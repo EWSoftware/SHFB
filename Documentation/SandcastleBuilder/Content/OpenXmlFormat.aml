@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c5e7e920-2cb4-4f78-b167-634361d85263" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The Open XML file format is used to produce word processing documents that can be opened by Microsoft
+Word and Open Office.  Files in this format are convertible to other file formats such as PDF using other
+third-party tools and applications.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="KnownIssues">
+			<title>Knowns Issues and Limitations</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>The Open XML format works best for projects with roughly 1,000 topics or less.  Bear in mind
+that topic count is no indication of actual page count as many topics can span several pages.  For example, the
+format works quite well for the XML Comments Guide (180 topics resulting in 277 pages) and the MAML Guide (90
+topics resulting in 136 pages).  A test case project with 508 topics generated 722 pages and was still quite
+manageable.  However, the Sandcastle Help File Builder help project generated over 2,800 topics which generated
+over 6,100 pages.  While the file could be loaded, it took a while and was rather unwieldy.  Saving to other
+formats was not possible as Word ran out of memory before it could finish saving the converted file.  If you have
+a large project with 1,000 or more topics, this is probably not a good option and you should consider one of the
+other file formats instead.</para>	
+					</listItem>
+
+					<listItem>
+						<para>Unlike HTML, the Open XML format is completely unforgiving with regard to ill-formed or illegal
+content.  The build process tries to fix up a number of common issues but it may miss some cases resulting in a
+document that states it is corrupted or has issues when opened.  You will need to track down the invalid markup
+and fix it (i.e. wrap text in paragraphs, remove unsupported HTML markup, etc.).  See the following section for
+tips on troubleshooting corrupted or invalid documents.</para>
+					</listItem>
+					
+					<listItem>
+						<alert class="important">
+							<para>The physical page layout and page numbering relies on several factors all of which are
+controlled entirely by the application that consumes the resulting document <legacyBold>not</legacyBold> the one
+that produces it.  As such, the help file builder <legacyBold>cannot</legacyBold> determine page layout nor page
+numbers at build time.</para>
+						</alert>
+
+						<para>Some of the side-effects of this limitation are as follows:</para>
+
+						<list class="bullet">
+							<listItem>
+							<para>There may be blank pages between topics.  These will need to be manually removed after
+generating the document.</para>
+							</listItem>
+
+							<listItem>
+								<para>Syntax sections and code examples may wrap lines due to the page margins.  If necessary,
+you may need to reformat the code examples to fix up any unwanted line wraps.</para>
+							</listItem>
+
+							<listItem>
+								<para>Since there is no way to determine valid page numbers, a table of contents is not added to
+the document.  For similar reasons and also because tagging index words is rather problematic while generating
+Open XML, an index is not added to the document either.  These can be added and generated after the document has
+been produced using the word processing application of your choice.</para>
+							</listItem>
+						</list>
+					</listItem>
+					
+					<listItem>
+						<para>There are many different bibliography formats available in applications such as Microsoft Word.
+As such, the bibliography elements and plug-in are not supported.  If desired, add a bibliography in the desired
+format to the document after it is produced with the word processing application of your choice.</para>
+					</listItem>
+
+					<listItem>
+						<para>Code colorization is supported.  However, line numbering and collapsible regions are not
+supported and those options are ignored.</para>
+					</listItem>
+
+					<listItem>
+						<para>Obviously, the language filter from the HTML help formats is not supported.  As such,
+language-specific text is shown using the generic, multi-language style.  Likewise, syntax sections and code
+blocks are shown in a sequential fashion similar to the VS2005 presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>The MAML <codeInline>markup</codeInline> element is supported for passing through Open XML
+markup directly into the document.  HTML markup is <legacyBold>not</legacyBold> supported in Open XML documents.
+Any HTML in MAML <codeInline>markup</codeInline> elements will likely corrupt the document.</para>
+
+						<alert class="tip">
+							<para>A few HTML elements are recognized and used in the XSL transformations as a requirement of
+the presentation style to handle certain cases that cannot be taken care of in the XSL transformations and to
+support certain build component output and localized resource items.  The Open XML file builder task translates
+these elements into Open XML elements when the topics are merged into a single document body.</para>
+
+							<para>Those elements are: <codeInline>a</codeInline> (anchor), <codeInline>br</codeInline> (line
+break), <codeInline>img</codeInline> (image), <codeInline>span</codeInline> (used for a limited set of named
+styles), <codeInline>ul</codeInline>/<codeInline>li</codeInline> (used to define lists).  If these elements
+appear in a <codeInline>markup</codeInline> element, they will be passed through and processed as if the XSL
+transformations or a build component had added them.  Note that they will only be processed based on the
+conditions expected by the Open XML file builder task.  Additional attributes on the elements other than those
+expected will be ignored.  As always, it is best to avoid use of the <codeInline>markup</codeInline> element
+whenever possible.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>Unlike MAML, HTML elements are prevalent in XML comments and the presentation style will make
+its best effort to translate as many HTML elements in the XML comments as possible to their Open XML equivalents.
+However, the end result may need fixing up in the generated document.  Better results are obtained with well
+formed HTML content.  Note that styling attributes are ignored as it is not possible to translate those to an
+Open XML equivalent.  As with MAML, staying with the standard XML comments elements whenever possible will
+produce the best results.</para>
+					</listItem>
+
+					<listItem>
+						<para>It is common in XML comments to omit the containing paragraph element in simple summary and
+remarks content.  Normally this is not an issue and the content will be converted to a paragraph with the
+expected formatting.  In some cases, such as when nested elements appear within the content, it may not wrap as
+expected and unintended line breaks may appear in the generated document.  In most cases, the solution to this
+problem is to wrap the content in a paragraph element in the XML comments so that the help file builder does not
+have to guess the intended layout.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Unlike HTML, self-closing and empty paragraphs will be rendered in the document and will
+consume space in both MAML topics and XML comments.  They cannot be removed as more often than not it ends up
+combining text into a single paragraph that is not intended to be combined.  The fix is to wrap the text in the
+paragraph elements and not use self-closing paragraphs which gets the expected results regardless of file format.</para>
+					</listItem>
+
+					<listItem>
+						<para>Headers and footers are separate document parts in Open XML content and localized resource
+items cannot be used within them.  A basic header containing the help title and a basic footer with a page number
+are included by default.  The following project properties are ignored:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Additional header content</para>
+							</listItem>
+
+							<listItem>
+								<para>Additional footer content</para>
+							</listItem>
+
+							<listItem>
+								<para>Copyright notice URL</para>
+							</listItem>
+
+							<listItem>
+								<para>Copyright notice text</para>
+							</listItem>
+
+							<listItem>
+								<para>Feedback e-mail address</para>
+							</listItem>
+
+							<listItem>
+								<para>Feedback e-mail link text</para>
+							</listItem>
+
+						</list>
+
+						<para>If you want this information to appear in the header and footer, it must be added to the
+generated document manually.  Since adding all of the information may unnecessarily clutter the header and footer
+it may be better to add it in a single topic somewhere near the start of the document.</para>
+
+						<alert class="tip">
+							<para>As in other help file formats, stock content item overrides are supported.  Including a
+<localUri>word/header.xml</localUri> and/or <localUri>word/footer.xml</localUri> file with appropriate, valid
+content in your project can be used to override the default header and/or footer in the generated document.
+Similarly, including a <localUri>word/styles.xml</localUri> file with valid content will override the default
+style sheet used in the document.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>SDK Link Target</codeInline> project property is ignored.  Links to external
+content are always opened in a new browser window or the related application that handles the given link type.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="Troubleshooting">
+			<title>Troubleshooting Corrupted Output</title>
+			<content>
+				<para>As mentioned earlier, the Open XML file format is extremely strict and requires that all content
+conform to the Open XML schema.  Deviation from the expected format usually results in the consuming application
+reporting that the file is corrupted in some way.  This section covers how to diagnose the issue.</para>
+
+				<para>The consuming application, such as Microsoft Word, will typically display a dialog box stating that
+the content is corrupt.  In Microsoft Word, clicking the <ui>Details</ui> button will provide more information
+about the problem and gives a line number within the XML content.  By default, the content is rendered without
+whitespace between elements so the line number is not of much use.  To obtain a useful line number and locate the
+invalid content, do the following:</para>
+
+				<list class="ordered">
+					<listItem>
+						<para>In your help file project, select the <ui>Build</ui> property category.
+					</para>
+					</listItem>
+
+					<listItem>
+						<para>Disable the <ui>Clean intermediate files after a successful build</ui> option.
+					</para>
+					</listItem>
+
+					<listItem>
+						<para>Enable the <ui>Indent rendered HTML</ui> option.  In this case, it's rendered XML but the
+result we need is the same.</para>
+					</listItem>
+
+					<listItem>
+						<para>Rebuild your project and open the resulting document.  Use the error dialog within the
+application to display the line number at which the failure is occurring as described above.</para>
+					</listItem>
+
+					<listItem>
+						<para>Navigate to the working folder for your project that contains the Open XML content generated
+by the build.  This is typically the <localUri>.\Help\Working\Output\OpenXml\word</localUri> folder beneath the
+project folder unless you defined a different location using the <ui>Working files path</ui> project property.</para>
+					</listItem>
+
+					<listItem>
+						<para>In that folder, locate and open the <localUri>document.xml</localUri> file in the text editor
+of your choice and go to the line number reported as the point of failure.  You should find the invalid content
+such as HTML elements within a few lines of that location.  By scrolling up, you can usually use the topic title
+to identify the MAML topic or API member that contains the invalid content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Once the topic or API member has been determined, you can open the topic or go to the source
+code and fix the offending content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Once the problem has been fixed and a valid document is being produced, be sure to turn off
+the <ui>Indent rendered HTML</ui> option as it is only for debugging purposes, it can affect the layout of the
+rendered content, and produces much larger content than is necessary.</para>
+					</listItem>
+				</list>
+
+				<para>Another common issue is missing images.  While this may not necessarily result in a corrupted
+document, it does result in invalid content since there is only a placeholder where the image should appear.
+Check the build log as it will contain warning messages about image files that were referenced in the content
+but could not be found.  The causes of missing images are usually an invalid path or the image not being marked
+as content so that it is included in the build output.</para>
+
+				<alert class="tip">
+					<para>If your project is quite large, using the API filter to limit the number of members included in
+the output and disabling topics in the content layout file can reduce the size of the resulting document XML and
+may help narrow down the location of the failure.</para>
+				</alert>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="da405a33-3eeb-4451-9aa8-a55be5026434" />
+			<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

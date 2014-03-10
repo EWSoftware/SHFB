@@ -325,7 +325,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // Determine the default topic for Help 1 and website output if one was not specified in a site map
             // or content layout file.
-            if(defaultTopic == null)
+            if(defaultTopic == null && (project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 |
+              HelpFileFormats.Website)) != 0)
             {
                 node = tocXml.SelectSingleNode("topics/topic");
 

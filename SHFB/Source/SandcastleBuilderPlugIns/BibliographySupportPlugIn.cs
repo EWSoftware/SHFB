@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 03/09/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add bibliography support to the topics
@@ -26,6 +26,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -106,10 +108,19 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
+            // If the file format is Open XML, this plug in is not supported and will not run
+            if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+            {
+                builder.ReportWarning("BIP0005", "The bibliography plug-in is not supported in the Open XML " +
+                    "file format and will not run.");
+                executionPoints = new List<ExecutionPoint>();
+                return;
+            }
+
             root = configuration.SelectSingleNode("configuration");
 
             if(root.IsEmptyElement)
-                throw new BuilderException("BIB0001", "The Bibliography support plug-in has not been " +
+                throw new BuilderException("BIP0001", "The Bibliography support plug-in has not been " +
                     "configured yet");
 
             node = root.SelectSingleNode("bibliography");
@@ -118,14 +129,14 @@ namespace SandcastleBuilder.PlugIns
                 bibliographyFile = node.GetAttribute("path", String.Empty).Trim();
 
             if(String.IsNullOrEmpty(bibliographyFile))
-                throw new BuilderException("BIB0002", "A path to the bibliography file is required");
+                throw new BuilderException("BIP0002", "A path to the bibliography file is required");
 
             // If relative, the path is relative to the project folder
             bibliographyFile = FilePath.RelativeToAbsolutePath(builder.ProjectFolder,
                 builder.TransformText(bibliographyFile));
 
             if(!File.Exists(bibliographyFile))
-                throw new BuilderException("BIB0003", "Unable to locate bibliography file at " + bibliographyFile);
+                throw new BuilderException("BIP0003", "Unable to locate bibliography file at " + bibliographyFile);
         }
 
         /// <summary>
@@ -175,7 +186,7 @@ namespace SandcastleBuilder.PlugIns
                 "@id='XSL Transform Component']/transform");
 
             if(transform == null)
-                throw new BuilderException("BIB0004", "Unable to locate XSL Transform Component configuration in " +
+                throw new BuilderException("BIP0004", "Unable to locate XSL Transform Component configuration in " +
                     configFilename);
 
             argument = configFile.CreateElement("argument");

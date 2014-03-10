@@ -135,7 +135,7 @@ namespace TestDoc.Overloads
         /// <dd>White cold drink</dd>
         /// </dl>
         ///
-        /// <p/><img src="../Images/AddContent.gif" alt="Additional Content"/>
+        /// <p/><img src="../Media/SandcastleLogoSmall.jpg" alt="Sandcastle Logo" title="Sandcastle Logo"/>
         /// </remarks>
         public void HtmlTagCommentTest()
         {

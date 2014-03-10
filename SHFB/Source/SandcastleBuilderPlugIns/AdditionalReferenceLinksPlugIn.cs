@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 03/08/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -333,8 +333,16 @@ namespace SandcastleBuilder.PlugIns
 
                         attr = configFile.CreateAttribute("type");
 
-                        helpFormat = (HelpFileFormats)Enum.Parse(typeof(HelpFileFormats),
-                            match.ParentNode.Attributes["format"].Value, true);
+                        // Look for a format attribute on the parent component which is typically the
+                        // Multi-format Output Component.
+                        var format = match.ParentNode.Attributes["format"];
+
+                        // If not found, we've probably got a single format presentation style so look to the
+                        // project for the format.
+                        if(format != null)
+                            helpFormat = (HelpFileFormats)Enum.Parse(typeof(HelpFileFormats), format.Value, true);
+                        else
+                            helpFormat = builder.CurrentProject.HelpFileFormat;
 
                         switch(helpFormat)
                         {
@@ -350,7 +358,7 @@ namespace SandcastleBuilder.PlugIns
                                 attr.Value = vs.MSHelpViewerSdkLinkType.ToString();
                                 break;
 
-                            default:
+                            default:    // Website and Open XML format
                                 attr.Value = vs.WebsiteSdkLinkType.ToString();
                                 break;
                         }

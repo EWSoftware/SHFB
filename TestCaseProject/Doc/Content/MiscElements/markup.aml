@@ -41,8 +41,7 @@ Its use should be restricted to custom build components.
       <content>
 				<para>Here is a piece of literal HTML markup:
 <markup><br /><br />
-It is <b>NOT</b> recommended that you use the <em>markup</em> element for normal conceptual content when an
-equivalent <u>MAML element</u> already exists.  Its use should be restricted to custom build components.
+Modified content that is compatible with the <span class="Bold">Open XML</span> presentation style too.
 </markup></para>
 			</content>
     </section>

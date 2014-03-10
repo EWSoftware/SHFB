@@ -224,11 +224,11 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" isExpanded="true" title="Project Properties Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="property categories, Overview" />
     </HelpKeywords>
-    <Topic id="da405a33-3eeb-4451-9aa8-a55be5026434" visible="True" title="Build Category Properties">
+    <Topic id="da405a33-3eeb-4451-9aa8-a55be5026434" visible="True" isSelected="true" title="Build Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, BuildLogFile" />
         <HelpKeyword index="K" term="properties, CleanIntermediates" />
@@ -1316,6 +1316,11 @@
       <HelpKeyword index="K" term="build components, presentation style template class" />
     </HelpKeywords>
   </Topic>
+  <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" title="Open XML Document Help File Format">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="open XML" />
+    </HelpKeywords>
+  </Topic>
   <Topic id="1aea789d-b226-4b39-b534-4c97c256fac8" visible="True" title="Frequently Asked Questions (FAQ)" linkText="FAQ">
     <HelpKeywords>
       <HelpKeyword index="K" term="errors, HHC3002" />
@@ -1346,7 +1351,7 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />

@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Donate.aml" />
+    <None Include="Content\License.aml" />
     <None Include="Content\MiscElements\markup.aml" />
     <None Include="Content\VersionHistory\v1.1.0.1.aml" />
     <None Include="Content\MSHelpViewerRoot.aml" />

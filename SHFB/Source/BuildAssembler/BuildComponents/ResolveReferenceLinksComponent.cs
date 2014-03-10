@@ -13,6 +13,9 @@
 // 03/17/2013 - EFW - Added support for the ReferenceLink.RenderAsLink property
 // 11/08/2013 - EFW - Applied patch from Stazzz to write out nested XML elements within the link inner text
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 03/03/2014 - EFW - Added code to default to looking up target IDs if not found in the reflection data but
+// they start with "System." or "Microsoft.".  This should help add links to MSDN content for Microsoft SDKs
+// without having to add additional reference link data to the help project.
 
 using System;
 using System.Collections.Generic;
@@ -248,7 +251,27 @@ namespace Microsoft.Ddue.Tools
                     continue;
                 }
 
-                if(!targets.TryGetValue(targetId, out target, out type))
+                bool targetFound = targets.TryGetValue(targetId, out target, out type);
+
+                // If not found and it starts with "System." or "Microsoft." we'll go with the assumption that
+                // it's part of a Microsoft class library that is not part of the core framework but does have
+                // documentation available on MSDN.  Worst case it doesn't and we get an unresolved link warning
+                // instead of an unknown reference target warning.
+                if(!targetFound && ((targetId.Length > 9 && targetId.Substring(2).StartsWith("System.",
+                  StringComparison.Ordinal)) || (targetId.Length > 12 && targetId.Substring(2).StartsWith(
+                  "Microsoft.", StringComparison.Ordinal))))
+                {
+                    // Use the same link type as a core framework class
+                    targetFound = targets.TryGetValue("T:System.Object", out target, out type);
+
+                    // We don't have a target in this case so links to overloads pages won't work.  Also note
+                    // that the link text will be generated from the ID which shouldn't make much of a difference
+                    // in most cases.  If either case is an issue, the Additional Reference Links SHFB plug-in
+                    // can be used to generate valid link target data.
+                    target = null;
+                }
+
+                if(!targetFound)
                 {
                     // If not being rendered as a link, don't report a warning
                     if(link.RenderAsLink && targetId != key)
@@ -262,7 +285,7 @@ namespace Microsoft.Ddue.Tools
                 else
                 {
                     // If overload is preferred and found, change targetId and make link options hide parameters
-                    if(link.PreferOverload)
+                    if(link.PreferOverload && target != null)
                     {
                         bool isConversionOperator = false;
 
@@ -294,7 +317,7 @@ namespace Microsoft.Ddue.Tools
 
                     // If link type is Local or Index, determine which
                     if(type == ReferenceLinkType.LocalOrIndex)
-                        if(targets.TryGetValue(key, out keyTarget) && target.Container == keyTarget.Container)
+                        if(targets.TryGetValue(key, out keyTarget) && target != null && target.Container == keyTarget.Container)
                             type = ReferenceLinkType.Local;
                         else
                             type = ReferenceLinkType.Index;

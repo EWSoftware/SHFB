@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 03/09/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,6 +21,7 @@
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.8.0.3  07/06/2009  EFW  Added support for Help Viewer deployment
 // -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+//          03/09/2014  EFW  Updated to support Open XML file deployment
 //===============================================================================================================
 
 using System;
@@ -60,7 +61,7 @@ namespace SandcastleBuilder.PlugIns
         private BuildProcess builder;
 
         // Plug-in configuration options
-        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer, deployWebsite;
+        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer, deployWebsite, deployOpenXml;
         private bool deleteAfterDeploy, renameMSHA;
         #endregion
 
@@ -139,6 +140,7 @@ namespace SandcastleBuilder.PlugIns
             deployHelp2 = DeploymentLocation.FromXPathNavigator(root, "help2x");
             deployHelpViewer = DeploymentLocation.FromXPathNavigator(root, "helpViewer");
             deployWebsite = DeploymentLocation.FromXPathNavigator(root, "website");
+            deployOpenXml = DeploymentLocation.FromXPathNavigator(root, "openXml");
 
             msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
 
@@ -148,12 +150,11 @@ namespace SandcastleBuilder.PlugIns
 
             // At least one deployment location must be defined
             if(deployHelp1.Location == null && deployHelp2.Location == null &&
-              deployHelpViewer.Location == null && deployWebsite.Location == null)
+              deployHelpViewer.Location == null && deployWebsite.Location == null && deployOpenXml.Location == null)
                 throw new BuilderException("ODP0002", "The output deployment plug-in must have at least " +
                     "one configured deployment location");
 
-            // Issue a warning if the deployment location is null and the
-            // associated help file format is active.
+            // Issue a warning if the deployment location is null and the associated help file format is active
             if(deployHelp1.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 builder.ReportWarning("ODP0003", "HTML Help 1 will be generated but not deployed due to " +
@@ -172,6 +173,11 @@ namespace SandcastleBuilder.PlugIns
             if(deployWebsite.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.Website) != 0)
                 builder.ReportWarning("ODP0003", "Website will be generated but not deployed due to " +
+                    "missing deployment location information");
+
+            if(deployOpenXml.Location == null &&
+              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+                builder.ReportWarning("ODP0003", "Open XML will be generated but not deployed due to " +
                     "missing deployment location information");
         }
 
@@ -204,6 +210,12 @@ namespace SandcastleBuilder.PlugIns
             {
                 builder.ReportProgress("Deploying website files");
                 this.DeployOutput(builder.WebsiteFiles, deployWebsite);
+            }
+
+            if(builder.CurrentFormat == HelpFileFormats.OpenXml)
+            {
+                builder.ReportProgress("Deploying Open XML files");
+                this.DeployOutput(builder.OpenXmlFiles, deployOpenXml);
             }
         }
         #endregion

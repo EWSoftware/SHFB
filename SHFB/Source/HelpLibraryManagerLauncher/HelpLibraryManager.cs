@@ -2,8 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
-// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
+// Updated : 03/03/2014
+// Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to interact with the Help Library Manager.
@@ -18,12 +18,14 @@
 // 1.0.0.0  07/03/2010  EFW  Created the code
 // 1.0.0.1  03/24/2012  EFW  Merged changes submitted by Don Fehr
 // 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
+// -------  03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace SandcastleBuilder.MicrosoftHelpViewer
@@ -34,38 +36,6 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
     /// </summary>
     public class HelpLibraryManager
     {
-        #region Private catalog information class
-        //=====================================================================
-
-        /// <summary>
-        /// This is used internally to store information about the installed catalogs
-        /// </summary>
-        private class Catalog
-        {
-            /// <summary>Get the locale</summary>
-            public string Locale { get; private set; }
-
-            /// <summary>Get the product</summary>
-            public string Product { get; private set; }
-
-            /// <summary>Get the version</summary>
-            public string Version { get; private set; }
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="product">The product</param>
-            /// <param name="version">The version</param>
-            /// <param name="locale">The locale</param>
-            public Catalog(string product, string version, string locale)
-            {
-                this.Product = product;
-                this.Version = version;
-                this.Locale = locale;
-            }
-        }
-        #endregion
-
         #region Private data members
         //=====================================================================
 
@@ -158,7 +128,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         //=====================================================================
 
         /// <summary>
-        /// This is used to find the installed locale of the specified product version for Help Viewer 1.0.
+        /// This is used to find the installed locale of the specified product version for Help Viewer 1.0
         /// </summary>
         /// <param name="product">The product for which to get the locale.</param>
         /// <param name="version">The version of the product for which to get the locale.</param>
@@ -166,33 +136,115 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         public string FindLocaleFor(string product, string version)
         {
             XmlDocument manifest;
-            List<Catalog> allInstalledCatalogs = new List<Catalog>();
-            string locale = null;
+            Dictionary<string, int> allCatalogLocales = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            string path, productId, productVersion, productLocale;
+            int sourceFileCount, currentCount;
 
             if(String.IsNullOrEmpty(this.LocalStorePath))
                 return null;
 
+            path = Path.Combine(this.LocalStorePath, "manifest");
+
+            if(!Directory.Exists(path))
+                return null;
+
             // I suppose it's possible there may be more than one so we'll look at all of them
-            foreach(string file in Directory.EnumerateFiles(Path.Combine(this.LocalStorePath, "manifest"),
-              "queryManifest.*.xml"))
+            foreach(string file in Directory.EnumerateFiles(path, "queryManifest.*.xml"))
             {
                 manifest = new XmlDocument();
                 manifest.Load(file);
 
                 foreach(XmlNode node in manifest.SelectNodes("/queryManifest/catalogs/catalog"))
-                    allInstalledCatalogs.Add(new Catalog(node.Attributes["productId"].Value,
-                        node.Attributes["productVersion"].Value, node.Attributes["productLocale"].Value));
+                {
+                    productId = node.Attributes["productId"].Value;
+                    productVersion = node.Attributes["productVersion"].Value;
+
+                    if(product.Equals(productId, StringComparison.OrdinalIgnoreCase) &&
+                        version.Equals(productVersion, StringComparison.OrdinalIgnoreCase))
+                    {
+                        productLocale = node.Attributes["productLocale"].Value;
+                        sourceFileCount = node.SelectNodes("catalogSources/catalogSource/sourceFiles/sourceFile").Count;
+
+                        if(!allCatalogLocales.TryGetValue(productLocale, out currentCount))
+                            currentCount = 0;
+
+                        allCatalogLocales[productLocale] = currentCount + sourceFileCount;
+                    }
+                }
             }
 
-            // Look for the product and version to find the locale.  If, by chance, we
-            // find more than one we'll use the last one found or "en-US" if present.
-            foreach(Catalog catalog in allInstalledCatalogs)
-                if(catalog.Product.Equals(product, StringComparison.OrdinalIgnoreCase) &&
-                  catalog.Version.Equals(version, StringComparison.OrdinalIgnoreCase) &&
-                  (locale == null || !locale.Equals("en-us", StringComparison.OrdinalIgnoreCase)))
-                    locale = catalog.Locale.ToLowerInvariant();
+            if(allCatalogLocales.Count == 0)
+                return null;
 
-            return locale;
+            // On systems with a different language installed, we can still get en-US as well.  If we've got more
+            // than one language, take the one with the most source files as it's most likely the language of
+            // choice.
+            int maxSourceFileCount = allCatalogLocales.Max(c => c.Value);
+
+            // It's a long shot, but if we end up with two or more with the same count, pick the first one that
+            // isn't en-US.  Failing that, just return the first one.
+            var matches = allCatalogLocales.Where(c => c.Value == maxSourceFileCount).ToList();
+
+            if(matches.Count > 1 && matches.Any(c => !c.Key.Equals("en-US")))
+                return matches.First(c => !c.Key.Equals("en-US")).Key;
+
+            return matches.First().Key;
+        }
+
+        /// <summary>
+        /// This is used to find the installed locale of the specified product version for Help Viewer 2.x
+        /// </summary>
+        /// <param name="catalogName">The catalogName for which to get the locale</param>
+        /// <returns>The locale found for the specified catalog.  If not found, it returns null.</returns>
+        public string FindLocaleFor(string catalogName)
+        {
+            XmlDocument manifest;
+            Dictionary<string, int> allCatalogLocales = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            string path, bookLocale;
+            int bookCount, currentCount;
+
+            if(String.IsNullOrEmpty(this.LocalStorePath))
+                return null;
+
+            path = Path.Combine(this.LocalStorePath, catalogName + @"\ContentStore");
+
+            if(!Directory.Exists(path))
+                return null;
+
+            // I suppose it's possible there may be more than one so we'll look at all of them
+            foreach(string file in Directory.EnumerateFiles(path, "installedBooks.*.xml"))
+            {
+                manifest = new XmlDocument();
+                manifest.Load(file);
+
+                foreach(XmlNode node in manifest.SelectNodes("/installed-books/locale-membership/locale"))
+                {
+                    bookLocale = node.Attributes["name"].Value;
+                    bookCount = node.SelectNodes("book-list/book").Count;
+
+                    if(!allCatalogLocales.TryGetValue(bookLocale, out currentCount))
+                        currentCount = 0;
+
+                    allCatalogLocales[bookLocale] = currentCount + bookCount;
+                }
+            }
+
+            if(allCatalogLocales.Count == 0)
+                return null;
+
+            // On systems with a different language installed, we can still get en-US as well.  If we've got more
+            // than one language, take the one with the most source files as it's most likely the language of
+            // choice.
+            int maxSourceFileCount = allCatalogLocales.Max(c => c.Value);
+
+            // It's a long shot, but if we end up with two or more with the same count, pick the first one that
+            // isn't en-US.  Failing that, just return the first one.
+            var matches = allCatalogLocales.Where(c => c.Value == maxSourceFileCount).ToList();
+
+            if(matches.Count > 1 && matches.Any(c => !c.Key.Equals("en-US")))
+                return matches.First(c => !c.Key.Equals("en-US")).Key;
+
+            return matches.First().Key;
         }
 
         /// <summary>

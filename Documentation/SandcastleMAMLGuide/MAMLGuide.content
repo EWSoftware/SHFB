@@ -5,9 +5,14 @@
       <HelpKeyword index="K" term="Sandcastle MAML Guide" />
     </HelpKeywords>
   </Topic>
-  <Topic id="303c996a-2911-4c08-b492-6496c82b3edb" visible="True" isDefault="true">
+  <Topic id="303c996a-2911-4c08-b492-6496c82b3edb" visible="True" isDefault="true" title="Welcome">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="aa8250ea-dfe4-46c0-b2eb-b4e975f0db1e" visible="True" isSelected="true" title="License Agreement">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="License agreement" />
     </HelpKeywords>
   </Topic>
   <Topic id="b00070c7-9c5e-4b49-ad5c-f55fa866f062" visible="True" title="Known Issues and Bugs">
@@ -422,7 +427,7 @@
       <HelpKeyword index="K" term="extensibility" />
     </HelpKeywords>
   </Topic>
-  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" isSelected="true" title="Links to Resources">
+  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" title="Links to Resources">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, article on creating components" />
       <HelpKeyword index="K" term="build components, links to third-party components" />

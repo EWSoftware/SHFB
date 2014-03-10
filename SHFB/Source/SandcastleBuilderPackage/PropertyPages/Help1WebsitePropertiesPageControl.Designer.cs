@@ -55,7 +55,7 @@
             this.chkBinaryTOC.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBinaryTOC.Location = new System.Drawing.Point(190, 78);
             this.chkBinaryTOC.Name = "chkBinaryTOC";
-            this.chkBinaryTOC.Size = new System.Drawing.Size(376, 24);
+            this.chkBinaryTOC.Size = new System.Drawing.Size(382, 24);
             this.chkBinaryTOC.TabIndex = 3;
             this.chkBinaryTOC.Tag = "BinaryTOC";
             this.chkBinaryTOC.Text = "Create a binary table of contents to reduce load time";
@@ -79,7 +79,7 @@
             this.dividerLabel2.Name = "dividerLabel2";
             this.dividerLabel2.Size = new System.Drawing.Size(629, 24);
             this.dividerLabel2.TabIndex = 5;
-            this.dividerLabel2.Text = "Website (HTML/ASP.NET)";
+            this.dividerLabel2.Text = "Website (HTML/ASP.NET) / Open XML (DOCX)";
             // 
             // chkIncludeFavorites
             // 
@@ -116,7 +116,7 @@
             // 
             this.cboWebsiteSdkLinkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboWebsiteSdkLinkType.FormattingEnabled = true;
-            this.cboWebsiteSdkLinkType.Location = new System.Drawing.Point(190, 197);
+            this.cboWebsiteSdkLinkType.Location = new System.Drawing.Point(253, 197);
             this.cboWebsiteSdkLinkType.MaxDropDownItems = 16;
             this.cboWebsiteSdkLinkType.Name = "cboWebsiteSdkLinkType";
             this.cboWebsiteSdkLinkType.Size = new System.Drawing.Size(302, 28);
@@ -127,9 +127,9 @@
             // 
             this.label1.Location = new System.Drawing.Point(12, 199);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(172, 23);
+            this.label1.Size = new System.Drawing.Size(235, 23);
             this.label1.TabIndex = 6;
-            this.label1.Text = "We&bsite SDK link type";
+            this.label1.Text = "We&bsite/Open XML SDK link type";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Help1WebsitePropertiesPageControl

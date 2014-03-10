@@ -20,6 +20,7 @@ namespace SandcastleBuilder.Package
 		public const uint TopicPreviewerWindow = 0x0030;
 		public const uint LaunchContentMgr = 0x0031;
 		public const uint HtmlEncode = 0x0032;
+		public const uint ViewDocxHelp = 0x0038;
         
     };
 }

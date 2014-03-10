@@ -181,7 +181,9 @@
     <Compile Include="MSBuild\Build2xHelpFile.cs" />
     <Compile Include="MSBuild\BuildHelp.cs" />
     <Compile Include="MSBuild\CleanHelp.cs" />
+    <Compile Include="MSBuild\BuildOpenXmlFile.cs" />
     <Compile Include="MSBuild\MSBuildProject.cs" />
+    <Compile Include="MSBuild\NumberingStyle.cs" />
     <Compile Include="MSHelpAttr.cs" />
     <Compile Include="MSHelpAttrCollection.cs" />
     <Compile Include="ApiFilter.cs" />

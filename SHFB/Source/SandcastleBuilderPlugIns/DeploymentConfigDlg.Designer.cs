@@ -40,17 +40,20 @@ namespace SandcastleBuilder.PlugIns
             this.pgMSHelp2 = new System.Windows.Forms.TabPage();
             this.ucMSHelp2 = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
             this.pgMSHelpViewer = new System.Windows.Forms.TabPage();
+            this.chkRenameMSHA = new System.Windows.Forms.CheckBox();
             this.ucMSHelpViewer = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
             this.pgWebsite = new System.Windows.Forms.TabPage();
             this.ucWebsite = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
             this.chkDeleteAfterDeploy = new System.Windows.Forms.CheckBox();
-            this.chkRenameMSHA = new System.Windows.Forms.CheckBox();
+            this.pgOpenXml = new System.Windows.Forms.TabPage();
+            this.ucOpenXml = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.tabConfig.SuspendLayout();
             this.pgHtmlHelp1.SuspendLayout();
             this.pgMSHelp2.SuspendLayout();
             this.pgMSHelpViewer.SuspendLayout();
             this.pgWebsite.SuspendLayout();
+            this.pgOpenXml.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -98,6 +101,7 @@ namespace SandcastleBuilder.PlugIns
             this.tabConfig.Controls.Add(this.pgMSHelp2);
             this.tabConfig.Controls.Add(this.pgMSHelpViewer);
             this.tabConfig.Controls.Add(this.pgWebsite);
+            this.tabConfig.Controls.Add(this.pgOpenXml);
             this.tabConfig.Location = new System.Drawing.Point(12, 42);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.SelectedIndex = 0;
@@ -152,6 +156,16 @@ namespace SandcastleBuilder.PlugIns
             this.pgMSHelpViewer.Text = "MS Help Viewer";
             this.pgMSHelpViewer.UseVisualStyleBackColor = true;
             // 
+            // chkRenameMSHA
+            // 
+            this.chkRenameMSHA.AutoSize = true;
+            this.chkRenameMSHA.Location = new System.Drawing.Point(93, 275);
+            this.chkRenameMSHA.Name = "chkRenameMSHA";
+            this.chkRenameMSHA.Size = new System.Drawing.Size(420, 21);
+            this.chkRenameMSHA.TabIndex = 1;
+            this.chkRenameMSHA.Text = "Rename MSHA file to HelpContentSetup.msha when deployed";
+            this.chkRenameMSHA.UseVisualStyleBackColor = true;
+            // 
             // ucMSHelpViewer
             // 
             this.ucMSHelpViewer.Location = new System.Drawing.Point(5, 12);
@@ -186,15 +200,23 @@ namespace SandcastleBuilder.PlugIns
             this.chkDeleteAfterDeploy.Text = "Delete source files &after deploying them";
             this.chkDeleteAfterDeploy.UseVisualStyleBackColor = true;
             // 
-            // chkRenameMSHA
+            // pgOpenXml
             // 
-            this.chkRenameMSHA.AutoSize = true;
-            this.chkRenameMSHA.Location = new System.Drawing.Point(93, 275);
-            this.chkRenameMSHA.Name = "chkRenameMSHA";
-            this.chkRenameMSHA.Size = new System.Drawing.Size(420, 21);
-            this.chkRenameMSHA.TabIndex = 1;
-            this.chkRenameMSHA.Text = "Rename MSHA file to HelpContentSetup.msha when deployed";
-            this.chkRenameMSHA.UseVisualStyleBackColor = true;
+            this.pgOpenXml.Controls.Add(this.ucOpenXml);
+            this.pgOpenXml.Location = new System.Drawing.Point(4, 25);
+            this.pgOpenXml.Name = "pgOpenXml";
+            this.pgOpenXml.Padding = new System.Windows.Forms.Padding(3);
+            this.pgOpenXml.Size = new System.Drawing.Size(606, 302);
+            this.pgOpenXml.TabIndex = 4;
+            this.pgOpenXml.Text = "Open XML";
+            this.pgOpenXml.UseVisualStyleBackColor = true;
+            // 
+            // ucOpenXml
+            // 
+            this.ucOpenXml.Location = new System.Drawing.Point(5, 12);
+            this.ucOpenXml.Name = "ucOpenXml";
+            this.ucOpenXml.Size = new System.Drawing.Size(596, 257);
+            this.ucOpenXml.TabIndex = 0;
             // 
             // DeploymentConfigDlg
             // 
@@ -221,6 +243,7 @@ namespace SandcastleBuilder.PlugIns
             this.pgMSHelpViewer.ResumeLayout(false);
             this.pgMSHelpViewer.PerformLayout();
             this.pgWebsite.ResumeLayout(false);
+            this.pgOpenXml.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -243,5 +266,7 @@ namespace SandcastleBuilder.PlugIns
         private DeploymentConfigUserControl ucMSHelpViewer;
         private DeploymentConfigUserControl ucWebsite;
         private System.Windows.Forms.CheckBox chkRenameMSHA;
+        private System.Windows.Forms.TabPage pgOpenXml;
+        private DeploymentConfigUserControl ucOpenXml;
     }
 }

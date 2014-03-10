@@ -89,7 +89,7 @@
               </groupBaseReferencesButtons>
             </buttons>
           </group>
-          <group Id="51fa6e8a-6f0a-4d8a-bacb-5590dd560c21" name="ViewLogGroup" idNumeric="34" priority="261">
+          <group Id="51fa6e8a-6f0a-4d8a-bacb-5590dd560c21" name="ViewLogGroup" idNumeric="34" priority="262">
             <buttons>
               <groupBaseReferencesButtons Id="49947a42-e43c-4b8b-b91f-5c170664626b">
                 <buttonMoniker Id="869d455d-931b-4aab-bf64-884bd8ced87e" />
@@ -134,6 +134,13 @@
             <buttons>
               <groupBaseReferencesButtons Id="e3fcf17d-94a0-44c3-a74c-8dc72949eb24">
                 <buttonMoniker Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="ea10b1d8-53b9-43b8-9dad-291d9c1d3235" name="DocxHelpGroup" idNumeric="57" priority="261">
+            <buttons>
+              <groupBaseReferencesButtons Id="de404263-b547-4bf0-88c1-2fdc2f08bd0c">
+                <buttonMoniker Id="ee79214d-2eb7-4ac5-97d1-aaa7a87d8352" />
               </groupBaseReferencesButtons>
             </buttons>
           </group>
@@ -187,6 +194,9 @@
           <commandTableHasButtons Id="165c2b93-c4b7-4ca5-89f1-a62ab5a2de23">
             <button Id="9bf37359-0e7b-4b4a-a241-046935d2c5f7" name="HtmlEncode" idNumeric="50" buttonText="HTML Encode Selected Text" menuText="HTML Encode Selected Text" commandName="cmdidHtmlEncode" toolTipText="HTML encode the selected text" mod1="0" mod2="0" visibilityConstraints="0" icon="HtmlEncode.bmp" commandFlags="DefaultDisabled, DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
+          <commandTableHasButtons Id="867e1c29-bad5-435d-bfee-bc14a037643a">
+            <button Id="ee79214d-2eb7-4ac5-97d1-aaa7a87d8352" name="ViewDocxHelp" idNumeric="56" buttonText="View &amp;Open XML (.docx) File" menuText="View &amp;Open XML (.docx) File" commandName="cmdidViewDocxHelp" toolTipText="View &amp;Open XML (.docx) File" mod1="0" mod2="0" visibilityConstraints="0" icon="Docx.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
         </buttons>
         <menuBases>
           <commandTableHasMenuBases Id="63b62b76-668e-47d3-b456-c8113eca11a0">
@@ -225,6 +235,9 @@
                 <menuBaseReferencesGroupBases Id="c2c4c050-d0c5-4919-963f-49fd8a23a458">
                   <groupMoniker Id="1a04f23a-e7c8-4e09-b1d4-7ede59d14ef7" />
                 </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="f8826b1c-d281-4da1-b899-23746e857e5b">
+                  <groupMoniker Id="ea10b1d8-53b9-43b8-9dad-291d9c1d3235" />
+                </menuBaseReferencesGroupBases>
               </groupBases>
             </menu>
           </commandTableHasMenuBases>
@@ -260,6 +273,9 @@
                 </menuBaseReferencesGroupBases>
                 <menuBaseReferencesGroupBases Id="0939c932-a7fb-493f-9a0b-4e2ee07c65bc">
                   <groupMoniker Id="51fa6e8a-6f0a-4d8a-bacb-5590dd560c21" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="e0bc5d9b-15ac-45c6-a1e7-faf4b7392956">
+                  <groupMoniker Id="ea10b1d8-53b9-43b8-9dad-291d9c1d3235" />
                 </menuBaseReferencesGroupBases>
               </groupBases>
             </menu>

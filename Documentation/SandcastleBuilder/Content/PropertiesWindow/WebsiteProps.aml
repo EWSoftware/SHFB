@@ -16,8 +16,13 @@ framework (SDK) help topics. It can be set to <codeInline>None</codeInline> whic
 <codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN help content for the topic.
 When set to <codeInline>MSDN</codeInline>, the
 <link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">Sdk Link Target</link> property is used to
-define where the MSDN links will open in the browser.
-				</para>
+define where the MSDN links will open in the browser.</para>
+
+				<alert class="note">
+					<para>This property is also used as the SDK link type setting for the Open XML help file format.  For
+the Open XML format, the SDK Link Target property is ignored and all MSDN links are opened in an external
+browser instance.</para>
+				</alert>
 			</content>
 		</section>
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/18/2014
+// Updated : 03/03/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -212,6 +212,18 @@ namespace Sandcastle.Core
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
+                    catch(IOException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(System.Security.SecurityException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(UnauthorizedAccessException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
                     catch(ReflectionTypeLoadException ex)
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
@@ -223,8 +235,23 @@ namespace Sandcastle.Core
 
                 // Enumerate subfolders separately so that we can skip future requests for the same folder
                 if(includeSubfolders)
-                    foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                        AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
+                    try
+                    {
+                        foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
+                            AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
+                    }
+                    catch(IOException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(System.Security.SecurityException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(UnauthorizedAccessException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
             }
         }
         #endregion

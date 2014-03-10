@@ -51,13 +51,21 @@
           <colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml" styleFile="{@SHFBFolder}Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
         </component>
       </ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><!-- Output options (optional)
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <!-- Output options (optional)
   Attributes:
     Include namespaces (false by default)
     Namespaces comments filename ("Namespaces" if not specified or empty)
-    Output folder (current folder if not specified or empty) --><output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" /></component></ComponentConfig></ComponentConfigurations>
+    Output folder (current folder if not specified or empty) -->
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
@@ -132,7 +140,31 @@
       </PlugInConfig>
     </PlugInConfigurations>
     <ApiFilter>
-    </ApiFilter>
+      <Filter entryType="Namespace" fullName="" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc" isExposed="True">
+  <Filter entryType="Class" fullName="TestDoc.TestClass" filterName="TestClass" isExposed="False" />
+  <Filter entryType="Class" fullName="TestDoc.TestDerivedClass" filterName="TestDerivedClass" isExposed="False" />
+  <Filter entryType="Enumeration" fullName="TestDoc.TestGeneral" filterName="TestGeneral" isExposed="False" />
+  <Filter entryType="Class" fullName="TestDoc.TestSealedDerivedClass" filterName="TestSealedDerivedClass" isExposed="False" />
+</Filter>
+<Filter entryType="Namespace" fullName="TestDoc.DocumentationInheritance" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.ExtensionMethods" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.Generics" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.Generics.InheritanceBug" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.Generics.InterfaceFailure" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.Generics.MissingMembersBug" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.Generics.OverloadBug" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Report.Excel" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Reporting" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Reporting.Standard" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Reporting.WordXML" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.IndexTocBugs" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.InterfaceTests" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.InteropAttributesBug" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.InteropBug" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.NestedClasses" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.Overloads" isExposed="False" />
+<Filter entryType="Namespace" fullName="TestDoc.SealedOverrideBug" isExposed="False" /></ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Version>1.20.34.123</Version>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/26/2014
+// Updated : 03/08/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.9.3.3  12/26/2011  EFW  Added support for the SHFB file editors
 // 1.9.3.4  01/21/2012  EFW  Added support for the Topic Previewer tool window
 // 1.9.5.0  10/06/2012  EFW  Added support for Help Viewer 2.0
+// -------  03/08/2014  EFW  Added support for the Open XML file format
 //===============================================================================================================
 
 using System;
@@ -52,12 +53,10 @@ namespace SandcastleBuilder.Package
     /// package.
     /// </summary>
     /// <remarks>
-    /// The class implements the <c>IVsPackage</c> interface and registers
-    /// itself with the shell.  This package uses the helper classes defined
-    /// inside the <b>Managed Package Framework</b> (MPF) to do it.  It derives
-    /// from the <c>Package</c> class that provides the implementation of the 
-    /// <c>IVsPackage</c> interface and uses the registration attributes
-    /// defined in the framework to register itself and its components with the
+    /// The class implements the <c>IVsPackage</c> interface and registers itself with the shell.  This package
+    /// uses the helper classes defined inside the <b>Managed Package Framework</b> (MPF) to do it.  It derives
+    /// from the <c>Package</c> class that provides the implementation of the <c>IVsPackage</c> interface and
+    /// uses the registration attributes defined in the framework to register itself and its components with the
     /// shell.</remarks>
     // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is
     // a package.
@@ -342,20 +341,24 @@ namespace SandcastleBuilder.Package
                     if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
                         this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewHxSHelp);
                     else
-                        if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                            Utility.OpenUrl(projectNode.StartWebServerInstance());
+                        if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+                            this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
                         else
-                        {
-                            // This format opens a modal dialog box so we'll use it last if nothing
-                            // else is selected.
-                            var options = this.GeneralOptions;
+                            if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                                Utility.OpenUrl(projectNode.StartWebServerInstance());
+                            else
+                            {
+                                // This format opens a modal dialog box so we'll use it last if nothing else is
+                                // selected.
+                                var options = this.GeneralOptions;
 
-                            if(options != null)
-                                using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project, options.MSHelpViewerPath))
-                                {
-                                    dlg.ShowDialog();
-                                }
-                        }
+                                if(options != null)
+                                    using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project,
+                                      options.MSHelpViewerPath))
+                                    {
+                                        dlg.ShowDialog();
+                                    }
+                            }
             }
         }
 
@@ -382,8 +385,7 @@ namespace SandcastleBuilder.Package
             if(options != null)
                 help2Viewer = options.HxsViewerPath;
 
-            // Make sure we start out in the project's output folder in case the output folder
-            // is relative to it.
+            // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
             outputPath = project.OutputPath;
 
@@ -409,7 +411,10 @@ namespace SandcastleBuilder.Package
                     }
                 }
                 else
-                    outputPath += "Index.html";
+                    if(commandId == PkgCmdIDList.ViewDocxHelp)
+                        outputPath += project.HtmlHelpName + ".docx";
+                    else
+                        outputPath += "Index.html";
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
@@ -432,8 +437,8 @@ namespace SandcastleBuilder.Package
 
             if(!File.Exists(outputPath))
             {
-                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "A copy of the help file does not appear to exist yet.  " +
-                    "It may need to be built.");
+                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "A copy of the help file does not appear " +
+                    "to exist yet.  It may need to be built.");
                 return;
             }
 
@@ -442,7 +447,8 @@ namespace SandcastleBuilder.Package
                 if(outputPath.EndsWith(".hxs", StringComparison.OrdinalIgnoreCase))
                     System.Diagnostics.Process.Start(help2Viewer, outputPath);
                 else
-                    if(outputPath.EndsWith(".chm", StringComparison.OrdinalIgnoreCase))
+                    if(outputPath.EndsWith(".chm", StringComparison.OrdinalIgnoreCase) ||
+                      outputPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
                         System.Diagnostics.Process.Start(outputPath);
                     else
                         Utility.OpenUrl(outputPath);
@@ -450,8 +456,8 @@ namespace SandcastleBuilder.Package
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, "Unable to open help file '{0}'\r\nReason: {1}",
-                    outputPath, ex.Message);
+                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, "Unable to open help file '{0}'\r\n" +
+                    "Reason: {1}", outputPath, ex.Message);
             }
         }
         #endregion
@@ -700,6 +706,26 @@ namespace SandcastleBuilder.Package
         protected override void ViewHtmlWebsiteExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlWebsite);
+        }
+
+        /// <summary>
+        /// Set the state of the View Open XML help command
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void ViewDocxHelpQueryStatusHandler(object sender, EventArgs e)
+        {
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.OpenXml);
+        }
+
+        /// <summary>
+        /// View the last built Open XML document
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void ViewDocxHelpExecuteHandler(object sender, EventArgs e)
+        {
+            this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewDocxHelp);
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/13/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -61,6 +61,7 @@
 //          01/09/2014  EFW  Removed copying of branding files.  They are part of the presentation style now.
 //          01/11/2014  EFW  Updated where shared content and stop word lists are copied from.  These files are
 //                           part of each presentation style now.
+//          02/15/2014  EFW  Added support for the Open XML output format
 //===============================================================================================================
 
 using System;
@@ -124,7 +125,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private StreamWriter swLog;
 
         // Build output file lists
-        private Collection<string> help1Files, help2Files, helpViewerFiles, websiteFiles;
+        private Collection<string> help1Files, help2Files, helpViewerFiles, websiteFiles, openXmlFiles;
 
         // Progress event arguments
         private BuildProgressEventArgs progressArgs;
@@ -359,6 +360,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
+        /// This returns a list of the Open XML files that were built
+        /// </summary>
+        /// <remarks>If the Open XML format was not built, this returns an empty collection</remarks>
+        public Collection<string> OpenXmlFiles
+        {
+            get { return openXmlFiles; }
+        }
+
+        /// <summary>
         /// This controls whether or not the API filter is suppressed
         /// </summary>
         /// <value>By default, it is not suppressed and the API filter will be applied.  The API Filter designer
@@ -521,6 +531,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             help2Files = new Collection<string>();
             helpViewerFiles = new Collection<string>();
             websiteFiles = new Collection<string>();
+            openXmlFiles = new Collection<string>();
             helpFormatOutputFolders = new Collection<string>();
         }
 
@@ -710,7 +721,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "The selected presentation style ({0}) is not valid.  Reason(s):\r\n{1}",
                         style.Metadata.Id, String.Join("\r\n", psErrors)));
 
-                // If the presentation style does not support any of the selected help file formats, stop now
+                // If the presentation style does not support one or more of the selected help file formats,
+                // stop now.
                 if((project.HelpFileFormat & ~presentationStyle.SupportedFormats) != 0)
                     throw new BuilderException("BE0074", String.Format(CultureInfo.CurrentCulture,
                         "The selected presentation style ({0}) does not support one or more of the selected " +
@@ -783,6 +795,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         if(File.Exists(helpFile))
                             File.Delete(helpFile);
                     }
+
+                    helpFile = outputFolder + this.ResolvedHtmlHelpName + ".docx";
+
+                    if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0 && File.Exists(helpFile))
+                        File.Delete(helpFile);
                 }
                 catch(IOException ex)
                 {
@@ -1473,6 +1490,55 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.GenerateWebsite();
                 }
 
+                if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+                {
+                    // The following build steps are executed to allow plug-ins to handle any necessary processing
+                    // but nothing actually happens here:
+                    //
+                    //      BuildStep.GenerateHelpFormatTableOfContents
+                    //      BuildStep.GenerateHelpProject
+                    //
+                    // For the Open XML format, there is no project file to compile and the TOC layout is
+                    // generated when the document is opened.  All of the necessary TOC info is stored in the
+                    // intermediate TOC file generated prior to building the topics.  The process used to merge
+                    // the topics into a single document uses it to define the order in which the topics are
+                    // combined.
+
+                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents, "Executing informational " +
+                        "Generate Table of Contents build step for plug-ins (not used for Open XML)");
+
+                    currentFormat = HelpFileFormats.OpenXml;
+
+                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                    {
+                        this.ExecutePlugIns(ExecutionBehaviors.Before);
+                        this.ExecutePlugIns(ExecutionBehaviors.After);
+                    }
+
+                    this.ReportProgress(BuildStep.GenerateHelpProject, "Executing informational Generate Help " +
+                        "Project build step for plug-ins (not used for Open XML)");
+
+                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                    {
+                        this.ExecutePlugIns(ExecutionBehaviors.Before);
+                        this.ExecutePlugIns(ExecutionBehaviors.After);
+                    }
+
+                    // Build the Open XML document
+                    this.ReportProgress(BuildStep.CompilingHelpFile, "Generating Open XML document file...");
+
+                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                    {
+                        scriptFile = this.TransformTemplate("BuildOpenXmlFile.proj", templateFolder, workingFolder);
+
+                        this.ExecutePlugIns(ExecutionBehaviors.Before);
+                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m BuildOpenXmlFile.proj");
+
+                        this.GatherBuildOutputFilenames();
+                        this.ExecutePlugIns(ExecutionBehaviors.After);
+                    }
+                }
+
                 // All done
                 if(project.CleanIntermediates)
                 {
@@ -1920,6 +1986,10 @@ AllDone:
                     patterns[3] = "HelpLibraryManagerLauncher.exe";
                     break;
 
+                case HelpFileFormats.OpenXml:
+                    patterns[0] = this.ResolvedHtmlHelpName + "*.docx";
+                    break;
+
                 default:    // Website
                     patterns[0] = "*.*";
                     break;
@@ -1950,9 +2020,13 @@ AllDone:
                             helpViewerFiles.Add(file);
                             break;
 
+                        case HelpFileFormats.OpenXml:
+                            openXmlFiles.Add(file);
+                            break;
+
                         default:    // Website
                             if(!help1Files.Contains(file) && !help2Files.Contains(file) &&
-                              !helpViewerFiles.Contains(file))
+                              !helpViewerFiles.Contains(file) && !openXmlFiles.Contains(file))
                                 websiteFiles.Add(file);
                             break;
                     }
@@ -1975,61 +2049,57 @@ AllDone:
 
             this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.ToolsFolder);
 
-            // Find the help compilers by looking on all fixed drives.  We don't need them if the result is only
-            // a website.
-            if((project.HelpFileFormat & ~HelpFileFormats.Website) != 0)
+            // Find the help compilers by looking on all fixed drives but only if the related format is used
+            if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
             {
-                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+                hhcFolder = project.HtmlHelp1xCompilerPath;
+
+                if(hhcFolder.Length == 0)
                 {
-                    hhcFolder = project.HtmlHelp1xCompilerPath;
-
-                    if(hhcFolder.Length == 0)
-                    {
-                        this.ReportProgress("Searching for HTML Help 1 compiler...");
-                        hhcFolder = BuildProcess.FindOnFixedDrives(@"\HTML Help Workshop");
-                    }
-
-                    if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
-                        throw new BuilderException("BE0037", "Could not find the path the the HTML Help 1 " +
-                            "compiler. See the error number topic in the help file for details.\r\n");
-
-                    if(hhcFolder[hhcFolder.Length - 1] != '\\')
-                        hhcFolder += @"\";
-
-                    this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
+                    this.ReportProgress("Searching for HTML Help 1 compiler...");
+                    hhcFolder = BuildProcess.FindOnFixedDrives(@"\HTML Help Workshop");
                 }
 
-                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
-                {
-                    hxcompFolder = project.HtmlHelp2xCompilerPath;
+                if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
+                    throw new BuilderException("BE0037", "Could not find the path the the HTML Help 1 " +
+                        "compiler. See the error number topic in the help file for details.\r\n");
 
+                if(hhcFolder[hhcFolder.Length - 1] != '\\')
+                    hhcFolder += @"\";
+
+                this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
+            }
+
+            if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
+            {
+                hxcompFolder = project.HtmlHelp2xCompilerPath;
+
+                if(hxcompFolder.Length == 0)
+                {
+                    this.ReportProgress("Searching for HTML Help 2 compiler...");
+
+                    // Search the Visual Studio SDK folders first as it usually has a more recent version
+                    hxcompFolder = BuildProcess.FindSdkExecutable("hxcomp.exe");
+
+                    // If not found there, try the default installation folders
                     if(hxcompFolder.Length == 0)
                     {
-                        this.ReportProgress("Searching for HTML Help 2 compiler...");
+                        hxcompFolder = BuildProcess.FindOnFixedDrives(
+                            @"\Common Files\Microsoft Shared\Help 2.0 Compiler");
 
-                        // Search the Visual Studio SDK folders first as it usually has a more recent version
-                        hxcompFolder = BuildProcess.FindSdkExecutable("hxcomp.exe");
-
-                        // If not found there, try the default installation folders
                         if(hxcompFolder.Length == 0)
-                        {
-                            hxcompFolder = BuildProcess.FindOnFixedDrives(
-                                @"\Common Files\Microsoft Shared\Help 2.0 Compiler");
-
-                            if(hxcompFolder.Length == 0)
-                                hxcompFolder = BuildProcess.FindOnFixedDrives(@"\Microsoft Help 2.0 SDK");
-                        }
+                            hxcompFolder = BuildProcess.FindOnFixedDrives(@"\Microsoft Help 2.0 SDK");
                     }
-
-                    if(hxcompFolder.Length == 0 || !Directory.Exists(hxcompFolder))
-                        throw new BuilderException("BE0038", "Could not find the path to the MS Help 2 " +
-                            "compiler.  See error topic in help file for details.\r\n");
-
-                    if(hxcompFolder[hxcompFolder.Length - 1] != '\\')
-                        hxcompFolder += @"\";
-
-                    this.ReportProgress("Found MS Help 2 help compiler in '{0}'", hxcompFolder);
                 }
+
+                if(hxcompFolder.Length == 0 || !Directory.Exists(hxcompFolder))
+                    throw new BuilderException("BE0038", "Could not find the path to the MS Help 2 " +
+                        "compiler.  See error topic in help file for details.\r\n");
+
+                if(hxcompFolder[hxcompFolder.Length - 1] != '\\')
+                    hxcompFolder += @"\";
+
+                this.ReportProgress("Found MS Help 2 help compiler in '{0}'", hxcompFolder);
             }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);

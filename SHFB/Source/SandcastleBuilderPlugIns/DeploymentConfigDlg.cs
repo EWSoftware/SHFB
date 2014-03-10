@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 03/09/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // 1.5.2.0  09/24/2007  EFW  Created the code
 // 1.8.0.3  07/05/2009  EFW  Added support for MS Help Viewer deployment
 // 1.9.4.0  02/06/2012  EFW  Added support for renaming MSHA file
+// -------  03/09/2014  EFW  Added support for Open XML deployment
 //===============================================================================================================
 
 using System;
@@ -59,8 +60,7 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="currentConfig">The current XML configuration
-        /// XML fragment</param>
+        /// <param name="currentConfig">The current XML configuration XML fragment</param>
         public DeploymentConfigDlg(string currentConfig)
         {
             XPathNavigator navigator, root, msHelpViewer;
@@ -107,6 +107,9 @@ namespace SandcastleBuilder.PlugIns
 
             // Get website deployment information
             ucWebsite.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "website"));
+
+            // Get Open XML deployment information
+            ucOpenXml.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "openXml"));
         }
         #endregion
 
@@ -124,13 +127,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// Go to the CodePlex home page of the Sandcastle Help File Builder
-        /// project.
+        /// Go to the CodePlex home page of the Sandcastle Help File Builder project
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void codePlex_LinkClicked(object sender,
-          LinkLabelLinkClickedEventArgs e)
+        private void codePlex_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -153,8 +154,8 @@ namespace SandcastleBuilder.PlugIns
         {
             XmlAttribute attr;
             XmlNode root, mshv;
-            DeploymentLocation htmlHelp1, msHelp2, msHelpViewer, website;
-            bool isValid = true;
+            DeploymentLocation htmlHelp1, msHelp2, msHelpViewer, website, openXml;
+            bool isValid = false;
 
             epErrors.Clear();
 
@@ -162,37 +163,31 @@ namespace SandcastleBuilder.PlugIns
             msHelp2 = ucMSHelp2.CreateDeploymentLocation();
             msHelpViewer = ucMSHelpViewer.CreateDeploymentLocation();
             website = ucWebsite.CreateDeploymentLocation();
+            openXml = ucOpenXml.CreateDeploymentLocation();
 
             if(htmlHelp1 == null)
-            {
                 tabConfig.SelectedIndex = 0;
-                isValid = false;
-            }
             else
                 if(msHelp2 == null)
-                {
                     tabConfig.SelectedIndex = 1;
-                    isValid = false;
-                }
                 else
                     if(msHelpViewer == null)
-                    {
                         tabConfig.SelectedIndex = 2;
-                        isValid = false;
-                    }
                     else
                         if(website == null)
-                        {
                             tabConfig.SelectedIndex = 3;
-                            isValid = false;
-                        }
+                        else
+                            if(openXml == null)
+                                tabConfig.SelectedIndex = 4;
+                            else
+                                isValid = true;
 
             if(isValid && htmlHelp1.Location == null && msHelp2.Location == null &&
-              msHelpViewer.Location == null && website.Location == null)
+              msHelpViewer.Location == null && website.Location == null && openXml.Location == null)
             {
                 tabConfig.SelectedIndex = 0;
-                epErrors.SetError(chkDeleteAfterDeploy, "At least one help file format must have a " +
-                    "target location specified");
+                epErrors.SetError(chkDeleteAfterDeploy, "At least one help file format must have a target " +
+                    "location specified");
                 isValid = false;
             }
 
@@ -215,6 +210,7 @@ namespace SandcastleBuilder.PlugIns
             msHelp2.ToXml(config, root, "help2x");
             msHelpViewer.ToXml(config, root, "helpViewer");
             website.ToXml(config, root, "website");
+            openXml.ToXml(config, root, "openXml");
 
             mshv = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
 

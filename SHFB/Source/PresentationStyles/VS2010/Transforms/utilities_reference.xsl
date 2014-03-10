@@ -732,8 +732,8 @@
 	</xsl:template>
 
 	<xsl:template match="elements" mode="namespaceGroup" name="t_namespaceGroupElements">
-		<div id="namespacesSection">
-			<xsl:if test="count(element) > 0">
+		<xsl:if test="count(element) > 0">
+			<div id="namespacesSection">
 				<xsl:call-template name="t_putSectionInclude">
 					<xsl:with-param name="p_titleInclude" select="'tableTitle_namespace'"/>
 					<xsl:with-param name="p_content">
@@ -752,8 +752,8 @@
 						</table>
 					</xsl:with-param>
 				</xsl:call-template>
-			</xsl:if>
-		</div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="element" mode="namespaceGroup" name="t_namespaceGroupElement">
@@ -767,11 +767,9 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="elements"
-								mode="enumeration"
-								name="t_enumerationElements">
-		<div id="enumerationSection">
-			<xsl:if test="count(element) > 0">
+	<xsl:template match="elements" mode="enumeration" name="t_enumerationElements">
+		<xsl:if test="count(element) > 0">
+			<div id="enumerationSection">
 				<xsl:call-template name="t_putSectionInclude">
 					<xsl:with-param name="p_titleInclude"
 													select="'topicTitle_enumMembers'"/>
@@ -792,13 +790,12 @@
 									<include item="header_memberDescription"/>
 								</th>
 							</tr>
-							<xsl:apply-templates select="element"
-																	 mode="enumeration"/>
+							<xsl:apply-templates select="element" mode="enumeration"/>
 						</table>
 					</xsl:with-param>
 				</xsl:call-template>
-			</xsl:if>
-		</div>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="elements"
@@ -1723,72 +1720,54 @@
 	Inheritance hierarchy
 	============================================================================================= -->
 
-	<xsl:template match="family"
-								name="t_family">
+	<xsl:template match="family" name="t_family">
 
 		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"
-											select="'title_family'"/>
+			<xsl:with-param name="p_titleInclude" select="'title_family'"/>
 			<xsl:with-param name="p_content">
-				<xsl:variable name="ancestorCount"
-											select="count(ancestors/*)"/>
-				<xsl:variable name="childCount"
-											select="count(descendents/*)"/>
+				<xsl:variable name="ancestorCount" select="count(ancestors/*)"/>
+				<xsl:variable name="childCount" select="count(descendents/*)"/>
 
 				<xsl:for-each select="ancestors/type">
-					<xsl:sort select="position()"
-										data-type="number"
-										order="descending"/>
-					<!-- <xsl:sort select="@api"/> -->
+					<xsl:sort select="position()" data-type="number" order="descending"/>
 
 					<xsl:call-template name="t_putIndent">
-						<xsl:with-param name="p_count"
-														select="position()"/>
+						<xsl:with-param name="p_count" select="position()"/>
 					</xsl:call-template>
 
-					<xsl:apply-templates select="self::type"
-															 mode="link">
-						<xsl:with-param name="qualified"
-														select="true()"/>
+					<xsl:apply-templates select="self::type" mode="link">
+						<xsl:with-param name="qualified" select="true()"/>
 					</xsl:apply-templates>
 
 					<br/>
 				</xsl:for-each>
 
 				<xsl:call-template name="t_putIndent">
-					<xsl:with-param name="p_count"
-													select="$ancestorCount + 1"/>
+					<xsl:with-param name="p_count" select="$ancestorCount + 1"/>
 				</xsl:call-template>
-				<referenceLink target="{$key}"
-											 qualified="true"/>
+				<referenceLink target="{$key}" qualified="true"/>
 				<br/>
 
 				<xsl:choose>
 					<xsl:when test="descendents/@derivedTypes">
 						<xsl:call-template name="t_putIndent">
-							<xsl:with-param name="p_count"
-															select="$ancestorCount + 2"/>
+							<xsl:with-param name="p_count" select="$ancestorCount + 2"/>
 						</xsl:call-template>
-						<referenceLink target="{descendents/@derivedTypes}"
-													 qualified="true">
+						<referenceLink target="{descendents/@derivedTypes}" qualified="true">
 							<include item="derivedClasses"/>
 						</referenceLink>
 					</xsl:when>
 					<xsl:otherwise>
-
 						<xsl:for-each select="descendents/type">
 							<xsl:sort select="@api"/>
 
 							<xsl:if test="not(self::type/@api=preceding-sibling::*/self::type/@api)">
 								<xsl:call-template name="t_putIndent">
-									<xsl:with-param name="p_count"
-																	select="$ancestorCount + 2"/>
+									<xsl:with-param name="p_count" select="$ancestorCount + 2"/>
 								</xsl:call-template>
 
-								<xsl:apply-templates select="self::type"
-																		 mode="link">
-									<xsl:with-param name="qualified"
-																	select="true()"/>
+								<xsl:apply-templates select="self::type" mode="link">
+									<xsl:with-param name="qualified" select="true()"/>
 								</xsl:apply-templates>
 
 								<br/>
@@ -2261,62 +2240,59 @@
 	Syntax
 	============================================================================================= -->
 
-	<xsl:template match="parameters"
-								name="t_parameters">
-		<div id="parameters">
-			<xsl:call-template name="t_putSubSection">
-				<xsl:with-param name="p_title">
-					<include item="title_parameters"/>
-				</xsl:with-param>
-				<xsl:with-param name="p_content">
-					<xsl:for-each select="parameter">
+	<xsl:template match="parameters" name="t_parameters">
+		<xsl:call-template name="t_putSubSection">
+			<xsl:with-param name="p_title">
+				<include item="title_parameters"/>
+			</xsl:with-param>
+			<xsl:with-param name="p_content">
+				<xsl:for-each select="parameter">
 
-						<!-- Use the reflection-generated parameter name when non-empty, otherwise use the authored parameter name. -->
-						<xsl:variable name="paramPosition"
-													select="position()"/>
-						<xsl:variable name="paramName">
-							<xsl:choose>
-								<xsl:when test="normalize-space(@name) != ''">
-									<xsl:value-of select="normalize-space(@name)"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="normalize-space(/document/comments/ddue:dduexml/ddue:parameters[1]/ddue:parameter[$paramPosition]/ddue:parameterReference)"/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
+					<!-- Use the reflection-generated parameter name when non-empty, otherwise use the authored parameter name. -->
+					<xsl:variable name="paramPosition"
+												select="position()"/>
+					<xsl:variable name="paramName">
+						<xsl:choose>
+							<xsl:when test="normalize-space(@name) != ''">
+								<xsl:value-of select="normalize-space(@name)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="normalize-space(/document/comments/ddue:dduexml/ddue:parameters[1]/ddue:parameter[$paramPosition]/ddue:parameterReference)"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 
-						<dl paramName="{$paramName}">
-							<dt>
-								<span class="parameter">
-									<xsl:value-of select="$paramName"/>
-								</span>
-								<xsl:if test="@optional = 'true'">
-									<xsl:text> (Optional)</xsl:text>
-								</xsl:if>
-							</dt>
-							<dd>
-								<include item="typeLink">
-									<parameter>
-										<xsl:apply-templates select="*[1]"
-																				 mode="link">
-											<xsl:with-param name="qualified"
-																			select="true()"/>
-										</xsl:apply-templates>
-									</parameter>
-								</include>
-								<br/>
-								<span>
-									<xsl:call-template name="t_getParameterDescription">
-										<xsl:with-param name="name"
-																		select="$paramName"/>
-									</xsl:call-template>
-								</span>
-							</dd>
-						</dl>
-					</xsl:for-each>
-				</xsl:with-param>
-			</xsl:call-template>
-		</div>
+					<dl paramName="{$paramName}">
+						<dt>
+							<span class="parameter">
+								<xsl:value-of select="$paramName"/>
+							</span>
+							<xsl:if test="@optional = 'true'">
+								<xsl:text> (Optional)</xsl:text>
+							</xsl:if>
+						</dt>
+						<dd>
+							<include item="typeLink">
+								<parameter>
+									<xsl:apply-templates select="*[1]"
+																				mode="link">
+										<xsl:with-param name="qualified"
+																		select="true()"/>
+									</xsl:apply-templates>
+								</parameter>
+							</include>
+							<br/>
+							<span>
+								<xsl:call-template name="t_getParameterDescription">
+									<xsl:with-param name="name"
+																	select="$paramName"/>
+								</xsl:call-template>
+							</span>
+						</dd>
+					</dl>
+				</xsl:for-each>
+			</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
@@ -2470,13 +2446,13 @@
 		<xsl:choose>
 			<xsl:when test="@api">
 				<referenceLink target="{@api}">
-					<span class="typeparam">
+					<span class="typeparameter">
 						<xsl:value-of select="@name"/>
 					</span>
 				</referenceLink>
 			</xsl:when>
 			<xsl:otherwise>
-				<span class="typeparam">
+				<span class="typeparameter">
 					<xsl:value-of select="@name"/>
 				</span>
 			</xsl:otherwise>

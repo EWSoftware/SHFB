@@ -338,7 +338,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 filename = Path.Combine(folder, td.Value.DictionaryId);
 
                 // Fair warning, this is really slow for the main .NET Framework target dictionary hence the
-                // reason not to offer the option to serialze the InMemoryTargetDictionary to a persistent cache.
+                // reason not to offer the option to serialize the InMemoryTargetDictionary to a persistent cache.
                 using(FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
                 {
                     bf.Serialize(fs, td.Value);

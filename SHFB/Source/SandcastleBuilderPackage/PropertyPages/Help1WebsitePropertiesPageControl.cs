@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Help1WebsitePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/11/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 03/08/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help 1 and Website category properties.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+//===============================================================================================================
+// 03/27/2011  EFW  Created the code
+// 03/08/2014  EFW  Updated for use with the Open XML file format
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -26,13 +26,13 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
     /// <summary>
-    /// This is used to edit the Help 1 and Website category project properties
+    /// This is used to edit the Help 1, Website, and Open XML category project properties
     /// </summary>
+    /// <remarks>The only Open XML property is for SDK links so we re-use the Website link type</remarks>
     [Guid("690D191C-5614-4A82-92A4-96EB519828CA")]
     public partial class Help1WebsitePropertiesPageControl : BasePropertyPage
     {

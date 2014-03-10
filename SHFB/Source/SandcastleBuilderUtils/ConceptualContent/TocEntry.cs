@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@
 // 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
 // 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
+// -------  02/15/2014  EFW  Added support for the Open XML output format
 //===============================================================================================================
 
 using System;
@@ -613,6 +614,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             
                 case HelpFileFormats.MSHelp2:
                 case HelpFileFormats.Website:
+                case HelpFileFormats.OpenXml:
                     if(!String.IsNullOrEmpty(this.DestinationFile) && format == HelpFileFormats.Website)
                         url = this.DestinationFile.Replace('\\', '/');
                     else

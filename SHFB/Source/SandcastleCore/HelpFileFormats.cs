@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : HelpFileFormats.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 //                           combos since they weren't used and are rather unwieldy.  Added MS Help Viewer
 //                           option.
 // -------  01/04/2014  EFW  Moved the code to Sandcastle.Core
+//          02/15/2014  EFW  Added support for the Open XML output format
 //===============================================================================================================
 
 using System;
@@ -42,5 +43,7 @@ namespace Sandcastle.Core
         MSHelpViewer = 0x0004,
         /// <summary>A website with a basic TOC and search panes</summary>
         Website      = 0x0008,
+        /// <summary>Open XML (.docx) format, compatible with Microsoft Word and Open Office</summary>
+        OpenXml      = 0x0010
     }
 }

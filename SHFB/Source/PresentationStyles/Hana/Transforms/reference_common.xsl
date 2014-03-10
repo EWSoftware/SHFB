@@ -129,13 +129,13 @@
 		<xsl:choose>
 			<xsl:when test="@api">
 				<referenceLink target="{@api}">
-					<span class="typeparam">
+					<span class="typeparameter">
 						<xsl:value-of select="@name" />
 					</span>
 				</referenceLink>
 			</xsl:when>
 			<xsl:otherwise>
-				<span class="typeparam">
+				<span class="typeparameter">
 					<xsl:value-of select="@name" />
 				</span>
 			</xsl:otherwise>

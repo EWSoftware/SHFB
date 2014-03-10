@@ -1,224 +1,231 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="da405a33-3eeb-4451-9aa8-a55be5026434" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <autoOutline lead="The Build category properties control the build process." excludeRelatedTopics="true" />
-    </introduction>
+		<introduction>
+			<autoOutline lead="The Build category properties control the build process." excludeRelatedTopics="true" />
+		</introduction>
 
-<section address="HelpFileFormats">
-  <title>Help file formats (HelpFileFormats)</title>
-  <content>
-		<para>This property lets you specify the type of help file to build (HTML Help 1, MS Help 2, MS Help Viewer,
-a website, or various combinations of these options).  The default is to produce an HTML Help 1 format file.  To
-build multiple formats at the same time, put a check next to each type that you want to build concurrently.</para>
+		<section address="HelpFileFormats">
+			<title>Help file formats (HelpFileFormats)</title>
+			<content>
+				<para>This property lets you specify the type of help file to build (HTML Help 1, MS Help 2, MS Help
+Viewer, a website, an Open XML document, or various combinations of these options when supported by the selected
+presentation style).  The default is to produce an HTML Help 1 format file.  To build multiple formats at the
+same time, put a check next to each type that you want to build concurrently.</para>
 
-<alert class="warning">
-	<para>Be aware that if an option is selected that produces a website, the output folder specified by the
-<codeInline>Output Path</codeInline> property will be cleared of all of its current content without any prompting
-before the web site content is copied to it.  In other words, don't do something stupid like set it to the root
-of your C: drive or your desktop folder.  The help file builder will take steps to try and prevent this from
-happening.  When producing a help file alone, the output folder is not cleared.</para>
-</alert>
+				<alert class="warning">
+					<para>Be aware that if an option is selected that produces a website, the output folder specified by
+the <codeInline>Output Path</codeInline> property will be cleared of all of its current content without any
+prompting before the web site content is copied to it.  In other words, don't do something stupid like set it to
+the root of your C: drive or your desktop folder.  The help file builder will take steps to try and prevent this
+from happening.  When producing a help file alone, the output folder is not cleared.</para>
+				</alert>
 
-	<para>When producing a website, the following additional files are copied to the root of the output folder.</para>
+				<alert class="note">
+					<para>The Open XML format has certain requirements that must be met in order to produce a valid
+document.  See the <link xlink:href="c5e7e920-2cb4-4f78-b167-634361d85263" /> topic for details.</para>
+				</alert>
 
-<list class="bullet">
-    <listItem>
-			<para><localUri>Index.aspx</localUri> - This page is used to contain the table of contents and the
+				<para>When producing a website, the following additional files may be copied to the root of the output
+folder if the presentation style uses the stock website content provided by the help file builder.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><localUri>Index.aspx</localUri> - This page is used to contain the table of contents and the
 currently selected content page.  It uses Ajax to dynamically load child nodes when first expanded and should be
 more efficient for large help files.  It also contains a search option that lets you search for keywords in the
 help topics and a keyword index.  A <codeInline>topic</codeInline> query string parameter can be specified.  If
 set to the path of a page in the website, it will display that page instead of the normal default topic page.</para>
-		</listItem>
+					</listItem>
 
-    <listItem>
-			<para><localUri>FillNode.aspx</localUri> - This is used by the Ajax calls to dynamically load child nodes
-for the table of contents.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>FillNode.aspx</localUri> - This is used by the Ajax calls to dynamically load child
+nodes for the table of contents.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>SearchHelp.aspx</localUri> - This is used by the Ajax calls to search for keywords using
-the full-text index.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>SearchHelp.aspx</localUri> - This is used by the Ajax calls to search for keywords
+using the full-text index.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>Web.config</localUri> - This contains some necessary namespace declarations for the ASP.NET
-pages above.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>Web.config</localUri> - This contains some necessary namespace declarations for the
+ASP.NET pages above.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>Index.html</localUri> - This page is used to contain the table of contents and the
+					<listItem>
+						<para><localUri>Index.html</localUri> - This page is used to contain the table of contents and the
 currently selected content page.  The table of contents is contained entirely within the page and may not be as
 efficient for large help files.</para>
-		</listItem>
+					</listItem>
 
-    <listItem>
-			<para><localUri>TOC.css</localUri> - This is the style sheet used for the index pages.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>TOC.css</localUri> - This is the style sheet used for the index pages.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>TOC.js</localUri> - This JavaScript file is used by the index pages.  It contains the code
-used to implement a basic tree view with collapsible and expandable nodes, a splitter bar, and Ajax calls to load
-child table of contents nodes dynamically and perform keyword searches.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>TOC.js</localUri> - This JavaScript file is used by the index pages.  It contains the
+code used to implement a basic tree view with collapsible and expandable nodes, a splitter bar, and Ajax calls to
+load child table of contents nodes dynamically and perform keyword searches.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>WebTOC.xml</localUri> - This is the XML file used to contain the table of contents
+					<listItem>
+						<para><localUri>WebTOC.xml</localUri> - This is the XML file used to contain the table of contents
 information.  This file is generated during the build and will contain the same entries as the help file's table
 of contents in a matching layout.</para>
-		</listItem>
+					</listItem>
 
-    <listItem>
-			<para><localUri>favicon.ico</localUri> - This is used as the Favorites icon for the help website.  You can
-override it with your own icon by including a file called <localUri>favicon.ico</localUri> in the root folder of
-your project.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>favicon.ico</localUri> - This is used as the Favorites icon for the help website.
+You can override it with your own icon by including a file called <localUri>favicon.ico</localUri> in the root
+folder of your project.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>*.gif, *.png, *.bmp</localUri> - Several image files are copied that represent the
+					<listItem>
+						<para><localUri>*.gif, *.png, *.bmp</localUri> - Several image files are copied that represent the
 collapsed, expanded, and item nodes in the table of contents tree view and the Expand All, Collapse All, and
 Synch to Content options.</para>
-		</listItem>
+					</listItem>
 
-    <listItem>
-			<para><localUri>*.php</localUri> - These are PHP versions of the index page and its supporting pages.  The
-files perform the same tasks as their like-named ASP.NET counterparts.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>*.php</localUri> - These are PHP versions of the index page and its supporting pages.
+The files perform the same tasks as their like-named ASP.NET counterparts.</para>
+					</listItem>
 
-    <listItem>
-			<para><localUri>.\FTI\*.bin</localUri> - The FTI folder contains the serialized full-text index data files.
-The data is split up into multiple files to improve the performance and reduce the amount of information needed
-when doing a search.</para>
-		</listItem>
+					<listItem>
+						<para><localUri>.\FTI\*.bin</localUri> - The FTI folder contains the serialized full-text index data
+files.  The data is split up into multiple files to improve the performance and reduce the amount of information
+needed when doing a search.</para>
+					</listItem>
 
-</list>
+				</list>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="FrmwkVer">
-  <title>Framework version (FrameworkVersion)</title>
-  <content>
-		<para>This property allows you to specify against which .NET Framework version the documentation assemblies
-where compiled.  This affects how the <application>MRefBuilder</application> tool produces the reflection
-information file.  The default is to use the .NET Framework version used to build the help file builder itself.
-This will also affect which set of .NET Framework comments are included in the build to document all inherited
-members of your classes.  Set this property according to your assemblies' framework version requirements to
-ensure that the correct reflection information is generated.</para>
+		<section address="FrmwkVer">
+			<title>Framework version (FrameworkVersion)</title>
+			<content>
+				<para>This property allows you to specify against which .NET Framework version the documentation
+assemblies where compiled.  This affects how the <application>MRefBuilder</application> tool produces the
+reflection information file.  The default is to use the .NET Framework version used to build the help file
+builder itself.  This will also affect which set of .NET Framework comments are included in the build to document
+all inherited members of your classes.  Set this property according to your assemblies' framework version
+requirements to ensure that the correct reflection information is generated.</para>
 
-		<para>It is also possible to select a Silverlight Framework version for Silverlight projects, a portable
+				<para>It is also possible to select a Silverlight Framework version for Silverlight projects, a portable
 framework version for .NET Portable Framework projects, or the Windows Store App framework for Windows Store
 applications.  The selected framework must be present on the system for the build to succeed.  One exception is
 for earlier versions of the selected framework.  They are set up to automatically redirect to later versions of
 the framework until a version is found on the current system.</para>
 
-<alert class="note">
-  <para>Because Silverlight, portable framework, and Windows Store app projects each use an entirely different
-framework, it is not possible to build a help project containing assemblies and/or Visual Studio projects that
-target a combination of the Silverlight framework, portable framework, Windows Store App framework, and/or the
-normal .NET Framework.  Each must be built in their own separate help project.  You can use the
+				<alert class="note">
+					<para>Because Silverlight, portable framework, and Windows Store app projects each use an entirely
+different framework, it is not possible to build a help project containing assemblies and/or Visual Studio
+projects that target a combination of the Silverlight framework, portable framework, Windows Store App framework,
+and/or the normal .NET Framework.  Each must be built in their own separate help project.  You can use the
 <link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /> to merge the information from each help project into
 one help file if necessary.</para>
-</alert>
+				</alert>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="BuildLogFile">
-  <title>Build log filename (BuildLogFile)</title>
-  <content>
-		<para>This property is used to specify the location and name of the build log file.  If not specified, a
+		<section address="BuildLogFile">
+			<title>Build log filename (BuildLogFile)</title>
+			<content>
+				<para>This property is used to specify the location and name of the build log file.  If not specified, a
 default name of <localUri>LastBuild.log</localUri> is used and the log file is stored in the same folder as the
 help file (the location specified by the <codeInline>Output Path</codeInline> property).</para>
 
-  </content>
-</section>
-		
-<section address="CleanInt">
-  <title>Clean intermediate files after a successful build (CleanIntermediates)</title>
-  <content>
-		<para>This property is used to specify whether or not intermediate files created during the build are kept
-after a successful build or are purged.  The default is True to purge the files.  If not purged, you will find
-the files in a <localUri>.\Working</localUri> folder under the project's output path folder.  Files that are
+			</content>
+		</section>
+
+		<section address="CleanInt">
+			<title>Clean intermediate files after a successful build (CleanIntermediates)</title>
+			<content>
+				<para>This property is used to specify whether or not intermediate files created during the build are
+kept after a successful build or are purged.  The default is True to purge the files.  If not purged, you will
+find the files in a <localUri>.\Working</localUri> folder under the project's output path folder.  Files that are
 placed there include the build scripts, configuration files, and the HTML help compiler project output files
 (scripts, art, HTML pages, the HTML help project, etc).  The intermediate files are always retained if the build
 fails so that you can examine them to find the cause if necessary.</para>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="KeepLogFile">
-  <title>Keep the log file after a successful build (KeepLogFile)</title>
-  <content>
-		<para>This property is used to specify whether or not the log file is kept after a successful build.  It is
-true by default to keep the log file.  If set to false, the log file is deleted after a successful build.  The
+		<section address="KeepLogFile">
+			<title>Keep the log file after a successful build (KeepLogFile)</title>
+			<content>
+				<para>This property is used to specify whether or not the log file is kept after a successful build.  It
+is true by default to keep the log file.  If set to false, the log file is deleted after a successful build.  The
 log file is always kept after a failed build.</para>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="DisableCodeBlock">
-  <title>Disable the custom code block component (DisableCodeBlockComponent)</title>
-  <content>
-		<para>This property allows the custom <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> to be
+		<section address="DisableCodeBlock">
+			<title>Disable the custom code block component (DisableCodeBlockComponent)</title>
+			<content>
+				<para>This property allows the custom <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> to be
 disabled so that the <codeInline>&lt;code&gt;</codeInline> elements are rendered in their default format by the
 Sandcastle XSL transformations with no colorization.  The only thing it will do is import external code and
 normalize the leading whitespace.</para>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="CppFixup">
-  <title>Fix up method signatures in C++ XML comments files (CppCommentsFixup)</title>
-  <content>
-		<para>This option is used to fix some issues with C++ XML comments.  The C++ compiler generates non-standard
-method signatures in the XML comments files in certain situations.  The methods affected usually involve generics.
-The C++ compiler also has problems resolving references to some members if it has not seen them yet.  These are
-prefixed with "<codeInline>!:</codeInline>" which is removed by the fix-up code.  If you find some C++ methods
-that fail to get documented, set this project property to true to have the help file builder attempt to fix them
-up so that they can be documented.</para>
+		<section address="CppFixup">
+			<title>Fix up method signatures in C++ XML comments files (CppCommentsFixup)</title>
+			<content>
+				<para>This option is used to fix some issues with C++ XML comments.  The C++ compiler generates
+non-standard method signatures in the XML comments files in certain situations.  The methods affected usually
+involve generics.  The C++ compiler also has problems resolving references to some members if it has not seen
+them yet.  These are prefixed with "<codeInline>!:</codeInline>" which is removed by the fix-up code.  If you
+find some C++ methods that fail to get documented, set this project property to true to have the help file
+builder attempt to fix them up so that they can be documented.</para>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="IndentHtml">
-  <title>Indent rendered HTML (IndentHtml)</title>
-  <content>
-		<para>This is used to indicate whether or not the HTML rendered by <application>BuildAssembler</application>
+		<section address="IndentHtml">
+			<title>Indent rendered HTML (IndentHtml)</title>
+			<content>
+				<para>This is used to indicate whether or not the HTML rendered by <application>BuildAssembler</application>
 is indented.  This is mainly a debugging aid.  When set to True, the HTML is indented to make it more readable.
 Leave it set to False to produce more compact HTML.</para>
 
-<alert class="note">
-  <para>Setting this property to true will cause the first line of <codeInline>code</codeInline> element content
-to be indented.  Set the property to false to correct the issue.  This property is for testing only and should
-not be used in production help files.</para>
-</alert>
+				<alert class="note">
+					<para>Setting this property to true will cause the first line of <codeInline>code</codeInline> element
+content to be indented.  Set the property to false to correct the issue.  This property is for testing only and
+should not be used in production help files.</para>
+				</alert>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="BuildAssemblerVerbosity">
-  <title>BuildAssembler Verbosity (BuildAssemblerVerbosity)</title>
-  <content>
-		<para>This property is used to specify the minimum message level that the <application>BuildAssembler</application>
+		<section address="BuildAssemblerVerbosity">
+			<title>BuildAssembler Verbosity (BuildAssemblerVerbosity)</title>
+			<content>
+				<para>This property is used to specify the minimum message level that the <application>BuildAssembler</application>
 tool will output.  The default is <codeInline>All messages</codeInline> to log all messages.  Setting it to
 <codeInline>Only warnings and errors</codeInline> will cause it to only output warning and error messages.
 Setting it to <codeInline>Only errors</codeInline> will cause it to only output errors.  Using one of the warning
 or error settings can significantly reduce the size of the build log for large projects.</para>
 
-		<para>If a warning or error message does not provide enough context to diagnose the cause, resetting this
+				<para>If a warning or error message does not provide enough context to diagnose the cause, resetting this
 property to <codeInline>All messages</codeInline> and rebuilding the project will let you see the informational
 messages before the warning or error to help in diagnosing the issue.</para>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-	<relatedTopics>
-		<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-	</relatedTopics>
+		<relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

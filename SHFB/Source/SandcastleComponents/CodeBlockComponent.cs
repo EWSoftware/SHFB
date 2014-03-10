@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2014
+// Updated : 02/27/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -37,6 +37,7 @@
 //                           component event handler in this class.  Moved the title support into the
 //                           presentation style XSL transformations.
 // -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
+//          02/27/2014  EFW  Added support for the Open XML help file format
 //===============================================================================================================
 
 using System;
@@ -255,9 +256,10 @@ namespace SandcastleBuilder.Components
         // The style sheet, script, and image files to include and the output path
         private string stylesheet, scriptFile;
 
-        // Line numbering, outlining, keep see tags, remove region markers, disabled, and files copied flags
+        // Line numbering, outlining, keep see tags, remove region markers, disabled, files copied and Open XML
+        // flags.
         private bool numberLines, outliningEnabled, keepSeeTags, removeRegionMarkers, isDisabled,
-            colorizerFilesCopied;
+            colorizerFilesCopied, isOpenXml;
 
         // The base path to use for file references with relative paths, the syntax and style filenames, and the
         // default language.
@@ -347,6 +349,10 @@ namespace SandcastleBuilder.Components
                     Directory.CreateDirectory(value);
 
                 outputPaths.Add(value);
+
+                // The Open XML format doesn't support all features and requires a custom transformation
+                if(value.IndexOf("OpenXML", StringComparison.OrdinalIgnoreCase) != -1)
+                    isOpenXml = true;
             }
 
             if(outputPaths.Count == 0)
@@ -405,11 +411,11 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("You must specify a 'styleFile' attribute on the " +
                     "<colorizer> element.");
 
-            if(String.IsNullOrEmpty(stylesheet))
+            if(String.IsNullOrEmpty(stylesheet) && !isOpenXml)
                 throw new ConfigurationErrorsException("You must specify a 'stylesheet' attribute on the " +
                     "<colorizer> element");
 
-            if(String.IsNullOrEmpty(scriptFile))
+            if(String.IsNullOrEmpty(scriptFile) && !isOpenXml)
                 throw new ConfigurationErrorsException("You must specify a 'scriptFile' attribute on the " +
                     "<colorizer> element");
 
@@ -417,8 +423,6 @@ namespace SandcastleBuilder.Components
             // doesn't have to exist yet.
             syntaxFile = Path.GetFullPath(syntaxFile);
             styleFile = Path.GetFullPath(styleFile);
-            stylesheet = Path.GetFullPath(stylesheet);
-            scriptFile = Path.GetFullPath(scriptFile);
 
             if(!File.Exists(syntaxFile))
                 throw new ConfigurationErrorsException("The specified syntax file could not be found: " +
@@ -428,11 +432,17 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("The specified style file could not be found: " +
                     styleFile);
 
-            if(!File.Exists(stylesheet))
-                throw new ConfigurationErrorsException("Could not find style sheet file: " + stylesheet);
+            if(!isOpenXml)
+            {
+                stylesheet = Path.GetFullPath(stylesheet);
+                scriptFile = Path.GetFullPath(scriptFile);
 
-            if(!File.Exists(stylesheet))
-                throw new ConfigurationErrorsException("Could not find script file: " + scriptFile);
+                if(!File.Exists(stylesheet))
+                    throw new ConfigurationErrorsException("Could not find style sheet file: " + stylesheet);
+
+                if(!File.Exists(scriptFile))
+                    throw new ConfigurationErrorsException("Could not find script file: " + scriptFile);
+            }
 
             // Optional attributes
             defaultLanguage = nav.GetAttribute("language", String.Empty);
@@ -475,6 +485,24 @@ namespace SandcastleBuilder.Components
             if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out isDisabled))
                 throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
                     "'disabled' attribute.");
+
+            if(isOpenXml)
+            {
+                numberLines = outliningEnabled = false;
+
+                // If the default transform is specified, switch to the Open XML version.  This can happen if
+                // the user adds the code block component to their project to override the default settings.
+                string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location), @"Colorizer\highlight.xsl");
+
+                if(styleFile.Equals(defaultTransform, StringComparison.OrdinalIgnoreCase))
+                {
+                    styleFile = Path.Combine(Path.GetDirectoryName(defaultTransform), "highlight_openxml.xsl");
+
+                    if(!File.Exists(styleFile))
+                        throw new ConfigurationErrorsException("The specified style file could not be found: " +
+                            styleFile);
+                }
+            }
 
             // Initialize the code colorizer
             colorizer = new CodeColorizer(syntaxFile, styleFile);
@@ -608,6 +636,9 @@ namespace SandcastleBuilder.Components
                 else
                     if(code.Attributes["language"] != null)
                         language = code.Attributes["language"].Value;
+
+                if(isOpenXml)
+                    nbrLines = outline = false;
 
                 // If disabled, we'll just normalize the leading whitespace and let the Sandcastle transformation
                 // handle it.  The language ID is passed to use the appropriate tab size if not overridden.
@@ -845,7 +876,7 @@ namespace SandcastleBuilder.Components
                 return;
 
             // Only copy the files if needed
-            if(!colorizerFilesCopied)
+            if(!colorizerFilesCopied && !isOpenXml)
             {
                 foreach(string outputPath in outputPaths)
                 {
@@ -875,60 +906,75 @@ namespace SandcastleBuilder.Components
                 colorizerFilesCopied = true;
             }
 
-            // Find the <head> section
-            head = tt.Document.SelectSingleNode("html/head");
-
-            if(head == null)
+            if(!isOpenXml)
             {
-                base.WriteMessage(tt.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
-                return;
+                // Find the <head> section
+                head = tt.Document.SelectSingleNode("html/head");
+
+                if(head == null)
+                {
+                    base.WriteMessage(tt.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
+                    return;
+                }
+
+                // Add the link to the style sheet
+                node = tt.Document.CreateNode(XmlNodeType.Element, "link", null);
+
+                attr = tt.Document.CreateAttribute("type");
+                attr.Value = "text/css";
+                node.Attributes.Append(attr);
+
+                attr = tt.Document.CreateAttribute("rel");
+                attr.Value = "stylesheet";
+                node.Attributes.Append(attr);
+
+                node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                    "<includeAttribute name='href' item='stylePath'><parameter>{0}</parameter></includeAttribute>",
+                    Path.GetFileName(stylesheet));
+
+                head.AppendChild(node);
+
+                // Add the link to the script
+                node = tt.Document.CreateNode(XmlNodeType.Element, "script", null);
+
+                attr = tt.Document.CreateAttribute("type");
+                attr.Value = "text/javascript";
+                node.Attributes.Append(attr);
+
+                // Script tags cannot be self-closing so set their inner text
+                // to a space so that they render as an opening and a closing tag.
+                node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                    " <includeAttribute name='src' item='scriptPath'><parameter>{0}</parameter></includeAttribute>",
+                    Path.GetFileName(scriptFile));
+
+                head.AppendChild(node);
             }
 
-            // Add the link to the style sheet
-            node = tt.Document.CreateNode(XmlNodeType.Element, "link", null);
+            // The "local-name()" part of the query is for the VS2010 and Open XML styles which add a namespace
+            // to the element.  I could have created a context for the namespace but this is quick and it works
+            // for all cases.
+            foreach(XmlNode codeContainer in tt.Document.SelectNodes(
+              "//pre[starts-with(.,'@@_SHFB_')]|//*[(local-name() = 'pre' or local-name() = 't') and starts-with(.,'@@_SHFB_')]"))
+            {
+                XmlNode placeholder = codeContainer;
 
-            attr = tt.Document.CreateAttribute("type");
-            attr.Value = "text/css";
-            node.Attributes.Append(attr);
-
-            attr = tt.Document.CreateAttribute("rel");
-            attr.Value = "stylesheet";
-            node.Attributes.Append(attr);
-
-            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                "<includeAttribute name='href' item='stylePath'><parameter>{0}</parameter></includeAttribute>",
-                Path.GetFileName(stylesheet));
-
-            head.AppendChild(node);
-
-            // Add the link to the script
-            node = tt.Document.CreateNode(XmlNodeType.Element, "script", null);
-
-            attr = tt.Document.CreateAttribute("type");
-            attr.Value = "text/javascript";
-            node.Attributes.Append(attr);
-
-            // Script tags cannot be self-closing so set their inner text
-            // to a space so that they render as an opening and a closing tag.
-            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                " <includeAttribute name='src' item='scriptPath'><parameter>{0}</parameter></includeAttribute>",
-                Path.GetFileName(scriptFile));
-
-            head.AppendChild(node);
-
-            // The "local-name()" part of the query is for the VS2010 style which adds an xhtml namespace to
-            // the element.  I could have created a context for the namespace but this is quick and it works for
-            // both cases.
-            foreach(XmlNode placeholder in tt.Document.SelectNodes(
-              "//pre[starts-with(.,'@@_SHFB_')]|//*[local-name() = 'pre' and starts-with(.,'@@_SHFB_')]"))
                 if(colorizedCodeBlocks.TryGetValue(placeholder.InnerText, out codeBlock))
                 {
-                    // Make sure spacing is preserved
-                    if(placeholder.Attributes["xml:space"] == null)
+                    if(!isOpenXml)
                     {
-                        attr = tt.Document.CreateAttribute("xml:space");
-                        attr.Value = "preserve";
-                        placeholder.Attributes.Append(attr);
+                        // Make sure spacing is preserved
+                        if(placeholder.Attributes["xml:space"] == null)
+                        {
+                            attr = tt.Document.CreateAttribute("xml:space");
+                            attr.Value = "preserve";
+                            placeholder.Attributes.Append(attr);
+                        }
+                    }
+                    else
+                    {
+                        // Replace the w:t element's parent paragraph content with the code block.  The Open XML
+                        // file builder task will fix up the formatting.
+                        placeholder = placeholder.ParentNode.ParentNode;
                     }
 
                     placeholder.InnerXml = codeBlock.InnerXml;
@@ -945,6 +991,7 @@ namespace SandcastleBuilder.Components
                 else
                     base.WriteMessage(tt.Key, MessageLevel.Warn, "Unable to locate colorized code for placeholder: " +
                         placeholder.InnerText);
+            }
         }
         #endregion
     }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -30,6 +30,7 @@
 // 1.9.3.4  01/08/2012  EFW  Updated to use shared NewFromOtherFormatDlg
 // 1.9.3.4  01/20/2012  EFW  Updated to use the new topic previewer window
 // 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
+// -------  02/15/2014  EFW  Added support for the Open XML output format
 //===============================================================================================================
 
 using System;
@@ -1455,6 +1456,7 @@ namespace SandcastleBuilder.Gui
             miViewMSHelpViewer.Enabled = ((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0);
             miViewAspNetWebsite.Enabled = miViewHtmlWebsite.Enabled =
                 ((project.HelpFileFormat & HelpFileFormats.Website) != 0);
+            miViewOpenXml.Enabled = ((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0);
             miOpenHelpAfterBuild.Checked = Settings.Default.OpenHelpAfterBuild;
         }
 
@@ -1477,7 +1479,10 @@ namespace SandcastleBuilder.Gui
                     if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                         miViewMSHelpViewer_Click(sender, e);
                     else
-                        miViewAspNetWebsite_Click(sender, e);
+                        if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+                            miViewBuiltHelpFile_Click(miViewOpenXml, e);
+                        else
+                            miViewAspNetWebsite_Click(sender, e);
         }
 
         /// <summary>
@@ -1518,7 +1523,10 @@ namespace SandcastleBuilder.Gui
                     }
                 }
                 else
-                    outputPath += "Index.html";
+                    if(sender == miViewOpenXml)
+                        outputPath += project.HtmlHelpName + ".docx";
+                    else
+                        outputPath += "Index.html";
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)

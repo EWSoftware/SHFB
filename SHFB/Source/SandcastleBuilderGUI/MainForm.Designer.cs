@@ -104,9 +104,9 @@ namespace SandcastleBuilder.Gui
             this.miViewHtmlWebsite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.miOpenHelpAfterBuild = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbViewHelpFile = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miCleanOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbViewHelpFile = new System.Windows.Forms.ToolStripSplitButton();
             this.tcbConfig = new System.Windows.Forms.ToolStripComboBox();
             this.tcbPlatform = new System.Windows.Forms.ToolStripComboBox();
             this.miWindow = new System.Windows.Forms.ToolStripMenuItem();
@@ -144,6 +144,8 @@ namespace SandcastleBuilder.Gui
             this.tsslProgressNote = new System.Windows.Forms.ToolStripStatusLabel();
             this.tspbProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.miViewOpenXml = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
             this.ctxViewHelpMenu.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.tsbMain.SuspendLayout();
@@ -463,9 +465,11 @@ namespace SandcastleBuilder.Gui
             this.miViewAspNetWebsite,
             this.miViewHtmlWebsite,
             this.toolStripSeparator11,
+            this.miViewOpenXml,
+            this.toolStripSeparator19,
             this.miOpenHelpAfterBuild});
             this.ctxViewHelpMenu.Name = "ctxViewHelpMenu";
-            this.ctxViewHelpMenu.Size = new System.Drawing.Size(351, 250);
+            this.ctxViewHelpMenu.Size = new System.Drawing.Size(351, 302);
             this.ctxViewHelpMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ctxViewHelpMenu_Opening);
             // 
             // miViewHelpFile
@@ -524,7 +528,7 @@ namespace SandcastleBuilder.Gui
             this.miLaunchHlm.Name = "miLaunchHlm";
             this.miLaunchHlm.Size = new System.Drawing.Size(350, 24);
             this.sbStatusBarText.SetStatusBarText(this.miLaunchHlm, "Launch the Help Library Manager 1.0 for interactive use");
-            this.miLaunchHlm.Text = "Launch Help Library Manager 1.0";
+            this.miLaunchHlm.Text = "Launch Help Library Manager &1.0";
             this.miLaunchHlm.Click += new System.EventHandler(this.miLaunchHlm_Click);
             // 
             // miLaunchHV2CM
@@ -533,7 +537,7 @@ namespace SandcastleBuilder.Gui
             this.miLaunchHV2CM.Size = new System.Drawing.Size(350, 24);
             this.sbStatusBarText.SetStatusBarText(this.miLaunchHV2CM, "Launch the Help Viewer 2.x Content Manager for interactive use based on the proje" +
         "ct\'s current catalog name");
-            this.miLaunchHV2CM.Text = "Launch Help Viewer 2.x Content Manager";
+            this.miLaunchHV2CM.Text = "Launch Help Viewer &2.x Content Manager";
             this.miLaunchHV2CM.Click += new System.EventHandler(this.miLaunchHlm_Click);
             // 
             // toolStripSeparator18
@@ -570,19 +574,6 @@ namespace SandcastleBuilder.Gui
             this.miOpenHelpAfterBuild.Text = "&Open help file after successful build";
             this.miOpenHelpAfterBuild.Click += new System.EventHandler(this.miOpenHelpAfterBuild_Click);
             // 
-            // tsbViewHelpFile
-            // 
-            this.tsbViewHelpFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbViewHelpFile.DropDown = this.ctxViewHelpMenu;
-            this.tsbViewHelpFile.Image = global::SandcastleBuilder.Gui.Properties.Resources.ViewHelpFile;
-            this.tsbViewHelpFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.tsbViewHelpFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbViewHelpFile.Name = "tsbViewHelpFile";
-            this.tsbViewHelpFile.Size = new System.Drawing.Size(32, 29);
-            this.sbStatusBarText.SetStatusBarText(this.tsbViewHelpFile, "View the help file produced by the last build");
-            this.tsbViewHelpFile.ToolTipText = "View help file from last build";
-            this.tsbViewHelpFile.ButtonClick += new System.EventHandler(this.miViewHelpFile_Click);
-            // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
@@ -595,6 +586,19 @@ namespace SandcastleBuilder.Gui
             this.sbStatusBarText.SetStatusBarText(this.miCleanOutput, "Clean the output folder by deleting all files in it");
             this.miCleanOutput.Text = "Clea&n Output Folder";
             this.miCleanOutput.Click += new System.EventHandler(this.miCleanOutput_Click);
+            // 
+            // tsbViewHelpFile
+            // 
+            this.tsbViewHelpFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbViewHelpFile.DropDown = this.ctxViewHelpMenu;
+            this.tsbViewHelpFile.Image = global::SandcastleBuilder.Gui.Properties.Resources.ViewHelpFile;
+            this.tsbViewHelpFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsbViewHelpFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbViewHelpFile.Name = "tsbViewHelpFile";
+            this.tsbViewHelpFile.Size = new System.Drawing.Size(32, 29);
+            this.sbStatusBarText.SetStatusBarText(this.tsbViewHelpFile, "View the help file produced by the last build");
+            this.tsbViewHelpFile.ToolTipText = "View help file from last build";
+            this.tsbViewHelpFile.ButtonClick += new System.EventHandler(this.miViewHelpFile_Click);
             // 
             // tcbConfig
             // 
@@ -1036,6 +1040,19 @@ namespace SandcastleBuilder.Gui
             this.dockPanel.ContentAdded += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.dockPanel_ContentAdded);
             this.dockPanel.ContentRemoved += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.dockPanel_ContentRemoved);
             // 
+            // miViewOpenXml
+            // 
+            this.miViewOpenXml.Name = "miViewOpenXml";
+            this.miViewOpenXml.Size = new System.Drawing.Size(350, 24);
+            this.sbStatusBarText.SetStatusBarText(this.miViewOpenXml, "View Open XML (.docx) help file");
+            this.miViewOpenXml.Text = "View Open &XML (.docx) File";
+            this.miViewOpenXml.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
+            // 
+            // toolStripSeparator19
+            // 
+            this.toolStripSeparator19.Name = "toolStripSeparator19";
+            this.toolStripSeparator19.Size = new System.Drawing.Size(347, 6);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -1157,6 +1174,8 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripMenuItem miLaunchHlm;
         private System.Windows.Forms.ToolStripMenuItem miLaunchHV2CM;
+        private System.Windows.Forms.ToolStripMenuItem miViewOpenXml;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
     }
 }
 

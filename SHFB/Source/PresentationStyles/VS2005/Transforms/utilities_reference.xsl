@@ -152,54 +152,52 @@
 	</xsl:template>
 
 	<xsl:template match="parameters">
-		<div id="parameters">
-			<xsl:call-template name="subSection">
-				<xsl:with-param name="title">
-					<include item="parametersTitle"/>
-				</xsl:with-param>
-				<xsl:with-param name="content">
-					<xsl:for-each select="parameter">
+		<xsl:call-template name="subSection">
+			<xsl:with-param name="title">
+				<include item="parametersTitle"/>
+			</xsl:with-param>
+			<xsl:with-param name="content">
+				<xsl:for-each select="parameter">
 
-						<!-- Use the reflection-generated parameter name when non-empty, otherwise use the authored parameter name. -->
-						<xsl:variable name="paramPosition" select="position()" />
-						<xsl:variable name="paramName">
-							<xsl:choose>
-								<xsl:when test="normalize-space(@name) != ''">
-									<xsl:value-of select="normalize-space(@name)" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="normalize-space(/document/comments/ddue:dduexml/ddue:parameters[1]/ddue:parameter[$paramPosition]/ddue:parameterReference)" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
+					<!-- Use the reflection-generated parameter name when non-empty, otherwise use the authored parameter name. -->
+					<xsl:variable name="paramPosition" select="position()" />
+					<xsl:variable name="paramName">
+						<xsl:choose>
+							<xsl:when test="normalize-space(@name) != ''">
+								<xsl:value-of select="normalize-space(@name)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="normalize-space(/document/comments/ddue:dduexml/ddue:parameters[1]/ddue:parameter[$paramPosition]/ddue:parameterReference)" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 
-						<dl paramName="{$paramName}">
-							<dt>
-								<span class="parameter">
-									<xsl:value-of select="$paramName"/>
-								</span>
-								<xsl:if test="@optional = 'true'">
-									<xsl:text> (Optional)</xsl:text>
-								</xsl:if>
-							</dt>
-							<dd>
-								<include item="typeLink">
-									<parameter>
-										<xsl:apply-templates select="*[1]" mode="link">
-											<xsl:with-param name="qualified" select="true()" />
-										</xsl:apply-templates>
-									</parameter>
-								</include>
-								<br />
-								<xsl:call-template name="getParameterDescription">
-									<xsl:with-param name="name" select="$paramName" />
-								</xsl:call-template>
-							</dd>
-						</dl>
-					</xsl:for-each>
-				</xsl:with-param>
-			</xsl:call-template>
-		</div>
+					<dl paramName="{$paramName}">
+						<dt>
+							<span class="parameter">
+								<xsl:value-of select="$paramName"/>
+							</span>
+							<xsl:if test="@optional = 'true'">
+								<xsl:text> (Optional)</xsl:text>
+							</xsl:if>
+						</dt>
+						<dd>
+							<include item="typeLink">
+								<parameter>
+									<xsl:apply-templates select="*[1]" mode="link">
+										<xsl:with-param name="qualified" select="true()" />
+									</xsl:apply-templates>
+								</parameter>
+							</include>
+							<br />
+							<xsl:call-template name="getParameterDescription">
+								<xsl:with-param name="name" select="$paramName" />
+							</xsl:call-template>
+						</dd>
+					</dl>
+				</xsl:for-each>
+			</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="implements">
@@ -914,34 +912,32 @@
 	</xsl:template>
 
 	<xsl:template match="elements" mode="enumeration">
-		<div id="enumerationSection">
-			<xsl:if test="count(element) > 0">
-				<xsl:call-template name="section">
-					<xsl:with-param name="toggleSwitch" select="'members'"/>
-					<xsl:with-param name="title">
-						<include item="enumMembersTitle" />
-					</xsl:with-param>
-					<xsl:with-param name="content">
-						<table class="members" id="memberList" frame="lhs" cellpadding="2">
-							<col width="10%"/>
-							<tr>
-								<th class="iconColumn"></th>
-								<th class="nameColumn">
-									<include item="memberNameHeader"/>
-								</th>
-								<th class="valueColumn">
-									<include item="memberValueHeader" />
-								</th>
-								<th class="descriptionColumn">
-									<include item="memberDescriptionHeader" />
-								</th>
-							</tr>
-							<xsl:apply-templates select="element" mode="enumeration"/>
-						</table>
-					</xsl:with-param>
-				</xsl:call-template>
-			</xsl:if>
-		</div>
+		<xsl:if test="count(element) > 0">
+			<xsl:call-template name="section">
+				<xsl:with-param name="toggleSwitch" select="'members'"/>
+				<xsl:with-param name="title">
+					<include item="enumMembersTitle" />
+				</xsl:with-param>
+				<xsl:with-param name="content">
+					<table class="members" id="memberList" frame="lhs" cellpadding="2">
+						<col width="10%"/>
+						<tr>
+							<th class="iconColumn"></th>
+							<th class="nameColumn">
+								<include item="memberNameHeader"/>
+							</th>
+							<th class="valueColumn">
+								<include item="memberValueHeader" />
+							</th>
+							<th class="descriptionColumn">
+								<include item="memberDescriptionHeader" />
+							</th>
+						</tr>
+						<xsl:apply-templates select="element" mode="enumeration"/>
+					</table>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="element" mode="members">

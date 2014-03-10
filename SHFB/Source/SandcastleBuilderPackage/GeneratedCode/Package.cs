@@ -126,6 +126,10 @@ namespace SandcastleBuilder.Package
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.HtmlEncode);
                 menuItem = new OleMenuCommand(HtmlEncodeExecuteHandler, HtmlEncodeChangeHandler, HtmlEncodeQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
+				// Create the command for button ViewDocxHelp
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewDocxHelp);
+                menuItem = new OleMenuCommand(ViewDocxHelpExecuteHandler, ViewDocxHelpChangeHandler, ViewDocxHelpQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
 
 			}
 		}
@@ -383,6 +387,22 @@ namespace SandcastleBuilder.Package
 		}
 		
 		protected virtual void HtmlEncodeQueryStatusHandler(object sender, EventArgs e)
+		{
+		}
+
+		#endregion
+
+		#region Handlers for Button: ViewDocxHelp
+
+		protected virtual void ViewDocxHelpExecuteHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void ViewDocxHelpChangeHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void ViewDocxHelpQueryStatusHandler(object sender, EventArgs e)
 		{
 		}
 

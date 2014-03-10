@@ -8,6 +8,8 @@
 // and a huge memory usage increase that isn't justified based on the way the expressions are used here.
 // 03/09/2013 - EFW - Moved the supporting classes to the Snippets namespace
 // 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
+// 02/27/2014 - EFW - Removed leading blank lines and trailing whitespace to get rid of excess whitespace in the
+// resulting code sections.
 
 using System;
 using System.Collections.Generic;
@@ -89,6 +91,7 @@ namespace Microsoft.Ddue.Tools
             string language;
 
             WriteMessage(MessageLevel.Info, "Loading code snippet file '{0}'.", file);
+
             try
             {
                 XmlReaderSettings settings = new XmlReaderSettings();
@@ -100,18 +103,19 @@ namespace Microsoft.Ddue.Tools
                     reader.MoveToContent();
                     while(!reader.EOF)
                     {
-                        if((reader.NodeType == XmlNodeType.Element) && (reader.Name == "item"))
+                        if(reader.NodeType == XmlNodeType.Element && reader.Name == "item")
                         {
                             key = new SnippetIdentifier(reader.GetAttribute("id"));
                             reader.Read();
                         }
-                        else if((reader.NodeType == XmlNodeType.Element) && (reader.Name == "sampleCode"))
+                        else if(reader.NodeType == XmlNodeType.Element && reader.Name == "sampleCode")
                         {
                             language = reader.GetAttribute("language");
 
                             string content = reader.ReadString();
 
-                            // If the element is empty, ReadString does not advance the reader, so we must do it manually
+                            // If the element is empty, ReadString does not advance the reader, so we must do it
+                            // manually.
                             if(String.IsNullOrEmpty(content))
                                 reader.Read();
 
@@ -138,7 +142,8 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(XmlException e)
                 {
-                    WriteMessage(MessageLevel.Warn, "The contents of the snippet file '{0}' are not well-formed XML. The error message is: {1}. Some snippets may be lost.", file, e.Message);
+                    WriteMessage(MessageLevel.Warn, "The contents of the snippet file '{0}' are not " +
+                        "well-formed XML. The error message is: {1}. Some snippets may be lost.", file, e.Message);
                 }
                 finally
                 {
@@ -148,7 +153,8 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException e)
             {
-                WriteMessage(MessageLevel.Error, "An access error occured while attempting to read the snippet file '{0}'. The error message is: {1}", file, e.Message);
+                WriteMessage(MessageLevel.Error, "An access error occurred while attempting to read the " +
+                    "snippet file '{0}'. The error message is: {1}", file, e.Message);
             }
         }
 
@@ -160,7 +166,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>A collection of colorized code regions</returns>
         private static ICollection<Region> ColorizeSnippet(string text, List<ColorizationRule> rules)
         {
-            // create a linked list consiting entirely of one uncolored region
+            // create a linked list consisting entirely of one uncolored region
             LinkedList<Region> regions = new LinkedList<Region>();
             regions.AddFirst(new Region(text));
 
@@ -259,26 +265,31 @@ namespace Microsoft.Ddue.Tools
             if(text == null)
                 throw new ArgumentNullException("text");
 
-            // split the text into lines
-            string[] lines = text.Split('\n');
+            // Remove trailing whitespace and split the text into lines
+            string[] lines = text.TrimEnd(new[] { ' ', '\t', '\r', '\n' }).Split('\n');
 
-            // no need to do this if there is only one line
+            // No need to do this if there is only one line
             if(lines.Length == 1)
                 return lines[0];
 
-            // figure out how many leading spaces to delete
+            // Skip leading blank lines
+            int start = 0;
+
+            while(start < lines.Length && String.IsNullOrWhiteSpace(lines[start]))
+                start++;
+
+            // Figure out how many leading spaces to delete
             int spaces = Int32.MaxValue;
 
-            for(int i = 0; i < lines.Length; i++)
+            for(int i = start; i < lines.Length; i++)
             {
-
                 string line = lines[i];
 
-                // skip empty lines
+                // Skip empty lines
                 if(line.Length == 0)
                     continue;
 
-                // determine the number of leading spaces
+                // Determine the number of leading spaces
                 int index = 0;
 
                 while(index < line.Length)
@@ -291,28 +302,27 @@ namespace Microsoft.Ddue.Tools
 
                 if(index == line.Length)
                 {
-                    // lines that are all spaces should just be treated as empty
+                    // Lines that are all spaces should just be treated as empty
                     lines[i] = String.Empty;
                 }
                 else
                 {
-                    // otherwise, keep track of the minimum number of leading spaces				
+                    // Otherwise, keep track of the minimum number of leading spaces				
                     if(index < spaces)
                         spaces = index;
                 }
-
             }
 
-            // re-form the string with leading spaces deleted
+            // Re-form the string with leading spaces deleted
             StringBuilder result = new StringBuilder();
 
-            foreach(string line in lines)
+            foreach(string line in lines.Skip(start))
                 if(line.Length == 0)
                     result.AppendLine();
                 else
                     result.AppendLine(line.Substring(spaces));
 
-            return result.ToString();
+            return result.ToString().TrimEnd(new[] { '\r', '\n' });
         }
         #endregion
 
@@ -452,7 +462,7 @@ namespace Microsoft.Ddue.Tools
                             for(int i = 0; i < values.Count; i++)
                             {
                                 if(i > 0)
-                                    writer.WriteString("\n...\n\n\n");
+                                    writer.WriteString("\n\n...\n\n");
 
                                 writer.WriteString(values[i].Text);
                             }

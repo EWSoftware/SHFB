@@ -47,6 +47,7 @@
 			<Output TaskParameter="Help2Files" ItemName="Help2Files" />
 			<Output TaskParameter="HelpViewerFiles" ItemName="HelpViewerFiles" />
 			<Output TaskParameter="WebsiteFiles" ItemName="WebsiteFiles" />
+			<Output TaskParameter="OpenXmlFiles" ItemName="OpenXmlFiles" />
 			<Output TaskParameter="AllHelpFiles" ItemName="AllHelpFiles" />
 		</SandcastleBuilder.Utils.MSBuild.BuildHelp>
 	</Target>

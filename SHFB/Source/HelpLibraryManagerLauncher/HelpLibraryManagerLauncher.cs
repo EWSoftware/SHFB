@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
 // System  : Help Library Manager Launcher
-// File    : StartUp.cs
+// File    : HelpLibraryManagerLauncher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
-// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
+// Updated : 03/02/2014
+// Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main program entry point.
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.0.0.0  07/03/2010  EFW  Created the code
 // 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
+// -------  03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
 //===============================================================================================================
 
 using System;
@@ -165,12 +166,24 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 // If not specified, try to figure out the default locale
                 if(String.IsNullOrEmpty(locale))
                 {
-                    locale = hlm.FindLocaleFor(product, version);
+                    if(viewerVersion.Major == 1)
+                    {
+                        locale = hlm.FindLocaleFor(product, version);
 
-                    if(locale == null)
-                        throw new HelpLibraryManagerException(viewerVersion,
-                            HelpLibraryManagerException.CatalogNotInstalled, String.Format(
-                            CultureInfo.InvariantCulture, "Product: {0}  Version: {1}", product, version));
+                        if(locale == null)
+                            throw new HelpLibraryManagerException(viewerVersion,
+                                HelpLibraryManagerException.CatalogNotInstalled, String.Format(
+                                CultureInfo.InvariantCulture, "Product: {0}  Version: {1}", product, version));
+                    }
+                    else
+                    {
+                        locale = hlm.FindLocaleFor(catalogName);
+
+                        if(locale == null)
+                            throw new HelpLibraryManagerException(viewerVersion,
+                                HelpLibraryManagerException.CatalogNotInstalled, String.Format(
+                                CultureInfo.InvariantCulture, "Catalog Name: {0}", catalogName));
+                    }
 
                     Console.WriteLine("No locale specified, the default locale '{0}' will be used", locale);
 

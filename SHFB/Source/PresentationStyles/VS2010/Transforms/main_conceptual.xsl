@@ -37,26 +37,15 @@
 	<xsl:variable name="g_hasSeeAlsoSection"
 								select="boolean(count(/document/topic/*/ddue:relatedTopics/*[local-name()!='sampleRef']) > 0)"/>
 
-	<xsl:variable name="g_apiGroup"
-								select="/document/reference/apidata/@group"/>
-	<xsl:variable name="g_apiSubGroup"
-								select="/document/reference/apidata/@subgroup"/>
-	<xsl:variable name="g_apiSubSubGroup"
-								select="/document/reference/apidata/@subsubgroup"/>
-	<xsl:variable name="g_topicGroup"
-								select="$g_apiGroup"/>
-	<xsl:variable name="g_topicSubGroup"
-								select="$g_apiSubGroup"/>
-	<xsl:variable name="g_topicSubSubGroup"
-								select="$g_apiSubSubGroup"/>
-	<xsl:variable name="g_apiTopicGroup"
-								select="$g_apiGroup"/>
-	<xsl:variable name="g_apiTopicSubGroup"
-								select="$g_apiSubGroup"/>
-	<xsl:variable name="g_apiTopicSubSubGroup"
-								select="$g_apiSubSubGroup"/>
-	<xsl:variable name="pseudo"
-								select="boolean(/document/reference/apidata[@pseudo='true'])"/>
+	<xsl:variable name="g_apiGroup" select="/document/reference/apidata/@group"/>
+	<xsl:variable name="g_apiSubGroup" select="/document/reference/apidata/@subgroup"/>
+	<xsl:variable name="g_apiSubSubGroup" select="/document/reference/apidata/@subsubgroup"/>
+	<xsl:variable name="g_topicGroup" select="$g_apiGroup"/>
+	<xsl:variable name="g_topicSubGroup" select="$g_apiSubGroup"/>
+	<xsl:variable name="g_apiTopicGroup" select="$g_apiGroup"/>
+	<xsl:variable name="g_apiTopicSubGroup" select="$g_apiSubGroup"/>
+	<xsl:variable name="g_apiTopicSubSubGroup" select="$g_apiSubSubGroup"/>
+	<xsl:variable name="pseudo" select="boolean(/document/reference/apidata[@pseudo='true'])"/>
 
 	<!-- ============================================================================================
 	Document

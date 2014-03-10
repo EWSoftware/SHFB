@@ -624,6 +624,43 @@ namespace TestDoc
         public static void TestSeeWithGenerics()
         {
         }
+
+        // These test the reflection file referenced namespace filter to ensure it picks up type specializations
+
+        /// <summary>
+        /// Authors for the search response
+        /// </summary>
+        /// <remarks>
+        /// This usually corresponds to the <c>Author</c> element(s) in an OpenSearch response, which is part of the Atom namespace. The server
+        /// does not need to provide this information. If it is not provided, an empty list will be returned.
+        /// </remarks>
+        public System.Collections.ObjectModel.Collection<System.ServiceModel.Syndication.SyndicationPerson> Authors
+        {
+            get { return null ; }
+        }
+
+        /// <summary>
+        /// Search queries that the search client can use
+        /// </summary>
+        /// <remarks>
+        /// <para>This corresponds to the <c>Query</c> elements in an OpenSearch response.</para>
+        /// </remarks>
+        public IEnumerable<string> Queries
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// Search results in "raw" form
+        /// </summary>
+        /// <remarks>
+        /// This property provides the items returned by the search as an enumeration of <c>System.ServiceModel.Syndication.SyndicationItem</c>, which
+        /// provides low-level access to the items for further processing.
+        /// </remarks>
+        public IEnumerable<System.ServiceModel.Syndication.SyndicationItem> ItemsRaw
+        {
+            get { return null; }
+        }
     }
 
     /// <summary>

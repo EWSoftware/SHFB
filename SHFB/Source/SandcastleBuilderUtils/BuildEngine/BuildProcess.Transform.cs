@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/12/2014
+// Updated : 03/02/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1054,9 +1054,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "sandcastlepath":
                     // This is obsolete but will still appear in the older component and plug-in configurations.
-                    // We'll ignore it and return an empty string as it won't be used anyway.
-                    replaceWith = String.Empty;
-                    break;
+                    // Throw an exception that describes what to do to fix it.
+                    throw new BuilderException("BE0065", "One or more component or plug-in configurations in " +
+                        "this project contains an obsolete path setting.  Please remove the custom components " +
+                        "and plug-ins and add them again so that their configurations are updated.  See the " +
+                        "version release notes for information on breaking changes that require this update.");
 
                 default:
                     // Try for a custom project property.  Use the last one since the original may be
@@ -1460,9 +1462,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
             HashSet<string> seenNamespaces = new HashSet<string>();
             string ns;
 
-            // Find all type references and extract the namespace from them
-            var nodes = nav.Select("//ancestors/type/@api | //returns/type/@api | //parameter/type/@api | " +
-                "//attributes/attribute/type/@api");
+            // Find all type references and extract the namespace from them.  This is a rather brute force way
+            // of doing it but the type element can appear in various places.  This way we find them all.
+            // Examples: //ancestors/type/@api, //returns/type/@api, //parameter/type/@api,
+            // //parameter/referenceTo/type/@api, //attributes/attribute/argument/type/@api,
+            // //returns/type/specialization/type/@api, //containers/type/@api, //overrides/member/type/@api
+            var nodes = nav.Select("//type/@api");
 
             foreach(XPathNavigator n in nodes)
                 if(n.Value.Length > 2 && n.Value.IndexOf('.') != -1)

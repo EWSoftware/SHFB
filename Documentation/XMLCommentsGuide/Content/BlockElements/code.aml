@@ -297,7 +297,9 @@ type, you can add the region statements in comments to workaround the limitation
 it and extract the region.</para>
 
 <code language="none" title="Commented Region Examples">
-<b><u>VB.NET Example</u></b>
+--------------------------------------------------------
+VB.NET Example
+--------------------------------------------------------
 Public Sub SomeMethod()
     ' #Region "VB.NET Snippet"
     Dim x As Integer
@@ -308,7 +310,9 @@ Public Sub SomeMethod()
     ' #End Region
 End Sub
 
-<b><u>XAML Example</u></b>
+--------------------------------------------------------
+XAML Example
+--------------------------------------------------------
 &lt;Style x:Key="SpecialButton" TargetType="{x:Type Button}"&gt;
   &lt;Style.Triggers&gt;
     &lt;!-- #region XAML Snippet --&gt;
@@ -319,7 +323,9 @@ End Sub
   &lt;/Style.Triggers&gt;
 &lt;/Style&gt;
 
-<b><u>SQL Example</u></b>
+--------------------------------------------------------
+SQL Example
+--------------------------------------------------------
 -- #region SQL snippet
 Select *
 From   tblName

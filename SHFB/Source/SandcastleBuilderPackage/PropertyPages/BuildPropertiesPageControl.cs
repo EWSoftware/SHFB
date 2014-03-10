@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/04/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.4.0  03/31/2012  EFW  Added BuildAssembler Verbosity property
 // 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// -------  02/15/2014  EFW  Added support for the Open XML output format
 //===============================================================================================================
 
 using System;
@@ -89,10 +90,11 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             cblHelpFileFormat.Items.AddRange(new []
             {
-                new HelpFileFormatItem { Format = HelpFileFormats.HtmlHelp1, Description = "HTML Help 1 (CHM)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.HtmlHelp1, Description = "HTML Help 1 (chm)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.MSHelp2, Description = "MS Help 2 (HxS)" },
-                new HelpFileFormatItem { Format = HelpFileFormats.MSHelpViewer, Description = "MS Help Viewer (MSHC)" },
-                new HelpFileFormatItem { Format = HelpFileFormats.Website, Description = "Website (HTML/ASP.NET)" }
+                new HelpFileFormatItem { Format = HelpFileFormats.MSHelpViewer, Description = "MS Help Viewer (mshc)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.Website, Description = "Website (HTML/ASP.NET)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.OpenXml, Description = "Open XML (docx)" }
             });
 
             cboBuildAssemblerVerbosity.DisplayMember = "Value";

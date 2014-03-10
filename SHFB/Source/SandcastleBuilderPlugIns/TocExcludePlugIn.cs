@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : TocExcludePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 02/26/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to exclude API members from the table of contents via the
@@ -69,11 +69,10 @@ namespace SandcastleBuilder.PlugIns
                 if(executionPoints == null)
                     executionPoints = new List<ExecutionPoint>
                     {
-                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
-
                         // This one has a slightly higher priority as it removes stuff that the other plug-ins
                         // don't need to see.
-                        new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents, ExecutionBehaviors.After, 1500)
+                        new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents,
+                            ExecutionBehaviors.After, 1500)
                     };
 
                 return executionPoints;
@@ -125,23 +124,16 @@ namespace SandcastleBuilder.PlugIns
 
             // Scan the XML comments files.  The files aren't available soon after this step and by now
             // everything that other plug-ins may have added to the collection should be there.
-            if(context.BuildStep == BuildStep.MergeCustomConfigs)
-            {
-                builder.ReportProgress("Searching for comment members containing <tocexclude />...");
+            builder.ReportProgress("Searching for comment members containing <tocexclude />...");
 
-                foreach(XmlCommentsFile f in builder.CommentsFiles)
-                    foreach(XmlNode member in f.Members.SelectNodes("member[count(.//tocexclude) > 0]/@name"))
-                        exclusionList.Add(member.Value);
+            foreach(XmlCommentsFile f in builder.CommentsFiles)
+                foreach(XmlNode member in f.Members.SelectNodes("member[count(.//tocexclude) > 0]/@name"))
+                    exclusionList.Add(member.Value);
 
-                builder.ReportProgress("Found {0} members to exclude from the TOC", exclusionList.Count);
-                return;
-            }
+            builder.ReportProgress("Found {0} members to exclude from the TOC", exclusionList.Count);
 
             if(exclusionList.Count == 0)
-            {
-                builder.ReportProgress("No members found to exclude");
                 return;
-            }
 
             builder.ReportProgress("Removing members from the TOC");
 

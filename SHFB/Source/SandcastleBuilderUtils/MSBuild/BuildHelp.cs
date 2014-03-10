@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // -------  12/21/2013  EFW  Removed support for SHFBCOMPONENT root as the ComponentPath project property
 //                           handles its functionality now.
+//          02/15/2014  EFW  Added support for the Open XML output format
 //===============================================================================================================
 
 using System;
@@ -73,14 +74,11 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <summary>
         /// This is used to pass in the project filename
         /// </summary>
-        /// <remarks>Since <see cref="SandcastleProject" /> already wraps the
-        /// MSBuild project, it seemed redundant to define each and every
-        /// property on this task and map them to the project properties.  As
-        /// such, this task will attempt to use the executing project to create
-        /// the Sandcastle project instance.  If that fails or
-        /// <see cref="AlwaysLoadProject" /> is true, this file will be
-        /// loaded instead.  The downside is that property overrides on the
-        /// command line will be ignored.</remarks>
+        /// <remarks>Since <see cref="SandcastleProject" /> already wraps the MSBuild project, it seemed
+        /// redundant to define each and every property on this task and map them to the project properties.  As
+        /// such, this task will attempt to use the executing project to create the Sandcastle project instance.
+        /// If that fails or <see cref="AlwaysLoadProject" /> is true, this file will be loaded instead.  The
+        /// downside is that property overrides on the command line will be ignored.</remarks>
         [Required]
         public string ProjectFile { get; set; }
 
@@ -97,39 +95,35 @@ namespace SandcastleBuilder.Utils.MSBuild
         public string Platform { get; set; }
 
         /// <summary>
-        /// This is used to specify the output directory containing the build
-        /// output for solution and project documentation sources when using
-        /// Team Build.
+        /// This is used to specify the output directory containing the build output for solution and project
+        /// documentation sources when using Team Build.
         /// </summary>
-        /// <value>This property is optional.  If not specified, the default
-        /// output path in project file documentation sources will be used.</value>
+        /// <value>This property is optional.  If not specified, the default output path in project file
+        /// documentation sources will be used.</value>
         public string OutDir { get; set; }
 
         /// <summary>
         /// This is used to set or get the output logging verbosity flag
         /// </summary>
-        /// <value>This property is optional.  If set to false (the default),
-        /// only build steps are written to the task log.  If set to true, all
-        /// output from the build process is written to the task log.</value>
+        /// <value>This property is optional.  If set to false (the default), only build steps are written to the
+        /// task log.  If set to true, all output from the build process is written to the task log.</value>
         public bool Verbose { get; set; }
 
         /// <summary>
-        /// This is used to set or get whether the log file is dumped to the
-        /// task log if the help file project build fails.
+        /// This is used to set or get whether the log file is dumped to the task log if the help file project
+        /// build fails.
         /// </summary>
-        /// <value>This property is optional.  If set to false (the default),
-        /// the log is not dumped if the build fails.  If set to true, all
-        /// output from the build process is written to the task log if the
-        /// build fails.</value>
+        /// <value>This property is optional.  If set to false (the default), the log is not dumped if the build
+        /// fails.  If set to true, all output from the build process is written to the task log if the build
+        /// fails.</value>
         public bool DumpLogOnFailure { get; set; }
 
         /// <summary>
-        /// This is used to specify whether or not to load the specified
-        /// <see cref="ProjectFile" /> rather than use the executing project.
+        /// This is used to specify whether or not to load the specified <see cref="ProjectFile" /> rather than
+        /// use the executing project.
         /// </summary>
-        /// <value>This property is optional.  If set to false, the default,
-        /// the executing project is used as the Sandcastle project to build.
-        /// If set to true, the specified <see cref="ProjectFile" /> is loaded.
+        /// <value>This property is optional.  If set to false, the default, the executing project is used as the
+        /// Sandcastle project to build.  If set to true, the specified <see cref="ProjectFile" /> is loaded.
         /// In such cases, command line property overrides are ignored.</value>
         public bool AlwaysLoadProject { get; set; }
 
@@ -139,8 +133,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         //=====================================================================
 
         /// <summary>
-        /// This is used to return a list of the HTML Help 1 (CHM) files that
-        /// resulted from the build.
+        /// This is used to return a list of the HTML Help 1 (chm) files that resulted from the build
         /// </summary>
         [Output]
         public ITaskItem[] Help1Files
@@ -158,8 +151,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is used to return a list of the MS Help 2 (HxS) files that
-        /// resulted from the build.
+        /// This is used to return a list of the MS Help 2 (HxS) files that resulted from the build
         /// </summary>
         [Output]
         public ITaskItem[] Help2Files
@@ -177,8 +169,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is used to return a list of the MS Help Viewer (MSHC) files
-        /// that resulted from the build.
+        /// This is used to return a list of the MS Help Viewer (mshc) files that resulted from the build
         /// </summary>
         [Output]
         public ITaskItem[] HelpViewerFiles
@@ -196,8 +187,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is used to return a list of the website files that resulted
-        /// from the build.
+        /// This is used to return a list of the website files that resulted from the build
         /// </summary>
         [Output]
         public ITaskItem[] WebsiteFiles
@@ -215,6 +205,25 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
+        /// This is used to return a list of the Open XML (docx) files that resulted from the build
+        /// </summary>
+        [Output]
+        public ITaskItem[] OpenXmlFiles
+        {
+            get
+            {
+                List<ITaskItem> files = new List<ITaskItem>();
+
+                if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                    foreach(string file in buildProcess.OpenXmlFiles)
+                        files.Add(new TaskItem(file));
+
+                return files.ToArray();
+            }
+        }
+
+
+        /// <summary>
         /// This is used to return a list of all files that resulted from the
         /// build (all help formats).
         /// </summary>
@@ -226,7 +235,8 @@ namespace SandcastleBuilder.Utils.MSBuild
                 return this.Help1Files.Concat(
                     this.Help2Files.Concat(
                     this.HelpViewerFiles.Concat(
-                    this.WebsiteFiles))).ToArray();
+                    this.WebsiteFiles.Concat(
+                    this.OpenXmlFiles)))).ToArray();
             }
         }
         #endregion
@@ -494,6 +504,10 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                         case HelpFileFormats.MSHelpViewer:
                             outputPath += ".mshc";
+                            break;
+
+                        case HelpFileFormats.OpenXml:
+                            outputPath += ".docx";
                             break;
 
                         default:

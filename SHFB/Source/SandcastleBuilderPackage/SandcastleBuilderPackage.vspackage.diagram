@@ -308,7 +308,7 @@
             <groupShapeMoniker Id="782dfda7-cbd4-4757-9e02-345204819719" />
           </nodes>
         </containsConnector>
-        <containsConnector Id="85b6c4e5-2e36-418c-9f13-88e756689482" edgePoints="[(5 : 2.28125); (6.59166666666667 : 2.28125 : JumpStart); (6.65833333333333 : 2.28125 : JumpEnd); (9.90625 : 2.28125); (9.90625 : 5.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+        <containsConnector Id="85b6c4e5-2e36-418c-9f13-88e756689482" edgePoints="[(5 : 2.28125); (6.18541466666667 : 2.28125 : JumpStart); (6.25208133333333 : 2.28125 : JumpEnd); (6.59166666666667 : 2.28125 : JumpStart); (6.65833333333333 : 2.28125 : JumpEnd); (9.90625 : 2.28125); (9.90625 : 5.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
           <menuBaseReferencesGroupBasesMoniker Id="c2c4c050-d0c5-4919-963f-49fd8a23a458" />
           <nodes>
             <menuShapeMoniker Id="867f7536-217a-41d3-918b-d2c50142a3ce" />
@@ -450,6 +450,33 @@
           <nodes>
             <externalMenuShapeMoniker Id="ae002a49-0607-43c6-9765-982185c00709" />
             <groupShapeMoniker Id="5da2cfdd-8c04-4a89-99e8-e1369545b81a" />
+          </nodes>
+        </containsConnector>
+        <buttonShape Id="bb1f61e7-3680-4bfc-9603-c2f5b8546ba2" absoluteBounds="0.875, 2.75, 1.5, 0.625">
+          <buttonMoniker Id="ee79214d-2eb7-4ac5-97d1-aaa7a87d8352" />
+        </buttonShape>
+        <groupShape Id="ff9e5d22-7e57-4aca-8bd7-a09384d19d7a" absoluteBounds="0.875, 1.875, 1.5, 0.625">
+          <groupMoniker Id="ea10b1d8-53b9-43b8-9dad-291d9c1d3235" />
+        </groupShape>
+        <containsConnector Id="6a4bd8dd-51ab-4e45-91a1-582ed92a93f6" edgePoints="[(1.625 : 2.5); (1.625 : 2.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+          <groupBaseReferencesButtonsMoniker Id="de404263-b547-4bf0-88c1-2fdc2f08bd0c" />
+          <nodes>
+            <groupShapeMoniker Id="ff9e5d22-7e57-4aca-8bd7-a09384d19d7a" />
+            <buttonShapeMoniker Id="bb1f61e7-3680-4bfc-9603-c2f5b8546ba2" />
+          </nodes>
+        </containsConnector>
+        <containsConnector Id="dc6c2b14-c4bd-42ec-b6b4-9adfe47b5d5e" edgePoints="[(3.5 : 2.375); (2.375 : 2.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+          <menuBaseReferencesGroupBasesMoniker Id="f8826b1c-d281-4da1-b899-23746e857e5b" />
+          <nodes>
+            <menuShapeMoniker Id="867f7536-217a-41d3-918b-d2c50142a3ce" />
+            <groupShapeMoniker Id="ff9e5d22-7e57-4aca-8bd7-a09384d19d7a" />
+          </nodes>
+        </containsConnector>
+        <containsConnector Id="636f9240-473e-47ba-a823-93595cbe4541" edgePoints="[(6.218748 : 2.375); (6.218748 : 2.1875); (4.28333333333333 : 2.1875 : JumpStart); (4.21666666666667 : 2.1875 : JumpEnd); (2.375 : 2.1875)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+          <menuBaseReferencesGroupBasesMoniker Id="e0bc5d9b-15ac-45c6-a1e7-faf4b7392956" />
+          <nodes>
+            <menuShapeMoniker Id="77221227-c626-42f8-be9d-bf7c1aa8f85c" />
+            <groupShapeMoniker Id="ff9e5d22-7e57-4aca-8bd7-a09384d19d7a" />
           </nodes>
         </containsConnector>
       </nestedChildShapes>
