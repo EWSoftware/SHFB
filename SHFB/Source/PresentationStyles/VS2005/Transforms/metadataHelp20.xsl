@@ -168,15 +168,23 @@
 
 	</xsl:template>
 
-	<!-- toc title and rl title -->
+	<!-- TOC title and result list title -->
 
 	<xsl:template name="mshelpTitles">
 
-		<!-- Toc List title-->
+		<!-- TOC List title-->
 		<MSHelp:TOCTitle>
 			<includeAttribute name="Title" item="tocTitle">
 				<parameter>
-					<xsl:call-template name="topicTitlePlain" />
+					<!-- For namespaces TOC titles, only show the namespace without any descriptive suffix -->
+					<xsl:choose>
+						<xsl:when test="$group='namespace'">
+							<xsl:call-template name="shortNamePlain" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="topicTitlePlain" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</parameter>
 			</includeAttribute>
 		</MSHelp:TOCTitle>

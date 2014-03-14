@@ -1,128 +1,184 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="bc490dbf-7d46-432d-a816-3ae16ab6af54" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>This is used to insert a reference to a code entity such as a type,
-method, property, event, field, etc.  It can be a reference to a member in one
-of your classes or one in the .NET Framework.</para>
-    </introduction>
-    <section>
-      <title>Usage</title>
-      <content>
-        <para>To use a code entity reference, simply insert the fully qualified
-member name as the inner text of a <codeInline>codeEntityReference</codeInline>
-element anywhere within a topic.  For methods, include the data types of any
-parameters that are passed to the method.  The member name should be prefixed
-with a code indicating the member type:</para>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This is used to insert a reference to a code entity such as a type, method, property, event, field,
+etc.  It can be a reference to a member in one of your classes or one in the .NET Framework.</para>
+		</introduction>
 
-<table>
-  <tableHeader>
-    <row>
-      <entry><para>Prefix</para></entry>
-      <entry><para>Description</para></entry>
-    </row>
-  </tableHeader>
-  <row>
-    <entry><para>N:</para></entry>
-    <entry><para>A namespace</para></entry>
-  </row>
-  <row>
-    <entry><para>T:</para></entry>
-    <entry><para>A types such as a class, enumeration, interface, or structure</para></entry>
-  </row>
-  <row>
-    <entry><para>F:</para></entry>
-    <entry><para>A field member</para></entry>
-  </row>
-  <row>
-    <entry><para>E:</para></entry>
-    <entry><para>An event member</para></entry>
-  </row>
-  <row>
-    <entry><para>P:</para></entry>
-    <entry><para>A property</para></entry>
-  </row>
-  <row>
-    <entry><para>M:</para></entry>
-    <entry><para>A method</para></entry>
-  </row>
-</table>
+		<section>
+			<title>Usage</title>
+			<content>
+				<para>To use a code entity reference, simply insert the fully qualified member name as the inner text of
+a <codeInline>codeEntityReference</codeInline> element anywhere within a topic.  For methods, include the data
+types of any parameters that are passed to the method.  The member name should be prefixed with a code indicating
+the member type:</para>
 
-<para>There are two optional attributes.</para>
-        <table>
-          <tableHeader>
-            <row>
-              <entry><para>Name</para></entry>
-              <entry><para>Description</para></entry>
-            </row>
-          </tableHeader>
-          <row>
-            <entry><para>qualifyHint</para></entry>
-            <entry><para>If set to false or omitted, the link text will consist only of
-the member name without a namespace or class qualifier.  If set to true, type
-names are fully qualified with their namespace.  Class members are qualified
-with their class name.</para></entry>
-          </row>
-          <row>
-            <entry><para>autoUpgrade</para></entry>
-            <entry><para>This only has purpose on method class members.  If set to false
-or omitted, the link will take you directly to the referenced member.  If set
-to true and the method has overloads, the link will take you to the method
-overloads page instead.  If the method has no overloads, it works the same as
-if set to false and it takes you to the method page.</para></entry>
-          </row>
-        </table>
-      </content>
-    </section>
-    <section>
-      <title>Example</title>
-      <content>
-        <code language="xml" title=" ">
-&lt;codeEntityReference qualifyHint="true"&gt;T:System.IO.FileStream&lt;/codeEntityReference&gt;
-&lt;codeEntityReference qualifyHint="true" autoUpgrade="true"&gt;
-  M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)
-&lt;/codeEntityReference&gt;
-&lt;codeEntityReference qualifyHint="true" autoUpgrade="true"&gt;
-  M:System.IO.FileStream.Write(System.Byte[],System.Int32,System.Int32)
-&lt;/codeEntityReference&gt;
-&lt;codeEntityReference qualifyHint="false"&gt;P:System.IO.FileStream.Length
-&lt;/codeEntityReference&gt;
-&lt;codeEntityReference qualifyHint="false" autoUpgrade="true"&gt;
-  M:System.IO.FileStream.Flush&lt;/codeEntityReference&gt;
-</code>
-      </content>
-    </section>
-    <section>
-      <title>Example Output</title>
-      <content>
-        <para>
-          <codeEntityReference qualifyHint="true">T:System.IO.FileStream</codeEntityReference>
-        </para>
-        <para>
-          <codeEntityReference qualifyHint="true" autoUpgrade="true">
-  M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)
-</codeEntityReference>
-        </para>
-        <para>
-          <codeEntityReference qualifyHint="true" autoUpgrade="true">
-  M:System.IO.FileStream.Write(System.Byte[],System.Int32,System.Int32)
-</codeEntityReference>
-        </para>
-        <para>
-          <codeEntityReference qualifyHint="false">P:System.IO.FileStream.Length
-</codeEntityReference>
-        </para>
-        <para>
-          <codeEntityReference qualifyHint="false" autoUpgrade="true">
-  M:System.IO.FileStream.Flush</codeEntityReference>
-        </para>
-      </content>
-    </section>
-    <relatedTopics>
-      <link xlink:href="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" />
-      <link xlink:href="65e7e30a-ba03-4e10-b1f2-763a613b6e27" />
-      <link xlink:href="915392b7-c701-44fd-8ff4-89c34a10f574" />
-      <link xlink:href="91a45341-e368-463e-a9ed-9e05286d2c25" />
-    </relatedTopics>
-  </developerConceptualDocument>
+				<table>
+					<tableHeader>
+						<row>
+							<entry>
+								<para>Prefix</para>
+							</entry>
+							<entry>
+								<para>Description</para>
+							</entry>
+						</row>
+					</tableHeader>
+					<row>
+						<entry>
+							<para>N:</para>
+						</entry>
+						<entry>
+							<para>A namespace</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>T:</para>
+						</entry>
+						<entry>
+							<para>A types such as a class, enumeration, interface, or structure</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>F:</para>
+						</entry>
+						<entry>
+							<para>A field member</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>E:</para>
+						</entry>
+						<entry>
+							<para>An event member</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>P:</para>
+						</entry>
+						<entry>
+							<para>A property</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>M:</para>
+						</entry>
+						<entry>
+							<para>A method</para>
+						</entry>
+					</row>
+				</table>
+
+				<para>There are three optional attributes.</para>
+
+				<table>
+					<tableHeader>
+						<row>
+							<entry>
+								<para>Name</para>
+							</entry>
+							<entry>
+								<para>Description</para>
+							</entry>
+						</row>
+					</tableHeader>
+					<row>
+						<entry>
+							<para>qualifyHint</para>
+						</entry>
+						<entry>
+							<para>If set to false or omitted, the link text will consist only of the member name without a
+namespace or class qualifier.  If set to true, type names are fully qualified with their namespace.  Class
+members are qualified with their class name.</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>autoUpgrade</para>
+						</entry>
+						<entry>
+							<para>This only has purpose on method class members.  If set to false or omitted, the link will
+take you directly to the referenced member.  If set to true and the method has overloads, the link will take you
+to the method overloads page instead.  If the method has no overloads, it works the same as	if set to false and
+it takes you to the method page.</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>linkText</para>
+						</entry>
+						<entry>
+							<para>This can be used to override the default link text based on the member name and provide your
+own link text.</para>
+						</entry>
+					</row>
+				</table>
+			</content>
+		</section>
+		<section>
+			<title>Example</title>
+			<content>
+				<code language="xml" title=" ">
+					&lt;codeEntityReference qualifyHint="true"&gt;T:System.IO.FileStream&lt;/codeEntityReference&gt;
+					&lt;codeEntityReference qualifyHint="true" autoUpgrade="true"&gt;
+					M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)
+					&lt;/codeEntityReference&gt;
+					&lt;codeEntityReference qualifyHint="true" autoUpgrade="true"&gt;
+					M:System.IO.FileStream.Write(System.Byte[],System.Int32,System.Int32)
+					&lt;/codeEntityReference&gt;
+					&lt;codeEntityReference qualifyHint="false"&gt;P:System.IO.FileStream.Length
+					&lt;/codeEntityReference&gt;
+					&lt;codeEntityReference qualifyHint="false" autoUpgrade="true"&gt;
+					M:System.IO.FileStream.Flush&lt;/codeEntityReference&gt;
+					&lt;codeEntityReference linkText="FileStream.Flush on MSDN"&gt;
+					M:System.IO.FileStream.Flush&lt;/codeEntityReference&gt;
+				</code>
+			</content>
+		</section>
+		<section>
+			<title>Example Output</title>
+			<content>
+				<para>
+					<codeEntityReference qualifyHint="true">T:System.IO.FileStream</codeEntityReference>
+				</para>
+				<para>
+					<codeEntityReference qualifyHint="true" autoUpgrade="true">
+						M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)
+					</codeEntityReference>
+				</para>
+				<para>
+					<codeEntityReference qualifyHint="true" autoUpgrade="true">
+						M:System.IO.FileStream.Write(System.Byte[],System.Int32,System.Int32)
+					</codeEntityReference>
+				</para>
+				<para>
+					<codeEntityReference qualifyHint="false">
+						P:System.IO.FileStream.Length
+					</codeEntityReference>
+				</para>
+				<para>
+					<codeEntityReference qualifyHint="false" autoUpgrade="true">
+						M:System.IO.FileStream.Flush
+					</codeEntityReference>
+				</para>
+				<para>
+					<codeEntityReference linkText="FileStream.Flush on MSDN">
+						M:System.IO.FileStream.Flush
+					</codeEntityReference>
+				</para>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" />
+			<link xlink:href="65e7e30a-ba03-4e10-b1f2-763a613b6e27" />
+			<link xlink:href="915392b7-c701-44fd-8ff4-89c34a10f574" />
+			<link xlink:href="91a45341-e368-463e-a9ed-9e05286d2c25" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

@@ -11,9 +11,6 @@
 	<!-- inserted boilerplate -->
 	<item id="runningHeaderText">Библиотека классов .NET Framework</item>
 	<item id="rootLink"><referenceLink target="R:Project">Пространства имён</referenceLink></item>
-  <item id="rootTopicTitle">Пространства имён</item>
-  <item id="namespaceTopicTitle">{0} - пространство имён</item>
-  <item id="namespaceGroupTopicTitle">{0} Пространства имён</item>
   <item id="definedBy">(Определяется {0}.)</item>
 	<item id="inheritedFrom">(Унаследован от {0}.)</item>
 	<item id="overridesMember">(Переопределяет {0}.)</item>
@@ -29,9 +26,9 @@
   <!-- topic titles -->
   <item id="meta_mshelp_tocTitle">{0}</item>
   <item id="meta_mshelp_rlTitle">{0} ({1})</item>
-  <item id="topicTitle_root"><include item="rootTopicTitle"/></item>
-	<item id="topicTitle_namespace"><include item="namespaceTopicTitle"><parameter>{0}</parameter></include></item>
-	<item id="topicTitle_namespaceGroup"><include item="namespaceGroupTopicTitle"><parameter>{0}</parameter></include></item>
+  <item id="topicTitle_root">Пространства имён</item>
+	<item id="topicTitle_namespace">{0} - пространство имён</item>
+	<item id="topicTitle_namespaceGroup">{0} Пространства имён</item>
 	<item id="topicTitle_class">{0} - класс</item>
 	<item id="topicTitle_structure">{0} - структура</item>
 	<item id="topicTitle_interface">{0} - интерфейс</item>

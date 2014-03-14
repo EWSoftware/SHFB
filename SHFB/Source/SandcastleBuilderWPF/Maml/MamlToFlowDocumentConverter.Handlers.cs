@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/13/2014
+// Updated : 03/12/2014
 // Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1077,44 +1077,51 @@ namespace SandcastleBuilder.WPF.Maml
         private static void CodeEntityReferenceElement(ElementProperties props)
         {
             XAttribute hint;
-            string memberId = (props.Element.Value ?? String.Empty).Trim();
+            string linkText, memberId = (props.Element.Value ?? String.Empty).Trim();
             string[] parts;
             bool qualifyHint;
             char prefix = 'N';
             int pos;
 
-            hint = props.Element.Attribute("qualifyHint");
+            linkText = (string)props.Element.Attribute("linkText");
 
-            if(hint == null || !Boolean.TryParse(hint.Value, out qualifyHint))
-                qualifyHint = false;
-
-            // Remove parameters from the ID
-            pos = memberId.IndexOf('(');
-
-            if(pos != -1)
-                memberId = memberId.Substring(0, pos);
-
-            // Remove the type prefix
-            if(memberId.Length > 2 && memberId[1] == ':')
+            if(String.IsNullOrWhiteSpace(linkText))
             {
-                prefix = memberId[0];
-                memberId = memberId.Substring(2);
-            }
+                hint = props.Element.Attribute("qualifyHint");
 
-            parts = memberId.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                if(hint == null || !Boolean.TryParse(hint.Value, out qualifyHint))
+                    qualifyHint = false;
 
-            // If qualified, add the appropriate parts
-            if(qualifyHint)
-            {
-                if(prefix != 'N' && prefix != 'T')
-                    memberId = String.Join(".", parts, parts.Length - 2, 2);
+                // Remove parameters from the ID
+                pos = memberId.IndexOf('(');
+
+                if(pos != -1)
+                    memberId = memberId.Substring(0, pos);
+
+                // Remove the type prefix
+                if(memberId.Length > 2 && memberId[1] == ':')
+                {
+                    prefix = memberId[0];
+                    memberId = memberId.Substring(2);
+                }
+
+                parts = memberId.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // If qualified, add the appropriate parts
+                if(qualifyHint)
+                {
+                    if(prefix != 'N' && prefix != 'T')
+                        memberId = String.Join(".", parts, parts.Length - 2, 2);
+                }
+                else
+                    memberId = parts[parts.Length - 1];
+
+                if(parts.Length > 2)
+                    memberId = memberId.Replace("#ctor", parts[parts.Length - 2]).Replace("#cctor",
+                        parts[parts.Length - 2]);
             }
             else
-                memberId = parts[parts.Length - 1];
-
-            if(parts.Length > 2)
-                memberId = memberId.Replace("#ctor", parts[parts.Length - 2]).Replace(
-                    "#cctor", parts[parts.Length - 2]);
+                memberId = linkText;
 
             props.Converter.AddInlineToContainer(new Bold(new Run(memberId)));
             props.ParseChildren = false;

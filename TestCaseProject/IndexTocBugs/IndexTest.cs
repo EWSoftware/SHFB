@@ -69,19 +69,19 @@ namespace TestDoc.IndexTocBugs
         /// <summary>
         /// A method
         /// </summary>
-        /// <param name="o"></param>
+        /// <param name="o">O</param>
         public IndexTest(object o) { }
 
         /// <summary>
         /// An overloaded method
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="s">S</param>
         public void MethodA(string s) { }
 
         /// <summary>
         /// Another overload
         /// </summary>
-        /// <param name="i"></param>
+        /// <param name="i">I</param>
         public void MethodA(int i) { }
 
         /// <summary>

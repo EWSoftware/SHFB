@@ -93,8 +93,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 new HelpFileFormatItem { Format = HelpFileFormats.HtmlHelp1, Description = "HTML Help 1 (chm)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.MSHelp2, Description = "MS Help 2 (HxS)" },
                 new HelpFileFormatItem { Format = HelpFileFormats.MSHelpViewer, Description = "MS Help Viewer (mshc)" },
-                new HelpFileFormatItem { Format = HelpFileFormats.Website, Description = "Website (HTML/ASP.NET)" },
-                new HelpFileFormatItem { Format = HelpFileFormats.OpenXml, Description = "Open XML (docx)" }
+                new HelpFileFormatItem { Format = HelpFileFormats.OpenXml, Description = "Open XML (docx)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.Website, Description = "Website (HTML/ASP.NET)" }
             });
 
             cboBuildAssemblerVerbosity.DisplayMember = "Value";

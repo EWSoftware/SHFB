@@ -630,31 +630,15 @@
 	<!-- used as the big title in the non-scrolling region -->
 
 	<xsl:template name="topicTitleDecorated">
-		<!--<xsl:param name="titleType" />-->
 		<include>
 			<xsl:attribute name="item">
-				<!--<xsl:choose>
-          -->
-				<!-- what is this for?! -->
-				<!--
-          -->
-				<!--<xsl:when test="$titleType = 'tocTitle' and $group='namespace'">
-            <xsl:text>tocTitle</xsl:text>
-          </xsl:when>-->
-				<!--
-          <xsl:otherwise>-->
-				<!-- we don't call out generics will special titles anymore, because their type parameters are shown
-            in the language neutral syntax -->
-				<!--<xsl:if test="boolean(/document/reference/templates) and not($group='list')">
-              <xsl:text>generic_</xsl:text>
-            </xsl:if>-->
 				<xsl:choose>
 					<!-- api topic titles -->
 					<xsl:when test="$topic-group='api'">
 						<xsl:choose>
 							<xsl:when test="string($api-subsubgroup)">
 								<xsl:choose>
-									<!-- topic tilte for op_explicit and op_implicit members -->
+									<!-- topic title for op_explicit and op_implicit members -->
 									<xsl:when test="$api-subsubgroup='operator' and (document/reference/apidata/@name = 'Explicit' or document/reference/apidata/@name = 'Implicit')">
 										<xsl:value-of select="'typeConversion'"/>
 									</xsl:when>
@@ -721,8 +705,6 @@
 					</xsl:when>
 				</xsl:choose>
 				<xsl:text>TopicTitle</xsl:text>
-				<!--</xsl:otherwise>
-        </xsl:choose>-->
 			</xsl:attribute>
 			<parameter>
 				<xsl:call-template name="shortNameDecorated" />
@@ -746,7 +728,6 @@
 			</parameter>
 		</include>
 	</xsl:template>
-
 
 	<!-- Title in TOC -->
 

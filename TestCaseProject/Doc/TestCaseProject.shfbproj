@@ -81,10 +81,24 @@
       <NamespaceSummaryItem name="TestDoc.Generics" isDocumented="True">&lt;inheritdoc cref="N:TestDoc"/&gt;
 &lt;p/&gt;Test of the &amp;lt;inheritdoc /&amp;gt; tag in namespace comments.  The stuff from the &lt;b&gt;TestDoc&lt;/b&gt; namespace should be above this paragraph.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="TestDoc.IndexTocBugs" isDocumented="True">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="TestNamespace" isDocumented="True">This namespace contains the class from the Sandcastle tools examples.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="TestDoc.Generics (Group)" isGroup="True" isDocumented="True">These namespaces contain various tests for documenting generic types.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="TestDoc.HierarchicalToc (Group)" isGroup="True" isDocumented="True">These namespaces are used to test the namespace grouping support.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="TestDoc (Group)" isGroup="True" isDocumented="True">These namespaces contain various classes used to test the Sandcastle Help File Builder and the Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.ExtensionMethods" isDocumented="True">Extension method tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.InheritanceBug" isDocumented="True">Inheritance bug tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.InterfaceFailure" isDocumented="True">Interface failure test</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.MissingMembersBug" isDocumented="True">Missing members bugs</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics.OverloadBug" isDocumented="True" />
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Report.Excel" isDocumented="True">Excel namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting" isDocumented="True">Reporting namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.Standard" isDocumented="True">Reporting standard namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc.WoodDreams.Reporting.WordXML" isDocumented="True">Reporting Word XML namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.InterfaceTests" isDocumented="True">Interface tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.InteropAttributesBug" isDocumented="True">Interop attribute bugs</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.InteropBug" isDocumented="True">Interop bug</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.NestedClasses" isDocumented="True">Nested class tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Overloads" isDocumented="True">Overloads tests</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.SealedOverrideBug" isDocumented="True" />
     </NamespaceSummaries>
     <PlugInConfigurations>
       <PlugInConfig id="Additional Content Only" enabled="False">
@@ -140,31 +154,7 @@
       </PlugInConfig>
     </PlugInConfigurations>
     <ApiFilter>
-      <Filter entryType="Namespace" fullName="" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc" isExposed="True">
-  <Filter entryType="Class" fullName="TestDoc.TestClass" filterName="TestClass" isExposed="False" />
-  <Filter entryType="Class" fullName="TestDoc.TestDerivedClass" filterName="TestDerivedClass" isExposed="False" />
-  <Filter entryType="Enumeration" fullName="TestDoc.TestGeneral" filterName="TestGeneral" isExposed="False" />
-  <Filter entryType="Class" fullName="TestDoc.TestSealedDerivedClass" filterName="TestSealedDerivedClass" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="TestDoc.DocumentationInheritance" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.ExtensionMethods" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.Generics" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.Generics.InheritanceBug" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.Generics.InterfaceFailure" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.Generics.MissingMembersBug" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.Generics.OverloadBug" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Report.Excel" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Reporting" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Reporting.Standard" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.HierarchicalToc.WoodDreams.Reporting.WordXML" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.IndexTocBugs" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.InterfaceTests" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.InteropAttributesBug" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.InteropBug" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.NestedClasses" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.Overloads" isExposed="False" />
-<Filter entryType="Namespace" fullName="TestDoc.SealedOverrideBug" isExposed="False" /></ApiFilter>
+    </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Version>1.20.34.123</Version>

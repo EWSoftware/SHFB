@@ -35,7 +35,7 @@ namespace TestDoc.Generics.InterfaceFailure
         /// <typeparam name="U">af23rwer</typeparam>
         /// <param name="arg1">qwerqwer</param>
         /// <param name="arg2">zvczxcvzx</param>
-        /// <returns></returns>
+        /// <returns><typeparamref name="T"/></returns>
         T BazGlorp<T, U>(T arg1, U arg2);
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace TestDoc.Generics.InterfaceFailure
         /// <typeparam name="U">bdfgsdf</typeparam>
         /// <param name="arg1">nvbn</param>
         /// <param name="arg2">rtyrtyf</param>
-        /// <returns></returns>
+        /// <returns>Object</returns>
         object GlorpQux<T, U>(T arg1, U arg2);
     }
 

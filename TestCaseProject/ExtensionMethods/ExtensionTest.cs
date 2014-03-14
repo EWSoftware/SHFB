@@ -14,6 +14,7 @@ namespace TestDoc.ExtensionMethods
         /// </summary>
         /// <param name="s">The string to modify</param>
         /// <param name="x">The string to append</param>
+        /// <returns>s + x</returns>
         public static string ExtendTest(this string s, string x)
         {
             return s + x;

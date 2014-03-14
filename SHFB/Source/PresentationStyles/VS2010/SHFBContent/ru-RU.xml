@@ -21,8 +21,7 @@
 	<item id="fb_body">Ваш отзыв будет использован для улучшения качества документации и продукта в целом. Адрес вашей электронной почты не будет использован для других целей и будет удалён, после того как ваш отзыв будет обработан. До окончания работ по обработке вашего отзыва, вы можете связаться с автором для получения дополнительной информации. После его обработки, вы можете получить сообщение об окончании работ по вашему отзыву на указанный адрес электронной почты.</item>
 
     <!-- reference_content.xml overrides -->
-    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
-    <item id="rootTopicTitleLocalized">Пространства имен</item>
+    <item id="topicTitle_root">{@RootNamespaceTitle}</item>
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

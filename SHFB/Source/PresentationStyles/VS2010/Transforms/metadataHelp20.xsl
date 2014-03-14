@@ -192,24 +192,29 @@
 
 	<xsl:template name="t_mshelpTitles">
 
-		<!-- Toc List title-->
+		<!-- TOC List title-->
 		<MSHelp:TOCTitle>
-			<includeAttribute name="Title"
-												item="meta_mshelp_tocTitle">
+			<includeAttribute name="Title" item="meta_mshelp_tocTitle">
 				<parameter>
-					<xsl:call-template name="t_topicTitlePlain" />
+					<!-- For namespaces TOC titles, only show the namespace without any descriptive suffix -->
+					<xsl:choose>
+						<xsl:when test="$g_apiTopicGroup='namespace'">
+							<xsl:call-template name="t_shortNamePlain" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="t_topicTitlePlain" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</parameter>
 			</includeAttribute>
 		</MSHelp:TOCTitle>
 
 		<!-- The Results List title -->
 		<MSHelp:RLTitle>
-			<includeAttribute name="Title"
-												item="meta_mshelp_rlTitle">
+			<includeAttribute name="Title" item="meta_mshelp_rlTitle">
 				<parameter>
 					<xsl:call-template name="t_topicTitlePlain">
-						<xsl:with-param name="p_qualifyMembers"
-														select="true()" />
+						<xsl:with-param name="p_qualifyMembers" select="true()" />
 					</xsl:call-template>
 				</parameter>
 				<parameter>

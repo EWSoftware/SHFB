@@ -1703,6 +1703,9 @@
 						<xsl:value-of select="@autoUpgrade" />
 					</xsl:attribute>
 				</xsl:if>
+				<xsl:if test="normalize-space(@linkText)">
+					<xsl:value-of select="normalize-space(@linkText)"/>
+				</xsl:if>
 			</referenceLink>
 		</span>
 	</xsl:template>

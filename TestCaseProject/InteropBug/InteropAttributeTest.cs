@@ -20,6 +20,10 @@ namespace TestDoc.InteropAttributesBug
         /// <summary>
         /// Test the other DllImport attribute settings to make sure they appear in the syntax section
         /// </summary>
+        /// <param name="lpszUrlSearchPattern">URL search pattern</param>
+        /// <param name="lpFirstCacheEntryInfo">First cache entry info</param>
+        /// <param name="lpdwFirstCacheEntryInfoBufferSize">First cache entry info buffer size</param>
+        /// <returns>IntPtr</returns>
         [DllImport("wininetXYZ", BestFitMapping = false, ExactSpelling = true, ThrowOnUnmappableChar = true,
             CallingConvention = CallingConvention.Cdecl, PreserveSig = false)]
         public static extern IntPtr ThisFunctionDoesNotExist(
@@ -30,6 +34,10 @@ namespace TestDoc.InteropAttributesBug
         /// <summary>
         /// This begins the enumeration of the Internet cache
         /// </summary>
+        /// <param name="lpszUrlSearchPattern">URL search pattern</param>
+        /// <param name="lpFirstCacheEntryInfo">First cache entyr info</param>
+        /// <param name="lpdwFirstCacheEntryInfoBufferSize">First cache entry info buffer size</param>
+        /// <returns>IntPtr</returns>
         [DllImport("wininet", SetLastError = true, CharSet = CharSet.Auto,
           EntryPoint = "FindFirstUrlCacheEntryA")]
         public static extern IntPtr FindFirstUrlCacheEntry(
@@ -40,6 +48,10 @@ namespace TestDoc.InteropAttributesBug
         /// <summary>
         /// This retrieves the next entry in the Internet cache
         /// </summary>
+        /// <param name="hFind">Find handle</param>
+        /// <param name="lpNextCacheEntryInfo">Next cache entry info</param>
+        /// <param name="lpdwNextCacheEntryInfoBufferSize">Next cache entry info buffer size</param>
+        /// <returns>Boolean</returns>
         [DllImport("wininet", SetLastError = true, CharSet = CharSet.Auto,
           EntryPoint = "FindNextUrlCacheEntryA")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -54,55 +66,55 @@ namespace TestDoc.InteropAttributesBug
     [StructLayout(LayoutKind.Explicit, Size = 80)]
     public struct INTERNET_CACHE_ENTRY_INFOA
     {
-        /// <summary></summary>
+        /// <summary>Structure size</summary>
         [FieldOffset(0)]
         public uint dwStructSize;
-        /// <summary></summary>
+        /// <summary>Source URL name</summary>
         [FieldOffset(4)]
         public IntPtr lpszSourceUrlName;
-        /// <summary></summary>
+        /// <summary>Local filename</summary>
         [FieldOffset(8)]
         public IntPtr lpszLocalFileName;
-        /// <summary></summary>
+        /// <summary>Cache entry type</summary>
         [FieldOffset(12)]
         public uint CacheEntryType;
-        /// <summary></summary>
+        /// <summary>Use count</summary>
         [FieldOffset(16)]
         public uint dwUseCount;
-        /// <summary></summary>
+        /// <summary>Hit rate</summary>
         [FieldOffset(20)]
         public uint dwHitRate;
-        /// <summary></summary>
+        /// <summary>Size low</summary>
         [FieldOffset(24)]
         public uint dwSizeLow;
-        /// <summary></summary>
+        /// <summary>Size high</summary>
         [FieldOffset(28)]
         public uint dwSizeHigh;
-        /// <summary></summary>
+        /// <summary>Last modified time</summary>
         [FieldOffset(32)]
         public System.Runtime.InteropServices.ComTypes.FILETIME LastModifiedTime;
-        /// <summary></summary>
+        /// <summary>Expire time</summary>
         [FieldOffset(40)]
         public System.Runtime.InteropServices.ComTypes.FILETIME ExpireTime;
-        /// <summary></summary>
+        /// <summary>Last access time</summary>
         [FieldOffset(48)]
         public System.Runtime.InteropServices.ComTypes.FILETIME LastAccessTime;
-        /// <summary></summary>
+        /// <summary>Last sync time</summary>
         [FieldOffset(56)]
         public System.Runtime.InteropServices.ComTypes.FILETIME LastSyncTime;
-        /// <summary></summary>
+        /// <summary>Header info</summary>
         [FieldOffset(64)]
         public IntPtr lpHeaderInfo;
-        /// <summary></summary>
+        /// <summary>Header info size</summary>
         [FieldOffset(68)]
         public uint dwHeaderInfoSize;
-        /// <summary></summary>
+        /// <summary>File extension</summary>
         [FieldOffset(72)]
         public IntPtr lpszFileExtension;
-        /// <summary></summary>
+        /// <summary>Reserved</summary>
         [FieldOffset(76)]
         public uint dwReserved;
-        /// <summary></summary>
+        /// <summary>Exempt delta</summary>
         [FieldOffset(76)]
         public uint dwExemptDelta;
     }
@@ -115,16 +127,22 @@ namespace TestDoc.InteropAttributesBug
       InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAssemblyEnum
     {
-        /// <summary></summary>
+        /// <summary>Get next assembly</summary>
+        /// <param name="pvReserved">Reserved</param>
+        /// <param name="ppName">Name</param>
+        /// <param name="dwFlags">Flags</param>
+        /// <returns><para><see cref="int"/></para></returns>
         [PreserveSig]
-        int GetNextAssembly(IntPtr pvReserved, out /*IAssemblyName*/ object ppName,
-            uint dwFlags);
+        int GetNextAssembly(IntPtr pvReserved, out /*IAssemblyName*/ object ppName, uint dwFlags);
 
-        /// <summary></summary>
+        /// <summary>Reset</summary>
+        /// <returns>Int</returns>
         [PreserveSig]
         int Reset();
 
-        /// <summary></summary>
+        /// <summary>Clone</summary>
+        /// <param name="ppEnum">Assembly enum</param>
+        /// <returns>int</returns>
         [PreserveSig]
         int Clone(out IAssemblyEnum ppEnum);
     }

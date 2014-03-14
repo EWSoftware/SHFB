@@ -18,6 +18,7 @@ namespace TestDoc.Generics.MissingMembersBug
         /// <summary>
         /// Some method.
         /// </summary>
+        /// <param name="i">Action</param>
         void Method(Action<int, int> i);
     }
 
@@ -204,6 +205,7 @@ namespace TestDoc.Generics.MissingMembersBug
         /// <summary>
         /// This protected Method should also show up in the help
         /// </summary>
+        /// <returns>Dictionary</returns>
         protected virtual Dictionary<string, object> GetPropertyValues()
         {
             // If this piece of code is uncommented, the members of this class will not show up

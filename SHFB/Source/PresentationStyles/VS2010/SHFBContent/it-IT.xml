@@ -21,8 +21,7 @@
 	<item id="fb_body">Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.</item>
 
     <!-- reference_content.xml overrides -->
-    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
-    <item id="rootTopicTitleLocalized">Spazio dei nomi</item>
+    <item id="topicTitle_root">{@RootNamespaceTitle}</item>
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

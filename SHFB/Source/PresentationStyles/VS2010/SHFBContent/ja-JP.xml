@@ -22,8 +22,7 @@
   <item id="fb_body">ドキュメント開発チームはドキュメントの品質向上にあなたのフィードバックを使用いたします。送信いただいたメールアドレスは他の用途に使用いたしません。問題が解決した後送信されたメールアドレスを破棄いたします。送信いただいた問題の処理において，詳細をお伺いする場合や問題の切り分けのためにコンタクトをとらせていただく場合がございます。</item>
 
     <!-- reference_content.xml overrides -->
-    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
-    <item id="rootTopicTitleLocalized">名前空間</item>
+    <item id="topicTitle_root">{@RootNamespaceTitle}</item>
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

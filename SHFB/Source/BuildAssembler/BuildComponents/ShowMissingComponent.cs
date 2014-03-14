@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 03/12/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
@@ -416,6 +416,7 @@ namespace Microsoft.Ddue.Tools
         /// transformations.</remarks>
         private void CheckForMissingText(XmlNode comments, string key, string tagName)
         {
+            bool hasElements = false;
             string text;
             XmlNode tag = comments.SelectSingleNode(tagName);
 
@@ -426,9 +427,16 @@ namespace Microsoft.Ddue.Tools
                 text = String.Empty;
             }
             else
+            {
                 text = reStripWhitespace.Replace(tag.InnerText, String.Empty);
 
-            if(text.Length == 0)
+                // Certain self-closing XML comments elements will also satisfy the check
+                if(text.Length == 0)
+                    hasElements = (tag.SelectNodes("//conceptualLink|//see|//paramref|//typeparamref").Count != 0);
+            }
+
+            // Certain self-closing XML comments elements will also satisfy the check
+            if(text.Length == 0 && !hasElements)
             {
                 // Auto document constructor?
                 if(tagName == "summary" && autoDocConstructors && (key.Contains("#ctor") || key.Contains("#cctor")))
@@ -489,6 +497,7 @@ namespace Microsoft.Ddue.Tools
         /// transformations.</remarks>
         private void CheckForMissingParameter(XmlNode comments, string key, string paramName, string tagName)
         {
+            bool hasElements = false;
             string text;
             XmlAttribute name;
             XmlNode tag = comments.SelectSingleNode(tagName + "[@name='" + paramName + "']");
@@ -505,9 +514,15 @@ namespace Microsoft.Ddue.Tools
                 text = String.Empty;
             }
             else
+            {
                 text = reStripWhitespace.Replace(tag.InnerText, String.Empty);
 
-            if(text.Length == 0)
+                // Certain self-closing XML comments elements will also satisfy the check
+                if(text.Length == 0)
+                    hasElements = (tag.SelectNodes("//conceptualLink|//see|//paramref|//typeparamref").Count != 0);
+            }
+
+            if(text.Length == 0 && !hasElements)
             {
                 // Auto document Dispose(Bool) parameter?
                 if(autoDocDispose && key.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal))

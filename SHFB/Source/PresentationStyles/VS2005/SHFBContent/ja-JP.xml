@@ -33,7 +33,6 @@
 
     <!-- reference_content.xml overrides -->
     <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
-    <item id="rootTopicTitleLocalized">名前空間</item>
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

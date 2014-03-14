@@ -14,7 +14,7 @@ namespace TestDoc.IndexTocBugs
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
-        /// <returns></returns>
+        /// <returns>Left operand</returns>
         public static Test1 operator +(Test1 left, Test1 right)
         {
             return left;
@@ -25,7 +25,7 @@ namespace TestDoc.IndexTocBugs
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
-        /// <returns></returns>
+        /// <returns>Right operand</returns>
         public static Test2 operator +(Test1 left, Test2 right)
         {
             return right;
@@ -36,7 +36,7 @@ namespace TestDoc.IndexTocBugs
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
-        /// <returns></returns>
+        /// <returns>Left operand</returns>
         public static Test2 operator +(Test2 left, Test1 right)
         {
             return left;
@@ -53,7 +53,7 @@ namespace TestDoc.IndexTocBugs
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
-        /// <returns></returns>
+        /// <returns>Left operand</returns>
         public static Test2 operator +(Test2 left, Test2 right)
         {
             return left;
@@ -64,7 +64,7 @@ namespace TestDoc.IndexTocBugs
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
-        /// <returns></returns>
+        /// <returns>Right operand</returns>
         public static Test2 operator +(Test1 left, Test2 right)
         {
             return right;
@@ -75,7 +75,7 @@ namespace TestDoc.IndexTocBugs
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
-        /// <returns></returns>
+        /// <returns>Left operand</returns>
         public static Test2 operator +(Test2 left, Test1 right)
         {
             return left;
@@ -91,9 +91,9 @@ namespace TestDoc.IndexTocBugs
         /// <summary>
         /// operator *
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
+        /// <param name="x">X</param>
+        /// <param name="y">Y</param>
+        /// <returns>x</returns>
         public static Test3 operator *(Test3 x, double y)
         {
             return x;

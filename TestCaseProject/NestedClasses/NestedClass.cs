@@ -70,6 +70,7 @@ namespace TestDoc.NestedClasses
             /// <summary>
             /// A method on the nested class
             /// </summary>
+            /// <returns>Null</returns>
             public InnermostClass NestedClassMethod()
             {
                 return null;
@@ -92,6 +93,7 @@ namespace TestDoc.NestedClasses
         /// <summary>
         /// A method on the parent class
         /// </summary>
+        /// <returns>Null</returns>
         /// <remarks>If <see langword="true"/>, do something.</remarks>
         public NestedClass ParentClassMethod()
         {

@@ -230,6 +230,7 @@ namespace TestDoc
         /// <summary>
         /// A public method
         /// </summary>
+        /// <returns>String</returns>
         /// <remarks>See <see cref="System.Collections.Generic.List{T}"/>
         /// for a generic list class.
         /// <p/>See <see cref="IndexTocBugs.IndexTest.TestArrayMethod(System.String[])">IndexTest.TestArrayMethod</see> for
@@ -337,6 +338,7 @@ namespace TestDoc
         /// <summary>
         /// A protected method (debug)
         /// </summary>
+        /// <returns>String</returns>
         protected virtual string ProtectedMethod()
         {
             return protectedStringField;
@@ -362,6 +364,7 @@ namespace TestDoc
         /// <summary>
         /// A protected internal method
         /// </summary>
+        /// <returns>String</returns>
         /// <example>
         /// <code title="NOTE: Watch &amp; learn">
         /// // See VB.NET example for VB.NET code extraction test
@@ -387,6 +390,7 @@ namespace TestDoc
         /// <summary>
         /// A private method()
         /// </summary>
+        /// <returns>String</returns>
         private string PrivateMethod()
         {
             return privateStringField;
@@ -498,7 +502,6 @@ namespace TestDoc
         /// </item>
         /// </list>
         /// 
-        /// 
         /// <p/>Test table list with terms and definitions:
         /// <list type="table">
         /// <listheader>
@@ -553,6 +556,12 @@ namespace TestDoc
         /// .NET 4.0 optional arguments test.  The June 2010 and earlier releases of Sandcastle
         /// do not support optional argument values in the syntax section.
         /// </summary>
+        /// <param name="amount">Amount</param>
+        /// <param name="isUsed">Is used</param>
+        /// <param name="optionalByAttr">Optional by attribute</param>
+        /// <param name="smallAmount">Small amount</param>
+        /// <param name="testString">Test string</param>
+        /// <param name="value">Test value</param>
         /// <remarks>Conceptual link tests: <conceptualLink target="303c996a-2911-4c08-b492-6496c82b3edb"/> and
         /// <conceptualLink target="ba47a67c-4825-4fcd-b806-2b2e02d4373a">Another MAML topic</conceptualLink> and
         /// <conceptualLink target="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildTools" />.</remarks>
@@ -743,7 +752,7 @@ namespace TestDoc
         /// <code source="..\TestClass.cs" region="Methods"
         ///     title="Methods Region" />
         /// </example>
-        /// <returns></returns>
+        /// <returns>String</returns>
         protected internal override string ProtectedInternalMethod()
         {
             return base.ProtectedInternalMethod();
@@ -804,7 +813,7 @@ namespace TestDoc
         /// <summary>
         /// An override of the public method in the sealed class
         /// </summary>
-        /// <returns></returns>
+        /// <returns><para><see cref="String"/></para></returns>
         // For testing bad include: <include file='MissingExample.xml' path='Examples/Not/There[@name="Ex1"]/*' />
         public override string PublicMethod()
         {
@@ -814,7 +823,7 @@ namespace TestDoc
         /// <summary>
         /// An override of the protected method in the sealed class
         /// </summary>
-        /// <returns></returns>
+        /// <returns>String</returns>
         /// <include file='Doc\ExampleFiles\Example.xml' path='Test/Example[@id="1"]/*' />
         protected override string ProtectedMethod()
         {

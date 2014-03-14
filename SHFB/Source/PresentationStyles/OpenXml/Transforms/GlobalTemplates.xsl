@@ -27,6 +27,24 @@
 		</xsl:if>
 	</xsl:template>
 
+	<!-- Gets the substring after the last occurrence of a period in a given string -->
+	<xsl:template name="t_getTrimmedLastPeriod">
+		<xsl:param name="p_string" />
+
+		<xsl:choose>
+			<xsl:when test="contains($p_string, '.')">
+				<xsl:call-template name="t_getTrimmedLastPeriod">
+					<xsl:with-param name="p_string"
+													select="substring-after($p_string, '.')" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$p_string" />
+			</xsl:otherwise>
+		</xsl:choose>
+
+	</xsl:template>
+
 	<!-- ============================================================================================
 	Text handling
 	============================================================================================= -->

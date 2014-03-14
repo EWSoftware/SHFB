@@ -3,6 +3,8 @@ namespace TestDoc.Generics
     /// <summary>
     /// A test generic class
     /// </summary>
+    /// <typeparam name="TKey">TKey</typeparam>
+    /// <typeparam name="TValue">TValue</typeparam>
     public class GenericClass<TKey, TValue>
     {
         private TKey xkey;
@@ -10,8 +12,8 @@ namespace TestDoc.Generics
 
         /// <summary>
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="x">X</param>
+        /// <param name="y">Y</param>
         public GenericClass(TKey x, TValue y)
         {
             xkey = x;

@@ -171,6 +171,8 @@
 			<extension base="maml:codeEntityReferenceStringType">
 				<attribute name="qualifyHint" type="boolean" />
 				<attribute name="autoUpgrade" type="boolean" />
+				<!-- Sandcastle change.  Added support for alternate link text. -->
+				<attribute name="linkText" type="string" />
 			</extension>
 		</simpleContent>
 	</complexType>

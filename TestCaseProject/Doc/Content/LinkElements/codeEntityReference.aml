@@ -96,7 +96,7 @@ if set to false and it takes you to the method page.</para></entry>
       <title>Example Output</title>
       <content>
         <para>
-          <codeEntityReference qualifyHint="true">T:System.IO.FileStream</codeEntityReference>
+          <codeEntityReference qualifyHint="true" linkText="FileStream on MSDN">T:System.IO.FileStream</codeEntityReference>
         </para>
         <para>
           <codeEntityReference qualifyHint="true" autoUpgrade="true">

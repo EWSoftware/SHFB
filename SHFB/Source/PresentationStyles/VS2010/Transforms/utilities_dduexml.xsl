@@ -1682,12 +1682,9 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="ddue:codeEntityReference"
-								name="t_ddue_codeEntityReference">
-		<span sdata="cer"
-					target="{normalize-space(string(.))}">
-			<referenceLink class="mtps-internal-link"
-										 target="{normalize-space(string(.))}">
+	<xsl:template match="ddue:codeEntityReference" name="t_ddue_codeEntityReference">
+		<span sdata="cer" target="{normalize-space(string(.))}">
+			<referenceLink class="mtps-internal-link" target="{normalize-space(string(.))}">
 				<xsl:if test="@qualifyHint">
 					<xsl:attribute name="show-container">
 						<xsl:value-of select="@qualifyHint"/>
@@ -1700,6 +1697,9 @@
 					<xsl:attribute name="prefer-overload">
 						<xsl:value-of select="@autoUpgrade"/>
 					</xsl:attribute>
+				</xsl:if>
+				<xsl:if test="normalize-space(@linkText)">
+					<xsl:value-of select="normalize-space(@linkText)"/>
 				</xsl:if>
 			</referenceLink>
 		</span>

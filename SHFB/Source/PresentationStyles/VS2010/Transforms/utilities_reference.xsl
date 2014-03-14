@@ -2322,46 +2322,56 @@
 												 mode="link"/>
 	</xsl:template>
 
-	<!-- Produces a (plain) name; outer types are indicated by dot-seperators; -->
+	<!-- Produces a (plain) name; outer types are indicated by dot-separators; -->
 	<!-- generic types are indicated by a keyword, because we can't show templates in a language-independent way -->
-	<xsl:template match="type"
-								mode="plain"
-								name="t_typeNamePlain">
+	<xsl:template match="type" mode="plain" name="t_typeNamePlain">
 		<xsl:if test="type|(containers/type)">
-			<xsl:apply-templates select="type|(containers/type)"
-													 mode="plain"/>
+			<xsl:apply-templates select="type|(containers/type)" mode="plain"/>
 			<xsl:text>.</xsl:text>
 		</xsl:if>
-		<xsl:value-of select="apidata/@name"/>
+		<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
 		<xsl:choose>
-			<xsl:when test="specialization">
-				<xsl:apply-templates select="specialization"
-														 mode="plain"/>
+			<xsl:when test="apidata/@name">
+				<xsl:value-of select="apidata/@name" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-templates select="templates"
-														 mode="plain"/>
+				<xsl:call-template name="t_getTrimmedLastPeriod">
+					<xsl:with-param name="p_string" select="@api" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:choose>
+			<xsl:when test="specialization">
+				<xsl:apply-templates select="specialization" mode="plain"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="templates" mode="plain"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="type"
-								mode="decorated"
-								name="t_typeNameDecorated">
+	<xsl:template match="type" mode="decorated" name="t_typeNameDecorated">
 		<xsl:if test="type|(containers/type)">
-			<xsl:apply-templates select="type|(containers/type)"
-													 mode="decorated"/>
+			<xsl:apply-templates select="type|(containers/type)" mode="decorated"/>
 			<xsl:call-template name="t_decoratedNameSep"/>
 		</xsl:if>
-		<xsl:value-of select="apidata/@name"/>
+		<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
 		<xsl:choose>
-			<xsl:when test="specialization">
-				<xsl:apply-templates select="specialization"
-														 mode="decorated"/>
+			<xsl:when test="apidata/@name">
+				<xsl:value-of select="apidata/@name" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-templates select="templates"
-														 mode="decorated"/>
+				<xsl:call-template name="t_getTrimmedLastPeriod">
+					<xsl:with-param name="p_string" select="@api" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:choose>
+			<xsl:when test="specialization">
+				<xsl:apply-templates select="specialization" mode="decorated"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="templates" mode="decorated"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

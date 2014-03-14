@@ -11,9 +11,6 @@
 	<!-- inserted boilerplate -->
 	<item id="runningHeaderText">Produkt Klassenbibliothek</item>
 	<item id="rootLink"><referenceLink target="R:Project">Namensräume</referenceLink></item>
-  <item id="rootTopicTitle">Namensräume</item>
-  <item id="namespaceTopicTitle">{0} Namensraum</item>
-  <item id="namespaceGroupTopicTitle">{0} Namensräume</item>
   <item id="definedBy">(Definiert von {0}.)</item>
 	<item id="inheritedFrom">(Vererbt von {0}.)</item>
 	<item id="overridesMember">(Überschreibt {0}.)</item>
@@ -29,9 +26,9 @@
   <!-- topic titles -->
   <item id="meta_mshelp_tocTitle">{0}</item>
   <item id="meta_mshelp_rlTitle">{0} ({1})</item>
-  <item id="topicTitle_root"><include item="rootTopicTitle"/></item>
-	<item id="topicTitle_namespace"><include item="namespaceTopicTitle"><parameter>{0}</parameter></include></item>
-	<item id="topicTitle_namespaceGroup"><include item="namespaceGroupTopicTitle"><parameter>{0}</parameter></include></item>
+  <item id="topicTitle_root">Namensräume</item>
+	<item id="topicTitle_namespace">{0} Namensraum</item>
+	<item id="topicTitle_namespaceGroup">{0} Namensräume</item>
 	<item id="topicTitle_class">{0} Klasse</item>
 	<item id="topicTitle_structure">{0} Struktur</item>
 	<item id="topicTitle_interface">{0} Schnittstelle</item>

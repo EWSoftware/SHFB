@@ -2100,7 +2100,17 @@
 			<xsl:apply-templates select="type|(containers/type)" mode="plain"/>
 			<xsl:text>.</xsl:text>
 		</xsl:if>
-		<xsl:value-of select="apidata/@name"/>
+		<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+		<xsl:choose>
+			<xsl:when test="apidata/@name">
+				<xsl:value-of select="apidata/@name" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="t_getTrimmedLastPeriod">
+					<xsl:with-param name="p_string" select="@api" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="specialization">
 				<xsl:apply-templates select="specialization" mode="plain"/>
@@ -2116,7 +2126,17 @@
 			<xsl:apply-templates select="type|(containers/type)" mode="decorated"/>
 			<xsl:text>.</xsl:text>
 		</xsl:if>
-		<xsl:value-of select="apidata/@name"/>
+		<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+		<xsl:choose>
+			<xsl:when test="apidata/@name">
+				<xsl:value-of select="apidata/@name" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="t_getTrimmedLastPeriod">
+					<xsl:with-param name="p_string" select="@api" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="specialization">
 				<xsl:apply-templates select="specialization" mode="decorated"/>

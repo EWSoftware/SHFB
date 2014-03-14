@@ -32,7 +32,6 @@
 
     <!-- reference_content.xml overrides -->
     <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
-    <item id="rootTopicTitleLocalized">Espacio de nombres</item>
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

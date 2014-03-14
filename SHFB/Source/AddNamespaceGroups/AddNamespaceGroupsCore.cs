@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroupsCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/12/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 03/12/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This utility is used to add namespace groups to a reflection data file.  The namespace groups can be used to
@@ -17,6 +17,7 @@
 // Date        Who  Comments
 // ==============================================================================================================
 // 12/07/2013  EFW  Created the code
+// 03/12/2014  EFW  Updated to merge sub-groups into the parent if they are the only child of the parent group
 //===============================================================================================================
 
 using System;
@@ -399,6 +400,21 @@ namespace Microsoft.Ddue.Tools
                     if(groups.Keys.Contains(children[idx]))
                         children[idx] = "G" + children[idx].Substring(1);
             }
+
+            // If a group only contains one group entry, pull that sub-group up into the parent and remove
+            // the sub-group.
+            foreach(var group in groups.Values.ToList())
+                if(group.Children.Count == 1 && group.Children[0][0] == 'G')
+                {
+                    root = "N" + group.Children[0].Substring(1);
+
+                    if(namespaces.Contains(root))
+                        group.Children.Add(root);
+
+                    group.Children.RemoveAt(0);
+                    group.Children.AddRange(groups[root].Children);
+                    groups.Remove(root);
+                }
 
             // In the final pass, for each group key that is a namespace, add the namespace to its children.
             // Also change the name of the namespace group.  Once done, return it to the caller.

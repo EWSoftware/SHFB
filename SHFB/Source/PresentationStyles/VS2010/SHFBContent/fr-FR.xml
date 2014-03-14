@@ -21,8 +21,7 @@
   <item id="fb_body">Vos remarques sont utilisées pour améliorer la documentation et le produit. Votre addresse e-mail ne sera pas utilisé à d'autres fins, et sera supprimée une fois que le problème que vous signalez sera résolu. Pendant la résolution du problème que vous signalez, il est possible que vous soyez contacté par e-mail pour obtenir des précisions ou des clarifications sur vos remarques. Une fois que le problème que vois signalez sera résolu, il est possible que vous receviez un e-mail pour vous en informer.</item>
 
     <!-- reference_content.xml overrides -->
-    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
-    <item id="rootTopicTitleLocalized">Espaces de noms</item>
+    <item id="topicTitle_root">{@RootNamespaceTitle}</item>
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

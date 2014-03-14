@@ -6,6 +6,8 @@
 // parameters when there are method overloads in which one uses a generic type and the other does not.
 // 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
 // obfuscated member names.
+// 03/11/2013 - EFW - Added more code to ParametersMatch() to try and get a proper match when comparing
+// parameters lists with generic types.
 
 using System;
 using System.Collections.Generic;
@@ -379,27 +381,67 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 // We can't determine the equivalence of template parameters; this is probably not good
                 if(type1.IsTemplateParameter || type2.IsTemplateParameter)
-                    continue;
-
-                // The node type must be the same; this is probably a fast check
-                if(type1.NodeType != type2.NodeType)
-                    return false;
-
-                // If they are "normal" types, we will compare them.  Comparing arrays, pointers, etc. is
-                // dangerous, because the types they contain may be template parameters
-                if(type1.NodeType == NodeType.Class || type1.NodeType == NodeType.Struct ||
-                  type1.NodeType == NodeType.Interface || type1.NodeType == NodeType.EnumNode ||
-                  type1.NodeType == NodeType.DelegateNode)
                 {
-                    type1 = type1.GetTemplateType();
-                    type2 = type2.GetTemplateType();
+                    // !EFW - As a fallback, compare the type parameter positions.  If they don't match, this
+                    // probably isn't the one we want.
+                    int p1 = GetTemplateParameterPosition(parameters1[i].DeclaringMethod.DeclaringType, type1.Name.Name),
+                        p2 = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType, type2.Name.Name);
 
-                    if(!type2.IsStructurallyEquivalentTo(type1))
+                    if(p1 != -1 && p2 != -1 && p1 != p2)
                         return false;
+                }
+                else
+                {
+                    // The node type must be the same; this is probably a fast check
+                    if(type1.NodeType != type2.NodeType)
+                        return false;
+
+                    // If they are "normal" types, we will compare them.  Comparing arrays, pointers, etc. is
+                    // dangerous, because the types they contain may be template parameters
+                    if(type1.NodeType == NodeType.Class || type1.NodeType == NodeType.Struct ||
+                      type1.NodeType == NodeType.Interface || type1.NodeType == NodeType.EnumNode ||
+                      type1.NodeType == NodeType.DelegateNode)
+                    {
+                        type1 = type1.GetTemplateType();
+                        type2 = type2.GetTemplateType();
+
+                        if(!type2.IsStructurallyEquivalentTo(type1))
+                            return false;
+                    }
                 }
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// !EFW - Get the position of the given parameter name in the given declaring type's template
+        /// arguments or parameters.
+        /// </summary>
+        /// <param name="declaringType">The declaring type from which to get the parameter position</param>
+        /// <param name="name">The parameter name to look up</param>
+        /// <returns>-1 if not found or a non-negative position if it was found</returns>
+        private static int GetTemplateParameterPosition(TypeNode declaringType, string name)
+        {
+            int position = -1;
+
+            if(declaringType.TemplateArguments != null)
+            {
+                var arg = declaringType.TemplateArguments.FirstOrDefault(a => a.Name.Name == name);
+
+                if(arg != null)
+                    position = declaringType.TemplateArguments.IndexOf(arg);
+            }
+
+            if(position == -1 && declaringType.TemplateParameters != null)
+            {
+                var param = declaringType.TemplateParameters.FirstOrDefault(p => p.Name.Name == name);
+
+                if(param != null)
+                    position = declaringType.TemplateParameters.IndexOf(param);
+            }
+
+            return position;
         }
         #endregion
 

@@ -18,64 +18,47 @@
 //===============================================================================================================
 
 // For debugging:
-// /out:reflection.org C:\CP\TFS01\SHFB\Sandcastle\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
+// /out:reflection.org C:\CP\TFS01\SHFB\SHFB\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
 
 using System;
 
 namespace MyClassLibrary
 {
     /// <summary>
-    /// Base class
+    /// Summary
     /// </summary>
-    public class Base
+    /// <typeparam name="T1">Some Type</typeparam>
+    /// <typeparam name="T2">Some Type</typeparam>
+    public interface ITest2<T1, T2>
     {
         /// <summary>
-        /// Base class method
+        /// Summary
         /// </summary>
-        public void BaseMethod()
-        {
-        }
+        /// <param name="other">parameter</param>
+        /// <returns>returns</returns>
+        T1 Map(T2 paramT2);
 
         /// <summary>
-        /// Protected virtual method
+        /// Summary
         /// </summary>
-        protected virtual void ProtectedVirtualMethod()
-        {
-        }
-
-        /// <summary>
-        /// Non-virtual protected method of base class
-        /// </summary>
-        protected void BaseProtectedMethod()
-        {
-        }
+        /// <param name="other">parameter</param>
+        /// <returns>returns</returns>
+        T2 Map(T1 paramT1);
     }
 
     /// <summary>
-    /// Derived sealed class
+    /// Summary
     /// </summary>
-    public sealed class Derived : Base
+    /// <typeparam name="T">Some Type</typeparam>
+    public interface ITest<T> : ITest2<Exception, T>
     {
-        /// <summary>
-        /// Public method of derived class
-        /// </summary>
-        public void DerivedMethod()
-        {
-        }
-
-/*        /// <summary>
-        /// New protected member in a sealed class.  Just a warning about this so it's possible.
-        /// </summary>
-        protected void Test()
-        {
-        }*/
+        // A duplicate entry for the base method ITest2`2.Map(`1) is generated
 
         /// <summary>
-        /// Overridden protected method in sealed class
+        /// Summary
         /// </summary>
-        protected override void ProtectedVirtualMethod()
-        {
-            base.ProtectedVirtualMethod();
-        }
+        /// <param name="other">parameter</param>
+        /// <returns>returns</returns>
+        T Map(string paramString);
     }
 }

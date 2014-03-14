@@ -41,7 +41,7 @@
 	String formatting
 	============================================================================================= -->
 
-	<!-- Gets the substring after the last occurence of a period in a given string -->
+	<!-- Gets the substring after the last occurrence of a period in a given string -->
 	<xsl:template name="t_getTrimmedLastPeriod">
 		<xsl:param name="p_string" />
 
