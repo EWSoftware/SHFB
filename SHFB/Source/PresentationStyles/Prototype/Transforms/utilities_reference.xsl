@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-		xmlns:MSHelp="http://msdn.microsoft.com/mshelp" >
+								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+>
 
 	<xsl:import href="reference_common.xsl"/>
 

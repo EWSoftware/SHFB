@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/08/2014
+// Updated : 03/19/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -58,19 +58,17 @@ namespace SandcastleBuilder.Package
     /// from the <c>Package</c> class that provides the implementation of the <c>IVsPackage</c> interface and
     /// uses the registration attributes defined in the framework to register itself and its components with the
     /// shell.</remarks>
-    // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is
-    // a package.
+    // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is a package
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    // This attribute is used to register the information needed to show the this package
-    // in the Help/About dialog of Visual Studio.
+    // This attribute is used to register the information needed to show the this package in the Help/About
+    // dialog of Visual Studio.
     [InstalledProductRegistration("#110", "#111", "SHFB", IconResourceID = 400)]
     // Define the package GUID
     [Guid(GuidList.guidSandcastleBuilderPackagePkgString)]
-    // Register the project factory.  The template is in a VSTemplate so a
-    // non-existent path is used for the template directory parameter and we
-    // set LanguageVsTemplate to our project type value.  The display name is
-    // set to "Documentation" to provide a more generic category for the Add
-    // New Project and Add New Item dialog boxes.
+    // Register the project factory.  The template is in a VSTemplate so a non-existent path is used for the
+    // template directory parameter and we set LanguageVsTemplate to our project type value.  The display name is
+    // set to "Documentation" to provide a more generic category for the Add New Project and Add New Item dialog
+    // boxes.
     [ProvideProjectFactory(typeof(SandcastleBuilderProjectFactory), "Documentation", "#112", "shfbproj",
       "shfbproj", @".\NullPath", LanguageVsTemplate = "SHFBProject")]
     // This attribute is needed to let the shell know that this package exposes some menus.
@@ -82,6 +80,7 @@ namespace SandcastleBuilder.Package
     [ProvideProfile(typeof(SandcastleBuilderOptionsPage), "Sandcastle Help File Builder", "General",
       110, 110, true, DescriptionResourceID = 201)]
     // Provide project option pages
+    [ProvideObject(typeof(BuildEventPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(BuildPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(ComponentPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(Help1WebsitePropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
@@ -108,6 +107,8 @@ namespace SandcastleBuilder.Package
     [ProvideEditorExtension(typeof(TokenEditorFactory), ".tokens", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 135,
       TemplateDir = @".\NullPath")]
+    // Register a path that should be probed for candidate assemblies at assembly load time.  This lets the
+    // package find its dependency assemblies.
     [ProvideBindingPath()]
     public sealed class SandcastleBuilderPackage : PackageBase
     {

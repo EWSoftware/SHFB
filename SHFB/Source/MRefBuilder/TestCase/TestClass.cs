@@ -24,7 +24,7 @@ using System;
 
 namespace MyClassLibrary
 {
-    /// <summary>
+/*    /// <summary>
     /// Summary
     /// </summary>
     /// <typeparam name="T1">Some Type</typeparam>
@@ -60,5 +60,46 @@ namespace MyClassLibrary
         /// <param name="other">parameter</param>
         /// <returns>returns</returns>
         T Map(string paramString);
+    }
+*/
+    /// <summary>
+    /// Test
+    /// </summary>
+    public interface Foo
+    {
+        /// <summary>
+        /// Overload 1
+        /// </summary>
+        void Foo();
+
+        /// <summary>
+        /// Overload 2
+        /// </summary>
+        /// <typeparam name="T">T</typeparam>
+        void Foo<T>();
+    }
+
+    /// <summary>
+    /// Test
+    /// </summary>
+    public class Implementation : Foo
+    {
+        #region Foo Members
+
+        // Methods not match correctly
+
+        /// <inheritdoc />
+        public void Foo()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Foo<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -8,11 +8,13 @@
 // class to make it more generic.  Components that handle the event arguments are responsible for determining
 // additional file locations rather than relying on this component to tell them.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 03/18/2014 - EFW - Added support for the outputMethod attribute although the default output will remain XML
 
 using System;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
@@ -76,7 +78,7 @@ namespace Microsoft.Ddue.Tools
             settings.Encoding = Encoding.UTF8;
             settings.CloseOutput = true;
 
-            // load the target path format
+            // Load the target path format
             XPathNavigator saveNode = configuration.SelectSingleNode("save");
 
             if(saveNode == null)
@@ -85,12 +87,12 @@ namespace Microsoft.Ddue.Tools
 
             string baseValue = saveNode.GetAttribute("base", String.Empty);
 
-            if(!String.IsNullOrEmpty(baseValue))
+            if(!String.IsNullOrWhiteSpace(baseValue))
                 basePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseValue));
 
             string pathValue = saveNode.GetAttribute("path", String.Empty);
 
-            if(String.IsNullOrEmpty(pathValue))
+            if(String.IsNullOrWhiteSpace(pathValue))
                 base.WriteMessage(MessageLevel.Error, "Each save element must have a path attribute specifying " +
                     "an XPath expression that evaluates to the location to save the file.");
 
@@ -98,27 +100,52 @@ namespace Microsoft.Ddue.Tools
 
             string selectValue = saveNode.GetAttribute("select", String.Empty);
 
-            if(!String.IsNullOrEmpty(selectValue))
+            if(!String.IsNullOrWhiteSpace(selectValue))
             {
                 settings.ConformanceLevel = ConformanceLevel.Auto;
                 selectExpression = XPathExpression.Compile(selectValue);
             }
 
+            // If true, indent the rendered HTML (debugging aid)
             string indentValue = saveNode.GetAttribute("indent", String.Empty);
 
-            if(!String.IsNullOrEmpty(indentValue))
+            if(!String.IsNullOrWhiteSpace(indentValue))
                 settings.Indent = Convert.ToBoolean(indentValue, CultureInfo.InvariantCulture);
 
+            // If true or not set, omit the XML declaration
             string omitValue = saveNode.GetAttribute("omit-xml-declaration", String.Empty);
 
-            if(!String.IsNullOrEmpty(omitValue))
+            if(!String.IsNullOrWhiteSpace(omitValue))
                 settings.OmitXmlDeclaration = Convert.ToBoolean(omitValue, CultureInfo.InvariantCulture);
 
-            // add-xhtml-namespace adds a default namespace for xhtml.  Required by Help Viewer documentation.
+            // If true, this adds a default namespace for XHTML.  Required by Help Viewer documentation.
             string addXhtmlDeclaration = saveNode.GetAttribute("add-xhtml-namespace", String.Empty);
 
-            if(!String.IsNullOrEmpty(addXhtmlDeclaration))
+            if(!String.IsNullOrWhiteSpace(addXhtmlDeclaration))
                 writeXhtmlNamespace = Convert.ToBoolean(addXhtmlDeclaration, CultureInfo.InvariantCulture);
+
+            // By default, the output is serialized using the default XML rules.  This attribute can be set to
+            // override that with a different output method such as HTML.  While this will prevent it from
+            // converting empty elements to self-closing elements, it can have unintended side-effects such as
+            // converting self-closing elements to full opening/closing empty elements and using non-XHTML
+            // compliant versions of elements such as <br>, <hr>, and <link>.  The empty element issue can be
+            // solved using an "<xsl:comment />" or "<xsl:text> </xsl:text>" element in the XSL transformations
+            // thus avoiding the other side-effects of enabling the HTML output method.
+            string outputMethod = saveNode.GetAttribute("outputMethod", String.Empty);
+
+            if(!String.IsNullOrWhiteSpace(outputMethod))
+            {
+                XmlOutputMethod method;
+
+                if(!Enum.TryParse(outputMethod, true, out method))
+                    throw new ConfigurationErrorsException("The specified output method is not valid for the " +
+                        "save component");
+
+                // This isn't a publicly settable property so we have to resort to reflection
+                var propertyInfo = typeof(XmlWriterSettings).GetProperty("OutputMethod", BindingFlags.Instance |
+                    BindingFlags.Public | BindingFlags.NonPublic);
+                propertyInfo.SetValue(settings, method, null);
+            }
         }
 
         /// <inheritdoc />

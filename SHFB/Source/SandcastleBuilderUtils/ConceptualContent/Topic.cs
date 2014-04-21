@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 04/08/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -26,8 +26,8 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Text;
-using System.Web;
 using System.Xml;
 
 using Sandcastle.Core;
@@ -744,28 +744,25 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to create the companion file used by the build
-        /// component that resolves conceptual links.
+        /// This is used to create the companion file used by the build component that resolves conceptual links
         /// </summary>
         /// <param name="folder">The folder in which to place the file</param>
         /// <param name="builder">The build process</param>
-        /// <remarks>The file will be named using the ID and a ".xml"
-        /// extension.</remarks>
+        /// <remarks>The file will be named using the ID and a ".xml" extension</remarks>
         internal void WriteCompanionFile(string folder, BuildProcess builder)
         {
             string linkElement = String.Empty;
 
-            // MS Help Viewer doesn't support empty place holders so we automatically
-            // generate a dummy place holder file for them.
+            // MS Help Viewer doesn't support empty place holders so we automatically generate a dummy place
+            // holder file for them.
             if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
             {
                 // Link text is optional
                 if(!String.IsNullOrEmpty(linkText))
                     linkElement = String.Format(CultureInfo.InvariantCulture,
-                        "    <linkText>{0}</linkText>\r\n", HttpUtility.HtmlEncode(linkText));
+                        "    <linkText>{0}</linkText>\r\n", WebUtility.HtmlEncode(linkText));
 
-                // It's small enough that we'll just write it out as a string
-                // rather than using an XML writer.
+                // It's small enough that we'll just write it out as a string rather than using an XML writer
                 using(StreamWriter sw = new StreamWriter(Path.Combine(folder, this.Id + ".cmp.xml"),
                   false, Encoding.UTF8))
                 {
@@ -776,7 +773,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         "    <title>{1}</title>\r\n" +
                         "{2}" +
                         "  </topic>\r\n" +
-                        "</metadata>\r\n", this.Id, HttpUtility.HtmlEncode(this.DisplayTitle), linkElement);
+                        "</metadata>\r\n", WebUtility.HtmlEncode(this.Id),
+                        WebUtility.HtmlEncode(this.DisplayTitle), linkElement);
                 }
             }
 

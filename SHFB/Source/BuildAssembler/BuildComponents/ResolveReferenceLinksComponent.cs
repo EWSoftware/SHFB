@@ -406,7 +406,7 @@ namespace Microsoft.Ddue.Tools
                         break;
 
                     case ReferenceLinkType.Index:
-                        writer.WriteStartElement("mshelp", "link", "http://msdn.microsoft.com/mshelp");
+                        writer.WriteStartElement("MSHelp", "link", "http://msdn.microsoft.com/mshelp");
                         writer.WriteAttributeString("keywords", targetId);
                         writer.WriteAttributeString("tabindex", "0");
                         break;

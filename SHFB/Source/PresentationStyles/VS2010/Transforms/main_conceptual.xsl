@@ -2,12 +2,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								version="2.0"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:mtps="http://msdn2.microsoft.com/mtps"
 								xmlns:xhtml="http://www.w3.org/1999/xhtml"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
 >
 	<!-- ======================================================================================== -->
 
@@ -51,10 +50,41 @@
 	Document
 	============================================================================================= -->
 
-	<xsl:template match="/document"
-								name="t_document">
+	<xsl:template match="/document" name="t_document">
 		<html>
 			<head>
+				<link rel="shortcut icon">
+					<includeAttribute name="href" item="iconPath">
+						<parameter>
+							<xsl:value-of select="'favicon.ico'"/>
+						</parameter>
+					</includeAttribute>
+				</link>
+				<!-- Hack to fix up the background image URLs in Help Viewer 2.  See onLoad() in Branding.js.
+						 NOTE: These MUST appear INLINE and BEFORE the Branding.css file or the script will not find them. -->
+				<style type="text/css">.OH_CodeSnippetContainerTabLeftActive, .OH_CodeSnippetContainerTabLeft,.OH_CodeSnippetContainerTabLeftDisabled { }.OH_CodeSnippetContainerTabRightActive, .OH_CodeSnippetContainerTabRight,.OH_CodeSnippetContainerTabRightDisabled { }.OH_footer { }</style>
+				<link rel="stylesheet" type="text/css">
+					<includeAttribute name="href" item="stylePath">
+						<parameter>
+							<xsl:value-of select="'branding.css'"/>
+						</parameter>
+					</includeAttribute>
+				</link>
+				<link rel="stylesheet" type="text/css">
+					<includeAttribute name="href" item="stylePath">
+						<parameter>
+							<include item="brandingLocaleCss" />
+						</parameter>
+					</includeAttribute>
+				</link>
+				<script type="text/javascript">
+					<includeAttribute name="src" item="scriptPath">
+						<parameter>
+							<xsl:value-of select="'branding.js'"/>
+						</parameter>
+					</includeAttribute>
+				</script>
+
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 				<xsl:call-template name="t_insertNoIndexNoFollow"/>
 				<title>
@@ -63,12 +93,17 @@
 				<xsl:call-template name="t_insertMetadataHelp30"/>
 				<xsl:call-template name="t_insertMetadataHelp20"/>
 				<xsl:call-template name="t_insertMetadata"/>
-				<link rel="stylesheet" type="text/css" href="ms-help://Hx/HxRuntime/HxLink.css" />
+				<link type="text/css" rel="stylesheet" href="ms-help://Hx/HxRuntime/HxLink.css" />
 			</head>
-			<body class="primary-mtps-offline-document">
-				<div class="topic">
-					<xsl:call-template name="t_bodyTitle"/>
-					<xsl:call-template name="t_bodyMain"/>
+			<body onload="onLoad()">
+				<div class="OH_outerDiv">
+					<div class="OH_outerContent">
+						<xsl:call-template name="t_bodyTitle"/>
+						<xsl:call-template name="t_bodyMain"/>
+					</div>
+				</div>
+				<div id="OH_footer" class="OH_footer">
+					<include item="footer_content" />
 				</div>
 			</body>
 		</html>

@@ -16,8 +16,7 @@
 
 		<!-- System.Language -->
 		<meta name="Language">
-			<includeAttribute name="content"
-												item="meta_locale" />
+			<includeAttribute name="content" item="locale" />
 		</meta>
 
 		<!-- System.Title -->

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 04/12/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode application used to extract title and keyword information from HTML files
@@ -35,12 +35,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -232,8 +232,10 @@ namespace SandcastleBuilder.HtmlExtract
         private static Regex reSubEntry = new Regex(@",([^\)\>]+|([^\<\>]*" +
             @"\<[^\<\>]*\>[^\<\>]*)?|([^\(\)]*\([^\(\)]*\)[^\(\)]*)?)$");
         private static Regex reXmlIsland = new Regex("<xml>.*?</xml>", RegexOptions.Singleline);
-        private static Regex reHxLinkCss = new Regex("<link[^>]*?href=\"ms-help://Hx/HxRuntime/HxLink\\.css\".*?/>",
+        private static Regex reHxLinkCss = new Regex("<link[^>]*?href=\"ms-help://Hx/HxRuntime/HxLink\\.css\".*?/?>",
             RegexOptions.IgnoreCase);
+        private static Regex reHtmlElement = new Regex("\\<html.*?\\>");
+        private static Regex reUnusedNamespaces = new Regex("\\s*?xmlns:(MSHelp|mshelp|ddue|xlink|msxsl)=\".*?\"");
 
         // Localization support members
         private static Dictionary<Regex, string> patterns;
@@ -659,8 +661,8 @@ commas, or other special characters.
 
             key = Path.GetFileNameWithoutExtension(sourceFile);
 
-            if(!titles.TryAdd(key, new TitleInfo(HttpUtility.HtmlDecode(topicTitle),
-              HttpUtility.HtmlDecode(tocTitle), sourceFile)))
+            if(!titles.TryAdd(key, new TitleInfo(WebUtility.HtmlDecode(topicTitle),
+              WebUtility.HtmlDecode(tocTitle), sourceFile)))
                 Console.WriteLine("SHFB: Warning SHE0004: The key '{0}' used for '{1}' is already in use by '{2}'.  " +
                     "'{1}' will be ignored.", key, sourceFile, titles[key].File);
 
@@ -674,7 +676,7 @@ commas, or other special characters.
 
                 if(!String.IsNullOrEmpty(term))
                 {
-                    term = HttpUtility.HtmlDecode(term.Replace("%3C", "<").Replace("%3E", ">").Replace("%2C", ","));
+                    term = WebUtility.HtmlDecode(term.Replace("%3C", "<").Replace("%3E", ">").Replace("%2C", ","));
 
                     // See if there is a sub-entry
                     match = reSubEntry.Match(term);
@@ -692,9 +694,14 @@ commas, or other special characters.
                 }
             }
 
-            // Remove the XML data island and the MS Help CSS link
+            // Remove the XML data island, the MS Help CSS link, and the unused namespaces
             content = reXmlIsland.Replace(content, String.Empty);
             content = reHxLinkCss.Replace(content, String.Empty);
+
+            Match htmlMatch = reHtmlElement.Match(content);
+            string htmlElement = reUnusedNamespaces.Replace(htmlMatch.Value, String.Empty);
+            
+            content = reHtmlElement.Replace(content, htmlElement, 1);
 
             // If localizing, perform the substitutions, convert the encoding, and save the file to the
             // localized folder.
@@ -784,16 +791,15 @@ commas, or other special characters.
                                 }
 
                                 indentCount = reader.Depth;
-                                title = HttpUtility.HtmlEncode(title);
 
                                 WriteContentLine(writer, indentCount, "<UL>");
                                 WriteContentLine(writer, indentCount, "  <LI><OBJECT type=\"text/sitemap\">");
                                 WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                    "    <param name=\"Name\" value=\"{0}\">", title));
+                                    "    <param name=\"Name\" value=\"{0}\">", WebUtility.HtmlEncode(title)));
 
                                 if(htmlFile != null)
                                     WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                        "    <param name=\"Local\" value=\"{0}\">", htmlFile));
+                                        "    <param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(htmlFile)));
 
                                 WriteContentLine(writer, indentCount, "  </OBJECT></LI>");
 
@@ -908,7 +914,7 @@ commas, or other special characters.
         /// <param name="indent">The indent level</param>
         private static void WriteHelp1IndexEntry(string title, string file, StreamWriter writer, int indent)
         {
-            title = HttpUtility.HtmlEncode(title);
+            title = WebUtility.HtmlEncode(title);
 
             WriteContentLine(writer, indent, "<LI><OBJECT type=\"text/sitemap\">");
             WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
@@ -919,7 +925,7 @@ commas, or other special characters.
                     "<param name=\"See Also\" value=\"{0}\">", title));
             else
                 WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
-                    "<param name=\"Local\" value=\"{0}\">", file));
+                    "<param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(file)));
 
             WriteContentLine(writer, indent, "</OBJECT></LI>");
         }
@@ -982,16 +988,19 @@ commas, or other special characters.
                                 }
 
                                 indentCount = reader.Depth;
-                                title = HttpUtility.HtmlEncode(title);
+                                title = WebUtility.HtmlEncode(title);
+                                htmlFile = WebUtility.HtmlEncode(htmlFile);
 
                                 if(reader.IsEmptyElement)
                                     WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
                                         "<HelpTOCNode Title=\"{0}\" Url=\"{1}\" />", title, htmlFile));
                                 else
                                     if(htmlFile != null)
+                                    {
                                         WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">",
-                                            Guid.NewGuid(), title, htmlFile));
+                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">", Guid.NewGuid(),
+                                            title, htmlFile));
+                                    }
                                     else
                                         WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
                                             "<HelpTOCNode Id=\"{0}\" Title=\"{1}\">", Guid.NewGuid(), title));
@@ -1041,13 +1050,13 @@ commas, or other special characters.
 
                         if(!String.IsNullOrEmpty(kw.File))
                             WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
-                                "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(kw.MainEntry),
-                                kw.File.Substring(baseFolderLength).Replace('\\', '/')));
+                                "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(kw.MainEntry),
+                                WebUtility.HtmlEncode(kw.File.Substring(baseFolderLength)).Replace('\\', '/')));
                     }
                     else
                     {
                         WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
-                             "<HelpKINode Title=\"{0}\">", HttpUtility.HtmlEncode(group.Key)));
+                             "<HelpKINode Title=\"{0}\">", WebUtility.HtmlEncode(group.Key)));
 
                         foreach(var k in group)
                             if(!String.IsNullOrEmpty(k.File))
@@ -1058,13 +1067,13 @@ commas, or other special characters.
                                     title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
 
                                     WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
-                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(title),
-                                        k.File.Substring(baseFolderLength).Replace('\\', '/')));
+                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(title),
+                                        WebUtility.HtmlEncode(k.File.Substring(baseFolderLength)).Replace('\\', '/')));
                                 }
                                 else
                                     WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
-                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(k.SubEntry),
-                                        k.File.Substring(baseFolderLength).Replace('\\', '/')));
+                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(k.SubEntry),
+                                        WebUtility.HtmlEncode(k.File.Substring(baseFolderLength)).Replace('\\', '/')));
 
                         WriteContentLine(writer, 1, "</HelpKINode>");
                     }

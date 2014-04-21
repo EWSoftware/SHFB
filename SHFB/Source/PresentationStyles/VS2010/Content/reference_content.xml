@@ -140,6 +140,7 @@
 	<item id="title_relatedTopics">See Also</item>
 	<item id="title_extensionUsage">Usage Note</item>
 	<item id="text_extensionUsage">In Visual Basic and C#, you can call this method as an instance method on any object of type {0}. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx" target="_blank">Extension Methods (Visual Basic)</a> or <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx" target="_blank">Extension Methods (C# Programming Guide)</a>.</item>
+	<item id="text_moreInheritance">More...</item>
 
 	<!-- table headers -->
 	<item id="header_namespaceName">Namespace</item>
@@ -211,7 +212,7 @@
   <item id="Overloaded">Overloaded. </item>	
   <item id="defaultNamespace">( Default Namespace )</item>
   
-  <item id="typeLink">Type: {0}</item>
+  <item id="typeLink">Type:&#160;{0}</item>
   <!-- First line of a param or retval description is a link to the type of the param or retval.
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><strong>{0}</strong> type parameter of {1}.</item>
@@ -225,11 +226,8 @@
 									 prefer-overload="true" /> class or <a href="http://msdn.microsoft.com/en-us/library/ms172338.aspx" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
 
 	<!-- Obsolete boilerplate text -->
-	<item id="boilerplate_obsoleteShort"><span class="obsolete">Obsolete.</span></item>
-	<item id="boilerplate_obsoleteLong"><span class="obsolete">This API is obsolete.</span></item>
-	<item id="boilerplate_obsoleteNonobsoleteAlternative">The non-obsolete alternative is {0}.</item>
-  <item id="boilerplate_obsoleteRed"><font color="red"><strong>Obsolete. </strong></font></item>
-  <item id="boilerplate_obsolete"><font color="red"><strong>Note: This API is now obsolete.</strong></font></item>
+  <item id="boilerplate_obsoleteShort"><strong>Obsolete. </strong></item>
+  <item id="boilerplate_obsoleteLong"><strong>Note: This API is now obsolete.</strong></item>
 
 	<!-- Group and SubGroup text -->
 	<item id="text_classLower">class</item>
@@ -388,10 +386,7 @@
 	  <strong>{0} Platform Note:</strong> {1}
   </item>
   <item id="boilerplate_systemRequirementsLink">
-	  <p/>
-	  <span>
-        The <include item="netfw"/> and <include item="netcfw"/> do not support all versions of every platform. For a list of the supported versions, see <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx" target="_blank">.NET Framework System Requirements</a>.
-	  </span>
+	  <p>The <include item="netfw"/> and <include item="netcfw"/> do not support all versions of every platform. For a list of the supported versions, see <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx" target="_blank">.NET Framework System Requirements</a>.</p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds --> 
@@ -520,11 +515,6 @@
   <item id="allMembersTitle">Members</item>
 	<item id="membersTitle">Overload List</item>
   <item id="hostProtectionAttributeShort"><include item="text_hostProtectionAttribute"/></item>
-	<item id="obsoleteShort"><include item="boilerplate_obsoleteShort"/></item>
-	<item id="obsoleteLong"><include item="boilerplate_obsoleteLong"/></item>
-	<item id="nonobsoleteAlternative"><include item="boilerplate_obsoleteNonobsoleteAlternative"><parameter>{0}</parameter></include></item>
-  <item id="obsoleteRed"><include item="boilerplate_obsoleteRed"/></item>
-  <item id="ObsoleteBoilerPlate"><include item="boilerplate_obsolete"/></item>
 	<item id="classLower"><include item="text_classLower"/></item>
   <item id="delegateLower"><include item="text_delegateLower"/></item>
   <item id="structureLower"><include item="text_structureLower"/></item>

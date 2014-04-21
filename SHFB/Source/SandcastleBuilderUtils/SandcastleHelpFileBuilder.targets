@@ -25,9 +25,11 @@
 	<!-- This defines the dependencies for the Build target -->
 	<PropertyGroup>
 		<BuildDependsOn>
+			PreBuildEvent;
 			BeforeBuildHelp;
 			CoreBuildHelp;
-			AfterBuildHelp
+			AfterBuildHelp;
+			PostBuildEvent
 		</BuildDependsOn>
 	</PropertyGroup>
 
@@ -50,6 +52,8 @@
 			<Output TaskParameter="OpenXmlFiles" ItemName="OpenXmlFiles" />
 			<Output TaskParameter="AllHelpFiles" ItemName="AllHelpFiles" />
 		</SandcastleBuilder.Utils.MSBuild.BuildHelp>
+
+		<OnError ExecuteTargets="PostBuildEvent" Condition="'$(RunPostBuildEvent)'=='Always'"/>
 	</Target>
 
 	<!-- The following targets may be overridden in project files to perform

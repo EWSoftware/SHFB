@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
  				xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-        xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 				xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 				xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-   >
+>
 
 	<!-- sections -->
 
@@ -1674,20 +1673,9 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:legacyLink">
-		<xsl:choose>
-			<xsl:when test="starts-with(@xlink:href,'#')">
-				<!-- in-page link -->
-				<a href="{@xlink:href}">
-					<xsl:apply-templates />
-				</a>
-			</xsl:when>
-			<xsl:otherwise>
-				<!-- unverified, external link -->
-				<mshelp:link keywords="{@xlink:href}" tabindex="0">
-					<xsl:apply-templates />
-				</mshelp:link>
-			</xsl:otherwise>
-		</xsl:choose>
+		<a href="{@xlink:href}">
+			<xsl:apply-templates />
+		</a>
 	</xsl:template>
 
 	<xsl:template match="ddue:codeEntityReference">

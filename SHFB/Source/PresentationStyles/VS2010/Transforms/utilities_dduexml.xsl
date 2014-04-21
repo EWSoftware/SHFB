@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								version="2.0"
-								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:mtps="http://msdn2.microsoft.com/mtps"
 								xmlns:xhtml="http://www.w3.org/1999/xhtml"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-   >
+								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+>
 	<!-- ======================================================================================== -->
 
 	<xsl:import href="globalTemplates.xsl"/>
@@ -239,30 +238,30 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:notesForImplementers"
-								name="t_ddue_notesForImplementers">
-		<p/>
-		<span class="label">
-			<include item="text_NotesForImplementers"/>
-		</span>
+	<xsl:template match="ddue:notesForImplementers" name="t_ddue_notesForImplementers">
+		<p>
+			<span class="label">
+				<include item="text_NotesForImplementers"/>
+			</span>
+		</p>
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="ddue:notesForCallers"
-								name="t_ddue_notesForCallers">
-		<p/>
-		<span class="label">
-			<include item="text_NotesForCallers"/>
-		</span>
+	<xsl:template match="ddue:notesForCallers" name="t_ddue_notesForCallers">
+		<p>
+			<span class="label">
+				<include item="text_NotesForCallers"/>
+			</span>
+		</p>
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="ddue:notesForInheritors"
-								name="t_ddue_notesForInheritors">
-		<p/>
-		<span class="label">
-			<include item="text_NotesForInheritors"/>
-		</span>
+	<xsl:template match="ddue:notesForInheritors" name="t_ddue_notesForInheritors">
+		<p>
+			<span class="label">
+				<include item="text_NotesForInheritors"/>
+			</span>
+		</p>
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -686,11 +685,9 @@
 
 	</xsl:template>
 
-	<xsl:template match="ddue:nonLocErrorTitle"
-								name="t_ddue_nonLocErrorTitle">
+	<xsl:template match="ddue:nonLocErrorTitle" name="t_ddue_nonLocErrorTitle">
 		<xsl:if test="string-length(../ddue:nonLocErrorTitle[normalize-space(.)]) > 0 or string-length(../ddue:secondaryErrorTitle[normalize-space(.)]) > 0">
-			<div id="errorTitleSection"
-					 class="section">
+			<div id="errorTitleSection" class="section">
 				<xsl:if test="../ddue:secondaryErrorTitle">
 					<h4 class="subHeading">
 						<include item="title_errorMessage"/>
@@ -700,21 +697,19 @@
 					</xsl:apply-templates>
 				</xsl:if>
 				<xsl:apply-templates/>
-				<p/>
+				<p></p>
 			</div>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:secondaryErrorTitle"
-								name="t_ddue_secondaryErrorTitle">
+	<xsl:template match="ddue:secondaryErrorTitle" name="t_ddue_secondaryErrorTitle">
 		<xsl:param name="newSection"/>
 		<xsl:if test="string-length(../ddue:secondaryErrorTitle[normalize-space(.)]) > 0">
 			<xsl:choose>
 				<xsl:when test="$newSection = 'yes'">
-					<div id="errorTitleSection"
-							 class="section">
+					<div id="errorTitleSection" class="section">
 						<xsl:apply-templates/>
-						<p/>
+						<p></p>
 					</div>
 				</xsl:when>
 				<xsl:otherwise>
@@ -770,8 +765,7 @@
 	Lists and Tables
 	============================================================================================= -->
 
-	<xsl:template match="ddue:list"
-								name="t_ddue_list">
+	<xsl:template match="ddue:list" name="t_ddue_list">
 		<xsl:choose>
 			<xsl:when test="@class='bullet'">
 				<ul>
@@ -796,16 +790,14 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="ddue:listItem"
-								name="t_ddue_listItem">
+	<xsl:template match="ddue:listItem" name="t_ddue_listItem">
 		<li>
 			<xsl:apply-templates select="@address" />
 			<xsl:apply-templates />
 		</li>
 	</xsl:template>
 
-	<xsl:template match="ddue:table"
-								name="t_ddue_table">
+	<xsl:template match="ddue:table" name="t_ddue_table">
 		<div class="tableSection">
 			<xsl:if test="normalize-space(ddue:title)">
 				<div class="caption">
@@ -818,156 +810,46 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="ddue:tableHeader"
-								name="t_ddue_tableHeader">
+	<xsl:template match="ddue:tableHeader" name="t_ddue_tableHeader">
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="ddue:row"
-								name="t_ddue_row">
+	<xsl:template match="ddue:row" name="t_ddue_row">
 		<tr>
 			<xsl:apply-templates/>
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="ddue:entry"
-								name="t_ddue_entry">
+	<xsl:template match="ddue:entry" name="t_ddue_entry">
 		<td>
 			<xsl:apply-templates select="@address"/>
 			<xsl:apply-templates/>
 		</td>
 	</xsl:template>
 
-	<xsl:template match="ddue:tableHeader/ddue:row/ddue:entry"
-								name="t_ddue_tableHeaderRowEntry">
+	<xsl:template match="ddue:tableHeader/ddue:row/ddue:entry" name="t_ddue_tableHeaderRowEntry">
 		<th>
 			<xsl:apply-templates/>
 		</th>
 	</xsl:template>
 
-	<xsl:template match="ddue:definitionTable"
-								name="t_ddue_definitionTable">
+	<xsl:template match="ddue:definitionTable" name="t_ddue_definitionTable">
 		<dl class="authored">
 			<xsl:apply-templates/>
 		</dl>
 	</xsl:template>
 
-	<xsl:template match="ddue:definedTerm"
-								name="t_ddue_definedTerm">
+	<xsl:template match="ddue:definedTerm" name="t_ddue_definedTerm">
 		<dt>
 			<xsl:apply-templates select="@address"/>
 			<xsl:apply-templates/>
 		</dt>
 	</xsl:template>
 
-	<xsl:template match="ddue:definition"
-								name="t_ddue_definition">
+	<xsl:template match="ddue:definition" name="t_ddue_definition">
 		<dd>
 			<xsl:apply-templates/>
 		</dd>
-	</xsl:template>
-
-	<!-- ======================================================================================== -->
-
-	<xsl:template match="ddue:listItem/ddue:para[1]"
-								name="t_ddue_listItemPara1">
-		<xsl:variable name="v_minimalSpacing">
-			<xsl:call-template name="t_checkMinimalSpacing">
-				<xsl:with-param name="p_spacingType"
-												select="'listItem'"/>
-				<xsl:with-param name="p_parentLevel"
-												select="1"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!--<xsl:comment xml:space="preserve">t_ddue_listItemPara1[<xsl:value-of select="$v_minimalSpacing"/>]</xsl:comment>-->
-		<xsl:choose>
-			<xsl:when test="$v_minimalSpacing='true'">
-				<xsl:apply-templates/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_ddue_para"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="ddue:table/ddue:row/ddue:entry/ddue:para[1]"
-								name="t_ddue_tableRowEntryPara1">
-		<xsl:variable name="v_minimalSpacing">
-			<xsl:call-template name="t_checkMinimalSpacing">
-				<xsl:with-param name="p_spacingType"
-												select="'table'"/>
-				<xsl:with-param name="p_parentLevel"
-												select="2"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!--<xsl:comment xml:space="preserve">t_ddue_tableRowEntryPara1[<xsl:value-of select="$v_minimalSpacing"/>]</xsl:comment>-->
-		<xsl:choose>
-			<xsl:when test="$v_minimalSpacing='true'">
-				<xsl:apply-templates/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_ddue_para"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="ddue:tableHeader/ddue:row/ddue:entry/ddue:para[1]"
-								name="t_ddue_tableHeaderRowEntryPara1">
-		<xsl:variable name="v_minimalSpacing">
-			<xsl:call-template name="t_checkMinimalSpacing">
-				<xsl:with-param name="p_spacingType"
-												select="'tableHeader'"/>
-				<xsl:with-param name="p_parentLevel"
-												select="2"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!--<xsl:comment xml:space="preserve">t_ddue_tableHeaderRowEntryPara1[<xsl:value-of select="$v_minimalSpacing"/>]</xsl:comment>-->
-		<xsl:choose>
-			<xsl:when test="$v_minimalSpacing='true'">
-				<xsl:apply-templates/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_ddue_para"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="ddue:definedTerm/ddue:para[1]"
-								name="t_ddue_definedTermPara1">
-		<xsl:variable name="v_minimalSpacing">
-			<xsl:call-template name="t_checkMinimalSpacing">
-				<xsl:with-param name="p_spacingType"
-												select="'definedTerm'"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!--<xsl:comment xml:space="preserve">t_ddue_definedTermPara1[<xsl:value-of select="$v_minimalSpacing"/>]</xsl:comment>-->
-		<xsl:choose>
-			<xsl:when test="$v_minimalSpacing='true'">
-				<xsl:apply-templates/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_ddue_para"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="ddue:definition/ddue:para[1]"
-								name="t_ddue_definitionPara1">
-		<xsl:variable name="v_minimalSpacing">
-			<xsl:call-template name="t_checkMinimalSpacing">
-				<xsl:with-param name="p_spacingType"
-												select="'definition'"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!--<xsl:comment xml:space="preserve">t_ddue_definitionPara1[<xsl:value-of select="$v_minimalSpacing"/>]</xsl:comment>-->
-		<xsl:choose>
-			<xsl:when test="$v_minimalSpacing='true'">
-				<xsl:apply-templates/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_ddue_para"/>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 
 	<!-- ============================================================================================
@@ -1113,38 +995,15 @@
 	Alerts
 	============================================================================================= -->
 
-	<xsl:template match="ddue:alert"
-								name="t_ddue_alert">
+	<xsl:template match="ddue:alert" name="t_ddue_alert">
 		<xsl:call-template name="t_putAlert"/>
-	</xsl:template>
-
-	<xsl:template match="ddue:alert/ddue:para[1]"
-								name="t_ddue_alertPara1">
-		<xsl:variable name="v_minimalSpacing">
-			<xsl:call-template name="t_checkMinimalSpacing">
-				<xsl:with-param name="p_spacingType"
-												select="'alert'"/>
-				<xsl:with-param name="p_parentLevel"
-												select="1"/>
-			</xsl:call-template>
-		</xsl:variable>
-		<!--<xsl:comment xml:space="preserve">t_notePara1[<xsl:value-of select="$v_minimalSpacing"/>]</xsl:comment>-->
-		<xsl:choose>
-			<xsl:when test="$v_minimalSpacing='true'">
-				<xsl:apply-templates/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_ddue_para"/>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 
 	<!-- ============================================================================================
 	Media
 	============================================================================================= -->
 
-	<xsl:template match="ddue:mediaLink"
-								name="t_ddue_mediaLink">
+	<xsl:template match="ddue:mediaLink" name="t_ddue_mediaLink">
 		<div>
 			<xsl:choose>
 				<xsl:when test="ddue:image[@placement='center']">
@@ -1181,8 +1040,7 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="ddue:mediaLinkInline"
-								name="t_ddue_mediaLinkInline">
+	<xsl:template match="ddue:mediaLinkInline" name="t_ddue_mediaLinkInline">
 		<span class="media">
 			<artLink target="{ddue:image/@xlink:href}"/>
 		</span>
@@ -1192,89 +1050,76 @@
 	Inline elements
 	============================================================================================= -->
 
-	<xsl:template match="ddue:span"
-								name="t_ddue_span">
+	<xsl:template match="ddue:span" name="t_ddue_span">
 		<xsl:choose>
-			<!-- Process the markup added by MTMarkup tool -->
-			<xsl:when test="@class='tgtSentence' or @class='srcSentence'">
-				<span>
-					<xsl:copy-of select="@*"/>
-					<xsl:apply-templates select="node()"/>
-				</span>
-			</xsl:when>
 			<!-- fix bug 361746 - use copy-of, so that span class="keyword", "literal" and "comment" 
-            nodes are copied to preserve code colorization in snippets -->
+           nodes are copied to preserve code colorization in snippets -->
 			<xsl:when test="@class='keyword' or @class='identifier' or @class='literal' or @class='parameter' or @class='typeparameter' or @class='comment'">
 				<xsl:copy-of select="."/>
 			</xsl:when>
-			<!-- If the class is unrecognized skip it?  Copyied from vs2005 style - is this right? -->
-			<!--<xsl:otherwise>
-				<xsl:apply-templates/>
-			</xsl:otherwise>-->
+			<!-- If the class is unrecognized skip it -->
 		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ddue:languageKeyword" name="t_ddue_languageKeyword">
 		<xsl:variable name="v_keyword" select="."/>
-		<span sdata="langKeyword" value="{$v_keyword}">
-			<xsl:variable name="v_syntaxKeyword">
-				<xsl:if test="/document/syntax">
-					<xsl:value-of select="'true'"/>
-				</xsl:if>
-			</xsl:variable>
-			<xsl:choose>
-				<xsl:when test="$v_keyword='null' or $v_keyword='Nothing' or $v_keyword='nullptr'">
-					<xsl:call-template name="t_nullKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='static' or $v_keyword='Shared'">
-					<xsl:call-template name="t_staticKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='virtual' or $v_keyword='Overridable'">
-					<xsl:call-template name="t_virtualKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='true' or $v_keyword='True'">
-					<xsl:call-template name="t_trueKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='false' or $v_keyword='False'">
-					<xsl:call-template name="t_falseKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='abstract' or $v_keyword='MustInherit'">
-					<xsl:call-template name="t_abstractKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='async' or $v_keyword='Async'">
-					<xsl:call-template name="t_asyncKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='await' or $v_keyword='Await'">
-					<xsl:call-template name="t_awaitKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$v_keyword='async/await' or $v_keyword='Async/Await'">
-					<xsl:call-template name="t_asyncAwaitKeyword">
-						<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<span class="code">
-						<xsl:value-of select="."/>
-					</span>
-				</xsl:otherwise>
-			</xsl:choose>
-		</span>
+		<xsl:variable name="v_syntaxKeyword">
+			<xsl:if test="/document/syntax">
+				<xsl:value-of select="'true'"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$v_keyword='null' or $v_keyword='Nothing' or $v_keyword='nullptr'">
+				<xsl:call-template name="t_nullKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='static' or $v_keyword='Shared'">
+				<xsl:call-template name="t_staticKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='virtual' or $v_keyword='Overridable'">
+				<xsl:call-template name="t_virtualKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='true' or $v_keyword='True'">
+				<xsl:call-template name="t_trueKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='false' or $v_keyword='False'">
+				<xsl:call-template name="t_falseKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='abstract' or $v_keyword='MustInherit'">
+				<xsl:call-template name="t_abstractKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='async' or $v_keyword='Async'">
+				<xsl:call-template name="t_asyncKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='await' or $v_keyword='Await'">
+				<xsl:call-template name="t_awaitKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="$v_keyword='async/await' or $v_keyword='Async/Await'">
+				<xsl:call-template name="t_asyncAwaitKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="code">
+					<xsl:value-of select="."/>
+				</span>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
@@ -1399,12 +1244,11 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:legacyItalic"
-								name="t_ddue_legacyItalic">
+	<xsl:template match="ddue:legacyItalic" name="t_ddue_legacyItalic">
 		<xsl:if test="normalize-space(.)">
-			<i>
+			<em>
 				<xsl:apply-templates />
-			</i>
+			</em>
 		</xsl:if>
 	</xsl:template>
 
@@ -1601,8 +1445,7 @@
 	<xsl:template match="*"
 								mode="markup"
 								name="t_ddue_markup_content">
-		<xsl:element name="{name()}"
-								 namespace="{$xhtml}">
+		<xsl:element name="{name()}">
 			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates select="node()"
 													 mode="markup"/>
@@ -1617,9 +1460,8 @@
 	Links
 	============================================================================================= -->
 
-	<xsl:template match="ddue:externalLink"
-								name="t_ddue_externalLink">
-		<a class="mtps-external-link">
+	<xsl:template match="ddue:externalLink" name="t_ddue_externalLink">
+		<a>
 			<xsl:attribute name="href">
 				<xsl:value-of select="normalize-space(ddue:linkUri)"/>
 			</xsl:attribute>
@@ -1642,67 +1484,48 @@
 		</a>
 	</xsl:template>
 
-	<xsl:template match="ddue:link"
-								name="t_ddue_link">
-		<span sdata="link">
-			<xsl:choose>
-				<xsl:when test="starts-with(@xlink:href,'#')">
-					<!-- in-page link -->
-					<a href="{@xlink:href}">
-						<xsl:apply-templates/>
-					</a>
-				</xsl:when>
-				<xsl:otherwise>
-					<!-- verified, external link -->
-					<conceptualLink class="mtps-internal-link"
-													target="{@xlink:href}">
-						<xsl:apply-templates/>
-					</conceptualLink>
-				</xsl:otherwise>
-			</xsl:choose>
-		</span>
-	</xsl:template>
-
-	<xsl:template match="ddue:legacyLink"
-								name="t_ddue_legacyLink">
+	<xsl:template match="ddue:link" name="t_ddue_link">
 		<xsl:choose>
 			<xsl:when test="starts-with(@xlink:href,'#')">
-				<!-- in-page link -->
+				<!-- In-page link -->
 				<a href="{@xlink:href}">
-					<xsl:apply-templates />
+					<xsl:apply-templates/>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- unverified, external link -->
-				<mshelp:link keywords="{@xlink:href}"
-										 tabindex="0">
-					<xsl:apply-templates />
-				</mshelp:link>
+				<!-- Verified, external link -->
+				<conceptualLink target="{@xlink:href}">
+					<xsl:apply-templates/>
+				</conceptualLink>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="ddue:legacyLink" name="t_ddue_legacyLink">
+		<a href="{@xlink:href}">
+			<xsl:apply-templates />
+		</a>
+	</xsl:template>
+
 	<xsl:template match="ddue:codeEntityReference" name="t_ddue_codeEntityReference">
-		<span sdata="cer" target="{normalize-space(string(.))}">
-			<referenceLink class="mtps-internal-link" target="{normalize-space(string(.))}">
-				<xsl:if test="@qualifyHint">
-					<xsl:attribute name="show-container">
-						<xsl:value-of select="@qualifyHint"/>
-					</xsl:attribute>
-					<xsl:attribute name="show-parameters">
-						<xsl:value-of select="@qualifyHint"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="@autoUpgrade">
-					<xsl:attribute name="prefer-overload">
-						<xsl:value-of select="@autoUpgrade"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="normalize-space(@linkText)">
-					<xsl:value-of select="normalize-space(@linkText)"/>
-				</xsl:if>
-			</referenceLink>
-		</span>
+		<referenceLink target="{normalize-space(string(.))}">
+			<xsl:if test="@qualifyHint">
+				<xsl:attribute name="show-container">
+					<xsl:value-of select="@qualifyHint"/>
+				</xsl:attribute>
+				<xsl:attribute name="show-parameters">
+					<xsl:value-of select="@qualifyHint"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="@autoUpgrade">
+				<xsl:attribute name="prefer-overload">
+					<xsl:value-of select="@autoUpgrade"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="normalize-space(@linkText)">
+				<xsl:value-of select="normalize-space(@linkText)"/>
+			</xsl:if>
+		</referenceLink>
 	</xsl:template>
 
 	<!-- ============================================================================================
@@ -2062,35 +1885,5 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-
-	<!-- ======================================================================================== -->
-
-	<!-- Authored glossary links -->
-
-	<xsl:template match="ddue:link[starts-with(.,'GTMT#')]"
-								name="t_GTMT_link">
-		<!-- not supporting popup definitions; just show the text -->
-		<span sdata="link">
-			<xsl:value-of select="substring-after(.,'GTMT#')"/>
-		</span>
-	</xsl:template>
-
-	<xsl:template match="ddue:legacyLink[starts-with(@xlink:href,'GTMT#')]"
-								name="t_GTMT_legacyLink">
-		<!-- not supporting popup definitions; just show the text -->
-		<xsl:value-of select="."/>
-	</xsl:template>
-
-	<!-- ============================================================================================
-	Debugging - fail if any unknown elements are encountered
-	============================================================================================= -->
-
-	<!--<xsl:template match="ddue:*">
-		<xsl:message terminate="yes">
-			<xsl:text>An unknown element </xsl:text>
-			<xsl:value-of select="name()"/>
-			<xsl:text> was encountered.</xsl:text>
-		</xsl:message>
-	</xsl:template>-->
 
 </xsl:stylesheet>

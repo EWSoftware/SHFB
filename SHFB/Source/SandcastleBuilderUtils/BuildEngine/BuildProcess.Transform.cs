@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2014
+// Updated : 04/11/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -448,9 +448,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = language.Name.ToLowerInvariant();
                     break;
 
+                case "localemixedcase":
+                    replaceWith = language.Name;
+                    break;
+
                 case "copyright":
-                    // Include copyright info if there is a copyright HREF or
-                    // copyright text.
+                    // Include copyright info if there is a copyright HREF or copyright text
                     if(project.CopyrightHref.Length != 0 || project.CopyrightText.Length != 0)
                         replaceWith = "<include item=\"copyright\"/>";
                     else
@@ -476,15 +479,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         replaceWith = String.Empty;
                     else
                         if(project.CopyrightHref.Length == 0)
-                            replaceWith = "<p/>" + HttpUtility.HtmlEncode(project.DecodedCopyrightText);
+                            replaceWith = "<p>" + HttpUtility.HtmlEncode(project.DecodedCopyrightText) + "</p>";
                         else
                             if(project.CopyrightText.Length == 0)
                                 replaceWith = String.Format(CultureInfo.CurrentCulture,
-                                    "<p/><a href='{0}' target='_blank'>{0}</a>",
+                                    "<p><a href='{0}' target='_blank'>{0}</a></p>",
                                     HttpUtility.HtmlEncode(project.CopyrightHref));
                             else
                                 replaceWith = String.Format(CultureInfo.CurrentCulture,
-                                    "<p/><a href='{0}' target='_blank'>{1}</a>",
+                                    "<p><a href='{0}' target='_blank'>{1}</a></p>",
                                     HttpUtility.HtmlEncode(project.CopyrightHref),
                                     HttpUtility.HtmlEncode(project.DecodedCopyrightText));
                     break;

@@ -85,3 +85,9 @@ this, open a command prompt, change into the root folder and run the MasterBuild
 the tools and place them in the SHFB\Deploy folder ready for use.  Once that completes, change into the
 SHFB\Deploy\Data folder and execute the BuildReflectionData.bat script.  This will generate the reflection data
 files for the .NET Framework into a temporary folder.  Rename the folder it creates to "Reflection".
+
+NOTE: If you do not have .NET 4.5.1 installed, pass it the framework and version to build.  For example:
+
+    BuildReflectionData .NETFramework 4.0.30319
+Or
+    BuildReflectionData .NETFramework 4.5

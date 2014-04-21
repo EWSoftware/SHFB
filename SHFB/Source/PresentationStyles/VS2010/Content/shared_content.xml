@@ -7,7 +7,8 @@
 	<item id="scriptPath">../scripts/{0}</item>
 
 	<!-- locale -->
-	<item id="meta_locale">en-us</item>
+	<item id="locale">en-US</item>
+	<item id="brandingLocaleCss">branding-en-US.css</item>
 
 	<item id="meta_help20_desktopTechnologyAttribute">kbNetFramewk</item>
 	<item id="meta_help20_netcfTechnologyAttribute">kbNetCompactFramewk</item>

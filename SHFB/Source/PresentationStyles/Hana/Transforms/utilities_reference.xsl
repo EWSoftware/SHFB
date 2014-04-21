@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
- 				xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-        xmlns:mshelp="http://msdn.microsoft.com/mshelp"
+				xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
 				xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 				xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-    >
+>
 
 	<xsl:import href="reference_common.xsl"/>
 
@@ -2444,7 +2443,8 @@
 
 	<xsl:template name="typeNamePlain">
 		<xsl:param name="annotate" select="false()" />
-		<xsl:if test="(containers/type)|type">
+		<!-- EFW - Don't show the type name on list pages -->
+		<xsl:if test="type|(containers/type) and not($group='list')">
 			<xsl:for-each select="(containers/type)|type">
 				<xsl:call-template name="typeNamePlain">
 					<xsl:with-param name="annotate" select="$annotate" />

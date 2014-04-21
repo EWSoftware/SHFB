@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/10/2014
+// Updated : 03/19/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -646,8 +646,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// Get a list of GUIDs identifying the configuration independent property pages.
         /// </summary>
-        /// <returns>An array of GUIDs that identify the configuration independent project
-        /// property pages and the order in which they should be displayed.</returns>
+        /// <returns>An array of GUIDs that identify the configuration independent project property pages and the
+        /// order in which they should be displayed.</returns>
         protected override Guid[] GetConfigurationIndependentPropertyPages()
         {
             return new Guid[]
@@ -664,7 +664,8 @@ namespace SandcastleBuilder.Package.Nodes
                 typeof(ComponentPropertiesPageControl).GUID,
                 typeof(PlugInPropertiesPageControl).GUID,
                 typeof(TransformArgumentsPageControl).GUID,
-                typeof(UserDefinedPropertiesPageControl).GUID
+                typeof(UserDefinedPropertiesPageControl).GUID,
+                typeof(BuildEventPropertiesPageControl).GUID
             };
         }
 

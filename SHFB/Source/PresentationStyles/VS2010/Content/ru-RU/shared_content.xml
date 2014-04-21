@@ -8,7 +8,8 @@
 	<item id="scriptPath">../scripts/{0}</item>
 
 	<!-- locale -->
-	<item id="meta_locale">ru-ru</item>
+	<item id="locale">ru-RU</item>
+	<item id="brandingLocaleCss">branding-ru-RU.css</item>
 
 	<item id="meta_help20_desktopTechnologyAttribute">kbNetFramewk</item>
 	<item id="meta_help20_netcfTechnologyAttribute">kbNetCompactFramewk</item>

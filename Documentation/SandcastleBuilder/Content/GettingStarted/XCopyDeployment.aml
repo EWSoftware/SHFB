@@ -39,7 +39,8 @@ shown below:</para>
 
 <code language="xml" title=" ">
 &lt;PropertyGroup&gt;
-	&lt;SHFBROOT Condition=" '$(SHFBROOT)' == '' "&gt;..\..\RelativePath\ToSHFB\Adjust As Needed&lt;/SHFBROOT&gt;
+	&lt;SHFBROOT Condition=" '$(SHFBROOT)' == '' "&gt;$(MSBuildThisFileDirectory)..\..\Relative
+		Path\ToSHFB\Adjust As Needed&lt;/SHFBROOT&gt;
 	
 	... other SHFB project properties ...
 

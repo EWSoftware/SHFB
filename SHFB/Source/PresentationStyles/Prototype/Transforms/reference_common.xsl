@@ -202,10 +202,11 @@
 		</xsl:if>
 	</xsl:template>
 
-	<!-- when position on a type api, produces a (plain) name; outer types are indicated by dot-seperators; -->
+	<!-- when position on a type api, produces a (plain) name; outer types are indicated by dot-separators; -->
 	<!-- generic types are indicated by a keyword, because we can't show templates in a language-independent way -->
 	<xsl:template name="typeNamePlain">
-		<xsl:if test="type|(containers/type)">
+		<!-- EFW - Don't show the type name on list pages -->
+		<xsl:if test="type|(containers/type) and not($group='list')">
 			<xsl:apply-templates select="type|(containers/type)" mode="plain" />
 			<xsl:text>.</xsl:text>
 		</xsl:if>
@@ -305,7 +306,8 @@
 
 	<!-- when position on a type api, produces a (decorated) name, including outer types and templates -->
 	<xsl:template name="typeNameDecorated">
-		<xsl:if test="type|(containers/type)">
+		<!-- EFW - Don't show the type name on list pages -->
+		<xsl:if test="type|(containers/type) and not($group='list')">
 			<xsl:apply-templates select="type|(containers/type)" mode="decorated" />
 			<span class="languageSpecificText">
 				<span class="cs">.</span>

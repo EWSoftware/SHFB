@@ -5,8 +5,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FillNode.aspx
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/17/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 04/09/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft C#
 //
 // This file contains the code used to dynamically load a parent node with its child table of content nodes when
@@ -17,11 +17,11 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.0.0  06/21/2007  EFW  Created the code
-// 1.9.8.0  07/17/2013  EFW  Merged code contributed by Procomp Solutions Oy that improves performance for large
-//                           TOCs by using XML serialization and caching.
+// 06/21/2007  EFW  Created the code
+// 07/17/2013  EFW  Merged code contributed by Procomp Solutions Oy that improves performance for large TOCs by
+//								  using XML serialization and caching.
 //===============================================================================================================
 
 private static readonly TocNode[] NoChildNodes = new TocNode[0];
@@ -130,7 +130,8 @@ protected override void Render(HtmlTextWriter writer)
 					"<a class=\"UnselectedNode\" onclick=\"javascript: return Expand(this);\" " +
 					"href=\"{0}\"{1}>{2}</a>\r\n" +
 					"<div id=\"{3}\" class=\"Hidden\"></div>\r\n" +
-					"</div>\r\n", childUrl, childTarget, HttpUtility.HtmlEncode(childNode.Title), childNode.Id);
+					"</div>\r\n", HttpUtility.HtmlEncode(childUrl), childTarget, HttpUtility.HtmlEncode(childNode.Title),
+					childNode.Id);
 			}
 			else
 			{
@@ -144,7 +145,7 @@ protected override void Render(HtmlTextWriter writer)
 					"<img src=\"Item.gif\"/><a class=\"UnselectedNode\" " +
 					"onclick=\"javascript: return SelectNode(this);\" href=\"{0}\" " +
 					"target=\"TopicContent\">{1}</a>\r\n" +
-					"</div>\r\n", childUrl, HttpUtility.HtmlEncode(childNode.Title));
+					"</div>\r\n", HttpUtility.HtmlEncode(childUrl), HttpUtility.HtmlEncode(childNode.Title));
 			}
 		}
 

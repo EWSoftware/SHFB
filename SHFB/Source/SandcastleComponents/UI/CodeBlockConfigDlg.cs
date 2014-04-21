@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 04/08/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the Code Block Component.
@@ -241,6 +241,7 @@ namespace SandcastleBuilder.Components.UI
                     new XAttribute("styleFile", txtXsltStylesheetFile.Text),
                     new XAttribute("stylesheet", txtCssStylesheet.Text),
                     new XAttribute("scriptFile", txtScriptFile.Text),
+                    new XAttribute("disabled", "{@DisableCodeBlockComponent}"),
                     new XAttribute("language", languages[cboLanguage.SelectedIndex]),
                     new XAttribute("tabSize", (int)udcTabSize.Value),
                     new XAttribute("numberLines", chkNumberLines.Checked),

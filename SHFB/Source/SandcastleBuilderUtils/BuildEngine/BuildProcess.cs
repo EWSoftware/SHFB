@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2014
+// Updated : 03/24/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -688,8 +688,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkSettings.Title);
 
-                // Get the composition container used to find build components in the rest of the build process 
-                this.ReportProgress("Locating components...");
+                // Get the composition container used to find build components in the rest of the build process
+                this.ReportProgress("Locating components in the following folder(s):");
+
+                if(!String.IsNullOrEmpty(project.ComponentPath))
+                    this.ReportProgress("   {0}", project.ComponentPath);
+
+                this.ReportProgress("   {0}", Path.GetDirectoryName(project.Filename));
 
                 componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
                     Path.GetDirectoryName(project.Filename) });

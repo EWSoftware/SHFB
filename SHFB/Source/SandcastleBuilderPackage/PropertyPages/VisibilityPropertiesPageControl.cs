@@ -146,7 +146,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             // If not found or not valid, we'll ignore it and use the defaults
             if(projProp == null || !Enum.TryParse<VisibleItems>(projProp.UnevaluatedValue, out items))
                 items = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
-                    VisibleItems.Protected | VisibleItems.SealedProtected;
+                    VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected;
 
             chkAttributes.Checked = ((items & VisibleItems.Attributes) != 0);
             chkExplicitInterfaceImplementations.Checked = ((items & VisibleItems.ExplicitInterfaceImplementations) != 0);

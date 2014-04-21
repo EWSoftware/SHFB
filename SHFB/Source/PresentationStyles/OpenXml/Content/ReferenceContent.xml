@@ -214,7 +214,8 @@
   <item id="infraStructure">Infrastructure. </item>
 
 	<!-- Obsolete boilerplate text -->
-  <item id="boilerplate_obsolete"><span class="Obsolete">Obsolete. </span></item>
+  <item id="boilerplate_obsoleteShort"><span class="Bold">Obsolete. </span></item>
+  <item id="boilerplate_obsoleteLong"><span class="Bold">Note: This API is now obsolete.</span></item>
 
 	<!-- Group and SubGroup text -->
   <item id="text_classUpper">Class</item>

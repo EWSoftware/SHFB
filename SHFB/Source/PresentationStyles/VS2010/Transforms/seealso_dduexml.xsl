@@ -1,11 +1,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								version="2.0"
-								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	>
+								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+>
 	<!-- ======================================================================================== -->
 
 	<xsl:import href="conceptualTopicTypes.xsl"/>
@@ -14,14 +13,8 @@
 	Process relatedTopics
 	============================================================================================= -->
 
-	<xsl:template match="ddue:relatedTopics"
-								mode="seeAlso">
-		<xsl:param name="p_autoGenerateLinks"
-							 select="false()"/>
-
-		<!--<xsl:for-each select="ddue:link | ddue:legacyLink">
-			<xsl:comment xml:space="preserve">[<xsl:value-of select="@xlink:href"/>][<xsl:value-of select="@topicType_id"/>]</xsl:comment>
-		</xsl:for-each>-->
+	<xsl:template match="ddue:relatedTopics" mode="seeAlso">
+		<xsl:param name="p_autoGenerateLinks" select="false()"/>
 
 		<xsl:variable name="v_taskLinks">
 			<xsl:for-each select="(ddue:link | ddue:legacyLink)[@topicType_id]">

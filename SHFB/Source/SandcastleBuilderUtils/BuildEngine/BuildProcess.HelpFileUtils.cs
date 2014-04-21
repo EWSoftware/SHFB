@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2014
+// Updated : 04/09/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -637,7 +637,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "src=\"Collapsed.gif\"/><a class=\"UnselectedNode\" " +
                         "onclick=\"javascript: return Expand(this);\" " +
                         "href=\"{0}\"{1}>{2}</a>\r\n" +
-                        "<div class=\"Hidden\">\r\n", url, target,
+                        "<div class=\"Hidden\">\r\n", HttpUtility.HtmlEncode(url), target,
                         HttpUtility.HtmlEncode(title));
 
                     // Append child nodes
@@ -660,7 +660,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "<a class=\"UnselectedNode\" " +
                         "onclick=\"javascript: return SelectNode(this);\" " +
                         "href=\"{0}\" target=\"TopicContent\">{1}</a>\r\n" +
-                        "</div>\r\n", url, HttpUtility.HtmlEncode(title));
+                        "</div>\r\n", HttpUtility.HtmlEncode(url), HttpUtility.HtmlEncode(title));
                 }
         }
 

@@ -1,7 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								version="2.0"
-								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
@@ -404,7 +402,7 @@
 	<xsl:template name="showXamlValuesSection">
 		<xsl:for-each select="//ddue:section[starts-with(@address,'xamlValues')]">
 			<div id="xamlValues">
-				<p/>
+				<p></p>
 				<xsl:call-template name="t_putSubSection">
 					<xsl:with-param name="p_title">
 						<include item="xamlValuesSectionHeading" />

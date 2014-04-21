@@ -1,0 +1,942 @@
+body {
+	font-family: Segoe UI, Verdana, Arial;
+	font-size: 0.85em; /*10pt*/
+	color: #000;
+	margin: 0px;
+	padding: 0px 0px 0px 5px;
+	min-width: 600px;
+	background-color: #fff;
+}
+
+a {
+	color: #1364c4;
+	text-decoration: none;
+}
+
+a:link {
+	color: #1364c4;
+}
+a:visited {
+	color: #960bb4;
+}
+
+a:hover, a:active {
+	color: #960bb4;
+}
+
+a img {
+	border: none;
+}
+
+pre {
+	overflow: hidden;
+}
+
+/* NOTE: We must use different style names here instead of the OH_ prefixes from the VS2010 style to avoid
+   style conflicts in MS Help Viewer 1.0. */
+div.VS2013_outerContent table {
+	width: 100%;
+	border-collapse: collapse;
+	border-color: #bbb;
+	border-width: 1px;
+	border-style: solid;
+}
+
+div.VS2013_outerContent table th {
+	border-color: #bbb;
+	border-width: 1px;
+	border-style: solid;
+	height: 21px;
+	text-align: left;
+	color: #000;
+	padding: 4px;
+	font-style: normal;
+	font-weight: normal;
+	background-color: rgb(229,229,229);
+}
+
+div.VS2013_outerContent table td {
+	border-color: #bbb;
+	border-width: 1px;
+	border-style: solid;
+	margin: 1px;
+}
+
+div.VS2013_outerContent table.TitleTable {
+	width: 100%;
+	border-collapse: collapse;
+	border-width: 0px;
+}
+
+div.VS2013_outerContent table.TitleTable td {
+	border-width: 0px;
+}
+
+.VS2013_tdTitleColumn {
+	font-family: Segoe UI, Verdana, Arial;
+	font-size: 1.45em; /*17pt*/
+	font-weight: bold;
+	color: #250c58;
+	padding: 0px;
+	padding-left: 10px;
+	text-align: left;
+}
+
+.VS2013_tdRunningTitleColumn {
+	padding: 0px;
+	padding-top: 11px;
+	padding-right: 13px;
+	padding-bottom: 12px;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.VS2013_tdLogoColumn {
+	padding: 0px;
+	padding-top: 11px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 12px;
+	vertical-align: middle;
+	width: 1px;
+}
+
+.VS2013_tdLogoColumnAbove {
+	padding: 0px;
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	vertical-align: middle;
+}
+
+.target {
+	font-weight: bold;
+}
+
+table p {
+	margin-top: 0;
+}
+
+table.header {
+	width: 100%;
+}
+
+td.header {
+	padding: 0px 0px 0px 16px;
+}
+
+h1 {
+	font-size: 2em; /*24pt*/
+	font-weight: 400;
+	margin-top: 0px;
+}
+
+h1.heading {
+	font-size: 1.2em; /*14pt*/
+	font-family: Segoe UI, Verdana, Arial;
+	font-weight: bold;
+	line-height: 120%;
+}
+
+h2 {
+	font-size: 1.15em; /*13.5pt*/
+	font-weight: bold;
+}
+
+h2.subtitle {
+	font-size: 1.8em; /*22pt*/
+	font-weight: 400;
+	margin-bottom: 0.6em;
+}
+h3 {
+	font-size: 1.1em; /*13pt*/
+	font-weight: bold;
+}
+.heading {
+	font-size: 0.85em; /*10pt*/
+	font-family: Segoe UI, Verdana, Arial;
+	font-weight: bold;
+	margin: 0px;
+	margin-top: 18px;
+}
+h4.subHeading {
+	margin-top: 10px;
+	font-size: 1em; /*12pt*/
+}
+
+h4.subHeading, .subHeading {
+	font-size: 0.85em; /*10pt*/
+	font-family: Segoe UI, Verdana, Arial;
+	font-weight: bold;
+	margin: 0px;
+}
+dl {
+	margin: 0 0 10px;
+	padding: 0 0 0 1px;
+}
+dt {
+	font-style: normal;
+	margin: 0px;
+}
+dd {
+	margin-left: 13px;
+}
+
+dd p {
+	margin-top: 0;
+}
+li {
+	margin-bottom: 3px;
+	margin-left: 0;
+}
+ol {
+	line-height: 140%;
+	list-style-type: decimal;
+	margin-bottom: 15px;
+}
+ol ol {
+	line-height: 140%;
+	list-style-type: lower-alpha;
+	margin-bottom: 4px;
+	margin-top: 3px;
+}
+
+ol ol ol {
+	line-height: 140%;
+	list-style-type: lower-roman;
+	margin-bottom: 4px;
+	margin-top: 3px;
+}
+
+ol ul, ul ol {
+	line-height: 140%;
+	margin-bottom: 15px;
+	margin-top: 15px;
+}
+
+p {
+	margin: 12px 0px 12px 0px;
+}
+
+div.section p {
+	margin-bottom: 15px;
+	margin-top: 0;
+}
+
+ul {
+	line-height: 140%;
+	list-style-position: outside;
+	list-style-type: disc;
+	margin-bottom: 15px;
+}
+
+ul ul {
+	line-height: 140%;
+	list-style-type: disc;
+	margin-bottom: 4px;
+	margin-left: 13px;
+	margin-top: 3px;
+}
+
+div#mainSection {
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 15px;
+	padding-right: 10px;
+}
+
+div.VS2013_outerContent div#mainSection table {
+	border-collapse: collapse;
+	border: 1px solid #bbbbbb;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	margin-right: 13px;
+	padding: 0px;
+	width: 97%;
+}
+
+div.VS2013_outerContent div#mainSection table th {
+	font-family: Segoe UI, Verdana, Arial;
+	font-size: 0.85em; /*10pt*/
+	border: 1px solid #bbbbbb;
+	color: #000000;
+	background-color: #e5e5e5;
+	padding-left: 13px;
+	padding-right: 13px;
+	vertical-align: middle;
+	text-align: left;
+}
+
+div.VS2013_outerContent div#mainSection table td {
+	font-family: Segoe UI, Verdana, Arial;
+	font-size: 0.85em; /*10pt*/
+	border: 1px solid #bbbbbb;
+	color: #000000;
+	padding: 5px;
+	overflow: visible;
+	vertical-align: top;
+}
+
+div.VS2013_outerContent div#mainSection table td p {
+	padding: 5px 5px 0px 5px;
+}
+
+div.VS2013_outerContent div#mainSection table td.imageCell {
+	white-space: nowrap;
+}
+
+div.VS2013_outerContent div#mainSection table td img {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+div.VS2013_outerContent div#mainSection table table td {
+	border-right: 0px;
+}
+
+.media img {
+	vertical-align: top;
+}
+
+div#mainBody div.alert, div#mainBody div.code {
+	width: 98.9%;
+}
+
+div#mainBody div.alert {
+	padding-bottom: 0.82em; /*9px*/
+}
+
+div#mainBody div.alert table {
+	width: 100%;
+}
+
+span.selflink {
+	font-weight: bold;
+}
+
+div.preliminary {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-weight: bold;
+	color: #333333;
+}
+
+div.caption {
+	font-weight: bold;
+	font-size: 1em; /*12pt*/
+	color: #003399;
+}
+
+.procedureSubHeading {
+	font-size: 1.1em; /*13.5pt*/
+	font-weight: bold;
+}
+
+/* added for new spans that replace sub, sup, big and small tags */
+span.sub {
+	vertical-align: sub;
+}
+span.sup {
+	vertical-align: super;
+}
+span.big {
+	font-size: larger;
+}
+span.small {
+	font-size: smaller;
+}
+span.tt {
+	font-family: Courier, Consolas, monospace;
+}
+
+.VS2013_CollapsibleAreaRegion {
+    margin-top: 15px;
+	z-index: 100;
+}
+
+img.CollapseToggle {
+	border: 0;
+	padding-right: 5px;
+}
+
+.VS2013_RegionTitle {
+	font-size: 1.3em; /*15pt*/
+	font-family: Segoe UI, Verdana, Arial;
+	font-weight: bold;
+	color: #250c58;
+	background-color: #FFFFFF;
+	margin-top: 13px;
+	margin-left: 0px;
+	margin-bottom: 0px;
+	padding-right: 7px;
+	z-index: 2;
+	cursor: pointer;
+}
+
+.VS2013_CollapsibleSection
+{
+	margin-top: 5px;
+}
+
+span.copyCode {
+	font-weight: normal;
+	display: inline;
+}
+
+a.copyCode {
+	cursor: pointer;
+	color: blue;
+	text-decoration: none;
+	text-align: right;
+}
+
+.codeSnippetContainer {
+	clear: both;
+	min-width: 260px;
+}
+.codeSnippetContainerTabs {
+	height: 23px;
+	vertical-align: middle;
+	position: relative;
+	z-index: 1;
+}
+.codeSnippetContainerTab {
+	padding: 0px 15px;
+	width: auto;
+	height: 22px;
+	color: rgb(42, 42, 42);
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 12px;
+	font-style: normal !important;
+	vertical-align: baseline;
+	float: left;
+}
+.codeSnippetContainerTabActive {
+	background: rgb(248, 248, 248);
+	padding: 0px 15px;
+	width: auto;
+	height: 22px;
+	color: rgb(0, 0, 0);
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 12px;
+	font-style: normal !important;
+	vertical-align: baseline;
+	border-top-color: rgb(147, 147, 147);
+	border-right-color: rgb(147, 147, 147);
+	border-left-color: rgb(147, 147, 147);
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	float: left;
+}
+.codeSnippetContainerTabPhantom {
+	padding: 0px 15px;
+	width: auto;
+	height: 22px;
+	color: rgb(194, 194, 194);
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 12px;
+	font-style: normal !important;
+	vertical-align: baseline;
+	float: left;
+}
+.codeSnippetContainerTabSingle {
+	background: rgb(248, 248, 248);
+	padding: 0px 5px;
+	width: auto;
+	height: 22px;
+	color: rgb(0, 0, 0);
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 12px;
+	font-style: normal !important;
+	vertical-align: baseline;
+	border-top-color: rgb(147, 147, 147);
+	border-right-color: rgb(147, 147, 147);
+	border-left-color: rgb(147, 147, 147);
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
+	float: left;
+}
+.codeSnippetContainerTab a {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTab a:hover {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	position: relative;
+}
+.codeSnippetContainerTab a:link {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTab a:visited {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTab a:active {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabActive a {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+    cursor: default;
+}
+.codeSnippetContainerTabActive a:hover {
+	top: 2px;
+	color: rgb(112, 112, 112);
+	position: relative;
+}
+.codeSnippetContainerTabActive a:link {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabActive a:visited {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabActive a:active {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabPhantom a {
+	top: 2px;
+	color: rgb(139, 139, 139) !important;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabPhantom a:hover {
+	top: 2px;
+	color: rgb(194, 194, 194);
+	position: relative;
+}
+.codeSnippetContainerTabPhantom a:link {
+	top: 2px;
+	color: rgb(139, 139, 139) !important;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabPhantom a:visited {
+	top: 2px;
+	color: rgb(139, 139, 139) !important;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabPhantom a:active {
+	top: 2px;
+	color: rgb(139, 139, 139) !important;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabSingle a {
+	padding: 0px 8px;
+	display: inline-block;
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabSingle a:hover {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	position: relative;
+}
+.codeSnippetContainerTabSingle a:link {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabSingle a:visited {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerTabSingle a:active {
+	top: 2px;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
+	text-decoration: none;
+	position: relative;
+}
+.codeSnippetContainerCodeContainer {
+	border: 1px solid rgb(147, 147, 147);
+	top: -1px;
+	clear: both;
+	margin-bottom: 12px;
+	position: relative;
+}
+.codeSnippetToolBar {
+	width: auto;
+	height: auto;
+}
+.codeSnippetToolBarText {
+	top: -12px;
+	width: auto;
+	height: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	vertical-align: top;
+	float: right;
+	position: relative;
+	background-color: rgb(255, 255, 255);
+}
+.codeSnippetToolBarText a:link {
+	color: rgb(42, 42, 42);
+	padding-right: 8px;
+	padding-left: 8px;
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 10px;
+	font-style: normal !important;
+	text-decoration: none;
+	margin-right: 15px;
+	margin-left: 15px;
+	background-color: rgb(255, 255, 255);
+}
+.codeSnippetToolBarText a:visited {
+	color: rgb(42, 42, 42);
+	padding-right: 8px;
+	padding-left: 8px;
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 10px;
+	font-style: normal !important;
+	text-decoration: none;
+	margin-right: 15px;
+	margin-left: 15px;
+	background-color: rgb(255, 255, 255);
+}
+.codeSnippetToolBarText a:active {
+	color: rgb(42, 42, 42);
+	padding-right: 8px;
+	padding-left: 8px;
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 10px;
+	font-style: normal !important;
+	text-decoration: none;
+	margin-right: 15px;
+	margin-left: 15px;
+	background-color: rgb(255, 255, 255);
+}
+.codeSnippetToolBarText a:hover {
+	color: rgb(51, 144, 177);
+}
+.codeSnippetToolBarText a {
+	color: rgb(19, 100, 196);
+	text-decoration: none;
+}
+.codeSnippetToolBarText a:link {
+	color: rgb(19, 100, 196);
+	text-decoration: none;
+}
+.codeSnippetToolBarText a:visited {
+	color: rgb(3, 105, 122);
+	text-decoration: none;
+}
+.codeSnippetToolBarText a:active {
+	color: rgb(3, 105, 122);
+	text-decoration: none;
+}
+.codeSnippetContainerCode {
+	margin: 0px;
+	padding: 10px 21px;
+	width: auto;
+}
+.codeSnippetContainerCode div {
+	margin: 0px;
+	padding: 0px;
+}
+.codeSnippetContainerCode pre {
+	margin: 0px;
+	padding: 5px;
+	overflow: auto;
+	font-family: Consolas,Courier,monospace !important;
+	font-style: normal;
+	font-weight: normal;
+	-ms-word-wrap: normal;
+}
+
+.members {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.members td {
+	border: 1px solid #DDDDDD;
+}
+
+.members th {
+	background: #CCCCCC none repeat scroll 0 0;
+}
+
+.ps_iconColumn {
+}
+
+.VS2013_outerDiv {
+	background-color: #ffffff;
+}
+
+.VS2013_outerContent {
+	_width: 99.9%;
+	overflow: visible;
+	border-left: 1px solid #bbb;
+}
+
+.VS2013_footer {
+	clear: both;
+	border-top: solid 1px #bbb;
+	padding: 0px 10px 5px 10px;
+}
+
+.VS2013_footer p {
+	margin: 0;
+}
+
+.VS2013_feedbacklink {
+	font-family: Segoe UI, Verdana, Arial;
+	font-size: 0.8em; /*10pt*/
+	padding-left: 0px;
+}
+
+/*Start of colorization*/
+div.seeAlsoStyle {
+	padding-top: 5px;
+}
+
+span.code, span.command {
+	font-size: 105%;
+	color: #000066;
+	font-family: Consolas, Courier, monospace;
+}
+span.ui {
+	font-weight: bold;
+}
+span.math {
+	font-style: italic;
+}
+span.input {
+	font-weight: 700;
+}
+span.term {
+	font-style: italic;
+}
+span.label {
+	font-weight: bold;
+}
+span.foreignPhrase, span.phrase {
+	font-style: italic;
+}
+span.placeholder {
+	font-style: italic;
+}
+span.keyword {
+	font-weight: bold;
+}
+span.typeparameter {
+	font-style: italic;
+}
+span.identifier {
+}
+span.keyword {
+	color: #871f78;
+}
+span.parameter {
+	font-style: italic;
+}
+span.literal, span.literalValue {
+	color: maroon;
+}
+span.comment {
+	color: green;
+}
+span.syntaxLabel {
+	font-weight: bold;
+	color: #0481da;
+}
+span.introStyle {
+	color: DarkGray;
+}
+/*End of colorization*/
+
+/* Various *******************************************************************/
+
+q {
+	font-style: italic;
+}
+
+dl.authored dt {
+	font-weight: bold;
+	margin-top: 5px;
+}
+
+dl.authored dd {
+	margin-left: 20px;
+	margin-bottom: 5px;
+}
+
+span.nolink {
+	font-weight: bold;
+}
+
+ul.autoOutline {
+}
+
+li.outlineSectionEntry {
+}
+
+div.outlineSectionEntrySummary {
+}
+
+/* Media *********************************************************************/
+
+div.ps_mediaNear {
+	text-align: left;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+div.ps_mediaFar {
+	text-align: right;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+div.ps_mediaCenter {
+	text-align: center;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+span.ps_captionLead {
+	font-weight: bold;
+	margin-right: .5em;
+}
+
+/* Glossary ******************************************************************/
+
+div.clsTooltip {
+	border: 1px solid black;
+	padding: 2px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+	background-color: #FFFFAA;
+	color: black;
+	font-size: 8pt;
+	font-family: Arial;
+}
+
+h1.ps_glossaryTitle {
+	color: #000000;
+	font-size: 140%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+div.ps_glossaryDiv {
+}
+
+h2.ps_glossaryDivHeading {
+	color: Black;
+	font-size: 115%;
+	margin-top: 1em;
+	margin-bottom: 0px;
+}
+
+div.ps_glossaryLetterBar {
+	font-size: 90%;
+}
+
+hr.ps_glossaryRule {
+	text-align: left;
+	color: Black;
+}
+
+h3.ps_glossaryGroupHeading {
+	font-size: 120%;
+	color: Gray;
+	margin: 5px 0 5px 0;
+}
+
+div.ps_glossaryGroup {
+}
+
+dl.ps_glossaryGroupList {
+	margin: 0;
+	color: Black;
+}
+
+dt.ps_glossaryEntry {
+	font-weight: bold;
+	margin-left: 2em;
+}
+
+dd.ps_glossaryEntry {
+	margin-left: 2em;
+	margin-bottom: 2em;
+}
+
+dd.ps_glossaryEntry p {
+	margin-top: 0;
+}
+
+div.ps_relatedEntry {
+	margin-bottom: 4px;
+}
+
+/* Bibliography***************************************************************/
+
+div.bibliographStyle {
+	padding-top: 5px;
+}
+
+span.bibliographyNumber {
+}
+
+span.bibliographyAuthor {
+	font-weight: bold;
+}
+
+span.bibliographyTitle {
+	font-style: italic;
+}
+
+span.bibliographyPublisher {
+}
+
+sup.citation a:link a:visited a:active {
+	text-decoration: none;
+}

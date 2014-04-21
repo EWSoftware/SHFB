@@ -466,10 +466,10 @@ namespace Sandcastle.Core.BuildAssembler
         /// </summary>
         /// <param name="componentLocations">The component locations configuration node</param>
         /// <remarks>If any component locations are specified, they are searched recursively for component
-        /// assemblies in the order given.  The tools folder is added last if not already specified as one of
-        /// the component locations.  There may be duplicate component IDs across the assemblies found.  Only
-        /// the first component for a unique ID will be used.  As such, assemblies in a folder that appears
-        /// earlier in the list can override copies in folders lower in the list.</remarks>
+        /// assemblies in the order given.  The custom components and tools folders are added last if not already
+        /// specified as one of the component locations.  There may be duplicate component IDs across the
+        /// assemblies found.  Only the first component for a unique ID will be used.  As such, assemblies in a
+        /// folder that appears earlier in the list can override copies in folders lower in the list.</remarks>
         private void CreateComponentContainer(XPathNavigator componentLocations)
         {
             if(componentContainer != null)
@@ -479,7 +479,7 @@ namespace Sandcastle.Core.BuildAssembler
                 allBuildComponents = null;
             }
 
-            componentFolders = new HashSet<string>();
+            componentFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             // Create an aggregate catalog that combines assembly catalogs for all of the possible component
             // locations.
@@ -490,9 +490,9 @@ namespace Sandcastle.Core.BuildAssembler
                     if(!String.IsNullOrWhiteSpace(location.Value) && Directory.Exists(location.Value))
                         AddAssemblyCatalogs(catalog, location.Value, componentFolders, true);
 
-            // Always include the tools folder
-            AddAssemblyCatalogs(catalog, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                componentFolders, true);
+            // Always include the custom components and the tools folders
+            AddAssemblyCatalogs(catalog, ComponentUtilities.ComponentsFolder, componentFolders, true);
+            AddAssemblyCatalogs(catalog, ComponentUtilities.ToolsFolder, componentFolders, true);
 
             componentContainer = new CompositionContainer(catalog);
 
@@ -548,6 +548,18 @@ namespace Sandcastle.Core.BuildAssembler
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
+                    catch(IOException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(System.Security.SecurityException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(UnauthorizedAccessException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
                     catch(ReflectionTypeLoadException ex)
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
@@ -559,8 +571,23 @@ namespace Sandcastle.Core.BuildAssembler
 
                 // Enumerate subfolders separately so that we can skip future requests for the same folder
                 if(includeSubfolders)
-                    foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                        AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
+                    try
+                    {
+                        foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
+                            AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
+                    }
+                    catch(IOException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(System.Security.SecurityException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(UnauthorizedAccessException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
             }
         }
         #endregion

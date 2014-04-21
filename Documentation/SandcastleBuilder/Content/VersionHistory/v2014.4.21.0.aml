@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="81b04099-bcd7-4caa-8a21-13624d9e290d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.4.21.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the referenced namespace extraction code so that it finds referenced types regardless of
+where they appear in the reflection data.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the component search so that it ignores security exceptions such as being denied access
+to certain subfolders.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed HelpLibraryManagerLauncher so that it correctly detects the default locale for Help
+Viewer 1.0 and 2.x when multiple help languages are present on the system.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the TOC Exclusion plug-in so that it runs in the correct build steps.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up some issues with non-GUID topic IDs that needed encoding in the intermediate TOC
+files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the build engine to throw an exception with a message indicating that the
+component/plug-in configurations need to be updated if the old <codeInline>{@SandcastlePath}</codeInline>
+replacement tag is encountered.</para>
+					</listItem>
+
+					<listItem>
+						<para>Enabled <codeInline>PreBuildEvent</codeInline>, <codeInline>PostBuildEvent</codeInline>, and
+<codeInline>RunPostBuildEvent</codeInline> property support in the help file builder targets file.  A property
+page was added to allow editing the properties in the standalone GUI and the Visual Studio Package.
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged the C# IntelliSense extension code from Sam Harwell into the Visual Studio package to
+provide support for the extended XML comments elements from Sandcastle.  Note that other languages do not support
+the extensions.  Visual Basic does not provide any context to extend the XML comments easily and other languages
+like F# and C++ don't appear to provide XML comments IntelliSense at all.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the new Open XML help file format and presentation style.</para>
+
+						<alert class="important">
+							<para>The Open XML format has some specific requirements.  See the
+<link xlink:href="c5e7e920-2cb4-4f78-b167-634361d85263" /> topic for details and information on troubleshooting
+problems with the resulting output.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the new VS2013 presentation style.  This is currently a clone of the VS2010
+style with some changes to get rid of the background images, alter the syntax and code block tabs styles, and add
+collapsible sections.  A future release will make further changes to bring it closer to the online Visual Studio
+content style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

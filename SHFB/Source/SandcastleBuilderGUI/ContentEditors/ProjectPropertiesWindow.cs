@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/27/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 03/19/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the project properties
@@ -13,10 +13,10 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  07/27/2008  EFW  Created the code
-// 1.9.6.0  10/28/2012  EFW  Rewrote to use the property pages from the VSPackage
+// 07/27/2008  EFW  Created the code
+// 10/28/2012  EFW  Rewrote to use the property pages from the VSPackage
 //===============================================================================================================
 
 using System;
@@ -309,7 +309,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 typeof(ComponentPropertiesPageControl),
                 typeof(PlugInPropertiesPageControl),
                 typeof(TransformArgumentsPageControl),
-                typeof(UserDefinedPropertiesPageControl)
+                typeof(UserDefinedPropertiesPageControl),
+                typeof(BuildEventPropertiesPageControl)
             };
 
             try

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2014
+// Updated : 04/08/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -32,8 +32,8 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Text;
-using System.Web;
 using System.Xml;
 
 using Sandcastle.Core;
@@ -589,22 +589,22 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         sb.AppendFormat("<LI><OBJECT type=\"text/sitemap\">\r\n" +
                             "<param name=\"Name\" value=\"{0}\">\r\n" +
                             "<param name=\"Local\" value=\"{1}\">\r\n" +
-                            "</OBJECT></LI>\r\n", HttpUtility.HtmlEncode(this.Title),
-                            HttpUtility.HtmlEncode(this.DestinationFile));
+                            "</OBJECT></LI>\r\n", WebUtility.HtmlEncode(this.Title),
+                            WebUtility.HtmlEncode(this.DestinationFile));
                     else
                     {
                         if(String.IsNullOrEmpty(this.DestinationFile))
                             sb.AppendFormat("<LI><OBJECT type=\"text/sitemap\">\r\n" +
                                 "<param name=\"Name\" value=\"{0}\">\r\n" +
                                 "</OBJECT></LI>\r\n",
-                                HttpUtility.HtmlEncode(this.Title));
+                                WebUtility.HtmlEncode(this.Title));
                         else
                             sb.AppendFormat("<LI><OBJECT type=\"text/sitemap\">\r\n" +
                                 "<param name=\"Name\" value=\"{0}\">\r\n" +
                                 "<param name=\"Local\" value=\"{1}\">\r\n" +
                                 "</OBJECT></LI>\r\n",
-                                HttpUtility.HtmlEncode(this.Title),
-                                HttpUtility.HtmlEncode(this.DestinationFile));
+                                WebUtility.HtmlEncode(this.Title),
+                                WebUtility.HtmlEncode(this.DestinationFile));
 
                         sb.Append("<UL>\r\n");
                         children.ConvertToString(format, sb);
@@ -622,7 +622,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     if(children.Count == 0)
                         sb.AppendFormat("<HelpTOCNode Url=\"{0}\" Title=\"{1}\" />\r\n",
-                            HttpUtility.HtmlEncode(url), HttpUtility.HtmlEncode(this.Title));
+                            WebUtility.HtmlEncode(url), WebUtility.HtmlEncode(this.Title));
                     else
                     {
                         // Use a GUID to uniquely identify the entries with
@@ -635,11 +635,11 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         if(String.IsNullOrEmpty(url))
                         {
                             sb.AppendFormat("<HelpTOCNode Id=\"{0}\" Title=\"{1}\">\r\n",
-                                guid, HttpUtility.HtmlEncode(this.Title));
+                                guid, WebUtility.HtmlEncode(this.Title));
                         }
                         else
                             sb.AppendFormat("<HelpTOCNode Id=\"{0}\" Url=\"{1}\" Title=\"{2}\">\r\n",
-                                guid, url, HttpUtility.HtmlEncode(this.Title));
+                                guid, url, WebUtility.HtmlEncode(this.Title));
 
                         children.ConvertToString(format, sb);
                         sb.Append("</HelpTOCNode>\r\n");
@@ -649,13 +649,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 case HelpFileFormats.MSHelpViewer:
                     if(String.IsNullOrEmpty(this.DestinationFile))
                     {
-                        url = this.Id;
+                        url = WebUtility.HtmlEncode(this.Id);
                         titleAttr = String.Format(CultureInfo.InvariantCulture, " title=\"{0}\"",
-                            HttpUtility.HtmlEncode(this.Title));
+                            WebUtility.HtmlEncode(this.Title));
                     }
                     else
                     {
-                        url = Path.GetFileNameWithoutExtension(this.DestinationFile);
+                        url = WebUtility.HtmlEncode(Path.GetFileNameWithoutExtension(this.DestinationFile));
                         titleAttr = String.Empty;
                     }
 

@@ -7,6 +7,7 @@
 // 09/10/2012 - EFW - Added support to the TargetPlatform class for using the Frameworks.xml file to load
 // framework assembly information.
 // 11/22/2013 - EFW - Cleared out the conditional statements
+// 04/20/2014 - EFW - Added a workaround for the .NET Micro Framework related to DictionaryEntry being a class
 
 using System.Diagnostics;
 using System.IO;
@@ -1113,7 +1114,12 @@ namespace System.Compiler
             CollectionBase = (Class)GetTypeNodeFor("System.Collections", "CollectionBase", ElementType.Class);
             CultureInfo = (Class)GetTypeNodeFor("System.Globalization", "CultureInfo", ElementType.Class);
             DictionaryBase = (Class)GetTypeNodeFor("System.Collections", "DictionaryBase", ElementType.Class);
-            DictionaryEntry = (Struct)GetTypeNodeFor("System.Collections", "DictionaryEntry", ElementType.ValueType);
+
+            // EFW - In the .NET Micro Framework this is a class not a structure.  Few if any of these are
+            // actually used, this one included.  I'm loathe to remove them as they may be used to ensure
+            // assemblies are loaded.  Using the as operator rather than a direct cast prevent it from failing.
+            DictionaryEntry = GetTypeNodeFor("System.Collections", "DictionaryEntry", ElementType.ValueType) as Struct;
+
             DuplicateWaitObjectException = (Class)GetTypeNodeFor("System", "DuplicateWaitObjectException", ElementType.Class);
             Environment = (Class)GetTypeNodeFor("System", "Environment", ElementType.Class);
             EventArgs = (Class)GetTypeNodeFor("System", "EventArgs", ElementType.Class);

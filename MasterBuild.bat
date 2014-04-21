@@ -22,6 +22,9 @@ IF ERRORLEVEL 1 GOTO End
 
 IF ERRORLEVEL 1 GOTO End
 
+REM Skip help file and setup build if there is no reflection data yet
+IF NOT EXIST %SHFBROOT%\Data\Reflection\*.xml GOTO MissingReflectionData
+
 CD ..\..\Documentation
 
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
@@ -36,5 +39,20 @@ IF ERRORLEVEL 1 GOTO End
 
 CD ..\..
 
+GOTO End
+
+:MissingReflectionData
+ECHO *
+ECHO *
+ECHO * Reflection data has not been built yet.  Help file and setup file generation skipped.
+ECHO * See ReadMe.txt for more information on running BuildReflectionData.bat.
+ECHO *
+ECHO *
+
 :End
+
+ECHO *
+ECHO * The tools have been built successfully.
+ECHO *
+
 ENDLOCAL

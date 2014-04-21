@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/16/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 03/18/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This application provides a way for the user to choose which application is used to load help file builder
@@ -74,10 +74,10 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             get
             {
-                string vsPath = FindVisualStudioPath("VS120COMNTOOLS", "11.0");
+                string vsPath = FindVisualStudioPath("VS120COMNTOOLS", "12.0");
 
                 if(vsPath == null)
-                    vsPath = FindVisualStudioPath("VS110COMNTOOLS", "10.0");
+                    vsPath = FindVisualStudioPath("VS110COMNTOOLS", "11.0");
 
                 if(vsPath == null)
                     vsPath = FindVisualStudioPath("VS100COMNTOOLS", "10.0");
@@ -148,8 +148,7 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             bool success = false;
 
-            // If no project or VS 2010 is present but no preference has been specified,
-            // ask the user what to use.
+            // If no project or VS 2010 is present but no preference has been specified, ask the user what to use
             if(String.IsNullOrEmpty(ProjectToLoad) ||
               (!Settings.Default.AlwaysUseSelection && !String.IsNullOrEmpty(VisualStudioPath)) ||
               (String.IsNullOrEmpty(VisualStudioPath) && !Settings.Default.UseStandaloneGui))
@@ -183,8 +182,7 @@ namespace SandcastleBuilder.ProjectLauncher
         /// <summary>
         /// This is used to try to launch the project using the selected application
         /// </summary>
-        /// <param name="useStandaloneGui">True to use the standalone GUI or false to use Visual
-        /// Studio 2010.</param>
+        /// <param name="useStandaloneGui">True to use the standalone GUI or false to use Visual Studio 2010</param>
         /// <returns>True if successful, false if not</returns>
         public static bool LaunchWithSelectedApplication(bool useStandaloneGui)
         {

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 04/08/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,6 +28,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml;
 
@@ -313,8 +314,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used to save the TOC information to an intermediate TOC
-        /// file used in the conceptual content build.
+        /// This is used to save the TOC information to an intermediate TOC file used in the conceptual content
+        /// build.
         /// </summary>
         /// <param name="rootContainerId">The ID of the root container topic if used</param>
         /// <param name="rootOrder">The TOC order for the root container topic if used</param>
@@ -328,7 +329,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 if(!String.IsNullOrEmpty(rootContainerId))
                     sw.WriteLine("<topic id=\"{0}\" file=\"{0}\" sortOrder=\"{1}\">",
-                        rootContainerId, rootOrder);
+                        WebUtility.HtmlEncode(rootContainerId), rootOrder);
 
                 sw.WriteLine(this.ToString(HelpFileFormats.MSHelpViewer));
 

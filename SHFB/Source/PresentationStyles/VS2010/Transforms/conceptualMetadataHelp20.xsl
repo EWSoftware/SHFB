@@ -2,7 +2,6 @@
 <xsl:stylesheet version="2.0"
 								xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 								exclude-result-prefixes="msxsl"
@@ -157,8 +156,7 @@
 
 				<!-- Locale attribute -->
 				<MSHelp:Attr Name="Locale">
-					<includeAttribute name="Value"
-														item="meta_locale"/>
+					<includeAttribute name="Value" item="locale"/>
 				</MSHelp:Attr>
 
 			</xml>

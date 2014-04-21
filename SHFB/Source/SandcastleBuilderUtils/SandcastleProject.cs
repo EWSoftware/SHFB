@@ -117,10 +117,10 @@ namespace SandcastleBuilder.Utils
 
         // Restricted property names that cannot be used for user-defined property names
         internal static List<string> restrictedProps = new List<string>() {
-            "AssemblyName", "Configuration", "CustomBeforeSHFBTargets", "CustomAfterSHFBTargets",
-            "DumpLogOnFailure", "Name", "Platform", "ProjectGuid", "RootNamespace", "SHFBSchemaVersion",
-            "SchemaVersion", "Verbose", "SccProjectName", "SccProvider", "SccAuxPath", "SccLocalPath",
-            "TransformComponentArguments" };
+            "AssemblyName", "Configuration", "CustomAfterSHFBTargets", "CustomBeforeSHFBTargets",
+            "DumpLogOnFailure", "Name", "Platform", "PostBuildEvent", "PreBuildEvent", "ProjectGuid",
+            "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName", "SccProvider",
+            "SchemaVersion", "SHFBSchemaVersion", "TransformComponentArguments", "Verbose" };
 
         // Bad characters for the vendor name property
         private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");

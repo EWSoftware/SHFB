@@ -2,7 +2,6 @@
 								version="2.0"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:mtps="http://msdn2.microsoft.com/mtps"
 								xmlns:xhtml="http://www.w3.org/1999/xhtml"
@@ -386,11 +385,7 @@
 		<!-- Post-branding treats 'other' and 'none' alike, so avoid using 'none' as the Language. The result is: -->
 		<!--   If Language is 'other' a tab is formatted using DisplayLanguage. -->
 		<!--   If Language is '' no tab is formatted. -->
-		<xsl:element name="mtps:CodeSnippet"
-								 namespace="{$mtps}">
-			<xsl:attribute name="runat">
-				<xsl:value-of select="'server'"/>
-			</xsl:attribute>
+		<xsl:element name="mtps:CodeSnippet">
 			<xsl:attribute name="ContainsMarkup">
 				<xsl:choose>
 					<xsl:when test="starts-with(normalize-space(.),'@@_')">
@@ -418,8 +413,7 @@
 							</xsl:attribute>
 						</xsl:when>
 						<xsl:when test="$v_codeLangTitleId!=''">
-							<includeAttribute name="Language"
-																item="{$v_codeLangTitleId}"/>
+							<includeAttribute name="Language" item="{$v_codeLangTitleId}"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
@@ -434,8 +428,7 @@
 							</xsl:attribute>
 						</xsl:when>
 						<xsl:when test="$v_codeLangTitleId!=''">
-							<includeAttribute name="DisplayLanguage"
-																item="{$v_codeLangTitleId}"/>
+							<includeAttribute name="DisplayLanguage" item="{$v_codeLangTitleId}"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:otherwise>
@@ -443,22 +436,17 @@
 
 			<xsl:choose>
 				<xsl:when test="starts-with(normalize-space(.),'@@_')">
-					<!-- MS Help Viewer has code to show the code colorized or plain.  We'll ignore their colorizer and insert our own colorized text later. -->
-<!--					<xsl:element name="div">
-						<xsl:attribute name="class">
-							<xsl:value-of select="'code'"/>
-						</xsl:attribute>
-						<xsl:value-of select="."/>
-					</xsl:element> -->
-					<xsl:element name="pre" namespace="{$xhtml}" xml:space="preserve"><xsl:value-of select="."/></xsl:element>
+					<!-- MS Help Viewer has code to show the code colorized or plain.  We'll ignore their colorizer and
+							 insert our own colorized text later. -->
+					<xsl:element name="pre" xml:space="preserve"><xsl:value-of select="."/></xsl:element>
 				</xsl:when>
 				<xsl:otherwise>
-						<xsl:choose>
+					<xsl:choose>
 						<xsl:when test="$p_transformCode">
-							<xsl:element name="pre" namespace="{$xhtml}" xml:space="preserve"><xsl:call-template name="t_tranformCodeContainer"/></xsl:element>
+							<xsl:element name="pre" xml:space="preserve"><xsl:call-template name="t_tranformCodeContainer"/></xsl:element>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:element name="pre" namespace="{$xhtml}" xml:space="preserve"><xsl:call-template name="t_copyCodeContainer"/></xsl:element>
+							<xsl:element name="pre" xml:space="preserve"><xsl:call-template name="t_copyCodeContainer"/></xsl:element>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:otherwise>
@@ -468,41 +456,30 @@
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="*"
-								mode="transformCode"
-								name="t_translateCodeElement">
+	<xsl:template match="*" mode="transformCode" name="t_translateCodeElement">
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="code|pre|div"
-								mode="transformCode"
-								name="t_tranformCodeContainer">
+	<xsl:template match="code|pre|div" mode="transformCode" name="t_tranformCodeContainer">
 		<xsl:apply-templates mode="transformCode"/>
 	</xsl:template>
 
-	<xsl:template match="text()"
-								mode="transformCode"
-								name="t_translateCodeText">
+	<xsl:template match="text()" mode="transformCode" name="t_translateCodeText">
 		<xsl:call-template name="t_copyCodeText"/>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
 
 	<!-- MAML elements are transformed, even if the code is not.  This supports the ddue:legacy* elements -->
-	<xsl:template match="ddue:*"
-								mode="copyCode"
-								name="t_copyCodeDdueElement">
+	<xsl:template match="ddue:*" mode="copyCode" name="t_copyCodeDdueElement">
 		<xsl:apply-templates select="."/>
 	</xsl:template>
 
-	<xsl:template match="*"
-								mode="copyCode"
-								name="t_copyCodeElement">
+	<xsl:template match="*" mode="copyCode" name="t_copyCodeElement">
 		<xsl:choose>
 			<!-- The span element can be interpreted as xhtml:span or ddue:span so special processing is required -->
 			<xsl:when test="local-name()='span'">
-				<xsl:element name="span"
-										 namespace="{$xhtml}">
+				<xsl:element name="span">
 					<xsl:copy-of select="@*"/>
 					<xsl:apply-templates mode="copyCode"/>
 					<xsl:if test="not(node())">
@@ -522,46 +499,12 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="code|pre|div"
-								mode="copyCode"
-								name="t_copyCodeContainer">
-		<xsl:choose>
-			<xsl:when test="contains($minimal-spacing,'code')">
-				<xsl:for-each select="node()">
-					<xsl:choose>
-						<xsl:when test="self::ddue:*">
-							<xsl:call-template name="t_copyCodeDdueElement"/>
-						</xsl:when>
-						<xsl:when test="self::*">
-							<xsl:call-template name="t_copyCodeElement"/>
-						</xsl:when>
-						<xsl:when test="self::text() and normalize-space(.)='' and contains(.,'&#10;') and not(preceding-sibling::node())">
-						</xsl:when>
-						<xsl:when test="self::text() and normalize-space(.)='' and contains(.,'&#10;') and not(following-sibling::*)">
-						</xsl:when>
-						<xsl:when test="self::text() and normalize-space(.)!='' and contains(.,'&#10;') and not(following-sibling::*)">
-							<xsl:call-template name="t_copyCodeText">
-								<xsl:with-param name="p_text"
-																select="ddue:TrimEol(.)"/>
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:call-template name="t_copyCodeText"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:for-each>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:apply-templates mode="copyCode"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<xsl:template match="code|pre|div" mode="copyCode" name="t_copyCodeContainer">
+		<xsl:apply-templates mode="copyCode"/>
 	</xsl:template>
 
-	<xsl:template match="text()"
-								mode="copyCode"
-								name="t_copyCodeText">
-		<xsl:param name="p_text"
-							 select="."/>
+	<xsl:template match="text()" mode="copyCode" name="t_copyCodeText">
+		<xsl:param name="p_text" select="."/>
 		<xsl:choose>
 			<xsl:when test="$p_text=' ' or $p_text='&#160;'">
 				<xsl:value-of select="'&#160;'"/>

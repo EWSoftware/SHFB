@@ -19,7 +19,8 @@ IF '%1_%2'=='.NETPortable_4.6' GOTO Unsupported
 IF ERRORLEVEL 1 GOTO BuildFailed
 
 ECHO *
-ECHO * The reflection data has been built successfully
+ECHO * The reflection data has been built successfully.
+ECHO * Rename the "%1_%2" folder to "Reflection" to make it usable.
 ECHO *
 
 GOTO Done

@@ -1,12 +1,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								version="2.0"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
-								xmlns:mshelp="http://msdn.microsoft.com/mshelp"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								xmlns:mtps="http://msdn2.microsoft.com/mtps"
 								xmlns:xhtml="http://www.w3.org/1999/xhtml"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
 	>
 	<!-- ============================================================================================
 	Parameters
@@ -14,7 +13,6 @@
 
 	<xsl:param name="metadata">false</xsl:param>
 	<xsl:param name="languages">false</xsl:param>
-	<xsl:param name="minimal-spacing">code;alert;listItem;table;tableHeader;definedTerm;definition;</xsl:param>
 
 	<!-- Topic header logo parameters -->
 	<xsl:param name="logoFile" />
@@ -110,131 +108,6 @@
 												select="$p_count - 1" />
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template>
-
-	<!-- ============================================================================================
-	Minimal spacing tests
-
-	The minimal spacing feature skips the <p></p> translation for the first <para> element in
-	selected parent elements (eg. alerts, list items, table entries, definition items, etc.)
-
-	These templates check if minimal spacing should be applied in a specified context. 
-
-	The first check determines if minimal spacing is enabled for the current context by matching
-	the $p_spacingType parameter agains the $minimal-spacing global parameter.
-
-	The next check traverses up the element tree and checks the @minimal-spacing attribute at each
-	level.
-	- If any element has a @minimal-spacing attribute of 'false', this disables the feature
-	  for that element and its descendants.
-	- If any element has a @minimal-spacing attribute of 'true', this enables the feature
-	  for that element and its descendants.
-	- If and element does not have a @minimal-spacing attribute, it inherits its parent's setting.
-	- The root is assumed to have the feature enabled.
-	
-	The last check uses the $p_parentLevel pameter to traverse up the element tree and then
-	back down again to check each descendant.  The purpose is to determine if any	descendant
-	element satisfies conditions that would block the minimal spacing feature, as follows:
-	- If an element contains more than one <para> element, the feature is blocked.
-	- If an element contains any element other than <para>, the feature is blocked.
-	- However, if the element has @minimal-spacing='true' the feature is not blocked, no matter
-	  what the element's contents.
-
-	Note - for the <code> element, minimal spacing does not apply to <para> elements.  Instead, 
-	it causes all leading and trailing blank lines to be removed.
-	============================================================================================= -->
-
-	<xsl:template name="t_checkMinimalSpacing">
-		<xsl:param name="p_spacingType"
-							 select="'any'"/>
-		<xsl:param name="p_parentLevel"
-							 select="0"/>
-		<xsl:if test="$p_spacingType='any' or contains($minimal-spacing,$p_spacingType)">
-			<xsl:variable name="v_minimalSpacing">
-				<xsl:call-template name="t_getMinimalSpacing"/>
-			</xsl:variable>
-			<xsl:if test="$v_minimalSpacing='' or starts-with($v_minimalSpacing,'true')">
-				<xsl:variable name="v_levelCheck">
-					<xsl:call-template name="t_checkMinimalParent">
-						<xsl:with-param name="p_parentLevel"
-														select="$p_parentLevel"/>
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:choose>
-					<xsl:when test="$v_levelCheck=''">
-						<xsl:value-of select="'true'"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="$v_levelCheck"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="t_getMinimalSpacing">
-		<xsl:choose>
-			<xsl:when test="@minimal-spacing">
-				<xsl:value-of select="@minimal-spacing"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:for-each select="parent::*">
-					<xsl:call-template name="t_getMinimalSpacing"/>
-				</xsl:for-each>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template name="t_checkMinimalParent">
-		<xsl:param name="p_parentLevel"/>
-		<xsl:param name="p_childLevel"
-							 select="0"/>
-		<xsl:choose>
-			<xsl:when test="$p_parentLevel = 1">
-				<xsl:for-each select="parent::*">
-					<xsl:call-template name="t_checkMinimalChild">
-						<xsl:with-param name="p_childLevel"
-														select="$p_childLevel"/>
-					</xsl:call-template>
-				</xsl:for-each>
-			</xsl:when>
-			<xsl:when test="$p_parentLevel &gt; 1">
-				<xsl:for-each select="parent::*">
-					<xsl:call-template name="t_checkMinimalParent">
-						<xsl:with-param name="p_parentLevel"
-														select="$p_parentLevel - 1"/>
-						<xsl:with-param name="p_childLevel"
-														select="$p_childLevel + 1"/>
-					</xsl:call-template>
-				</xsl:for-each>
-			</xsl:when>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template name="t_checkMinimalChild">
-		<xsl:param name="p_childLevel"/>
-		<xsl:choose>
-			<xsl:when test="$p_childLevel = 0">
-				<xsl:if test="not(@minimal-spacing) or (@minimal-spacing!='true')">
-					<xsl:choose>
-						<xsl:when test="child::*[local-name()!='para']">
-							<xsl:value-of select="'sibling!=para'"/>
-						</xsl:when>
-						<xsl:when test="(child::*[local-name()='para'])[2]">
-							<xsl:value-of select="'sibling para[2]'"/>
-						</xsl:when>
-					</xsl:choose>
-				</xsl:if>
-			</xsl:when>
-			<xsl:when test="$p_childLevel &gt; 0">
-				<xsl:for-each select="child::*">
-					<xsl:call-template name="t_checkMinimalChild">
-						<xsl:with-param name="p_childLevel"
-														select="$p_childLevel - 1"/>
-					</xsl:call-template>
-				</xsl:for-each>
-			</xsl:when>
-		</xsl:choose>
 	</xsl:template>
 
 	<!-- ============================================================================================
@@ -500,52 +373,6 @@
 	<xsl:template name="t_insertMetadata">
 		<xsl:element name="xml">
 			<xsl:attribute name="id">BrandingData</xsl:attribute>
-			<string id="BrandingProductTitle">
-				<include item="productTitle"/>
-			</string>
-
-			<string id="BrandingCopyrightText">
-				<include item="copyright_text"/>
-			</string>
-			<string id="BrandingCopyrightLink">
-				<include item="copyright_link"/>
-			</string>
-			<string id="BrandingCopyrightInfo">
-				<include item="copyright_info"/>
-			</string>
-			<string id="BrandingHeader">
-				<include item="boilerplate_pageTitle">
-					<parameter>
-						<xsl:call-template name="t_topicTitleDecorated"/>
-					</parameter>
-				</include>
-			</string>
-
-			<string id="BrandingFooterText">
-				<include item="footer_text"/>
-			</string>
-			<string id="BrandingFeedbackAlias">
-				<include item="fb_alias"/>
-			</string>
-			<string id="BrandingFeedbackSubject">
-				<include item="fb_product"/>
-			</string>
-			<string id="BrandingFeedbackText">
-				<include item="fb_text"/>
-			</string>
-			<string id="BrandingFeedbackFooterTo">
-				<include item="fb_footer_to"/>
-			</string>
-			<string id="BrandingFeedbackFooterText">
-				<include item="fb_footer_text"/>
-			</string>
-			<string id="BrandingFeedbackFooterTextTo">
-				<include item="fb_footer_text_to"/>
-			</string>
-			<string id="BrandingFeedbackBody">
-				<include item="fb_body"/>
-			</string>
-
 			<xsl:if test="$languages/language">
 				<list id="BrandingLanguages">
 					<xsl:for-each select="$languages/language">
@@ -585,8 +412,7 @@
 
 	<xsl:template name="t_insertNoIndexNoFollow">
 		<xsl:if test="/document/metadata/attribute[@name='NoSearch']">
-			<META NAME="ROBOTS"
-						CONTENT="NOINDEX, NOFOLLOW" />
+			<meta name="robots" content="noindex, nofollow" />
 		</xsl:if>
 	</xsl:template>
 
@@ -765,34 +591,30 @@
 	<xsl:template name="t_putSection">
 		<xsl:param name="p_title" />
 		<xsl:param name="p_content" />
-		<xsl:param name="p_toplink"
-							 select="false()" />
+		<xsl:param name="p_toplink" select="false()" />
 
+		<!-- TODO: Add support for true collapsible sections like the VS2005 style -->
 		<xsl:element name="mtps:CollapsibleArea">
-			<xsl:attribute name="runat">
-				<xsl:value-of select="'server'" />
-			</xsl:attribute>
-			<xsl:attribute name="Title">
-				<xsl:value-of select="$p_title" />
-			</xsl:attribute>
-			<xsl:element name="xml">
-				<xsl:element name="string">
-					<xsl:attribute name="id">
-						<xsl:value-of select="'Title'" />
-					</xsl:attribute>
-					<xsl:copy-of select="$p_title" />
-				</xsl:element>
-			</xsl:element>
+			<xsl:if test="normalize-space($p_title)">
+				<div class="OH_CollapsibleAreaRegion">
+					<div class="OH_regiontitle">
+						<xsl:copy-of select="$p_title" />
+					</div>
+					<div class="OH_CollapsibleArea_HrDiv">
+						<hr class="OH_CollapsibleArea_Hr" />
+					</div>
+				</div>
+				<div class="OH_clear">
+					<xsl:text> </xsl:text>
+				</div>
+			</xsl:if>
 
 			<xsl:copy-of select="$p_content" />
 
 			<xsl:if test="boolean($p_toplink)">
-				<xsl:element name="a">
-					<xsl:attribute name="href">
-						<xsl:value-of select="'#mainBody'" />
-					</xsl:attribute>
+				<a href="#mainBody">
 					<include item="top"/>
-				</xsl:element>
+				</a>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
@@ -800,33 +622,36 @@
 	<xsl:template name="t_putSectionInclude">
 		<xsl:param name="p_titleInclude" />
 		<xsl:param name="p_content" />
-		<xsl:param name="p_toplink"
-							 select="false()" />
+		<xsl:param name="p_toplink" select="false()" />
+		<xsl:param name="p_id" select="''" />
 
+		<!-- TODO: Add support for true collapsible sections like the VS2005 style -->
 		<xsl:element name="mtps:CollapsibleArea">
-			<xsl:attribute name="runat">
-				<xsl:value-of select="'server'" />
-			</xsl:attribute>
-			<includeAttribute name="Title"
-												item="{$p_titleInclude}"/>
-			<xsl:element name="xml">
-				<xsl:element name="string">
-					<xsl:attribute name="id">
-						<xsl:value-of select="'Title'" />
-					</xsl:attribute>
-					<include item="{$p_titleInclude}"/>
-				</xsl:element>
-			</xsl:element>
+			<xsl:if test="normalize-space($p_titleInclude)">
+				<div class="OH_CollapsibleAreaRegion">
+					<xsl:if test="normalize-space($p_id)">
+						<xsl:attribute name="id">
+							<xsl:value-of select="$p_id"/>
+						</xsl:attribute>
+					</xsl:if>
+					<div class="OH_regiontitle">
+						<include item="{$p_titleInclude}"/>
+					</div>
+					<div class="OH_CollapsibleArea_HrDiv">
+						<hr class="OH_CollapsibleArea_Hr" />
+					</div>
+				</div>
+				<div class="OH_clear">
+					<xsl:text> </xsl:text>
+				</div>
+			</xsl:if>
 
 			<xsl:copy-of select="$p_content" />
 
 			<xsl:if test="boolean($p_toplink)">
-				<xsl:element name="a">
-					<xsl:attribute name="href">
-						<xsl:value-of select="'#mainBody'" />
-					</xsl:attribute>
+				<a href="#mainBody">
 					<include item="top"/>
-				</xsl:element>
+				</a>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
@@ -965,15 +790,13 @@
 			<table>
 				<tr>
 					<th>
-						<img class="mtps-img-src">
-							<includeAttribute item="iconPath"
-																name="src">
+						<img>
+							<includeAttribute item="iconPath" name="src">
 								<parameter>
 									<xsl:value-of select="$v_noteImg"/>
 								</parameter>
 							</includeAttribute>
-							<includeAttribute name="alt"
-																item="{$v_altTitle}"/>
+							<includeAttribute name="alt" item="{$v_altTitle}"/>
 						</img>
 						<xsl:text>&#160;</xsl:text>
 						<include item="{$v_title}"/>

@@ -1,6 +1,6 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Tools Standard Presentation Styles
-// File    : VisualStudi2005.cs
+// File    : VisualStudio2005.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 01/11/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved

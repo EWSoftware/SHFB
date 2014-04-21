@@ -98,6 +98,22 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventEditorForm.cs">
+      <Link>PropertyPages\BuildEventEditorForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventEditorForm.designer.cs">
+      <Link>PropertyPages\BuildEventEditorForm.designer.cs</Link>
+      <DependentUpon>BuildEventEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.cs">
+      <Link>PropertyPages\BuildEventPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\BuildEventPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.cs">
       <Link>PropertyPages\BuildPropertiesPageControl.cs</Link>
       <SubType>UserControl</SubType>
@@ -340,6 +356,14 @@
     <Compile Include="Spelling\TextLocation.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventEditorForm.resx">
+      <Link>PropertyPages\BuildEventEditorForm.resx</Link>
+      <DependentUpon>BuildEventEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.resx">
+      <Link>PropertyPages\BuildEventPropertiesPageControl.resx</Link>
+      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.resx">
       <Link>PropertyPages\BuildPropertiesPageControl.resx</Link>
       <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>

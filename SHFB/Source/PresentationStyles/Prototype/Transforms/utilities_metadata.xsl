@@ -465,7 +465,7 @@
 
 	<xsl:template name="textNames">
 		<xsl:choose>
-			<xsl:when test="typedata and (containers/type | type)">
+			<xsl:when test="typedata and (containers/type | type) and not($group='list')">
 				<xsl:variable name="left">
 					<xsl:apply-templates select="type | (containers/type)" mode="index" />
 				</xsl:variable>

@@ -359,7 +359,7 @@
 							<xsl:call-template name="addLibraryAssemblyData"/>
 						</xsl:for-each>
 						<xsl:copy-of select="containers/namespace"/>
-						<xsl:copy-of select="containers/type"/>
+						<type api="{$typeId}"/>
 					</containers>
 				</api>
 			</xsl:if>
@@ -480,8 +480,8 @@
 
 					<!-- if more than one member in overloadSet, add an overload topic if necessary -->
 					<xsl:if test="(count($overloadSet) &gt; 1) and $overloadSet[1][@id=$memberId or @api=$memberId]">
-						<!-- When merging multiple versions, an overload set may have multiple members with the same signature, 
-               e.g. when one version inherits a member and another version overrides it. 
+						<!-- When merging multiple versions, an overload set may have multiple members with the same signature,
+               e.g. when one version inherits a member and another version overrides it.
                We want an overload topic only when there are multiple signatures. -->
 						<!-- get the set of unique signatures for this overload set -->
 						<xsl:variable name="signatureSet">
@@ -939,7 +939,7 @@
 						<xsl:call-template name="addLibraryAssemblyData"/>
 					</xsl:for-each>
 					<xsl:copy-of select="containers/namespace"/>
-					<xsl:copy-of select="containers/type"/>
+					<type api="{$typeId}"/>
 				</containers>
 			</api>
 		</xsl:if>
@@ -971,10 +971,10 @@
 						<!-- get the set of overloads: EII members with same name and subgroup -->
 						<xsl:variable name="overloadSet" select="
                           $members[
-                            proceduredata/@eii='true' and implements/member/type/@api=$eiiTypeId and 
+                            proceduredata/@eii='true' and implements/member/type/@api=$eiiTypeId and
                             apidata[
-                              @name=$apidataName and 
-                              @subgroup=$subgroup and 
+                              @name=$apidataName and
+                              @subgroup=$subgroup and
                               (@subsubgroup=$subsubgroup or (not(@subsubgroup) and normalize-space($subsubgroup)=''))
                             ]
                           ]" />
@@ -991,8 +991,8 @@
 
 						<!-- make sure we add to the list only once -->
 						<xsl:if test="$overloadSet[1][@id=$memberId or @api=$memberId]">
-							<!-- When merging multiple versions, an overload set may have multiple members with the same signature, 
-                         e.g. when one version inherits a member and another version overrides it. 
+							<!-- When merging multiple versions, an overload set may have multiple members with the same signature,
+                         e.g. when one version inherits a member and another version overrides it.
                          We want an overload topic only when there are multiple signatures. -->
 							<!-- get the set of unique signatures for this overload set -->
 							<xsl:choose>

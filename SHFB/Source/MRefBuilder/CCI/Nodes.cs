@@ -14,6 +14,7 @@
 // obfuscated member names.
 // 11/21/2013 - EFW - Cleared out the conditional statements and unused code and updated based on changes to
 // ListTemplate.cs.
+// 03/14/2014 - EFW - Fixed bug in TypeNode.GetMatchingMethod() reported by SHarwell.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9773,21 +9774,31 @@ done:
             }
             return null;
         }
+
         public Method GetMatchingMethod(Method method)
         {
             if(method == null || method.Name == null)
                 return null;
+
             MemberList members = this.GetMembersNamed(method.Name);
+
             for(int i = 0, n = members == null ? 0 : members.Count; i < n; i++)
             {
                 Method m = members[i] as Method;
-                if(m == null)
+
+                // !EFW - Bug fix for problem reported by SHarwell.  Must compare type parameter counts too.
+                // If not, overloaded methods, one with and one without generic parameters, will be matched
+                // incorrectly.
+                if(m == null || !m.TypeParameterCountsMatch(method))
                     continue;
+
                 if(m.ParametersMatchStructurally(method.Parameters))
                     return m;
             }
+
             return null;
         }
+
         /// <summary>
         /// Returns the first nested type declared by this type with the specified name. Returns null if this type has no such nested type.
         /// </summary>

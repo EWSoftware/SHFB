@@ -2,7 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
 		xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
 		xmlns:xlink="http://www.w3.org/1999/xlink"
-		xmlns:mshelp="http://msdn.microsoft.com/mshelp" >
+		xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
+>
 
 	<!-- sections -->
 
@@ -562,7 +563,7 @@
 	<!-- links -->
 
 	<xsl:template match="ddue:dynamicLink[@type='inline']">
-		<mshelp:ktable disambiguator='span' indexMoniker='!DefaultDynamicLinkIndex'>
+		<MSHelp:ktable disambiguator='span' indexMoniker='!DefaultDynamicLinkIndex'>
 			<xsl:attribute name="keywords">
 				<xsl:for-each select="ddue:keyword">
 					<xsl:value-of select="."/>
@@ -572,7 +573,7 @@
 			<includeAttribute name="prefix" item="dynamicLinkInlinePreFixText" />
 			<includeAttribute name="postfix" item="dynamicLinkInlinePostFixText" />
 			<includeAttribute name="separator" item="dynamicLinkInlineSeperatorText" />
-		</mshelp:ktable>
+		</MSHelp:ktable>
 	</xsl:template>
 
 	<xsl:template match="ddue:dynamicLink[@type='table']">
@@ -587,7 +588,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:dynamicLink[@type='bulleted']">
-		<mshelp:ktable disambiguator='span' indexMoniker='!DefaultDynamicLinkIndex'>
+		<MSHelp:ktable disambiguator='span' indexMoniker='!DefaultDynamicLinkIndex'>
 			<xsl:attribute name="keywords">
 				<xsl:for-each select="ddue:keyword">
 					<xsl:value-of select="."/>
@@ -597,7 +598,7 @@
 			<xsl:attribute name="prefix">&lt;ul&gt;&lt;li&gt;</xsl:attribute>
 			<xsl:attribute name="postfix">&lt;/li&gt;&lt;/ul&gt;</xsl:attribute>
 			<xsl:attribute name="separator">&lt;/li&gt;&lt;li&gt;</xsl:attribute>
-		</mshelp:ktable>
+		</MSHelp:ktable>
 	</xsl:template>
 
 	<xsl:template match="ddue:codeFeaturedElement">
@@ -1185,20 +1186,9 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:legacyLink">
-		<xsl:choose>
-			<xsl:when test="starts-with(@xlink:href,'#')">
-				<!-- in-page link -->
-				<a href="{@xlink:href}">
-					<xsl:apply-templates />
-				</a>
-			</xsl:when>
-			<xsl:otherwise>
-				<!-- unverified, external link -->
-				<mshelp:link keywords="{@xlink:href}" tabindex="0">
-					<xsl:apply-templates />
-				</mshelp:link>
-			</xsl:otherwise>
-		</xsl:choose>
+		<a href="{@xlink:href}">
+			<xsl:apply-templates />
+		</a>
 	</xsl:template>
 
 	<xsl:template match="ddue:codeEntityReference">

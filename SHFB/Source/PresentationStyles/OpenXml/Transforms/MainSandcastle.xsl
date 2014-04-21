@@ -88,6 +88,14 @@
 
 		<!-- Auto-inserted info -->
 		<xsl:apply-templates select="/document/comments/preliminary"/>
+
+		<xsl:if test="/document/reference/attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
+			<w:p>
+				<include item="boilerplate_obsoleteLong"/>
+			</w:p>
+		</xsl:if>
+
+
 		<xsl:apply-templates select="/document/comments/summary"/>
 		<xsl:if test="$g_apiTopicSubGroup='overload'">
 			<xsl:apply-templates select="/document/reference/elements" mode="overloadSummary"/>

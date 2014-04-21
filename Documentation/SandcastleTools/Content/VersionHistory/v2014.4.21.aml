@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bcbab5f1-b036-4901-9be8-8f940a1f49a8" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.4.21.0." />
+		</introduction>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in MRefBuilder in <codeInline>TypeNode.GetMatchingMethod()</codeInline> reported by
+Sam Harwell.  Type parameter counts are compared as well in order to get a correct match on overloaded methods in
+cases where one has and one does not have generic parameters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added more code to <codeInline>ParametersMatch()</codeInline> in MRefBuilder to try and get a
+proper match when comparing parameters lists with generic types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that it does not fail when parsing .NET Micro Framework assemblies.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to default to looking up target IDs starting with "<codeInline>System.</codeInline>"
+or "<codeInline>Microsoft.</codeInline>" using the MSDN web service if not found in the project reflection data
+sources rather than reporting them as unknown reference links. This should help add links to MSDN content for
+Microsoft SDKs without having to add additional reference link data to the help project. If not found on MSDN,
+they will be reported as unresolved reference links.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the AddNamespaceGroups tool to merge sub-groups into the parent if they are the only
+child of the parent group</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed leading blank lines and trailing whitespace to get rid of excess whitespace in the
+resulting code sections produced by the <codeInline>ExampleComponent</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>In <codeInline>ShowMissingComponent</codeInline>, self-closing <codeInline>conceptualLink</codeInline>,
+<codeInline>see</codeInline>, <codeInline>paramref</codeInline>, and <codeInline>typeparamref</codeInline>
+elements will also satisfy the documentation check.  For example: <codeInline>&lt;returns&gt; &lt;see cref="String"/&gt;
+&lt;/returns&gt;</codeInline>).
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for an <codeInline>outputMethod</codeInline> attribute on the BuildAssembler
+<codeInline>SaveComponent</codeInline> to allow defining how the content is written out (i.e. HTML rules rather
+than XML rules).  However, the default will remain XML and the existing presentation styles will continue to use
+XML rules since they work fine with them.  Note that using HTML rules can introduce unintended side-effects to
+the generated output such as non-XHTML compliant formatting, self-closing elements getting converted to full
+opening/closing element pairs etc.  Also, there are alternatives that make it unnecessary such as using an
+"<codeInline>&lt;xsl:comment/&gt;</codeInline>" or "<codeInline>&lt;xsl:text&gt; &lt;/xsl:text&gt;</codeInline>"
+element to enforce non-self-closing output of an element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the .NET Micro Framework versions 4.2 and 4.3.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added a new Open XML presentation style that can be used to produce Open XML documents. These
+are convertible to other proprietary formats such as PDF.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up some minor issues in the Hana, Prototype, VS2005, and VS2010 presentation styles such
+as incorrect style names, extraneous elements, and obsolete resource items found while creating the Open XML
+presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to the <codeInline>codeEntityReference</codeInline> MAML element for a
+<codeInline>linkText</codeInline> attribute that can be added to override the default member ID link text with
+link text of your choosing.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the <codeInline>TOCTitle</codeInline> metadata attribute for namespaces so that it
+only outputs the namespace name to match the online MSDN content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>ApplyVSDocModel.xsl</localUri> so that it correctly includes the type element
+for member list pages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Cleaned up the VS2010 presentation style by removing a lot of unused elements.  Also removed
+all the unused branding templates and moved most of the processing back into the presentation style as a first
+step to getting rid of branding completely.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up a number of minor issues in all presentation styles found while removing the branding
+transformations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a VS2013 presentation style.  This is currently a clone of the VS2010 style with some
+changes to get rid of the background images, alter the syntax and code block tabs styles, and add collapsible
+sections.  A future release will make further changes to bring it closer to the online Visual Studio content
+style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -1,8 +1,8 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Tools Standard Presentation Styles
-// File    : VisualStudi2010.cs
+// File    : VisualStudio2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2014
+// Updated : 04/13/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,8 +31,8 @@ namespace Sandcastle.PresentationStyles
     /// This contains the definition for the Visual Studio 2010 presentation style
     /// </summary>
     [PresentationStyleExport("VS2010", "VS2010", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2010 and " +
-      "later in the Microsoft Help Viewer.")]
+      Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2010 in " +
+      "Microsoft Help Viewer 1.0.")]
     public sealed class VisualStudio2010 : PresentationStyleSettings
     {
         /// <inheritdoc />
@@ -75,6 +75,7 @@ namespace Sandcastle.PresentationStyles
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file
             // system.
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.MSHelp2, @"Help2\*.*", @".\styles"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));

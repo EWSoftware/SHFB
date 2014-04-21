@@ -141,6 +141,7 @@
   <item id="title_relatedTopics">См. также</item>
   <item id="title_extensionUsage">Примечание об использовании</item>
   <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/bb384936.aspx" target="_blank">Методы расширения (Visual Basic)</a> или <a href="http://msdn.microsoft.com/ru-ru/library/bb383977.aspx" target="_blank">Методы расширения (Руководство по программированию в C#)</a> <conceptualLink target="b8020aae-374d-46a9-bcb7-8cc2390b93b6" /> или <conceptualLink target="175ce3ff-9bbf-4e64-8421-faeb81a0bb51" />.</item>
+	<item id="text_moreInheritance">More...</item>
 
 	<!-- table headers -->
 	<item id="header_namespaceName">Пространство имён</item>
@@ -211,7 +212,7 @@
   <item id="Overloaded">Перегружен. </item>
   <item id="defaultNamespace">(пространство имён по-умолчанию)</item>
   
-  <item id="typeLink">Тип: {0}</item>
+  <item id="typeLink">Тип:&#160;{0}</item>
   <!-- First line of a param or retval description is a link to the type of the param or retval.
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><strong>{0}</strong> - параметр типа {1}.</item>
@@ -225,11 +226,8 @@
                    prefer-overload="true" /> или в разделе <a href="http://msdn.microsoft.com/ru-ru/library/ms172338.aspx" target="_blank">программирование SQL Server и атрибуты защиты основного приложения</a> <conceptualLink target="7dfa36b4-e773-4c75-a3ff-ff1af3ce4c4f" />.</item>
 
 	<!-- Obsolete boilerplate text -->
-	<item id="boilerplate_obsoleteShort"><span class="obsolete">Устаревшее.</span></item>
-	<item id="boilerplate_obsoleteLong"><span class="obsolete">Данный API устарел.</span></item>
-	<item id="boilerplate_obsoleteNonobsoleteAlternative">Поддерживаемый аналог: {0}.</item>
-  <item id="boilerplate_obsoleteRed"><font color="red"><strong>Устарело. </strong></font></item>
-  <item id="boilerplate_obsolete"><font color="red"><strong>Примечание: Данный API устарел.</strong></font></item>
+  <item id="boilerplate_obsoleteShort"><strong>Устарело. </strong></item>
+  <item id="boilerplate_obsoleteLong"><strong>Примечание: Данный API устарел.</strong></item>
 
 	<!-- Group and SubGroup text -->
 	<item id="text_classLower">класс</item>
@@ -388,10 +386,7 @@
 	  <strong>Примечание для платформы {0}:</strong> {1}
   </item>
   <item id="boilerplate_systemRequirementsLink">
-	  <p/>
-	  <span>
-		  <include item="netfw"/> и <include item="netcfw"/> поддерживают не все версии каждой платформы. Поддерживаемые версии перечислены в разделе <a href="http://msdn.microsoft.com/ru-ru/library/8z6watww.aspx" target="_blank">Требования к системе для .NET Framework</a>.
-	  </span>
+	  <p><include item="netfw"/> и <include item="netcfw"/> поддерживают не все версии каждой платформы. Поддерживаемые версии перечислены в разделе <a href="http://msdn.microsoft.com/ru-ru/library/8z6watww.aspx" target="_blank">Требования к системе для .NET Framework</a>.</p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds --> 
@@ -520,11 +515,6 @@
   <item id="allMembersTitle">Члены</item>
 	<item id="membersTitle">Список перегрузки</item>
   <item id="hostProtectionAttributeShort"><include item="text_hostProtectionAttribute"/></item>
-	<item id="obsoleteShort"><include item="boilerplate_obsoleteShort"/></item>
-	<item id="obsoleteLong"><include item="boilerplate_obsoleteLong"/></item>
-	<item id="nonobsoleteAlternative"><include item="boilerplate_obsoleteNonobsoleteAlternative"><parameter>{0}</parameter></include></item>
-  <item id="obsoleteRed"><include item="boilerplate_obsoleteRed"/></item>
-  <item id="ObsoleteBoilerPlate"><include item="boilerplate_obsolete"/></item>
 	<item id="classLower"><include item="text_classLower"/></item>
   <item id="delegateLower"><include item="text_delegateLower"/></item>
   <item id="structureLower"><include item="text_structureLower"/></item>

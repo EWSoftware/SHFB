@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="682c2e1c-54d2-4128-80ff-f6dc63d2f58d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This property page allows you to define scripts that run before and/or after the build.  The extended
+editor dialog box that is resizable and contains a list of the common macros can be accessed by clicking the
+button following each property editor text box.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>By specifying a custom build event, you can automatically run commands before a build starts or
+after it finishes. For example, you can run a <localUri>.bat</localUri> file before a build starts or copy the
+build output to a folder after the build is completed.  Build events run only if the build successfully reaches
+those points in the build process.  The scripts consist of the same commands that you would use at the command
+prompt.  Macros can be used to substitute common values from the project such as the project path, the project
+name, the current configuration, etc.</para>
+
+				<para>The following are some general tips on creating pre-build and post-build event scripts:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Place each command on a separate line.  Separate each with a line break.</para>
+					</listItem>
+
+					<listItem>
+						<para>Add a <codeInline>call</codeInline> statement before all build events that run
+<localUri>.bat</localUri> files.  For example: <codeInline>call C:\Project\CopyMyFiles.bat</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>If you specify files or macros that can contain path or file names, enclose them in quotes
+so that the commands handle paths and filenames containing spaces correctly.  For example:
+<codeInline>COPY "$(ProjectDir)Help\*.*" "C:\Project\Build Output\"</codeInline></para>
+					</listItem>
+
+					<listItem>
+						<para>In the extended editor dialog box, select a macro from the grid below the text box and click
+the <ui>Insert</ui> button to insert it at the current cursor location.  An example of the macro's value
+based on the current project settings is shown to the right of its name.</para>
+					</listItem>
+
+					<listItem>
+						<para>The pre-build event will run unconditionally.  The post-build event can be set to run only if
+the build succeeds or to run always by changing the value in the combo box following the post-build event text
+box on the property page.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<!-- Add related topics -->
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

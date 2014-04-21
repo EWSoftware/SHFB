@@ -247,7 +247,7 @@ namespace Microsoft.Ddue.Tools
                         break;
 
                     case ConceptualLinkType.Index:
-                        writer.WriteStartElement("mshelp", "link", "http://msdn.microsoft.com/mshelp");
+                        writer.WriteStartElement("MSHelp", "link", "http://msdn.microsoft.com/mshelp");
                         writer.WriteAttributeString("keywords", info.Target);
                         writer.WriteAttributeString("tabindex", "0");
                         break;
