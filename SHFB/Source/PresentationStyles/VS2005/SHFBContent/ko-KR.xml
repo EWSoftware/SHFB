@@ -32,6 +32,9 @@
 
     <!-- reference_content.xml overrides -->
     <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
+    <!-- This is used when a title is not specified in the project -->
+    <item id="rootTopicTitleLocalized">네임스페이스</item>
+
     <item id="productTitle">{@HtmlEncHelpTitle}</item>
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 

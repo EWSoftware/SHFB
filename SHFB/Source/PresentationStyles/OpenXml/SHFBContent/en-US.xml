@@ -3,6 +3,8 @@
 	<!-- NOTE: This file must appear LAST in the list of content files so that these items override the matching
 						 items in the stock content files! -->
 
-  <item id="topicTitle_root">{@RootNamespaceTitle}</item>
+	<item id="topicTitle_root">{@RootNamespaceTitle}</item>
+	<!-- This is used when a title is not specified in the project -->
+	<item id="rootTopicTitleLocalized">Namespaces</item>
 
 </content>

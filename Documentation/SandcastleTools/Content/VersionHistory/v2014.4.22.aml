@@ -2,7 +2,7 @@
 <topic id="bcbab5f1-b036-4901-9be8-8f940a1f49a8" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.4.21.0." />
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.4.22.0." />
 		</introduction>
 
 		<section address="SandcastleTools">
