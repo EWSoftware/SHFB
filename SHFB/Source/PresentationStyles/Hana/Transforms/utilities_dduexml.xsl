@@ -623,7 +623,7 @@
 									<xsl:value-of select="ddue:title" />
 								</span>
 							</h1>
-							<div id="sectionSection{$sectionCount}" class="section" name="collapseableSection" style="">
+							<div id="sectionSection{$sectionCount}" class="section" name="collapseableSection">
 								<xsl:apply-templates select="ddue:content"/>
 								<xsl:apply-templates select="ddue:sections" />
 							</div>
@@ -1282,7 +1282,7 @@
 			</span>
 		</h1>
 
-		<div id="{$toggleSection}" class="section" name="collapseableSection" style="">
+		<div id="{$toggleSection}" class="section" name="collapseableSection">
 			<xsl:copy-of select="$content" />
 		</div>
 
@@ -1765,8 +1765,9 @@
 	<xsl:template match="ddue:glossaryDiv">
 		<xsl:if test="@address">
 			<a>
-				<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
+				<!-- Keep this on one line or the spaces preceding the address end up in the anchor name -->
 				<xsl:attribute name="name"><xsl:value-of select="@address"/></xsl:attribute>
+				<xsl:text> </xsl:text>
 			</a>
 		</xsl:if>
 		<div class="glossaryDiv">
@@ -1818,6 +1819,7 @@
 				<xsl:attribute name="name">
 					<xsl:value-of select="$link"/>
 				</xsl:attribute>
+				<xsl:text> </xsl:text>
 			</a>
 			<h3 class="glossaryGroupHeading">
 				<xsl:value-of select="$name"/>
@@ -1838,8 +1840,9 @@
 
 				<xsl:if test="@termId">
 					<a>
-						<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
+						<!-- Keep this on one line or the spaces preceding the address end up in the anchor name -->
 						<xsl:attribute name="name"><xsl:value-of select="@termId"/></xsl:attribute>
+						<xsl:text> </xsl:text>
 					</a>
 				</xsl:if>
 
@@ -1937,12 +1940,26 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Pass through a chunk of markup.  This will allow build components
-       to add HTML to a pre-transformed document.  You can also use it in
-       topics to support things such as video or image maps that aren't
-       addressed by the MAML schema and the Sandcastle transforms. -->
-	<xsl:template match="ddue:markup">
-		<xsl:copy-of select="node()"/>
+	<!-- ============================================================================================
+	Pass through a chunk of markup.  This differs from the API markup template in that it must strip
+	off the "ddue" namespace.  This will allow build components to add HTML elements to a
+	pre-transformed document.  You can also use it in topics to support things that aren't addressed
+	by the MAML schema and the Sandcastle transforms.
+	============================================================================================= -->
+
+	<xsl:template match="ddue:markup" name="t_ddue_markup">
+		<xsl:apply-templates select="node()" mode="markup"/>
+	</xsl:template>
+
+	<xsl:template match="*" mode="markup" name="t_ddue_markup_content">
+		<xsl:element name="{name()}">
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates select="node()" mode="markup"/>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template match="text() | comment()" mode="markup" name="t_ddue_markup_text">
+		<xsl:copy-of select="."/>
 	</xsl:template>
 
 </xsl:stylesheet>
