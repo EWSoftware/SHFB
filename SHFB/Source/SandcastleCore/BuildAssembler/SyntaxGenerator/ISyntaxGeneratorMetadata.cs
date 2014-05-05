@@ -38,7 +38,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
 
         /// <summary>
         /// This read-only property is used to get the keyword style parameter value used by the client side
-        /// script in the topics for language specific keyword text.
+        /// script in the topics for language-specific keyword text.
         /// </summary>
         string KeywordStyleParameter { get; }
 

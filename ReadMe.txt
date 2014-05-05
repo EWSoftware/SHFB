@@ -82,7 +82,8 @@ your changed version.
 
 Before using the source code version, you will need to build the tools and the reflection data files.  To do
 this, open a command prompt, change into the root folder and run the MasterBuild.bat script.  This will build
-the tools and place them in the SHFB\Deploy folder ready for use.  Once that completes, change into the
+the tools and place them in the SHFB\Deploy folder ready for use.  By default, the Release version is built.
+To build a debug version, pass in the command line parameter Debug.  Once that completes, change into the
 SHFB\Deploy\Data folder and execute the BuildReflectionData.bat script.  This will generate the reflection data
 files for the .NET Framework into a temporary folder.  Rename the folder it creates to "Reflection".
 

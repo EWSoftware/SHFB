@@ -134,23 +134,20 @@
 					</xsl:when>
 				</xsl:choose>
 
-				<!-- Autogenerate codeLang attributes based on the snippets -->
+				<!-- Auto-generate codeLang attributes based on the snippets -->
 				<xsl:call-template name="t_mshelpCodelangAttributes">
-					<xsl:with-param name="snippets"
-													select="/document/topic/*//ddue:snippets/ddue:snippet" />
+					<xsl:with-param name="snippets" select="//*[@language]" />
 				</xsl:call-template>
 
 				<!-- authored attributes -->
 				<xsl:for-each select="/document/metadata/attribute">
-					<MSHelp:Attr Name="{@name}"
-											 Value="{text()}" />
+					<MSHelp:Attr Name="{@name}" Value="{text()}" />
 				</xsl:for-each>
 
 				<!-- TopicType attribute -->
 				<xsl:for-each select="/document/topic/*[1]">
 					<MSHelp:Attr Name="TopicType">
-						<includeAttribute name="Value"
-															item="meta_mshelp_topicType_{local-name()}"/>
+						<includeAttribute name="Value" item="meta_mshelp_topicType_{local-name()}"/>
 					</MSHelp:Attr>
 				</xsl:for-each>
 

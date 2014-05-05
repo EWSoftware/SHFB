@@ -191,7 +191,7 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(IOException e)
                 {
-                    base.WriteMessage(key, MessageLevel.Error, "An access error occured while attempting to " +
+                    base.WriteMessage(key, MessageLevel.Error, "An access error occurred while attempting to " +
                         "save to the file '{0}'. The error message is: {1}", path, e.GetExceptionMessage());
                 }
                 catch(XmlException e)

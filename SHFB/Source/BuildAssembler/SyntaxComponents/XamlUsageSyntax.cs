@@ -28,11 +28,13 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "XAML", StyleIdName = "xaml";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("XAML Usage", "XAML", "cs", AlternateIds = "XamlUsage, xml", SortOrder = 90,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("XAML Usage", LanguageName, StyleIdName, AlternateIds = "XamlUsage, xaml",
+          SortOrder = 90, Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates XAML usage syntax sections",
           DefaultConfiguration="<filter files=\"{@SHFBFolder}PresentationStyles\\Shared\\configuration\\xamlSyntax.config\" />\r\n" +
 			"{@XamlConfigFiles}")]
@@ -41,7 +43,7 @@ namespace Microsoft.Ddue.Tools
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new XamlUsageSyntaxGenerator();
+                return new XamlUsageSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion
@@ -57,7 +59,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            writer.WriteStartBlock(Language);
+            writer.WriteStartBlock(this.Language, this.StyleId);
 
             // Check the list of assemblies for which to generate XAML syntax
             string assemblyName = (string)reflection.Evaluate(apiContainingAssemblyExpression);

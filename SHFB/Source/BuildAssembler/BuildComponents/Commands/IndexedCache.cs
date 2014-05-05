@@ -197,7 +197,7 @@ namespace Microsoft.Ddue.Tools.Commands
             }
             catch(IOException e)
             {
-                this.Component.WriteMessage(MessageLevel.Error, "An access error occured while attempting to " +
+                this.Component.WriteMessage(MessageLevel.Error, "An access error occurred while attempting to " +
                     "load the file '{0}'. The error message is: {1}", file, e.Message);
             }
             catch(XmlException e)
@@ -234,7 +234,7 @@ namespace Microsoft.Ddue.Tools.Commands
             }
             catch(IOException e)
             {
-                this.Component.WriteMessage(MessageLevel.Error, "An access error occured while attempting to " +
+                this.Component.WriteMessage(MessageLevel.Error, "An access error occurred while attempting to " +
                     "load the file '{0}'. The error message is: {1}", file, e.Message);
             }
             catch(XmlException e)

@@ -263,20 +263,19 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="example"
-								name="t_example">
+	<xsl:template match="example" name="t_example">
 		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"
-											select="'title_examples'"/>
+			<xsl:with-param name="p_titleInclude" select="'title_examples'"/>
 			<xsl:with-param name="p_content">
 				<xsl:apply-templates/>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="code"
-								name="t_code">
-		<xsl:call-template name="t_putCodeSection"/>
+	<xsl:template match="codeSnippetGroup" name="t_code">
+		<xsl:call-template name="t_putCodeSections">
+			<xsl:with-param name="p_nodes" select="./code" />
+		</xsl:call-template>
 	</xsl:template>
 
 	<!-- Details (nonstandard) -->
@@ -329,14 +328,11 @@
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'title_syntax'"/>
 				<xsl:with-param name="p_content">
-					<div id="snippetGroup_Syntax" class="code">
-						<xsl:call-template name="t_putCodeSections">
-							<xsl:with-param name="p_codeNodes" select="./div[@codeLanguage]"/>
-							<xsl:with-param name="p_nodeCount" select="count(./div[@codeLanguage])"/>
-							<xsl:with-param name="p_codeLangAttr" select="'codeLanguage'"/>
-						</xsl:call-template>
-					</div>
-					<!-- parameters & return value -->
+					<!-- Syntax sections -->
+					<xsl:call-template name="t_putSyntaxSections">
+						<xsl:with-param name="p_nodes" select="./div[@codeLanguage]"/>
+					</xsl:call-template>
+					<!-- Parameters & return value -->
 					<xsl:apply-templates select="/document/reference/parameters"/>
 					<xsl:apply-templates select="/document/reference/templates"/>
 					<xsl:choose>
@@ -351,7 +347,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:apply-templates select="/document/reference/implements"/>
-					<!-- usage note for extension methods -->
+					<!-- Usage note for extension methods -->
 					<xsl:if test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.ExtensionAttribute'] and boolean($g_apiSubGroup='method')">
 						<xsl:call-template name="t_putSubSection">
 							<xsl:with-param name="p_title">
@@ -837,11 +833,9 @@
 
 	<xsl:template name="t_putSeeAlsoSection">
 		<xsl:if test="$g_hasSeeAlsoSection">
-			<xsl:element name="a">
-				<xsl:attribute name="name">seeAlsoSection</xsl:attribute>
-			</xsl:element>
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'title_relatedTopics'"/>
+				<xsl:with-param name="p_id" select="'seeAlsoSection'"/>
 				<xsl:with-param name="p_content">
 					<xsl:if test="$g_hasReferenceLinks">
 						<xsl:call-template name="t_putSubSection">
@@ -1196,7 +1190,7 @@
 	<xsl:template name="t_codelangAttributes">
 		<xsl:call-template name="t_mshelpCodelangAttributes">
 			<xsl:with-param name="snippets"
-											select="/document/comments/example/code"/>
+											select="/document/comments/example//code"/>
 		</xsl:call-template>
 	</xsl:template>
 

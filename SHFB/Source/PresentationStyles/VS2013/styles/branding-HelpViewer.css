@@ -1,0 +1,21 @@
+/* Style adjustments for Help Viewer */
+.codeSnippetContainerTabs {
+    top: 1px;
+}
+.codeSnippetToolBarText {
+	top: -12px;
+}
+.codeSnippetContainerTabPhantom {
+	padding: 2px 15px 0px 15px;
+	height: 22px;
+}
+.codeSnippetContainerTabSingle {
+	padding: 2px 15px 0px 15px;
+	height: 22px;
+}
+.codeSnippetContainerTab a:visited {
+	color: rgb(0, 0, 0);
+}
+.codeSnippetContainerTabActive a:visited {
+	color: rgb(0, 0, 0);
+}

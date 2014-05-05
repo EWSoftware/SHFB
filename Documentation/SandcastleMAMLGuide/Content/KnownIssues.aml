@@ -3,9 +3,8 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>This topic covers known issues and bugs with Sandcastle and conceptual content.  Currently, the
-VS2005 presentation style is the best choice for conceptual content as it contains no known issues beyond those
-noted in the <legacyBold>General Issues</legacyBold> section.  The list does not include issues fixed by the
-noted patch.</para>
+VS2013 presentation style is the best choice for conceptual content as it contains no known issues beyond those
+noted in the <legacyBold>General Issues</legacyBold> section.</para>
     </introduction>
 
     <section address="General">
@@ -49,7 +48,7 @@ will not toggle the visibility on code examples.</para>
         </list>
 
 				<alert class="note">
-					<para>This presentation style has been deprecated and is no longer supported by Microsoft.</para>
+					<para>This presentation style has been deprecated and is no longer supported.</para>
 				</alert>
       </content>
     </section>
@@ -69,11 +68,25 @@ will not toggle the visibility on code examples.</para>
         </list>
 
 				<alert class="note">
-					<para>This presentation style has been deprecated and is no longer supported by Microsoft.</para>
+					<para>This presentation style has been deprecated and is no longer supported.</para>
 				</alert>
 			</content>
     </section>
 
+		<section address="VS2005">
+			<title>VS2005 Presentation Style Issues</title>
+			<content>
+				<para>The only known issue with this presentation style is that the language filter will not persist its
+selection between pages in website output when viewed with Internet Explorer 10 or later nor the latest releases
+of FireFox and Chrome.  It uses binary behaviors to save the language filter settings which are no longer
+supported.</para>
+
+				<alert class="note">
+					<para>This presentation style has been deprecated and is no longer supported.</para>
+				</alert>
+			</content>
+		</section>
+		
     <relatedTopics>
       <link xlink:href="303c996a-2911-4c08-b492-6496c82b3edb" />
     </relatedTopics>

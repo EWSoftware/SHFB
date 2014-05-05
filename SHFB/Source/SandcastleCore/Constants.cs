@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : Constants.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2014
+// Updated : 05/04/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,7 +41,7 @@ namespace Sandcastle.Core
         public const string AppName = "Sandcastle Help File Builder";
 
         /// <summary>The default presentation style</summary>
-        public const string DefaultPresentationStyle = "VS2005";
+        public const string DefaultPresentationStyle = "VS2013";
 
         /// <summary>
         /// The application folder in which the component and user data files are stored.

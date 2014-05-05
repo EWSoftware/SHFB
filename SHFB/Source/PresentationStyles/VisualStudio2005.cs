@@ -30,9 +30,10 @@ namespace Sandcastle.PresentationStyles
     /// <summary>
     /// This contains the definition for the Visual Studio 2005 presentation style
     /// </summary>
-    [PresentationStyleExport("VS2005", "VS2005", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2005 and " +
-      "Visual Studio 2008.")]
+    [PresentationStyleExport("VS2005", "VS2005 (Deprecated)", IsDeprecated = true,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright, Description = "This style " +
+        "has been deprecated and is no longer supported.  This is the style used by Visual Studio 2005 and " +
+        "Visual Studio 2008.")]
     public sealed class VisualStudio2005 : PresentationStyleSettings
     {
         /// <inheritdoc />

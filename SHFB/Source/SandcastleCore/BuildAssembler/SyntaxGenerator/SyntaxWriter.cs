@@ -8,6 +8,8 @@
 // 03/17/2013 - EFW - Added the RenderReferenceLinks property to control whether or not reference links are
 // written as identifiers or actual reference links.
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
+// 04/26/2014 - Changed WriteStartBlock to add a style ID to each syntax element for better handling within the
+// XSL transformations.
 
 using System.Collections.Generic;
 
@@ -55,8 +57,9 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <summary>
         /// Write a start block
         /// </summary>
-        /// <param name="language">The language of the block</param>
-        public abstract void WriteStartBlock(string language);
+        /// <param name="codeLanguage">The code language of the block</param>
+        /// <param name="styleId">The style ID of the block</param>
+        public abstract void WriteStartBlock(string codeLanguage, string styleId);
 
         /// <summary>
         /// Write a start sub-block

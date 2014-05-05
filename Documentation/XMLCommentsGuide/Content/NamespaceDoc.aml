@@ -15,7 +15,7 @@ this class are found in the XML comments files they will be used as the namespac
 This will cause the class to be automatically ignored when reflection information is generated for the assembly.
 The following is an example:</para>
 
-<code language="cs" title="C# NamespaceDoc Example">
+<code language="cs">
 namespace Company.Product.Widgets
 {
     /// &lt;summary&gt;
@@ -28,7 +28,7 @@ namespace Company.Product.Widgets
 }
 </code>
 
-<code language="vbnet" title="VB.NET NamespaceDoc Example">
+<code language="vbnet">
 Namespace Company.Product.Widgets
     ''' &lt;summary&gt;
     ''' These are the namespace comments for &lt;c&gt;Company.Product.Widgets&lt;/c&gt;.

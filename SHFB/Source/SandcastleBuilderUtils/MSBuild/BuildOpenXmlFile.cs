@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildOpenXmlFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/08/2014
+// Updated : 04/24/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -679,13 +679,13 @@ namespace SandcastleBuilder.Utils.MSBuild
                     break;
 
                 case "languageSpecificText":
-                    // Replace language specific text with the generic text sub-entry
+                    // Replace language-specific text with the neutral text sub-entry.  If not found, remove it.
                     var genericText = span.Elements("span").FirstOrDefault(s => (string)s.Attribute("class") == "nu");
 
                     if(genericText != null)
                         span.ReplaceWith(new XElement(w + "r", new XElement(w + "t", genericText.Value)));
                     else
-                        span.ReplaceWith(new XElement(w + "r", new XElement(w + "t", ".")));
+                        span.Remove();
                     return;
 
                 case "Bold":

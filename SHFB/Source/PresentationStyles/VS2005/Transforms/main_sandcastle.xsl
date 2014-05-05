@@ -1269,7 +1269,7 @@
 			</span>
 		</h1>
 
-		<div id="{$toggleSection}" class="section" name="collapseableSection" style="">
+		<div id="{$toggleSection}" class="section" name="collapseableSection">
 			<xsl:copy-of select="$content" />
 		</div>
 

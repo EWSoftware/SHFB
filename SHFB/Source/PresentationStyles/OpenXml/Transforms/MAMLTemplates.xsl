@@ -1219,10 +1219,10 @@
 	</xsl:template>
 
 	<!-- ============================================================================================
-	Pass through a chunk of markup.
-	This will allow build components to add Open XML elements to a pre-transformed document.
-	You can also use it in topics to support things that aren't addressed by the MAML schema and the
-	Sandcastle transforms.
+	Pass through a chunk of markup.  This differs from the API markup template in that it must strip
+	off the "ddue" namespace.  This will allow build components to add Open XML elements to a
+	pre-transformed document.  You can also use it in topics to support things that aren't addressed
+	by the MAML schema and the Sandcastle transforms.
 	============================================================================================= -->
 
 	<xsl:template match="ddue:markup" name="t_ddue_markup">

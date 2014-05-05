@@ -2,8 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								version="2.0"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
-								xmlns:mtps="http://msdn2.microsoft.com/mtps"
-								xmlns:xhtml="http://www.w3.org/1999/xhtml"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
@@ -131,8 +129,6 @@
 								name="t_ddue_section">
 		<!-- display the section only if it has content (text or media)-->
 		<xsl:if test="descendant::ddue:content[normalize-space(.)] or descendant::ddue:content/*">
-
-			<xsl:apply-templates select="@address"/>
 			<!-- Count all the possible ancestor root nodes -->
 			<xsl:variable name="a1"
 										select="count(ancestor::ddue:attributesandElements)"/>
@@ -181,9 +177,9 @@
 				<xsl:when test="($total = 0) or ($total = 1)">
 					<xsl:call-template name="t_putSection">
 						<xsl:with-param name="p_title">
-							<xsl:apply-templates select="ddue:title"
-																	 mode="section"/>
+							<xsl:apply-templates select="ddue:title" mode="section"/>
 						</xsl:with-param>
+						<xsl:with-param name="p_id" select="@address" />
 						<xsl:with-param name="p_content">
 							<xsl:apply-templates select="ddue:content"/>
 							<xsl:apply-templates select="ddue:sections"/>
@@ -192,8 +188,12 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<h4 class="subHeading">
-						<xsl:apply-templates select="ddue:title"
-																 mode="section"/>
+						<xsl:if test="@address">
+							<xsl:attribute name="id">
+								<xsl:value-of select="@address"/>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:apply-templates select="ddue:title" mode="section"/>
 					</h4>
 					<div class="subsection">
 						<xsl:apply-templates select="ddue:content"/>
@@ -208,11 +208,6 @@
 								mode="section"
 								name="t_ddue_sectionTitle">
 		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="@address"
-								name="t_ddue_address">
-		<a id="{string(.)}"/>
 	</xsl:template>
 
 	<!-- ============================================================================================
@@ -304,18 +299,14 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="ddue:syntaxSection"
-								name="t_ddue_syntaxSection">
-		<div id="syntaxSection"
-				 class="section">
+	<xsl:template match="ddue:syntaxSection" name="t_ddue_syntaxSection">
+		<div id="syntaxSection" class="section">
 			<xsl:if test="ddue:legacySyntax">
-				<div id="snippetGroup_Syntax"
-						 class="code">
+				<div id="snippetGroup_Syntax" class="code">
 					<xsl:for-each select="ddue:legacySyntax">
-						<xsl:call-template name="t_putCodeSection">
-							<xsl:with-param name="p_transformCode"
-															select="true()"/>
-						</xsl:call-template>
+						<div class="OH_CodeSnippetContainerCode">
+							<pre xml:space="preserve"><xsl:apply-templates xml:space="preserve"/></pre>
+						</div>
 					</xsl:for-each>
 				</div>
 			</xsl:if>
@@ -334,13 +325,22 @@
 
 	<xsl:template match="ddue:procedure"
 								name="t_ddue_procedure">
-		<xsl:apply-templates select="@address"/>
 		<xsl:if test="normalize-space(ddue:title)">
 			<h3 class="procedureSubHeading">
+				<xsl:if test="@address">
+					<xsl:attribute name="id">
+						<xsl:value-of select="@address"/>
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:value-of select="ddue:title"/>
 			</h3>
 		</xsl:if>
 		<div class="subSection">
+			<xsl:if test="@address and not(normalize-space(ddue:title))">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates select="ddue:steps"/>
 			<xsl:apply-templates select="ddue:conclusion"/>
 		</div>
@@ -375,7 +375,11 @@
 	<xsl:template match="ddue:step"
 								name="t_ddue_step">
 		<li>
-			<xsl:apply-templates select="@address"/>
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</li>
 	</xsl:template>
@@ -697,7 +701,7 @@
 					</xsl:apply-templates>
 				</xsl:if>
 				<xsl:apply-templates/>
-				<p></p>
+				<p><xsl:text> </xsl:text></p>
 			</div>
 		</xsl:if>
 	</xsl:template>
@@ -709,7 +713,7 @@
 				<xsl:when test="$newSection = 'yes'">
 					<div id="errorTitleSection" class="section">
 						<xsl:apply-templates/>
-						<p></p>
+						<p><xsl:text> </xsl:text></p>
 					</div>
 				</xsl:when>
 				<xsl:otherwise>
@@ -792,7 +796,11 @@
 
 	<xsl:template match="ddue:listItem" name="t_ddue_listItem">
 		<li>
-			<xsl:apply-templates select="@address" />
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates />
 		</li>
 	</xsl:template>
@@ -822,7 +830,11 @@
 
 	<xsl:template match="ddue:entry" name="t_ddue_entry">
 		<td>
-			<xsl:apply-templates select="@address"/>
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</td>
 	</xsl:template>
@@ -841,7 +853,11 @@
 
 	<xsl:template match="ddue:definedTerm" name="t_ddue_definedTerm">
 		<dt>
-			<xsl:apply-templates select="@address"/>
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates/>
 		</dt>
 	</xsl:template>
@@ -856,54 +872,23 @@
 	Code
 	============================================================================================= -->
 
-	<xsl:template match="ddue:snippets"
-								name="t_ddue_snippets">
-		<xsl:if test="ddue:snippet">
-			<xsl:element name="div">
-				<xsl:attribute name="id">
-					<xsl:value-of select="concat('snippetGroup_',generate-id())"/>
-				</xsl:attribute>
-				<xsl:for-each select="ddue:snippet">
-					<xsl:call-template name="t_putCodeSection"/>
-				</xsl:for-each>
-			</xsl:element>
+	<xsl:template match="ddue:snippets" name="t_ddue_snippets">
+		<xsl:if test="ddue:codeSnippetGroup">
+			<xsl:for-each select="ddue:codeSnippetGroup">
+				<xsl:call-template name="t_putCodeSections">
+					<xsl:with-param name="p_nodes" select="./ddue:snippet" />
+				</xsl:call-template>
+			</xsl:for-each>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:code"
-								name="t_ddue_code">
-		<xsl:variable name="v_currentId">
-			<xsl:value-of select="generate-id(.)"/>
-		</xsl:variable>
-		<xsl:variable name="v_prevPosition">
-			<xsl:for-each select="parent::*/child::*">
-				<xsl:if test="generate-id(.)=$v_currentId">
-					<xsl:number value="position()-1"/>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:variable>
-
-		<xsl:choose>
-			<xsl:when test="name(parent::*/child::*[position()=$v_prevPosition])=name()">
-			</xsl:when>
-			<xsl:when test="following-sibling::*[1]/self::ddue:code">
-				<xsl:variable name="v_codeNodes"
-											select=". | following-sibling::ddue:code[not(preceding-sibling::*[generate-id(.)=generate-id((current()/following-sibling::*[not(self::ddue:code)])[1])])]"/>
-				<xsl:call-template name="t_putCodeSections">
-					<xsl:with-param name="p_codeNodes"
-													select="$v_codeNodes"/>
-					<xsl:with-param name="p_nodeCount"
-													select="count($v_codeNodes)"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="t_putCodeSection"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<xsl:template match="ddue:codeSnippetGroup" name="t_ddue_code">
+		<xsl:call-template name="t_putCodeSections">
+			<xsl:with-param name="p_nodes" select="./ddue:code" />
+		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="ddue:sampleCode"
-								name="t_ddue_sampleCode">
+	<xsl:template match="ddue:sampleCode" name="t_ddue_sampleCode">
 		<div>
 			<span class="label">
 				<xsl:value-of select="@language"/>
@@ -914,12 +899,10 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="ddue:codeExamples"
-								name="t_ddue_codeExamples">
+	<xsl:template match="ddue:codeExamples" name="t_ddue_codeExamples">
 		<xsl:if test="normalize-space(.)">
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="'title_examples'"/>
+				<xsl:with-param name="p_titleInclude" select="'title_examples'"/>
 				<xsl:with-param name="p_content">
 					<xsl:apply-templates/>
 					<xsl:call-template name="t_moreCodeSection"/>
@@ -937,8 +920,8 @@
 	<xsl:template name="t_moreCodeSection">
 		<xsl:variable name="v_gotCodeAlready"
 									select="boolean(
-													(ddue:codeExample/ddue:legacy/ddue:content[ddue:codeReference[ddue:sampleCode] | ddue:code | ddue:snippets/ddue:snippet]) or
-													(ddue:codeExample[ddue:codeReference[ddue:sampleCode] | ddue:code | ddue:snippets/ddue:snippet])
+													(ddue:codeExample/ddue:legacy/ddue:content[ddue:codeReference[ddue:sampleCode] | ddue:code | ddue:snippets//ddue:snippet]) or
+													(ddue:codeExample[ddue:codeReference[ddue:sampleCode] | ddue:code | ddue:snippets//ddue:snippet])
 													)"/>
 
 		<xsl:variable name="v_gotMoreCode"
@@ -1430,25 +1413,20 @@
 	</xsl:template>
 
 	<!-- ============================================================================================
-	Pass through a chunk of markup (changing its namespace to xhtml).
-	This will allow build components to add HTML to a pre-transformed document.
-	You can also use it in topics to support things such as video or image maps
-	that aren't addressed by the MAML schema and the Sandcastle transforms.
+	Pass through a chunk of markup.  This differs from the API markup template in that it must strip
+	off the "ddue" namespace.  This will allow build components to add HTML elements to a
+	pre-transformed document.  You can also use it in topics to support things that aren't addressed
+	by the MAML schema and the Sandcastle transforms.
 	============================================================================================= -->
 
-	<xsl:template match="ddue:markup"
-								name="t_ddue_markup">
-		<xsl:apply-templates select="node()"
-												 mode="markup"/>
+	<xsl:template match="ddue:markup" name="t_ddue_markup">
+		<xsl:apply-templates select="node()" mode="markup"/>
 	</xsl:template>
 
-	<xsl:template match="*"
-								mode="markup"
-								name="t_ddue_markup_content">
+	<xsl:template match="*" mode="markup" name="t_ddue_markup_content">
 		<xsl:element name="{name()}">
 			<xsl:copy-of select="@*"/>
-			<xsl:apply-templates select="node()"
-													 mode="markup"/>
+			<xsl:apply-templates select="node()" mode="markup"/>
 		</xsl:element>
 	</xsl:template>
 
@@ -1664,9 +1642,7 @@
 					<xsl:if test="ddue:title">
 						<xsl:choose>
 							<xsl:when test="@address">
-								<a>
-									<!-- Keep this on one line or the spaces preceeding the "#" end up in the anchor name -->
-									<xsl:attribute name="href">#<xsl:value-of select="@address"/></xsl:attribute>
+								<a href="#{@address}">
 									<xsl:value-of select="ddue:title" />
 								</a>
 							</xsl:when>
@@ -1692,15 +1668,13 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="ddue:glossaryDiv"
-								name="t_ddue_glossaryDiv">
-		<xsl:if test="@address">
-			<a>
-				<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
-				<xsl:attribute name="name"><xsl:value-of select="@address"/></xsl:attribute>
-			</a>
-		</xsl:if>
+	<xsl:template match="ddue:glossaryDiv" name="t_ddue_glossaryDiv">
 		<div class="ps_glossaryDiv">
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:if test="ddue:title">
 				<h2 class="ps_glossaryDivHeading">
 					<xsl:value-of select="ddue:title"/>
@@ -1708,13 +1682,11 @@
 			</xsl:if>
 			<hr class="ps_glossaryRule"/>
 			<xsl:call-template name="t_glossaryLetterBar">
-				<xsl:with-param name="p_sectionPrefix"
-												select="generate-id()"/>
+				<xsl:with-param name="p_sectionPrefix" select="generate-id()"/>
 			</xsl:call-template>
 			<br/>
 			<xsl:call-template name="t_glossaryGroupByEntriesTermFirstLetter">
-				<xsl:with-param name="p_sectionPrefix"
-												select="generate-id()"/>
+				<xsl:with-param name="p_sectionPrefix" select="generate-id()"/>
 			</xsl:call-template>
 		</div>
 	</xsl:template>
@@ -1747,21 +1719,27 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="ddue:glossaryEntry"
-								name="t_ddue_glossaryEntry">
+	<xsl:template match="ddue:glossaryEntry" name="t_ddue_glossaryEntry">
 		<dt class="ps_glossaryEntry">
-			<xsl:apply-templates select="@address" />
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:for-each select="ddue:terms/ddue:term">
 				<xsl:sort select="normalize-space(.)" />
 
-				<xsl:if test="@termId">
-					<a>
-						<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
-						<xsl:attribute name="name"><xsl:value-of select="@termId"/></xsl:attribute>
-					</a>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="@termId">
+						<span id="{@termId}">
+							<xsl:value-of select="normalize-space(.)" />
+						</span>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="normalize-space(.)" />
+					</xsl:otherwise>
+				</xsl:choose>
 
-				<xsl:value-of select="normalize-space(.)" />
 				<xsl:if test="position() != last()">
 					<xsl:text>, </xsl:text>
 				</xsl:if>
@@ -1775,11 +1753,8 @@
 					<include item="text_relatedEntries" />&#160;
 
 					<xsl:for-each select="ddue:relatedEntry">
-						<xsl:variable name="id"
-													select="@termId" />
-						<a>
-							<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
-							<xsl:attribute name="href" xml:space="preserve">#<xsl:value-of select="@termId"/></xsl:attribute>
+						<xsl:variable name="id" select="@termId" />
+						<a href="#{@termId}">
 							<xsl:value-of select="//ddue:term[@termId=$id]"/>
 						</a>
 						<xsl:if test="position() != last()">
@@ -1796,12 +1771,10 @@
 		<xsl:param name="p_name"/>
 		<xsl:param name="p_nodes"/>
 		<div class="ps_glossaryGroup">
-			<a>
-				<xsl:attribute name="name">
+			<h3 class="ps_glossaryGroupHeading">
+				<xsl:attribute name="id">
 					<xsl:value-of select="$p_link"/>
 				</xsl:attribute>
-			</a>
-			<h3 class="ps_glossaryGroupHeading">
 				<xsl:value-of select="$p_name"/>
 			</h3>
 			<dl class="ps_glossaryGroupList">
@@ -1813,16 +1786,12 @@
 	</xsl:template>
 
 	<xsl:template name="t_glossaryLetterBar">
-		<xsl:param name="p_sectionPrefix"
-							 select="''"/>
+		<xsl:param name="p_sectionPrefix" select="''"/>
 		<div class="ps_glossaryLetterBar">
 			<xsl:call-template name="t_glossaryLetterBarLinkRecursive">
-				<xsl:with-param name="p_sectionPrefix"
-												select="$p_sectionPrefix"/>
-				<xsl:with-param name="p_bar"
-												select="$g_allUpperCaseLetters"/>
-				<xsl:with-param name="p_characterPosition"
-												select="1"/>
+				<xsl:with-param name="p_sectionPrefix" select="$p_sectionPrefix"/>
+				<xsl:with-param name="p_bar" select="$g_allUpperCaseLetters"/>
+				<xsl:with-param name="p_characterPosition" select="1"/>
 			</xsl:call-template>
 		</div>
 	</xsl:template>
@@ -1873,8 +1842,7 @@
 		<xsl:param name="p_name"/>
 		<xsl:choose>
 			<xsl:when test="$p_link">
-				<a>
-					<xsl:attribute name="href" xml:space="preserve">#<xsl:value-of select="$p_link"/></xsl:attribute>
+				<a href="#{$p_link}">
 					<xsl:value-of select="$p_name"/>
 				</a>
 			</xsl:when>

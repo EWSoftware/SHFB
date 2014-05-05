@@ -456,9 +456,6 @@
     <Content Include="VS2005\SHFBContent\zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2010\Branding\CodeSnippet.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="VS2010\Configuration\conceptual.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -468,58 +465,13 @@
     <Content Include="VS2010\Configuration\sandcastle.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2013\Branding\branding-cs-CZ.xslt">
+    <Content Include="VS2010\styles\branding-Help1.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2013\Branding\branding-de-DE.xslt">
+    <Content Include="VS2010\styles\branding-Help2.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2013\Branding\branding-en-US.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-es-ES.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-fr-FR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-it-IT.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-ja-JP.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-ko-KR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-pl-PL.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-pt-BR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-ru-RU.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-tr-TR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-zh-CN.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding-zh-TW.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\branding.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\CodeSnippet.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Branding\ps-codesnippet.xslt">
+    <Content Include="VS2010\styles\branding-HelpViewer.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Content\conceptual_content.xml">
@@ -747,6 +699,12 @@
     <Content Include="VS2013\styles\branding-fr-FR.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="VS2013\styles\branding-Help1.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\styles\branding-Help2.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="VS2013\styles\branding-it-IT.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -766,6 +724,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\styles\branding-tr-TR.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\styles\branding-HelpViewer.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\styles\branding-zh-CN.css">
@@ -1895,57 +1856,6 @@
     <Content Include="VS2005\Transforms\xamlSyntax.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2010\Branding\branding-cs-CZ.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-de-DE.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-en-US.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-es-ES.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-fr-FR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-it-IT.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-ja-JP.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-ko-KR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-pl-PL.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-pt-BR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-ru-RU.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-tr-TR.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-zh-CN.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding-zh-TW.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\branding.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Branding\ps-codesnippet.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="VS2010\Content\conceptual_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1992,9 +1902,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2010\Data\bibliography.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Help2\branding.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2010\icons\alert_caution.gif">
@@ -2227,6 +2134,7 @@
     </Content>
     <Content Include="VS2010\Transforms\main_sandcastle.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2010\Transforms\metadataHelp20.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

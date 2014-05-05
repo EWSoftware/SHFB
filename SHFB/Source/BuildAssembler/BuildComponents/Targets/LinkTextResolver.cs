@@ -978,11 +978,16 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 writer.WriteStartElement("span");
                 writer.WriteAttributeString("class", "languageSpecificText");
-                // when there are no parameters, VB shows no parenthesis
 
                 writer.WriteStartElement("span");
                 writer.WriteAttributeString("class", "cs");
                 writer.WriteString("()");
+                writer.WriteEndElement();
+
+                // When there are no parameters, VB shows no parenthesis
+                writer.WriteStartElement("span");
+                writer.WriteAttributeString("class", "vb");
+                writer.WriteString(String.Empty);
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("span");
@@ -1027,11 +1032,16 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 writer.WriteStartElement("span");
                 writer.WriteAttributeString("class", "languageSpecificText");
-                // when there are no parameters, VB shows no parenthesis
 
                 writer.WriteStartElement("span");
                 writer.WriteAttributeString("class", "cs");
                 writer.WriteString("()");
+                writer.WriteEndElement();
+
+                // When there are no parameters, VB shows no parenthesis
+                writer.WriteStartElement("span");
+                writer.WriteAttributeString("class", "vb");
+                writer.WriteString(String.Empty);
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("span");
@@ -1061,7 +1071,6 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 IList<Parameter> parameters = target.Parameters;
 
-                // VB only shows parenthesis when there are parameters
                 if(parameters.Count > 0)
                 {
                     writer.WriteStartElement("span");

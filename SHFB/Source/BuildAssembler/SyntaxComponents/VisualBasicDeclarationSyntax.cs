@@ -28,10 +28,12 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "VisualBasic", StyleIdName = "vb";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("Visual Basic", "VisualBasic", "vb",
+        [SyntaxGeneratorExport("Visual Basic", LanguageName, StyleIdName,
           AlternateIds = "VisualBasic, vb, vb#, vbnet, vb.net", IsConfigurable = true, SortOrder = 20,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates Visual Basic declaration syntax sections",
@@ -41,7 +43,7 @@ namespace Microsoft.Ddue.Tools
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new VisualBasicDeclarationSyntaxGenerator();
+                return new VisualBasicDeclarationSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion

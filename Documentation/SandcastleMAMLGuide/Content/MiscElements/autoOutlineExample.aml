@@ -1,66 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="1a817894-db7a-4c7f-bd67-cca896affa35" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction address="Intro">
-      <!-- No depth option so only show top-level sections here -->
-      <autoOutline />
-      <para>The introduction.  If <codeInline>&lt;autoOutline /&gt;</codeInline>
-is included, this paragraph can be omitted.</para>
-      <!-- Note that placing the autoOutline element here would place
-         the section outline below the intro paragraph. -->
-    </introduction>
-    <section address="S1">
-      <title>Section 1</title>
-      <content>
-        <para>This is section 1.</para>
-        <!-- This will include sub-sections in the outline up to three
-           levels down.  It also uses custom lead-in text. -->
-        <autoOutline lead="Select a sub-section:">3</autoOutline>
-      </content>
-      <sections>
-        <section address="SS1">
-          <title>Sub-section 1</title>
-          <content>
-            <para>This is sub-section 1.</para>
-          </content>
-        </section>
-        <section address="SS2">
-          <title>Sub-section 2</title>
-          <content>
-            <!-- No <autoOutline /> in here so no outline -->
-            <para>This is sub-section 2.</para>
-          </content>
-          <sections>
-            <section address="SSS1">
-              <title>Sub-sub-section 1</title>
-              <content>
-                <para>This is sub-sub-section 1.</para>
-              </content>
-            </section>
-            <section address="SSS2">
-              <title>Sub-sub-section 2</title>
-              <content>
-                <para>This is sub-sub-section 2.</para>
+		<introduction address="Intro">
+			<!-- No depth option so only show top-level sections here -->
+			<autoOutline />
+			<para>The introduction.  If <codeInline>&lt;autoOutline /&gt;</codeInline>
+is included, this paragraph can be omitted.
+			</para>
+			<!-- Note that placing the autoOutline element here would place
+					 the section outline below the intro paragraph. -->
+		</introduction>
+		<section address="S1">
+			<title>Section 1</title>
+			<content>
+				<para>This is section 1.</para>
+				<!-- This will include sub-sections in the outline up to three
+						 levels down.  It also uses custom lead-in text. -->
+				<autoOutline lead="Select a sub-section:">3</autoOutline>
+			</content>
+			<sections>
+				<section address="SS1">
+					<title>Sub-section 1</title>
+					<content>
+						<para>This is sub-section 1.</para>
+					</content>
+				</section>
+				<section address="SS2">
+					<title>Sub-section 2</title>
+					<content>
+						<!-- No <autoOutline /> in here so no outline -->
+						<para>This is sub-section 2.</para>
+					</content>
+					<sections>
+						<section address="SSS1">
+							<title>Sub-sub-section 1</title>
+							<content>
+								<para>This is sub-sub-section 1.</para>
+							</content>
+						</section>
+						<section address="SSS2">
+							<title>Sub-sub-section 2</title>
+							<content>
+								<para>This is sub-sub-section 2.</para>
 								<para>
 									<link xlink:href="#Intro">Back to the Top</link>
 								</para>
-              </content>
-            </section>
-          </sections>
-        </section>
-      </sections>
-    </section>
-    <section address="S2">
-      <title>Section 2</title>
-      <content>
-        <para>This is section 2.</para>
-      </content>
-    </section>
-    <relatedTopics>
-      <link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" />
-    </relatedTopics>
-  </developerConceptualDocument>
+							</content>
+						</section>
+					</sections>
+				</section>
+			</sections>
+		</section>
+		<section address="S2">
+			<title>Section 2</title>
+			<content>
+				<para>This is section 2.</para>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

@@ -21,10 +21,12 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "AspNet", StyleIdName = "asp";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("ASP.NET", "AspNet", "cs", AlternateIds = "AspNet, asp", SortOrder = 100,
+        [SyntaxGeneratorExport("ASP.NET", LanguageName, StyleIdName, AlternateIds = "AspNet, asp", SortOrder = 100,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates ASP.NET declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
@@ -39,8 +41,6 @@ namespace Microsoft.Ddue.Tools
 
         #region Private data members
         //=====================================================================
-
-        private const string Language = "AspNet";
 
         private static XPathExpression nameExpression = XPathExpression.Compile("string(apidata/@name)");
         private static XPathExpression groupExpression = XPathExpression.Compile("string(apidata/@group)");
@@ -137,7 +137,7 @@ namespace Microsoft.Ddue.Tools
         {
             string name = (string)reflection.Evaluate(nameExpression);
 
-            writer.WriteStartBlock(Language);
+            writer.WriteStartBlock(LanguageName, StyleIdName);
 
             writer.WriteString("<");
             writer.WriteString(prefix);
@@ -167,7 +167,7 @@ namespace Microsoft.Ddue.Tools
 
             bool isInnerProperty = (bool)reflection.Evaluate(propertyIsInnerProperty);
 
-            writer.WriteStartBlock(Language);
+            writer.WriteStartBlock(LanguageName, StyleIdName);
 
             if(isInnerProperty)
             {
@@ -242,7 +242,7 @@ namespace Microsoft.Ddue.Tools
             string declaringType = (string)reflection.Evaluate(declaringTypeExpression);
             string handlerType = (string)reflection.Evaluate(eventHandlerTypeExpression);
 
-            writer.WriteStartBlock(Language);
+            writer.WriteStartBlock(LanguageName, StyleIdName);
 
             writer.WriteString("<");
             writer.WriteString(prefix);

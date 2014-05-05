@@ -26,18 +26,20 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "CSharp", StyleIdName = "cs";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("C#", "CSharp", "cs", AlternateIds = "CSharp, cs", SortOrder = 10,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("C#", LanguageName, StyleIdName, AlternateIds = "CSharp, cs",
+          SortOrder = 10, Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates C# declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new CSharpDeclarationSyntaxGenerator();
+                return new CSharpDeclarationSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion

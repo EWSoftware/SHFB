@@ -505,7 +505,7 @@
 									<xsl:value-of select="ddue:title" />
 								</span>
 							</h1>
-							<div id="sectionSection{$sectionCount}" class="section" name="collapseableSection" style="">
+							<div id="sectionSection{$sectionCount}" class="section" name="collapseableSection">
 								<xsl:apply-templates select="ddue:content"/>
 								<xsl:apply-templates select="ddue:sections" />
 							</div>
@@ -1113,7 +1113,7 @@
 			<xsl:copy-of select="$nonToggletitle" />
 		</h1>
 
-		<div id="{$toggleSection}" class="section" name="collapseableSection" style="">
+		<div id="{$toggleSection}" class="section" name="collapseableSection">
 			<xsl:copy-of select="$content" />
 			<xsl:if test="boolean($toplink)">
 				<a href="#mainBody">
@@ -1737,9 +1737,7 @@
 					<xsl:if test="ddue:title">
 						<xsl:choose>
 							<xsl:when test="@address">
-								<a>
-									<!-- Keep this on one line or the spaces preceeding the "#" end up in the anchor name -->
-									<xsl:attribute name="href">#<xsl:value-of select="@address"/></xsl:attribute>
+								<a href="#{@address}">
 									<xsl:value-of select="ddue:title" />
 								</a>
 							</xsl:when>
@@ -1766,13 +1764,12 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:glossaryDiv">
-		<xsl:if test="@address">
-			<a>
-				<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
-				<xsl:attribute name="name"><xsl:value-of select="@address"/></xsl:attribute>
-			</a>
-		</xsl:if>
 		<div class="glossaryDiv">
+			<xsl:if test="@address">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@address"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:if test="ddue:title">
 				<h2 class="glossaryDivHeading">
 					<xsl:value-of select="ddue:title"/>
@@ -1821,6 +1818,7 @@
 				<xsl:attribute name="name">
 					<xsl:value-of select="$link"/>
 				</xsl:attribute>
+				<xsl:text> </xsl:text>
 			</a>
 			<h3 class="glossaryGroupHeading">
 				<xsl:value-of select="$name"/>
@@ -1839,14 +1837,17 @@
 			<xsl:for-each select="ddue:terms/ddue:term">
 				<xsl:sort select="normalize-space(.)" />
 
-				<xsl:if test="@termId">
-					<a>
-						<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
-						<xsl:attribute name="name"><xsl:value-of select="@termId"/></xsl:attribute>
-					</a>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="@termId">
+						<span id="{@termId}">
+							<xsl:value-of select="normalize-space(.)" />
+						</span>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="normalize-space(.)" />
+					</xsl:otherwise>
+				</xsl:choose>
 
-				<xsl:value-of select="normalize-space(.)" />
 				<xsl:if test="position() != last()">
 					<xsl:text>, </xsl:text>
 				</xsl:if>
@@ -1861,9 +1862,7 @@
 
 					<xsl:for-each select="ddue:relatedEntry">
 						<xsl:variable name="id" select="@termId" />
-						<a>
-							<!-- Keep this on one line or the spaces preceeding the address end up in the anchor name -->
-							<xsl:attribute name="href">#<xsl:value-of select="@termId"/></xsl:attribute>
+						<a href="#{@termId}">
 							<xsl:value-of select="//ddue:term[@termId=$id]"/>
 						</a>
 						<xsl:if test="position() != last()">
@@ -1940,12 +1939,26 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Pass through a chunk of markup.  This will allow build components
-       to add HTML to a pre-transformed document.  You can also use it in
-       topics to support things such as video or image maps that aren't
-       addressed by the MAML schema and the Sandcastle transforms. -->
-	<xsl:template match="ddue:markup">
-		<xsl:copy-of select="node()"/>
+	<!-- ============================================================================================
+	Pass through a chunk of markup.  This differs from the API markup template in that it must strip
+	off the "ddue" namespace.  This will allow build components to add HTML elements to a
+	pre-transformed document.  You can also use it in topics to support things that aren't addressed
+	by the MAML schema and the Sandcastle transforms.
+	============================================================================================= -->
+
+	<xsl:template match="ddue:markup" name="t_ddue_markup">
+		<xsl:apply-templates select="node()" mode="markup"/>
+	</xsl:template>
+
+	<xsl:template match="*" mode="markup" name="t_ddue_markup_content">
+		<xsl:element name="{name()}">
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates select="node()" mode="markup"/>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template match="text() | comment()" mode="markup" name="t_ddue_markup_text">
+		<xsl:copy-of select="."/>
 	</xsl:template>
 
 </xsl:stylesheet>

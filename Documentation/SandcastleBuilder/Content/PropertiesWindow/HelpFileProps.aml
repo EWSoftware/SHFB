@@ -239,7 +239,9 @@ the "#")</para>
 the code, the HTML files will reside in an <localUri>html\</localUri> folder and will have a <localUri>.htm</localUri>
 extension so be sure to add them to the resulting topic filename.</para>
 
-<code language="cs" title="C# - GUID">
+		<para><legacyBold>GUID Method</legacyBold></para>
+
+<code language="cs">
 // Compute the MD5 hash of the member name.  Assume
 // memberName contains the member name of the topic
 // to show.
@@ -257,7 +259,7 @@ Help.ShowHelp(parentForm, helpFilePath,
     HelpNavigator.Topic, @"html\" + pageId.ToString() + ".htm");
 </code>
 
-<code language="vbnet" title="VB.NET - GUID">
+<code language="vbnet">
 ' Compute the MD5 hash of the member name.  Assume
 ' memberName contains the member name of the topic
 ' to show.
@@ -275,7 +277,9 @@ Help.ShowHelp(parentForm, helpFilePath, _
     HelpNavigator.Topic, "html\" &amp; pageId.ToString() &amp; ".htm")
 </code>
 
-<code language="cs" title="C# - MemberName">
+		<para><legacyBold>Member Name Method</legacyBold></para>
+
+<code language="cs">
 Regex reInvalidChars = new Regex("[ :.`#&lt;&gt;*?]");
 
 // Assume memberName contains the member name of the
@@ -289,7 +293,7 @@ Help.ShowHelp(parentForm, helpFilePath,
     HelpNavigator.Topic, @"html\" + pageName + ".htm");
 </code>
 
-<code language="vbnet" title="VB.NET - MemberName">
+<code language="vbnet">
 Dim reInvalidChars As New Regex("[ :.`#&lt;&gt;*?]")
 
 ' Assume memberName contains the member name of the
@@ -303,7 +307,9 @@ Help.ShowHelp(parentForm, helpFilePath, _
     HelpNavigator.Topic, "html\" &amp; pageName &amp; ".htm")
 </code>
 
-<code language="cs" title="C# - HashedMemberName">
+		<para><legacyBold>Hashed Member Name Method</legacyBold></para>
+
+<code language="cs">
 // Assume memberName contains the member name of the
 // topic to show.
 string pageName = String.Format("{0:X}",
@@ -315,7 +321,7 @@ Help.ShowHelp(parentForm, helpFilePath,
     HelpNavigator.Topic, @"html\" + pageName + ".htm");
 </code>
 
-<code language="vbnet" title="VB.NET - HashedMemberName">
+<code language="vbnet">
 ' Assume memberName contains the member name of the
 ' topic to show.
 Dim pageName As String = String.Format("{0:X}", _

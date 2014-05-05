@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleExportAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 05/01/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -58,6 +58,11 @@ namespace Sandcastle.Core.PresentationStyle
         /// This is used to get or set copyright information for the presentation style
         /// </summary>
         public string Copyright { get; set; }
+
+        /// <summary>
+        /// This read-only property is used to indicate that the presentation style has been deprecated
+        /// </summary>
+        public bool IsDeprecated { get; set; }
 
         #endregion
 

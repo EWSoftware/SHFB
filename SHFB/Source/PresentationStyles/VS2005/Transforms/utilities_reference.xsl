@@ -969,9 +969,6 @@
 
 		<xsl:call-template name="memberIntro" />
 
-		<!-- TODO: factor out these duplicated Xpaths by a new conditional in memberlistSection:
-         count($members) &gt; 0 -->
-
 		<xsl:if test="$filteredOverloadElements[apidata[@subgroup='constructor']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]">
 			<xsl:call-template name="memberlistSection">
 				<xsl:with-param name="headerGroup" select="'constructor'" />

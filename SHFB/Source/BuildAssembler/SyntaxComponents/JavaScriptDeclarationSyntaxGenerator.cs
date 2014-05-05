@@ -50,18 +50,20 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "JavaScript", StyleIdName = "js";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("JavaScript", "JavaScript", "cs", AlternateIds = "js, ecmascript", SortOrder = 80,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("JavaScript", LanguageName, StyleIdName, AlternateIds = "js, ecmascript",
+          SortOrder = 80, Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates JavaScript declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new JavaScriptDeclarationSyntaxGenerator();
+                return new JavaScriptDeclarationSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/18/2014
+// Updated : 05/02/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,8 +31,8 @@ namespace Sandcastle.PresentationStyles
     /// This contains the definition for the Visual Studio 2013 presentation style
     /// </summary>
     [PresentationStyleExport("VS2013", "VS2013", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2013 and " +
-      "later in the Microsoft Help Viewer.")]
+      Copyright = AssemblyInfo.Copyright, Description = "This style is similar to the one used for Visual " +
+        "Studio and MSDN online content.")]
     public sealed class VisualStudio2013 : PresentationStyleSettings
     {
         /// <inheritdoc />
@@ -49,17 +49,8 @@ namespace Sandcastle.PresentationStyles
             // The base path of the presentation style files relative to the assembly's location
             this.BasePath = "VS2013";
 
-            // The X-UA-Compatible metadata element is used to force the Help 1 and MS Help Viewer 2.x viewers
-            // to render the content using the latest browser version.  If not, they default to IE 7.0 emulation
-            // complete with all of its issues which can affect the rendered content.  Note that due to a bug in
-            // the MS Help Viewer 1.0 transforms it places its style sheet and branding script elements ahead of
-            // our element which renders it useless.  Not much we can do about that.  We use different style
-            // names where possible to avoid display issues too (a "VS2013_" prefix instead of an "OH_" prefix).
-            // The element also renders the MSHelp:link elements inoperable so we cannot support Help 2 output.
-            // The VS2005 style is a closer match to the old Help 2 content so no attempt will be made to force
-            // this style to work in the old Help 2 viewer.
-            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelpViewer |
-                HelpFileFormats.Website;
+            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelp2 |
+                HelpFileFormats.MSHelpViewer | HelpFileFormats.Website;
 
             this.SupportsNamespaceGrouping = true;
 
@@ -112,6 +103,10 @@ namespace Sandcastle.PresentationStyles
                 null, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " +
                 "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " +
                 "assembly file version value if specified."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("defaultLanguage", true, true,
+                "cs", "The default language to use for syntax sections, code snippets, and a language-specific " +
+                "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " +
+                "third-party syntax generator if you want to use a non-standard language as the default."));
         }
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/26/2014
+// Updated : 05/01/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -173,7 +173,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 }
 
                 cblSyntaxFilters.Items.AddRange(syntaxGenerators.Select(f => f.Id).OrderBy(f => f).ToArray());
-                cboPresentationStyle.DataSource = presentationStyles.OrderBy(s => s.Id).ToList();
+                cboPresentationStyle.DataSource = presentationStyles.OrderBy(s => s.IsDeprecated ? 1 : 0).ThenBy(
+                    s => s.Id).ToList();
                 cboPresentationStyle.SelectedValue = Constants.DefaultPresentationStyle;
 
                 // Resize the syntax filter columns to the widest entry

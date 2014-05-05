@@ -26,10 +26,14 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        // The usage syntax generator shares a common style ID with the declaration syntax generator.  Selecting
+        // either one will show the VB code snippets.
+        private const string LanguageName = "VisualBasicUsage", StyleIdName = "vb";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("Visual Basic Usage", "VisualBasicUsage", "vb",
+        [SyntaxGeneratorExport("Visual Basic Usage", LanguageName, StyleIdName,
           AlternateIds = "VisualBasicUsage, vbusage, vbnetusage", IsConfigurable = true, SortOrder = 30,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates Visual Basic usage syntax sections",
@@ -39,7 +43,7 @@ namespace Microsoft.Ddue.Tools
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new VisualBasicUsageSyntaxGenerator();
+                return new VisualBasicUsageSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion

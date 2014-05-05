@@ -33,8 +33,8 @@
     <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>VS2005</PresentationStyle>
-    <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <SyntaxFilters>Standard</SyntaxFilters>
     <HelpFileVersion>2014.4.22.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>

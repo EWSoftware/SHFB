@@ -75,17 +75,23 @@
     <Compile Include="..\..\SandcastleCore\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="AdditionalHeaderResourcesComponent.cs" />
     <Compile Include="Commands\CopyCommand.cs" />
     <Compile Include="Commands\CopyFromFileCommand.cs" />
     <Compile Include="Commands\CopyFromFilesCommand.cs" />
     <Compile Include="Commands\CopyFromIndexCommand.cs" />
     <Compile Include="Commands\IndexedCache.cs" />
     <Compile Include="Commands\InMemoryIndexedCache.cs" />
+    <Compile Include="LanguageSpecificTextComponent.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Snippets\CodeSnippet.cs" />
+    <Compile Include="Snippets\CodeSnippetGroup.cs" />
     <Compile Include="Snippets\ColorizationRule.cs" />
     <Compile Include="Snippets\Region.cs" />
     <Compile Include="Snippets\SnippetIdentifier.cs" />
@@ -138,6 +144,7 @@
     <Compile Include="Transform.cs" />
     <Compile Include="TransformComponent.cs" />
     <Compile Include="TransformedTopicEventArgs.cs" />
+    <Compile Include="TransformingTopicEventArgs.cs" />
     <Compile Include="UI\IntelliSenseConfigDlg.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -8,6 +8,10 @@
 
 	<xsl:import href="globalTemplates.xsl"/>
 
+	<!-- TODO: Is anything in here actually used besides xamlXmlnsInfo?  Do XAML syntax sections work properly
+						 without this stuff?  Either implement it if needed or remove it.  It is used in the VS2005 style
+						 for syntax sections.  Compare to see how they look. -->
+	
 	<!-- ============================================================================================
 	Global Variables
 	============================================================================================= -->
@@ -402,7 +406,7 @@
 	<xsl:template name="showXamlValuesSection">
 		<xsl:for-each select="//ddue:section[starts-with(@address,'xamlValues')]">
 			<div id="xamlValues">
-				<p></p>
+				<p><xsl:text> </xsl:text></p>
 				<xsl:call-template name="t_putSubSection">
 					<xsl:with-param name="p_title">
 						<include item="xamlValuesSectionHeading" />

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2014
+// Updated : 05/04/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1245,7 +1245,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the presentation style for the help topic pages.
         /// </summary>
-        /// <value>The default is to use the VS2005 style.</value>
+        /// <value>The default is to use the VS2013 style.</value>
         [Category("Help File"), Description("Select which presentation style to use for the generated " +
           "help topic pages"), EscapeValue, RefreshProperties(RefreshProperties.Repaint)]
         public string PresentationStyle

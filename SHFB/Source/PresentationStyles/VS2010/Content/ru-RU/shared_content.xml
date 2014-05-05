@@ -78,13 +78,13 @@
   <item id="inline_dynamicLink_separatorText"> и </item>
   
   <!-- devlang -->
-  <item id="devlang_VisualBasic">Visual Basic</item>
-  <item id="devlang_VisualBasicDeclaration">Visual Basic</item>
-  <item id="devlang_VisualBasicUsage">Visual Basic использование</item>
-  <item id="devlang_VBScript">Visual Basic Script</item>
+  <item id="devlang_VisualBasic">VB</item>
+  <item id="devlang_VisualBasicDeclaration">VB</item>
+  <item id="devlang_VisualBasicUsage">VB использование</item>
+  <item id="devlang_VBScript">VBScript</item>
   <item id="devlang_CSharp">C#</item>
-  <item id="devlang_visualbasicANDcsharp">Visual Basic и C#</item>
-  <item id="devlang_ManagedCPlusPlus">Visual C++</item>
+  <item id="devlang_visualbasicANDcsharp">VB и C#</item>
+  <item id="devlang_ManagedCPlusPlus">C++</item>
   <item id="devlang_JSharp">J#</item>
   <item id="devlang_JScript">JScript</item>
   <item id="devlang_xmlLang">XML</item>

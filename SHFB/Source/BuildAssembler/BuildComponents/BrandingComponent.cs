@@ -1,5 +1,7 @@
 ﻿// Change history:
 // 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
+// 04/27/2014 - EFW - Deprecated this component as it is no longer used.  It will be removed in a future release.
+// Presentation styles should now generate all aspects of the topic.
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,13 @@ namespace Microsoft.Ddue.Tools
     /// This component applies formatting that makes the help content compatible with
     /// the MS Help Viewer branding package.
     /// </summary>
-    /// <remarks>There are three different possible operation modes:
+    /// <remarks>
+    /// <note type="warning">PLEASE NOTE: The Branding Component has been deprecated.  Presentation styles are
+    /// now responsible for generating all aspects of the topic.  This component will be removed in a future
+    /// release.</note>
+    /// 
+    /// <para>There are three different possible operation modes:</para>
+    /// 
     /// <list type="number">
     /// <item>For self-branded MS Help Viewer content, it applies the branding package formatting
     /// that the MS Help Viewer would apply if the content were not self-branded (except for
@@ -131,6 +139,10 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc/>
         public override void Initialize(XPathNavigator configuration)
         {
+            base.WriteMessage(MessageLevel.Warn, "PLEASE NOTE: The Branding Component has been deprecated.  " +
+                "Presentation styles are now responsible for generating all aspects of the topic.  This " +
+                "component will be removed in a future release.");
+
             XPathNavigator v_configData = configuration.SelectSingleNode("data");
             String v_configValue;
 
@@ -689,7 +701,7 @@ namespace Microsoft.Ddue.Tools
                     v_spanElement.InnerText = "&#160;";
                     v_scriptElement = document.CreateElement("script");
                     v_scriptElement.SetAttribute("type", "text/javascript");
-                    v_scriptElement.InnerText = String.Format(CultureInfo.InvariantCulture, "addToLanSpecTextIdSet(\"{0}?{1}\");", v_uniqueId, v_partText);
+                    v_scriptElement.InnerText = String.Format(CultureInfo.InvariantCulture, "AddLanguageSpecificTextSet(\"{0}?{1}\");", v_uniqueId, v_partText);
 
                     v_node.ParentNode.InsertAfter(v_scriptElement, v_node);
                     v_node.ParentNode.ReplaceChild(v_spanElement, v_node);

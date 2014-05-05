@@ -7,6 +7,7 @@
 // 10/14/2012 - EFW - Added code to raise a component event to signal that the topic has been transformed.
 // The event uses the new TransformedTopicEventArgs as the event arguments.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 04/27/2014 - EFW - Added support for a "transforming topic" event that happens prior to transformation
 
 using System;
 using System.Collections.Generic;
@@ -152,6 +153,9 @@ namespace Microsoft.Ddue.Tools
         /// list when each topic is transformed.  It will contain the current topic's key.</note></remarks>
         public override void Apply(XmlDocument document, string key)
         {
+            // Raise a component event to signal that the topic is about to be transformed
+            base.OnComponentEvent(new TransformingTopicEventArgs(key, document));
+
             foreach(Transform transform in transforms)
             {
                 // Add the key as a parameter to the arguments
@@ -171,7 +175,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(XsltException e)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An error ocurred while executing the " +
+                        base.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
                             "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
                             e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
                             e.InnerException.Message);

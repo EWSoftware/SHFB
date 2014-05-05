@@ -28,10 +28,12 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "ManagedCPlusPlus", StyleIdName = "cpp";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("Managed C++", "ManagedCPlusPlus", "cpp",
+        [SyntaxGeneratorExport("Managed C++", LanguageName, StyleIdName,
           AlternateIds = "CPlusPlus, ManagedCPlusPlus, cpp, cpp#, c++", SortOrder = 40,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates Managed C++ declaration syntax sections")]
@@ -40,7 +42,7 @@ namespace Microsoft.Ddue.Tools
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new ManagedCPlusPlusDeclarationSyntaxGenerator();
+                return new ManagedCPlusPlusDeclarationSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion

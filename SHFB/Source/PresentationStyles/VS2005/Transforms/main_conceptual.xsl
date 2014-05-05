@@ -470,8 +470,7 @@
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
-				<!--for toplevel outlines include a link to See Also-->
-				<!-- xsl:if test="starts-with($outlineType,'toplevel') and //ddue:relatedTopics[normalize-space(.)!='']"  -->
+				<!-- For top level outlines include a link to See Also-->
 				<xsl:if test="starts-with($outlineType,'toplevel') and count(//ddue:relatedTopics/*) > 0">
 					<li class="outlineSectionEntry">
 						<a>
@@ -484,17 +483,20 @@
 		</xsl:if>
 	</xsl:template>
 
-	<!--a list item in the outline's bullet list-->
+	<!-- A list item in the outline's bullet list -->
 	<xsl:template name="outlineSectionEntry">
 		<xsl:if test="descendant::ddue:content[normalize-space(.)] or count(ddue:content/*) &gt; 0">
 			<li class="outlineSectionEntry">
-				<a>
-					<xsl:if test="@address">
-						<!-- Keep this on one line or the spaces preceeding the "#" end up in the anchor name -->
-						<xsl:attribute name="href">#<xsl:value-of select="@address"/></xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="ddue:title" />
-				</a>
+				<xsl:choose>
+					<xsl:when test="@address">
+						<a href="#{@address}">
+							<xsl:value-of select="ddue:title" />
+						</a>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="ddue:title" />
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:if test="normalize-space(ddue:summary)">
 					<div class="outlineSectionEntrySummary">
 						<xsl:apply-templates select="ddue:summary/node()"/>

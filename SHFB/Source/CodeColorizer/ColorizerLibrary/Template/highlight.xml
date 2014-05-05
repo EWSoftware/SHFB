@@ -1261,7 +1261,7 @@
 			</contexts>
 		</language>
 		<!-- XML -->
-		<language id="xml" tabSize="4" name="XML">
+		<language id="xml" tabSize="2" name="XML">
 			<contexts default="value">
 				<!-- Value context -->
 				<context id="value" attribute="xml-value">
@@ -1318,7 +1318,7 @@
 			</contexts>
 		</language>
 		<!-- XAML -->
-		<language id="xaml" tabSize="4" name="XAML">
+		<language id="xaml" tabSize="2" name="XAML">
 			<contexts default="value">
 				<!-- Value context -->
 				<context id="value" attribute="xml-value">
@@ -1375,7 +1375,7 @@
 			</contexts>
 		</language>
 		<!-- SQL language specification -->
-		<language id="sql" not-case-sensitive="yes" tabSize="4" name="SQL">
+		<language id="sql" not-case-sensitive="yes" tabSize="8" name="SQL">
 			<!-- Code contexts: default (most common) is code. -->
 			<contexts default="code">
 				<!-- basic source code context -->

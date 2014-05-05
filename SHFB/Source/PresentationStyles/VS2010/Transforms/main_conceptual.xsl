@@ -3,8 +3,6 @@
 								version="2.0"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
-								xmlns:mtps="http://msdn2.microsoft.com/mtps"
-								xmlns:xhtml="http://www.w3.org/1999/xhtml"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
 								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
 >
@@ -60,7 +58,7 @@
 						</parameter>
 					</includeAttribute>
 				</link>
-				<!-- Hack to fix up the background image URLs in Help Viewer 2.  See onLoad() in Branding.js.
+				<!-- Hack to fix up the background image URLs in Help Viewer 2.  See OnLoad() in branding.js.
 						 NOTE: These MUST appear INLINE and BEFORE the Branding.css file or the script will not find them. -->
 				<style type="text/css">.OH_CodeSnippetContainerTabLeftActive, .OH_CodeSnippetContainerTabLeft,.OH_CodeSnippetContainerTabLeftDisabled { }.OH_CodeSnippetContainerTabRightActive, .OH_CodeSnippetContainerTabRight,.OH_CodeSnippetContainerTabRightDisabled { }.OH_footer { }</style>
 				<link rel="stylesheet" type="text/css">
@@ -83,6 +81,7 @@
 							<xsl:value-of select="'branding.js'"/>
 						</parameter>
 					</includeAttribute>
+					<xsl:text> </xsl:text>
 				</script>
 
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -92,10 +91,11 @@
 				</title>
 				<xsl:call-template name="t_insertMetadataHelp30"/>
 				<xsl:call-template name="t_insertMetadataHelp20"/>
-				<xsl:call-template name="t_insertMetadata"/>
 				<link type="text/css" rel="stylesheet" href="ms-help://Hx/HxRuntime/HxLink.css" />
 			</head>
-			<body onload="onLoad()">
+			<body onload="OnLoad('{$defaultLanguage}')">
+				<input type="hidden" id="userDataCache" class="userDataStyle" />
+
 				<div class="OH_outerDiv">
 					<div class="OH_outerContent">
 						<xsl:call-template name="t_bodyTitle"/>
@@ -180,8 +180,12 @@
 	<xsl:template match="ddue:introduction">
 		<!-- Display the introduction only if it has content -->
 		<xsl:if test="count(*) &gt; 0">
-			<xsl:apply-templates select="@address"/>
 			<div class="introduction">
+				<xsl:if test="@address">
+					<xsl:attribute name="id">
+						<xsl:value-of select="@address"/>
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:apply-templates/>
 			</div>
 		</xsl:if>
@@ -250,15 +254,11 @@
 
 	<xsl:template match="ddue:relatedTopics">
 		<xsl:if test="$g_hasSeeAlsoSection">
-			<xsl:element name="a">
-				<xsl:attribute name="name">seeAlsoSection</xsl:attribute>
-			</xsl:element>
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="'title_relatedTopics'"/>
+				<xsl:with-param name="p_titleInclude" select="'title_relatedTopics'"/>
+				<xsl:with-param name="p_id" select="'seeAlsoSection'"/>
 				<xsl:with-param name="p_content">
-					<xsl:apply-templates select="/document/topic/*/ddue:relatedTopics"
-															 mode="seeAlso"/>
+					<xsl:apply-templates select="/document/topic/*/ddue:relatedTopics" mode="seeAlso"/>
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
@@ -268,8 +268,7 @@
 		<!-- create Example section for the first codeExample node -->
 		<xsl:if test="not(preceding-sibling::ddue:codeExample) and ../ddue:codeExample[normalize-space(.)!='']">
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="'title_example'"/>
+				<xsl:with-param name="p_titleInclude" select="'title_example'"/>
 				<xsl:with-param name="p_content">
 					<xsl:apply-templates/>
 					<!-- if there are additional codeExample nodes, put them inside this section -->
@@ -414,7 +413,7 @@
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
-				<!--for toplevel outlines include a link to See Also-->
+				<!-- For top level outlines include a link to See Also -->
 				<xsl:if test="starts-with($p_outlineType,'toplevel') and count(//ddue:relatedTopics/*) > 0">
 					<li class="outlineSectionEntry">
 						<a>
@@ -427,17 +426,20 @@
 		</xsl:if>
 	</xsl:template>
 
-	<!--a list item in the outline's bullet list-->
+	<!-- A list item in the outline's bullet list -->
 	<xsl:template name="t_outlineSectionEntry">
 		<xsl:if test="descendant::ddue:content[normalize-space(.)] or count(ddue:content/*) &gt; 0">
 			<li class="outlineSectionEntry">
-				<a>
-					<xsl:if test="@address">
-						<!-- Keep this on one line or the spaces preceeding the "#" end up in the anchor name -->
-						<xsl:attribute name="href" xml:space="preserve">#<xsl:value-of select="@address"/></xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="ddue:title"/>
-				</a>
+				<xsl:choose>
+					<xsl:when test="@address">
+						<a href="#{@address}">
+							<xsl:value-of select="ddue:title"/>
+						</a>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="ddue:title"/>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:if test="normalize-space(ddue:summary)">
 					<div class="outlineSectionEntrySummary">
 						<xsl:apply-templates select="ddue:summary/node()"/>

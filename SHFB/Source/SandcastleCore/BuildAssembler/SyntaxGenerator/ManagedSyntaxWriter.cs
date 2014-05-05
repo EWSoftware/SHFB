@@ -61,11 +61,12 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         //=====================================================================
 
         /// <inheritdoc />
-        public override void WriteStartBlock(string language)
+        public override void WriteStartBlock(string codeLanguage, string styleId)
         {
             writer = location.AppendChild();
             writer.WriteStartElement("div");
-            writer.WriteAttributeString("codeLanguage", language);
+            writer.WriteAttributeString("codeLanguage", codeLanguage);
+            writer.WriteAttributeString("style", styleId);
             position = 0;
         }
 

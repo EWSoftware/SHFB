@@ -29,6 +29,7 @@ a img {
 }
 
 pre {
+	font-family: Consolas, Courier, monospace;
 	overflow: hidden;
 }
 
@@ -51,7 +52,7 @@ div.VS2013_outerContent table th {
 	color: #000;
 	padding: 4px;
 	font-style: normal;
-	font-weight: normal;
+	font-weight: bold;
 	background-color: rgb(229,229,229);
 }
 
@@ -76,7 +77,7 @@ div.VS2013_outerContent table.TitleTable td {
 	font-family: Segoe UI, Verdana, Arial;
 	font-size: 1.45em; /*17pt*/
 	font-weight: bold;
-	color: #250c58;
+	color: #000000;
 	padding: 0px;
 	padding-left: 10px;
 	text-align: left;
@@ -181,7 +182,6 @@ dt {
 dd {
 	margin-left: 13px;
 }
-
 dd p {
 	margin-top: 0;
 }
@@ -225,16 +225,14 @@ div.section p {
 
 ul {
 	line-height: 140%;
-	list-style-position: outside;
 	list-style-type: disc;
 	margin-bottom: 15px;
 }
 
 ul ul {
 	line-height: 140%;
-	list-style-type: disc;
+	list-style-type: circle;
 	margin-bottom: 4px;
-	margin-left: 13px;
 	margin-top: 3px;
 }
 
@@ -265,6 +263,7 @@ div.VS2013_outerContent div#mainSection table th {
 	padding-right: 13px;
 	vertical-align: middle;
 	text-align: left;
+	font-weight: bold;
 }
 
 div.VS2013_outerContent div#mainSection table td {
@@ -346,11 +345,11 @@ span.small {
 	font-size: smaller;
 }
 span.tt {
-	font-family: Courier, Consolas, monospace;
+	font-family: Consolas, Courier, monospace;
 }
 
 .VS2013_CollapsibleAreaRegion {
-    margin-top: 15px;
+	margin-top: 15px;
 	z-index: 100;
 }
 
@@ -363,7 +362,7 @@ img.CollapseToggle {
 	font-size: 1.3em; /*15pt*/
 	font-family: Segoe UI, Verdana, Arial;
 	font-weight: bold;
-	color: #250c58;
+	color: #000000;
 	background-color: #FFFFFF;
 	margin-top: 13px;
 	margin-left: 0px;
@@ -373,21 +372,8 @@ img.CollapseToggle {
 	cursor: pointer;
 }
 
-.VS2013_CollapsibleSection
-{
+.VS2013_CollapsibleSection {
 	margin-top: 5px;
-}
-
-span.copyCode {
-	font-weight: normal;
-	display: inline;
-}
-
-a.copyCode {
-	cursor: pointer;
-	color: blue;
-	text-decoration: none;
-	text-align: right;
 }
 
 .codeSnippetContainer {
@@ -433,24 +419,35 @@ a.copyCode {
 	float: left;
 }
 .codeSnippetContainerTabPhantom {
-	padding: 0px 15px;
+	background: rgb(248, 248, 248);
+	padding: 2px 15px 0px 15px;
 	width: auto;
-	height: 22px;
-	color: rgb(194, 194, 194);
+	height: 20px;
+	color: rgb(0, 0, 0);
 	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
 	font-size: 12px;
 	font-style: normal !important;
 	vertical-align: baseline;
+	border-top-color: rgb(147, 147, 147);
+	border-right-color: rgb(147, 147, 147);
+	border-left-color: rgb(147, 147, 147);
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-left-style: solid;
 	float: left;
 }
 .codeSnippetContainerTabSingle {
 	background: rgb(248, 248, 248);
-	padding: 0px 5px;
+	padding: 2px 15px 0px 15px;
 	width: auto;
-	height: 22px;
+	height: 20px;
 	color: rgb(0, 0, 0);
 	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
 	font-size: 12px;
+	font-weight: bold;
 	font-style: normal !important;
 	vertical-align: baseline;
 	border-top-color: rgb(147, 147, 147);
@@ -471,31 +468,11 @@ a.copyCode {
 	text-decoration: none;
 	position: relative;
 }
-.codeSnippetContainerTab a:hover {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	position: relative;
-}
 .codeSnippetContainerTab a:link {
-	top: 2px;
 	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
 }
-.codeSnippetContainerTab a:visited {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTab a:active {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
+.codeSnippetContainerTab a:hover {
+	color: rgb(19, 100, 96);
 }
 .codeSnippetContainerTabActive a {
 	top: 2px;
@@ -503,94 +480,24 @@ a.copyCode {
 	font-weight: bold;
 	text-decoration: none;
 	position: relative;
-    cursor: default;
-}
-.codeSnippetContainerTabActive a:hover {
-	top: 2px;
-	color: rgb(112, 112, 112);
-	position: relative;
+	cursor: default;
 }
 .codeSnippetContainerTabActive a:link {
-	top: 2px;
 	color: rgb(0, 0, 0);
-	text-decoration: none;
-	position: relative;
 }
-.codeSnippetContainerTabActive a:visited {
-	top: 2px;
+.codeSnippetContainerTabActive a:hover {
 	color: rgb(0, 0, 0);
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabActive a:active {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	text-decoration: none;
-	position: relative;
 }
 .codeSnippetContainerTabPhantom a {
 	top: 2px;
-	color: rgb(139, 139, 139) !important;
+	color: rgb(0, 0, 0);
+	font-weight: bold;
 	text-decoration: none;
 	position: relative;
-}
-.codeSnippetContainerTabPhantom a:hover {
-	top: 2px;
-	color: rgb(194, 194, 194);
-	position: relative;
+	cursor: default;
 }
 .codeSnippetContainerTabPhantom a:link {
-	top: 2px;
-	color: rgb(139, 139, 139) !important;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabPhantom a:visited {
-	top: 2px;
-	color: rgb(139, 139, 139) !important;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabPhantom a:active {
-	top: 2px;
-	color: rgb(139, 139, 139) !important;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabSingle a {
-	padding: 0px 8px;
-	display: inline-block;
-	top: 2px;
 	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabSingle a:hover {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	position: relative;
-}
-.codeSnippetContainerTabSingle a:link {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabSingle a:visited {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
-}
-.codeSnippetContainerTabSingle a:active {
-	top: 2px;
-	color: rgb(0, 0, 0);
-	font-weight: bold;
-	text-decoration: none;
-	position: relative;
 }
 .codeSnippetContainerCodeContainer {
 	border: 1px solid rgb(147, 147, 147);
@@ -604,7 +511,7 @@ a.copyCode {
 	height: auto;
 }
 .codeSnippetToolBarText {
-	top: -12px;
+	top: -8px;
 	width: auto;
 	height: 0px;
 	padding-right: 0px;
@@ -612,66 +519,26 @@ a.copyCode {
 	vertical-align: top;
 	float: right;
 	position: relative;
-	background-color: rgb(255, 255, 255);
-}
-.codeSnippetToolBarText a:link {
-	color: rgb(42, 42, 42);
-	padding-right: 8px;
-	padding-left: 8px;
-	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
-	font-size: 10px;
-	font-style: normal !important;
-	text-decoration: none;
-	margin-right: 15px;
-	margin-left: 15px;
-	background-color: rgb(255, 255, 255);
-}
-.codeSnippetToolBarText a:visited {
-	color: rgb(42, 42, 42);
-	padding-right: 8px;
-	padding-left: 8px;
-	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
-	font-size: 10px;
-	font-style: normal !important;
-	text-decoration: none;
-	margin-right: 15px;
-	margin-left: 15px;
-	background-color: rgb(255, 255, 255);
-}
-.codeSnippetToolBarText a:active {
-	color: rgb(42, 42, 42);
-	padding-right: 8px;
-	padding-left: 8px;
-	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
-	font-size: 10px;
-	font-style: normal !important;
-	text-decoration: none;
-	margin-right: 15px;
-	margin-left: 15px;
-	background-color: rgb(255, 255, 255);
-}
-.codeSnippetToolBarText a:hover {
-	color: rgb(51, 144, 177);
 }
 .codeSnippetToolBarText a {
 	color: rgb(19, 100, 196);
 	text-decoration: none;
+	padding-left: 8px;
+	padding-right: 8px;
+	font-family: "Segoe UI" , "Lucida Grande" ,Verdana,Arial,Helvetica,sans-serif !important;
+	font-size: 10px;
+	font-style: normal !important;
+	text-decoration: none;
+	margin-right: 10px;
+	margin-left: 0px;
+	background-color: rgb(255, 255, 255);
 }
 .codeSnippetToolBarText a:link {
 	color: rgb(19, 100, 196);
-	text-decoration: none;
-}
-.codeSnippetToolBarText a:visited {
-	color: rgb(3, 105, 122);
-	text-decoration: none;
-}
-.codeSnippetToolBarText a:active {
-	color: rgb(3, 105, 122);
-	text-decoration: none;
 }
 .codeSnippetContainerCode {
 	margin: 0px;
-	padding: 10px 21px;
+	padding: 10px;
 	width: auto;
 }
 .codeSnippetContainerCode div {
@@ -699,6 +566,7 @@ a.copyCode {
 
 .members th {
 	background: #CCCCCC none repeat scroll 0 0;
+	font-weight: bold;
 }
 
 .ps_iconColumn {
@@ -709,7 +577,6 @@ a.copyCode {
 }
 
 .VS2013_outerContent {
-	_width: 99.9%;
 	overflow: visible;
 	border-left: 1px solid #bbb;
 }
@@ -939,4 +806,8 @@ span.bibliographyPublisher {
 
 sup.citation a:link a:visited a:active {
 	text-decoration: none;
+}
+
+/* Placeholder for the Help 1 user data style class */
+.userDataStyle {
 }

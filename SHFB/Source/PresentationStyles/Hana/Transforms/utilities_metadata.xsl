@@ -630,7 +630,7 @@
 
 	<xsl:template name="codeLang">
 		<xsl:param name="codeLang" />
-		<MSHelp:Attr Name="codelang" Value="{$codeLang}" />
+		<MSHelp:Attr Name="DevLang" Value="{$codeLang}" />
 	</xsl:template>
 
 	<xsl:template name="mshelpDevlangAttributes">

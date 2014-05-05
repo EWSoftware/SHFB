@@ -3,8 +3,6 @@
 								version="2.0"
 								xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 								xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
-								xmlns:mtps="http://msdn2.microsoft.com/mtps"
-								xmlns:xhtml="http://www.w3.org/1999/xhtml"
 								xmlns:xlink="http://www.w3.org/1999/xlink"
 								xmlns:MSHelp="http://msdn.microsoft.com/mshelp"
 >
@@ -94,17 +92,6 @@
 	<xsl:template match="/">
 		<html>
 			<head>
-				<!-- The X-UA-Compatible metadata element is used to force the Help 1 and MS Help Viewer 2.x viewers
-						 to render the content using the latest browser version.  If not, they default to IE 7.0 emulation
-						 complete with all of its issues which can affect the rendered content.  Note that due to a bug in
-						 the MS Help Viewer 1.0 transforms it places its style sheet and branding script elements ahead of
-						 our element which renders it useless.  Not much we can do about that.  We use different style
-						 names where possible to avoid display issues too (a "VS2013_" prefix instead of an "OH_" prefix).
-						 The element also renders the MSHelp:link elements inoperable so we cannot support Help 2 output.
-						 The VS2005 style is a closer match to the old Help 2 content so no attempt will be made to force
-						 this style to work in the old Help 2 viewer. -->
-				<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-
 				<link rel="shortcut icon">
 					<includeAttribute name="href" item="iconPath">
 						<parameter>
@@ -132,6 +119,7 @@
 							<xsl:value-of select="'branding.js'"/>
 						</parameter>
 					</includeAttribute>
+					<xsl:text> </xsl:text>
 				</script>
 
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -142,12 +130,13 @@
 					</xsl:call-template>
 				</title>
 				<xsl:call-template name="t_insertMetadataHelp30"/>
-				<xsl:call-template name="t_insertFilename"/>
 				<xsl:call-template name="t_insertMetadataHelp20"/>
-				<xsl:call-template name="t_insertMetadata"/>
+				<xsl:call-template name="t_insertFilename"/>
 				<link type="text/css" rel="stylesheet" href="ms-help://Hx/HxRuntime/HxLink.css" />
 			</head>
-			<body onload="onLoad()">
+			<body onload="OnLoad('{$defaultLanguage}')">
+				<input type="hidden" id="userDataCache" class="userDataStyle" />
+
 				<div class="VS2013_outerDiv">
 					<div class="VS2013_outerContent">
 						<xsl:call-template name="t_bodyTitle"/>
@@ -156,6 +145,7 @@
 				</div>
 				<div id="VS2013_footer" class="VS2013_footer">
 					<include item="footer_content" />
+					<xsl:text> </xsl:text>
 				</div>
 			</body>
 		</html>
@@ -602,9 +592,6 @@
 						<xsl:when test="$g_apiSubSubGroup='operator' and (apidata/@name='Explicit' or apidata/@name='Implicit')">
 							<xsl:text>&#xa0;</xsl:text>
 							<span class="languageSpecificText">
-								<span class="cs">
-									<xsl:value-of select="apidata/@name"/>
-								</span>
 								<span class="vb">
 									<xsl:choose>
 										<xsl:when test="apidata/@name='Explicit'">
@@ -618,12 +605,6 @@
 										</xsl:otherwise>
 									</xsl:choose>
 								</span>
-								<span class="cpp">
-									<xsl:value-of select="apidata/@name"/>
-								</span>
-								<span class="fs">
-									<xsl:value-of select="apidata/@name"/>
-								</span>
 								<span class="nu">
 									<xsl:value-of select="apidata/@name"/>
 								</span>
@@ -633,8 +614,7 @@
 							<xsl:value-of select="apidata/@name"/>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:apply-templates select="templates"
-															 mode="decorated"/>
+					<xsl:apply-templates select="templates" mode="decorated"/>
 				</xsl:for-each>
 			</xsl:when>
 			<!-- namespace (and any other) topics just use the name -->
@@ -1255,7 +1235,6 @@
 				</xsl:choose>
 			</td>
 			<td>
-
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>
 					<include item="boilerplate_obsoleteShort"/>
@@ -1780,12 +1759,9 @@
 						<xsl:call-template name="t_putIndent">
 							<xsl:with-param name="p_count" select="$ancestorCount + 2"/>
 						</xsl:call-template>
-						<xsl:element name="a">
-							<xsl:attribute name="href">
-								<xsl:value-of select="'#fullInheritance'" />
-							</xsl:attribute>
+						<a href="#fullInheritance">
 							<include item="text_moreInheritance"/>
-						</xsl:element>
+						</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:for-each select="descendents/type">
@@ -2042,7 +2018,7 @@
 	============================================================================================= -->
 
 	<xsl:template name="t_putRequirementsInfo">
-		<p></p>
+		<p><xsl:text> </xsl:text></p>
 		<include item="boilerplate_requirementsNamespace"/>
 		<xsl:text>&#xa0;</xsl:text>
 		<referenceLink target="{/document/reference/containers/namespace/@api}"/>
@@ -2412,21 +2388,18 @@
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="specialization"
-								mode="link"
-								name="t_specializationLink">
+	<xsl:template match="specialization" mode="link" name="t_specializationLink">
 		<span class="languageSpecificText">
 			<span class="cs">&lt;</span>
 			<span class="vb">
 				<xsl:text>(Of </xsl:text>
 			</span>
 			<span class="cpp">&lt;</span>
-			<span class="nu">(</span>
 			<span class="fs">&lt;'</span>
+			<span class="nu">(</span>
 		</span>
 		<xsl:for-each select="*">
-			<xsl:apply-templates select="."
-													 mode="link"/>
+			<xsl:apply-templates select="." mode="link"/>
 			<xsl:if test="position() != last()">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
@@ -2435,18 +2408,15 @@
 			<span class="cs">&gt;</span>
 			<span class="vb">)</span>
 			<span class="cpp">&gt;</span>
-			<span class="nu">)</span>
 			<span class="fs">&gt;</span>
+			<span class="nu">)</span>
 		</span>
 	</xsl:template>
 
-	<xsl:template match="specialization"
-								mode="plain"
-								name="t_specializationPlain">
+	<xsl:template match="specialization" mode="plain" name="t_specializationPlain">
 		<xsl:text>(</xsl:text>
 		<xsl:for-each select="*">
-			<xsl:apply-templates select="."
-													 mode="plain"/>
+			<xsl:apply-templates select="." mode="plain"/>
 			<xsl:if test="position() != last()">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
@@ -2454,21 +2424,18 @@
 		<xsl:text>)</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="specialization"
-								mode="decorated"
-								name="t_specializationDecorated">
+	<xsl:template match="specialization" mode="decorated" name="t_specializationDecorated">
 		<span class="languageSpecificText">
 			<span class="cs">&lt;</span>
 			<span class="vb">
 				<xsl:text>(Of </xsl:text>
 			</span>
 			<span class="cpp">&lt;</span>
-			<span class="nu">(</span>
 			<span class="fs">&lt;'</span>
+			<span class="nu">(</span>
 		</span>
 		<xsl:for-each select="*">
-			<xsl:apply-templates select="."
-													 mode="decorated"/>
+			<xsl:apply-templates select="." mode="decorated"/>
 			<xsl:if test="position() != last()">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
@@ -2477,8 +2444,8 @@
 			<span class="cs">&gt;</span>
 			<span class="vb">)</span>
 			<span class="cpp">&gt;</span>
-			<span class="nu">)</span>
 			<span class="fs">&gt;</span>
+			<span class="nu">)</span>
 		</span>
 	</xsl:template>
 
@@ -2537,21 +2504,13 @@
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="arrayOf"
-								mode="link"
-								name="t_arrayOfLink">
-		<xsl:param name="qualified"
-							 select="false()"/>
+	<xsl:template match="arrayOf" mode="link" name="t_arrayOfLink">
+		<xsl:param name="qualified" select="false()"/>
 		<span class="languageSpecificText">
 			<span class="cpp">array&lt;</span>
-			<span class="cs"></span>
-			<span class="vb"></span>
-			<span class="fs"></span>
-			<span class="nu"></span>
 		</span>
 		<xsl:apply-templates mode="link">
-			<xsl:with-param name="qualified"
-											select="$qualified"/>
+			<xsl:with-param name="qualified" select="$qualified"/>
 		</xsl:apply-templates>
 		<span class="languageSpecificText">
 			<span class="cpp">
@@ -2560,11 +2519,6 @@
 					<xsl:value-of select="@rank"/>
 				</xsl:if>
 				<xsl:text>&gt;</xsl:text>
-			</span>
-			<span class="cs">
-				<xsl:text>[</xsl:text>
-				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
-				<xsl:text>]</xsl:text>
 			</span>
 			<span class="vb">
 				<xsl:text>(</xsl:text>
@@ -2576,17 +2530,10 @@
 				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
 				<xsl:text>]</xsl:text>
 			</span>
-			<span class="fs">
-				<xsl:text>[</xsl:text>
-				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
-				<xsl:text>]</xsl:text>
-			</span>
 		</span>
 	</xsl:template>
 
-	<xsl:template match="arrayOf"
-								mode="plain"
-								name="t_arrayOfPlain">
+	<xsl:template match="arrayOf" mode="plain" name="t_arrayOfPlain">
 		<xsl:apply-templates select="type|arrayOf|pointerTo|referenceTo|template|specialization|templates"
 												 mode="plain"/>
 		<xsl:text>[</xsl:text>
@@ -2594,9 +2541,7 @@
 		<xsl:text>]</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="arrayOf"
-								mode="decorated"
-								name="t_arrayOfDecorated">
+	<xsl:template match="arrayOf" mode="decorated" name="t_arrayOfDecorated">
 		<span class="languageSpecificText">
 			<span class="cpp">array&lt;</span>
 		</span>
@@ -2610,11 +2555,6 @@
 				</xsl:if>
 				<xsl:text>&gt;</xsl:text>
 			</span>
-			<span class="cs">
-				<xsl:text>[</xsl:text>
-				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
-				<xsl:text>]</xsl:text>
-			</span>
 			<span class="vb">
 				<xsl:text>(</xsl:text>
 				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
@@ -2625,90 +2565,57 @@
 				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
 				<xsl:text>]</xsl:text>
 			</span>
-			<span class="fs">
-				<xsl:text>[</xsl:text>
-				<xsl:if test="number(@rank) &gt; 1">,</xsl:if>
-				<xsl:text>]</xsl:text>
-			</span>
 		</span>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="pointerTo"
-								mode="link"
-								name="t_pointerToLink">
-		<xsl:param name="qualified"
-							 select="false()"/>
+	<xsl:template match="pointerTo" mode="link" name="t_pointerToLink">
+		<xsl:param name="qualified" select="false()"/>
 		<xsl:apply-templates mode="link">
-			<xsl:with-param name="qualified"
-											select="$qualified"/>
+			<xsl:with-param name="qualified" select="$qualified"/>
 		</xsl:apply-templates>
 		<xsl:text>*</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="pointerTo"
-								mode="plain"
-								name="t_pointerToPlain">
+	<xsl:template match="pointerTo" mode="plain" name="t_pointerToPlain">
 		<xsl:apply-templates select="type|arrayOf|pointerTo|referenceTo|template|specialization|templates"
 												 mode="plain"/>
 		<xsl:text>*</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="pointerTo"
-								mode="decorated"
-								name="t_pointerToDecorated">
+	<xsl:template match="pointerTo" mode="decorated" name="t_pointerToDecorated">
 		<xsl:apply-templates select="type|arrayOf|pointerTo|referenceTo|template|specialization|templates"
 												 mode="decorated"/>
 		<span class="languageSpecificText">
 			<span class="cpp">
 				<xsl:text>*</xsl:text>
 			</span>
-			<span class="cs"></span>
-			<span class="vb"></span>
-			<span class="fs"></span>
-			<span class="nu"></span>
 		</span>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="referenceTo"
-								mode="link"
-								name="t_referenceToLink">
-		<xsl:param name="qualified"
-							 select="false()"/>
+	<xsl:template match="referenceTo" mode="link" name="t_referenceToLink">
+		<xsl:param name="qualified" select="false()"/>
 		<xsl:apply-templates mode="link">
-			<xsl:with-param name="qualified"
-											select="$qualified"/>
+			<xsl:with-param name="qualified" select="$qualified"/>
 		</xsl:apply-templates>
 		<span class="languageSpecificText">
 			<span class="cpp">%</span>
-			<span class="cs"></span>
-			<span class="vb"></span>
-			<span class="fs"></span>
-			<span class="nu"></span>
 		</span>
 	</xsl:template>
 
-	<xsl:template match="referenceTo"
-								mode="plain"
-								name="t_referenceToPlain">
+	<xsl:template match="referenceTo" mode="plain" name="t_referenceToPlain">
 		<xsl:apply-templates select="type|arrayOf|pointerTo|referenceTo|template|specialization|templates"
 												 mode="plain"/>
 	</xsl:template>
 
-	<xsl:template match="referenceTo"
-								mode="decorated"
-								name="t_referenceToDecorated">
+	<xsl:template match="referenceTo" mode="decorated" name="t_referenceToDecorated">
 		<xsl:apply-templates select="type|arrayOf|pointerTo|referenceTo|template|specialization|templates"
 												 mode="decorated"/>
 		<span class="languageSpecificText">
 			<span class="cpp">%</span>
-			<span class="cs"></span>
-			<span class="vb"></span>
-			<span class="fs"></span>
-			<span class="nu"></span>
 		</span>
 	</xsl:template>
 

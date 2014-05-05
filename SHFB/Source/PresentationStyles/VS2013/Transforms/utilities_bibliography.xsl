@@ -7,11 +7,8 @@
 
     <xsl:if test="$data">
       <div class="bibliographStyle">
-        <a>
-          <xsl:attribute name="name">cite<xsl:value-of select="$number"/></xsl:attribute>
-          <xsl:attribute name="id">cite<xsl:value-of select="$number"/></xsl:attribute>
-        </a>
         <span class="bibliographyNumber">
+          <xsl:attribute name="id">cite<xsl:value-of select="$number"/></xsl:attribute>
           [<xsl:value-of select="$number"/>]
         </span>
         <span class="bibliographyAuthor"><xsl:value-of select="$data/author/text()" /></span>

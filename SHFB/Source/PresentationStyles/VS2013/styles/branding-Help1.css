@@ -1,0 +1,20 @@
+/* Define the userData cache persistence mechanism for Help 1 files */
+.userDataStyle {
+	behavior: url(#default#userdata);
+}
+
+/* Style adjustments for Help 1 */
+.codeSnippetContainerTabs {
+    top: 1px;
+}
+.codeSnippetToolBarText {
+	top: -14px;
+}
+.codeSnippetContainerTabPhantom {
+	padding: 2px 15px 0px 15px;
+	height: 22px;
+}
+.codeSnippetContainerTabSingle {
+	padding: 2px 15px 0px 15px;
+	height: 22px;
+}

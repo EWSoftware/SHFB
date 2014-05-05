@@ -27,18 +27,20 @@ namespace Microsoft.Ddue.Tools
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        private const string LanguageName = "FSharp", StyleIdName = "fs";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("F#", "FSharp", "fs", AlternateIds = "FSharp, fs, fsscript", SortOrder = 50,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("F#", LanguageName, StyleIdName, AlternateIds = "FSharp, fs, fsscript",
+          SortOrder = 50, Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates F# declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new FSharpDeclarationSyntaxGenerator();
+                return new FSharpDeclarationSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion
@@ -62,7 +64,6 @@ namespace Microsoft.Ddue.Tools
             WriteDotNetObject(reflection, writer, "class");
         }
 
-        // TODO: Use apiContainingTypeSubgroupExpression instead of passing in class, struct, interface
         /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {

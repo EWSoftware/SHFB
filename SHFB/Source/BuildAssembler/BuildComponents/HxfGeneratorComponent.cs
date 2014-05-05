@@ -183,7 +183,7 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(Exception ex)
                 {
-                    base.WriteMessage(MessageLevel.Error, "An access error occured while attempting to copy " +
+                    base.WriteMessage(MessageLevel.Error, "An access error occurred while attempting to copy " +
                         "the input HxF data. The error message is:", ex.Message);
                 }
             }

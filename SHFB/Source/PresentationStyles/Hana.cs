@@ -30,9 +30,10 @@ namespace Sandcastle.PresentationStyles
     /// <summary>
     /// This contains the definition for the Hana presentation style
     /// </summary>
-    [PresentationStyleExport("Hana", "Hana (Deprecated)", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This style has been deprecated and is no longer " +
-      "supported.  It was an experimental style that was never used in production by Microsoft.")]
+    [PresentationStyleExport("Hana", "Hana (Deprecated)", IsDeprecated = true,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright, Description = "This style " +
+        "has been deprecated and is no longer supported.  It was an experimental style that was never used in " +
+        "production by Microsoft.")]
     public sealed class Hana : PresentationStyleSettings
     {
         /// <inheritdoc />

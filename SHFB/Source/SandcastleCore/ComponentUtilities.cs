@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2014
+// Updated : 04/26/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -385,12 +385,11 @@ namespace Sandcastle.Core
             foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
                 if(!String.IsNullOrWhiteSpace(generator.DefaultConfiguration))
                 {
-                    sb.AppendFormat("<generator id=\"{0}\" name=\"{1}\">{2}</generator>\r\n", generator.Id,
-                        generator.LanguageElementName, generator.DefaultConfiguration);
+                    sb.AppendFormat("<generator id=\"{0}\">{1}</generator>\r\n", generator.Id,
+                        generator.DefaultConfiguration);
                 }
                 else
-                    sb.AppendFormat("<generator id=\"{0}\" name=\"{1}\" />\r\n", generator.Id,
-                        generator.LanguageElementName);
+                    sb.AppendFormat("<generator id=\"{0}\" />\r\n", generator.Id);
 
             return sb.ToString();
         }

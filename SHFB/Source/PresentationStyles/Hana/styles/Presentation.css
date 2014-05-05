@@ -359,8 +359,7 @@ span#nsrTitle
 
 
 /* Formats the footer. Currently, the transforms pass in two parameters to the
-   footer SSC, but the default footer SSC doesn't use either parameter.
-   TODO: Investigate whether the default footer SSC has any impact on doc spec. */
+   footer SSC, but the default footer SSC doesn't use either parameter. */
 div#footer
 {
 	font-size: 80%;
@@ -382,22 +381,6 @@ html>body div#footer
 	padding-right:	2px;
 	width:	98%;
 }
-
-/* Unable to find this style in the transforms. The default footer SSC adds a plain horizontal rule.
-   TODO: Determine whether this style is required by the doc spec. */
-/*
-hr#footerHR
-{
-	border-bottom-color: #EEEEFF;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-top-color: C8CDDE;
-	border-top-style: solid;
-	border-top-width: 1px;
-	height: 3px;
-	color: #D4DFFF;
-}
-*/
 
 /********************************************************************************************************************
 	Collapsible Section Structure
@@ -455,8 +438,7 @@ div.seeSection
 }
 
 /*------------------------------ Begin Heading Styles -------------------------------*/
-/* As far as I can tell, only <h1> tags use this class.
-   TODO: Decide whether to roll these attributes into the h1.heading style */
+/* As far as I can tell, only <h1> tags use this class */
 .heading
 {
 	font-weight:	bold;
@@ -638,26 +620,6 @@ span.copyCodeOnHover
 	font-family: Times New Roman;
 	font-size: 125%
 }
-
-/* The sourceCodeList class doesn't appear in the transforms.
-   TODO: Find out whether this style is needed for the doc spec. */
-/*
-.sourceCodeList
-{
-	font-family: Verdana;
-	font-size: 90%;	
-}
-*/
-
-/* The viewCode class doesn't appear in the transforms.
-   TODO: Find out whether this style is needed for the doc spec. */
-/*
-pre.viewCode
-{
-	width: 100%;
-	overflow: auto;
-}
-*/
 
 /* Dropdown areas */
 

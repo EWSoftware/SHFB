@@ -26,16 +26,13 @@
 		<xsl:call-template name="t_insertKeywordsF1Metadata" />
 
 		<!-- Microsoft.Help.Id -->
-		<meta name="Microsoft.Help.Id"
-					content="{/document/topic/@id}" />
+		<meta name="Microsoft.Help.Id" content="{/document/topic/@id}" />
 
 		<!-- Microsoft.Help.Description -->
-		<xsl:variable name="v_abstract"
-									select="normalize-space(string(/document/topic//ddue:para[1]))" />
+		<xsl:variable name="v_abstract" select="normalize-space(string(/document/topic//ddue:para[1]))" />
 		<xsl:variable name="v_description">
 			<xsl:call-template name="t_getTrimmedAtPeriod">
-				<xsl:with-param name="p_string"
-												select="$v_abstract" />
+				<xsl:with-param name="p_string" select="$v_abstract" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:if test="normalize-space($v_description)">
@@ -48,30 +45,20 @@
 
 		<!-- Microsoft.Help.TocParent -->
 		<xsl:if test="/document/metadata/attribute[@name='TOCParent']">
-			<meta name="Microsoft.Help.TocParent"
-						content="{/document/metadata/attribute[@name='TOCParent']}" />
+			<meta name="Microsoft.Help.TocParent" content="{/document/metadata/attribute[@name='TOCParent']}" />
 		</xsl:if>
 		<xsl:if test="/document/metadata/attribute[@name='TOCOrder']">
-			<meta name="Microsoft.Help.TocOrder"
-						content="{/document/metadata/attribute[@name='TOCOrder']}" />
+			<meta name="Microsoft.Help.TocOrder" content="{/document/metadata/attribute[@name='TOCOrder']}" />
 		</xsl:if>
-
-		<!-- Microsoft.Help.Product -->
-		<!-- Added by MTPS -->
-
-		<!-- Microsoft.Help.ProductVersion -->
-		<!-- Added by MTPS -->
 
 		<!-- Microsoft.Help.Category -->
 		<xsl:for-each select="/document/metadata/attribute[@name='Category']">
-			<meta name="Microsoft.Help.Category"
-						content="{.}" />
+			<meta name="Microsoft.Help.Category" content="{.}" />
 		</xsl:for-each>
 
 		<!-- Microsoft.Help.ContentFilter -->
 		<xsl:for-each select="/document/metadata/attribute[@name='ContentFilter']">
-			<meta name="Microsoft.Help.ContentFilter"
-						content="{.}" />
+			<meta name="Microsoft.Help.ContentFilter" content="{.}" />
 		</xsl:for-each>
 
 		<!-- Microsoft.Help.ContentType -->
@@ -91,32 +78,26 @@
 
 		<xsl:choose>
 			<xsl:when test="$v_contentTypeDocStudio">
-				<meta name="Microsoft.Help.ContentType"
-							content="{$v_contentTypeDocStudio}" />
+				<meta name="Microsoft.Help.ContentType" content="{$v_contentTypeDocStudio}" />
 			</xsl:when>
 			<xsl:when test="$v_contentTypeTopicType">
-				<meta name="Microsoft.Help.ContentType"
-							content="{$v_contentTypeTopicType}" />
+				<meta name="Microsoft.Help.ContentType" content="{$v_contentTypeTopicType}" />
 			</xsl:when>
 		</xsl:choose>
 
 		<!-- Microsoft.Package.Book -->
-		<xsl:variable name="Book"
-									select="/document/metadata/attribute[@name='Book']/text()" />
+		<xsl:variable name="Book" select="/document/metadata/attribute[@name='Book']/text()" />
 		<xsl:if test="$Book">
-			<meta name="Microsoft.Package.Book"
-						content="{$Book}" />
+			<meta name="Microsoft.Package.Book" content="{$Book}" />
 		</xsl:if>
 
 		<!-- Source -->
 		<xsl:for-each select="/document/metadata/attribute[@name='Source']">
-			<meta name="Source"
-						content="{.}" />
+			<meta name="Source" content="{.}" />
 		</xsl:for-each>
 
-		<!-- BrandingAware -->
-		<meta name="BrandingAware"
-					content="'true'"/>
+		<!-- Branding aware.  This prevents the MSHC Component from changing a couple of CSS style names. -->
+		<meta name="BrandingAware" content="true"/>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->

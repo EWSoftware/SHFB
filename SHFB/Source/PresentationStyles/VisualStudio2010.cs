@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2014
+// Updated : 04/30/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,8 +31,8 @@ namespace Sandcastle.PresentationStyles
     /// This contains the definition for the Visual Studio 2010 presentation style
     /// </summary>
     [PresentationStyleExport("VS2010", "VS2010", Version = AssemblyInfo.ProductVersion,
-      Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2010 in " +
-      "Microsoft Help Viewer 1.0.")]
+      Copyright = AssemblyInfo.Copyright, Description = "This style is similar to the one use for offline " +
+      "content in Microsoft Help Viewer in Visual Studio 2010 and later.")]
     public sealed class VisualStudio2010 : PresentationStyleSettings
     {
         /// <inheritdoc />
@@ -75,7 +75,10 @@ namespace Sandcastle.PresentationStyles
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file
             // system.
+            
+            // The Help 2 format has a modified style sheet and must be copied first
             this.ContentFiles.Add(new ContentFiles(HelpFileFormats.MSHelp2, @"Help2\*.*", @".\styles"));
+
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
@@ -104,6 +107,10 @@ namespace Sandcastle.PresentationStyles
                 null, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " +
                 "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " +
                 "assembly file version value if specified."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("defaultLanguage", true, true,
+                "cs", "The default language to use for syntax sections, code snippets, and a language-specific " +
+                "text.  This should be set to cs, vb, cpp, fs, or the keyword style ID of a third-party syntax " +
+                "generator if you want to use a non-standard language as the default."));
         }
     }
 }

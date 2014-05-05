@@ -235,7 +235,7 @@ namespace SandcastleBuilder.HtmlExtract
         private static Regex reHxLinkCss = new Regex("<link[^>]*?href=\"ms-help://Hx/HxRuntime/HxLink\\.css\".*?/?>",
             RegexOptions.IgnoreCase);
         private static Regex reHtmlElement = new Regex("\\<html.*?\\>");
-        private static Regex reUnusedNamespaces = new Regex("\\s*?xmlns:(MSHelp|mshelp|ddue|xlink|msxsl)=\".*?\"");
+        private static Regex reUnusedNamespaces = new Regex("\\s*?xmlns:(MSHelp|mshelp|ddue|xlink|msxsl|xhtml)=\".*?\"");
 
         // Localization support members
         private static Dictionary<Regex, string> patterns;

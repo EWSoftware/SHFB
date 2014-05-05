@@ -133,6 +133,9 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(!String.IsNullOrEmpty(assemblyName))
                 {
+                    // Had an odd case where the name contained a line feed so trim it just in case
+                    assemblyName = assemblyName.Trim();
+
                     // The values are case insensitive
                     if(String.Compare(outputType, "Library", StringComparison.OrdinalIgnoreCase) == 0)
                         assemblyName += ".dll";
@@ -178,6 +181,9 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     if(!String.IsNullOrEmpty(docFile))
                     {
+                        // Had an odd case where the name contained a line feed so trim it just in case
+                        docFile = docFile.Trim();
+
                         // If rooted, take the path as it is
                         if(!Path.IsPathRooted(docFile))
                         {

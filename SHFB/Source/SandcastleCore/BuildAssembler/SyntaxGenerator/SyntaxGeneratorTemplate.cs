@@ -206,11 +206,21 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the language identifier
+        /// This is used to get or set the language name
         /// </summary>
-        /// <value>This is used as the element name of the root element written to the topics.  The presentation
-        /// style XSL transformations will also use it to name the language-specific resource items.</value>
+        /// <value>This is used as the code language name added as an attribute to the <c>div</c>element written
+        /// to the topics.  The presentation style XSL transformations will also use it to name the
+        /// language-specific resource items.</value>
         public string Language { get; protected set; }
+
+        /// <summary>
+        /// This is used to get or set the style ID
+        /// </summary>
+        /// <value>This is used as the code style ID added as an attribute to the <c>div</c>element written
+        /// to the topics.  The presentation style XSL transformations will use it to group common language
+        /// elements such as language-specific text and code snippets so that they can be shown and hidden
+        /// together.</value>
+        public string StyleId { get; protected set; }
 
         #endregion
 
@@ -307,17 +317,17 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// Initialize the syntax generator
         /// </summary>
         /// <param name="configuration">The syntax generator configuration</param>
-        /// <remarks>The configuration element must contain a <c>name</c> attribute that identifies the language
-        /// element written out by the syntax generator</remarks>
+        /// <remarks>The base implementation just validates that a <see cref="Language"/> and
+        /// <see cref="StyleId"/> have been defined.</remarks>
+        /// <exception cref="InvalidOperationException">This is thrown if a <see cref="Language"/> or
+        /// <see cref="StyleId"/> has not been set.</exception>
         public override void Initialize(XPathNavigator configuration)
         {
-            string nameValue = configuration.GetAttribute("name", String.Empty);
+            if(String.IsNullOrWhiteSpace(this.Language))
+                throw new InvalidOperationException("A language name has not been set");
 
-            if(String.IsNullOrWhiteSpace(nameValue))
-                throw new InvalidOperationException("The syntax generator configuration requires a name " +
-                    "attribute that identifies the element name to use in the generated syntax sections");
-
-            this.Language = nameValue;
+            if(String.IsNullOrWhiteSpace(this.StyleId))
+                throw new InvalidOperationException("A style ID has not been set");
         }
 
         // Methods to write syntax for different kinds of APIs
@@ -329,7 +339,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <param name="writer">The writer to which the syntax is written</param>
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            writer.WriteStartBlock(this.Language);
+            writer.WriteStartBlock(this.Language, this.StyleId);
 
             string group = (string)reflection.Evaluate(apiGroupExpression);
 
