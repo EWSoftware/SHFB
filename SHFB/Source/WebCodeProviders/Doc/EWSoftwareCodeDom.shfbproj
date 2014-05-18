@@ -33,7 +33,7 @@
     <CopyrightHref>http://Sandcastle.CodePlex.com</CopyrightHref>
     <CopyrightText>Copyright \xA9 2008-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>VS2005</PresentationStyle>
+    <PresentationStyle>VS2013</PresentationStyle>
     <HelpFileVersion>1.1.0.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>

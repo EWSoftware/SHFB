@@ -329,16 +329,16 @@
 	</xsl:template>
 
 	<!-- ============================================================================================
-	Running header
+	Page title and optional logo
 	============================================================================================= -->
 
-	<xsl:template name="t_bodyTitle">
+	<xsl:template name="t_pageTitle">
 		<xsl:variable name="placementLC" select="translate($logoPlacement, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
 		<xsl:variable name="alignmentLC" select="translate($logoAlignment, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-		<table class="TitleTable">
+		<table class="titleTable">
 			<xsl:if test="normalize-space($logoFile) and $placementLC = 'above'">
 				<tr>
-					<td colspan="2" class="VS2013_tdLogoColumnAbove">
+					<td colspan="2" class="logoColumnAbove">
 						<xsl:attribute name="align">
 							<xsl:choose>
 								<xsl:when test="normalize-space($alignmentLC)">
@@ -355,22 +355,19 @@
 			</xsl:if>
 			<tr>
 				<xsl:if test="normalize-space($logoFile) and $placementLC = 'left'">
-					<td class="VS2013_tdLogoColumn">
+					<td class="logoColumn">
 						<xsl:call-template name="logoImage" />
 					</td>
 				</xsl:if>
-				<td class="VS2013_tdTitleColumn">
+				<td class="titleColumn">
 					<include item="boilerplate_pageTitle">
 						<parameter>
 							<xsl:call-template name="t_topicTitleDecorated"/>
 						</parameter>
 					</include>
 				</td>
-				<td class="VS2013_tdRunningTitleColumn">
-					<xsl:call-template name="t_runningHeader" />
-				</td>
 				<xsl:if test="normalize-space($logoFile) and $placementLC = 'right'">
-					<td class="VS2013_tdLogoColumn">
+					<td class="logoColumn">
 						<xsl:call-template name="logoImage" />
 					</td>
 				</xsl:if>
@@ -511,17 +508,17 @@
 		<xsl:variable name="toggleSection" select="concat($togglePrefix,'Section')" />
 
 		<xsl:if test="normalize-space($p_title)">
-			<div class="VS2013_CollapsibleAreaRegion">
+			<div class="collapsibleAreaRegion">
 				<xsl:if test="normalize-space($p_id)">
 					<xsl:attribute name="id">
 						<xsl:value-of select="$p_id"/>
 					</xsl:attribute>
 				</xsl:if>
-				<span class="VS2013_RegionTitle" onclick="ExpandCollapse('{$togglePrefix}')"
-					onkeypress="ExpandCollapse_CheckKey('{$togglePrefix}', event)" tabindex="0">
-					<img id="{$toggleImage}" class="CollapseToggle">
+				<span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('{$togglePrefix}')"
+					onkeypress="SectionExpandCollapse_CheckKey('{$togglePrefix}', event)" tabindex="0">
+					<img id="{$toggleImage}" class="collapseToggle">
 						<includeAttribute name="src" item="iconPath">
-							<parameter>Expanded.png</parameter>
+							<parameter>SectionExpanded.png</parameter>
 						</includeAttribute>
 					</img>
 
@@ -530,11 +527,11 @@
 			</div>
 		</xsl:if>
 
-		<div id="{$toggleSection}" class="VS2013_CollapsibleSection">
+		<div id="{$toggleSection}" class="collapsibleSection">
 			<xsl:copy-of select="$p_content" />
 
 			<xsl:if test="boolean($p_toplink)">
-				<a href="#mainBody">
+				<a href="#PageHeader">
 					<include item="top"/>
 				</a>
 			</xsl:if>
@@ -552,17 +549,17 @@
 		<xsl:variable name="toggleSection" select="concat($togglePrefix,'Section')" />
 
 		<xsl:if test="normalize-space($p_titleInclude)">
-			<div class="VS2013_CollapsibleAreaRegion">
+			<div class="collapsibleAreaRegion">
 				<xsl:if test="normalize-space($p_id)">
 					<xsl:attribute name="id">
 						<xsl:value-of select="$p_id"/>
 					</xsl:attribute>
 				</xsl:if>
-				<span class="VS2013_RegionTitle" onclick="ExpandCollapse('{$togglePrefix}')"
-					onkeypress="ExpandCollapse_CheckKey('{$togglePrefix}', event)" tabindex="0">
-					<img id="{$toggleImage}" class="CollapseToggle">
+				<span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('{$togglePrefix}')"
+					onkeypress="SectionExpandCollapse_CheckKey('{$togglePrefix}', event)" tabindex="0">
+					<img id="{$toggleImage}" class="collapseToggle">
 						<includeAttribute name="src" item="iconPath">
-							<parameter>Expanded.png</parameter>
+							<parameter>SectionExpanded.png</parameter>
 						</includeAttribute>
 					</img>
 
@@ -571,11 +568,11 @@
 			</div>
 		</xsl:if>
 
-		<div id="{$toggleSection}" class="VS2013_CollapsibleSection">
+		<div id="{$toggleSection}" class="collapsibleSection">
 			<xsl:copy-of select="$p_content" />
 
 			<xsl:if test="boolean($p_toplink)">
-				<a href="#mainBody">
+				<a href="#PageHeader">
 					<include item="top"/>
 				</a>
 			</xsl:if>
@@ -684,31 +681,31 @@
 		<xsl:variable name="v_noteImg">
 			<xsl:choose>
 				<xsl:when test="$p_alertClass='note' or $p_alertClass='tip' or $p_alertClass='implement' or $p_alertClass='caller' or $p_alertClass='inherit'">
-					<xsl:text>alert_note.gif</xsl:text>
+					<xsl:text>AlertNote.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='caution' or $p_alertClass='warning'">
-					<xsl:text>alert_caution.gif</xsl:text>
+					<xsl:text>AlertCaution.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='security' or $p_alertClass='security note'">
-					<xsl:text>alert_security.gif</xsl:text>
+					<xsl:text>AlertSecurity.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='important'">
-					<xsl:text>alert_caution.gif</xsl:text>
+					<xsl:text>AlertCaution.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='vb' or $p_alertClass='VB' or $p_alertClass='VisualBasic' or $p_alertClass='visual basic note'">
-					<xsl:text>alert_note.gif</xsl:text>
+					<xsl:text>AlertNote.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='cs' or $p_alertClass='CSharp' or $p_alertClass='c#' or $p_alertClass='C#' or $p_alertClass='visual c# note'">
-					<xsl:text>alert_note.gif</xsl:text>
+					<xsl:text>AlertNote.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='cpp' or $p_alertClass='c++' or $p_alertClass='C++' or $p_alertClass='CPP' or $p_alertClass='visual c++ note'">
-					<xsl:text>alert_note.gif</xsl:text>
+					<xsl:text>AlertNote.png</xsl:text>
 				</xsl:when>
 				<xsl:when test="$p_alertClass='JSharp' or $p_alertClass='j#' or $p_alertClass='J#' or $p_alertClass='visual j# note'">
-					<xsl:text>alert_note.gif</xsl:text>
+					<xsl:text>AlertNote.png</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>alert_note.gif</xsl:text>
+					<xsl:text>AlertNote.png</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

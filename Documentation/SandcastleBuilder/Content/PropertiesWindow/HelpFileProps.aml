@@ -358,10 +358,11 @@ and they are always placed in the <localUri>html/</localUri> folder.</para>
   <title>Presentation style (PresentationStyle)</title>
   <content>
 		<para>This property is used to choose the presentation style that determines the layout and appearance of
-the help topics.  Sandcastle comes with five styles: <codeInline>VS2005</codeInline> (the default),
-<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, <codeInline>Prototype (Deprecated)</codeInline>,
-and <codeInline>Hana (Deprecated)</codeInline>.  The files for each style are located in the
-<localUri>.\PresentationStyles</localUri> folder under the main help file builder installation folder.</para>
+the help topics.  Sandcastle comes with several styles: <codeInline>VS2013</codeInline> (the default),
+<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, <codeInline>VS2005</codeInline>
+(deprecated), <codeInline>Prototype (Deprecated)</codeInline>, and <codeInline>Hana (Deprecated)</codeInline>.
+The files for each style are located in the <localUri>.\PresentationStyles</localUri> folder under the main help
+file builder installation folder.</para>
 
 	</content>
 

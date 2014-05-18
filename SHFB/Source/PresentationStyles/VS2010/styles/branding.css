@@ -50,7 +50,7 @@ div.OH_outerContent table th {
 	color: #000;
 	padding: 4px;
 	font-style: normal;
-	font-weight: normal;
+	font-weight: bold;
 	background-color: rgb(229,229,229);
 }
 
@@ -75,7 +75,7 @@ div.OH_outerContent table.TitleTable td {
 	font-family: Segoe UI, Verdana, Arial;
 	font-size: 1.45em; /*17pt*/
 	font-weight: bold;
-	color: #250c58;
+	color: #000000;
 	padding: 0px;
 	padding-left: 10px;
 	text-align: left;
@@ -229,7 +229,7 @@ ul {
 
 ul ul {
 	line-height: 140%;
-	list-style-type: disc;
+	list-style-type: circle;
 	margin-bottom: 4px;
 	margin-top: 3px;
 }
@@ -261,6 +261,7 @@ div.OH_outerContent div#mainSection table th {
 	padding-right: 13px;
 	vertical-align: middle;
 	text-align: left;
+	font-weight: bold;
 }
 
 div.OH_outerContent div#mainSection table td {
@@ -349,7 +350,7 @@ span.tt {
 	font-size: 1.3em; /*15pt*/
 	font-family: Segoe UI, Verdana, Arial;
 	font-weight: bold;
-	color: #250c58;
+	color: #000000;
 	float: left;
 	background-color: #FFFFFF;
 	margin-top: 13px;

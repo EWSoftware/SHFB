@@ -321,7 +321,8 @@
   <item id="altText_CompactFramework">Supported by the .NET Compact Framework</item>
   <item id="altText_XNAFramework">Supported by the XNA Framework</item>
   <item id="altText_SilverlightMobile">Supported by <include item="silverlight_mobile"/></item>
-  <item id="altText_ExplicitInterface">Explicit interface implemetation</item>
+  <item id="altText_ExplicitInterface">Explicit interface implementation</item>
+  <item id="altText_CodeExample">Code example</item>
 
   <item id="boilerplate_seeAlsoNamespaceLink">{0} Namespace</item>
   <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/></item>

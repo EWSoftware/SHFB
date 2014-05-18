@@ -3,7 +3,7 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>This topic covers known issues and bugs with Sandcastle and conceptual content.  Currently, the
-VS2005 presentation style is the best choice for conceptual content as it contains no known issues beyond those
+VS2013 presentation style is the best choice for conceptual content as it contains no known issues beyond those
 noted in the <legacyBold>General Issues</legacyBold> section.  The list does not include issues fixed by the
 noted patch.</para>
     </introduction>
@@ -44,7 +44,7 @@ for an example.</para>
 					</listItem>
           <listItem>
 						<para>The language filter is present but only toggles syntax and code snippet visibility.  It
-will not toggle the visiblity on code examples.</para>
+will not toggle the visibility on code examples.</para>
 					</listItem>
         </list>
 
@@ -64,7 +64,7 @@ will not toggle the visiblity on code examples.</para>
 					</listItem>
           <listItem>
 						<para>The language filter is present but only toggles syntax and code snippet visibility.  It
-will not toggle the visiblity on code examples.</para>
+will not toggle the visibility on code examples.</para>
 					</listItem>
           <listItem>
 						<para>Most section headers are not rendered as collapsible sections like they are in the Hana

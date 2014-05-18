@@ -53,7 +53,7 @@ supplied with the <token>SHFB</token>.  Refer to its help file for more informat
 						<para>Use a <codeInline>CDATA</codeInline> section to encapsulate the code so that special characters
 and formatting are preserved.  For example:</para>
 
-<code language="xml" title="CDATA Example">
+<code language="cs" title="CDATA Example">
 /// &lt;example&gt;
 /// &lt;code language="xml" title="Example Configuration"&gt;
 /// &lt;![CDATA[

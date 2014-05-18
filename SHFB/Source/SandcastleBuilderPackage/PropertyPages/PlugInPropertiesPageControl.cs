@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/07/2014
+// Updated : 05/16/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -121,9 +121,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 // There may be duplicate component IDs across the assemblies found.  See
                 // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
-                // component for a unique ID will be used.
+                // component for a unique ID will be used.  We also ignore hidden plug-ins.
                 foreach(var plugIn in availablePlugIns)
-                    if(!plugInIds.Contains(plugIn.Metadata.Id))
+                    if(!plugIn.Metadata.IsHidden && !plugInIds.Contains(plugIn.Metadata.Id))
                     {
                         lbAvailablePlugIns.Items.Add(plugIn.Metadata.Id);
                         plugInIds.Add(plugIn.Metadata.Id);

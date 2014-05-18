@@ -27,7 +27,7 @@
 
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[これは仮のドキュメントであり、予告なく変更されます。]</p></item>
 
-	<item id="comments"><div class="VS2013_feedbacklink">このトピックに対してコメントを送信
+	<item id="comments"><div class="feedbackLink">このトピックに対してコメントを送信
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");

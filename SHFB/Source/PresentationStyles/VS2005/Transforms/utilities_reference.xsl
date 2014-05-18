@@ -2088,7 +2088,17 @@
 						<span class="nu">.</span>
 						<span class="fs">.</span>
 					</span>
-					<xsl:value-of select="apidata/@name" />
+					<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+					<xsl:choose>
+						<xsl:when test="apidata/@name">
+							<xsl:value-of select="apidata/@name" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="subString">
+								<xsl:with-param name="name" select="@api" />
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:apply-templates select="templates" mode="decorated" />
 				</xsl:for-each>
 			</xsl:when>
@@ -2210,7 +2220,17 @@
 								<xsl:call-template name="typeNamePlain" />
 							</xsl:for-each>
 							<xsl:text>.</xsl:text>
-							<xsl:value-of select="apidata/@name" />
+							<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+							<xsl:choose>
+								<xsl:when test="apidata/@name">
+									<xsl:value-of select="apidata/@name" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="subString">
+										<xsl:with-param name="name" select="@api" />
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:apply-templates select="templates" mode="plain" />
 						</xsl:for-each>
 					</xsl:when>

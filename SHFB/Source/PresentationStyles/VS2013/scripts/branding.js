@@ -1,4 +1,25 @@
-﻿// The IDs of all code snippet sets on the same page are stored so that we can keep them in synch when a tab is
+﻿//===============================================================================================================
+// System  : Sandcastle Help File Builder
+// File    : branding.js
+// Author  : Eric Woodruff  (Eric@EWoodruff.us)
+// Updated : 05/15/2014
+// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+//           Portions Copyright 2010-2014 Microsoft, All rights reserved
+//
+// This file contains the methods necessary to implement the language filtering, collapsible section, and
+// copy to clipboard options.
+//
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 05/04/2014  EFW  Created the code based on the MS Help Viewer script
+//===============================================================================================================
+
+// The IDs of all code snippet sets on the same page are stored so that we can keep them in synch when a tab is
 // selected.
 var allTabSetIds = new Array();
 
@@ -32,7 +53,7 @@ function OnLoad(defaultLanguage)
 {
     var defLang;
 
-    if(typeof(defaultLanguage) == "undefined" || defaultLanguage == null || defaultLanguage == "")
+    if(typeof (defaultLanguage) == "undefined" || defaultLanguage == null || defaultLanguage == "")
         defLang = "vb";
     else
         defLang = defaultLanguage;
@@ -41,7 +62,7 @@ function OnLoad(defaultLanguage)
     // belongs if necessary.
     try
     {
-        var footer = document.getElementById("VS2013_footer")
+        var footer = document.getElementById("pageFooter")
 
         if(footer)
         {
@@ -54,10 +75,11 @@ function OnLoad(defaultLanguage)
             }
         }
     }
-    catch(e) { }
-    finally { }
+    catch(e)
+    {
+    }
 
-    var language = GetLanguageCookie("CodeSnippetContainerLanguage", defLang);
+    var language = GetCookie("CodeSnippetContainerLanguage", defLang);
 
     // If LST exists on the page, set the LST to show the user selected programming language
     UpdateLST(language);
@@ -81,8 +103,8 @@ function OnLoad(defaultLanguage)
             if(tabCount < 2)
             {
                 // Disable the Copy Code link if in Chrome
-                if(navigator.userAgent.toLowerCase().indexOf('chrome') != -1)
-                    document.getElementById(allTabSetIds[i] + "_copyCode").style.display = 'none';
+                if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1)
+                    document.getElementById(allTabSetIds[i] + "_copyCode").style.display = "none";
             }
             else
                 SetCurrentLanguage(allTabSetIds[i], language, tabCount);
@@ -90,10 +112,17 @@ function OnLoad(defaultLanguage)
             i++;
         }
     }
+
+    InitializeToc();
+}
+
+// This is just a place holder.  The website script implements this function to initialize it's in-page TOC pane
+function InitializeToc()
+{
 }
 
 // This function executes in the OnLoad event and ChangeTab action on code snippets.  The function parameter
-// is the user chosen programming language.  This function iterates through the 'allLSTSetIds' dictionary object
+// is the user chosen programming language.  This function iterates through the "allLSTSetIds" dictionary object
 // to update the node value of the LST span tag per the user's chosen programming language.
 function UpdateLST(language)
 {
@@ -154,8 +183,8 @@ function UpdateLST(language)
     }
 }
 
-// Get the selected language cookie
-function GetLanguageCookie(cookieName, defaultValue)
+// Get the specified cookie.  If not found, return the specified default value.
+function GetCookie(cookieName, defaultValue)
 {
     if(isHelp1)
     {
@@ -189,8 +218,8 @@ function GetLanguageCookie(cookieName, defaultValue)
     return defaultValue;
 }
 
-// Set the selected language cookie
-function SetLanguageCookie(name, value)
+// Set the specified cookie to the specified value
+function SetCookie(name, value)
 {
     if(isHelp1)
     {
@@ -234,7 +263,7 @@ function AddLanguageTabSet(tabSetId)
 // Switch the active tab for all of other code snippets
 function ChangeTab(tabSetId, language, snippetIdx, snippetCount)
 {
-    SetLanguageCookie("CodeSnippetContainerLanguage", language);
+    SetCookie("CodeSnippetContainerLanguage", language);
 
     SetActiveTab(tabSetId, snippetIdx, snippetCount);
 
@@ -296,7 +325,7 @@ function SetCurrentLanguage(tabSetId, language, tabCount)
                 if(tab.className != "codeSnippetContainerTabPhantom")
                 {
                     tab.className = "codeSnippetContainerTabActive";
-                    document.getElementById(tabSetId + '_code_Div' + j).style.display = 'block';
+                    document.getElementById(tabSetId + "_code_Div" + j).style.display = "block";
                     break;
                 }
 
@@ -319,23 +348,31 @@ function SetActiveTab(tabSetId, tabIndex, tabCount)
 
         if(tabTemp.className == "codeSnippetContainerTabActive")
             tabTemp.className = "codeSnippetContainerTab";
+        else
+            if(tabTemp.className == "codeSnippetContainerTabPhantom")
+                tabTemp.style.display = "none";
 
         var codeTemp = document.getElementById(tabSetId + "_code_Div" + i);
 
-        if(codeTemp.style.display != 'none')
-            codeTemp.style.display = 'none';
+        if(codeTemp.style.display != "none")
+            codeTemp.style.display = "none";
 
         i++;
     }
 
-    document.getElementById(tabSetId + "_tab" + tabIndex).className = "codeSnippetContainerTabActive";
-    document.getElementById(tabSetId + '_code_Div' + tabIndex).style.display = 'block';
+    // Phantom tabs are shown or hidden as needed
+    if(document.getElementById(tabSetId + "_tab" + tabIndex).className != "codeSnippetContainerTabPhantom")
+        document.getElementById(tabSetId + "_tab" + tabIndex).className = "codeSnippetContainerTabActive";
+    else
+        document.getElementById(tabSetId + "_tab" + tabIndex).style.display = "block";
+
+    document.getElementById(tabSetId + "_code_Div" + tabIndex).style.display = "block";
 
     // Show copy code button if not in Chrome
-    if(navigator.userAgent.toLowerCase().indexOf('chrome') == -1)
-        document.getElementById(tabSetId + "_copyCode").style.display = 'inline';
+    if(navigator.userAgent.toLowerCase().indexOf("chrome") == -1)
+        document.getElementById(tabSetId + "_copyCode").style.display = "inline";
     else
-        document.getElementById(tabSetId + "_copyCode").style.display = 'none';
+        document.getElementById(tabSetId + "_copyCode").style.display = "none";
 }
 
 // Copy the code from the active tab of the given tab set to the clipboard
@@ -346,10 +383,10 @@ function CopyToClipboard(tabSetId)
 
     do
     {
-        contentId = tabSetId + '_code_Div' + i;
+        contentId = tabSetId + "_code_Div" + i;
         tabTemp = document.getElementById(contentId);
 
-        if(tabTemp != null && tabTemp.style.display != 'none')
+        if(tabTemp != null && tabTemp.style.display != "none")
             break;
 
         i++;
@@ -374,21 +411,21 @@ function CopyToClipboard(tabSetId)
     {
         try
         {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-            var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(
+            var clip = Components.classes["@mozilla.org/widget/clipboard;1"].createInstance(
                 Components.interfaces.nsIClipboard);
 
             if(!clip)
                 return;
 
-            var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(
+            var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(
                 Components.interfaces.nsITransferable);
 
             if(!trans)
                 return;
 
-            trans.addDataFlavor('text/unicode');
+            trans.addDataFlavor("text/unicode");
 
             var str = new Object();
             var len = new Object();
@@ -412,7 +449,7 @@ function CopyToClipboard(tabSetId)
 }
 
 // Expand or collapse a section
-function ExpandCollapse(togglePrefix)
+function SectionExpandCollapse(togglePrefix)
 {
     var image = document.getElementById(togglePrefix + "Toggle");
     var section = document.getElementById(togglePrefix + "Section");
@@ -420,21 +457,21 @@ function ExpandCollapse(togglePrefix)
     if(image != null && section != null)
         if(section.style.display == "")
         {
-            image.src = image.src.replace("Expanded.png", "Collapsed.png");
+            image.src = image.src.replace("SectionExpanded.png", "SectionCollapsed.png");
             section.style.display = "none";
         }
         else
         {
-            image.src = image.src.replace("Collapsed.png", "Expanded.png");
+            image.src = image.src.replace("SectionCollapsed.png", "SectionExpanded.png");
             section.style.display = "";
         }
 }
 
 // Expand or collapse a section when it has the focus and Enter is hit
-function ExpandCollapse_CheckKey(togglePrefix, eventArgs)
+function SectionExpandCollapse_CheckKey(togglePrefix, eventArgs)
 {
     if(eventArgs.keyCode == 13)
-        ExpandCollapse(togglePrefix);
+        SectionExpandCollapse(togglePrefix);
 }
 
 // Help 1 persistence object.  This requires a hidden input element on the page with a class of "userDataStyle"

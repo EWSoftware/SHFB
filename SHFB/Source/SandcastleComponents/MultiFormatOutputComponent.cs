@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MultiFormatOutputComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/12/2014
+// Updated : 05/17/2014
 // Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.Components
     /// formats.  Only the components related to the requested set of format types will be executed.</remarks>
     /// <example>
     /// <code lang="xml" title="Example Configuration"
-    ///     source="..\..\SHFB\Source\PresentationStyles\VS2005\Configuration\SHFBReference.config"
+    ///     source="..\..\SHFB\Source\PresentationStyles\VS2013\Configuration\SHFBReference.config"
     ///     region="Multi-format output component" />
     /// </example>
     public class MultiFormatOutputComponent : BuildComponentCore

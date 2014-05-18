@@ -26,7 +26,7 @@
 
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Documentazione preliminare soggetta a variazioni.]</p></item>
 
-	<item id="comments"><div class="VS2013_feedbacklink">Inviare suggerimenti o segnalare errori relativi a questo argomento a
+	<item id="comments"><div class="feedbackLink">Inviare suggerimenti o segnalare errori relativi a questo argomento a
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");

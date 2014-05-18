@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2014
+// Updated : 05/16/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -62,6 +62,7 @@
 //          01/11/2014  EFW  Updated where shared content and stop word lists are copied from.  These files are
 //                           part of each presentation style now.
 //          02/15/2014  EFW  Added support for the Open XML output format
+//          05/14/2014  EFW  Added support for presentation style plug-in dependencies
 //===============================================================================================================
 
 using System;
@@ -243,6 +244,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string PresentationStyleFolder
         {
             get { return FolderPath.TerminatePath(presentationStyle.ResolvePath(presentationStyle.BasePath)); }
+        }
+
+        /// <summary>
+        /// This returns the name of the presentation style resource items folder determined by the build
+        /// process.
+        /// </summary>
+        public string PresentationStyleResourceItemsFolder
+        {
+            get
+            {
+                return FolderPath.TerminatePath(Path.Combine(presentationStyle.ResolvePath(
+                    presentationStyle.ResourceItemsPath), languageFolder));
+            }
         }
 
         /// <summary>
@@ -433,6 +447,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 rootContentContainerId = value;
             }
+        }
+
+        /// <summary>
+        /// This returns the filename of the default topic as determined by the build engine
+        /// </summary>
+        /// <remarks>The path is relative to the root of the output folder (i.e. html/DefaultTopic.htm)</remarks>
+        public string DefaultTopicFile
+        {
+            get { return defaultTopic; }
+        }
+
+        /// <summary>
+        /// This returns the <see cref="SandcastleProject.HelpTitle"/> project property value with all
+        /// substitution tags it contains, if any, resolved to actual values.
+        /// </summary>
+        public string ResolvedHelpTitle
+        {
+            get { return this.TransformText(project.HelpTitle); }
         }
 
         /// <summary>
@@ -734,8 +766,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "help file formats.  Supported formats: {1}", style.Metadata.Id,
                         presentationStyle.SupportedFormats));
 
-                // Load the plug-ins
-                if(project.PlugInConfigurations.Count != 0)
+                // Load the plug-ins if necessary
+                if(project.PlugInConfigurations.Count != 0 || presentationStyle.PlugInDependencies.Count != 0)
                     this.LoadPlugIns();
 
                 this.ExecutePlugIns(ExecutionBehaviors.After);

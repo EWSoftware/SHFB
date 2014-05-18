@@ -52,7 +52,7 @@ building help files, it is strongly recommended that you use one of the third-pa
 tools such as the <token>SHFB</token>.  They contain all of the necessary features
 and tools required to make building help files with Sandcastle a much simpler process.
 This help file was produced using the <token>SHFB</token> and is an example of what
-the VS2005 presentation style looks like.</para>
+the VS2013 presentation style looks like.</para>
       </content>
     </section>
     <relatedTopics>

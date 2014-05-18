@@ -85,7 +85,8 @@ namespace Microsoft.Ddue.Tools
 <generators>
     {@SyntaxFilters}
 </generators>
-<containerElement name=""codeSnippetGroup"" />";
+<containerElement name=""codeSnippetGroup"" addNoExampleTabs=""true"" includeOnSingleSnippets=""false""
+    groupingEnabled=""{@CodeSnippetGrouping}"" />";
                 }
             }
 
@@ -108,7 +109,7 @@ namespace Microsoft.Ddue.Tools
 
         // Syntax generator data
         private XPathExpression syntaxInput, syntaxOutput;
-        private bool renderReferenceLinks;
+        private bool renderReferenceLinks, addNoExampleTabs, includeOnSingleSnippets;
 
         private List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories;
         private List<SyntaxGeneratorCore> generators = new List<SyntaxGeneratorCore>();
@@ -119,6 +120,7 @@ namespace Microsoft.Ddue.Tools
         private string containerElementName;
         private Dictionary<string, ISyntaxGeneratorMetadata> codeSnippetLanguages;
         private HashSet<string> generatorLanguages;
+        private List<ISyntaxGeneratorMetadata> languageSet;
 
         #endregion
 
@@ -136,6 +138,7 @@ namespace Microsoft.Ddue.Tools
             this.generatorFactories = generatorFactories;
 
             generatorLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            languageSet = new List<ISyntaxGeneratorMetadata>();
 
             // Generate a list of all possible language IDs for code snippets from the available generators
             codeSnippetLanguages = new Dictionary<string, ISyntaxGeneratorMetadata>(StringComparer.OrdinalIgnoreCase);
@@ -172,9 +175,9 @@ namespace Microsoft.Ddue.Tools
 
             syntaxOutput = XPathExpression.Compile(syntaxOutputXPath);
 
-            string renderLinks = syntaxNode.GetAttribute("renderReferenceLinks", String.Empty);
+            string attrValue = syntaxNode.GetAttribute("renderReferenceLinks", String.Empty);
 
-            if(String.IsNullOrWhiteSpace(renderLinks) || !Boolean.TryParse(renderLinks, out renderReferenceLinks))
+            if(String.IsNullOrWhiteSpace(attrValue) || !Boolean.TryParse(attrValue, out renderReferenceLinks))
                 renderReferenceLinks = false;
 
             XPathNodeIterator generatorNodes = configuration.Select("generators/generator");
@@ -198,6 +201,7 @@ namespace Microsoft.Ddue.Tools
 
                 // Track the languages for grouping
                 generatorLanguages.Add(generatorFactory.Metadata.Id);
+                languageSet.Add(generatorFactory.Metadata);
 
                 foreach(string alternateId in generatorFactory.Metadata.AlternateIds.Split(new[] { ',', ' ', '\t' },
                   StringSplitOptions.RemoveEmptyEntries))
@@ -239,11 +243,36 @@ namespace Microsoft.Ddue.Tools
 
             base.WriteMessage(MessageLevel.Info, "Loaded {0} syntax generators.", generators.Count);
 
-            var containerElement = configuration.SelectSingleNode("containerElement/@name");
+            // If this is not found or set, we'll assume the presentation style does not support grouping
+            var containerElement = configuration.SelectSingleNode("containerElement");
 
-            if(containerElement != null && !String.IsNullOrWhiteSpace(containerElement.Value))
+            if(containerElement != null)
             {
-                containerElementName = containerElement.Value;
+                // If grouping is disabled, skip the remainder of the set up.  This will happen if the user adds
+                // a custom configuration to a project for a presentation style that doesn't support it.
+                bool groupingEnabled;
+
+                containerElementName = containerElement.GetAttribute("name", String.Empty);
+                attrValue = containerElement.GetAttribute("groupingEnabled", String.Empty);
+
+                if(String.IsNullOrWhiteSpace(attrValue) || !Boolean.TryParse(attrValue, out groupingEnabled))
+                    groupingEnabled = false;
+
+                if(!groupingEnabled || String.IsNullOrWhiteSpace(containerElementName))
+                    return;
+
+                languageSet = languageSet.OrderBy(l => l.SortOrder).ToList();
+
+                // Get the "no example tab" options
+                attrValue = containerElement.GetAttribute("addNoExampleTabs", String.Empty);
+
+                if(String.IsNullOrWhiteSpace(attrValue) || !Boolean.TryParse(attrValue, out addNoExampleTabs))
+                    addNoExampleTabs = true;
+
+                attrValue = containerElement.GetAttribute("includeOnSingleSnippets", String.Empty);
+
+                if(String.IsNullOrWhiteSpace(attrValue) || !Boolean.TryParse(attrValue, out includeOnSingleSnippets))
+                    includeOnSingleSnippets = false;
 
                 // Create the XPath queries used for code snippet grouping and sorting
                 context = new CustomContext();
@@ -291,9 +320,8 @@ namespace Microsoft.Ddue.Tools
         private void TransformComponent_TopicTransforming(object sender, EventArgs e)
         {
             XPathNavigator[] codeList;
-            XmlElement nextElement;
             XmlAttribute attribute;
-            XmlNode code;
+            XmlNode code, nextNode;
             CodeSnippetGroup snippetGroup;
             ISyntaxGeneratorMetadata metadata;
             string namespaceUri;
@@ -304,8 +332,10 @@ namespace Microsoft.Ddue.Tools
             if(tt == null)
                 return;
 
-            XPathNavigator root, navDoc = tt.Document.CreateNavigator();
+            XmlDocument document = tt.Document;
+            XPathNavigator root, navDoc = document.CreateNavigator();
             List<CodeSnippetGroup> allGroups = new List<CodeSnippetGroup>();
+            List<List<CodeSnippet>> extraGroups = new List<List<CodeSnippet>>();
 
             // Select all code nodes.  The location depends on the build type.
             root = navDoc.SelectSingleNode(referenceRoot);
@@ -331,6 +361,9 @@ namespace Microsoft.Ddue.Tools
                 namespaceUri = "http://ddue.schemas.microsoft.com/authoring/2003/5";
             }
 
+            if(codeList.Length == 0)
+                return;
+
             // In the first pass, group all consecutive code snippets
             foreach(XPathNavigator navCode in codeList)
             {
@@ -342,29 +375,35 @@ namespace Microsoft.Ddue.Tools
                 if(code.ParentNode == null || code.ParentNode.LocalName == "code")
                     continue;
 
-                snippetGroup = new CodeSnippetGroup(tt.Document.CreateElement(containerElementName, namespaceUri));
+                snippetGroup = new CodeSnippetGroup(document.CreateElement(containerElementName, namespaceUri));
                 allGroups.Add(snippetGroup);
 
                 code.ParentNode.InsertBefore(snippetGroup.SnippetGroupElement, code);
 
+                // Keep going until we hit a text node or a non-code element
                 while(code != null && (code.LocalName == "code" || code.LocalName == "snippet"))
                 {
                     snippetGroup.CodeSnippets.Add(new CodeSnippet((XmlElement)code));
 
-                    nextElement = code.NextSibling as XmlElement;
+                    nextNode = code.NextSibling;
                     code.ParentNode.RemoveChild(code);
-                    code = nextElement;
+
+                    // Skip intervening comment nodes as they may incorrectly split a group
+                    while(nextNode is XmlComment)
+                        nextNode = nextNode.NextSibling;
+
+                    code = nextNode as XmlElement;
                 }
             }
 
-            // For each group, move snippets with a title or a language not in the syntax set into a new group by
-            // themselves following the containing group and remove them from the containing group.
             foreach(var group in allGroups.ToList())
             {
                 // Get the group insertion point and snippet count up front as they may change below
                 int groupInsertionPoint = allGroups.IndexOf(group) + 1, snippetCount = group.CodeSnippets.Count;
                 CodeSnippetGroup insertionPoint = group;
 
+                // For each group, move snippets with a title or a language not in the syntax set into a new
+                // group by themselves following the containing group and remove them from the containing group.
                 foreach(var snippet in group.CodeSnippets.ToList())
                 {
                     if(!codeSnippetLanguages.TryGetValue(snippet.Language, out metadata))
@@ -375,7 +414,7 @@ namespace Microsoft.Ddue.Tools
 
                         if(snippet.CodeElement.Attributes["title"] == null)
                         {
-                            attribute = tt.Document.CreateAttribute("title");
+                            attribute = document.CreateAttribute("title");
                             attribute.Value = " ";
                             snippet.CodeElement.Attributes.Append(attribute);
                         }
@@ -387,27 +426,32 @@ namespace Microsoft.Ddue.Tools
                         snippet.SortOrder = metadata.SortOrder;
                     }
 
-                    attribute = tt.Document.CreateAttribute("codeLanguage");
+                    attribute = document.CreateAttribute("codeLanguage");
                     attribute.Value = snippet.LanguageElementName;
                     snippet.CodeElement.Attributes.Append(attribute);
 
-                    attribute = tt.Document.CreateAttribute("style");
+                    attribute = document.CreateAttribute("style");
                     attribute.Value = snippet.KeywordStyleParameter;
                     snippet.CodeElement.Attributes.Append(attribute);
 
-                    if(snippetCount != 1 && (snippet.CodeElement.Attributes["title"] != null ||
-                      !generatorLanguages.Contains(snippet.Language)))
-                    {
-                        snippetGroup = new CodeSnippetGroup(tt.Document.CreateElement(containerElementName, namespaceUri));
-                        allGroups.Insert(groupInsertionPoint++, snippetGroup);
+                    if(snippet.CodeElement.Attributes["title"] != null || !generatorLanguages.Contains(snippet.Language))
+                        if(snippetCount != 1)
+                        {
+                            snippetGroup = new CodeSnippetGroup(document.CreateElement(containerElementName,
+                                namespaceUri));
+                            snippetGroup.IsStandalone = true;
 
-                        insertionPoint.SnippetGroupElement.ParentNode.InsertAfter(snippetGroup.SnippetGroupElement,
-                            insertionPoint.SnippetGroupElement);
-                        insertionPoint = snippetGroup;
+                            allGroups.Insert(groupInsertionPoint++, snippetGroup);
 
-                        group.CodeSnippets.Remove(snippet);
-                        snippetGroup.CodeSnippets.Add(snippet);
-                    }
+                            insertionPoint.SnippetGroupElement.ParentNode.InsertAfter(snippetGroup.SnippetGroupElement,
+                                insertionPoint.SnippetGroupElement);
+                            insertionPoint = snippetGroup;
+
+                            group.CodeSnippets.Remove(snippet);
+                            snippetGroup.CodeSnippets.Add(snippet);
+                        }
+                        else
+                            group.IsStandalone = true;
                 }
 
                 // If all snippets were converted into standalone snippets, remove the group
@@ -415,18 +459,90 @@ namespace Microsoft.Ddue.Tools
                 {
                     group.SnippetGroupElement.ParentNode.RemoveChild(group.SnippetGroupElement);
                     allGroups.Remove(group);
+                    continue;
+                }
+
+                extraGroups.Clear();
+                groupInsertionPoint = allGroups.IndexOf(group) + 1;
+                insertionPoint = group;
+
+                // If there are multiple snippets for a language in a group, move the duplicates into a new group
+                if(!group.IsStandalone && group.CodeSnippets.Count != 1)
+                {
+                    // There can be multiple language IDs that map to the same keyword style so group by that
+                    foreach(var langSet in group.CodeSnippets.GroupBy(c => c.KeywordStyleParameter).Where(
+                      g => g.Count() != 1).ToList())
+                    {
+                        // For each duplicate, find a group that doesn't contain the language or create
+                        // a new group and put it in that one.
+                        foreach(var snippet in langSet.Skip(1))
+                        {
+                            var moveToGroup = extraGroups.FirstOrDefault(eg => !eg.Any(
+                                c => c.Language == snippet.Language));
+
+                            if(moveToGroup == null)
+                            {
+                                moveToGroup = new List<CodeSnippet>();
+                                extraGroups.Add(moveToGroup);
+                            }
+
+                            moveToGroup.Add(snippet);
+                            group.CodeSnippets.Remove(snippet);
+                        }
+                    }
+
+                    foreach(var set in extraGroups)
+                    {
+                        snippetGroup = new CodeSnippetGroup(document.CreateElement(containerElementName,
+                            namespaceUri));
+
+                        allGroups.Insert(groupInsertionPoint++, snippetGroup);
+
+                        insertionPoint.SnippetGroupElement.ParentNode.InsertAfter(snippetGroup.SnippetGroupElement,
+                            insertionPoint.SnippetGroupElement);
+                        insertionPoint = snippetGroup;
+                        snippetGroup.CodeSnippets.AddRange(set);
+                    }
                 }
             }
 
-            // TODO: If there are multiple snippets in a group for a language, move duplicates into a new group.
-
-            // TODO: Add "no example" snippets to groups that don't contain all of the syntax languages.  Perhaps
-            // make this a configurable option.
-
-            // And finally, add the snippets to the group container in sorted order
+            // We've got all the necessary groups now so make the final pass
             foreach(var group in allGroups)
+            {
+                // If wanted, add "no example" snippets to groups that don't contain all of the syntax languages.
+                // Standalone groups are always excluded.  Single snippets are excluded if so indicated.
+                if(addNoExampleTabs && !group.IsStandalone && (group.CodeSnippets.Count > 1 || includeOnSingleSnippets))
+                    foreach(var style in languageSet.Select(l => l.KeywordStyleParameter).Except(
+                      group.CodeSnippets.Select(c => c.KeywordStyleParameter)))
+                    {
+                        var language = languageSet.First(l => l.KeywordStyleParameter == style);
+
+                        var noExample = document.CreateElement(group.CodeSnippets[0].CodeElement.LocalName,
+                            namespaceUri);
+
+                        attribute = document.CreateAttribute("language");
+                        attribute.Value = language.KeywordStyleParameter;
+                        noExample.Attributes.Append(attribute);
+
+                        attribute = document.CreateAttribute("codeLanguage");
+                        attribute.Value = language.LanguageElementName;
+                        noExample.Attributes.Append(attribute);
+
+                        attribute = document.CreateAttribute("style");
+                        attribute.Value = language.KeywordStyleParameter;
+                        noExample.Attributes.Append(attribute);
+
+                        attribute = document.CreateAttribute("phantom");
+                        attribute.Value = "true";
+                        noExample.Attributes.Append(attribute);
+
+                        group.CodeSnippets.Add(new CodeSnippet(noExample) { SortOrder = language.SortOrder });
+                    }
+
+                // And finally, add the snippets to the group container in sorted order
                 foreach(var snippet in group.CodeSnippets.OrderBy(c => c.SortOrder))
                     group.SnippetGroupElement.AppendChild(snippet.CodeElement);
+            }
         }
         #endregion
     }

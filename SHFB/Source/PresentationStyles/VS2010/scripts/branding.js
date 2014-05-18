@@ -167,8 +167,8 @@ function OnLoad(defaultLanguage)
             if(tabCount < 2)
             {
                 // Disable the Copy Code link if in Chrome
-                if(navigator.userAgent.toLowerCase().indexOf('chrome') != -1)
-                    document.getElementById(allTabSetIds[i] + "_copyCode").style.display = 'none';
+                if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1)
+                    document.getElementById(allTabSetIds[i] + "_copyCode").style.display = "none";
             }
             else
                 SetCurrentLanguage(allTabSetIds[i], language, tabCount);
@@ -179,7 +179,7 @@ function OnLoad(defaultLanguage)
 }
 
 // This function executes in the OnLoad event and ChangeTab action on code snippets.  The function parameter
-// is the user chosen programming language.  This function iterates through the 'allLSTSetIds' dictionary object
+// is the user chosen programming language.  This function iterates through the "allLSTSetIds" dictionary object
 // to update the node value of the LST span tag per the user's chosen programming language.
 function UpdateLST(language)
 {
@@ -382,7 +382,7 @@ function SetCurrentLanguage(tabSetId, language, tabCount)
                 if(tab.className.indexOf("OH_CodeSnippetContainerTabDisabled") == -1)
                 {
                     tab.className = "OH_CodeSnippetContainerTabActiveNotFirst";
-                    document.getElementById(tabSetId + '_code_Div' + j).style.display = 'block';
+                    document.getElementById(tabSetId + "_code_Div" + j).style.display = "block";
                     break;
                 }
 
@@ -415,40 +415,54 @@ function SetActiveTab(tabSetId, tabIndex, tabCount)
         else
             if(tabTemp.className == "OH_CodeSnippetContainerTabActiveNotFirst")
                 tabTemp.className = "OH_CodeSnippetContainerTab";
+            else
+                if(tabTemp.className.indexOf("OH_CodeSnippetContainerTabDisabled") != -1)
+                {
+                    tabTemp.firstChild.style.color = "#a8a8a8";
+                    tabTemp.firstChild.style.fontWeight = "normal";
+                }
 
         var codeTemp = document.getElementById(tabSetId + "_code_Div" + i);
 
-        if(codeTemp.style.display != 'none')
-            codeTemp.style.display = 'none';
+        if(codeTemp.style.display != "none")
+            codeTemp.style.display = "none";
 
         i++;
     }
 
-    if(tabIndex == 1)
-        document.getElementById(tabSetId + "_tab" + tabIndex).className = "OH_CodeSnippetContainerTabActive";
+    if(document.getElementById(tabSetId + "_tab" + tabIndex).className.indexOf("OH_CodeSnippetContainerTabDisabled") == -1)
+    {
+        if(tabIndex == 1)
+            document.getElementById(tabSetId + "_tab" + tabIndex).className = "OH_CodeSnippetContainerTabActive";
+        else
+            document.getElementById(tabSetId + "_tab" + tabIndex).className = "OH_CodeSnippetContainerTabActiveNotFirst";
+    }
     else
-        document.getElementById(tabSetId + "_tab" + tabIndex).className = "OH_CodeSnippetContainerTabActiveNotFirst";
+    {
+        document.getElementById(tabSetId + "_tab" + tabIndex).firstChild.style.color = "black";
+        document.getElementById(tabSetId + "_tab" + tabIndex).firstChild.style.fontWeight = "bold";
+    }
 
-    document.getElementById(tabSetId + '_code_Div' + tabIndex).style.display = 'block';
+    document.getElementById(tabSetId + "_code_Div" + tabIndex).style.display = "block";
 
     // Change the CSS of the first/last image div according the currently selected tab
-    if(tabIndex == 1)
+    if(tabIndex == 1 && document.getElementById(tabSetId + "_tab" + tabIndex).className.indexOf("OH_CodeSnippetContainerTabDisabled") == -1)
         document.getElementById(tabSetId + "_tabimgleft").className = "OH_CodeSnippetContainerTabLeftActive";
     else
         if(document.getElementById(tabSetId + "_tabimgleft").className != "OH_CodeSnippetContainerTabLeftDisabled")
             document.getElementById(tabSetId + "_tabimgleft").className = "OH_CodeSnippetContainerTabLeft";
 
-    if(tabIndex == tabCount)
+    if(tabIndex == tabCount && document.getElementById(tabSetId + "_tab" + tabIndex).className.indexOf("OH_CodeSnippetContainerTabDisabled") == -1)
         document.getElementById(tabSetId + "_tabimgright").className = "OH_CodeSnippetContainerTabRightActive";
     else
         if(document.getElementById(tabSetId + "_tabimgright").className != "OH_CodeSnippetContainerTabRightDisabled")
             document.getElementById(tabSetId + "_tabimgright").className = "OH_CodeSnippetContainerTabRight";
 
     // Show copy code button if not in Chrome
-    if(navigator.userAgent.toLowerCase().indexOf('chrome') == -1)
-        document.getElementById(tabSetId + "_copyCode").style.display = 'inline';
+    if(navigator.userAgent.toLowerCase().indexOf("chrome") == -1)
+        document.getElementById(tabSetId + "_copyCode").style.display = "inline";
     else
-        document.getElementById(tabSetId + "_copyCode").style.display = 'none';
+        document.getElementById(tabSetId + "_copyCode").style.display = "none";
 }
 
 // Copy the code from the active tab of the given tab set to the clipboard
@@ -459,10 +473,10 @@ function CopyToClipboard(tabSetId)
 
     do
     {
-        contentId = tabSetId + '_code_Div' + i;
+        contentId = tabSetId + "_code_Div" + i;
         tabTemp = document.getElementById(contentId);
 
-        if(tabTemp != null && tabTemp.style.display != 'none')
+        if(tabTemp != null && tabTemp.style.display != "none")
             break;
 
         i++;
@@ -487,21 +501,21 @@ function CopyToClipboard(tabSetId)
     {
         try
         {
-            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-            var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(
+            var clip = Components.classes["@mozilla.org/widget/clipboard;1"].createInstance(
                 Components.interfaces.nsIClipboard);
 
             if(!clip)
                 return;
 
-            var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(
+            var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(
                 Components.interfaces.nsITransferable);
 
             if(!trans)
                 return;
 
-            trans.addDataFlavor('text/unicode');
+            trans.addDataFlavor("text/unicode");
 
             var str = new Object();
             var len = new Object();

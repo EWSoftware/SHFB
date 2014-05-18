@@ -26,7 +26,7 @@
 
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[This is preliminary documentation and is subject to change.]</p></item>
 
-	<item id="comments"><div class="VS2013_feedbacklink">내용에 문의사항이 있는 경우 우측의 메일 주소로 연락 바랍니다.
+	<item id="comments"><div class="feedbackLink">내용에 문의사항이 있는 경우 우측의 메일 주소로 연락 바랍니다.
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");

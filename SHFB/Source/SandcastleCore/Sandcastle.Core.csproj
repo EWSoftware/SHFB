@@ -115,6 +115,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PresentationStyle\IPresentationStyleMetadata.cs" />
+    <Compile Include="PresentationStyle\PlugInDependency.cs" />
     <Compile Include="PresentationStyle\PresentationStyleExportAttribute.cs" />
     <Compile Include="PresentationStyle\PresentationStyleSettings.cs">
       <SubType>Code</SubType>

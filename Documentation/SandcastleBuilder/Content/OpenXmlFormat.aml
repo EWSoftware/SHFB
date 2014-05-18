@@ -77,7 +77,7 @@ supported and those options are ignored.</para>
 					<listItem>
 						<para>Obviously, the language filter from the HTML help formats is not supported.  As such,
 language-specific text is shown using the generic, multi-language style.  Likewise, syntax sections and code
-blocks are shown in a sequential fashion similar to the VS2005 presentation style.</para>
+blocks are shown in a sequential fashion similar to the topic previewer.</para>
 					</listItem>
 
 					<listItem>

@@ -322,6 +322,7 @@
   <item id="altText_XNAFramework">Поддерживается платформой XNA Framework</item>
   <item id="altText_SilverlightMobile">Поддерживается платформой <include item="silverlight_mobile"/></item>
   <item id="altText_ExplicitInterface">Явные реализации интерфейса</item>
+  <item id="altText_CodeExample">Code example</item>
 
   <item id="boilerplate_seeAlsoNamespaceLink">{0} - пространство имён</item>
   <item id="boilerplate_seeAlsoTypeLink">{0} - <include item="text_{1}Lower"/></item>

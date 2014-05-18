@@ -322,6 +322,7 @@
   <item id="altText_XNAFramework">Vom XNA Framework unterstützt</item>
   <item id="altText_SilverlightMobile">Von <include item="silverlight_mobile"/> unterstützt</item>
   <item id="altText_ExplicitInterface">Explizite Schnittstellenimplementierung</item>
+  <item id="altText_CodeExample">Code example</item>
 
   <item id="boilerplate_seeAlsoNamespaceLink">{0} Namensraum</item>
   <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/></item>

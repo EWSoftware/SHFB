@@ -26,7 +26,7 @@
 
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Diese Seite ist eine Vorabausgabe der Dokumentation und kann in zukünftigen Ausgaben geändert werden. Leere Seiten sind als Platzhalter eingefügt.]</p></item>
 
-	<item id="comments"><div class="VS2013_feedbacklink">Senden Sie Kommentare zu diesem Feature an
+	<item id="comments"><div class="feedbackLink">Senden Sie Kommentare zu diesem Feature an
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");

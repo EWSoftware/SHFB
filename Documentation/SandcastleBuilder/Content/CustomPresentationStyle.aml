@@ -171,7 +171,7 @@ typically sufficient.</para>
 					<title>Constructor</title>
 					<content>
 						<para>Use the constructor to initialize all of the other properties.  The template class contains
-examples for all of the properties and mimics the settings for the existing VS2005 and VS2010 presentation
+examples for all of the properties and mimics the settings for the existing VS2010 and VS2013 presentation
 styles.</para>
 
 					</content>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/30/2014
+// Updated : 05/17/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // 01/04/2014  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -52,7 +53,7 @@ namespace Sandcastle.PresentationStyles
             this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelp2 |
                 HelpFileFormats.MSHelpViewer | HelpFileFormats.Website;
 
-            this.SupportsNamespaceGrouping = true;
+            this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
             
             // If relative, these paths are relative to the base path
             this.ResourceItemsPath = "Content";
@@ -75,15 +76,11 @@ namespace Sandcastle.PresentationStyles
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file
             // system.
-            
-            // The Help 2 format has a modified style sheet and must be copied first
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.MSHelp2, @"Help2\*.*", @".\styles"));
-
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, "%SHFBROOT%", @"Web\*.*", @".\",
-                new[] { ".aspx", ".html", ".htm", ".php" } ));
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"..\LegacyWeb\*.*",
+                String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
 
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoFile", true, true, null,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +

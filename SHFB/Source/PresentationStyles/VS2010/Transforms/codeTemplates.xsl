@@ -322,6 +322,12 @@
 										<xsl:when test="$v_nodeCount = 1">
 											<xsl:text>OH_CodeSnippetContainerTabSolo</xsl:text>
 										</xsl:when>
+										<xsl:when test="@phantom and position() = 1">
+											<xsl:text>OH_CodeSnippetContainerTabDisabled</xsl:text>
+										</xsl:when>
+										<xsl:when test="@phantom">
+											<xsl:text>OH_CodeSnippetContainerTabDisabledNotFirst</xsl:text>
+										</xsl:when>
 										<xsl:when test="position() = 1">
 											<xsl:text>OH_CodeSnippetContainerTabFirst</xsl:text>
 										</xsl:when>
@@ -389,7 +395,14 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:attribute>
-						<pre xml:space="preserve"><xsl:copy-of select="node()"/></pre>
+						<xsl:choose>
+							<xsl:when test="@phantom">
+								<include item="noCodeExample" />
+							</xsl:when>
+							<xsl:otherwise>
+								<pre xml:space="preserve"><xsl:copy-of select="node()"/></pre>
+							</xsl:otherwise>
+						</xsl:choose>
 					</div>
 				</xsl:for-each>
 			</div>

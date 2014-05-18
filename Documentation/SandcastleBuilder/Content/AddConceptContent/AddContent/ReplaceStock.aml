@@ -8,8 +8,8 @@
       <para>A benefit of the additional content implementation is that it is possible to replace the stock
 content that appears in each help file.  The stock content is copied from a presentation style sub-folder which
 can be found under the <localUri>.\PresentationStyles</localUri> folder of the root help file builder
-installation folder.  Each presentation style has its own folder such as <localUri>.\VS2005</localUri>,
-<localUri>.\VS2010</localUri>, <localUri>.\Prototype</localUri>, and <localUri>.\Hana</localUri>.</para>
+installation folder.  Each presentation style has its own folder such as <localUri>.\VS2010</localUri>,
+<localUri>.\VS2013</localUri>, etc.</para>
     </introduction>
 
 <section>
@@ -27,27 +27,22 @@ method icons, etc).</para>
 			</listItem>
 			<listItem>
 				<para>The <localUri>styles\</localUri> folder contains stock style sheets.</para>
-
-				<alert class="note">
-					<para>The VS2005 style folder contains an additional <localUri>.\Whidbey</localUri> sub-folder that
-contains an alternate style sheet for the VS2005 presentation style.  It can be ignored unless you want to make
-use of it.</para>
-				</alert>
 			</listItem>
 		</list>
 
 		<para>Modifying the Sandcastle copy of the presentation files directly will affect all help files that you
 build with the help file builder.  For example, if you want to modify the style sheet for all projects you create
-with the help file builder, edit the <localUri>Presentation.css</localUri> files in the <localUri>.\styles</localUri>
+with the help file builder, edit the <localUri>branding.css</localUri> files in the <localUri>.\styles</localUri>
 folders.  The files do not need to be added to your project in that case.</para>
 
 		<para>If you want to modify them on a per project basis, that is when you would copy them to your project's
 folder.  By adding an additional content entry to the project that resides in a like-named folder and has the
 same filename, you can replace the default entry of the same name. In the example above, you would create a
-<localUri>.\styles</localUri> folder in the Project Explorer window and place a copy of <localUri>Presentation.css</localUri>
+<localUri>.\styles</localUri> folder in the Project Explorer window and place a copy of <localUri>branding.css</localUri>
 in it that you can edit for that project.  The location to copy from would be the one matching the presentation
-style selected in your project (i.e. <localUri>C:\Program Files\Sandcastle\Presentation\VS2005\styles\Presentation.css</localUri>).
-The presentation styles are all different and their files are not interchangeable.</para>
+style selected in your project (i.e. <localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help File
+Builder\PresentationStyles\VS2013\styles\branding.css</localUri>).  The presentation styles are all different and
+their files are not interchangeable.</para>
 
 		<para>In addition, an <localUri>html\</localUri> folder is created when the help file is built to contain the
 help pages generated from the documented assemblies and conceptual content.  You can place additional HTML files

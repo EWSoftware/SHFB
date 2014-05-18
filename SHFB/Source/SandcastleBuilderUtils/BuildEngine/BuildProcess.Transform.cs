@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/11/2014
+// Updated : 05/07/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -285,8 +285,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = HttpUtility.HtmlEncode(Path.GetDirectoryName(originalProjectName));
 
                     if(replaceWith.Length == 0)
-                        replaceWith = HttpUtility.HtmlEncode(
-                            Directory.GetCurrentDirectory());
+                        replaceWith = HttpUtility.HtmlEncode(Directory.GetCurrentDirectory());
 
                     replaceWith += @"\";
                     break;
@@ -416,6 +415,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                     break;
 
+                case "codesnippetgrouping":
+                    replaceWith = presentationStyle.SupportsCodeSnippetGrouping.ToString().ToLowerInvariant();
+                    break;
+
                 case "maximumgroupparts":
                     replaceWith = project.MaximumGroupParts.ToString(CultureInfo.InvariantCulture);
                     break;
@@ -435,8 +438,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "language":
-                    replaceWith = String.Format(CultureInfo.InvariantCulture,
-                        "0x{0:X} {1}", language.LCID, language.NativeName);
+                    replaceWith = String.Format(CultureInfo.InvariantCulture, "0x{0:X} {1}", language.LCID,
+                        language.NativeName);
                     break;
 
                 case "resourceitemsfolder":

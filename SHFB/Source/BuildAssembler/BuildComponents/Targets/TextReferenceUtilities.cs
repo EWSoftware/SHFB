@@ -6,7 +6,8 @@
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
 // 02/14/2013 - EFW - Removed RegexOptions.Compiled from the Regex instances as it doesn't appear to make any
-// real differencee in performance.
+// real difference in performance.
+// 05/16/2014 - EFW - Added separating period after namespace in WriteSimpleMemberReference()
 
 using System;
 using System.Collections.Generic;
@@ -527,7 +528,7 @@ namespace Microsoft.Ddue.Tools.Targets
         internal static void WriteSimpleTypeReference(SimpleTypeReference type, DisplayOptions options, XmlWriter writer)
         {
             // This logic won't correctly deal with nested types, but type CER strings simply don't include that
-            // infomation, so this is our best guess under the assumption of a non-nested type
+            // information, so this is our best guess under the assumption of a non-nested type
             string cer = type.Id;
 
             // Get the name
@@ -576,6 +577,7 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 SimpleTypeReference type = CreateSimpleTypeReference(typeCer);
                 WriteSimpleTypeReference(type, options & ~DisplayOptions.ShowContainer, writer);
+                writer.WriteString(".");
             }
 
             // Change this so that we deal with EII names correctly, too

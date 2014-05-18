@@ -103,6 +103,8 @@ namespace SandcastleBuilder.Gui
             this.miViewAspNetWebsite = new System.Windows.Forms.ToolStripMenuItem();
             this.miViewHtmlWebsite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.miViewOpenXml = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
             this.miOpenHelpAfterBuild = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miCleanOutput = new System.Windows.Forms.ToolStripMenuItem();
@@ -144,8 +146,6 @@ namespace SandcastleBuilder.Gui
             this.tsslProgressNote = new System.Windows.Forms.ToolStripStatusLabel();
             this.tspbProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.miViewOpenXml = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
             this.ctxViewHelpMenu.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.tsbMain.SuspendLayout();
@@ -469,7 +469,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator19,
             this.miOpenHelpAfterBuild});
             this.ctxViewHelpMenu.Name = "ctxViewHelpMenu";
-            this.ctxViewHelpMenu.Size = new System.Drawing.Size(351, 302);
+            this.ctxViewHelpMenu.Size = new System.Drawing.Size(351, 280);
             this.ctxViewHelpMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ctxViewHelpMenu_Opening);
             // 
             // miViewHelpFile
@@ -549,22 +549,35 @@ namespace SandcastleBuilder.Gui
             // 
             this.miViewAspNetWebsite.Name = "miViewAspNetWebsite";
             this.miViewAspNetWebsite.Size = new System.Drawing.Size(350, 24);
-            this.sbStatusBarText.SetStatusBarText(this.miViewAspNetWebsite, "View the ASP.NET website using the ASP.NET Development Web Server");
-            this.miViewAspNetWebsite.Text = "View Website (&ASP.NET)";
+            this.sbStatusBarText.SetStatusBarText(this.miViewAspNetWebsite, "View the website using the local ASP.NET Development Web Server");
+            this.miViewAspNetWebsite.Text = "View Website (Loc&al Web Dev Server)";
             this.miViewAspNetWebsite.Click += new System.EventHandler(this.miViewAspNetWebsite_Click);
             // 
             // miViewHtmlWebsite
             // 
             this.miViewHtmlWebsite.Name = "miViewHtmlWebsite";
             this.miViewHtmlWebsite.Size = new System.Drawing.Size(350, 24);
-            this.sbStatusBarText.SetStatusBarText(this.miViewHtmlWebsite, "View the website using the basic HTML index page");
-            this.miViewHtmlWebsite.Text = "View &Website (HTML)";
+            this.sbStatusBarText.SetStatusBarText(this.miViewHtmlWebsite, "View the website using the basic HTML index page on the local file system");
+            this.miViewHtmlWebsite.Text = "View &Website (Local File System)";
             this.miViewHtmlWebsite.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
             this.toolStripSeparator11.Size = new System.Drawing.Size(347, 6);
+            // 
+            // miViewOpenXml
+            // 
+            this.miViewOpenXml.Name = "miViewOpenXml";
+            this.miViewOpenXml.Size = new System.Drawing.Size(350, 24);
+            this.sbStatusBarText.SetStatusBarText(this.miViewOpenXml, "View Open XML (.docx) help file");
+            this.miViewOpenXml.Text = "View Open &XML (.docx) File";
+            this.miViewOpenXml.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
+            // 
+            // toolStripSeparator19
+            // 
+            this.toolStripSeparator19.Name = "toolStripSeparator19";
+            this.toolStripSeparator19.Size = new System.Drawing.Size(347, 6);
             // 
             // miOpenHelpAfterBuild
             // 
@@ -1039,19 +1052,6 @@ namespace SandcastleBuilder.Gui
             this.dockPanel.TabIndex = 7;
             this.dockPanel.ContentAdded += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.dockPanel_ContentAdded);
             this.dockPanel.ContentRemoved += new System.EventHandler<WeifenLuo.WinFormsUI.Docking.DockContentEventArgs>(this.dockPanel_ContentRemoved);
-            // 
-            // miViewOpenXml
-            // 
-            this.miViewOpenXml.Name = "miViewOpenXml";
-            this.miViewOpenXml.Size = new System.Drawing.Size(350, 24);
-            this.sbStatusBarText.SetStatusBarText(this.miViewOpenXml, "View Open XML (.docx) help file");
-            this.miViewOpenXml.Text = "View Open &XML (.docx) File";
-            this.miViewOpenXml.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
-            // 
-            // toolStripSeparator19
-            // 
-            this.toolStripSeparator19.Name = "toolStripSeparator19";
-            this.toolStripSeparator19.Size = new System.Drawing.Size(347, 6);
             // 
             // MainForm
             // 

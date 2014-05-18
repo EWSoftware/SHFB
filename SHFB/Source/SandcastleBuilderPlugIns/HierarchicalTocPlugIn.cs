@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : HierarchicalTocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 05/16/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
@@ -188,16 +189,22 @@ namespace SandcastleBuilder.PlugIns
             XmlDocument toc;
             XPathNavigator root, navToc;
             XmlAttribute attr;
-            XmlNode tocEntry, tocParent;
+            XmlNode tocEntry = null, tocParent;
             string[] parts;
-            string name, parent, topicTitle;
+            string name, parent, topicTitle, referenceContentFile;
             int parentIdx, childIdx, entriesAdded;
 
             builder.ReportProgress("Retrieving namespace topic title from shared content...");
 
-            toc = new XmlDocument();
-            toc.Load(builder.PresentationStyleFolder + @"content\reference_content.xml");
-            tocEntry = toc.SelectSingleNode("content/item[@id='namespaceTopicTitle']");
+            referenceContentFile = Directory.EnumerateFiles(builder.PresentationStyleResourceItemsFolder,
+                "reference*content*", SearchOption.AllDirectories).FirstOrDefault();
+
+            if(referenceContentFile != null)
+            {
+                toc = new XmlDocument();
+                toc.Load(referenceContentFile);
+                tocEntry = toc.SelectSingleNode("content/item[@id='namespaceTopicTitle']");
+            }
 
             if(tocEntry != null)
                 topicTitle = tocEntry.InnerText;

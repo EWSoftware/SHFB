@@ -92,14 +92,27 @@
 			</head>
 			<body onload="OnLoad('{$defaultLanguage}')">
 				<input type="hidden" id="userDataCache" class="userDataStyle" />
+				<div class="pageHeader" id="PageHeader">
+					<include item="runningHeaderText"/>
+				</div>
+				<div class="pageBody">
+					<div class="topicContent" id="TopicContent">
+						<xsl:call-template name="t_pageTitle"/>
 
-				<div class="VS2013_outerDiv">
-					<div class="VS2013_outerContent">
-						<xsl:call-template name="t_bodyTitle"/>
-						<xsl:call-template name="t_bodyMain"/>
+						<include item="header"/>
+
+						<xsl:call-template name="t_writeFreshnessDate">
+							<xsl:with-param name="p_changedHistoryDate"
+															select="/document/topic/*//ddue:section[ddue:title = 'Change History']/ddue:content/ddue:table/ddue:row[1]/ddue:entry[1] |
+                    /document/topic/*/ddue:changeHistory/ddue:content/ddue:table/ddue:row[1]/ddue:entry[1]"/>
+						</xsl:call-template>
+
+						<xsl:apply-templates select="topic"/>
+
+						<xsl:call-template name="t_writeChangeHistorySection"/>
 					</div>
 				</div>
-				<div id="VS2013_footer" class="VS2013_footer">
+				<div id="pageFooter" class="pageFooter">
 					<include item="footer_content" />
 				</div>
 			</body>
@@ -132,38 +145,6 @@
 				<xsl:value-of select="normalize-space(/document/topic/*/ddue:title)"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template name="t_runningHeader">
-		<xsl:variable name="v_runningHeaderText">
-			<xsl:value-of select="/document/metadata/runningHeaderText/@uscid"/>
-		</xsl:variable>
-		<include item="{$v_runningHeaderText}"/>
-	</xsl:template>
-
-	<!-- ============================================================================================
-	Body
-	============================================================================================= -->
-
-	<xsl:template name="t_bodyMain">
-		<div id="mainSection">
-			<div id="mainBody">
-				<include item="header"/>
-				<xsl:call-template name="t_body"/>
-			</div>
-		</div>
-	</xsl:template>
-
-	<xsl:template name="t_body">
-		<xsl:call-template name="t_writeFreshnessDate">
-			<xsl:with-param name="p_changedHistoryDate"
-											select="/document/topic/*//ddue:section[ddue:title = 'Change History']/ddue:content/ddue:table/ddue:row[1]/ddue:entry[1] |
-                      /document/topic/*/ddue:changeHistory/ddue:content/ddue:table/ddue:row[1]/ddue:entry[1]"/>
-		</xsl:call-template>
-
-		<xsl:apply-templates select="topic"/>
-
-		<xsl:call-template name="t_writeChangeHistorySection"/>
 	</xsl:template>
 
 	<!-- ============================================================================================

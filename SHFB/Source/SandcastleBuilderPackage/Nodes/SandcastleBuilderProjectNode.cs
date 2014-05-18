@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2014
+// Updated : 05/17/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -264,14 +264,14 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// This is used to start a web server instance used to view the ASP.NET website output
+        /// Launch the ASP.NET Development Web Server to view the website output (Index.aspx/Index.html)
         /// </summary>
         /// <returns>The URL to the website's index page if successful or null if not</returns>
         public string StartWebServerInstance()
         {
             ProcessStartInfo psi;
             SandcastleBuilder.Utils.FilePath webServerPath = new SandcastleBuilder.Utils.FilePath(null);
-            string path, outputPath;
+            string path, outputPath, defaultPage = "Index.aspx";
             int serverPort = 12345, uniqueId;
 
             if(this.SandcastleProject == null)
@@ -295,7 +295,13 @@ namespace SandcastleBuilder.Package.Nodes
             else
                 outputPath = Path.GetFullPath(outputPath);
 
-            outputPath += "Index.aspx";
+            outputPath += defaultPage;
+
+            if(!File.Exists(outputPath))
+            {
+                outputPath = Path.ChangeExtension(outputPath, ".html");
+                defaultPage = "Index.html";
+            }
 
             if(!File.Exists(outputPath))
             {
@@ -353,10 +359,10 @@ namespace SandcastleBuilder.Package.Nodes
                     webServerInstance.WaitForInputIdle(30000);
                 }
 
-                // This form's handle is used to keep the URL unique in case multiple copies of SHFB are
-                // running so that each can view website output.
+                // The project filename hash code is used to keep the URL unique in case multiple copies of SHFB
+                // are running so that each can view website output.
                 outputPath = String.Format(CultureInfo.InvariantCulture,
-                    "http://localhost:{0}/SHFBOutput_{1}/Index.aspx", serverPort, uniqueId);
+                    "http://localhost:{0}/SHFBOutput_{1}/{2}", serverPort, uniqueId, defaultPage);
 
                 return outputPath;
             }

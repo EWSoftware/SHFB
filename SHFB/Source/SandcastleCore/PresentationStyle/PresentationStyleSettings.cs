@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2014
+// Updated : 05/14/2014
 // Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,6 +19,7 @@
 // 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
 // 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 // -------  01/04/2014  EFW  Moved the code into Sandcastle.Core and made it an abstract base class
+//          05/14/2014  EFW  Added support for defining dependent plug-ins
 //===============================================================================================================
 
 using System;
@@ -41,6 +42,7 @@ namespace Sandcastle.Core.PresentationStyle
 
         private List<ContentFiles> contentFiles;
         private List<TransformComponentArgument> transformComponentArgs;
+        private List<PlugInDependency> plugInDependencies;
 
         #endregion
 
@@ -72,6 +74,14 @@ namespace Sandcastle.Core.PresentationStyle
         /// This is used to get or set whether or not namespace grouping is supported by the presentation style
         /// </summary>
         public bool SupportsNamespaceGrouping { get; protected set; }
+
+        /// <summary>
+        /// This is used to get or set whether or not code snippet grouping is supported by the presentation
+        /// style.
+        /// </summary>
+        /// <remarks>If true, code snippets will be grouped and sorted based on the syntax generators present
+        /// in the project.</remarks>
+        public bool SupportsCodeSnippetGrouping { get; protected set; }
 
         /// <summary>
         /// This read-only property returns the list of help content file locations
@@ -118,6 +128,17 @@ namespace Sandcastle.Core.PresentationStyle
         {
             get { return transformComponentArgs; }
         }
+
+        /// <summary>
+        /// This read-only property returns any plug-in dependencies required by the presentation style
+        /// </summary>
+        /// <remarks>This is used to ensure that any dependent plug-ins are added to the build.  If any of the
+        /// plug-ins are visible to the user and have been added to the project, the project configuration will
+        /// override the default configuration supplied here.</remarks>
+        public IList<PlugInDependency> PlugInDependencies
+        {
+            get { return plugInDependencies; }
+        }
         #endregion
 
         #region Constructor
@@ -130,6 +151,7 @@ namespace Sandcastle.Core.PresentationStyle
         {
             contentFiles = new List<ContentFiles>();
             transformComponentArgs = new List<TransformComponentArgument>();
+            plugInDependencies = new List<PlugInDependency>();
         }
         #endregion
 

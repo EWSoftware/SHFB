@@ -123,7 +123,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
 <Strings>
             <CommandName>cmdidViewAspNetWebsite</CommandName>
-            <ButtonText>View Website (&amp;ASP.NET)</ButtonText>
+            <ButtonText>View Website (Loc&amp;al Web Dev Server)</ButtonText>
             <MenuText>View Website (&amp;ASP.NET)</MenuText>
             <ToolTipText>View Website (&amp;ASP.NET)</ToolTipText>
 		    </Strings>
@@ -134,7 +134,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
 <Strings>
             <CommandName>cmdidViewHtmlWebsite</CommandName>
-            <ButtonText>View &amp;Website (HTML)</ButtonText>
+            <ButtonText>View &amp;Website (Local File System)</ButtonText>
             <MenuText>View &amp;Website (HTML)</MenuText>
             <ToolTipText>View &amp;Website (HTML)</ToolTipText>
 		    </Strings>
@@ -476,46 +476,46 @@
 	     <IDSymbol name="SHFBToolbar" value="0x0016" />
 	     <IDSymbol name="ViewHelpMenuController" value="0x0018" />
 	  </GuidSymbol>
-	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{d855ab0b-19ed-4b6d-9140-bd74dac409d2}">
+	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{88ccdc65-c14f-4132-a440-616c6b073179}">
 				<IDSymbol name="ViewHelpFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{a6a20932-b8dd-441c-8bfd-73d1bb0b26ab}">
+	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{9ee258bd-d00b-4ebf-9c15-278b68818c8b}">
 				<IDSymbol name="HtmlHelp.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Help2.bmpGuid" value="{05cfe7a5-1f36-493f-b2c1-c444384198f2}">
+	     <GuidSymbol name="Help2.bmpGuid" value="{175b92ad-23c5-4d2a-b2d4-6649a444b1b1}">
 				<IDSymbol name="Help2.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{7b8a0572-4a7b-4dfe-934f-5a83c811270a}">
+	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{1fc27516-4998-4ffc-81f0-5923298e3c9a}">
 				<IDSymbol name="MSHelpViewer.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{c4564ffe-f7f9-44e1-a1c1-3317d693fd4f}">
+	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{5b3858ba-c36e-45b6-9269-c1c86e733b08}">
 				<IDSymbol name="HelpLibManager.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{3c896627-de44-43f0-8572-7221832c3eb3}">
+	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{0e1df3ec-265e-46b7-9ea4-49936811e9ae}">
 				<IDSymbol name="AspNetWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{adebe1e8-d033-4541-82a0-b1f9021d1455}">
+	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{9d0a053d-a2ed-4c96-8887-463dd2f4e653}">
 				<IDSymbol name="HtmlWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="FAQ.bmpGuid" value="{84a2185f-6fc9-404e-9ce6-de4e70c813d2}">
+	     <GuidSymbol name="FAQ.bmpGuid" value="{fadfa626-45cf-4440-a130-d894b2b43556}">
 				<IDSymbol name="FAQ.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="LogFile.bmpGuid" value="{6510ff3f-648f-40b7-be8e-0b7b9b1cdd2d}">
+	     <GuidSymbol name="LogFile.bmpGuid" value="{335afdff-ab3d-401f-9fe4-fb00149413ff}">
 				<IDSymbol name="LogFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="EntityReferences.bmpGuid" value="{3159f76c-0eeb-4c0c-a5f1-cb87f47e0fe2}">
+	     <GuidSymbol name="EntityReferences.bmpGuid" value="{9ff6808c-ace4-4254-b378-80d296939aa7}">
 				<IDSymbol name="EntityReferences.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="TopicPreview.bmpGuid" value="{9df904c3-772e-4f51-bd54-d65d62ae1bea}">
+	     <GuidSymbol name="TopicPreview.bmpGuid" value="{cad1bcf5-ddcd-416b-82df-05a5c0e412f5}">
 				<IDSymbol name="TopicPreview.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HelpContentManager.bmpGuid" value="{5194af38-7750-498e-87e6-f58b20e7e07a}">
+	     <GuidSymbol name="HelpContentManager.bmpGuid" value="{7a2c4115-a1e4-4034-b344-4c3aa9025399}">
 				<IDSymbol name="HelpContentManager.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlEncode.bmpGuid" value="{32367ae5-cf59-4857-b5dd-63874b5bc053}">
+	     <GuidSymbol name="HtmlEncode.bmpGuid" value="{3006c4b4-8513-4ca0-b068-7f46bbfd1b3e}">
 				<IDSymbol name="HtmlEncode.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Docx.bmpGuid" value="{75dbc88c-5c50-46c6-8438-a941d467dd4e}">
+	     <GuidSymbol name="Docx.bmpGuid" value="{20b457ce-898e-45ab-b271-1d898ab0992f}">
 				<IDSymbol name="Docx.bmpId" value="1" />
 			</GuidSymbol>
 	</Symbols>

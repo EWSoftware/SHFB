@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/02/2014
+// Updated : 05/15/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // 04/13/2014  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -52,7 +53,7 @@ namespace Sandcastle.PresentationStyles
             this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelp2 |
                 HelpFileFormats.MSHelpViewer | HelpFileFormats.Website;
 
-            this.SupportsNamespaceGrouping = true;
+            this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
 
             // If relative, these paths are relative to the base path
             this.ResourceItemsPath = "Content";
@@ -78,9 +79,10 @@ namespace Sandcastle.PresentationStyles
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, "%SHFBROOT%", @"Web\*.*", @".\",
-                new[] { ".aspx", ".html", ".htm", ".php" }));
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"Web\*.*",
+                String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
 
+            // Define the transform component arguments
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoFile", true, true, null,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +
                 "the path.  Place the file in your project in an icons\\ folder and set the Build Action to " +
@@ -107,6 +109,9 @@ namespace Sandcastle.PresentationStyles
                 "cs", "The default language to use for syntax sections, code snippets, and a language-specific " +
                 "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " +
                 "third-party syntax generator if you want to use a non-standard language as the default."));
+
+            // Add the plug-in dependencies
+            this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
         }
     }
 }

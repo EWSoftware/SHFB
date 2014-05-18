@@ -199,8 +199,7 @@
 	Block sections
 	============================================================================================= -->
 
-	<xsl:template match="summary"
-								name="t_summary">
+	<xsl:template match="summary" name="t_summary">
 		<div class="summary">
 			<xsl:apply-templates/>
 		</div>
@@ -413,9 +412,7 @@
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="overloads"
-								mode="summary"
-								name="t_overloadsSummary">
+	<xsl:template match="overloads" mode="summary" name="t_overloadsSummary">
 		<xsl:choose>
 			<xsl:when test="count(summary) > 0">
 				<xsl:apply-templates select="summary"/>
@@ -502,10 +499,10 @@
 					<div class="tableSection">
 						<table>
 							<tr>
-								<th class="ps_exceptionNameColumn">
+								<th>
 									<include item="header_exceptionName"/>
 								</th>
-								<th class="ps_exceptionConditionColumn">
+								<th>
 									<include item="header_exceptionCondition"/>
 								</th>
 							</tr>
@@ -568,10 +565,10 @@
 					<div class="tableSection">
 						<table>
 							<tr>
-								<th class="ps_permissionNameColumn">
+								<th>
 									<include item="header_permissionName"/>
 								</th>
-								<th class="ps_permissionDescriptionColumn">
+								<th>
 									<include item="header_permissionDescription"/>
 								</th>
 							</tr>
@@ -743,7 +740,7 @@
 						</xsl:if>
 					</div>
 					<!--Contracts link-->
-					<div class="ps_contractsLink">
+					<div>
 						<a>
 							<xsl:attribute name="target">
 								<xsl:text>_blank</xsl:text>
@@ -764,7 +761,7 @@
 		<xsl:param name="p_contracts"/>
 		<table>
 			<tr>
-				<th class="ps_contractsNameColumn">
+				<th>
 					<xsl:copy-of select="$p_title"/>
 				</th>
 			</tr>
@@ -778,12 +775,7 @@
 						<xsl:if test="@description or @inheritedFrom or @exception">
 							<div style="font-size:95%; margin-left: 10pt;
                         margin-bottom: 0pt">
-								<table
-									class="contractaux"
-									width="100%"
-									frame="void"
-									rules="none"
-									border="0">
+								<table>
 									<colgroup>
 										<col width="10%"/>
 										<col width="90%"/>
@@ -960,7 +952,7 @@
 	</xsl:template>
 
 	<xsl:template match="list[@type='definition']" name="t_definitionList">
-		<dl class="authored">
+		<dl>
 			<xsl:for-each select="item">
 				<dt>
 					<xsl:apply-templates select="term"/>
@@ -1189,16 +1181,11 @@
 
 	<xsl:template name="t_codelangAttributes">
 		<xsl:call-template name="t_mshelpCodelangAttributes">
-			<xsl:with-param name="snippets"
-											select="/document/comments/example//code"/>
+			<xsl:with-param name="snippets" select="/document/comments/example//code"/>
 		</xsl:call-template>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
-
-	<xsl:template name="t_runningHeader">
-		<include item="runningHeaderText"/>
-	</xsl:template>
 
 	<xsl:template name="t_getParameterDescription">
 		<xsl:param name="name"/>
@@ -1215,13 +1202,11 @@
 	</xsl:template>
 
 	<xsl:template name="t_getOverloadSummary">
-		<xsl:apply-templates select="overloads"
-												 mode="summary"/>
+		<xsl:apply-templates select="overloads" mode="summary"/>
 	</xsl:template>
 
 	<xsl:template name="t_getOverloadSections">
-		<xsl:apply-templates select="overloads"
-												 mode="sections"/>
+		<xsl:apply-templates select="overloads" mode="sections"/>
 	</xsl:template>
 
 	<!-- ============================================================================================

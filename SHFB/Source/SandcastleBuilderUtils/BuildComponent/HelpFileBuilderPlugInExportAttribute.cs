@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : HelpFileBuilderPlugInExportAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 05/16/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in export attribute used to mark classes as Sandcastle Help File Builder build
@@ -44,6 +44,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// </summary>
         /// <value>If not specified, the default is false</value>
         public bool IsConfigurable { get; set; }
+
+        /// <summary>
+        /// This is used to indicate whether or not the plug-in is hidden in the project plug-in property page
+        /// </summary>
+        /// <value>If set to true, the plug-in is hidden in the project plug-in property page and cannot
+        /// be added to the project.  If false, the default, it can be added to projects.  This is useful for
+        /// presentation style dependency plug-ins that have no configurable elements and thus do not need to be
+        /// manually added to the project to override settings.</value>
+        public bool IsHidden { get; set; }
 
         /// <summary>
         /// This is used to get or set whether or not the plug-in runs in partial builds

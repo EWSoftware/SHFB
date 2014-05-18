@@ -430,11 +430,9 @@
                                       starts-with(@address,'routedEventInfo')]"/>
 
 	<!-- the authored dependency Property Information section -->
-	<xsl:template match="ddue:section[starts-with(@address,'dependencyPropertyInfo')]"
-								mode="section">
+	<xsl:template match="ddue:section[starts-with(@address,'dependencyPropertyInfo')]" mode="section">
 		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"
-											select="'dependencyPropertyInfoHeading'" />
+			<xsl:with-param name="p_titleInclude" select="'dependencyPropertyInfoHeading'" />
 			<xsl:with-param name="p_content">
 				<xsl:apply-templates select="ddue:content" />
 			</xsl:with-param>
@@ -442,11 +440,9 @@
 	</xsl:template>
 
 	<!-- the authored routed event Information section -->
-	<xsl:template match="ddue:section[starts-with(@address,'routedEventInfo')]"
-								mode="section">
+	<xsl:template match="ddue:section[starts-with(@address,'routedEventInfo')]" mode="section">
 		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"
-											select="'routedEventInfoHeading'" />
+			<xsl:with-param name="p_titleInclude" select="'routedEventInfoHeading'" />
 			<xsl:with-param name="p_content">
 				<xsl:apply-templates select="ddue:content" />
 			</xsl:with-param>

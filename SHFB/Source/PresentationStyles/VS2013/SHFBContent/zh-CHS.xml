@@ -26,7 +26,7 @@
 
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[这是一个初步的说明文档有待于进一步改进。]</p></item>
 
-	<item id="comments"><div class="VS2013_feedbacklink">如果您对本产品的帮助或其他功能有任何建议或需要报告 Bug，请发送邮件到
+	<item id="comments"><div class="feedbackLink">如果您对本产品的帮助或其他功能有任何建议或需要报告 Bug，请发送邮件到
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");

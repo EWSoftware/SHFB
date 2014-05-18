@@ -506,16 +506,6 @@ compresses the topics into the archive that becomes the MSHC file.</para>
   </row>
   <row>
     <entry>
-			<para>conceptual.config</para>
-		</entry>
-    <entry>
-			<para>This is the Sandcastle configuration file template used to build conceptual help topics using
-<application>BuildAssembler</application>.  The conceptual help build component stack is currently not dependent
-on the presentation style so the same one is used for all of them.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>ExtractHtmlInfo.proj</para>
 		</entry>
     <entry>
@@ -551,17 +541,6 @@ file.</para>
 			<para>This MSBuild project is used to generate the reflection information from the documentation assemblies
 using <application>MRefBuilder</application>.  The result is the <localUri>reflection.org</localUri> file that
 contains information about the types in each assembly.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>Hana.config, Prototype.config, VS2005.config, and VS2010.config</para>
-		</entry>
-    <entry>
-			<para>These are the Sandcastle configuration file templates.  One of these will be updated with the
-necessary paths and project options based on the presentation style selected.  The transformed file is used as
-the <localUri>sandcastle.config</localUri> for <application>BuildAssembler</application> to produce the API help
-topic files.</para>
 		</entry>
   </row>
   <row>

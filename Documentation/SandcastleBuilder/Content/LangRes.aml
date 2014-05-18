@@ -24,11 +24,6 @@ files.</para>
 					</listItem>
 
 					<listItem>
-						<para><localUri>feedBack_content.xml</localUri> contains items related to the feedback control in the
-VS2005 presentation style.  Currently, the feedback control is not used by any of the presentation styles.</para>
-					</listItem>
-
-					<listItem>
 						<para><localUri>reference_content.xml</localUri> contains titles for the various class library parts,
 filter text, and alternate image text.</para>
 					</listItem>

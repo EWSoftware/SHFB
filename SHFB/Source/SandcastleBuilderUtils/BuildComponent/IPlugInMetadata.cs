@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : IPlugInMetadata.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 05/16/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in metadata interface definition used to implement a Sandcastle Help File Builder
@@ -30,6 +30,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// This read-only property returns the ID for the plug-in
         /// </summary>
         string Id { get; }
+
+        /// <summary>
+        /// This read-only property returns true if the plug-in is hidden in the project plug-in property page
+        /// </summary>
+        /// <value>If this returns true, the plug-in is hidden in the project plug-in property page and cannot
+        /// be added to the project.  If false, the default, it can be added to projects.  This is useful for
+        /// presentation style dependency plug-ins that have no configurable elements and thus do not need to be
+        /// manually added to the project to override settings.</value>
+        bool IsHidden { get; }
 
         /// <summary>
         /// This read-only property returns true if the plug-in is configurable or false if it is not

@@ -26,7 +26,7 @@
 
 	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Это предварительная версия документации. API может измениться в будущем.]</p></item>
 
-	<item id="comments"><div class="VS2013_feedbacklink">Отправить комментарий по этой теме в
+	<item id="comments"><div class="feedbackLink">Отправить комментарий по этой теме в
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
         <script type="text/javascript">
         var HT_mailLink = document.getElementById("HT_MailLink");

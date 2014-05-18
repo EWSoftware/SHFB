@@ -1584,7 +1584,7 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// Launch the ASP.NET Development Web Server to view the website output (Index.aspx)
+        /// Launch the ASP.NET Development Web Server to view the website output (Index.aspx/Index.html)
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -1592,7 +1592,7 @@ namespace SandcastleBuilder.Gui
         {
             ProcessStartInfo psi;
             FilePath webServerPath = new FilePath(null);
-            string path;
+            string path, defaultPage = "Index.aspx";
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
@@ -1604,7 +1604,13 @@ namespace SandcastleBuilder.Gui
             else
                 outputPath = Path.GetFullPath(outputPath);
 
-            outputPath += "Index.aspx";
+            outputPath += defaultPage;
+
+            if(!File.Exists(outputPath))
+            {
+                outputPath = Path.ChangeExtension(outputPath, ".html");
+                defaultPage = "Index.html";
+            }
 
             if(!File.Exists(outputPath))
             {
@@ -1664,8 +1670,8 @@ namespace SandcastleBuilder.Gui
                 // This form's handle is used to keep the URL unique in case multiple copies of SHFB are running
                 // so that each can view website output.
                 outputPath = String.Format(CultureInfo.InvariantCulture,
-                    "http://localhost:{0}/SHFBOutput_{1}/Index.aspx", Settings.Default.ASPNETDevServerPort,
-                    this.Handle);
+                    "http://localhost:{0}/SHFBOutput_{1}/{2}", Settings.Default.ASPNETDevServerPort,
+                    this.Handle, defaultPage);
 
                 System.Diagnostics.Process.Start(outputPath);
             }

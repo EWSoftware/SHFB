@@ -32,15 +32,15 @@
   <item id="boilerplate_pageTitle">{0}</item>
 
 	<!-- alert titles -->
-	<item id="alert_title_tip"><strong>Подсказка</strong></item>
-	<item id="alert_title_caution"><strong>Внимание</strong></item>
-	<item id="alert_title_security"><strong>Примечание по безопасности</strong></item>
-	<item id="alert_title_note"><strong>Примечание</strong></item>
-	<item id="alert_title_important"><strong>Важно</strong></item>
-	<item id="alert_title_visualBasic"><strong>Примечание для Visual Basic</strong></item>
-	<item id="alert_title_visualC#"><strong>Примечание для C#</strong></item>
-  <item id="alert_title_visualC++"><strong>Примечание для C++</strong></item>
-	<item id="alert_title_visualJ#"><strong>Примечание для J#</strong></item>
+	<item id="alert_title_tip">Подсказка</item>
+	<item id="alert_title_caution">Внимание</item>
+	<item id="alert_title_security">Примечание по безопасности</item>
+	<item id="alert_title_note">Примечание</item>
+	<item id="alert_title_important">Важно</item>
+	<item id="alert_title_visualBasic">Примечание для Visual Basic</item>
+	<item id="alert_title_visualC#">Примечание для C#</item>
+  <item id="alert_title_visualC++">Примечание для C++</item>
+	<item id="alert_title_visualJ#">Примечание для J#</item>
 
 	<!-- alert alt text -->
 	<item id="alert_altText_tip">Подсказка</item>
@@ -96,6 +96,7 @@
   <item id="devlang_pshell">PowerShell</item>
   <item id="devlang_sql">SQL</item>
   <item id="devlang_Python">Python</item>
+	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
 
   <!-- language keywords -->
   <item id="devlang_nullKeyword">null (<span class="keyword">Nothing</span> в Visual Basic)</item>

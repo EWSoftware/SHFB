@@ -252,7 +252,17 @@
 								<xsl:call-template name="t_typeNamePlain"/>
 							</xsl:for-each>
 							<xsl:text>.</xsl:text>
-							<xsl:value-of select="apidata/@name"/>
+							<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+							<xsl:choose>
+								<xsl:when test="apidata/@name">
+									<xsl:value-of select="apidata/@name" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="t_getTrimmedLastPeriod">
+										<xsl:with-param name="p_string" select="@api" />
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:apply-templates select="templates" mode="plain"/>
 						</xsl:for-each>
 					</xsl:when>
@@ -455,7 +465,17 @@
 						<xsl:call-template name="t_typeNameDecorated"/>
 					</xsl:for-each>
 					<xsl:text>.</xsl:text>
-					<xsl:value-of select="apidata/@name"/>
+					<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+					<xsl:choose>
+						<xsl:when test="apidata/@name">
+							<xsl:value-of select="apidata/@name" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="t_getTrimmedLastPeriod">
+								<xsl:with-param name="p_string" select="@api" />
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:apply-templates select="templates" mode="decorated"/>
 				</xsl:for-each>
 			</xsl:when>

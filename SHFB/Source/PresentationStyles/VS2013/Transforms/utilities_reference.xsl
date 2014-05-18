@@ -86,7 +86,7 @@
 								select="/document/reference/containers/namespace/apidata/@name"/>
 
 	<!-- ============================================================================================
-	Document header
+	Document body
 	============================================================================================= -->
 
 	<xsl:template match="/">
@@ -136,32 +136,24 @@
 			</head>
 			<body onload="OnLoad('{$defaultLanguage}')">
 				<input type="hidden" id="userDataCache" class="userDataStyle" />
+				<div class="pageHeader" id="PageHeader">
+					<include item="runningHeaderText"/>
+				</div>
+				<div class="pageBody">
+					<div class="topicContent" id="TopicContent">
+						<xsl:call-template name="t_pageTitle"/>
 
-				<div class="VS2013_outerDiv">
-					<div class="VS2013_outerContent">
-						<xsl:call-template name="t_bodyTitle"/>
-						<xsl:call-template name="t_bodyMain"/>
+						<include item="header"/>
+
+						<xsl:call-template name="t_body"/>
 					</div>
 				</div>
-				<div id="VS2013_footer" class="VS2013_footer">
+				<div id="pageFooter" class="pageFooter">
 					<include item="footer_content" />
 					<xsl:text> </xsl:text>
 				</div>
 			</body>
 		</html>
-	</xsl:template>
-
-	<!-- ============================================================================================
-	Main body div
-	============================================================================================= -->
-
-	<xsl:template name="t_bodyMain">
-		<div id="mainSection">
-			<div id="mainBody">
-				<include item="header"/>
-				<xsl:call-template name="t_body"/>
-			</div>
-		</div>
 	</xsl:template>
 
 	<!-- ============================================================================================
@@ -358,9 +350,18 @@
 								<xsl:call-template name="t_typeNamePlain"/>
 							</xsl:for-each>
 							<xsl:text>.</xsl:text>
-							<xsl:value-of select="apidata/@name"/>
-							<xsl:apply-templates select="templates"
-																	 mode="plain"/>
+							<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+							<xsl:choose>
+								<xsl:when test="apidata/@name">
+									<xsl:value-of select="apidata/@name" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="t_getTrimmedLastPeriod">
+										<xsl:with-param name="p_string" select="@api" />
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>
+							<xsl:apply-templates select="templates" mode="plain"/>
 						</xsl:for-each>
 					</xsl:when>
 					<!-- Use just the plain, unadorned api name for overload pages with templates -->
@@ -566,9 +567,18 @@
 						<xsl:call-template name="t_typeNameDecorated"/>
 					</xsl:for-each>
 					<xsl:call-template name="t_decoratedNameSep"/>
-					<xsl:value-of select="apidata/@name"/>
-					<xsl:apply-templates select="templates"
-															 mode="decorated"/>
+					<!-- EFW - If the API element is not present (unresolved type), show the type name from the type element -->
+					<xsl:choose>
+						<xsl:when test="apidata/@name">
+							<xsl:value-of select="apidata/@name" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="t_getTrimmedLastPeriod">
+								<xsl:with-param name="p_string" select="@api" />
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:apply-templates select="templates" mode="decorated"/>
 				</xsl:for-each>
 			</xsl:when>
 			<!-- Use just the plain, unadorned type.api name for overload pages with templates -->
@@ -685,27 +695,21 @@
 	Elements processing
 	============================================================================================= -->
 
-	<xsl:template match="elements"
-								mode="root"
-								name="t_rootElements">
+	<xsl:template match="elements" mode="root" name="t_rootElements">
 		<xsl:if test="count(element) > 0">
-
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="'title_namespaces'"/>
+				<xsl:with-param name="p_titleInclude" select="'title_namespaces'"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList"
-								 class="members">
+					<table id="memberList" class="members">
 						<tr>
-							<th class="ps_nameColumn">
+							<th>
 								<include item="header_namespaceName"/>
 							</th>
-							<th class="ps_descriptionColumn">
+							<th>
 								<include item="header_namespaceDescription"/>
 							</th>
 						</tr>
-						<xsl:apply-templates select="element"
-																 mode="root">
+						<xsl:apply-templates select="element" mode="root">
 							<xsl:sort select="apidata/@name"/>
 						</xsl:apply-templates>
 					</table>
@@ -714,42 +718,35 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="elements"
-								mode="namespace"
-								name="t_namespaceElements">
+	<xsl:template match="elements" mode="namespace" name="t_namespaceElements">
 
 		<xsl:if test="element/apidata/@subgroup = 'class'">
 			<xsl:call-template name="t_putNamespaceSection">
-				<xsl:with-param name="p_listSubgroup"
-												select="'class'"/>
+				<xsl:with-param name="p_listSubgroup" select="'class'"/>
 			</xsl:call-template>
 		</xsl:if>
 
 		<xsl:if test="element/apidata/@subgroup = 'structure'">
 			<xsl:call-template name="t_putNamespaceSection">
-				<xsl:with-param name="p_listSubgroup"
-												select="'structure'"/>
+				<xsl:with-param name="p_listSubgroup" select="'structure'"/>
 			</xsl:call-template>
 		</xsl:if>
 
 		<xsl:if test="element/apidata/@subgroup = 'interface'">
 			<xsl:call-template name="t_putNamespaceSection">
-				<xsl:with-param name="p_listSubgroup"
-												select="'interface'"/>
+				<xsl:with-param name="p_listSubgroup" select="'interface'"/>
 			</xsl:call-template>
 		</xsl:if>
 
 		<xsl:if test="element/apidata/@subgroup = 'delegate'">
 			<xsl:call-template name="t_putNamespaceSection">
-				<xsl:with-param name="p_listSubgroup"
-												select="'delegate'"/>
+				<xsl:with-param name="p_listSubgroup" select="'delegate'"/>
 			</xsl:call-template>
 		</xsl:if>
 
 		<xsl:if test="element/apidata/@subgroup = 'enumeration'">
 			<xsl:call-template name="t_putNamespaceSection">
-				<xsl:with-param name="p_listSubgroup"
-												select="'enumeration'"/>
+				<xsl:with-param name="p_listSubgroup" select="'enumeration'"/>
 			</xsl:call-template>
 		</xsl:if>
 
@@ -763,10 +760,10 @@
 					<xsl:with-param name="p_content">
 						<table id="typeList" class="members">
 							<tr>
-								<th class="ps_nameColumn">
+								<th>
 									<include item="header_namespaceName"/>
 								</th>
-								<th class="ps_descriptionColumn">
+								<th>
 									<include item="header_namespaceDescription"/>
 								</th>
 							</tr>
@@ -795,22 +792,20 @@
 		<xsl:if test="count(element) > 0">
 			<div id="enumerationSection">
 				<xsl:call-template name="t_putSectionInclude">
-					<xsl:with-param name="p_titleInclude"
-													select="'topicTitle_enumMembers'"/>
+					<xsl:with-param name="p_titleInclude" select="'topicTitle_enumMembers'"/>
 					<xsl:with-param name="p_content">
-						<table id="memberList"
-									 class="members">
+						<table id="memberList" class="members">
 							<tr>
-								<th class="ps_iconColumn">
+								<th class="iconColumn">
 									&#160;
 								</th>
-								<th class="ps_nameColumn">
+								<th>
 									<include item="header_memberName"/>
 								</th>
-								<th class="ps_valueColumn">
+								<th>
 									<include item="header_memberValue"/>
 								</th>
-								<th class="ps_descriptionColumn">
+								<th>
 									<include item="header_memberDescription"/>
 								</th>
 							</tr>
@@ -906,25 +901,21 @@
 		<xsl:apply-templates select="." mode="member"/>
 	</xsl:template>
 
-	<xsl:template match="elements"
-								mode="derivedType">
+	<xsl:template match="elements" mode="derivedType">
 		<xsl:if test="count(element) > 0">
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="'derivedClasses'"/>
+				<xsl:with-param name="p_titleInclude" select="'derivedClasses'"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList"
-								 class="members">
+					<table id="memberList" class="members">
 						<tr>
-							<th class="ps_nameColumn">
+							<th>
 								<include item="header_memberName"/>
 							</th>
-							<th class="ps_descriptionColumn">
+							<th>
 								<include item="header_memberDescription"/>
 							</th>
 						</tr>
-						<xsl:apply-templates select="element"
-																 mode="derivedType">
+						<xsl:apply-templates select="element" mode="derivedType">
 							<xsl:sort select="apidata/@name"/>
 						</xsl:apply-templates>
 					</table>
@@ -933,31 +924,22 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="elements"
-								mode="overload"
-								name="t_overloadElements">
+	<xsl:template match="elements" mode="overload" name="t_overloadElements">
 		<xsl:if test="count(element) > 0">
 			<xsl:call-template name="t_putMemberListSection">
-				<xsl:with-param name="p_headerGroup"
-												select="'overloadMembers'"/>
-				<xsl:with-param name="p_members"
-												select="element"/>
-				<xsl:with-param name="p_showParameters"
-												select="'true'"/>
-				<xsl:with-param name="p_sort"
-												select="false()"/>
+				<xsl:with-param name="p_headerGroup" select="'overloadMembers'"/>
+				<xsl:with-param name="p_members" select="element"/>
+				<xsl:with-param name="p_showParameters" select="'true'"/>
+				<xsl:with-param name="p_sort" select="false()"/>
 			</xsl:call-template>
 		</xsl:if>
-		<xsl:apply-templates select="element"
-												 mode="overloadSections">
+		<xsl:apply-templates select="element" mode="overloadSections">
 			<xsl:sort select="apidata/@name"/>
 		</xsl:apply-templates>
 	</xsl:template>
 
-	<xsl:template match="elements"
-								mode="overloadSummary">
-		<xsl:apply-templates select="element"
-												 mode="overloadSummary" >
+	<xsl:template match="elements" mode="overloadSummary">
+		<xsl:apply-templates select="element" mode="overloadSummary" >
 			<xsl:sort select="apidata/@name"/>
 		</xsl:apply-templates>
 	</xsl:template>
@@ -969,15 +951,12 @@
 	<xsl:template name="t_putNamespaceSection">
 		<xsl:param name="p_listSubgroup"/>
 
-		<xsl:variable name="v_header"
-									select="concat('tableTitle_', $p_listSubgroup)"/>
+		<xsl:variable name="v_header" select="concat('tableTitle_', $p_listSubgroup)"/>
 		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"
-											select="$v_header"/>
+			<xsl:with-param name="p_titleInclude" select="$v_header"/>
 			<xsl:with-param name="p_content">
 				<xsl:call-template name="t_putNamespaceList">
-					<xsl:with-param name="p_listSubgroup"
-													select="$p_listSubgroup"/>
+					<xsl:with-param name="p_listSubgroup" select="$p_listSubgroup"/>
 				</xsl:call-template>
 			</xsl:with-param>
 		</xsl:call-template>
@@ -986,21 +965,19 @@
 	<xsl:template name="t_putNamespaceList">
 		<xsl:param name="p_listSubgroup"/>
 
-		<table id="typeList"
-					 class="members">
+		<table id="typeList" class="members">
 			<tr>
-				<th class="ps_iconColumn">
+				<th class="iconColumn">
 					&#160;
 				</th>
-				<th class="ps_nameColumn">
+				<th>
 					<include item="header_{$p_listSubgroup}Name"/>
 				</th>
-				<th class="ps_descriptionColumn">
+				<th>
 					<include item="header_typeDescription"/>
 				</th>
 			</tr>
-			<xsl:apply-templates select="element[apidata/@subgroup=$p_listSubgroup]"
-													 mode="namespace">
+			<xsl:apply-templates select="element[apidata/@subgroup=$p_listSubgroup]" mode="namespace">
 				<xsl:sort select="@api"/>
 			</xsl:apply-templates>
 		</table>
@@ -1041,26 +1018,23 @@
 			</xsl:variable>
 
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="$v_header"/>
-				<xsl:with-param name="p_toplink"
-												select="true()"/>
+				<xsl:with-param name="p_titleInclude" select="$v_header"/>
+				<xsl:with-param name="p_toplink" select="true()"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList"
-								 class="members">
+					<table id="memberList" class="members">
 						<tr>
-							<th class="ps_iconColumn">
+							<th class="iconColumn">
 								&#160;
 							</th>
-							<th class="ps_nameColumn">
+							<th>
 								<include item="header_typeName"/>
 							</th>
-							<th class="ps_descriptionColumn">
+							<th>
 								<include item="header_typeDescription"/>
 							</th>
 						</tr>
 
-						<!-- add a row for each member of the current subgroup-visibility -->
+						<!-- Add a row for each member of the current subgroup-visibility -->
 						<xsl:choose>
 							<xsl:when test="boolean($p_sort)">
 								<xsl:apply-templates select="$p_members" mode="memberlistRow">
@@ -1109,10 +1083,7 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="element"
-								mode="namespace"
-								name="t_namespaceElement">
-
+	<xsl:template match="element" mode="namespace" name="t_namespaceElement">
 		<xsl:variable name="v_typeVisibility">
 			<xsl:choose>
 				<xsl:when test="typedata/@visibility='family' or typedata/@visibility='family or assembly' or typedata/@visibility='assembly'">prot</xsl:when>
@@ -1127,13 +1098,11 @@
 			</xsl:attribute>
 			<td>
 				<xsl:call-template name="t_putTypeIcon">
-					<xsl:with-param name="p_typeVisibility"
-													select="$v_typeVisibility"/>
+					<xsl:with-param name="p_typeVisibility" select="$v_typeVisibility"/>
 				</xsl:call-template>
 			</td>
 			<td>
-				<referenceLink target="{@api}"
-											 qualified="false"/>
+				<referenceLink target="{@api}" qualified="false"/>
 			</td>
 			<td>
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
@@ -1145,10 +1114,7 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="element"
-								mode="enumeration"
-								name="t_enumerationElement">
-
+	<xsl:template match="element" mode="enumeration" name="t_enumerationElement">
 		<xsl:variable name="v_supportedOnXna">
 			<xsl:call-template name="t_isMemberSupportedOnXna"/>
 		</xsl:variable>
@@ -1160,7 +1126,7 @@
 		</xsl:variable>
 		<tr>
 			<td>
-				<!-- platform icons -->
+				<!-- Platform icons -->
 				<xsl:if test="normalize-space($v_supportedOnCf)!=''">
 					<img data="netcfw">
 						<includeAttribute name="src"
@@ -1173,7 +1139,6 @@
 															item="altText_CompactFramework"/>
 					</img>
 				</xsl:if>
-
 				<xsl:if test="normalize-space($v_supportedOnXna)!=''">
 					<img data="xnafw">
 						<includeAttribute name="src"
@@ -1199,8 +1164,7 @@
 					</img>
 				</xsl:if>
 			</td>
-			<xsl:variable name="id"
-										select="@api"/>
+			<xsl:variable name="id" select="@api"/>
 			<td target="{$id}">
 				<span class="selflink">
 					<xsl:value-of select="apidata/@name"/>
@@ -1262,11 +1226,8 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="element"
-								mode="memberlistRow"
-								name="t_memberlistRowElement">
-		<xsl:param name="p_showParameters"
-							 select="'false'"/>
+	<xsl:template match="element" mode="memberlistRow" name="t_memberlistRowElement">
+		<xsl:param name="p_showParameters" select="'false'"/>
 		<xsl:variable name="v_notsupportedOnNetfw">
 			<xsl:call-template name="t_isMemberUnsupportedOnNetfw"/>
 		</xsl:variable>
@@ -1306,7 +1267,7 @@
 		<xsl:variable name="v_conversionOperator">
 			<xsl:call-template name="t_isConversionOperator"/>
 		</xsl:variable>
-		<!-- do not show non-static members of static types -->
+		<!-- Do not show non-static members of static types -->
 		<xsl:if test=".//memberdata/@static='true' or not(/document/reference/typedata[@abstract='true' and @sealed='true'])">
 			<tr>
 				<xsl:attribute name="data">
@@ -1367,16 +1328,11 @@
 								<xsl:otherwise>pub</xsl:otherwise>
 							</xsl:choose>
 						</xsl:with-param>
-						<xsl:with-param name="p_staticMember"
-														select="normalize-space($v_staticMember)"/>
-						<xsl:with-param name="p_supportedOnXna"
-														select="normalize-space($v_supportedOnXna)"/>
-						<xsl:with-param name="p_supportedOnCf"
-														select="normalize-space($v_supportedOnCf)"/>
-						<xsl:with-param name="p_supportedOnSilverlight"
-														select="normalize-space($v_supportedOnSilverlight)"/>
-						<xsl:with-param name="p_supportedOnSilverlightMobile"
-														select="normalize-space($v_supportedOnSilverlightMobile)"/>
+						<xsl:with-param name="p_staticMember" select="normalize-space($v_staticMember)"/>
+						<xsl:with-param name="p_supportedOnXna" select="normalize-space($v_supportedOnXna)"/>
+						<xsl:with-param name="p_supportedOnCf" select="normalize-space($v_supportedOnCf)"/>
+						<xsl:with-param name="p_supportedOnSilverlight" select="normalize-space($v_supportedOnSilverlight)"/>
+						<xsl:with-param name="p_supportedOnSilverlightMobile" select="normalize-space($v_supportedOnSilverlightMobile)"/>
 					</xsl:call-template>
 				</td>
 				<td>
@@ -1547,21 +1503,26 @@
 	<xsl:template name="t_putTypeIcon">
 		<xsl:param name="p_typeVisibility"/>
 
-		<xsl:variable name="typeSubgroup"
-									select="apidata/@subgroup"/>
+		<xsl:variable name="typeSubgroup" select="apidata/@subgroup"/>
 		<img>
-			<includeAttribute name="src"
-												item="iconPath">
+			<includeAttribute name="src" item="iconPath">
 				<parameter>
 					<xsl:value-of select="concat($p_typeVisibility,$typeSubgroup,'.gif')"/>
 				</parameter>
 			</includeAttribute>
-			<includeAttribute name="alt"
-												item="{concat('altText_',$p_typeVisibility,$typeSubgroup)}"/>
-			<includeAttribute name="title"
-												item="{concat('altText_',$p_typeVisibility,$typeSubgroup)}"/>
+			<includeAttribute name="alt" item="{concat('altText_',$p_typeVisibility,$typeSubgroup)}"/>
+			<includeAttribute name="title" item="{concat('altText_',$p_typeVisibility,$typeSubgroup)}"/>
 		</img>
 
+		<xsl:if test=".//example">
+			<img>
+				<includeAttribute name="src" item="iconPath">
+					<parameter>CodeExample.png</parameter>
+				</includeAttribute>
+				<includeAttribute name="alt" item="altText_CodeExample"/>
+				<includeAttribute name="title" item="altText_CodeExample"/>
+			</img>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="t_putMemberIcons">
@@ -1598,92 +1559,81 @@
 		<!-- test for explicit interface implementations, which get the interface icon -->
 		<xsl:if test="memberdata/@visibility='private' and proceduredata/@virtual='true'">
 			<img>
-				<includeAttribute name="src"
-													item="iconPath">
+				<includeAttribute name="src" item="iconPath">
 					<parameter>pubinterface.gif</parameter>
 				</includeAttribute>
-				<includeAttribute name="alt"
-													item="altText_ExplicitInterface"/>
-				<includeAttribute name="title"
-													item="altText_ExplicitInterface"/>
+				<includeAttribute name="alt" item="altText_ExplicitInterface"/>
+				<includeAttribute name="title" item="altText_ExplicitInterface"/>
 			</img>
 		</xsl:if>
 
 		<img>
-			<includeAttribute name="src"
-												item="iconPath">
+			<includeAttribute name="src" item="iconPath">
 				<parameter>
 					<xsl:value-of select="concat($p_memberVisibility,$v_memberSubgroup,'.gif')"/>
 				</parameter>
 			</includeAttribute>
 			<xsl:choose>
 				<xsl:when test="apidata/@subsubgroup">
-					<includeAttribute name="alt"
-														item="{concat('altText_',$p_memberVisibility,apidata/@subsubgroup)}"/>
-					<includeAttribute name="title"
-														item="{concat('altText_',$p_memberVisibility,apidata/@subsubgroup)}"/>
+					<includeAttribute name="alt" item="{concat('altText_',$p_memberVisibility,apidata/@subsubgroup)}"/>
+					<includeAttribute name="title" item="{concat('altText_',$p_memberVisibility,apidata/@subsubgroup)}"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<includeAttribute name="alt"
-														item="{concat('altText_',$p_memberVisibility,$v_memberSubgroup)}"/>
-					<includeAttribute name="title"
-														item="{concat('altText_',$p_memberVisibility,$v_memberSubgroup)}"/>
+					<includeAttribute name="alt" item="{concat('altText_',$p_memberVisibility,$v_memberSubgroup)}"/>
+					<includeAttribute name="title" item="{concat('altText_',$p_memberVisibility,$v_memberSubgroup)}"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</img>
 
 		<xsl:if test="$p_staticMember!=''">
 			<img>
-				<includeAttribute name="src"
-													item="iconPath">
+				<includeAttribute name="src" item="iconPath">
 					<parameter>static.gif</parameter>
 				</includeAttribute>
-				<includeAttribute name="alt"
-													item="altText_static"/>
-				<includeAttribute name="title"
-													item="altText_static"/>
+				<includeAttribute name="alt" item="altText_static"/>
+				<includeAttribute name="title" item="altText_static"/>
 			</img>
 		</xsl:if>
 
 		<xsl:if test="$p_supportedOnCf!=''">
 			<img data="netcfw">
-				<includeAttribute name="src"
-													item="iconPath">
+				<includeAttribute name="src" item="iconPath">
 					<parameter>CFW.gif</parameter>
 				</includeAttribute>
-				<includeAttribute name="alt"
-													item="altText_CompactFramework"/>
-				<includeAttribute name="title"
-													item="altText_CompactFramework"/>
+				<includeAttribute name="alt" item="altText_CompactFramework"/>
+				<includeAttribute name="title" item="altText_CompactFramework"/>
 			</img>
 		</xsl:if>
 
 		<xsl:if test="$p_supportedOnXna!=''">
 			<img data="xnafw">
-				<includeAttribute name="src"
-													item="iconPath">
+				<includeAttribute name="src" item="iconPath">
 					<parameter>xna.gif</parameter>
 				</includeAttribute>
-				<includeAttribute name="alt"
-													item="altText_XNAFramework"/>
-				<includeAttribute name="title"
-													item="altText_XNAFramework"/>
+				<includeAttribute name="alt" item="altText_XNAFramework"/>
+				<includeAttribute name="title" item="altText_XNAFramework"/>
 			</img>
 		</xsl:if>
 
 		<xsl:if test="$p_supportedOnSilverlightMobile!=''">
 			<img data="silverlight_mobile">
-				<includeAttribute name="src"
-													item="iconPath">
+				<includeAttribute name="src" item="iconPath">
 					<parameter>slMobile.gif</parameter>
 				</includeAttribute>
-				<includeAttribute name="alt"
-													item="altText_SilverlightMobile"/>
-				<includeAttribute name="title"
-													item="altText_SilverlightMobile"/>
+				<includeAttribute name="alt" item="altText_SilverlightMobile"/>
+				<includeAttribute name="title" item="altText_SilverlightMobile"/>
 			</img>
 		</xsl:if>
 
+		<xsl:if test=".//example">
+			<img>
+				<includeAttribute name="src" item="iconPath">
+					<parameter>CodeExample.png</parameter>
+				</includeAttribute>
+				<includeAttribute name="alt" item="altText_CodeExample"/>
+				<includeAttribute name="title" item="altText_CodeExample"/>
+			</img>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="t_getEnumMemberDescription">

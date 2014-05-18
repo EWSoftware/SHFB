@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 05/14/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the methods that handle the plug-ins during the build process
@@ -19,12 +19,11 @@
 // 1.6.0.6  03/13/2008  EFW  Wrapped plug-in log output in an XML element
 // 1.8.0.1  11/14/2008  EFW  Added execution priority support
 // -------  12/18/2013  EFW  Updated to use MEF for the plug-ins
+//          05/14/2014  EFW  Added support for presentation style plug-in dependencies
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -63,7 +62,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <exception cref="BuilderException">This is thrown if a requested plug-in is not found</exception>
         private void LoadPlugIns()
         {
-            PlugInConfiguration plugInConfig;
             Lazy<IPlugIn, IPlugInMetadata> plugIn;
             IPlugIn instance;
             XmlDocument config;
@@ -73,29 +71,36 @@ namespace SandcastleBuilder.Utils.BuildEngine
             loadedPlugIns = new Dictionary<string, IPlugIn>();
 
             var availablePlugs = componentContainer.GetExports<IPlugIn, IPlugInMetadata>();
+            var projectPlugIns = new Dictionary<string, string>();
 
-            // Note that a list of failures is accumulate as we may need to run the Completion Notification
-            // plug-in to report the failures when done.
-            foreach(string key in project.PlugInConfigurations.Keys)
+            // Get the project plug-ins first
+            foreach(var kv in project.PlugInConfigurations)
             {
-                plugInConfig = project.PlugInConfigurations[key];
+                if(!kv.Value.Enabled)
+                    this.ReportProgress("{0} plug-in is disabled and will not be loaded", kv.Key);
+                else
+                    projectPlugIns.Add(kv.Key, kv.Value.Configuration);
+            }
 
-                if(!plugInConfig.Enabled)
-                {
-                    this.ReportProgress("{0} plug-in is disabled and will not be loaded", key);
-                    continue;
-                }
+            // Add presentation style plug-in dependencies that are not in the project already
+            foreach(var dp in presentationStyle.PlugInDependencies)
+                if(!projectPlugIns.ContainsKey(dp.Id))
+                    projectPlugIns.Add(dp.Id, dp.Configuration);
 
+            // Note that a list of failures is accumulated as we may need to run the Completion Notification
+            // plug-in to report the failures when done.
+            foreach(var kv in projectPlugIns)
+            {
                 plugIn = null;
 
                 try
                 {
-                    plugIn = availablePlugs.FirstOrDefault(p => p.Metadata.Id == key);
+                    plugIn = availablePlugs.FirstOrDefault(p => p.Metadata.Id == kv.Key);
 
                     if(plugIn == null)
                     {
                         sb.AppendFormat("Error: Unable to locate plug-in '{0}' in any of the component or " +
-                            "project folders and it cannot be used.\r\n", key);
+                            "project folders and it cannot be used.\r\n", kv.Key);
                         continue;
                     }
 
@@ -107,11 +112,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         instance = plugIn.Value;
 
                         config = new XmlDocument();
-                        config.LoadXml(plugInConfig.Configuration);
+                        config.LoadXml(kv.Value);
 
                         instance.Initialize(this, config.CreateNavigator());
 
-                        loadedPlugIns.Add(key, instance);
+                        loadedPlugIns.Add(kv.Key, instance);
                     }
                 }
                 catch(Exception ex)
@@ -122,7 +127,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         sb.AppendFormat("{0}: {1}\r\n", bex.ErrorCode, bex.Message);
                     else
                         sb.AppendFormat("{0}: Unexpected error: {1}\r\n",
-                            (plugIn != null) ? plugIn.Metadata.Id : key, ex.ToString());
+                            (plugIn != null) ? plugIn.Metadata.Id : kv.Key, ex.ToString());
                 }
             }
 

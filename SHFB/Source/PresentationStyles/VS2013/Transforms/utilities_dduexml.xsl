@@ -204,9 +204,7 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:title"
-								mode="section"
-								name="t_ddue_sectionTitle">
+	<xsl:template match="ddue:title" mode="section" name="t_ddue_sectionTitle">
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -300,11 +298,11 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:syntaxSection" name="t_ddue_syntaxSection">
-		<div id="syntaxSection" class="section">
+		<div id="syntaxSection">
 			<xsl:if test="ddue:legacySyntax">
 				<div id="snippetGroup_Syntax" class="code">
 					<xsl:for-each select="ddue:legacySyntax">
-						<div class="OH_CodeSnippetContainerCode">
+						<div class="codeSnippetContainerCode">
 							<pre xml:space="preserve"><xsl:apply-templates xml:space="preserve"/></pre>
 						</div>
 					</xsl:for-each>
@@ -691,7 +689,7 @@
 
 	<xsl:template match="ddue:nonLocErrorTitle" name="t_ddue_nonLocErrorTitle">
 		<xsl:if test="string-length(../ddue:nonLocErrorTitle[normalize-space(.)]) > 0 or string-length(../ddue:secondaryErrorTitle[normalize-space(.)]) > 0">
-			<div id="errorTitleSection" class="section">
+			<div id="errorTitleSection">
 				<xsl:if test="../ddue:secondaryErrorTitle">
 					<h4 class="subHeading">
 						<include item="title_errorMessage"/>
@@ -711,7 +709,7 @@
 		<xsl:if test="string-length(../ddue:secondaryErrorTitle[normalize-space(.)]) > 0">
 			<xsl:choose>
 				<xsl:when test="$newSection = 'yes'">
-					<div id="errorTitleSection" class="section">
+					<div id="errorTitleSection">
 						<xsl:apply-templates/>
 						<p><xsl:text> </xsl:text></p>
 					</div>
@@ -787,7 +785,7 @@
 				</ol>
 			</xsl:when>
 			<xsl:otherwise>
-				<ul style="list-style-type:none;">
+				<ul class="noBullet">
 					<xsl:apply-templates select="ddue:listItem | ddue:list"/>
 				</ul>
 			</xsl:otherwise>
@@ -846,7 +844,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:definitionTable" name="t_ddue_definitionTable">
-		<dl class="authored">
+		<dl>
 			<xsl:apply-templates/>
 		</dl>
 	</xsl:template>
@@ -990,19 +988,19 @@
 		<div>
 			<xsl:choose>
 				<xsl:when test="ddue:image[@placement='center']">
-					<xsl:attribute name="class">ps_mediaCenter</xsl:attribute>
+					<xsl:attribute name="class">mediaCenter</xsl:attribute>
 				</xsl:when>
 				<xsl:when test="ddue:image[@placement='far']">
-					<xsl:attribute name="class">ps_mediaFar</xsl:attribute>
+					<xsl:attribute name="class">mediaFar</xsl:attribute>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:attribute name="class">ps_mediaNear</xsl:attribute>
+					<xsl:attribute name="class">mediaNear</xsl:attribute>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:if test="ddue:caption and not(ddue:caption[@placement='after'])">
 				<div class="caption">
 					<xsl:if test="ddue:caption[@lead]">
-						<span class="ps_captionLead">
+						<span class="captionLead">
 							<xsl:value-of select="normalize-space(ddue:caption/@lead)"/>:
 						</span>
 					</xsl:if>
@@ -1013,7 +1011,7 @@
 			<xsl:if test="ddue:caption and ddue:caption[@placement='after']">
 				<div class="caption">
 					<xsl:if test="ddue:caption[@lead]">
-						<span class="ps_captionLead">
+						<span class="captionLead">
 							<xsl:value-of select="normalize-space(ddue:caption/@lead)"/>:
 						</span>
 					</xsl:if>
@@ -1311,9 +1309,9 @@
 	<xsl:template match="ddue:quote"
 								name="t_ddue_quote">
 		<xsl:if test="normalize-space(.)">
-			<blockQuote>
+			<blockquote>
 				<xsl:apply-templates/>
-			</blockQuote>
+			</blockquote>
 		</xsl:if>
 	</xsl:template>
 
@@ -1335,40 +1333,20 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:subscript"
-								name="t_ddue_subscript">
+	<xsl:template match="ddue:subscript|ddue:subscriptType" name="t_ddue_subscript">
 		<xsl:if test="normalize-space(.)">
-			<small>
-				<small>
-					<sub>
-						<xsl:apply-templates/>
-					</sub>
-				</small>
-			</small>
+			<sub>
+				<xsl:apply-templates/>
+			</sub>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:subscriptType"
-								name="t_ddue_subscriptType">
-		<xsl:call-template name="t_ddue_subscript"/>
-	</xsl:template>
-
-	<xsl:template match="ddue:superscript"
-								name="t_ddue_superscript">
+	<xsl:template match="ddue:superscript|ddue:superscriptType" name="t_ddue_superscript">
 		<xsl:if test="normalize-space(.)">
-			<small>
-				<small>
-					<sup>
-						<xsl:apply-templates/>
-					</sup>
-				</small>
-			</small>
+			<sup>
+				<xsl:apply-templates/>
+			</sup>
 		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="ddue:superscriptType"
-								name="t_ddue_superscriptType">
-		<xsl:call-template name="t_ddue_superscript"/>
 	</xsl:template>
 
 	<xsl:template match="ddue:system"
@@ -1630,9 +1608,9 @@
 	<xsl:template match="ddue:glossary"
 								name="t_ddue_glossary">
 		<xsl:if test="ddue:title">
-			<h1 class="ps_glossaryTitle">
+			<h2>
 				<xsl:value-of select="normalize-space(ddue:title)" />
-			</h1>
+			</h2>
 		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="ddue:glossaryDiv">
@@ -1669,18 +1647,18 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:glossaryDiv" name="t_ddue_glossaryDiv">
-		<div class="ps_glossaryDiv">
+		<div class="glossaryDiv">
 			<xsl:if test="@address">
 				<xsl:attribute name="id">
 					<xsl:value-of select="@address"/>
 				</xsl:attribute>
 			</xsl:if>
 			<xsl:if test="ddue:title">
-				<h2 class="ps_glossaryDivHeading">
+				<h3>
 					<xsl:value-of select="ddue:title"/>
-				</h2>
+				</h3>
 			</xsl:if>
-			<hr class="ps_glossaryRule"/>
+			<hr class="glossaryRule"/>
 			<xsl:call-template name="t_glossaryLetterBar">
 				<xsl:with-param name="p_sectionPrefix" select="generate-id()"/>
 			</xsl:call-template>
@@ -1720,7 +1698,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:glossaryEntry" name="t_ddue_glossaryEntry">
-		<dt class="ps_glossaryEntry">
+		<dt class="glossaryEntry">
 			<xsl:if test="@address">
 				<xsl:attribute name="id">
 					<xsl:value-of select="@address"/>
@@ -1745,11 +1723,11 @@
 				</xsl:if>
 			</xsl:for-each>
 		</dt>
-		<dd class="ps_glossaryEntry">
+		<dd class="glossaryEntry">
 			<xsl:apply-templates select="ddue:definition/*"/>
 
 			<xsl:if test="ddue:relatedEntry">
-				<div class="ps_relatedEntry">
+				<div class="relatedEntry">
 					<include item="text_relatedEntries" />&#160;
 
 					<xsl:for-each select="ddue:relatedEntry">
@@ -1770,14 +1748,14 @@
 		<xsl:param name="p_link"/>
 		<xsl:param name="p_name"/>
 		<xsl:param name="p_nodes"/>
-		<div class="ps_glossaryGroup">
-			<h3 class="ps_glossaryGroupHeading">
+		<div class="glossaryGroup">
+			<h3 class="glossaryGroupHeading">
 				<xsl:attribute name="id">
 					<xsl:value-of select="$p_link"/>
 				</xsl:attribute>
 				<xsl:value-of select="$p_name"/>
 			</h3>
-			<dl class="ps_glossaryGroupList">
+			<dl class="glossaryGroupList">
 				<xsl:apply-templates select="$p_nodes">
 					<xsl:sort select="ddue:terms/ddue:term"/>
 				</xsl:apply-templates>
@@ -1787,7 +1765,7 @@
 
 	<xsl:template name="t_glossaryLetterBar">
 		<xsl:param name="p_sectionPrefix" select="''"/>
-		<div class="ps_glossaryLetterBar">
+		<div class="glossaryLetterBar">
 			<xsl:call-template name="t_glossaryLetterBarLinkRecursive">
 				<xsl:with-param name="p_sectionPrefix" select="$p_sectionPrefix"/>
 				<xsl:with-param name="p_bar" select="$g_allUpperCaseLetters"/>

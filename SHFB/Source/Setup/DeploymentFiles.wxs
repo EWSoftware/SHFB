@@ -2277,6 +2277,77 @@
             </Component>
           </Directory>
         </Directory>
+        <Directory Id="dir21E3EA98DD09AEA50B3DB8566367B39E" Name="LegacyWeb">
+          <Component Id="cmp9BD95AF723FAEA6BA51AFDCCAB5C5E31" Guid="{00F01603-D7D6-43AF-B32D-B6176587D891}">
+            <File Id="filFE0D2BF24D5E880CC90A33FE2457948B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\CloseSearch.png" />
+          </Component>
+          <Component Id="cmp960194282232035A1920F34718DDD280" Guid="{F8DB3C33-62F8-4ACD-A23C-D999110B2445}">
+            <File Id="fil173C16757A65A9D66CB20C137258B96C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\CollapseAll.png" />
+          </Component>
+          <Component Id="cmpE2876218F21C377C54C9A32A67060374" Guid="{25E0A49D-19A5-4B6B-BCFF-F2FFB4E01C69}">
+            <File Id="fil432CB337F27A1B66059953EBC9EE3FAC" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Collapsed.gif" />
+          </Component>
+          <Component Id="cmpD88687190DD5B4CFFDBC66C4F188D3AB" Guid="{CCEEB307-90CF-4C01-80F1-22EBAB053705}">
+            <File Id="fil7D71B70D43AB22B7000F64122EB6FD9A" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Expanded.gif" />
+          </Component>
+          <Component Id="cmp12162F60D5AA1DC1533E651127BDD35E" Guid="{9AADDA1C-6B3C-4C6A-A4D3-1C00FF65EF5D}">
+            <File Id="fil67368577EF8931EE120FCEC6D90E8542" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\favicon.ico" />
+          </Component>
+          <Component Id="cmpA28A35071DD0771F0D4ABCCFB6A5C886" Guid="{E78C4556-980D-46DB-81EB-C26B0626D730}">
+            <File Id="filF043928EEC25C94D2E2F66674EB34167" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\FillNode.aspx" />
+          </Component>
+          <Component Id="cmp0415B97F2418AE85A58A5E9E90591C0C" Guid="{C4E030E9-D82F-44BD-A674-369772D145A6}">
+            <File Id="fil2F618A3D5598FABBD2E77CA2DDC7868A" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\FillNode.php" />
+          </Component>
+          <Component Id="cmpA64D308E8E7530229B7080B943CA7877" Guid="{5EE6A539-4A1D-4549-8F78-8C474CDE2920}">
+            <File Id="filA69EBB16D97239EEABC49134F6415E87" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Index.aspx" />
+          </Component>
+          <Component Id="cmpD01F7C46C98EBA8FAC0B5A3476EB4D97" Guid="{71417587-BE8A-4F41-8915-036086765FF8}">
+            <File Id="fil97A3681EBF30F1614BC5045E812AE85D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Index.gif" />
+          </Component>
+          <Component Id="cmp59F4D3DD34B78B5170324C8615C4777F" Guid="{BAA62488-644F-44C2-89ED-D9FB0A871511}">
+            <File Id="fil67889E408DB84305C609500C611BC459" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\index.html" />
+          </Component>
+          <Component Id="cmpE6CBEF7723317CD643CD2ADAEFE7927B" Guid="{1F554D76-FDA8-44C7-AFFA-9E9A1365EAE1}">
+            <File Id="fil9867B4A2C57242260E067F3212615B24" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\index.php" />
+          </Component>
+          <Component Id="cmp4AA1F74F9BE7829DC460B31E384BFDD3" Guid="{F6E54C34-6011-4168-BE67-4A50430B969E}">
+            <File Id="fil282242B834D62FF04AFDD1A8AACB5F1A" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Item.gif" />
+          </Component>
+          <Component Id="cmpDAFD3DE57C48A40AE2D558C50E5C6453" Guid="{B17324BC-3E11-40B1-AA7C-A6933F26EA21}">
+            <File Id="fil0DA5D993854862E2431F64D0ECE3ACC4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\LoadIndexKeywords.aspx" />
+          </Component>
+          <Component Id="cmp45C500D8BF59013A824D1F393C2EA794" Guid="{98572C2A-D32C-4160-902A-AF8E18B94E27}">
+            <File Id="fil96A6F6BBE9890F43A3F3445EF824C716" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\LoadIndexKeywords.php" />
+          </Component>
+          <Component Id="cmpBE4B6158BB244E4434D9972540940B9A" Guid="{9B4544E2-46D5-4FA9-890C-7ADF7FE393A7}">
+            <File Id="filEE5ABF12D57A0DBFFA9C7D1CA29963B0" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Search.gif" />
+          </Component>
+          <Component Id="cmp97FD0E3C4DD99AD9433A7A063EE071C4" Guid="{D301DAE5-7487-486B-9887-6FF74B12CF74}">
+            <File Id="filEDAEDA6BEAF31CD3A8C8F49E9B94D710" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\SearchHelp.aspx" />
+          </Component>
+          <Component Id="cmpC83E2A6304C94B91BFE28968B3C7A8F7" Guid="{3326AE64-9C2A-4491-A979-71EB8E818119}">
+            <File Id="fil0A2B984E9FFC7F6DDE9D3093673F8B40" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\SearchHelp.inc.php" />
+          </Component>
+          <Component Id="cmp4902D05D7744F20753C589F261F3E8EB" Guid="{1B08807C-45E5-4B80-B403-F7314C9F4408}">
+            <File Id="fil3911A5F613C29091DF7FFA234EC58E97" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\SearchHelp.php" />
+          </Component>
+          <Component Id="cmp9663BC1DF80B3421556D0BD7A9C7E1ED" Guid="{10AE479E-E131-4AAE-A98B-60D1C1A5A73E}">
+            <File Id="fil2B4DC3433466B6C0094D594F61773B11" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Splitter.gif" />
+          </Component>
+          <Component Id="cmpF53A6C8E3445202E390F4DE86A5B2630" Guid="{5084D97E-9D7C-4968-9C38-F2668EEBA477}">
+            <File Id="fil7877A122CFE60337537CE2CF1654A401" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\SyncTOC.gif" />
+          </Component>
+          <Component Id="cmpBC3473637F9B2F5B954B03C8A8AB2C1C" Guid="{2DC19FA4-CFAC-494F-92DF-3E3F50FD172B}">
+            <File Id="fil4ADE70DF72B31D78D96E60EF674F1556" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\TOC.css" />
+          </Component>
+          <Component Id="cmp277DD37F7612FC7F6E1A73776198F8C7" Guid="{19FA1F5E-1F98-43B2-B2D1-889A70106629}">
+            <File Id="fil83C7CBAD1EC1A904F81C1F94421E06E2" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\TOC.js" />
+          </Component>
+          <Component Id="cmpD34C1E8E9A4572114ED5425D05B485DC" Guid="{02DCE3BB-DC2B-4B7E-B9E1-8896B5899C3C}">
+            <File Id="filAAC6EF310297B0F2103B3F2095B1CC7C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Web.Config" />
+          </Component>
+        </Directory>
         <Directory Id="dir67A6AD6029ACC0B0DC4B16E331BCDE0A" Name="OpenXml">
           <Directory Id="dir1E325ACCCD83643C243D8379CBB65341" Name="Configuration">
             <Component Id="cmp9351A48C808692941A6AAA1D19325FAF" Guid="{2B729B5A-8527-4E52-9F39-5B808FFC88B2}">
@@ -3444,7 +3515,10 @@
             <Component Id="cmpC56FCD8BE9A3F46E5AA39BED9B90E4C1" Guid="{6C545E2E-D782-4B69-B9D8-8F742F34D748}">
               <File Id="fil716F49E74AB536FC35E22387B80223F1" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\icons\CFW.gif" />
             </Component>
-            <Component Id="cmpC5AB235A775EF65842EDEA2628BE8B6E" Guid="{C25EB11B-F7F1-437C-A8A9-13268B9E5786}">
+            <Component Id="cmp6E103A25598C5DBCD1E01A5444B01565" Guid="{84F7C5C1-9D42-427F-BE15-5BD82A678990}">
+              <File Id="fil442FA70EB75E49E8F276CDA8F2197F45" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\icons\CodeExample.png" />
+            </Component>
+            <Component Id="cmpC5AB235A775EF65842EDEA2628BE8B6E" Guid="{359E8374-31E9-4988-8662-FE23D4F651DD}">
               <File Id="fil60BF9C04D20E32FF5C0E3170D4E888D6" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\icons\favicon.ico" />
             </Component>
             <Component Id="cmpEF3A3FD59BCBE369CF4BDC22BF3C35D1" Guid="{4CE9BF26-91C0-4F2D-8066-C6D47B968533}">
@@ -3790,25 +3864,22 @@
             </Component>
           </Directory>
           <Directory Id="dir51F4D79999E28C999E2065F1A19D073F" Name="icons">
-            <Component Id="cmp59771D9EFC4064A609F3D5B3B412205A" Guid="{DF31E536-BEED-4E07-A0B7-A8EB9E329EA3}">
-              <File Id="filB9964670B1DAEFBC52CD43EA00D76513" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\alert_caution.gif" />
+            <Component Id="cmp5D17EE02040ECBB7E2411B8137BFDC61" Guid="{7AB4E1ED-8BA9-4884-A829-B76975B063BE}">
+              <File Id="filE23DA73001FDE35866D63D395D84AED2" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\AlertCaution.png" />
             </Component>
-            <Component Id="cmp4A896D1777FB30854695DA6CC2BE6098" Guid="{1BF8D5A5-542C-4AE6-AC5A-A91E7A41E9CF}">
-              <File Id="filE7A3C1A51375FFB502CFA6907B861C53" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\alert_note.gif" />
+            <Component Id="cmp0DAD5BF1477ADC518D46BC62E772F0D2" Guid="{23A5A8DB-82EF-4A6F-8F01-324259EF07AC}">
+              <File Id="fil328599CA7C5317EAA67B1E4A07113562" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\AlertNote.png" />
             </Component>
-            <Component Id="cmp7356031625F6AE5D41EC254F2EE099CE" Guid="{3E340FA1-E4C3-4BC7-97C1-536DCE5FBFEE}">
-              <File Id="filB122320FD68F6CDCF0B1B4D3018742FB" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\alert_security.gif" />
+            <Component Id="cmp7481D5EC4F65B29EB0490E138B4D3B02" Guid="{4F807465-D65A-4D33-801B-9194AAC06781}">
+              <File Id="fil30B13FCDB099BF215D9582D86B9780C4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\AlertSecurity.png" />
             </Component>
-            <Component Id="cmpDB8A0CEF1CCF4D8321FB74015BF64718" Guid="{D45F4BBB-EB48-4D0B-83C5-95D6E4A6E37D}">
+            <Component Id="cmpDB8A0CEF1CCF4D8321FB74015BF64718" Guid="{30A5F588-08CC-414D-820A-62AAF496DC77}">
               <File Id="fil3E199D3FFEB756C7775AA3B91A9BBB24" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\CFW.gif" />
             </Component>
-            <Component Id="cmp5AF67822B8DA81754477AD45EDC9FD27" Guid="{BB082E83-21EF-494B-952F-1C4300703442}">
-              <File Id="filF1AE11249729BD99500F37FF956672DC" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\Collapsed.png" />
+            <Component Id="cmpC3A2AFF515C9078D42CB154EAF77D165" Guid="{0A2FEFF2-E813-4993-AE5C-D0E436180ABE}">
+              <File Id="filA0473AF3EEB877C95CEFD9A24233B456" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\CodeExample.png" />
             </Component>
-            <Component Id="cmp6C179B35F92296D279DC374DB030928D" Guid="{00F4F573-35D3-4B4F-AE0F-F4EC8E63B0B5}">
-              <File Id="fil0FAB3A7D04D384D366AD6DE747CF7E4C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\Expanded.png" />
-            </Component>
-            <Component Id="cmpE485808AEB345B7D9E3C48C10357881D" Guid="{15C97699-D849-42FA-838D-4A4F0BBE5AB9}">
+            <Component Id="cmpE485808AEB345B7D9E3C48C10357881D" Guid="{EDBBEA49-CDB1-48E8-8CD4-D317DAAC2C3C}">
               <File Id="fil9C44A636AB352056C3B7B9ED6CE05817" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\favicon.ico" />
             </Component>
             <Component Id="cmpA15280DA5108252EC177715063C329E1" Guid="{C06FF4E8-6804-4527-9665-EF48B01D8446}">
@@ -3907,7 +3978,13 @@
             <Component Id="cmp2AAECD396E7CD2E533EFEAE2C1A79F5F" Guid="{CE282793-2586-4BD9-8C83-A0A2614FC981}">
               <File Id="fil2DDACE701B98C9E54BC53EEC8B74F05D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\pubstructure.gif" />
             </Component>
-            <Component Id="cmp4FF5348A7648A1EC3FDD7C387C67839D" Guid="{4E655E49-E92B-4B2E-9974-27BD38085C5B}">
+            <Component Id="cmp14070B1D113DC2D5E8352295E7B6FF98" Guid="{C115141E-0C12-4DE1-A7E8-D03D8E9A5FC6}">
+              <File Id="fil74F90155860A3950C01270DEABD89A1C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\SectionCollapsed.png" />
+            </Component>
+            <Component Id="cmp7E0D15E724AC2FED2E283B21938C5E5B" Guid="{AD64C823-BE92-4206-B35A-E729DE655B17}">
+              <File Id="fil6BB3772637F20FDAF4D12C7CAB3304DD" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\SectionExpanded.png" />
+            </Component>
+            <Component Id="cmp4FF5348A7648A1EC3FDD7C387C67839D" Guid="{6A152958-D586-492D-8F78-105C72DDE0A3}">
               <File Id="fil9DFD64FED5112747D7BF384368BC47AA" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\icons\slMobile.gif" />
             </Component>
             <Component Id="cmp250A7E4E11439476D5EDFB2898E82F57" Guid="{C2BF2BF6-C823-4760-AAE3-7EBF41D14130}">
@@ -4003,7 +4080,10 @@
             <Component Id="cmp17EB71CB0EEC0619F4A31EA339D65CDE" Guid="{FE8FEA75-98E1-4824-A472-0B97DA1BBDCE}">
               <File Id="fil0DB7E4BF6AA55D60C5514A0A1A09E689" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\styles\branding-tr-TR.css" />
             </Component>
-            <Component Id="cmpA69FDA04185F6ACB39D31C5F573C3BA3" Guid="{FCFC9446-4870-4EF9-9AF2-A95BE4BB2D03}">
+            <Component Id="cmpD86AB9A1C66A5527DB1BCC1FFBF1585F" Guid="{FDFCDCBD-2856-476F-8B0A-E5D61A3AF49F}">
+              <File Id="fil5A58919033C6E880400F0917CB4CC71F" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\styles\branding-Website.css" />
+            </Component>
+            <Component Id="cmpA69FDA04185F6ACB39D31C5F573C3BA3" Guid="{D411351C-D9D1-4139-A805-6E55216D1060}">
               <File Id="fil0DA3A3B721712D70596138E5C52E726B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\styles\branding-zh-CN.css" />
             </Component>
             <Component Id="cmp9D2732EDF2968465F563BC7F175B8509" Guid="{8682EF7F-9CF3-486D-B568-5569B17D01F0}">
@@ -4068,6 +4148,51 @@
             <Component Id="cmp2A6FF71314F1E7DBAEDCE7FC20E6E376" Guid="{6C42ECE4-175F-4714-8403-A6E6CDEFA511}">
               <File Id="fil96BC065C45CEDB89598B2E8A71732C6B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Transforms\xpathFunctions.xsl" />
             </Component>
+          </Directory>
+          <Directory Id="dirCB0E2823B37F5912925CB57E725B3594" Name="Web">
+            <Component Id="cmp39FBBE4AEFEDDB51DC3BF4A824115E3D" Guid="{132A4B4D-5B75-4A01-9633-965975137AB5}">
+              <File Id="fil2E309FDE3ADF75E5B35DE36C17CE8808" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\index.html" />
+            </Component>
+            <Component Id="cmp5CDBB0C8E2C62807E141946E7671871E" Guid="{E0A18946-D7EF-42C8-A9CA-25A97C542960}">
+              <File Id="fil847442B2F09ECEE136F1ED26BE167E14" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\search.html" />
+            </Component>
+            <Component Id="cmp7A06AB06D485DA8048A6C9D0B780FB3F" Guid="{A382182B-DD76-4D3B-9D78-22DBCDE30235}">
+              <File Id="fil7945DB068EB5D1A20B4CA893192B2CEE" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\SearchHelp.aspx" />
+            </Component>
+            <Component Id="cmp60A2F7F9FCDC225D682815D9FB6534F0" Guid="{BE680230-D25B-468A-9C0D-51F809076541}">
+              <File Id="fil5A6DF3F184951D2BC951B5D143864003" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\SearchHelp.inc.php" />
+            </Component>
+            <Component Id="cmp25C5FA3E2B63A18DFC760DD825B6303D" Guid="{FDF964E9-D509-4B3F-98F2-1CF6291EBDD7}">
+              <File Id="fil10860CD7D591DC94E67B1C9FC040A006" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\SearchHelp.php" />
+            </Component>
+            <Component Id="cmpF95C98A72552C7A0D0C9F0D4ECAA32DA" Guid="{9812EC4E-5BEA-45E4-A947-CF20B27C2F95}">
+              <File Id="fil2A692FE893CB69FBD425579DB5B39486" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\Web.Config" />
+            </Component>
+            <Directory Id="dir7DC711FC09D1153210FD75424D3CA63F" Name="icons">
+              <Component Id="cmpE278BDD1D46038032676473BB4326822" Guid="{9BD248EF-5F68-4543-BB68-A15340C92DB0}">
+                <File Id="filD9BED8014ED43F2566A5988480F53FFE" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\icons\Search.png" />
+              </Component>
+              <Component Id="cmp473F16FF89527FD899F49FB3A4ECCF9A" Guid="{A9C40980-E24F-4C43-B0E2-C84108669E08}">
+                <File Id="filE50D8C6325E1829CAA942A4C46E5E57C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\icons\TocClose.gif" />
+              </Component>
+              <Component Id="cmpE134071D786E29BDC5DABBD7046064FD" Guid="{850E50A6-FC84-46AF-B0C6-C6844155871F}">
+                <File Id="fil32CE4C703DED4B730F6C148B19221897" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\icons\TocCollapsed.gif" />
+              </Component>
+              <Component Id="cmp67DF7A28EC4739ECE6C8D4C4CCDB520C" Guid="{3BD574BE-BCE7-45DA-B220-A9F52E70026D}">
+                <File Id="fil1FA4B5335EED5E059E6E0429AC550432" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\icons\TocExpanded.gif" />
+              </Component>
+              <Component Id="cmp9F9C007EE8078C787D081D90E8EDF1B1" Guid="{C3546B8B-1049-4FE3-8C97-718A223846BD}">
+                <File Id="fil97068937B4725011983F06A4F475FE8E" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\icons\TocOpen.gif" />
+              </Component>
+            </Directory>
+            <Directory Id="dir7E4D806C9C76FCABD98FC498788FFC68" Name="scripts">
+              <Component Id="cmp9C74B263BCC9787FAE1C5FDCA12BAAAA" Guid="{B7F16C4C-FE13-4B6D-BD8A-579CFEF295A2}">
+                <File Id="fil7A4A72B037CE19E5E9D287FE0FFD3269" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\branding-Website.js" />
+              </Component>
+              <Component Id="cmpC713CBEA6613FC3F42605633CB8ED849" Guid="{A563D501-B8A4-4E9D-85BA-EB67B1D89BDE}">
+                <File Id="fil4899211CEF33FF113DF9409CF4BBCAB4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\jquery-1.11.0.min.js" />
+              </Component>
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
@@ -4315,77 +4440,6 @@
         </Component>
         <Component Id="cmpFD287BA2C6CE31FA234FA6067AFCF9E6" Guid="{2098648C-E63E-4D44-A89D-21FCECB6BAAC}">
           <File Id="filBEE0DA7044355EEFD5287D0E1463D66D" KeyPath="yes" Source="$(var.RootFolder)\Templates\VS2005.xsl" />
-        </Component>
-      </Directory>
-      <Directory Id="dir523C7825A406466352AFECD0E16F4D70" Name="Web">
-        <Component Id="cmp59C4114FA2D1B8D10868E162AB5E725F" Guid="{8A06A538-6223-4587-BBAA-CA479092910B}">
-          <File Id="fil5CE5D40AA26FA359BAEEB7746F4C8BEF" KeyPath="yes" Source="$(var.RootFolder)\Web\CloseSearch.png" />
-        </Component>
-        <Component Id="cmp3CDDBC448CC5F8FE2AB92D2CBF424FA0" Guid="{8B1CA45D-E357-4AD2-A425-35037480C3D6}">
-          <File Id="fil3AD0D929D39C62B7887EB36DCA12B0C0" KeyPath="yes" Source="$(var.RootFolder)\Web\CollapseAll.png" />
-        </Component>
-        <Component Id="cmp25CB0DB0500EC8C012A44520535F03EC" Guid="{17F6CDB3-3113-4FE9-A3AF-4A975F4DFA5C}">
-          <File Id="filBF15550E582CFF89AA5E10A72E55C923" KeyPath="yes" Source="$(var.RootFolder)\Web\Collapsed.gif" />
-        </Component>
-        <Component Id="cmp616AB926849A0B10DAFA6C09BA75BE18" Guid="{BA0B4DB1-1447-46F6-A27B-507F9FAA8D87}">
-          <File Id="fil96D0A2BE170D6A575675CFE3356B28E1" KeyPath="yes" Source="$(var.RootFolder)\Web\Expanded.gif" />
-        </Component>
-        <Component Id="cmp9FB1DAE4FBBB44ACB1757E7BF40AAB99" Guid="{738E88DD-2505-456F-88E5-D58BC749FED2}">
-          <File Id="fil57B0028998F2C280C117C96571E24072" KeyPath="yes" Source="$(var.RootFolder)\Web\favicon.ico" />
-        </Component>
-        <Component Id="cmp6F99D45776887AE43F3DE328D5156E7A" Guid="{BF5F9868-E32C-4C91-A8C1-AF16231E9A82}">
-          <File Id="filBDD408612FEB4CA4092AC183197663C5" KeyPath="yes" Source="$(var.RootFolder)\Web\FillNode.aspx" />
-        </Component>
-        <Component Id="cmp4F2104631255F7A2A397BD4D826B5468" Guid="{BB4C2A9A-F1E7-45B8-896C-3D5AD1CE1C26}">
-          <File Id="fil8B3EE0B9193563845202C45896033805" KeyPath="yes" Source="$(var.RootFolder)\Web\FillNode.php" />
-        </Component>
-        <Component Id="cmpC63E08FFA64CD013EFE4B26FCC7BA032" Guid="{F386096F-ACE3-46D3-AB87-788581D469EF}">
-          <File Id="fil02AF6478773DECA47B2AC731ECA6C1A9" KeyPath="yes" Source="$(var.RootFolder)\Web\Index.aspx" />
-        </Component>
-        <Component Id="cmpFF4B65816086815CC215032D7A7ACE8A" Guid="{1B85402E-5A5C-49D1-A67E-BD4BA9DBECB7}">
-          <File Id="fil95A8FF34544FE22737638153E391F882" KeyPath="yes" Source="$(var.RootFolder)\Web\Index.gif" />
-        </Component>
-        <Component Id="cmp98BDAE997DA889C49A8A141232DAEA8D" Guid="{197C86E3-FA9D-45D0-A5DB-FD167E3C8857}">
-          <File Id="fil9DC7186FACF33170D32466F9E5A2E888" KeyPath="yes" Source="$(var.RootFolder)\Web\index.html" />
-        </Component>
-        <Component Id="cmp22ABFE0296CB3FEFB042597537B3D236" Guid="{5D64A1B3-C7BE-4570-825D-37E55701454A}">
-          <File Id="fil42E06DC2700E9B4A3B16D86B8B31080D" KeyPath="yes" Source="$(var.RootFolder)\Web\index.php" />
-        </Component>
-        <Component Id="cmp1EDC4E27AB8C5360E0D13F0F9D79C2A1" Guid="{FDA3759C-CEEE-4DC1-A547-6FBDF986ED0B}">
-          <File Id="filEFF61CFBC891F91B52A4AC8683556D01" KeyPath="yes" Source="$(var.RootFolder)\Web\Item.gif" />
-        </Component>
-        <Component Id="cmpEFB9C3FE7635446EF971087C2EE809C0" Guid="{C55D2015-1BE4-439D-9D7D-2D7428F9BA2D}">
-          <File Id="filCC2695CCC4D3853EE23FD3EE29BC0063" KeyPath="yes" Source="$(var.RootFolder)\Web\LoadIndexKeywords.aspx" />
-        </Component>
-        <Component Id="cmpE8E968F831D8435A51808B0000A45F1D" Guid="{0DAD5837-D943-4B16-BE2F-AD56C064D1FE}">
-          <File Id="filF81BE2B32C31F1C58D18AB4445482080" KeyPath="yes" Source="$(var.RootFolder)\Web\LoadIndexKeywords.php" />
-        </Component>
-        <Component Id="cmpEC01C216DF4A326256723A65389F5174" Guid="{A7A6749D-1B7C-45C0-B7AF-0EFBBFA483DF}">
-          <File Id="filE7E3EC617AA96B8E9FCB10B0C51B4227" KeyPath="yes" Source="$(var.RootFolder)\Web\Search.gif" />
-        </Component>
-        <Component Id="cmpA105A9E2511AD8E40050949BB44A26A6" Guid="{89FB0008-A4DC-438F-B44A-19D393C2B815}">
-          <File Id="filEF7F3946627CF594B7C92846FF8D974A" KeyPath="yes" Source="$(var.RootFolder)\Web\SearchHelp.aspx" />
-        </Component>
-        <Component Id="cmp593AAF9045A85DC9808FD15BA2708711" Guid="{E4028DC4-2A9A-4C71-9B98-7A34FC9F1B83}">
-          <File Id="filC64C479C14BA978A7903235F7F73B7C7" KeyPath="yes" Source="$(var.RootFolder)\Web\SearchHelp.inc.php" />
-        </Component>
-        <Component Id="cmp2FE97AC475B761892E1EC8865397C0FD" Guid="{1558C26E-266D-4F2D-ABB0-54C092A98211}">
-          <File Id="filE3F4375E40790E9B40FF370550D6F69E" KeyPath="yes" Source="$(var.RootFolder)\Web\SearchHelp.php" />
-        </Component>
-        <Component Id="cmp3F1916B94357D31A56C89726007E7465" Guid="{C9D6FF55-6050-4977-A383-E7BF79799D91}">
-          <File Id="fil566D1099F4774F82429F655CBD46FBB2" KeyPath="yes" Source="$(var.RootFolder)\Web\Splitter.gif" />
-        </Component>
-        <Component Id="cmp3FD47216935D9BE7921CCE314165AB21" Guid="{407B8838-CF63-4CA5-8C91-1662E7B167D7}">
-          <File Id="filBA9F42A9D0E06F5AF97490D13CBDE524" KeyPath="yes" Source="$(var.RootFolder)\Web\SyncTOC.gif" />
-        </Component>
-        <Component Id="cmpF4B413E691F935E9612E042385241844" Guid="{E70C670E-82D1-46C1-89B4-0ECF1E810E2F}">
-          <File Id="fil2E3249EE72C6F9D8A0615FED0FFC690C" KeyPath="yes" Source="$(var.RootFolder)\Web\TOC.css" />
-        </Component>
-        <Component Id="cmp4B1AF4141861BC3C17E886AE70E74836" Guid="{06DB16C6-6E6B-4CB8-ABED-267FC581BA2C}">
-          <File Id="fil7F747FF3E9CD045E47C79E39B9691973" KeyPath="yes" Source="$(var.RootFolder)\Web\TOC.js" />
-        </Component>
-        <Component Id="cmpBB3E71E9292EB60B1CE386591CBB6C24" Guid="{7B819463-E331-45FD-A4F5-B428B84DED6B}">
-          <File Id="filC90525142FE2A1D8E0D98A7C54C8F1E0" KeyPath="yes" Source="$(var.RootFolder)\Web\Web.Config" />
         </Component>
       </Directory>
     </DirectoryRef>
@@ -5117,6 +5171,29 @@
       <ComponentRef Id="cmpB8D23D102D42F10E4E3C61C7181D2CFE" />
       <ComponentRef Id="cmp29EF6EABC6522EB747555B44A5F289C8" />
       <ComponentRef Id="cmpBBAEDD133363040611DD4764B5010BCF" />
+      <ComponentRef Id="cmp9BD95AF723FAEA6BA51AFDCCAB5C5E31" />
+      <ComponentRef Id="cmp960194282232035A1920F34718DDD280" />
+      <ComponentRef Id="cmpE2876218F21C377C54C9A32A67060374" />
+      <ComponentRef Id="cmpD88687190DD5B4CFFDBC66C4F188D3AB" />
+      <ComponentRef Id="cmp12162F60D5AA1DC1533E651127BDD35E" />
+      <ComponentRef Id="cmpA28A35071DD0771F0D4ABCCFB6A5C886" />
+      <ComponentRef Id="cmp0415B97F2418AE85A58A5E9E90591C0C" />
+      <ComponentRef Id="cmpA64D308E8E7530229B7080B943CA7877" />
+      <ComponentRef Id="cmpD01F7C46C98EBA8FAC0B5A3476EB4D97" />
+      <ComponentRef Id="cmp59F4D3DD34B78B5170324C8615C4777F" />
+      <ComponentRef Id="cmpE6CBEF7723317CD643CD2ADAEFE7927B" />
+      <ComponentRef Id="cmp4AA1F74F9BE7829DC460B31E384BFDD3" />
+      <ComponentRef Id="cmpDAFD3DE57C48A40AE2D558C50E5C6453" />
+      <ComponentRef Id="cmp45C500D8BF59013A824D1F393C2EA794" />
+      <ComponentRef Id="cmpBE4B6158BB244E4434D9972540940B9A" />
+      <ComponentRef Id="cmp97FD0E3C4DD99AD9433A7A063EE071C4" />
+      <ComponentRef Id="cmpC83E2A6304C94B91BFE28968B3C7A8F7" />
+      <ComponentRef Id="cmp4902D05D7744F20753C589F261F3E8EB" />
+      <ComponentRef Id="cmp9663BC1DF80B3421556D0BD7A9C7E1ED" />
+      <ComponentRef Id="cmpF53A6C8E3445202E390F4DE86A5B2630" />
+      <ComponentRef Id="cmpBC3473637F9B2F5B954B03C8A8AB2C1C" />
+      <ComponentRef Id="cmp277DD37F7612FC7F6E1A73776198F8C7" />
+      <ComponentRef Id="cmpD34C1E8E9A4572114ED5425D05B485DC" />
       <ComponentRef Id="cmp9351A48C808692941A6AAA1D19325FAF" />
       <ComponentRef Id="cmpE42D44D752EB5972F188CA601E965B07" />
       <ComponentRef Id="cmp7BFB2B96184C2517B56DD00D05256157" />
@@ -5478,6 +5555,7 @@
       <ComponentRef Id="cmpC32825D442F0373543D816EDD7E2DEF9" />
       <ComponentRef Id="cmpBC1FAA7703A4B5B164BE9AA2FB4DF15F" />
       <ComponentRef Id="cmpC56FCD8BE9A3F46E5AA39BED9B90E4C1" />
+      <ComponentRef Id="cmp6E103A25598C5DBCD1E01A5444B01565" />
       <ComponentRef Id="cmpC5AB235A775EF65842EDEA2628BE8B6E" />
       <ComponentRef Id="cmpEF3A3FD59BCBE369CF4BDC22BF3C35D1" />
       <ComponentRef Id="cmp61B4081182F894B46FDAC5213AB544F2" />
@@ -5586,12 +5664,11 @@
       <ComponentRef Id="cmp5C533D60EF2C8E0C144BBFE2A4436515" />
       <ComponentRef Id="cmp60B6416503ADCC0ACB4DE83B5CD1FEBA" />
       <ComponentRef Id="cmpA86E9459C5D1F6202E9D1E96D4B1F92E" />
-      <ComponentRef Id="cmp59771D9EFC4064A609F3D5B3B412205A" />
-      <ComponentRef Id="cmp4A896D1777FB30854695DA6CC2BE6098" />
-      <ComponentRef Id="cmp7356031625F6AE5D41EC254F2EE099CE" />
+      <ComponentRef Id="cmp5D17EE02040ECBB7E2411B8137BFDC61" />
+      <ComponentRef Id="cmp0DAD5BF1477ADC518D46BC62E772F0D2" />
+      <ComponentRef Id="cmp7481D5EC4F65B29EB0490E138B4D3B02" />
       <ComponentRef Id="cmpDB8A0CEF1CCF4D8321FB74015BF64718" />
-      <ComponentRef Id="cmp5AF67822B8DA81754477AD45EDC9FD27" />
-      <ComponentRef Id="cmp6C179B35F92296D279DC374DB030928D" />
+      <ComponentRef Id="cmpC3A2AFF515C9078D42CB154EAF77D165" />
       <ComponentRef Id="cmpE485808AEB345B7D9E3C48C10357881D" />
       <ComponentRef Id="cmpA15280DA5108252EC177715063C329E1" />
       <ComponentRef Id="cmp4E3487E7BC62A69B0D63F7528A2D4561" />
@@ -5625,6 +5702,8 @@
       <ComponentRef Id="cmpE626913F026C4A29E90265E16B1745D4" />
       <ComponentRef Id="cmpD671F73068A10685B895D420BBC1FAD7" />
       <ComponentRef Id="cmp2AAECD396E7CD2E533EFEAE2C1A79F5F" />
+      <ComponentRef Id="cmp14070B1D113DC2D5E8352295E7B6FF98" />
+      <ComponentRef Id="cmp7E0D15E724AC2FED2E283B21938C5E5B" />
       <ComponentRef Id="cmp4FF5348A7648A1EC3FDD7C387C67839D" />
       <ComponentRef Id="cmp250A7E4E11439476D5EDFB2898E82F57" />
       <ComponentRef Id="cmpBA2FA4FE3F643833F296082685732883" />
@@ -5655,6 +5734,7 @@
       <ComponentRef Id="cmp0A47C9622B254FC8C0AAEEBE9335741A" />
       <ComponentRef Id="cmp6A2FD528085ECBAFE6765D4018D69873" />
       <ComponentRef Id="cmp17EB71CB0EEC0619F4A31EA339D65CDE" />
+      <ComponentRef Id="cmpD86AB9A1C66A5527DB1BCC1FFBF1585F" />
       <ComponentRef Id="cmpA69FDA04185F6ACB39D31C5F573C3BA3" />
       <ComponentRef Id="cmp9D2732EDF2968465F563BC7F175B8509" />
       <ComponentRef Id="cmp21F316A6BBD9F3D8706008B7F5B93F8D" />
@@ -5676,6 +5756,19 @@
       <ComponentRef Id="cmp456590A55F13C97CD8B14DAFCD219D47" />
       <ComponentRef Id="cmp797EE819B0CD6DDCB8F4A195CE2AE527" />
       <ComponentRef Id="cmp2A6FF71314F1E7DBAEDCE7FC20E6E376" />
+      <ComponentRef Id="cmp39FBBE4AEFEDDB51DC3BF4A824115E3D" />
+      <ComponentRef Id="cmp5CDBB0C8E2C62807E141946E7671871E" />
+      <ComponentRef Id="cmp7A06AB06D485DA8048A6C9D0B780FB3F" />
+      <ComponentRef Id="cmp60A2F7F9FCDC225D682815D9FB6534F0" />
+      <ComponentRef Id="cmp25C5FA3E2B63A18DFC760DD825B6303D" />
+      <ComponentRef Id="cmpF95C98A72552C7A0D0C9F0D4ECAA32DA" />
+      <ComponentRef Id="cmpE278BDD1D46038032676473BB4326822" />
+      <ComponentRef Id="cmp473F16FF89527FD899F49FB3A4ECCF9A" />
+      <ComponentRef Id="cmpE134071D786E29BDC5DABBD7046064FD" />
+      <ComponentRef Id="cmp67DF7A28EC4739ECE6C8D4C4CCDB520C" />
+      <ComponentRef Id="cmp9F9C007EE8078C787D081D90E8EDF1B1" />
+      <ComponentRef Id="cmp9C74B263BCC9787FAE1C5FDCA12BAAAA" />
+      <ComponentRef Id="cmpC713CBEA6613FC3F42605633CB8ED849" />
       <ComponentRef Id="cmp0DB2BFCB1CD3D868AFA7505967E53E49" />
       <ComponentRef Id="cmpB5731877051694D27A4B704D1C45F5A6" />
       <ComponentRef Id="cmpADED2715F3D335FCBDC5FA18985D614E" />
@@ -5752,29 +5845,6 @@
       <ComponentRef Id="cmp58CCF08BC1907A646D43676651CBFDCF" />
       <ComponentRef Id="cmp5896F84D46377B285FA1D6E4EA2EB239" />
       <ComponentRef Id="cmpFD287BA2C6CE31FA234FA6067AFCF9E6" />
-      <ComponentRef Id="cmp59C4114FA2D1B8D10868E162AB5E725F" />
-      <ComponentRef Id="cmp3CDDBC448CC5F8FE2AB92D2CBF424FA0" />
-      <ComponentRef Id="cmp25CB0DB0500EC8C012A44520535F03EC" />
-      <ComponentRef Id="cmp616AB926849A0B10DAFA6C09BA75BE18" />
-      <ComponentRef Id="cmp9FB1DAE4FBBB44ACB1757E7BF40AAB99" />
-      <ComponentRef Id="cmp6F99D45776887AE43F3DE328D5156E7A" />
-      <ComponentRef Id="cmp4F2104631255F7A2A397BD4D826B5468" />
-      <ComponentRef Id="cmpC63E08FFA64CD013EFE4B26FCC7BA032" />
-      <ComponentRef Id="cmpFF4B65816086815CC215032D7A7ACE8A" />
-      <ComponentRef Id="cmp98BDAE997DA889C49A8A141232DAEA8D" />
-      <ComponentRef Id="cmp22ABFE0296CB3FEFB042597537B3D236" />
-      <ComponentRef Id="cmp1EDC4E27AB8C5360E0D13F0F9D79C2A1" />
-      <ComponentRef Id="cmpEFB9C3FE7635446EF971087C2EE809C0" />
-      <ComponentRef Id="cmpE8E968F831D8435A51808B0000A45F1D" />
-      <ComponentRef Id="cmpEC01C216DF4A326256723A65389F5174" />
-      <ComponentRef Id="cmpA105A9E2511AD8E40050949BB44A26A6" />
-      <ComponentRef Id="cmp593AAF9045A85DC9808FD15BA2708711" />
-      <ComponentRef Id="cmp2FE97AC475B761892E1EC8865397C0FD" />
-      <ComponentRef Id="cmp3F1916B94357D31A56C89726007E7465" />
-      <ComponentRef Id="cmp3FD47216935D9BE7921CCE314165AB21" />
-      <ComponentRef Id="cmpF4B413E691F935E9612E042385241844" />
-      <ComponentRef Id="cmp4B1AF4141861BC3C17E886AE70E74836" />
-      <ComponentRef Id="cmpBB3E71E9292EB60B1CE386591CBB6C24" />
     </ComponentGroup>
   </Fragment>
 </Wix>

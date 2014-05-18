@@ -95,6 +95,7 @@
   <item id="devlang_pshell">PowerShell</item>
   <item id="devlang_sql">SQL</item>
   <item id="devlang_Python">Python</item>
+	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
 
   <!-- language keywords -->
   <item id="devlang_nullKeyword">a null reference (<span class="keyword">Nothing</span> in Visual Basic)</item>
@@ -128,5 +129,7 @@
 	<!-- Legacy shared content -->
 	<item id="copyrightText"><include item="copyright_text"/></item>
 	<item id="copyCode">Copy</item>
-  
+ 
+	<!-- Lightweight TOC resize tool tip -->
+	<item id="resizeToolTip">Click or drag to resize</item>
 </content>

@@ -31,15 +31,15 @@
   <item id="boilerplate_pageTitle">{0}</item>
 
 	<!-- alert titles -->
-	<item id="alert_title_tip"><strong>Tipp</strong></item>
-	<item id="alert_title_caution"><strong>Achtung</strong></item>
-	<item id="alert_title_security"><strong>Sicherheitshinweis</strong></item>
-	<item id="alert_title_note"><strong>Hinweis</strong></item>
-	<item id="alert_title_important"><strong>Wichtig</strong></item>
-	<item id="alert_title_visualBasic"><strong>Visual Basic Hinweis</strong></item>
-	<item id="alert_title_visualC#"><strong>C# Hinweis</strong></item>
-	<item id="alert_title_visualC++"><strong>C++ Hinweis</strong></item>
-	<item id="alert_title_visualJ#"><strong>J# Hinweis</strong></item>
+	<item id="alert_title_tip">Tipp</item>
+	<item id="alert_title_caution">Achtung</item>
+	<item id="alert_title_security">Sicherheitshinweis</item>
+	<item id="alert_title_note">Hinweis</item>
+	<item id="alert_title_important">Wichtig</item>
+	<item id="alert_title_visualBasic">Visual Basic Hinweis</item>
+	<item id="alert_title_visualC#">C# Hinweis</item>
+	<item id="alert_title_visualC++">C++ Hinweis</item>
+	<item id="alert_title_visualJ#">J# Hinweis</item>
 
 	<!-- alert alt text -->
 	<item id="alert_altText_tip">Tipp</item>
@@ -95,6 +95,7 @@
   <item id="devlang_pshell">PowerShell</item>
   <item id="devlang_sql">SQL</item>
   <item id="devlang_Python">Python</item>
+	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
 
   <!-- language keywords -->
   <item id="devlang_nullKeyword">eine Null Referenz (<span class="keyword">Nothing</span> in Visual Basic)</item>

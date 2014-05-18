@@ -12,20 +12,10 @@
 				<list class="bullet">
 					<listItem>
 						<para>Full Microsoft Help Viewer support has been implemented within the Sandcastle Help File Builder.
-However, please note that only the <legacyBold>VS2010</legacyBold> and <legacyBold>VS2005</legacyBold>
-presentation styles contain the necessary resources and XSL transformations to output the necessary metadata.
-This was Microsoft's decision as noted in the June 2010 release:</para>
-
-						<quote>The <legacyBold>Hana</legacyBold> presentation is not supported because its support was
-already dropped in the latest Sandcastle code before our changes.  The <legacyBold>Prototype</legacyBold>
-presentation is not supported because we consider it outdated, existing only for compatibility purposes even in
-the earlier Sandcastle versions.</quote>
-
-						<para>Support for the <legacyBold>Hana</legacyBold> and <legacyBold>Prototype</legacyBold> styles is
-present in the help file builder but the Sandcastle transformations and resource files will need updating in
-order to support the generation of Microsoft Help Viewer files with them.  There are no plans to do this and it
-is recommended that you switch to the <legacyBold>VS2010</legacyBold> or <legacyBold>VS2005</legacyBold>
-presentation style.</para>
+However, please note that only the latest presentation styles contain the necessary resources and XSL
+transformations to output the necessary metadata.  The deprecated styles are not guaranteed to work correctly
+as they are no longer supported and will not be updated with any new features required to support the latest help
+file formats.</para>
 					</listItem>
 
 					<listItem>
@@ -35,17 +25,6 @@ contents generation is not supported for help viewer output.  All additional top
 content layout file.  There are too many requirements of the format to support raw HTML files and the deprecated
 additional content options.  The installer for the Sandcastle tools contains an HTML to MAML converter utility
 if you need one.</para>
-					</listItem>
-
-					<listItem>
-						<para>Microsoft's Help Viewer Power Tool introduces some changes that are incompatible with content
-that uses the <codeInline>SelfBranded=True</codeInline> attribute that Sandcastle will emit in the
-<legacyBold>VS2005</legacyBold> presentation style.</para>
-					</listItem>
-
-					<listItem>
-						<para>Microsoft Help Viewer content generated with the <legacyBold>VS2005</legacyBold> presentation
-style will produce content that in some contexts produces two vertical scrollbars.</para>
 					</listItem>
 
 				</list>

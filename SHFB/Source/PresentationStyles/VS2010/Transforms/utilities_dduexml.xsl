@@ -1335,40 +1335,20 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:subscript"
-								name="t_ddue_subscript">
+	<xsl:template match="ddue:subscript|ddue:subscriptType" name="t_ddue_subscript">
 		<xsl:if test="normalize-space(.)">
-			<small>
-				<small>
-					<sub>
-						<xsl:apply-templates/>
-					</sub>
-				</small>
-			</small>
+			<sub>
+				<xsl:apply-templates/>
+			</sub>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="ddue:subscriptType"
-								name="t_ddue_subscriptType">
-		<xsl:call-template name="t_ddue_subscript"/>
-	</xsl:template>
-
-	<xsl:template match="ddue:superscript"
-								name="t_ddue_superscript">
+	<xsl:template match="ddue:superscript|ddue:superscriptType" name="t_ddue_superscript">
 		<xsl:if test="normalize-space(.)">
-			<small>
-				<small>
-					<sup>
-						<xsl:apply-templates/>
-					</sup>
-				</small>
-			</small>
+			<sup>
+				<xsl:apply-templates/>
+			</sup>
 		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="ddue:superscriptType"
-								name="t_ddue_superscriptType">
-		<xsl:call-template name="t_ddue_superscript"/>
 	</xsl:template>
 
 	<xsl:template match="ddue:system"

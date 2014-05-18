@@ -42,6 +42,12 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// This read-only property is used to get the list of related code snippets
         /// </summary>
         public List<CodeSnippet> CodeSnippets { get; private set; }
+
+        /// <summary>
+        /// This is used to get or set whether or not the group is a single, standalone snippet
+        /// </summary>
+        public bool IsStandalone { get; set; }
+
         #endregion
 
         #region Constructor

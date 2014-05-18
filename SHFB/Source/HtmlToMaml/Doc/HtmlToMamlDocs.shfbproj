@@ -32,7 +32,7 @@
     <CopyrightHref>http://Sandcastle.CodePlex.com</CopyrightHref>
     <CopyrightText>Copyright \xA9 2008-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <SyntaxFilters>C#, Visual Basic</SyntaxFilters>
+    <SyntaxFilters>Standard</SyntaxFilters>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
       <HelpAttribute name="DocSet" value="NetFramework" />
@@ -83,7 +83,7 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>VS2005</PresentationStyle>
+    <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <Language>en-US</Language>
