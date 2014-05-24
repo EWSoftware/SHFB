@@ -137,13 +137,6 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template name="t_runningHeader">
-		<xsl:variable name="v_runningHeaderText">
-			<xsl:value-of select="/document/metadata/runningHeaderText/@uscid"/>
-		</xsl:variable>
-		<include item="{$v_runningHeaderText}"/>
-	</xsl:template>
-
 	<!-- ============================================================================================
 	Body
 	============================================================================================= -->

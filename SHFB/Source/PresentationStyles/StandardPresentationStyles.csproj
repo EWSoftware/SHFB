@@ -144,7 +144,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="LegacyWeb\SearchHelp.aspx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="LegacyWeb\Splitter.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -800,6 +800,7 @@
     </Content>
     <Content Include="VS2013\Transforms\codeTemplates.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2013\Transforms\conceptualMetadataHelp20.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -844,9 +845,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Transforms\utilities_reference.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Transforms\xamlSyntax.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Transforms\xpathFunctions.xsl">
@@ -2251,9 +2249,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2010\Transforms\utilities_reference.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Transforms\xamlSyntax.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2010\Transforms\xpathFunctions.xsl">

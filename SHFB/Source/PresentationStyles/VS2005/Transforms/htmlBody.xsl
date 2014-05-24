@@ -131,7 +131,7 @@
 			<tr id="headerTableRow1">
 				<td align="left">
 					<span id="runningHeaderText">
-						<xsl:call-template name="runningHeader" />
+						<include item="runningHeaderText" />
 					</span>
 				</td>
 			</tr>

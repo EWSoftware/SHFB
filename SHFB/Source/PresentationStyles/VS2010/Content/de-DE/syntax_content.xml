@@ -85,7 +85,7 @@ Der Compiler löst automatisch alle Aufrufe dieser Methode zur selben Methode mi
 	<item id="propertyXamlSyntax_nonXaml">Sie können diese Eigenschaft in XAML nicht setzen.</item>
 
 	<!-- syntax used with all enums in xaml assemblies -->
-	<item id="enumerationOverviewXamlSyntax"><span>&lt;<em>object property</em>="<em>enumerationMemberName</em>" .../&gt;</span></item>
+	<item id="enumerationOverviewXamlSyntax">&lt;<em>object property</em>="<em>enumerationMemberName</em>" .../&gt;/item>
 
 	<!-- boilerplate used with all method, field, etc. in xaml assemblies -->
 	<item id="constructorOverviewXamlSyntax">Sie können in XAML keine Konstruktoren verwenden.</item>

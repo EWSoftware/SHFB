@@ -422,8 +422,7 @@ namespace Microsoft.Ddue.Tools
                 string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
                 writer.WriteStartSubBlock(xamlBlockId);
                 writer.WriteString("<");
-                writer.WriteParameter("object");
-                writer.WriteString(" ");
+                writer.WriteParameter("object ");
                 writer.WriteIdentifier(containingTypeName + "." + propertyName);
                 writer.WriteString("=\"");
                 WriteTypeReference(returnType, writer);
@@ -619,8 +618,7 @@ namespace Microsoft.Ddue.Tools
             // syntax looks like: 
             //   <object PropertyName="linkToType" .../>
             writer.WriteString("<");
-            writer.WriteParameter("object");
-            writer.WriteString(" ");
+            writer.WriteParameter("object ");
             writer.WriteIdentifier(propertyName);
             writer.WriteString("=\"");
             WriteTypeReference(returnType, writer);
@@ -677,8 +675,7 @@ namespace Microsoft.Ddue.Tools
                 // syntax looks like: 
                 //   <object eventName="eventHandlerLink" .../>
                 writer.WriteString("<");
-                writer.WriteParameter("object");
-                writer.WriteString(" ");
+                writer.WriteParameter("object ");
                 writer.WriteIdentifier(eventName);
                 writer.WriteString("=\"");
                 WriteTypeReference(eventHandler, writer);
@@ -700,8 +697,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteStartSubBlock(xamlBlockId);
 
             writer.WriteString("<");
-            writer.WriteParameter("object");
-            writer.WriteString(" ");
+            writer.WriteParameter("object ");
             writer.WriteIdentifier(containingTypeName + "." + eventName);
             writer.WriteString("=\"");
             WriteTypeReference(eventHandler, writer);

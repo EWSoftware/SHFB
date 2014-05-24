@@ -206,7 +206,12 @@
 		<xsl:param name="p_nodes"/>
 
 		<xsl:variable name="v_id" select="generate-id(msxsl:node-set($p_nodes))" />
-		<xsl:variable name="v_nodeCount" select="count(msxsl:node-set($p_nodes))" />
+
+		<!-- Count non-XAML snippets and XAML snippets with something other than boilerplate content -->
+		<xsl:variable name="v_nodeCount" select="count(msxsl:node-set($p_nodes)/self::node()[@codeLanguage != 'XAML' or
+			(@codeLanguage = 'XAML' and boolean(./div[@class='xamlAttributeUsageHeading' or
+			@class='xamlObjectElementUsageHeading' or @class='xamlContentElementUsageHeading' or
+			@class='xamlPropertyElementUsageHeading']))])" />
 
 		<div class="OH_CodeSnippetContainer">
 			<div class="OH_CodeSnippetContainerTabs">
@@ -220,32 +225,40 @@
 				</xsl:choose>
 
 				<xsl:for-each select="msxsl:node-set($p_nodes)">
-					<div id="{$v_id}_tab{position()}">
-						<xsl:attribute name="class">
-							<xsl:choose>
-								<xsl:when test="$v_nodeCount = 1">
-									<xsl:text>OH_CodeSnippetContainerTabSolo</xsl:text>
-								</xsl:when>
-								<xsl:when test="position() = 1">
-									<xsl:text>OH_CodeSnippetContainerTabFirst</xsl:text>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:text>OH_CodeSnippetContainerTab</xsl:text>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
-						<xsl:choose>
-							<xsl:when test="$v_nodeCount = 1">
-								<include item="devlang_{@codeLanguage}" />
-							</xsl:when>
-							<xsl:otherwise>
-								<!-- Use onclick rather than href or HV 2.0 messes up the link -->
-								<a href="#" onclick="javascript:ChangeTab('{$v_id}','{@style}','{position()}','{$v_nodeCount}');return false;">
-									<include item="devlang_{@codeLanguage}" />
-								</a>
-							</xsl:otherwise>
-						</xsl:choose>
-					</div>
+					<xsl:choose>
+						<!-- Suppress tabs for boilerplate XAML which isn't currently shown -->
+						<xsl:when test="@codeLanguage='XAML' and not(boolean(./div[
+										@class='xamlAttributeUsageHeading' or @class='xamlObjectElementUsageHeading' or
+										@class='xamlContentElementUsageHeading' or @class='xamlPropertyElementUsageHeading']))" />
+						<xsl:otherwise>
+							<div id="{$v_id}_tab{position()}">
+								<xsl:attribute name="class">
+									<xsl:choose>
+										<xsl:when test="$v_nodeCount = 1">
+											<xsl:text>OH_CodeSnippetContainerTabSolo</xsl:text>
+										</xsl:when>
+										<xsl:when test="position() = 1">
+											<xsl:text>OH_CodeSnippetContainerTabFirst</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>OH_CodeSnippetContainerTab</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:choose>
+									<xsl:when test="$v_nodeCount = 1">
+										<include item="devlang_{@codeLanguage}" />
+									</xsl:when>
+									<xsl:otherwise>
+										<!-- Use onclick rather than href or HV 2.0 messes up the link -->
+										<a href="#" onclick="javascript:ChangeTab('{$v_id}','{@style}','{position()}','{$v_nodeCount}');return false;">
+											<include item="devlang_{@codeLanguage}" />
+										</a>
+									</xsl:otherwise>
+								</xsl:choose>
+							</div>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 
 				<xsl:choose>
@@ -269,19 +282,34 @@
 				</div>
 
 				<xsl:for-each select="msxsl:node-set($p_nodes)">
-					<div id="{$v_id}_code_Div{position()}" class="OH_CodeSnippetContainerCode">
-						<xsl:attribute name="style">
-							<xsl:choose>
-								<xsl:when test="$v_nodeCount = 1 or position() = 1">
-									<xsl:text>display: block</xsl:text>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:text>display: none</xsl:text>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
-						<pre xml:space="preserve"><xsl:copy-of select="node()"/></pre>
-					</div>
+					<xsl:choose>
+						<!-- Suppress snippets for boilerplate XAML which isn't currently shown -->
+						<xsl:when test="@codeLanguage='XAML' and not(boolean(./div[
+										@class='xamlAttributeUsageHeading' or @class='xamlObjectElementUsageHeading' or
+										@class='xamlContentElementUsageHeading' or @class='xamlPropertyElementUsageHeading']))" />
+						<xsl:otherwise>
+							<div id="{$v_id}_code_Div{position()}" class="OH_CodeSnippetContainerCode">
+								<xsl:attribute name="style">
+									<xsl:choose>
+										<xsl:when test="$v_nodeCount = 1 or position() = 1">
+											<xsl:text>display: block</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>display: none</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:choose>
+									<xsl:when test="@codeLanguage='XAML'">
+										<xsl:call-template name="XamlSyntaxBlock" />
+									</xsl:when>
+									<xsl:otherwise>
+										<pre xml:space="preserve"><xsl:copy-of select="node()"/></pre>
+									</xsl:otherwise>
+								</xsl:choose>
+							</div>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 			</div>
 		</div>
@@ -410,6 +438,142 @@
 
 		<!-- Register the tab set even for single tabs as we may need to hide the Copy link -->
 		<script type="text/javascript">AddLanguageTabSet("<xsl:value-of select="$v_id" />");</script>
+	</xsl:template>
+
+	<!-- ============================================================================================
+	XAML Syntax
+	============================================================================================= -->
+
+	<xsl:template name="XamlSyntaxBlock">
+		<!-- Branch based on page type -->
+		<xsl:choose>
+			<!-- Display boilerplate for page types that cannot be used in XAML -->
+			<xsl:when test="$g_apiTopicSubGroup='method' or $g_apiTopicSubGroup='constructor' or
+                      $g_apiTopicSubGroup='interface' or $g_apiTopicSubGroup='delegate' or
+                      $g_apiTopicSubGroup='field'">
+				<xsl:call-template name="ShowXamlSyntaxBoilerplate"/>
+			</xsl:when>
+
+			<!-- Class and structure -->
+			<xsl:when test="$g_apiTopicSubGroup='class' or $g_apiTopicSubGroup='structure'">
+				<xsl:choose>
+					<xsl:when test="div[@class='xamlObjectElementUsageHeading']">
+						<xsl:call-template name="ShowAutogeneratedXamlSyntax">
+							<xsl:with-param name="autogenContent">
+								<xsl:copy-of select="div[@class='xamlObjectElementUsageHeading']"/>
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="ShowXamlSyntaxBoilerplate">
+							<xsl:with-param name="p_messageId">
+								<xsl:copy-of select="."/>
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+
+			<!-- Enumeration -->
+			<xsl:when test="$g_apiTopicSubGroup='enumeration'">
+				<xsl:choose>
+					<xsl:when test="div[@class='nonXamlAssemblyBoilerplate']"/>
+					<xsl:otherwise>
+						<pre xml:space="preserve"><include item="enumerationOverviewXamlSyntax"/><xsl:text/></pre>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+
+			<!-- Property -->
+			<xsl:when test="$g_apiTopicSubGroup='property' or $g_apiTopicSubSubGroup='attachedProperty'">
+				<!-- Property Element Usage -->
+				<xsl:if test="div[@class='xamlPropertyElementUsageHeading' or @class='xamlContentElementUsageHeading']">
+					<xsl:call-template name="ShowAutogeneratedXamlSyntax">
+						<xsl:with-param name="autogenContent">
+							<xsl:copy-of select="div[@class='xamlPropertyElementUsageHeading' or @class='xamlContentElementUsageHeading']"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:if>
+				<!-- Attribute Usage -->
+				<xsl:if test="div[@class='xamlAttributeUsageHeading']">
+					<xsl:call-template name="ShowAutogeneratedXamlSyntax">
+						<xsl:with-param name="autogenContent">
+							<xsl:copy-of select="div[@class='xamlAttributeUsageHeading']"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:if>
+				<!-- Show auto-generated boilerplate if no other content to override it -->
+				<xsl:if test="not(div[@class='xamlPropertyElementUsageHeading' or
+								@class='xamlContentElementUsageHeading' or @class='xamlAttributeUsageHeading'])">
+					<xsl:call-template name="ShowXamlSyntaxBoilerplate">
+						<xsl:with-param name="p_messageId">
+							<xsl:copy-of select="div/*"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:if>
+			</xsl:when>
+
+			<!-- Event -->
+			<xsl:when test="$g_apiTopicSubGroup='event' or $g_apiTopicSubSubGroup='attachedEvent'">
+				<!-- If XamlSyntaxUsage component generated an Attribute Usage block, this template will show it -->
+				<xsl:call-template name="ShowAutogeneratedXamlSyntax">
+					<xsl:with-param name="autogenContent">
+						<xsl:copy-of select="div[@class='xamlAttributeUsageHeading']"/>
+					</xsl:with-param>
+				</xsl:call-template>
+				<!-- If XamlSyntaxUsage component generated a boilerplate block, this template will show it -->
+				<xsl:call-template name="ShowXamlSyntaxBoilerplate">
+					<xsl:with-param name="p_messageId">
+						<xsl:copy-of select="div/*"/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- Displays one of the standard XAML boilerplate strings. -->
+	<xsl:template name="ShowXamlSyntaxBoilerplate">
+		<xsl:param name="p_messageId"/>
+
+		<!-- Do not show any XAML syntax boilerplate strings -->
+		<xsl:variable name="boilerplateId"/>
+
+		<!-- If future requirements call for showing one or more boilerplate strings for XAML, use the commented out
+				 code to specify the ids of the shared content items to include.
+         NOTE: The markup like div/@class='interfaceOverviewXamlSyntax' is added by XamlUsageSyntax.cs in
+				 BuildAssembler. -->
+		<!--
+    <xsl:variable name="boilerplateId">
+      <xsl:value-of select="div/@class[.='interfaceOverviewXamlSyntax' or
+                    .='propertyXamlSyntax_abstractType' or                    
+                    .='classXamlSyntax_abstract']"/>
+    </xsl:variable>
+    -->
+
+		<xsl:if test="$boilerplateId != ''">
+			<pre xml:space="preserve"><include item="{$boilerplateId}">
+          <xsl:choose>
+            <xsl:when test="$p_messageId !='' or (count(msxsl:node-set($p_messageId)/*) &gt; 0)">
+              <parameter><xsl:copy-of select="msxsl:node-set($p_messageId)"/></parameter>
+            </xsl:when>
+            <!-- Make sure we at least pass in an empty param because some boilerplates expect them -->
+            <xsl:otherwise>
+              <parameter/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </include><xsl:text/></pre>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Displays the auto-generated XAML syntax for page types other than enumerations -->
+	<xsl:template name="ShowAutogeneratedXamlSyntax">
+		<xsl:param name="autogenContent"/>
+		<xsl:if test="count(msxsl:node-set($autogenContent))>0">
+			<xsl:for-each select="msxsl:node-set($autogenContent)/div">
+				<pre xml:space="preserve"><xsl:copy-of select="node()"/><xsl:text/></pre>
+			</xsl:for-each>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

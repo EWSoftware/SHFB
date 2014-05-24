@@ -49,7 +49,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" visible="True" title="Section Elements">
+  <Topic id="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" visible="True" isExpanded="true" title="Section Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="element categories, section" />
     </HelpKeywords>
@@ -91,6 +91,11 @@
     <Topic id="fa97c10b-a683-4d10-a01c-5787dbdd42d3" visible="True" title="returns">
       <HelpKeywords>
         <HelpKeyword index="K" term="section elements, returns" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="2a973959-9c9a-4b3b-abcb-48bb30382400" visible="True" isSelected="true" title="revisionHistory">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, revisionHistory" />
       </HelpKeywords>
     </Topic>
     <Topic id="16cdb957-a35b-4c17-bf5e-ea511b0218e3" visible="True" title="seealso">
@@ -169,7 +174,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="9341fdc8-1571-405c-8e61-6a6b9b601b46" visible="True" title="Miscellaneous Elements">
+  <Topic id="9341fdc8-1571-405c-8e61-6a6b9b601b46" visible="True" isExpanded="true" title="Miscellaneous Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="element categories, miscellaneous" />
     </HelpKeywords>
@@ -250,7 +255,7 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
-    <Topic id="a5108a60-fdf8-412a-bd74-c182cd2832ec" visible="True" isSelected="true" title="Version 2014.1.26.0">
+    <Topic id="a5108a60-fdf8-412a-bd74-c182cd2832ec" visible="True" title="Version 2014.1.26.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2014.1.26.0" />
       </HelpKeywords>

@@ -102,6 +102,7 @@
   <item id="dynamicLinkInlineSeperatorText"> and </item>
     
   <item id="remarksTitle">Remarks</item>
+  <item id="revisionHistoryTitle">Revision History</item>
   
   <!-- devlangs filter -->
   <item id="devlangsDropdown">Code: {0}</item>

@@ -88,6 +88,8 @@
 		<xsl:if test="not($group='list' or $group='root' or $group='namespace' or $group='namespaceGroup')">
 			<xsl:apply-templates select="/document/reference/versions" />
 		</xsl:if>
+		<!-- revisions -->
+		<xsl:call-template name="t_revisionHistory"/>
 		<!-- bibliography -->
 		<xsl:call-template name="bibliography" />
 		<!-- see also -->
@@ -1047,10 +1049,6 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template name="runningHeader">
-		<include item="runningHeaderText" />
-	</xsl:template>
-
 	<!-- pass through html tags -->
 
 	<xsl:template match="p|ol|ul|li|dl|dt|dd|table|tr|th|td|a|img|b|i|strong|em|del|sub|sup|br|hr|h1|h2|h3|h4|h5|h6|pre|div|span|blockquote|abbr|acronym|u|font|map|area">
@@ -1386,6 +1384,50 @@
 				<xsl:with-param name="data" select="$entry"/>
 			</xsl:call-template>
 		</xsl:for-each>
+	</xsl:template>
+
+	<!-- Revision History information template processing. -->
+	<xsl:template name="t_revisionHistory" match="revisionHistory" >
+		<xsl:if test="boolean(count(/document//revisionHistory) > 0)">
+			<xsl:if test="not(/document//revisionHistory[@visible='false'])">
+				<xsl:call-template name="section">
+					<xsl:with-param name="toggleSwitch" select="'revisionHistorySection'"/>
+					<xsl:with-param name="title">
+						<include item="revisionHistoryTitle" />
+					</xsl:with-param>
+					<xsl:with-param name="content">
+						<table>
+							<tr>
+								<th>
+									<include item="revHistoryDate" />
+								</th>
+								<th>
+									<include item="revHistoryVersion" />
+								</th>
+								<th>
+									<include item="revHistoryDescription" />
+								</th>
+							</tr>
+							<xsl:for-each select="/document//revisionHistory/revision">
+								<xsl:if test="not(@visible='false')">
+									<tr>
+										<td>
+											<xsl:value-of select="@date"/>
+										</td>
+										<td>
+											<xsl:value-of select="@version"/>
+										</td>
+										<td>
+											<xsl:apply-templates />
+										</td>
+									</tr>
+								</xsl:if>
+							</xsl:for-each>
+						</table>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- Pass through a chunk of markup.  This will allow build components to add HTML or other elements such as

@@ -726,10 +726,6 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template name="runningHeader">
-		<include item="runningHeaderText" />
-	</xsl:template>
-
 	<!-- pass through html tags -->
 
 	<xsl:template match="p|ol|ul|li|dl|dt|dd|table|tr|th|td|a|img|b|i|strong|em|del|sub|sup|br|hr|h1|h2|h3|h4|h5|h6|pre|div|span|blockquote|abbr|acronym|u|font|map|area">

@@ -176,6 +176,10 @@
   <item id="ensuresOnThrowNameHeader">Постусловия при возникновении исключений</item>
   <item id="invariantsNameHeader">Инварианты</item>
 
+	<item id="revHistoryDate">Date</item>
+	<item id="revHistoryVersion">Version</item>
+	<item id="revHistoryDescription">Description</item>
+	
   <!-- filter control text -->
   <item id="allTypesFilterLabel">Все типы</item>
   <item id="classTypesFilterLabel">Классы</item>

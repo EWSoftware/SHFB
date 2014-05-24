@@ -46,6 +46,7 @@
 								select="boolean(count(/document/topic/*/ddue:relatedTopics/*[local-name()!='sampleRef']) > 0)"/>
 	<xsl:variable name="g_apiTopicGroup" />
 	<xsl:variable name="g_apiTopicSubGroup" />
+	<xsl:variable name="g_apiTopicSubSubGroup" />
 
 	<!-- ============================================================================================
 	Document

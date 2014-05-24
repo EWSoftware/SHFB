@@ -187,6 +187,7 @@
     <None Include="Content\MiscElements\token.aml" />
     <None Include="Content\MSHelpViewerRoot.aml" />
     <None Include="Content\NamespaceDoc.aml" />
+    <None Include="Content\SectionElements\revisionHistory.aml" />
     <None Include="Content\SharedComments.aml" />
     <None Include="Content\BlockElements\BlockElements.aml" />
     <None Include="Content\BlockElements\code.aml" />

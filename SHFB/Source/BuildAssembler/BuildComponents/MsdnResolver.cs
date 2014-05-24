@@ -13,13 +13,15 @@
 // specification of an existing cache.  Added the CacheItemsAdded property to allow the owner to determine if
 // items were added to the cache in the latest run.
 // 12/31/2012 - EFW - Implemented IDisposable
+// 05/23/2014 - EFW - Added code to disable lookups if the service fails for reasons other than not finding the
+// content ID.  The error will be reported in the log by the caller.
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Web.Services.Protocols;
-
+using System.Linq;
 using Microsoft.Ddue.Tools.MtpsContentService;
 
 namespace Microsoft.Ddue.Tools
@@ -159,10 +161,32 @@ namespace Microsoft.Ddue.Tools
                     // Don't save changes to the cache
                     this.CacheItemsAdded = false;
                 }
-                catch(SoapException)
+                catch(SoapException ex)
                 {
-                    // Lookup failed (ID not found).  Cache the result though since it isn't there.
-                    success = true;
+                    if(ex.Message.IndexOf("content identifier not found", StringComparison.OrdinalIgnoreCase) != -1 ||
+                      ex.Detail.OuterXml.IndexOf("mtpsContentIdentifierNotFound", StringComparison.Ordinal) != -1)
+                    {
+                        // Lookup failed (ID not found).  Cache the result though since it isn't there.
+                        success = true;
+                    }
+                    else
+                    {
+                        // Ignore failures, just turn off the service and note the last error for the caller
+                        msdnService.Dispose();
+                        msdnService = null;
+
+                        this.DisabledReason = ex.Message;
+                        Exception innerEx = ex.InnerException;
+
+                        while(innerEx != null)
+                        {
+                            this.DisabledReason += "\r\n" + innerEx.Message;
+                            innerEx = innerEx.InnerException;
+                        }
+
+                        // Don't save changes to the cache
+                        this.CacheItemsAdded = false;
+                    }
                 }
 
                 // We'll cache the result but will only mark the cache as changed if successful so as not to

@@ -11,7 +11,6 @@
 	<xsl:import href="utilities_metadata.xsl" />
 	<xsl:import href="metadataHelp30.xsl"/>
 	<xsl:import href="metadataHelp20.xsl"/>
-	<xsl:import href="xamlSyntax.xsl"/>
 
 	<!-- ============================================================================================
 	Parameters - key parameter is the api identifier string - see globalTemplates for others
@@ -1986,9 +1985,32 @@
 		<br/>
 		<xsl:call-template name="t_putAssembliesInfo"/>
 
-		<!-- some apis display a XAML xmlns uri -->
+		<!-- Show XAML xmlns for APIs that support XAML -->
 		<xsl:if test="$omitXmlnsBoilerplate != 'true'">
-			<xsl:call-template name="xamlXmlnsInfo"/>
+			<!-- All topics that have auto-generated XAML syntax get an "XMLNS for XAML" line in the Requirements
+					 section.  Topics with boilerplate XAML syntax, e.g. "Not applicable", do NOT get this line. -->
+			<xsl:if test="boolean(/document/syntax/div[@codeLanguage='XAML']/div[
+										@class='xamlAttributeUsageHeading' or @class='xamlObjectElementUsageHeading' or
+										@class='xamlContentElementUsageHeading' or @class='xamlPropertyElementUsageHeading'])">
+				<br/>
+				<include item="boilerplate_xamlXmlnsRequirements">
+					<parameter>
+						<xsl:choose>
+							<xsl:when test="/document/syntax/div[@codeLanguage='XAML']/div[@class='xamlXmlnsUri']">
+								<xsl:for-each select="/document/syntax/div[@codeLanguage='XAML']/div[@class='xamlXmlnsUri']">
+									<xsl:if test="position()!=1">
+										<xsl:text>, </xsl:text>
+									</xsl:if>
+									<xsl:value-of select="."/>
+								</xsl:for-each>
+							</xsl:when>
+							<xsl:otherwise>
+								<include item="boilerplate_unmappedXamlXmlns"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</parameter>
+				</include>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 
@@ -2215,26 +2237,11 @@
 				<include item="title_parameters"/>
 			</xsl:with-param>
 			<xsl:with-param name="p_content">
-				<xsl:for-each select="parameter">
-
-					<!-- Use the reflection-generated parameter name when non-empty, otherwise use the authored parameter name. -->
-					<xsl:variable name="paramPosition"
-												select="position()"/>
-					<xsl:variable name="paramName">
-						<xsl:choose>
-							<xsl:when test="normalize-space(@name) != ''">
-								<xsl:value-of select="normalize-space(@name)"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="normalize-space(/document/comments/ddue:dduexml/ddue:parameters[1]/ddue:parameter[$paramPosition]/ddue:parameterReference)"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-
-					<dl paramName="{$paramName}">
+				<dl>
+					<xsl:for-each select="parameter">
 						<dt>
 							<span class="parameter">
-								<xsl:value-of select="$paramName"/>
+								<xsl:value-of select="normalize-space(@name)"/>
 							</span>
 							<xsl:if test="@optional = 'true'">
 								<xsl:text> (Optional)</xsl:text>
@@ -2243,30 +2250,25 @@
 						<dd>
 							<include item="typeLink">
 								<parameter>
-									<xsl:apply-templates select="*[1]"
-																				mode="link">
-										<xsl:with-param name="qualified"
-																		select="true()"/>
+									<xsl:apply-templates select="*[1]" mode="link">
+										<xsl:with-param name="qualified" select="true()"/>
 									</xsl:apply-templates>
 								</parameter>
 							</include>
 							<br/>
-							<span>
-								<xsl:call-template name="t_getParameterDescription">
-									<xsl:with-param name="name"
-																	select="$paramName"/>
-								</xsl:call-template>
-							</span>
+							<xsl:call-template name="t_getParameterDescription">
+								<xsl:with-param name="name" select="normalize-space(@name)"/>
+							</xsl:call-template>
 						</dd>
-					</dl>
-				</xsl:for-each>
+					</xsl:for-each>
+				</dl>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->
 
-	<!-- produces a (plain) comma-seperated list of parameter types -->
+	<!-- produces a (plain) comma-separated list of parameter types -->
 	<xsl:template match="type"
 								mode="link"
 								name="t_typeLink">

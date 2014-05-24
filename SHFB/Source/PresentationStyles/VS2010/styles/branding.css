@@ -170,15 +170,16 @@ h4.subHeading, .subHeading {
 	margin: 0px;
 }
 dl {
-	margin: 0 0 10px;
-	padding: 0 0 0 1px;
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
 dt {
 	font-style: normal;
 	margin: 0px;
 }
 dd {
-	margin-left: 13px;
+	margin-left: 20px;
+	margin-bottom: 5px;
 }
 dd p {
 	margin-top: 0;
@@ -585,7 +586,7 @@ span.math {
 	font-style: italic;
 }
 span.input {
-	font-weight: 700;
+	font-weight: bold;
 }
 span.term {
 	font-style: italic;
@@ -599,32 +600,25 @@ span.foreignPhrase, span.phrase {
 span.placeholder {
 	font-style: italic;
 }
-span.keyword {
-	font-weight: bold;
-}
 span.typeparameter {
 	font-style: italic;
 }
 span.identifier {
 }
 span.keyword {
-	color: #871f78;
+	color: #0000ff;
 }
 span.parameter {
 	font-style: italic;
 }
 span.literal, span.literalValue {
-	color: maroon;
+	color: #cc0000;
 }
 span.comment {
-	color: green;
-}
-span.syntaxLabel {
-	font-weight: bold;
-	color: #0481da;
+	color: #006633;
 }
 span.introStyle {
-	color: DarkGray;
+	color: #a9a9a9;
 }
 /*End of colorization*/
 

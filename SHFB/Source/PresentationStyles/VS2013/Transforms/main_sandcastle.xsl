@@ -127,9 +127,10 @@
 		</xsl:if>
 		<!-- permissions -->
 		<xsl:call-template name="t_permissions"/>
-		<!-- threadsafety -->
+		<!-- thread safety -->
 		<xsl:apply-templates select="/document/comments/threadsafety"/>
-
+		<!-- revisions -->
+		<xsl:call-template name="t_revisionHistory"/>
 		<!-- bibliography -->
 		<xsl:call-template name="t_bibliography"/>
 		<!-- see also -->
@@ -1272,6 +1273,47 @@
 												select="$entry"/>
 			</xsl:call-template>
 		</xsl:for-each>
+	</xsl:template>
+
+	<!-- Revision History information template processing. -->
+	<xsl:template name="t_revisionHistory" match="revisionHistory" >
+		<xsl:if test="boolean(count(/document//revisionHistory) > 0)">
+			<xsl:if test="not(/document//revisionHistory[@visible='false'])">
+				<xsl:call-template name="t_putSectionInclude">
+					<xsl:with-param name="p_titleInclude" select="'title_revisionHistory'"/>
+					<xsl:with-param name="p_content">
+						<table>
+							<tr>
+								<th>
+									<include item="header_revHistoryDate" />
+								</th>
+								<th>
+									<include item="header_revHistoryVersion" />
+								</th>
+								<th>
+									<include item="header_revHistoryDescription" />
+								</th>
+							</tr>
+							<xsl:for-each select="/document//revisionHistory/revision">
+								<xsl:if test="not(@visible='false')">
+									<tr>
+										<td>
+											<xsl:value-of select="@date"/>
+										</td>
+										<td>
+											<xsl:value-of select="@version"/>
+										</td>
+										<td>
+											<xsl:apply-templates />
+										</td>
+									</tr>
+								</xsl:if>
+							</xsl:for-each>
+						</table>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- Pass through a chunk of markup.  This will allow build components to add HTML or other elements such as

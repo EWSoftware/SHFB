@@ -65,8 +65,9 @@
   <item id="title_seeAlso_reference">Ссылки</item>
   <item id="title_seeAlso_concepts">Основные понятия</item>
   <item id="title_seeAlso_otherResources">Другие ресурсы</item>
+  <item id="title_revisionHistory">Revision History</item>
   
-   <!-- dynamic Link Information -->
+  <!-- dynamic Link Information -->
   <item id="meta_mshelp_KTable"><MSHelp:ktable keywords='{0}'
 									 locHeader='Location'
 									 topicHeader = 'Topic'

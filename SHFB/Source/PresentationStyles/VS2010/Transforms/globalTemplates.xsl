@@ -367,7 +367,7 @@
 					</include>
 				</td>
 				<td class="OH_tdRunningTitleColumn">
-					<xsl:call-template name="t_runningHeader" />
+					<include item="runningHeaderText" />
 				</td>
 				<xsl:if test="normalize-space($logoFile) and $placementLC = 'right'">
 					<td class="OH_tdLogoColumn">

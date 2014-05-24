@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="2a973959-9c9a-4b3b-abcb-48bb30382400" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to display revision history for a type or its members.  It originated in the
+old NDoc and VBCommenter tools but is still useful today to communicate revision history in the documentation.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all types and type members.</para>
+
+<code language="xml" title=" ">
+&lt;revisionHistory [visible="true|false"]&gt;
+	&lt;revision date="MM/dd/yyyy" version="#.#.#.#" [author="XXXXX"] [visible="true|false"]&gt;
+		Comments about the revision.
+	&lt;/revision&gt;
+&lt;/revisionHistory&gt;
+</code>
+
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by the <token>SHFB</token>.  It will not appear
+in the list of valid elements for XML comments IntelliSense.</para>
+				</alert>
+
+				<para>An optional <codeInline>visible</codeInline> attribute on the <codeInline>revisionHistory</codeInline>
+parent element controls visibility of the section within the generated topic.  If omitted or set to true, the
+revision history is included.  If set to false, it is not included in the topic.</para>
+
+				<para>The <codeInline>revision</codeInline> elements describe one or more revisions to the type or
+member.  The following attributes are supported:</para>
+
+				<definitionTable>
+					<definedTerm>date</definedTerm>
+					<definition>
+						<para>This attribute specifies the date of the revision.  The value is treated as a string field and
+is displayed as-is in the generated help topic.  No locale date formatting is applied.</para>
+					</definition>
+
+					<definedTerm>version</definedTerm>
+					<definition>
+						<para>This attribute specifies the version in which the revision was made. As with the date, the
+value is treated as a string field and is displayed as-is in the generated help topic.</para>
+					</definition>
+
+					<definedTerm>author</definedTerm>
+					<definition>
+						<para>This attribute is optional and specifies the name of the person that made the revision.  This
+attribute's value will not appear in the generated help topic.</para>
+					</definition>
+
+					<definedTerm>visible</definedTerm>
+					<definition>
+						<para>This optional attribute can be used to control visibility of the revision in the generated
+topic.  If omitted or set to true, the revision entry is included.  If set to false, it is not included in the
+topic.</para>
+					</definition>
+				</definitionTable>
+
+				<para>The content of the <codeInline>revision</codeInline> element can contain other XML comments
+elements similar to a remarks section to add additional details.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Example</title>
+			<content>
+				<code language="cs" title=" " source="RevisionHistoryClass.cs" region="Revision history examples" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.RevisionHistoryClass</codeEntityReference>
+			<codeEntityReference qualifyHint="false">P:XMLCommentsExamples.RevisionHistoryClass.Revision</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.RevisionHistoryClass.ExampleMethod</codeEntityReference>
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

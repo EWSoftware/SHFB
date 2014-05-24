@@ -442,13 +442,13 @@ span.math {
 	font-style: italic;
 }
 span.input {
-	font-weight: 700;
+	font-weight: bold;
 }
 span.term {
 	font-style: italic;
 }
 span.label {
-	font-weight: 700;
+	font-weight: bold;
 }
 span.foreignPhrase, span.phrase {
 	font-style: italic;
@@ -456,29 +456,25 @@ span.foreignPhrase, span.phrase {
 span.placeholder {
 	font-style: italic;
 }
-span.keyword {
-	font-weight: bold;
-}
 span.typeparameter {
 	font-style: italic;
 }
 span.identifier {
 }
 span.keyword {
-	color: #871f78;
+	color: #0000ff;
 }
 span.parameter {
 	font-style: italic;
 }
+dt span.parameter {
+	font-weight: normal;
+}
 span.literal, span.literalValue {
-	color: maroon;
+	color: #cc0000;
 }
 span.comment {
-	color: green;
-}
-span.syntaxLabel {
-	font-weight: bold;
-	color: #0481da;
+	color: #006633;
 }
 span.introStyle {
 	color: #a9a9a9;

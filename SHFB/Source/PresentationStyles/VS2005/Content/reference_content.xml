@@ -173,6 +173,10 @@
   <item id="ensuresNameHeader">Ensures</item>
   <item id="ensuresOnThrowNameHeader">EnsuresOnThrow</item>
   <item id="invariantsNameHeader">Invariants</item>
+	
+	<item id="revHistoryDate">Date</item>
+	<item id="revHistoryVersion">Version</item>
+	<item id="revHistoryDescription">Description</item>
 
 	<!-- filter control text -->
 	<item id="allTypesFilterLabel">All Types</item>

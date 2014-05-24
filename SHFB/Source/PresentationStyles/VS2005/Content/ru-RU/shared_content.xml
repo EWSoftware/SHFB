@@ -104,7 +104,8 @@
   <item id="dynamicLinkInlineSeperatorText"> и </item>
     
   <item id="remarksTitle">Заметки</item>
-  
+  <item id="revisionHistoryTitle">Revision History</item>
+
   <!-- devlangs filter -->
   <item id="devlangsDropdown">Код: {0}</item>
   <item id="all">Все</item>

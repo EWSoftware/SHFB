@@ -84,7 +84,7 @@ The compiler automatically resolves calls to this method to the same method that
 	<item id="propertyXamlSyntax_nonXaml">You cannot set this property in XAML.</item>
 
 	<!-- syntax used with all enums in xaml assemblies -->
-	<item id="enumerationOverviewXamlSyntax"><span>&lt;<em>object property</em>="<em>enumerationMemberName</em>" .../&gt;</span></item>
+	<item id="enumerationOverviewXamlSyntax">&lt;<em>object property</em>="<em>enumerationMemberName</em>" .../&gt;</item>
 
 	<!-- boilerplate used with all method, field, etc. in xaml assemblies -->
 	<item id="constructorOverviewXamlSyntax">You cannot use constructors in XAML.</item>

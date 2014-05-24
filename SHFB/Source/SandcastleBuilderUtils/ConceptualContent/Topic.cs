@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2014
+// Updated : 05/23/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -819,14 +819,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 // TOC title is optional
                 if(!String.IsNullOrEmpty(tocTitle))
                     writer.WriteElementString("tableOfContentsTitle", tocTitle);
-
-                // The running header text ID is set to "runningHeaderText"
-                // so that it pulls in the shared content item by that name.
-                // This will equate to the project's HTML encoded HelpTitle
-                // property value.
-                writer.WriteStartElement("runningHeaderText");
-                writer.WriteAttributeString("uscid", "runningHeaderText");
-                writer.WriteEndElement();
 
                 // Each topic includes the project-level help attributes
                 foreach(MSHelpAttr attr in builder.CurrentProject.HelpAttributes)

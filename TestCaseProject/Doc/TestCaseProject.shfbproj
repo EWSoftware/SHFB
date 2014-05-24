@@ -30,7 +30,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <IndentHtml>False</IndentHtml>
+    <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -202,6 +202,9 @@
     <CatalogName>VisualStudio12</CatalogName>
     <ComponentPath>
     </ComponentPath>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -389,7 +392,10 @@
   <ItemGroup>
     <None Include="ExampleFiles\TestUTF8.txt" />
     <None Include="ExampleFiles\Test.txt" />
-    <None Include="AboutPageIcon.html" />
+    <None Include="AboutPageIcon.html">
+      <ImageId>AboutPageIcon</ImageId>
+      <AlternateText>About Page Icon</AlternateText>
+    </None>
     <None Include="AboutPageInfo.html" />
   </ItemGroup>
   <ItemGroup>

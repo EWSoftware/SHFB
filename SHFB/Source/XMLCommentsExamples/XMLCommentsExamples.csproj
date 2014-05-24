@@ -54,6 +54,7 @@
     <Compile Include="DocumentationInheritance\NamespaceDoc.cs" />
     <Compile Include="DocumentationInheritance\SetDocumentation.cs" />
     <Compile Include="GenericClass.cs" />
+    <Compile Include="RevisionHistoryClass.cs" />
     <Compile Include="SampleClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadSafetyClass.cs" />

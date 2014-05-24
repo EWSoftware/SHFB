@@ -308,13 +308,6 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template name="runningHeader">
-		<xsl:variable name="runningHeaderText">
-			<xsl:value-of select="/document/metadata/runningHeaderText/@uscid"/>
-		</xsl:variable>
-		<include item="{$runningHeaderText}" />
-	</xsl:template>
-
 	<!-- Footer stuff -->
 
 	<xsl:template name="foot">

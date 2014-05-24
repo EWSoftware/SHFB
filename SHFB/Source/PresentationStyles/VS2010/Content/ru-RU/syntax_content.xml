@@ -86,7 +86,7 @@
   <item id="propertyXamlSyntax_nonXaml">Вы не можете установить значения для этого свойства в XAML.</item>
 
   <!-- syntax used with all enums in xaml assemblies -->
-  <item id="enumerationOverviewXamlSyntax"><span>&lt;объект <em>свойство</em>="<em>одно_из_значений_перечисления</em>" .../&gt;</span></item>
+  <item id="enumerationOverviewXamlSyntax">&lt;объект <em>свойство</em>="<em>одно_из_значений_перечисления</em>" .../&gt;</item>
 
   <!-- boilerplate used with all method, field, etc. in xaml assemblies -->
   <item id="constructorOverviewXamlSyntax">Вы не можете использовать конструкторы в XAML.</item>

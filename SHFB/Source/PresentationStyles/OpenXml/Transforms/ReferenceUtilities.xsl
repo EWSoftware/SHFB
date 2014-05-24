@@ -59,6 +59,16 @@
 	</xsl:variable>
 
 	<xsl:variable name="g_apiSubSubGroup" select="/document/reference/apidata/@subsubgroup"/>
+	<xsl:variable name="g_apiTopicSubSubGroup">
+		<xsl:choose>
+			<xsl:when test="/document/reference/topicdata/@group = 'api'">
+				<xsl:value-of select="/document/reference/apidata/@subsubgroup"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/document/reference/topicdata/@subsubgroup"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<xsl:variable name="g_namespaceName" select="/document/reference/containers/namespace/apidata/@name"/>
 
