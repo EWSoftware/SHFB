@@ -33,12 +33,16 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.btnMoveUp = new System.Windows.Forms.Button();
+            this.btnMoveDown = new System.Windows.Forms.Button();
             this.chkRenderReferenceLinks = new System.Windows.Forms.CheckBox();
             this.lblConfiguration = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtConfiguration = new System.Windows.Forms.TextBox();
             this.tvGenerators = new System.Windows.Forms.TreeView();
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chkAddNoExampleTabs = new System.Windows.Forms.CheckBox();
+            this.chkIncludeOnSingleSnippets = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,10 +50,10 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(687, 304);
+            this.btnCancel.Location = new System.Drawing.Point(689, 371);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 7;
+            this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -58,10 +62,10 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(593, 304);
+            this.btnOK.Location = new System.Drawing.Point(595, 371);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
-            this.btnOK.TabIndex = 6;
+            this.btnOK.TabIndex = 10;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
             this.btnOK.UseVisualStyleBackColor = true;
@@ -70,14 +74,38 @@
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnReset.Location = new System.Drawing.Point(12, 304);
+            this.btnReset.Location = new System.Drawing.Point(12, 371);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(88, 32);
-            this.btnReset.TabIndex = 5;
-            this.btnReset.Text = "Re&set";
+            this.btnReset.TabIndex = 7;
+            this.btnReset.Text = "R&eset";
             this.toolTip1.SetToolTip(this.btnReset, "Reset to default configuration");
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // btnMoveUp
+            // 
+            this.btnMoveUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnMoveUp.Location = new System.Drawing.Point(118, 371);
+            this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Size = new System.Drawing.Size(55, 32);
+            this.btnMoveUp.TabIndex = 8;
+            this.btnMoveUp.Text = "&Up";
+            this.toolTip1.SetToolTip(this.btnMoveUp, "Move the generator up in the order");
+            this.btnMoveUp.UseVisualStyleBackColor = true;
+            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
+            // 
+            // btnMoveDown
+            // 
+            this.btnMoveDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnMoveDown.Location = new System.Drawing.Point(179, 371);
+            this.btnMoveDown.Name = "btnMoveDown";
+            this.btnMoveDown.Size = new System.Drawing.Size(55, 32);
+            this.btnMoveDown.TabIndex = 9;
+            this.btnMoveDown.Text = "&Down";
+            this.toolTip1.SetToolTip(this.btnMoveDown, "Move the generator down in the order");
+            this.btnMoveDown.UseVisualStyleBackColor = true;
+            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
             // chkRenderReferenceLinks
             // 
@@ -91,20 +119,20 @@
             // 
             // lblConfiguration
             // 
-            this.lblConfiguration.Location = new System.Drawing.Point(240, 53);
+            this.lblConfiguration.Location = new System.Drawing.Point(240, 96);
             this.lblConfiguration.Name = "lblConfiguration";
             this.lblConfiguration.Size = new System.Drawing.Size(132, 23);
-            this.lblConfiguration.TabIndex = 3;
-            this.lblConfiguration.Text = "&Edit Configuration";
+            this.lblConfiguration.TabIndex = 5;
+            this.lblConfiguration.Text = "Edit &Configuration";
             this.lblConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 53);
+            this.label1.Location = new System.Drawing.Point(12, 96);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(222, 23);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Configurable Syntax Generators";
+            this.label1.TabIndex = 3;
+            this.label1.Text = "&Syntax Generators";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtConfiguration
@@ -114,11 +142,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtConfiguration.Enabled = false;
-            this.txtConfiguration.Location = new System.Drawing.Point(240, 79);
+            this.txtConfiguration.Location = new System.Drawing.Point(240, 122);
             this.txtConfiguration.Multiline = true;
             this.txtConfiguration.Name = "txtConfiguration";
-            this.txtConfiguration.Size = new System.Drawing.Size(535, 219);
-            this.txtConfiguration.TabIndex = 4;
+            this.txtConfiguration.Size = new System.Drawing.Size(537, 243);
+            this.txtConfiguration.TabIndex = 6;
             // 
             // tvGenerators
             // 
@@ -126,11 +154,11 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tvGenerators.FullRowSelect = true;
             this.tvGenerators.HideSelection = false;
-            this.tvGenerators.Location = new System.Drawing.Point(12, 79);
+            this.tvGenerators.Location = new System.Drawing.Point(12, 122);
             this.tvGenerators.Name = "tvGenerators";
             this.tvGenerators.ShowRootLines = false;
-            this.tvGenerators.Size = new System.Drawing.Size(222, 219);
-            this.tvGenerators.TabIndex = 2;
+            this.tvGenerators.Size = new System.Drawing.Size(222, 243);
+            this.tvGenerators.TabIndex = 4;
             this.tvGenerators.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvGenerators_BeforeSelect);
             this.tvGenerators.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvGenerators_AfterSelect);
             // 
@@ -138,11 +166,38 @@
             // 
             this.epErrors.ContainerControl = this;
             // 
+            // chkAddNoExampleTabs
+            // 
+            this.chkAddNoExampleTabs.AutoSize = true;
+            this.chkAddNoExampleTabs.Checked = true;
+            this.chkAddNoExampleTabs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAddNoExampleTabs.Location = new System.Drawing.Point(12, 39);
+            this.chkAddNoExampleTabs.Name = "chkAddNoExampleTabs";
+            this.chkAddNoExampleTabs.Size = new System.Drawing.Size(537, 21);
+            this.chkAddNoExampleTabs.TabIndex = 1;
+            this.chkAddNoExampleTabs.Text = "&Add \"No example\" tabs in presentation styles that support code snippet grouping";
+            this.chkAddNoExampleTabs.UseVisualStyleBackColor = true;
+            this.chkAddNoExampleTabs.CheckedChanged += new System.EventHandler(this.chkAddNoExampleTabs_CheckedChanged);
+            // 
+            // chkIncludeOnSingleSnippets
+            // 
+            this.chkIncludeOnSingleSnippets.AutoSize = true;
+            this.chkIncludeOnSingleSnippets.Location = new System.Drawing.Point(33, 66);
+            this.chkIncludeOnSingleSnippets.Name = "chkIncludeOnSingleSnippets";
+            this.chkIncludeOnSingleSnippets.Size = new System.Drawing.Size(250, 21);
+            this.chkIncludeOnSingleSnippets.TabIndex = 2;
+            this.chkIncludeOnSingleSnippets.Text = "&Include on standalone snippets too";
+            this.chkIncludeOnSingleSnippets.UseVisualStyleBackColor = true;
+            // 
             // SyntaxComponentConfigDlg
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(787, 348);
+            this.ClientSize = new System.Drawing.Size(789, 415);
+            this.Controls.Add(this.chkIncludeOnSingleSnippets);
+            this.Controls.Add(this.chkAddNoExampleTabs);
+            this.Controls.Add(this.btnMoveDown);
+            this.Controls.Add(this.btnMoveUp);
             this.Controls.Add(this.lblConfiguration);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnReset);
@@ -175,5 +230,9 @@
         private System.Windows.Forms.TextBox txtConfiguration;
         private System.Windows.Forms.TreeView tvGenerators;
         private System.Windows.Forms.ErrorProvider epErrors;
+        private System.Windows.Forms.Button btnMoveDown;
+        private System.Windows.Forms.Button btnMoveUp;
+        private System.Windows.Forms.CheckBox chkIncludeOnSingleSnippets;
+        private System.Windows.Forms.CheckBox chkAddNoExampleTabs;
     }
 }

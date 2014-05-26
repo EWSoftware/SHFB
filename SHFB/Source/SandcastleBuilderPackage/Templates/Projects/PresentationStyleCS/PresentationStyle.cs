@@ -56,7 +56,7 @@ namespace $safeprojectname$
             this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelp2 |
                 HelpFileFormats.MSHelpViewer | HelpFileFormats.Website;
 
-            this.SupportsNamespaceGrouping = true;
+            this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
 
             // If relative, these paths are relative to the base path
             this.ResourceItemsPath = "Content";
@@ -65,7 +65,7 @@ namespace $safeprojectname$
             this.DocumentModelTransformation = new TransformationFile(
                 @"%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", new Dictionary<string, string>
                 {
-                    { "IncludeAllMembersTopic", "true" },
+                    { "IncludeAllMembersTopic", "false" },
                     { "IncludeInheritedOverloadTopics", "false" },
                     { "project", "{@ProjectNodeIDOptional}" }
                 });
@@ -109,6 +109,13 @@ namespace $safeprojectname$
                 null, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " +
                 "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " +
                 "assembly file version value if specified."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("defaultLanguage", true, true,
+                "cs", "The default language to use for syntax sections, code snippets, and a language-specific " +
+                "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " +
+                "third-party syntax generator if you want to use a non-standard language as the default."));
+
+            // Add plug-in dependencies if any
+            //this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
         }
     }
 }

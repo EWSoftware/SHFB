@@ -119,6 +119,7 @@ namespace Microsoft.Ddue.Tools
         private XPathExpression referenceRoot, referenceCode, conceptualRoot, conceptualCode;
         private string containerElementName;
         private Dictionary<string, ISyntaxGeneratorMetadata> codeSnippetLanguages;
+        private Dictionary<string, int> languageOrder;
         private HashSet<string> generatorLanguages;
         private List<ISyntaxGeneratorMetadata> languageSet;
 
@@ -139,6 +140,7 @@ namespace Microsoft.Ddue.Tools
 
             generatorLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             languageSet = new List<ISyntaxGeneratorMetadata>();
+            languageOrder = new Dictionary<string, int>();
 
             // Generate a list of all possible language IDs for code snippets from the available generators
             codeSnippetLanguages = new Dictionary<string, ISyntaxGeneratorMetadata>(StringComparer.OrdinalIgnoreCase);
@@ -186,6 +188,16 @@ namespace Microsoft.Ddue.Tools
             // configuration file at build time.  Substitution of the edited configuration is easier to do here.
             var generatorConfigs = configuration.SelectSingleNode("configurations");
 
+            // If we have configuration nodes, note the order of the syntax generators.  These will be used to
+            // order the snippets.
+            if(generatorConfigs != null)
+            {
+                int order = 1;
+
+                foreach(XPathNavigator id in generatorConfigs.Select("generator/@id"))
+                    languageOrder.Add(id.Value, order++);
+            }
+
             foreach(XPathNavigator generatorNode in generatorNodes)
             {
                 // Get the ID of the syntax generator
@@ -216,7 +228,7 @@ namespace Microsoft.Ddue.Tools
                     {
                         var alternateConfig = generatorConfigs.SelectSingleNode("generator[@id='" + id + "']");
 
-                        if(alternateConfig != null)
+                        if(alternateConfig != null && alternateConfig.HasChildren)
                         {
                             // Since there may be custom attributes on the generator node, we'll make a copy and
                             // substitute the child elements that make up the configuration.
@@ -261,8 +273,6 @@ namespace Microsoft.Ddue.Tools
                 if(!groupingEnabled || String.IsNullOrWhiteSpace(containerElementName))
                     return;
 
-                languageSet = languageSet.OrderBy(l => l.SortOrder).ToList();
-
                 // Get the "no example tab" options
                 attrValue = containerElement.GetAttribute("addNoExampleTabs", String.Empty);
 
@@ -277,8 +287,8 @@ namespace Microsoft.Ddue.Tools
                 // Create the XPath queries used for code snippet grouping and sorting
                 context = new CustomContext();
                 context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
-                referenceRoot = XPathExpression.Compile("document/comments");
-                referenceCode = XPathExpression.Compile("//code");
+                referenceRoot = XPathExpression.Compile("document/comments|document/syntax");
+                referenceCode = XPathExpression.Compile("//code|//div[@codeLanguage]");
                 conceptualRoot = XPathExpression.Compile("document/topic");
                 conceptualCode = XPathExpression.Compile("//ddue:code|//ddue:snippet");
                 conceptualCode.SetContext(context);
@@ -325,6 +335,7 @@ namespace Microsoft.Ddue.Tools
             CodeSnippetGroup snippetGroup;
             ISyntaxGeneratorMetadata metadata;
             string namespaceUri;
+            int order;
 
             // Don't bother if not a transforming event
             TransformingTopicEventArgs tt = e as TransformingTopicEventArgs;
@@ -375,13 +386,24 @@ namespace Microsoft.Ddue.Tools
                 if(code.ParentNode == null || code.ParentNode.LocalName == "code")
                     continue;
 
-                snippetGroup = new CodeSnippetGroup(document.CreateElement(containerElementName, namespaceUri));
-                allGroups.Add(snippetGroup);
+                if(code.LocalName != "div")
+                {
+                    snippetGroup = new CodeSnippetGroup(document.CreateElement(containerElementName, namespaceUri));
+                    allGroups.Add(snippetGroup);
 
-                code.ParentNode.InsertBefore(snippetGroup.SnippetGroupElement, code);
+                    code.ParentNode.InsertBefore(snippetGroup.SnippetGroupElement, code);
+                }
+                else
+                {
+                    // A div indicates a syntax section so we must reuse the parent element rather than replace
+                    // it as they are already grouped.
+                    snippetGroup = new CodeSnippetGroup((XmlElement)code.ParentNode);
+                    allGroups.Add(snippetGroup);
+                }
 
                 // Keep going until we hit a text node or a non-code element
-                while(code != null && (code.LocalName == "code" || code.LocalName == "snippet"))
+                while(code != null && (code.LocalName == "code" || code.LocalName == "snippet" ||
+                  code.LocalName == "div"))
                 {
                     snippetGroup.CodeSnippets.Add(new CodeSnippet((XmlElement)code));
 
@@ -423,7 +445,11 @@ namespace Microsoft.Ddue.Tools
                     {
                         snippet.LanguageElementName = metadata.LanguageElementName;
                         snippet.KeywordStyleParameter = metadata.KeywordStyleParameter;
-                        snippet.SortOrder = metadata.SortOrder;
+
+                        if(!languageOrder.TryGetValue(metadata.Id, out order))
+                            order = metadata.SortOrder;
+
+                        snippet.SortOrder = order;
                     }
 
                     attribute = document.CreateAttribute("codeLanguage");
@@ -536,7 +562,10 @@ namespace Microsoft.Ddue.Tools
                         attribute.Value = "true";
                         noExample.Attributes.Append(attribute);
 
-                        group.CodeSnippets.Add(new CodeSnippet(noExample) { SortOrder = language.SortOrder });
+                        if(!languageOrder.TryGetValue(language.Id, out order))
+                            order = language.SortOrder;
+
+                        group.CodeSnippets.Add(new CodeSnippet(noExample) { SortOrder = order });
                     }
 
                 // And finally, add the snippets to the group container in sorted order

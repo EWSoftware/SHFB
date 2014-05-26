@@ -145,6 +145,7 @@
     </Content>
     <Content Include="LegacyWeb\SearchHelp.aspx">
       <SubType>ASPXCodeBehind</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="LegacyWeb\Splitter.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

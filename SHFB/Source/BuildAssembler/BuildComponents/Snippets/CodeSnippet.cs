@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeSnippet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2014
+// Updated : 05/26/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -89,7 +89,12 @@ namespace Microsoft.Ddue.Tools.Snippets
             attr = code.Attributes["language"];
 
             if(attr == null)
+            {
                 attr = code.Attributes["lang"];
+
+                if(attr == null)
+                    attr = code.Attributes["codeLanguage"];
+            }
 
             if(attr != null)
                 this.Language = attr.Value;

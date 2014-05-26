@@ -3781,10 +3781,7 @@
             <Component Id="cmpB8042AF8962E09C7196453804DB3706A" Guid="{F36F30AA-F4F0-4A44-8424-80F3DF19318E}">
               <File Id="filEA04B55A95CF2995D43AE629BD51C5B0" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Transforms\utilities_reference.xsl" />
             </Component>
-            <Component Id="cmpA204BD15F96D929A11086C8ACC23889F" Guid="{5A3CC5F6-11EC-4163-A39C-F6A04D248DF4}">
-              <File Id="fil3BEB5788A521BCA9BE81C6FDDD7F2B45" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Transforms\xamlSyntax.xsl" />
-            </Component>
-            <Component Id="cmp29B107AC4FD574EE08E70783AFD192E1" Guid="{21174D95-DD17-4E74-96AD-B5AE195A3161}">
+            <Component Id="cmp29B107AC4FD574EE08E70783AFD192E1" Guid="{EEDB5E7C-DF32-40A3-9DD8-D28E6B942A53}">
               <File Id="fil6D9078E9164C121EEBC4B0707FD01F55" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Transforms\xpathFunctions.xsl" />
             </Component>
           </Directory>
@@ -4142,10 +4139,7 @@
             <Component Id="cmp456590A55F13C97CD8B14DAFCD219D47" Guid="{8845D09C-00DC-4D95-8ABE-ED792DE78891}">
               <File Id="fil311ED14B216742BC72FF5FF6D3DD42CF" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Transforms\utilities_reference.xsl" />
             </Component>
-            <Component Id="cmp797EE819B0CD6DDCB8F4A195CE2AE527" Guid="{9C21E915-75BC-4130-9C56-F6AEE8B17C8B}">
-              <File Id="filCD5B01A19D85B3A3721DCC85FE96717E" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Transforms\xamlSyntax.xsl" />
-            </Component>
-            <Component Id="cmp2A6FF71314F1E7DBAEDCE7FC20E6E376" Guid="{6C42ECE4-175F-4714-8403-A6E6CDEFA511}">
+            <Component Id="cmp2A6FF71314F1E7DBAEDCE7FC20E6E376" Guid="{F7D76739-B9C8-4814-B4D9-BC13E033A4B5}">
               <File Id="fil96BC065C45CEDB89598B2E8A71732C6B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Transforms\xpathFunctions.xsl" />
             </Component>
           </Directory>
@@ -5641,7 +5635,6 @@
       <ComponentRef Id="cmpF8F330ABB0F47CE6553558F49411F83E" />
       <ComponentRef Id="cmpAD13B4E7B253CAD8312626EE4DE1677C" />
       <ComponentRef Id="cmpB8042AF8962E09C7196453804DB3706A" />
-      <ComponentRef Id="cmpA204BD15F96D929A11086C8ACC23889F" />
       <ComponentRef Id="cmp29B107AC4FD574EE08E70783AFD192E1" />
       <ComponentRef Id="cmpBF5A45CC8C5255D0AD61D527CAEC9B58" />
       <ComponentRef Id="cmp498179DAEF4649087EE0C5176FFC66D9" />
@@ -5754,7 +5747,6 @@
       <ComponentRef Id="cmp105519A473934899EABF593415063926" />
       <ComponentRef Id="cmp39FA74C4BC6B4BF8E1D59B3EEBEA6557" />
       <ComponentRef Id="cmp456590A55F13C97CD8B14DAFCD219D47" />
-      <ComponentRef Id="cmp797EE819B0CD6DDCB8F4A195CE2AE527" />
       <ComponentRef Id="cmp2A6FF71314F1E7DBAEDCE7FC20E6E376" />
       <ComponentRef Id="cmp39FBBE4AEFEDDB51DC3BF4A824115E3D" />
       <ComponentRef Id="cmp5CDBB0C8E2C62807E141946E7671871E" />

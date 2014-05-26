@@ -22,12 +22,15 @@ namespace $safeprojectname$
         #region Syntax generator factory for MEF
         //=====================================================================
 
+        // TODO: Set the unique style ID name
+        private const string LanguageName = "$safeprojectname$", StyleIdName = "xyz";
+
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
         /// <remarks>The <c>keywordStyleParameter</c> parameter is used to set the keyword style in the
-        /// presentation style and should be "cs", "cpp", or "vb".  "cs" is typically used as a default.
-        /// Set the additional attributes as needed:
+        /// presentation style and should unique to your programming language.  Set the additional attributes as
+        /// needed:
         ///
         /// <list type="bullet">
         ///     <item>
@@ -47,7 +50,7 @@ namespace $safeprojectname$
         ///     </item>
         /// </list>
         /// </remarks>
-        [SyntaxGeneratorExport("$safeprojectname$", "$safeprojectname$", "cs", SortOrder = 500,
+        [SyntaxGeneratorExport("$safeprojectname$", LanguageName, StyleIdName, SortOrder = 500,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates $safeprojectname$ declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
@@ -55,7 +58,7 @@ namespace $safeprojectname$
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {
-                return new $safeprojectname$DeclarationSyntaxGenerator();
+                return new $safeprojectname$DeclarationSyntaxGenerator { Language = LanguageName, StyleId = StyleIdName };
             }
         }
         #endregion

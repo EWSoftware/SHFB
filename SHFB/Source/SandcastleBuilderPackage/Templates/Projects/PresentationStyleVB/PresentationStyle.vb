@@ -56,7 +56,8 @@ Namespace safeprojectname
             Me.SupportedFormats = HelpFileFormats.HtmlHelp1 Or HelpFileFormats.MSHelp2 Or
                 HelpFileFormats.MSHelpViewer Or HelpFileFormats.Website
 
-            Me.SupportsNamespaceGrouping = true
+            Me.SupportsNamespaceGrouping = True
+            Me.SupportsCodeSnippetGrouping = True
 
             ' If relative, these paths are relative to the base path
             Me.ResourceItemsPath = "Content"
@@ -65,7 +66,7 @@ Namespace safeprojectname
             Me.DocumentModelTransformation = New TransformationFile(
                 "%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", New Dictionary(Of String, String) From
                 {
-                    { "IncludeAllMembersTopic", "true" },
+                    { "IncludeAllMembersTopic", "false" },
                     { "IncludeInheritedOverloadTopics", "false" },
                     { "project", "{@ProjectNodeIDOptional}" }
                 })
@@ -87,28 +88,35 @@ Namespace safeprojectname
             Me.ContentFiles.Add(New ContentFiles(HelpFileFormats.Website, "%SHFBROOT%", "Web\*.*", ".\",
                 New String() { ".aspx", ".html", ".htm", ".php" } ))
 
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoFile", true, true, Nothing,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoFile", True, True, Nothing,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " &
                 "the path.  Place the file in your project in an icons\\ folder and set the Build Action to " &
                 "Content.  If blank, no logo will appear in the topic headers.  If building website output " &
                 "and your web server is case-sensitive, be sure to match the case of the folder name in your " &
                 "project with that of the presentation style.  The same applies to the logo filename itself."))
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoHeight", true, true, Nothing,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoHeight", True, True, Nothing,
                 "An optional logo height.  If left blank, the actual logo image height is used."))
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoWidth", true, true, Nothing,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoWidth", True, True, Nothing,
                 "An optional logo width.  If left blank, the actual logo image width is used."))
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoAltText", true, true, Nothing,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoAltText", True, True, Nothing,
                 "Optional logo alternate text.  If left blank, no alternate text is added."))
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoPlacement", true, true,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoPlacement", True, True,
                  "left", "An optional logo placement.  Specify left, right, or above.  If not specified, the " &
                 "default is left."))
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoAlignment", true, true,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("logoAlignment", True, True,
                 "left", "An optional logo alignment when using the 'above' placement option.  Specify left, " &
                 "right, or center.  If not specified, the default is left."))
-            Me.TransformComponentArguments.Add(New TransformComponentArgument("maxVersionParts", false, true,
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("maxVersionParts", False, True,
                 Nothing, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " &
                 "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " &
                 "assembly file version value if specified."))
+            Me.TransformComponentArguments.Add(New TransformComponentArgument("defaultLanguage", True, True,
+                "cs", "The default language to use for syntax sections, code snippets, and a language-specific " &
+                "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " &
+                "third-party syntax generator if you want to use a non-standard language as the default."))
+
+            ' Add plug-in dependencies if any
+            'Me.PlugInDependencies.Add(New PlugInDependency("Lightweight Website Style", Nothing))
         End Sub
 
     End Class

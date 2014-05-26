@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2014
+// Updated : 05/26/2014
 // Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,10 +14,10 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.7.0  01/14/2013  EFW  Created the code
-// 1.9.7.0  02/15/2013  EFW  Added support for grouping within the dictionary table
+// 01/14/2013  EFW  Created the code
+// 02/15/2013  EFW  Added support for grouping within the dictionary table
 //===============================================================================================================
 
 using System;
@@ -395,7 +395,9 @@ ELSE
         public bool ContainsKey(string key)
         {
             cmdRetrieveValue.Parameters[0].Value = key;
-            return (cmdRetrieveValue.ExecuteScalar() != null);
+            object value = cmdRetrieveValue.ExecuteScalar();
+
+            return (value != null && value != DBNull.Value);
         }
 
         /// <inheritdoc />
@@ -423,7 +425,7 @@ ELSE
             cmdRetrieveValue.Parameters[0].Value = key;
             object v = cmdRetrieveValue.ExecuteScalar();
 
-            if(v == null)
+            if(v == null || v == DBNull.Value)
                 return false;
 
             if(!isReferenceType)
@@ -473,16 +475,21 @@ ELSE
             {
                 cmdInsertUpdateValue.Parameters[0].Value = key;
 
-                if(!isReferenceType)
-                    cmdInsertUpdateValue.Parameters[1].Value = value;
-                else
+                if(value != null)
                 {
-                    using(MemoryStream ms = new MemoryStream())
+                    if(!isReferenceType)
+                        cmdInsertUpdateValue.Parameters[1].Value = value;
+                    else
                     {
-                        bf.Serialize(ms, value);
-                        cmdInsertUpdateValue.Parameters[1].Value = ms.GetBuffer();
+                        using(MemoryStream ms = new MemoryStream())
+                        {
+                            bf.Serialize(ms, value);
+                            cmdInsertUpdateValue.Parameters[1].Value = ms.GetBuffer();
+                        }
                     }
                 }
+                else
+                    cmdInsertUpdateValue.Parameters[1].Value = DBNull.Value;
 
                 cmdInsertUpdateValue.ExecuteNonQuery();
             }

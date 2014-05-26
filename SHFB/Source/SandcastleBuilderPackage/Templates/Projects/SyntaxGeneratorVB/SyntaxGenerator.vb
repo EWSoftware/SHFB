@@ -23,12 +23,16 @@ Namespace $safeprojectname$
         #Region "Syntax generator factory for MEF"
         '=====================================================================
 
+        ' TODO: Set the unique style ID name
+        Private Const LanguageName As String = "$safeprojectname$"
+        Private Const StyleIdName As String = "xyz"
+
         ''' <summary>
         ''' This is used to create a new instance of the syntax generator
         ''' </summary>
         ''' <remarks>The <c>keywordStyleParameter</c> parameter is used to set the keyword style in the
-        ''' presentation style and should be "cs", "cpp", or "vb".  "cs" is typically used as a default.
-        ''' Set the additional attributes as needed:
+        ''' presentation style and should be unique to your programming language.  Set the additional attributes
+        ''' as needed:
         '''
         ''' <list type="bullet">
         '''     <item>
@@ -56,7 +60,7 @@ Namespace $safeprojectname$
 
             ''' <inheritdoc />
             Public Function Create() As SyntaxGeneratorCore Implements ISyntaxGeneratorFactory.Create
-                Return New $safeprojectname$DeclarationSyntaxGenerator()
+                Return New $safeprojectname$DeclarationSyntaxGenerator With { .Language = LanguageName, .StyleId = StyleIdName }
             End Function
         End Class
         #End Region
