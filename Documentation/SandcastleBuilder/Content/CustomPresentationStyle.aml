@@ -145,6 +145,16 @@ selected.</para>
 					</content>
 				</section>
 
+				<section address="MetadataIsDeprecated">
+					<title>IsDeprecated</title>
+					<content>
+						<para>The <codeInline>IsDeprecated</codeInline> property is optional and allows you to specify
+whether or not the presentation style has been deprecated.  If true, the property page will sort the deprecated
+style to the end of the list of available presentation styles.  Deprecated presentation styles are include for
+backward compatibility but may not receive any future updates or fixes.</para>
+					</content>
+				</section>
+
 			</sections>
 		</section>
 
@@ -193,23 +203,28 @@ be relative to the presentation style's base path.</para>
 				<section address="SupportedFormats">
 					<title>SupportedFormats</title>
 					<content>
-						<para>This defines the help file formats supported by this presentation style.  The
+						<para>This defines the help file formats supported by the presentation style.  The
 <codeInline>HelpFileFormats</codeInline> values are:</para>
 
 						<list class="bullet">
 							<listItem>
 								<para>
-									<codeInline>HtmlHelp1</codeInline> - HTML Help 1 (CHM)
+									<codeInline>HtmlHelp1</codeInline> - HTML Help 1 (.chm)
 								</para>
 							</listItem>
 							<listItem>
 								<para>
-									<codeInline>MSHelp2</codeInline> - MS Help 2 (HxS)
+									<codeInline>MSHelp2</codeInline> - MS Help 2 (.HxS)
 								</para>
 							</listItem>
 							<listItem>
 								<para>
-									<codeInline>MSHelpViewer</codeInline> - MS Help Viewer (MSHC)
+									<codeInline>MSHelpViewer</codeInline> - MS Help Viewer (.mshc)
+								</para>
+							</listItem>
+							<listItem>
+								<para>
+									<codeInline>OpenXml</codeInline> - Open XML document (.docx)
 								</para>
 							</listItem>
 							<listItem>
@@ -229,6 +244,18 @@ be relative to the presentation style's base path.</para>
 					<content>
 						<para>Set this property to true if the presentation style supports namespace grouping.  When enabled,
 it indicates that namespaces with a common root will be grouped in the table of contents.</para>
+
+					</content>
+				</section>
+
+				<section address="CodeSnippetGrouping">
+					<title>SupportsCodeSnippetGrouping</title>
+					<content>
+						<para>Set this property to true if the presentation style supports code snippet grouping.  When
+enabled, it indicates that the Syntax Component can group and sort the code snippets based on the selected syntax
+filters in the project.  It is expected that the presentation style will then render these groups as tabbed
+sections or something similar in the topics in which they appear along with the supporting script to switch
+between them to see the code snippets.</para>
 
 					</content>
 				</section>
@@ -271,7 +298,7 @@ dictionary containing key/value pairs.</para>
 				</section>
 
 				<section address="IntermediateTocTransformation">
-					<title>IntermediateToCTransformation</title>
+					<title>IntermediateTocTransformation</title>
 					<content>
 						<para>This defines the XSL transformation to use on the reflection data to generate the intermediate
 table of contents XML file used by help formats that require a table of contents.  As above, parameters can be
@@ -298,7 +325,7 @@ reference content (API) builds.</para>
 				<section address="ContentFiles">
 					<title>ContentFiles</title>
 					<content>
-						<para>This collection property is used to defines the content from the presentation style that should
+						<para>This collection property is used to define the content from the presentation style that should
 be embedded in the compiled help file such as images, style sheets, and scripts.  Add one or more
 <codeInline>ContentFiles</codeInline> instances that define the content files that should be copied and their
 destination in the compiled help file.  The help file format parameter defines which format types the content
@@ -358,6 +385,17 @@ default value, set the <codeInline>Value</codeInline> property to an empty strin
 to null.</para>
 							</listItem>
 						</list>
+					</content>
+				</section>
+
+				<section address="PlugInDependencies">
+					<title>PlugInDependencies</title>
+					<content>
+						<para>This collection property is used to define one or more plug-in IDs on which the presentation
+style depends.  It can be omitted if the presentation style has no plug-in dependencies.  If the identified
+plug-ins are not present in the project when built, they will be added automatically to ensure that the build
+succeeds.  If already present in the project (the user has added them to override their default configurations),
+the project instances will be used instead.</para>
 					</content>
 				</section>
 

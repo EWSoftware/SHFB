@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <content xml:space="preserve" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
   <item id="BuildDate">{@BuildDate:MMMM d, yyyy}</item>
-  <item id="SandcastleVersion">v2014.4.22.0</item>
+  <item id="SandcastleVersion">v2014.5.31.0</item>
   <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
     <ddue:linkUri>http://SHFB.CodePlex.com</ddue:linkUri>

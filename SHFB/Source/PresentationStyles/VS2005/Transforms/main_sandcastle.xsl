@@ -191,8 +191,7 @@
 	</xsl:template>
 
 	<xsl:template match="templates">
-		<xsl:call-template name="section">
-			<xsl:with-param name="toggleSwitch" select="'templates'" />
+		<xsl:call-template name="subSection">
 			<xsl:with-param name="title">
 				<include item="templatesTitle" />
 			</xsl:with-param>

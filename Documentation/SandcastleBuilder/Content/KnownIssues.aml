@@ -13,9 +13,9 @@
 					<listItem>
 						<para>Full Microsoft Help Viewer support has been implemented within the Sandcastle Help File Builder.
 However, please note that only the latest presentation styles contain the necessary resources and XSL
-transformations to output the necessary metadata.  The deprecated styles are not guaranteed to work correctly
-as they are no longer supported and will not be updated with any new features required to support the latest help
-file formats.</para>
+transformations to output the necessary metadata.  Not all of the deprecated styles are guaranteed to work
+correctly as they are no longer supported and will not be updated with any new features required to support the
+latest help file formats.</para>
 					</listItem>
 
 					<listItem>
@@ -23,8 +23,7 @@ file formats.</para>
 contents generation is not supported for help viewer output.  All additional topics must be in the form of MAML
 <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> and must be defined in a
 content layout file.  There are too many requirements of the format to support raw HTML files and the deprecated
-additional content options.  The installer for the Sandcastle tools contains an HTML to MAML converter utility
-if you need one.</para>
+additional content options.  The installer contains an HTML to MAML converter utility if you need one.</para>
 					</listItem>
 
 				</list>

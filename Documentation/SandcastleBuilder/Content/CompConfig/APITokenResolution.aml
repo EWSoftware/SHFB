@@ -24,7 +24,9 @@ inserted into the configuration file before the <codeInline>ShowMissingComponent
 </code>
 
 		<para>The <codeInline>content</codeInline> elements are used to specify the files that contain the tokens
-to be resolved and their values.</para>
+to be resolved and their values.  The help file builder uses the <codeInline>{@TokenFiles}</codeInline>
+replacement tag in place of the <codeInline>content</codeInline> elements to insert the token files found in the
+project at build time.</para>
 	</content>
 </section>
 

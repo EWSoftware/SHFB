@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2be51e6c-c457-44ee-9031-b0b0c1d03e6b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.5.31.0</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Added a new topic for the section element <link xlink:href="2a973959-9c9a-4b3b-abcb-48bb30382400" />
+contributed by THLucas.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="0999CAAA-4992-4352-9ED2-965892040176" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

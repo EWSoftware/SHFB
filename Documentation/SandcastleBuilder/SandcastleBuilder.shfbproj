@@ -222,6 +222,7 @@
     <None Include="Content\CompConfig\CreateSyntaxFilter.aml" />
     <None Include="Content\CompConfig\ESentCachingComponents.aml" />
     <None Include="Content\CompConfig\SQLCachingComponents.aml" />
+    <None Include="Content\CompConfig\SyntaxComponent.aml" />
     <None Include="Content\CustomPresentationStyle.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0004.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0071.aml" />
@@ -235,6 +236,7 @@
     <None Include="Content\GettingStarted\SpellCheckerOptions.aml" />
     <None Include="Content\GettingStarted\XCopyDeployment.aml" />
     <None Include="Content\OpenXmlFormat.aml" />
+    <None Include="Content\PlugIns\LightweightWebsiteStylePlugIn.aml" />
     <None Include="Content\PropertiesWindow\BuildEvents.aml" />
     <None Include="Content\PropertiesWindow\ComponentConfigs.aml" />
     <None Include="Content\PropertiesWindow\PlugInConfigs.aml" />
@@ -261,6 +263,7 @@
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\VersionHistory\v2014.2.15.0.aml" />
     <None Include="Content\VersionHistory\v2014.4.22.0.aml" />
+    <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\ProjectTemplates.aml" />

@@ -21,3 +21,7 @@ td p {
 .codeSnippetContainerTabActive a:visited {
 	color: #000000;
 }
+span.keyword {
+	color: #0000ff;
+	font-weight: normal;
+}

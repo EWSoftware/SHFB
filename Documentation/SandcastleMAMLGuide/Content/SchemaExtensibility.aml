@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="53e9f04f-fbc4-480d-9653-1547046526f1" revisionNumber="1">
-	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
-								 xmlns:xlink="http://www.w3.org/1999/xlink"
-								 xmlns:xsd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>
 				This topic will explain how you can change the MAML schema so that you can use elements from other
@@ -46,7 +44,7 @@
 							This only allows elements from the target namespace of the declaring
 							schema. For our purposes this is useless because it would only allow
 							elements from the MAML namespace
-							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>).
+							(<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5</localUri>).
 						</para>
 					</definition>
 					<definedTerm>##any</definedTerm>
@@ -54,9 +52,8 @@
 						<para>
 							This allows any namespace, including the target namespace of the
 							declaring schema. We do not want to use this because it would also
-							allow to use any element from the
-							MAML namespace
-							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>)
+							allow to use any element from the MAML namespace
+							(<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5</localUri>)
 							itself and hence undermine the schema validation for MAML.
 						</para>
 					</definition>
@@ -66,7 +63,7 @@
 							This allows any namespaces except the target namespace of the declaring
 							schema. For our purposes this is ideal because it allows only to use
 							elements from any namespace except the MAML namespace
-							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>).
+							(<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5</localUri>).
 						</para>
 					</definition>
 				</definitionTable>
@@ -113,22 +110,17 @@
 			<title>Extending Inline Text</title>
 			<content>
 				<para>
-					Build components might add elements that you can use inside a
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference>
+					Build components might add elements that you can use inside a <codeInline>para</codeInline>
 					element. Examples for such elements are:
 				</para>
 				<definitionTable>
 					<definedTerm>Linking</definedTerm>
 					<definition>
 						<para>
-							These are elements that allow you to link to other topics. MAML itself already provides
-							several elements for this purpose, such as the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/link</xsd:xmlEntityReference>
-							element to link to conceptual topics, the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/codeEntityReference</xsd:xmlEntityReference>
-							element to link to managed code APIs, and the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/externalLink</xsd:xmlEntityReference>
-							element to link to some location in the internet.
+							These are elements that allow you to link to other topics. MAML itself already provides several
+							elements for this purpose, such as the <codeInline>link</codeInline> element to link to conceptual
+							topics, the <codeInline>codeEntityReference</codeInline> element to link to managed code APIs, and
+							the <codeInline>externalLink</codeInline> element to link to some location in the internet.
 						</para>
 					</definition>
 					<definedTerm>Semantics</definedTerm>
@@ -136,19 +128,15 @@
 						<para>
 							This category includes elements that are used to associate pieces of text with semantics.
 							In many cases these semantics are made visible through a consistent formatting, such as italics
-							or bold text. Amongst others MAML itself provides the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/localUri</xsd:xmlEntityReference>
-							element for marking text as representing local paths and the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/ui</xsd:xmlEntityReference>
+							or bold text. Amongst others MAML itself provides the <codeInline>localUri</codeInline>
+							element for marking text as representing local paths and the <codeInline>ui</codeInline>
 							element for marking text as representing elements in your user interface.
 						</para>
 					</definition>
 				</definitionTable>
 				<para>
-					To extend the
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference>
-					element we will extend the underlying type
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/inlineType</xsd:xmlEntityReference>.
+					To extend the <codeInline>para</codeInline> element we will extend the underlying type
+					<codeInline>inlineType</codeInline>.
 				</para>
 				<para>
 					Open the file <localUri>inline.xsd</localUri>, goto line 60, and add the <codeInline>any</codeInline>
@@ -185,11 +173,9 @@
 			<title>Extending Related Topics</title>
 			<content>
 				<para>
-					For build components that provide elements for linking we also want to be able to
-					use them inside the
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/relatedTopics</xsd:xmlEntityReference>
-					element. To do this, we will extend the type
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/relatedTopicsType</xsd:xmlEntityReference>.
+					For build components that provide elements for linking we also want to be able to use them inside the
+					<codeInline>relatedTopics</codeInline> element. To do this, we will extend the type
+					<codeInline>relatedTopicsType</codeInline>.
 				</para>
 				<para>
 					Open the file <localUri>hierarchy.xsd</localUri>, goto line 123 and add the <codeInline>any</codeInline>
@@ -210,13 +196,10 @@
 			<title>Extending Section Structure</title>
 			<content>
 				<para>
-					Last but not least build components might also provide elements that allow you to build a
-					structure. For this purpose MAML itself already provides the
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/table</xsd:xmlEntityReference>,
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/code</xsd:xmlEntityReference> and
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference> elements.
-					To allow new structural elements we have to extend the type
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/sectionContentType</xsd:xmlEntityReference>.
+					Last but not least build components might also provide elements that allow you to build a structure.
+					For this purpose MAML itself already provides the <codeInline>table</codeInline>,
+					<codeInline>code</codeInline>, and <codeInline>para</codeInline> elements.  To allow new structural
+					elements we have to extend the type <codeInline>sectionContentType</codeInline>.
 				</para>
 				<para>
 					Open the file <localUri>structure.xsd</localUri>, goto line 67 and add the <codeInline>any</codeInline>

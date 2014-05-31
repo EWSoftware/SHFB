@@ -19,6 +19,7 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../../Deploy/BuildAssembler.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -249,6 +250,20 @@
       <Namespaces>
        <Namespace Name="Microsoft.Ddue.Tools">
         <Types>
+         <Type Name="AdditionalHeaderResourcesComponent+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-05-30 22:01:00Z">
+            <Issue>
+             <Item>'AdditionalHeaderResourcesComponent.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="72" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="BrandingComponent">
           <Members>
            <Member Name="#ApplyBranding(System.Xml.XmlDocument,System.String)">
@@ -881,6 +896,20 @@
             </Accessors>
            </Member>
           </Members>
+         </Type>
+         <Type Name="LanguageSpecificTextComponent+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-05-30 22:01:00Z">
+            <Issue>
+             <Item>'LanguageSpecificTextComponent.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="72" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="MsdnResolver">
           <Members>
@@ -1635,6 +1664,40 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="TransformingTopicEventArgs">
+          <Members>
+           <Member Name="#.ctor(System.String,System.Xml.XmlDocument)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="Xml">
+               <Item>'TransformingTopicEventArgs.TransformingTopicEventArgs(string, XmlDocument)'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Document">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="Xml">
+               <Item>'TransformingTopicEventArgs.Document'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ValidateComponent+Factory">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-28 20:20:57Z">
@@ -1748,6 +1811,84 @@
        </Namespace>
        <Namespace Name="Microsoft.Ddue.Tools.Snippets">
         <Types>
+         <Type Name="CodeSnippet">
+          <Members>
+           <Member Name="#.ctor(System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="Xml">
+               <Item>'CodeSnippet.CodeSnippet(XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="67" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CodeElement">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="Xml">
+               <Item>'CodeSnippet.CodeElement'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="67" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CodeSnippetGroup">
+          <Members>
+           <Member Name="#.ctor(System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="Xml">
+               <Item>'CodeSnippetGroup.CodeSnippetGroup(XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="67" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CodeSnippets">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2014-05-30 22:01:00Z">
+              <Issue>
+               <Item>'List&lt;CodeSnippet&gt;'</Item>
+               <Item>'CodeSnippetGroup.CodeSnippets'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SnippetGroupElement">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="Xml">
+               <Item>'CodeSnippetGroup.SnippetGroupElement'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="67" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="Region">
           <Messages>
            <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2013-03-18 20:34:36Z">
@@ -1953,6 +2094,75 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SyntaxComponentConfigDlg">
+          <Members>
+           <Member Name="#.ctor(System.String,System.ComponentModel.Composition.Hosting.CompositionContainer)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue>
+               <Item>'SyntaxComponentConfigDlg.SyntaxComponentConfigDlg(string, CompositionContainer)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="70" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'SyntaxComponentConfigDlg.btnOK_Click(object, EventArgs)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'SyntaxComponentConfigDlg.btnOK_Click(object, EventArgs)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'SyntaxComponentConfigDlg.btnOK_Click(object, EventArgs)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="73" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#tvGenerators_BeforeSelect(System.Object,System.Windows.Forms.TreeViewCancelEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue>
+               <Item>'SyntaxComponentConfigDlg.tvGenerators_BeforeSelect(object, TreeViewCancelEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="70" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="element" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue>
+               <Item>'SyntaxComponentConfigDlg.tvGenerators_BeforeSelect(object, TreeViewCancelEventArgs)'</Item>
+               <Item>'element'</Item>
+               <Item>'XElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="74" />
                </User>
               </Notes>
              </Message>
@@ -3890,6 +4100,22 @@
        </Namespace>
        <Namespace Name="Sandcastle.Core.PresentationStyle">
         <Types>
+         <Type Name="PlugInDependency">
+          <Messages>
+           <Message Id="InDependency" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2014-05-30 22:01:00Z">
+            <Issue Name="TypeShouldBeDiscreteTerm">
+             <Item>InDependency</Item>
+             <Item>'PlugInDependency'</Item>
+             <Item>Independency</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="68" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="PresentationStyleSettings">
           <Members>
            <Member Name="#DocumentModelTransformation">
@@ -3915,6 +4141,22 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="66" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PlugInDependencies">
+            <Messages>
+             <Message Id="InDependencies" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2014-05-30 22:01:00Z">
+              <Issue Name="MemberShouldBeDiscreteTerm">
+               <Item>InDependencies</Item>
+               <Item>'PresentationStyleSettings.PlugInDependencies'</Item>
+               <Item>Independencies</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="69" />
                </User>
               </Notes>
              </Message>
@@ -3964,34 +4206,6 @@
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
             <Issue>
              <Item>'AspNetSyntaxGenerator.Factory'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="56" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="CPlusPlusDeclarationSyntaxGenerator">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectPrefix" Category="Microsoft.Naming" CheckId="CA1722" Status="Excluded" Created="2012-12-24 04:29:28Z">
-            <Issue>
-             <Item>'CPlusPlusDeclarationSyntaxGenerator'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="25" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="CPlusPlusDeclarationSyntaxGenerator+Factory">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
-            <Issue>
-             <Item>'CPlusPlusDeclarationSyntaxGenerator.Factory'</Item>
             </Issue>
             <Notes>
              <User Name="EWOODRUFF">
@@ -4089,6 +4303,20 @@
             <Notes>
              <User Name="EWOODRUFF">
               <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ManagedCPlusPlusDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-05-30 22:01:00Z">
+            <Issue>
+             <Item>'ManagedCPlusPlusDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="72" />
              </User>
             </Notes>
            </Message>
@@ -5282,6 +5510,14 @@
     <Note Id="64" Modified="2013-12-22 02:47:19Z">Okay as is</Note>
     <Note Id="65" Modified="2014-01-11 04:36:02Z">Lowercase is preferred here</Note>
     <Note Id="66" Modified="2014-01-11 21:22:29Z">Since it's used to construct the transformation file information and is only settable from within the class, I'm going to let this one slide.</Note>
+    <Note Id="67" Modified="2014-05-30 22:01:37Z">Okay as is</Note>
+    <Note Id="68" Modified="2014-05-30 22:03:20Z">Okay as is</Note>
+    <Note Id="69" Modified="2014-05-30 22:03:30Z">Okay as is</Note>
+    <Note Id="70" Modified="2014-05-30 22:03:54Z">The error is reported</Note>
+    <Note Id="71" Modified="2014-05-30 22:05:25Z">Okay as is</Note>
+    <Note Id="72" Modified="2014-05-30 22:06:07Z">Nested factory class.  Okay as is.</Note>
+    <Note Id="73" Modified="2014-05-30 22:06:23Z">Lowercase is required here.</Note>
+    <Note Id="74" Modified="2014-05-30 22:07:38Z">Okay as is.  Used to test that the node is valid.</Note>
    </User>
   </Notes>
   <Rules>
@@ -5308,6 +5544,7 @@
    </Rule>
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="TypeShouldBeDiscreteTerm">The compound word '{0}' in type name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}'.</Resolution>
    </Rule>
    <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
     <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
@@ -5347,9 +5584,6 @@
    </Rule>
    <Rule TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707">
     <Resolution Name="Member">Remove the underscores from member name {0}.</Resolution>
-   </Rule>
-   <Rule TypeName="IdentifiersShouldNotHaveIncorrectPrefix" Category="Microsoft.Naming" CheckId="CA1722">
-    <Resolution Name="Default">Remove the leading 'C' from type name {0}.</Resolution>
    </Rule>
    <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
     <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>

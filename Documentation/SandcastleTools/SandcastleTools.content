@@ -10,7 +10,7 @@
       <HelpKeyword index="K" term="License agreement" />
     </HelpKeywords>
   </Topic>
-  <Topic id="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" visible="True" isExpanded="true" title="Getting Started">
+  <Topic id="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" visible="True" title="Getting Started">
     <HelpKeywords>
       <HelpKeyword index="K" term="Getting Started" />
     </HelpKeywords>
@@ -37,7 +37,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isExpanded="true" title="Sandcastle Tools">
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" title="Sandcastle Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="Sandcastle tools" />
     </HelpKeywords>
@@ -73,7 +73,12 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
-    <Topic id="bcbab5f1-b036-4901-9be8-8f940a1f49a8" visible="True" isSelected="true" title="Version 2014.4.22.0">
+    <Topic id="7dced1d0-b471-4252-be70-3727e058b41b" visible="True" isSelected="true" title="Version 2014.5.31.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2014.5.31.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="bcbab5f1-b036-4901-9be8-8f940a1f49a8" visible="True" title="Version 2014.4.22.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2014.4.22.0" />
       </HelpKeywords>

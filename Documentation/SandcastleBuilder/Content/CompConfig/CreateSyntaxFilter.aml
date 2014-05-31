@@ -22,7 +22,7 @@ elements.  In that case, there is nothing to add to the default configuration.  
 configuration that is passed to a syntax generator.</para>
 
 <code language="xml" title="Example Syntax Generator Configuration">
-&lt;generator id="VisualBasic" name="VisualBasic"&gt;
+&lt;generator id="VisualBasic"&gt;
 	&lt;includeLineContinuation value="false" /&gt;
 &lt;/generator&gt;
 </code>
@@ -176,8 +176,8 @@ selected.</para>
 					<title>SortOrder</title>
 					<content>
 						<para>The <codeInline>SortOrder</codeInline> property is optional and allows you to define the
-sort order of the presentation style when used in conjunction with other syntax generators.  Some presentation
-styles will use this sort order to define the order in which the syntax sections are emitted to the topic.</para>
+sort order of the presentation style when used in conjunction with other syntax generators.  The syntax build
+component will use this sort order to define the order in which the syntax sections are emitted to the topic.</para>
 					</content>
 				</section>
 

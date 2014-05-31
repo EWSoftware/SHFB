@@ -84,8 +84,8 @@ namespace $safeprojectname$
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
 
             // By default, this will use the standard web file content from the Sandcastle Help File Builder
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, "%SHFBROOT%", @"Web\*.*", @".\",
-                new[] { ".aspx", ".html", ".htm", ".php" } ));
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"..\LegacyWeb\*.*",
+                String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
 
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoFile", true, true, null,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +

@@ -30,8 +30,8 @@ blank.  The help content will be opened using the <localUri>ms-xhelp:///</localU
 
 					<listItem>
 						<para><ui>ASP.NET Development Web Server Port</ui> - This allows you to specify the port number to
-use when starting the built-in .NET development web server to view website output using the <localUri>Index.aspx</localUri>
-page.  By default, it is set to port 12345.  You can alter this if it conflicts with something on your system.</para>
+use when starting the built-in .NET development web server to view website output.  By default, it is set to port
+12345.  You can alter this if it conflicts with something on your system.</para>
 					</listItem>
 
 					<listItem>

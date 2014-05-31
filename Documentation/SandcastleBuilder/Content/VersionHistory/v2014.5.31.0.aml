@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3405263f-a9eb-4ce4-b90f-87c31ab76d85" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.5.31.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+				<para>This release completes removal of the branding transformations and implements the new VS2013
+presentation style that utilizes the new lightweight website format.  Several breaking changes had to be made in
+order to support it properly.  You will need to rebuild any custom plug-ins, components, and presentation styles
+against the latest version of the Sandcastle and Help File Builder assemblies.</para>
+
+				<alert class="important">
+					<para>If switching to the new VS2013 presentation style, there are a few issues to be aware of.
+Most notable is that existing links to topics from external sites will not work unless updated to use the
+direct URL to the topic.  See the <link xlink:href="0acf46fe-e7c3-4f3f-a4ca-df86f3630286" /> topic for details.</para>
+				</alert>
+
+				<list class="bullet">
+					<listItem>
+						<para>Moved the web content from the standalone GUI to the presentation style project.  It is now
+in a presentation style folder called <localUri>.\LegacyWeb</localUri>.  If you have custom presentation styles
+that use the prior web content, update them to use the new folder location.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the build engine to support the presentation style plug-in dependency list.</para>
+					</listItem>
+
+					<listItem>
+						<para>The Syntax Component now supports configuring the order of the syntax generators.  This only
+has an effect in presentation styles that support code snippet grouping (currently only the VS2010 and VS2013
+styles).</para>
+					</listItem>
+
+					<listItem>
+						<para>The default language for the VS2010 and VS2013 presentation styles can be set using the new
+<codeInline>defaultLanguage</codeInline> transform argument found on the <ui>Transform Args</ui> property page.
+This can be used in conjunction with the Syntax Component configuration to match the default language to the first
+language in the syntax language sort order.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an <codeInline>IsHidden</codeInline> property to the
+<codeInline>HelpFileBuilderPlugInExportAttribute</codeInline>.  The Plug-Ins property page uses this to hide
+presentation style dependency plug-ins that do not have any configurable settings.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for Windows Phone 8.1 (Silverlight and Windows Store Apps) frameworks. Thanks to
+Morten Nielsen for the configuration settings.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the presentation style and syntax generator project templates to reflect recent changes
+in the API.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the topic previewer tool window to use a VS2013-like presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made the VS2013 style the default presentation style for new projects.</para>
+					</listItem>
+
+					<listItem>
+						<para>Renamed the <ui>View Website (ASP.NET)</ui> and <ui>View Website (HTML)</ui> options to
+<ui>View Website (Local Web Dev Server)</ui> and <ui>View Website (Local File System)</ui> to reflect their more
+general use now since the VS2013 presentation style does not contain an <localUri>Index.aspx</localUri> page and
+no longer requires ASP.NET to be viewed with the local web development server.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

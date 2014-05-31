@@ -18,18 +18,27 @@ you in its configuration file templates:</para>
 
 				<list class="bullet">
 					<listItem>
-						<para><link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /></para>
+						<para>
+							<link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+						</para>
 					</listItem>
 					<listItem>
-						<para><link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" /></para>
+						<para>
+							<link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="3127217a-9b11-424e-aeb4-b88ca4569bad" />
+						</para>
 					</listItem>
 				</list>
 
-				<para>You can override the default configuration for the Code Block Component by adding the component
-to your project using the <link xlink:href="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" /> property page and configuring
-it there.  The Help Attributes and Show Missing Documentation components are configured via project properties.
-The Multi-Format Output component has no configurable properties.  As such, they will not appear in the
-Components property page.</para>
+				<para>You can override the default configuration for the Code Block Component and the Syntax Component
+by adding the components to your project using the <link xlink:href="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" />
+property page and configuring them there.  The Help Attributes and Show Missing Documentation components (not
+listed) are configured via project properties and the Multi-Format Output component has no configurable
+properties.  As such, they will not appear in the Components property page.</para>
 
 				<para>The following build components are not pre-configured and must be added to the project in order to
 use them.</para>

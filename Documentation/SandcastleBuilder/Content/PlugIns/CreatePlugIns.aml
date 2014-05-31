@@ -172,6 +172,17 @@ plug-in will not be configurable from the property page.  If true, the property 
 <codeInline>ConfigurePlugIn</codeInline> method so that it can invoke a dialog box to edit the configuration.</para>
 					</content>
 				</section>
+
+				<section address="MetadataIsHidden">
+					<title>IsHidden</title>
+					<content>
+						<para>The <codeInline>IsHidden</codeInline> property is optional and allows you to define
+whether or not the plug-in is hidden and does not appear on the project property page.  If false, the default,
+the plug-in will appear on the property page.  If true, the property page will not list it as one that can
+be added to the project.  This is useful for presentation style dependency plug-ins that have no configurable
+elements and thus do not need to be manually added to the project to override settings.</para>
+					</content>
+				</section>
 			</sections>
 		</section>
 

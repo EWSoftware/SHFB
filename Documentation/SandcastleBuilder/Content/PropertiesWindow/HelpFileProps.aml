@@ -333,14 +333,23 @@ Help.ShowHelp(parentForm, helpFilePath, _
     HelpNavigator.Topic, "html\" &amp; pageName &amp; ".htm")
 </code>
 
-		<para>The naming rules are the same for pages generated for the website output.  One way to get the URL to
-use for a page in the website output is to bring up the Index page for the generated website
-(<localUri>Index.html</localUri> or <localUri>Index.aspx</localUri>).  You can click on the links in the
-navigation pane to display the topics and click the <ui>Direct Link</ui> option at the top of the index pane to
-show the direct link URL in a message box.  Copy and paste that link into your web page.  That will bring up the
-index page and show the selected topic as the default page in the right-hand pane.  You can replace
-<localUri>Index.aspx</localUri> with one of the other index pages such as the HTML or PHP version.
-Here is an example link:</para>
+		<para>The naming rules are the same for pages generated for the website output.  If using a newer
+presentation style such as the VS2013 style, the URLs to the topics are direct.  Simply bring up the site and
+navigate to the page you want to link to.  The URL to the page will appear in the browser's address bar.  Here
+is an example:</para>
+
+<code language="none" title=" ">
+http://www.ewoodruff.us/shfbdocs/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+</code>
+
+		<para>If using an older presentation style that uses the frame-based index page, the URL must use a query
+string to specify the topic to display.  One way to get the URL to use for a page in the old-style website output
+is to bring up the Index page for the generated website (<localUri>Index.html</localUri> or
+<localUri>Index.aspx</localUri>).  You can click on the links in the navigation pane to display the topics and
+click the <ui>Direct Link</ui> option at the top of the index pane to show the direct link URL in a message box.
+Copy and paste that link into your web page.  That will bring up the index page and show the selected topic as
+the default page in the right-hand pane.  You can replace <localUri>Index.aspx</localUri> with one of the other
+index pages such as the HTML or PHP version.  Here is an example link:</para>
 
 <code language="none" title=" ">
 http://www.ewoodruff.us/shfbdocs/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
@@ -358,9 +367,9 @@ and they are always placed in the <localUri>html/</localUri> folder.</para>
   <title>Presentation style (PresentationStyle)</title>
   <content>
 		<para>This property is used to choose the presentation style that determines the layout and appearance of
-the help topics.  Sandcastle comes with several styles: <codeInline>VS2013</codeInline> (the default),
+the help topics.  Several styles are provided: <codeInline>VS2013</codeInline> (the default),
 <codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, <codeInline>VS2005</codeInline>
-(deprecated), <codeInline>Prototype (Deprecated)</codeInline>, and <codeInline>Hana (Deprecated)</codeInline>.
+(deprecated), <codeInline>Prototype</codeInline> (deprecated), and <codeInline>Hana</codeInline> (deprecated).
 The files for each style are located in the <localUri>.\PresentationStyles</localUri> folder under the main help
 file builder installation folder.</para>
 

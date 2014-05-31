@@ -284,8 +284,8 @@ namespace SandcastleBuilder.WPF.Maml
             p.Inlines.Add(new InlineUIContainer(new Image
             {
                 Source = iconImage,
-                Height = iconImage.Height,
-                Width = iconImage.Width,
+                Height = iconImage.Height / 2,
+                Width = iconImage.Width / 2,
                 ToolTip = title,
                 Margin = new Thickness(0, 0, 5, 0),
                 VerticalAlignment = VerticalAlignment.Center
@@ -383,7 +383,8 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 // The URI signals the generic handler to copy code rather than launch the URL
                 NavigateUri = new Uri("copy://code", UriKind.RelativeOrAbsolute),
-                ToolTip = "Copy Code"
+                ToolTip = "Copy Code",
+                FontSize = 10
             };
 
             tb = new TextBlock(l) { TextAlignment = TextAlignment.Right };

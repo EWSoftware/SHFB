@@ -26,7 +26,7 @@ namespace Microsoft.Ddue.Tools.Snippets
     /// <summary>
     /// This is used to track a group of related code snippets in the <see cref="SyntaxComponent"/>
     /// </summary>
-    public class CodeSnippetGroup
+    public sealed class CodeSnippetGroup
     {
         #region Properties
         //=====================================================================

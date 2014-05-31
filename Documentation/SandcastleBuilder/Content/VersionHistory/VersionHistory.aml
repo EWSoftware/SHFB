@@ -27,27 +27,40 @@ format before they can be used with the new version.</para>
 				</alert>
 
 				<alert class="note">
-					<para>
-						For information on the Visual Studio integration package and where to find features in it, see the
-						<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topic.
-					</para>
+					<para>For information on the Visual Studio integration package and where to find features in it, see
+the <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topic.</para>
 				</alert>
 
 				<list class="bullet">
 					<listItem>
-						<para><link xlink:href="81b04099-bcd7-4caa-8a21-13624d9e290d" /></para>
+						<para>
+							<link xlink:href="3405263f-a9eb-4ce4-b90f-87c31ab76d85" />
+						</para>
 					</listItem>
 					<listItem>
-						<para><link xlink:href="8f7fa83f-c989-426f-b8b1-c42c333a4d0a" /></para>
+						<para>
+							<link xlink:href="81b04099-bcd7-4caa-8a21-13624d9e290d" />
+						</para>
 					</listItem>
 					<listItem>
-						<para><link xlink:href="1139ca15-af64-48a2-9187-ccc1aec389d4" /></para>
+						<para>
+							<link xlink:href="8f7fa83f-c989-426f-b8b1-c42c333a4d0a" />
+						</para>
 					</listItem>
 					<listItem>
-						<para><link xlink:href="22c82423-a322-4857-9bf8-6d1f1c2fba68" /></para>
+						<para>
+							<link xlink:href="1139ca15-af64-48a2-9187-ccc1aec389d4" />
+						</para>
 					</listItem>
 					<listItem>
-						<para><link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" /></para>
+						<para>
+							<link xlink:href="22c82423-a322-4857-9bf8-6d1f1c2fba68" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+						</para>
 					</listItem>
 				</list>
 

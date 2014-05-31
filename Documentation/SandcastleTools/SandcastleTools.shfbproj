@@ -167,6 +167,7 @@
     <None Include="Content\VersionHistory\v2014.4.22.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
+    <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,11 @@
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>
+    <Image Include="..\SandcastleBuilder\icons\Sandcastle.jpg">
+      <ImageId>Sandcastle</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+      <Link>Sandcastle.jpg</Link>
+    </Image>
     <Image Include="Media\SandcastleLayers.jpg">
       <ImageId>SandcastleLayers</ImageId>
       <AlternateText>Sandcastle Layers</AlternateText>

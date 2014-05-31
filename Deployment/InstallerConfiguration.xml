@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2014.4.22.0" />
+	<sandcastle version="v2014.5.31.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -12,10 +12,10 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://www.ewoodruff.us/sandcastletools/?topic=html/bcbab5f1-b036-4901-9be8-8f940a1f49a8.htm"
-				description="Sandcastle v2014.4.22.0 Release Notes" />
-			<whatsNew url="http://www.ewoodruff.us/shfbdocs/?topic=html/81b04099-bcd7-4caa-8a21-13624d9e290d.htm"
-				description="Sandcastle Help File Builder v2014.4.22.0 Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/sandcastletools/html/7dced1d0-b471-4252-be70-3727e058b41b.htm"
+				description="Sandcastle Tools v2014.5.31.0 Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/shfbdocs/html/3405263f-a9eb-4ce4-b90f-87c31ab76d85.htm"
+				description="Sandcastle Help File Builder v2014.5.31.0 Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -25,7 +25,7 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="2014.4.22.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.0" shfbVersion="2014.5.31.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
 			installerName="SHFBVisualStudioPackage.vsix">

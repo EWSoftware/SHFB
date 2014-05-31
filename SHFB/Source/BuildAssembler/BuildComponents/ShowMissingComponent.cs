@@ -432,7 +432,7 @@ namespace Microsoft.Ddue.Tools
 
                 // Certain self-closing XML comments elements will also satisfy the check
                 if(text.Length == 0)
-                    hasElements = (tag.SelectNodes("//conceptualLink|//see|//paramref|//typeparamref").Count != 0);
+                    hasElements = (tag.SelectNodes(".//conceptualLink|.//see|.//paramref|.//typeparamref").Count != 0);
             }
 
             // Certain self-closing XML comments elements will also satisfy the check

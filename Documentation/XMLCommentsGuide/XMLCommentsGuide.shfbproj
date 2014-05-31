@@ -224,6 +224,7 @@
     <None Include="Content\VersionHistory\v1.0.0.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
+    <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +244,13 @@
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\SandcastleBuilder\icons\Sandcastle.jpg">
+      <ImageId>Sandcastle</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+      <Link>Sandcastle.jpg</Link>
+    </Image>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />

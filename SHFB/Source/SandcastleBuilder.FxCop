@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../Deploy/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -3479,6 +3478,10 @@
                <Item>'BuildProcess.OnFieldMatch(Match)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'BuildProcess.OnFieldMatch(Match)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="95" />
@@ -4827,6 +4830,29 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="15" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="BuildOpenXmlFile">
+          <Members>
+           <Member Name="#GenerateFileList()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-05-30 21:29:35Z">
+              <Issue>
+               <Item>'BuildOpenXmlFile.GenerateFileList()'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Issue>
+               <Item>'BuildOpenXmlFile.GenerateFileList()'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="64" />
                </User>
               </Notes>
              </Message>
@@ -9033,6 +9059,29 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="BuildEventEditorForm">
+          <Members>
+           <Member Name="#DetermineMacroValues(Microsoft.Build.Evaluation.Project)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-05-30 21:29:35Z">
+              <Issue>
+               <Item>'BuildEventEditorForm.DetermineMacroValues(Project)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'BuildEventEditorForm.DetermineMacroValues(Project)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="68" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="BuildPropertiesPageControl">
           <Members>
            <Member Name="#BindControlValue(System.Windows.Forms.Control)">
@@ -9694,9 +9743,11 @@
     <Note Id="61" Modified="2007-08-03 18:12:37Z">There doesn't appear to be any side-effects</Note>
     <Note Id="62" Modified="2009-04-21 01:29:17Z">Okay as is</Note>
     <Note Id="63" Modified="2007-08-03 18:40:06Z">It's used to validate the regular expression text</Note>
+    <Note Id="64" Modified="2014-05-30 21:32:33Z">The exception is intentionally ignored</Note>
     <Note Id="65" Modified="2008-09-20 03:02:24Z">Lowercase is preferred</Note>
     <Note Id="66" Modified="2007-10-08 22:04:38Z">The error is reported</Note>
     <Note Id="67" Modified="2008-09-20 03:04:51Z">Lowercase is preferred</Note>
+    <Note Id="68" Modified="2014-05-30 21:34:27Z">The error is reported</Note>
     <Note Id="71" Modified="2011-02-28 01:05:49Z">No security issues found</Note>
     <Note Id="73" Modified="2011-03-07 01:03:02Z">Lowercase is needed here.</Note>
     <Note Id="74" Modified="2011-03-07 01:03:16Z">The error is reported</Note>

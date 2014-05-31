@@ -29,7 +29,7 @@ for your help file projects.</para>
 
 					<listItem>
 						<para>The help file builder can produce an HTML Help 1 (.chm) file, an MS Help 2 (.HxS) file,
-MS Help Viewer (.mshc) file, and/or a website.</para>
+an MS Help Viewer (.mshc) file, an Open XML (.docx) document, and/or a website.</para>
 					</listItem>
 
 					<listItem>
@@ -51,9 +51,11 @@ scripts are generated with the help file that show how to use the tool to instal
 					</listItem>
 
 					<listItem>
-						<para>The website output contains a standard HTML index page, an ASP.NET index page, and a PHP index
-page, each with a tree view that can be used to navigate the table of contents.  The ASP.NET and PHP index pages
-provide access to a keyword index and a full-text index search feature as well.</para>
+						<para>The website output contains a standard HTML index page.  The table of content style varies by
+presentation style.  Older versions use a frame-based layout while newer presentation styles use table of
+contents elements embedded in each topic.  The new style is implemented as HTML and client-side script which is
+suitable for servers and content delivery networks that do not support ASP.NET or PHP.  A full-text index search
+feature is available as well with support for ASP.NET, PHP, and client-side script implementations.</para>
 					</listItem>
 
 					<listItem>

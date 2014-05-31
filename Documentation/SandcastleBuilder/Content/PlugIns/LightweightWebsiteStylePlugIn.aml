@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="0acf46fe-e7c3-4f3f-a4ca-df86f3630286" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This plug-in adds lightweight table of contents and search elements to each topic in website builds.
+It is utilized by newer presentation styles such as the VS2013 style that contain the necessary elements that it
+looks for in order to insert the required elements.</para>
+
+			<alert class="note">
+				<para>This plug-in currently has no configurable options and is hidden from the Plug-Ins property page.
+It is added automatically as a dependency plug-in at build time by the presentation styles that utilize it.</para>
+			</alert>
+		</introduction>
+
+		<section>
+			<title>Advantages of the Lightweight Style</title>
+			<content>
+				<para>The lightweight website style has several advantages over the frame-based website format used by
+the older presentation styles.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Since the frame is omitted, the browser's address bar always contains the direct URL to the
+topic being viewed.  This makes it much simpler to create links to topics from external sites.</para>
+					</listItem>
+
+					<listItem>
+						<para>Site performance is improved.  This is especially true of sites that formerly used the old
+<localUri>index.html</localUri> page that contained the full table of contents.  In the lightweight style, each
+page contains only the table of content fragment that it needs to navigate to nearby topics.  The content of
+collapsed topic nodes in the table of contents tree are loaded on demand.</para>
+					</listItem>
+
+					<listItem>
+						<para>ASP.NET or PHP is no longer required for viewing or searching the site.  This allows for the
+sites to be hosted on servers that can only serve static content.  ASP.NET or PHP will be utilized for site
+searches if available since they provide better performance.  If not, a client-side script implementation is
+available for use.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Known Issues</title>
+			<content>
+				<para>There are a few issues to be aware of when using a presentation style that utilizes the lightweight
+website style.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>When you switch to a presentation style that uses the lightweight website style, it will break
+existing links to topics from external sites.  Correcting those links is simple.  All that needs to be done is to
+remove the <localUri>"Index.aspx?topic="</localUri> or <localUri>"?topic="</localUri> query string section from
+the URLs.  For example:</para>
+
+<code language="none" title=" ">
+Old URL Formats:
+http://www.ewoodruff.us/shfbdocs/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+http://www.ewoodruff.us/shfbdocs/?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+
+New URL Format:
+http://www.ewoodruff.us/shfbdocs/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+</code>
+					</listItem>
+
+					<listItem>
+						<para>As noted above, if ASP.NET or PHP is not available, site searches will be performed using a
+client-side script implementation.  While it does work, it is not optimal since it has to download the keyword
+index files used for the search to the client.  The files are cached after their first use but this will slow
+initial searches, especially on larger sites and when the browser cache is cleared.</para>
+					</listItem>
+
+					<listItem>
+						<para>The index feature has been dropped and is not available.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Requirements</title>
+			<content>
+				<para>If you create a new presentation style that utilizes this plug-in, the following requirements must
+be met.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>A shared content file must contain a resource item with the id <codeInline>resizeToolTip</codeInline>
+that defines the tool tip used for the resizing element.</para>
+					</listItem>
+
+					<listItem>
+						<para>A <codeInline>div</codeInline> element must appear in each topic with a <codeInline>class</codeInline>
+attribute value of <codeInline>pageHeader</codeInline>.  The search box will be inserted inside this element.</para>
+					</listItem>
+
+					<listItem>
+						<para>A <codeInline>div</codeInline> element must appear in each topic with a <codeInline>class</codeInline>
+attribute value of <codeInline>topicContent</codeInline>.  The element containing the table of contents fragment
+and resizing element will be inserted ahead of it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Image, style sheet, and script resources used by the lightweight table of contents and search
+elements must be included as part of the website output for the presentation style.  See the VS2013 presentation
+style for an example, specifically the files in the <localUri>.\Web</localUri> folder and the additional style
+sheet <localUri>.\styles\branding-Website.css</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The BuildAssembler configuration files must include the <codeInline>Additional Header Resources
+Component</codeInline> to insert the necessary resource items and metadata into each topic based on the file
+format.  See the VS2013 presentation style configuration files for an example.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -426,23 +426,20 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="overloads"
-								mode="sections"
-								name="t_overloadsSections">
+	<xsl:template match="overloads" mode="sections" name="t_overloadsSections">
 		<xsl:apply-templates select="remarks"/>
 		<xsl:apply-templates select="example"/>
 	</xsl:template>
 
-	<xsl:template match="templates"
-								name="t_templates">
-		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"
-											select="'title_templates'"/>
+	<xsl:template match="templates" name="t_templates">
+		<xsl:call-template name="t_putSubSection">
+			<xsl:with-param name="p_title">
+				<include item="title_templates"/>
+			</xsl:with-param>
 			<xsl:with-param name="p_content">
 				<dl>
 					<xsl:for-each select="template">
-						<xsl:variable name="templateName"
-													select="@name"/>
+						<xsl:variable name="templateName" select="@name"/>
 						<dt>
 							<span class="parameter">
 								<xsl:value-of select="$templateName"/>

@@ -29,49 +29,11 @@ from happening.  When producing a help file alone, the output folder is not clea
 document.  See the <link xlink:href="c5e7e920-2cb4-4f78-b167-634361d85263" /> topic for details.</para>
 				</alert>
 
-				<para>When producing a website, the following additional files may be copied to the root of the output
-folder if the presentation style uses the stock website content provided by the help file builder.</para>
+				<para>When producing a website, various additional files will be copied to the root of the output folder
+based upon the presentation style selected.  These files are used to provide a default index page, search
+features, etc.  The following files will also appear:</para>
 
 				<list class="bullet">
-					<listItem>
-						<para><localUri>Index.aspx</localUri> - This page is used to contain the table of contents and the
-currently selected content page.  It uses Ajax to dynamically load child nodes when first expanded and should be
-more efficient for large help files.  It also contains a search option that lets you search for keywords in the
-help topics and a keyword index.  A <codeInline>topic</codeInline> query string parameter can be specified.  If
-set to the path of a page in the website, it will display that page instead of the normal default topic page.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>FillNode.aspx</localUri> - This is used by the Ajax calls to dynamically load child
-nodes for the table of contents.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>SearchHelp.aspx</localUri> - This is used by the Ajax calls to search for keywords
-using the full-text index.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>Web.config</localUri> - This contains some necessary namespace declarations for the
-ASP.NET pages above.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>Index.html</localUri> - This page is used to contain the table of contents and the
-currently selected content page.  The table of contents is contained entirely within the page and may not be as
-efficient for large help files.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>TOC.css</localUri> - This is the style sheet used for the index pages.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>TOC.js</localUri> - This JavaScript file is used by the index pages.  It contains the
-code used to implement a basic tree view with collapsible and expandable nodes, a splitter bar, and Ajax calls to
-load child table of contents nodes dynamically and perform keyword searches.</para>
-					</listItem>
-
 					<listItem>
 						<para><localUri>WebTOC.xml</localUri> - This is the XML file used to contain the table of contents
 information.  This file is generated during the build and will contain the same entries as the help file's table
@@ -79,24 +41,12 @@ of contents in a matching layout.</para>
 					</listItem>
 
 					<listItem>
-						<para><localUri>favicon.ico</localUri> - This is used as the Favorites icon for the help website.
-You can override it with your own icon by including a file called <localUri>favicon.ico</localUri> in the root
-folder of your project.</para>
+						<para><localUri>WebKI.xml</localUri> - This is the XML file used to contain the keywords found in
+the topics.  This file is generated during the build.</para>
 					</listItem>
 
 					<listItem>
-						<para><localUri>*.gif, *.png, *.bmp</localUri> - Several image files are copied that represent the
-collapsed, expanded, and item nodes in the table of contents tree view and the Expand All, Collapse All, and
-Synch to Content options.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>*.php</localUri> - These are PHP versions of the index page and its supporting pages.
-The files perform the same tasks as their like-named ASP.NET counterparts.</para>
-					</listItem>
-
-					<listItem>
-						<para><localUri>.\FTI\*.bin</localUri> - The FTI folder contains the serialized full-text index data
+						<para><localUri>.\FTI\*.bin</localUri> - This folder contains the serialized full-text index data
 files.  The data is split up into multiple files to improve the performance and reduce the amount of information
 needed when doing a search.</para>
 					</listItem>

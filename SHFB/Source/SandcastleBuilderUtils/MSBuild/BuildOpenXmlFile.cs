@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildOpenXmlFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2014
+// Updated : 05/30/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -55,7 +56,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         private static XNamespace pic = "http://schemas.openxmlformats.org/drawingml/2006/picture";
 
         // This is used in the content types file as its default namespace
-        private XNamespace ct = "http://schemas.openxmlformats.org/package/2006/content-types";
+        private static XNamespace ct = "http://schemas.openxmlformats.org/package/2006/content-types";
 
         // This is used in the relationships part file as its default namespace
         private static XNamespace pr = "http://schemas.openxmlformats.org/package/2006/relationships";
@@ -176,7 +177,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                                             while(topicReader.Read())
                                                                 if(topicReader.NodeType == XmlNodeType.Element &&
                                                                   topicReader.LocalName == "body")
-                                                                    this.WriteTopic(writer, topicReader);
+                                                                    WriteTopic(writer, topicReader);
                                                         }
                                                     }
                                                 }
@@ -268,7 +269,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="reader">The reader for the topic body content</param>
         /// <remarks>Using a reader prevents unnecessary namespaces from appearing on the body content elements
         /// which happens if we convert the XElement content to a string and write it out as raw content.</remarks>
-        private void WriteTopic(XmlWriter writer, XmlReader reader)
+        private static void WriteTopic(XmlWriter writer, XmlReader reader)
         {
             while(!reader.EOF)
             {
@@ -328,16 +329,17 @@ namespace SandcastleBuilder.Utils.MSBuild
         private void ApplyChanges(XDocument document, string key)
         {
             // Remove invalid spans that we can't use for formatting
-            this.RemoveInvalidSpans(document);
+            RemoveInvalidSpans(document);
 
             // Wrap stray text nodes in run/text elements and add containing paragraphs first since the
             // subsequent updates rely on well-formed paragraphs.
-            this.WrapStrayElementNodes(document);
-            this.AddContainingParagraphs(document);
+            WrapStrayElementNodes(document);
+            AddContainingParagraphs(document);
 
-            this.AddBlankCellParagraphs(document);
-            this.ConvertStyleSpans(document);
-            this.ConvertHtmlLineBreaks(document);
+            AddBlankCellParagraphs(document);
+            ConvertStyleSpans(document);
+            ConvertHtmlLineBreaks(document);
+
             this.ReformatBookmarkNames(document, key);
             this.ConvertHtmlAnchors(document, key);
             this.ConvertHtmlImages(document);
@@ -346,11 +348,11 @@ namespace SandcastleBuilder.Utils.MSBuild
             this.ConvertHtmlLists(document);
 
             // Finally, add line breaks where necessary to preserve text formatting in things like code blocks
-            this.InsertLineBreaks(document);
+            InsertLineBreaks(document);
 
             // Make one final pass to wrap remaining stray text nodes that showed up after handling everything.
             // This can happen for stuff in span elements which are skipped by this method.
-            this.WrapStrayElementNodes(document);
+            WrapStrayElementNodes(document);
         }
 
         /// <summary>
@@ -396,42 +398,46 @@ namespace SandcastleBuilder.Utils.MSBuild
 
             foreach(var style in numberingStyles)
             {
-                var num = new XElement(w + "num", new XAttribute(w + "numId", style.Id.ToString()),
+                var num = new XElement(w + "num",
+                    new XAttribute(w + "numId", style.Id.ToString(CultureInfo.InvariantCulture)),
                     new XElement(w + "abstractNumId", new XAttribute(w + "val", "0")));
 
                 var lvlOverride = new XElement(w + "lvlOverride", new XAttribute(w + "ilvl",
-                    style.Level.ToString()));
+                    style.Level.ToString(CultureInfo.InvariantCulture)));
 
                 if(style.Style == "ordered")
                 {
                     // A starting number override is required in order to reset numbering.  It must match the
                     // w:start element value added below.
                     lvlOverride.Add(new XElement(w + "startOverride", new XAttribute(w + "val",
-                        style.Start.ToString())));
+                        style.Start.ToString(CultureInfo.InvariantCulture))));
 
                     lvlOverride.Add(new XElement(w + "lvl", new XAttribute(w + "ilvl",
-                        style.Level.ToString()),
-                        new XElement(w + "start", new XAttribute(w + "val", style.Start.ToString())),
+                        style.Level.ToString(CultureInfo.InvariantCulture)),
+                        new XElement(w + "start", new XAttribute(w + "val",
+                            style.Start.ToString(CultureInfo.InvariantCulture))),
                         new XElement(w + "numFmt", new XAttribute(w + "val", "decimal")),
                         new XElement(w + "lvlText", new XAttribute(w + "val",
-                            "%" + (style.Level + 1).ToString() + ".")),
+                            "%" + (style.Level + 1).ToString(CultureInfo.InvariantCulture) + ".")),
                         new XElement(w + "lvlJc", new XAttribute(w + "val", "left")),
                         new XElement(w + "pPr",
                             new XElement(w + "ind",
-                                new XAttribute(w + "left", (720 * (style.Level + 1)).ToString()),
+                                new XAttribute(w + "left",
+                                    (720 * (style.Level + 1)).ToString(CultureInfo.InvariantCulture)),
                                 new XAttribute(w + "hanging", "360")))));
                 }
                 else
                 {
                     lvlOverride.Add(new XElement(w + "lvl", new XAttribute(w + "ilvl",
-                        style.Level.ToString()),
+                        style.Level.ToString(CultureInfo.InvariantCulture)),
                         new XElement(w + "start", new XAttribute(w + "val", "1")),
                         new XElement(w + "numFmt", new XAttribute(w + "val", "bullet")),
                         new XElement(w + "lvlText", new XAttribute(w + "val", " ")),
                         new XElement(w + "lvlJc", new XAttribute(w + "val", "left")),
                         new XElement(w + "pPr",
                             new XElement(w + "ind",
-                                new XAttribute(w + "left", (720 * (style.Level + 1)).ToString()),
+                                new XAttribute(w + "left",
+                                    (720 * (style.Level + 1)).ToString(CultureInfo.InvariantCulture)),
                                 new XAttribute(w + "hanging", "360")))));
                 }
 
@@ -458,19 +464,19 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// document to appear to be corrupted.  This attempts to fix up such ill-formed content.  It is not
         /// perfect so there may still be issues.  Additional fix ups can be added as they are found but this is
         /// no substitute for using well-formed content in the first place.</remarks>
-        private void AddContainingParagraphs(XDocument document)
+        private static void AddContainingParagraphs(XDocument document)
         {
-            this.CheckForContainingParagraph(document.Descendants(w + "r"));
-            this.CheckForContainingParagraph(document.Descendants(w + "hyperlink"));
-            this.CheckForContainingParagraph(document.Descendants("span"));
-            this.CheckForContainingParagraph(document.Descendants("a"));
+            CheckForContainingParagraph(document.Descendants(w + "r"));
+            CheckForContainingParagraph(document.Descendants(w + "hyperlink"));
+            CheckForContainingParagraph(document.Descendants("span"));
+            CheckForContainingParagraph(document.Descendants("a"));
         }
 
         /// <summary>
         /// Check for a containing paragraph on each of the given elements
         /// </summary>
         /// <param name="elements">An enumerable list of elements to check</param>
-        private void CheckForContainingParagraph(IEnumerable<XElement> elements)
+        private static void CheckForContainingParagraph(IEnumerable<XElement> elements)
         {
             foreach(var element in elements.ToList())
             {
@@ -509,7 +515,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <param name="document">The document in which to add paragraphs to empty cells</param>
         /// <remarks>Table cells must contain a paragraph element</remarks>
-        private void AddBlankCellParagraphs(XDocument document)
+        private static void AddBlankCellParagraphs(XDocument document)
         {
             foreach(var cell in document.Descendants(w + "tc").Where(c => !c.HasElements && c.IsEmpty))
                 cell.Add(new XElement(w + "p"));
@@ -522,7 +528,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <remarks>HTML line breaks can appear in content items and the transformations where it may not be
         /// convenient or possible to insert the containing run element.  This fixes them up so that they are
         /// correct.</remarks>
-        private void ConvertHtmlLineBreaks(XDocument document)
+        private static void ConvertHtmlLineBreaks(XDocument document)
         {
             foreach(var lineBreak in document.Descendants("br").ToList())
                 lineBreak.ReplaceWith(new XElement(w + "br"));
@@ -534,7 +540,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="document">The document in which to wrap stray text nodes</param>
         /// <remarks>Stray text nodes can occur when resolving shared content items.  We need to ensure that
         /// all text nodes are within a text element within a run.</remarks>
-        private void WrapStrayElementNodes(XDocument document)
+        private static void WrapStrayElementNodes(XDocument document)
         {
             XElement wrap;
 
@@ -560,7 +566,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// Insert line break elements where needed to preserve text formatting
         /// </summary>
         /// <param name="document">The document in which to insert line breaks</param>
-        private void InsertLineBreaks(XDocument document)
+        private static void InsertLineBreaks(XDocument document)
         {
             XElement element, lastElement = null;
             string[] parts;
@@ -630,7 +636,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="document">The document in which to remove invalid spans</param>
         /// <remarks>The XSL transformation could do this but it wouldn't necessarily cover third party build
         /// components which could introduce invalid spans so we'll take care of them all here.</remarks>
-        private void RemoveInvalidSpans(XDocument document)
+        private static void RemoveInvalidSpans(XDocument document)
         {
             foreach(var span in document.Descendants("span").Where(s => (string)s.Attribute("class") == null).ToList())
             {
@@ -650,17 +656,17 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="document">The document in which to convert the style spans</param>
         /// <remarks>Nested spans result in run formatting that is accumulated in each run in the nested set of
         /// spans.</remarks>
-        private void ConvertStyleSpans(XDocument document)
+        private static void ConvertStyleSpans(XDocument document)
         {
             XElement runProps = new XElement(w + "rPr");
 
             // Get all paragraphs with a span as a child and condense the span formatting
             foreach(var span in document.Descendants(w + "p").Elements("span").ToList())
-                this.ApplySpanFormatting(span, new XElement(runProps));
+                ApplySpanFormatting(span, new XElement(runProps));
 
             // Remove language specific text formatting from within HTML anchors too
             foreach(var span in document.Descendants("a").Elements("span").ToList())
-                this.ApplySpanFormatting(span, new XElement(runProps));
+                ApplySpanFormatting(span, new XElement(runProps));
         }
 
         /// <summary>
@@ -668,7 +674,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <param name="span">The root span from which to start applying formatting</param>
         /// <param name="runProps">The run properties in which to accumulate formatting</param>
-        private void ApplySpanFormatting(XElement span, XElement runProps)
+        private static void ApplySpanFormatting(XElement span, XElement runProps)
         {
             string spanClass = (string)span.Attribute("class");
 
@@ -768,7 +774,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
             // Handle nested spans.  These will accumulate the formatting of the parent spans.
             foreach(var nestedSpan in span.Elements("span").ToList())
-                this.ApplySpanFormatting(nestedSpan, new XElement(runProps));
+                ApplySpanFormatting(nestedSpan, new XElement(runProps));
 
             // Now move the content up to the parent
             foreach(var child in span.Nodes().ToList())
@@ -799,7 +805,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Bookmark names are limited to 40 characters.  As such, use a hash of the key to keep it short.
             // Start each one with an underscore so that it is valid and hidden and replace invalid characters
             // with an underscore.
-            string keyHash = "_" + key.ToUpperInvariant().GetHashCode().ToString("X");
+            string keyHash = "_" + key.ToUpperInvariant().GetHashCode().ToString("X", CultureInfo.InvariantCulture);
 
             foreach(var bookmarkStart in document.Descendants(w + "bookmarkStart"))
             {
@@ -815,12 +821,12 @@ namespace SandcastleBuilder.Utils.MSBuild
                 // Bookmark IDs must be unique across all topics.  Links use the name to reference them but the
                 // bookmarkEnd elements use the ID so we need to update it there too.  In this case, the end
                 // element should immediately follow the start element since we never wrap content in a bookmark.
-                bookmarkStart.Attribute(w + "id").Value = bookmarkId.ToString();
+                bookmarkStart.Attribute(w + "id").Value = bookmarkId.ToString(CultureInfo.InvariantCulture);
 
                 bookmarkEnd = bookmarkStart.NextNode as XElement;
 
                 if(bookmarkEnd != null && bookmarkEnd.Name.LocalName == "bookmarkEnd")
-                    bookmarkEnd.Attribute(w + "id").Value = bookmarkId.ToString();
+                    bookmarkEnd.Attribute(w + "id").Value = bookmarkId.ToString(CultureInfo.InvariantCulture);
 
                 bookmarkId++;
             }
@@ -918,7 +924,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     {
                         // External link.  Add a relationship ID and track the id/URL pair.  These are stored in
                         // the relationships file.
-                        id = String.Format("elId{0:X}", href.ToUpperInvariant().GetHashCode());
+                        id = String.Format(CultureInfo.InvariantCulture, "elId{0:X}", href.ToUpperInvariant().GetHashCode());
 
                         if(!externalHyperlinks.ContainsKey(id))
                             externalHyperlinks.Add(id, href);
@@ -933,15 +939,23 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // Bookmark names are limited to 40 characters.  As such, use a hash of the key to keep
                         // it short.
                         if(parts.Length == 1)
-                            href = Path.GetFileNameWithoutExtension(href).ToUpperInvariant().GetHashCode().ToString("X") + "_Topic";
+                        {
+                            href = Path.GetFileNameWithoutExtension(href).ToUpperInvariant().GetHashCode().ToString(
+                                "X", CultureInfo.InvariantCulture) + "_Topic";
+                        }
                         else
                         {
                             // In-page link?
                             if(parts[0].Length == 0)
-                                href = key.ToUpperInvariant().GetHashCode().ToString("X") + "_Topic_" + parts[1];
+                            {
+                                href = key.ToUpperInvariant().GetHashCode().ToString("X",
+                                    CultureInfo.InvariantCulture) + "_Topic_" + parts[1];
+                            }
                             else
-                                href = Path.GetFileNameWithoutExtension(parts[0]).ToUpperInvariant().GetHashCode().ToString("X") +
-                                    "_Topic_" + parts[1];
+                            {
+                                href = Path.GetFileNameWithoutExtension(parts[0]).ToUpperInvariant().GetHashCode().ToString(
+                                    "X", CultureInfo.InvariantCulture) + "_Topic_" + parts[1];
+                            }
                         }
 
                         href = reBadChars.Replace("_" + href, "_");
@@ -980,7 +994,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 // Set the relationship ID and track the id/image pair.  These are stored in the relationships
                 // file.
-                id = String.Format("imgId{0:X}", src.ToUpperInvariant().GetHashCode());
+                id = String.Format(CultureInfo.InvariantCulture, "imgId{0:X}", src.ToUpperInvariant().GetHashCode());
 
                 if(!images.ContainsKey(id))
                     images.Add(id, src);
@@ -992,8 +1006,8 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 var xfrm = new XElement(a + "xfrm",
                     new XElement(a + "off", new XAttribute("x", "0"), new XAttribute("y", "0")),
-                    new XElement(a + "ext", new XAttribute("cx", cx.ToString()),
-                        new XAttribute("cy", cy.ToString())));
+                    new XElement(a + "ext", new XAttribute("cx", cx.ToString(CultureInfo.InvariantCulture)),
+                        new XAttribute("cy", cy.ToString(CultureInfo.InvariantCulture))));
 
                 var prstGeom = new XElement(a + "prstGeom", new XAttribute("prst", "rect"),
                     new XElement(a + "avLst"));
@@ -1029,15 +1043,17 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 // The ID in this one must be unique for each drawing element across all topics
                 var docPr = new XElement(wp + "docPr",
-                    new XAttribute("id", imageId.ToString()),
+                    new XAttribute("id", imageId.ToString(CultureInfo.InvariantCulture)),
                     new XAttribute("name", src),
                     !String.IsNullOrWhiteSpace(alt) ? new XAttribute("title", alt) : null);
 
-                var extent = new XElement(wp + "extent", new XAttribute("cx", cx.ToString()),
-                    new XAttribute("cy", cy.ToString()));
+                var extent = new XElement(wp + "extent",
+                    new XAttribute("cx", cx.ToString(CultureInfo.InvariantCulture)),
+                    new XAttribute("cy", cy.ToString(CultureInfo.InvariantCulture)));
 
                 var drawing = new XElement(w + "drawing",
-                    new XElement(wp + "inline", new XAttribute("distT", "0"), new XAttribute("distB", "0"),
+                    new XElement(wp + "inline",
+                        new XAttribute("distT", "0"), new XAttribute("distB", "0"),
                         new XAttribute("distL", "0"), new XAttribute("distR", "0"),
                             extent, docPr, cNvGraphicFramePr, graphic));
 
@@ -1180,8 +1196,10 @@ namespace SandcastleBuilder.Utils.MSBuild
                         if(isFirstPara)
                         {
                             props.Add(new XElement(w + "numPr",
-                                new XElement(w + "ilvl", new XAttribute(w + "val", level.ToString())),
-                                new XElement(w + "numId", new XAttribute(w + "val", id.ToString()))));
+                                new XElement(w + "ilvl",
+                                    new XAttribute(w + "val", level.ToString(CultureInfo.InvariantCulture))),
+                                new XElement(w + "numId",
+                                    new XAttribute(w + "val", id.ToString(CultureInfo.InvariantCulture)))));
 
                             isFirstPara = false;
                         }
@@ -1189,8 +1207,11 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // Each paragraph turns off contextual spacing and adds an appropriate indent.  Note that
                         // we're making an assumption here about the indent widths based on the default style
                         // sheet.
-                        props.Add(new XElement(w + "contextualSpacing", new XAttribute(w + "val", "0")),
-                            new XElement(w + "ind", new XAttribute(w + "left", ((level + 1) * 720).ToString())));
+                        props.Add(
+                            new XElement(w + "contextualSpacing",
+                                new XAttribute(w + "val", "0")),
+                            new XElement(w + "ind",
+                                new XAttribute(w + "left", ((level + 1) * 720).ToString(CultureInfo.InvariantCulture))));
                     }
                 }
 
@@ -1212,13 +1233,13 @@ namespace SandcastleBuilder.Utils.MSBuild
                     if(indent == null)
                     {
                         props.Add(new XElement(w + "tblInd",
-                            new XAttribute(w + "w", ((level + 1) * 720).ToString()),
+                            new XAttribute(w + "w", ((level + 1) * 720).ToString(CultureInfo.InvariantCulture)),
                             new XAttribute(w + "type", "dxa")));
 
                         var width = props.Element(w + "tblW");
 
                         if(width != null)
-                            width.Attribute(w + "w").Value = (5000 - ((level + 1) * 430)).ToString();
+                            width.Attribute(w + "w").Value = (5000 - ((level + 1) * 430)).ToString(CultureInfo.InvariantCulture);
                     }
                 }
 

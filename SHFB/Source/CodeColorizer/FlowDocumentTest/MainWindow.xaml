@@ -46,9 +46,8 @@
 					<Style TargetType="{x:Type Section}">
 						<Setter Property="FontFamily" Value="Consolas, Courier New, Courier"/>
 						<Setter Property="FontSize" Value="12.0"/>
-						<Setter Property="Background" Value="WhiteSmoke"/>
-						<Setter Property="BorderBrush" Value="Black"/>
-						<Setter Property="BorderThickness" Value="0, 0.5, 0, 0"/>
+						<Setter Property="BorderBrush" Value="#939393"/>
+						<Setter Property="BorderThickness" Value="0.5"/>
 						<Setter Property="Margin" Value="0, 0, 0, 10"/>
 						<Setter Property="Padding" Value="5"/>
 						<Style.Resources>
@@ -58,7 +57,7 @@
 						</Style.Resources>
 					</Style>
 					<Style x:Key="CopyLink">
-						<Setter Property="TextElement.FontFamily" Value="Verdana" />
+						<Setter Property="TextElement.FontFamily" Value="Segoe UI" />
 						<Setter Property="TextElement.FontSize" Value="10" />
 					</Style>
 				</FlowDocument.Resources>
@@ -68,7 +67,7 @@
 							<ColumnDefinition />
 							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
-						<TextBlock Name="lblTitle" Grid.Column="0" TextAlignment="Left" FontWeight="Bold">Title Goes here</TextBlock>
+						<TextBlock Name="lblTitle" Grid.Column="0" TextAlignment="Left" FontWeight="Bold">Title Goes Here</TextBlock>
 						<TextBlock Grid.Column="1" TextAlignment="Right">
 							<Hyperlink NavigateUri="copy://code" Click="hlCopy_Click" ToolTip="Copy Code">Copy</Hyperlink>
 						</TextBlock>

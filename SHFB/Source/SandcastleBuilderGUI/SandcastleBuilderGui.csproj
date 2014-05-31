@@ -513,6 +513,7 @@
     <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight_flowDoc.xsl">
       <Link>Colorizer\highlight_flowDoc.xsl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\packages\NHunspell.1.1.1\native\Hunspellx64.dll">
       <Link>Spelling\Hunspellx64.dll</Link>

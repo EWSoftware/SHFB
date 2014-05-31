@@ -2,7 +2,7 @@
 // System  : Sandcastle Build Components
 // File    : SyntaxComponentConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2014
+// Updated : 05/30/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -303,10 +304,15 @@ namespace Microsoft.Ddue.Tools.UI
                 var sg = syntaxGenerators.First(g => g.Id == tn.Text);
 
                 if(!sg.IsConfigurable)
-                    node.Add(XElement.Parse(String.Format("<generator id=\"{0}\" />", sg.Id)));
+                {
+                    node.Add(XElement.Parse(String.Format(CultureInfo.InvariantCulture,
+                        "<generator id=\"{0}\" />", sg.Id)));
+                }
                 else
-                    node.Add(XElement.Parse(String.Format("<generator id=\"{0}\">{1}</generator>", sg.Id,
-                        sg.CurrentConfiguration)));
+                {
+                    node.Add(XElement.Parse(String.Format(CultureInfo.InvariantCulture,
+                        "<generator id=\"{0}\">{1}</generator>", sg.Id, sg.CurrentConfiguration)));
+                }
             }
 
             this.DialogResult = DialogResult.OK;

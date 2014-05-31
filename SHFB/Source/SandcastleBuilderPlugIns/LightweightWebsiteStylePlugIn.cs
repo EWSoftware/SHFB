@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 05/16/2014
+// Updated : 05/30/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved.
 //           Portions Copyright 2014, Sam Harwell, All rights reserved.
 // Compiler: Microsoft Visual C#
@@ -348,7 +348,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="level">The level of the node</param>
         /// <param name="expanded">True if expanded, false if not</param>
         /// <returns>The TOC ancestor node</returns>
-        private XElement GenerateTocAncestor(XElement ancestor, int level, bool expanded)
+        private static XElement GenerateTocAncestor(XElement ancestor, int level, bool expanded)
         {
             string file, tocid, tocTitle;
 
@@ -404,7 +404,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="level">The level of the node</param>
         /// <param name="showSiblings">True to show siblings, false to keep them hidden</param>
         /// <returns>The TOC sibling node</returns>
-        private XElement GenerateTocSibling(XElement current, XElement sibling, int level, bool showSiblings)
+        private static XElement GenerateTocSibling(XElement current, XElement sibling, int level, bool showSiblings)
         {
             XElement glyphElement;
             string targetId, targetTocId, currentId, file, tocTitle, styleClassSuffix;
@@ -476,7 +476,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <param name="child">The child node</param>
         /// <returns>The TOC child node</returns>
-        private XElement GenerateTocChild(XElement child)
+        private static XElement GenerateTocChild(XElement child)
         {
             XElement glyphElement;
             string file, tocid, tocTitle;

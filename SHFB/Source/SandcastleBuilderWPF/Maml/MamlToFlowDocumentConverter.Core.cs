@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
+// Updated : 05/27/2014
+// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the core methods of the class used to convert a MAML topic file to a flow document so that
@@ -249,8 +249,9 @@ namespace SandcastleBuilder.WPF.Maml
                     document.Blocks.InsertBefore(document.Blocks.FirstBlock, rootSection);
 
                 Style errorStyle = new Style(typeof(Section));
-                errorStyle.Setters.Add(new Setter(Section.FontFamilyProperty, new FontFamily("Verdana")));
-                errorStyle.Setters.Add(new Setter(Section.FontSizeProperty, 11.0));
+                errorStyle.Setters.Add(new Setter(Section.FontFamilyProperty,
+                    new FontFamily("Segoe UI, Lucida Grande, Verdana")));
+                errorStyle.Setters.Add(new Setter(Section.FontSizeProperty, 12.0));
                 errorStyle.Setters.Add(new Setter(Section.PaddingProperty, new Thickness(3)));
                 errorStyle.Setters.Add(new Setter(Section.BorderThicknessProperty, new Thickness(1)));
                 errorStyle.Setters.Add(new Setter(Section.BorderBrushProperty,
@@ -487,7 +488,7 @@ namespace SandcastleBuilder.WPF.Maml
             document.Resources.Add("AlertNote", SharedResources.NoteIcon);
             document.Resources.Add("AlertSecurity", SharedResources.SecurityIcon);
 
-            // Create all of the styles.  Currently it will look like the VS2005 style.
+            // Create all of the styles.  Currently it will look like the VS2013 style.
             Style noMargin = new Style(typeof(Paragraph));
             noMargin.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(0)));
 
@@ -496,17 +497,21 @@ namespace SandcastleBuilder.WPF.Maml
                 Double.NaN, Double.NaN)));
 
             Style section = new Style(typeof(Section));
-            section.Setters.Add(new Setter(Section.FontFamilyProperty, new FontFamily("Verdana")));
-            section.Setters.Add(new Setter(Section.FontSizeProperty, 11.0));
+            section.Setters.Add(new Setter(Section.FontFamilyProperty,
+                new FontFamily("Segoe UI, Lucida Grande, Verdana")));
+            section.Setters.Add(new Setter(Section.FontSizeProperty, 12.0));
+
+            Style para = new Style(typeof(Paragraph));
+            para.Setters.Add(new Setter(Paragraph.FontSizeProperty, 12.0));
+            para.Setters.Add(new Setter(Paragraph.PaddingProperty, new Thickness(0, 0, 0, 10)));
+            para.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(0)));
 
             Style codeBlock = new Style(typeof(Section));
             codeBlock.Setters.Add(new Setter(Section.FontFamilyProperty,
                 new FontFamily("Consolas, Courier New, Courier")));
             codeBlock.Setters.Add(new Setter(Section.FontSizeProperty, 12.0));
-            codeBlock.Setters.Add(new Setter(Section.BackgroundProperty,
-                new SolidColorBrush(Color.FromRgb(0xEF, 0xEF, 0xF7))));
             codeBlock.Setters.Add(new Setter(Section.BorderBrushProperty, new SolidColorBrush(Colors.Black)));
-            codeBlock.Setters.Add(new Setter(Section.BorderThicknessProperty, new Thickness(0, 0.5, 0, 0)));
+            codeBlock.Setters.Add(new Setter(Section.BorderThicknessProperty, new Thickness(0.5)));
             codeBlock.Setters.Add(new Setter(Section.MarginProperty, new Thickness(0, 0, 0, 10)));
             codeBlock.Setters.Add(new Setter(Section.PaddingProperty, new Thickness(5)));
             codeBlock.Resources.Add(typeof(Paragraph), noMargin);
@@ -529,7 +534,8 @@ namespace SandcastleBuilder.WPF.Maml
             definition.Resources.Add(typeof(Paragraph), noTopMargin);
 
             Style list = new Style(typeof(List));
-            list.Setters.Add(new Setter(List.MarginProperty, new Thickness(0, 0, 0, 10)));
+            list.Setters.Add(new Setter(List.MarginProperty, new Thickness(0, 0, 0, 20)));
+            list.Setters.Add(new Setter(List.PaddingProperty, new Thickness(30, Double.NaN, Double.NaN, Double.NaN)));
 
             Style bottomMargin = new Style(typeof(Paragraph));
             bottomMargin.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(0, 0, 0, 10)));
@@ -539,25 +545,25 @@ namespace SandcastleBuilder.WPF.Maml
             listItem.Resources.Add(typeof(Paragraph), bottomMargin);
 
             Style title = new Style(typeof(Paragraph));
-            title.Setters.Add(new Setter(Paragraph.FontFamilyProperty, new FontFamily("Verdana")));
-            title.Setters.Add(new Setter(Paragraph.FontSizeProperty, 14.0));
-            title.Setters.Add(new Setter(Paragraph.FontWeightProperty, FontWeights.Bold));
+            title.Setters.Add(new Setter(Paragraph.FontFamilyProperty,
+                new FontFamily("Segoe UI, Lucida Grande, Verdana")));
+            title.Setters.Add(new Setter(Paragraph.FontWeightProperty, FontWeights.SemiBold));
+            title.Setters.Add(new Setter(Paragraph.FontSizeProperty, 20.0));
             title.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(Double.NaN, 10,
-                Double.NaN, 5)));
+                Double.NaN, 10)));
 
             Style alertTitle = new Style(typeof(Paragraph));
             alertTitle.Setters.Add(new Setter(Paragraph.FontWeightProperty, FontWeights.Bold));
             alertTitle.Setters.Add(new Setter(Paragraph.BackgroundProperty,
-                new SolidColorBrush(Color.FromRgb(0xEF, 0xEF, 0xF7))));
+                new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED))));
             alertTitle.Setters.Add(new Setter(Paragraph.ForegroundProperty,
-                new SolidColorBrush(Color.FromRgb(0, 0, 0x66))));
+                new SolidColorBrush(Color.FromRgb(0x63, 0x63, 0x63))));
             alertTitle.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(0, 10, 0, 0)));
-            alertTitle.Setters.Add(new Setter(Paragraph.PaddingProperty, new Thickness(5, 1, 5, 1)));
+            alertTitle.Setters.Add(new Setter(Paragraph.PaddingProperty, new Thickness(5)));
 
             Style alertBody = new Style(typeof(Section));
-            alertBody.Setters.Add(new Setter(Section.BackgroundProperty,
-                new SolidColorBrush(Color.FromRgb(0xF7, 0xF7, 0xFF))));
-            alertBody.Setters.Add(new Setter(Section.BorderBrushProperty, new SolidColorBrush(Colors.Black)));
+            alertBody.Setters.Add(new Setter(Section.BorderBrushProperty,
+                new SolidColorBrush(Color.FromRgb(0xDB, 0xDB, 0xDB))));
             alertBody.Setters.Add(new Setter(Section.BorderThicknessProperty, new Thickness(0, 0.5, 0, 0.5)));
             alertBody.Setters.Add(new Setter(Section.MarginProperty, new Thickness(0, 0, 0, 15)));
             alertBody.Setters.Add(new Setter(Section.PaddingProperty, new Thickness(4, 8, 4, 0)));
@@ -567,44 +573,41 @@ namespace SandcastleBuilder.WPF.Maml
             tableStyle.Setters.Add(new Setter(Table.MarginProperty, new Thickness(0, 5, 0, 5)));
 
             Style tableCell = new Style(typeof(TableCell));
-            tableCell.Setters.Add(new Setter(TableCell.PaddingProperty,
-                new Thickness(5)));
-            tableCell.Setters.Add(new Setter(TableCell.BackgroundProperty,
-                new SolidColorBrush(Color.FromRgb(0xF7, 0xF7, 0xFF))));
-            tableCell.Setters.Add(new Setter(TableCell.BorderThicknessProperty,
-                new Thickness(0, 0.5, 0, 0.5)));
+            tableCell.Setters.Add(new Setter(TableCell.PaddingProperty, new Thickness(5)));
+            tableCell.Setters.Add(new Setter(TableCell.BorderThicknessProperty, new Thickness(0, 0, 0, 0.5)));
             tableCell.Setters.Add(new Setter(TableCell.BorderBrushProperty,
-                new SolidColorBrush(Color.FromRgb(0xD5, 0xD5, 0xD3))));
+                new SolidColorBrush(Color.FromRgb(0xDB, 0xDB, 0xDB))));
 
             Style tableHeaderCell = new Style(typeof(TableCell), tableCell);
             tableHeaderCell.Setters.Add(new Setter(TableCell.BackgroundProperty,
-                new SolidColorBrush(Color.FromRgb(0xE7, 0xE7, 0xF7))));
+                new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED))));
 
             Style tableHeaderRow = new Style(typeof(TableRowGroup));
             tableHeaderRow.Setters.Add(new Setter(TableRowGroup.BackgroundProperty,
-                new SolidColorBrush(Color.FromRgb(0xEF, 0xEF, 0xF7))));
+                new SolidColorBrush(Color.FromRgb(0xED, 0xED, 0xED))));
             tableHeaderRow.Setters.Add(new Setter(TableRowGroup.ForegroundProperty,
-                new SolidColorBrush(Color.FromRgb(0, 0, 0x66))));
+                new SolidColorBrush(Color.FromRgb(0x63, 0x63, 0x63))));
             tableHeaderRow.Setters.Add(new Setter(TableRowGroup.FontWeightProperty, FontWeights.Bold));
             tableHeaderRow.Resources.Add(typeof(TableCell), tableHeaderCell);
 
             Style tableTitle = new Style(typeof(Paragraph));
+            tableTitle.Setters.Add(new Setter(Paragraph.FontSizeProperty, 12.0));
+            tableTitle.Setters.Add(new Setter(Paragraph.FontWeightProperty, FontWeights.Bold));
             tableTitle.Setters.Add(new Setter(Paragraph.ForegroundProperty,
                 new SolidColorBrush(Color.FromRgb(0, 0x33, 0x99))));
+            tableTitle.Setters.Add(new Setter(Paragraph.PaddingProperty, new Thickness(0)));
 
             Style math = new Style(typeof(Italic));
-            math.Setters.Add(new Setter(Italic.FontFamilyProperty, new FontFamily("Times New Roman")));
-            math.Setters.Add(new Setter(Italic.FontSizeProperty, 14.0));
 
             Style literal = new Style(typeof(Span));
             literal.Setters.Add(new Setter(Span.ForegroundProperty,
-                new SolidColorBrush(Color.FromRgb(0x8B, 0, 0))));
+                new SolidColorBrush(Color.FromRgb(0xCC, 0, 0))));
 
             Style quote = new Style(typeof(Paragraph));
             quote.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(40, 15, 40, 15)));
 
             Style glossaryDivisionTitle = new Style(typeof(Paragraph), title);
-            glossaryDivisionTitle.Setters.Add(new Setter(Paragraph.FontSizeProperty, 13.0));
+            glossaryDivisionTitle.Setters.Add(new Setter(Paragraph.FontSizeProperty, 12.0));
             glossaryDivisionTitle.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(Double.NaN, 10,
                 Double.NaN, 0)));
             glossaryDivisionTitle.Setters.Add(new Setter(Paragraph.BorderThicknessProperty,
@@ -613,9 +616,10 @@ namespace SandcastleBuilder.WPF.Maml
                 new SolidColorBrush(Colors.Black)));
 
             Style glossaryLetterBar = new Style(typeof(Paragraph));
-            glossaryLetterBar.Setters.Add(new Setter(Paragraph.FontSizeProperty, 10.0));
+            glossaryLetterBar.Setters.Add(new Setter(Paragraph.FontSizeProperty, 12.0));
 
             Style glossaryLetterTitle = new Style(typeof(Paragraph), title);
+            glossaryLetterTitle.Setters.Add(new Setter(Paragraph.FontSizeProperty, 14.0));
             glossaryLetterTitle.Setters.Add(new Setter(Paragraph.ForegroundProperty,
                 new SolidColorBrush(Colors.Gray)));
 
@@ -624,12 +628,15 @@ namespace SandcastleBuilder.WPF.Maml
                 Double.NaN, Double.NaN, Double.NaN)));
 
             Style relatedTopicTitle = new Style(typeof(Paragraph));
-            relatedTopicTitle.Setters.Add(new Setter(Paragraph.FontSizeProperty, 12.0));
+            relatedTopicTitle.Setters.Add(new Setter(Paragraph.FontFamilyProperty,
+                new FontFamily("Segoe UI Semibold, Segoe UI, Lucida Grande, Verdana")));
+            relatedTopicTitle.Setters.Add(new Setter(Paragraph.FontSizeProperty, 13.0));
             relatedTopicTitle.Setters.Add(new Setter(Paragraph.FontWeightProperty, FontWeights.Bold));
             relatedTopicTitle.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(Double.NaN, 5,
                 Double.NaN, 5)));
 
             document.Resources.Add(typeof(Section), section);
+            document.Resources.Add(typeof(Paragraph), para);
             document.Resources.Add(typeof(List), list);
             document.Resources.Add(typeof(ListItem), listItem);
             document.Resources.Add(typeof(Table), tableStyle);

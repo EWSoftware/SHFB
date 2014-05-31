@@ -23,13 +23,13 @@ missing documentation items as well.</para>
 &lt;!-- IntelliSense component configuration.  This must appear
      before the TransformComponent. --&gt;
 &lt;component id="IntelliSense Component"&gt;
- &lt;!-- Output options (optional)
-      Attributes:
-         Include Namespaces (false by default)
-         Namespaces filename ("Namespaces" if not specified or empty)
-         Directory (current folder if not specified or empty) --&gt;
- &lt;output includeNamespaces="false" namespacesFile="Namespaces"
-     folder="{@OutputFolder}" /&gt;
+  &lt;!-- Output options (optional)
+       Attributes:
+          Include Namespaces (false by default)
+          Namespaces filename ("Namespaces" if not specified or empty)
+          Directory (current folder if not specified or empty) --&gt;
+  &lt;output includeNamespaces="false" namespacesFile="Namespaces"
+      folder="{@OutputFolder}" /&gt;
 &lt;/component&gt;
 </code>
 

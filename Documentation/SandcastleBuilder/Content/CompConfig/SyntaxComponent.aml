@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="3127217a-9b11-424e-aeb4-b88ca4569bad" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The Syntax Component is primarily used to insert syntax sections into API reference topics.  In
+addition, it is used by presentation styles that support code snippet grouping to group and sort code snippets
+into tabbed sections that match the syntax section order.  As each tab is clicked, the same language tab in the
+syntax section and the other code snippet groups is also selected keeping them all in synch.  By default, the
+grouping and sorting is performed based on the sort order defined by the syntax generators.  By adding this
+component to your project you can change the order of the languages within the syntax section and code snippet
+groups.  Adding the component to your project will also allow you to change the settings of each syntax generator
+if they have any configurable options.</para>
+
+			<alert class="tip">
+				<para>If you change the sort order of the languages, use the the <codeInline>defaultLangauge</codeInline>
+transformation argument found on the <ui>Transform Args</ui> property page to set the default language selected
+so that it matches the first language in your chosen order.</para>
+			</alert>
+		</introduction>
+
+		<section>
+			<content>
+				<para>The following is the default configuration for the Syntax Component. It should be inserted into the
+configuration file before the <codeInline>TransformComponent</codeInline>.  It can be inserted into the
+configuration file for conceptual builds as well as reference builds.  In conceptual builds, no syntax sections
+are inserted but it will allow for grouping and sorting of code snippets.</para>
+
+<code language="xml" title="Example Configuration">
+&lt;component id="Syntax Component"&gt;
+	&lt;!-- The input element and the output element. --&gt;
+	&lt;syntax input="/document/reference" output="/document/syntax" /&gt;
+	&lt;!-- The list of syntax generators to use --&gt;
+	&lt;generators&gt;
+		{@SyntaxFilters}
+	&lt;/generators&gt;
+	&lt;!-- Group snippets for languages in the syntax generator set within this element --&gt;
+	&lt;containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="false"
+	groupingEnabled="{@CodeSnippetGrouping}" /&gt;
+&lt;/component&gt;
+</code>
+
+				<para>The example given above is taken from the Sandcastle Help File Builder's configuration file.  When
+used with it, the replacement tag <codeInline>{@SyntaxFilters}</codeInline> is used to insert the selected syntax
+filters from the project.  If using the component in your own build scripts, replace the tag with the necessary
+<codeInline>generator</codeInline> elements for each selected syntax filter.</para>
+
+				<para>When added to a project and the syntax generator order is changed or configuration options for a
+syntax generator are edited, an additional <codeInline>configurations</codeInline> element is added that defines
+the order of the syntax filters and their custom configuration if any.</para>
+
+				<para>The <codeInline>containerElement</codeInline> element defines the name of the container element
+that will hold the grouped code snippets.  The XSL transformations will use this name to find the grouped
+snippets and transform them into tabbed sections.  The <codeInline>addNoExampleTabs</codeInline> attribute
+defines whether or not to insert "No Example" tabs into groups that do not contain examples for all languages
+found in the syntax section.  The default is true to insert them.  When selected, they display a message stating
+that the selected language has no example or is not supported.  The <codeInline>includeOnSingleSnippets</codeInline>
+attribute specifies whether or not to add "No Example" tabs to groups that only contain a single language (not
+including standalone snippets that specify a title).  The default is false to render single language snippets as
+standalone groups.  The <codeInline>groupingEnabled</codeInline> attribute specifies whether or not the grouping
+behavior is enabled.  The help file builder uses the <codeInline>{@CodeSnippetGrouping}</codeInline> replacement
+tag to set the option based on the selected presentation style.  The presentation style must support code snippet
+grouping in order for the grouped elements to be handled correctly by the XSL transformations.</para>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

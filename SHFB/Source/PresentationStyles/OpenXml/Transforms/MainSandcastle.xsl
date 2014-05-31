@@ -412,8 +412,10 @@
 	</xsl:template>
 
 	<xsl:template match="templates" name="t_templates">
-		<xsl:call-template name="t_putSectionInclude">
-			<xsl:with-param name="p_titleInclude"	select="'title_templates'"/>
+		<xsl:call-template name="t_putSubSection">
+			<xsl:with-param name="p_title">
+				<include item="title_templates"/>
+			</xsl:with-param>
 			<xsl:with-param name="p_content">
 				<xsl:for-each select="template">
 					<xsl:variable name="templateName" select="@name"/>

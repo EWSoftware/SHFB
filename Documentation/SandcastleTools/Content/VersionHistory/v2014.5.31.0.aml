@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7dced1d0-b471-4252-be70-3727e058b41b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.5.31.0.">2</autoOutline>
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<para>This release completes removal of the branding transformations and implements the new VS2013
+presentation style that utilizes the new lightweight website format.  Several breaking changes had to be made in
+order to support it properly.  You will need to rebuild any custom plug-ins, components, and presentation styles
+against the latest version of the Sandcastle and Help File Builder assemblies.</para>
+			</content>
+
+			<sections>
+				<section address="BuildAssemblerBreaks">
+					<title>BuildAssembler and Build Components</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Modified the syntax generator components so that they write out a style ID as well as the
+language name.  This allows better handling of grouped language elements without having to modify the XSL
+transformations for custom languages.</para>
+							</listItem>
+
+							<listItem>
+								<para>Each syntax generator now has a unique style ID. Third-party generators should also ensure
+they are using a unique style ID rather than the existing ones or the previously suggested default of "cs".
+Using an existing one such as "cs" will cause the custom syntax section to be associated with the other
+language's code snippets when grouped.</para>
+							</listItem>
+
+							<listItem>
+								<para>The language name and style ID on the syntax generators must now be set by the syntax
+generator factory when it constructs an instance so that the values do not have to be on the configuration
+elements in the <application>BuildAssembler</application> configuration file.  This change was required to better
+support grouping and sorting by the <codeInline>SyntaxComponent</codeInline> and eliminate another location where
+the information had to be duplicated unnecessarily.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a warning to the <codeInline>BrandingComponent</codeInline> to note that its use has
+been deprecated and that it will be removed in a future release. You will only see this if you cloned the VS2010
+or VS2013 presentation style from a prior release.  Update your custom style to match the latest release as soon
+as possible.  It is well worth the effort.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+
+				<section address="PresentationStyleBreaks">
+					<title>Presentation Styles</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Moved the web content from the standalone GUI to the presentation style project.  It is now
+in a presentation style folder called <localUri>.\LegacyWeb</localUri>.  If you have custom presentation styles
+that use the prior web content, update them to use the new folder location.</para>
+							</listItem>
+						</list>
+					</content>
+				</section>
+
+			</sections>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes in This Release</title>
+			<content />
+
+			<sections>
+				<section address="Documentation">
+					<title>Documentation</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Updated all documentation projects to use the new VS2013 presentation style.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a topic to the XML Comments Guide for the section element <codeInline>revisionHistory</codeInline>
+contributed by THLucas.</para>
+							</listItem>
+						</list>
+					</content>
+				</section>
+
+				<section address="BuildAssembler">
+					<title>BuildAssembler and Build Components</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Fixed the <codeInline>SqlDictionary</codeInline> class so that it handles nulls correctly
+for unresolved member IDs in the SQL Server cached build components.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added the <codeInline>LanguageSpecificTextComponent</codeInline> to handle
+language-specific text element conversion from <codeInline>span</codeInline> to <codeInline>script</codeInline>
+elements for the VS2010 and later presentation styles.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added the <codeInline>AdditionalHeaderResourcesComponent</codeInline> to handle insertion
+of additional metadata, style sheets, and scripts in the topics based on the help file format.  This allows for
+changes to be made on a format by format basis to give a better look to the rendered content such as adjusting
+the positioning of elements that may differ in the various help viewers due to variations in browser and CSS
+versions supported.  Believe it or not, Help 1 and MS Help Viewer default to the IE7 rendering engine unless
+forced to use a higher version via metadata.</para>
+							</listItem>
+
+							<listItem>
+								<para>Updated the <codeInline>SyntaxComponent</codeInline> to group and sort code snippets based
+on the order of the defined syntax generators.  The sort order and whether or not to add "No Example" tabs can be
+configured in the <codeInline>SyntaxComponent</codeInline>'s configuration dialog.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a new <codeInline>TransformingTopicEventArgs</codeInline> class and updated the
+<codeInline>TransformComponent</codeInline> to raise a build event using the event arguments just prior to
+transforming the topic.  This allows other build components to alter the document XML prior to the XSL
+transformation.  The <codeInline>SyntaxComponent</codeInline> uses this event to group and sort the code snippets
+at that time since any other components that ran after it will have added their snippets by that point and we can
+be sure that it will find and handle them all.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added code the the MSDN resolver to shut off further lookups and report failures due to the
+service being down.  This prevents it from reporting all failures as missing content IDs.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+
+				<section address="MRefBuilder">
+					<title>MRefBuilder</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Added support for Windows Phone 8.1 (Silverlight and Windows Store Apps) frameworks.
+Thanks to Morten Nielsen for the configuration settings.</para>
+							</listItem>
+						</list>
+					</content>
+				</section>
+
+				<section address="PresentationStyles">
+					<title>Presentation Styles</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Removed all branding transformations and use of the branding component from the VS2010 and
+VS2013 presentation styles. The presentation styles now handle all aspects of topic generation.</para>
+							</listItem>
+
+							<listItem>
+								<para>Finished the VS2013 style which is now a blend of the best parts of the MSDN and Visual
+Studio website styles and implemented the lightweight table of contents based on Sam Harwell's code.</para>
+							</listItem>
+
+							<listItem>
+								<para>Implemented a search feature in the new VS2013 lightweight website output that works with
+modified versions of the old ASP.NET and PHP server-side search pages and, if they are not available, a full
+client-side script implementation. Although not optimal for large sites, the client-side search works quite well for
+sites that do not support ASP.NET or PHP.</para>
+							</listItem>
+
+							<listItem>
+								<para>Reworked how the tab sets and language-specific text elements work to allow for missing
+languages in the VS2010 and VS2013 presentation styles.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed up handling of XAML syntax sections in the Open XML, VS2010, and VS2013 presentation
+styles.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed the presentation styles so that they show explicitly implemented interface member
+names even if the parent type is unresolved.</para>
+							</listItem>
+
+							<listItem>
+								<para>Made various updates and fixes to the VS2010 and VS2013 presentation styles to ensure they
+render the best possible output in each of the different help file formats.</para>
+							</listItem>
+
+							<listItem>
+								<para>Completely rewrote the code snippet grouping support to present the code snippets in a
+logical manner based on their positioning within a MAML topic or XML comments and took steps to make the grouping
+and default language easily configurable without having to change the presentation style transformations or
+scripts.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a new <codeInline>defaultLanguage</codeInline> transform component argument to the
+VS2010 and VS2013 presentation styles.  This allows you to define the default language displayed in the help
+topics on a project by project basis.  The default is "cs" for C#.  The <codeInline>SyntaxComponent</codeInline>
+allows the order of the syntax components to be defined via its configuration dialog so that the first tab can be
+set to match the default language when not C#.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added support for "No Example" tabs in code snippet groups.  These appear for missing
+languages in grouped code snippets.  For example, if the syntax section shows C#, VB.NET, C++ and F# but a code
+example only shows C# and VB.NET, tabs for C++ and F# will be added to the group with a default message noting
+that an example is unavailable or is not supported.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added an <codeInline>IsDeprecated</codeInline> property to
+<codeInline>PresentationStyleExportAttribute</codeInline>.  The Help File property page uses this to sort
+deprecated presentation styles to the end of the list.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a new <codeInline>PlugInDependencies</codeInline> presentation style property which
+allows a presentation style to define a list of plug-ins on which it depends so that they are added to the build
+with a default configuration if not already included in the project.  The new VS2013 presentation style uses this
+to add the lightweight website style plug-in to the project when built.</para>
+							</listItem>
+
+							<listItem>
+								<para>Simplified the VS2013 style sheet to include only the necessary elements.  This gives a
+more consistent look to the topics across all help formats.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a new "Code Example" icon to the member list pages in the VS2010 and VS2013
+presentation styles to show when a type or member's comments contain code examples.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added support to the VS2005, VS2010, and VS2013 presentation styles for the
+<codeInline>revisionHistory</codeInline> element contributed by THLucas.</para>
+							</listItem>
+
+							<listItem>
+								<para>Deprecated the VS2005 presentation style.  It will not receive any further enhancements.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+			</sections>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

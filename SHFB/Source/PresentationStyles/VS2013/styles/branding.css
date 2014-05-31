@@ -207,7 +207,7 @@ td.logoColumnAbove {
 	vertical-align: middle;
 }
 span.selflink {
-	font-weight: bold;
+	color: #000066;
 }
 div.preliminary {
 	margin-top: 1em;
@@ -232,6 +232,7 @@ div.caption {
 /* Collapsible region styles */
 .collapsibleAreaRegion {
 	margin-top: 15px;
+	margin-bottom: 15px;
 }
 .collapseToggle {
 	padding-right: 5px;

@@ -25,7 +25,7 @@ namespace Microsoft.Ddue.Tools.Snippets
     /// <summary>
     /// This is used to track a single code snippet in the <see cref="SyntaxComponent"/>
     /// </summary>
-    public class CodeSnippet
+    public sealed class CodeSnippet
     {
         #region Private data members
         //=====================================================================
