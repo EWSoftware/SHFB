@@ -173,7 +173,7 @@
 	<item id="header_revHistoryDate">Date</item>
 	<item id="header_revHistoryVersion">Version</item>
 	<item id="header_revHistoryDescription">Description</item>
-	
+
   <!-- member list table titles -->
 	<item id="tableTitle_class">Klassen</item>
 	<item id="tableTitle_structure">Strukturen</item>

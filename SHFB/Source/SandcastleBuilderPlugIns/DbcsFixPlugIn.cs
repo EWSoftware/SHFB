@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 08/22/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,10 +20,12 @@
 // 1.8.0.0  07/15/2008  EFW  Updated for use with MSBuild project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
 // -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+//          07/31/2014  EFW  Made the localize app optional
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -46,7 +48,7 @@ namespace SandcastleBuilder.PlugIns
     /// to run the HTML Help 1 compiler using the correct locale.</remarks>
     [HelpFileBuilderPlugInExport("DBCS Fix for CHM Builds", IsConfigurable = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nSBAppLocale is Copyright \xA9 " +
-      "2005-2013 Steel Bytes, All Rights Reserved",
+      "2005-2014 Steel Bytes, All Rights Reserved",
       Description = "This plug-in is used to modify the HTML files and alter the build so as to overcome the " +
         "encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.")]
     public sealed class DbcsFixPlugIn : IPlugIn
@@ -128,15 +130,20 @@ namespace SandcastleBuilder.PlugIns
             if(node != null)
                 sbAppLocalePath = node.GetAttribute("path", String.Empty).Trim();
 
-            if(String.IsNullOrEmpty(sbAppLocalePath))
-                throw new BuilderException("DFP0002", "A path to the Steel Bytes App Locale tool is required");
+            if(String.IsNullOrWhiteSpace(sbAppLocalePath))
+            {
+                builder.ReportWarning("DFP0002", "A path to the Steel Bytes App Locale tool was not specified " +
+                    "and it will not be used for this build.");
+            }
+            else
+            {
+                // If relative, the path is relative to the project folder
+                sbAppLocalePath = FilePath.RelativeToAbsolutePath(builder.ProjectFolder,
+                    builder.TransformText(sbAppLocalePath));
 
-            // If relative, the path is relative to the project folder
-            sbAppLocalePath = FilePath.RelativeToAbsolutePath(builder.ProjectFolder,
-                builder.TransformText(sbAppLocalePath));
-
-            if(!File.Exists(sbAppLocalePath))
-                throw new BuilderException("DFP0003", "Unable to locate SBAppLocale tool at " + sbAppLocalePath);
+                if(!File.Exists(sbAppLocalePath))
+                    throw new BuilderException("DFP0003", "Unable to locate SBAppLocale tool at " + sbAppLocalePath);
+            }
 
             // If not building HTML Help 1, there's nothing to do
             if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0)
@@ -161,6 +168,17 @@ namespace SandcastleBuilder.PlugIns
             // Localize the content when extracting keyword and TOC info
             if(context.BuildStep == BuildStep.ExtractingHtmlInfo)
             {
+                // Since we need to localize all of the content, we must manually copy the presentation style
+                // Help 1 content which isn't normally copied until after the current build step.  This assumes
+                // that none of the replacement tags in the standard content depend on information generated in
+                // this step (i.e. it wouldn't work for website output in the older presentation styles which
+                // rely on the WebTOC.xml file for the index page).
+                builder.ReportProgress("Copying Help 1 presentation style content ready for localization");
+
+                builder.PresentationStyle.CopyHelpContent(HelpFileFormats.HtmlHelp1, String.Format(
+                    CultureInfo.InvariantCulture, @"{0}Output\{1}", builder.WorkingFolder, HelpFileFormats.HtmlHelp1),
+                    builder.ReportProgress, (name, source, dest) => builder.TransformTemplate(name, source, dest));
+
                 builder.ReportProgress("Adding DBCS Fix localization folder");
 
                 projectFile = builder.WorkingFolder + "ExtractHtmlInfo.proj";
@@ -203,7 +221,7 @@ namespace SandcastleBuilder.PlugIns
             if(property == null)
                 throw new BuilderException("DFP0006", "Unable to locate LocalizeApp element in project file");
 
-            property.InnerText = sbAppLocalePath;
+            property.InnerText = (sbAppLocalePath ?? String.Empty);
             project.Save(projectFile);
         }
         #endregion

@@ -28,7 +28,8 @@
 	<xsl:variable name="g_abstractSummary" select="/document/comments/summary"/>
 	<xsl:variable name="g_hasSeeAlsoSection"
 		select="boolean((count(/document/comments//seealso[not(ancestor::overloads)] |
-		/document/comments/conceptualLink | /document/reference/elements/element/overloads//seealso) > 0) or
+		/document/comments/conceptualLink | /document/reference/elements/element/overloads//seealso |
+		/document/reference/elements/element/overloads/conceptualLink) > 0) or
 		($g_apiTopicGroup='type' or $g_apiTopicGroup='member' or $g_apiTopicGroup='list'))"/>
 	<xsl:variable name="g_hasReferenceLinks"
 		select="boolean((count(/document/comments//seealso[not(ancestor::overloads) and not(@href)] |
@@ -36,7 +37,8 @@
 		($g_apiTopicGroup='type' or $g_apiTopicGroup='member' or $g_apiTopicGroup='list'))"/>
 	<xsl:variable name="g_hasOtherResourcesLinks"
 		select="boolean((count(/document/comments//seealso[not(ancestor::overloads) and @href] |
-		/document/comments/conceptualLink | /document/reference/elements/element/overloads//seealso[@href]) > 0))"/>
+		/document/comments/conceptualLink | /document/reference/elements/element/overloads//seealso[@href] |
+		/document/reference/elements/element/overloads/conceptualLink) > 0))"/>
 
 	<!-- ============================================================================================
 	Body
@@ -837,8 +839,7 @@
 								<xsl:for-each select="/document/comments//seealso[not(ancestor::overloads) and not(@href)] | /document/reference/elements/element/overloads//seealso[not(@href)]">
 									<div class="seeAlsoStyle">
 										<xsl:apply-templates select=".">
-											<xsl:with-param name="displaySeeAlso"
-																			select="true()"/>
+											<xsl:with-param name="displaySeeAlso" select="true()"/>
 										</xsl:apply-templates>
 									</div>
 								</xsl:for-each>
@@ -854,13 +855,12 @@
 								<xsl:for-each select="/document/comments//seealso[not(ancestor::overloads) and @href] | /document/reference/elements/element/overloads//seealso[@href]">
 									<div class="seeAlsoStyle">
 										<xsl:apply-templates select=".">
-											<xsl:with-param name="displaySeeAlso"
-																			select="true()"/>
+											<xsl:with-param name="displaySeeAlso" select="true()"/>
 										</xsl:apply-templates>
 									</div>
 								</xsl:for-each>
 								<!-- Copy conceptualLink elements as-is -->
-								<xsl:for-each select="/document/comments/conceptualLink">
+								<xsl:for-each select="/document/comments/conceptualLink | /document/reference/elements/element/overloads/conceptualLink">
 									<div class="seeAlsoStyle">
 										<xsl:copy-of select="."/>
 									</div>
@@ -1172,14 +1172,6 @@
 	<xsl:template match="note" name="t_note">
 		<xsl:call-template name="t_putAlert">
 			<xsl:with-param name="p_alertClass" select="@type"/>
-		</xsl:call-template>
-	</xsl:template>
-
-	<!-- ======================================================================================== -->
-
-	<xsl:template name="t_codelangAttributes">
-		<xsl:call-template name="t_mshelpCodelangAttributes">
-			<xsl:with-param name="snippets" select="/document/comments/example//code"/>
 		</xsl:call-template>
 	</xsl:template>
 

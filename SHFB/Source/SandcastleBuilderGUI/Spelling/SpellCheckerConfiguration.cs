@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckerConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 06/13/2014
 // Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,9 +13,9 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.8.0  05/11/2013  EFW  Created the code
+// 05/11/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -64,6 +64,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <summary>
         /// This is used to get or set the default language for the spell checker
         /// </summary>
+        /// <remarks>The default is to use the English US dictionary (en-US)</remarks>
         public static CultureInfo DefaultLanguage { get; set; }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// This is used to get or set whether or not to ignore XML elements in the text being spell checked
         /// (text within '&amp;lt;' and '&amp;gt;').
         /// </summary>
-        /// <value>The default is true</value>
+        /// <value>This is true by default</value>
         public static bool IgnoreXmlElementsInText { get; set; }
 
 
@@ -131,21 +132,25 @@ namespace SandcastleBuilder.Gui.Spelling
                 // This is supplied with the application and is always available
                 yield return new CultureInfo("en-US");
 
-                foreach(string dictionary in Directory.EnumerateFiles(ConfigurationFilePath, "??_??.dic"))
-                {
-                    try
+                // Culture names can vary in format (en-US, arn, az-Cyrl, az-Cyrl-AZ, az-Latn, az-Latn-AZ, etc.)
+                // so look for any affix files with a related dictionary file and see if they are valid cultures.
+                // If so, we'll take them.
+                foreach(string dictionary in Directory.EnumerateFiles(ConfigurationFilePath, "*.aff"))
+                    if(File.Exists(Path.ChangeExtension(dictionary, ".dic")))
                     {
-                        info = new CultureInfo(Path.GetFileNameWithoutExtension(dictionary).Replace("_", "-"));
-                    }
-                    catch(CultureNotFoundException )
-                    {
-                        // Ignore the file if not found
-                        info = null;
-                    }
+                        try
+                        {
+                            info = new CultureInfo(Path.GetFileNameWithoutExtension(dictionary).Replace("_", "-"));
+                        }
+                        catch(CultureNotFoundException )
+                        {
+                            // Ignore filenames that are not cultures
+                            info = null;
+                        }
 
-                    if(info != null)
-                        yield return info;
-                }
+                        if(info != null)
+                            yield return info;
+                    }
             }
         }
 
@@ -170,7 +175,8 @@ namespace SandcastleBuilder.Gui.Spelling
         {
             get
             {
-                return new[] { "altText", "Caption", "Content", "lead", "title", "term", "Text", "ToolTip" };
+                return new[] { "altText", "Caption", "Content", "Header", "lead", "title", "term", "Text",
+                    "ToolTip" };
             }
         }
         #endregion

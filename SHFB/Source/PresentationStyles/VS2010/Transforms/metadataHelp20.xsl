@@ -47,12 +47,10 @@
 				</xsl:choose>
 
 				<!-- Assembly Version-->
-				<xsl:if test="$g_apiGroup != 'namespace'">
-					<MSHelp:Attr Name="AssemblyVersion"
-											 Value="{/document/reference/containers/library/assemblydata/@version}" />
+				<xsl:if test="$g_apiGroup != 'namespace' and $g_apiGroup != 'namespaceGroup'">
+					<MSHelp:Attr Name="AssemblyVersion" Value="{/document/reference/containers/library/assemblydata/@version}" />
 				</xsl:if>
 
-				<xsl:call-template name="t_codelangAttributes" />
 				<xsl:call-template name="t_versionMetadata" />
 				<xsl:call-template name="t_authoredMetadata" />
 			</xml>
@@ -555,27 +553,26 @@
 	============================================================================================= -->
 
 	<xsl:template name="t_mshelpDevlangAttributes">
-		<!-- first insert a DevLang attr for each language in the $languages arg passed to the transform -->
+		<!-- First insert a DevLang attribute for each language in the $languages argument passed to the transform -->
 		<xsl:for-each select="$languages/language">
 			<xsl:variable name="v_devlang">
 				<xsl:call-template name="t_codeLangName">
-					<xsl:with-param name="p_codeLang"
-													select="@name"/>
+					<xsl:with-param name="p_codeLang" select="@name"/>
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:if test="normalize-space($v_devlang)!=''">
-				<MSHelp:Attr Name="DevLang"
-										 Value="{$v_devlang}" />
+				<MSHelp:Attr Name="DevLang">
+					<includeAttribute name="Value" item="metaLang_{$v_devlang}"/>
+				</MSHelp:Attr>
 			</xsl:if>
 		</xsl:for-each>
 
-		<!-- make a list of the languages that have already been included via $languages -->
+		<!-- Make a list of the languages that have already been included via $languages -->
 		<xsl:variable name="languagesList">
 			<xsl:for-each select="$languages/language">
 				<xsl:variable name="v_devlang">
 					<xsl:call-template name="t_codeLangName">
-						<xsl:with-param name="p_codeLang"
-														select="@name"/>
+						<xsl:with-param name="p_codeLang" select="@name"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:if test="normalize-space($v_devlang)!=''">
@@ -585,34 +582,33 @@
 			</xsl:for-each>
 		</xsl:variable>
 
-		<!-- add DevLang attr for any additional languages referred to in the topic's snippet and code nodes -->
+		<!-- Add DevLang attribute for any additional languages referred to in the topic's snippet and code nodes -->
 		<xsl:for-each select="//*[@language]">
 			<xsl:if test="not(@language=preceding::*/@language)">
 				<xsl:variable name="v_devlang">
 					<xsl:call-template name="t_codeLangName">
-						<xsl:with-param name="p_codeLang"
-														select="@language"/>
+						<xsl:with-param name="p_codeLang" select="@language"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="normalize-space($v_devlang)=''"/>
 					<xsl:when test="contains($languagesList,concat($v_devlang,';'))"/>
 					<xsl:otherwise>
-						<MSHelp:Attr Name="DevLang"
-												 Value="{$v_devlang}" />
+						<MSHelp:Attr Name="DevLang">
+							<includeAttribute name="Value" item="metaLang_{$v_devlang}"/>
+						</MSHelp:Attr>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
 		</xsl:for-each>
 
-		<!-- extend the list of languages that have already been included -->
+		<!-- Extend the list of languages that have already been included -->
 		<xsl:variable name="languagesList2">
 			<xsl:value-of select="$languagesList"/>
 			<xsl:for-each select="//*[@language]">
 				<xsl:variable name="v_devlang">
 					<xsl:call-template name="t_codeLangName">
-						<xsl:with-param name="p_codeLang"
-														select="@language"/>
+						<xsl:with-param name="p_codeLang" select="@language"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:if test="normalize-space($v_devlang)!=''">
@@ -622,21 +618,21 @@
 			</xsl:for-each>
 		</xsl:variable>
 
-		<!-- add DevLang attr for any additional languages referred to in the topic's syntax blocks -->
+		<!-- Add DevLang attribute for any additional languages referred to in the topic's syntax blocks -->
 		<xsl:for-each select="/document/syntax/div[@codeLanguage and not(div[@class='nonXamlAssemblyBoilerplate'])]">
 			<xsl:if test="not(@codeLanguage=preceding::*/@codeLanguage)">
 				<xsl:variable name="v_devlang">
 					<xsl:call-template name="t_codeLangName">
-						<xsl:with-param name="p_codeLang"
-														select="@codeLanguage"/>
+						<xsl:with-param name="p_codeLang" select="@codeLanguage"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="normalize-space($v_devlang)=''"/>
 					<xsl:when test="contains($languagesList2,concat($v_devlang,';'))"/>
 					<xsl:otherwise>
-						<MSHelp:Attr Name="DevLang"
-												 Value="{$v_devlang}" />
+						<MSHelp:Attr Name="DevLang">
+							<includeAttribute name="Value" item="metaLang_{$v_devlang}"/>
+						</MSHelp:Attr>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>

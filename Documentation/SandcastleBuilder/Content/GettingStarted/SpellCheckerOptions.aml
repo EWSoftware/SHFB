@@ -100,7 +100,8 @@ dictionaries for other languages. To make them available to the spell checker, d
 							<linkAlternateText>dictionary page</linkAlternateText>
 							<linkUri>http://extensions.services.openoffice.org/dictionary</linkUri>
 							<linkTarget>_blank</linkTarget>
-						</externalLink> and download the dictionaries for the languages you need.</para>
+						</externalLink> and download the dictionaries for the languages you need.  Dictionaries for
+OpenOffice versions 2, 3, and 4 are supported.</para>
 					</listItem>
 
 					<listItem>
@@ -130,15 +131,17 @@ Help File Builder</localUri></para>
 					<listItem>
 						<para>Note that the <localUri>.aff</localUri> and <localUri>.dic</localUri> files must be named after
 the language they represent with no other text in the filename and the language parts must be separated with an
-underscore. If necessary rename the files to match the required format. For example:</para>
+underscore or a dash. If necessary rename the files to match the required format. For example:</para>
 
 						<list class="bullet">
 							<listItem>
-								<para><localUri>de_DE.aff</localUri> and <localUri>de_DE.dic</localUri> for German.</para>
+								<para><localUri>de_DE.aff</localUri> and <localUri>de_DE.dic</localUri> or
+<localUri>de-DE.aff</localUri> and <localUri>de-DE.dic</localUri> for German.</para>
 							</listItem>
 
 							<listItem>
-								<para><localUri>fr_FR.aff</localUri> and <localUri>fr_FR.dic</localUri> for French.</para>
+								<para><localUri>sr_Latn.aff</localUri> and <localUri>sr_Latn.dic</localUri> or
+<localUri>sr-Latn.aff</localUri> and <localUri>sr-Latn.dic</localUri> for Serbian (Latin).</para>
 							</listItem>
 
 						</list>
@@ -155,6 +158,13 @@ standalone GUI.</para>
 able to select the related language on the Spell Checking tab of the User Preferences dialog box.</para>
 					</listItem>
 				</list>
+
+				<alert class="note">
+					<para>After installing the custom dictionary files, if the language does not appear in the
+configuration dialog, the files may not be named correctly.  If the language is selected but spelling is still
+occurring in English, there may be a problem with one or both of the dictionary files.  Please post a message on
+the Help File Builder's discussion board asking for help if you are unable to resolve the issue.</para>
+				</alert>
 			</content>
 		</section>
 		

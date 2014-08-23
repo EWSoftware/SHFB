@@ -22,7 +22,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- These are needed to properly build the project and item templates and include them in the VSIX
-         container ready for installation.  Deployment is suppresssed since we are using VSTemplate files. -->
+         container ready for installation.  Deployment is suppressed since we are using VSTemplate files. -->
     <VsTemplateLanguage>SHFBProject</VsTemplateLanguage>
     <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);GetVsixTemplateItems</GetVsixSourceItemsDependsOn>
     <DeployVSTemplates>false</DeployVSTemplates>
@@ -436,7 +436,11 @@
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
+		<ZipProject Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
+			<RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+			<OutputSubPath>Documentation</OutputSubPath>
+		</ZipProject>
+		<ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -500,7 +504,11 @@
       <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
+		<ZipProject Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
+			<RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+			<OutputSubPath>Documentation</OutputSubPath>
+		</ZipProject>
+		<!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
          in the Add New Item dialog box. -->
     <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
       <OutputSubPath>Other Content</OutputSubPath>

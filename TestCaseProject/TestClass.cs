@@ -12,6 +12,12 @@ namespace TestDoc
     public class TestClass
     {
         #region Fields
+
+        /// <summary>
+        /// A test constant
+        /// </summary>
+        public const int TestConstant = 1234;
+
         /// <summary>
         /// A public string field
         /// </summary>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 07/31/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,9 +13,10 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.5  02/18/2008  EFW  Created the code
+// 02/18/2008  EFW  Created the code
+// 07/31/2014  EFW  Made the localize app optional
 //===============================================================================================================
 
 using System;
@@ -33,7 +34,15 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     internal partial class DbcsFixConfigDlg : Form
     {
-        private XmlDocument config;     // The configuration
+        #region Private data members
+        //=====================================================================
+
+        private XmlDocument config;
+
+        #endregion
+
+        #region Properties
+        //=====================================================================
 
         /// <summary>
         /// This is used to return the configuration information
@@ -42,6 +51,10 @@ namespace SandcastleBuilder.PlugIns
         {
             get { return config.OuterXml; }
         }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
         /// Constructor
@@ -67,9 +80,14 @@ namespace SandcastleBuilder.PlugIns
                 return;
 
             node = root.SelectSingleNode("sbAppLocale");
+
             if(node != null)
                 txtSBAppLocalePath.Text = node.GetAttribute("path", String.Empty);
         }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
 
         /// <summary>
         /// Close without saving
@@ -86,8 +104,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void project_LinkClicked(object sender,
-          LinkLabelLinkClickedEventArgs e)
+        private void project_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -131,25 +148,13 @@ namespace SandcastleBuilder.PlugIns
         {
             XmlAttribute attr;
             XmlNode root, node;
-            bool isValid = true;
 
             txtSBAppLocalePath.Text = txtSBAppLocalePath.Text.Trim();
-            epErrors.Clear();
-
-            if(txtSBAppLocalePath.Text.Length == 0)
-            {
-                epErrors.SetIconPadding(txtSBAppLocalePath, 35);
-                epErrors.SetError(txtSBAppLocalePath, "The path to the tool is required");
-                isValid = false;
-            }
-
-            if(!isValid)
-                return;
 
             // Store the changes
             root = config.SelectSingleNode("configuration");
-
             node = root.SelectSingleNode("sbAppLocale");
+
             if(node == null)
             {
                 node = config.CreateNode(XmlNodeType.Element, "sbAppLocale", null);
@@ -164,5 +169,6 @@ namespace SandcastleBuilder.PlugIns
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+        #endregion
     }
 }

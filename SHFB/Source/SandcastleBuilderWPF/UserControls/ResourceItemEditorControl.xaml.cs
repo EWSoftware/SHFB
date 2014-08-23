@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2014
+// Updated : 08/06/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,12 +18,12 @@
 // 1.9.3.3  12/21/2011  EFW  Created the code
 // 1.9.6.0  10/27/2012  EFW  Updated to use the presentation style configuration file
 // -------  01/07/2014  EFW  Updated to use MEF to load presentation style information
+//          08/06/2014  EFW  Added support for syntax generator resource item files
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -100,6 +100,7 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             PresentationStyleSettings pss = null;
             string presentationStylePath, shfbStyleContent;
+            List<string> syntaxGeneratorFiles = new List<string>();
 
             if(resourceItemsFile == null)
                 throw new ArgumentNullException("resourceItemsFile", "A resource items file name must be specified");
@@ -129,6 +130,8 @@ namespace SandcastleBuilder.WPF.UserControls
                             "Resource Item Editor", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
+
+                    syntaxGeneratorFiles.AddRange(ComponentUtilities.SyntaxGeneratorResourceItemFiles(container, null));
                 }
 
                 // Get the presentation style folders
@@ -144,9 +147,12 @@ namespace SandcastleBuilder.WPF.UserControls
                 else
                     shfbStyleContent = Path.Combine(shfbStyleContent, "en-US.xml");
 
-                // Load the presentation style content files first followed by the help file builder content
-                // items and then the user's resource item file.
+                // Load the presentation style content files first followed by the syntax generator files, the
+                // help file builder content items, and then the user's resource item file.
                 foreach(string file in Directory.EnumerateFiles(presentationStylePath, "*.xml"))
+                    this.LoadItemFile(file, false);
+
+                foreach(string file in syntaxGeneratorFiles)
                     this.LoadItemFile(file, false);
 
                 if(File.Exists(shfbStyleContent))

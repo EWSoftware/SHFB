@@ -56,13 +56,28 @@ fit.</para>
 						</step>
 						<step>
 							<content>
-								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
-enter the path to the <localUri>BuildAssembler.exe</localUri> program.  If you installed the help file
-builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
-Builder\</localUri>.  If not, substitute your path as appropriate.  Set the working directory to the working
-folder of a project that contains the build component.  Note that you will need to perform one build of the
-project with the <ui>Clean intermediate files</ui> option turned off so that you can test the build component
-using the temporary build files.</para>
+								<para>On the <ui>Debug</ui> tab, do the following:</para>
+
+								<list class="bullet">
+
+									<listItem>
+										<para>Set the <ui>Start Action</ui> to "Start external program" and enter the path to the
+<localUri>BuildAssembler.exe</localUri> program.  If you installed the help file builder in the default location,
+this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File Builder\</localUri>.  If not,
+substitute your path as appropriate.</para>
+									</listItem>
+
+									<listItem>
+										<para>Set the <ui>Command line arguments</ui> property to
+<command><replaceable>/config:sandcastle.config manifest.xml</replaceable></command>.</para>
+									</listItem>
+
+									<listItem>
+										<para>Set the working directory to the working folder of a project that contains the build
+component.  Note that you will need to perform one build of the project with the <ui>Clean intermediate files</ui>
+option turned off so that you can test the build component using the temporary build files.</para>
+									</listItem>
+								</list>
 
 								<alert class="tip">
 									<para>Using the BuildAssembler tool as the host is easier than using Visual Studio as the

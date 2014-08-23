@@ -35,16 +35,14 @@ namespace SandcastleBuilder.PlugIns
             this.lnkCodePlexSHFB = new System.Windows.Forms.LinkLabel();
             this.lnkSteelBytes = new System.Windows.Forms.LinkLabel();
             this.btnSelectLocation = new System.Windows.Forms.Button();
-            this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
             this.txtSBAppLocalePath = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(566, 82);
+            this.btnCancel.Location = new System.Drawing.Point(566, 92);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
             this.btnCancel.TabIndex = 4;
@@ -55,7 +53,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 82);
+            this.btnOK.Location = new System.Drawing.Point(12, 92);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
             this.btnOK.TabIndex = 3;
@@ -66,7 +64,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkCodePlexSHFB
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(120, 87);
+            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(120, 97);
             this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
             this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
             this.lnkCodePlexSHFB.TabIndex = 5;
@@ -78,7 +76,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkSteelBytes
             // 
-            this.lnkSteelBytes.Location = new System.Drawing.Point(344, 87);
+            this.lnkSteelBytes.Location = new System.Drawing.Point(344, 97);
             this.lnkSteelBytes.Name = "lnkSteelBytes";
             this.lnkSteelBytes.Size = new System.Drawing.Size(202, 23);
             this.lnkSteelBytes.TabIndex = 6;
@@ -90,7 +88,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnSelectLocation
             // 
-            this.btnSelectLocation.Location = new System.Drawing.Point(584, 30);
+            this.btnSelectLocation.Location = new System.Drawing.Point(548, 56);
             this.btnSelectLocation.Name = "btnSelectLocation";
             this.btnSelectLocation.Size = new System.Drawing.Size(32, 25);
             this.btnSelectLocation.TabIndex = 2;
@@ -99,33 +97,31 @@ namespace SandcastleBuilder.PlugIns
             this.btnSelectLocation.UseVisualStyleBackColor = true;
             this.btnSelectLocation.Click += new System.EventHandler(this.btnSelectLocation_Click);
             // 
-            // epErrors
-            // 
-            this.epErrors.ContainerControl = this;
-            // 
             // txtSBAppLocalePath
             // 
-            this.txtSBAppLocalePath.Location = new System.Drawing.Point(266, 31);
+            this.txtSBAppLocalePath.Location = new System.Drawing.Point(87, 57);
             this.txtSBAppLocalePath.MaxLength = 256;
             this.txtSBAppLocalePath.Name = "txtSBAppLocalePath";
-            this.txtSBAppLocalePath.Size = new System.Drawing.Size(318, 22);
+            this.txtSBAppLocalePath.Size = new System.Drawing.Size(461, 22);
             this.txtSBAppLocalePath.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(36, 31);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(224, 23);
+            this.label1.Size = new System.Drawing.Size(642, 42);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Path to SBAppLocale executable";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Text = "Path to SBAppLocale executable.  Leave this blank if you do not want to use it.  " +
+    "In that case, only encoding changes applied by the Sandcastle HTML Extract tool " +
+    "will be applied.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DbcsFixConfigDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(666, 126);
+            this.ClientSize = new System.Drawing.Size(666, 136);
             this.Controls.Add(this.btnSelectLocation);
             this.Controls.Add(this.lnkSteelBytes);
             this.Controls.Add(this.txtSBAppLocalePath);
@@ -140,7 +136,6 @@ namespace SandcastleBuilder.PlugIns
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configure DBCS Fix Plug-In";
-            ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,7 +146,6 @@ namespace SandcastleBuilder.PlugIns
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.ErrorProvider epErrors;
         private System.Windows.Forms.LinkLabel lnkCodePlexSHFB;
         private System.Windows.Forms.TextBox txtSBAppLocalePath;
         private System.Windows.Forms.Label label1;

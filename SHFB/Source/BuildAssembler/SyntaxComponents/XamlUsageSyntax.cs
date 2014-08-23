@@ -8,12 +8,14 @@
 // abstract return types as long as there is a type converter for it (i.e. Brush).
 // 12/23/2012 - EFW - Made the xamlAssemblies dictionary use case-insensitive key comparisons
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
+// 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
@@ -40,6 +42,15 @@ namespace Microsoft.Ddue.Tools
 			"{@XamlConfigFiles}")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
+            /// <inheritdoc />
+            public string ResourceItemFileLocation
+            {
+                get
+                {
+                    return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent");
+                }
+            }
+
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {

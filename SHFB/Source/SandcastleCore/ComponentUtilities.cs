@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/26/2014
+// Updated : 08/05/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,11 +27,13 @@
 //                           SHFBCOMPONENTROOT.
 //          12/26/2013  EFW  Updated to use MEF to load BuildAssembler build components
 //          01/02/2014  EFW  Moved the component manager class to Sandcastle.Core
+//          08/05/2014  EFW  Added support for getting a list of syntax generator resource item files
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -411,6 +413,58 @@ namespace Sandcastle.Core
                     generator.LanguageElementName, generator.KeywordStyleParameter);
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// This returns an enumerable list of resource item files for all defined syntax filters
+        /// </summary>
+        /// <param name="componentContainer">The component container from which to get the available syntax
+        /// filter generators.</param>
+        /// <param name="language">The language used to find localized versions if they exist</param>
+        /// <returns>An enumerable list of syntax filter generator resource item files.  If localized versions in
+        /// the specified language do not exit, the default resource item files (typically English US) will be
+        /// returned.</returns>
+        public static IEnumerable<string> SyntaxGeneratorResourceItemFiles(
+          CompositionContainer componentContainer, CultureInfo language)
+        {
+            string resourceItemPath, path;
+
+            foreach(var filter in componentContainer.GetExports<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>())
+            {
+                resourceItemPath = filter.Value.ResourceItemFileLocation;
+
+                if(resourceItemPath != null)
+                {
+                    if(language == null)
+                    {
+                        path = Path.Combine(resourceItemPath, filter.Metadata.LanguageElementName + ".xml");
+
+                        if(!File.Exists(path))
+                            path = null;
+                    }
+                    else
+                    {
+                        path = Path.Combine(resourceItemPath, language.Name, filter.Metadata.LanguageElementName + ".xml");
+
+                        if(!File.Exists(path))
+                        {
+                            path = Path.Combine(resourceItemPath, language.TwoLetterISOLanguageName,
+                                filter.Metadata.LanguageElementName + ".xml");
+
+                            if(!File.Exists(path))
+                            {
+                                path = Path.Combine(resourceItemPath, filter.Metadata.LanguageElementName + ".xml");
+
+                                if(!File.Exists(path))
+                                    path = null;
+                            }
+                        }
+                    }
+
+                    if(path != null)
+                        yield return path;
+                }
+            }
         }
         #endregion
     }

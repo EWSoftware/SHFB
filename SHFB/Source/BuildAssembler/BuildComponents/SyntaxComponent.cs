@@ -149,9 +149,11 @@ namespace Microsoft.Ddue.Tools
             {
                 codeSnippetLanguages[factory.Metadata.Id] = factory.Metadata;
 
-                foreach(string alternateId in factory.Metadata.AlternateIds.Split(new[] { ',', ' ', '\t' },
-                  StringSplitOptions.RemoveEmptyEntries))
+                foreach(string alternateId in (factory.Metadata.AlternateIds ?? String.Empty).Split(
+                  new[] { ',', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
+                {
                     codeSnippetLanguages[alternateId] = factory.Metadata;
+                }
             }
         }
         #endregion
@@ -215,8 +217,8 @@ namespace Microsoft.Ddue.Tools
                 generatorLanguages.Add(generatorFactory.Metadata.Id);
                 languageSet.Add(generatorFactory.Metadata);
 
-                foreach(string alternateId in generatorFactory.Metadata.AlternateIds.Split(new[] { ',', ' ', '\t' },
-                  StringSplitOptions.RemoveEmptyEntries))
+                foreach(string alternateId in (generatorFactory.Metadata.AlternateIds ?? String.Empty).Split(
+                  new[] { ',', ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries))
                     generatorLanguages.Add(alternateId);
 
                 try

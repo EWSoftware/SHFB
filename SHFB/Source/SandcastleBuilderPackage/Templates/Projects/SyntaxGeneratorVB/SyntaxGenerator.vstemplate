@@ -18,6 +18,9 @@
 			<Folder Name="My Project" TargetFolderName="My Project">
 				<ProjectItem TargetFileName="AssemblyInfo.vb" ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
 			</Folder>
+			<Folder Name="SyntaxContent" TargetFolderName="SyntaxContent">
+				<ProjectItem TargetFileName="$safeprojectname$.xml" ReplaceParameters="true">ResourceItems.xml</ProjectItem>
+			</Folder>
 		</Project>
 	</TemplateContent>
 </VSTemplate>

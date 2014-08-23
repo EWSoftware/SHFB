@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2014
+// Updated : 06/20/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -362,7 +362,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             finally
             {
                 // If we loaded it, we must unload it.  If not, it is cached and may cause problems later.
-                if(removeProjectWhenDisposed)
+                if(removeProjectWhenDisposed && msBuildProject != null)
                 {
                     ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
                     ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);

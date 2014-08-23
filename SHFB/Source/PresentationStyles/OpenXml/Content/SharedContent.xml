@@ -1,7 +1,7 @@
 <content xml:space="preserve">
 
-  <!-- Topic title -->
-  <item id="boilerplate_pageTitle">{0}</item>
+	<!-- Topic title -->
+	<item id="boilerplate_pageTitle">{0}</item>
 
 	<!-- Alert titles -->
 	<item id="alert_title_tip">Tip</item>
@@ -25,51 +25,41 @@
 	<item id="alert_altText_visualC++">C++ note</item>
 	<item id="alert_altText_visualJ#">J# note</item>
 
-  <!-- Section titles -->
-  <item id="title_remarks">Remarks</item>
-  <item id="title_changeHistory">Change History</item>
-  <item id="title_events">Events</item>
-  <item id="title_exceptions">Exceptions</item>
-  <item id="title_contracts">Contracts</item>
-  <item id="title_setter">Set</item>
-  <item id="title_getter">Get</item>
-  <item id="title_seeAlso_tasks">Tasks</item>
-  <item id="title_seeAlso_reference">Reference</item>
-  <item id="title_seeAlso_concepts">Concepts</item>
-  <item id="title_seeAlso_otherResources">Other Resources</item>
+	<!-- Section titles -->
+	<item id="title_remarks">Remarks</item>
+	<item id="title_changeHistory">Change History</item>
+	<item id="title_events">Events</item>
+	<item id="title_exceptions">Exceptions</item>
+	<item id="title_contracts">Contracts</item>
+	<item id="title_setter">Set</item>
+	<item id="title_getter">Get</item>
+	<item id="title_seeAlso_tasks">Tasks</item>
+	<item id="title_seeAlso_reference">Reference</item>
+	<item id="title_seeAlso_concepts">Concepts</item>
+	<item id="title_seeAlso_otherResources">Other Resources</item>
 
-  <item id="inline_dynamicLink_prefixText">For more information, see </item>
-  <item id="inline_dynamicLink_postfixText">.</item>
-  <item id="inline_dynamicLink_separatorText"> and </item>
+	<item id="inline_dynamicLink_prefixText">For more information, see </item>
+	<item id="inline_dynamicLink_postfixText">.</item>
+	<item id="inline_dynamicLink_separatorText"> and </item>
 
-  <!-- Dev lang -->
-  <item id="devlang_VisualBasic">Visual Basic</item>
-  <item id="devlang_VisualBasicDeclaration">Visual Basic</item>
-  <item id="devlang_VisualBasicUsage">Visual Basic Usage</item>
-  <item id="devlang_VBScript">Visual Basic Script</item>
-  <item id="devlang_CSharp">C#</item>
-  <item id="devlang_visualbasicANDcsharp">Visual Basic and C#</item>
-  <item id="devlang_ManagedCPlusPlus">Visual C++</item>
-  <item id="devlang_JSharp">J#</item>
-  <item id="devlang_JScript">JScript</item>
-  <item id="devlang_xmlLang">XML</item>
-  <item id="devlang_JavaScript">JavaScript</item>
-  <item id="devlang_FSharp">F#</item>
-  <item id="devlang_html">HTML</item>
-  <item id="devlang_XAML">XAML</item>
-  <item id="devlang_AspNet">ASP.NET</item>
-  <item id="devlang_pshell">PowerShell</item>
-  <item id="devlang_sql">SQL</item>
-  <item id="devlang_Python">Python</item>
+	<!-- Development language and code snippet titles for languages without a syntax generator -->
+	<item id="devlang_HTML">HTML</item>
+	<item id="devlang_PShell">PowerShell</item>
+	<item id="devlang_Python">Python</item>
+	<item id="devlang_SQL">SQL</item>
+	<item id="devlang_VBScript">Visual Basic Script</item>
+	<item id="devlang_VisualBasicAndCSharp">Visual Basic and C#</item>
+	<item id="devlang_XML">XML</item>
 
-  <!-- Language keywords -->
-  <item id="devlang_nullKeyword">a null reference (<span class="CodeInline">Nothing</span> in Visual Basic)</item>
-  <item id="devlang_staticKeyword"><span class="CodeInline">static</span> (<span class="CodeInline">Shared</span> in Visual Basic)</item>
-  <item id="devlang_virtualKeyword"><span class="CodeInline">virtual</span> (<span class="CodeInline">Overridable</span> in Visual Basic)</item>
-  <item id="devlang_trueKeyword"><span class="CodeInline">true</span> (<span class="CodeInline">True</span> in Visual Basic)</item>
-  <item id="devlang_falseKeyword"><span class="CodeInline">false</span> (<span class="CodeInline">False</span> in Visual Basic)</item>
-  <item id="devlang_abstractKeyword"><span class="CodeInline">abstract</span> (<span class="CodeInline">MustInherit</span> in Visual Basic)</item>
+	<!-- Language keywords -->
+	<item id="devlang_nullKeyword">a null reference (<span class="CodeInline">Nothing</span> in Visual Basic)</item>
+	<item id="devlang_staticKeyword"><span class="CodeInline">static</span> (<span class="CodeInline">Shared</span> in Visual Basic)</item>
+	<item id="devlang_virtualKeyword"><span class="CodeInline">virtual</span> (<span class="CodeInline">Overridable</span> in Visual Basic)</item>
+	<item id="devlang_trueKeyword"><span class="CodeInline">true</span> (<span class="CodeInline">True</span> in Visual Basic)</item>
+	<item id="devlang_falseKeyword"><span class="CodeInline">false</span> (<span class="CodeInline">False</span> in Visual Basic)</item>
+	<item id="devlang_abstractKeyword"><span class="CodeInline">abstract</span> (<span class="CodeInline">MustInherit</span> in Visual Basic)</item>
 
-  <item id="top">Back to Top</item>
-  
+	<!-- Back to Top link text -->
+	<item id="top">Back to Top</item>
+
 </content>

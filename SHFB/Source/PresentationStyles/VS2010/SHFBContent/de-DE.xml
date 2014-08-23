@@ -4,9 +4,9 @@
 			 items in the stock content files! -->
 
 	<!-- Note that the copyright item in the shared content is not used. The following items are used instead. -->
-	<item id="copyright_info">{@CopyrightInfo}</item>
-	<item id="copyright_link">{@CopyrightHref}</item>
-	<item id="copyright_text">{@CopyrightText}</item>
+	<item id="copyright_info">{@HtmlEncCopyrightInfo}</item>
+	<item id="copyright_link">{@HtmlEncCopyrightHref}</item>
+	<item id="copyright_text">{@HtmlEncCopyrightText}</item>
 
 	<item id="header"><span class="introStyle">{@HeaderText}</span> {@Preliminary}</item>
 	<item id="footer_content">{@FooterText}{@Copyright}{@Comments}</item>

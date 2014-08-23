@@ -169,12 +169,12 @@
   <item id="header_ensuresName">Постусловия</item>
   <item id="header_ensuresOnThrowName">Постусловия при возникновении исключений</item>
   <item id="header_invariantsName">Инварианты</item>
- 
+
 	<item id="header_revHistoryDate">Date</item>
 	<item id="header_revHistoryVersion">Version</item>
 	<item id="header_revHistoryDescription">Description</item>
 
-	<!-- member list table titles -->
+  <!-- member list table titles -->
 	<item id="tableTitle_class">Классы</item>
 	<item id="tableTitle_structure">Структуры</item>
 	<item id="tableTitle_interface">Интерфейсы</item>

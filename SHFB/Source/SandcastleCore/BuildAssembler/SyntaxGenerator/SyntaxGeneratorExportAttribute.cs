@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ISyntaxGeneratorFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2013
+// Updated : 08/01/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -49,8 +49,9 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// This read-only property is used to get the keyword style parameter value used by the client side
         /// script in the topics for language specific keyword/separator text.
         /// </summary>
-        /// <value>This will typically be one of the following: <c>cs</c> (C# or equivalent), <c>vb</c> (VB.NET
-        /// or equivalent), <c>cpp</c> (C++ or equivalent), <c>fs</c> (F# or equivalent).</value>
+        /// <value>This will be one of the following: <c>cs</c> (C# or equivalent), <c>vb</c> (VB.NET
+        /// or equivalent), <c>cpp</c> (C++ or equivalent), <c>fs</c> (F# or equivalent), or a value unique to
+        /// the language.</value>
         public string KeywordStyleParameter { get; private set; }
 
         /// <summary>
@@ -75,8 +76,8 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         public string Copyright { get; set; }
 
         /// <summary>
-        /// This is used to get or set the the value that defines the order in which the syntax generators are
-        /// added the to the configuration file.
+        /// This is used to get or set the value that defines the order in which the syntax generators are added
+        /// the to the configuration file.
         /// </summary>
         /// <value>The sort order determines the order of the syntax sections in each topic</value>
         public int SortOrder { get; set; }

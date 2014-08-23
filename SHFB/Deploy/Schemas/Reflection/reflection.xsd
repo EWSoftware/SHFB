@@ -1,7 +1,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<!-- Copyright (c) Microsoft Corporation.  All rights reserved. -->
 
-	<!-- Api elements -->
+	<!-- API elements -->
 
 	<xsd:element name="reflection">
 		<xsd:complexType>
@@ -45,7 +45,7 @@
 		</xsd:complexType>
 	</xsd:element>
 
-	<!-- Api data -->
+	<!-- API data -->
 
 	<xsd:element name="apis">
 		<xsd:complexType>
@@ -378,6 +378,8 @@
 			<xsd:sequence>
 				<xsd:group ref="typeReferenceElements" minOccurs="1" />
 				<xsd:group ref="valueReferenceElements" minOccurs="0" />
+				<!-- EFW - Added to include parameter attributes -->
+				<xsd:element ref="attributes" minOccurs="0" />
 			</xsd:sequence>
 			<xsd:attribute name="name" type="xsd:string" use="required" />
 			<xsd:attribute name="in" type="xsd:boolean" use="optional" />
@@ -685,7 +687,7 @@
 
 	<xsd:simpleType name="apiSubsubgroupType">
 		<xsd:restriction base="xsd:string">
-			<!-- method subsubgroups -->
+			<!-- method sub-subgroups -->
 			<xsd:enumeration value="operator" />
 		</xsd:restriction>
 	</xsd:simpleType>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/12/2014
+// Updated : 07/31/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -26,6 +26,8 @@
 // 1.9.7.0  03/02/2013  EFW  Updated how the keyword index files were created so that each entry has a unique
 //                           title when grouped under a common keyword.  Updated to process the files in
 //                           parallel to improve the performance.
+// -------  07/31/2014  EFW  Applied fix from Kalyan00 to correctly save files in the localized and original
+//                           locations with the proper encodings.
 //===============================================================================================================
 
 using System;
@@ -635,7 +637,7 @@ commas, or other special characters.
             MatchCollection matches;
             Match match;
             KeywordInfo keyword;
-            string content, topicTitle, tocTitle, term, folder, key;
+            string content, topicTitle, tocTitle, term, folder, key, destFile;
             byte[] currentBytes, convertedBytes;
 
             // Read the file in using the proper encoding
@@ -704,7 +706,7 @@ commas, or other special characters.
             content = reHtmlElement.Replace(content, htmlElement, 1);
 
             // If localizing, perform the substitutions, convert the encoding, and save the file to the
-            // localized folder.
+            // localized folder using the appropriate encoding.
             if(localizedOutputFolder != null)
             {
                 foreach(KeyValuePair<Regex, string> pair in patterns)
@@ -713,19 +715,19 @@ commas, or other special characters.
                 currentBytes = currentEncoding.GetBytes(content);
                 convertedBytes = Encoding.Convert(currentEncoding, destEncoding, currentBytes);
 
-                sourceFile = Path.Combine(localizedOutputFolder, sourceFile.Substring(basePath.Length + 1));
-                folder = Path.GetDirectoryName(sourceFile);
+                destFile = Path.Combine(localizedOutputFolder, sourceFile.Substring(basePath.Length + 1));
+                folder = Path.GetDirectoryName(destFile);
 
                 if(!Directory.Exists(folder))
                     Directory.CreateDirectory(folder);
 
-                using(StreamWriter writer = new StreamWriter(sourceFile, false, destEncoding))
+                using(StreamWriter writer = new StreamWriter(destFile, false, destEncoding))
                 {
                     writer.Write(destEncoding.GetString(convertedBytes));
                 }
             }
 
-            // Save the file to its original location without the Help 2 elements
+            // Save the file to its original location without the Help 2 elements using the original encoding
             using(StreamWriter writer = new StreamWriter(sourceFile, false, currentEncoding))
             {
                 writer.Write(content);

@@ -36,9 +36,7 @@ and element types.</para>
         <para>Creating the actual topic files is just a matter of entering the content using a text editor.
 Creating a help file from them requires several configuration files and the Sandcastle tools.  If you are going
 to build a help file using Sandcastle alone, see the topics in the <link xlink:href="86752a38-eba3-4174-bcbf-79ec8428ecf9" />
-section.  They cover the various file types that are used in the build process.  A build script that can be used
-to create a help file can be found in the <localUri>.\Examples</localUri> folder in the main Sandcastle
-installation folder.</para>
+section.  They cover the various file types that are used in the build process.</para>
 
         <para>If you prefer a more visual and automated approach to managing and building help files, it is
 strongly recommended that you use one of the third-party tools such as the <token>SHFB</token> or

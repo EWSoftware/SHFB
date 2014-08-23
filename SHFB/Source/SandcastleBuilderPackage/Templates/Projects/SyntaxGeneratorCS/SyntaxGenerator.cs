@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Reflection;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
@@ -22,7 +25,9 @@ namespace $safeprojectname$
         #region Syntax generator factory for MEF
         //=====================================================================
 
-        // TODO: Set the unique style ID name
+        // TODO: Set the unique style ID name.
+        // NOTE: If you change LanguageName, rename the SyntaxContent\TestLanguage.xml file to the same name
+        //       and update the IDs of the content items with the new name.
         private const string LanguageName = "$safeprojectname$", StyleIdName = "xyz";
 
         /// <summary>
@@ -55,6 +60,15 @@ namespace $safeprojectname$
           Description = "Generates $safeprojectname$ declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
+            /// <inheritdoc />
+            public string ResourceItemFileLocation
+            {
+                get
+                {
+                    return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent");
+                }
+            }
+
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {

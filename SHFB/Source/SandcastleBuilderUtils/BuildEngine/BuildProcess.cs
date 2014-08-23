@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2014
+// Updated : 08/22/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -235,6 +235,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string Help2CompilerFolder
         {
             get { return hxcompFolder; }
+        }
+
+        /// <summary>
+        /// This returns the presentation instance being used by the build process
+        /// </summary>
+        public PresentationStyleSettings PresentationStyle
+        {
+            get { return presentationStyle; }
         }
 
         /// <summary>

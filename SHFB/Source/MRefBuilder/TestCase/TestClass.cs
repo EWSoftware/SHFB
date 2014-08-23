@@ -24,82 +24,51 @@ using System;
 
 namespace MyClassLibrary
 {
-/*    /// <summary>
-    /// Summary
-    /// </summary>
-    /// <typeparam name="T1">Some Type</typeparam>
-    /// <typeparam name="T2">Some Type</typeparam>
-    public interface ITest2<T1, T2>
-    {
-        /// <summary>
-        /// Summary
-        /// </summary>
-        /// <param name="other">parameter</param>
-        /// <returns>returns</returns>
-        T1 Map(T2 paramT2);
-
-        /// <summary>
-        /// Summary
-        /// </summary>
-        /// <param name="other">parameter</param>
-        /// <returns>returns</returns>
-        T2 Map(T1 paramT1);
-    }
-
     /// <summary>
-    /// Summary
+    /// MyBaseClass
     /// </summary>
-    /// <typeparam name="T">Some Type</typeparam>
-    public interface ITest<T> : ITest2<Exception, T>
-    {
-        // A duplicate entry for the base method ITest2`2.Map(`1) is generated
-
-        /// <summary>
-        /// Summary
-        /// </summary>
-        /// <param name="other">parameter</param>
-        /// <returns>returns</returns>
-        T Map(string paramString);
-    }
-*/
-    /// <summary>
-    /// Test
-    /// </summary>
-    public interface Foo
+    /// <typeparam name="T">t</typeparam>
+    /// <typeparam name="U">u</typeparam>
+    public class MyBaseClass<T, U>
     {
         /// <summary>
-        /// Overload 1
+        /// Test constant
         /// </summary>
-        void Foo();
+        public const int TestConstant = 1234;
 
         /// <summary>
-        /// Overload 2
+        /// Test field
         /// </summary>
-        /// <typeparam name="T">T</typeparam>
-        void Foo<T>();
-    }
+        public int TestField = 1234;
 
-    /// <summary>
-    /// Test
-    /// </summary>
-    public class Implementation : Foo
-    {
-        #region Foo Members
-
-        // Methods not match correctly
-
-        /// <inheritdoc />
-        public void Foo()
+        /// <summary>
+        /// Blah
+        /// </summary>
+        /// <param name="t">t</param>
+        /// <param name="u">u</param>
+        public void Blah(T t, U u)
         {
-            throw new NotImplementedException();
+
         }
 
-        /// <inheritdoc />
-        public void Foo<T>()
+        /// <summary>
+        /// Blah
+        /// </summary>
+        /// <param name="t">t</param>
+        /// <param name="u">u</param>
+        /// <param name="i">i</param>
+        public void Blah(T t, U u, int i)
         {
-            throw new NotImplementedException();
-        }
 
-        #endregion
+        }
+    }
+
+    /// <summary>
+    /// MyChildClass
+    /// </summary>
+    /// <typeparam name="T">t</typeparam>
+    public class MyChildClass<T> : MyBaseClass<T, T>
+    {
+
     }
 }

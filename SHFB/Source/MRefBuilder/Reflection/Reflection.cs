@@ -8,6 +8,8 @@
 // obfuscated member names.
 // 03/11/2013 - EFW - Added more code to ParametersMatch() to try and get a proper match when comparing
 // parameters lists with generic types.
+// 07/31/2014 - EFW - Applied fix from Jared Moore related to generic template parameter matching under a
+// specific set of conditions.
 
 using System;
 using System.Collections.Generic;
@@ -388,7 +390,19 @@ namespace Microsoft.Ddue.Tools.Reflection
                         p2 = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType, type2.Name.Name);
 
                     if(p1 != -1 && p2 != -1 && p1 != p2)
-                        return false;
+                    {
+                        // !EFW - Another test case supplied by Jared Moore.  If the types are something like
+                        // MyBaseClass<T, T> and MyBaseClass<T, U> we can still provide a match by comparing
+                        // all possible positions.  As long as they intersect, it's probably a good match.
+                        var positions1 = GetTemplateParameterPositions(parameters1[i].DeclaringMethod.DeclaringType,
+                            type1.Name.Name);
+                        var positions2 = GetTemplateParameterPositions(parameters2[i].DeclaringMethod.DeclaringType,
+                            type2.Name.Name);
+
+                        // If we found any but none of them are the same, then no match.
+                        if(positions1.Any() && positions2.Any() && !positions1.Intersect(positions2).Any())
+                            return false;
+                    }
                 }
                 else
                 {
@@ -443,6 +457,37 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             return position;
         }
+
+        /// <summary>
+        /// !EFW - Get the positions of the given parameter name in the given declaring type's template
+        /// arguments or parameters.
+        /// </summary>
+        /// <param name="declaringType">The declaring type from which to get the parameter position</param>
+        /// <param name="name">The parameter name to look up</param>
+        /// <returns>An enumerable list of the possible parameter positions or an empty list if no positions
+        /// match.</returns>
+        private static IEnumerable<int> GetTemplateParameterPositions(TypeNode declaringType, string name)
+        {
+            List<int> positions = new List<int>();
+
+            if(declaringType.TemplateArguments != null)
+            {
+                // For types like "MyChildClass<T> : MyBaseClass<T, T>", the parameter list index and item is
+                // identical for both arguments so we've got to figure it out the long way positionally.
+                for(int i = 0; i < declaringType.TemplateArguments.Count; i++)
+                    if(declaringType.TemplateArguments[i].Name.Name == name)
+                        positions.Add(i);
+            }
+
+            if(positions.Count == 0 && declaringType.TemplateParameters != null)
+            {
+                for(int i = 0; i < declaringType.TemplateParameters.Count; i++)
+                    if(declaringType.TemplateParameters[i].Name.Name == name)
+                        positions.Add(i);
+            }
+
+            return positions;
+        }        
         #endregion
 
         #region XML character checking methods

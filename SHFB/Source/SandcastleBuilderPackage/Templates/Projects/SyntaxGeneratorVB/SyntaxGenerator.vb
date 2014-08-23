@@ -1,3 +1,6 @@
+Imports System
+Imports System.IO
+Imports System.Reflection
 Imports System.Xml.XPath
 
 Imports Sandcastle.Core.BuildAssembler.SyntaxGenerator
@@ -23,7 +26,9 @@ Namespace $safeprojectname$
         #Region "Syntax generator factory for MEF"
         '=====================================================================
 
-        ' TODO: Set the unique style ID name
+        ' TODO: Set the unique style ID name.
+        ' NOTE: If you change LanguageName, rename the SyntaxContent\TestLanguage.xml file to the same name
+        '       and update the IDs of the content items with the new name.
         Private Const LanguageName As String = "$safeprojectname$"
         Private Const StyleIdName As String = "xyz"
 
@@ -57,6 +62,13 @@ Namespace $safeprojectname$
           Description := "Generates $safeprojectname$ declaration syntax sections")>
         Public NotInheritable Class Factory
             Implements ISyntaxGeneratorFactory
+
+            ''' <inheritdoc />
+            Public ReadOnly Property ResourceItemFileLocation As String
+                Get
+                    Return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent")
+                End Get
+            End Property
 
             ''' <inheritdoc />
             Public Function Create() As SyntaxGeneratorCore Implements ISyntaxGeneratorFactory.Create

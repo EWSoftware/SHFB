@@ -11,9 +11,12 @@
 // the static WriteVisibility() method.
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
+// 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 
 using System;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
@@ -38,6 +41,15 @@ namespace Microsoft.Ddue.Tools
           Description = "Generates JSharp declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
+            /// <inheritdoc />
+            public string ResourceItemFileLocation
+            {
+                get
+                {
+                    return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent");
+                }
+            }
+
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
             {

@@ -11,6 +11,7 @@
 // 11/20/2013 - EFW - Cleaned up the code and removed unused members.  Added code to apply visibility settings
 // to property getters and setters.  Added code to write out type data for the interop attributes that are
 // converted to type metadata.
+// 08/06/2014 - EFW - Added code to write out values for literal (constant) fields.
 
 using System;
 using System.Collections.Generic;
@@ -854,10 +855,15 @@ namespace Microsoft.Ddue.Tools
                     this.WriteFieldData(field);
                     this.WriteReturnValue(field.Type);
 
-                    // Write enumeration field values
+                    // Write enumeration and literal (constant) field values
                     if(field.DeclaringType.NodeType == NodeType.EnumNode)
+                    {
                         this.WriteLiteral(new Literal(field.DefaultValue.Value,
                             ((EnumNode)field.DeclaringType).UnderlyingType), false);
+                    }
+                    else
+                        if(field.IsLiteral)
+                            this.WriteLiteral(new Literal(field.DefaultValue.Value, field.Type), false);
                     break;
 
                 case NodeType.Method:
@@ -1569,6 +1575,9 @@ namespace Microsoft.Ddue.Tools
 
             if(parameter.IsOptional && parameter.DefaultValue != null)
                 this.WriteExpression(parameter.DefaultValue);
+
+            if(parameter.Attributes != null && parameter.Attributes.Count != 0)
+                this.WriteAttributes(parameter.Attributes, new SecurityAttributeList());
 
             writer.WriteEndElement();
         }

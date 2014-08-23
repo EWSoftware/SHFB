@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 06/13/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to spell check files in the SHFB project
@@ -13,9 +13,9 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.8.0  05/11/2013  EFW  Created the code
+// 05/11/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -54,7 +54,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// file.
         /// </summary>
         /// <remarks>If <c>Cancel</c> is set to true in the event arguments,
-        /// the spell checking operation will be cancelled.</remarks>
+        /// the spell checking operation will be canceled.</remarks>
         public event CancelEventHandler SpellCheckFileStarting;
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// block of text.
         /// </summary>
         /// <remarks>If <c>Cancel</c> is set to true in the event arguments,
-        /// the spell checking operation will be cancelled.</remarks>
+        /// the spell checking operation will be canceled.</remarks>
         public event CancelEventHandler SpellCheckTextStarting;
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace SandcastleBuilder.Gui.Spelling
         }
 
         /// <summary>
-        /// This event is raised when the spell checking has been cancelled
+        /// This event is raised when the spell checking has been canceled
         /// for a block of text.
         /// </summary>
         public event EventHandler SpellCheckTextCancelled;
@@ -154,7 +154,7 @@ namespace SandcastleBuilder.Gui.Spelling
         }
 
         /// <summary>
-        /// This event is raised when the spell checking has been cancelled
+        /// This event is raised when the spell checking has been canceled
         /// for a file.
         /// </summary>
         public event EventHandler SpellCheckFileCancelled;
@@ -224,7 +224,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         /// <param name="text">The text to spell check</param>
         /// <param name="location">The location of the text being spell checked</param>
-        /// <returns>False if it was cancelled or True if it completed.</returns>
+        /// <returns>False if it was canceled or True if it completed.</returns>
         private bool SpellCheckInternal(string text, TextLocation location)
         {
             SpellingEventArgs se = null;
@@ -233,7 +233,7 @@ namespace SandcastleBuilder.Gui.Spelling
             string currentWord;
             int textIdx;
 
-            // Signal the start and allow it to be cancelled
+            // Signal the start and allow it to be canceled
             CancelEventArgs ce = new CancelEventArgs();
             this.OnSpellCheckTextStarting(ce);
 
@@ -313,85 +313,130 @@ namespace SandcastleBuilder.Gui.Spelling
             if(String.IsNullOrWhiteSpace(text))
                 yield break;
 
-            for(int i = 0; i < text.Length; i++)
+            for(int i = 0, end = 0; i < text.Length; i++)
             {
-                if(IsWordBreakCharacter(text[i]))
+                // Skip escape sequences.  If not, they can end up as part of the word or cause words to be
+                // missed.  For example, "This\r\nis\ta\ttest \x22missing\x22" would incorrectly yield "nis",
+                // "ta", and "ttest" and incorrectly exclude "missing".  This can cause the occasional false
+                // positive in file paths (i.e. \Folder\transform\File.txt flags "ransform" as a misspelled word
+                // because of the lowercase "t" following the backslash) but I can live with that.
+                if(text[i] == '\\')
                 {
-                    // Skip escape sequences.  If not, they can end up as part of the word or cause words to be
-                    // missed.  For example, "This\r\nis\ta\ttest \x22missing\x22" would incorrectly yield "r",
-                    // "nis", "ta", and "ttest" and incorrectly exclude "missing").  This can cause the
-                    // occasional false positive in file paths (i.e. \Folder\transform\File.txt flags "ransform"
-                    // as a misspelled word because of the lowercase "t" following the backslash) but I can live
-                    // with that.
-                    if(text[i] == '\\' && i + 1 < text.Length)
-                        switch(text[i + 1])
+                    end = i + 1;
+
+                    if(end < text.Length)
+                    {
+                        // Escape sequences
+                        switch(text[end])
                         {
                             case '\'':
                             case '\"':
                             case '\\':
-                            case '0':
-                            case 'a':
-                            case 'b':
-                            case 'f':
-                            case 'n':
-                            case 'r':
-                            case 't':
-                            case 'v':
+                            case '?':   // Anti-Trigraph
+                            case '0':   // NUL or Octal
+                            case 'a':   // BEL
+                            case 'b':   // BS
+                            case 'f':   // FF
+                            case 'n':   // LF
+                            case 'r':   // CR
+                            case 't':   // TAB
+                            case 'v':   // VT
                                 i++;
                                 break;
 
-                            case 'u':
-                            case 'U':
-                            case 'x':
-                                i++;
+                            case 'x':   // xh[h[h[h]]] or xhh[hh]
+                                while(++end < text.Length && (end - i) < 6 && (Char.IsDigit(text[end]) ||
+                                  (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                    ;
 
-                                // Special handling for \x, \u, and \U.  Skip the hex digits too.
-                                if(i + 1 < text.Length)
-                                {
-                                    do
-                                    {
-                                        i++;
+                                i = --end;
+                                break;
 
-                                    } while(i < text.Length && (Char.IsDigit(text[i]) ||
-                                      (Char.ToLower(text[i]) >= 'a' && Char.ToLower(text[i]) <= 'f')));
+                            case 'u':   // uhhhh
+                                while(++end < text.Length && (end - i) < 6 && (Char.IsDigit(text[end]) ||
+                                  (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                    ;
 
-                                    i--;
-                                }
+                                if((--end - i) == 5)
+                                    i = end;
+                                break;
+
+                            case 'U':   // Uhhhhhhhh
+                                while(++end < text.Length && (end - i) < 10 && (Char.IsDigit(text[end]) ||
+                                  (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                    ;
+
+                                if((--end - i) == 9)
+                                    i = end;
                                 break;
 
                             default:
                                 break;
                         }
+                    }
 
                     continue;
                 }
 
-                int end = i;
-
-                for(; end < text.Length; end++)
-                    if(IsWordBreakCharacter(text[end]))
-                        break;
-
-                // If it looks like an XML entity, ignore it
-                if(i == 0 || end >= text.Length || text[i - 1] != '&' || text[end] != ';')
+                // Skip XML entities
+                if(text[i] == '&')
                 {
-                    // Ignore leading apostrophes
-                    while(i < end && text[i] == '\'')
-                        i++;
+                    end = i + 1;
 
-                    // Ignore trailing apostrophes, periods, and at-signs
-                    while(end > i && (text[end - 1] == '\'' || text[end - 1] == '.' || text[end - 1] == '@'))
-                        end--;
+                    if(end < text.Length && text[end] == '#')
+                    {
+                        // Numeric Reference &#n[n][n][n];
+                        while(++end < text.Length && (end - i) < 7 && Char.IsDigit(text[end]))
+                            ;
 
-                    // Ignore anything less than two characters
-                    if(end <= i)
-                        end++;
-                    else
-                        if(end - i > 1)
-                            yield return new TextLocation { Start = i, Length = end - i };
+                        // Hexadecimal Reference &#xh[h][h][h];
+                        if(end < text.Length && text[end] == 'x')
+                        {
+                            while(++end < text.Length && (end - i) < 8 && (Char.IsDigit(text[end]) ||
+                              (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                ;
+                        }
+
+                        // Check for entity closer
+                        if(end < text.Length && text[end] == ';')
+                            i = end;
+                    }
+
+                    continue;
                 }
 
-                i = end - 1;
+                // Skip word separator
+                if(IsWordBreakCharacter(text[i]))
+                    continue;
+
+                // Find the end of the word
+                end = i;
+
+                while(++end < text.Length && !IsWordBreakCharacter(text[end]))
+                    ;
+
+                // Skip XML entity reference &[name];
+                if(end < text.Length && i > 0 && text[i - 1] == '&' && text[end] == ';')
+                {
+                    i = end;
+                    continue;
+                }
+
+                // Skip leading apostrophes
+                while(i < end && text[i] == '\'')
+                    i++;
+
+                // Skip trailing apostrophes, periods, and at-signs
+                while(--end > i && (text[end] == '\'' || text[end] == '.' || text[end] == '@'))
+                    ;
+
+                end++;    // Move back to last match
+
+                // Ignore anything less than two characters
+                if(end - i > 1)
+                    yield return new TextLocation { Start = i, Length = end - i };
+
+                i = --end;
             }
         }
 
@@ -464,7 +509,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// Spell check a block of text
         /// </summary>
         /// <param name="text">The text to spell check</param>
-        /// <returns>False if it was cancelled or True if it completed.</returns>
+        /// <returns>False if it was canceled or True if it completed.</returns>
         public bool SpellCheckText(string text)
         {
             return this.SpellCheckInternal(text, new TextLocation { Line = 1 });
@@ -474,10 +519,10 @@ namespace SandcastleBuilder.Gui.Spelling
         /// Spell check a plain text file
         /// </summary>
         /// <param name="filename">The name of the file to check</param>
-        /// <returns>False if it was cancelled or True if it completed.</returns>
+        /// <returns>False if it was canceled or True if it completed.</returns>
         public bool SpellCheckPlainTextFile(string filename)
         {
-            // Signal the start and allow it to be cancelled
+            // Signal the start and allow it to be canceled
             CancelEventArgs ce = new CancelEventArgs();
             this.OnSpellCheckFileStarting(ce);
 
@@ -498,11 +543,11 @@ namespace SandcastleBuilder.Gui.Spelling
         /// Spell check an XML file
         /// </summary>
         /// <param name="filename">The name of the file to check</param>
-        /// <returns>False if it was cancelled or True if it completed.</returns>
+        /// <returns>False if it was canceled or True if it completed.</returns>
         /// <remarks>The inner text and the content of selected attributes will be spell checked</remarks>
         public bool SpellCheckXmlFile(string filename)
         {
-            // Signal the start and allow it to be cancelled
+            // Signal the start and allow it to be canceled
             CancelEventArgs ce = new CancelEventArgs();
             this.OnSpellCheckFileStarting(ce);
 
@@ -528,7 +573,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// Spell check the content of an XML reader
         /// </summary>
         /// <param name="reader">The reader to spell check</param>
-        /// <returns>False if it was cancelled or True if it completed.</returns>
+        /// <returns>False if it was canceled or True if it completed.</returns>
         public bool SpellCheckXmlReader(XmlReader reader)
         {
             IXmlLineInfo lineInfo = (IXmlLineInfo)reader;

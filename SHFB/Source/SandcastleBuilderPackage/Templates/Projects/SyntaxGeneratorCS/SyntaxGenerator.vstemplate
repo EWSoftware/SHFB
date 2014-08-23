@@ -18,6 +18,9 @@
 			<Folder Name="Properties" TargetFolderName="Properties">
 				<ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
 			</Folder>
+			<Folder Name="SyntaxContent" TargetFolderName="SyntaxContent">
+				<ProjectItem TargetFileName="$safeprojectname$.xml" ReplaceParameters="true">ResourceItems.xml</ProjectItem>
+			</Folder>
 		</Project>
 	</TemplateContent>
 </VSTemplate>

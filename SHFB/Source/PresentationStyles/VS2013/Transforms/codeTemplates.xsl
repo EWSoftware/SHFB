@@ -13,73 +13,52 @@
 	Code languages
 	============================================================================================= -->
 
+	<!-- This gets the language ID for syntax section and code example titles -->
 	<xsl:template name="t_codeLang">
 		<xsl:param name="p_codeLang"/>
 		<xsl:variable name="v_codeLangLC" select="translate($p_codeLang,$g_allUpperCaseLetters,$g_allLowerCaseLetters)"/>
 		<xsl:choose>
-			<xsl:when test="$v_codeLangLC = 'vbs' or $v_codeLangLC = 'vbscript'">
-				<xsl:text>VBScript</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'vb' or $v_codeLangLC = 'vb#' or $v_codeLangLC = 'vb.net' or $v_codeLangLC = 'vbnet' or $v_codeLangLC = 'kblangvb' or $v_codeLangLC = 'visualbasic'" >
-				<xsl:text>VisualBasic</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'visualbasicdeclaration'" >
-				<xsl:text>VisualBasicDeclaration</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'visualbasicusage'" >
-				<xsl:text>VisualBasicUsage</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'c#' or $v_codeLangLC = 'cs' or $v_codeLangLC = 'csharp'" >
-				<xsl:text>CSharp</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'vb-c#' or $v_codeLangLC = 'visualbasicandcsharp'">
-				<xsl:text>visualbasicANDcsharp</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'cpp' or $v_codeLangLC = 'cpp#' or $v_codeLangLC = 'c' or $v_codeLangLC = 'c++' or $v_codeLangLC = 'kblangcpp' or $v_codeLangLC = 'managedcplusplus'" >
-				<xsl:text>ManagedCPlusPlus</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'j#' or $v_codeLangLC = 'jsharp'">
-				<xsl:text>JSharp</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'f#' or $v_codeLangLC = 'fs' or $v_codeLangLC = 'fsharp' or $v_codeLangLC = 'fsscript'">
-				<xsl:text>FSharp</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'jscript#' or $v_codeLangLC = 'jscript' or $v_codeLangLC = 'kbjscript' or $v_codeLangLC = 'jscript.net'">
-				<xsl:text>JScript</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'js' or $v_codeLangLC = 'javascript' or $v_codeLangLC = 'ecmascript'">
-				<xsl:text>JavaScript</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'xml' or $v_codeLangLC = 'xmllang' or $v_codeLangLC = 'xsl'">
-				<xsl:text>xmlLang</xsl:text>
-			</xsl:when>
+			<!-- Languages without a syntax generator.  The presentation style content files will contain any required
+					 resource items for these (i.e. devlang_HTML). -->
 			<xsl:when test="$v_codeLangLC = 'html' or $v_codeLangLC = 'htm'">
-				<xsl:text>html</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'xaml'">
-				<xsl:text>XAML</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'aspnet' or $v_codeLangLC = 'asp.net'">
-				<xsl:text>AspNet</xsl:text>
+				<xsl:text>HTML</xsl:text>
 			</xsl:when>
 			<xsl:when test="$v_codeLangLC = 'pshell' or $v_codeLangLC = 'powershell' or $v_codeLangLC = 'ps1'">
-				<xsl:text>pshell</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'sql' or $v_codeLangLC = 'sqlserver' or $v_codeLangLC = 'sql server'">
-				<xsl:text>sql</xsl:text>
+				<xsl:text>PShell</xsl:text>
 			</xsl:when>
 			<xsl:when test="$v_codeLangLC = 'py'">
 				<xsl:text>Python</xsl:text>
 			</xsl:when>
-			<xsl:when test="$v_codeLangLC = 'none'">
+			<xsl:when test="$v_codeLangLC = 'sql' or $v_codeLangLC = 'sqlserver' or $v_codeLangLC = 'sql server'">
+				<xsl:text>SQL</xsl:text>
+			</xsl:when>
+			<xsl:when test="$v_codeLangLC = 'vbs' or $v_codeLangLC = 'vbscript'">
+				<xsl:text>VBScript</xsl:text>
+			</xsl:when>
+			<xsl:when test="$v_codeLangLC = 'vb-c#' or $v_codeLangLC = 'visualbasicandcsharp'">
+				<xsl:text>VisualBasicAndCSharp</xsl:text>
+			</xsl:when>
+			<xsl:when test="$v_codeLangLC = 'xml' or $v_codeLangLC = 'xmllang' or $v_codeLangLC = 'xsl'">
+				<xsl:text>XML</xsl:text>
+			</xsl:when>
+			<!-- Special case for XAML.  It has a syntax generator but we treat the code elements differently and must
+					 use a common ID. -->
+			<xsl:when test="$v_codeLangLC = 'xaml' or $v_codeLangLC = 'xamlusage'">
+				<xsl:text>XAML</xsl:text>
+			</xsl:when>
+			<!-- None/other.  No resource items are needed for these. -->
+			<xsl:when test="$v_codeLangLC = 'none' or $v_codeLangLC = 'other'">
 				<xsl:value-of select="$v_codeLangLC"/>
 			</xsl:when>
+			<!-- If none of the above, assume it is a language with a syntax generator.  The syntax generator content
+					 files will contain any required resource items for the language. -->
 			<xsl:otherwise>
-				<xsl:text>other</xsl:text>
+				<xsl:value-of select="$p_codeLang"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
+	<!-- This gets the language name for metadata -->
 	<xsl:template name="t_codeLangName">
 		<xsl:param name="p_codeLang"/>
 		<xsl:variable name="v_codeLangUnique">
@@ -88,114 +67,11 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$v_codeLangUnique = 'VBScript'">
-				<xsl:text>VBScript</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'VisualBasic' or $v_codeLangUnique = 'VisualBasicUsage' or $v_codeLangUnique = 'VisualBasicDeclaration'" >
-				<xsl:text>VB</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'CSharp'" >
-				<xsl:text>CSharp</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'visualbasicANDcsharp'" >
-				<xsl:text>VB and C#</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'ManagedCPlusPlus'" >
-				<xsl:text>C++</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'JSharp'">
-				<xsl:text>VJ#</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'FSharp'" >
-				<xsl:text>FSharp</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'JScript'">
-				<xsl:text>JScript</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'JavaScript'">
-				<xsl:text>JavaScript</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'XAML'">
-				<xsl:text>XAML</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'xmlLang'">
-				<xsl:text>XML</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'html'">
-				<xsl:text>HTML</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'AspNet'">
-				<xsl:text>ASP.NET</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'pshell'">
-				<xsl:text>PowerShell</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'sql'">
-				<xsl:text>SQL</xsl:text>
-			</xsl:when>
-			<xsl:when test="$v_codeLangUnique = 'Python'">
-				<xsl:text>Python</xsl:text>
-			</xsl:when>
-			<xsl:otherwise/>
+			<xsl:when test="$v_codeLangUnique = 'none' or $v_codeLangUnique = 'other'" />
+			<xsl:otherwise>
+				<xsl:value-of select="$v_codeLangUnique"/>
+			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template name="t_mshelpCodelangAttributes">
-		<xsl:param name="snippets"/>
-		<xsl:for-each select="$snippets">
-
-			<xsl:if test="not(@language=preceding::*/@language)">
-				<xsl:variable name="v_codeLang">
-					<xsl:choose>
-						<xsl:when test="@language = 'VBScript' or @language = 'vbs'">
-							<xsl:text>VBScript</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'VisualBasic' or @language = 'vb' or @language = 'vb#' or @language = 'VB' or @language = 'kbLangVB'" >
-							<xsl:text>kbLangVB</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'CSharp' or @language = 'c#' or @language = 'cs' or @language = 'C#'" >
-							<xsl:text>CSharp</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'ManagedCPlusPlus' or @language = 'cpp' or @language = 'cpp#' or @language = 'c' or @language = 'c++' or @language = 'C++' or @language = 'kbLangCPP'" >
-							<xsl:text>kbLangCPP</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'JSharp' or @language = 'j#' or @language = 'jsharp' or @language = 'VJ#'">
-							<xsl:text>VJ#</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'JScript' or @language = 'js' or @language = 'jscript#' or @language = 'jscript' or @language = 'JScript' or @language = 'kbJScript'">
-							<xsl:text>kbJScript</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'XAML' or @language = 'xaml'">
-							<xsl:text>XAML</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'JavaScript' or @language = 'javascript'">
-							<xsl:text>JavaScript</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'xml'">
-							<xsl:text>xml</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'html'">
-							<xsl:text>html</xsl:text>
-						</xsl:when>
-						<xsl:when test="@language = 'vb-c#'">
-							<xsl:text>visualbasicANDcsharp</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>other</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:choose>
-					<xsl:when test="$v_codeLang='other'"/>
-					<!-- If $v_codeLang is already authored, then do nothing -->
-					<xsl:when test="/document/metadata/attribute[@name='codelang']/text() = $v_codeLang"/>
-					<xsl:otherwise>
-						<MSHelp:Attr Name="DevLang" Value="{$v_codeLang}"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
-
-		</xsl:for-each>
 	</xsl:template>
 
 	<!-- ============================================================================================

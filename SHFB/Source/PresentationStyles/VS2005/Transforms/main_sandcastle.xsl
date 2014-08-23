@@ -15,8 +15,8 @@
 	<xsl:variable name="summary" select="normalize-space(/document/comments/summary)" />
 	<xsl:variable name="abstractSummary" select="/document/comments/summary" />
 	<xsl:variable name="hasSeeAlsoSection" select="boolean((count(/document/comments//seealso[not(ancestor::overloads)] |
-		/document/comments/conceptualLink |
-		/document/reference/elements/element/overloads//seealso) > 0)  or
+		/document/comments/conceptualLink | /document/reference/elements/element/overloads//seealso |
+		/document/reference/elements/element/overloads/conceptualLink) > 0)  or
 		($group='type' or $group='member' or $group='list'))"/>
 	<xsl:variable name="examplesSection" select="boolean(string-length(/document/comments/example[normalize-space(.)]) > 0)"/>
 	<xsl:variable name="languageFilterSection" select="boolean(string-length(/document/comments/example[normalize-space(.)]) > 0)" />
@@ -594,7 +594,7 @@
 						</div>
 					</xsl:for-each>
 					<!-- EFW: Copy conceptualLink elements as-is -->
-					<xsl:for-each select="/document/comments/conceptualLink">
+					<xsl:for-each select="/document/comments/conceptualLink | /document/reference/elements/element/overloads/conceptualLink">
 						<div class="seeAlsoStyle">
 							<xsl:copy-of select="."/>
 						</div>

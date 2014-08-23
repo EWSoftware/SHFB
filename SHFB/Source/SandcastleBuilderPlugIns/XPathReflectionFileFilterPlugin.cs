@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : XPathReflectionFileFilterPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Eyal Post
-// Updated : 12/17/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 08/19/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to filter out unwanted information from the reflection information
@@ -69,7 +69,7 @@ namespace SandcastleBuilder.PlugIns
                     {
                         // This one has a slightly higher priority as it removes stuff that the other plug-ins
                         // don't need to see.
-                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before, 1100)
+                        new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.Before, 1100)
                     };
 
                 return executionPoints;

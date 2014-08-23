@@ -134,10 +134,26 @@
 					</xsl:when>
 				</xsl:choose>
 
-				<!-- Auto-generate codeLang attributes based on the snippets -->
-				<xsl:call-template name="t_mshelpCodelangAttributes">
-					<xsl:with-param name="snippets" select="//*[@language]" />
-				</xsl:call-template>
+				<!-- Auto-generate DevLang attributes based on the snippets -->
+				<xsl:for-each select="//*[@language]">
+					<xsl:if test="not(@language=preceding::*/@language)">
+						<xsl:variable name="v_codeLang">
+							<xsl:call-template name="t_codeLang">
+								<xsl:with-param name="p_codeLang" select="@language"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:choose>
+							<xsl:when test="$v_codeLang='none' or $v_codeLang='other'"/>
+							<!-- If $v_codeLang is already authored, then do nothing -->
+							<xsl:when test="/document/metadata/attribute[@name='codelang']/text() = $v_codeLang"/>
+							<xsl:otherwise>
+								<MSHelp:Attr Name="DevLang">
+									<includeAttribute name="Value" item="metaLang_{$v_codeLang}"/>
+								</MSHelp:Attr>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:if>
+				</xsl:for-each>
 
 				<!-- authored attributes -->
 				<xsl:for-each select="/document/metadata/attribute">

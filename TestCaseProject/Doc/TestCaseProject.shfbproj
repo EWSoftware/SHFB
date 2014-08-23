@@ -134,7 +134,7 @@
       </PlugInConfig>
       <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
         <configuration>
-          <sbAppLocale path="C:\UTILS\SBAppLocale.exe!" />
+          <sbAppLocale path="C:\Utils\SBAppLocale.exe" />
         </configuration>
       </PlugInConfig>
       <PlugInConfig id="Hierarchical Table of Contents" enabled="False">

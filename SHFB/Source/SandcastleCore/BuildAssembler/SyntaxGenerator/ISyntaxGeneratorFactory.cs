@@ -27,6 +27,21 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
     public interface ISyntaxGeneratorFactory
     {
         /// <summary>
+        /// This read-only property is implemented to return the default and localized resource item file
+        /// location.
+        /// </summary>
+        /// <remarks><para>If it returns null or an empty string, it is assumed the syntax generator has no
+        /// resource item files.  Otherwise, this will return the folder containing the default and localized
+        /// resource item files for things such as the title to use for syntax sections and code examples,
+        /// unsupported language feature messages, etc.</para>
+        /// 
+        /// <para>The resource item files are like those in the presentation styles.  The root folder contains
+        /// the default (English) resource item file.  Subfolders, if any, named after each supported language
+        /// contain the localized version of the file.  In all cases, the file is named using the language ID
+        /// plus a ".xml" extension.</para></remarks>
+        string ResourceItemFileLocation { get; }
+
+        /// <summary>
         /// This is implemented to provide a syntax generator factory
         /// </summary>
         /// <returns>A new instance of a syntax generator</returns>

@@ -66,37 +66,33 @@
   <item id="title_seeAlso_otherResources">Andere Ressourcen</item>
   <item id="title_revisionHistory">Revision History</item>
   
-  <!-- dynamic Link Information -->
-  <item id="meta_mshelp_KTable"><MSHelp:ktable keywords='{0}'
-									 locHeader='Location'
-									 topicHeader = 'Topic'
-									 disambiguator='table'
-									 indexMoniker='!DefaultDynamicLinkIndex' /></item>
+	<!-- dynamic Link Information -->
+	<item id="meta_mshelp_KTable"><MSHelp:ktable keywords='{0}' locHeader='Location' topicHeader = 'Topic'
+		disambiguator='table' indexMoniker='!DefaultDynamicLinkIndex' /></item>
 
-  <item id="inline_dynamicLink_prefixText">Für mehr Information siehe </item>
-  <item id="inline_dynamicLink_postfixText">.</item>
-  <item id="inline_dynamicLink_separatorText"> und </item>
+	<item id="inline_dynamicLink_prefixText">Für mehr Information siehe </item>
+	<item id="inline_dynamicLink_postfixText">.</item>
+	<item id="inline_dynamicLink_separatorText"> und </item>
   
-  <!-- devlang -->
-  <item id="devlang_VisualBasic">VB</item>
-  <item id="devlang_VisualBasicDeclaration">VB</item>
-  <item id="devlang_VisualBasicUsage">VB Verwendung</item>
-  <item id="devlang_VBScript">VBScript</item>
-  <item id="devlang_CSharp">C#</item>
-  <item id="devlang_visualbasicANDcsharp">VB und C#</item>
-  <item id="devlang_ManagedCPlusPlus">C++</item>
-  <item id="devlang_JSharp">J#</item>
-  <item id="devlang_JScript">JScript</item>
-  <item id="devlang_xmlLang">XML</item>
-  <item id="devlang_JavaScript">JavaScript</item>
-  <item id="devlang_FSharp">F#</item>
-  <item id="devlang_html">HTML</item>
-  <item id="devlang_XAML">XAML</item>
-  <item id="devlang_AspNet">ASP.NET</item>
-  <item id="devlang_pshell">PowerShell</item>
-  <item id="devlang_sql">SQL</item>
-  <item id="devlang_Python">Python</item>
+	<!-- Development language and code snippet titles for languages without a syntax generator -->
+	<item id="devlang_HTML">HTML</item>
+	<item id="devlang_PShell">PowerShell</item>
+	<item id="devlang_Python">Python</item>
+	<item id="devlang_SQL">SQL</item>
+	<item id="devlang_VBScript">Visual Basic Script</item>
+	<item id="devlang_VisualBasicAndCSharp">Visual Basic und C#</item>
+	<item id="devlang_XML">XML</item>
+
 	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
+
+	<!-- Development language metadata values for languages without a syntax generator -->
+	<item id="metaLang_HTML">HTML</item>
+	<item id="metaLang_PShell">PowerShell</item>
+	<item id="metaLang_Python">Python</item>
+	<item id="metaLang_SQL">SQL</item>
+	<item id="metaLang_VBScript">VBScript</item>
+	<item id="metaLang_VisualBasicAndCSharp">VB and C#</item>
+	<item id="metaLang_XML">XML</item>
 
   <!-- language keywords -->
   <item id="devlang_nullKeyword">eine Null Referenz (<span class="keyword">Nothing</span> in Visual Basic)</item>

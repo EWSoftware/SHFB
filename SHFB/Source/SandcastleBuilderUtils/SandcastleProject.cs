@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2014
+// Updated : 06/20/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -3116,13 +3116,10 @@ namespace SandcastleBuilder.Utils
         {
             // If we loaded the MSBuild project, we must unload it.  If not, it is cached and will cause problems
             // if loaded a second time.
-            if(removeProjectWhenDisposed)
+            if(removeProjectWhenDisposed && msBuildProject != null && !String.IsNullOrEmpty(this.Filename))
             {
-                if(msBuildProject != null && !String.IsNullOrEmpty(this.Filename))
-                {
-                    ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
-                    ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);
-                }
+                ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
+                ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);
             }
         }
         #endregion

@@ -30,7 +30,6 @@
 .tocResize img {
 	border: none;
 	cursor: pointer;
-	margin-top: 20px;
 }
 div#leftNav {
 	float: left;
@@ -76,6 +75,16 @@ div#tocNav > div > a.tocExpanded, div#tocNav > div > a.tocCollapsed {
 	display: inline-block;
 	margin-left: 0;
 	vertical-align: top;
+}
+div#tocResizableEW {
+	cursor: e-resize;
+	width: 15px;
+	top: 0;
+	height: 100%;
+	position: absolute;
+	display: block;
+	font-size: 0.5px;
+	right: -7px;
 }
 .toclevel0:first-child {
 	margin-top: 16px;
