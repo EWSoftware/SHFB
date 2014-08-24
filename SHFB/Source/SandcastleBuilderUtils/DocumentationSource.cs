@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a documentation source such as an assembly, an XML comments file, a
@@ -233,7 +233,6 @@ namespace SandcastleBuilder.Utils
             using(StreamReader sr = new StreamReader(solutionFile))
             {
                 solutionContent = sr.ReadToEnd();
-                sr.Close();
             }
 
             // Only add projects that are likely to contain assemblies

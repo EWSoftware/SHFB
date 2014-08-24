@@ -49,6 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Deploy\HelpLibraryManagerLauncher.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,6 +69,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="CommandLineArgument.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HelpLibraryManager.cs" />
     <Compile Include="HelpLibraryManagerException.cs" />
     <Compile Include="HelpLibraryManagerLauncher.cs" />

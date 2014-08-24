@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : OptionInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/27/2008
-// Note    : Copyright 2006-2008, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the command line option information class.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.3.4.0  12/27/2006  EFW  Created the code
-// 1.4.0.0  02/23/2007  EFW  Added support for a third value option
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/27/2006  EFW  Created the code
+// 02/23/2007  EFW  Added support for a third value option
+//===============================================================================================================
 
 using System;
-using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace SandcastleBuilder.HtmlExtract
@@ -43,7 +41,6 @@ namespace SandcastleBuilder.HtmlExtract
 
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
         /// Get the option text as specified
@@ -86,8 +83,8 @@ namespace SandcastleBuilder.HtmlExtract
         }
         #endregion
 
+        #region Methods 
         //=====================================================================
-        // Methods
 
         /// <summary>
         /// Constructor
@@ -102,7 +99,7 @@ namespace SandcastleBuilder.HtmlExtract
 
             optionText = option.Trim();
 
-            // Is is a project file
+            // Is it a project file
             if(optionText[0] != '-' && optionText[0] != '/')
             {
                 name = "project";
@@ -113,12 +110,10 @@ namespace SandcastleBuilder.HtmlExtract
             pos = optionText.IndexOf('=');
 
             if(pos < 2)
-                name = optionText.Substring(1).ToLower(
-                    CultureInfo.InvariantCulture);
+                name = optionText.Substring(1).ToLowerInvariant();
             else
             {
-                name = optionText.Substring(1, pos - 1).Trim().ToLower(
-                    CultureInfo.InvariantCulture);
+                name = optionText.Substring(1, pos - 1).Trim().ToLowerInvariant();
                 value = optionText.Substring(pos + 1).Trim();
 
                 if(reSplit.IsMatch(value))
@@ -144,5 +139,6 @@ namespace SandcastleBuilder.HtmlExtract
                         thirdValue.Length - 2).Trim();
             }
         }
+        #endregion
     }
 }

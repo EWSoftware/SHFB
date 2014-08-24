@@ -68,6 +68,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -144,6 +145,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\SupportAnimatedGIFBehavior.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InstallerPages\BasePage.cs" />
     <Compile Include="InstallerPages\CompletionAction.cs" />
     <Compile Include="InstallerPages\CompletionPage.xaml.cs">

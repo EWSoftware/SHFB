@@ -472,9 +472,7 @@ namespace Microsoft.Ddue.Tools
                             XmlWriterSettings settings = new XmlWriterSettings();
                             settings.ConformanceLevel = ConformanceLevel.Fragment;
 
-                            XmlWriter xmlStore = XmlWriter.Create(textStore, settings);
-
-                            try
+                            using(XmlWriter xmlStore = XmlWriter.Create(textStore, settings))
                             {
                                 if(target != null)
                                     resolver.WriteTarget(target, options, xmlStore);
@@ -483,10 +481,6 @@ namespace Microsoft.Ddue.Tools
                                     Reference reference = TextReferenceUtilities.CreateReference(targetId);
                                     resolver.WriteReference(reference, options, xmlStore);
                                 }
-                            }
-                            finally
-                            {
-                                xmlStore.Close();
                             }
 
                             input = textStore.ToString();
@@ -566,7 +560,7 @@ namespace Microsoft.Ddue.Tools
         /// persist changes to the cache if needed.</para></remarks>
         protected virtual MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
         {
-            MsdnResolver resolver;
+            MsdnResolver newResolver;
             IDictionary<string, string> cache = null;
 
             if(BuildComponentCore.Data.ContainsKey(SharedMsdnContentIdCacheId))
@@ -582,7 +576,7 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
 
             if(node == null)
-                resolver = new MsdnResolver();
+                newResolver = new MsdnResolver();
             else
             {
                 // Keep the filename.  If we own it, we'll update the cache file when disposed.
@@ -606,23 +600,23 @@ namespace Microsoft.Ddue.Tools
                     base.WriteMessage(MessageLevel.Diagnostic, "The MSDN content ID cache '" + msdnIdCacheFile +
                         "' does not exist yet.  All IDs will be looked up in this build which will slow it down.");
 
-                    resolver = new MsdnResolver();
+                    newResolver = new MsdnResolver();
                 }
                 else
                     using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Open, FileAccess.Read,
                       FileShare.Read))
                     {
                         BinaryFormatter bf = new BinaryFormatter();
-                        resolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs), false);
+                        newResolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs), false);
 
                         base.WriteMessage(MessageLevel.Info, "Loaded {0} cached MSDN content ID entries",
-                            resolver.MsdnContentIdCache.Count);
+                            newResolver.MsdnContentIdCache.Count);
                     }
             }
 
-            BuildComponentCore.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
+            BuildComponentCore.Data[SharedMsdnContentIdCacheId] = newResolver.MsdnContentIdCache;
 
-            return resolver;
+            return newResolver;
         }
 
         /// <summary>

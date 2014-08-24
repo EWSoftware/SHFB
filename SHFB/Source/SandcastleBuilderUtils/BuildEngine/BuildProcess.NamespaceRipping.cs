@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.NamespaceRipping.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to generate the API filter collection information used by MRefBuilder to
@@ -259,13 +259,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This is used to manually apply the specified API filter to the specified reflection information file
         /// </summary>
-        /// <param name="apiFilter">The API filter to apply</param>
+        /// <param name="filterToApply">The API filter to apply</param>
         /// <param name="reflectionFilename">The reflection information file</param>
         /// <remarks>This can be used by any plug-in that does not produce a reflection information file using
         /// <b>MRefBuilder.exe</b>.  In such cases, the API filter is not applied unless the plug-in uses this
         /// method.  If the reflection information file is produced by <b>MRefBuilder.exe</b>, there is no need
         /// to use this method as it will apply the API filter automatically to the file that it produces.</remarks>
-        public void ApplyManualApiFilter(ApiFilterCollection apiFilter, string reflectionFilename)
+        public void ApplyManualApiFilter(ApiFilterCollection filterToApply, string reflectionFilename)
         {
             XmlDocument refInfo;
             XmlNode apis;
@@ -276,7 +276,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             refInfo.Load(reflectionFilename);
             apis = refInfo.SelectSingleNode("reflection/apis");
 
-            foreach(ApiFilter nsFilter in apiFilter)
+            foreach(ApiFilter nsFilter in filterToApply)
                 if(nsFilter.Children.Count == 0)
                     this.RemoveNamespace(apis, nsFilter.FullName);
                 else

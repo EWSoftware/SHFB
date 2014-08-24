@@ -27,6 +27,7 @@
     <DefineConstants>TRACE;DEBUG;ASSEMBLYSPECIFICVERSION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,6 +49,7 @@
     <Compile Include="EnumerationTarget.cs" />
     <Compile Include="EventTarget.cs" />
     <Compile Include="ExtensionMethodReference.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IndexedTemplateTypeReference.cs" />
     <Compile Include="InvalidReference.cs" />
     <Compile Include="MemberReference.cs" />

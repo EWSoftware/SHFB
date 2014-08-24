@@ -1,12 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionBuilder", "VersionBuilder.csproj", "{62C554D0-12B0-4B4D-B750-5CEEF1DA97C5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C78B9DA-2FEA-4EFF-A73A-9634F693B9E5}"
-	ProjectSection(SolutionItems) = preProject
-		VersionBuilder.FxCop = VersionBuilder.FxCop
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject

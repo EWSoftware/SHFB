@@ -300,26 +300,27 @@ namespace Microsoft.Ddue.Tools.Targets
             LinkTextResolver resolver = new LinkTextResolver(this);
 
             XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
-            XmlWriter writer = XmlWriter.Create(targetsFile, settings);
+            
+            using(XmlWriter writer = XmlWriter.Create(targetsFile, settings))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("References");
+                writer.WriteAttributeString("Count", this.Count.ToString(CultureInfo.InvariantCulture));
 
-            writer.WriteStartDocument();
-            writer.WriteStartElement("References");
-            writer.WriteAttributeString("Count", this.Count.ToString(CultureInfo.InvariantCulture));
+                foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
+                    foreach(var target in td.Value)
+                    {
+                        writer.WriteStartElement("Reference");
+                        writer.WriteAttributeString("Id", target.Key);
 
-            foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
-                foreach(var target in td.Value)
-                {
-                    writer.WriteStartElement("Reference");
-                    writer.WriteAttributeString("Id", target.Key);
+                        resolver.WriteTarget(target.Value, DisplayOptions.All, writer);
 
-                    resolver.WriteTarget(target.Value, DisplayOptions.All, writer);
+                        writer.WriteEndElement();
+                    }
 
-                    writer.WriteEndElement();
-                }
-
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
-            writer.Close();
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
         }
 
         /// <summary>
@@ -328,31 +329,33 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="folder">The folder in which to place the serialized files</param>
         public void SerializeDictionary(string folder)
         {
-            TargetTypeDictionary tempTD = new TargetTypeDictionary();
-            TargetDictionary targetDictionary;
-            BinaryFormatter bf = new BinaryFormatter();
-            string filename;
-
-            foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
+            using(TargetTypeDictionary tempTD = new TargetTypeDictionary())
             {
-                filename = Path.Combine(folder, td.Value.DictionaryId);
+                TargetDictionary targetDictionary;
+                BinaryFormatter bf = new BinaryFormatter();
+                string filename;
 
-                // Fair warning, this is really slow for the main .NET Framework target dictionary hence the
-                // reason not to offer the option to serialize the InMemoryTargetDictionary to a persistent cache.
-                using(FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+                foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
                 {
-                    bf.Serialize(fs, td.Value);
+                    filename = Path.Combine(folder, td.Value.DictionaryId);
+
+                    // Fair warning, this is really slow for the main .NET Framework target dictionary hence the
+                    // reason not to offer the option to serialize the InMemoryTargetDictionary to a persistent cache.
+                    using(FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        bf.Serialize(fs, td.Value);
+                    }
+
+                    using(FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        targetDictionary = (TargetDictionary)bf.Deserialize(fs);
+                    }
+
+                    tempTD.Add(ReferenceLinkType.None, targetDictionary);
                 }
 
-                using(FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    targetDictionary = (TargetDictionary)bf.Deserialize(fs);
-                }
-
-                tempTD.Add(ReferenceLinkType.None, targetDictionary);
+                tempTD.DumpTargetDictionary(Path.Combine(folder, "SerializedIn.xml"));
             }
-
-            tempTD.DumpTargetDictionary(Path.Combine(folder, "SerializedIn.xml"));
         }
 #endif
         #endregion

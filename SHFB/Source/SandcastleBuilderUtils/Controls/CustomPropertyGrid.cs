@@ -1,27 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Custom Property Grid
 // File    : CustomPropertyGrid.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2008
-// Note    : Copyright 2006-2008, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a custom property grid that allows you to set the
-// initial width of the property name pane and has a context menu that allows
-// you to hide the description pane and reset the selected property value.
+// This file contains a custom property grid that allows you to set the initial width of the property name pane
+// and has a context menu that allows you to hide the description pane and reset the selected property value.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  08/03/2006  EFW  Created the code
-// 1.5.1.0  08/02/2007  EFW  Added an option to the context menu to copy the
-//                           property name to the clipboard.
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 08/03/2006  EFW  Created the code
+// 08/02/2007  EFW  Added an option to the context menu to copy the property name to the clipboard
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -38,10 +35,7 @@ namespace SandcastleBuilder.Utils.Controls
     /// you to hide the description pane and reset the selected property
     /// value.
 	/// </summary>
-    [Description("A property grid with a default context menu and " +
-      "user-definable property panel size"),
-      PermissionSet(SecurityAction.InheritanceDemand, Name="FullTrust"),
-      PermissionSet(SecurityAction.LinkDemand, Name="FullTrust")]
+    [Description("A property grid with a default context menu and user-definable property panel size")]
     public class CustomPropertyGrid : System.Windows.Forms.PropertyGrid
     {
         #region Private data members

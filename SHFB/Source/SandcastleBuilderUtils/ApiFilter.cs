@@ -248,7 +248,7 @@ namespace SandcastleBuilder.Utils
 
                 sb.Append(HttpUtility.HtmlEncode(filterName));
 
-                sb.AppendFormat("\" expose=\"{0}\"", isExposed.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+                sb.AppendFormat("\" expose=\"{0}\"", isExposed.ToString().ToLowerInvariant());
 
                 if(children.Count == 0)
                     sb.Append("/>\r\n");

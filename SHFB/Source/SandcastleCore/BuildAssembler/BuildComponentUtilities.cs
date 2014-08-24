@@ -78,26 +78,23 @@ namespace Sandcastle.Core.BuildAssembler
             // Clone the node so that we don't change the input
             XPathNavigator current = node.Clone();
 
-            // Create appropriate settings for the output writer
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.OmitXmlDeclaration = true;
 
-            // Construct a writer for our output
             StringBuilder builder = new StringBuilder();
-            XmlWriter writer = XmlWriter.Create(builder, settings);
 
-            // write the output
-            bool writing = current.MoveToFirstChild();
-
-            while(writing)
+            using(XmlWriter writer = XmlWriter.Create(builder, settings))
             {
-                current.WriteSubtree(writer);
-                writing = current.MoveToNext();
-            }
+                // write the output
+                bool writing = current.MoveToFirstChild();
 
-            // Finish up and return the result
-            writer.Close();
+                while(writing)
+                {
+                    current.WriteSubtree(writer);
+                    writing = current.MoveToNext();
+                }
+            }
 
             return builder.ToString();
         }

@@ -54,7 +54,7 @@ namespace SandcastleBuilder.Utils
         DeveloperReferenceWithoutSyntaxDocument,
         /// <summary>Sample Document</summary>
         DeveloperSampleDocument,
-        /// <summary>SDK Technology Overview Architechture document</summary>
+        /// <summary>SDK Technology Overview Architecture document</summary>
         DeveloperSDKTechnologyOverviewArchitectureDocument,
         /// <summary>SDK Technology Overview Code Directory document</summary>
         DeveloperSDKTechnologyOverviewCodeDirectoryDocument,

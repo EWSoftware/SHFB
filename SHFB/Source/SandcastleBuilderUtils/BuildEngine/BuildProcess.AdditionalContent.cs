@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2014
+// Updated : 08/23/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -494,8 +494,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Initialize code colorizer on first use
                 if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xml",
-                        ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xsl");
+                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder +
+                        @"PresentationStyles\Colorizer\highlight.xml", ComponentUtilities.ToolsFolder +
+                        @"PresentationStyles\Colorizer\highlight.xsl");
 
                 // Set the path the "Copy" image
                 codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";
@@ -541,11 +542,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!File.Exists(baseFolder + @"styles\highlight.css"))
                     {
                         syntaxFile = baseFolder + @"styles\highlight.css";
-                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\highlight.css", syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"PresentationStyles\Colorizer\highlight.css",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         syntaxFile = baseFolder + @"scripts\highlight_ac.js";
-                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\highlight_ac.js", syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"PresentationStyles\Colorizer\highlight_ac.js",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         // Always copy the image files, they may be different.  Also, delete the destination file
@@ -558,7 +561,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             File.Delete(syntaxFile);
                         }
 
-                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\CopyCode.gif", syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"PresentationStyles\Colorizer\CopyCode.gif",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         syntaxFile = baseFolder + @"icons\CopyCode_h.gif";
@@ -569,7 +573,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             File.Delete(syntaxFile);
                         }
 
-                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\CopyCode_h.gif", syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"PresentationStyles\Colorizer\CopyCode_h.gif",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
                     }
             }
@@ -960,8 +965,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Initialize code colorizer on first use
                 if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xml",
-                        ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xsl");
+                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder +
+                        @"PresentationStyles\Colorizer\highlight.xml", ComponentUtilities.ToolsFolder +
+                        @"PresentationStyles\Colorizer\highlight.xsl");
 
                 // Set the path the "Copy" image
                 codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";

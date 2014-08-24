@@ -67,6 +67,45 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Colorizer\highlight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Colorizer\highlight_ac.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Colorizer\highlight_openxml.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif">
+      <Link>Colorizer\CopyCode.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif">
+      <Link>Colorizer\CopyCode_h.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight_flowDoc.xsl">
+      <Link>Colorizer\highlight_flowDoc.xsl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.css">
+      <Link>Colorizer\highlight.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xml">
+      <Link>Colorizer\highlight.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xsl">
+      <Link>Colorizer\highlight.xsl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\DocumentTemplate.xaml">
+      <Link>Colorizer\DocumentTemplate.xaml</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Hana\Configuration\conceptual.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

@@ -1,10 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD104C35-AE92-4C7B-9DD8-F8AF997BACE2}"
-	ProjectSection(SolutionItems) = preProject
-		CodeColorizer.FxCop = CodeColorizer.FxCop
-	EndProjectSection
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextColorizerTest", "{D7F11A0C-3E65-42D0-8743-82CEA117A003}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "SAK"
@@ -28,6 +25,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextCo
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "1789"
+		SlnRelativePath = "TextColorizerTest\"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
@@ -35,6 +33,11 @@ EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "ColorizerLibraryDocs", "Doc\ColorizerLibraryDocs.shfbproj", "{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowDocumentTest", "FlowDocumentTest\FlowDocumentTest.csproj", "{2C79E315-A5C8-4436-A2AC-8C264A1E823C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{85714152-106C-48B7-A408-6078045BEDEC}"
+	ProjectSection(SolutionItems) = preProject
+		CodeColorizer.ruleset = CodeColorizer.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution

@@ -391,7 +391,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 {
                     // If the filename matches the folder, copy the info to
                     // the parent folder item.
-                    source = source.ToLower(CultureInfo.InvariantCulture);
+                    source = source.ToLowerInvariant();
 
                     if(Path.GetDirectoryName(source).EndsWith(
                       Path.GetFileNameWithoutExtension(source),

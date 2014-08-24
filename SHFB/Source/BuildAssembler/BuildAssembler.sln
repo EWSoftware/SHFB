@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssembler", "BuildAssembler\BuildAssembler.csproj", "{5BA19924-5A65-46E0-97CD-948595932584}"
 	ProjectSection(ProjectDependencies) = postProject
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41} = {30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}
@@ -10,11 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponents", "BuildComponents\BuildComponents.csproj", "{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntaxComponents", "SyntaxComponents\SyntaxComponents.csproj", "{CEAEC85B-973A-4414-8668-723EB65E5088}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA42C7D1-8CF9-44DF-8A25-8370697A1A7D}"
-	ProjectSection(SolutionItems) = preProject
-		BuildAssembler.FxCop = BuildAssembler.FxCop
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponentTargets", "BuildComponentTargets\BuildComponentTargets.csproj", "{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}"
 EndProject

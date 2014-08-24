@@ -63,18 +63,18 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // lbNamespaces
             // 
-            this.lbNamespaces.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbNamespaces.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbNamespaces.Font = new System.Drawing.Font("Tahoma", 8F);
             this.lbNamespaces.HorizontalScrollbar = true;
             this.lbNamespaces.Location = new System.Drawing.Point(12, 102);
             this.lbNamespaces.Name = "lbNamespaces";
             this.lbNamespaces.Size = new System.Drawing.Size(592, 194);
             this.statusBarTextProvider1.SetStatusBarText(this.lbNamespaces, "Namespaces: Check namespaces to include them in the help file.  Uncheck them to e" +
-                    "xclude them.");
+        "xclude them.");
             this.lbNamespaces.TabIndex = 2;
-            this.lbNamespaces.SelectedIndexChanged += new System.EventHandler(this.lbNamespaces_SelectedIndexChanged);
             this.lbNamespaces.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lbNamespaces_ItemCheck);
+            this.lbNamespaces.SelectedIndexChanged += new System.EventHandler(this.lbNamespaces_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -83,12 +83,12 @@ namespace SandcastleBuilder.Utils.Design
             this.label1.Size = new System.Drawing.Size(592, 23);
             this.label1.TabIndex = 1;
             this.label1.Text = "&Checked namespaces will appear in the help file.  Unchecked namespaces will not." +
-                "";
+    "";
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Location = new System.Drawing.Point(12, 313);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(326, 23);
@@ -97,8 +97,8 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // txtSummary
             // 
-            this.txtSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSummary.Location = new System.Drawing.Point(12, 339);
             this.txtSummary.Multiline = true;
             this.txtSummary.Name = "txtSummary";
@@ -106,8 +106,8 @@ namespace SandcastleBuilder.Utils.Design
             this.txtSummary.Size = new System.Drawing.Size(858, 156);
             this.statusBarTextProvider1.SetStatusBarText(this.txtSummary, "Summary: Edit the summary information for the namespace");
             this.txtSummary.TabIndex = 7;
-            this.txtSummary.Leave += new System.EventHandler(this.txtSummary_Leave);
             this.txtSummary.Enter += new System.EventHandler(this.txtSummary_Enter);
+            this.txtSummary.Leave += new System.EventHandler(this.txtSummary_Leave);
             // 
             // btnClose
             // 
@@ -190,9 +190,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // lbAppearsIn
             // 
-            this.lbAppearsIn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbAppearsIn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbAppearsIn.FormattingEnabled = true;
             this.lbAppearsIn.HorizontalScrollbar = true;
             this.lbAppearsIn.ItemHeight = 16;
@@ -204,8 +204,8 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // cboAssembly
             // 
-            this.cboAssembly.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cboAssembly.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cboAssembly.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAssembly.FormattingEnabled = true;
             this.cboAssembly.Location = new System.Drawing.Point(94, 24);
@@ -226,7 +226,7 @@ namespace SandcastleBuilder.Utils.Design
             // pbWait
             // 
             this.pbWait.BackColor = System.Drawing.SystemColors.Window;
-            this.pbWait.Image = global::SandcastleBuilder.Utils.Properties.Resources.SpinningWheel;
+            this.pbWait.Image = global::SandcastleBuilder.Utils.Properties.Resources.Spinner;
             this.pbWait.Location = new System.Drawing.Point(200, 189);
             this.pbWait.Name = "pbWait";
             this.pbWait.Size = new System.Drawing.Size(32, 32);
@@ -255,8 +255,8 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnApplyFilter);
             this.groupBox1.Controls.Add(this.txtSearchText);
             this.groupBox1.Controls.Add(this.label5);
@@ -319,8 +319,8 @@ namespace SandcastleBuilder.Utils.Design
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Namespace Summaries";
-            this.Load += new System.EventHandler(this.NamespacesDlg_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NamespacesDlg_FormClosing);
+            this.Load += new System.EventHandler(this.NamespacesDlg_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbWait)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

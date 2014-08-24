@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2014
+// Updated : 08/23/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -221,8 +221,10 @@ namespace SandcastleBuilder.Components
 		Keep XML comment ""see"" tags within the code (optional)
 		Tab size override (optional, 0 = Use syntax file setting)
 		Use language name as default title (optional) -->
-<colorizer syntaxFile=""{@SHFBFolder}Colorizer\highlight.xml"" styleFile=""{@SHFBFolder}Colorizer\highlight.xsl""
-	stylesheet=""{@SHFBFolder}Colorizer\highlight.css"" scriptFile=""{@SHFBFolder}Colorizer\highlight.js""
+<colorizer syntaxFile=""{@SHFBFolder}PresentationStyles\Colorizer\highlight.xml""
+	styleFile=""{@SHFBFolder}PresentationStyles\Colorizer\highlight.xsl""
+	stylesheet=""{@SHFBFolder}PresentationStyles\Colorizer\highlight.css""
+	scriptFile=""{@SHFBFolder}PresentationStyles\Colorizer\highlight.js""
 	disabled=""{@DisableCodeBlockComponent}"" language=""cs"" numberLines=""false"" outlining=""false""
 	keepSeeTags=""false"" tabSize=""0"" defaultTitle=""true"" />";
                 }
@@ -492,7 +494,8 @@ namespace SandcastleBuilder.Components
 
                 // If the default transform is specified, switch to the Open XML version.  This can happen if
                 // the user adds the code block component to their project to override the default settings.
-                string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location), @"Colorizer\highlight.xsl");
+                string defaultTransform = Path.Combine(Path.GetDirectoryName(asm.Location),
+                    @"PresentationStyles\Colorizer\highlight.xsl");
 
                 if(styleFile.Equals(defaultTransform, StringComparison.OrdinalIgnoreCase))
                 {

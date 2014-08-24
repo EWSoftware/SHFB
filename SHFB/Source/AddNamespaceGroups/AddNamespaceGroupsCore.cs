@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroupsCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2014
+// Updated : 08/23/2014
 // Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -314,7 +314,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Unexpected error adding namespace groups to reflection data.  Reason: ",
+                Console.WriteLine("Unexpected error adding namespace groups to reflection data.  Reason: {0}",
                     ex.Message);
                 return 1;
             }

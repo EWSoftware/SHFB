@@ -50,6 +50,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SandcastleBuilder.Utils.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,7 +79,7 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-		<Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -86,13 +87,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
-      <Link>BuildEngine\HelpLibraryManager.cs</Link>
+      <Link>HelpLibraryManager\HelpLibraryManager.cs</Link>
     </Compile>
     <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerException.cs">
-      <Link>BuildEngine\HelpLibraryManagerException.cs</Link>
+      <Link>HelpLibraryManager\HelpLibraryManagerException.cs</Link>
     </Compile>
     <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerUnsafeNativeMethods.cs">
-      <Link>BuildEngine\HelpLibraryManagerUnsafeNativeMethods.cs</Link>
+      <Link>HelpLibraryManager\HelpLibraryManagerUnsafeNativeMethods.cs</Link>
     </Compile>
     <Compile Include="ApiEntryType.cs" />
     <Compile Include="BaseBuildItem.cs" />
@@ -173,6 +174,13 @@
     <Compile Include="BuildEngine\FullTextIndex.cs" />
     <Compile Include="Gac\GacApi.cs" />
     <Compile Include="Gac\GacEnumerator.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HelpLibraryManager\LaunchMSHelpViewerDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpLibraryManager\LaunchMSHelpViewerDlg.Designer.cs">
+      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="IBasePathProvider.cs" />
     <Compile Include="InheritedDocumentation\CommentsCacheEventArgs.cs" />
     <Compile Include="InheritedDocumentation\IndexedCommentsCache.cs" />
@@ -242,8 +250,108 @@
     <Compile Include="XPath\XPathFunctionContext.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Spinner.gif" />
+    <Content Include="Templates\Hana.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Prototype.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\TransformBuildLog.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\VS2005.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <Content Include="SandcastleHelpFileBuilder.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Build1xHelpFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Build2xHelpFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildConceptualTopics.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildHelpViewerFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildOpenXmlFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildReferenceTopics.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ExtractHtmlInfo.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Generate2xTOC.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateInheritedDocs.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateInheritedDocs.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateIntermediateTOC.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateRefInfo.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help1x.hhp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x.HxC">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x.HxF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_A.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_B.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_F.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_H2Reg.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_K.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_NamedURLIndex.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_S.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\HelpContentSetup.msha">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\HelpFileBuilderTokens.tokens">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\InstallMSHC.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\MRefBuilder.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\PlaceHolderNode.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RemoveMSHC.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\TransformManifest.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -270,6 +378,9 @@
     <EmbeddedResource Include="Design\NamespaceSummaryItemEditorDlg.resx">
       <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HelpLibraryManager\LaunchMSHelpViewerDlg.resx">
+      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
@@ -357,7 +468,6 @@
     <EmbeddedResource Include="Controls\RefreshableItemListBox.bmp" />
     <EmbeddedResource Include="Controls\FilePathUserControl.bmp" />
     <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />
-    <None Include="Resources\SpinningWheel.gif" />
     <Compile Include="BuildAction.cs" />
     <Compile Include="ConceptualContent\ApiParentMode.cs" />
     <Compile Include="ConceptualContent\CodeSnippetCollection.cs" />

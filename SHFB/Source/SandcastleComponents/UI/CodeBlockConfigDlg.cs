@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2014
+// Updated : 08/23/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -102,12 +102,12 @@ namespace SandcastleBuilder.Components.UI
             if(node.Attribute("stylesheet") != null)
                 txtCssStylesheet.Text = node.Attribute("stylesheet").Value;
             else
-                txtCssStylesheet.Text = @"{@SHFBFolder}Colorizer\highlight.css";
+                txtCssStylesheet.Text = @"{@SHFBFolder}PresentationStyles\Colorizer\highlight.css";
 
             if(node.Attribute("scriptFile") != null)
                 txtScriptFile.Text = node.Attribute("scriptFile").Value;
             else
-                txtScriptFile.Text = @"{@SHFBFolder}Colorizer\highlight.js";
+                txtScriptFile.Text = @"{@SHFBFolder}PresentationStyles\Colorizer\highlight.js";
 
             attr = node.Attribute("language");
 

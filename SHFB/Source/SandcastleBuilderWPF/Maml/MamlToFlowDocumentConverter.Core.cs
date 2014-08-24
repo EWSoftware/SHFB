@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/27/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -64,7 +64,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// for media link elements.
         /// </summary>
         /// <value>The key is the image ID, the value is the key/value pair where the key is the filename
-        /// and the value is the optional alternate text to use as the image tooltip.</value>
+        /// and the value is the optional alternate text to use as the image tool tip.</value>
         public Dictionary<string, KeyValuePair<string, string>> MediaFiles
         {
             get { return mediaFiles; }

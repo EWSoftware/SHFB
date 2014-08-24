@@ -320,70 +320,72 @@ namespace Microsoft.Ddue.Tools
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.IgnoreWhitespace = true;
             settings.IgnoreComments = true;
-            XmlReader reader = XmlReader.Create(_args.TocFile, settings);
 
-            //<param name="Local" value="Html\15ed547b-455d-808c-259e-1eaa3c86dccc.htm"> 
-            //"html" before GUID
-            string _localFilePrefix = _args.HtmlDirectory.Substring(_args.HtmlDirectory.LastIndexOf('\\') + 1);
-
-            string fileAttr;
-            string titleValue;
-            using(StreamWriter sw = new StreamWriter(String.Format(CultureInfo.InvariantCulture, "{0}\\{1}.hhc",
-              _args.OutputDirectory, _args.ProjectName), false, Encoding.GetEncoding(_lang.CodePage)))
+            using(XmlReader reader = XmlReader.Create(_args.TocFile, settings))
             {
-                sw.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">");
-                sw.WriteLine("<HTML>");
-                sw.WriteLine("  <BODY>");
+                //<param name="Local" value="Html\15ed547b-455d-808c-259e-1eaa3c86dccc.htm"> 
+                //"html" before GUID
+                string _localFilePrefix = _args.HtmlDirectory.Substring(_args.HtmlDirectory.LastIndexOf('\\') + 1);
 
-                bool bDefaultTopic = true;
-                while(reader.Read())
+                string fileAttr;
+                string titleValue;
+                using(StreamWriter sw = new StreamWriter(String.Format(CultureInfo.InvariantCulture, "{0}\\{1}.hhc",
+                  _args.OutputDirectory, _args.ProjectName), false, Encoding.GetEncoding(_lang.CodePage)))
                 {
-                    switch(reader.NodeType)
-                    {
-                        case XmlNodeType.Element:
-                            if(reader.Name == "topic")
-                            {
-                                _indentCount = reader.Depth;
-                                fileAttr = reader.GetAttribute("file") + ".htm";
-                                if(titleTable.Contains(fileAttr))
-                                    titleValue = (string)titleTable[fileAttr];
-                                else
-                                    titleValue = String.Empty;
+                    sw.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">");
+                    sw.WriteLine("<HTML>");
+                    sw.WriteLine("  <BODY>");
 
-                                WriteHhcLine(sw, "<UL>");
-                                WriteHhcLine(sw, "  <LI><OBJECT type=\"text/sitemap\">");
-                                WriteHhcLine(sw, String.Format(CultureInfo.InvariantCulture,
-                                    "    <param name=\"Name\" value=\"{0}\">", titleValue));
-                                WriteHhcLine(sw, String.Format(CultureInfo.InvariantCulture,
-                                    "    <param name=\"Local\" value=\"{0}\\{1}\">", _localFilePrefix, fileAttr));
-                                if(bDefaultTopic)
+                    bool bDefaultTopic = true;
+                    while(reader.Read())
+                    {
+                        switch(reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if(reader.Name == "topic")
                                 {
-                                    _defaultTopic = _localFilePrefix + "\\" + reader.GetAttribute("file") + ".htm";
-                                    bDefaultTopic = false;
+                                    _indentCount = reader.Depth;
+                                    fileAttr = reader.GetAttribute("file") + ".htm";
+                                    if(titleTable.Contains(fileAttr))
+                                        titleValue = (string)titleTable[fileAttr];
+                                    else
+                                        titleValue = String.Empty;
+
+                                    WriteHhcLine(sw, "<UL>");
+                                    WriteHhcLine(sw, "  <LI><OBJECT type=\"text/sitemap\">");
+                                    WriteHhcLine(sw, String.Format(CultureInfo.InvariantCulture,
+                                        "    <param name=\"Name\" value=\"{0}\">", titleValue));
+                                    WriteHhcLine(sw, String.Format(CultureInfo.InvariantCulture,
+                                        "    <param name=\"Local\" value=\"{0}\\{1}\">", _localFilePrefix, fileAttr));
+                                    if(bDefaultTopic)
+                                    {
+                                        _defaultTopic = _localFilePrefix + "\\" + reader.GetAttribute("file") + ".htm";
+                                        bDefaultTopic = false;
+                                    }
+                                    WriteHhcLine(sw, "  </OBJECT></LI>");
+                                    if(reader.IsEmptyElement)
+                                    {
+                                        WriteHhcLine(sw, "</UL>");
+                                    }
                                 }
-                                WriteHhcLine(sw, "  </OBJECT></LI>");
-                                if(reader.IsEmptyElement)
+                                break;
+
+                            case XmlNodeType.EndElement:
+                                if(reader.Name == "topic")
                                 {
+                                    _indentCount = reader.Depth;
                                     WriteHhcLine(sw, "</UL>");
                                 }
-                            }
-                            break;
+                                break;
 
-                        case XmlNodeType.EndElement:
-                            if(reader.Name == "topic")
-                            {
-                                _indentCount = reader.Depth;
-                                WriteHhcLine(sw, "</UL>");
-                            }
-                            break;
-
-                        default:
-                            //Console.WriteLine(reader.Name);
-                            break;
+                            default:
+                                //Console.WriteLine(reader.Name);
+                                break;
+                        }
                     }
+                    sw.WriteLine("  </BODY>");
+                    sw.WriteLine("</HTML>");
                 }
-                sw.WriteLine("  </BODY>");
-                sw.WriteLine("</HTML>");
             }
         }
 
@@ -582,104 +584,106 @@ namespace Microsoft.Ddue.Tools
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.IgnoreWhitespace = false;
             settings.IgnoreComments = true;
-            XmlReader reader = XmlReader.Create(srcFile, settings);
 
-            XmlWriterSettings settings2 = new XmlWriterSettings();
-            settings2.Indent = false;
-            settings2.IndentChars = "\t";
-            settings2.OmitXmlDeclaration = true;
-            XmlWriter writer = XmlWriter.Create(destFile, settings2);
-
-            _currentTitle = String.Empty;
-            _currentFile = destFile;
-
-            _topicCount++;
-
-            while(reader.Read())
+            using(XmlReader reader = XmlReader.Create(srcFile, settings))
             {
-                if(_metadata == false && reader.Name.ToLowerInvariant() == "xml" && reader.NodeType == XmlNodeType.Element)
+                XmlWriterSettings settings2 = new XmlWriterSettings();
+                settings2.Indent = false;
+                settings2.IndentChars = "\t";
+                settings2.OmitXmlDeclaration = true;
+
+                using(XmlWriter writer = XmlWriter.Create(destFile, settings2))
                 {
-                    //skip xml data island
-                    reader.ReadOuterXml();
-                }
+                    _currentTitle = String.Empty;
+                    _currentFile = destFile;
 
-                switch(reader.NodeType)
-                {
+                    _topicCount++;
 
-                    case XmlNodeType.Element:
-                        string elementName = reader.Name.ToLowerInvariant();
-
-                        //skip <mshelp:link> node, 
-                        if(elementName == "mshelp:link")
+                    while(reader.Read())
+                    {
+                        if(_metadata == false && reader.Name.ToLowerInvariant() == "xml" && reader.NodeType == XmlNodeType.Element)
                         {
-                            writer.WriteStartElement("span");
-                            writer.WriteAttributeString("class", "nolink");
-                            reader.MoveToContent();
+                            //skip xml data island
+                            reader.ReadOuterXml();
                         }
 
-                        else
+                        switch(reader.NodeType)
                         {
-                            if(!String.IsNullOrEmpty(reader.Prefix))
-                                writer.WriteStartElement(reader.Prefix, reader.LocalName, null);
-                            else
-                                writer.WriteStartElement(reader.Name);
 
-                            if(reader.HasAttributes)
-                            {
-                                while(reader.MoveToNextAttribute())
+                            case XmlNodeType.Element:
+                                string elementName = reader.Name.ToLowerInvariant();
+
+                                //skip <mshelp:link> node, 
+                                if(elementName == "mshelp:link")
+                                {
+                                    writer.WriteStartElement("span");
+                                    writer.WriteAttributeString("class", "nolink");
+                                    reader.MoveToContent();
+                                }
+
+                                else
                                 {
                                     if(!String.IsNullOrEmpty(reader.Prefix))
-                                        writer.WriteAttributeString(reader.Prefix, reader.LocalName, null, reader.Value);
+                                        writer.WriteStartElement(reader.Prefix, reader.LocalName, null);
                                     else
-                                        //If we write the following content to output file, we will get xmlexception saying the 2003/5 namespace is redefined. So hard code to skip "xmlns".
-                                        //<pre>My.Computer.FileSystem.RenameFile(<span class="literal" xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
-                                        if(!(reader.Depth > 2 && reader.Name.StartsWith("xmlns", StringComparison.Ordinal)))
-                                            writer.WriteAttributeString(reader.Name, reader.Value);
-                                }
-                                // Move the reader back to the element node.
-                                reader.MoveToElement();
-                            }
+                                        writer.WriteStartElement(reader.Name);
 
-                            //read html/head/title, save it to _currentTitle
-                            if(reader.Depth == 2 && elementName == "title")
-                            {
-                                if(!reader.IsEmptyElement) //skip <Title/> node, fix bug 425406
-                                {
-                                    reader.Read();
-                                    if(reader.NodeType == XmlNodeType.Text)
+                                    if(reader.HasAttributes)
                                     {
-                                        _currentTitle = reader.Value;
-                                        writer.WriteRaw(reader.Value);
+                                        while(reader.MoveToNextAttribute())
+                                        {
+                                            if(!String.IsNullOrEmpty(reader.Prefix))
+                                                writer.WriteAttributeString(reader.Prefix, reader.LocalName, null, reader.Value);
+                                            else
+                                                //If we write the following content to output file, we will get xmlexception saying the 2003/5 namespace is redefined. So hard code to skip "xmlns".
+                                                //<pre>My.Computer.FileSystem.RenameFile(<span class="literal" xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5">
+                                                if(!(reader.Depth > 2 && reader.Name.StartsWith("xmlns", StringComparison.Ordinal)))
+                                                    writer.WriteAttributeString(reader.Name, reader.Value);
+                                        }
+                                        // Move the reader back to the element node.
+                                        reader.MoveToElement();
                                     }
+
+                                    //read html/head/title, save it to _currentTitle
+                                    if(reader.Depth == 2 && elementName == "title")
+                                    {
+                                        if(!reader.IsEmptyElement) //skip <Title/> node, fix bug 425406
+                                        {
+                                            reader.Read();
+                                            if(reader.NodeType == XmlNodeType.Text)
+                                            {
+                                                _currentTitle = reader.Value;
+                                                writer.WriteRaw(reader.Value);
+                                            }
+                                        }
+                                    }
+
+                                    if(reader.IsEmptyElement)
+                                        writer.WriteEndElement();
                                 }
-                            }
+                                break;
 
-                            if(reader.IsEmptyElement)
-                                writer.WriteEndElement();
+                            case XmlNodeType.Text:
+                                writer.WriteValue(reader.Value);
+                                break;
+
+                            case XmlNodeType.EndElement:
+                                writer.WriteFullEndElement();
+                                break;
+
+                            case XmlNodeType.Whitespace:
+                            case XmlNodeType.SignificantWhitespace:
+                                writer.WriteWhitespace(reader.Value);
+                                break;
+
+
+                            default:
+                                //Console.WriteLine(reader.Name);
+                                break;
                         }
-                        break;
-
-                    case XmlNodeType.Text:
-                        writer.WriteValue(reader.Value);
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        writer.WriteFullEndElement();
-                        break;
-
-                    case XmlNodeType.Whitespace:
-                    case XmlNodeType.SignificantWhitespace:
-                        writer.WriteWhitespace(reader.Value);
-                        break;
-
-
-                    default:
-                        //Console.WriteLine(reader.Name);
-                        break;
+                    }
                 }
             }
-
-            writer.Close();
 
             ReadXmlIsland(srcFile);
 
@@ -698,56 +702,58 @@ namespace Microsoft.Ddue.Tools
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.IgnoreWhitespace = false;
             settings.IgnoreComments = true;
-            XmlReader reader = XmlReader.Create(filename, settings);
 
-            //Fix TFS bug 289403: search if there is comma in k keyword except those in () or <>. 
-            //sample1: "StoredNumber (T1,T2) class, about StoredNumber (T1,T2) class";
-            //sample2: "StoredNumber <T1,T2> class, about StoredNumber <T1,T2> class";
-            Regex r = new Regex(@",([^\)\>]+|([^\<\>]*\<[^\<\>]*\>[^\<\>]*)?|([^\(\)]*\([^\(\)]*\)[^\(\)]*)?)$");
-
-            while(reader.Read())
+            using(XmlReader reader = XmlReader.Create(filename, settings))
             {
-                if(reader.IsStartElement())
+                //Fix TFS bug 289403: search if there is comma in k keyword except those in () or <>. 
+                //sample1: "StoredNumber (T1,T2) class, about StoredNumber (T1,T2) class";
+                //sample2: "StoredNumber <T1,T2> class, about StoredNumber <T1,T2> class";
+                Regex r = new Regex(@",([^\)\>]+|([^\<\>]*\<[^\<\>]*\>[^\<\>]*)?|([^\(\)]*\([^\(\)]*\)[^\(\)]*)?)$");
+
+                while(reader.Read())
                 {
-                    if(reader.Name.ToLowerInvariant() == "mshelp:toctitle")
+                    if(reader.IsStartElement())
                     {
-                        string titleAttr = reader.GetAttribute("Title");
-                        if(!String.IsNullOrEmpty(titleAttr))
-                            _currentTitle = titleAttr;
-                    }
-
-                    if(reader.Name.ToLowerInvariant() == "mshelp:keyword")
-                    {
-                        string indexType = reader.GetAttribute("Index");
-                        if(indexType == "K")
+                        if(reader.Name.ToLowerInvariant() == "mshelp:toctitle")
                         {
-                            KKeywordInfo kkwdinfo = new KKeywordInfo();
-                            string kkeyword = reader.GetAttribute("Term");
-                            if(!string.IsNullOrEmpty(kkeyword))
-                            {
-                                kkeyword = ChmBuilder.ReplaceMarks(kkeyword);
-                                Match match = r.Match(kkeyword);
-                                if(match.Success)
-                                {
-                                    kkwdinfo.MainEntry = kkeyword.Substring(0, match.Index);
-                                    kkwdinfo.SubEntry = kkeyword.Substring(match.Index + 1).TrimStart(new char[] { ' ' });
-                                }
-                                else
-                                {
-                                    kkwdinfo.MainEntry = kkeyword;
-                                }
+                            string titleAttr = reader.GetAttribute("Title");
+                            if(!String.IsNullOrEmpty(titleAttr))
+                                _currentTitle = titleAttr;
+                        }
 
-                                kkwdinfo.File = _currentFile;
-                                _kkeywords.Add(kkwdinfo);
+                        if(reader.Name.ToLowerInvariant() == "mshelp:keyword")
+                        {
+                            string indexType = reader.GetAttribute("Index");
+                            if(indexType == "K")
+                            {
+                                KKeywordInfo kkwdinfo = new KKeywordInfo();
+                                string kkeyword = reader.GetAttribute("Term");
+                                if(!string.IsNullOrEmpty(kkeyword))
+                                {
+                                    kkeyword = ChmBuilder.ReplaceMarks(kkeyword);
+                                    Match match = r.Match(kkeyword);
+                                    if(match.Success)
+                                    {
+                                        kkwdinfo.MainEntry = kkeyword.Substring(0, match.Index);
+                                        kkwdinfo.SubEntry = kkeyword.Substring(match.Index + 1).TrimStart(new char[] { ' ' });
+                                    }
+                                    else
+                                    {
+                                        kkwdinfo.MainEntry = kkeyword;
+                                    }
+
+                                    kkwdinfo.File = _currentFile;
+                                    _kkeywords.Add(kkwdinfo);
+                                }
                             }
                         }
                     }
-                }
 
-                if(reader.NodeType == XmlNodeType.EndElement)
-                {
-                    if(reader.Name == "xml")
-                        return;
+                    if(reader.NodeType == XmlNodeType.EndElement)
+                    {
+                        if(reader.Name == "xml")
+                            return;
+                    }
                 }
             }
         }

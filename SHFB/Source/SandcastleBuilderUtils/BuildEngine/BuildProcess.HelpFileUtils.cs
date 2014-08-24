@@ -580,7 +580,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <returns>The HTML to insert for the table of contents</returns>
         private string GenerateHtmlToc()
         {
-            XPathDocument toc;
+            XPathDocument tocDoc;
             XPathNavigator navToc;
             XPathNodeIterator entries;
             Encoding enc = Encoding.Default;
@@ -594,10 +594,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             using(StringReader sr = new StringReader(content))
             {
-                toc = new XPathDocument(sr);
+                tocDoc = new XPathDocument(sr);
             }
 
-            navToc = toc.CreateNavigator();
+            navToc = tocDoc.CreateNavigator();
 
             // Get the TOC entries from the HelpTOC node
             entries = navToc.Select("HelpTOC/*");

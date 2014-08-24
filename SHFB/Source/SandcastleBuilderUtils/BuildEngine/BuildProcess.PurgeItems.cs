@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PurgeItems.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to purge items from the MRefBuilder reflection.org file based on the
@@ -56,11 +56,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// Apply the project's Visibility category properties to the given reflection information file
         /// </summary>
-        /// <param name="reflectionFilename">The name of the reflection information file to use</param>
+        /// <param name="reflectionInfoFile">The name of the reflection information file to use</param>
         /// <remarks>This is used to remove entries from the reflection information file so that it does not
         /// appear in the help file.  See the <c>Document*</c> properties in the <see cref="SandcastleProject"/>
         /// class for information on the items removed.</remarks>
-        public void ApplyVisibilityProperties(string reflectionFilename)
+        public void ApplyVisibilityProperties(string reflectionInfoFile)
         {
             XmlNodeList apis;
             XmlNode api;
@@ -77,10 +77,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             try
             {
-                XmlDocument reflectionFile = new XmlDocument();
-                reflectionFile.Load(reflectionFilename);
+                XmlDocument reflectionDoc = new XmlDocument();
+                reflectionDoc.Load(reflectionInfoFile);
 
-                XmlNode apisRoot = reflectionFile.SelectSingleNode("reflection/apis");
+                XmlNode apisRoot = reflectionDoc.SelectSingleNode("reflection/apis");
 
                 // Removal of excluded members is handled by the API filter so we don't have to deal with them here
 
@@ -201,8 +201,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
                 // Backup the original for reference and save the changed file
-                File.Copy(reflectionFilename, Path.ChangeExtension(reflectionFilename, ".bak"), true);
-                reflectionFile.Save(reflectionFilename);
+                File.Copy(reflectionInfoFile, Path.ChangeExtension(reflectionInfoFile, ".bak"), true);
+                reflectionDoc.Save(reflectionInfoFile);
             }
             catch(BuilderException )
             {

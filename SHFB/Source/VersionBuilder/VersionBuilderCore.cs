@@ -319,20 +319,22 @@ namespace Microsoft.Ddue.Tools
                             return 1;
                         }
 
-                        XmlReader reader3 = XmlReader.Create(info5.File, settings);
-                        reader3.MoveToContent();
-
-                        while(reader3.Read())
+                        using(XmlReader reader3 = XmlReader.Create(info5.File, settings))
                         {
-                            if((reader3.NodeType == XmlNodeType.Element) && (reader3.LocalName == "assembly"))
+                            reader3.MoveToContent();
+
+                            while(reader3.Read())
                             {
-                                string str9 = reader3.GetAttribute("name");
-                                if(!dictionary4.ContainsKey(str9))
+                                if((reader3.NodeType == XmlNodeType.Element) && (reader3.LocalName == "assembly"))
                                 {
-                                    XmlReader reader4 = reader3.ReadSubtree();
-                                    writer.WriteNode(reader4, false);
-                                    reader4.Close();
-                                    dictionary4.Add(str9, null);
+                                    string str9 = reader3.GetAttribute("name");
+                                    if(!dictionary4.ContainsKey(str9))
+                                    {
+                                        XmlReader reader4 = reader3.ReadSubtree();
+                                        writer.WriteNode(reader4, false);
+                                        reader4.Close();
+                                        dictionary4.Add(str9, null);
+                                    }
                                 }
                             }
                         }
@@ -553,8 +555,8 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException ioEx)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                    "An error occurred while generating the output file. The error message is: {1}", ioEx.Message));
+                ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while generating the " +
+                    "output file. The error message is: {0}", ioEx.Message);
                 return 1;
             }
 

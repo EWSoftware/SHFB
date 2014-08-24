@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FilePath.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to represent a file path.  Support is included for treating the path as fixed
@@ -581,7 +581,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// Default constructor.  The file path is undefined.
         /// </summary>
-        /// <param name="provider">The base base provider</param>
+        /// <param name="provider">The base path provider</param>
         /// <overloads>There are three overloads for the constructor.</overloads>
         public FilePath(IBasePathProvider provider)
         {
@@ -593,7 +593,7 @@ namespace SandcastleBuilder.Utils
         /// Constructor.  Assign the specified path.
         /// </summary>
         /// <param name="path">A relative or absolute path.</param>
-        /// <param name="provider">The base base provider</param>
+        /// <param name="provider">The base path provider</param>
         /// <remarks>Unless <see cref="IsFixedPath"/> is set to true, the path is always treated as a relative
         /// path.</remarks>
         public FilePath(string path, IBasePathProvider provider)
@@ -607,7 +607,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="path">A relative or absolute path.</param>
         /// <param name="isFixed">True to treat the path as fixed, false to treat it as a relative path.</param>
-        /// <param name="provider">The base base provider</param>
+        /// <param name="provider">The base path provider</param>
         public FilePath(string path, bool isFixed, IBasePathProvider provider)
         {
             basePathProvider = provider;
@@ -635,7 +635,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>Returns the hash code of the <see cref="ToString" /> value converted to lowercase</returns>
         public override int GetHashCode()
         {
-            return this.ToString().ToLower(CultureInfo.InvariantCulture).GetHashCode();
+            return this.ToString().ToLowerInvariant().GetHashCode();
         }
 
         /// <summary>

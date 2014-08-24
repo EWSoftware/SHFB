@@ -30,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SandcastleBuilder.WPF.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,6 +73,7 @@
     <Compile Include="Controls\SplitButton.cs" />
     <Compile Include="EntityReference.cs" />
     <Compile Include="EntityType.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Maml\ElementProperties.cs" />
     <Compile Include="Maml\GlossaryEntry.cs" />
     <Compile Include="Maml\MamlToFlowDocumentConverter.Core.cs" />

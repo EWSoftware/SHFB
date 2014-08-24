@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1147,24 +1147,24 @@ namespace SandcastleBuilder.Gui
         private void miRecentProjects_DropDownOpening(object sender, EventArgs e)
         {
             StringCollection mruList = Settings.Default.MruList;
-            ToolStripMenuItem miProject;
+            ToolStripMenuItem miMruProject;
             int idx = 1;
 
             miRecentProjects.DropDownItems.Clear();
 
             if(mruList.Count == 0)
             {
-                miProject = new ToolStripMenuItem("(Empty)");
-                miProject.Enabled = false;
-                miRecentProjects.DropDownItems.Add(miProject);
+                miMruProject = new ToolStripMenuItem("(Empty)");
+                miMruProject.Enabled = false;
+                miRecentProjects.DropDownItems.Add(miMruProject);
             }
             else
-                foreach(string project in mruList)
+                foreach(string mru in mruList)
                 {
-                    miProject = new ToolStripMenuItem();
-                    miProject.Text = String.Format(CultureInfo.CurrentCulture, "&{0} {1}", idx++, project);
-                    miProject.Click += new EventHandler(miProject_Click);
-                    miRecentProjects.DropDownItems.Add(miProject);
+                    miMruProject = new ToolStripMenuItem();
+                    miMruProject.Text = String.Format(CultureInfo.CurrentCulture, "&{0} {1}", idx++, mru);
+                    miMruProject.Click += new EventHandler(miProject_Click);
+                    miRecentProjects.DropDownItems.Add(miMruProject);
                 }
         }
 

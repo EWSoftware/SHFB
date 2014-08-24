@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/23/2014
 // Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,10 +13,10 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.4  01/02/2012  EFW  Created the code
-// 1.9.7.0  01/12/2012  EFW  Added support for colorized code blocks
+// 01/02/2012  EFW  Created the code
+// 01/12/2012  EFW  Added support for colorized code blocks
 //===============================================================================================================
 
 using System;
@@ -140,7 +140,8 @@ namespace SandcastleBuilder.WPF.UserControls
             if(MamlToFlowDocumentConverter.CodeColorizer == null)
                 try
                 {
-                    string colorizerPath = Path.Combine(ComponentUtilities.ToolsFolder, "Colorizer");
+                    string colorizerPath = Path.Combine(ComponentUtilities.ToolsFolder,
+                        @"PresentationStyles\Colorizer");
 
                     MamlToFlowDocumentConverter.CodeColorizer = new CodeColorizer(Path.Combine(colorizerPath,
                       "highlight.xml"), Path.Combine(colorizerPath, "highlight_flowDoc.xsl"))

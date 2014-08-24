@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRefBuilder", "MRefBuilder.csproj", "{A8DCAD75-879F-4C97-803B-C9A17F227B04}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E8606C83-11D9-411D-97A4-0ED1FC5C32EA} = {E8606C83-11D9-411D-97A4-0ED1FC5C32EA}
@@ -8,12 +10,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRefBuilder", "MRefBuilder.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCase", "TestCase\TestCase.csproj", "{E8606C83-11D9-411D-97A4-0ED1FC5C32EA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D908FB5-0118-43FC-9941-E96D68ED47E4}"
-	ProjectSection(SolutionItems) = preProject
-		MRefBuilder.FxCop = MRefBuilder.FxCop
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{95A87268-EFA7-4534-8F34-9539B2E08FEE}"
+	ProjectSection(SolutionItems) = preProject
+		MRefBuilder.ruleset = MRefBuilder.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution

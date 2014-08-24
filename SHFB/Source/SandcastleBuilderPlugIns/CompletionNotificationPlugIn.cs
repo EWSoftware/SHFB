@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to run after the build completes to send notification of the completion
@@ -241,18 +241,19 @@ namespace SandcastleBuilder.PlugIns
                 if(context.BuildStep != BuildStep.Completed || builder.CurrentProject.KeepLogFile)
                     msg.Body += "Build details can be found in the log file " + builder.LogFilename + "\r\n";
 
-                SmtpClient smtp = new SmtpClient();
-
-                if(smtpServer.Length != 0)
+                using(SmtpClient smtp = new SmtpClient())
                 {
-                    smtp.Host = smtpServer;
-                    smtp.Port = smtpPort;
+                    if(smtpServer.Length != 0)
+                    {
+                        smtp.Host = smtpServer;
+                        smtp.Port = smtpPort;
+                    }
+
+                    if(!credentials.UseDefaultCredentials)
+                        smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
+
+                    smtp.Send(msg);
                 }
-
-                if(!credentials.UseDefaultCredentials)
-                    smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
-
-                smtp.Send(msg);
 
                 builder.ReportProgress("The build notification e-mail was sent successfully to {0}",
                     msg.To[0].Address);
@@ -313,9 +314,6 @@ namespace SandcastleBuilder.PlugIns
             XsltSettings settings;
             XmlReaderSettings readerSettings;
             XmlWriterSettings writerSettings;
-            XmlReader reader = null;
-            XmlWriter writer = null;
-            StringReader sr = null;
             StringBuilder sb = null;
             string html = null, logFile = Path.ChangeExtension(builder.LogFilename, ".html");
 
@@ -334,20 +332,29 @@ namespace SandcastleBuilder.PlugIns
                 xslTransform = new XslCompiledTransform();
                 settings = new XsltSettings(true, true);
 
-                xslTransform.Load(XmlReader.Create(xslTransformFile, readerSettings), settings,
-                    new XmlUrlResolver());
+                using(var transformReader = XmlReader.Create(xslTransformFile, readerSettings))
+                {
+                    xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 
-                sr = new StringReader(html);
-                reader = XmlReader.Create(sr, readerSettings);
-                writerSettings = xslTransform.OutputSettings.Clone();
-                writerSettings.CloseOutput = true;
-                writerSettings.Indent = false;
+                    using(var sr = new StringReader(html))
+                    {
+                        using(var reader = XmlReader.Create(sr, readerSettings))
+                        {
+                            writerSettings = xslTransform.OutputSettings.Clone();
+                            writerSettings.CloseOutput = true;
+                            writerSettings.Indent = false;
 
-                sb = new StringBuilder(10240);
-                writer = XmlWriter.Create(sb, writerSettings);
-                xslTransform.Transform(reader, writer);
+                            sb = new StringBuilder(10240);
 
-                writer.Flush();
+                            using(var writer = XmlWriter.Create(sb, writerSettings))
+                            {
+                                xslTransform.Transform(reader, writer);
+                                writer.Flush();
+                            }
+                        }
+                    }
+                }
+
                 html = sb.ToString();
             }
             catch(Exception ex)
@@ -358,17 +365,6 @@ namespace SandcastleBuilder.PlugIns
                 html = String.Format(CultureInfo.CurrentCulture, "<pre><b>An error occurred trying to " +
                     "transform the log file '{0}'</b>:\r\n{1}\r\n\r\n<b>Log Content:</b>\r\n{2}</pre>",
                     builder.LogFilename, ex.Message, HttpUtility.HtmlEncode(html));
-            }
-            finally
-            {
-                if(reader != null)
-                    reader.Close();
-
-                if(writer != null)
-                    writer.Close();
-
-                if(sr != null)
-                    sr.Close();
             }
 
             using(StreamWriter sw = new StreamWriter(logFile, false, Encoding.UTF8))

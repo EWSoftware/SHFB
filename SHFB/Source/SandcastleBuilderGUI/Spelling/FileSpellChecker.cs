@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/13/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -559,10 +559,13 @@ namespace SandcastleBuilder.Gui.Spelling
 
             XmlReaderSettings rs = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
 
-            if(!this.SpellCheckXmlReader(XmlReader.Create(filename, rs)))
+            using(var reader = XmlReader.Create(filename, rs))
             {
-                this.OnSpellCheckFileCancelled(EventArgs.Empty);
-                return false;
+                if(!this.SpellCheckXmlReader(reader))
+                {
+                    this.OnSpellCheckFileCancelled(EventArgs.Empty);
+                    return false;
+                }
             }
 
             this.OnSpellCheckFileCompleted(EventArgs.Empty);

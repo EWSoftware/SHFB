@@ -646,24 +646,26 @@ namespace SandcastleBuilder.WPF.UserControls
                     // Ignore projects that we've already seen
                     if(projectDictionary.Add(sourceProject.ProjectFileName))
                     {
-                        projRef = new MSBuildProject(sourceProject.ProjectFileName);
+                        using(projRef = new MSBuildProject(sourceProject.ProjectFileName))
+                        {
+                            // Use the project file configuration and platform properties if they are set.  If
+                            // not, use the documentation source values.  If they are not set, use the SHFB
+                            // project settings.
+                            projRef.SetConfiguration(
+                                !String.IsNullOrEmpty(sourceProject.Configuration) ? sourceProject.Configuration :
+                                    !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
+                                !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
+                                    !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform,
+                                currentProject.MSBuildOutDir);
 
-                        // Use the project file configuration and platform properties if they are set.  If not,
-                        // use the documentation source values.  If they are not set, use the SHFB project settings.
-                        projRef.SetConfiguration(
-                            !String.IsNullOrEmpty(sourceProject.Configuration) ? sourceProject.Configuration :
-                                !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
-                            !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
-                                !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform,
-                            currentProject.MSBuildOutDir);
+                            // Add Visual Studio solution macros if necessary
+                            if(lastSolution != null)
+                                projRef.SetSolutionMacros(lastSolution);
 
-                        // Add Visual Studio solution macros if necessary
-                        if(lastSolution != null)
-                            projRef.SetSolutionMacros(lastSolution);
-
-                        if(!String.IsNullOrEmpty(projRef.XmlCommentsFile))
-                            cache.IndexCommentsFiles(Path.GetDirectoryName(projRef.XmlCommentsFile),
-                                Path.GetFileName(projRef.XmlCommentsFile), false, null);
+                            if(!String.IsNullOrEmpty(projRef.XmlCommentsFile))
+                                cache.IndexCommentsFiles(Path.GetDirectoryName(projRef.XmlCommentsFile),
+                                    Path.GetFileName(projRef.XmlCommentsFile), false, null);
+                        }
                     }
                 }
 

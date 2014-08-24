@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TransformArgumentsPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -219,15 +219,17 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // Get the transform component arguments defined in the project if any
                 if(argsProp != null && !String.IsNullOrEmpty(argsProp.UnevaluatedValue))
                 {
-                    var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
-                        XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve));
-                    xr.Namespaces = false;
-                    xr.MoveToContent();
-
-                    foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
+                    using(var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
+                      XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve)))
                     {
-                        tca = new TransformComponentArgument(arg);
-                        transformComponentArgs.Add(tca.Key, tca);
+                        xr.Namespaces = false;
+                        xr.MoveToContent();
+
+                        foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
+                        {
+                            tca = new TransformComponentArgument(arg);
+                            transformComponentArgs.Add(tca.Key, tca);
+                        }
                     }
                 }
 

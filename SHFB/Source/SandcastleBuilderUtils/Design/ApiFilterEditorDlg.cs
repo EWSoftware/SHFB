@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -221,7 +221,7 @@ namespace SandcastleBuilder.Utils.Design
             private void DetermineApiEntryType()
             {
                 XmlNode subsubgroup;
-                string subgroup, id;
+                string subgroup, entryId;
 
                 // Is it an inherited namespace?
                 if(apiNode.Name == "namespace")
@@ -240,13 +240,13 @@ namespace SandcastleBuilder.Utils.Design
 
                 // It's a documented or inherited member of some sort
                 if(apiNode.Name == "element" || apiNode.Name == "type")
-                    id = apiNode.Attributes["api"].Value;   // Inherited
+                    entryId = apiNode.Attributes["api"].Value;   // Inherited
                 else
                 {
-                    id = apiNode.Attributes["id"].Value;    // Documented
+                    entryId = apiNode.Attributes["id"].Value;    // Documented
 
                     // Is it a namespace?
-                    if(id[0] == 'N')
+                    if(entryId[0] == 'N')
                     {
                         entryType = ApiEntryType.Namespace;
                         return;
@@ -260,8 +260,8 @@ namespace SandcastleBuilder.Utils.Design
                 else
                     subgroup = apiNode.SelectSingleNode("apidata/@subgroup").Value;
 
-                entryType = EntryTypeFromId(id[0], subgroup);
-                visibility = DetermineVisibility(id[0], apiNode);
+                entryType = EntryTypeFromId(entryId[0], subgroup);
+                visibility = DetermineVisibility(entryId[0], apiNode);
             }
 
             /// <summary>
@@ -585,7 +585,7 @@ namespace SandcastleBuilder.Utils.Design
         /// some memory for extremely large builds.
         /// <p/>Documented APIs are loaded into the first root node.  Inherited
         /// APIs are loaded into the second node.  By splitting the inherited
-        /// stuff out, we can optimze the API filter and allow the user to get
+        /// stuff out, we can optimize the API filter and allow the user to get
         /// rid of unwanted inherited members with a single selection.</remarks>
         private void LoadNamespaces()
         {

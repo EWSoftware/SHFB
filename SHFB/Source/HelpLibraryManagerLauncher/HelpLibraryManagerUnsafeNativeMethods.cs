@@ -1,23 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerUnsafeNativeMethods.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2011
-// Note    : Copyright 2010-2011, Eric Woodruff, All rights reserved
+// Updated : 08/23/2014
+// Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains an internal class used to call some Win32 API functions.
+// This file contains an internal class used to call some Win32 API functions
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.2.0  02/27/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 02/27/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
@@ -56,7 +55,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         //=====================================================================
 
         /// <summary>
-        /// This is used to try and find the specified regsitry key value in the 64 bit part
+        /// This is used to try and find the specified registry key value in the 64 bit part
         /// of the registry. If not found, an attempt is made to try and find it in the 32 bit
         /// part of the registry.
         /// </summary>
@@ -108,7 +107,6 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
             return value;
         }
-
         #endregion
     }
 }

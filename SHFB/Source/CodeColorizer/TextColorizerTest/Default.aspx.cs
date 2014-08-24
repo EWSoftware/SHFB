@@ -17,6 +17,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -55,9 +56,10 @@ namespace TextColorizerTest
         #region Button click handler
         protected void btnProcess_Click(object sender, EventArgs e)
         {
-            int tabSize = 0;
+            int tabSize;
 
-            Int32.TryParse(txtTabSize.Text, out tabSize);
+            if(!Int32.TryParse(txtTabSize.Text, out tabSize))
+                tabSize = 0;
 
             colorizerControl.SyntaxEngine = syntaxEngine;
             syntaxEngine.UseDefaultTitle = chkDefaultTitle.Checked;
@@ -66,7 +68,7 @@ namespace TextColorizerTest
             // to the control.  The text inside the tag is expected to be
             // HTML encoded.  Line numbering and outlining are ignored for
             // <code> tags.
-            colorizerControl.Text = String.Format(
+            colorizerControl.Text = String.Format(CultureInfo.CurrentCulture,
                 "The colorized text block: <{0} lang=\"{1}\" " +
                 "numberLines=\"{2}\" outlining=\"{3}\" " +
                 "tabSize=\"{4}\" keepSeeTags=\"{5}\" {6}>{7}</{0}>",

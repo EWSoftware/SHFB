@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/26/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert conceptual content settings in
@@ -306,8 +306,7 @@ namespace SandcastleBuilder.Utils.Conversion
                 else
                     destFile = Path.Combine(projectFolder, Path.GetFileName(file));
 
-                ext = Path.GetExtension(destFile).ToLower(
-                    CultureInfo.InvariantCulture);
+                ext = Path.GetExtension(destFile).ToLowerInvariant();
 
                 // Change the extension on .xml files to .aml and add the
                 // root topic element.

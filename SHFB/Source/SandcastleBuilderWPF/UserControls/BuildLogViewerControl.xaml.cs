@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -149,26 +149,29 @@ namespace SandcastleBuilder.WPF.UserControls
                 XslCompiledTransform xslTransform = new XslCompiledTransform();
                 XsltSettings settings = new XsltSettings(true, true);
 
-                xslTransform.Load(XmlReader.Create(Path.Combine(Path.GetDirectoryName(
-                    ComponentUtilities.ToolsFolder), @"Templates\TransformBuildLog.xsl"),
-                    readerSettings), settings, new XmlUrlResolver());
-
-                XsltArgumentList argList = new XsltArgumentList();
-                argList.AddParam("filterOn", String.Empty, filtered ? "true" : "false");
-                argList.AddParam("highlightOn", String.Empty, highlight ? "true" : "false");
-
-                using(StringReader sr = new StringReader(html))
+                using(var transformReader = XmlReader.Create(Path.Combine(Path.GetDirectoryName(
+                  ComponentUtilities.ToolsFolder), @"Templates\TransformBuildLog.xsl"),
+                  readerSettings))
                 {
-                    using(XmlReader reader = XmlReader.Create(sr, readerSettings))
-                    {
-                        XmlWriterSettings writerSettings = xslTransform.OutputSettings.Clone();
-                        writerSettings.CloseOutput = true;
-                        writerSettings.Indent = false;
+                    xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 
-                        using(XmlWriter writer = XmlWriter.Create(sb, writerSettings))
+                    XsltArgumentList argList = new XsltArgumentList();
+                    argList.AddParam("filterOn", String.Empty, filtered ? "true" : "false");
+                    argList.AddParam("highlightOn", String.Empty, highlight ? "true" : "false");
+
+                    using(StringReader sr = new StringReader(html))
+                    {
+                        using(XmlReader reader = XmlReader.Create(sr, readerSettings))
                         {
-                            xslTransform.Transform(reader, argList, writer);
-                            writer.Flush();
+                            XmlWriterSettings writerSettings = xslTransform.OutputSettings.Clone();
+                            writerSettings.CloseOutput = true;
+                            writerSettings.Indent = false;
+
+                            using(XmlWriter writer = XmlWriter.Create(sb, writerSettings))
+                            {
+                                xslTransform.Transform(reader, argList, writer);
+                                writer.Flush();
+                            }
                         }
                     }
                 }

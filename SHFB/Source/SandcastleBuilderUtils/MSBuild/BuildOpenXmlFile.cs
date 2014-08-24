@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildOpenXmlFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/30/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -233,7 +233,6 @@ namespace SandcastleBuilder.Utils.MSBuild
                 }
 
                 writer.WriteEndDocument();
-                writer.Close();
             }
 
             Log.LogMessage(MessageImportance.High, "Finished merging {0} topics", topicCount);

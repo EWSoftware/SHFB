@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -394,7 +394,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
         /// <summary>
         /// This handles garbage collection to ensure proper disposal of the
-        /// MSBuild project if not done explicity with <see cref="Dispose()"/>.
+        /// MSBuild project if not done explicitly with <see cref="Dispose()"/>.
         /// </summary>
         ~MSBuildProject()
         {

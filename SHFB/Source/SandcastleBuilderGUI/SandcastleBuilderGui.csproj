@@ -52,6 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Deploy\SandcastleBuilderGUI.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -325,12 +326,7 @@
     <Compile Include="ContentEditors\TopicEditorWindow.Designer.cs">
       <DependentUpon>TopicEditorWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="LaunchMSHelpViewerDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LaunchMSHelpViewerDlg.Designer.cs">
-      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -475,9 +471,6 @@
       <DependentUpon>TopicEditorWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LaunchMSHelpViewerDlg.resx">
-      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -502,19 +495,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif">
-      <Link>Colorizer\CopyCode.gif</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif">
-      <Link>Colorizer\CopyCode_h.gif</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight_flowDoc.xsl">
-      <Link>Colorizer\highlight_flowDoc.xsl</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="..\packages\NHunspell.1.1.1\native\Hunspellx64.dll">
       <Link>Spelling\Hunspellx64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -523,20 +503,12 @@
       <Link>Spelling\Hunspellx86.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Colorizer\highlight.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Colorizer\highlight_ac.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Colorizer\highlight_openxml.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Images\SpellCheck.ico" />
     <Content Include="ItemTemplates\XAML Syntax.xamlcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\SpellCheck.png" />
+    <None Include="Resources\Spinner.gif" />
     <Content Include="Spelling\en_US.aff">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -561,9 +533,6 @@
       <DependentUpon>UserPreferencesDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowPlacement.cs" />
-    <Content Include="Templates\BuildOpenXmlFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\SandcastleBuilder.ico" />
@@ -679,54 +648,6 @@
     <None Include="Resources\Explorer.bmp" />
     <None Include="Resources\TopicPreview.bmp" />
     <None Include="Resources\Filter2.bmp" />
-    <Content Include="Templates\InstallMSHC.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\RemoveMSHC.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\HelpContentSetup.msha">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\PlaceHolderNode.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\BuildHelpViewerFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Build2xHelpFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Build1xHelpFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Generate2xTOC.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\ExtractHtmlInfo.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateIntermediateTOC.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\BuildConceptualTopics.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\BuildReferenceTopics.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\HelpFileBuilderTokens.tokens">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\TransformManifest.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateInheritedDocs.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateRefInfo.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="ConceptualTemplates\Conceptual.aml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -784,67 +705,6 @@
     <Content Include="ConceptualTemplates\XML Reference.aml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\Help2x_H2Reg.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateInheritedDocs.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_NamedURLIndex.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Hana.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Prototype.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\TransformBuildLog.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\VS2005.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.css">
-      <Link>Colorizer\highlight.css</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xml">
-      <Link>Colorizer\highlight.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xsl">
-      <Link>Colorizer\highlight.xsl</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\MRefBuilder.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Templates\Help2x.HxC">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x.HxF">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_A.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_B.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_F.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_K.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_S.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help1x.hhp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -875,14 +735,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\DocumentTemplate.xaml">
-      <Link>Colorizer\DocumentTemplate.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

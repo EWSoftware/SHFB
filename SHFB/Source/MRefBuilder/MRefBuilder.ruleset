@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="MRefBuilder Rule Set" Description="This is the common set of code analysis rules for MRefBuilder projects" ToolsVersion="12.0">
+  <Include Path="basiccorrectnessrules.ruleset" Action="Default" />
+  <Include Path="basicdesignguidelinerules.ruleset" Action="Default" />
+  <Include Path="extendedcorrectnessrules.ruleset" Action="Default" />
+  <Include Path="extendeddesignguidelinerules.ruleset" Action="Default" />
+  <Include Path="globalizationrules.ruleset" Action="Default" />
+  <Include Path="managedminimumrules.ruleset" Action="Default" />
+  <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
+  <Include Path="securityrules.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1002" Action="None" />
+    <Rule Id="CA1024" Action="None" />
+    <Rule Id="CA1031" Action="None" />
+    <Rule Id="CA1034" Action="None" />
+    <Rule Id="CA1051" Action="None" />
+    <Rule Id="CA1062" Action="None" />
+    <Rule Id="CA1300" Action="None" />
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1500" Action="None" />
+    <Rule Id="CA1501" Action="None" />
+    <Rule Id="CA1502" Action="None" />
+    <Rule Id="CA1506" Action="None" />
+    <Rule Id="CA1702" Action="None" />
+    <Rule Id="CA1704" Action="None" />
+    <Rule Id="CA1707" Action="None" />
+    <Rule Id="CA1708" Action="None" />
+    <Rule Id="CA1709" Action="None" />
+    <Rule Id="CA1710" Action="None" />
+    <Rule Id="CA1711" Action="None" />
+    <Rule Id="CA1716" Action="None" />
+    <Rule Id="CA1721" Action="None" />
+    <Rule Id="CA1726" Action="None" />
+    <Rule Id="CA1802" Action="Warning" />
+    <Rule Id="CA1811" Action="None" />
+    <Rule Id="CA1819" Action="None" />
+    <Rule Id="CA1823" Action="None" />
+    <Rule Id="CA2000" Action="Warning" />
+    <Rule Id="CA2104" Action="None" />
+    <Rule Id="CA2151" Action="Warning" />
+    <Rule Id="CA2204" Action="None" />
+    <Rule Id="CA2211" Action="None" />
+    <Rule Id="CA2214" Action="None" />
+    <Rule Id="CA2227" Action="None" />
+    <Rule Id="CA5122" Action="Warning" />
+  </Rules>
+</RuleSet>

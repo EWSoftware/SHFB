@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/18/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the namespace summary item information
@@ -180,37 +180,29 @@ namespace SandcastleBuilder.Utils
         /// <returns>The XML fragment containing the namespace summary info</returns>
         public string ToXml()
         {
-            MemoryStream ms = new MemoryStream(10240);
-            XmlTextWriter xw = null;
-
-            try
+            using(var ms = new MemoryStream(10240))
             {
-                xw = new XmlTextWriter(ms, new UTF8Encoding(false));
-                xw.Formatting = Formatting.Indented;
-
-                foreach(NamespaceSummaryItem nsi in this)
+                using(var xw = new XmlTextWriter(ms, new UTF8Encoding(false)))
                 {
-                    xw.WriteStartElement("NamespaceSummaryItem");
-                    xw.WriteAttributeString("name", nsi.Name);
+                    xw.Formatting = Formatting.Indented;
 
-                    if(nsi.IsGroup)
-                        xw.WriteAttributeString("isGroup", nsi.IsGroup.ToString());
+                    foreach(NamespaceSummaryItem nsi in this)
+                    {
+                        xw.WriteStartElement("NamespaceSummaryItem");
+                        xw.WriteAttributeString("name", nsi.Name);
 
-                    xw.WriteAttributeString("isDocumented", nsi.IsDocumented.ToString());
-                    xw.WriteString(nsi.Summary);
-                    xw.WriteEndElement();
+                        if(nsi.IsGroup)
+                            xw.WriteAttributeString("isGroup", nsi.IsGroup.ToString());
+
+                        xw.WriteAttributeString("isDocumented", nsi.IsDocumented.ToString());
+                        xw.WriteString(nsi.Summary);
+                        xw.WriteEndElement();
+                    }
+
+                    xw.Flush();
+
+                    return Encoding.UTF8.GetString(ms.ToArray());
                 }
-
-                xw.Flush();
-
-                return Encoding.UTF8.GetString(ms.ToArray());
-            }
-            finally
-            {
-                if(xw != null)
-                    xw.Close();
-
-                ms.Dispose();
             }
         }
         #endregion

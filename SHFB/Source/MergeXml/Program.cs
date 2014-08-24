@@ -51,7 +51,7 @@ namespace MergeXml
                 return 1;
             }
 
-            // ensure a postition element name was passed
+            // ensure a position element name was passed
             if(String.IsNullOrEmpty(options.Options["position"].Value.ToString()))
             {
                 ConsoleApplication.WriteMessage(LogLevel.Error, "No position element name was provided.");
@@ -96,11 +96,11 @@ namespace MergeXml
                 }
             }
 
-
             // open the output file and move to the position
             XmlWriterSettings outputSettings = new XmlWriterSettings();
-            outputSettings.Indent = true;
+            outputSettings.Indent = outputSettings.CloseOutput = true;
             outputSettings.Encoding = Encoding.UTF8;
+
             using(XmlWriter output = XmlWriter.Create(outputPath + ".tmp", outputSettings))
             {
                 // start printing output doc string until the selected node is matched
@@ -163,14 +163,14 @@ namespace MergeXml
                         }
                     }
                 }
+
                 output.WriteEndDocument();
-                output.Close();
             }
 
             File.Delete(outputPath);
             File.Move(outputPath + ".tmp", outputPath);
 
-            return 0; // pau
+            return 0;
         }
     }
 }

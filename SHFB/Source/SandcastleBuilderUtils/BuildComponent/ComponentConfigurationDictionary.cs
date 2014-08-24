@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ComponentConfigurationDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/26/2013
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a dictionary class used to hold the configurations for third party build components such
@@ -135,34 +135,28 @@ namespace SandcastleBuilder.Utils.BuildComponent
         public string ToXml()
         {
             BuildComponentConfiguration config;
-            MemoryStream ms = new MemoryStream(10240);
-            XmlTextWriter xw = null;
 
-            try
+            using(var ms = new MemoryStream(10240))
             {
-                xw = new XmlTextWriter(ms, new UTF8Encoding(false));
-                xw.Formatting = Formatting.Indented;
-
-                foreach(string key in this.Keys)
+                using(var xw = new XmlTextWriter(ms, new UTF8Encoding(false)))
                 {
-                    config = this[key];
+                    xw.Formatting = Formatting.Indented;
 
-                    xw.WriteStartElement("ComponentConfig");
-                    xw.WriteAttributeString("id", key);
-                    xw.WriteAttributeString("enabled", config.Enabled.ToString());
-                    xw.WriteRaw(config.Configuration);
-                    xw.WriteEndElement();
+                    foreach(string key in this.Keys)
+                    {
+                        config = this[key];
+
+                        xw.WriteStartElement("ComponentConfig");
+                        xw.WriteAttributeString("id", key);
+                        xw.WriteAttributeString("enabled", config.Enabled.ToString());
+                        xw.WriteRaw(config.Configuration);
+                        xw.WriteEndElement();
+                    }
+
+                    xw.Flush();
+
+                    return Encoding.UTF8.GetString(ms.ToArray());
                 }
-
-                xw.Flush();
-                return Encoding.UTF8.GetString(ms.ToArray());
-            }
-            finally
-            {
-                if(xw != null)
-                    xw.Close();
-
-                ms.Dispose();
             }
         }
         #endregion

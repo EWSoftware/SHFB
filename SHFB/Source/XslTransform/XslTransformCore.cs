@@ -153,6 +153,7 @@ namespace Microsoft.Ddue.Tools
             // Prepare the reader
             XmlReaderSettings readerSettings = new XmlReaderSettings();
             readerSettings.IgnoreWhitespace = ignoreWhitespace;
+            readerSettings.CloseInput = true;
 
             // Do each transform
             for(int i = 0; i < transforms.Length; i++)

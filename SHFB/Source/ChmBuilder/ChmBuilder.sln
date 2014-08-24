@@ -1,12 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChmBuilder", "ChmBuilder.csproj", "{D17FA1CB-06EF-43A6-B11E-2B8E2661AA6D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{104BEE13-2B7F-41A2-B169-606962961FC1}"
-	ProjectSection(SolutionItems) = preProject
-		ChmBuilder.FxCop = ChmBuilder.FxCop
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject

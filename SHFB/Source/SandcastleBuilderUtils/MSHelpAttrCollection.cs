@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpAttrCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/18/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the help attribute information
@@ -146,23 +146,16 @@ namespace SandcastleBuilder.Utils
         /// <returns>The XML fragment containing the help attribute info</returns>
         public string ToXml()
         {
-            MemoryStream ms = new MemoryStream(10240);
-            XmlTextWriter xw = null;
-
-            try
+            using(var ms = new MemoryStream(10240))
             {
-                xw = new XmlTextWriter(ms, new UTF8Encoding(false));
-                xw.Formatting = Formatting.Indented;
-                this.WriteXml(xw, false);
-                xw.Flush();
-                return Encoding.UTF8.GetString(ms.ToArray());
-            }
-            finally
-            {
-                if(xw != null)
-                    xw.Close();
+                using(var xw = new XmlTextWriter(ms, new UTF8Encoding(false)))
+                {
+                    xw.Formatting = Formatting.Indented;
+                    this.WriteXml(xw, false);
+                    xw.Flush();
 
-                ms.Dispose();
+                    return Encoding.UTF8.GetString(ms.ToArray());
+                }
             }
         }
 

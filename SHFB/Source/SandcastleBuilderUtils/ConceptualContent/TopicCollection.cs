@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -329,7 +329,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             foreach(ProjectItem item in project.MSBuildProject.AllEvaluatedItems)
                 if(item.ItemType == none || item.ItemType == content)
                 {
-                    ext = Path.GetExtension(item.EvaluatedInclude).ToLower(CultureInfo.InvariantCulture);
+                    ext = Path.GetExtension(item.EvaluatedInclude).ToLowerInvariant();
 
                     if(ext == ".aml" || ext == ".htm" || ext == ".html" || ext == ".topic")
                     {

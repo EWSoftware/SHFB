@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromDocProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -317,7 +317,7 @@ namespace SandcastleBuilder.Utils.Conversion
             // Content settings files
             if(file.StartsWith(@"Help\Settings\", StringComparison.OrdinalIgnoreCase))
             {
-                name = Path.GetFileName(file).ToLower(CultureInfo.InvariantCulture);
+                name = Path.GetFileName(file).ToLowerInvariant();
 
                 // Filter and process by name
                 switch(name)
@@ -503,57 +503,51 @@ namespace SandcastleBuilder.Utils.Conversion
         private void CreateContentLayoutFile()
         {
             string filename = Path.Combine(base.ProjectFolder, "ContentLayout.content");
-            XmlTextReader reader = null;
             XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
             int topicsAdded = 0;
 
             try
             {
                 settings.Indent = true;
                 settings.CloseOutput = true;
-                writer = XmlWriter.Create(filename, settings);
 
-                writer.WriteStartDocument();
-                writer.WriteStartElement("Topics");
-
-                reader = new XmlTextReader(new StreamReader(topicLayoutFilename));
-                reader.MoveToContent();
-
-                while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
+                using(var writer = XmlWriter.Create(filename, settings))
                 {
-                    if(reader.NodeType == XmlNodeType.Element && reader.Name == "topics" && !reader.IsEmptyElement)
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("Topics");
+
+                    using(var reader = new XmlTextReader(new StreamReader(topicLayoutFilename)))
                     {
+                        reader.MoveToContent();
+
                         while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
                         {
-                            if(reader.NodeType == XmlNodeType.Element && reader.Name == "topic")
+                            if(reader.NodeType == XmlNodeType.Element && reader.Name == "topics" && !reader.IsEmptyElement)
                             {
-                                this.ConvertTopic(reader, writer);
-                                topicsAdded++;
+                                while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
+                                {
+                                    if(reader.NodeType == XmlNodeType.Element && reader.Name == "topic")
+                                    {
+                                        this.ConvertTopic(reader, writer);
+                                        topicsAdded++;
+                                    }
+
+                                    reader.Read();
+                                }
                             }
 
                             reader.Read();
                         }
                     }
 
-                    reader.Read();
+                    writer.WriteEndElement();   // </Topics>
+                    writer.WriteEndDocument();
                 }
-
-                writer.WriteEndElement();   // </Topics>
-                writer.WriteEndDocument();
             }
             catch(Exception ex)
             {
                 throw new BuilderException("CVT0006", String.Format(CultureInfo.CurrentCulture,
                     "Error converting content layout file ({0}):\r\n{1}", topicLayoutFilename, ex.Message), ex);
-            }
-            finally
-            {
-                if(reader != null)
-                    reader.Close();
-
-                if(writer != null)
-                    writer.Close();
             }
 
             if(topicsAdded != 0)

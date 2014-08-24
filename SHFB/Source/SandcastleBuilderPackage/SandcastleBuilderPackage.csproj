@@ -142,14 +142,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SandcastleBuilderGUI\LaunchMSHelpViewerDlg.cs">
-      <Link>UI\LaunchMSHelpViewerDlg.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderGUI\LaunchMSHelpViewerDlg.designer.cs">
-      <Link>UI\LaunchMSHelpViewerDlg.designer.cs</Link>
-      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -436,11 +428,11 @@
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-		<ZipProject Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
-			<RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-			<OutputSubPath>Documentation</OutputSubPath>
-		</ZipProject>
-		<ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -504,11 +496,11 @@
       <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-		<ZipProject Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
-			<RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-			<OutputSubPath>Documentation</OutputSubPath>
-		</ZipProject>
-		<!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
          in the Add New Item dialog box. -->
     <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
       <OutputSubPath>Other Content</OutputSubPath>
@@ -754,10 +746,6 @@
     <None Include="Resources\Sandcastle.jpg" />
     <Resource Include="Resources\TokenFile.ico" />
     <Resource Include="Resources\ResourceItemFile.ico" />
-    <EmbeddedResource Include="..\SandcastleBuilderGUI\LaunchMSHelpViewerDlg.resx">
-      <Link>UI\LaunchMSHelpViewerDlg.resx</Link>
-      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

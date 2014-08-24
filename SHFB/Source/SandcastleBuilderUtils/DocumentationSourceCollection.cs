@@ -1,28 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSourceCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/04/2008
-// Note    : Copyright 2006-2008, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a collection class used to hold the documentation
-// sources.
+// This file contains a collection class used to hold the documentation sources
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  08/03/2006  EFW  Created the code
 // 1.4.0.2  05/11/2007  EFW  Added the ability to sort the collection
 // 1.6.0.2  11/10/2007  EFW  Moved CommentFileList to XmlCommentsFileCollection
 // 1.6.0.7  04/16/2008  EFW  Added support for wildcards
 // 1.8.0.0  06/23/2008  EFW  Rewrote to support MSBuild project format
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -202,42 +200,34 @@ namespace SandcastleBuilder.Utils
         /// <returns>The XML fragment containing the documentation sources</returns>
         internal string ToXml()
         {
-            MemoryStream ms = new MemoryStream(10240);
-            XmlTextWriter xw = null;
-
-            try
+            using(var ms = new MemoryStream(10240))
             {
-                xw = new XmlTextWriter(ms, new UTF8Encoding(false));
-                xw.Formatting = Formatting.Indented;
-
-                foreach(DocumentationSource ds in this)
+                using(var xw = new XmlTextWriter(ms, new UTF8Encoding(false)))
                 {
-                    xw.WriteStartElement("DocumentationSource");
-                    xw.WriteAttributeString("sourceFile",
-                        ds.SourceFile.PersistablePath);
+                    xw.Formatting = Formatting.Indented;
 
-                    if(!String.IsNullOrEmpty(ds.Configuration))
-                        xw.WriteAttributeString("configuration", ds.Configuration);
+                    foreach(DocumentationSource ds in this)
+                    {
+                        xw.WriteStartElement("DocumentationSource");
+                        xw.WriteAttributeString("sourceFile",
+                            ds.SourceFile.PersistablePath);
 
-                    if(!String.IsNullOrEmpty(ds.Platform))
-                        xw.WriteAttributeString("platform", ds.Platform);
+                        if(!String.IsNullOrEmpty(ds.Configuration))
+                            xw.WriteAttributeString("configuration", ds.Configuration);
 
-                    if(ds.IncludeSubFolders)
-                        xw.WriteAttributeString("subFolders",
-                            ds.IncludeSubFolders.ToString());
+                        if(!String.IsNullOrEmpty(ds.Platform))
+                            xw.WriteAttributeString("platform", ds.Platform);
 
-                    xw.WriteEndElement();
+                        if(ds.IncludeSubFolders)
+                            xw.WriteAttributeString("subFolders",
+                                ds.IncludeSubFolders.ToString());
+
+                        xw.WriteEndElement();
+                    }
+
+                    xw.Flush();
+                    return Encoding.UTF8.GetString(ms.ToArray());
                 }
-
-                xw.Flush();
-                return Encoding.UTF8.GetString(ms.ToArray());
-            }
-            finally
-            {
-                if(xw != null)
-                    xw.Close();
-
-                ms.Dispose();
             }
         }
         #endregion

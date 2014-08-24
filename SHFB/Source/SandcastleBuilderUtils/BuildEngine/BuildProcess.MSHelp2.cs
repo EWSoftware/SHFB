@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.MSHelp2.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to modify the MS Help 2 collection files.
@@ -13,9 +13,9 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  03/21/2008  EFW  Created the code
+// 03/21/2008  EFW  Created the code
 //===============================================================================================================
 
 using System.Globalization;
@@ -43,14 +43,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             XmlDocument document;
             XmlNode node;
-            string extension, toc, iniFile;
+            string extension, tocDoc, iniFile;
 
             this.ReportProgress("Cleaning up collection files...");
 
             foreach(string file in Directory.EnumerateFiles(outputFolder, this.ResolvedHtmlHelpName + "*.Hx?"))
             {
-                extension = Path.GetExtension(file).ToLower(
-                    CultureInfo.InvariantCulture);
+                extension = Path.GetExtension(file).ToLowerInvariant();
 
                 switch(extension)
                 {
@@ -67,7 +66,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     case ".hxt":
                         // We don't need the whole TOC so recreate it from
                         // this string.
-                        toc = this.TransformText(
+                        tocDoc = this.TransformText(
                             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" +
                             "<!DOCTYPE HelpTOC>\r\n" +
                             "<HelpTOC DTDVersion=\"1.0\" LangId=\"{@LangId}\" " +
@@ -78,7 +77,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             "</HelpTOC>\r\n");
 
                         document = new XmlDocument();
-                        document.LoadXml(toc);
+                        document.LoadXml(tocDoc);
                         break;
 
                     case ".hxk":

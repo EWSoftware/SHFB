@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/31/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -557,7 +557,7 @@ commas, or other special characters.
             // Process all *.htm and *.html files in the given folder and all of its subfolders.
             Parallel.ForEach(Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories), file =>
             {
-                string ext = Path.GetExtension(file).ToLower(CultureInfo.InvariantCulture);
+                string ext = Path.GetExtension(file).ToLowerInvariant();
 
                 if(ext == ".htm" || ext == ".html")
                 {
@@ -744,7 +744,6 @@ commas, or other special characters.
         private static void WriteHelp1xTableOfContents()
         {
             XmlReaderSettings settings;
-            XmlReader reader;
             TitleInfo titleInfo;
             string key, title, htmlFile;
             int indentCount, baseFolderLength = help1Folder.Length + 1;
@@ -755,73 +754,75 @@ commas, or other special characters.
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.IgnoreWhitespace = true;
             settings.IgnoreComments = true;
-            reader = XmlReader.Create(tocFile, settings);
 
-            // Write the table of contents using the appropriate encoding
-            using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, projectName + ".hhc"), false,
-              Encoding.GetEncoding(codePage)))
+            using(var reader = XmlReader.Create(tocFile, settings))
             {
-                writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">\r\n");
-                writer.WriteLine("<HTML>");
-                writer.WriteLine("  <BODY>");
+                // Write the table of contents using the appropriate encoding
+                using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, projectName + ".hhc"), false,
+                  Encoding.GetEncoding(codePage)))
+                {
+                    writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">\r\n");
+                    writer.WriteLine("<HTML>");
+                    writer.WriteLine("  <BODY>");
 
-                while(reader.Read())
-                    switch(reader.NodeType)
-                    {
-                        case XmlNodeType.Element:
-                            if(reader.Name == "topic")
-                            {
-                                key = reader.GetAttribute("file");
-
-                                if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                    while(reader.Read())
+                        switch(reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if(reader.Name == "topic")
                                 {
-                                    titleInfo = titles[key];
-                                    title = titleInfo.TocTitle;
-                                    htmlFile = titleInfo.File.Substring(baseFolderLength);
-                                }
-                                else
-                                {
-                                    // Container only topic or unknown element, just use the title or ID attribute
-                                    htmlFile = null;
-                                    title = reader.GetAttribute("title");
+                                    key = reader.GetAttribute("file");
 
-                                    if(String.IsNullOrEmpty(title))
-                                        title = reader.GetAttribute("id");
+                                    if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                                    {
+                                        titleInfo = titles[key];
+                                        title = titleInfo.TocTitle;
+                                        htmlFile = titleInfo.File.Substring(baseFolderLength);
+                                    }
+                                    else
+                                    {
+                                        // Container only topic or unknown element, just use the title or ID attribute
+                                        htmlFile = null;
+                                        title = reader.GetAttribute("title");
 
-                                    if(String.IsNullOrEmpty(title))
-                                        title = key;
-                                }
+                                        if(String.IsNullOrEmpty(title))
+                                            title = reader.GetAttribute("id");
 
-                                indentCount = reader.Depth;
+                                        if(String.IsNullOrEmpty(title))
+                                            title = key;
+                                    }
 
-                                WriteContentLine(writer, indentCount, "<UL>");
-                                WriteContentLine(writer, indentCount, "  <LI><OBJECT type=\"text/sitemap\">");
-                                WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                    "    <param name=\"Name\" value=\"{0}\">", WebUtility.HtmlEncode(title)));
+                                    indentCount = reader.Depth;
 
-                                if(htmlFile != null)
+                                    WriteContentLine(writer, indentCount, "<UL>");
+                                    WriteContentLine(writer, indentCount, "  <LI><OBJECT type=\"text/sitemap\">");
                                     WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                        "    <param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(htmlFile)));
+                                        "    <param name=\"Name\" value=\"{0}\">", WebUtility.HtmlEncode(title)));
 
-                                WriteContentLine(writer, indentCount, "  </OBJECT></LI>");
+                                    if(htmlFile != null)
+                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                            "    <param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(htmlFile)));
 
-                                if(reader.IsEmptyElement)
-                                    WriteContentLine(writer, indentCount, "</UL>");
-                            }
-                            break;
+                                    WriteContentLine(writer, indentCount, "  </OBJECT></LI>");
 
-                        case XmlNodeType.EndElement:
-                            if(reader.Name == "topic")
-                                WriteContentLine(writer, reader.Depth, "</UL>");
-                            break;
+                                    if(reader.IsEmptyElement)
+                                        WriteContentLine(writer, indentCount, "</UL>");
+                                }
+                                break;
 
-                        default:
-                            break;
-                    }
+                            case XmlNodeType.EndElement:
+                                if(reader.Name == "topic")
+                                    WriteContentLine(writer, reader.Depth, "</UL>");
+                                break;
 
-                writer.WriteLine();
-                writer.WriteLine("  </BODY>");
-                writer.WriteLine("</HTML>");
+                            default:
+                                break;
+                        }
+
+                    writer.WriteLine();
+                    writer.WriteLine("  </BODY>");
+                    writer.WriteLine("</HTML>");
+                }
             }
         }
 
@@ -942,7 +943,6 @@ commas, or other special characters.
         private static void WriteWebsiteTableOfContents()
         {
             XmlReaderSettings settings;
-            XmlReader reader;
             TitleInfo titleInfo;
             string key, title, htmlFile;
             int indentCount, baseFolderLength = websiteFolder.Length + 1;
@@ -953,73 +953,75 @@ commas, or other special characters.
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.IgnoreWhitespace = true;
             settings.IgnoreComments = true;
-            reader = XmlReader.Create(tocFile, settings);
 
-            // Write the table of contents with UTF-8 encoding
-            using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, "WebTOC.xml"), false,
-              Encoding.UTF8))
+            using(var reader = XmlReader.Create(tocFile, settings))
             {
-                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                writer.WriteLine("<HelpTOC>");
+                // Write the table of contents with UTF-8 encoding
+                using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, "WebTOC.xml"), false,
+                  Encoding.UTF8))
+                {
+                    writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                    writer.WriteLine("<HelpTOC>");
 
-                while(reader.Read())
-                    switch(reader.NodeType)
-                    {
-                        case XmlNodeType.Element:
-                            if(reader.Name == "topic")
-                            {
-                                key = reader.GetAttribute("file");
-
-                                if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                    while(reader.Read())
+                        switch(reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if(reader.Name == "topic")
                                 {
-                                    titleInfo = titles[key];
-                                    title = titleInfo.TocTitle;
-                                    htmlFile = titleInfo.File.Substring(baseFolderLength).Replace('\\', '/');
-                                }
-                                else
-                                {
-                                    // Container only topic or unknown element, just use the title or ID attribute
-                                    htmlFile = null;
-                                    title = reader.GetAttribute("title");
+                                    key = reader.GetAttribute("file");
 
-                                    if(String.IsNullOrEmpty(title))
-                                        title = reader.GetAttribute("id");
-
-                                    if(String.IsNullOrEmpty(title))
-                                        title = key;
-                                }
-
-                                indentCount = reader.Depth;
-                                title = WebUtility.HtmlEncode(title);
-                                htmlFile = WebUtility.HtmlEncode(htmlFile);
-
-                                if(reader.IsEmptyElement)
-                                    WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                        "<HelpTOCNode Title=\"{0}\" Url=\"{1}\" />", title, htmlFile));
-                                else
-                                    if(htmlFile != null)
+                                    if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
                                     {
-                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">", Guid.NewGuid(),
-                                            title, htmlFile));
+                                        titleInfo = titles[key];
+                                        title = titleInfo.TocTitle;
+                                        htmlFile = titleInfo.File.Substring(baseFolderLength).Replace('\\', '/');
                                     }
                                     else
+                                    {
+                                        // Container only topic or unknown element, just use the title or ID attribute
+                                        htmlFile = null;
+                                        title = reader.GetAttribute("title");
+
+                                        if(String.IsNullOrEmpty(title))
+                                            title = reader.GetAttribute("id");
+
+                                        if(String.IsNullOrEmpty(title))
+                                            title = key;
+                                    }
+
+                                    indentCount = reader.Depth;
+                                    title = WebUtility.HtmlEncode(title);
+                                    htmlFile = WebUtility.HtmlEncode(htmlFile);
+
+                                    if(reader.IsEmptyElement)
                                         WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\">", Guid.NewGuid(), title));
-                            }
-                            break;
+                                            "<HelpTOCNode Title=\"{0}\" Url=\"{1}\" />", title, htmlFile));
+                                    else
+                                        if(htmlFile != null)
+                                        {
+                                            WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                                "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">", Guid.NewGuid(),
+                                                title, htmlFile));
+                                        }
+                                        else
+                                            WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                                "<HelpTOCNode Id=\"{0}\" Title=\"{1}\">", Guid.NewGuid(), title));
+                                }
+                                break;
 
-                        case XmlNodeType.EndElement:
-                            if(reader.Name == "topic")
-                                WriteContentLine(writer, reader.Depth, "</HelpTOCNode>");
-                            break;
+                            case XmlNodeType.EndElement:
+                                if(reader.Name == "topic")
+                                    WriteContentLine(writer, reader.Depth, "</HelpTOCNode>");
+                                break;
 
-                        default:
-                            break;
-                    }
+                            default:
+                                break;
+                        }
 
-                writer.WriteLine();
-                writer.WriteLine("</HelpTOC>");
+                    writer.WriteLine();
+                    writer.WriteLine("</HelpTOC>");
+                }
             }
         }
         #endregion

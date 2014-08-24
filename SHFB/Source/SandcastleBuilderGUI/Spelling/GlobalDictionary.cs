@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GlobalDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that implements the global dictionary
@@ -67,7 +67,7 @@ namespace SandcastleBuilder.Gui.Spelling
             this.Language = culture;
             this.spellFactory = spellFactory;
 
-            ignoredWords = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+            ignoredWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             ignoredWordsFile = Path.Combine(SpellCheckerConfiguration.ConfigurationFilePath,
                 culture.Name + "_Ignored.dic");
 

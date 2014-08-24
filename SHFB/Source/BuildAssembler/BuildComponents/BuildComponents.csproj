@@ -49,6 +49,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\Deploy\BuildComponents.xml</DocumentationFile>
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <CodeAnalysisRuleSet>..\..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -82,6 +83,7 @@
     <Compile Include="Commands\CopyFromIndexCommand.cs" />
     <Compile Include="Commands\IndexedCache.cs" />
     <Compile Include="Commands\InMemoryIndexedCache.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LanguageSpecificTextComponent.cs">
       <SubType>Code</SubType>
     </Compile>

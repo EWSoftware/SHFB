@@ -83,9 +83,6 @@
       <Component Id="cmp3566CF05D4BE73252B68F81716668DED" Guid="{995DA2CA-26B7-4307-8D30-9C219C4D674C}">
         <File Id="filB86CA9FEE1449886D25C48B83A66916C" KeyPath="yes" Source="$(var.RootFolder)\MRefBuilder.exe.config" />
       </Component>
-      <Component Id="cmp881B772CB58E752F537897CD91642059" Guid="{777247EC-E0CF-4C92-9605-2E60F232EEDB}">
-        <File Id="filCE500730F609D1FE7C16B425122CDBFF" KeyPath="yes" Source="$(var.RootFolder)\MSHCPackager.exe" />
-      </Component>
       <Component Id="cmpE749CA273C9DB8DDB3026025D6D709B5" Guid="{D5BFFD0E-EE96-473E-B74D-BB37F6315C7B}">
         <File Id="filEE376814EC4A1E388D39390A3EDE048D" KeyPath="yes" Source="$(var.RootFolder)\NHunspell.dll" />
       </Component>
@@ -183,38 +180,6 @@
       <Component Id="cmp51C1C88660576D53C94470BC746A13A8" Guid="{F967CBB2-3F49-4219-A573-2666FFD4887F}">
         <File Id="fil71BA3FAD3D09648177066FBEBEC2EB6F" KeyPath="yes" Source="$(var.RootFolder)\XslTransform.exe" />
       </Component>
-      <Directory Id="dirB277D14960E0E6F87BA785D0EFAD395F" Name="Colorizer">
-        <Component Id="cmp98C29E4EDA4B97041F582F829F7EC6C2" Guid="{4BCCF4FB-0A4E-4963-9B32-34B0E1F01409}">
-          <File Id="fil50557E86F18F7CFBDE8FFB79A404BE1C" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\CopyCode.gif" />
-        </Component>
-        <Component Id="cmp404D690C98ECB58F48D0B467499FE417" Guid="{1F6C5FB6-D6B0-4288-BDFC-154CBE049C99}">
-          <File Id="fil16244A8C00DF1F6E08922F40F326D926" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\CopyCode_h.gif" />
-        </Component>
-        <Component Id="cmp3277803AC2A7C888F6E5775D04B537D0" Guid="{E9EEE725-69F3-429F-81AA-DD61E23FB9A0}">
-          <File Id="fil2ECA18F68480E97A50AA0A2D2763D922" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\DocumentTemplate.xaml" />
-        </Component>
-        <Component Id="cmp82024C4EA6679C1F3EE0DF0E0C88CE53" Guid="{34CFF878-AFE1-4B05-A7BA-7BEA6994D04F}">
-          <File Id="fil5DD04C98B213A0CFB829D418C5E11D3D" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight.css" />
-        </Component>
-        <Component Id="cmp6C5FC268AA268BF5FE2184B3D6467D4E" Guid="{025773BF-D2F8-4793-921D-30DF16706185}">
-          <File Id="fil2DA1B2BA0E7D7C5BBF29E4CB3D0E071B" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight.js" />
-        </Component>
-        <Component Id="cmp0A575A5C842D79EEE7BA49C6FA82EFF5" Guid="{8599B2C3-A95D-4CD8-8C49-F722732218D2}">
-          <File Id="fil9EE91A5A4FE3D8FD0883EB20D475ACE0" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight.xml" />
-        </Component>
-        <Component Id="cmp1C5E5A72F1BA77D43B51AD6E6B56AA42" Guid="{7F27C939-E849-4151-B9FA-EB45416F0122}">
-          <File Id="fil007DF37E17B7F40FA5C7A5E2BC642BE2" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight.xsl" />
-        </Component>
-        <Component Id="cmpC99930F4133F948DA68C969B53043997" Guid="{1DF7DCA8-4ED8-42F9-BDDE-6C2F98C81161}">
-          <File Id="fil7539F69FC78A801AB7A709459AD7B9F2" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight_ac.js" />
-        </Component>
-        <Component Id="cmp7D1F19FC24DC784DDDC6EB481736DCBA" Guid="{98B179D7-8BCC-47A6-9C2D-F8A9AEF68CDA}">
-          <File Id="fil05057D927E8B9195369466095894B585" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight_flowDoc.xsl" />
-        </Component>
-        <Component Id="cmp05D00417FE9EC227939B947F9A18D29E" Guid="{B2BDB1A1-6DC1-4E2F-915C-A850013EDD5F}">
-          <File Id="filCABF91FDD0BF5106A5FF01203C55B9FD" KeyPath="yes" Source="$(var.RootFolder)\Colorizer\highlight_openxml.xsl" />
-        </Component>
-      </Directory>
       <Directory Id="dirAC46F60E51F0870AE9D1BD44B1F098F3" Name="ConceptualTemplates">
         <Component Id="cmp2D35A1A915818CF4CC96E15C40F40C2D" Guid="{F78DD769-DD2F-4250-BFDA-46E0D402C708}">
           <File Id="fil7B20AD05D787ABEACBED310F6208571A" KeyPath="yes" Source="$(var.RootFolder)\ConceptualTemplates\Conceptual.aml" />
@@ -1791,6 +1756,38 @@
         <Component Id="cmpF916695FDFACF107234D992DB13C5BF2" Guid="{74534663-82AB-4CB4-BDE1-556B8A035A1D}">
           <File Id="filD1A8023C53A6F4E2E9BC75F59AF26811" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\StandardPresentationStyles.dll" />
         </Component>
+        <Directory Id="dir81A35C02B90F24F9C7142A434BFC2569" Name="Colorizer">
+          <Component Id="cmp29E8AF07906EDFBAFD1B804DE2D56968" Guid="{44DC3994-74D7-4511-99D0-D777F1932D57}">
+            <File Id="filA2851B63A7C182CF4BCD77E76EC2A31E" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\CopyCode.gif" />
+          </Component>
+          <Component Id="cmpB077F020489298526FA8D1DC034D76EE" Guid="{1E9AA29C-B5E9-40F0-B87C-7248E225533B}">
+            <File Id="fil5B7EFE7A0D9F833B7594A41D4F26C0F0" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\CopyCode_h.gif" />
+          </Component>
+          <Component Id="cmp49442844E4940989ED08FDE9671DD9D3" Guid="{53A948B3-CAA1-450F-98B6-2E5F8DB1B9FF}">
+            <File Id="fil08D047E2D2B0DB3B1FB5945641EAB2B6" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\DocumentTemplate.xaml" />
+          </Component>
+          <Component Id="cmpFD2142E7CD3AB31F4A71577E89E11502" Guid="{9A8987CF-014D-4250-8616-C15ED7F5B415}">
+            <File Id="fil0F70B3E889CCFFCBF975985E10FB17D6" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight.css" />
+          </Component>
+          <Component Id="cmpA37240BC25C6D6457A31F928FB004650" Guid="{E7F45421-FD10-4926-A607-2B1378F9618E}">
+            <File Id="filC1A1689433AB6D3C9D18D2DF81880DDC" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight.js" />
+          </Component>
+          <Component Id="cmp1041224A45F4088FBBDD8066AC9A3896" Guid="{504DBE13-1BDF-4C1B-B7F5-95A9DCCD75A7}">
+            <File Id="fil244437954AB9E2DB6393F92C12148622" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight.xml" />
+          </Component>
+          <Component Id="cmp59E2109439F144219287EC6640F2932E" Guid="{91C8F2EA-F47F-4284-95E5-D1147FA14B54}">
+            <File Id="filB345F05831E1EDAA33BD95D69CE0D6CA" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight.xsl" />
+          </Component>
+          <Component Id="cmpC0557FF975E581E61818B83DEB2B0AA3" Guid="{2573B49E-B55C-4A0F-B23E-B6EAB23DFFE2}">
+            <File Id="filAC517C427E7B2E1A86617FFAE042EECE" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight_ac.js" />
+          </Component>
+          <Component Id="cmp3A8525B06E407119AC4F16E9740E0A37" Guid="{1DAD9DD7-D221-4873-AA6F-D4F874242D6A}">
+            <File Id="fil5F02E94B5F6FE2330F002199EE7A31F7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight_flowDoc.xsl" />
+          </Component>
+          <Component Id="cmp68E5580FDE5C7BEAC25248BE125E7C07" Guid="{1C52AC9D-988B-4F8F-9F0A-0B3DFE060D49}">
+            <File Id="filCCD8979FA7BD5B144FB17A89469C1FAF" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Colorizer\highlight_openxml.xsl" />
+          </Component>
+        </Directory>
         <Directory Id="dir1D59524C347A36C523FC14E4704889AB" Name="Hana">
           <Directory Id="dirB86FDC9F25CBDDEA69DFB44F988342AB" Name="Configuration">
             <Component Id="cmpACDF8A0F7ABFD0DDFE0CADB55B90C049" Guid="{7BF25401-C4CF-4663-89DB-C0205892DCBD}">
@@ -4526,7 +4523,6 @@
       <ComponentRef Id="cmp91D85178A06806BEAAA0D49E48B8894F" />
       <ComponentRef Id="cmp58A124A7CE4898F21F18DE917B96D351" />
       <ComponentRef Id="cmp3566CF05D4BE73252B68F81716668DED" />
-      <ComponentRef Id="cmp881B772CB58E752F537897CD91642059" />
       <ComponentRef Id="cmpE749CA273C9DB8DDB3026025D6D709B5" />
       <ComponentRef Id="cmp07B7E56546C21A028C2425EE701F4348" />
       <ComponentRef Id="cmp31182693BB67D6C4E67F13D8B1C6D6F7" />
@@ -4552,16 +4548,6 @@
       <ComponentRef Id="cmpB33DADF2D729CCAE7A61B72DDA2087A3" />
       <ComponentRef Id="cmpF64D60E2A7A50FD6241ABDBE27E31F59" />
       <ComponentRef Id="cmp51C1C88660576D53C94470BC746A13A8" />
-      <ComponentRef Id="cmp98C29E4EDA4B97041F582F829F7EC6C2" />
-      <ComponentRef Id="cmp404D690C98ECB58F48D0B467499FE417" />
-      <ComponentRef Id="cmp3277803AC2A7C888F6E5775D04B537D0" />
-      <ComponentRef Id="cmp82024C4EA6679C1F3EE0DF0E0C88CE53" />
-      <ComponentRef Id="cmp6C5FC268AA268BF5FE2184B3D6467D4E" />
-      <ComponentRef Id="cmp0A575A5C842D79EEE7BA49C6FA82EFF5" />
-      <ComponentRef Id="cmp1C5E5A72F1BA77D43B51AD6E6B56AA42" />
-      <ComponentRef Id="cmpC99930F4133F948DA68C969B53043997" />
-      <ComponentRef Id="cmp7D1F19FC24DC784DDDC6EB481736DCBA" />
-      <ComponentRef Id="cmp05D00417FE9EC227939B947F9A18D29E" />
       <ComponentRef Id="cmp2D35A1A915818CF4CC96E15C40F40C2D" />
       <ComponentRef Id="cmpD76FDB944DCAAA5FF14E52A03E106BCE" />
       <ComponentRef Id="cmp4109FFB5EA18FEB142B5857121F9C864" />
@@ -5069,6 +5055,16 @@
       <ComponentRef Id="cmpA437783BF02B7CC30229D6F654B4E213" />
       <ComponentRef Id="cmp454719E4A46A3402086C06BE19EA34F8" />
       <ComponentRef Id="cmpF916695FDFACF107234D992DB13C5BF2" />
+      <ComponentRef Id="cmp29E8AF07906EDFBAFD1B804DE2D56968" />
+      <ComponentRef Id="cmpB077F020489298526FA8D1DC034D76EE" />
+      <ComponentRef Id="cmp49442844E4940989ED08FDE9671DD9D3" />
+      <ComponentRef Id="cmpFD2142E7CD3AB31F4A71577E89E11502" />
+      <ComponentRef Id="cmpA37240BC25C6D6457A31F928FB004650" />
+      <ComponentRef Id="cmp1041224A45F4088FBBDD8066AC9A3896" />
+      <ComponentRef Id="cmp59E2109439F144219287EC6640F2932E" />
+      <ComponentRef Id="cmpC0557FF975E581E61818B83DEB2B0AA3" />
+      <ComponentRef Id="cmp3A8525B06E407119AC4F16E9740E0A37" />
+      <ComponentRef Id="cmp68E5580FDE5C7BEAC25248BE125E7C07" />
       <ComponentRef Id="cmpACDF8A0F7ABFD0DDFE0CADB55B90C049" />
       <ComponentRef Id="cmpE3D245CE6726C5BEF0749F17086D6AB1" />
       <ComponentRef Id="cmpCA814A56395AF096CF3B9B4F781DE784" />

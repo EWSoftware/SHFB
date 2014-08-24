@@ -48,6 +48,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>MRefBuilder.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,6 +89,7 @@
     <Compile Include="ExtensionMethodAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MemberDictionary.cs" />
     <Compile Include="MRefBuilder.cs" />
     <Compile Include="MRefBuilderCore.cs" />

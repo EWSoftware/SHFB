@@ -48,6 +48,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Deploy\SandcastleBuilder.PlugIns.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -127,6 +128,7 @@
     <Compile Include="DeploymentConfigUserControl.Designer.cs">
       <DependentUpon>DeploymentConfigUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HierarchicalTocConfigDlg.cs">
       <SubType>Form</SubType>
     </Compile>

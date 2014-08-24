@@ -409,15 +409,15 @@ namespace Sandcastle.Core.BuildAssembler
         public IEnumerable<BuildComponentCore> LoadComponents(XPathNavigator configuration)
         {
             XPathNodeIterator componentNodes = configuration.Select("component");
-            List<BuildComponentCore> components = new List<BuildComponentCore>();
+            List<BuildComponentCore> loadedComponents = new List<BuildComponentCore>();
 
             foreach(XPathNavigator componentNode in componentNodes)
             {
-                components.Add(this.LoadComponent(componentNode));
+                loadedComponents.Add(this.LoadComponent(componentNode));
                 tokenSource.Token.ThrowIfCancellationRequested();
             }
 
-            return components;
+            return loadedComponents;
         }
 
         /// <summary>

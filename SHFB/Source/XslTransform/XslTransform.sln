@@ -1,12 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XslTransform", "XslTransform.csproj", "{88A4B9E2-AE05-4817-879C-15461DA29761}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C5990610-FC0C-480C-BE1B-73B49D52712F}"
-	ProjectSection(SolutionItems) = preProject
-		XslTransform.FxCop = XslTransform.FxCop
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject

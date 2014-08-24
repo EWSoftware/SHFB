@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2014
+// Updated : 08/24/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2571,7 +2571,7 @@ namespace SandcastleBuilder.Utils
         {
             ProjectProperty property;
             Version schemaVersion;
-            string helpFileFormat;
+            string helpFormats;
             Dictionary<string, string> translateFormat = new Dictionary<string, string> {
                 { "HTMLHELP1X", "HtmlHelp1" },
                 { "HTMLHELP2X", "MSHelp2" },
@@ -2645,12 +2645,12 @@ namespace SandcastleBuilder.Utils
                             if(schemaVersion.Major == 1 && schemaVersion.Minor == 8 &&
                               schemaVersion.Build == 0 && schemaVersion.Revision < 3)
                             {
-                                helpFileFormat = prop.UnevaluatedValue.ToUpper(CultureInfo.InvariantCulture);
+                                helpFormats = prop.UnevaluatedValue.ToUpper(CultureInfo.InvariantCulture);
 
                                 foreach(string key in translateFormat.Keys)
-                                    helpFileFormat = helpFileFormat.Replace(key, translateFormat[key]);
+                                    helpFormats = helpFormats.Replace(key, translateFormat[key]);
 
-                                this.SetLocalProperty(prop.Name, helpFileFormat);
+                                this.SetLocalProperty(prop.Name, helpFormats);
 
                                 msBuildProject.SetProperty("HelpFileFormat", this.HelpFileFormat.ToString());
                             }
@@ -3135,8 +3135,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>The build action based on the extension</returns>
         public static BuildAction DefaultBuildAction(string filename)
         {
-            string ext = Path.GetExtension(filename).ToLower(
-                CultureInfo.InvariantCulture);
+            string ext = Path.GetExtension(filename).ToLowerInvariant();
 
             switch(ext)
             {

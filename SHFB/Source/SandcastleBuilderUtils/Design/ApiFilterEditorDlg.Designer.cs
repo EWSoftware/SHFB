@@ -119,7 +119,7 @@ namespace SandcastleBuilder.Utils.Design
             // btnFind
             // 
             this.btnFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFind.Location = new System.Drawing.Point(500, 16);
+            this.btnFind.Location = new System.Drawing.Point(494, 16);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnFind, "Find: Find all members matching the search expression");
@@ -313,7 +313,7 @@ namespace SandcastleBuilder.Utils.Design
             // pbWait
             // 
             this.pbWait.BackColor = System.Drawing.SystemColors.Window;
-            this.pbWait.Image = global::SandcastleBuilder.Utils.Properties.Resources.SpinningWheel;
+            this.pbWait.Image = global::SandcastleBuilder.Utils.Properties.Resources.Spinner;
             this.pbWait.Location = new System.Drawing.Point(12, 77);
             this.pbWait.Name = "pbWait";
             this.pbWait.Size = new System.Drawing.Size(32, 32);
@@ -334,7 +334,7 @@ namespace SandcastleBuilder.Utils.Design
             this.lvSearchResults.HideSelection = false;
             this.lvSearchResults.Location = new System.Drawing.Point(3, 217);
             this.lvSearchResults.Name = "lvSearchResults";
-            this.lvSearchResults.Size = new System.Drawing.Size(594, 340);
+            this.lvSearchResults.Size = new System.Drawing.Size(588, 340);
             this.lvSearchResults.SmallImageList = this.ilTreeImages;
             this.lvSearchResults.TabIndex = 1;
             this.lvSearchResults.UseCompatibleStateImageBehavior = false;
@@ -360,7 +360,7 @@ namespace SandcastleBuilder.Utils.Design
             this.groupBox1.Controls.Add(this.txtSearchText);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(594, 208);
+            this.groupBox1.Size = new System.Drawing.Size(588, 208);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "&Search Options";
@@ -390,7 +390,7 @@ namespace SandcastleBuilder.Utils.Design
             this.pnlOptions.Controls.Add(this.chkPrivate);
             this.pnlOptions.Location = new System.Drawing.Point(6, 49);
             this.pnlOptions.Name = "pnlOptions";
-            this.pnlOptions.Size = new System.Drawing.Size(582, 151);
+            this.pnlOptions.Size = new System.Drawing.Size(576, 151);
             this.pnlOptions.TabIndex = 2;
             // 
             // chkCaseSensitive
@@ -676,7 +676,7 @@ namespace SandcastleBuilder.Utils.Design
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearchText.Location = new System.Drawing.Point(6, 21);
             this.txtSearchText.Name = "txtSearchText";
-            this.txtSearchText.Size = new System.Drawing.Size(471, 22);
+            this.txtSearchText.Size = new System.Drawing.Size(465, 22);
             this.statusBarTextProvider1.SetStatusBarText(this.txtSearchText, "Search Text: Enter a string or regular expression for which to search");
             this.txtSearchText.TabIndex = 0;
             // 

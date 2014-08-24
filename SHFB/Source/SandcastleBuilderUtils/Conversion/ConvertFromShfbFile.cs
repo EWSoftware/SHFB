@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromShfbFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 08/24/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert version 1.7.0.0 and prior SHFB project files to the new MSBuild
@@ -597,12 +597,10 @@ namespace SandcastleBuilder.Utils.Conversion
                             foreach(string file in ExpandWildcard(
                               base.FullPath(dep), false))
                             {
-                                ext = Path.GetExtension(file).ToLower(
-                                    CultureInfo.InvariantCulture);
+                                ext = Path.GetExtension(file).ToLowerInvariant();
 
                                 if(ext == ".dll" || ext == ".exe")
-                                    base.Project.References.AddReference(
-                                        Path.GetFileNameWithoutExtension(file),
+                                    base.Project.References.AddReference(Path.GetFileNameWithoutExtension(file),
                                         file);
                             }
                 }
