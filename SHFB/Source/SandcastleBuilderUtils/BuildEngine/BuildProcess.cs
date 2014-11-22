@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/22/2014
+// Updated : 11/18/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -720,7 +720,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(frameworkSettings == null)
                     throw new BuilderException("BE0071", String.Format(CultureInfo.CurrentCulture,
                         "Unable to locate information for the project framework version '{0}' or a suitable " +
-                        "redirected version on this system", project.FrameworkVersion));
+                        "redirected version on this system.  See error number help topic for details.",
+                        project.FrameworkVersion));
 
                 // Warn if a different framework is being used for the build
                 if(frameworkSettings.Title != project.FrameworkVersion)
@@ -1616,8 +1617,7 @@ AllDone:
 
                 TimeSpan runtime = DateTime.Now - buildStart;
 
-                this.ReportProgress(BuildStep.Completed,
-                    "\r\nBuild completed successfully at {0:MM/dd/yyyy hh:mm tt}.  " +
+                this.ReportProgress(BuildStep.Completed, "\r\nBuild completed successfully at {0}.  " +
                     "Total time: {1:00}:{2:00}:{3:00.0000}\r\n", DateTime.Now, Math.Floor(runtime.TotalSeconds / 3600),
                     Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60));
 
@@ -1764,12 +1764,10 @@ AllDone:
         //=====================================================================
 
         /// <summary>
-        /// This is used to report progress during the build process
-        /// within the current step.
+        /// This is used to report progress during the build process within the current step
         /// </summary>
         /// <param name="message">The message to report</param>
-        /// <param name="args">A list of arguments to format into the message
-        /// text</param>
+        /// <param name="args">A list of arguments to format into the message text</param>
         /// <overloads>This method has two overloads.</overloads>
         public void ReportProgress(string message, params object[] args)
         {
@@ -1782,18 +1780,13 @@ AllDone:
         /// <param name="step">The current build step</param>
         /// <param name="errorCode">The error code</param>
         /// <param name="message">The message to report</param>
-        /// <param name="args">A list of arguments to format into the message
-        /// text</param>
-        /// <remarks>This just reports the error.  The caller must abort the
-        /// build.</remarks>
-        private void ReportError(BuildStep step, string errorCode,
-          string message, params object[] args)
+        /// <param name="args">A list of arguments to format into the message text</param>
+        /// <remarks>This just reports the error.  The caller must abort the build</remarks>
+        private void ReportError(BuildStep step, string errorCode, string message, params object[] args)
         {
-            string errorMessage = String.Format(CultureInfo.CurrentCulture,
-                message, args);
+            string errorMessage = String.Format(CultureInfo.CurrentCulture, message, args);
 
-            this.ReportProgress(step, "\r\nSHFB: Error {0}: {1}\r\n",
-                errorCode, errorMessage);
+            this.ReportProgress(step, "\r\nSHFB: Error {0}: {1}\r\n", errorCode, errorMessage);
         }
 
         /// <summary>
@@ -1801,32 +1794,23 @@ AllDone:
         /// </summary>
         /// <param name="warningCode">The warning code</param>
         /// <param name="message">The message to report</param>
-        /// <param name="args">A list of arguments to format into the message
-        /// text</param>
-        public void ReportWarning(string warningCode, string message,
-          params object[] args)
+        /// <param name="args">A list of arguments to format into the message text</param>
+        public void ReportWarning(string warningCode, string message, params object[] args)
         {
-            string warningMessage = String.Format(CultureInfo.CurrentCulture,
-                message, args);
+            string warningMessage = String.Format(CultureInfo.CurrentCulture, message, args);
 
-            this.ReportProgress(progressArgs.BuildStep,
-                "SHFB: Warning {0}: {1}", warningCode, warningMessage);
+            this.ReportProgress(progressArgs.BuildStep, "SHFB: Warning {0}: {1}", warningCode, warningMessage);
         }
 
         /// <summary>
-        /// This is used to report progress during the build process
-        /// and possibly update the current step.
+        /// This is used to report progress during the build process and possibly update the current step
         /// </summary>
         /// <param name="step">The current build step</param>
         /// <param name="message">The message to report</param>
-        /// <param name="args">A list of arguments to format into the
-        /// message text</param>
-        /// <event cref="BuildStepChanged">This event fires when the
-        /// current build step changes.</event>
-        /// <event cref="BuildProgress">This event fires to report progress
-        /// information.</event>
-        protected void ReportProgress(BuildStep step, string message,
-          params object[] args)
+        /// <param name="args">A list of arguments to format into the message text</param>
+        /// <event cref="BuildStepChanged">This event fires when the current build step changes</event>
+        /// <event cref="BuildProgress">This event fires to report progress information</event>
+        protected void ReportProgress(BuildStep step, string message, params object[] args)
         {
             TimeSpan runtime;
 
@@ -1838,12 +1822,9 @@ AllDone:
                 if(step > BuildStep.GenerateSharedContent)
                 {
                     runtime = DateTime.Now - stepStart;
-                    progressArgs.Message = String.Format(
-                        CultureInfo.InvariantCulture, "    Last step " +
-                        "completed in {0:00}:{1:00}:{2:00.0000}",
-                        Math.Floor(runtime.TotalSeconds / 3600),
-                        Math.Floor((runtime.TotalSeconds % 3600) / 60),
-                        (runtime.TotalSeconds % 60));
+                    progressArgs.Message = String.Format(CultureInfo.CurrentCulture, "    Last step " +
+                        "completed in {0:00}:{1:00}:{2:00.0000}", Math.Floor(runtime.TotalSeconds / 3600),
+                        Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60));
 
                     if(swLog != null)
                         swLog.WriteLine(progressArgs.Message);
@@ -1858,19 +1839,17 @@ AllDone:
                 progressArgs.BuildStep = step;
 
                 if(swLog != null)
-                    swLog.WriteLine("</buildStep>\r\n<buildStep step=\"{0}\">",
-                        step);
+                    swLog.WriteLine("</buildStep>\r\n<buildStep step=\"{0}\">", step);
             }
 
-            progressArgs.Message = String.Format(CultureInfo.CurrentCulture,
-                message, args);
+            progressArgs.Message = String.Format(CultureInfo.CurrentCulture, message, args);
 
             // Save the message to the log file
             if(swLog != null)
                 swLog.WriteLine(HttpUtility.HtmlEncode(progressArgs.Message));
 
-            // Report progress first and then the step change so that any
-            // final information gets saved to the log file.
+            // Report progress first and then the step change so that any final information gets saved to the log
+            // file.
             this.OnBuildProgress(progressArgs);
 
             if(stepChanged)
@@ -1879,7 +1858,6 @@ AllDone:
             if(this.BuildCanceled && !progressArgs.HasCompleted)
                 throw new BuilderException("BUILD CANCELLED");
         }
-
         #endregion
 
         #region Helper methods
@@ -2000,7 +1978,7 @@ AllDone:
             }
 
             if(isBadPath)
-                throw new BuilderException("BE0034", String.Format(CultureInfo.InvariantCulture,
+                throw new BuilderException("BE0034", String.Format(CultureInfo.CurrentCulture,
                     "The '{0}' property resolved to '{1}' which is a reserved folder name that cannot be used " +
                     "for build output or as the working files folder.  See the error or property topic in the " +
                     "help file for more details.", propertyName, propertyValue));
@@ -2106,7 +2084,7 @@ AllDone:
                 }
 
                 if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
-                    throw new BuilderException("BE0037", "Could not find the path the the HTML Help 1 " +
+                    throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 " +
                         "compiler. See the error number topic in the help file for details.\r\n");
 
                 if(hhcFolder[hhcFolder.Length - 1] != '\\')
@@ -2399,7 +2377,7 @@ AllDone:
                                 this.ReportProgress("    Ignoring duplicate assembly file '{0}'", workingPath);
                         }
                         else
-                            throw new BuilderException("BE0067", String.Format(CultureInfo.InvariantCulture,
+                            throw new BuilderException("BE0067", String.Format(CultureInfo.CurrentCulture,
                                 "Unable to obtain assembly name from project file '{0}' using Configuration " +
                                 "'{1}', Platform '{2}'", msbProject.ProjectFile.FullPath,
                                 msbProject.ProjectFile.AllEvaluatedProperties.Last(

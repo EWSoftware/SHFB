@@ -72,6 +72,8 @@
             // chkCppCommentsFixup
             // 
             this.chkCppCommentsFixup.AutoSize = true;
+            this.epNotes.SetError(this.chkCppCommentsFixup, "The Member ID Fix-Ups plug-in can be used to fix these issues and others that you" +
+        " define");
             this.chkCppCommentsFixup.Location = new System.Drawing.Point(292, 205);
             this.chkCppCommentsFixup.Name = "chkCppCommentsFixup";
             this.chkCppCommentsFixup.Size = new System.Drawing.Size(419, 24);
@@ -113,9 +115,9 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "F&ramework version";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            //
+            // 
             // cboFrameworkVersion
-            //
+            // 
             this.cboFrameworkVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFrameworkVersion.FormattingEnabled = true;
             this.cboFrameworkVersion.Location = new System.Drawing.Point(431, 12);
@@ -124,15 +126,15 @@
             this.cboFrameworkVersion.Size = new System.Drawing.Size(330, 28);
             this.cboFrameworkVersion.TabIndex = 3;
             this.cboFrameworkVersion.Tag = "FrameworkVersion";
-            //
+            // 
             // epNotes
-            //
+            // 
             this.epNotes.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.epNotes.ContainerControl = this;
             this.epNotes.Icon = ((System.Drawing.Icon)(resources.GetObject("epNotes.Icon")));
-            //
+            // 
             // chkIndentHtml
-            //
+            // 
             this.chkIndentHtml.AutoSize = true;
             this.epNotes.SetError(this.chkIndentHtml, "Build component debugging aid.  Leave this unchecked for normal builds\nto produce" +
         " more compact HTML");
@@ -154,7 +156,7 @@
             this.epNotes.SetIconPadding(this.txtBuildLogFile, 5);
             this.txtBuildLogFile.Location = new System.Drawing.Point(431, 46);
             this.txtBuildLogFile.Name = "txtBuildLogFile";
-            this.txtBuildLogFile.Size = new System.Drawing.Size(330, 59);
+            this.txtBuildLogFile.Size = new System.Drawing.Size(340, 59);
             this.txtBuildLogFile.TabIndex = 5;
             this.txtBuildLogFile.Tag = "BuildLogFile";
             this.txtBuildLogFile.Title = "Select the log file location";
@@ -174,7 +176,7 @@
             this.cblHelpFileFormat.FormattingEnabled = true;
             this.cblHelpFileFormat.Location = new System.Drawing.Point(7, 41);
             this.cblHelpFileFormat.Name = "cblHelpFileFormat";
-            this.cblHelpFileFormat.Size = new System.Drawing.Size(221, 246);
+            this.cblHelpFileFormat.Size = new System.Drawing.Size(228, 246);
             this.cblHelpFileFormat.TabIndex = 1;
             this.cblHelpFileFormat.Tag = "HelpFileFormat";
             // 
@@ -191,9 +193,9 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(233, 275);
+            this.label4.Location = new System.Drawing.Point(241, 275);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(192, 23);
+            this.label4.Size = new System.Drawing.Size(184, 23);
             this.label4.TabIndex = 11;
             this.label4.Text = "BuildAssembler &Verbosity";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -214,9 +216,9 @@
             this.Controls.Add(this.chkCppCommentsFixup);
             this.Controls.Add(this.chkCleanIntermediates);
             this.Controls.Add(this.label1);
-            this.MinimumSize = new System.Drawing.Size(745, 310);
+            this.MinimumSize = new System.Drawing.Size(770, 310);
             this.Name = "BuildPropertiesPageControl";
-            this.Size = new System.Drawing.Size(785, 310);
+            this.Size = new System.Drawing.Size(795, 310);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

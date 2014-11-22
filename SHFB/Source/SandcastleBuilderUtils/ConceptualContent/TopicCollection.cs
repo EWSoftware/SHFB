@@ -434,13 +434,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 {
                     // If there is an ID with no file, the file is missing
                     if(!t.NoTopicFile)
-                        throw new BuilderException("BE0054", String.Format(CultureInfo.InvariantCulture,
+                        throw new BuilderException("BE0054", String.Format(CultureInfo.CurrentCulture,
                             "The conceptual topic '{0}' (ID: {1}) does not match any file in the project",
                             t.DisplayTitle, t.ContentId));
 
                     // A file is required if there are no sub-topics and it isn't the API content parent
                     if(t.Subtopics.Count == 0 && t.ApiParentMode != ApiParentMode.InsertAsChild)
-                        throw new BuilderException("BE0055", String.Format(CultureInfo.InvariantCulture,
+                        throw new BuilderException("BE0055", String.Format(CultureInfo.CurrentCulture,
                             "The conceptual topic '{0}' (ID: {1}) must either specify a " +
                             "topic file or it must contains sub-topics", t.DisplayTitle, t.Id));
 
@@ -475,13 +475,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 // It must exist
                 if(t.DocumentType <= DocumentType.NotFound)
-                    throw new BuilderException("BE0056", String.Format(CultureInfo.InvariantCulture,
+                    throw new BuilderException("BE0056", String.Format(CultureInfo.CurrentCulture,
                         "The conceptual content file '{0}' with ID '{1}' does not exist.", t.TopicFile.FullPath,
                         t.Id));
 
                 // And it must be valid
                 if(t.DocumentType == DocumentType.Invalid)
-                    throw new BuilderException("BE0057", String.Format(CultureInfo.InvariantCulture,
+                    throw new BuilderException("BE0057", String.Format(CultureInfo.CurrentCulture,
                         "The conceptual content file '{0}' with ID '{1}' is not valid: {2}",
                         t.TopicFile.FullPath, t.Id, t.TopicFile.ErrorMessage));
 
@@ -492,7 +492,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     // The IDs must be unique
                     if(File.Exists(destFile))
-                        throw new BuilderException("BE0058", String.Format(CultureInfo.InvariantCulture,
+                        throw new BuilderException("BE0058", String.Format(CultureInfo.CurrentCulture,
                             "Two conceptual content files have the same ID ({0}).  The file with the " +
                             "duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
 
@@ -517,7 +517,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                         // The IDs must be unique
                         if(File.Exists(destFile))
-                            throw new BuilderException("BE0058", String.Format(CultureInfo.InvariantCulture,
+                            throw new BuilderException("BE0058", String.Format(CultureInfo.CurrentCulture,
                                 "Two conceptual content files have the same ID ({0}).  The file " +
                                 "with the duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
 

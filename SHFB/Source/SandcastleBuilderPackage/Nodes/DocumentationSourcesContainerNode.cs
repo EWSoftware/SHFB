@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/22/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 08/25/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents the documentation sources container node in a Sandcastle Help
@@ -14,13 +14,14 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/30/2011  EFW  Created the code
-// 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
+// 03/30/2011  EFW  Created the code
+// 10/22/2012  EFW  Updated to support .winmd documentation sources
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -39,6 +40,7 @@ using Microsoft.VisualStudio;
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.MSBuild;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -197,7 +199,16 @@ namespace SandcastleBuilder.Package.Nodes
                     {
                         Cursor.Current = Cursors.WaitCursor;
 
+                        HashSet<string> projectList = new HashSet<string>();
+
                         foreach(string file in dlg.FileNames)
+                            if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                                projectList.Add(file);
+                            else
+                                foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
+                                    projectList.Add(project);
+
+                        foreach(string file in projectList)
                         {
                             this.AddDocumentationSource(file);
                             ext = Path.GetExtension(file).ToLowerInvariant();

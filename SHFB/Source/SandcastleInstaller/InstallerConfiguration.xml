@@ -4,7 +4,7 @@
 	<pathOffset location="..\..\..\..\Deployment" />
 
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2014.5.31.0" />
+	<sandcastle version="v2014.11.22.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -15,10 +15,10 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://www.ewoodruff.us/sandcastletools/html/7dced1d0-b471-4252-be70-3727e058b41b.htm"
-				description="Sandcastle Tools v2014.5.31.0 Release Notes" />
-			<whatsNew url="http://www.ewoodruff.us/shfbdocs/html/3405263f-a9eb-4ce4-b90f-87c31ab76d85.htm"
-				description="Sandcastle Help File Builder v2014.5.31.0 Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/sandcastletools/html/c03788c0-96ec-47aa-bfd2-935a2ea6ac70.htm"
+				description="Sandcastle Tools v2014.11.22.0 Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/shfbdocs/html/7238a41e-1375-4038-8bf1-d699f4dae668.htm"
+				description="Sandcastle Help File Builder v2014.11.22.0 Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -28,18 +28,16 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="2014.5.31.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.0" shfbVersion="2014.11.22.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
 			installerName="SHFBVisualStudioPackage.vsix">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
 					 be in version order from earliest to most recent. -->
-			<visualStudio version="10.0" name="Visual Studio 2010 Professional/Premium/Ultimate"
-				location="%VS100COMNTOOLS%\..\IDE" />
-			<visualStudio version="11.0" name="Visual Studio 2012 Professional/Premium/Ultimate"
-				location="%VS110COMNTOOLS%\..\IDE" />
-			<visualStudio version="12.0" name="Visual Studio 2013 Professional/Premium/Ultimate"
-				location="%VS120COMNTOOLS%\..\IDE" />
+			<visualStudio version="10.0" name="Visual Studio 2010" location="%VS100COMNTOOLS%\..\IDE" />
+			<visualStudio version="11.0" name="Visual Studio 2012" location="%VS110COMNTOOLS%\..\IDE" />
+			<visualStudio version="12.0" name="Visual Studio 2013" location="%VS120COMNTOOLS%\..\IDE" />
+			<visualStudio version="14.0" name="Visual Studio 2015" location="%VS140COMNTOOLS%\..\IDE" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
@@ -48,6 +46,7 @@
 			<visualStudio version="Visual Studio 2010" location="%VS100COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2012" location="%VS110COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are
@@ -56,6 +55,7 @@
 			<visualStudio version="Visual Studio 2010" location="Visual Studio 2010\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2012" location="Visual Studio 2012\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
+			<visualStudio version="Visual Studio 2015" location="Visual Studio 14\Code Snippets\Xml\My Xml Snippets" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />

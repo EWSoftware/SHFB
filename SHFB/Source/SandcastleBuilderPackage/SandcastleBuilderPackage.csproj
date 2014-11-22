@@ -168,6 +168,13 @@
     <Compile Include="IntelliSense\CSharpDocumentationCompletionSource.cs" />
     <Compile Include="IntelliSense\CSharpDocumentationCompletionSourceProvider.cs" />
     <Compile Include="IntelliSense\CustomCompletion.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\CommandFilter.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\RoslynKeyboardFilter.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\RoslynTextViewCreationListener.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\RoslynUtilities.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\TextViewCommandFilter.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\ToolTipProvider.cs" />
+    <Compile Include="IntelliSense\RoslynHacks\WpfHelper.cs" />
     <Compile Include="PropertyPages\BuildEventEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

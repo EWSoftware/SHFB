@@ -1,6 +1,14 @@
 namespace TestDoc.Generics
 {
     /// <summary>
+    /// Namespace group comments from a <c>NamespaceGroupDoc</c> class in the source code.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceGroupDoc
+    {
+    }
+
+    /// <summary>
     /// A test generic class
     /// </summary>
     /// <typeparam name="TKey">TKey</typeparam>

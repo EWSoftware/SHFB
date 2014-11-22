@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/26/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -42,6 +42,7 @@ using Sandcastle.Core;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.MSBuild;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -1030,7 +1031,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     {
                         Cursor.Current = Cursors.WaitCursor;
 
+                        HashSet<string> projectList = new HashSet<string>();
+
                         foreach(string file in dlg.FileNames)
+                            if(!file.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                                projectList.Add(file);
+                            else
+                                foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
+                                    projectList.Add(project);
+
+                        foreach(string file in projectList)
                         {
                             docSources.Add(file, null, null, false);
 
@@ -2158,6 +2168,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         if(ext != ".dll" && ext != ".exe" && ext != ".winmd" && ext != ".xml" && ext != ".sln" &&
                           !ext.EndsWith("proj", StringComparison.Ordinal))
                             continue;
+
+                        if(ext == ".sln")
+                        {
+                            foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
+                                currentProject.DocumentationSources.Add(project, null, null, false);
+
+                            continue;
+                        }
 
                         currentProject.DocumentationSources.Add(file, null, null, false);
 

@@ -21,19 +21,92 @@ These are not standalone files.  In order to view them, they must be integrated 
 These are typically used to provide help for control libraries and tools and are integrated into the help
 collections used by Microsoft Visual Studio 2008 and earlier.</Paragraph>
 
-        <Section Name="secResults">
+				<Paragraph>If you will be creating Help 2 files, you will need to follow the instructions below to
+download and install it using one of the listed SDKs.  If you will not, you can safely skip this step.  You can
+run this application again to install it later if needed.</Paragraph>
 
-        </Section>
-      </FlowDocument>
+				<Paragraph>Because the Help 2 compiler is not available separately, it must be installed as part of the
+Visual Studio SDK.  This may require that you have the associated version of Visual Studio installed as well.  It
+is only available in SDKs for Visual Studio 2008 and earlier.</Paragraph>
+
+				<Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">Support
+for the Help 2 format in the help file builder has been deprecated.  It will not receive any further updates or
+support going forward.</Paragraph>
+
+				<Paragraph>You only need to install one of the following SDKs to obtain the Help 2 compiler components.
+Note that the SDKs for Visual Studio 2005 and 2008 both contain an outdated version of Sandcastle.  The DXROOT
+environment variable and path to the old version added to the PATH environment variable can be safely removed as
+the latest Sandcastle tools are integrated with and deployed as part of the Sandcastle Help File builder
+installation.</Paragraph>
+
+				<Paragraph>
+					<Bold FontSize="13">If you have Visual Studio 2010 or later</Bold>
+				</Paragraph>
+				<Paragraph>Help 2 files are not used by Visual Studio 2010 or later and their related SDKs do not contain
+the Help 2 compiler.  You do not need to install anything.</Paragraph>
+
+				<Paragraph><Bold FontSize="13">If you have Visual Studio 2008</Bold></Paragraph>
+
+				<Paragraph>
+					<Bold>NOTE:</Bold> You must install version 1.0 of the Visual Studio 2008 SDK.  Version 1.1 does not
+contain the Help 2 compiler components.</Paragraph>
+
+				<List>
+					<ListItem>
+						<Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en">
+Visual Studio 2008 SDK Version 1.0</Hyperlink>
+						</Paragraph>
+					</ListItem>
+					<ListItem>
+						<Paragraph>Once the page opens, click the <Bold>Download</Bold> button.</Paragraph>
+					</ListItem>
+					<ListItem>
+						<Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+					</ListItem>
+				</List>
+
+				<Paragraph>
+					<Bold FontSize="13">If you have Visual Studio 2005</Bold>
+				</Paragraph>
+
+				<List>
+					<ListItem>
+						<Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="https://visualstudiogallery.msdn.microsoft.com/85B8164E-00CF-42FD-8560-150FE4C027EA">
+Visual Studio 2005 SDK Version 4.0</Hyperlink>
+						</Paragraph>
+					</ListItem>
+					<ListItem>
+						<Paragraph>Once the page opens, click the <Bold>Get Now</Bold> button.</Paragraph>
+					</ListItem>
+					<ListItem>
+						<Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+					</ListItem>
+				</List>
+
+				<Paragraph>
+					<Bold FontSize="13">If you have Visual Studio 2003</Bold>
+				</Paragraph>
+
+				<List>
+					<ListItem>
+						<Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="http://www.microsoft.com/downloads/en/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en">
+Visual Studio .NET Help Integration Kit 2003</Hyperlink>
+						</Paragraph>
+					</ListItem>
+					<ListItem>
+						<Paragraph>Once the page opens, click the <Bold>Download</Bold> button.</Paragraph>
+					</ListItem>
+					<ListItem>
+						<Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+					</ListItem>
+				</List>
+			</FlowDocument>
     </FlowDocumentScrollViewer>
-    <StackPanel Grid.Row="1" Name="pnlControls" Orientation="Horizontal"
-      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
-      <Button Name="btnSearchAgain" Content="_Search Again" Padding="10,3" Margin="10"
-        ToolTip="Search for the HTML Help 1 compiler again" Click="btnSearchAgain_Click" />
-      <Image Name="imgSpinner" Source="../Resources/Spinner.gif" Height="20"
-        scBehaviors:SupportAnimatedGIFBehavior.SupportAnimatedGif="True" />
-      <Label Name="lblPleaseWait" Content="Searching for Help 2 compiler.  Please wait..."
-        VerticalAlignment="Center" />
-    </StackPanel>
   </Grid>
 </sci:BasePage>

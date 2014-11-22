@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="bd1918e3-1af8-49e7-b26b-bfedb0574a19" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.11.22.0</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added information on creating and using a
+<link xlink:href="41B2D835-DB0D-4828-8D9E-0E423EDA4590">NamespaceGroupDoc</link> class to add comments for name
+space group topics when namespace grouping is enabled in the Sandcastle Help File Builder project.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="0999CAAA-4992-4352-9ED2-965892040176" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

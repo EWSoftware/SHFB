@@ -11,6 +11,7 @@
 // 11/20/2013 - EFW - Deprecated support for /internal command line option as the new visibility settings in the
 // configuration file provide finer grained control over the members included in the output.
 // 12/10/2013 - EFW - Added MSBuild task support.
+// 10/16/2014 - EFW - Added support for WindowsStoreAndPhoneNamer.
 
 using System;
 using System.IO;
@@ -54,7 +55,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>Zero on success or non-zero on failure</returns>
         public static int Main(string[] args)
         {
-            string path, version, framework, assemblyPath, typeName;
+            string path, version, framework = null, assemblyPath, typeName;
 
             // Write banner
             ConsoleApplication.WriteBanner();
@@ -186,7 +187,14 @@ namespace Microsoft.Ddue.Tools
             }
 
             // Create an API member namer
-            ApiNamer namer = new OrcasNamer();
+            ApiNamer namer;
+
+            // Apply a different naming method to assemblies using the Windows Store or Windows Phone frameworks
+            if(framework == ".NETCore" || framework == "WindowsPhone" || framework == "WindowsPhoneApp")
+                namer = new WindowsStoreAndPhoneNamer();
+            else
+                namer = new OrcasNamer();
+
             XPathNavigator namerNode = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/namer");
 
             if(namerNode != null)

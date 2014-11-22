@@ -29,7 +29,7 @@
     <CleanIntermediates>False</CleanIntermediates>
     <BuildLogFile>
     </BuildLogFile>
-    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
@@ -44,20 +44,28 @@
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
         <component id="Code Block Component">
-  <basePath value="{@HtmlEncProjectFolder}" />
-  <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
-  <allowMissingSource value="false" />
-  <removeRegionMarkers value="false" />
-  <colorizer syntaxFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xml" styleFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}PresentationStyles\Colorizer\highlight.css" scriptFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
-</component>
+          <basePath value="{@HtmlEncProjectFolder}" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="false" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xml" styleFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}PresentationStyles\Colorizer\highlight.css" scriptFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
+        </component>
       </ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><!-- Output options (optional)
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <!-- Output options (optional)
   Attributes:
     Include namespaces (false by default)
     Namespaces comments filename ("Namespaces" if not specified or empty)
-    Output folder (current folder if not specified or empty) --><output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" /></component></ComponentConfig></ComponentConfigurations>
+    Output folder (current folder if not specified or empty) -->
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
@@ -97,13 +105,58 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="XPath Reflection File Filter" enabled="False"><configuration><expressions><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression></expressions></configuration></PlugInConfig>
-<PlugInConfig id="Bibliography Support" enabled="False"><configuration><bibliography path="{@ProjectFolder}Bibliography.xml" /></configuration></PlugInConfig>
-<PlugInConfig id="Completion Notification" enabled="False"><configuration><smtpServer host="mail.somecompany.org" port="25" /><userCredentials useDefault="true" userName="" password="" /><fromEMail address="SHFB@SomeCompany.org" /><successEMail address="EWoodruff@SomeCompany.org" attachLog="false" /><failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" /><xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" /></configuration></PlugInConfig>
-<PlugInConfig id="DBCS Fix for CHM Builds" enabled="False"><configuration><sbAppLocale path="C:\Utils\SBAppLocale.exe" /></configuration></PlugInConfig>
-<PlugInConfig id="Hierarchical Table of Contents" enabled="False"><configuration><toc minParts="2" insertBelow="False" /></configuration></PlugInConfig>
-<PlugInConfig id="Wildcard Assembly References" enabled="False"><configuration><references><reference path="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" /><reference path="..\..\SHFB\Deploy\" wildcard="*.dll" recurse="true" /></references></configuration></PlugInConfig>
-<PlugInConfig id="Additional Reference Links" enabled="False"><configuration /></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
+        <configuration>
+          <expressions>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression>
+          </expressions>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Bibliography Support" enabled="False">
+        <configuration>
+          <bibliography path="{@ProjectFolder}Bibliography.xml" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Completion Notification" enabled="False">
+        <configuration>
+          <smtpServer host="mail.somecompany.org" port="25" />
+          <userCredentials useDefault="true" userName="" password="" />
+          <fromEMail address="SHFB@SomeCompany.org" />
+          <successEMail address="EWoodruff@SomeCompany.org" attachLog="false" />
+          <failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" />
+          <xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
+        <configuration>
+          <sbAppLocale path="C:\Utils\SBAppLocale.exe" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Hierarchical Table of Contents" enabled="False">
+        <configuration>
+          <toc minParts="2" insertBelow="False" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Wildcard Assembly References" enabled="False">
+        <configuration>
+          <references>
+            <reference path="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" />
+            <reference path="..\..\SHFB\Deploy\" wildcard="*.dll" recurse="true" />
+          </references>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Additional Reference Links" enabled="False">
+        <configuration />
+      </PlugInConfig>
+      <PlugInConfig id="IntelliSense Only" enabled="False">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
@@ -114,7 +167,7 @@
     <Build>34</Build>
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
-    <HelpTitle>Sandcastle Test Case Library</HelpTitle>
+    <HelpTitle>Sandcastle Test Case Library {%40Version}</HelpTitle>
     <SyntaxFilters>Standard</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>

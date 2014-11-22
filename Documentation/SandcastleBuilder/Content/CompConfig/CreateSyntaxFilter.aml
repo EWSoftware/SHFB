@@ -4,7 +4,7 @@
 		<introduction>
 			<para>Syntax generators are used to add language and usage syntax sections to each API topic for a
 programming language.  They are executed in <application>BuildAssembler</application> as part of the
-<codeInline>SyntaxComponent</codeInline>.  Several default language and usage syntax generators are supplied with
+<codeInline>SyntaxComponent</codeInline>.  Several language and usage syntax generators are supplied with
 Sandcastle by default.  This topic will walk you through the creation of a syntax generator project used to add a
 new language or usage syntax section.</para>
 
@@ -147,6 +147,13 @@ syntax generator.  Typically, the ID is the language name.</para>
 						<para>The <codeInline>Language Element Name</codeInline> parameter is required and is used to
 uniquely identify the syntax language element generated in each topic by the component.  This value should be
 valid as an XML element name.</para>
+
+						<alert class="important">
+							<para>If you change the language name, rename the matching language resource item file in the
+<localUri>SyntaxContent\</localUri> folder to the same name and update the IDs of the content items in it with
+the new name.  This is required to ensure that the file and its content items are matched correctly to the
+syntax sections in the generated topics.</para>
+						</alert>
 					</content>
 				</section>
 
@@ -235,9 +242,33 @@ appropriate project values.  The default if not overridden is an empty string.</
 			<title>The Factory Class</title>
 			<content>
 				<para>The factory class for a syntax generator is quite simple.  It is derived from
-<codeInline>Sandcastle.Core.BuildAssembler.SyntaxGenerator.ISyntaxGeneratorFactory</codeInline> and contains a
-single abstract <codeInline>Create</codeInline> method that you must implement.  All it has to do is create the
-instance of the syntax generator and return it.</para>
+<codeInline>Sandcastle.Core.BuildAssembler.SyntaxGenerator.ISyntaxGeneratorFactory</codeInline> and contains the
+following abstract members that must be implemented:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><codeInline>ResourceItemFileLocation</codeInline> - This property is used to return the
+location of the language's resource item file.  This file contains the localized string resources used for
+labels, messages, etc. and allows syntax generators to be developed and deployed without having to make changes
+to the presentation styles.  By default, the project contains a <localUri>SyntaxContent\</localUri> folder with a
+single XML file named after the language.  These are the default resources if no language-specific resources
+are defined.  To create language-specific versions of the resource files (i.e. French, German, Chinese), create
+sub-folders named after the language ID (i.e. fr-FR, de-DE, ch-CN) and place a copy of the file in each language
+sub-folder containing the translated resource items.</para>
+						
+						<alert class="important">
+							<para>If you change the language name, rename the matching language resource item file in the
+<localUri>SyntaxContent\</localUri> folder to the same name and update the IDs of the content items in it with
+the new name.  This is required to ensure that the file and its content items are matched correctly to the
+syntax sections in the generated topics.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para><codeInline>Create</codeInline> - This is used to create an instance of the syntax generator
+and return it.</para>
+					</listItem>
+				</list>
 			</content>
 
 		</section>

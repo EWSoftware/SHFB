@@ -773,8 +773,7 @@
 							<pre xml:space="preserve" style="margin-bottom: 0pt"><xsl:value-of select="."/></pre>
 						</div>
 						<xsl:if test="@description or @inheritedFrom or @exception">
-							<div style="font-size:95%; margin-left: 10pt;
-                        margin-bottom: 0pt">
+							<div style="font-size:95%; margin-left: 10pt; margin-bottom: 0pt">
 								<table>
 									<colgroup>
 										<col width="10%"/>
@@ -796,7 +795,21 @@
 												<em><xsl:text>Inherited From: </xsl:text></em>
 											</td>
 											<td style="border-bottom: 0px none;">
-												<referenceLink target="{@inheritedFrom}">
+												<!-- Change the ID type and strip "get_" and "set_" prefixes from property member IDs -->
+												<xsl:variable name="inheritedMemberId">
+													<xsl:choose>
+														<xsl:when test="contains(@inheritedFrom, '.get_')">
+															<xsl:value-of select="concat('P:', substring-before(substring(@inheritedFrom, 3), '.get_'), '.', substring-after(@inheritedFrom, '.get_'))"/>
+														</xsl:when>
+														<xsl:when test="contains(@inheritedFrom, '.set_')">
+															<xsl:value-of select="concat('P:', substring-before(substring(@inheritedFrom, 3), '.set_'), '.', substring-after(@inheritedFrom, '.set_'))"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:value-of select="@inheritedFrom"/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:variable>
+												<referenceLink target="{$inheritedMemberId}">
 													<xsl:value-of select="@inheritedFromTypeName"/>
 												</referenceLink>
 											</td>

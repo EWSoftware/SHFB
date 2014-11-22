@@ -83,6 +83,13 @@ and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the 
 comments in the help file projects will be appended to these comments.</para>
 			</listItem>
 
+			<listItem>
+				<para>To specify shared namespace group summary comments, add a <codeInline>&lt;member&gt;</codeInline>
+node, set it's <codeInline>name</codeInline> attribute to the namespace group name prefixed with
+"<codeInline>G:</codeInline>", and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the
+node.  Any namespace group summary comments in the help file projects will be appended to these comments.</para>
+			</listItem>
+
 		</list>
 
 		<para>Once you have created the file, open each project that needs to use it, right click on the

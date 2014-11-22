@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="1fcdf9d3-06fb-4a7b-a584-f55b6ea5baae" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This plug-in can be used to build a help project that only generates XML comments files for
+use with IntelliSense.  All conceptual content in the project is ignored and no help file will be produced.  This
+results in a faster build for support projects that do not need a separate help file but do need IntelliSense XML
+comments files such as those used in the projects for the
+<link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3">Version Builder plug-in's</link> prior version/platform
+assemblies which may be distributed along with the actual assemblies being documented.</para>
+
+		</introduction>
+
+		<section>
+			<content>
+				<para>This plug-in contains no configuration options.  It simply suppresses several of the build steps
+that generate conceptual topics and the help file itself.</para>
+				
+				<alert class="important">
+					<para>Note that for this to work, the project must also contain the <link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" />
+ added via the <ui>Components</ui> category of project properties.</para>
+				</alert>
+
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

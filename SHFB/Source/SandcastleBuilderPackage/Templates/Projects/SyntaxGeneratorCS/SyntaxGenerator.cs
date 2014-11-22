@@ -17,7 +17,7 @@ namespace $safeprojectname$
     /// help file builder finds it and can make use of it.  The example below shows the basic usage for a common
     /// syntax generator.  Multiple copies of syntax generators can be created depending on their usage.  The
     /// host process will create instances as needed.
-    /// 
+    ///
     /// <para>NOTE: For non-languages, a simpler base type, <c>SyntaxGeneratorCore</c>, may be used.  An example
     /// of its use can be found in the <c>AspNetSyntaxGenerator</c>.</para></remarks>
     public class $safeprojectname$DeclarationSyntaxGenerator : SyntaxGeneratorTemplate
@@ -26,8 +26,8 @@ namespace $safeprojectname$
         //=====================================================================
 
         // TODO: Set the unique style ID name.
-        // NOTE: If you change LanguageName, rename the SyntaxContent\TestLanguage.xml file to the same name
-        //       and update the IDs of the content items with the new name.
+        // NOTE: If you change LanguageName, rename the SyntaxContent\$safeprojectname$.xml file to the same name
+        //       and update the IDs of the content items in it with the new name.
         private const string LanguageName = "$safeprojectname$", StyleIdName = "xyz";
 
         /// <summary>

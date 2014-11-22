@@ -1577,7 +1577,14 @@ namespace Microsoft.Ddue.Tools
                 this.WriteExpression(parameter.DefaultValue);
 
             if(parameter.Attributes != null && parameter.Attributes.Count != 0)
-                this.WriteAttributes(parameter.Attributes, new SecurityAttributeList());
+            {
+                // Ignore ParamArray as it's handled above
+                var paramAttrs = new AttributeList(parameter.Attributes.Where(a => a != null &&
+                    a.Type.FullName != "System.ParamArrayAttribute"));
+
+                if(paramAttrs.Count != 0)
+                    this.WriteAttributes(paramAttrs, new SecurityAttributeList());
+            }
 
             writer.WriteEndElement();
         }

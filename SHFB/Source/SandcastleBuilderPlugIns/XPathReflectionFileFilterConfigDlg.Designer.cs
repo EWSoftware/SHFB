@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XPathReflectionFileFilterConfigDlg));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.tvExpressions = new System.Windows.Forms.TreeView();
@@ -47,7 +48,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(532, 391);
+            this.btnCancel.Location = new System.Drawing.Point(657, 391);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
             this.btnCancel.TabIndex = 7;
@@ -70,29 +71,36 @@
             // 
             // tvExpressions
             // 
+            this.tvExpressions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvExpressions.Font = new System.Drawing.Font("Courier New", 10F);
             this.tvExpressions.FullRowSelect = true;
             this.tvExpressions.HideSelection = false;
             this.tvExpressions.Location = new System.Drawing.Point(12, 35);
             this.tvExpressions.Name = "tvExpressions";
             this.tvExpressions.ShowRootLines = false;
-            this.tvExpressions.Size = new System.Drawing.Size(608, 188);
+            this.tvExpressions.Size = new System.Drawing.Size(733, 188);
             this.tvExpressions.TabIndex = 1;
-            this.tvExpressions.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvExpressions_AfterSelect);
             this.tvExpressions.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExpressions_BeforeSelect);
+            this.tvExpressions.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvExpressions_AfterSelect);
             // 
             // txtExpression
             // 
+            this.txtExpression.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtExpression.Enabled = false;
+            this.txtExpression.Font = new System.Drawing.Font("Courier New", 10F);
             this.txtExpression.Location = new System.Drawing.Point(12, 267);
             this.txtExpression.Multiline = true;
             this.txtExpression.Name = "txtExpression";
-            this.txtExpression.Size = new System.Drawing.Size(608, 118);
+            this.txtExpression.Size = new System.Drawing.Size(733, 118);
             this.txtExpression.TabIndex = 5;
             // 
             // btnAdd
             // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAdd.Location = new System.Drawing.Point(432, 229);
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdd.Location = new System.Drawing.Point(563, 229);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(88, 32);
             this.btnAdd.TabIndex = 2;
@@ -103,9 +111,9 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(532, 229);
+            this.btnDelete.Location = new System.Drawing.Point(657, 229);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(88, 32);
             this.btnDelete.TabIndex = 3;
@@ -116,7 +124,8 @@
             // 
             // lnkCodePlexSHFB
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(207, 396);
+            this.lnkCodePlexSHFB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(269, 396);
             this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
             this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
             this.lnkCodePlexSHFB.TabIndex = 8;
@@ -152,7 +161,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(632, 435);
+            this.ClientSize = new System.Drawing.Size(757, 435);
             this.Controls.Add(this.lnkCodePlexSHFB);
             this.Controls.Add(this.lblExpression);
             this.Controls.Add(this.label1);
@@ -162,11 +171,11 @@
             this.Controls.Add(this.tvExpressions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "XPathReflectionFileFilterConfigDlg";
             this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configure XPath Reflection File Filter Plug-In";
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();

@@ -6,9 +6,11 @@
 // Change History
 // 01/19/2013 - EFW - Moved the class into the Commands namespace, made it public, renamed it from CopyCommand to
 // CopyFromIndexCommand and derived it from the new CopyCommand base class.
+// 10/07/2014 - EFW - Added code to check for and use broken EII member IDs if the correct one is not found.
 
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -22,6 +24,15 @@ namespace Microsoft.Ddue.Tools.Commands
     /// </summary>
     public class CopyFromIndexCommand : CopyCommand
     {
+        #region Private data members
+        //=====================================================================
+
+        // These are used to match and try broken EII member IDs
+        private static Regex reDictionaryEII = new Regex(@"#I(\w*Dictionary){.*?}#");
+        private static Regex reGenericEII = new Regex(@"#I(\w*){.*?}#");
+
+        #endregion
+
         #region Properties
         //=====================================================================
 
@@ -104,8 +115,29 @@ namespace Microsoft.Ddue.Tools.Commands
 
             XPathNavigator data = this.SourceIndex[keyValue];
 
-            if(data == null && this.IgnoreCase)
-                data = this.SourceIndex[keyValue.ToLowerInvariant()];
+            if(data == null && !String.IsNullOrWhiteSpace(keyValue))
+            {
+                if(this.IgnoreCase)
+                    data = this.SourceIndex[keyValue.ToLowerInvariant()];
+
+                if(data == null)
+                {
+                    // For certain inherited explicitly implemented interface members, Microsoft is using
+                    // incorrect member IDs in the XML comments files and on the content service.  If the
+                    // failed member ID looks like one of them, try using the broken ID for the look up.
+                    string brokenId = keyValue;
+
+                    if(reDictionaryEII.IsMatch(brokenId))
+                        brokenId = reGenericEII.Replace(brokenId, "#I$1{TKey@TValue}#");
+                    else
+                        if(reGenericEII.IsMatch(brokenId))
+                            brokenId = reGenericEII.Replace(brokenId, "#I$1{T}#");
+
+                    // Don't bother if they are the same
+                    if(brokenId != keyValue)
+                        data = this.SourceIndex[brokenId];
+                }
+            }
 
             // Notify if no entry
             if(data == null)

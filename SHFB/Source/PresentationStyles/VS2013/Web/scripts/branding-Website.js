@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : branding-Website.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/19/2014
+// Updated : 10/09/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 //           Portions Copyright 2014 Sam Harwell, All rights reserved
 //
@@ -447,7 +447,7 @@ function PerformSearch()
 
                     if(wordCount == 0)
                         wordNotFound = true;
-                },
+                }
             });
         }
     }

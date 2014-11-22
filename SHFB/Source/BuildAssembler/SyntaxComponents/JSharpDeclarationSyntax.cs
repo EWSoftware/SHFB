@@ -12,6 +12,7 @@
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
+// 11/20/2014 - EFW - Added support for writing out method parameter attributes
 
 using System;
 using System.Globalization;
@@ -485,10 +486,12 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteLine();
         }
 
-        private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer)
+        // !EFW - Added parameterAttributes to suppress line feeds for method parameter attributes
+        private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer, bool parameterAttributes = false)
         {
             // Handle interop attributes first as they are output in metadata
-            WriteInteropAttributes(reflection, writer);
+            if(!parameterAttributes)
+                WriteInteropAttributes(reflection, writer);
 
             // Add the standard attributes
             XPathNodeIterator attributes = (XPathNodeIterator)reflection.Evaluate(apiAttributesExpression);
@@ -497,8 +500,9 @@ namespace Microsoft.Ddue.Tools
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore FixedBufferAttribute
-                if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute")
+                // !EFW - Ignore FixedBufferAttribute and ParamArrayAttribute
+                if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
+                  type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
                     continue;
 
                 writer.WriteString("/** @attribute ");
@@ -540,8 +544,13 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 writer.WriteString(" */");
-                writer.WriteLine();
+
+                if(!parameterAttributes)
+                    writer.WriteLine();
             }
+
+            if(parameterAttributes && attributes.Count != 0)
+                writer.WriteString(" ");
         }
 
         // EFW - Added support for interop attributes stored in metadata
@@ -898,6 +907,9 @@ namespace Microsoft.Ddue.Tools
 
                 if(isOut)
                     WriteAttribute("T:System.Runtime.InteropServices.OutAttribute", writer, false);
+
+                // !EFW - Write out parameter attributes
+                WriteAttributes(parameter, writer, true);
 
                 if(isRef)
                     writer.WriteString("/** @ref */");

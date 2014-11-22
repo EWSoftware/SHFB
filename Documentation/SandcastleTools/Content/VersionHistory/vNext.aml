@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c03788c0-96ec-47aa-bfd2-935a2ea6ac70" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.11.22.0." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<para>The first two changes affect all users.  The remaining changes will only affect those that have
+created custom build components, syntax generators, plug-ins, and presentation styles.  Carefully read the
+following items as you will need to update your components based on these changes.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Moved the colorizer files from the Sandcastle Builder GUI project to the Presentation Styles
+project where they are a better fit.  This changes the location of the colorizer files and places them under the
+<localUri>PresentationStyles\</localUri> folder.  If you have added the Code Block Component to your project, you
+will need to remove it and re-add it or update the configuration to add the "PresentationStyles\" folder ahead of
+the "Colorizer\" folder in the configuration file location options.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to the Resolve Reference Links Component and Copy From Index Command to check
+for and use broken explicitly implemented interface (EII) member IDs if the correct one is not found.  This works
+around a bug in the base framework XML comments file member IDs and the MSDN content service IDs for certain
+inherited EII members.</para>
+
+						<alert class="important">
+							<para>You will need to delete the content ID cache in order for this change to have any effect.
+See the <legacyBold>User Configuration Settings and Cache Files</legacyBold> section of the <legacyBold>Special
+Folder Locations</legacyBold> topic in the Sandcastle Help File Builder help file for details.</para>
+						</alert>
+					</listItem>
+					
+					<listItem>
+						<para>Moved the syntax generator resource items to the syntax generator BuildAssembler project.  This
+allows the syntax generators to be more self-contained and allows them to be created without requiring changes to
+the presentation styles.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added a new <codeInline>ResourceItemFileLocation</codeInline> property to the syntax generator
+factory interface. This is implemented to return the path to the resource item file associated with the syntax
+generator containing its localized text for titles, messages, metadata, etc. This allows creation of
+self-contained syntax generators that require no modifications to the presentation styles with which they will be
+used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Open XML, VS2010, and VS2013 presentation styles so that they are no longer
+dependent on the syntax generator items and IDs.</para>
+					</listItem>
+					
+				</list>
+			</content>
+		</section>
+
+		<section address="Help2Deprecated">
+			<title>MS Help 2 (HxS) Format Support Deprecated</title>
+			<content>
+				<para>Effective with this release, support for the MS Help 2 (HxS) help file format used in Visual Studio
+2008 and earlier has been deprecated.  It is just too cumbersome to maintain a separate environment with an older
+version of Visual Studio and its SDKs in which to test this obsolete help format.  Going forward, no further
+updates or fixes will be made to support it.  Any new presentation styles created in the future will not support
+it either.</para>
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes in This Release</title>
+			<content />
+
+			<sections>
+				<section address="Documentation">
+					<title>Documentation</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Added information to the XML Comments Guide about using <codeInline>NamespaceGroupDoc</codeInline>
+classes.</para>
+							</listItem>
+						</list>
+					</content>
+				</section>
+
+				<section address="BuildAssembler">
+					<title>BuildAssembler and Build Components</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Fixed a bug in the Syntax Component so that it does not crash if a syntax generator does
+not specify any alternate IDs.</para>
+							</listItem>
+
+							<listItem>
+								<para>Updated the syntax generators to write out method parameter attributes.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+
+				<section address="MRefBuilder">
+					<title>MRefBuilder</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Fixed MRefBuilder so that it properly matches types and methods with generic parameters
+under certain specific conditions.  Thanks to Jared Moore for reporting the issue with a test case.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed MRefBuilder so that it filters out duplicate member IDs from derived interfaces that
+re-implement base members using the "new" keyword.  Thanks to rpcode for reporting the issue with a test case.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added a new namer component for Windows Store and Windows Phone frameworks that renames
+certain core types that the compiler changes when building assemblies.  This ensures that the reflection data
+matches the XML comments which contain the expected type names.  The new namer component is used automatically
+when generating reflection data using a Windows Store or Windows Phone framework version.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added code to write method parameter attribute elements to the reflection information file.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added code to write out the value of literal (constant) fields to the reflection
+information file.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+
+				<section address="PresentationStyles">
+					<title>Presentation Styles</title>
+					<content>
+						<list class="bullet">
+							<listItem>
+								<para>Fixed the copyright replacement tags in the SHFB content files so that they use the HTML
+encoded text.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed an invalid end element in the German and Russian language versions of the
+<codeInline>enumerationOverviewXamlSyntax</codeInline> element.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed the VS2010 and VS2013 presentation styles so that code blocks with line numbers
+and/or collapsible sections are copied to the clipboard without those elements.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed the code contracts templates so that the inherited property member IDs in reference
+links are rendered correctly.</para>
+							</listItem>
+
+							<listItem>
+								<para>Removed an extraneous comma in the VS2013 <localUri>branding-Website.js</localUri> file
+which was causing problems in Internet Explorer (reported by baerbradford).</para>
+							</listItem>
+
+							<listItem>
+								<para>Merged a few style changes into the VS2013 website style sheet from Sam Harwell related to
+the resize/drag divider.</para>
+							</listItem>
+
+							<listItem>
+								<para>Added support for including conceptual links in <codeInline>overloads</codeInline> elements.</para>
+							</listItem>
+
+						</list>
+					</content>
+				</section>
+			</sections>
+
+		</section>
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

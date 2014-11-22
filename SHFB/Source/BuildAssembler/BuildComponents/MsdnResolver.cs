@@ -15,13 +15,15 @@
 // 12/31/2012 - EFW - Implemented IDisposable
 // 05/23/2014 - EFW - Added code to disable lookups if the service fails for reasons other than not finding the
 // content ID.  The error will be reported in the log by the caller.
+// 10/07/2014 - EFW - Added code to check for and use broken EII member IDs if the correct one is not found.
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Services.Protocols;
-using System.Linq;
+
 using Microsoft.Ddue.Tools.MtpsContentService;
 
 namespace Microsoft.Ddue.Tools
@@ -38,6 +40,11 @@ namespace Microsoft.Ddue.Tools
         private ContentService msdnService;
         private IDictionary<string, string> cachedMsdnIds;
         private bool isCacheShared;
+
+        // These are used to match and try broken EII member IDs
+        private static Regex reDictionaryEII = new Regex(@"#I(\w*Dictionary){.*?}#");
+        private static Regex reGenericEII = new Regex(@"#I(\w*){.*?}#");
+
         #endregion
 
         #region Properties
@@ -168,6 +175,26 @@ namespace Microsoft.Ddue.Tools
                     {
                         // Lookup failed (ID not found).  Cache the result though since it isn't there.
                         success = true;
+
+                        // For certain inherited explicitly implemented interface members, Microsoft is using
+                        // incorrect member IDs in the XML comments files and on the content service.  If the
+                        // failed member ID looks like one of them, try using the broken ID for the look up.
+                        string brokenId = id;
+
+                        if(reDictionaryEII.IsMatch(brokenId))
+                            brokenId = reGenericEII.Replace(brokenId, "#I$1{TKey@TValue}#");
+                        else
+                            if(reGenericEII.IsMatch(brokenId))
+                                brokenId = reGenericEII.Replace(brokenId, "#I$1{T}#");
+
+                        // Don't bother if they are the same
+                        if(brokenId != id)
+                        {
+                            endPoint = this.GetMsdnUrl(brokenId);
+
+                            if(endPoint != null)
+                                endPoint = endPoint.Substring(endPoint.LastIndexOf('/') + 1);
+                        }
                     }
                     else
                     {

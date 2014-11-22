@@ -476,46 +476,46 @@
 	     <IDSymbol name="SHFBToolbar" value="0x0016" />
 	     <IDSymbol name="ViewHelpMenuController" value="0x0018" />
 	  </GuidSymbol>
-	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{88ccdc65-c14f-4132-a440-616c6b073179}">
+	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{f650fbe9-4790-43f2-9189-04e849eb10d1}">
 				<IDSymbol name="ViewHelpFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{9ee258bd-d00b-4ebf-9c15-278b68818c8b}">
+	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{1dfab9b7-44d7-4b87-b770-76cb35da5c60}">
 				<IDSymbol name="HtmlHelp.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Help2.bmpGuid" value="{175b92ad-23c5-4d2a-b2d4-6649a444b1b1}">
+	     <GuidSymbol name="Help2.bmpGuid" value="{d07f15cc-6675-459b-99b2-00a1501fa64e}">
 				<IDSymbol name="Help2.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{1fc27516-4998-4ffc-81f0-5923298e3c9a}">
+	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{49ba3c6d-c32a-4bfb-b2aa-340e740b2b13}">
 				<IDSymbol name="MSHelpViewer.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{5b3858ba-c36e-45b6-9269-c1c86e733b08}">
+	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{cce9f9f3-9b58-4b17-a1b5-f5e4f67c2a0e}">
 				<IDSymbol name="HelpLibManager.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{0e1df3ec-265e-46b7-9ea4-49936811e9ae}">
+	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{c82101b5-c75e-4ddc-a86e-370998cec963}">
 				<IDSymbol name="AspNetWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{9d0a053d-a2ed-4c96-8887-463dd2f4e653}">
+	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{fd023183-ebe9-4e78-b9f1-c0c7893cc962}">
 				<IDSymbol name="HtmlWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="FAQ.bmpGuid" value="{fadfa626-45cf-4440-a130-d894b2b43556}">
+	     <GuidSymbol name="FAQ.bmpGuid" value="{7ae82905-ebaa-4e88-baf4-9f266ac76f21}">
 				<IDSymbol name="FAQ.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="LogFile.bmpGuid" value="{335afdff-ab3d-401f-9fe4-fb00149413ff}">
+	     <GuidSymbol name="LogFile.bmpGuid" value="{c42e96de-b9b6-48ed-a444-d9a615dace73}">
 				<IDSymbol name="LogFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="EntityReferences.bmpGuid" value="{9ff6808c-ace4-4254-b378-80d296939aa7}">
+	     <GuidSymbol name="EntityReferences.bmpGuid" value="{c4dde224-9c58-457b-9204-be8fd8ffdec7}">
 				<IDSymbol name="EntityReferences.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="TopicPreview.bmpGuid" value="{cad1bcf5-ddcd-416b-82df-05a5c0e412f5}">
+	     <GuidSymbol name="TopicPreview.bmpGuid" value="{9030b57c-bd2e-4470-b84c-3d90edc2d0b1}">
 				<IDSymbol name="TopicPreview.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HelpContentManager.bmpGuid" value="{7a2c4115-a1e4-4034-b344-4c3aa9025399}">
+	     <GuidSymbol name="HelpContentManager.bmpGuid" value="{5140d895-4db7-4712-a5ce-64f0b4346890}">
 				<IDSymbol name="HelpContentManager.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlEncode.bmpGuid" value="{3006c4b4-8513-4ca0-b068-7f46bbfd1b3e}">
+	     <GuidSymbol name="HtmlEncode.bmpGuid" value="{8f5a8152-c414-40fd-9d18-b37594fbead7}">
 				<IDSymbol name="HtmlEncode.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Docx.bmpGuid" value="{20b457ce-898e-45ab-b271-1d898ab0992f}">
+	     <GuidSymbol name="Docx.bmpGuid" value="{e0cd0339-2d95-45a2-a5c5-9198cfcccee7}">
 				<IDSymbol name="Docx.bmpId" value="1" />
 			</GuidSymbol>
 	</Symbols>

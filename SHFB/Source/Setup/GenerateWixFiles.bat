@@ -10,5 +10,7 @@ DEL ..\..\Deploy\HelpLibraryManagerLauncher.xml
 DEL ..\..\Deploy\NHunSpell.xml
 DEL ..\..\Deploy\SandcastleBuilderGUI.xml
 DEL ..\..\Deploy\SandcastleHtmlExtract.xml
+DEL /S /Q ..\..\Deploy\*CodeAnalysis*
+DEL ..\..\Deploy\reflection.org
 
 "%WIX%\bin\heat.exe" dir ..\..\Deploy\ -out Temp\DeploymentFiles.wxs -cg Data -gg -sfrag -template fragment -dr INSTALLDIR -var var.RootFolder -indent 2 -sreg -srd

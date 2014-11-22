@@ -145,10 +145,11 @@
         <HelpKeyword index="K" term="Getting started, websites and web projects" />
       </HelpKeywords>
     </Topic>
-    <Topic id="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" visible="True" title="XCOPY/Build Server Deployment">
+    <Topic id="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" visible="True" title="XCOPY/NuGet Build Server Deployment">
       <HelpKeywords>
         <HelpKeyword index="K" term="deployment, xcopy" />
         <HelpKeyword index="K" term="deployment, build server" />
+        <HelpKeyword index="K" term="deployment, NuGet" />
       </HelpKeywords>
     </Topic>
     <Topic id="8ffc0d37-0215-4609-b6f8-dba53a6c5063" visible="True" title="Building Projects Outside the GUI">
@@ -224,7 +225,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" isExpanded="true" title="Project Properties Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="property categories, Overview" />
     </HelpKeywords>
@@ -340,15 +341,16 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Summaries Category Properties">
+    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" isExpanded="true" title="Summaries Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, NamespaceSummaries" />
         <HelpKeyword index="K" term="properties, ProjectSummary" />
         <HelpKeyword index="K" term="property categories, Summaries" />
       </HelpKeywords>
-      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" title="Using NamespaceDoc Classes">
+      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" isSelected="true" title="Using NamespaceDoc and NamespaceGroupDoc Classes">
         <HelpKeywords>
           <HelpKeyword index="K" term="NamespaceDoc classes" />
+          <HelpKeyword index="K" term="NamespaceGroupDoc classes" />
         </HelpKeywords>
       </Topic>
       <Topic id="52aa172a-a310-4f75-b20f-7e2c7d870c65" visible="True" title="Sharing Project Summary and Namespace Comments">
@@ -602,9 +604,19 @@
         <HelpKeyword index="K" term="HierarchicalTocPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
+    <Topic id="1fcdf9d3-06fb-4a7b-a584-f55b6ea5baae" visible="True" title="IntelliSense Only Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, IntelliSense only plug-in" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="0acf46fe-e7c3-4f3f-a4ca-df86f3630286" visible="True" title="Lightweight Website Style Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, lightweight website style plug-in" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="17d977a6-e3dc-4ef4-9bbf-718ef4823854" visible="True" title="Member ID Fix-Ups Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, member ID fix-ups plug-in" />
       </HelpKeywords>
     </Topic>
     <Topic id="796d6bbe-5130-4c87-8790-5cceb66219c7" visible="True" title="Output Deployment Plug-In">
@@ -1375,12 +1387,17 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="7238a41e-1375-4038-8bf1-d699f4dae668" visible="True" title="Version 2014.11.22.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2014.11.22.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="3405263f-a9eb-4ce4-b90f-87c31ab76d85" visible="True" title="Version 2014.5.31.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2014.5.31.0" />
       </HelpKeywords>
     </Topic>
-    <Topic id="81b04099-bcd7-4caa-8a21-13624d9e290d" visible="True" isSelected="true" title="Version 2014.4.22.0">
+    <Topic id="81b04099-bcd7-4caa-8a21-13624d9e290d" visible="True" title="Version 2014.4.22.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2014.4.22.0" />
       </HelpKeywords>

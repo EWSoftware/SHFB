@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2014
+// Updated : 09/05/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -201,6 +201,11 @@ namespace SandcastleBuilder.PlugIns
 
                 using(SandcastleProject tempProject = new SandcastleProject(vs.HelpFileProject, true))
                 {
+                    // Set the configuration and platform here so that they are evaluated property in project
+                    // properties when the project is loaded below.
+                    tempProject.Configuration = builder.CurrentProject.Configuration;
+                    tempProject.Platform = builder.CurrentProject.Platform;
+
                     // This looks odd but is necessary.  If we are in Visual Studio, the above constructor may
                     // return an instance that uses an underlying MSBuild project loaded in Visual Studio.
                     // Since the BuildProject() method modifies the project, those changes are propagated to the
@@ -286,6 +291,8 @@ namespace SandcastleBuilder.PlugIns
             // Add items for each framework label
             foreach(string label in uniqueLabels)
             {
+                // We need to use a hash value as this ends up as an XML attribute name in the reflection
+                // data file and this ensures it only contains valid characters.
                 hashValue = label.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
 
                 // Label item
@@ -314,19 +321,21 @@ namespace SandcastleBuilder.PlugIns
                 root.AppendChild(node);
             }
 
-            // Find all unique versions and write out a label for each one
+            // Write out a label for each framework and version
             foreach(VersionSettings vs in allVersions)
-                if(!uniqueVersions.Contains(vs.Version))
-                {
-                    uniqueVersions.Add(vs.Version);
+            {
+                node = sharedContent.CreateElement("item");
+                attr = sharedContent.CreateAttribute("id");
 
-                    node = sharedContent.CreateElement("item");
-                    attr = sharedContent.CreateAttribute("id");
-                    attr.Value = "SHFB_VBPI_" + vs.Version.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
-                    node.Attributes.Append(attr);
-                    node.InnerText = vs.Version;
-                    root.AppendChild(node);
-                }
+                // We need to use a hash value as this ends up as an XML attribute name in the reflection
+                // data file and this ensures it only contains valid characters.
+                attr.Value = "SHFB_VBPI_" + (vs.FrameworkLabel + " " + vs.Version).GetHashCode().ToString("X",
+                    CultureInfo.InvariantCulture);
+
+                node.Attributes.Append(attr);
+                node.InnerText = vs.Version;
+                root.AppendChild(node);
+            }
 
             sharedContent.Save(sharedContentFilename);
         }
@@ -352,8 +361,6 @@ namespace SandcastleBuilder.PlugIns
                 project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
-                project.Configuration = builder.CurrentProject.Configuration;
-                project.Platform = builder.CurrentProject.Platform;
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
                 string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir").EvaluatedValue;
@@ -415,8 +422,9 @@ namespace SandcastleBuilder.PlugIns
                 foreach(VersionSettings vs in allVersions)
                     if(vs.FrameworkLabel == label)
                     {
-                        config.AppendFormat("    <version name=\"SHFB_VBPI_{0:X}\" file=\"{1:X}.ver\" />\r\n",
-                            vs.Version.GetHashCode(), vs.GetHashCode());
+                        config.AppendFormat("    <version name=\"SHFB_VBPI_{0}\" file=\"{1:X}.ver\" />\r\n",
+                            (vs.FrameworkLabel + " " + vs.Version).GetHashCode().ToString("X",
+                            CultureInfo.InvariantCulture), vs.GetHashCode());
 
                         File.Copy(vs.ReflectionFilename, Path.Combine(builder.WorkingFolder,
                             String.Format(CultureInfo.InvariantCulture, "{0:X}.ver", vs.GetHashCode())), true);

@@ -192,6 +192,12 @@
     <Compile Include="MSBuild\BuildOpenXmlFile.cs" />
     <Compile Include="MSBuild\MSBuildProject.cs" />
     <Compile Include="MSBuild\NumberingStyle.cs" />
+    <Compile Include="MSBuild\SelectProjectsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MSBuild\SelectProjectsDlg.Designer.cs">
+      <DependentUpon>SelectProjectsDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="MSHelpAttr.cs" />
     <Compile Include="MSHelpAttrCollection.cs" />
     <Compile Include="ApiFilter.cs" />
@@ -381,6 +387,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HelpLibraryManager\LaunchMSHelpViewerDlg.resx">
       <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MSBuild\SelectProjectsDlg.resx">
+      <DependentUpon>SelectProjectsDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>

@@ -27,8 +27,8 @@ Namespace $safeprojectname$
         '=====================================================================
 
         ' TODO: Set the unique style ID name.
-        ' NOTE: If you change LanguageName, rename the SyntaxContent\TestLanguage.xml file to the same name
-        '       and update the IDs of the content items with the new name.
+        ' NOTE: If you change LanguageName, rename the SyntaxContent\$safeprojectname$.xml file to the same name
+        '       and update the IDs of the content items in it with the new name.
         Private Const LanguageName As String = "$safeprojectname$"
         Private Const StyleIdName As String = "xyz"
 

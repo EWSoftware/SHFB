@@ -40,7 +40,7 @@ namespace SandcastleBuilder.PlugIns
     [HelpFileBuilderPlugInExport("XPath Reflection File Filter", IsConfigurable = true, RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nBased on code submitted by " +
       "Eyal Post",
-      Description = "This plug in is used to remove unwanted items from the reflection information file using " +
+      Description = "This plug-in is used to remove unwanted items from the reflection information file using " +
       "XPath queries.")]
     public sealed class XPathReflectionFileFilterPlugIn : IPlugIn
     {

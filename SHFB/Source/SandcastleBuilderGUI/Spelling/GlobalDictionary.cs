@@ -177,8 +177,7 @@ namespace SandcastleBuilder.Gui.Spelling
                 // the given culture.
                 if(!globalDictionaries.ContainsKey(culture.Name))
                 {
-                    string dllPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                        "Spelling");
+                    string dllPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
                     if(spellEngine == null)
                     {
@@ -194,7 +193,7 @@ namespace SandcastleBuilder.Gui.Spelling
                     // least clue us in that it didn't find the language-specific dictionary when the suggestions
                     // are in English.
                     if(!File.Exists(dictionaryFile))
-                        dictionaryFile = Path.Combine(dllPath, "en_US.aff");
+                        dictionaryFile = Path.Combine(dllPath, "Spelling", "en_US.aff");
 
                     LanguageConfig lc = new LanguageConfig();
                     lc.LanguageCode = culture.Name;

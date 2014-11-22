@@ -1,4 +1,15 @@
-﻿namespace TestDoc.HierarchicalToc.WoodDreams.Report.Excel
+﻿namespace TestDoc.HierarchicalToc
+{
+    /// <summary>
+    /// Namespace group comments from a <c>NamespaceGroupDoc</c> class in the source code.
+    /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceGroupDoc
+    {
+    }
+}
+
+namespace TestDoc.HierarchicalToc.WoodDreams.Report.Excel
 {
     /// <summary>
     /// Excel class

@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7238a41e-1375-4038-8bf1-d699f4dae668" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.11.22.0." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<para>The first two changes affect all users.  The remaining changes will only affect those that have
+created custom build components, syntax generators, plug-ins, and presentation styles.  Carefully read the
+following items as you will need to update your components based on these changes.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Moved the colorizer files from the Sandcastle Builder GUI project to the Presentation Styles
+project where they are a better fit.  This changes the location of the colorizer files and places them under the
+<localUri>PresentationStyles\</localUri> folder.  If you have added the Code Block Component to your project, you
+will need to remove it and re-add it or update the configuration to add the "PresentationStyles\" folder ahead of
+the "Colorizer\" folder in the configuration file location options.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to the Resolve Reference Links Component and Copy From Index Command to check
+for and use broken explicitly implemented interface (EII) member IDs if the correct one is not found.  This works
+around a bug in the base framework XML comments file member IDs and the MSDN content service IDs for certain
+inherited EII members.</para>
+
+						<alert class="important">
+							<para>You will need to delete the content ID cache in order for this change to have any effect.
+See the <legacyBold>User Configuration Settings and Cache Files</legacyBold> section of the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildSettings" /> topic for details.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>Moved the syntax generator resource items to the syntax generator BuildAssembler project.  This
+allows the syntax generators to be more self-contained and allows them to be created without requiring changes to
+the presentation styles.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added a new <codeInline>ResourceItemFileLocation</codeInline> property to the syntax generator
+factory interface. This is implemented to return the path to the resource item file associated with the syntax
+generator containing its localized text for titles, messages, metadata, etc. This allows creation of
+self-contained syntax generators that require no modifications to the presentation styles with which they will be
+used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Open XML, VS2010, and VS2013 presentation styles so that they are no longer
+dependent on the syntax generator items and IDs.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="Help2Deprecated">
+			<title>MS Help 2 (HxS) Format Support Deprecated</title>
+			<content>
+				<para>Effective with this release, support for the MS Help 2 (HxS) help file format used in Visual Studio
+2008 and earlier has been deprecated.  It is just too cumbersome to maintain a separate environment with an older
+version of Visual Studio and its SDKs in which to test this obsolete help format.  Going forward, no further
+updates or fixes will be made to support it.  Any new presentation styles created in the future will not support
+it either.</para>
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes Made in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>A NuGet package is now available (<legacyBold>EWSoftware.SHFB</legacyBold>) to allow for
+<link xlink:href="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2">build server deployments</link> and local project copies
+of the tools that can be checked into source control.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Version Builder plug-in so that it correctly generates the version IDs used in the
+configuration file and the label resource items.  It is now possible to have "prior" projects that use different
+framework labels with a version number that matches the "current" project.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Additional Reference Links and Version Builder plug-ins so that they correctly apply
+the <codeInline>Configuration</codeInline> and <codeInline>Platform</codeInline> properties to the sub-projects
+to ensure they are evaluated properly in project properties when the sub-projects are loaded.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the VSPackage IntelliSense provider by adding "langword" as a prefix to the language
+keyword entries to prevent an odd crash in VS 2013.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from Sam Harwell to enable the Visual Studio C# documentation completion
+provider to work properly if the Roslyn package is installed which uses a different implementation of
+IntelliSense.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Lightweight TOC plug-in so that it adds some script to the default topic to expand
+the root node when the first node has children. This prevents it from looking like only one namespace was
+documented because the root node is collapsed.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Lightweight TOC plug-in so that it transforms the help title property value to ensure
+substitution tags in the value are replaced.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the DBCS Fix plug-in so that it copies the Help 1 content to the output folder for
+inclusion in the localized copy of the content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the XPath Reflection File Filter plug-in so that it runs before transforming the
+reflection file content and generating the BuildAssembler manifest file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Applied a fix from Kalyan00 to the Sandcastle HTML Extract tool so that it correctly saves
+files in the localized and original locations with the proper encodings.</para>
+					</listItem>
+
+					<listItem>
+						<para>Set the maximum degree of parallelism in the Sandcastle HTML Extract tool to 20 threads per
+processor.  This is configurable but is not currently exposed.  It can be adjusted by adding a
+<codeInline>MaxDegreeOfParallelism</codeInline> property to the HTML extract project template and passing it to
+the task if needed.</para>
+					</listItem>
+
+					<listItem>
+						<para>As suggested by Kaylan00, the DBCS Fix plug-in has been changed so that the path to the
+<application>SBAppLocale</application> tool is optional.  If not specified, the plug-in will issue a warning but
+will run.  In such cases, only the localization fixes applied by the Sandcastle HTML Extract tool will be in
+effect.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for <link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d">NamespaceGroupDoc</link>
+classes in XML comments files to add documentation to namespace group topics.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <link xlink:href="17d977a6-e3dc-4ef4-9bbf-718ef4823854" /> to allow fixing up member
+IDs in XML comments files that do not match the reflection data due to quirks in the various compilers.  This can
+be used in place of or in conjunction with the C++ Fix-Up project property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <link xlink:href="1fcdf9d3-06fb-4a7b-a584-f55b6ea5baae" /> that can be used to
+suppress the help file build steps and produce only the IntelliSense XML comments files when used in conjunction
+with the <link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" />.  This is useful for supporting projects that
+need IntelliSense XML comments files but do not contribute content to the help file directly (i.e. those in the
+Version Builder plug-in configuration).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for installing the VSPackage in Visual Studio 2015 Preview and added support for
+the .NET Framework versions 4.5.2 and 4.5.3.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

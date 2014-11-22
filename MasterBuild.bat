@@ -37,7 +37,11 @@ CD ..\SHFB\Source
 
 IF ERRORLEVEL 1 GOTO End
 
-CD ..\..
+CD ..\..\NuGet
+
+BuildNuGet.bat
+
+CD ..
 
 GOTO End
 

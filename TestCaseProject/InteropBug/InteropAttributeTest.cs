@@ -35,7 +35,7 @@ namespace TestDoc.InteropAttributesBug
         /// This begins the enumeration of the Internet cache
         /// </summary>
         /// <param name="lpszUrlSearchPattern">URL search pattern</param>
-        /// <param name="lpFirstCacheEntryInfo">First cache entyr info</param>
+        /// <param name="lpFirstCacheEntryInfo">First cache entry info</param>
         /// <param name="lpdwFirstCacheEntryInfoBufferSize">First cache entry info buffer size</param>
         /// <returns>IntPtr</returns>
         [DllImport("wininet", SetLastError = true, CharSet = CharSet.Auto,

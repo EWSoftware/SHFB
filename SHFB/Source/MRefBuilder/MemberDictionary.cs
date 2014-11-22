@@ -8,6 +8,7 @@
 // template parameters by name to match members with generic parameters correctly.
 // 11/25/2013 - EFW - Cleaned up the code and removed unused members.  Added support for the visibility options
 // in the API filter.
+// 11/18/2014 - EFW - Added a hack to work around a unique case using "new" to re-implement interface methods
 
 using System;
 using System.Collections;
@@ -55,19 +56,58 @@ namespace Microsoft.Ddue.Tools
             // For interfaces, list members of inherited interfaces
             if(type is Interface && filter.IncludeInheritedMembers)
             {
+                var derivedMembers = new HashSet<string>();
+                string nameAndParams;
+                int pos;
+
+                // !EFW - This is a hack to filter out duplicate members by name and parameters for cases where
+                // an interface member in the derived type uses the "new" keyword to re-implement a member using
+                // the same name as in the base type.  In such cases, the member is not truly hidden as it is in
+                // a class since it still needs to be explicitly implemented when derived from but we don't want
+                // to see it duplicated below as part of the inherited members.
+                foreach(var m in this)
+                {
+                    pos = m.FullName.LastIndexOf('(');
+
+                    if(pos != -1)
+                        pos = m.FullName.LastIndexOf('.', pos, pos);
+                    else
+                        pos = m.FullName.LastIndexOf('.');
+
+                    if(pos != -1)
+                        derivedMembers.Add(m.FullName.Substring(pos));
+                    else
+                        derivedMembers.Add(m.FullName);
+                }
+
                 foreach(var contract in type.Interfaces)
                 {
                     // Members of hidden interfaces don't count
                     if(filter.IsExposedType(contract))
                     {
-                        // Otherwise, add inherited interface members except those rejected by the filter.
-                        // This is necessary to remove accessor methods.
+                        // Otherwise, add inherited interface members except those rejected by the filters.  This
+                        // is necessary to remove accessor methods.
                         foreach(var contractMember in contract.Members)
+                        {
+                            pos = contractMember.FullName.LastIndexOf('(');
+
+                            if(pos != -1)
+                                pos = contractMember.FullName.LastIndexOf('.', pos, pos);
+                            else
+                                pos = contractMember.FullName.LastIndexOf('.');
+
+                            if(pos != -1)
+                                nameAndParams = contractMember.FullName.Substring(pos);
+                            else
+                                nameAndParams = contractMember.FullName;
+
                             if(!filter.IsExcludedFrameworkMember(type, contractMember) &&
-                              filter.IsExposedMember(contractMember))
+                              filter.IsExposedMember(contractMember) && !derivedMembers.Contains(nameAndParams))
                             {
                                 this.AddMember(contractMember);
+                                derivedMembers.Add(nameAndParams);
                             }
+                        }
                     }
                 }
 

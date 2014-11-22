@@ -236,7 +236,9 @@
     <None Include="Content\GettingStarted\SpellCheckerOptions.aml" />
     <None Include="Content\GettingStarted\XCopyDeployment.aml" />
     <None Include="Content\OpenXmlFormat.aml" />
+    <None Include="Content\PlugIns\IntelliSenseOnlyPlugIn.aml" />
     <None Include="Content\PlugIns\LightweightWebsiteStylePlugIn.aml" />
+    <None Include="Content\PlugIns\MemberIdFixUpsPlugIn.aml" />
     <None Include="Content\PropertiesWindow\BuildEvents.aml" />
     <None Include="Content\PropertiesWindow\ComponentConfigs.aml" />
     <None Include="Content\PropertiesWindow\PlugInConfigs.aml" />
@@ -264,6 +266,7 @@
     <None Include="Content\VersionHistory\v2014.2.15.0.aml" />
     <None Include="Content\VersionHistory\v2014.4.22.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
+    <None Include="Content\VersionHistory\vNext.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\ProjectTemplates.aml" />

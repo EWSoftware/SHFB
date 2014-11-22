@@ -103,8 +103,8 @@ namespace SandcastleBuilder.Package.IntelliSense
             // items that expand to something other that what the user wrote (e.g. "true" expands to
             // <see langword="true"/> as opposed to <true/>).
             //
-            // The descriptions for custom tags is copied from the the Sandcastle XML Comments Guide.
-            // Obsolete custom tags are not included.
+            // The descriptions for custom tags is copied from the Sandcastle XML Comments Guide.  Obsolete
+            // custom tags are not included.
             var iconSource = _provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphKeyword,
                 StandardGlyphItem.GlyphItemPublic);
             var macroIconSource = _provider.GlyphService.GetGlyph(StandardGlyphGroup.GlyphGroupMacro,
@@ -171,25 +171,28 @@ namespace SandcastleBuilder.Package.IntelliSense
 
                 // Language-specific keyword extensions.  The C# provider allows these at any level but
                 // Sandcastle only uses them if they are inline.
+                //
+                // NOTE: The display text on these MUST be prefixed with "langword" or it will cause VS2013 to
+                // crash whenever "<see" is typed into an XML comment.  Adding the prefix works around the issue.
                 completions.AddRange(new[]
                 {
-                    new Completion("null", prefix + "see langword=\"null\"/>", "Inserts the language-specific " +
+                    new Completion("langword null", prefix + "see langword=\"null\"/>", "Inserts the language-specific " +
                         "keyword 'null'.", macroIconSource, ""),
-                    new Completion("static", prefix + "see langword=\"static\"/>", "Inserts the " +
+                    new Completion("langword static", prefix + "see langword=\"static\"/>", "Inserts the " +
                         "language-specific keyword 'static'.", macroIconSource, ""),
-                    new Completion("virtual", prefix + "see langword=\"virtual\"/>", "Inserts the " +
+                    new Completion("langword virtual", prefix + "see langword=\"virtual\"/>", "Inserts the " +
                         "language-specific keyword 'virtual'.", macroIconSource, ""),
-                    new Completion("true", prefix + "see langword=\"true\"/>", "Inserts the language-specific " +
+                    new Completion("langword true", prefix + "see langword=\"true\"/>", "Inserts the language-specific " +
                         "keyword 'true'.", macroIconSource, ""),
-                    new Completion("false", prefix + "see langword=\"false\"/>", "Inserts the " +
+                    new Completion("langword false", prefix + "see langword=\"false\"/>", "Inserts the " +
                         "language-specific keyword 'false'.", macroIconSource, ""),
-                    new Completion("abstract", prefix + "see langword=\"abstract\"/>", "Inserts the " +
+                    new Completion("langword abstract", prefix + "see langword=\"abstract\"/>", "Inserts the " +
                         "language-specific keyword 'abstract'.", macroIconSource, ""),
-                    new Completion("async", prefix + "see langword=\"async\"/>", "Inserts the " +
+                    new Completion("langword async", prefix + "see langword=\"async\"/>", "Inserts the " +
                         "language-specific keyword 'async'.", macroIconSource, ""),
-                    new Completion("await", prefix + "see langword=\"await\"/>", "Inserts the " +
+                    new Completion("langword await", prefix + "see langword=\"await\"/>", "Inserts the " +
                         "language-specific keyword 'await'.", macroIconSource, ""),
-                    new Completion("async/await", prefix + "see langword=\"async/await\"/>", "Inserts the " +
+                    new Completion("langword async/await", prefix + "see langword=\"async/await\"/>", "Inserts the " +
                         "language-specific keyword 'async/await'.", macroIconSource, "")
                 });
             }

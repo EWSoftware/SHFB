@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 09/18/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the XML comments files
@@ -20,6 +20,7 @@
 // 1.6.0.5  03/02/2008  EFW  Added support for the <inheritdoc /> tag
 // 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
 // 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
+// -------  09/18/2014  EFW  Added support for NamespaceGroupDoc classes
 //===============================================================================================================
 
 using System;
@@ -106,17 +107,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This will search for all type member comments where the ID contains <b>NamespaceDoc</b> and convert
-        /// them to namespace entries for the containing namespace.
+        /// This will search for all type member comments where the ID contains <c>NamespaceDoc</c> or
+        /// <c>NamespaceGroupDoc</c> and convert them to namespace and namespace group entries for the containing
+        /// namespace.
         /// </summary>
         /// <remarks>The converted ID effectively converts the comments into comments for the class's containing
         /// namespace.</remarks>
         public void ReplaceNamespaceDocEntries()
         {
             foreach(XmlCommentsFile f in this)
+            {
                 foreach(XmlNode member in f.Members.SelectNodes(
                   "member[starts-with(@name, 'T:') and contains(@name, '.NamespaceDoc')]/@name"))
                     member.Value = "N:" + member.Value.Substring(2, member.Value.Length - 15);
+
+                foreach(XmlNode member in f.Members.SelectNodes(
+                  "member[starts-with(@name, 'T:') and contains(@name, '.NamespaceGroupDoc')]/@name"))
+                    member.Value = "G:" + member.Value.Substring(2, member.Value.Length - 20);
+            }
         }
 
         /// <summary>

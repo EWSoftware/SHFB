@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder
 // File    : TestClass.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2013
+// Updated : 11/20/2014
 // Compiler: Microsoft Visual C#
 //
 // This class is used to test small snippets of code with MRefBuilder to diagnose problems
@@ -20,55 +20,24 @@
 // For debugging:
 // /out:reflection.org C:\CP\TFS01\SHFB\SHFB\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
 
-using System;
+using System.Runtime.CompilerServices;
 
 namespace MyClassLibrary
 {
     /// <summary>
-    /// MyBaseClass
+    /// Test parameter attributes
     /// </summary>
-    /// <typeparam name="T">t</typeparam>
-    /// <typeparam name="U">u</typeparam>
-    public class MyBaseClass<T, U>
+    public class InteropAttributeTest
     {
         /// <summary>
-        /// Test constant
+        /// Test method parameter attributes
         /// </summary>
-        public const int TestConstant = 1234;
-
-        /// <summary>
-        /// Test field
-        /// </summary>
-        public int TestField = 1234;
-
-        /// <summary>
-        /// Blah
-        /// </summary>
-        /// <param name="t">t</param>
-        /// <param name="u">u</param>
-        public void Blah(T t, U u)
+        /// <param name="callerMemberName">Caller member name</param>
+        /// <param name="callerLineNumber">Caller line number</param>
+        /// <param name="callerFilePath">Caller file path</param>
+        public void TestMethodParameterAttributes([CallerMemberName]string callerMemberName = "",
+            [CallerLineNumber]int callerLineNumber = 0, [CallerFilePath]string callerFilePath = "")
         {
-
         }
-
-        /// <summary>
-        /// Blah
-        /// </summary>
-        /// <param name="t">t</param>
-        /// <param name="u">u</param>
-        /// <param name="i">i</param>
-        public void Blah(T t, U u, int i)
-        {
-
-        }
-    }
-
-    /// <summary>
-    /// MyChildClass
-    /// </summary>
-    /// <typeparam name="T">t</typeparam>
-    public class MyChildClass<T> : MyBaseClass<T, T>
-    {
-
     }
 }

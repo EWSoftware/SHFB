@@ -15,8 +15,7 @@ the life of the project.</para>
 				<para>Select a version below to see a description of its changes.</para>
 
 				<alert class="note">
-					<para>
-						If you are coming to the latest version from version 1.7.0.0 or earlier be sure to read the
+					<para>If you are coming to the latest version from version 1.7.0.0 or earlier be sure to read the
 <link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />,
 <link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />,
 <link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />, and
@@ -24,6 +23,10 @@ the life of the project.</para>
 occurred to the project file format and the standalone GUI across those releases.  Any existing projects will
 need to be <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">converted</link> to the new project file
 format before they can be used with the new version.</para>
+
+					<para>Other breaking changes may have been made since the last release you were using.  Please review
+the release notes from all releases after it to the latest to find changes that may require you to update your
+project such as modifications to build component and plug-in configurations.</para>
 				</alert>
 
 				<alert class="note">
@@ -32,6 +35,11 @@ the <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topic.</para>
 				</alert>
 
 				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="7238a41e-1375-4038-8bf1-d699f4dae668" />
+						</para>
+					</listItem>
 					<listItem>
 						<para>
 							<link xlink:href="3405263f-a9eb-4ce4-b90f-87c31ab76d85" />

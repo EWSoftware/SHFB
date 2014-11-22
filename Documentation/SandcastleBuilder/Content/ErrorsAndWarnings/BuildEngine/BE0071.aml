@@ -1,34 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="31414af7-b465-4dc3-9454-19a2d01953bc" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>Error BE0071: Unable to locate information for the project framework version
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Error BE0071: Unable to locate information for the project framework version
 '<legacyItalic>XXXX</legacyItalic>' or a suitable redirected version on this system</para>
-    </introduction>
+		</introduction>
 
-    <section>
-      <title>Cause</title>
-      <content>
-        <para>The build engine was unable to locate framework information for the version specified in the
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>The build engine was unable to locate framework information for the version specified in the
 project's <codeInline>FrameworkVersion</codeInline> property.  An attempt was made to redirect usage to a later
 version but none were found.</para>
-      </content>
-    </section>
+			</content>
+		</section>
 
-    <section>
-      <title>Solution</title>
-      <content>
-        <para>This can happen if you select a framework that is not installed on the system.  For example,
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>This can happen if you select a framework that is not installed on the system.  For example,
 choosing an earlier version of the Silverlight framework.  If the earlier version is not found, the build engine
 will attempt to redirect usage to a later version of the framework if one can be found on the system.  If the
 specified version or a later version cannot be found, you will need to install the selected or later version of
 the framework specified in the project on the system.</para>
-      </content>
-    </section>
 
-    <relatedTopics>
+				<para>The framework assemblies are search for in the Reference Assemblies folder
+(<localUri>%ProgramFiles(x86)\Reference Assemblies\Microsoft\Framework</localUri>).  If you have not
+installed a version of Visual Studio related to the indicated framework version or the related targeting pack,
+the reference assemblies may not exist there.  The simplest solution is to download and install the appropriate
+<externalLink>
+	<linkText>targeting pack</linkText>
+	<linkAlternateText>.NET Framework targeting packs</linkAlternateText>
+	<linkUri>http://msdn.microsoft.com/en-us/vstudio/dn250998.aspx</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> or copy the reference assemblies from another system that does have them.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
 			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
 		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

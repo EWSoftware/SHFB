@@ -10,6 +10,7 @@
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
+// 11/20/2014 - EFW - Added support for writing out method parameter attributes
 
 using System;
 using System.Globalization;
@@ -696,11 +697,14 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteLine();
         }
 
-        // !EFW - Added indent parameter for property getter/setter attributes
-        private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
+        // !EFW - Added indent parameter for property getter/setter attributes.  Added parameterAttributes to
+        // suppress line feeds for method parameter attributes.
+        private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null,
+            bool parameterAttributes = false)
         {
             // Handle interop attributes first as they are output in metadata
-            WriteInteropAttributes(reflection, writer, indent);
+            if(!parameterAttributes)
+                WriteInteropAttributes(reflection, writer, indent);
 
             // Add the standard attributes
             XPathNodeIterator attributes = (XPathNodeIterator)reflection.Evaluate(apiAttributesExpression);
@@ -709,9 +713,10 @@ namespace Microsoft.Ddue.Tools
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore FixedBufferAttribute too
+                // !EFW - Ignore FixedBufferAttribute and ParamArrayAttribute too
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.ExtensionAttribute" ||
-                  type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute")
+                  type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
+                  type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
                     continue;
 
                 if(!String.IsNullOrEmpty(indent))
@@ -755,8 +760,13 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 writer.WriteString("]");
-                writer.WriteLine();
+
+                if(!parameterAttributes)
+                    writer.WriteLine();
             }
+
+            if(parameterAttributes && attributes.Count != 0)
+                writer.WriteString(" ");
         }
 
         // EFW - Added support for interop attributes stored in metadata
@@ -1233,7 +1243,6 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-
         private void WriteParameters(XPathNodeIterator parameters, XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isExtension = (bool)reflection.Evaluate(apiIsExtensionMethod);
@@ -1254,16 +1263,19 @@ namespace Microsoft.Ddue.Tools
 
                 writer.WriteString("\t");
 
-                if(isExtension && parameters.CurrentPosition == 1)
-                {
-                    writer.WriteKeyword("this");
-                    writer.WriteString(" ");
-                }
-
                 // !EFW - Optional indicated by OptionalAttribute?
                 if(isOptional && argument == null)
                 {
                     WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
+                    writer.WriteString(" ");
+                }
+
+                // !EFW - Write out parameter attributes
+                WriteAttributes(parameter, writer, null, true);
+
+                if(isExtension && parameters.CurrentPosition == 1)
+                {
+                    writer.WriteKeyword("this");
                     writer.WriteString(" ");
                 }
 

@@ -80,6 +80,12 @@ set it's <codeInline>name</codeInline> attribute to the namespace name prefixed 
 and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the node.</para>
 			</listItem>
 
+			<listItem>
+				<para>To specify namespace group summary comments, add a <codeInline>&lt;member&gt;</codeInline> node,
+set it's <codeInline>name</codeInline> attribute to the namespace group name prefixed with "<codeInline>G:</codeInline>",
+and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the node.</para>
+			</listItem>
+
 		</list>
 
 		<para>Once you have created the file, you can add it to the build tool that you use to include the comments

@@ -440,6 +440,27 @@ namespace SandcastleBuilder.Utils
             return projects;
         }
 
+        /// <summary>
+        /// This is used to get a list of all projects in a solution file
+        /// </summary>
+        /// <param name="solutionFile">The solution filename from which to get the project names</param>
+        /// <returns>An enumerable list of the projects within the solution regardless of which configuration or
+        /// platform build combination in which they are enabled.</returns>
+        public static IEnumerable<string> ProjectsIn(string solutionFile)
+        {
+            string solutionContent, folder = Path.GetDirectoryName(solutionFile);
+
+            using(StreamReader sr = new StreamReader(solutionFile))
+            {
+                solutionContent = sr.ReadToEnd();
+            }
+
+            // Only add projects that are likely to contain assemblies
+            MatchCollection projects = reExtractProjectGuids.Matches(solutionContent);
+
+            foreach(Match solutionMatch in projects)
+                yield return solutionMatch.Groups["Path"].Value;
+        }
         #endregion
     }
 }

@@ -34,7 +34,8 @@ page for each namespace.</para>
 		<mediaLink><image xlink:href="Namespaces" placement="center" /></mediaLink>
 
 		<para>When the form is opened, it scans the documentation assemblies for new namespaces and adds them to the
-list if it finds any.  As you select each namespace, the list of assemblies in which it appears is shown to the
+list if it finds any.  If namespace grouping is enabled in the project, entries are added for each namespace
+group as well.  As you select each namespace, the list of assemblies in which it appears is shown to the
 right and its current description appears in the text box below the lists.  Namespaces can be filtered by
 assembly and/or by entering some text or a regular expression to match and clicking the <ui>Apply</ui> button.
 Setting the assembly combo box back to "&lt;All&gt;", clearing the search text, and clicking <ui>Apply</ui> will

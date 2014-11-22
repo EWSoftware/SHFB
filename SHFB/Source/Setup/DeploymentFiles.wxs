@@ -65,7 +65,13 @@
       <Component Id="cmp5B1C4AAACD09E1A36DB334EAD0BFFFAE" Guid="{7BD52BFB-F637-49DA-A627-A1B8F0E0D122}">
         <File Id="fil73400CFD7CAF441E83D1497B8717222B" KeyPath="yes" Source="$(var.RootFolder)\HelpLibraryManagerLauncher.exe" />
       </Component>
-      <Component Id="cmpF6AF7C98B30945DBF757C200CF382260" Guid="{1AF6DA6E-B476-4A04-8CD8-0A34F2C7B905}">
+      <Component Id="cmpF39685F2C10EB65A306FF076C15FC4B3" Guid="{DF0ADC8D-003B-48AA-B282-FD7F42B8CE76}">
+        <File Id="fil3C2734FBD918B0159CBB679FA250DB04" KeyPath="yes" Source="$(var.RootFolder)\Hunspellx64.dll" />
+      </Component>
+      <Component Id="cmp5553F425DF10497AB12D84691B9B203D" Guid="{877E2847-A1B6-4144-9871-422079897F91}">
+        <File Id="fil6C5E86A84D6DCA3F67CC5E24C1352E55" KeyPath="yes" Source="$(var.RootFolder)\Hunspellx86.dll" />
+      </Component>
+      <Component Id="cmpF6AF7C98B30945DBF757C200CF382260" Guid="{1F51B011-4947-4228-B737-C202914FCCB6}">
         <File Id="fil89FD48E13D7B43840B43E3FCC5A9B1EB" KeyPath="yes" Source="$(var.RootFolder)\ICSharpCode.TextEditor.dll" />
       </Component>
       <Component Id="cmp47710F4ED559988F6A71463791BDDB20" Guid="{CC712A0B-833F-45A6-B112-8B407346229F}">
@@ -723,9 +729,6 @@
           </Component>
           <Component Id="cmpE2223ABF7923DA9EC63E27769049FE8E" Guid="{9CAEF1C8-8089-45B2-AA7D-D599198BAE94}">
             <File Id="filFA5A490ED64A04A00D9F1A1C51B27F6C" KeyPath="yes" Source="$(var.RootFolder)\Data\Reflection\System.Device.Location.xml" />
-          </Component>
-          <Component Id="cmp50F56AFF27C016281B468A9A0A40BA7E" Guid="{6AA9C062-1CE1-4C63-BAFA-FBFBBBFA4DB4}">
-            <File Id="fil4CA50D03A954F110C8863D1E96E777F0" KeyPath="yes" Source="$(var.RootFolder)\Data\Reflection\System.Diagnostics.CodeAnalysis.xml" />
           </Component>
           <Component Id="cmp88B394BCC782C7217793A3C310069949" Guid="{03DC8B98-71B0-4B98-8167-A31BFF026C79}">
             <File Id="filC948C51DDA81D13877496EAD83ED4F05" KeyPath="yes" Source="$(var.RootFolder)\Data\Reflection\System.Diagnostics.Contracts.Internal.xml" />
@@ -4289,12 +4292,6 @@
         <Component Id="cmp471CF6E1A4EE531B00D7F6AB3F0C36EE" Guid="{19F3683A-94CA-4856-9E54-824FFCC59CBD}">
           <File Id="fil235D4FD7E6CD33330614BB5281DB0F2F" KeyPath="yes" Source="$(var.RootFolder)\Spelling\en_US.dic" />
         </Component>
-        <Component Id="cmpE9E6087F8F5654476DE469E7B2ADAA5A" Guid="{CCD82928-698A-4C3E-8B1E-AA3B0634DB30}">
-          <File Id="fil33DDD2E5B98F2E8B4725E97BA9D4F6BE" KeyPath="yes" Source="$(var.RootFolder)\Spelling\Hunspellx64.dll" />
-        </Component>
-        <Component Id="cmp185AF6CFEA0483F8BD6A547EC949E20E" Guid="{3BA233D6-5DA4-42EF-8EA1-C0E9A3A67717}">
-          <File Id="filB5F87BB0392CE7E3F3D6F71439416DE3" KeyPath="yes" Source="$(var.RootFolder)\Spelling\Hunspellx86.dll" />
-        </Component>
       </Directory>
       <Directory Id="dirB816BF41AFB4F3695F376BEBFA98B15A" Name="SyntaxContent">
         <Component Id="cmp673A59389158901A886C79C3BE3D2401" Guid="{6D0DFF59-4ABA-44A5-8FB0-212263157329}">
@@ -4517,6 +4514,8 @@
       <ComponentRef Id="cmp72017B4A7326E21748F7FAF5D51C81F7" />
       <ComponentRef Id="cmp46735A636014E3CB2E88FDCA9037D477" />
       <ComponentRef Id="cmp5B1C4AAACD09E1A36DB334EAD0BFFFAE" />
+      <ComponentRef Id="cmpF39685F2C10EB65A306FF076C15FC4B3" />
+      <ComponentRef Id="cmp5553F425DF10497AB12D84691B9B203D" />
       <ComponentRef Id="cmpF6AF7C98B30945DBF757C200CF382260" />
       <ComponentRef Id="cmp47710F4ED559988F6A71463791BDDB20" />
       <ComponentRef Id="cmp58E922387D44A3CB22A7A2E910F62D31" />
@@ -4728,7 +4727,6 @@
       <ComponentRef Id="cmp35953D38ABC0EFD6E120950F88805B0D" />
       <ComponentRef Id="cmpF510D98B792424ED25C35FF5C98F259D" />
       <ComponentRef Id="cmpE2223ABF7923DA9EC63E27769049FE8E" />
-      <ComponentRef Id="cmp50F56AFF27C016281B468A9A0A40BA7E" />
       <ComponentRef Id="cmp88B394BCC782C7217793A3C310069949" />
       <ComponentRef Id="cmp6B6802975B177297FB43BEBF79EDFE04" />
       <ComponentRef Id="cmp92F6445E3AD1470B4F8627FA68076224" />
@@ -5846,8 +5844,6 @@
       <ComponentRef Id="cmpB6BFB57945A52C6BAA0D993D1AA60CFB" />
       <ComponentRef Id="cmpA3903DDA560263CB7A1D69DB94C5AEFE" />
       <ComponentRef Id="cmp471CF6E1A4EE531B00D7F6AB3F0C36EE" />
-      <ComponentRef Id="cmpE9E6087F8F5654476DE469E7B2ADAA5A" />
-      <ComponentRef Id="cmp185AF6CFEA0483F8BD6A547EC949E20E" />
       <ComponentRef Id="cmp673A59389158901A886C79C3BE3D2401" />
       <ComponentRef Id="cmp191D9C04927FB00F1CC9A7761CAB3ECF" />
       <ComponentRef Id="cmpD837FE2FDC8F148056FFBCCBA82BFC4D" />

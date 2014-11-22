@@ -57,7 +57,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             /// This read-only property returns the XPath navigator for the specified key
             /// </summary>
             /// <param name="key">The key to look up</param>
-            /// <returns>The XPath navigagor associated with the key</returns>
+            /// <returns>The XPath navigator associated with the key</returns>
             public XPathNavigator this[string key]
             {
                 get { return index[key].Clone(); }
@@ -284,13 +284,13 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             }
             catch(IOException e)
             {
-                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
-                    "An access error occured while attempting to load the file '{0}'. The error message is: {1}",
+                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
+                    "An access error occurred while attempting to load the file '{0}'. The error message is: {1}",
                     file, e.Message), e);
             }
             catch(XmlException e)
             {
-                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
+                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
                     "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file,
                     e.Message), e);
             }
@@ -309,6 +309,10 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                     // Also add a namespace entry for NamespaceDoc classes
                     if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
                         yield return "N:" + keyNode.Value.Substring(2, keyNode.Value.Length - 15);
+
+                    // Also add a namespace group entry for NamespaceGroupDoc classes
+                    if(keyNode.Value.EndsWith(".NamespaceGroupDoc", StringComparison.Ordinal))
+                        yield return "G:" + keyNode.Value.Substring(2, keyNode.Value.Length - 20);
                 }
             }
         }
@@ -329,13 +333,13 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             }
             catch(IOException e)
             {
-                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
-                    "An access error occured while attempting to load the file '{0}'. The error message is: {1}",
+                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
+                    "An access error occurred while attempting to load the file '{0}'. The error message is: {1}",
                     file, e.Message), e);
             }
             catch(XmlException e)
             {
-                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
+                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
                     "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file,
                     e.Message), e);
             }
@@ -355,6 +359,11 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                     if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
                         yield return new KeyValuePair<string, XPathNavigator>("N:" + keyNode.Value.Substring(2,
                             keyNode.Value.Length - 15), valueNode);
+
+                    // Also add a namespace group entry for NamespaceGroupDoc classes
+                    if(keyNode.Value.EndsWith(".NamespaceGroupDoc", StringComparison.Ordinal))
+                        yield return new KeyValuePair<string, XPathNavigator>("G:" + keyNode.Value.Substring(2,
+                            keyNode.Value.Length - 20), valueNode);
                 }
             }
         }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/08/2014
+// Updated : 09/05/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -161,6 +161,11 @@ namespace SandcastleBuilder.PlugIns
                 {
                     using(SandcastleProject tempProject = new SandcastleProject(vs.HelpFileProject, true))
                     {
+                        // Set the configuration and platform here so that they are evaluated properly in project
+                        // properties when the project is loaded below.
+                        tempProject.Configuration = builder.CurrentProject.Configuration;
+                        tempProject.Platform = builder.CurrentProject.Platform;
+
                         // This looks odd but is necessary.  If we are in Visual Studio, the above constructor
                         // may return an instance that uses an underlying MSBuild project loaded in Visual
                         // Studio.  Since the BuildProject() method modifies the project, those changes are
@@ -414,10 +419,6 @@ namespace SandcastleBuilder.PlugIns
                 project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
-
-                // Make sure the current configuration and platform are consistent
-                project.Configuration = builder.CurrentProject.Configuration;
-                project.Platform = builder.CurrentProject.Platform;
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
                 string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir").EvaluatedValue;

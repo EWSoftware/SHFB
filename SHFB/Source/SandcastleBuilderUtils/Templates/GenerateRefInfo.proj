@@ -12,6 +12,7 @@
 		<AddXamlSyntaxData>{@AddXamlSyntaxData}</AddXamlSyntaxData>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
 		<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 
 	<!-- The common targets require OutputPath to be valid -->

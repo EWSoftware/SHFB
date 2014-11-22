@@ -926,7 +926,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
             catch(Exception ex)
             {
-                throw new BuilderException("BE0017", String.Format(CultureInfo.InvariantCulture,
+                throw new BuilderException("BE0017", String.Format(CultureInfo.CurrentCulture,
                     "Unexpected error using '{0}' to transform additional content file '{1}' to '{2}'.  The " +
                     "error is: {3}\r\n{4}", xslStylesheet, sourceFile, destFile, ex.Message,
                     (ex.InnerException == null) ? String.Empty : ex.InnerException.Message));

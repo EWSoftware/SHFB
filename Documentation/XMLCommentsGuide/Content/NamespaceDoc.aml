@@ -39,6 +39,33 @@ Namespace Company.Product.Widgets
 End Namespace
 </code>
 
+		<para>If the project has namespace grouping enabled, you can also maintain the namespace group comments using
+a <codeInline>NamespaceGroupDoc</codeInline> class in a similar fashion.  The following is an example:</para>
+
+<code language="cs">
+namespace Company.Product
+{
+    /// &lt;summary&gt;
+    /// These are the group comments for namespaces in &lt;c&gt;Company.Product&lt;/c&gt;.
+    /// &lt;/summary&gt;
+    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    class NamespaceGroupDoc
+    {
+    }
+}
+</code>
+
+<code language="vbnet">
+Namespace Company.Product
+    ''' &lt;summary&gt;
+    ''' These are the group comments for namespaces in &lt;c&gt;Company.Product&lt;/c&gt;.
+    ''' &lt;/summary&gt;
+    &lt;System.Runtime.CompilerServices.CompilerGeneratedAttribute()&gt; _
+    Class NamespaceGroupDoc
+    End Class
+End Namespace
+</code>
+
   </content>
 </section>
 

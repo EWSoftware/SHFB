@@ -40,7 +40,7 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     [HelpFileBuilderPlugInExport("Bibliography Support", IsConfigurable = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-      Description = "This plug in is used to add bibliography support to the help file topics.")]
+      Description = "This plug-in is used to add bibliography support to the help file topics.")]
     public sealed class BibliographySupportPlugIn : SandcastleBuilder.Utils.BuildComponent.IPlugIn
     {
         #region Private data members
@@ -108,7 +108,7 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            // If the file format is Open XML, this plug in is not supported and will not run
+            // If the file format is Open XML, this plug-in is not supported and will not run
             if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
             {
                 builder.ReportWarning("BIP0005", "The bibliography plug-in is not supported in the Open XML " +

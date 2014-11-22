@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 11/14/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an XML comment file and is used when searching for and adding missing
@@ -40,12 +40,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         private static Regex reFixupComments1 = new Regex("`[0-9]+(\\{)");
-
-        private static Regex reFixupComments2 = new Regex(
-            "(member name=\".*?System\\.Collections\\.Generic.*?)(\\^)");
-
+        private static Regex reFixupComments2 = new Regex("(member name=\".*?System\\.Collections\\.Generic.*?)(\\^)");
         private static Regex reFixupComments3 = new Regex("cref=\"!:([EFMNPT]|Overload):");
-
         private static Regex reInteriorPtrFixup = new Regex(@"cli\.interior_ptr{([^}]+?)}");
 
         private string sourcePath;
@@ -67,6 +63,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
+        /// This read-only property is used to get the encoding, typically UTF-8
+        /// </summary>
+        public Encoding Encoding
+        {
+            get
+            {
+                if(comments == null)
+                {
+                    enc = Encoding.UTF8;
+                    BuildProcess.ReadWithEncoding(sourcePath, ref enc);
+                }
+
+                return enc;
+            }
+        }
+
+        /// <summary>
         /// This is used to load the comments file on first use
         /// </summary>
         public XmlDocument Comments
@@ -78,7 +91,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(comments == null)
                 {
-                    // Although Visual Studio doesn't add an encoding, the files are UTF-8 encoded.
+                    // Although Visual Studio doesn't add an encoding, the files are UTF-8 encoded
                     enc = Encoding.UTF8;
                     comments = new XmlDocument();
 
@@ -208,9 +221,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public void FixupComments()
         {
             this.Save();
+
             comments = null;
             members = null;
-            enc = Encoding.UTF8;
 
             // Read it from the XML document as it handles redirection
             string content = this.Comments.OuterXml;
@@ -220,8 +233,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             content = reFixupComments1.Replace(content, "$1");
             content = reFixupComments2.Replace(content, "$1");
             content = reFixupComments3.Replace(content, "cref=\"$1:");
-            content = reInteriorPtrFixup.Replace(content,
-                "$1@!System.Runtime.CompilerServices.IsExplicitlyDereferenced");
+            content = reInteriorPtrFixup.Replace(content, "$1@!System.Runtime.CompilerServices.IsExplicitlyDereferenced");
 
             // Write the file back out using its original encoding
             using(StreamWriter sw = new StreamWriter(sourcePath, false, enc))
@@ -231,6 +243,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 members = null;
                 wasModified = false;
             }
+        }
+
+        /// <summary>
+        /// This can be used to force a reload of the comments file if changes were made to it outside of this
+        /// instance.
+        /// </summary>
+        public void ForceReload()
+        {
+            comments = null;
+            members = null;
+            wasModified = false;
         }
         #endregion
     }

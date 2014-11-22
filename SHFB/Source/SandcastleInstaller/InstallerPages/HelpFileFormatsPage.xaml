@@ -27,7 +27,11 @@ collection.  These are typically used to provide help for control libraries and 
 help collections used by Microsoft Visual Studio 2008 and earlier.  The Help 2 compiler does not appear to be
 available separately and must be installed as part of one of the SDKs for Visual Studio 2008 or earlier.</Paragraph>
 
-      <Paragraph><Bold>Microsoft Help Viewer</Bold></Paragraph>
+			<Paragraph Margin="30,10,0,0" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">Support
+for the Help 2 format in the help file builder has been deprecated.  It will not receive any further updates or
+support going forward.</Paragraph>
+
+			<Paragraph><Bold>Microsoft Help Viewer</Bold></Paragraph>
       <Paragraph Margin="30,0,0,0">This is the latest help file format and produces help files with a
 <Italic>.mshc</Italic> extension.  These help files are typically used to provide help for control libraries
 and tools used with Visual Studio 2010 and later.  They are similar to Help 2 files in that they must be

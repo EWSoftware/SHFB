@@ -2739,7 +2739,7 @@ namespace SandcastleBuilder.Utils
             }
 
             if(!property.CanWrite || property.IsDefined(typeof(XmlIgnoreAttribute), true))
-                throw new BuilderException("PRJ0004", String.Format(CultureInfo.InvariantCulture,
+                throw new BuilderException("PRJ0004", String.Format(CultureInfo.CurrentCulture,
                     "An attempt was made to set a read-only or ignored property: {0}   Value: {1}",
                     name, value));
 

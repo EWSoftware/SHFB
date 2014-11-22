@@ -136,7 +136,16 @@
       <DependentUpon>HierarchicalTocConfigDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="HierarchicalTocPlugIn.cs" />
+    <Compile Include="IntelliSenseOnlyPlugIn.cs" />
     <Compile Include="LightweightWebsiteStylePlugIn.cs" />
+    <Compile Include="MemberIDFixUpPlugIn.cs" />
+    <Compile Include="MemberIDFixUpPlugInConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MemberIDFixUpPlugInConfigDlg.Designer.cs">
+      <DependentUpon>MemberIDFixUpPlugInConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemberIdMatchExpression.cs" />
     <Compile Include="ReferenceLinkSettings.cs" />
     <Compile Include="ReferenceLinkSettingsCollection.cs" />
     <Compile Include="ScriptSharpPlugIn.cs" />
@@ -222,6 +231,9 @@
     <EmbeddedResource Include="HierarchicalTocConfigDlg.resx">
       <DependentUpon>HierarchicalTocConfigDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MemberIDFixUpPlugInConfigDlg.resx">
+      <DependentUpon>MemberIDFixUpPlugInConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VersionBuilderConfigDlg.resx">
       <DependentUpon>VersionBuilderConfigDlg.cs</DependentUpon>

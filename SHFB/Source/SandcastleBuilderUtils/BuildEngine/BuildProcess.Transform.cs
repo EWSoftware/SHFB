@@ -1191,9 +1191,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 projectComp = project.ComponentConfigurations[id];
 
                 if(!buildComponents.TryGetValue(id, out factory))
-                    throw new BuilderException("BE0021", String.Format(CultureInfo.InvariantCulture,
-                        "The project contains a reference to a custom build " +
-                        "component '{0}' that could not be found.", id));
+                    throw new BuilderException("BE0021", String.Format(CultureInfo.CurrentCulture,
+                        "The project contains a reference to a custom build component '{0}' that could not " +
+                        "be found.", id));
 
                 if(factory.ReferenceBuildPlacement.Placement == PlacementAction.None)
                     this.ReportProgress("    Skipping component '{0}', not used in reference build", id);
@@ -1258,9 +1258,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     projectComp = project.ComponentConfigurations[id];
 
                     if(!buildComponents.TryGetValue(id, out factory))
-                        throw new BuilderException("BE0021", String.Format(CultureInfo.InvariantCulture,
-                            "The project contains a reference to a custom build " +
-                            "component '{0}' that could not be found.", id));
+                        throw new BuilderException("BE0021", String.Format(CultureInfo.CurrentCulture,
+                            "The project contains a reference to a custom build component '{0}' that could " +
+                            "not be found.", id));
 
                     if(factory.ConceptualBuildPlacement.Placement == PlacementAction.None)
                         this.ReportProgress("    Skipping component '{0}', not used in conceptual build", id);
@@ -1355,7 +1355,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     // Add the dependency with a default configuration
                     if(!buildComponents.TryGetValue(dependency, out dependencyFactory))
-                        throw new BuilderException("BE0023", String.Format(CultureInfo.InvariantCulture,
+                        throw new BuilderException("BE0023", String.Format(CultureInfo.CurrentCulture,
                             "The project contains a reference to a custom build component '{0}' that has a " +
                             "dependency '{1}' that could not be found.", id, dependency));
 

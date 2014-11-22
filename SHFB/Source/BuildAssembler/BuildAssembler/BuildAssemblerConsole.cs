@@ -109,7 +109,7 @@ namespace Microsoft.Ddue.Tools
             catch(Exception ex)
             {
                 // Ignore aggregate exceptions where the inner exception is OperationCanceledException.
-                // These are the result of of logging an error message.
+                // These are the result of logging an error message.
                 if(!(ex is AggregateException) || !(ex.InnerException is OperationCanceledException))
                 {
                     System.Diagnostics.Debug.WriteLine(ex);

@@ -53,10 +53,11 @@ message will appear instead.</para>
 	<title>Show missing namespace documentation (ShowMissingNamespaces)</title>
 	<content>
 		<para>This property lets you indicate whether or not a red "missing" message is inserted into each namespace
-topic that is missing its namespace comments.  The default is True to add the message.  Namespace comments can be
-added using the <codeInline>Namespace Summaries</codeInline> project property, by using an external XML comments
-file, or by using a <codeInline>NamespaceDoc</codeInline> class in your code.  See the
-<link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" /> for details.</para>
+group or namespace topic that is missing its namespace comments.  The default is True to add the message.
+Namespace comments can be added using the <codeInline>Namespace Summaries</codeInline> project property, by using
+an external XML comments file, or by using a <codeInline>NamespaceGroupDoc</codeInline> and
+<codeInline>NamespaceDoc</codeInline> class in your code.  See the <link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
+for details.</para>
 
 	</content>
 </section>

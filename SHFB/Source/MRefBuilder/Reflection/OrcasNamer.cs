@@ -5,6 +5,7 @@
 // 03/29/2012 - EFW - Fixed WriteTemplate() so that it uses the correct template parameter names which
 // don't always match the base class's template parameter names (i.e. Collection<TControl> vs Collection<T>).
 // 11/20/2013 - EFW - Replaced the StringWriter with a StringBuilder and cleared out dead code.
+// 09/16/2014 - EFW - Fixed WriteTemplate() so that it treats nested class separators like periods
 
 using System;
 using System.Linq;
@@ -414,6 +415,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             string eiiClean = eiiType.GetFullUnmangledNameWithTypeParameters();
 
             eiiClean = eiiClean.Replace('.', '#');
+            eiiClean = eiiClean.Replace('+', '#');  // !EFW - Treat nested class separators like periods
             eiiClean = eiiClean.Replace(',', '@');  // Change the separator between parameters
             eiiClean = eiiClean.Replace('<', '{');  // Change the parameter brackets
             eiiClean = eiiClean.Replace('>', '}');

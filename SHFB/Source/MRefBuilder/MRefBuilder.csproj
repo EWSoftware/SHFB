@@ -110,6 +110,7 @@
     <Compile Include="Reflection\RootFilter.cs" />
     <Compile Include="Reflection\TypeFilter.cs" />
     <Compile Include="Reflection\VisibleItems.cs" />
+    <Compile Include="Reflection\WindowsStoreAndPhoneNamer.cs" />
     <Compile Include="XamlAttachedMembersAddIn.cs">
       <SubType>Code</SubType>
     </Compile>

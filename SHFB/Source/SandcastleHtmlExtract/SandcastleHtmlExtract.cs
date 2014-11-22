@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
+// Updated : 09/05/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,6 +28,7 @@
 //                           parallel to improve the performance.
 // -------  07/31/2014  EFW  Applied fix from Kalyan00 to correctly save files in the localized and original
 //                           locations with the proper encodings.
+//          09/05/2014  EFW  Added support for setting the maximum degree of parallelism used
 //===============================================================================================================
 
 using System;
@@ -154,6 +155,25 @@ namespace SandcastleBuilder.HtmlExtract
         }
 
         /// <summary>
+        /// This is used to get or set the maximum degree of parallelism used to process the HTML files
+        /// </summary>
+        /// <value>If not set, it defaults to a maximum of 20 threads per processor.  Increase or decrease this
+        /// value as needed based on your system.  Setting it to a value less than 1 will allow for an unlimited
+        /// number of threads.  However, this is a largely IO-bound process so allowing an excessive number of
+        /// threads may slow overall system performance on very large help files.</value>
+        public int MaxDegreeOfParallelism
+        {
+            get { return maxDegreeOfParallelism; }
+            set
+            {
+                if(value < 1)
+                    value = -1;
+
+                maxDegreeOfParallelism = value;
+            }
+        }
+
+        /// <summary>
         /// This is used to execute the task and process the HTML files
         /// </summary>
         /// <returns>True on success or false on failure.</returns>
@@ -217,7 +237,7 @@ namespace SandcastleBuilder.HtmlExtract
         // Options
         private static string outputFolder, help1Folder, websiteFolder, projectName, tocFile,
             localizedFolder, encodingName;
-        private static int langId, codePage;
+        private static int langId, codePage, maxDegreeOfParallelism = Environment.ProcessorCount * 20;
         private static bool isMSBuildTask;
 
         // Extracted keyword and title information
@@ -555,7 +575,8 @@ commas, or other special characters.
                 fileFolder = fileFolder.Substring(0, fileFolder.Length - 1);
 
             // Process all *.htm and *.html files in the given folder and all of its subfolders.
-            Parallel.ForEach(Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories), file =>
+            Parallel.ForEach(Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories),
+              new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, file =>
             {
                 string ext = Path.GetExtension(file).ToLowerInvariant();
 

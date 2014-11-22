@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : VersionBuilderConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 08/29/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -263,13 +263,6 @@ namespace SandcastleBuilder.PlugIns
                   projects.ContainsValue(vs.HelpFileProject))
                 {
                     epErrors.SetError(lbVersionInfo, "Label + Version values and project filenames must be unique");
-                    isValid = false;
-                    break;
-                }
-
-                if(vs.Version == txtVersion.Text)
-                {
-                    epErrors.SetError(lbVersionInfo, "A prior version cannot match the current project's version");
                     isValid = false;
                     break;
                 }

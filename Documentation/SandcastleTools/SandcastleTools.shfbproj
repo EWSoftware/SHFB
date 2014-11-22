@@ -168,6 +168,7 @@
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
+    <None Include="Content\VersionHistory\vNext.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>

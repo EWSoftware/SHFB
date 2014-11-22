@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2014
+// Updated : 11/20/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -462,7 +462,13 @@ namespace SandcastleBuilder.Package.Nodes
                 if(docSourcesNode != null)
                 {
                     foreach(string f in allDocSources)
-                        docSourcesNode.AddDocumentationSource(f);
+                    {
+                        if(!f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                            docSourcesNode.AddDocumentationSource(f);
+                        else
+                            foreach(string project in SandcastleBuilder.Utils.MSBuild.SelectProjectsDlg.SelectSolutionOrProjects(f))
+                                docSourcesNode.AddDocumentationSource(project);
+                    }
                 }
                 else
                 {
@@ -726,28 +732,42 @@ namespace SandcastleBuilder.Package.Nodes
         {
             try
             {
-                var prop = this.ProjectMgr.BuildProject.GetProperty("SHFBROOT");
-
-                // This will remain in effect for the duration of the process including for projects loaded
-                // after this one that don't override it locally.  A restart will reset it.
-                if(prop != null && !prop.IsEnvironmentProperty && !prop.IsGlobalProperty)
-                {
-                    string path = prop.EvaluatedValue;
-
-                    if(!Path.IsPathRooted(path))
-                        path = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), path);
-
-                    Environment.SetEnvironmentVariable("SHFBROOT", path);
-                }
-
-                // Unlike the standalone GUI we can't figure out where SHFBROOT should point so we'll make the
-                // user take care of it.
+                // Only use the project version if SHFBROOT isn't already set.  Otherwise we might encounter a
+                // situation where the project is using an older version of the build engine than this package
+                // which could cause all sorts of strange errors.  Bottom line, if using this package with
+                // SHFBROOT defined, it's going to use the version of SHFB related to it, not the one the project
+                // references.  Note that this doesn't guarantee there won't be issues.  The best bet if trying
+                // to edit projects using an older version of SHFB local to the project is to use the standalone
+                // GUI instead.
                 if(String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SHFBROOT")))
-                    Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment " +
-                        "variable was not found.  This variable is usually created during installation and " +
-                        "may require a reboot.  It may also be defined locally within the project.  Since " +
-                        "it has not been set, the project properties may not be editable nor may the project " +
-                        "be built properly.  Please ensure the variable is defined and reload the project.");
+                {
+                    var prop = this.ProjectMgr.BuildProject.GetProperty("SHFBROOT");
+
+                    // This will remain in effect for the duration of the process including for projects loaded
+                    // after this one that don't override it locally.  A restart will reset it.
+                    if(prop != null && !prop.IsEnvironmentProperty && !prop.IsGlobalProperty)
+                    {
+                        string path = prop.EvaluatedValue;
+
+                        if(!String.IsNullOrWhiteSpace(path))
+                        {
+                            if(!Path.IsPathRooted(path))
+                                path = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath),
+                                    path);
+
+                            Environment.SetEnvironmentVariable("SHFBROOT", path);
+                        }
+                    }
+
+                    // Unlike the standalone GUI we can't figure out where SHFBROOT should point so we'll make
+                    // the user take care of it.
+                    if(String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SHFBROOT")))
+                        Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment " +
+                            "variable was not found.  This variable is usually created during installation and " +
+                            "may require a reboot.  It may also be defined locally within the project.  Since " +
+                            "it has not been set, the project properties may not be editable nor may the project " +
+                            "be built properly.  Please ensure the variable is defined and reload the project.");
+                }
             }
             catch
             {
@@ -760,8 +780,7 @@ namespace SandcastleBuilder.Package.Nodes
             }
 
             ProjectPropertiesContainerNode projProps = this.FindChild(
-                ProjectPropertiesContainerNode.PropertiesNodeVirtualName)
-                as ProjectPropertiesContainerNode;
+                ProjectPropertiesContainerNode.PropertiesNodeVirtualName) as ProjectPropertiesContainerNode;
 
             if(projProps == null)
             {
@@ -770,8 +789,7 @@ namespace SandcastleBuilder.Package.Nodes
             }
 
             DocumentationSourcesContainerNode docSources = this.FindChild(
-                DocumentationSourcesContainerNode.DocSourcesNodeVirtualName)
-                as DocumentationSourcesContainerNode;
+                DocumentationSourcesContainerNode.DocSourcesNodeVirtualName) as DocumentationSourcesContainerNode;
 
 			if(docSources == null)
 			{

@@ -363,6 +363,15 @@
   <item id="supportedIn_5">Unterstützt in: {0}, {1}, {2}, {3}, {4}</item>
   <item id="supportedIn_6">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}</item>
   <item id="supportedIn_7">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}</item>
+  <item id="supportedIn_8">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}</item>
+  <item id="supportedIn_9">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}</item>
+  <item id="supportedIn_10">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}</item>
+  <item id="supportedIn_11">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}</item>
+  <item id="supportedIn_12">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}</item>
+  <item id="supportedIn_13">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}</item>
+  <item id="supportedIn_14">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}</item>
+  <item id="supportedIn_15">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}</item>
+  <item id="supportedIn_16">Unterstützt in: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}</item>
   <item id="obsoleteWarning">Obsolet (Compilerwarnung) in {0}</item>
   <item id="obsoleteError">Obsolet (compiliert nicht) in {0} und später</item>
   	

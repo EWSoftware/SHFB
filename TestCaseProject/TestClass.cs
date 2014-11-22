@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace TestDoc
@@ -675,6 +676,17 @@ namespace TestDoc
         public IEnumerable<System.ServiceModel.Syndication.SyndicationItem> ItemsRaw
         {
             get { return null; }
+        }
+
+        /// <summary>
+        /// Test method parameter attributes
+        /// </summary>
+        /// <param name="callerMemberName">Caller member name</param>
+        /// <param name="callerLineNumber">Caller line number</param>
+        /// <param name="callerFilePath">Caller file path</param>
+        public void TestMethodParameterAttributes([CallerMemberName] string callerMemberName = "",
+            [CallerLineNumber] int callerLineNumber = 0, [CallerFilePath] string callerFilePath = "")
+        {
         }
     }
 

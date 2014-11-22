@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 09/18/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
@@ -26,6 +26,7 @@
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
 // 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
 // 1.9.9.0  12/14/2013  EFW  Added support for namespace grouping
+// -------  09/18/2014  EFW  Added support for NamespaceGroupDoc classes
 //===============================================================================================================
 
 using System;
@@ -91,8 +92,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 commentsFiles.Add(new XmlCommentsFile(nsName));
             }
 
-            // Replace any "NamespaceDoc" class IDs with their containing namespace.  The comments in these then
-            // become the comments for the namespace.
+            // Replace any "NamespaceDoc" and "NamespaceGroupDoc" class IDs with their containing namespace.
+            // The comments in these then become the comments for the namespaces and namespace groups.
             commentsFiles.ReplaceNamespaceDocEntries();
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
@@ -160,7 +161,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Eat the error in a partial build so that the user can get into the namespace comments editor
                 // to fix it.
                 if(this.PartialBuildType != PartialBuildType.None)
-                    throw new BuilderException("BE0012", String.Format(CultureInfo.InvariantCulture,
+                    throw new BuilderException("BE0012", String.Format(CultureInfo.CurrentCulture,
                         "Error generating namespace summaries (Namespace = {0}): {1}", nsName, ex.Message), ex);
             }
 

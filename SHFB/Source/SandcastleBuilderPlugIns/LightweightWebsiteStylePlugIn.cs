@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 08/19/2014
+// Updated : 11/18/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved.
 //           Portions Copyright 2014, Sam Harwell, All rights reserved.
 // Compiler: Microsoft Visual C#
@@ -359,7 +359,7 @@ namespace SandcastleBuilder.PlugIns
                         new XAttribute("href", Path.GetFileName(builder.DefaultTopicFile)),
                         new XAttribute("title", builder.ResolvedHelpTitle),
                         new XAttribute("tocid", "roottoc"),
-                        new XText(builder.CurrentProject.HelpTitle)));
+                        new XText(builder.TransformText(builder.CurrentProject.HelpTitle))));
 
             if(expanded)
                 result.SetAttributeValue("data-childrenloaded", "true");
