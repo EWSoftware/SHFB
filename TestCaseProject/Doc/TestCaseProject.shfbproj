@@ -39,7 +39,7 @@
     <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>VS2010</PresentationStyle>
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision}</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
@@ -263,6 +263,8 @@
     </Image>
     <Image Include="Media\SecuritySuccess.png">
       <ImageId>b5d069f7-5daf-45ae-882c-4596ab2b724a</ImageId>
+      <AlternateText>
+      </AlternateText>
     </Image>
   </ItemGroup>
   <ItemGroup>

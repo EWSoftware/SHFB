@@ -142,9 +142,10 @@ namespace Sandcastle.Core.Frameworks
                         assemblyDetails.Add(AssemblyDetails.FromAssemblyName(
                             AssemblyName.GetAssemblyName(assembly)));
                     }
-                    catch(BadImageFormatException)
+                    catch(BadImageFormatException ex)
                     {
                         // Ignore, not a .NET assembly
+                        System.Diagnostics.Debug.WriteLine(ex.FileName);
                     }
                 }
         }

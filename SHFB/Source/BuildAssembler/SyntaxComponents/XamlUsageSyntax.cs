@@ -9,6 +9,7 @@
 // 12/23/2012 - EFW - Made the xamlAssemblies dictionary use case-insensitive key comparisons
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
+// 12/03/2014 - EFW - Fixed up some problems that were causing it to skip or add XAML info incorrectly
 
 using System;
 using System.Collections.Generic;
@@ -897,12 +898,20 @@ namespace Microsoft.Ddue.Tools
         {
             XPathNodeIterator ancestors = (XPathNodeIterator)typeReflection.Evaluate(apiAncestorsExpression);
 
+            // Check the type itself as well
+            string ancestorId = typeReflection.GetAttribute("api", string.Empty);
+
+            if(!String.IsNullOrWhiteSpace(ancestorId) && excludedAncestorList.Contains(ancestorId))
+                return true;
+
             foreach(XPathNavigator ancestor in ancestors)
             {
-                string ancestorId = ancestor.GetAttribute("api", string.Empty);
+                ancestorId = ancestor.GetAttribute("api", string.Empty);
+
                 if(excludedAncestorList.Contains(ancestorId))
                     return true;
             }
+
             return false;
         }
 
@@ -921,12 +930,13 @@ namespace Microsoft.Ddue.Tools
             if(HasTypeConverterAttribute(containingType))
                 return true;
 
-            // A property that returns a String doesn't need a TypeConverterAttribute, so return true here
+            // A property that returns a primitive type doesn't need a TypeConverterAttribute, so return true here
             XPathNavigator returnType = memberReflection.SelectSingleNode(apiReturnTypeExpression);
             if(returnType != null)
             {
                 string returnTypeId = returnType.GetAttribute("api", string.Empty);
-                if(returnTypeId == "T:System.String")
+
+                if(IsPrimitiveType(returnTypeId))
                     return true;
             }
 

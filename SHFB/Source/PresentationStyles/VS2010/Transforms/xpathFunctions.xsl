@@ -17,14 +17,6 @@
 						return input.TrimEnd('\r','\n','\t',' ');
 				}
 
-				//Regular expression to check that a string is in a valid Guid representation.
-				private static Regex guidChecker = new Regex("[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}");
-
-				public static string GuidChecker(string id)
-				{
-						return guidChecker.IsMatch(id).ToString();
-				}
-      
 				public static string IsValidDate(string dateString)
 				{
 						CultureInfo culture = CultureInfo.InvariantCulture;

@@ -151,13 +151,321 @@ M:fullname.#ctor[(arglist)]
 M:fullname.Finalize
 </code>
 
-				<para>Operators are encoded as the formal name of the operator.  Refer to the C# documentation for the
-formal name of all operators.  For conversion operators, the formal name is used (<codeInline>op_explicit</codeInline>
-or <codeInline>op_implicit</codeInline>) followed by a tilde (~) and the return type as follows.</para>
+				<para>Operators are encoded as the formal name of the operator followed by their arguments.  For
+conversion operators, the formal name is used (<codeInline>op_Explicit</codeInline> or
+<codeInline>op_Implicit</codeInline>) followed by the arguments, a tilde (~), and the return type.  For
+example:</para>
 
 <code language="none" title=" ">
-M:fullname.op_explicit(arglist)~returntype
+M:fullname.op_[binaryOpname](arg1, arg1)
+M:fullname.op_[unaryOpname](arg)
+M:fullname.op_Explicit(arg1, arg2)~returnType
+M:fullname.op_Implicit(arg1, arg2)~returnType
 </code>
+
+				<para>Below are example IDs for each overloadable operator:</para>
+
+				<table>
+					<tableHeader>
+						<row>
+							<entry>
+								<para>Operator</para>
+							</entry>
+							<entry>
+								<para>Usage</para>
+							</entry>
+							<entry>
+								<para>Member ID Example</para>
+							</entry>
+						</row>
+					</tableHeader>
+					<row>
+						<entry>
+							<para>+</para>
+						</entry>
+						<entry>
+							<para>x = y + z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Addition(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&amp;</para>
+						</entry>
+						<entry>
+							<para>x = y &amp; z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_BitwiseAnd(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>|</para>
+						</entry>
+						<entry>
+							<para>x = y | z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_BitwiseOr(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>--</para>
+						</entry>
+						<entry>
+							<para>x--</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Decrement(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>/</para>
+						</entry>
+						<entry>
+							<para>x = y / z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Division(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>==</para>
+						</entry>
+						<entry>
+							<para>if(x == y)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Equality(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>^</para>
+						</entry>
+						<entry>
+							<para>x = y ^ z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_ExclusiveOr(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>explicit</para>
+						</entry>
+						<entry>
+							<para>string x = (string)test1Object</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Explicit(System.String)~TestDoc.Type1</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>false</para>
+						</entry>
+						<entry>
+							<para>if(test1Object == false)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_False(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&gt;</para>
+						</entry>
+						<entry>
+							<para>if(x &gt; y)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_GreaterThan(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&gt;=</para>
+						</entry>
+						<entry>
+							<para>if(x &gt;= y)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_GreaterThanOrEqual(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>implicit</para>
+						</entry>
+						<entry>
+							<para>string x = test1Object</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Implicit(TestDoc.Type1)~System.String</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>++</para>
+						</entry>
+						<entry>
+							<para>x++</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Increment(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>!=</para>
+						</entry>
+						<entry>
+							<para>if(x != y)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Inequality(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&lt;&lt;</para>
+						</entry>
+						<entry>
+							<para>x = y &lt;&lt; 2</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_LeftShift(TestDoc.Type1,System.Int32)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&lt;</para>
+						</entry>
+						<entry>
+							<para>if(x &lt; y)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_LessThan(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&lt;=</para>
+						</entry>
+						<entry>
+							<para>if(x &lt;= y)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_LessThanOrEqual(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>!</para>
+						</entry>
+						<entry>
+							<para>if(!x)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_LogicalNot(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>%</para>
+						</entry>
+						<entry>
+							<para>x = y % z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Modulus(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>*</para>
+						</entry>
+						<entry>
+							<para>x = y * z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Multiply(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>~</para>
+						</entry>
+						<entry>
+							<para>x = ~x</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_OnesComplement(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>&gt;&gt;</para>
+						</entry>
+						<entry>
+							<para>x = y &gt;&gt; 2</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_RightShift(TestDoc.Type1,System.Int32)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>-</para>
+						</entry>
+						<entry>
+							<para>x = y - z</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_Subtraction(TestDoc.Type1,TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>true</para>
+						</entry>
+						<entry>
+							<para>if(test1Object == true)</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_True(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>- (unary)</para>
+						</entry>
+						<entry>
+							<para>x = -test1Object</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_UnaryNegation(TestDoc.Type1)</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>+ (unary)</para>
+						</entry>
+						<entry>
+							<para>int x = +test1Object</para>
+						</entry>
+						<entry>
+							<para>M:TestDoc.Type1.op_UnaryPlus(TestDoc.Type1)</para>
+						</entry>
+					</row>
+				</table>
 			</content>
 		</section>
 

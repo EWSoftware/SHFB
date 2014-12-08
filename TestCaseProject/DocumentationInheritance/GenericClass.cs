@@ -11,6 +11,7 @@ namespace TestDoc.DocumentationInheritance
     /// A structure with a generic base class that has inherited documentation
     /// on its members.
     /// </summary>
+    /// <seealso cref="CopyTo(int[], int)" />
     public struct SetDocumentation : ISet<int>
     {
         /// <inheritdoc />

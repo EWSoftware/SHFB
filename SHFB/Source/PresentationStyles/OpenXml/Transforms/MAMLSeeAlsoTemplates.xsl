@@ -14,51 +14,33 @@
 	Process relatedTopics
 	============================================================================================= -->
 
-	<msxsl:script language="C#" implements-prefix="ddue">
-		<msxsl:using namespace="System" />
-		<msxsl:using namespace="System.Text.RegularExpressions" />
-		<![CDATA[
-			// Regular expression to check that a string is in a valid Guid representation.
-			private static Regex guidChecker = new Regex("[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}");
-
-			public static string GuidChecker(string id)
-			{
-					return guidChecker.IsMatch(id).ToString();
-			}
-    ]]>
-	</msxsl:script>
-
 	<xsl:template match="ddue:relatedTopics" mode="seeAlso">
 		<xsl:param name="p_autoGenerateLinks" select="false()"/>
 
 		<xsl:variable name="v_taskLinks">
 			<xsl:for-each select="(ddue:link | ddue:legacyLink)[@topicType_id]">
-				<xsl:if test="ddue:GuidChecker(@xlink:href)='True'" >
-					<xsl:variable name="v_topicTypeId">
-						<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
-					</xsl:variable>
-					<xsl:variable name="v_seeAlsoGroup">
-						<xsl:value-of select="translate(msxsl:node-set($g_topicTypes)/topic[@guid = $v_topicTypeId]/@seeAlsoGroup, $g_allUpperCaseLetters, $g_allLowerCaseLetters)"/>
-					</xsl:variable>
-					<xsl:if test="$v_seeAlsoGroup='tasks'">
-						<xsl:copy-of select="."/>
-					</xsl:if>
+				<xsl:variable name="v_topicTypeId">
+					<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
+				</xsl:variable>
+				<xsl:variable name="v_seeAlsoGroup">
+					<xsl:value-of select="translate(msxsl:node-set($g_topicTypes)/topic[@guid = $v_topicTypeId]/@seeAlsoGroup, $g_allUpperCaseLetters, $g_allLowerCaseLetters)"/>
+				</xsl:variable>
+				<xsl:if test="$v_seeAlsoGroup='tasks'">
+					<xsl:copy-of select="."/>
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
 
 		<xsl:variable name="v_conceptLinks">
 			<xsl:for-each select="(ddue:link | ddue:legacyLink)[@topicType_id]">
-				<xsl:if test="ddue:GuidChecker(@xlink:href)='True'" >
-					<xsl:variable name="v_topicTypeId">
-						<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
-					</xsl:variable>
-					<xsl:variable name="v_seeAlsoGroup">
-						<xsl:value-of select="translate(msxsl:node-set($g_topicTypes)/topic[@guid = $v_topicTypeId]/@seeAlsoGroup, $g_allUpperCaseLetters, $g_allLowerCaseLetters)"/>
-					</xsl:variable>
-					<xsl:if test="$v_seeAlsoGroup='concepts'">
-						<xsl:copy-of select="."/>
-					</xsl:if>
+				<xsl:variable name="v_topicTypeId">
+					<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
+				</xsl:variable>
+				<xsl:variable name="v_seeAlsoGroup">
+					<xsl:value-of select="translate(msxsl:node-set($g_topicTypes)/topic[@guid = $v_topicTypeId]/@seeAlsoGroup, $g_allUpperCaseLetters, $g_allLowerCaseLetters)"/>
+				</xsl:variable>
+				<xsl:if test="$v_seeAlsoGroup='concepts'">
+					<xsl:copy-of select="."/>
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
@@ -69,7 +51,7 @@
 					<xsl:when test="self::ddue:codeEntityReference">
 						<xsl:copy-of select="."/>
 					</xsl:when>
-					<xsl:when test="ddue:GuidChecker(@xlink:href)='True'" >
+					<xsl:otherwise>
 						<xsl:variable name="v_topicTypeId">
 							<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
 						</xsl:variable>
@@ -79,9 +61,6 @@
 						<xsl:if test="$v_seeAlsoGroup='reference'">
 							<xsl:copy-of select="."/>
 						</xsl:if>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:copy-of select="."/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>
@@ -96,24 +75,20 @@
 					<xsl:when test="self::ddue:externalLink">
 						<xsl:copy-of select="."/>
 					</xsl:when>
-					<xsl:when test="ddue:GuidChecker(@xlink:href)='True'">
-						<xsl:choose>
-							<xsl:when test="@topicType_id">
-								<xsl:variable name="v_topicTypeId">
-									<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
-								</xsl:variable>
-								<xsl:variable name="v_seeAlsoGroup">
-									<xsl:value-of select="translate(msxsl:node-set($g_topicTypes)/topic[@guid = $v_topicTypeId]/@seeAlsoGroup, $g_allUpperCaseLetters, $g_allLowerCaseLetters)"/>
-								</xsl:variable>
-								<xsl:if test="($v_seeAlsoGroup!='tasks') and ($v_seeAlsoGroup!='concepts') and ($v_seeAlsoGroup!='reference')">
-									<xsl:copy-of select="."/>
-								</xsl:if>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:copy-of select="."/>
-							</xsl:otherwise>
-						</xsl:choose>
+					<xsl:when test="@topicType_id">
+						<xsl:variable name="v_topicTypeId">
+							<xsl:value-of select="translate(@topicType_id, $g_allLowerCaseLetters, $g_allUpperCaseLetters)"/>
+						</xsl:variable>
+						<xsl:variable name="v_seeAlsoGroup">
+							<xsl:value-of select="translate(msxsl:node-set($g_topicTypes)/topic[@guid = $v_topicTypeId]/@seeAlsoGroup, $g_allUpperCaseLetters, $g_allLowerCaseLetters)"/>
+						</xsl:variable>
+						<xsl:if test="($v_seeAlsoGroup!='tasks') and ($v_seeAlsoGroup!='concepts') and ($v_seeAlsoGroup!='reference')">
+							<xsl:copy-of select="."/>
+						</xsl:if>
 					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="."/>
+					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>
 		</xsl:variable>

@@ -98,11 +98,11 @@ if set to false and it takes you to the method page.</para></entry>
         <para>
           <codeEntityReference qualifyHint="true" linkText="FileStream on MSDN">T:System.IO.FileStream</codeEntityReference>
         </para>
-        <para>
-          <codeEntityReference qualifyHint="true" autoUpgrade="true">
-  M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)
-</codeEntityReference>
-        </para>
+				<para>
+					<codeEntityReference qualifyHint="true" autoUpgrade="true">
+						M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)
+					</codeEntityReference>
+				</para>
         <para>
           <codeEntityReference qualifyHint="true" autoUpgrade="true">
   M:System.IO.FileStream.Write(System.Byte[],System.Int32,System.Int32)
@@ -116,6 +116,36 @@ if set to false and it takes you to the method page.</para></entry>
           <codeEntityReference qualifyHint="false" autoUpgrade="true">
   M:System.IO.FileStream.Flush</codeEntityReference>
         </para>
+
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Addition(TestDoc.IndexTocBugs.Test1,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Addition(TestDoc.IndexTocBugs.Test1,TestDoc.IndexTocBugs.Test2)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Addition(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_BitwiseAnd(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_BitwiseOr(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Decrement(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Division(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Equality(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_ExclusiveOr(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Explicit(System.String)~TestDoc.IndexTocBugs.Test1</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_False(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_GreaterThan(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_GreaterThanOrEqual(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Implicit(TestDoc.IndexTocBugs.Test1)~System.String</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Increment(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Inequality(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_LeftShift(TestDoc.IndexTocBugs.Test1,System.Int32)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_LessThan(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_LessThanOrEqual(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_LogicalNot(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Modulus(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Multiply(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_OnesComplement(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_RightShift(TestDoc.IndexTocBugs.Test1,System.Int32)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_Subtraction(TestDoc.IndexTocBugs.Test2,TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_True(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_UnaryNegation(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+<para><codeEntityReference qualifyHint="false" autoUpgrade="true">M:TestDoc.IndexTocBugs.Test1.op_UnaryPlus(TestDoc.IndexTocBugs.Test1)</codeEntityReference></para>
+
       </content>
     </section>
     <relatedTopics>

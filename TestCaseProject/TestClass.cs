@@ -693,8 +693,16 @@ namespace TestDoc
     /// <summary>
     /// A test derived class
     /// </summary>
+    /// <seealso cref="TestDerivedClass.Finalize"/>
     public class TestDerivedClass : TestClass
     {
+        /// <summary>
+        /// Test finalizer
+        /// </summary>
+        ~TestDerivedClass()
+        {
+        }
+
         /// <summary>
         /// Override of public property
         /// </summary>
@@ -805,7 +813,17 @@ namespace TestDoc
             rhs = temp;
         }
 
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="x">Test</param>
+        /// <param name="y">Test</param>
+        public static void TestThis<T, K>(KeyValuePair<T, K> x, long y)
+        {
+        }
+
         /// <inheritdoc cref="Object.ToString" />
+        /// <see cref="TestThis{T,K}(KeyValuePair{T, K}, long)"/>
         public override string ToString()
         {
             return base.ToString();

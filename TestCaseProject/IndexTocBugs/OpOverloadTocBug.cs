@@ -10,7 +10,7 @@ namespace TestDoc.IndexTocBugs
     public struct Test1
     {
         /// <summary>
-        /// Operator +s the specified left.
+        /// Operator + (Test1, Test1).  <see cref="operator -"/>
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
@@ -21,7 +21,7 @@ namespace TestDoc.IndexTocBugs
         }
 
         /// <summary>
-        /// Operator +s the specified left.
+        /// Operator + (Test1, Test2)
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
@@ -32,7 +32,7 @@ namespace TestDoc.IndexTocBugs
         }
 
         /// <summary>
-        /// Operator +s the specified left.
+        /// Operator + (Test2, Test1).
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
@@ -40,6 +40,290 @@ namespace TestDoc.IndexTocBugs
         public static Test2 operator +(Test2 left, Test1 right)
         {
             return left;
+        }
+
+        /// <summary>
+        /// Operator -
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator -(Test2 left, Test1 right)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator *
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator *(Test2 left, Test1 right)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator /
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator /(Test2 left, Test1 right)
+        {
+            return left;
+        }
+    
+        /// <summary>
+        /// Operator %
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator %(Test2 left, Test1 right)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator &amp;
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator &(Test2 left, Test1 right)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator |
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator |(Test2 left, Test1 right)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator ^
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static Test2 operator ^(Test2 left, Test1 right)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator &lt;&lt;
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="bits">The bits.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator <<(Test1 left, int bits)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator &gt;&gt;
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="bits">The bits.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator >>(Test1 left, int bits)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator ==
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator ==(Test2 left, Test1 right)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Operator !=
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator !=(Test2 left, Test1 right)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Operator &lt;
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator <(Test2 left, Test1 right)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Operator &gt;
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator >(Test2 left, Test1 right)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Operator &lt;=
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator <=(Test2 left, Test1 right)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Operator >=
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator >=(Test2 left, Test1 right)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Implicit conversion
+        /// </summary>
+        /// <param name="test1">Test</param>
+        /// <returns>String</returns>
+        public static implicit operator String(Test1 test1)
+        {
+            return "Test";
+        }
+
+        /// <summary>
+        /// Explicit conversion
+        /// </summary>
+        /// <param name="s">String</param>
+        /// <returns>Test1</returns>
+        public static explicit operator Test1(string s)
+        {
+            return new Test1();
+        }
+
+        /// <summary>
+        /// Operator +
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator +(Test1 left)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator -
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator -(Test1 left)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator !
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator !(Test1 left)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Operator ~
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator ~(Test1 left)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator ++
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator ++(Test1 left)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator --
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static Test1 operator --(Test1 left)
+        {
+            return left;
+        }
+
+        /// <summary>
+        /// Operator true
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator true(Test1 left)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Operator false
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <returns>Left operand</returns>
+        public static bool operator false(Test1 left)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="obj">Test</param>
+        /// <returns>Test</returns>
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <returns>Test</returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
