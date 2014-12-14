@@ -33,6 +33,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnSelectMSHCViewer = new System.Windows.Forms.Button();
             this.btnSelectHxSViewer = new System.Windows.Forms.Button();
+            this.lnkSHFBInfo = new System.Windows.Forms.LinkLabel();
             this.txtMSHelpViewerPath = new System.Windows.Forms.TextBox();
             this.lblMSHelpViewer = new System.Windows.Forms.Label();
             this.chkOpenHelpAfterBuild = new System.Windows.Forms.CheckBox();
@@ -43,7 +44,9 @@
             this.lblHelp2Viewer = new System.Windows.Forms.Label();
             this.chkUseExternalBrowser = new System.Windows.Forms.CheckBox();
             this.chkOpenLogViewerOnFailure = new System.Windows.Forms.CheckBox();
-            this.lnkSHFBInfo = new System.Windows.Forms.LinkLabel();
+            this.chkEnableExtendedXmlComments = new System.Windows.Forms.CheckBox();
+            this.chkEnableGoToDefinition = new System.Windows.Forms.CheckBox();
+            this.lblSetColorNote = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).BeginInit();
             this.SuspendLayout();
@@ -73,6 +76,18 @@
             this.toolTip1.SetToolTip(this.btnSelectHxSViewer, "Select MS Help 2 HxS viewer application");
             this.btnSelectHxSViewer.UseVisualStyleBackColor = true;
             this.btnSelectHxSViewer.Click += new System.EventHandler(this.btnSelectViewer_Click);
+            // 
+            // lnkSHFBInfo
+            // 
+            this.lnkSHFBInfo.AutoSize = true;
+            this.lnkSHFBInfo.Location = new System.Drawing.Point(14, 402);
+            this.lnkSHFBInfo.Name = "lnkSHFBInfo";
+            this.lnkSHFBInfo.Size = new System.Drawing.Size(239, 20);
+            this.lnkSHFBInfo.TabIndex = 15;
+            this.lnkSHFBInfo.TabStop = true;
+            this.lnkSHFBInfo.Text = "About Sandcastle Help File Builder";
+            this.toolTip1.SetToolTip(this.lnkSHFBInfo, "SHFB version and contact information");
+            this.lnkSHFBInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSHFBInfo_LinkClicked);
             // 
             // txtMSHelpViewerPath
             // 
@@ -178,17 +193,34 @@
             this.chkOpenLogViewerOnFailure.Text = "Open b&uild log viewer on failed build";
             this.chkOpenLogViewerOnFailure.UseVisualStyleBackColor = true;
             // 
-            // lnkSHFBInfo
+            // chkEnableExtendedXmlComments
             // 
-            this.lnkSHFBInfo.AutoSize = true;
-            this.lnkSHFBInfo.Location = new System.Drawing.Point(14, 300);
-            this.lnkSHFBInfo.Name = "lnkSHFBInfo";
-            this.lnkSHFBInfo.Size = new System.Drawing.Size(239, 20);
-            this.lnkSHFBInfo.TabIndex = 12;
-            this.lnkSHFBInfo.TabStop = true;
-            this.lnkSHFBInfo.Text = "About Sandcastle Help File Builder";
-            this.toolTip1.SetToolTip(this.lnkSHFBInfo, "SHFB version and contact information");
-            this.lnkSHFBInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSHFBInfo_LinkClicked);
+            this.chkEnableExtendedXmlComments.AutoSize = true;
+            this.chkEnableExtendedXmlComments.Location = new System.Drawing.Point(44, 301);
+            this.chkEnableExtendedXmlComments.Name = "chkEnableExtendedXmlComments";
+            this.chkEnableExtendedXmlComments.Size = new System.Drawing.Size(382, 24);
+            this.chkEnableExtendedXmlComments.TabIndex = 12;
+            this.chkEnableExtendedXmlComments.Text = "Enable extended XML comments completion options";
+            this.chkEnableExtendedXmlComments.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableGoToDefinition
+            // 
+            this.chkEnableGoToDefinition.AutoSize = true;
+            this.chkEnableGoToDefinition.Location = new System.Drawing.Point(44, 331);
+            this.chkEnableGoToDefinition.Name = "chkEnableGoToDefinition";
+            this.chkEnableGoToDefinition.Size = new System.Drawing.Size(345, 24);
+            this.chkEnableGoToDefinition.TabIndex = 13;
+            this.chkEnableGoToDefinition.Text = "Enable MAML/XML comments Go To Definition";
+            this.chkEnableGoToDefinition.UseVisualStyleBackColor = true;
+            // 
+            // lblSetColorNote
+            // 
+            this.lblSetColorNote.Location = new System.Drawing.Point(62, 358);
+            this.lblSetColorNote.Name = "lblSetColorNote";
+            this.lblSetColorNote.Size = new System.Drawing.Size(385, 23);
+            this.lblSetColorNote.TabIndex = 14;
+            this.lblSetColorNote.Text = "(Set color with MAML/XML Comments Link Underline)";
+            this.lblSetColorNote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GeneralOptionsControl
             // 
@@ -205,11 +237,14 @@
             this.Controls.Add(this.chkOpenLogViewerOnFailure);
             this.Controls.Add(this.chkOpenHelpAfterBuild);
             this.Controls.Add(this.chkUseExternalBrowser);
+            this.Controls.Add(this.chkEnableExtendedXmlComments);
+            this.Controls.Add(this.chkEnableGoToDefinition);
+            this.Controls.Add(this.lblSetColorNote);
             this.Controls.Add(this.lnkSHFBInfo);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(435, 305);
             this.Name = "GeneralOptionsControl";
-            this.Size = new System.Drawing.Size(435, 335);
+            this.Size = new System.Drawing.Size(467, 440);
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).EndInit();
             this.ResumeLayout(false);
@@ -234,5 +269,8 @@
         private System.Windows.Forms.CheckBox chkUseExternalBrowser;
         private System.Windows.Forms.CheckBox chkOpenLogViewerOnFailure;
         private System.Windows.Forms.LinkLabel lnkSHFBInfo;
+        private System.Windows.Forms.CheckBox chkEnableGoToDefinition;
+        private System.Windows.Forms.CheckBox chkEnableExtendedXmlComments;
+        private System.Windows.Forms.Label lblSetColorNote;
     }
 }

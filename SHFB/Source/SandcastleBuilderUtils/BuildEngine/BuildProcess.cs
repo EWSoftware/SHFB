@@ -1194,7 +1194,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // If F# syntax is being generated, add some of the F# namespaces as the syntax sections generate
                 // references to types that may not be there in non-F# projects.
                 if(ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
-                  f => f.Id == "FSharp"))
+                  f => f.Id == "F#"))
                 {
                     rn.Add("Microsoft.FSharp.Core");
                     rn.Add("Microsoft.FSharp.Control");

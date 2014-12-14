@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="ba11d6d5-2f99-4b26-b384-21324ef1b49a" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>If enabled using the help file builder
+<link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095">configuration options</link>, hovering over certain link
+target attribute values or element inner text within MAML topics and XML comments in C# projects will provide
+more information about the target (i.e. the topic title and filename for MAML target links) and the option to go
+to the definition of the item if possible when Ctrl+Click is pressed while hovering over the text.</para>
+
+			<alert class="note">
+				<para>The color of the link underline can be changed using <ui>Tools | Options | Fonts and Colors</ui>
+and changing the color for the <ui>MAML/XML Comments Link Underline</ui> entry.</para>
+			</alert>
+
+		</introduction>
+
+		<section>
+			<title>MAML Topics</title>
+			<content>
+				<para>While editing a MAML topic, you can hover over the following elements.  If the target ID appears to
+be navigable, an underline will appear when the Ctrl key is held down and the tool tip will indicate that you can
+Ctrl+click on it.  Ctrl+clicking the link will attempt to navigate to the target element.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>The <codeInline>topic</codeInline> element's <codeInline>id</codeInline> attribute value -
+Hovering over this shows a tool tip containing the topic's title and filename.  If "(Not found)" is displayed
+for the title, the topic's ID could not be found in a content layout file within the project.  This element
+does not offer navigation as it represents the current file.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>image</codeInline> element's <codeInline>xlink:href</codeInline> attribute
+value - Hovering over this shows a tool tip containing the image's alternate text and filename.  If "(Not found)"
+is displayed for the alternate text, the image could not be found within the project with a
+<codeInline>BuildAction</codeInline> of <codeInline>Image</codeInline>.  If "(Not set)" is shown for the
+alternate text, the image was found but no alternate text has been set in the file's properties.  Ctrl+click on
+the link to open the associated image file.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>link</codeInline> element's <codeInline>xlink:href</codeInline> attribute
+value - Hovering over this shows a tool tip containing the topic's title and filename.  If "(Not found)" is
+displayed for the title, the topic's ID could not be found in a content layout file within the project.
+Ctrl+click on the link to open the associated topic file.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>codeEntityReference</codeInline> element's inner text - This represents a code
+API member ID.  Ctrl+clicking the link will attempt to open the associated code file and jump to the indicated
+member.  Note that navigation is only available for members of C# projects within the current solution.  It is
+not possible to navigate to members in non-C# projects or to members of base framework or reference assemblies.</para>
+
+						<para>Since code entity references must be fully qualified, there is an excellent probability that
+the target ID's member will be found and displayed provided it is with the current solution as noted above.
+However, since the ID must be parsed and searched for as text, there is a chance that an incorrect match will be
+made or no match will be found.  As such, check to be sure that you ended up where you expected before making any
+changes.  In the event it cannot find a match, check the ID to ensure that it is correct.  The
+<ui>Entity References</ui> tool window can be used to verify the ID.  If the ID is correct and is within the
+current solution, you may have found a case that could not be matched with enough accuracy.</para>
+
+						<para>Note that namespace identifiers (those IDs prefixed with "N:" or "G:") can never be matched as
+namespaces do not exist as code elements identifiable in a search since they may appear in multiple locations.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>codeReference</codeInline> element's inner text - This represents a code snippet
+ID in a code snippets file.  The code snippet ID must appear in a file within a project in the solution and the
+file's <codeInline>BuildAction</codeInline> must be set to <codeInline>CodeSnippets</codeInline>.  Ctrl+clicking
+the link will attempt to open the associated code snippets file and jump to the indicated ID.  If the ID
+contains multiple snippet identifiers after the group identifier, only the first snippet identifier will be used
+for the search.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>token</codeInline> element's inner text - This represents a token name in a
+token file.  The token ID must appear in a file within a project in the solution and the file's
+<codeInline>BuildAction</codeInline> must be set to <codeInline>Tokens</codeInline>.  Ctrl+clicking the link will
+attempt to open the associated token file and, if not already open, select the indicated ID.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>XML Comments</title>
+			<content>
+				<para>While editing C# source code, you can hover over the following XML comments elements.  If the
+target ID appears to be navigable, an underline will appear when the Ctrl key is held down and the tool tip will
+indicate that you can Ctrl+click on it.  Ctrl+clicking the link will attempt to navigate to the target element.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>The <codeInline>cref</codeInline> attribute value on any XML comments element that supports
+it - This represents a code API member ID.  Ctrl+clicking the link will attempt to open the associated code file
+and jump to the indicated member.  Note that navigation is only available for members of C# projects within the
+current solution.  It is not possible to navigate to members in non-C# projects or to members of base framework
+or reference assemblies.</para>
+
+						<para>The member ID will be parsed and a best attempt will be made to match it to the correct code
+member.  However, since XML comments member IDs are rarely fully qualified, a number of assumptions have to be
+made and a set of search text candidates formulated as follows:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Namespace identifiers (those IDs prefixed with "N:" or "G:") can never be matched as
+namespaces do not exist as code elements identifiable in a search since they may appear in multiple locations.</para>
+							</listItem>
+
+							<listItem>
+								<para>In the absence of any qualifying namespace or class identifiers and no parameters,
+preference will be given to matching class names first followed by class members.</para>
+							</listItem>
+
+							<listItem>
+								<para>If any parameter information is specified, only class members will be searched for matches
+(fields, properties, events, and methods in no particular order).</para>
+							</listItem>
+
+							<listItem>
+								<para>When searching for a class match, if the ID contains a namespace qualifier that matches
+the namespace containing the class being edited or an imported namespace identified in the file, only that
+namespace will be searched.</para>
+							</listItem>
+
+							<listItem>
+								<para>If no qualifier is present or it does not appear to match the containing namespace of the
+class being edited or an imported namespace, the containing namespace, its parent namespaces, and any imported
+namespaces will be searched.</para>
+							</listItem>
+
+							<listItem>
+								<para>In all cases, imported namespaces that look like core framework or Microsoft namespaces
+will be ignored unless the containing namespace starts with one of the ignored namespace identifiers.</para>
+							</listItem>
+
+							<listItem>
+								<para>When searching for class and member IDs with generic type parameters, an attempt is made to
+find the best match based on those type parameters.  Failing that, a best match based on the name alone is
+attempted.</para>
+							</listItem>
+
+							<listItem>
+								<para>Likewise, for member ID searches, if parameters are specified, an attempt is made to find
+the best match based on the specified parameter types.  Failing that, a best match based on the name alone is
+attempted.</para>
+							</listItem>
+
+							<listItem>
+								<para>As a last resort, if none of the formulated qualified names produce a match, an attempt is
+made to match the ID as given in the XML comments.</para>
+							</listItem>
+
+							<listItem>
+								<para>For specialized members such as constructors, finalizers, operator overloads, and
+explicitly implemented interface members, the search adjusts the member ID as needed to obtain the best possible
+match.</para>
+							</listItem>
+						</list>
+
+						<para>With the above rules, there is a good probability that it will successfully navigate to the
+correct API member.  However, check to be sure that you ended up where you expected before making any changes.
+Due to the nature of trying to match unqualified member ID's there is always a degree of uncertainty in the final
+result.  If the ID cannot be found, building your project can help you determine if the ID is valid or not.
+Unless you have disabled the warnings, the compiler will validate all <codeInline>cref</codeInline> member ID
+values and issues a warning if they are incorrect.  If the ID is correct and is within the current solution, you
+may have found a case that could not be matched with enough accuracy.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>conceptualLink</codeInline> element's <codeInline>target</codeInline> attribute
+value - Hovering over this shows a tool tip containing the topic's title and filename.  If "(Not found)" is
+displayed for the title, the topic's ID could not be found in a content layout file within a help file builder
+project in the solution.  Ctrl+click on the link to open the associated topic file.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>token</codeInline> element's inner text - This represents a token name in a
+token file.  The token ID must appear in a file within a help file builder project in the solution and the file's
+<codeInline>BuildAction</codeInline> must be set to <codeInline>Tokens</codeInline>.  Ctrl+clicking the link will
+attempt to open the associated token file and, if not already open, select the indicated ID.</para>
+					</listItem>
+					
+				</list>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" />
+			<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

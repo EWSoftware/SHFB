@@ -169,7 +169,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio Integration Package">
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" title="Visual Studio Integration Package">
     <HelpKeywords>
       <HelpKeyword index="K" term="Visual Studio, package" />
     </HelpKeywords>
@@ -196,6 +196,11 @@
         <HelpKeyword index="K" term="Visual Studio, IntelliSense" />
         <HelpKeyword index="K" term="Visual Studio, snippets" />
         <HelpKeyword index="K" term="Visual Studio, HTML encoding text" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ba11d6d5-2f99-4b26-b384-21324ef1b49a" visible="True" isSelected="true" title="Go To Definition Support">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Visual Studio, Go To Definition" />
       </HelpKeywords>
     </Topic>
   </Topic>
@@ -225,7 +230,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" isExpanded="true" title="Project Properties Window">
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="property categories, Overview" />
     </HelpKeywords>
@@ -347,7 +352,7 @@
         <HelpKeyword index="K" term="properties, ProjectSummary" />
         <HelpKeyword index="K" term="property categories, Summaries" />
       </HelpKeywords>
-      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" isSelected="true" title="Using NamespaceDoc and NamespaceGroupDoc Classes">
+      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" title="Using NamespaceDoc and NamespaceGroupDoc Classes">
         <HelpKeywords>
           <HelpKeyword index="K" term="NamespaceDoc classes" />
           <HelpKeyword index="K" term="NamespaceGroupDoc classes" />

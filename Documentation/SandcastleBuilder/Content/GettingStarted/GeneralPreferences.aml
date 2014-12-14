@@ -100,6 +100,26 @@ website output will be opened in a tabbed document window within Visual Studio.<
 					</listItem>
 
 					<listItem>
+						<para><ui>Enable extended XML comments completion options</ui> - (Visual Studio extension package
+only) If checked, extended XML comments completion items specific to the Sandcastle tools will appear as options
+in the completion pop-up when entering XML comments in C# projects.  These can be used to quickly enter
+Sandcastle-specific elements such as <codeInline>code</codeInline> elements with source and region attributes,
+<codeInline>see langword</codeInline> elements, <codeInline>inheritdoc</codeInline> extensions, etc.  This option
+can be disabled if you do not wish to use the extended elements or if you think the completion provider is
+causing issues with Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Enable MAML/XML comments Go To Definition</ui> - (Visual Studio extension package only)  If
+checked, hovering over certain link target attribute values or element inner text within MAML topics and XML
+comments in C# projects will provide more information about the target (i.e. the topic title and filename for
+MAML target links) and the option to go to the definition of the item if possible when Ctrl+Click is pressed
+while hovering over the text.  Some limitations apply.  See the <link xlink:href="ba11d6d5-2f99-4b26-b384-21324ef1b49a" />
+topic for details.</para>
+					</listItem>
+
+
+					<listItem>
 						<para><ui>Build Output Background/Foreground/Font</ui> - (Standalone GUI only)  These options let you
 specify the background color, foreground color, and font used in the output window for the build output (the text
 shown during the build).</para>

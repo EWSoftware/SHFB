@@ -560,6 +560,10 @@ namespace Sandcastle.Core.BuildAssembler
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
+                    catch(TypeLoadException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
                     catch(ReflectionTypeLoadException ex)
                     {
                         System.Diagnostics.Debug.WriteLine(ex);

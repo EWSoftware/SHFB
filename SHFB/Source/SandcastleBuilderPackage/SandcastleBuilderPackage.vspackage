@@ -174,7 +174,7 @@
             <button Id="24e76128-9ea8-4838-9bbe-2cbfc9a1e63c" name="ViewFaq" idNumeric="25" buttonText="Frequently Asked Questions" menuText="Frequently Asked Questions" commandName="cmdidViewFaq" toolTipText="Frequently Asked Questions" mod1="0" mod2="0" visibilityConstraints="0" icon="FAQ.bmp" commandFlags="0" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="3f5e232f-b57a-44a3-b5c9-33954369c899">
-            <button Id="3e2673f4-1a40-4be2-b397-d6f792d24cd8" name="ViewShfbHelp" idNumeric="26" buttonText="Help on Sandcastle Help File Builder" menuText="Help on Sandcastle Help File Builder" commandName="cmdidViewShfbHelp" toolTipText="Help on Sandcastle Help File Builder" mod1="0" mod2="0" visibilityConstraints="0" icon="msotcidF1Help" commandFlags="0" sampleData="false" />
+            <button Id="3e2673f4-1a40-4be2-b397-d6f792d24cd8" name="ViewShfbHelp" idNumeric="26" buttonText="Help on Sandcastle Help File Builder" menuText="Help on Sandcastle Help File Builder" commandName="cmdidViewShfbHelp" toolTipText="Help on Sandcastle Help File Builder" mod1="0" mod2="0" visibilityConstraints="0" icon="ShowHelp.bmp" commandFlags="0" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="84f0050a-08c7-42be-8912-c6150ca48b48">
             <button Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" name="OpenInStandaloneGUI" idNumeric="28" buttonText="Open Project in Standalone GUI" menuText="Open Project in Standalone GUI" commandName="cmdidOpenInStandaloneGUI" toolTipText="Open Project in Standalone GUI" mod1="0" mod2="0" visibilityConstraints="0" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />

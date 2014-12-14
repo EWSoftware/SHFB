@@ -3,7 +3,14 @@
   <!-- Default project property values -->
   <PropertyGroup>
     <FrameworkPlatform Condition="'$(FrameworkPlatform)' == ''">.NETFramework</FrameworkPlatform>
-    <FrameworkVersion Condition="'$(FrameworkVersion)' == ''">4.5.1</FrameworkVersion>
+    <!-- Always build the latest framework version -->
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == '.NETFramework'">4.5.1</FrameworkVersion>
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == '.NETCore'">4.5.1</FrameworkVersion>
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == '.NETPortable'">4.6</FrameworkVersion>
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == '.NETMicroFramework'">4.3</FrameworkVersion>
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == 'Silverlight'">5.0</FrameworkVersion>
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == 'WindowsPhone'">8.1</FrameworkVersion>
+    <FrameworkVersion Condition="'$(FrameworkPlatform)' == 'WindowsPhoneApp'">8.1</FrameworkVersion>
     <ToolsRoot Condition="'$(ToolsRoot)' == ''">$(SHFBROOT)</ToolsRoot>
     <ProductionTransforms>$(ToolsRoot)\ProductionTransforms</ProductionTransforms>
     <TmpPath>.\Tmp</TmpPath>
@@ -28,7 +35,7 @@
       OutputPaths="MRefBuilder.rsp" />
 
     <!-- Generate the reflection data file for the assemblies. -->
-    <Exec ContinueOnError="false" IgnoreExitCode="true"
+    <Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="true"
       Command="&quot;$(ToolsRoot)\MRefBuilder.exe&quot; @MRefBuilder.rsp /out:&quot;$(TmpPath)\Reflection.org&quot;" />
 
     <!-- Merge duplicate topics if any and add XAML syntax data -->

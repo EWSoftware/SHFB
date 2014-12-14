@@ -32,12 +32,11 @@
     <section address="Section1">
       <title>Optional section title</title>
       <content>
-        < ! - - Uncomment this to create a sub-section outline
-        <autoOutline /> - - >
+        <!-- Uncomment this to create a sub-section outline
+        <autoOutline /> -->
         <para>Section content</para>
       </content>
     </section>
-    -->
 
     <uiElementList>
       <content>

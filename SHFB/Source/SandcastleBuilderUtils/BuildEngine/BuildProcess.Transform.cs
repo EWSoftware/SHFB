@@ -1032,7 +1032,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 case "addxamlsyntaxdata":
                     // If the XAML syntax generator is present, add XAML syntax data to the reflection file
                     if(ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
-                      s => s.Id == "XamlUsage"))
+                      s => s.Id == "XAML Usage"))
                         replaceWith = @";~\ProductionTransforms\AddXamlSyntaxData.xsl";
                     else
                         replaceWith = String.Empty;

@@ -1,35 +1,34 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 12/08/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a utility class with extension and utility methods.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  04/02/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/02/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
-
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilderProjectElement = SandcastleBuilder.Utils.ProjectElement;
 
@@ -43,8 +42,45 @@ namespace SandcastleBuilder.Package
         #region Private data members
         //=====================================================================
 
+        // PlatformUI assembly loaded flag and environment colors type
+        private static bool shellAssemblyLoaded;
+        private static Type environmentColors;
+
         // This is used to insert spaces for the Image project element alternate text
         private static Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
+
+        // Namespaces (N) aren't supported for searching.  Overloads (O) are treated like member searches.
+        private static char[] cerTypes = new[] { 'T', 'F', 'P', 'E', 'M', 'O' };
+
+        private static Dictionary<string, string> cerOperatorToCodeOperator = new Dictionary<string, string>
+        {
+            { "op_Addition", "operator +" },
+            { "op_BitwiseAnd", "operator &" },
+            { "op_BitwiseOr", "operator |" },
+            { "op_Decrement", "operator --" },
+            { "op_Division", "operator /" },
+            { "op_Equality", "operator ==" },
+            { "op_ExclusiveOr", "operator ^" },
+            { "op_Explicit", "operator explicit" },     // Reversed for search
+            { "op_False", "operator false" },
+            { "op_GreaterThan", "operator >" },
+            { "op_GreaterThanOrEqual", "operator >=" },
+            { "op_Implicit", "operator implicit" },     // Reversed for search
+            { "op_Increment", "operator ++" },
+            { "op_Inequality", "operator !=" },
+            { "op_LeftShift", "operator <<" },
+            { "op_LessThan", "operator <" },
+            { "op_LessThanOrEqual", "operator <=" },
+            { "op_LogicalNot", "operator !" },
+            { "op_Modulus", "operator %" },
+            { "op_Multiply", "operator *" },            // '*' is wildcard.  Search takes steps to compensate.
+            { "op_OnesComplement", "operator ~" },
+            { "op_RightShift", "operator >>" },
+            { "op_Subtraction", "operator -" },
+            { "op_True", "operator true" },
+            { "op_UnaryNegation", "operator -" },
+            { "op_UnaryPlus", "operator +" },
+        };
         #endregion
 
         #region Extension methods
@@ -68,8 +104,54 @@ namespace SandcastleBuilder.Package
                     reInsertSpaces.Replace(baseName, " $&").Trim());
             }
         }
+
+        /// <summary>
+        /// This is used to determine if the given string looks like a code entity reference
+        /// </summary>
+        /// <param name="cer">The string to check</param>
+        /// <returns>True if it looks like a code entity reference, false if not</returns>
+        public static bool IsCodeEntityReference(this string cer)
+        {
+            if(!String.IsNullOrWhiteSpace(cer))
+                return (cer.Length > 3 && Array.IndexOf(cerTypes, cer[0]) != -1 && cer[1] == ':');
+
+            return false;
+        }
+
+        /// <summary>
+        /// This is used to determine if the given string looks like a code reference ID
+        /// </summary>
+        /// <param name="id">The string to check</param>
+        /// <returns>True if it looks like a code reference ID, false if not</returns>
+        public static bool IsCodeReferenceId(this string id)
+        {
+            if(!String.IsNullOrWhiteSpace(id))
+            {
+                int pos = id.IndexOf('#');
+
+                if(pos > 0 && pos < id.Length - 1)
+                    return !Char.IsWhiteSpace(id[pos - 1]) && !Char.IsWhiteSpace(id[pos + 1]);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Convert a code entity reference operator name to its equivalent code definition
+        /// </summary>
+        /// <param name="internalOperatorName">The code entity reference operator name to convert</param>
+        /// <returns>The converted operator as it appears in code or null if not recognized</returns>
+        public static string ToCodeOperator(this string internalOperatorName)
+        {
+            string name;
+
+            if(!cerOperatorToCodeOperator.TryGetValue(internalOperatorName, out name))
+                name = null;
+
+            return name;
+        }
         #endregion
-        
+
         #region General utility methods
         //=====================================================================
 
@@ -164,6 +246,56 @@ namespace SandcastleBuilder.Package
             }
 
             return new Font("Segoe UI", 9.0f);
+        }
+
+        // TODO: This can go away in VS 2012 and later.  See remarks.
+        /// <summary>
+        /// This is used get a Visual Studio theme key in a version-agnostic manner.
+        /// </summary>
+        /// <param name="key">The theme key to get</param>
+        /// <param name="alternateValue">An alternate value to use if not found or not supported</param>
+        /// <returns>The theme key to use or the alternate value if not found or supported.  It will return null
+        /// if this is Visual Studio 2010 which doesn't support the EnvironmentColors type.</returns>
+        /// <remarks>When built exclusively under Visual Studio 2012 or later, this can go away in favor of
+        /// using <c>EnvironmentColors</c> to access the named theme key.</remarks>
+        public static object GetThemeKey(string key, object alternateValue)
+        {
+            if(!shellAssemblyLoaded)
+            {
+                try
+                {
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "msenv.dll");
+
+                    if(File.Exists(path))
+                    {
+                        FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(path);
+
+                        // Do not attempt to load it on VS2010, just use the alternate value
+                        if(fvi.ProductMajorPart < 11)
+                            return null;
+
+                        var vsShell = Assembly.Load("Microsoft.VisualStudio.Shell.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
+
+                        if(vsShell != null)
+                            environmentColors = vsShell.GetType("Microsoft.VisualStudio.PlatformUI.EnvironmentColors");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    // Ignore exceptions, we'll just use the alternate value
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+
+                shellAssemblyLoaded = true;
+            }
+
+            if(environmentColors != null)
+            {
+                var prop = environmentColors.GetProperty(key);
+                return prop.GetValue(null, null);
+            }
+
+            return alternateValue;
         }
         #endregion
     }

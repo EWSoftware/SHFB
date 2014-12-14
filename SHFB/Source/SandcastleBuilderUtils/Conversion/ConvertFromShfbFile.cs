@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromShfbFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
+// Updated : 12/12/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,12 +14,12 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  07/23/2008  EFW  Created the code
-// 1.9.0.0  06/20/2010  EFW  Removed ProjectLinkType property
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
+// 07/23/2008  EFW  Created the code
+// 06/20/2010  EFW  Removed ProjectLinkType property
+// 07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 01/08/2012  EFW  Added constructor to support use from VSPackage
 //===============================================================================================================
 
 using System;
@@ -141,9 +141,11 @@ namespace SandcastleBuilder.Utils.Conversion
                             case "ShowFeedbackControl":
                             case "ProjectLinkType":
                             case "projectLinks":    // ProjectLinkType in v1.3.3.1 and prior
+                            case "SandcastlePath":
                                 // PurgeDuplicateTopics was removed in v1.6.0.7
                                 // ShowFeedbackControl was removed in v1.8.0.3
                                 // ProjectLinkType was removed in v1.9.0.0
+                                // SandcastlePath was removed in v2014.1.26.0
                                 break;
 
                             case "sdkLinks":        // SdkLinkType in v1.3.3.1 and prior

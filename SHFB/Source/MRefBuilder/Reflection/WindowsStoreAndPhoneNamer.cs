@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : WindowsStoreAndPhoneNamer.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/16/2014
+// Updated : 12/11/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -240,24 +240,8 @@ namespace Microsoft.Ddue.Tools.Reflection
             // These are all of the currently known cases that need renaming
             switch(sb.ToString())
             {
-                case "T:Windows.Foundation.DateTime":
-                    typeNameInCode = "T:System.DateTimeOffset";
-                    break;
-
-                case "T:Windows.Foundation.EventHandler":
-                    typeNameInCode = "T:System.EventHandler";
-                    break;
-
-                case "T:Windows.Foundation.TimeSpan":
-                    typeNameInCode = "T:System.TimeSpan";
-                    break;
-
                 case "T:Windows.Foundation.Collections.IIterable":
                     typeNameInCode = "T:System.Collections.Generic.IEnumerable";
-                    break;
-
-                case "T:Windows.Foundation.Collections.KeyValuePair":
-                    typeNameInCode = "T:System.Collections.Generic.KeyValuePair";
                     break;
 
                 case "T:Windows.Foundation.Collections.IMap":
@@ -274,6 +258,30 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 case "T:Windows.Foundation.Collections.IVectorView":
                     typeNameInCode = "T:System.Collections.Generic.IReadOnlyList";
+                    break;
+
+                case "T:Windows.Foundation.Collections.KeyValuePair":
+                    typeNameInCode = "T:System.Collections.Generic.KeyValuePair";
+                    break;
+
+                case "T:Windows.Foundation.DateTime":
+                    typeNameInCode = "T:System.DateTimeOffset";
+                    break;
+
+                case "T:Windows.Foundation.EventHandler":
+                    typeNameInCode = "T:System.EventHandler";
+                    break;
+
+                case "T:Windows.Foundation.IReference":
+                    typeNameInCode = "T:System.Nullable";
+                    break;
+
+                case "T:Windows.Foundation.TimeSpan":
+                    typeNameInCode = "T:System.TimeSpan";
+                    break;
+
+                case "T:Windows.Foundation.Uri":
+                    typeNameInCode = "T:System.Uri";
                     break;
 
                 default:

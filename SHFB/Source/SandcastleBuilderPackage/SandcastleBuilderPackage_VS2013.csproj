@@ -189,6 +189,28 @@
     <Compile Include="GeneratedCode\Package.cs" />
     <Compile Include="GeneratedCode\PkgCmdID.cs" />
     <Compile Include="GeneratedCode\ToolWindowBase.cs" />
+    <Compile Include="GoToDefinition\CodeEntitySearcher.cs" />
+    <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessorProvider.cs" />
+    <Compile Include="GoToDefinition\CtrlKeyState.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionKeyProcessor.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionKeyProcessorProvider.cs" />
+    <Compile Include="GoToDefinition\GoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\MamlLinkQuickInfoController.cs" />
+    <Compile Include="GoToDefinition\MamlLinkQuickInfoControllerProvider.cs" />
+    <Compile Include="GoToDefinition\MamlLinkQuickInfoSource.cs" />
+    <Compile Include="GoToDefinition\MamlLinkQuickInfoSourceProvider.cs" />
+    <Compile Include="GoToDefinition\ProjectFileSearcher.cs" />
+    <Compile Include="GoToDefinition\TopicIdCache.cs" />
+    <Compile Include="GoToDefinition\UnderlineClassifier.cs" />
+    <Compile Include="GoToDefinition\UnderlineClassifierProvider.cs" />
+    <Compile Include="GoToDefinition\UnderlineFormatDefinition.cs" />
+    <Compile Include="GoToDefinition\XmlCommentsLinkfoController.cs" />
+    <Compile Include="GoToDefinition\XmlCommentsLinkfoControllerProvider.cs" />
+    <Compile Include="GoToDefinition\XmlCommentsLinkfoSource.cs" />
+    <Compile Include="GoToDefinition\XmlCommentsLinkfoSourceProvider.cs" />
+    <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessorProvider.cs" />
     <Compile Include="IntelliSense\AugmentedCompletionSet.cs" />
     <Compile Include="IntelliSense\CompletionDisplayTextComparer.cs" />
     <Compile Include="IntelliSense\CSharpDocumentationCompletionSource.cs" />
@@ -201,6 +223,7 @@
     <Compile Include="IntelliSense\RoslynHacks\TextViewCommandFilter.cs" />
     <Compile Include="IntelliSense\RoslynHacks\ToolTipProvider.cs" />
     <Compile Include="IntelliSense\RoslynHacks\WpfHelper.cs" />
+    <Compile Include="MefProviderOptions.cs" />
     <Compile Include="PropertyPages\BuildEventEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,6 +381,12 @@
     <Resource Include="Button Bitmaps\HtmlEncode.bmp" />
     <Resource Include="Resources\Component.ico" />
     <Resource Include="Button Bitmaps\Docx.bmp" />
+    <VSCTCompile Include="GeneratedCode\SandcastleBuilderPackage.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
     <Content Include="VSIXPreview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

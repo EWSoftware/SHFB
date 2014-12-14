@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/05/2014
+// Updated : 12/08/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -110,12 +110,21 @@ namespace Sandcastle.Core
         {
             if(toolsFolder == null)
             {
-                // Try for SHFBROOT first (the VSPackage needs it)
-                toolsFolder = Environment.GetEnvironmentVariable("SHFBROOT");
+                // Special case for Visual Studio.  Try for SHFBROOT first since the VSPackage needs it as we
+                // will be running from the assembly in the extension's folder.
+                string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                // If not, use the executing assembly's folder
+                if(assemblyLocation.IndexOf(Environment.GetFolderPath(
+                  Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    toolsFolder = Environment.GetEnvironmentVariable("SHFBROOT");
+                }
+
+                // If not found, use the executing assembly's folder.  Builds and other stuff that relies on the
+                // true location will fail under Visual Studio.  The project system should have set SHFBROOT
+                // temporarily when it was initialized if it was found in the project.
                 if(String.IsNullOrWhiteSpace(toolsFolder))
-                    toolsFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    toolsFolder = assemblyLocation;
 
                 if(toolsFolder[toolsFolder.Length - 1] != '\\')
                     toolsFolder += @"\";
@@ -223,6 +232,10 @@ namespace Sandcastle.Core
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
                     catch(UnauthorizedAccessException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(TypeLoadException ex)
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
                     }

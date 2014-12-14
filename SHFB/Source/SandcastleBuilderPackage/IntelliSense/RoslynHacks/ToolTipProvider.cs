@@ -25,17 +25,17 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         public UIElement GetUIElement(Completion itemToRender, ICompletionSession context, UIElementType elementType)
         {
-            if (RoslynUtilities.IsFinalRoslyn)
+            if(RoslynUtilities.IsFinalRoslyn)
             {
                 // The bug which requires this provider has been fixed
                 return null;
             }
 
             // only hook when necessary
-            if (!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true)
+            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !MefProviderOptions.EnableExtendedXmlCommentsCompletion)
                 return null;
 
-            if (itemToRender != null && itemToRender.GetType().FullName != "Microsoft.CodeAnalysis.Editor.Implementation.Completion.Presentation.CustomCommitCompletion")
+            if(itemToRender != null && itemToRender.GetType().FullName != "Microsoft.CodeAnalysis.Editor.Implementation.Completion.Presentation.CustomCommitCompletion")
             {
                 // The Roslyn-provided tool tip provider will throw an exception in this case, so
                 // we override it with the default Visual Studio behavior
@@ -53,10 +53,10 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         internal static Rect GetScreenRect(IIntellisenseSession session)
         {
-            if (session != null && session.TextView != null)
+            if(session != null && session.TextView != null)
             {
                 Visual visualElement = ((IWpfTextView)session.TextView).VisualElement;
-                if (PresentationSource.FromVisual(visualElement) != null)
+                if(PresentationSource.FromVisual(visualElement) != null)
                 {
                     Rect screenRect = WpfHelper.GetScreenRect(visualElement.PointToScreen(new Point(0.0, 0.0)));
                     return new Rect(0.0, 0.0, screenRect.Width * WpfHelper.DeviceScaleX, screenRect.Height * WpfHelper.DeviceScaleY);

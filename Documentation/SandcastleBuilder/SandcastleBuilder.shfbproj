@@ -267,6 +267,7 @@
     <None Include="Content\VersionHistory\v2014.4.22.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
     <None Include="Content\VersionHistory\vNext.aml" />
+    <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\ProjectTemplates.aml" />

@@ -190,7 +190,8 @@ namespace Microsoft.Ddue.Tools
             ApiNamer namer;
 
             // Apply a different naming method to assemblies using the Windows Store or Windows Phone frameworks
-            if(framework == ".NETCore" || framework == "WindowsPhone" || framework == "WindowsPhoneApp")
+            if(framework == ".NETCore" || framework == ".NETPortable" || framework == "WindowsPhone" ||
+              framework == "WindowsPhoneApp")
                 namer = new WindowsStoreAndPhoneNamer();
             else
                 namer = new OrcasNamer();

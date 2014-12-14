@@ -18,6 +18,7 @@
 // the API filter.
 // 01/09/2013 - EFW - Added a workaround to allow documenting the compiler generated public types in WINMD
 // assemblies that actually represent user code.
+// 12/10/2014 - EFW - Added prefix exclusion for "put_" used on Windows Store/Phone assembly properties
 
 using System;
 using System.Collections.Generic;
@@ -542,6 +543,10 @@ namespace Microsoft.Ddue.Tools.Reflection
                     return false;
 
                 if(name.Contains("set_"))
+                    return false;
+
+                // !EFW - Added for Windows Store/Phone
+                if(name.Contains("put_"))
                     return false;
 
                 if(name.Contains("add_"))

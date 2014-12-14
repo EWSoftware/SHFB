@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TokenEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
+// Updated : 12/09/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,10 +13,10 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  10/15/2008  EFW  Created the code
-// 1.9.3.3  12/21/2011  EFW  Rewrote to use the shared WPF Token File Editor user control
+// 10/15/2008  EFW  Created the code
+// 12/21/2011  EFW  Rewrote to use the shared WPF Token File Editor user control
 //===============================================================================================================
 
 using System;
@@ -84,7 +84,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             tokenFile = fileItem;
 
             ucTokenEditor.ContentModified += ucTokenEditor_ContentModified;
-            ucTokenEditor.LoadTokenFile(tokenFile.FullPath);
+            ucTokenEditor.LoadTokenFile(tokenFile.FullPath, null);
         }
         #endregion
 

@@ -1,23 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 12/08/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that defines the general package options.
+// This file contains the class that defines the general package options
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ===============================================================================================================
+// 03/27/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -54,39 +53,34 @@ namespace SandcastleBuilder.Package.PropertyPages
         public string MSHelpViewerPath { get; set; }
 
         /// <summary>
-        /// This is used to get or set the port to use when launcing the
-        /// ASP.NET development web server.
+        /// This is used to get or set the port to use when launching the ASP.NET development web server
         /// </summary>
         public int AspNetDevelopmentServerPort { get; set; }
 
         /// <summary>
-        /// This is used to get or set whether or not verbose logging is enabled
-        /// when building a help file.
+        /// This is used to get or set whether or not verbose logging is enabled when building a help file
         /// </summary>
         public bool VerboseLogging { get; set; }
 
         /// <summary>
-        /// This is used to get or set whether or not to use the external browser
-        /// when viewing website output.
+        /// This is used to get or set whether or not to use the external browser when viewing website output
         /// </summary>
         public bool UseExternalWebBrowser { get; set; }
 
         /// <summary>
-        /// This is used to get or set whether or not to open the help file
-        /// after a successful build.
+        /// This is used to get or set whether or not to open the help file after a successful build
         /// </summary>
         public bool OpenHelpAfterBuild { get; set; }
 
         /// <summary>
-        /// This is used to get or set whether or not to open the build log
-        /// viewer tool window after a failed build.
+        /// This is used to get or set whether or not to open the build log viewer tool window after a failed
+        /// build.
         /// </summary>
-        /// <remarks>The log viewer is not opened if the build is cancelled</remarks>
+        /// <remarks>The log viewer is not opened if the build is canceled</remarks>
         public bool OpenLogViewerOnFailedBuild { get; set; }
 
         /// <summary>
-        /// This is overridden to return an instance of our custom user
-        /// interface control to edit the properties.
+        /// This is overridden to return an instance of our custom user interface control to edit the properties
         /// </summary>
         protected override System.Windows.Forms.IWin32Window Window
         {
@@ -161,7 +155,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This is overridden to dispose of the control
         /// </summary>
-        /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">True if managed resources should be disposed; otherwise, false</param>
         protected override void Dispose(bool disposing)
         {
             if(control != null)

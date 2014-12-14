@@ -28,11 +28,12 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             // only hook when necessary
-            if (!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true)
+            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !MefProviderOptions.EnableExtendedXmlCommentsCompletion)
                 return;
 
             ITextView textView = _editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
-            if (textView == null)
+
+            if(textView == null)
                 return;
 
             RoslynKeyboardFilter filter = new RoslynKeyboardFilter(_completionBroker, textViewAdapter, textView);

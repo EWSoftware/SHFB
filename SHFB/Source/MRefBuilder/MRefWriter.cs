@@ -12,7 +12,6 @@
 // to property getters and setters.  Added code to write out type data for the interop attributes that are
 // converted to type metadata.
 // 08/06/2014 - EFW - Added code to write out values for literal (constant) fields.
-// 12/03/2014 - EFW - Added support for the typedata/@defaultConstructor attribute.
 
 using System;
 using System.Collections.Generic;
@@ -633,10 +632,6 @@ namespace Microsoft.Ddue.Tools
             this.WriteBooleanAttribute("abstract", type.IsAbstract, false);
             this.WriteBooleanAttribute("sealed", type.IsSealed, false);
             this.WriteBooleanAttribute("serializable", (type.Flags & TypeFlags.Serializable) != 0);
-
-            // This is used by the XAML syntax writer to determine if a class has a default constructor
-            if(type.Members.Any(m => m is InstanceInitializer && m.IsPublic && ((Method)m).Parameters.Count == 0))
-                this.WriteBooleanAttribute("defaultConstructor", true);
 
             // Interop attribute data.  In code, these are attributes.  However, the compiler converts the
             // attribute data to type metadata so we don't see them in the regular attribute list.  The metadata
