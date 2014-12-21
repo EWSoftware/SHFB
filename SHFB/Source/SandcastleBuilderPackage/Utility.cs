@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
+// Updated : 12/20/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -26,9 +26,11 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilderProjectElement = SandcastleBuilder.Utils.ProjectElement;
 
@@ -49,8 +51,9 @@ namespace SandcastleBuilder.Package
         // This is used to insert spaces for the Image project element alternate text
         private static Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
 
-        // Namespaces (N) aren't supported for searching.  Overloads (O) are treated like member searches.
-        private static char[] cerTypes = new[] { 'T', 'F', 'P', 'E', 'M', 'O' };
+        // Namespace and namespace group IDs are converted to NamespaceDoc and NamespaceGroupDoc type searches.
+        // Overloads (O) are treated like member searches.
+        private static char[] cerTypes = new[] { 'N', 'G', 'T', 'F', 'P', 'E', 'M', 'O' };
 
         private static Dictionary<string, string> cerOperatorToCodeOperator = new Dictionary<string, string>
         {

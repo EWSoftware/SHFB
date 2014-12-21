@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c7b255bb-2890-46f7-a085-3f615c522f3a" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.12.20.0." />
+		</introduction>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><legacyBold>Breaking Change</legacyBold> - Updated the BuildAssembler configuration files to
+use framework-specific folders for the reflection data.  This will prevent all of the "unknown reference link"
+warnings caused by members of the different frameworks not present in the old reflection data which was only for
+the core .NET Framework.  It also allows for only the framework-specific base class members to be included on the
+member list pages.</para>
+
+						<para>If you have custom presentation styles, you will need to update your BuildAssembler
+configuration files by replacing the <localUri>Data\Reflection</localUri> path with a path to a specific
+framework (i.e. <localUri>Data\.NETFramework</localUri>).  If using the Sandcastle Help File Builder, replace
+the reference with the substitution tag as follows: <localUri>Data\{@TargetFrameworkIdentifier}</localUri>.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Removed the GUID check for link IDs in the VS2010 and VS2013 presentation styles to allow for
+non-GUID target IDs.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the VS2010 and VS2013 presentation styles so that a space is maintained after
+language-specific text in Help 1 and MS Help Viewer content where needed.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="MRefBuilder">
+			<title>MRefBuilder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Added "<codeInline>put_</codeInline>" prefix exclusion to the MRefBuilder API filter to exclude
+property put methods generated in Windows Store/Phone assemblies.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated <localUri>Frameworks.xml</localUri> with some missing reference assembly information
+for the .NET Portable 4.5 and 4.6 frameworks.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="BuildAssembler">
+			<title>BuildAssembler and Build Components</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added code to ignore <codeInline>TypeLoadException</codeInline> when searching for MEF
+component assemblies. That should prevent it from failing if an assembly for a different framework version is
+found during the search.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the XAML Usage syntax generator so that it excludes unwanted types correctly and includes
+XAML information correctly on types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the reflection data generation script and project to allow generation of reflection
+data for each framework type.</para>
+					</listItem>
+
+					<listItem>
+						<para>Generated reflection data for each of the specific frameworks (.NETFramework, .NETCore,
+.NETPortable, .NETMicroFramework, Silverlight, WindowsPhone, and WindowsPhoneApp).</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="Documentation">
+			<title>Documentation</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated the XML comments guide ID Strings topic with expanded information on operator overload
+ID strings.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

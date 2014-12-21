@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MefProviderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
+// Updated : 12/15/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -67,6 +67,14 @@ namespace SandcastleBuilder.Package
         /// <value>This is true by default</value>
         public static bool EnableGoToDefinition { get; set; }
 
+        /// <summary>
+        /// Related to the above, if enabled, any XML comments <c>cref</c> attribute value will allow Go To
+        /// Definition and tool tip info.
+        /// </summary>
+        /// <value>True by default.  This can be disabled in Visual Studio 2015 since it provides tool tip and
+        /// Go To Definition support for <c>cref</c> attribute values already.</value>
+        public static bool EnableGoToDefinitionInCRef { get; set; }
+
         #endregion
 
         #region Constructor
@@ -105,6 +113,7 @@ namespace SandcastleBuilder.Package
 
                 EnableExtendedXmlCommentsCompletion = (root.Element("EnableExtendedXmlCommentsCompletion") != null);
                 EnableGoToDefinition = (root.Element("EnableGoToDefinition") != null);
+                EnableGoToDefinitionInCRef = (root.Element("EnableGoToDefinitionInCRef") != null);
             }
             catch(Exception ex)
             {
@@ -129,7 +138,8 @@ namespace SandcastleBuilder.Package
             {
                 XElement root = new XElement("MefProviderOptions",
                     EnableExtendedXmlCommentsCompletion ? new XElement("EnableExtendedXmlCommentsCompletion") : null,
-                    EnableGoToDefinition ? new XElement("EnableGoToDefinition") : null);
+                    EnableGoToDefinition ? new XElement("EnableGoToDefinition") : null,
+                    EnableGoToDefinitionInCRef ? new XElement("EnableGoToDefinitionInCRef") : null);
 
                 root.Save(filename);
             }
@@ -149,7 +159,7 @@ namespace SandcastleBuilder.Package
         /// just set the default values</param>
         public static void ResetConfiguration(bool deleteConfigurationFile)
         {
-            EnableExtendedXmlCommentsCompletion = EnableGoToDefinition = true;
+            EnableExtendedXmlCommentsCompletion = EnableGoToDefinition = EnableGoToDefinitionInCRef = true;
 
             if(deleteConfigurationFile)
             {

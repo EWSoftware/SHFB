@@ -116,8 +116,13 @@ comments in C# projects will provide more information about the target (i.e. the
 MAML target links) and the option to go to the definition of the item if possible when Ctrl+Click is pressed
 while hovering over the text.  Some limitations apply.  See the <link xlink:href="ba11d6d5-2f99-4b26-b384-21324ef1b49a" />
 topic for details.</para>
-					</listItem>
 
+						<para>A sub-option is available that allows you to enable or disable the Go To Definition feature for
+XML comments <codeInline>cref</codeInline> attributes.  This is useful in Visual Studio 2015 and later which has
+expanded information tool tips and Go To Definition support for them built in.  These options can be disabled if
+you do not wish to use the Go To Definition support or if you think the options are causing issues with Visual
+Studio.</para>
+					</listItem>
 
 					<listItem>
 						<para><ui>Build Output Background/Foreground/Font</ui> - (Standalone GUI only)  These options let you

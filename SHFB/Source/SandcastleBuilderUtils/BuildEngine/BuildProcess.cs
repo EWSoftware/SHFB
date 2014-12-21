@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2014
+// Updated : 12/14/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -46,7 +46,6 @@
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight Framework versions
 // 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
-#endregion
 // 1.9.4.0  03/25/2012  EFW  Merged changes for VS2010 style from Don Fehr
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
@@ -56,6 +55,7 @@
 // -------  12/04/2013  EFW  Removed the ApplyVisibilityProperties build step.  Plug-ins can apply visibility
 //                           settings if needed by calling the ApplyVisibilityProperties() method.  Added
 //                           support for namespace grouping based on changes submitted by Stazzz.
+#endregion
 //          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //          12/29/2013  EFW  Added support for the ReferenceOutputAssembly project reference metadata item
 //          01/09/2014  EFW  Removed copying of branding files.  They are part of the presentation style now.
@@ -63,6 +63,7 @@
 //                           part of each presentation style now.
 //          02/15/2014  EFW  Added support for the Open XML output format
 //          05/14/2014  EFW  Added support for presentation style plug-in dependencies
+//          12/14/2014  EFW  Updated to use framework-specific reflection data folders
 //===============================================================================================================
 
 using System;
@@ -235,6 +236,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string Help2CompilerFolder
         {
             get { return hxcompFolder; }
+        }
+
+        /// <summary>
+        /// This returns the name of the folder that contains the reflection data for the selected framework
+        /// platform (.NETFramework, .NETCore, .NETPortable, etc.).
+        /// </summary>
+        public string FrameworkReflectionDataFolder
+        {
+            get
+            {
+                return Path.Combine(ComponentUtilities.ToolsFolder, "Data", frameworkSettings.Platform);
+            }
         }
 
         /// <summary>
@@ -710,9 +723,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     Environment.SetEnvironmentVariable("SHFBROOT", ComponentUtilities.ToolsFolder);
                 }
 
-                if(!Directory.Exists(ComponentUtilities.ToolsFolder + @"Data\Reflection"))
-                    throw new BuilderException("BE0032", "Reflection data files do not exist yet");
-
                 // Get the framework settings to use for the build
                 frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
                     project.FrameworkVersion);
@@ -722,6 +732,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "Unable to locate information for the project framework version '{0}' or a suitable " +
                         "redirected version on this system.  See error number help topic for details.",
                         project.FrameworkVersion));
+
+                if(!Directory.Exists(this.FrameworkReflectionDataFolder))
+                    throw new BuilderException("BE0032", "Reflection data files for the selected framework " +
+                        "do not exist yet (" + this.FrameworkReflectionDataFolder + ").  See help file for " +
+                        "details about this error number.");
 
                 // Warn if a different framework is being used for the build
                 if(frameworkSettings.Title != project.FrameworkVersion)
@@ -1173,9 +1188,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // These are all of the valid namespaces we are interested in.  This prevents the methods below
                 // from returning nested types as potential namespaces since they can't tell the difference.
-                HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                    ComponentUtilities.ToolsFolder, @"Data\Reflection"), "*.xml",
-                    SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
+                HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(
+                    this.FrameworkReflectionDataFolder, "*.xml", SearchOption.AllDirectories).Select(
+                        f => Path.GetFileNameWithoutExtension(f)));
 
                 // Get namespaces referenced in the XML comments of the documentation sources
                 foreach(var n in commentsFiles.GetReferencedNamespaces(validNamespaces))

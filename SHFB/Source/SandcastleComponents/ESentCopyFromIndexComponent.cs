@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentCopyFromIndexComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2014
+// Updated : 12/14/2014
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the CopyFromIndexComponent that stores the index data in one or more persistent ESENT
@@ -82,8 +82,8 @@ namespace SandcastleBuilder.Components
                 {
                     return @"<index name=""reflection"" value=""/reflection/apis/api"" key=""@id"" cache=""15"" localCacheSize=""2500""
 	frameworkCachePath=""{@LocalDataFolder}Cache\ReflectionIndexCache"" projectCachePath="""">
-	<data base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" duplicateWarning=""false""
-		groupId=""ReflectionIndexCache"">
+	<data base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		duplicateWarning=""false"" groupId=""ReflectionIndexCache"">
 		{@ReferenceLinkNamespaceFiles}
 	</data>
 	<data files=""reflection.xml"" groupId=""Project_Ref_{@UniqueID}"" />

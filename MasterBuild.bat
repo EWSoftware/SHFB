@@ -23,7 +23,7 @@ IF ERRORLEVEL 1 GOTO End
 IF ERRORLEVEL 1 GOTO End
 
 REM Skip help file and setup build if there is no reflection data yet
-IF NOT EXIST %SHFBROOT%\Data\Reflection\*.xml GOTO MissingReflectionData
+IF NOT EXIST %SHFBROOT%\Data\.NETFramework\*.xml GOTO MissingReflectionData
 
 CD ..\..\Documentation
 

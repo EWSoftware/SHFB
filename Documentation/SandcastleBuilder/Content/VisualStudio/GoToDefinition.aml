@@ -11,6 +11,10 @@ to the definition of the item if possible when Ctrl+Click is pressed while hover
 			<alert class="note">
 				<para>The color of the link underline can be changed using <ui>Tools | Options | Fonts and Colors</ui>
 and changing the color for the <ui>MAML/XML Comments Link Underline</ui> entry.</para>
+
+				<para>In order for Ctrl+Click to have any effect, the editor window must have the focus.  If you hold
+down Ctrl and no underline appears under a valid element under the mouse, ensure the window has the focus by
+clicking in it.</para>
 			</alert>
 
 		</introduction>
@@ -60,8 +64,11 @@ changes.  In the event it cannot find a match, check the ID to ensure that it is
 <ui>Entity References</ui> tool window can be used to verify the ID.  If the ID is correct and is within the
 current solution, you may have found a case that could not be matched with enough accuracy.</para>
 
-						<para>Note that namespace identifiers (those IDs prefixed with "N:" or "G:") can never be matched as
-namespaces do not exist as code elements identifiable in a search since they may appear in multiple locations.</para>
+						<para>Note that namespace identifiers (those IDs prefixed with "N:" or "G:") can never be matched to
+a namespace declaration as namespaces do not exist as code elements identifiable in a search since they may
+appear in multiple locations.  As such, these IDs are translated to the related <codeInline>NamespaceDoc</codeInline>
+or <codeInline>NamespaceGroupDoc</codeInline> type ID and a search is performed for it instead within the
+identified namespace.</para>
 					</listItem>
 
 					<listItem>
@@ -97,7 +104,8 @@ indicate that you can Ctrl+click on it.  Ctrl+clicking the link will attempt to 
 it - This represents a code API member ID.  Ctrl+clicking the link will attempt to open the associated code file
 and jump to the indicated member.  Note that navigation is only available for members of C# projects within the
 current solution.  It is not possible to navigate to members in non-C# projects or to members of base framework
-or reference assemblies.</para>
+or reference assemblies in Visual Studio 2013 or earlier.  Visual Studio 2015 does support Go To Definition for
+reference targets in XML comments and Ctrl+Click will work for any valid target.</para>
 
 						<para>The member ID will be parsed and a best attempt will be made to match it to the correct code
 member.  However, since XML comments member IDs are rarely fully qualified, a number of assumptions have to be
@@ -105,8 +113,11 @@ made and a set of search text candidates formulated as follows:</para>
 
 						<list class="bullet">
 							<listItem>
-								<para>Namespace identifiers (those IDs prefixed with "N:" or "G:") can never be matched as
-namespaces do not exist as code elements identifiable in a search since they may appear in multiple locations.</para>
+								<para>Namespace identifiers (those IDs prefixed with "N:" or "G:") can never be matched to
+namespace declarations as namespaces do not exist as code elements identifiable in a search since they may
+appear in multiple locations.  As such, these IDs are translated to the related <codeInline>NamespaceDoc</codeInline>
+or <codeInline>NamespaceGroupDoc</codeInline> type ID and a search is performed for it instead within the
+identified namespace.</para>
 							</listItem>
 
 							<listItem>

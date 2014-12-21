@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlIndexCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/15/2013
+// Updated : 12/16/2014
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the InMemoryIndexCache that adds the ability to store index information in a persistent
@@ -13,9 +13,9 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.7.0  02/15/2013  EFW  Created the code
+// 02/15/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -240,7 +240,16 @@ namespace SandcastleBuilder.Components.Commands
             if(String.IsNullOrEmpty(baseDirectory))
                 fullPath = wildcardPath;
             else
+            {
+                // Verify that the directory exists
+                if(!Directory.Exists(baseDirectory))
+                    throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "The targets " +
+                        "directory '{0}' does not exist.  The configuration is most likely out of date.  " +
+                        "Please delete this component from the project, add it back, and reconfigure it.",
+                        baseDirectory), "configuration");
+
                 fullPath = Path.Combine(baseDirectory, wildcardPath);
+            }
 
             fullPath = Environment.ExpandEnvironmentVariables(fullPath);
 

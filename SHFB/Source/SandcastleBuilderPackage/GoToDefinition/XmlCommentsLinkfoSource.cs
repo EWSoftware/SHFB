@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
+// Updated : 12/15/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -81,13 +81,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
             applicableToSpan = null;
 
             var tagAggregator = provider.AggregatorFactory.CreateTagAggregator<IClassificationTag>(session.TextView);
-            var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(textBuffer.CurrentSnapshot);
+            var triggerPoint = session.GetTriggerPoint(textBuffer.CurrentSnapshot);
 
             if(triggerPoint != null)
             {
                 SnapshotSpan tagSpan;
-                var lineSpan = triggerPoint.GetContainingLine();
-                string attrName = null, name;
+                var lineSpan = triggerPoint.Value.GetContainingLine();
+                string elementName = null, attrName = null, identifier = null, name;
                 UIElement content;
 
                 // Get the tags for the line containing the mouse point
@@ -97,15 +97,19 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     name = curTag.Tag.ClassificationType.Classification.ToLowerInvariant();
                     tagSpan = curTag.Span.GetSpans(textBuffer).First();
 
+                    if(name.IndexOf("identifier", StringComparison.Ordinal) != -1)
+                        name = "identifier";
+
                     switch(name)
                     {
                         case "xml doc tag":
-                            // Track the last seen XML "cref".  Note that the classifier doesn't break up the XML
-                            // comments into elements and attributes so we may get a mix of text in the "tag".
+                            // Track the last seen element or attribute.  The classifier in VS2013 and earlier does
+                            // not break up the XML comments into elements and attributes so we may get a mix of text
+                            // in the "tag".
                             attrName = tagSpan.GetText();
 
                             // If it contains "cref", tne next XML doc attribute value will be the target
-                            if(attrName.IndexOf("cref=") != -1)
+                            if(attrName.IndexOf("cref=") != -1 && MefProviderOptions.EnableGoToDefinitionInCRef)
                                 attrName = "cref";
 
                             // As above, for conceptualLink, the next XML doc attribute will be the target
@@ -119,7 +123,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                         case "xml doc attribute":
                             if((attrName == "cref" || attrName == "conceptualLink") &&
-                              tagSpan.Contains(triggerPoint) && tagSpan.Length > 2)
+                              tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 2)
                             {
                                 // Drop the quotes from the span
                                 var span = new SnapshotSpan(tagSpan.Snapshot, tagSpan.Start + 1,
@@ -134,11 +138,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                                     quickInfoContent.Add(content);
                                 }
+
+                                return;
                             }
                             break;
 
                         case "xml doc comment":
-                            if(attrName == "token" && tagSpan.Contains(triggerPoint) && tagSpan.Length > 1)
+                            if(attrName == "token" && tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 1)
                             {
                                 content = this.CreateInfoText(attrName, tagSpan.GetText());
 
@@ -149,6 +155,99 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                                     quickInfoContent.Add(content);
                                 }
+
+                                return;
+                            }
+                            break;
+
+                        // VS2015 is more specific in its classifications
+                        case "xml doc comment - name":
+                            elementName = tagSpan.GetText().Trim();
+                            break;
+
+                        case "xml doc comment - attribute name":
+                            attrName = tagSpan.GetText().Trim();
+                            identifier = null;
+
+                            if(attrName == "cref" && !MefProviderOptions.EnableGoToDefinitionInCRef)
+                                attrName = null;
+                            break;
+
+                        case "xml doc comment - attribute value":
+                            if((attrName == "cref" || (elementName == "conceptualLink" && attrName == "target")) &&
+                              tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 1)
+                            {
+                                content = this.CreateInfoText((attrName == "cref") ? attrName : elementName,
+                                    tagSpan.GetText());
+
+                                if(content != null)
+                                {
+                                    applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
+                                        SpanTrackingMode.EdgeExclusive);
+
+                                    quickInfoContent.Add(content);
+                                }
+
+                                return;
+                            }
+                            break;
+
+                        case "identifier":
+                        case "keyword":
+                        case "operator":
+                            if(attrName != null)
+                            {
+                                identifier += tagSpan.GetText();
+
+                                if(name == "keyword")
+                                    identifier += " ";
+                            }
+                            break;
+
+                        case "punctuation":
+                            if(identifier != null)
+                                identifier += tagSpan.GetText();
+                            break;
+
+                        case "xml doc comment - attribute quotes":
+                            if(identifier != null)
+                            {
+                                // Set the span to that of the identifier
+                                var span = new SnapshotSpan(tagSpan.Snapshot, tagSpan.Start - identifier.Length,
+                                    identifier.Length);
+
+                                if(span.Contains(triggerPoint.Value) && span.Length > 1)
+                                {
+                                    content = this.CreateInfoText("cref", span.GetText());
+
+                                    if(content != null)
+                                    {
+                                        applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(span,
+                                            SpanTrackingMode.EdgeExclusive);
+
+                                        quickInfoContent.Add(content);
+                                    }
+                                }
+
+                                return;
+                            }
+                            break;
+
+                        case "xml doc comment - text":
+                            if(elementName == "token" && tagSpan.Contains(triggerPoint.Value) &&
+                              tagSpan.Length > 1)
+                            {
+                                content = this.CreateInfoText(elementName, tagSpan.GetText());
+
+                                if(content != null)
+                                {
+                                    applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
+                                        SpanTrackingMode.EdgeExclusive);
+
+                                    quickInfoContent.Add(content);
+                                }
+
+                                return;
                             }
                             break;
 
@@ -199,7 +298,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     break;
 
                 case "cref":
-                    textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition (within solution only)"));
+                    if(!IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn)
+                        textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition (within solution only)"));
+                    else
+                        textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition"));
                     break;
 
                 default:

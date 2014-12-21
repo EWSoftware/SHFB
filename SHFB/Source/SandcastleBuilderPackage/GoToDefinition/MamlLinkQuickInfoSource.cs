@@ -81,12 +81,12 @@ namespace SandcastleBuilder.Package.GoToDefinition
             applicableToSpan = null;
 
             var tagAggregator = provider.AggregatorFactory.CreateTagAggregator<IClassificationTag>(session.TextView);
-            var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(textBuffer.CurrentSnapshot);
+            var triggerPoint = session.GetTriggerPoint(textBuffer.CurrentSnapshot);
 
             if(triggerPoint != null)
             {
                 SnapshotSpan tagSpan;
-                var lineSpan = triggerPoint.GetContainingLine();
+                var lineSpan = triggerPoint.Value.GetContainingLine();
                 string elementName = null, attrName = null, name, spanText;
                 UIElement content;
 
@@ -111,7 +111,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         case "xml attribute value":
                             tagSpan = curTag.Span.GetSpans(textBuffer).First();
 
-                            if(tagSpan.Contains(triggerPoint))
+                            if(tagSpan.Contains(triggerPoint.Value))
                             {
                                 if(((elementName == "image" || elementName == "link") && attrName == "xlink:href") ||
                                   (elementName == "topic" && attrName == "id"))
@@ -134,7 +134,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         case "xml text":
                             tagSpan = curTag.Span.GetSpans(textBuffer).First();
 
-                            if(tagSpan.Contains(triggerPoint))
+                            if(tagSpan.Contains(triggerPoint.Value))
                             {
                                 spanText = tagSpan.GetText().Trim();
                                 content = null;

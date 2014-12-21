@@ -19,7 +19,7 @@ without installing the tools manually such as on a build server.  The following 
 
     <PropertyGroup>
       <!-- NOTE: Update the version number in the path to match the package version -->
-      <SHFBROOT Condition=" '$(SHFBROOT)' == '' ">$(MSBuildThisFileDirectory)..\packages\EWSoftware.SHFB.2014.11.22.0\Tools\</SHFBROOT>
+      <SHFBROOT Condition=" '$(SHFBROOT)' == '' ">$(MSBuildThisFileDirectory)..\packages\EWSoftware.SHFB.2014.12.20.0\Tools\</SHFBROOT>
 
       ... other SHFB project properties ...
 

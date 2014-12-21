@@ -29,13 +29,13 @@ ECHO *
 ECHO * The reflection data has been built successfully.  Rename the temporary
 ECHO * folder appropriately to make it usable:
 ECHO *
-ECHO *     .NETFramework_[version]     to .NETFramework
-ECHO *     .NETCore_[version]          to .NETCore
-ECHO *     .NETPortable_[version]      to .NETPortable
-ECHO *     .NETMicroFramewor_[version] to .NETMicroFramework
-ECHO *     Silverlight_[version]       to Silverlight
-ECHO *     WindowsPhone_[version]      to WindowsPhone
-ECHO *     WindowsPhoneApp_[version]   to WindowsPhoneApp
+ECHO *     .NETFramework_[version]      to .NETFramework
+ECHO *     .NETCore_[version]           to .NETCore
+ECHO *     .NETPortable_[version]       to .NETPortable
+ECHO *     .NETMicroFramework_[version] to .NETMicroFramework
+ECHO *     Silverlight_[version]        to Silverlight
+ECHO *     WindowsPhone_[version]       to WindowsPhone
+ECHO *     WindowsPhoneApp_[version]    to WindowsPhoneApp
 ECHO *
 
 :Done

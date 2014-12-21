@@ -35,7 +35,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2014.4.22.0</HelpFileVersion>
+    <HelpFileVersion>2014.12.20.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -263,10 +263,11 @@
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.9.7.0.aml" />
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.9.8.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
+    <None Include="Content\VersionHistory\v2014.12.20.0.aml" />
     <None Include="Content\VersionHistory\v2014.2.15.0.aml" />
     <None Include="Content\VersionHistory\v2014.4.22.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
-    <None Include="Content\VersionHistory\vNext.aml" />
+    <None Include="Content\VersionHistory\v2014.11.22.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

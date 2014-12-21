@@ -2,25 +2,27 @@
 <topic id="bc38b398-4cca-4972-b4b5-966def8428b4" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<para>Error BE0032: Reflection data files do not exist yet</para>
+			<para>Error BE0032: Reflection data files for the selected framework do not exist yet
+(<localUri>folderName</localUri>)</para>
 		</introduction>
 
 		<section>
 			<title>Cause</title>
 			<content>
-				<para>This error will occur if the <localUri>%SHFBROOT%\Data\Reflection</localUri> folder does not exist.</para>
+				<para>This error will occur if the reflection data folder for the selected framework does not exist
+yet in the <localUri>%SHFBROOT%\Data\</localUri> folder.</para>
 			</content>
 		</section>
 
 		<section>
 			<title>Solution</title>
 			<content>
-				<para>The files in that folder are required to document members inherited from base .NET Framework
+				<para>The files in the named folder are required to document members inherited from base framework
 classes.  If you get this error, check to be sure that the <environmentVariable>SHFBROOT</environmentVariable>
 environment variable points to the latest copy of the Sandcastle Help File Builder and tools (usually in the
-<localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help File Builder</localUri>) folder and that the
-<localUri>.\Data\Reflection</localUri> folder exists beneath it.  If it does not, you should reinstall the
-Sandcastle Help File Builder.</para>
+<localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help File Builder</localUri> folder) and that a folder exists
+in the <localUri>.\Data\</localUri> folder named after the selected framework.  If it does not, you should
+reinstall the Sandcastle Help File Builder.</para>
 
 			</content>
 		</section>

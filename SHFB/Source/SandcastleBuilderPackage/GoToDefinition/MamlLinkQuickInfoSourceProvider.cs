@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MamlLinkQuickInfoSourceProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
+// Updated : 12/20/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -33,7 +33,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
     /// </summary>
     [Export(typeof(IQuickInfoSourceProvider))]
     [Name("MAML Link Quick Info Provider")]
-    [Order(Before = "Default Quick Info Presenter")]
+    [Order(After = "Default Quick Info Presenter")]
     [ContentType("xml")]
     internal sealed class MamlLinkQuickInfoSourceProvider : IQuickInfoSourceProvider
     {

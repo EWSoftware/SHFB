@@ -22,7 +22,8 @@ configuration that is passed to a build component.</para>
 <code language="xml" title="Example Build Component Configuration">
 &lt;component id="Copy From Index Component"&gt;
 	&lt;index name="reflection" value="/reflection/apis/api" key="@id" cache="15"&gt;
-		&lt;data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false" /&gt;
+		&lt;data base="{@SHFBFolder}Data\{@TargetFrameworkIdentifier}" recurse="true" files="*.xml"
+		duplicateWarning="false" /&gt;
 		&lt;data files="reflection.xml" /&gt;
 	&lt;/index&gt;
 	&lt;copy name="reflection" source="*" target="/document/reference" /&gt;

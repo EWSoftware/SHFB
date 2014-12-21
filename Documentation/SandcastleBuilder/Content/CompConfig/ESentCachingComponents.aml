@@ -90,8 +90,8 @@ files so that their information is cached in the same database.</para>
 &lt;component id="Reflection Index Data (ESENT Cache)"&gt;
   &lt;index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
     frameworkCachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" projectCachePath=""&gt;
-    &lt;data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
-      groupId="ReflectionIndexCache"&gt;
+    &lt;data base="{@SHFBFolder}Data\{@TargetFrameworkIdentifier}" recurse="true" files="*.xml"
+		duplicateWarning="false" groupId="ReflectionIndexCache"&gt;
       &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
       &lt;namespace file="System.xml" /&gt;
       &lt;namespace file="System.IO.xml" /&gt;
@@ -111,8 +111,9 @@ files so that their information is cached in the same database.</para>
   &lt;linkTarget value="{@SdkLinkTarget}" /&gt;
   &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
     cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" /&gt;
-  &lt;targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@SdkLinkType}"
-    id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500"&gt;
+  &lt;targets base="{@SHFBFolder}Data\{@TargetFrameworkIdentifier}" recurse="true" files="*.xml"
+	type="{@SdkLinkType}" id="FrameworkTargets"
+	cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500"&gt;
     &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
     &lt;namespace file="System.xml" /&gt;
     &lt;namespace file="System.IO.xml" /&gt;

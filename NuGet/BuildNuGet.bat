@@ -12,4 +12,4 @@ DEL ..\SHFB\Deploy\SandcastleHtmlExtract.xml > NUL 2> NUL
 DEL /S /Q ..\SHFB\Deploy\*CodeAnalysis* > NUL 2> NUL
 DEL ..\SHFB\Deploy\reflection.org > NUL 2> NUL
 
-..\SHFB\Source\.nuget\NuGet Pack SHFB.nuspec -NoPackageAnalysis -OutputDirectory ..\Deployment
+..\SHFB\Source\.nuget\NuGet Pack SHFB.nuspec -NoDefaultExcludes -NoPackageAnalysis -OutputDirectory ..\Deployment

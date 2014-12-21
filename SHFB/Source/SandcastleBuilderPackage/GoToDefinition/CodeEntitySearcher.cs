@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CodeEntitySearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/12/2014
+// Updated : 12/20/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -219,19 +219,26 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
             if(searchText.IsCodeEntityReference())
             {
-                // We can't search for namespaces since they don't exist as something we can go to in the code
-                if(searchText[0] == 'N')
-                    return false;
-
-                // Limit to classes or members for the results.  For member searches, there doesn't appear to be
-                // a way to further qualify it to limit it to specific member types such as just fields, events,
-                // properties, or methods so we may get all member types in the results.
-                if(searchText[0] == 'T')
+                // We can't search for namespaces and namespace groups since they don't exist as something we can
+                // go to in the code.  As such, convert them to NamespaceDoc and NamespaceGroupDoc type searches.
+                if(searchText[0] == 'N' || searchText[0] == 'G')
+                {
                     searchFlags = _LIB_LISTTYPE.LLT_CLASSES;
+                    searchText = searchText.Substring(2) + ((searchText[0] == 'N') ? ".NamespaceDoc" :
+                        ".NamespaceGroupDoc");
+                }
                 else
-                    searchFlags = _LIB_LISTTYPE.LLT_MEMBERS;
+                {
+                    // Limit to classes or members for the results.  For member searches, there doesn't appear to
+                    // be a way to further qualify it to limit it to specific member types such as just fields,
+                    // events, properties, or methods so we may get all member types in the results.
+                    if(searchText[0] == 'T')
+                        searchFlags = _LIB_LISTTYPE.LLT_CLASSES;
+                    else
+                        searchFlags = _LIB_LISTTYPE.LLT_MEMBERS;
 
-                searchText = searchText.Substring(2);
+                    searchText = searchText.Substring(2);
+                }
             }
 
             // If parentheses are found, only search for members.  Drop the parameters because we can't guarantee

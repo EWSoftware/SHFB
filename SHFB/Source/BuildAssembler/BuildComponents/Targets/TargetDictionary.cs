@@ -167,7 +167,9 @@ namespace Microsoft.Ddue.Tools.Targets
             // Verify that the directory exists
             if(!Directory.Exists(this.DirectoryPath))
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "The targets " +
-                    "directory '{0}' does not exist.", this.DirectoryPath), "configuration");
+                    "directory '{0}' does not exist.  The configuration is most likely out of date.  Please " +
+                    "delete this component from the project, add it back, and reconfigure it.",
+                    this.DirectoryPath), "configuration");
 
             if(String.IsNullOrWhiteSpace(id))
                 id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCode().ToString("X",

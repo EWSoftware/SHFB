@@ -10,6 +10,10 @@ namespace TestDoc
     /// <summary>
     /// A test class
     /// </summary>
+    /// <remarks><para>Token test: <token>SHFB</token></para>
+    /// <para>NamespaceGroupDoc link test: <see cref="G:TestDoc.Generics"/></para>
+    /// <para>NamespaceDoc link test: <see cref="N:TestDoc.DocumentationInheritance"/></para>
+    /// </remarks>
     public class TestClass
     {
         #region Fields

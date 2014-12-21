@@ -196,8 +196,6 @@
     <Compile Include="GoToDefinition\GoToDefinitionKeyProcessor.cs" />
     <Compile Include="GoToDefinition\GoToDefinitionKeyProcessorProvider.cs" />
     <Compile Include="GoToDefinition\GoToDefinitionMouseProcessor.cs" />
-    <Compile Include="GoToDefinition\MamlLinkQuickInfoController.cs" />
-    <Compile Include="GoToDefinition\MamlLinkQuickInfoControllerProvider.cs" />
     <Compile Include="GoToDefinition\MamlLinkQuickInfoSource.cs" />
     <Compile Include="GoToDefinition\MamlLinkQuickInfoSourceProvider.cs" />
     <Compile Include="GoToDefinition\ProjectFileSearcher.cs" />
@@ -205,8 +203,6 @@
     <Compile Include="GoToDefinition\UnderlineClassifier.cs" />
     <Compile Include="GoToDefinition\UnderlineClassifierProvider.cs" />
     <Compile Include="GoToDefinition\UnderlineFormatDefinition.cs" />
-    <Compile Include="GoToDefinition\XmlCommentsLinkfoController.cs" />
-    <Compile Include="GoToDefinition\XmlCommentsLinkfoControllerProvider.cs" />
     <Compile Include="GoToDefinition\XmlCommentsLinkfoSource.cs" />
     <Compile Include="GoToDefinition\XmlCommentsLinkfoSourceProvider.cs" />
     <Compile Include="GoToDefinition\XmlGoToDefinitionMouseProcessor.cs" />

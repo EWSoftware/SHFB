@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="063f61e1-2040-431f-b53c-91b826027ac6" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.12.20.0.</para>
+		</introduction>
+
+		<section>
+			<title>Breaking Changes</title>
+			<content>
+				<para>If you have custom presentation styles or use the ESent or SQL Server cached data components, the
+following breaking changes will affect them.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Updated the BuildAssembler configuration files to use framework-specific folders for the
+reflection data.  This will prevent all of the "unknown reference link" warnings caused by members of the
+different frameworks not present in the old reflection data which was only for the core .NET Framework.  It also
+allows for only the framework-specific base class members to be included on the member list pages.</para>
+
+						<para>If you have custom presentation styles, you will need to update your BuildAssembler
+configuration files by replacing the <localUri>Data\Reflection</localUri> path with the substitution tag as
+follows: <localUri>Data\{@TargetFrameworkIdentifier}</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the ESent and SQL data cache build components to use the new framework-specific folder
+locations for reference link target data.  If you use any of these components, you must delete them from the
+project, add them back, and configure them in order for the updated configuration to take effect.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Other Changes Made in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in the MPF code that caused renaming files using the Solution Explorer to add a new
+file under the new name and keep the old file thus causing source control to get confused and think there was a
+duplicate file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Encoded component paths written to the BuildAssembler configuration files to allow for paths
+containing XML entities such as the ampersand.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>ComponentUtilities.ToolsFolder</codeInline> so that it always prefers the
+executing assembly location over <environmentVariable>SHFBROOT</environmentVariable> unless running under Visual
+Studio.  This allows for a local project version of the help file builder tools to correctly take precedence over
+the installed version.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a couple of incorrect syntax generator IDs that caused the F# namespaces to not be
+included for the build component namespace filter and the <localUri>AddXamlSyntaxData.xsl</localUri> transform to
+be omitted when transforming the reflection data when the XAML Usage syntax generator was included.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to ignore <codeInline>TypeLoadException</codeInline> when searching for MEF
+component assemblies. That should prevent it from failing if an assembly for an different framework version is
+found during the search.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added informational tool tips and Go To Definition support for various MAML and XML comments
+elements to help with navigation while editing XML comments and MAML topics in Visual Studio.  Thanks to Noah
+Richards for his Go To Definition example package on which the core of the keyboard and mouse processor handlers
+is based.  See the <link xlink:href="ba11d6d5-2f99-4b26-b384-21324ef1b49a" /> topic for details and information
+on limitations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added options to the Sandcastle Help File Builder options page in Visual Studio to allow
+enabling and disabling of the extended XML comments completion and Go To Definition features.  This allows you to
+turn them off if you do not want to use them or if you think they may be causing problems.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 12/16/2013
+// Updated : 12/14/2014
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
@@ -12,10 +12,10 @@
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  02/05/2011  EFW  Created the code
-// 1.1.0.0  04/14/2012  EFW  Converted to use WPF
+// 02/05/2011  EFW  Created the code
+// 04/14/2012  EFW  Converted to use WPF
 //===============================================================================================================
 
 using System;
@@ -87,17 +87,19 @@ namespace Sandcastle.Installer.InstallerPages
             if(vsPath != null)
                 vsPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(vsPath));
 
-            // Check for the folder
-            if(String.IsNullOrEmpty(vsPath) || !Directory.Exists(vsPath))
-            {
-                para.Inlines.Add(new Run("Unable to locate this version of Visual Studio."));
-                return false;
-            }
-
-            // Search for one of the schema files.  If not found, assume it's safe to install them unless
-            // the folder doesn't exist.  It has been known to get by the check above for some reason.
             try
             {
+                // Check for the folder.  Also check for devenv.exe as some tools install under the Visual Studio
+                // folder and create the environment variable even though the IDE is not there.
+                if(String.IsNullOrEmpty(vsPath) || !Directory.Exists(vsPath) || !File.Exists(Path.Combine(
+                  vsPath, @"..\..\Common7\IDE\devenv.exe")))
+                {
+                    para.Inlines.Add(new Run("Unable to locate this version of Visual Studio."));
+                    return false;
+                }
+
+                // Search for one of the schema files.  If not found, assume it's safe to install them unless
+                // the folder doesn't exist.  It has been known to get by the check above for some reason.
                 checkPath = Directory.GetFiles(vsPath, "developerStructure.xsd",
                     SearchOption.AllDirectories).FirstOrDefault();
             }

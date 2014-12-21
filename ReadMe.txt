@@ -12,12 +12,13 @@ In order to use Sandcastle and the Sandcastle Help File Builder (SHFB) you will 
 In order to build the source code you will need the following tools:
 
     Required:
-        - Visual Studio 2010 SP1 (Used to build the C# projects for the tools)
+        - .NET 4.5.1 (Used to build the reflection data)
+        - Visual Studio 2010 SP1 or later (Used to build the C# projects for the tools)
         - NuGet Package Manager Extension (Required to download the NuGet packages used by the main projects)
 
     Optional:
-        - Visual Studio 2010 SDK SP1 (Required for VSPackage development)
-        - VSPackage Builder Extension (Required by the VSPackage project)
+        - Visual Studio 2010 SDK SP1 or later (Required for VSPackage development)
+        - VSPackage Builder Extension (Required by the VSPackage project, VS2010 only)
         - Wix 3.x Toolset (Used to create the MSI installer).
 
 
@@ -85,10 +86,15 @@ this, open a command prompt, change into the root folder and run the MasterBuild
 the tools and place them in the SHFB\Deploy folder ready for use.  By default, the Release version is built.
 To build a debug version, pass in the command line parameter Debug.  Once that completes, change into the
 SHFB\Deploy\Data folder and execute the BuildReflectionData.bat script.  This will generate the reflection data
-files for the .NET Framework into a temporary folder.  Rename the folder it creates to "Reflection".
+files for the .NET Framework into a temporary folder.  Rename the folder it creates to ".NETFramework".
 
-NOTE: If you do not have .NET 4.5.1 installed, pass it the framework and version to build.  For example:
+Reflection data can be built for other frameworks as well but you must have the latest version of the framework
+and all of the requisite tools and supporting SDKs installed as well.  Other supported frameworks include
+.NETCore, .NETPortable, .NETMicroFramwork, Silverlight, WindowsPhone, and WindowsPhoneApp.  To build the
+reflection data for a different framework, pass its name on the command line.  For example:
 
-    BuildReflectionData .NETFramework 4.0.30319
-Or
-    BuildReflectionData .NETFramework 4.5
+    BuildReflectionData .NETCore
+    BuildReflectionData .NETPortable
+    BuildReflectionData WindowsPhoneApp
+
+Once built, rename the folder by removing the version number on the resulting output folder.

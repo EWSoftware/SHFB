@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/05/2014
+// Updated : 12/14/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -208,9 +208,9 @@ namespace SandcastleBuilder.PlugIns
 
                 var rn = builder.ReferencedNamespaces;
 
-                HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                  ComponentUtilities.ToolsFolder, @"Data\Reflection"), "*.xml",
-                  SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
+                HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(
+                    builder.FrameworkReflectionDataFolder, "*.xml", SearchOption.AllDirectories).Select(
+                        f => Path.GetFileNameWithoutExtension(f)));
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
+// Updated : 12/15/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -171,7 +171,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                                     TopicId = topic.Attribute("id").Value,
                                 };
 
-                            info.Title = (string)topic.Attribute("title") ?? "No title";
+                            info.Title = (string)topic.Attribute("title") ?? info.Title ?? "(No title)";
 
                             topicInfo.AddOrUpdate(info.TopicId, info, (key, value) => value);
                         }
@@ -250,6 +250,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             {
                                 info.Filename = file;
                                 info.RelativePath = file.Substring(folder.Length + 1);
+
+                                if(info.Title == "(No title)")
+                                    info.Title = Path.GetFileNameWithoutExtension(file);
                             }
                         }
                         catch(Exception ex)

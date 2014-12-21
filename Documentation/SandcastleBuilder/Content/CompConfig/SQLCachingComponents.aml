@@ -88,8 +88,8 @@ files so that their information is cached in the same group within the table dat
 &lt;component id="Reflection Index Data (SQL Cache)"&gt;
   &lt;index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
     cacheProject="false" connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle"&gt;
-    &lt;data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
-      groupId="ReflectionIndexCache"&gt;
+    &lt;data base="{@SHFBFolder}Data\{@TargetFrameworkIdentifier}" recurse="true" files="*.xml"
+			duplicateWarning="false" groupId="ReflectionIndexCache"&gt;
       &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
       &lt;namespace file="System.xml" /&gt;
       &lt;namespace file="System.IO.xml" /&gt;
@@ -111,8 +111,8 @@ files so that their information is cached in the same group within the table dat
     msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
     projectLocalCacheSize="2500" cacheProject="false" /&gt;
   &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" /&gt;
-  &lt;targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@SdkLinkType}"
-    groupId="FrameworkTargets"&gt;
+  &lt;targets base="{@SHFBFolder}Data\{@TargetFrameworkIdentifier}" recurse="true" files="*.xml"
+		type="{@SdkLinkType}" groupId="FrameworkTargets"&gt;
     &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
     &lt;namespace file="System.xml" /&gt;
     &lt;namespace file="System.IO.xml" /&gt;

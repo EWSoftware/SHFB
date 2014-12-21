@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
+// Updated : 12/14/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -502,8 +502,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     // Add referenced namespaces to the build process
                     var rn = builder.ReferencedNamespaces;
 
-                    foreach(string ns in t.TopicFile.GetReferencedNamespaces(Path.Combine(
-                      ComponentUtilities.ToolsFolder, @"Data\Reflection")))
+                    foreach(string ns in t.TopicFile.GetReferencedNamespaces(builder.FrameworkReflectionDataFolder))
                         rn.Add(ns);
                 }
                 else

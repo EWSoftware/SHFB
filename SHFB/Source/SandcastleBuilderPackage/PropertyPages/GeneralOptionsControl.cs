@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GeneralOptionsControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/08/2014
+// Updated : 12/15/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -121,6 +121,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             // these options.
             chkEnableExtendedXmlComments.Checked = MefProviderOptions.EnableExtendedXmlCommentsCompletion;
             chkEnableGoToDefinition.Checked = MefProviderOptions.EnableGoToDefinition;
+            chkEnableGoToDefinitionInCRef.Checked = MefProviderOptions.EnableGoToDefinitionInCRef;
         }
 
         /// <summary>
@@ -143,6 +144,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // these options.
                 MefProviderOptions.EnableExtendedXmlCommentsCompletion = chkEnableExtendedXmlComments.Checked;
                 MefProviderOptions.EnableGoToDefinition = chkEnableGoToDefinition.Checked;
+                MefProviderOptions.EnableGoToDefinitionInCRef = chkEnableGoToDefinitionInCRef.Checked;
 
                 MefProviderOptions.SaveConfiguration();
             }
@@ -189,6 +191,16 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 dlg.ShowDialog();
             }
+        }
+
+        /// <summary>
+        /// Enable or disable the <c>cref</c> option based on the overall Go To Definition setting
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void chkEnableGoToDefinition_CheckedChanged(object sender, EventArgs e)
+        {
+            chkEnableGoToDefinitionInCRef.Enabled = chkEnableGoToDefinition.Checked;
         }
         #endregion
     }

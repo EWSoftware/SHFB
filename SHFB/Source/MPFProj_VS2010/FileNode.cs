@@ -46,9 +46,9 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
-//=============================================================================
+//===============================================================================================================
 // File    : FileNode.cs
-// Updated : 04/18/2011
+// Updated : 12/19/2014
 // Modifier: Eric Woodruff  (Eric@EWoodruff.us)
 //
 // This file has been modified to support "Add as Link" and "Show All Files" in
@@ -56,11 +56,12 @@ a particular purpose and non-infringement.
 // changes have not been tested with dependent files so expect bugs.
 //
 //    Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 06/18/2008  EFW  Added support for linked project files
 // 06/20/2008  EFW  Added support for "Show All Files"
 // 03/20/2011  EFW  Updated to use MPFProj for VS2010
-//=============================================================================
+// 12/19/2014  EFW  Fixed bug related to renaming a file in-place
+//===============================================================================================================
 
 // Core Show All Files functionality implemented in the FileNode.cs:
 // - Updated ImageIndex property to return the excluded file image for non-member items.
@@ -68,9 +69,8 @@ a particular purpose and non-infringement.
 // - Updated QueryStatusOnNode() to enable/disable commands as needed for non-member items.
 
 // Show All Files functionality not implemented in FileNode.cs
-// - Derived classes that override CreatePropertiesObject() should return a default
-//   instance of FileNodeProperties rather than their custom properties if the node
-//   is a non-member item.
+// - Derived classes that override CreatePropertiesObject() should return a default instance of
+//   FileNodeProperties rather than their custom properties if the node is a non-member item.
 
 using System;
 using System.Collections.Generic;
@@ -79,9 +79,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
@@ -1103,20 +1104,23 @@ namespace Microsoft.VisualStudio.Project
                         string newFileName = Path.GetFileName(newName);
                         DocumentManager.UpdateCaption(this.ProjectMgr.Site, newFileName, docData);
                         bool caseOnlyChange = NativeMethods.IsSamePath(oldName, newName);
-                        if (!caseOnlyChange)
-                        {
-                            // Check out the project file if necessary.
-                            if (!this.ProjectMgr.QueryEditProjectFile(false))
-                            {
-                                throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
-                            }
 
+                        // !EFW - If renamed in place (same folder), treat it like a case change too otherwise
+                        // it deletes and re-adds the file and source control gets confused and thinks there's
+                        // a duplicate.
+                        if(!caseOnlyChange && Path.GetDirectoryName(oldName).Length != 0 &&
+                          Path.GetDirectoryName(newName).Length != 0)
+                            caseOnlyChange = NativeMethods.IsSamePath(Path.GetDirectoryName(oldName),
+                                Path.GetDirectoryName(newName));
+
+                        // Check out the project file if necessary.
+                        if(!this.ProjectMgr.QueryEditProjectFile(false))
+                            throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
+
+                        if(!caseOnlyChange)
                             this.RenameFileNode(oldName, newName);
-                        }
                         else
-                        {
                             this.RenameCaseOnlyChange(newFileName);
-                        }
                     }
                 }
                 finally

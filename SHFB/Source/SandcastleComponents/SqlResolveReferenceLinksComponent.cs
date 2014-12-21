@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2014
+// Updated : 12/14/2014
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
@@ -91,8 +91,8 @@ namespace SandcastleBuilder.Components
 	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
 	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
-	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@HtmlSdkLinkType}""
-		groupId=""FrameworkTargets"">
+	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		type=""{@HtmlSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
 	</targets>
 	<targets files=""reflection.xml"" type=""Local"" groupId=""Project_{@UniqueID}"" />
@@ -102,8 +102,8 @@ namespace SandcastleBuilder.Components
 	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
 	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
-	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@MSHelp2SdkLinkType}""
-		groupId=""FrameworkTargets"">
+	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		type=""{@MSHelp2SdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
 	</targets>
 	<targets files=""reflection.xml"" type=""Index"" groupId=""Project_{@UniqueID}"" />
@@ -113,8 +113,8 @@ namespace SandcastleBuilder.Components
 	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
 	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
-	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@MSHelpViewerSdkLinkType}""
-		groupId=""FrameworkTargets"">
+	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		type=""{@MSHelpViewerSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
 	</targets>
 	<targets files=""reflection.xml"" type=""Id"" groupId=""Project_{@UniqueID}"" />
@@ -124,8 +124,8 @@ namespace SandcastleBuilder.Components
 	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
 	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
-	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@WebsiteSdkLinkType}""
-		groupId=""FrameworkTargets"">
+	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		type=""{@WebsiteSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
 	</targets>
 	<targets files=""reflection.xml"" type=""Local"" groupId=""Project_{@UniqueID}"" />

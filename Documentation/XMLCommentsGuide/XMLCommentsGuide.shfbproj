@@ -100,7 +100,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
     <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
-    <HelpFileVersion>2014.1.26.1</HelpFileVersion>
+    <HelpFileVersion>2014.5.31.0</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
