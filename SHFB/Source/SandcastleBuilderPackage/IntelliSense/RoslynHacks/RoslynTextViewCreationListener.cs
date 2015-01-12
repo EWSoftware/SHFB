@@ -27,8 +27,10 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
+            var options = new MefProviderOptions(_serviceProvider);
+
             // only hook when necessary
-            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !MefProviderOptions.EnableExtendedXmlCommentsCompletion)
+            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !options.EnableExtendedXmlCommentsCompletion)
                 return;
 
             ITextView textView = _editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);

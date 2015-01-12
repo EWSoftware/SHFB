@@ -16,11 +16,15 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
     internal class ToolTipProvider : IUIElementProvider<Completion, ICompletionSession>
     {
         private readonly SVsServiceProvider _serviceProvider;
+        private bool enableExtendedCompletion;
 
         [ImportingConstructor]
         public ToolTipProvider(SVsServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+
+            var options = new MefProviderOptions(_serviceProvider);
+            enableExtendedCompletion = options.EnableExtendedXmlCommentsCompletion;
         }
 
         public UIElement GetUIElement(Completion itemToRender, ICompletionSession context, UIElementType elementType)
@@ -32,7 +36,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             }
 
             // only hook when necessary
-            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !MefProviderOptions.EnableExtendedXmlCommentsCompletion)
+            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !enableExtendedCompletion)
                 return null;
 
             if(itemToRender != null && itemToRender.GetType().FullName != "Microsoft.CodeAnalysis.Editor.Implementation.Completion.Presentation.CustomCommitCompletion")

@@ -48,6 +48,7 @@
             this.chkEnableGoToDefinition = new System.Windows.Forms.CheckBox();
             this.lblSetColorNote = new System.Windows.Forms.Label();
             this.chkEnableGoToDefinitionInCRef = new System.Windows.Forms.CheckBox();
+            this.chkEnableCtrlClickGoToDefinition = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).BeginInit();
             this.SuspendLayout();
@@ -81,10 +82,10 @@
             // lnkSHFBInfo
             // 
             this.lnkSHFBInfo.AutoSize = true;
-            this.lnkSHFBInfo.Location = new System.Drawing.Point(4, 441);
+            this.lnkSHFBInfo.Location = new System.Drawing.Point(4, 460);
             this.lnkSHFBInfo.Name = "lnkSHFBInfo";
             this.lnkSHFBInfo.Size = new System.Drawing.Size(239, 20);
-            this.lnkSHFBInfo.TabIndex = 15;
+            this.lnkSHFBInfo.TabIndex = 17;
             this.lnkSHFBInfo.TabStop = true;
             this.lnkSHFBInfo.Text = "About Sandcastle Help File Builder";
             this.toolTip1.SetToolTip(this.lnkSHFBInfo, "SHFB version and contact information");
@@ -217,28 +218,37 @@
             // 
             // lblSetColorNote
             // 
-            this.lblSetColorNote.Location = new System.Drawing.Point(52, 388);
+            this.lblSetColorNote.Location = new System.Drawing.Point(52, 418);
             this.lblSetColorNote.Name = "lblSetColorNote";
             this.lblSetColorNote.Size = new System.Drawing.Size(372, 23);
-            this.lblSetColorNote.TabIndex = 14;
+            this.lblSetColorNote.TabIndex = 16;
             this.lblSetColorNote.Text = "(Set color with MAML/XML Comments Link Underline)";
             this.lblSetColorNote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkEnableGoToDefinitionInCRef
             // 
             this.chkEnableGoToDefinitionInCRef.AutoSize = true;
-            this.chkEnableGoToDefinitionInCRef.Location = new System.Drawing.Point(56, 361);
+            this.chkEnableGoToDefinitionInCRef.Location = new System.Drawing.Point(56, 391);
             this.chkEnableGoToDefinitionInCRef.Name = "chkEnableGoToDefinitionInCRef";
             this.chkEnableGoToDefinitionInCRef.Size = new System.Drawing.Size(279, 24);
-            this.chkEnableGoToDefinitionInCRef.TabIndex = 16;
+            this.chkEnableGoToDefinitionInCRef.TabIndex = 15;
             this.chkEnableGoToDefinitionInCRef.Text = "Enable for XML comments cref values";
             this.chkEnableGoToDefinitionInCRef.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableGoToDefinitionCtrlClick
+            // 
+            this.chkEnableCtrlClickGoToDefinition.AutoSize = true;
+            this.chkEnableCtrlClickGoToDefinition.Location = new System.Drawing.Point(56, 361);
+            this.chkEnableCtrlClickGoToDefinition.Name = "chkEnableGoToDefinitionCtrlClick";
+            this.chkEnableCtrlClickGoToDefinition.Size = new System.Drawing.Size(270, 24);
+            this.chkEnableCtrlClickGoToDefinition.TabIndex = 14;
+            this.chkEnableCtrlClickGoToDefinition.Text = "Enable Ctrl+Click to go to definition";
+            this.chkEnableCtrlClickGoToDefinition.UseVisualStyleBackColor = true;
             // 
             // GeneralOptionsControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoScroll = true;
-            this.Controls.Add(this.chkEnableGoToDefinitionInCRef);
             this.Controls.Add(this.lblHelp2Viewer);
             this.Controls.Add(this.txtHxSViewerPath);
             this.Controls.Add(this.btnSelectHxSViewer);
@@ -253,12 +263,14 @@
             this.Controls.Add(this.chkUseExternalBrowser);
             this.Controls.Add(this.chkEnableExtendedXmlComments);
             this.Controls.Add(this.chkEnableGoToDefinition);
+            this.Controls.Add(this.chkEnableCtrlClickGoToDefinition);
+            this.Controls.Add(this.chkEnableGoToDefinitionInCRef);
             this.Controls.Add(this.lblSetColorNote);
             this.Controls.Add(this.lnkSHFBInfo);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(430, 100);
             this.Name = "GeneralOptionsControl";
-            this.Size = new System.Drawing.Size(435, 479);
+            this.Size = new System.Drawing.Size(435, 491);
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).EndInit();
             this.ResumeLayout(false);
@@ -287,5 +299,6 @@
         private System.Windows.Forms.CheckBox chkEnableExtendedXmlComments;
         private System.Windows.Forms.Label lblSetColorNote;
         private System.Windows.Forms.CheckBox chkEnableGoToDefinitionInCRef;
+        private System.Windows.Forms.CheckBox chkEnableCtrlClickGoToDefinition;
     }
 }

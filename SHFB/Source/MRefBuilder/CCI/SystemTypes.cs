@@ -8,6 +8,8 @@
 // framework assembly information.
 // 11/22/2013 - EFW - Cleared out the conditional statements
 // 04/20/2014 - EFW - Added a workaround for the .NET Micro Framework related to DictionaryEntry being a class
+// 01/06/2014 - EFW - Added a TargetPlatform.Platform member to allow other classes to find out what platform
+// is being used for the core framework types.
 
 using System.Diagnostics;
 using System.IO;
@@ -29,7 +31,6 @@ namespace System.Compiler
             }
             set
             {
-                //Debug.Assert(location == null || location == value, string.Format("You attempted to set the mscorlib.dll location to\r\n\r\n{0}\r\n\r\nbut it was already set to\r\n\r\n{1}\r\n\r\nThis may occur if you have multiple projects that target different platforms. Make sure all of your projects target the same platform.\r\n\r\nYou may try to continue, but targeting multiple platforms during the same session is not supported, so you may see erroneous behavior.", value, location));
                 location = value;
             }
         }
@@ -82,6 +83,7 @@ namespace System.Compiler
             get { return Reader.StaticAssemblyCache; }
         }
 
+        public static string Platform = ".NETFramework";
         public static Version TargetVersion = new Version(2, 0, 50727);  // Default for a Whidbey compiler
         public static string TargetRuntimeVersion;
 
@@ -441,6 +443,7 @@ namespace System.Compiler
                 throw new InvalidOperationException(String.Format("A core framework location has not been " +
                     "defined for the framework '{0} {1}'", platformType, version));
 
+            TargetPlatform.Platform = fs.Platform;
             TargetPlatform.TargetVersion = fs.Version;
             TargetPlatform.TargetRuntimeVersion = "v" + fs.Version.ToString();
             TargetPlatform.GenericTypeNamesMangleChar = '`';

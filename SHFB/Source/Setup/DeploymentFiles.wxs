@@ -5652,6 +5652,17 @@
             <Component Id="cmp26F595E4720D0A0207887F2E6544F1FE" Guid="{1155ABBB-8D51-4BCF-9110-0CD51BD2A2BE}">
               <File Id="fil8980CA9244E535190DC79074A0DAA652" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Content\SharedContent.xml" />
             </Component>
+            <Directory Id="dir799D67B34DEA28A3CB0412DF4CFD13F5" Name="ru-RU">
+              <Component Id="cmp0CF82CAC5ADA1A523FD57457605F038E" Guid="{87ED403A-2186-4882-B1D6-73A3C3503FE4}">
+                <File Id="filC711D082FA68CC021FB3118465186786" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Content\ru-RU\ConceptualContent.xml" />
+              </Component>
+              <Component Id="cmpB5254A28BF1723FC77BECD0D1E1CD3A6" Guid="{346D1A20-4145-4D14-B05F-F90209E6026F}">
+                <File Id="fil7208C34F7BFF32889AB4180013B1BDAB" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Content\ru-RU\ReferenceContent.xml" />
+              </Component>
+              <Component Id="cmp59BC838C477F04F709B81F14F4924AF4" Guid="{C09426E8-41D9-444C-9AB4-4E3D31AE90B7}">
+                <File Id="fil07F86CD3D823B0AF1C6063B6D5F649B3" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Content\ru-RU\SharedContent.xml" />
+              </Component>
+            </Directory>
           </Directory>
           <Directory Id="dir5C205D66CC07B36D33852432B32BDE95" Name="DocumentParts">
             <Component Id="cmp2A03EFBE175BFC73033F2CEC9B44AA13" Guid="{C7345E15-E028-48A0-88D3-851EA2859F08}">
@@ -5832,6 +5843,9 @@
           <Directory Id="dirB0E52F0B427F77630D067ED1726E19E4" Name="SHFBContent">
             <Component Id="cmp80E986FBA6600544CA1E455818090B32" Guid="{F520C75B-39AC-419E-AD90-71DDD50DE50C}">
               <File Id="fil8DF7D2A7BAC80381C7C73BCFB9FE7346" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\SHFBContent\en-US.xml" />
+            </Component>
+            <Component Id="cmp3A7EEE5261A83CD604D243DED8C42252" Guid="{FBC1126D-5565-4A04-AA68-7CB503655627}">
+              <File Id="fil3723820071CC705BA20019A52CBEE8CF" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\SHFBContent\ru-RU.xml" />
             </Component>
           </Directory>
           <Directory Id="dir893DE630FE6804F11D8BE03F38F15073" Name="Transforms">
@@ -9626,6 +9640,9 @@
       <ComponentRef Id="cmp7BFB2B96184C2517B56DD00D05256157" />
       <ComponentRef Id="cmp6B3105C9FFCDC8F930B2E3EEBFB77087" />
       <ComponentRef Id="cmp26F595E4720D0A0207887F2E6544F1FE" />
+      <ComponentRef Id="cmp0CF82CAC5ADA1A523FD57457605F038E" />
+      <ComponentRef Id="cmpB5254A28BF1723FC77BECD0D1E1CD3A6" />
+      <ComponentRef Id="cmp59BC838C477F04F709B81F14F4924AF4" />
       <ComponentRef Id="cmp2A03EFBE175BFC73033F2CEC9B44AA13" />
       <ComponentRef Id="cmp7801955A85321DD778E8351AA523DA3D" />
       <ComponentRef Id="cmpBCB62E4E9973FF5DA79BB8393810A4DE" />
@@ -9681,6 +9698,7 @@
       <ComponentRef Id="cmpFB16D59E07C6E412E3DD0E4B996149F9" />
       <ComponentRef Id="cmpF9BBA96EDF5F4FB5E06FA9D08B0229C3" />
       <ComponentRef Id="cmp80E986FBA6600544CA1E455818090B32" />
+      <ComponentRef Id="cmp3A7EEE5261A83CD604D243DED8C42252" />
       <ComponentRef Id="cmpFD79B2A5A9E2EAF83EA37C939861F5AE" />
       <ComponentRef Id="cmp480915C7C14D8378404B5378AF641887" />
       <ComponentRef Id="cmp81DC519D0FDE8B74B7E3F41DC1D0FEAD" />

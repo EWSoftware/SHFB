@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the abstract base class used to handle Ctrl+clicks on valid elements to go to their
@@ -205,7 +205,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// This is used to go to the definition based on the highlighted span
         /// </summary>
         /// <param name="id">The ID of the definition to go to</param>
-        /// <param name="definitionType">An optional definition type to further classify the ID</param>
+        /// <param name="definitionType">A definition type to further classify the ID</param>
         protected abstract void GoToDefinition(string id, string definitionType);
 
         /// <summary>

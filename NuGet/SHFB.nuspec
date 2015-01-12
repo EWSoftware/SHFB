@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB</id>
-		<version>2014.12.20.0</version>
+		<version>2015.1.12.0</version>
 		<title>Sandcastle Help File Builder</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
@@ -11,7 +11,7 @@
 		<iconUrl>http://www.EWoodruff.us/Images/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This package allows you to deploy the Sandcastle Help File Builder tools inside of a project to build help files without installing the tools manually such as on a build server.  Some limitations apply.</description>
-		<copyright>Eric Woodruff (c) 2006-2014</copyright>
+		<copyright>Eric Woodruff (c) 2006-2015</copyright>
 		<tags>SHFB documentation sandcastle help XML comments</tags>
 	</metadata>
 	<files>

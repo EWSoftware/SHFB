@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UnderlineClassifierProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that creates the underline classifier used by the MAML and XML comments Go To
@@ -21,6 +21,7 @@
 
 using System.ComponentModel.Composition;
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
@@ -50,6 +51,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
         internal static ClassificationTypeDefinition underlineClassificationType = null;
 
         internal static IClassificationType UnderlineClassification;
+
+        [Import]
+        private SVsServiceProvider serviceProvider = null;
         #endregion
 
         #region IViewTaggerProvider implementation
@@ -58,7 +62,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <inheritdoc />
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
-            if(textView.TextBuffer != buffer || !MefProviderOptions.EnableGoToDefinition)
+            var options = new MefProviderOptions(serviceProvider);
+
+            if(textView.TextBuffer != buffer || !options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
                 return null;
 
             if(UnderlineClassification == null)

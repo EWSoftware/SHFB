@@ -21,6 +21,7 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Utilities;
 
@@ -50,10 +51,15 @@ namespace SandcastleBuilder.Package.IntelliSense
         [Import]
         internal IGlyphService GlyphService { get; private set; }
 
+        [Import]
+        private SVsServiceProvider serviceProvider = null;
+
         /// <inheritdoc />
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
-            if(!MefProviderOptions.EnableExtendedXmlCommentsCompletion)
+            var options = new MefProviderOptions(serviceProvider);
+
+            if(!options.EnableExtendedXmlCommentsCompletion)
                 return null;
 
             return new CSharpDocumentationCompletionSource(textBuffer, this);

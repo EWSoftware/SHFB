@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MamlLinkQuickInfoSourceProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that creates the quick info source specific to MAML elements
@@ -46,10 +46,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <inheritdoc />
         public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer textBuffer)
         {
-            if(!MefProviderOptions.EnableGoToDefinition)
+            var options = new MefProviderOptions(GlobalServiceProvider);
+
+            if(!options.EnableGoToDefinition)
                 return null;
 
-            return new MamlLinkQuickInfoSource(GlobalServiceProvider, textBuffer, this);
+            return new MamlLinkQuickInfoSource(GlobalServiceProvider, textBuffer, this,
+                options.EnableCtrlClickGoToDefinition);
         }
     }
 }

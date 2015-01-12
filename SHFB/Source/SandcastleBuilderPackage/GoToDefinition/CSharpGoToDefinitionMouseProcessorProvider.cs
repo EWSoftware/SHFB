@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CSharpGoToDefinitionMouseProcessorProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that creates the mouse processor specific to C# code
@@ -52,13 +52,16 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <inheritdoc />
         public IMouseProcessor GetAssociatedProcessor(IWpfTextView view)
         {
-            if(!MefProviderOptions.EnableGoToDefinition)
+            var options = new MefProviderOptions(GlobalServiceProvider);
+
+            if(!options.EnableGoToDefinition || !options.EnableCtrlClickGoToDefinition)
                 return null;
 
             var buffer = view.TextBuffer;
 
             return new CSharpGoToDefinitionMouseProcessor(view, GlobalServiceProvider, AggregatorFactory.GetClassifier(buffer),
-                NavigatorService.GetTextStructureNavigator(buffer), CtrlKeyState.GetStateForView(view));
+                NavigatorService.GetTextStructureNavigator(buffer), CtrlKeyState.GetStateForView(view),
+                options.EnableGoToDefinitionInCRef);
         }
     }
 }

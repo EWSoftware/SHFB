@@ -3,10 +3,10 @@
 	<!-- Translations provided by Alex Sherman, verifications Sergey Zhurikhin -->
 
 	<!-- Syntax section and code example title.  Add one for the primary ID and one for each alternate ID. -->
-  <item id="devlang_Visual Basic Usage">VB Usage</item>
-  <item id="devlang_VisualBasicUsage">VB Usage</item>
-  <item id="devlang_vbusage">VB Usage</item>
-  <item id="devlang_vbnetusage">VB Usage</item>
+  <item id="devlang_Visual Basic Usage">VB Использование</item>
+  <item id="devlang_VisualBasicUsage">VB Использование</item>
+  <item id="devlang_vbusage">VB Использование</item>
+  <item id="devlang_vbnetusage">VB Использование</item>
 
 	<!-- Development language metadata values.  Add one for the primary ID and one for each alternate ID.  -->
   <item id="metaLang_Visual Basic Usage">VB</item>

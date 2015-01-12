@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to cache information about MAML topic IDs and their related files
@@ -130,7 +130,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// </summary>
         /// <param name="solutionName">The current solution filename</param>
         /// <param name="projects">The current list of projects</param>
-        public void SetCurrentSolutionAndProjects(string solutionName, IEnumerable<MSBuildProject> projects)
+        /// <returns>True if re-indexing was initiated, false if not</returns>
+        public bool SetCurrentSolutionAndProjects(string solutionName, IEnumerable<MSBuildProject> projects)
         {
             // If the solution changes, clear all existing topic information
             if(this.CurrentSolutionName != solutionName)
@@ -183,7 +184,12 @@ namespace SandcastleBuilder.Package.GoToDefinition
             // large projects may have hundreds of topics.  This may not be necessary but it saves blocking the
             // IDE while it does it just in case.
             if(topicInfo.Any(t => t.Value.Filename == null))
+            {
                 this.MatchFilesToTopics(projects.Select(p => Path.GetDirectoryName(p.FullPath)).Distinct());
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

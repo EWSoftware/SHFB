@@ -4,6 +4,8 @@
 // Change history:
 // 11/20/2013 - EFW - Cleaned up the code and removed unused members
 // 12/10/2013 - EFW - Made the API visitor cancelable
+// 01/06/2014 - EFW - Removed resetting of mscorlib for frameworks that forward all their types to other
+// assemblies.  This prevents a stack overflow.
 
 using System;
 using System.Collections.Generic;
@@ -158,7 +160,10 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                if(assembly.Name == "mscorlib")
+                // Do not reset for frameworks that redirect all mscorlib types to other assemblies or it results
+                // in a stack overflow.
+                if(assembly.Name == "mscorlib" && TargetPlatform.Platform != ".NETCore" &&
+                  TargetPlatform.Platform != ".NETPortable" && TargetPlatform.Platform != "WindowsPhoneApp")
                     ResetMscorlib(assembly);
 
                 resolver.Add(assembly);
@@ -194,7 +199,10 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                if(assembly.Name == "mscorlib")
+                // Do not reset for frameworks that redirect all mscorlib types to other assemblies or it results
+                // in a stack overflow.
+                if(assembly.Name == "mscorlib" && TargetPlatform.Platform != ".NETCore" &&
+                  TargetPlatform.Platform != ".NETPortable" && TargetPlatform.Platform != "WindowsPhoneApp")
                     ResetMscorlib(assembly);
 
                 resolver.Add(assembly);

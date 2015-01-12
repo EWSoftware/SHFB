@@ -21,6 +21,6 @@
   <item id="metaLang_kblangcpp">C++</item>
 
 	<!-- C++ syntax section messages -->
-	<item id="UnsupportedOperator_ManagedCPlusPlus">Managed C++ не поддерживает этот оператор.</item>
+	<item id="UnsupportedOperator_ManagedCPlusPlus">Управляемый C++ не поддерживает этот оператор.</item>
 
 </content>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ProjectFileSearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to search for an open files related to MAML link-type elements such as for
@@ -132,9 +132,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                     if(!TopicIdCache.Instance.GetTopicInfo(id, out topicTitle, out topicFilename, out relativePath))
                     {
-                        // Not found, try reindexing to update the info
-                        TopicIdCache.Instance.SetCurrentSolutionAndProjects(currentSolution.FullName, shfbProjects);
-                        return true;
+                        // Not found, try re-indexing to update the info
+                        return TopicIdCache.Instance.SetCurrentSolutionAndProjects(currentSolution.FullName, shfbProjects);
                     }
 
                     var item = currentSolution.FindProjectItem(topicFilename);

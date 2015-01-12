@@ -147,7 +147,7 @@
 	<item id="platformsTitle">Plattformen</item>
   <item id="relatedTitle">Siehe auch</item>
   <item id="ExtensionUsageTitle">Benutzungshinweis</item>
-  <item id="ExtensionUsageText">In Visual Basic and C# können Sie diese Methode als Instanz-Methode auf ein beliebiges Objekt des Typs {0} aufrufen. Wenn Sie Instanzmethoden-Syntax benutzen, um diese Methode aufzurufen, lassen Sie den ersten Parameter weg. Für weitere Informationen siehe <conceptualLink target="b8020aae-374d-46a9-bcb7-8cc2390b93b6" /> or <conceptualLink target="175ce3ff-9bbf-4e64-8421-faeb81a0bb51" />.</item>
+  <item id="ExtensionUsageText">In Visual Basic and C# können Sie diese Methode als Instanz-Methode auf ein beliebiges Objekt des Typs {0} aufrufen. Wenn Sie Instanzmethoden-Syntax benutzen, um diese Methode aufzurufen, lassen Sie den ersten Parameter weg. Für weitere Informationen siehe <a href="http://msdn.microsoft.com/ru-ru/library/bb384936.aspx" target="_blank">Extension Methods (Visual Basic)</a> or <a href="http://msdn.microsoft.com/ru-ru/library/bb383977.aspx" target="_blank">Erweiterungsmethoden (C# Programmierhandbuch)</a>.</item>
 
 	<!-- table headers -->
 	<item id="namespaceNameHeader">Namensraum</item>
@@ -272,7 +272,7 @@
   <item id="SystemRequirementsLinkBoilerplate">
 	  <p/>
 	  <span>
-		  Die <include item="netfw"/> und <include item="netcfw"/> unterstützen nicht alle Versionen jeder Plattform. Eine Liste aller unterstützten Plattformen finden Sie unter <conceptualLink target="298275e2-da1d-4618-9f74-6a3567832350"/>.
+		  Die <include item="netfw"/> und <include item="netcfw"/> unterstützen nicht alle Versionen jeder Plattform. Eine Liste aller unterstützten Plattformen finden Sie unter <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx" target="_blank">.NET Framework Systemanforderungen</a>.
 	  </span>
   </item>
 
@@ -291,7 +291,7 @@
 	<item id="overridesMember">(Überschreibt {0}.)</item>
 	<item id="locationInformation">Assembly: {0} (Modul: {1})</item>
   <item id="hostProtectionAttributeShort">HostProtectionAttribute. </item>
-	<item id="hostProtectionAttributeLong">Das <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> Attribut, das auf diesen Typ oder Member angewandt wurde, hat den folgenden <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" /> Eigenschaftswert: {1}. Das <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> beeinflusst Desktop-Anwendungen nicht (welche normalerweise durch Doppelklick auf ein Icon ein Kommando, oder durch Eingabe einer URL in einen Browser gestartet werden). Für weitere Informationen, siehe die <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> Klasse oder <conceptualLink target="7dfa36b4-e773-4c75-a3ff-ff1af3ce4c4f" />.</item>
+	<item id="hostProtectionAttributeLong">Das <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> Attribut, das auf diesen Typ oder Member angewandt wurde, hat den folgenden <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" /> Eigenschaftswert: {1}. Das <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> beeinflusst Desktop-Anwendungen nicht (welche normalerweise durch Doppelklick auf ein Icon ein Kommando, oder durch Eingabe einer URL in einen Browser gestartet werden). Für weitere Informationen, siehe die <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> Klasse oder <a href="http://msdn.microsoft.com/en-us/library/ms172338.aspx" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
   <item id="classLower">Klasse</item>
   <item id="delegateLower">Delegat</item>
   <item id="interfaceLower">Interface</item>
@@ -431,7 +431,7 @@
   	<item id="obsoleteError">Obsolet (wird nicht kompiliert) in {0} und neuer</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="aptca">Volles Vertrauen für den direkten Aufrufer. Dieser Member kann nicht von teilweise vertrauenswürdigem Code eingesetzt werden. Für weitere Informationen siehe<conceptualLink target="dd66cd4c-b087-415f-9c3e-94e3a1835f74"/>.</item>
+	<item id="aptca">Volles Vertrauen für den direkten Aufrufer. Dieser Member kann nicht von teilweise vertrauenswürdigem Code eingesetzt werden. Für weitere Informationen siehe <a href="http://msdn.microsoft.com/en-us/library/8skskf63.aspx" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
   
   <item id="ReturnValue">Rückgabewert</item>
   <item id="PropertyValue">Eigenschaftswert</item>
@@ -474,7 +474,7 @@
   
   <item id="covariant">Dieser Typ-Parameter ist kovariant. Das bedeutet, dass Sie entweder den von Ihnen spezifizierten Typ verwenden können oder einen beliebigen weiter abgeleiteten Typ.</item>
   <item id="contravariant">Dieser Typ-Parameter ist kontravariant. Das bedeutet, dass Sie entweder den von Ihnen spezifizierten Typ verwenden können oder einen beliebigen weniger abgeleiteten Typ. </item>
-  <item id="variance">Für weitere Informationen über Kovarianz und kontravarianz, siehe <conceptualLink target="2678dc63-c7f9-4590-9ddc-0a4df684d42e" />.</item>
+  <item id="variance">Für weitere Informationen über Kovarianz und kontravarianz, siehe <a href="http://msdn.microsoft.com/en-us/library/ee207183.aspx" target="_blank">Kovarianz und Kontravarianz (C# und Visual Basic).</a>.</item>
   
   <!-- Non Cls Compliant boilerplate text-->
   <item id="NotClsCompliant">Diese API ist nicht CLS-kompatibel.</item>
@@ -512,7 +512,7 @@
   
   <!-- Platforms boilerplate for Silverlight mref builds --> 
   <item id="silverlightplatforms">
-    Für weitere Informationen über die von <include item="silverlight"/> unterstützten Browser und Betriebssysteme, siehe "Supported Operating Systems and Browsers" in <conceptualLink target="d1c41046-1eef-4a73-8049-5c9f0487f7fc"/>.
+    Für weitere Informationen über die von <include item="silverlight"/> unterstützten Browser und Betriebssysteme, siehe "Supported Operating Systems and Browsers" in <a href="http://msdn.microsoft.com/en-us/library/dd229102.aspx" target="_blank">Unterstützte Betriebssysteme und Browser</a>.
   </item>
 
   <!-- framework ids:  

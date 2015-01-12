@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CSharpGoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/10/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that provides the mouse processor handling specific to C# code
@@ -38,14 +38,30 @@ namespace SandcastleBuilder.Package.GoToDefinition
     /// </summary>
     internal sealed class CSharpGoToDefinitionMouseProcessor : GoToDefinitionMouseProcessor
     {
+        #region Private data members
+        //=====================================================================
+
+        private bool enableInCRef;
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="textView">The text view to use</param>
+        /// <param name="serviceProvider">The service provider to use</param>
+        /// <param name="aggregator">The classifier tag aggregator to use</param>
+        /// <param name="navigator">The text structure navigator to use</param>
+        /// <param name="state">The Ctrl key state tracker to use</param>
+        /// <param name="enableInCRef">True to enable in <c>cref</c> targets, false if not</param>
         public CSharpGoToDefinitionMouseProcessor(IWpfTextView textView, SVsServiceProvider serviceProvider,
-          IClassifier aggregator, ITextStructureNavigator navigator, CtrlKeyState state) :
+          IClassifier aggregator, ITextStructureNavigator navigator, CtrlKeyState state, bool enableInCRef) :
             base(textView, serviceProvider, aggregator, navigator, state)
         {
+            this.enableInCRef = enableInCRef;
         }
         #endregion
 
@@ -59,7 +75,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
             foreach(var classification in spans)
             {
-                var name = classification.ClassificationType.Classification.ToLowerInvariant();
+                string name = classification.ClassificationType.Classification.ToLowerInvariant();
 
                 // Not supporting VB for now due to problems looking up identifiers
                 //if(name.StartsWith("vb ", StringComparison.Ordinal))
@@ -78,7 +94,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         attrName = classification.Span.GetText();
 
                         // If it contains "cref", tne next XML doc attribute value will be the target
-                        if(attrName.IndexOf("cref=") != -1 && MefProviderOptions.EnableGoToDefinitionInCRef)
+                        if(attrName.IndexOf("cref=") != -1 && enableInCRef)
                             attrName = "cref";
 
                         // As above, for conceptualLink, the next XML doc attribute will be the target
@@ -121,7 +137,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         attrName = classification.Span.GetText().Trim();
                         identifier = null;
 
-                        if(attrName == "cref" && !MefProviderOptions.EnableGoToDefinitionInCRef)
+                        if(attrName == "cref" && !enableInCRef)
                             attrName = null;
                         break;
 
@@ -188,7 +204,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
             switch(definitionType)
             {
                 case "codeEntityReference":
-                    if(!IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn)
+                    if(!IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn || (id.Length > 2 && id[1] == ':'))
                     {
                         var entitySearcher = new CodeEntitySearcher(this.ServiceProvider);
 
@@ -212,7 +228,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     }
                     else
                     {
-                        // VS2015 and later do support actual Go To Definition on cref targets
+                        // VS2015 and later do support actual Go To Definition on cref targets in XML comments
                         Guid cmdGroup = VSConstants.GUID_VSStandardCommandSet97;
                         var shellCommandDispatcher = this.ServiceProvider.GetService(
                             typeof(SUIHostCommandDispatcher)) as IOleCommandTarget;

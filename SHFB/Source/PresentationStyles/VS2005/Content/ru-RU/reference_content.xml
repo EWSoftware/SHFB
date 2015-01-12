@@ -4,7 +4,7 @@
 
   <!-- note text -->
   <item id="notDocumentedText">Это API не документировано.</item>
-  <item id="preliminaryText">Это API является предварительным и может быть изменено.</item>
+  <item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
 
   <!-- topic titles -->
   <item id="tocTitle">{0}</item>
@@ -176,9 +176,9 @@
   <item id="ensuresOnThrowNameHeader">Постусловия при возникновении исключений</item>
   <item id="invariantsNameHeader">Инварианты</item>
 
-	<item id="revHistoryDate">Date</item>
-	<item id="revHistoryVersion">Version</item>
-	<item id="revHistoryDescription">Description</item>
+	<item id="revHistoryDate">Дата</item>
+	<item id="revHistoryVersion">Версия</item>
+	<item id="revHistoryDescription">Описание</item>
 	
   <!-- filter control text -->
   <item id="allTypesFilterLabel">Все типы</item>
@@ -576,9 +576,9 @@
   <!-- Show Missing Component messages -->
   <item id="SMCAutoDocConstructor">Инициализирует новый экземпляр класса <referenceLink target="T:{0}" /></item>
   <item id="SMCAutoDocStaticConstructor">Инициализирует статические члены класса <referenceLink target="T:{0}" /></item>
-  <item id="SMCAutoDocDispose">Освобождает все ресурсы, используемые <referenceLink target="T:{0}" /></item>
-  <item id="SMCAutoDocDisposeBool">Освобождает все неуправляемые ресурсы, используемые <referenceLink target="T:{0}" />, и, опционально, освобождает управляемые ресурсы</item>
-  <item id="SMCAutoDocDisposeParam">True для освобождения как неуправляемых, так и управляемых ресурсов; false для освобождения только неуправляемых ресурсов.</item>
+  <item id="SMCAutoDocDispose">Освобождает все ресурсы, используемые объектом <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocDisposeBool">Освобождает неуправляемые ресурсы, используемые объектом <referenceLink target="T:{0}" />, а при необходимости освобождает также управляемые ресурсы</item>
+  <item id="SMCAutoDocDisposeParam">Значение true позволяет освободить управляемые и неуправляемые ресурсы; значение false позволяет освободить только неуправляемые ресурсы.</item>
   <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0}&gt; отсутствует в документации для "{1}"]</p></item>
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</p></item>

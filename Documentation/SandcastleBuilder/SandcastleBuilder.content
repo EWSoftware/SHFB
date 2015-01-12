@@ -1392,7 +1392,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="063f61e1-2040-431f-b53c-91b826027ac6" visible="True" isSelected="true" title="Version 2014.12.20.0">
+    <Topic id="930f1daa-1a38-4659-84c9-91c81e204c73" visible="True" isSelected="true" title="Version 2015.1.12.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2015.1.12.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="063f61e1-2040-431f-b53c-91b826027ac6" visible="True" title="Version 2014.12.20.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2014.12.20.0" />
       </HelpKeywords>

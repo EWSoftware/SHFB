@@ -8,8 +8,10 @@
 // the current verbosity level are ignored.
 // 12/10/2013 - EFW - Added support for MSBuild logging
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
+// 01/06/2015 - EFW - Updated WriteBanner() to use file version info to be consistent with the other tools
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Xml.XPath;
 
@@ -74,11 +76,12 @@ namespace Sandcastle.Core
         {
             Assembly application = Assembly.GetCallingAssembly();
             AssemblyName applicationData = application.GetName();
-
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
+            
             if(Log != null)
-                Log.LogMessage("{0} (v{1})", applicationData.Name, applicationData.Version);
+                Log.LogMessage("{0} (v{1})", applicationData.Name, fvi.ProductVersion);
             else
-                Console.WriteLine("{0} (v{1})", applicationData.Name, applicationData.Version);
+                Console.WriteLine("{0} (v{1})", applicationData.Name, fvi.ProductVersion);
 
             Object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
 

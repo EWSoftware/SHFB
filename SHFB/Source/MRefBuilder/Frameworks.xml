@@ -14,7 +14,7 @@
 			<!-- This element defines a path to a set of assemblies.  The Path attribute that specifies the location
 					 can contain environment variables that will be expanded.  In the case of "%ProgramFiles(x86)%", it
 					 will be converted to "%ProgramFiles%" on 32-bit systems.  The optional IsCore attribute marks the
-					 location that contains the core framework assemblies (MSCorLib, System, System.Data etc.).  Non-core
+					 location that contains the core framework assemblies (mscorlib, System, System.Data etc.).  Non-core
 					 locations can be added for supplemental assemblies related to an earlier version such as those added
 					 in .NET 3.0 and .NET 3.5 and for commonly used SDK and toolkit assemblies such as those used by
 					 Silverlight. -->
@@ -1155,8 +1155,8 @@
 	<Framework Platform=".NETPortable" Version="4.0" Title=".NET Portable Library 4.0 (Legacy)" Redirect=".NET Portable Library 4.5">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.0">
-				<!-- mscorlib is excluded.  All types are forwarded to other assemblies in this set. -->
 				<AssemblyDetails Filename="Microsoft.CSharp.dll" Name="Microsoft.CSharp" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" />
+				<AssemblyDetails Filename="mscorlib.dll" Name="mscorlib" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" />
 				<AssemblyDetails Filename="System.ComponentModel.Composition.dll" Name="System.ComponentModel.Composition" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" />
 				<AssemblyDetails Filename="System.ComponentModel.DataAnnotations.dll" Name="System.ComponentModel.DataAnnotations" Version="2.0.5.0" PublicKeyToken="ddd0da4d3e678217" />
 				<AssemblyDetails Filename="System.Core.dll" Name="System.Core" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" />
@@ -1177,9 +1177,9 @@
 	<Framework Platform=".NETPortable" Version="4.5" Title=".NET Portable Library 4.5" Redirect=".NET Portable Library 4.6">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5">
-				<!-- mscorlib is excluded.  All types are forwarded to other assemblies in this set. -->
 				<AssemblyDetails Filename="Microsoft.CSharp.dll" Name="Microsoft.CSharp" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="Microsoft.VisualBasic.dll" Name="Microsoft.VisualBasic" Version="10.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+				<AssemblyDetails Filename="mscorlib.dll" Name="mscorlib" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.Collections.Concurrent.dll" Name="System.Collections.Concurrent" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.Collections.dll" Name="System.Collections" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.ComponentModel.Annotations.dll" Name="System.ComponentModel.Annotations" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -1255,9 +1255,9 @@
 	<Framework Platform=".NETPortable" Version="4.6" Title=".NET Portable Library 4.6">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6">
-				<!-- mscorlib is excluded.  All types are forwarded to other assemblies in this set. -->
 				<AssemblyDetails Filename="Microsoft.CSharp.dll" Name="Microsoft.CSharp" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="Microsoft.VisualBasic.dll" Name="Microsoft.VisualBasic" Version="10.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+				<AssemblyDetails Filename="mscorlib.dll" Name="mscorlib" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
 				<AssemblyDetails Filename="System.Collections.Concurrent.dll" Name="System.Collections.Concurrent" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.Collections.dll" Name="System.Collections" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.ComponentModel.Annotations.dll" Name="System.ComponentModel.Annotations" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -1580,9 +1580,9 @@
 	<Framework Platform=".NETCore" Version="4.5" Title=".NET for Windows Store Apps" Redirect=".NET for Windows Store Apps (8.1)">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5">
-				<!-- mscorlib is excluded.  All types are forwarded to other assemblies in this set. -->
 				<AssemblyDetails Filename="Microsoft.CSharp.dll" Name="Microsoft.CSharp" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="Microsoft.VisualBasic.dll" Name="Microsoft.VisualBasic" Version="10.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+				<AssemblyDetails Filename="mscorlib.dll" Name="mscorlib" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
 				<AssemblyDetails Filename="System.Collections.Concurrent.dll" Name="System.Collections.Concurrent" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.Collections.dll" Name="System.Collections" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.ComponentModel.Annotations.dll" Name="System.ComponentModel.Annotations" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -1658,9 +1658,9 @@
 	<Framework Platform=".NETCore" Version="4.5.1" Title=".NET for Windows Store Apps (8.1)">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5.1">
-				<!-- mscorlib is excluded.  All types are forwarded to other assemblies in this set. -->
 				<AssemblyDetails Filename="Microsoft.CSharp.dll" Name="Microsoft.CSharp" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="Microsoft.VisualBasic.dll" Name="Microsoft.VisualBasic" Version="10.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+				<AssemblyDetails Filename="mscorlib.dll" Name="mscorlib" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
 				<AssemblyDetails Filename="System.Collections.Concurrent.dll" Name="System.Collections.Concurrent" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.Collections.dll" Name="System.Collections" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.ComponentModel.Annotations.dll" Name="System.ComponentModel.Annotations" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -1892,9 +1892,9 @@
 	<Framework Platform="WindowsPhoneApp" Version="8.1" Title=".NET for Windows Phone Store Apps (8.1)">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\WindowsPhoneApp\v8.1">
-				<!-- mscorlib is excluded.  All types are forwarded to other assemblies in this set. -->
 				<AssemblyDetails Filename="Microsoft.CSharp.dll" Name="Microsoft.CSharp" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="Microsoft.VisualBasic.dll" Name="Microsoft.VisualBasic" Version="10.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+				<AssemblyDetails Filename="mscorlib.dll" Name="mscorlib" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
 				<AssemblyDetails Filename="System.Collections.Concurrent.dll" Name="System.Collections.Concurrent" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.Collections.dll" Name="System.Collections" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="System.ComponentModel.dll" Name="System.ComponentModel" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />

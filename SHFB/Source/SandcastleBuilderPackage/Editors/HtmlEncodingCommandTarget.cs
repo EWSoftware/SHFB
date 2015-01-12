@@ -71,7 +71,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="nCmdID">The command ID to be executed</param>
         /// <param name="nCmdexecopt">Specifies how the object should execute the command</param>
         /// <param name="pvaIn">A structure with optional input arguments</param>
-        /// <param name="pvaOut">A structure used to recieve output arguments if any</param>
+        /// <param name="pvaOut">A structure used to receive output arguments if any</param>
         /// <returns>Returns <c>S_OK</c> on success or a failure code if unsuccessful.</returns>
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GeneralOptionsControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/15/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to modify the general help file builder package preferences that are unrelated to
@@ -24,6 +24,8 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+
+using Microsoft.VisualStudio.Shell;
 
 using SandcastleBuilder.Package.UI;
 
@@ -96,6 +98,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         public GeneralOptionsControl()
         {
             InitializeComponent();
+
             this.Font = Utility.GetDialogFont();
         }
         #endregion
@@ -119,9 +122,12 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             // MEF provider options are stored separately to avoid loading the entire package just to access
             // these options.
-            chkEnableExtendedXmlComments.Checked = MefProviderOptions.EnableExtendedXmlCommentsCompletion;
-            chkEnableGoToDefinition.Checked = MefProviderOptions.EnableGoToDefinition;
-            chkEnableGoToDefinitionInCRef.Checked = MefProviderOptions.EnableGoToDefinitionInCRef;
+            var mefOptions = new MefProviderOptions(optionsPage.Site);
+
+            chkEnableExtendedXmlComments.Checked = mefOptions.EnableExtendedXmlCommentsCompletion;
+            chkEnableGoToDefinition.Checked = mefOptions.EnableGoToDefinition;
+            chkEnableCtrlClickGoToDefinition.Checked = mefOptions.EnableCtrlClickGoToDefinition;
+            chkEnableGoToDefinitionInCRef.Checked = mefOptions.EnableGoToDefinitionInCRef;
         }
 
         /// <summary>
@@ -142,11 +148,14 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 // MEF provider options are stored separately to avoid loading the entire package just to access
                 // these options.
-                MefProviderOptions.EnableExtendedXmlCommentsCompletion = chkEnableExtendedXmlComments.Checked;
-                MefProviderOptions.EnableGoToDefinition = chkEnableGoToDefinition.Checked;
-                MefProviderOptions.EnableGoToDefinitionInCRef = chkEnableGoToDefinitionInCRef.Checked;
+                var mefOptions = new MefProviderOptions(optionsPage.Site);
 
-                MefProviderOptions.SaveConfiguration();
+                mefOptions.EnableExtendedXmlCommentsCompletion = chkEnableExtendedXmlComments.Checked;
+                mefOptions.EnableGoToDefinition = chkEnableGoToDefinition.Checked;
+                mefOptions.EnableCtrlClickGoToDefinition = chkEnableCtrlClickGoToDefinition.Checked;
+                mefOptions.EnableGoToDefinitionInCRef = chkEnableGoToDefinitionInCRef.Checked;
+
+                mefOptions.SaveConfiguration();
             }
         }
         #endregion
@@ -194,13 +203,15 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <summary>
-        /// Enable or disable the <c>cref</c> option based on the overall Go To Definition setting
+        /// Enable or disable the Ctrl+click and <c>cref</c> options based on the overall Go To Definition
+        /// setting.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
         private void chkEnableGoToDefinition_CheckedChanged(object sender, EventArgs e)
         {
-            chkEnableGoToDefinitionInCRef.Enabled = chkEnableGoToDefinition.Checked;
+            chkEnableCtrlClickGoToDefinition.Enabled = chkEnableGoToDefinitionInCRef.Enabled =
+                chkEnableGoToDefinition.Checked;
         }
         #endregion
     }

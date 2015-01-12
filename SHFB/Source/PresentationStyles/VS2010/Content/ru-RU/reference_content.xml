@@ -3,7 +3,7 @@
 
   <!-- note text -->
   <item id="notDocumented">Это API не документировано.</item>
-  <item id="preliminary">Это API является предварительным и может быть изменено.</item>
+  <item id="preliminary">Это предварительная документация, которая в будущем может измениться.</item>
 	
 	<!-- main window stuff -->
 	<item id="productTitle">Библиотека классов .NET Framework</item>
@@ -28,7 +28,7 @@
   <item id="meta_mshelp_rlTitle">{0} ({1})</item>
   <item id="topicTitle_root">Пространства имён</item>
 	<item id="topicTitle_namespace">{0} - пространство имён</item>
-	<item id="topicTitle_namespaceGroup">{0} Пространства имён</item>
+	<item id="topicTitle_namespaceGroup">{0} - пространства имён</item>
 	<item id="topicTitle_class">{0} - класс</item>
 	<item id="topicTitle_structure">{0} - структура</item>
 	<item id="topicTitle_interface">{0} - интерфейс</item>
@@ -140,8 +140,8 @@
 	<item id="title_platforms">Платформы</item>
   <item id="title_relatedTopics">См. также</item>
   <item id="title_extensionUsage">Примечание об использовании</item>
-  <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/bb384936.aspx" target="_blank">Методы расширения (Visual Basic)</a> или <a href="http://msdn.microsoft.com/ru-ru/library/bb383977.aspx" target="_blank">Методы расширения (Руководство по программированию в C#)</a> <conceptualLink target="b8020aae-374d-46a9-bcb7-8cc2390b93b6" /> или <conceptualLink target="175ce3ff-9bbf-4e64-8421-faeb81a0bb51" />.</item>
-	<item id="text_moreInheritance">More...</item>
+  <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/bb384936.aspx" target="_blank">Методы расширения (Visual Basic)</a> или <a href="http://msdn.microsoft.com/ru-ru/library/bb383977.aspx" target="_blank">Методы расширения (Руководство по программированию в C#)</a> или <conceptualLink target="b8020aae-374d-46a9-bcb7-8cc2390b93b6" /> или <conceptualLink target="175ce3ff-9bbf-4e64-8421-faeb81a0bb51" />.</item>
+	<item id="text_moreInheritance">Подробнее...</item>
 
 	<!-- table headers -->
 	<item id="header_namespaceName">Пространство имён</item>
@@ -170,9 +170,9 @@
   <item id="header_ensuresOnThrowName">Постусловия при возникновении исключений</item>
   <item id="header_invariantsName">Инварианты</item>
 
-	<item id="header_revHistoryDate">Date</item>
-	<item id="header_revHistoryVersion">Version</item>
-	<item id="header_revHistoryDescription">Description</item>
+	<item id="header_revHistoryDate">Дата</item>
+	<item id="header_revHistoryVersion">Версия</item>
+	<item id="header_revHistoryDescription">Описание</item>
 
   <!-- member list table titles -->
 	<item id="tableTitle_class">Классы</item>
@@ -227,7 +227,7 @@
                    prefer-overload="true" /> имеет следующее значение свойства <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" 
                    prefer-overload="true" />: {1}. Атрибут <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" 
                    prefer-overload="true" /> не оказывает влияния на настольные приложения (обычно запускаемые двойным щелчком значка, вводом команды или URL-адреса в обозревателе). Дополнительные сведения см. в описании класса <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" 
-                   prefer-overload="true" /> или в разделе <a href="http://msdn.microsoft.com/ru-ru/library/ms172338.aspx" target="_blank">программирование SQL Server и атрибуты защиты основного приложения</a> <conceptualLink target="7dfa36b4-e773-4c75-a3ff-ff1af3ce4c4f" />.</item>
+                   prefer-overload="true" /> или в разделе <a href="http://msdn.microsoft.com/ru-ru/library/ms172338.aspx" target="_blank">программирование SQL Server и атрибуты защиты основного приложения</a>.</item>
 
 	<!-- Obsolete boilerplate text -->
   <item id="boilerplate_obsoleteShort"><strong>Устарело. </strong></item>
@@ -326,7 +326,7 @@
   <item id="altText_XNAFramework">Поддерживается платформой XNA Framework</item>
   <item id="altText_SilverlightMobile">Поддерживается платформой <include item="silverlight_mobile"/></item>
   <item id="altText_ExplicitInterface">Явные реализации интерфейса</item>
-  <item id="altText_CodeExample">Code example</item>
+  <item id="altText_CodeExample">Пример кода</item>
 
   <item id="boilerplate_seeAlsoNamespaceLink">{0} - пространство имён</item>
   <item id="boilerplate_seeAlsoTypeLink">{0} - <include item="text_{1}Lower"/></item>
@@ -376,12 +376,12 @@
   <item id="obsoleteError">Устарело (не компилируется) в {0} и более поздних версиях</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="boilerplate_aptca">Полное доверие для модуля немедленного вызова. Данный элемент не может использоваться кодом с частичным доверием. Дополнительные сведения см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/8skskf63.aspx" target="_blank">Использование библиотек из не вполне надежного кода</a> <conceptualLink target="dd66cd4c-b087-415f-9c3e-94e3a1835f74"/>.</item>
+	<item id="boilerplate_aptca">Полное доверие для модуля немедленного вызова. Данный элемент не может использоваться кодом с частичным доверием. Дополнительные сведения см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/8skskf63.aspx" target="_blank">Использование библиотек из не вполне надежного кода</a>.</item>
   
   <!-- Variance boilerplate text -->
   <item id="text_covariant">Этот параметр типа является ковариантным. Это означает, что можно использовать либо указанный тип, либо более производный тип. </item>
   <item id="text_contravariant">Этот параметр типа является контрвариантным. Это означает, что можно использовать либо указанный тип, либо менее производный тип. </item>
-  <item id="text_variance">Дополнительные сведения о ковариации и контрвариации см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/ee207183.aspx" target="_blank">Ковариация и контравариация в универсальных шаблонах</a> <conceptualLink target="2678dc63-c7f9-4590-9ddc-0a4df684d42e" />.</item>
+  <item id="text_variance">Дополнительные сведения о ковариации и контрвариации см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/ee207183.aspx" target="_blank">Ковариация и контравариация в универсальных шаблонах</a>.</item>
   
   <!-- Non Cls Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">Этот интерфейс API CLS-несовместим.</item>
@@ -405,7 +405,7 @@
   
   <!-- Platforms boilerplate for Silverlight mref builds --> 
   <item id="boilerplate_silverlightPlatforms">
-    Список операционных систем и браузеров, поддерживаемых <include item="silverlight"/>, см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/dd229102.aspx" target="_blank">Поддерживаемые операционные системы и браузеры</a> <conceptualLink target="d1c41046-1eef-4a73-8049-5c9f0487f7fc"/>.
+    Список операционных систем и браузеров, поддерживаемых <include item="silverlight"/>, см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/dd229102.aspx" target="_blank">Поддерживаемые операционные системы и браузеры</a>.
   </item>
 
  	<item id="Win95">Windows 95</item>
@@ -543,9 +543,9 @@
   <!-- Show Missing Component messages -->
   <item id="SMCAutoDocConstructor">Инициализирует новый экземпляр класса <referenceLink target="T:{0}" /></item>
   <item id="SMCAutoDocStaticConstructor">Инициализирует статические члены класса <referenceLink target="T:{0}" /></item>
-  <item id="SMCAutoDocDispose">Освобождает все ресурсы, используемые <referenceLink target="T:{0}" /></item>
-  <item id="SMCAutoDocDisposeBool">Освобождает все неуправляемые ресурсы, используемые <referenceLink target="T:{0}" />, и, опционально, освобождает управляемые ресурсы</item>
-  <item id="SMCAutoDocDisposeParam">True для освобождения как неуправляемых, так и управляемых ресурсов; false для освобождения только неуправляемых ресурсов.</item>
+  <item id="SMCAutoDocDispose">Освобождает все ресурсы, используемые объектом <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocDisposeBool">Освобождает неуправляемые ресурсы, используемые объектом <referenceLink target="T:{0}" />, а при необходимости освобождает также управляемые ресурсы</item>
+  <item id="SMCAutoDocDisposeParam">Значение true позволяет освободить управляемые и неуправляемые ресурсы; значение false позволяет освободить только неуправляемые ресурсы.</item>
   <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0}&gt; отсутствует в документации для "{1}"]</p></item>
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</p></item>

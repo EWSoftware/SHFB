@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that determines whether or not quick info should be shown for specific XML
@@ -45,6 +45,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         private SVsServiceProvider serviceProvider;
         private ITextBuffer textBuffer;
         private XmlCommentsLinkQuickInfoSourceProvider provider;
+        private bool ctrlClickEnabled, enableInCRef;
         #endregion
 
         #region Constructor
@@ -56,12 +57,16 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <param name="serviceProvider">The service provider to use</param>
         /// <param name="buffer">The buffer to use</param>
         /// <param name="provider">The quick info source provider to use</param>
+        /// <param name="ctrlClickEnabled">True if Ctrl+Click on definition is enabled, false if not</param>
+        /// <param name="enableInCRef">True to enable in <c>cref</c> targets, false if not</param>
         public XmlCommentsLinkQuickInfoSource(SVsServiceProvider serviceProvider, ITextBuffer buffer,
-          XmlCommentsLinkQuickInfoSourceProvider provider)
+          XmlCommentsLinkQuickInfoSourceProvider provider, bool ctrlClickEnabled, bool enableInCRef)
         {
             this.serviceProvider = serviceProvider;
             this.textBuffer = buffer;
             this.provider = provider;
+            this.ctrlClickEnabled = ctrlClickEnabled;
+            this.enableInCRef = enableInCRef;
         }
         #endregion
 
@@ -109,7 +114,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             attrName = tagSpan.GetText();
 
                             // If it contains "cref", tne next XML doc attribute value will be the target
-                            if(attrName.IndexOf("cref=") != -1 && MefProviderOptions.EnableGoToDefinitionInCRef)
+                            if(attrName.IndexOf("cref=") != -1 && enableInCRef)
                                 attrName = "cref";
 
                             // As above, for conceptualLink, the next XML doc attribute will be the target
@@ -169,7 +174,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             attrName = tagSpan.GetText().Trim();
                             identifier = null;
 
-                            if(attrName == "cref" && !MefProviderOptions.EnableGoToDefinitionInCRef)
+                            if(attrName == "cref" && !enableInCRef)
                                 attrName = null;
                             break;
 
@@ -290,7 +295,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         new Run(relativePath)
                     });
 
-                    if(found)
+                    if(found && ctrlClickEnabled)
                         textBlock.Inlines.AddRange(new Inline[] {
                             new LineBreak(),
                             new Run("Ctrl+Click to open the file")
@@ -298,6 +303,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     break;
 
                 case "cref":
+                    if(!ctrlClickEnabled)
+                        return null;
+
                     if(!IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn)
                         textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition (within solution only)"));
                     else
@@ -305,6 +313,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     break;
 
                 default:
+                    if(!ctrlClickEnabled)
+                        return null;
+
                     textBlock.Inlines.Add(new Run("Ctrl+Click to open the containing file"));
                     break;
             }

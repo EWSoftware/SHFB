@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MamlLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that determines whether or not quick info should be shown for specific MAML
@@ -45,6 +45,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         private SVsServiceProvider serviceProvider;
         private ITextBuffer textBuffer;
         private MamlLinkQuickInfoSourceProvider provider;
+        private bool ctrlClickEnabled;
         #endregion
 
         #region Constructor
@@ -56,12 +57,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <param name="serviceProvider">The service provider to use</param>
         /// <param name="buffer">The buffer to use</param>
         /// <param name="provider">The quick info source provider to use</param>
+        /// <param name="ctrlClickEnabled">True if Ctrl+Click on definition is enabled, false if not</param>
         public MamlLinkQuickInfoSource(SVsServiceProvider serviceProvider, ITextBuffer buffer,
-          MamlLinkQuickInfoSourceProvider provider)
+          MamlLinkQuickInfoSourceProvider provider, bool ctrlClickEnabled)
         {
             this.serviceProvider = serviceProvider;
             this.textBuffer = buffer;
             this.provider = provider;
+            this.ctrlClickEnabled = ctrlClickEnabled;
         }
         #endregion
 
@@ -228,7 +231,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         new Run(relativePath)
                     });
 
-                    if(elementName != "topic" && found)
+                    if(elementName != "topic" && found & ctrlClickEnabled)
                         textBlock.Inlines.AddRange(new Inline[] {
                             new LineBreak(),
                             new Run("Ctrl+Click to open the file")
@@ -236,10 +239,16 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     break;
 
                 case "codeEntityReference":
+                    if(!ctrlClickEnabled)
+                        return null;
+
                     textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition (within solution only)"));
                     break;
 
                 default:
+                    if(!ctrlClickEnabled)
+                        return null;
+
                     textBlock.Inlines.Add(new Run("Ctrl+Click to open the containing file"));
                     break;
             }

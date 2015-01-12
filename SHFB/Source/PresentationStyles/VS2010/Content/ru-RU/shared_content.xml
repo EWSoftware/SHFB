@@ -65,7 +65,7 @@
   <item id="title_seeAlso_reference">Ссылки</item>
   <item id="title_seeAlso_concepts">Основные понятия</item>
   <item id="title_seeAlso_otherResources">Другие ресурсы</item>
-  <item id="title_revisionHistory">Revision History</item>
+  <item id="title_revisionHistory">История редакций</item>
   
 	<!-- dynamic Link Information -->
 	<item id="meta_mshelp_KTable"><MSHelp:ktable keywords='{0}' locHeader='Location' topicHeader = 'Topic'
@@ -84,7 +84,7 @@
 	<item id="devlang_VisualBasicAndCSharp">VB и C#</item>
 	<item id="devlang_XML">XML</item>
 
-	<item id="noCodeExample"><p>No code example is currently available or this language may not be supported.</p></item>
+	<item id="noCodeExample"><p>В настоящее время язык не поддерживается либо пример кода отсутствует.</p></item>
 
 	<!-- Development language metadata values for languages without a syntax generator -->
 	<item id="metaLang_HTML">HTML</item>
@@ -96,7 +96,7 @@
 	<item id="metaLang_XML">XML</item>
 
   <!-- language keywords -->
-  <item id="devlang_nullKeyword">null (<span class="keyword">Nothing</span> в Visual Basic)</item>
+  <item id="devlang_nullKeyword"><span class="keyword">null</span> (<span class="keyword">Nothing</span> в Visual Basic)</item>
   <item id="devlang_staticKeyword"><span class="keyword">static</span> (<span class="keyword">Shared</span> в Visual Basic)</item>
   <item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (<span class="keyword">Overridable</span> в Visual Basic)</item>
   <item id="devlang_trueKeyword"><span class="keyword">true</span> (<span class="keyword">True</span> в Visual Basic)</item>
@@ -119,7 +119,7 @@
   <!-- Copyright -->	
 	<item id="copyright_info"><include item="copyright_text"/></item>
 	<item id="copyright_link"></item>
-	<item id="copyright_text">&#169; 2005 Microsoft Corporation. Все права защищены.</item> 
+	<item id="copyright_text">&#169; Корпорация Майкрософт (Microsoft Corporation), 2005 г. Все права защищены.</item> 
 
   <!-- Bibliography -->
   <item id="bibliographyTitle">Библиография</item>
