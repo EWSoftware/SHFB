@@ -6,9 +6,9 @@
 		<title>Sandcastle Help File Builder</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
-		<licenseUrl>http://SHFB.CodePlex.com/license</licenseUrl>
-		<projectUrl>http://SHFB.CodePlex.com/</projectUrl>
-		<iconUrl>http://www.EWoodruff.us/Images/SHFB.png</iconUrl>
+		<licenseUrl>https://github.com/EWSoftware/SHFB/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
+		<iconUrl>https://github.com/EWSoftware/SHFB/blob/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This package allows you to deploy the Sandcastle Help File Builder tools inside of a project to build help files without installing the tools manually such as on a build server.  Some limitations apply.</description>
 		<copyright>Eric Woodruff (c) 2006-2015</copyright>

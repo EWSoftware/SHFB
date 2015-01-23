@@ -21,7 +21,7 @@ package.  This application will search for the required tools and give you instr
 and install them if they are not found.</Paragraph>
 
       <Paragraph>This installer comes with the version of
-<Hyperlink NavigateUri="http://SHFB.CodePlex.com">Sandcastle</Hyperlink> displayed in the main title
+<Hyperlink NavigateUri="https://GitHub.com/EWSoftware/SHFB">Sandcastle</Hyperlink> displayed in the main title
 above.</Paragraph>
 
       <Paragraph>Third-party build tool and component providers may also use this installer with their

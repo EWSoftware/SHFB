@@ -16,9 +16,9 @@ Studio Spell Checker</Hyperlink> can be downloaded and installed from the <Bold>
 is an editor extension that checks the spelling of comments, strings, and plain text as you type or interactively
 with a tool window.  Support is included for spell checking source code, XML files, and MAML topic files.</Paragraph>
 
-			<Paragraph>The project is hosted on <Hyperlink NavigateUri="http://VSSpellChecker.CodePlex.com">CodePlex</Hyperlink>.
+			<Paragraph>The project is hosted on <Hyperlink NavigateUri="https://GitHub.com/EWSoftware/VSSpellChecker">GitHub</Hyperlink>.
 Information on its available features and instructions on adding custom dictionaries can be found there.  The
-CodePlex site is also the place to ask questions and make feature requests for it.</Paragraph>
+GitHub site is also the place to ask questions and make feature requests for it.</Paragraph>
 
 			<Paragraph>Click the <Bold>Next</Bold> button to continue.</Paragraph>
 		</FlowDocument>

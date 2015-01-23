@@ -9,7 +9,7 @@
 // This file contains a form that is used to configure the settings for the SQL Copy From Index component.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -64,7 +64,7 @@ namespace SandcastleBuilder.Components.UI
 
             InitializeComponent();
 
-            lnkCodePlexSHFB.Links[0].LinkData = "http://SHFB.CodePlex.com";
+            lnkProjectSite.Links[0].LinkData = "https://GitHub.com/EWSoftware/SHFB";
 
             // Load the current settings.  Note that there are multiple configurations (one for each help file
             // format).  However, the settings will be the same across all of them.
@@ -93,11 +93,11 @@ namespace SandcastleBuilder.Components.UI
         }
 
         /// <summary>
-        /// Go to the CodePlex home page of the Sandcastle Help File Builder project.
+        /// Go to the Sandcastle Help File Builder project site
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void lnkCodePlexSHFB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lnkProjectSite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {

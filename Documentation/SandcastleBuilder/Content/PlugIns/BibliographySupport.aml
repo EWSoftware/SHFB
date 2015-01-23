@@ -46,14 +46,14 @@ suggested name is <localUri>bibliography.xml</localUri> but you can name it what
   <reference name="sandcastle activity">
     <title>Sandcastle Help File Builder Activity Statistics</title>
     <author>Eric Woodruff</author>
-    <publisher>CodePlex.com</publisher>
-    <link>http://SHFB.codeplex.com/stats/view</link>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB/pulse/monthly</link>
   </reference>
   <reference name="shfb">
     <title>Sandcastle Help File Builder</title>
     <author>Eric Woodruff</author>
-    <publisher>CodePlex.com</publisher>
-    <link>http://SHFB.codeplex.com</link>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB</link>
   </reference>
 </bibliography>]]>
 </code>

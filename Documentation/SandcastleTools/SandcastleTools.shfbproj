@@ -86,10 +86,10 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>Sandcastle Tools</HelpTitle>
+    <HelpTitle>Sandcastle Tools Documentation</HelpTitle>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle Tools</CopyrightText>
-    <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
+    <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>

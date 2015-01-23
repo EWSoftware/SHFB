@@ -4,7 +4,7 @@
   <item id="SandcastleVersion">v2015.1.12.0</item>
   <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
-    <ddue:linkUri>http://SHFB.CodePlex.com</ddue:linkUri>
+    <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
 </content>

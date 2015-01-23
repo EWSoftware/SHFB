@@ -78,7 +78,7 @@ see the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" /> topic.</para>
 
 	<listItem>
 		<para><externalLink><linkText>XML Schema Documenter</linkText>
-<linkUri>http://xsddoc.codeplex.com/</linkUri>
+<linkUri>https://github.com/terrajobst/xsddoc</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink> - This plug-in allows you to integrate reference documentation
 for XML schemas into your help files.</para>
@@ -86,7 +86,7 @@ for XML schemas into your help files.</para>
 
 	<listItem>
 		<para><externalLink><linkText>Sandcastle LaTeX</linkText>
-<linkUri>http://github.com/cuda/latex-sandcastle/</linkUri>
+<linkUri>https://github.com/cuda/latex-sandcastle/</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink> - This custom build component converts LaTeX embedded in XML
 comments to images in the final help file.  The component utilizes mimeTeX 1.7.</para>
@@ -129,11 +129,11 @@ and the related tools, report bugs, and ask for help.</para>
 <list class="bullet">
 	<listItem>
 		<para>To discuss the help file builder, suggest new features, report bugs in it, and request help
-using it, visit the <token>SHFB</token> CodePlex project.</para>
+using it, visit the <token>SHFB</token> project site.</para>
 	</listItem>
 	<listItem>
 		<para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help
-using it, visit the <token>SHFB</token> CodePlex project.</para>
+using it, visit the <token>SHFB</token> project site.</para>
 	</listItem>
 	<listItem>
 		<para>For discussion and questions about help systems in general, visit the <externalLink>

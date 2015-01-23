@@ -3,13 +3,13 @@
   <item id="BuildDate">{@BuildDate:MMMM d, yyyy}</item>
   <item id="Sandcastle"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>Sandcastle</ddue:linkText>
-    <ddue:linkUri>http://Sandcastle.CodePlex.com</ddue:linkUri>
+    <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
   <item id="SandcastleVersion">v2014.2.15.0</item>
   <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
-    <ddue:linkUri>http://SHFB.CodePlex.com</ddue:linkUri>
+    <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
 </content>

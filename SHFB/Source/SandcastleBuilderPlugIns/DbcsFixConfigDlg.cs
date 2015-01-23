@@ -9,7 +9,7 @@
 // This file contains a form that is used to configure the settings for the DBCS Fix plug-in
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -66,7 +66,7 @@ namespace SandcastleBuilder.PlugIns
 
             InitializeComponent();
 
-            lnkCodePlexSHFB.Links[0].LinkData = "http://SHFB.CodePlex.com";
+            lnkProjectSite.Links[0].LinkData = "https://GitHub.com/EWSoftware/SHFB";
             lnkSteelBytes.Links[0].LinkData = "http://www.SteelBytes.com/?mid=45";
 
             // Load the current settings

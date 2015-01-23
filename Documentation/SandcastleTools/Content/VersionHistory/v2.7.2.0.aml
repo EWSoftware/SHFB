@@ -168,7 +168,7 @@ transformations.</para>
 					<listItem>
 						<para>Started to document the Sandcastle tools by adding this help file.  The content and images in
 the general information and architecture topics was originally created by Dave Sexton as part of the wiki
-content on the Sandcastle Styles project site on CodePlex.</para>
+content on the Sandcastle Styles project site on GitHub.</para>
 
 						<para>As of this release, it is still a work in progress.  More information on the various tools and
 components will be added as time permits.</para>

@@ -10,7 +10,7 @@
 // within them.  It can also include code from an external file or a region within the file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -323,8 +323,8 @@ namespace SandcastleBuilder.Components
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
             base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    Code Block Component.  " +
-                "{2}.\r\n    Portions copyright (c) 2003, Jonathan de Halleux, All rights reserved.\r\n" +
-                "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright);
+                "{2}.\r\n    Portions copyright (c) 2003-2015, Jonathan de Halleux, All rights reserved.\r\n" +
+                "    https://GitHub.com/EWSoftware/SHFB", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright);
 
             // The <basePath> element is optional.  If not set, it will assume the current folder as the base
             // path for source references with relative paths.

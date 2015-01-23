@@ -9,7 +9,7 @@
 // This file contains the static data definitions used by the MAML to flow document converter class
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -373,7 +373,7 @@ namespace SandcastleBuilder.WPF.Maml
             { "unmanagedCodeEntityReference", BoldElement },
             { "userInput", BoldElement },
             { "userInputLocalizable", BoldElement },
-            { "xmlEntityReference", BoldElement },  // XSD build component extension element (http://xsddoc.CodePlex.com)
+            { "xmlEntityReference", BoldElement },  // XSD build component extension element (https://github.com/terrajobst/xsddoc)
 
             // Inline link elements
             { "codeEntityReference", CodeEntityReferenceElement },

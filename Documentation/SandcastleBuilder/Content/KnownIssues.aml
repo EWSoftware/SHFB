@@ -37,8 +37,8 @@ additional content options.  The installer contains an HTML to MAML converter ut
 					<listItem>
 						<para>Not all build errors and warnings have been documented yet.  You will recognize these by a
 <placeholder>TODO:</placeholder> comment where the introduction should be or in the topic body.  If you need
-help for one of these errors or warnings, please ask in the Discussion area of the <token>SHFB</token> project
-at CodePlex.</para>
+help for one of these errors or warnings, please ask in the Issues area of the <token>SHFB</token> project
+on GitHub.</para>
 					</listItem>
 
 					<listItem>

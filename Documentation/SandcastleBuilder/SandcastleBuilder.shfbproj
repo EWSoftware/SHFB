@@ -17,7 +17,7 @@
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>SandcastleBuilder</HtmlHelpName>
-    <ProjectSummary>Sandcastle Help File Builder.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Sandcastle Help File Builder&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttp://SHFB.CodePlex.com&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttp://SHFB.CodePlex.com&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
+    <ProjectSummary>Sandcastle Help File Builder.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Sandcastle Help File Builder&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttps://GitHub.com/EWSoftware/SHFB&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttps://GitHub.com/EWSoftware/SHFB&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
@@ -30,7 +30,7 @@
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
-    <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
+    <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>

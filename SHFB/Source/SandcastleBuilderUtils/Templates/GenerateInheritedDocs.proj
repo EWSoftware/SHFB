@@ -1,5 +1,5 @@
 ﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-  <!-- Generate inherited documentation.  http://SHFB.CodePlex.com -->
+  <!-- Generate inherited documentation.  https://GitHub.com/EWSoftware/SHFB -->
   <UsingTask TaskName="SandcastleBuilder.InheritedDocumentation.GenerateInheritedDocs"
     AssemblyFile="{@SHFBFolder}\GenerateInheritedDocs.exe" />
 

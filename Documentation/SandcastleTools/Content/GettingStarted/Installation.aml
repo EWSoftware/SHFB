@@ -18,7 +18,7 @@ compilers, it contains instructions on where to get them and how to install them
 		<para>
 			<externalLink>
 				<linkText>Download the latest Sandcastle Help File Builder Guided Installer</linkText>
-				<linkUri>http://shfb.codeplex.com/releases</linkUri>
+				<linkUri>https://GitHub.com/EWSoftware/SHFB/releases</linkUri>
 				<linkTarget>_blank</linkTarget>
 			</externalLink>
 		</para>
@@ -33,7 +33,7 @@ additional tools not included in the guided installation that you may find usefu
   <title>Requirements</title>
   <content>
 		<para>The latest version of the Sandcastle Help File Builder and Tools can always be found at the
-<token>SHFB</token> CodePlex project site (<token>SandcastleVersion</token> when this help file was produced).
+<token>SHFB</token> project site (<token>SandcastleVersion</token> when this help file was produced).
 The <externalLink><linkText>.NET Framework 4.0</linkText>
 <linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9CFB2D51-5FF4-4491-B0E5-B386F32C0992</linkUri>
 <linkTarget>_blank</linkTarget></externalLink> is required to run the tools.</para>

@@ -6,9 +6,9 @@
 		<Version>2015.1.12.0</Version>
 		<Description xml:space="preserve">Visual Studio integration for the Sandcastle Help File Builder.</Description>
 		<Locale>1033</Locale>
-		<MoreInfoUrl>http://SHFB.CodePlex.com</MoreInfoUrl>
+		<MoreInfoUrl>http://EWSoftware.github.io/shfbdocs</MoreInfoUrl>
 		<License>License.rtf</License>
-		<GettingStartedGuide>http://www.ewoodruff.us/shfbdocs/</GettingStartedGuide>
+		<GettingStartedGuide>http://EWSoftware.github.io/shfbdocs/html/b772e00e-1705-4062-adb6-774826ce6700.htm</GettingStartedGuide>
 		<Icon>VSIXPackage.jpg</Icon>
 		<PreviewImage>VSIXPreview.png</PreviewImage>
 		<InstalledByMsi>false</InstalledByMsi>

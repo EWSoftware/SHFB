@@ -37,7 +37,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.lnkCodePlexSHFB = new System.Windows.Forms.LinkLabel();
+            this.lnkProjectSite = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.lblExpression = new System.Windows.Forms.Label();
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
@@ -122,18 +122,18 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // lnkCodePlexSHFB
+            // lnkProjectSite
             // 
-            this.lnkCodePlexSHFB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(269, 396);
-            this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
-            this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
-            this.lnkCodePlexSHFB.TabIndex = 8;
-            this.lnkCodePlexSHFB.TabStop = true;
-            this.lnkCodePlexSHFB.Text = "Sandcastle Help File Builder";
-            this.lnkCodePlexSHFB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip1.SetToolTip(this.lnkCodePlexSHFB, "http://SHFB.CodePlex.com");
-            this.lnkCodePlexSHFB.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkCodePlexSHFB_LinkClicked);
+            this.lnkProjectSite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lnkProjectSite.Location = new System.Drawing.Point(269, 396);
+            this.lnkProjectSite.Name = "lnkProjectSite";
+            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.TabIndex = 8;
+            this.lnkProjectSite.TabStop = true;
+            this.lnkProjectSite.Text = "Sandcastle Help File Builder";
+            this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip1.SetToolTip(this.lnkProjectSite, "https://GitHub.com/EWSoftware/SHFB");
+            this.lnkProjectSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkProjectSite_LinkClicked);
             // 
             // label1
             // 
@@ -162,7 +162,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(757, 435);
-            this.Controls.Add(this.lnkCodePlexSHFB);
+            this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.lblExpression);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDelete);
@@ -196,6 +196,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblExpression;
         private System.Windows.Forms.ErrorProvider epErrors;
-        private System.Windows.Forms.LinkLabel lnkCodePlexSHFB;
+        private System.Windows.Forms.LinkLabel lnkProjectSite;
     }
 }

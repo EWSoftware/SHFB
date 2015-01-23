@@ -9,7 +9,7 @@
   <title>Information and Guides</title>
   <content>
 			<para>The most recent version of this help file and other guides on MAML and XML comments can be download
-from the <token>SHFB</token> project on CodePlex.</para>
+from the <token>SHFB</token> project on GitHub.</para>
 
   </content>
 </section>
@@ -20,7 +20,7 @@ from the <token>SHFB</token> project on CodePlex.</para>
 		<list class="bullet">
 			<listItem>
 				<para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help using
-it, visit the <token>SHFB</token> CodePlex project.</para>
+it, visit the <token>SHFB</token> project site.</para>
 			</listItem>
 			<listItem>
 				<para>For discussion and questions about help systems in general, visit the <externalLink>

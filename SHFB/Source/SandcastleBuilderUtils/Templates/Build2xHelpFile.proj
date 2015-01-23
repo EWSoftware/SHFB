@@ -1,5 +1,5 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-  <!-- Sandcastle Help File Builder Tasks.  http://SHFB.CodePlex.com -->
+  <!-- Sandcastle Help File Builder Tasks.  https://GitHub.com/EWSoftware/SHFB -->
   <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.Build2xHelpFile"
     AssemblyFile="{@SHFBFolder}\SandcastleBuilder.Utils.dll" />
 

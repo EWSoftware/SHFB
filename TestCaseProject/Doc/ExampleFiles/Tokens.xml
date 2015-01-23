@@ -6,11 +6,11 @@
 
   <item id="Sandcastle"><ddue:externalLink>
     <ddue:linkText>Sandcastle</ddue:linkText>
-    <ddue:linkUri>http://www.codeplex.com/Sandcastle</ddue:linkUri>
+    <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
 </ddue:externalLink></item>
   <item id="SHFB"><ddue:externalLink>
     <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
-    <ddue:linkUri>http://www.codeplex.com/SHFB</ddue:linkUri>
+    <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
 </ddue:externalLink></item>
   <item id="autoOutline"><autoOutline /></item>
 </content>

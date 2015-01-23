@@ -9,7 +9,7 @@
 // This file contains a form that is used to configure the settings for the AjaxDoc Builder plug-in
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -67,8 +67,8 @@ namespace SandcastleBuilder.PlugIns
 
             InitializeComponent();
 
-            lnkCodePlexSHFB.Links[0].LinkData = "http://SHFB.CodePlex.com";
-            lnkCodePlexAjaxDoc.Links[0].LinkData = "http://AjaxDoc.CodePlex.com";
+            lnkSHFBProjectSite.Links[0].LinkData = "https://GitHub.com/EWSoftware/SHFB";
+            lnkAjaxDocProjectSite.Links[0].LinkData = "http://AjaxDoc.CodePlex.com";
 
             // Load the current settings
             config = new XmlDocument();
@@ -118,11 +118,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// Go to the CodePlex home page of the Sandcastle Help File Builder project
+        /// Go to the project site for the clicked link
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void codePlex_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void ProjectSite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {

@@ -63,12 +63,10 @@ namespace TestDoc
         /// </summary>
         /// <remarks>This has see and seealso tags with href attributes.
         /// 
-        /// <p/>See href: <see href="http://www.codeplex.com/SHFB" />
-        /// <p/>See href: <see href="http://www.codeplex.com/Sandcastle">Sandcastle
-        /// on CodePlex</see></remarks>
-        /// <seealso href="http://www.codeplex.com/SHFB"/>
-        /// <seealso href="http://www.codeplex.com/Sandcastle">Sandcastle
-        /// on CodePlex</seealso>
+        /// <p/>See href: <see href="https://GitHub.com/EWSoftware/SHFB" />
+        /// <p/>See href: <see href="https://GitHub.com/EWSoftware/SHFB">SHFB on GitHub</see></remarks>
+        /// <seealso href="https://GitHub.com/EWSoftware/SHFB"/>
+        /// <seealso href="https://GitHub.com/EWSoftware/SHFB">SHFB on GitHub</seealso>
         public TestClass()
         {
             publicStringField = String.Empty;

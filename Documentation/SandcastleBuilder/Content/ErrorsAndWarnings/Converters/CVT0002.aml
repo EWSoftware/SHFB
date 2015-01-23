@@ -18,7 +18,7 @@ project system or the project file.</para>
     <section>
       <title>Solution</title>
       <content>
-        <para>Open a work item in the <token>SHFB</token> project at CodePlex
+        <para>Open an issue in the <token>SHFB</token> project on GitHub
 containing the details from the error message.  Attach the affected source
 project as an example.</para>
       </content>

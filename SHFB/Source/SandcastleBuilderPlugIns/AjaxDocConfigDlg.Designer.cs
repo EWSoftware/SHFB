@@ -32,8 +32,8 @@ namespace SandcastleBuilder.PlugIns
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.lnkCodePlexSHFB = new System.Windows.Forms.LinkLabel();
-            this.lnkCodePlexAjaxDoc = new System.Windows.Forms.LinkLabel();
+            this.lnkSHFBProjectSite = new System.Windows.Forms.LinkLabel();
+            this.lnkAjaxDocProjectSite = new System.Windows.Forms.LinkLabel();
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -85,29 +85,29 @@ namespace SandcastleBuilder.PlugIns
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // lnkCodePlexSHFB
+            // lnkSHFBProjectSite
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(140, 361);
-            this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
-            this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
-            this.lnkCodePlexSHFB.TabIndex = 5;
-            this.lnkCodePlexSHFB.TabStop = true;
-            this.lnkCodePlexSHFB.Text = "Sandcastle Help File Builder";
-            this.lnkCodePlexSHFB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip1.SetToolTip(this.lnkCodePlexSHFB, "http://SHFB.CodePlex.com");
-            this.lnkCodePlexSHFB.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.codePlex_LinkClicked);
+            this.lnkSHFBProjectSite.Location = new System.Drawing.Point(140, 361);
+            this.lnkSHFBProjectSite.Name = "lnkSHFBProjectSite";
+            this.lnkSHFBProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkSHFBProjectSite.TabIndex = 5;
+            this.lnkSHFBProjectSite.TabStop = true;
+            this.lnkSHFBProjectSite.Text = "Sandcastle Help File Builder";
+            this.lnkSHFBProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip1.SetToolTip(this.lnkSHFBProjectSite, "https://GitHub.com/EWSoftware/SHFB");
+            this.lnkSHFBProjectSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectSite_LinkClicked);
             // 
-            // lnkCodePlexAjaxDoc
+            // lnkAjaxDocProjectSite
             // 
-            this.lnkCodePlexAjaxDoc.Location = new System.Drawing.Point(366, 361);
-            this.lnkCodePlexAjaxDoc.Name = "lnkCodePlexAjaxDoc";
-            this.lnkCodePlexAjaxDoc.Size = new System.Drawing.Size(105, 23);
-            this.lnkCodePlexAjaxDoc.TabIndex = 6;
-            this.lnkCodePlexAjaxDoc.TabStop = true;
-            this.lnkCodePlexAjaxDoc.Text = "AjaxDoc";
-            this.lnkCodePlexAjaxDoc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip1.SetToolTip(this.lnkCodePlexAjaxDoc, "http://AjaxDoc.CodePlex.com");
-            this.lnkCodePlexAjaxDoc.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.codePlex_LinkClicked);
+            this.lnkAjaxDocProjectSite.Location = new System.Drawing.Point(366, 361);
+            this.lnkAjaxDocProjectSite.Name = "lnkAjaxDocProjectSite";
+            this.lnkAjaxDocProjectSite.Size = new System.Drawing.Size(105, 23);
+            this.lnkAjaxDocProjectSite.TabIndex = 6;
+            this.lnkAjaxDocProjectSite.TabStop = true;
+            this.lnkAjaxDocProjectSite.Text = "AjaxDoc";
+            this.lnkAjaxDocProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip1.SetToolTip(this.lnkAjaxDocProjectSite, "http://AjaxDoc.CodePlex.com");
+            this.lnkAjaxDocProjectSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ProjectSite_LinkClicked);
             // 
             // epErrors
             // 
@@ -346,8 +346,8 @@ namespace SandcastleBuilder.PlugIns
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.lnkCodePlexAjaxDoc);
-            this.Controls.Add(this.lnkCodePlexSHFB);
+            this.Controls.Add(this.lnkAjaxDocProjectSite);
+            this.Controls.Add(this.lnkSHFBProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -374,7 +374,7 @@ namespace SandcastleBuilder.PlugIns
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.ErrorProvider epErrors;
-        private System.Windows.Forms.LinkLabel lnkCodePlexSHFB;
+        private System.Windows.Forms.LinkLabel lnkSHFBProjectSite;
         private System.Windows.Forms.TextBox txtProjectName;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox chkUseDefaultCredentials;
@@ -384,7 +384,7 @@ namespace SandcastleBuilder.PlugIns
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtAjaxDocUrl;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.LinkLabel lnkCodePlexAjaxDoc;
+        private System.Windows.Forms.LinkLabel lnkAjaxDocProjectSite;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chkUseProxyServer;
         private System.Windows.Forms.Label label5;

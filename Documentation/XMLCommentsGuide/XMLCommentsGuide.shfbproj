@@ -98,7 +98,7 @@
     <HelpTitle>Sandcastle XML Comments Guide</HelpTitle>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
-    <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
+    <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <HelpFileVersion>2014.5.31.0</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>

@@ -20,8 +20,8 @@ problem converting the conceptual content layout file.</para>
         <para>Since this is a catch-all error, refer to the error description
 for information about the cause of the error and how you might be able to
 correct it (i.e. file not found, permissions error, etc.).  If you are unable
-to solve the problem based on the reported error, open a work item in the
-<token>SHFB</token> project at CodePlex containing the details from the error
+to solve the problem based on the reported error, open an issue in the
+<token>SHFB</token> project on GitHub containing the details from the error
 message.  Attach the affected source project and the indicated content layout
 file as an example.</para>
       </content>

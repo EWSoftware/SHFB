@@ -11,7 +11,7 @@
 // members.  This is based on the Microsoft IntelliSense build component.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -173,8 +173,8 @@ namespace Microsoft.Ddue.Tools
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
             base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    IntelliSense Component. " +
-                "Copyright \xA9 2006-2012, Eric Woodruff, All Rights Reserved.\r\n    http://SHFB.CodePlex.com",
-                fvi.ProductName, fvi.ProductVersion);
+                "Copyright \xA9 2006-2015, Eric Woodruff, All Rights Reserved.\r\n" +
+                "    https://GitHub.com/EWSoftware/SHFB", fvi.ProductName, fvi.ProductVersion);
 
             outputFolder = String.Empty;
             namespacesFilename = "Namespaces";

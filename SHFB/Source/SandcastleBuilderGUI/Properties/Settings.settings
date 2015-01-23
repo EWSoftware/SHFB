@@ -14,9 +14,6 @@
     <Setting Name="EWoodruffURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://www.EWoodruff.us</Value>
     </Setting>
-    <Setting Name="ProjectURL" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://SHFB.CodePlex.com</Value>
-    </Setting>
     <Setting Name="VerboseLogging" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -86,6 +83,9 @@
   &lt;rcNormalPosition_right&gt;0&lt;/rcNormalPosition_right&gt;
   &lt;rcNormalPosition_bottom&gt;0&lt;/rcNormalPosition_bottom&gt;
 &lt;/WINDOWPLACEMENT&gt;</Value>
+    </Setting>
+    <Setting Name="ProjectURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://GitHub.com/EWSoftware/SHFB</Value>
     </Setting>
   </Settings>
 </SettingsFile>

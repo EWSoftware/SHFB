@@ -31,7 +31,7 @@
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <HelpTitle>Sandcastle MAML Guide</HelpTitle>
-    <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
+    <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle MAML Guide</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>

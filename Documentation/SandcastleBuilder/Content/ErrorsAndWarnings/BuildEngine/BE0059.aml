@@ -26,8 +26,8 @@ corresponding <codeInline>language</codeInline> element in the
 <localUri>SandcastleHtmlExtract.config</localUri> file.  This file can be found
 in the help file builder installation folder.  You can edit this file to add
 an element that defines the code page and character set to use for the
-given locale ID.  If you do make an addition, please open a work item at the
-<token>SHFB</token> project on CodePlex to have the change added to the next
+given locale ID.  If you do make an addition, please open an issue at the
+<token>SHFB</token> project on GitHub to have the change added to the next
 release of the help file builder.</para>
       </content>
     </section>

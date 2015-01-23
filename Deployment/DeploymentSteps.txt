@@ -5,4 +5,5 @@
 
 3. Update the installer configuration file if necessary.
 
-4. Compress this folder, relative paths, no read-only attributes, exclude this file and the NuGet package.
+4. Compress this folder, relative paths, no read-only attributes, exclude this file, the NuGet package, and the
+   .gitignore files.

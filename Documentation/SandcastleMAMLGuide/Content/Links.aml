@@ -12,7 +12,7 @@
 <list class="bullet">
     <listItem>
 			<para>The most recent version of this guide can be download from the <token>SHFB</token> project on
-CodePlex.</para>
+GitHub.</para>
 		</listItem>
 	
 		<listItem>
@@ -42,7 +42,7 @@ is included with Sandcastle as an extra along with this guide.</para>
 		<list class="bullet">
 			<listItem>
 				<para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help using
-it, visit the <token>SHFB</token> CodePlex project.</para>
+it, visit the <token>SHFB</token> project site.</para>
 			</listItem>
 			<listItem>
 				<para>For discussion and questions about help systems in general, visit the <externalLink>

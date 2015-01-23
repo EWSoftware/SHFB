@@ -27,8 +27,8 @@
   <reference name="sandcastle activity">
     <title>Sandcastle Help File Builder Activity Statistics</title>
     <author>Eric Woodruff</author>
-    <publisher>CodePlex.com</publisher>
-    <link>http://SHFB.codeplex.com/stats/view</link>
+    <publisher>GitHub.com</publisher>
+    <link>https://GitHub.com/EWSoftware/SHFB/pulse/monthly</link>
   </reference>
 
   Building documentation now will produce your auto-generated reference topic with a
@@ -50,8 +50,8 @@
 	<reference name="sandcastle activity">
 		<title>Sandcastle Help File Builder Activity Statistics</title>
 		<author>Eric Woodruff</author>
-		<publisher>CodePlex.com</publisher>
-		<link>http://SHFB.codeplex.com/stats/view</link>
+		<publisher>GitHub.com</publisher>
+		<link>https://GitHub.com/EWSoftware/SHFB/pulse/monthly</link>
 	</reference>
 
 </bibliography>

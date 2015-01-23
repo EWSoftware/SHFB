@@ -32,7 +32,7 @@ namespace SandcastleBuilder.Components.UI
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
-            this.lnkCodePlexSHFB = new System.Windows.Forms.LinkLabel();
+            this.lnkProjectSite = new System.Windows.Forms.LinkLabel();
             this.btnSelectFolder = new System.Windows.Forms.Button();
             this.btnSelectSyntax = new System.Windows.Forms.Button();
             this.btnSelectXsltStylesheet = new System.Windows.Forms.Button();
@@ -86,17 +86,17 @@ namespace SandcastleBuilder.Components.UI
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // lnkCodePlexSHFB
+            // lnkProjectSite
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(275, 409);
-            this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
-            this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
-            this.lnkCodePlexSHFB.TabIndex = 26;
-            this.lnkCodePlexSHFB.TabStop = true;
-            this.lnkCodePlexSHFB.Text = "Sandcastle Help File Builder";
-            this.lnkCodePlexSHFB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip1.SetToolTip(this.lnkCodePlexSHFB, "http://SHFB.CodePlex.com");
-            this.lnkCodePlexSHFB.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkCodePlexSHFB_LinkClicked);
+            this.lnkProjectSite.Location = new System.Drawing.Point(275, 409);
+            this.lnkProjectSite.Name = "lnkProjectSite";
+            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.TabIndex = 26;
+            this.lnkProjectSite.TabStop = true;
+            this.lnkProjectSite.Text = "Sandcastle Help File Builder";
+            this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip1.SetToolTip(this.lnkProjectSite, "https://GitHub.com/EWSoftware/SHFB");
+            this.lnkProjectSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkProjectSite_LinkClicked);
             // 
             // btnSelectFolder
             // 
@@ -374,7 +374,7 @@ namespace SandcastleBuilder.Components.UI
             this.Controls.Add(this.btnSelectXsltStylesheet);
             this.Controls.Add(this.btnSelectSyntax);
             this.Controls.Add(this.btnSelectFolder);
-            this.Controls.Add(this.lnkCodePlexSHFB);
+            this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.chkOutlining);
             this.Controls.Add(this.chkNumberLines);
             this.Controls.Add(this.udcTabSize);
@@ -419,7 +419,7 @@ namespace SandcastleBuilder.Components.UI
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cboLanguage;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.LinkLabel lnkCodePlexSHFB;
+        private System.Windows.Forms.LinkLabel lnkProjectSite;
         private System.Windows.Forms.CheckBox chkOutlining;
         private System.Windows.Forms.CheckBox chkNumberLines;
         private System.Windows.Forms.Button btnSelectFolder;

@@ -106,7 +106,7 @@ namespace SandcastleBuilder.Package.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://SHFB.CodePlex.com.
+        ///   Looks up a localized string similar to https://GitHub.com/EWSoftware/SHFB.
         /// </summary>
         internal static string ProjectURL {
             get {

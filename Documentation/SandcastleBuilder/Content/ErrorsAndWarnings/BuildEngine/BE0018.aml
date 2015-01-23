@@ -19,8 +19,8 @@ evaluated or replaced due to the indicated problem.</para>
       <content>
         <para>The most likely cause is a misspelled replacement tag name or
 one that is not recognized.  Refer to the error message for information about
-the cause.  If you are unable to resolve the issue, open a work item in the
-<token>SHFB</token> project at CodePlex containing the details from the error
+the cause.  If you are unable to resolve the issue, open an issue in the
+<token>SHFB</token> project on GitHub containing the details from the error
 message and attach a small example project with any related files that can be
 used to duplicate the problem.</para>
       </content>

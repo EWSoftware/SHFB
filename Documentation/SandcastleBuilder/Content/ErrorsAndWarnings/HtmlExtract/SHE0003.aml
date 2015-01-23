@@ -20,8 +20,8 @@ encountered while trying to parse the value of a command line option.</para>
         <para>Since this is a catch-all error, refer to the error description
 for information about the cause of the error and how you might be able to
 correct it (i.e. bad option value, invalid format, etc.).  If you are unable to
-solve the problem based on the reported error, open a work item in the
-<token>SHFB</token> project at CodePlex containing the details from the error
+solve the problem based on the reported error, open an issue in the
+<token>SHFB</token> project on GitHub containing the details from the error
 message.  Attach the affected project as an example.</para>
       </content>
     </section>

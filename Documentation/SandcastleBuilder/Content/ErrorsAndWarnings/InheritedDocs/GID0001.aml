@@ -21,7 +21,7 @@ encountered while generating the inherited documentation comments.</para>
 for information about the cause of the error and how you might be able to
 correct it (i.e. file not found, permission issues, a corrupt file, etc.).  If
 you are unable to solve the problem based on the reported error, open a work
-item in the <token>SHFB</token> project at CodePlex containing the details from
+item in the <token>SHFB</token> project on GitHub containing the details from
 the error message.  Attach the affected project as an example.</para>
       </content>
     </section>

@@ -136,7 +136,7 @@
     <comment>Package title for message boxes, etc.</comment>
   </data>
   <data name="ProjectURL" xml:space="preserve">
-    <value>http://SHFB.CodePlex.com</value>
+    <value>https://GitHub.com/EWSoftware/SHFB</value>
   </data>
   <data name="PropertiesNodeCaption" xml:space="preserve">
     <value>Project Properties</value>

@@ -74,7 +74,7 @@ Running SHFB and the Sandcastle Tools with the Source Code Version
 When you install SHFB and the Sandcastle tools, it creates a system environment variable called SHFBROOT that
 points to the release version (typically C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder).  To
 use the source code version of the tools, you must edit your system environment variables to point SHFBROOT at
-the SHFB\Deploy folder of the source code installation.  For example, set it to C:\CP\TFS01\SHFB\SHFB\Deploy\.
+the SHFB\Deploy folder of the source code installation.  For example, set it to C:\GH\SHFB\SHFB\Deploy\.
 Your location may differ based on where you extracted the code.  This will allow you to run the source code
 version of the tools while leaving the release build in place in the standard location.  You can freely make
 changes to the tool source code and presentation style files and test them as needed.  Pointing SHFBROOT back at
@@ -98,3 +98,5 @@ reflection data for a different framework, pass its name on the command line.  F
     BuildReflectionData WindowsPhoneApp
 
 Once built, rename the folder by removing the version number on the resulting output folder.
+
+TODO: Add info on setting up the VSPackage project for debugging (.user file settings).

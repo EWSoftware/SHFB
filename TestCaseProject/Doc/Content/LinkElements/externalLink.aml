@@ -53,19 +53,19 @@ error will occur.  See the example below.</para>
         <code language="xml" title=" ">
 Only link text and URI: &lt;externalLink&gt;
     &lt;linkText&gt;Sandcastle Help File Builder&lt;/linkText&gt;
-    &lt;linkUri&gt;http://SHFB.CodePlex.com&lt;/linkUri&gt;
+    &lt;linkUri&gt;https://GitHub.com/EWSoftware/SHFB&lt;/linkUri&gt;
 &lt;/externalLink&gt;
 
 Added alternate text: &lt;externalLink&gt;
     &lt;linkText&gt;Sandcastle Help File Builder&lt;/linkText&gt;
-    &lt;linkAlternateText&gt;Visit SHFB on CodePlex&lt;/linkAlternateText&gt;
-    &lt;linkUri&gt;http://SHFB.CodePlex.com&lt;/linkUri&gt;
+    &lt;linkAlternateText&gt;Visit SHFB on GitHub&lt;/linkAlternateText&gt;
+    &lt;linkUri&gt;https://GitHub.com/EWSoftware/SHFB&lt;/linkUri&gt;
 &lt;/externalLink&gt;
 
 Added link target: &lt;externalLink&gt;
     &lt;linkText&gt;Sandcastle Help File Builder&lt;/linkText&gt;
-    &lt;linkAlternateText&gt;Visit SHFB on CodePlex&lt;/linkAlternateText&gt;
-    &lt;linkUri&gt;http://SHFB.CodePlex.com&lt;/linkUri&gt;
+    &lt;linkAlternateText&gt;Visit SHFB on GitHub&lt;/linkAlternateText&gt;
+    &lt;linkUri&gt;https://GitHub.com/EWSoftware/SHFB&lt;/linkUri&gt;
     &lt;linkTarget&gt;_self&lt;/linkTarget&gt;
 &lt;/externalLink&gt;
 
@@ -81,15 +81,15 @@ If the link contains XML entities, they must be encoded (i.e. the ampersand):
       <title>Example Output</title>
       <content>
         <para>Only link text and URI: <externalLink><linkText>Sandcastle Help File Builder</linkText>
-<linkUri>http://SHFB.CodePlex.com</linkUri></externalLink></para>
+<linkUri>https://GitHub.com/EWSoftware/SHFB</linkUri></externalLink></para>
 
         <para>Added alternate text: <externalLink><linkText>Sandcastle Help File Builder</linkText>
-<linkAlternateText>Visit SHFB on CodePlex</linkAlternateText>
-<linkUri>http://SHFB.CodePlex.com</linkUri></externalLink></para>
+<linkAlternateText>Visit SHFB on GitHub</linkAlternateText>
+<linkUri>https://GitHub.com/EWSoftware/SHFB</linkUri></externalLink></para>
 
         <para>Added link target: <externalLink><linkText>Sandcastle Help File Builder</linkText>
-<linkAlternateText>Visit SHFB on CodePlex</linkAlternateText>
-<linkUri>http://SHFB.CodePlex.com</linkUri><linkTarget>_self</linkTarget></externalLink></para>
+<linkAlternateText>Visit SHFB on GitHub</linkAlternateText>
+<linkUri>https://GitHub.com/EWSoftware/SHFB</linkUri><linkTarget>_self</linkTarget></externalLink></para>
 
         <para>If the link contains XML entities, they must be encoded
 (i.e. the ampersand): <externalLink><linkText>MSDN Documentation Forum</linkText>

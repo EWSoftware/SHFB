@@ -12,18 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleInstaller", "SandcastleInstaller\SandcastleInstaller.csproj", "{8478ED2D-DE3C-4114-BD59-937429912F05}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Setup\\Setup.wixproj
-		SccProjectName1 = Setup
-		SccLocalPath1 = Setup
-		SccProjectUniqueName2 = SHFBProjectLauncher\\SHFBProjectLauncher.csproj
-		SccProjectName2 = SHFBProjectLauncher
-		SccLocalPath2 = SHFBProjectLauncher
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86

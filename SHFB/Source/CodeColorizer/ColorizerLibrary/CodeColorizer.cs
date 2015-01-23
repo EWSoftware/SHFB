@@ -385,7 +385,7 @@ namespace ColorizerLibrary
         /// <value>The default is false to treat them as part of the colorized code.  If set to true, any
         /// <c>&lt;see&gt;</c> tags are preserved so that they may be processed as normal HTML tags.  This is
         /// useful when using the code colorizer in conjunction with a documentation tool such as the
-        /// <see href="http://SHFB.CodePlex.com">Sandcastle Help File Builder</see>.</value>
+        /// <see href="https://GitHub.com/EWSoftware/SHFB">Sandcastle Help File Builder</see>.</value>
         public bool KeepSeeTags
         {
             get { return keepSeeTags; }

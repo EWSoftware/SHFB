@@ -23,36 +23,6 @@ EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "ReferenceLinks", "SandcastleBuilder\ReferenceLinks.shfbproj", "{F3891797-F0B5-4B49-95F0-03F0D292A399}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = SandcastleBuilder\\SandcastleBuilder.shfbproj
-		SccProjectName1 = SandcastleBuilder
-		SccLocalPath1 = SandcastleBuilder
-		SccProjectUniqueName2 = SandcastleMAMLGuide\\MAMLGuide.shfbproj
-		SccProjectName2 = SandcastleMAMLGuide
-		SccLocalPath2 = SandcastleMAMLGuide
-		SccProjectUniqueName3 = XMLCommentsGuide\\XMLCommentsGuide.shfbproj
-		SccProjectName3 = XMLCommentsGuide
-		SccLocalPath3 = XMLCommentsGuide
-		SccProjectUniqueName4 = SandcastleTools\\SandcastleTools.shfbproj
-		SccProjectName4 = SandcastleTools
-		SccLocalPath4 = SandcastleTools
-		SccProjectUniqueName5 = ..\\SHFB\\Source\\HtmlToMaml\\Doc\\HtmlToMamlDocs.shfbproj
-		SccProjectName5 = ../SHFB/Source/HtmlToMaml/Doc
-		SccLocalPath5 = ..\\SHFB\\Source\\HtmlToMaml\\Doc
-		SccProjectUniqueName6 = ..\\SHFB\\Source\\WebCodeProviders\\Doc\\EWSoftwareCodeDom.shfbproj
-		SccProjectName6 = ../SHFB/Source/WebCodeProviders/Doc
-		SccLocalPath6 = ..\\SHFB\\Source\\WebCodeProviders\\Doc
-		SccProjectUniqueName7 = ..\\SHFB\\Source\\XMLCommentsExamples\\XMLCommentsExamples.csproj
-		SccProjectName7 = ../SHFB/Source/XMLCommentsExamples
-		SccLocalPath7 = ..\\SHFB\\Source\\XMLCommentsExamples
-		SccProjectUniqueName8 = SandcastleBuilder\\ReferenceLinks.shfbproj
-		SccProjectName8 = SandcastleBuilder
-		SccLocalPath8 = SandcastleBuilder
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

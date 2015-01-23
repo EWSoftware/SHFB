@@ -123,8 +123,8 @@
   </data>
   <data name="111" xml:space="preserve">
     <value>Visual Studio integration for the Sandcastle Help File Builder.
-Copyright © 2011, Eric Woodruff, All Rights Reserved.
-http://SHFB.CodePlex.com</value>
+Copyright © 2011-2015, Eric Woodruff, All Rights Reserved.
+https://GitHub.com/EWSoftware/SHFB</value>
     <comment>Product details</comment>
   </data>
   <data name="112" xml:space="preserve">

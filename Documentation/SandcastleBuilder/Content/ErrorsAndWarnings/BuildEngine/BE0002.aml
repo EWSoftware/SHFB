@@ -22,8 +22,8 @@ file does not exist for the selected language.</para>
 defaults are used.  If you need resources to appear in the language selected
 in the project file, you will need to create a shared content file for the
 selected language.  See the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
-topic for details.  Once done, you can create a work item in the
-<token>SHFB</token> project on CodePlex and attach the translated help file
+topic for details.  Once done, you can create an issue in the
+<token>SHFB</token> project on GitHub and attach the translated help file
 builder resource files so that they can be included in a future release of
 the help file builder.</para>
 

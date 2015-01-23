@@ -9,7 +9,7 @@
 // This file contains the form used to edit the version builder plug-in configuration
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -76,7 +76,7 @@ namespace SandcastleBuilder.PlugIns
             InitializeComponent();
             project = currentProject;
 
-            lnkCodePlexSHFB.Links[0].LinkData = "http://SHFB.CodePlex.com";
+            lnkProjectSite.Links[0].LinkData = "https://GitHub.com/EWSoftware/SHFB";
             lbVersionInfo.DisplayMember = lbVersionInfo.ValueMember = "ListDescription";
 
             items = new VersionSettingsCollection();
@@ -316,7 +316,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void lnkCodePlexSHFB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void lnkProjectSite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {

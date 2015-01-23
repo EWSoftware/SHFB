@@ -36,7 +36,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.lnkCodePlexSHFB = new System.Windows.Forms.LinkLabel();
+            this.lnkProjectSite = new System.Windows.Forms.LinkLabel();
             this.btnCPPFixes = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblMatchExpression = new System.Windows.Forms.Label();
@@ -117,17 +117,17 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // lnkCodePlexSHFB
+            // lnkProjectSite
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(269, 443);
-            this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
-            this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
-            this.lnkCodePlexSHFB.TabIndex = 12;
-            this.lnkCodePlexSHFB.TabStop = true;
-            this.lnkCodePlexSHFB.Text = "Sandcastle Help File Builder";
-            this.lnkCodePlexSHFB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTip1.SetToolTip(this.lnkCodePlexSHFB, "http://SHFB.CodePlex.com");
-            this.lnkCodePlexSHFB.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkCodePlexSHFB_LinkClicked);
+            this.lnkProjectSite.Location = new System.Drawing.Point(269, 443);
+            this.lnkProjectSite.Name = "lnkProjectSite";
+            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.TabIndex = 12;
+            this.lnkProjectSite.TabStop = true;
+            this.lnkProjectSite.Text = "Sandcastle Help File Builder";
+            this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip1.SetToolTip(this.lnkProjectSite, "https://GitHub.com/EWSoftware/SHFB");
+            this.lnkProjectSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkProjectSite_LinkClicked);
             // 
             // btnCPPFixes
             // 
@@ -202,7 +202,7 @@
             this.Controls.Add(this.lblReplacementValue);
             this.Controls.Add(this.txtReplacementValue);
             this.Controls.Add(this.chkMatchAsRegEx);
-            this.Controls.Add(this.lnkCodePlexSHFB);
+            this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.lblMatchExpression);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnDelete);
@@ -236,7 +236,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblMatchExpression;
         private System.Windows.Forms.ErrorProvider epErrors;
-        private System.Windows.Forms.LinkLabel lnkCodePlexSHFB;
+        private System.Windows.Forms.LinkLabel lnkProjectSite;
         private System.Windows.Forms.Label lblReplacementValue;
         private System.Windows.Forms.TextBox txtReplacementValue;
         private System.Windows.Forms.CheckBox chkMatchAsRegEx;

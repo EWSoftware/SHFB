@@ -9,7 +9,7 @@
 // This form is used to display application version information.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -60,11 +60,11 @@ namespace SandcastleBuilder.Gui
 		{
             this.components = new System.ComponentModel.Container();
             this.lnkHelp = new System.Windows.Forms.LinkLabel();
-            this.ColumnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.ColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSysInfo = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.lvComponents = new System.Windows.Forms.ListView();
-            this.ColumnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.ColumnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Label1 = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
@@ -102,7 +102,7 @@ namespace SandcastleBuilder.Gui
             this.btnSysInfo.Name = "btnSysInfo";
             this.btnSysInfo.Size = new System.Drawing.Size(112, 32);
             this.sbMessage.SetStatusBarText(this.btnSysInfo, "System Info: View system information for the PC on which the application is runni" +
-                    "ng");
+        "ng");
             this.btnSysInfo.TabIndex = 10;
             this.btnSysInfo.Text = "System Info...";
             this.toolTip1.SetToolTip(this.btnSysInfo, "Display system information");
@@ -211,10 +211,10 @@ namespace SandcastleBuilder.Gui
             this.lnkProjectUrl.Location = new System.Drawing.Point(336, 357);
             this.lnkProjectUrl.Name = "lnkProjectUrl";
             this.lnkProjectUrl.Size = new System.Drawing.Size(438, 18);
-            this.sbMessage.SetStatusBarText(this.lnkProjectUrl, "View the project website on CodePlex");
+            this.sbMessage.SetStatusBarText(this.lnkProjectUrl, "View the project website");
             this.lnkProjectUrl.TabIndex = 9;
             this.lnkProjectUrl.TabStop = true;
-            this.lnkProjectUrl.Text = "http://SHFB.CodePlex.com";
+            this.lnkProjectUrl.Text = "https://GitHub.com/EWSoftware/SHFB";
             this.toolTip1.SetToolTip(this.lnkProjectUrl, "View project website");
             this.lnkProjectUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Link_LinkClicked);
             // 

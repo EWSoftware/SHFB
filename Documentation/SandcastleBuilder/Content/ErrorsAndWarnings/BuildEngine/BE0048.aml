@@ -18,7 +18,7 @@ items of the indicated member type from the reflection information.</para>
       <title>Solution</title>
       <content>
         <para>This most likely indicates an internal error in the build
-process.  Open a work item in the <token>SHFB</token> project at CodePlex
+process.  Open an issue in the <token>SHFB</token> project on GitHub
 containing the details from the error message and attach a small example
 project with any related files that can be used to duplicate the
 problem.</para>

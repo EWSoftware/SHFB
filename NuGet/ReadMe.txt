@@ -27,8 +27,8 @@ without installing the tools manually such as on a build server.  The following 
 
 - No standalone GUI or Visual Studio support is provided for managing the help project and none of the non-essential
   tools or help files are included in this package in order to keep its size down to the bare minimum.  If wanted,
-  those items must be downloaded and installed from the CodePlex project site using the guided installer:
-  http://SHFB.CodePlex.com
+  those items must be downloaded and installed from the GitHub project site using the guided installer:
+  https://GitHub.com/EWSoftware/SHFB
 
 See this help topic for more details on XCOPY/NuGet Build Server Deployment:
-    http://www.ewoodruff.us/shfbdocs/html/50ad2c8c-5004-4b4c-a77f-97b8c403c9f2.htm
+    http://EWSoftware.github.io/shfbdocs/html/50ad2c8c-5004-4b4c-a77f-97b8c403c9f2.htm

@@ -82,8 +82,8 @@ extension on the filename is changed to <localUri>.snippets</localUri>.</para>
 					</listItem>
 
 					<listItem>
-						<para>If you were using the standalone custom build components that are distributed at the
-<token>SHFB</token> CodePlex project site, you will need to add them to the project.  Open the Project Properties
+						<para>If you were using the old standalone custom build components that were distributed at the
+<token>SHFB</token> project site, you will need to add them to the project.  Open the Project Properties
 window and select the <ui>Components</ui> category.  The build components can be added and configured from there.</para>
 
 						<alert class="note">

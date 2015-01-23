@@ -43,7 +43,7 @@ transformations.</para>
 <code language="xml" title="Token with MAML Elements">
 &lt;ddue:externalLink&gt;
     &lt;ddue:linkText&gt;Sandcastle Help File Builder&lt;/ddue:linkText&gt;
-    &lt;ddue:linkUri&gt;http://shfb.codeplex.com&lt;/ddue:linkUri&gt;
+    &lt;ddue:linkUri&gt;https://GitHub.com/EWSoftware/SHFB&lt;/ddue:linkUri&gt;
 &lt;/ddue:externalLink&gt;
 </code>
 

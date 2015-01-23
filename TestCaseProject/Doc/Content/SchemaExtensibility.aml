@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="53e9f04f-fbc4-480d-9653-1547046526f1" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
-								 xmlns:xlink="http://www.w3.org/1999/xlink"
-								 xmlns:xsd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3">
+								 xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>
 				This topic will explain how you can change the MAML schema so that you can
@@ -47,7 +46,7 @@
 							This only allows elements from the target namespace of the declaring
 							schema. For our purposes this is useless because it would only allow
 							elements from the MAML namespace
-							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>).
+							(<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5</localUri>).
 						</para>
 					</definition>
 					<definedTerm>##any</definedTerm>
@@ -57,7 +56,7 @@
 							declaring schema. We do not want to use this because it would also
 							allow to use any element from the
 							MAML namespace
-							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>)
+							(<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5</localUri>)
 							itself and hence undermine the schema validation for MAML.
 						</para>
 					</definition>
@@ -67,7 +66,7 @@
 							This allows any namespaces except the target namespace of the declaring
 							schema. For our purposes this is ideal because it allows only to use
 							elements from any namespace except the MAML namespace
-							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>).
+							(<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5</localUri>).
 						</para>
 					</definition>
 				</definitionTable>
@@ -115,7 +114,7 @@
 			<content>
 				<para>
 					Build components might add elements that you can use inside a
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference>
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</localUri>
 					element. Examples for such elements are:
 				</para>
 				<definitionTable>
@@ -124,11 +123,11 @@
 						<para>
 							These are elements that allow you to link to other topics. MAML itself already provides
 							several elements for this purpose, such as the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/link</xsd:xmlEntityReference>
+							<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/link</localUri>
 							element to link to conceptual topics, the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/codeEntityReference</xsd:xmlEntityReference>
+							<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/codeEntityReference</localUri>
 							element to link to managed code APIs, and the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/externalLink</xsd:xmlEntityReference>
+							<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/externalLink</localUri>
 							element to link to some location in the internet.
 						</para>
 					</definition>
@@ -138,18 +137,18 @@
 							This category includes elements that are used to associate pieces of text with semantics.
 							In many cases these semantics are made visible through a consistent formatting, such as italics
 							or bold text. Amongst others MAML itself provides the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/localUri</xsd:xmlEntityReference>
+							<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/localUri</localUri>
 							element for marking text as representing local paths and the
-							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/ui</xsd:xmlEntityReference>
+							<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/ui</localUri>
 							element for marking text as representing elements in your user interface.
 						</para>
 					</definition>
 				</definitionTable>
 				<para>
 					To extend the
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference>
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</localUri>
 					element we will extend the underlying type
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/inlineType</xsd:xmlEntityReference>.
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#T/inlineType</localUri>.
 				</para>
 				<para>
 					Open the file <localUri>inline.xsd</localUri>, goto line 60, and add the <codeInline>any</codeInline>
@@ -188,9 +187,9 @@
 				<para>
 					For build components that provide elements for linking we also want to be able to
 					use them inside the
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/relatedTopics</xsd:xmlEntityReference>
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/relatedTopics</localUri>
 					element. To do this, we will extend the type
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/relatedTopicsType</xsd:xmlEntityReference>.
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#T/relatedTopicsType</localUri>.
 				</para>
 				<para>
 					Open the file <localUri>hierarchy.xsd</localUri>, goto line 123 and add the <codeInline>any</codeInline>
@@ -213,11 +212,11 @@
 				<para>
 					Last but not least build components might also provide elements that allow you to build a
 					structure. For this purpose MAML itself already provides the
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/table</xsd:xmlEntityReference>,
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/code</xsd:xmlEntityReference> and
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference> elements.
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/table</localUri>,
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/code</localUri> and
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</localUri> elements.
 					To allow new structural elements we have to extend the type
-					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/sectionContentType</xsd:xmlEntityReference>.
+					<localUri>http://ddue.schemas.microsoft.com/authoring/2003/5#T/sectionContentType</localUri>.
 				</para>
 				<para>
 					Open the file <localUri>structure.xsd</localUri>, goto line 67 and add the <codeInline>any</codeInline>

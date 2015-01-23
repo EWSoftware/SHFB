@@ -19,8 +19,8 @@
         <Paragraph>The Sandcastle Help File Builder (SHFB) was created to provide project managment
 features, add the missing NDoc-like features that are used most often, and provide graphical and command
 line based tools to build a help file in an automated fashion using the Sandcastle Tools.  The most recent
-version of both can always be found at the <Hyperlink NavigateUri="http://SHFB.CodePlex.com">Sandcastle Help
-File Builder</Hyperlink> project on CodePlex.</Paragraph>
+version of both can always be found at the <Hyperlink NavigateUri="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink> project on GitHub.</Paragraph>
 
         <Paragraph>This will install the core tools and build engine and the standalone GUI project management
 system.  A Visual Studio package is also available that will allow you to create, manage, and build help file

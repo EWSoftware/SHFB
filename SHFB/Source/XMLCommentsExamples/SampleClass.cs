@@ -9,7 +9,7 @@
 // This class is used to demonstrate the various XML comments elements.  It serves no useful purpose.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -755,27 +755,27 @@ namespace XMLCommentsExamples
         /// <remarks>
         /// <list type="bullet">
         ///   <item>
-        ///     <description>Basic link: <see href="http://SHFB.CodePlex.com"/></description>
+        ///     <description>Basic link: <see href="https://GitHub.com/EWSoftware/SHFB"/></description>
         ///   </item>
         ///   <item>
-        ///     <description>Link with target: <see href="http://SHFB.CodePlex.com/documentation"
+        ///     <description>Link with target: <see href="https://GitHub.com/EWSoftware/SHFB/wiki"
         ///       target="_self" /></description>
         ///   </item>
         ///   <item>
-        ///     <description>Link with alternate text: <see href="http://SHFB.CodePlex.com/discussions"
-        ///       alt="Discuss SHFB on CodePlex" /></description>
+        ///     <description>Link with alternate text: <see href="https://GitHub.com/EWSoftware/issues"
+        ///       alt="Discuss SHFB on GitHub" /></description>
         ///   </item>
         ///   <item>
-        ///     <description>Link with inner text: <see href="http://SHFB.CodePlex.com">
-        ///       SHFB on CodePlex</see></description>
+        ///     <description>Link with inner text: <see href="https://GitHub.com/EWSoftware/SHFB">
+        ///       SHFB on GitHub</see></description>
         ///   </item>
         /// </list>
         /// <para>Equivalent <c>seealso</c> links are shown below.</para>
         /// </remarks>
-        /// <seealso href="http://SHFB.CodePlex.com"/>
-        /// <seealso href="http://SHFB.CodePlex.com/documentation" target="_self" />
-        /// <seealso href="http://SHFB.CodePlex.com/discussions" alt="Discuss SHFB on CodePlex" />
-        /// <seealso href="http://SHFB.CodePlex.com">SHFB on CodePlex</seealso>
+        /// <seealso href="https://GitHub.com/EWSoftware/SHFB"/>
+        /// <seealso href="https://GitHub.com/EWSoftware/SHFB/wiki" target="_self" />
+        /// <seealso href="https://GitHub.com/EWSoftware/SHFB/issues" alt="Discuss SHFB on GitHub" />
+        /// <seealso href="https://GitHub.com/EWSoftware/SHFB">SHFB on GitHub</seealso>
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
         /// <conceptualLink target="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
         public void SeeElementExternalExample()

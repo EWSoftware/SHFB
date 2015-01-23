@@ -18,7 +18,7 @@ in the MSBuild global project collection.</para>
       <content>
         <para>This error is unlikely to occur as <application>MSBuild.exe</application> does not currently appear to
 use the global project collection when invoked from the command line.  If you encounter this error, please open a work
-item in the <token>SHFB</token> project at CodePlex containing the details of the build and attach a small example
+item in the <token>SHFB</token> project on GitHub containing the details of the build and attach a small example
 project with any related files that can be used to duplicate the problem.</para>
 
       </content>

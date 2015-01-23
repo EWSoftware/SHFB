@@ -18,7 +18,7 @@
     <OutputPath>Help\</OutputPath>
     <HtmlHelpName>HtmlToMaml</HtmlHelpName>
     <CleanIntermediates>True</CleanIntermediates>
-    <ProjectSummary>HTML to MAML Converter.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=HtmlToMaml&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttp://Sandcastle.CodePlex.com&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttp://Sandcastle.CodePlex.com&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
+    <ProjectSummary>HTML to MAML Converter.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=HtmlToMaml&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttps://GitHub.com/EWSoftware/SHFB&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttps://GitHub.com/EWSoftware/SHFB&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\HtmlToMaml.csproj" />
     </DocumentationSources>
@@ -29,7 +29,7 @@
       <NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains classes from the Sandcastle Help File Builder utilities library used in the HTML to MAML converter.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <HelpTitle>HTML to MAML Converter</HelpTitle>
-    <CopyrightHref>http://Sandcastle.CodePlex.com</CopyrightHref>
+    <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>Copyright \xA9 2008-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <SyntaxFilters>Standard</SyntaxFilters>

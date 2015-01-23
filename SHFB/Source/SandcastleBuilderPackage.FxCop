@@ -2901,7 +2901,7 @@
            <Item>'SandcastleBuilder.Package.Properties.Resources.resx'</Item>
            <Item>ProjectURL</Item>
            <Item>Plex</Item>
-           <Item>http://SHFB.CodePlex.com</Item>
+           <Item>https://GitHub.com/EWSoftware/SHFB</Item>
           </Issue>
           <Notes>
            <User Name="EWOODRUFF">
@@ -2937,7 +2937,7 @@
            <Item>'VSPackage.resx'</Item>
            <Item>111</Item>
            <Item>Plex</Item>
-           <Item>Visual Studio integration for the Sandcastle Help File Builder.&#xD;&#xA;Copyright © 2011, Eric Woodruff, All Rights Reserved.&#xD;&#xA;http://SHFB.CodePlex.com</Item>
+           <Item>Visual Studio integration for the Sandcastle Help File Builder.&#xD;&#xA;Copyright © 2011, Eric Woodruff, All Rights Reserved.&#xD;&#xA;https://GitHub.com/EWSoftware/SHFB</Item>
           </Issue>
           <Notes>
            <User Name="EWOODRUFF">
