@@ -54,7 +54,9 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)..\..\Deployment\InstallResources"</PostBuildEvent>
+    <PostBuildEvent>IF NOT EXIST "$(SolutionDir)..\..\Deployment\InstallResources" MD "$(SolutionDir)..\..\Deployment\InstallResources"
+
+Copy "$(TargetPath)" "$(SolutionDir)..\..\Deployment\InstallResources"</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
