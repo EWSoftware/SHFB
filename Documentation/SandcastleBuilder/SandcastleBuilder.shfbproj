@@ -96,35 +96,7 @@
           </targets>
         </configuration>
       </PlugInConfig>
-      <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="false">
-          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="help2x" location="">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="helpViewer" location="" renameMSHA="false">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-          <deploymentLocation id="website" location="">
-            <userCredentials useDefault="true" userName="" password="" />
-            <proxyCredentials useProxy="false" proxyServer="">
-              <userCredentials useDefault="true" userName="" password="" />
-            </proxyCredentials>
-          </deploymentLocation>
-        </configuration>
-      </PlugInConfig>
-    </PlugInConfigurations>
+<PlugInConfig id="Output Deployment" enabled="True"><configuration deleteAfterDeploy="true"><deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="help2x" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="helpViewer" location="" renameMSHA="false"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="website" location="..\WebHelp\SHFB\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="openXml" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation></configuration></PlugInConfig></PlugInConfigurations>
     <Preliminary>False</Preliminary>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
@@ -141,7 +113,7 @@
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
     <IncludeStopWordList>True</IncludeStopWordList>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>

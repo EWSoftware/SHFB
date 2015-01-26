@@ -30,6 +30,7 @@ bld/
 
 # Sandcastle Help File Builder is a documentation generator add-in
 Documentation/**/Help/
+Documentation/WebHelp/
 **/Doc/Help/
 *.shfbproj_*
 

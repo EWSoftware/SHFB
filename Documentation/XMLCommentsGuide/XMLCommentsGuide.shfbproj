@@ -57,7 +57,7 @@
     </NamespaceSummaries>
     <PlugInConfigurations>
       <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="false">
+        <configuration deleteAfterDeploy="true">
           <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
@@ -76,7 +76,13 @@
               <userCredentials useDefault="true" userName="" password="" />
             </proxyCredentials>
           </deploymentLocation>
-          <deploymentLocation id="website" location="">
+          <deploymentLocation id="website" location="..\WebHelp\XMLCommentsGuide\">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="openXml" location="">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
               <userCredentials useDefault="true" userName="" password="" />
@@ -116,7 +122,7 @@
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <KeepLogFile>True</KeepLogFile>
@@ -225,7 +231,7 @@
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
-    <None Include="Content\VersionHistory\vNext.aml" />
+    <None Include="Content\VersionHistory\v2014.11.22.0.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
