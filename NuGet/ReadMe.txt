@@ -31,4 +31,4 @@ without installing the tools manually such as on a build server.  The following 
   https://GitHub.com/EWSoftware/SHFB
 
 See this help topic for more details on XCOPY/NuGet Build Server Deployment:
-    http://EWSoftware.github.io/shfbdocs/html/50ad2c8c-5004-4b4c-a77f-97b8c403c9f2.htm
+    http://EWSoftware.github.io/SHFB/html/50ad2c8c-5004-4b4c-a77f-97b8c403c9f2.htm

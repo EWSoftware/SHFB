@@ -12,9 +12,9 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://EWSoftware.github.io/sandcastletools/html/f478aa7e-3b41-4411-b6eb-e70bea1644a9.htm"
+			<whatsNew url="http://EWSoftware.github.io/SandcastleTools/html/f478aa7e-3b41-4411-b6eb-e70bea1644a9.htm"
 				description="Sandcastle Tools v2015.1.12.0 Release Notes" />
-			<whatsNew url="http://EWSoftware.github.io/shfbdocs/html/930f1daa-1a38-4659-84c9-91c81e204c73.htm"
+			<whatsNew url="http://EWSoftware.github.io/SHFB/html/930f1daa-1a38-4659-84c9-91c81e204c73.htm"
 				description="Sandcastle Help File Builder v2015.1.12.0 Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
