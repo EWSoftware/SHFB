@@ -111,7 +111,7 @@
     <Folder Include="Content\MediaElements\" />
     <Folder Include="Content\LinkElements\" />
     <Folder Include="Content\MiscElements\" />
-    <Folder Include="Media\" />
+    <Folder Include="media\" />
     <Folder Include="Content\" />
     <Folder Include="icons\" />
   </ItemGroup>
@@ -120,24 +120,24 @@
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>
-    <Content Include="Media\PayPal.gif">
+    <Content Include="media\PayPal.gif">
       <ImageId>PayPal</ImageId>
       <AlternateText>Pay Pal</AlternateText>
       <CopyToMedia>True</CopyToMedia>
     </Content>
-    <Image Include="Media\SmallInformation.png">
+    <Image Include="media\SmallInformation.png">
       <ImageId>4cfacbe8-d100-471c-9d69-1dbcce50e316</ImageId>
       <AlternateText>Information</AlternateText>
     </Image>
-    <Image Include="Media\SandcastleLogoLarge.jpg">
+    <Image Include="media\SandcastleLogoLarge.jpg">
       <ImageId>6be7079d-a9d8-4189-9021-0f72d1642beb</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Image>
-    <Image Include="Media\SandcastleLogoSmall.jpg">
+    <Image Include="media\SandcastleLogoSmall.jpg">
       <ImageId>98a8a8b7-c374-40c7-902a-91c947bf107c</ImageId>
       <CopyToMedia>True</CopyToMedia>
     </Image>
-    <Image Include="Media\SecuritySuccess.png">
+    <Image Include="media\SecuritySuccess.png">
       <ImageId>b5d069f7-5daf-45ae-882c-4596ab2b724a</ImageId>
     </Image>
   </ItemGroup>

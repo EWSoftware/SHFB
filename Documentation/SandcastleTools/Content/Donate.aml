@@ -19,7 +19,7 @@ me an e-mail at <externalLink>
 					<markup>
 						<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=WBPB4ML7YBUHW"
 							 target="_blank" title="Make a donation">
-							<img border="0" src="../Media/PayPal.gif" alt="Make donations with PayPal - It's fast, free and secure!"/>
+							<img border="0" src="../media/PayPal.gif" alt="Make donations with PayPal - It's fast, free and secure!"/>
 						</a>
 					</markup>
 				</para>

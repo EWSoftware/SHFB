@@ -20,7 +20,7 @@ conceptual content in the project and define its layout in the table of contents
 					</listItem>
 
 					<listItem>
-						<para>The <localUri>.\Media</localUri> folder - Place images in this folder that you will reference
+						<para>The <localUri>.\media</localUri> folder - Place images in this folder that you will reference
 from conceptual content using <codeInline>medialLink</codeInline> or <codeInline>mediaLinkInline</codeInline>
 elements.  If you will not have any images in the file, you may remove this folder.</para>
 					</listItem>

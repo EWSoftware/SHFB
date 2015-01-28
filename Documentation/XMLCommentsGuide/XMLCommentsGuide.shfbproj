@@ -173,7 +173,7 @@
     <Folder Include="Content\SectionElements" />
     <Folder Include="Content\VersionHistory" />
     <Folder Include="icons\" />
-    <Folder Include="Media" />
+    <Folder Include="media" />
   </ItemGroup>
   <ItemGroup>
     <ContentLayout Include="XMLCommentsGuide.content" />
@@ -235,7 +235,7 @@
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Media\PayPal.gif">
+    <Content Include="media\PayPal.gif">
       <ImageId>PayPal</ImageId>
       <AlternateText>Pay Pal</AlternateText>
       <CopyToMedia>True</CopyToMedia>

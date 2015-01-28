@@ -21,7 +21,7 @@
 			<Folder Name="icons" TargetFolderName="icons">
 				<ProjectItem TargetFileName="Help.png" ReplaceParameters="false">Help.png</ProjectItem>
 			</Folder>
-			<Folder Name="Media" TargetFolderName="Media" />
+			<Folder Name="media" TargetFolderName="media" />
 			<ProjectItem TargetFileName="ContentLayout.content" ReplaceParameters="true">ContentLayout.content</ProjectItem>
 		</Project>
 	</TemplateContent>

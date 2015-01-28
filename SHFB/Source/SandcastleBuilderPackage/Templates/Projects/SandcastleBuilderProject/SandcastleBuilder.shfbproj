@@ -54,7 +54,7 @@
 		<Folder Include="Content" />
 		<Folder Include="Content\VersionHistory" />
 		<Folder Include="icons" />
-		<Folder Include="Media" />
+		<Folder Include="media" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Content\VersionHistory\v1.0.0.0.aml" />

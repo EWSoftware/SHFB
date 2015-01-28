@@ -185,7 +185,7 @@
     <Folder Include="Content\ProjectExplorer\" />
     <Folder Include="Content\ErrorsAndWarnings\Converters\" />
     <Folder Include="icons\" />
-    <Folder Include="Media\" />
+    <Folder Include="media\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\BenefitsAndFeatures.aml" />
@@ -474,84 +474,84 @@
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>
-    <Image Include="Media\ApiFilter.png">
+    <Image Include="media\ApiFilter.png">
       <ImageId>ApiFilter</ImageId>
       <AlternateText>API Filter</AlternateText>
     </Image>
-    <Image Include="Media\CompConfig.png">
+    <Image Include="media\CompConfig.png">
       <ImageId>CompConfig</ImageId>
       <AlternateText>Build component configuration property page</AlternateText>
     </Image>
-    <Image Include="Media\ContentLayoutEditor.png">
+    <Image Include="media\ContentLayoutEditor.png">
       <ImageId>ContentLayoutEditor</ImageId>
       <AlternateText>Content Layout Editor</AlternateText>
     </Image>
-    <Image Include="Media\EntityReferences.png">
+    <Image Include="media\EntityReferences.png">
       <ImageId>EntityReferences</ImageId>
       <AlternateText>Entity References Window</AlternateText>
     </Image>
-    <Image Include="Media\MainForm.png">
+    <Image Include="media\MainForm.png">
       <ImageId>MainForm</ImageId>
       <AlternateText>Main Form</AlternateText>
     </Image>
-    <Image Include="Media\Namespaces.png">
+    <Image Include="media\Namespaces.png">
       <ImageId>Namespaces</ImageId>
       <AlternateText>Namespace Summaries</AlternateText>
     </Image>
-    <Image Include="Media\PlugInConfig.png">
+    <Image Include="media\PlugInConfig.png">
       <ImageId>PlugInConfig</ImageId>
       <AlternateText>Plug-in configurations property page</AlternateText>
     </Image>
-    <Image Include="Media\ProjectExplorer.png">
+    <Image Include="media\ProjectExplorer.png">
       <ImageId>ProjectExplorer</ImageId>
       <AlternateText>Project Explorer</AlternateText>
     </Image>
-    <Image Include="Media\ResourceItemFileEditor.png">
+    <Image Include="media\ResourceItemFileEditor.png">
       <ImageId>ResourceItemFileEditor</ImageId>
       <AlternateText>Resource Item File Editor</AlternateText>
     </Image>
-    <Image Include="Media\SiteMapEditor.png">
+    <Image Include="media\SiteMapEditor.png">
       <ImageId>SiteMapEditor</ImageId>
       <AlternateText>Site Map Editor</AlternateText>
     </Image>
-    <Image Include="Media\TextEditorWindow.png">
+    <Image Include="media\TextEditorWindow.png">
       <ImageId>TextEditorWindow</ImageId>
       <AlternateText>Text Editor Window</AlternateText>
     </Image>
-    <Content Include="Media\PayPal.gif">
+    <Content Include="media\PayPal.gif">
       <ImageId>PayPal</ImageId>
       <AlternateText>Make donations with PayPal - It's fast, free and secure!</AlternateText>
       <CopyToMedia>False</CopyToMedia>
     </Content>
-    <Image Include="Media\TokenFileEditor.png">
+    <Image Include="media\TokenFileEditor.png">
       <ImageId>TokenFileEditor</ImageId>
       <AlternateText>Token File Editor</AlternateText>
     </Image>
-    <Image Include="Media\TopicPreviewer.png">
+    <Image Include="media\TopicPreviewer.png">
       <ImageId>TopicPreviewer</ImageId>
       <AlternateText>Topic Previewer</AlternateText>
     </Image>
-    <Image Include="Media\TransformArgsPropPage.png">
+    <Image Include="media\TransformArgsPropPage.png">
       <ImageId>TransformArgsPropPage</ImageId>
       <AlternateText>Transform Component arguments property page</AlternateText>
     </Image>
-    <Image Include="Media\UserDefinedProps.png">
+    <Image Include="media\UserDefinedProps.png">
       <ImageId>UserDefinedProps</ImageId>
       <AlternateText>User Defined Props</AlternateText>
     </Image>
-    <Image Include="Media\VSAddNewItemDlg.png">
+    <Image Include="media\VSAddNewItemDlg.png">
       <ImageId>VSAddNewItemDlg</ImageId>
       <AlternateText>Visual Studio Add New Item dialog</AlternateText>
     </Image>
-    <Image Include="Media\VSCustomTemplates.png">
+    <Image Include="media\VSCustomTemplates.png">
       <ImageId>VSCustomTemplates</ImageId>
       <AlternateText>Custom templates in the Add New Item dialog</AlternateText>
     </Image>
-    <Image Include="Media\VSNewProjectDlg.png">
+    <Image Include="media\VSNewProjectDlg.png">
       <ImageId>VSNewProjectDlg</ImageId>
       <AlternateText>Visual Studio New Project dialog</AlternateText>
     </Image>
-    <Image Include="Media\VSProjectPropsEditor.png">
+    <Image Include="media\VSProjectPropsEditor.png">
       <ImageId>VSProjectPropsEditor</ImageId>
       <AlternateText>Visual Studio project properties editor</AlternateText>
     </Image>
