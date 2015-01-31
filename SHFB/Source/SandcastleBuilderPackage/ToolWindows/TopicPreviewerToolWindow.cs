@@ -2,16 +2,16 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/18/2014
-// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
+// Updated : 01/28/2015
+// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to implement the Topic Previewer tool window
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
-// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
+// This notice, the author's name, and all copyright notices must remain intact in all applications,
+// documentation, and source files.
 //
 // Version     Date     Who  Comments
 // ==============================================================================================================
@@ -40,8 +40,11 @@ namespace SandcastleBuilder.Package.ToolWindows
     /// <summary>
     /// This is used to preview conceptual content topics in the project.
     /// </summary>
+    /// <remarks>In Visual Studio, tool windows are composed of a frame (implemented by the shell) and a pane,
+    /// usually implemented by the package implementer.  This class derives from the <c>ToolWindowPane</c> class
+    /// provided from the MPF in order to use its implementation of the <c>IVsUIElementPane</c> interface.</remarks>
     [Guid("3764ef30-ce37-4240-a79e-a9cb33073846")]
-    public sealed class TopicPreviewerToolWindow : TopicPreviewerToolWindowBase, IVsSelectionEvents
+    public sealed class TopicPreviewerToolWindow : ToolWindowPane, IVsSelectionEvents
     {
         #region Private data members
         //=====================================================================
@@ -57,15 +60,16 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <summary>
         /// Constructor
         /// </summary>
-        public TopicPreviewerToolWindow()
+        public TopicPreviewerToolWindow() : base(null)
         {
             ucTopicPreviewer = new TopicPreviewerControl();
 
-            base.Content = ucTopicPreviewer;
+            this.Caption = "Topic Previewer";
+            this.Content = ucTopicPreviewer;
 
             // Hook up the command bindings and event handlers
-            ucTopicPreviewer.CommandBindings.Add(new CommandBinding(EditorCommands.Edit,
-                cmdEdit_Executed, cmdEdit_CanExecute));
+            ucTopicPreviewer.CommandBindings.Add(new CommandBinding(EditorCommands.Edit, cmdEdit_Executed,
+                cmdEdit_CanExecute));
 
             ucTopicPreviewer.FileContentNeeded += ucTopicPreviewer_FileContentNeeded;
             ucTopicPreviewer.TopicContentNeeded += ucTopicPreviewer_TopicContentNeeded;
@@ -287,7 +291,7 @@ namespace SandcastleBuilder.Package.ToolWindows
         //=====================================================================
 
         /// <summary>
-        /// This is used to get information from token and content layoutfiles open in editors so that current
+        /// This is used to get information from token and content layout files open in editors so that current
         /// information is displayed for them in the topic previewer control.
         /// </summary>
         /// <param name="sender">The sender of the event</param>

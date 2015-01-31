@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderGui", "SandcastleBuilderGui\SandcastleBuilderGui.csproj", "{F5362C80-44E3-47E4-AAFD-49050B22B550}"
 	ProjectSection(ProjectDependencies) = postProject
 		{49720D17-40AD-4452-B60A-A5DEA226BA06} = {49720D17-40AD-4452-B60A-A5DEA226BA06}

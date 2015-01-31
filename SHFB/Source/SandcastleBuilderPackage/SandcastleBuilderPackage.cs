@@ -2,16 +2,16 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 01/29/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
-// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
+// This notice, the author's name, and all copyright notices must remain intact in all applications,
+// documentation, and source files.
 //
 // Version     Date     Who  Comments
 // ==============================================================================================================
@@ -24,6 +24,7 @@
 //===============================================================================================================
 
 using System;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -54,10 +55,9 @@ namespace SandcastleBuilder.Package
     /// </summary>
     /// <remarks>
     /// The class implements the <c>IVsPackage</c> interface and registers itself with the shell.  This package
-    /// uses the helper classes defined inside the <b>Managed Package Framework</b> (MPF) to do it.  It derives
-    /// from the <c>Package</c> class that provides the implementation of the <c>IVsPackage</c> interface and
-    /// uses the registration attributes defined in the framework to register itself and its components with the
-    /// shell.</remarks>
+    /// uses the helper classes defined inside the Managed Package Framework (MPF) to do it.  It derives from the
+    /// <c>Package</c> class that provides the implementation of the <c>IVsPackage</c> interface and uses the
+    /// registration attributes defined in the framework to register itself and its components with the shell.</remarks>
     // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is a package
     [PackageRegistration(UseManagedResourcesOnly = true)]
     // This attribute is used to register the information needed to show the this package in the Help/About
@@ -94,6 +94,16 @@ namespace SandcastleBuilder.Package
     [ProvideObject(typeof(TransformArgumentsPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(UserDefinedPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(VisibilityPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
+    // Provide tool windows
+    [ProvideToolWindow(typeof(BuildLogToolWindow), Orientation = ToolWindowOrientation.Right,
+        Style = VsDockStyle.MDI, MultiInstances = false, Transient = false, PositionX = 100, PositionY = 100,
+        Width = 300, Height = 300)]
+    [ProvideToolWindow(typeof(EntityReferencesToolWindow), Orientation = ToolWindowOrientation.Right,
+        Style = VsDockStyle.Float, MultiInstances = false, Transient = false, PositionX = 100, PositionY = 100,
+        Width = 300, Height = 300)]
+    [ProvideToolWindow(typeof(TopicPreviewerToolWindow), Orientation = ToolWindowOrientation.Right,
+        Style = VsDockStyle.Float, MultiInstances = false, Transient = false, PositionX = 100, PositionY = 100,
+        Width = 300, Height = 300)]
     // Provide custom file editors.  As above, a non-existent template path is used.
     [ProvideEditorExtension(typeof(ContentLayoutEditorFactory), ".content", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 129,
@@ -110,7 +120,7 @@ namespace SandcastleBuilder.Package
     // Register a path that should be probed for candidate assemblies at assembly load time.  This lets the
     // package find its dependency assemblies.
     [ProvideBindingPath()]
-    public sealed class SandcastleBuilderPackage : PackageBase
+    public sealed class SandcastleBuilderPackage : Microsoft.VisualStudio.Project.ProjectPackage
     {
         #region Private data members
         //=====================================================================
@@ -198,13 +208,12 @@ namespace SandcastleBuilder.Package
         /// <summary>
         /// Default constructor of the package.
         /// </summary>
-        /// <remarks>Inside this method you can place any initialization code that does not require 
-        /// any Visual Studio service because at this point the package object is created but 
-        /// not sited yet inside Visual Studio environment. The place to do all the other 
-        /// initialization is the Initialize method.</remarks>
+        /// <remarks>Inside this method you can place any initialization code that does not require any Visual
+        /// Studio service because at this point the package object is created but not sited yet inside Visual
+        /// Studio environment. The place to do all the other initialization is the Initialize method.</remarks>
         public SandcastleBuilderPackage()
         {
-            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}",
+            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for {0}",
                 this.ToString()));
 
             // Ensure that the file and folder path user controls are known by the base property page class
@@ -238,16 +247,99 @@ namespace SandcastleBuilder.Package
         /// <summary>
         /// This is overridden to initialize the package
         /// </summary>
-        /// <remarks>This method is called right after the package is sited, so
-        /// this is the place where you can put all the initialization code
-        /// that relies on services provided by Visual Studio.</remarks>
+        /// <remarks>This method is called right after the package is sited, so this is the place where you can
+        /// put all the initialization code that relies on services provided by Visual Studio.</remarks>
         protected override void Initialize()
         {
-            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}",
+            Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of {0}",
                 this.ToString()));
             base.Initialize();
 
             SandcastleBuilderPackage.Instance = this;
+
+            // Add our command handlers for menu items (commands must exist in the .vsct file)
+            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+
+            if(mcs != null)
+            {
+                CommandID commandId;
+                OleMenuCommand menuItem;
+
+                // Create the command for button ViewHelpFile
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewHelpFile);
+                menuItem = new OleMenuCommand(ViewHelpFileExecuteHandler, null, ViewHelpFileQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewHtmlHelp
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewHtmlHelp);
+                menuItem = new OleMenuCommand(ViewHtmlHelpExecuteHandler, null, ViewHtmlHelpQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewHxSHelp
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewHxSHelp);
+                menuItem = new OleMenuCommand(ViewHxSHelpExecuteHandler, null, ViewHxSHelpQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewMshcHelp
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewMshcHelp);
+                menuItem = new OleMenuCommand(ViewMshcHelpExecuteHandler, null, ViewMshcHelpQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button LaunchHelpLibMgr
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.LaunchHelpLibMgr);
+                menuItem = new OleMenuCommand(LaunchHelpLibMgrExecuteHandler, null, LaunchHelpLibMgrQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewAspNetWebsite
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewAspNetWebsite);
+                menuItem = new OleMenuCommand(ViewAspNetWebsiteExecuteHandler, null, ViewAspNetWebsiteQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewHtmlWebsite
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewHtmlWebsite);
+                menuItem = new OleMenuCommand(ViewHtmlWebsiteExecuteHandler, null, ViewHtmlWebsiteQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewFaq
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewFaq);
+                menuItem = new OleMenuCommand(ViewFaqExecuteHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewShfbHelp
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewShfbHelp);
+                menuItem = new OleMenuCommand(ViewShfbHelpExecuteHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button OpenInStandaloneGUI
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.OpenInStandaloneGUI);
+                menuItem = new OleMenuCommand(OpenInStandaloneGUIExecuteHandler, null, OpenInStandaloneGUIQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewBuildLog
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewBuildLog);
+                menuItem = new OleMenuCommand(ViewBuildLogExecuteHandler, null, ViewBuildLogQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button EntityReferencesWindow
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.EntityReferencesWindow);
+                menuItem = new OleMenuCommand(EntityReferencesWindowExecuteHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button TopicPreviewerWindow
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.TopicPreviewerWindow);
+                menuItem = new OleMenuCommand(TopicPreviewerWindowExecuteHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button LaunchContentMgr
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.LaunchContentMgr);
+                menuItem = new OleMenuCommand(LaunchContentMgrExecuteHandler, null, LaunchContentMgrQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+
+                // Create the command for button ViewDocxHelp
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewDocxHelp);
+                menuItem = new OleMenuCommand(ViewDocxHelpExecuteHandler, null, ViewDocxHelpQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+            }
 
             // Register the project factory
             this.RegisterProjectFactory(new SandcastleBuilderProjectFactory(this));
@@ -471,7 +563,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void OpenInStandaloneGUIQueryStatusHandler(object sender, EventArgs e)
+        private void OpenInStandaloneGUIQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
@@ -481,7 +573,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void OpenInStandaloneGUIExecuteHandler(object sender, EventArgs e)
+        private void OpenInStandaloneGUIExecuteHandler(object sender, EventArgs e)
         {
             var pn = CurrentProjectNode;
 
@@ -498,7 +590,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHelpFileQueryStatusHandler(object sender, EventArgs e)
+        private void ViewHelpFileQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
@@ -508,7 +600,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHelpFileExecuteHandler(object sender, EventArgs e)
+        private void ViewHelpFileExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(CurrentProjectNode);
         }
@@ -518,7 +610,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHtmlHelpQueryStatusHandler(object sender, EventArgs e)
+        private void ViewHtmlHelpQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.HtmlHelp1);
         }
@@ -528,7 +620,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHtmlHelpExecuteHandler(object sender, EventArgs e)
+        private void ViewHtmlHelpExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlHelp);
         }
@@ -538,7 +630,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHxSHelpQueryStatusHandler(object sender, EventArgs e)
+        private void ViewHxSHelpQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.MSHelp2);
         }
@@ -548,7 +640,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHxSHelpExecuteHandler(object sender, EventArgs e)
+        private void ViewHxSHelpExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHxSHelp);
         }
@@ -558,7 +650,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewMshcHelpQueryStatusHandler(object sender, EventArgs e)
+        private void ViewMshcHelpQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.MSHelpViewer);
         }
@@ -569,7 +661,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewMshcHelpExecuteHandler(object sender, EventArgs e)
+        private void ViewMshcHelpExecuteHandler(object sender, EventArgs e)
         {
             SandcastleProject project = CurrentSandcastleProject;
 
@@ -587,7 +679,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void LaunchHelpLibMgrQueryStatusHandler(object sender, EventArgs e)
+        private void LaunchHelpLibMgrQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
@@ -597,7 +689,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void LaunchHelpLibMgrExecuteHandler(object sender, EventArgs e)
+        private void LaunchHelpLibMgrExecuteHandler(object sender, EventArgs e)
         {
             try
             {
@@ -625,7 +717,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void LaunchContentMgrQueryStatusHandler(object sender, EventArgs e)
+        private void LaunchContentMgrQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
@@ -636,7 +728,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void LaunchContentMgrExecuteHandler(object sender, EventArgs e)
+        private void LaunchContentMgrExecuteHandler(object sender, EventArgs e)
         {
             Version version;
 
@@ -671,7 +763,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewAspNetWebsiteQueryStatusHandler(object sender, EventArgs e)
+        private void ViewAspNetWebsiteQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.Website);
         }
@@ -681,7 +773,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewAspNetWebsiteExecuteHandler(object sender, EventArgs e)
+        private void ViewAspNetWebsiteExecuteHandler(object sender, EventArgs e)
         {
             var pn = CurrentProjectNode;
 
@@ -694,7 +786,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHtmlWebsiteQueryStatusHandler(object sender, EventArgs e)
+        private void ViewHtmlWebsiteQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.Website);
         }
@@ -704,7 +796,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewHtmlWebsiteExecuteHandler(object sender, EventArgs e)
+        private void ViewHtmlWebsiteExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlWebsite);
         }
@@ -714,7 +806,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewDocxHelpQueryStatusHandler(object sender, EventArgs e)
+        private void ViewDocxHelpQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.OpenXml);
         }
@@ -724,7 +816,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewDocxHelpExecuteHandler(object sender, EventArgs e)
+        private void ViewDocxHelpExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewDocxHelp);
         }
@@ -734,7 +826,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewBuildLogQueryStatusHandler(object sender, EventArgs e)
+        private void ViewBuildLogQueryStatusHandler(object sender, EventArgs e)
         {
             SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
@@ -744,7 +836,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewBuildLogExecuteHandler(object sender, EventArgs e)
+        private void ViewBuildLogExecuteHandler(object sender, EventArgs e)
         {
             var pn = CurrentProjectNode;
 
@@ -761,7 +853,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void EntityReferencesWindowExecuteHandler(object sender, EventArgs e)
+        private void EntityReferencesWindowExecuteHandler(object sender, EventArgs e)
         {
             var window = this.FindToolWindow(typeof(ToolWindows.EntityReferencesToolWindow), 0, true);
 
@@ -777,7 +869,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void TopicPreviewerWindowExecuteHandler(object sender, EventArgs e)
+        private void TopicPreviewerWindowExecuteHandler(object sender, EventArgs e)
         {
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
             uint pitemid;
@@ -838,7 +930,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewFaqExecuteHandler(object sender, EventArgs e)
+        private void ViewFaqExecuteHandler(object sender, EventArgs e)
         {
             SHFBUtility.ShowHelpTopic("1aea789d-b226-4b39-b534-4c97c256fac8");
         }
@@ -848,7 +940,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        protected override void ViewShfbHelpExecuteHandler(object sender, EventArgs e)
+        private void ViewShfbHelpExecuteHandler(object sender, EventArgs e)
         {
             SHFBUtility.ShowHelpTopic("bd1ddb51-1c4f-434f-bb1a-ce2135d3a909");
         }

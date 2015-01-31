@@ -2,16 +2,16 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/23/2014
-// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
+// Updated : 01/29/2015
+// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to preview MAML topic files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
-// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
+// This notice, the author's name, and all copyright notices must remain intact in all applications,
+// documentation, and source files.
 //
 //    Date     Who  Comments
 // ==============================================================================================================
@@ -403,7 +403,7 @@ namespace SandcastleBuilder.WPF.UserControls
         }
 
         /// <summary>
-        /// This is used to adjust the page width to accomodate images wider than the available
+        /// This is used to adjust the page width to accommodate images wider than the available
         /// display area.
         /// </summary>
         /// <remarks>If not adjusted, the images get clipped.</remarks>
@@ -486,7 +486,19 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 if(element != null)
                 {
-                    element.BringIntoView();
+                    // Scroll the element into view.  BringIntoView() doesn't work on the flow document element
+                    // so we need to find the scroll viewer that contains it and scroll that instead.
+                    DependencyObject child = fdViewer;
+
+                    if(VisualTreeHelper.GetChildrenCount(child) != 0)
+                    {
+                        while(!(child is ScrollViewer))
+                            child = VisualTreeHelper.GetChild(child as Visual, 0);
+
+                        ((ScrollViewer)child).ScrollToVerticalOffset(element.ContentStart.GetCharacterRect(
+                            LogicalDirection.Forward).Top);
+                    }
+
                     wasFound = true;
                 }
                 else
@@ -645,7 +657,7 @@ namespace SandcastleBuilder.WPF.UserControls
         }
 
         /// <summary>
-        /// Resize the page width as needed to accomodate images wider than the display area
+        /// Resize the page width as needed to accommodate images wider than the display area
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>

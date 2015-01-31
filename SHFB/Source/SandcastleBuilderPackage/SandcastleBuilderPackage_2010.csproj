@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -16,31 +15,14 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseCodebase>true</UseCodebase>
     <ApplicationIcon>Resources\Package.ico</ApplicationIcon>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>4.0</OldToolsVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
   <PropertyGroup>
@@ -163,9 +145,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -187,10 +166,7 @@
     <Compile Include="Editors\SiteMapEditorPane.cs" />
     <Compile Include="Editors\TokenEditorFactory.cs" />
     <Compile Include="Editors\TokenEditorPane.cs" />
-    <Compile Include="GeneratedCode\Guids.cs" />
-    <Compile Include="GeneratedCode\Package.cs" />
-    <Compile Include="GeneratedCode\PkgCmdID.cs" />
-    <Compile Include="GeneratedCode\ToolWindowBase.cs" />
+    <Compile Include="PkgCmdID.cs" />
     <Compile Include="GoToDefinition\CodeEntitySearcher.cs" />
     <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
     <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessorProvider.cs" />
@@ -368,20 +344,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Resource Include="Button Bitmaps\LogFile.bmp" />
+    <Resource Include="Resources\LogFile.bmp" />
     <None Include="Images\MoveDown.bmp" />
     <None Include="Images\MoveUp.bmp" />
     <None Include="Images\Properties.bmp" />
     <None Include="Images\Delete.bmp" />
     <None Include="Images\PlugInAdd.png" />
     <None Include="Images\ComponentAdd.png" />
-    <Resource Include="Button Bitmaps\EntityReferences.bmp" />
-    <Resource Include="Button Bitmaps\TopicPreview.bmp" />
-    <Resource Include="Button Bitmaps\HelpContentManager.bmp" />
-    <Resource Include="Button Bitmaps\HtmlEncode.bmp" />
+    <Resource Include="Resources\EntityReferences.bmp" />
+    <Resource Include="Resources\TopicPreview.bmp" />
+    <Resource Include="Resources\HelpContentManager.bmp" />
+    <Resource Include="Resources\HtmlEncode.bmp" />
     <Resource Include="Resources\Component.ico" />
-    <Resource Include="Button Bitmaps\Docx.bmp" />
-    <VSCTCompile Include="GeneratedCode\SandcastleBuilderPackage.vsct">
+    <Resource Include="Resources\Docx.bmp" />
+    <Resource Include="Resources\ShowHelp.bmp" />
+    <VSCTCompile Include="SandcastleBuilderPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -826,14 +803,14 @@
     <Resource Include="Resources\JScriptFile.ico" />
     <Resource Include="Resources\MamlTopic.ico" />
     <Resource Include="Resources\CodeSnippets.ico" />
-    <Resource Include="Button Bitmaps\ViewHelpFile.bmp" />
-    <Resource Include="Button Bitmaps\HtmlHelp.bmp" />
-    <Resource Include="Button Bitmaps\Help2.bmp" />
-    <Resource Include="Button Bitmaps\HelpLibManager.bmp" />
-    <Resource Include="Button Bitmaps\HtmlWebsite.bmp" />
-    <Resource Include="Button Bitmaps\AspNetWebsite.bmp" />
-    <Resource Include="Button Bitmaps\MSHelpViewer.bmp" />
-    <Resource Include="Button Bitmaps\FAQ.bmp" />
+    <Resource Include="Resources\ViewHelpFile.bmp" />
+    <Resource Include="Resources\HtmlHelp.bmp" />
+    <Resource Include="Resources\Help2.bmp" />
+    <Resource Include="Resources\HelpLibManager.bmp" />
+    <Resource Include="Resources\HtmlWebsite.bmp" />
+    <Resource Include="Resources\AspNetWebsite.bmp" />
+    <Resource Include="Resources\MSHelpViewer.bmp" />
+    <Resource Include="Resources\FAQ.bmp" />
     <None Include="Images\Information.ico" />
     <None Include="Images\Warning.ico" />
     <Content Include="VSIXPackage.jpg">
@@ -850,7 +827,7 @@
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project_VS2013.csproj">
+    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project_2010.csproj">
       <Project>{CACB60A9-1E76-4F92-8831-B134A658C695}</Project>
       <Name>Microsoft.VisualStudio.Project</Name>
     </ProjectReference>
@@ -867,35 +844,9 @@
       <Name>Sandcastle.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

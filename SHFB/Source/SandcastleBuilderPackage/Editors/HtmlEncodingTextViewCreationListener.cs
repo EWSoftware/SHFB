@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HtmlEncodingTextViewCreationListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2015
+// Updated : 01/29/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -35,7 +35,8 @@ namespace SandcastleBuilder.Package.Editors
     /// </summary>
     /// <remarks>The command filter is only connected to HTML and XML text view adapters.  The command will be
     /// available to HTML and XML files in any project type, not just SHFB projects.</remarks>
-    [Export(typeof(IVsTextViewCreationListener)), ContentType("HTML"), ContentType("XML"),
+    [Export(typeof(IVsTextViewCreationListener)),
+      ContentType("html"), ContentType("htmlx"), ContentType("xml"),
       TextViewRole(PredefinedTextViewRoles.Editable)]
     internal class HtmlEncodingTextViewCreationListener : IVsTextViewCreationListener
     {

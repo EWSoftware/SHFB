@@ -18,9 +18,25 @@ IF ERRORLEVEL 1 GOTO End
 
 IF ERRORLEVEL 1 GOTO End
 
-"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+REM Build the package using the lowest Visual Studio version available
+IF NOT EXIST "%VS100COMNTOOLS%..\IDE\devenv.exe" GOTO VS2012
 
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage_2010.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
+GOTO BuildDocs
+
+:VS2012
+IF NOT EXIST "%VS110COMNTOOLS%..\IDE\devenv.exe" GOTO VS2013
+
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage_2012.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+IF ERRORLEVEL 1 GOTO End
+GOTO BuildDocs
+
+:VS2013
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage_2013.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+IF ERRORLEVEL 1 GOTO End
+
+:BuildDocs
 
 REM Skip help file and setup build if there is no reflection data yet
 IF NOT EXIST %SHFBROOT%\Data\.NETFramework\*.xml GOTO MissingReflectionData

@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- This is the file that defines the actual layout and type of the commands.  It is divided in different
+			 sections (e.g. command definition, command placement, ...), with each defining a specific set of
+			 properties.  See the comment before each section for more details about how to use it. -->
+
+	<!-- The VSCT compiler (the tool that translates this file into the binary format that VisualStudio will
+			 consume) has the ability to run a preprocessor on the VSCT file; this preprocessor is (usually) the C++
+			 preprocessor, so it is possible to define includes and macros with the same syntax used in C++ files.
+			 Using this ability of the compiler here, we include some files defining some of the constants that we
+			 will use inside the file. -->
+
+	<!-- This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+	<Extern href="stdidcmd.h"/>
+
+	<!--This header contains the command ids for the menus provided by the shell. -->
+	<Extern href="vsshlids.h"/>
+
+	<Extern href="VSDbgCmd.h" />
+	<Extern href="VsDebugGuids.h"/>
+
+	<!-- The Commands section is where we the commands, menus and menu groups are defined.  This section uses a
+			 GUID to identify the package that provides the command defined inside it. -->
+	<Commands package="guidPackage">
+		<Groups>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="DocSourcesGroup" priority="0x0100"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuGroup" priority="0x0BF0"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ChmHelpGroup" priority="0x0101"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="HxSHelpGroup" priority="0x0102"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" priority="0x0103"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" priority="0x0104"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFileGroup" priority="0x0100"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpToolbarGroup" priority="0x0100"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ShfbHelpGroup" priority="0x0100"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ProjectNodeGroup" priority="0x07B0"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ViewLogGroup" priority="0x0106"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" priority="0x0500"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" priority="0x9000"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" priority="0x9000"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="SHFBEditorCommandGroup" priority="0x0F00"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="ProjectMenuGroup" priority="0xFF00"/>
+			<Group guid="guidSandcastleBuilderPackageCommandSet" id="DocxHelpGroup" priority="0x0105"/>
+		</Groups>
+
+		<Buttons>
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="AddDocSource" priority="0x0100">
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidAddDocSource</CommandName>
+					<ButtonText>Add Documentation Source</ButtonText>
+					<MenuText>Add Documentation Source</MenuText>
+					<ToolTipText>Add Documentation Source</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFile" priority="0x0100">
+				<Icon guid="ViewHelpFile.bmpGuid" id="ViewHelpFile.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewHelpFile</CommandName>
+					<ButtonText>&amp;View Help File</ButtonText>
+					<MenuText>&amp;View Help File</MenuText>
+					<ToolTipText>&amp;View Help File</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlHelp" priority="0x0100">
+				<Icon guid="HtmlHelp.bmpGuid" id="HtmlHelp.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewHtmlHelp</CommandName>
+					<ButtonText>View &amp;HTML Help 1 (.chm) File</ButtonText>
+					<MenuText>View &amp;HTML Help 1 (.chm) File</MenuText>
+					<ToolTipText>View &amp;HTML Help 1 (.chm) File</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHxSHelp" priority="0x0100">
+				<Icon guid="Help2.bmpGuid" id="Help2.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewHxSHelp</CommandName>
+					<ButtonText>View &amp;MS Help 2 (.HxS) File</ButtonText>
+					<MenuText>View &amp;MS Help 2 (.HxS) File</MenuText>
+					<ToolTipText>View &amp;MS Help 2 (.HxS) File</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewMshcHelp" priority="0x0100">
+				<Icon guid="MSHelpViewer.bmpGuid" id="MSHelpViewer.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewMshcHelp</CommandName>
+					<ButtonText>View M&amp;S Help Viewer (.mshc) File</ButtonText>
+					<MenuText>View M&amp;S Help Viewer (.mshc) File</MenuText>
+					<ToolTipText>View M&amp;S Help Viewer (.mshc) File</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="LaunchHelpLibMgr" priority="0x0101">
+				<Icon guid="HelpLibManager.bmpGuid" id="HelpLibManager.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidLaunchHelpLibMgr</CommandName>
+					<ButtonText>La&amp;unch Help Library Manager 1.0</ButtonText>
+					<MenuText>La&amp;unch Help Library Manager 1.0</MenuText>
+					<ToolTipText>La&amp;unch Help Library Manager 1.0</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewAspNetWebsite" priority="0x0100">
+				<Icon guid="AspNetWebsite.bmpGuid" id="AspNetWebsite.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewAspNetWebsite</CommandName>
+					<ButtonText>View Website (Loc&amp;al Web Dev Server)</ButtonText>
+					<MenuText>View Website (&amp;ASP.NET)</MenuText>
+					<ToolTipText>View Website (&amp;ASP.NET)</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlWebsite" priority="0x0101">
+				<Icon guid="HtmlWebsite.bmpGuid" id="HtmlWebsite.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewHtmlWebsite</CommandName>
+					<ButtonText>View &amp;Website (Local File System)</ButtonText>
+					<MenuText>View &amp;Website (HTML)</MenuText>
+					<ToolTipText>View &amp;Website (HTML)</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewFaq" priority="0x0100">
+				<Icon guid="FAQ.bmpGuid" id="FAQ.bmpId" />
+				<Strings>
+					<CommandName>cmdidViewFaq</CommandName>
+					<ButtonText>Frequently Asked Questions</ButtonText>
+					<MenuText>Frequently Asked Questions</MenuText>
+					<ToolTipText>Frequently Asked Questions</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewShfbHelp" priority="0x0100">
+				<Icon guid="ShowHelp.bmpGuid" id="ShowHelp.bmpId" />
+				<Strings>
+					<CommandName>cmdidViewShfbHelp</CommandName>
+					<ButtonText>Help on Sandcastle Help File Builder</ButtonText>
+					<MenuText>Help on Sandcastle Help File Builder</MenuText>
+					<ToolTipText>Help on Sandcastle Help File Builder</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="OpenInStandaloneGUI" priority="0x0100">
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidOpenInStandaloneGUI</CommandName>
+					<ButtonText>Open Project in Standalone GUI</ButtonText>
+					<MenuText>Open Project in Standalone GUI</MenuText>
+					<ToolTipText>Open Project in Standalone GUI</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewBuildLog" priority="0x0101">
+				<Icon guid="LogFile.bmpGuid" id="LogFile.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewBuildLog</CommandName>
+					<ButtonText>View Build Log Content</ButtonText>
+					<MenuText>View Build Log Content</MenuText>
+					<ToolTipText>View Build Log Content</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100">
+				<Icon guid="EntityReferences.bmpGuid" id="EntityReferences.bmpId" />
+				<Strings>
+					<CommandName>cmdidEntityReferencesWindow</CommandName>
+					<ButtonText>Entity References Window</ButtonText>
+					<MenuText>Entity References Window</MenuText>
+					<ToolTipText>Open the Entity References Window</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101">
+				<Icon guid="TopicPreview.bmpGuid" id="TopicPreview.bmpId" />
+				<Strings>
+					<CommandName>cmdidTopicPreviewerWindow</CommandName>
+					<ButtonText>Topic Previewer Window</ButtonText>
+					<MenuText>Topic Previewer Window</MenuText>
+					<ToolTipText>Open the Topic Previewer Window</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="LaunchContentMgr" priority="0x0102">
+				<Icon guid="HelpContentManager.bmpGuid" id="HelpContentManager.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidLaunchContentMgr</CommandName>
+					<ButtonText>Lau&amp;nch Help Viewer 2.0 Content Manager</ButtonText>
+					<MenuText>Lau&amp;nch Help Viewer 2.0 Content Manager</MenuText>
+					<ToolTipText>Lau&amp;nch Help Viewer 2.0 Content Manager</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="HtmlEncode" priority="0x0100">
+				<Icon guid="HtmlEncode.bmpGuid" id="HtmlEncode.bmpId" />
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidHtmlEncode</CommandName>
+					<ButtonText>HTML Encode Selected Text</ButtonText>
+					<MenuText>HTML Encode Selected Text</MenuText>
+					<ToolTipText>HTML encode the selected text</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewDocxHelp" priority="0x0100">
+				<Icon guid="Docx.bmpGuid" id="Docx.bmpId" />
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>cmdidViewDocxHelp</CommandName>
+					<ButtonText>View &amp;Open XML (.docx) File</ButtonText>
+					<MenuText>View &amp;Open XML (.docx) File</MenuText>
+					<ToolTipText>View &amp;Open XML (.docx) File</ToolTipText>
+				</Strings>
+			</Button>
+		</Buttons>
+
+		<Menus>
+			<Menu guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" type="Menu" priority="0x0100">
+				<Strings>
+					<CommandName>View Help File</CommandName>
+					<ButtonText>View Help File</ButtonText>
+				</Strings>
+			</Menu>
+
+			<Menu guid="guidSandcastleBuilderPackageCommandSet" id="SHFBToolbar" type="Toolbar" priority="0x0100">
+				<CommandFlag>DefaultDocked</CommandFlag>
+				<Strings>
+					<CommandName>Sandcastle Help File Builder</CommandName>
+					<ButtonText>SHFBToolbar</ButtonText>
+				</Strings>
+			</Menu>
+
+			<Menu guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" type="MenuController" priority="0x0100">
+				<CommandFlag>TextChanges</CommandFlag>
+				<CommandFlag>TextIsAnchorCommand</CommandFlag>
+				<Strings>
+					<CommandName>View Help File</CommandName>
+					<ButtonText>View Help File</ButtonText>
+				</Strings>
+			</Menu>
+		</Menus>
+
+		<Bitmaps>
+			<Bitmap guid="ViewHelpFile.bmpGuid" href="Resources\ViewHelpFile.bmp" usedList="ViewHelpFile.bmpId" />
+			<Bitmap guid="HtmlHelp.bmpGuid" href="Resources\HtmlHelp.bmp" usedList="HtmlHelp.bmpId" />
+			<Bitmap guid="Help2.bmpGuid" href="Resources\Help2.bmp" usedList="Help2.bmpId" />
+			<Bitmap guid="MSHelpViewer.bmpGuid" href="Resources\MSHelpViewer.bmp" usedList="MSHelpViewer.bmpId" />
+			<Bitmap guid="HelpLibManager.bmpGuid" href="Resources\HelpLibManager.bmp" usedList="HelpLibManager.bmpId" />
+			<Bitmap guid="AspNetWebsite.bmpGuid" href="Resources\AspNetWebsite.bmp" usedList="AspNetWebsite.bmpId" />
+			<Bitmap guid="HtmlWebsite.bmpGuid" href="Resources\HtmlWebsite.bmp" usedList="HtmlWebsite.bmpId" />
+			<Bitmap guid="FAQ.bmpGuid" href="Resources\FAQ.bmp" usedList="FAQ.bmpId" />
+			<Bitmap guid="ShowHelp.bmpGuid" href="Resources\ShowHelp.bmp" usedList="ShowHelp.bmpId" />
+			<Bitmap guid="LogFile.bmpGuid" href="Resources\LogFile.bmp" usedList="LogFile.bmpId" />
+			<Bitmap guid="EntityReferences.bmpGuid" href="Resources\EntityReferences.bmp" usedList="EntityReferences.bmpId" />
+			<Bitmap guid="TopicPreview.bmpGuid" href="Resources\TopicPreview.bmp" usedList="TopicPreview.bmpId" />
+			<Bitmap guid="HelpContentManager.bmpGuid" href="Resources\HelpContentManager.bmp" usedList="HelpContentManager.bmpId" />
+			<Bitmap guid="HtmlEncode.bmpGuid" href="Resources\HtmlEncode.bmp" usedList="HtmlEncode.bmpId" />
+			<Bitmap guid="Docx.bmpGuid" href="Resources\Docx.bmp" usedList="Docx.bmpId" />
+		</Bitmaps>
+	</Commands>
+
+	<CommandPlacements>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="AddDocSource" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="DocSourcesGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFile" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFileGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlHelp" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ChmHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHxSHelp" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="HxSHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewMshcHelp" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="LaunchHelpLibMgr" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewAspNetWebsite" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlWebsite" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewFaq" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ShfbHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewShfbHelp" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ShfbHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="OpenInStandaloneGUI" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ProjectNodeGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="OpenInStandaloneGUI" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ProjectMenuGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewBuildLog" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ProjectNodeGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewBuildLog" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewLogGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewBuildLog" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="LaunchContentMgr" priority="0x0102">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="HtmlEncode" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBEditorCommandGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewDocxHelp" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="DocxHelpGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="DocSourcesGroup" priority="0x0100">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_REFERENCE" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuGroup" priority="0x0BF0">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_VIEW" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ChmHelpGroup" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ChmHelpGroup" priority="0x0101">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="HxSHelpGroup" priority="0x0102">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="HxSHelpGroup" priority="0x0102">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" priority="0x0103">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" priority="0x0103">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" priority="0x0104">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" priority="0x0104">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFileGroup" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFileGroup" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpToolbarGroup" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBToolbar" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ShfbHelpGroup" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBToolbar" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ProjectNodeGroup" priority="0x07B0">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewLogGroup" priority="0x0106">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" priority="0x0500">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_BUILD" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" priority="0x9000">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_CSCD_WINDOWS" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" priority="0x9000">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_MNUCTRL_OTRWNDWS" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="SHFBEditorCommandGroup" priority="0x0F00">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="SHFBEditorCommandGroup" priority="0x0F00">
+			<Parent guid="guidVSHtmlEditor" id="IDMX_HTM_SOURCE_HTML" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ProjectMenuGroup" priority="0xFF00">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_PROJECT" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="DocxHelpGroup" priority="0x0105">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="DocxHelpGroup" priority="0x0105">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuGroup" />
+		</CommandPlacement>
+		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" priority="0x0100">
+			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpToolbarGroup" />
+		</CommandPlacement>
+	</CommandPlacements>
+
+	<Symbols>
+		<!-- Added HTML editor symbols for encoding command placement -->
+		<GuidSymbol name="guidVSHtmlEditor" value="{D7E8C5E1-BDB8-11d0-9C88-0000F8040A53}">
+			<IDSymbol name="IDMX_HTM_SOURCE_HTML" value="0x0033" />
+		</GuidSymbol>
+
+		<!-- This is the package GUID -->
+		<GuidSymbol name="guidPackage" value="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" />
+
+		<!-- This is the GUID used to group the menu commands together -->
+		<GuidSymbol name="guidSandcastleBuilderPackageCommandSet" value="{811682ce-64b4-4a7a-a298-4eb8093f96ba}">
+			<IDSymbol name="DocSourcesGroup" value="0x0002" />
+			<IDSymbol name="ViewHelpMenuGroup" value="0x0010" />
+			<IDSymbol name="ChmHelpGroup" value="0x0011" />
+			<IDSymbol name="HxSHelpGroup" value="0x0012" />
+			<IDSymbol name="MshcHelpGroup" value="0x0013" />
+			<IDSymbol name="WebsiteHelpGroup" value="0x0014" />
+			<IDSymbol name="ViewHelpFileGroup" value="0x0015" />
+			<IDSymbol name="ViewHelpToolbarGroup" value="0x0017" />
+			<IDSymbol name="ShfbHelpGroup" value="0x001B" />
+			<IDSymbol name="ProjectNodeGroup" value="0x001E" />
+			<IDSymbol name="ViewLogGroup" value="0x0022" />
+			<IDSymbol name="BuildMenuGroup" value="0x0028" />
+			<IDSymbol name="SHFBWindowsGroup" value="0x002B" />
+			<IDSymbol name="SHFBOtherWindowsGroup" value="0x002E" />
+			<IDSymbol name="SHFBEditorCommandGroup" value="0x0033" />
+			<IDSymbol name="ProjectMenuGroup" value="0x0036" />
+			<IDSymbol name="DocxHelpGroup" value="0x0039" />
+			<IDSymbol name="AddDocSource" value="0x0001" />
+			<IDSymbol name="ViewHelpFile" value="0x0006" />
+			<IDSymbol name="ViewHtmlHelp" value="0x0007" />
+			<IDSymbol name="ViewHxSHelp" value="0x0008" />
+			<IDSymbol name="ViewMshcHelp" value="0x0009" />
+			<IDSymbol name="LaunchHelpLibMgr" value="0x000A" />
+			<IDSymbol name="ViewAspNetWebsite" value="0x000B" />
+			<IDSymbol name="ViewHtmlWebsite" value="0x000C" />
+			<IDSymbol name="ViewFaq" value="0x0019" />
+			<IDSymbol name="ViewShfbHelp" value="0x001A" />
+			<IDSymbol name="OpenInStandaloneGUI" value="0x001C" />
+			<IDSymbol name="ViewBuildLog" value="0x0020" />
+			<IDSymbol name="EntityReferencesWindow" value="0x002A" />
+			<IDSymbol name="TopicPreviewerWindow" value="0x0030" />
+			<IDSymbol name="LaunchContentMgr" value="0x0031" />
+			<IDSymbol name="HtmlEncode" value="0x0032" />
+			<IDSymbol name="ViewDocxHelp" value="0x0038" />
+			<IDSymbol name="ViewHelpMenu" value="0x000F" />
+			<IDSymbol name="SHFBToolbar" value="0x0016" />
+			<IDSymbol name="ViewHelpMenuController" value="0x0018" />
+		</GuidSymbol>
+
+		<!-- Image GUIDs -->
+		<GuidSymbol name="ViewHelpFile.bmpGuid" value="{e8a9c47f-7950-4c47-a837-8cfae2e31671}">
+			<IDSymbol name="ViewHelpFile.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="HtmlHelp.bmpGuid" value="{f3d38ea1-078d-4a76-afae-9ec407394773}">
+			<IDSymbol name="HtmlHelp.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="Help2.bmpGuid" value="{d72da1b8-a3a7-4a2e-83c2-f2dea5b10bc4}">
+			<IDSymbol name="Help2.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="MSHelpViewer.bmpGuid" value="{eb2ed59a-8262-48dc-9f59-bab070bd4a58}">
+			<IDSymbol name="MSHelpViewer.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="HelpLibManager.bmpGuid" value="{655f4fc1-0287-44f5-85e6-70d702984ccd}">
+			<IDSymbol name="HelpLibManager.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="AspNetWebsite.bmpGuid" value="{8e8669cc-c445-4357-a96b-5797bee36ac4}">
+			<IDSymbol name="AspNetWebsite.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="HtmlWebsite.bmpGuid" value="{91eda879-4fc3-4406-a430-042466fa275d}">
+			<IDSymbol name="HtmlWebsite.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="FAQ.bmpGuid" value="{7a81b577-79eb-46cf-9255-0e07d047cc5e}">
+			<IDSymbol name="FAQ.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="ShowHelp.bmpGuid" value="{a2bf7c5b-454e-458f-ac41-2edc8caea2ec}">
+			<IDSymbol name="ShowHelp.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="LogFile.bmpGuid" value="{6c240cdf-4b36-4b47-816e-9167dc6628a4}">
+			<IDSymbol name="LogFile.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="EntityReferences.bmpGuid" value="{d3e0699b-a960-42b2-8660-81ce4f363991}">
+			<IDSymbol name="EntityReferences.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="TopicPreview.bmpGuid" value="{6c232f18-db48-45c7-8316-bc589a975a1b}">
+			<IDSymbol name="TopicPreview.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="HelpContentManager.bmpGuid" value="{bee92097-9765-42e0-bc8f-a1f56a8b29f2}">
+			<IDSymbol name="HelpContentManager.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="HtmlEncode.bmpGuid" value="{9726fa79-209e-40f3-9274-7829931528b4}">
+			<IDSymbol name="HtmlEncode.bmpId" value="1" />
+		</GuidSymbol>
+
+		<GuidSymbol name="Docx.bmpGuid" value="{7859a182-ba6a-49c5-9d1c-7a545467c0b6}">
+			<IDSymbol name="Docx.bmpId" value="1" />
+		</GuidSymbol>
+	</Symbols>
+
+</CommandTable>
+

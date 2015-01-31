@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : EntityReferencesToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/09/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 01/28/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to implement the Entity References tool window
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
-// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
+// This notice, the author's name, and all copyright notices must remain intact in all applications,
+// documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/11/2011  EFW  Created the code
+// 12/11/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -24,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SandcastleBuilder.Package.Editors;
@@ -37,8 +38,11 @@ namespace SandcastleBuilder.Package.ToolWindows
     /// This is used to find and insert entity references such as token, image, code snippet, code entity, and
     /// table of contents links into files.
     /// </summary>
+    /// <remarks>In Visual Studio, tool windows are composed of a frame (implemented by the shell) and a pane,
+    /// usually implemented by the package implementer.  This class derives from the <c>ToolWindowPane</c> class
+    /// provided from the MPF in order to use its implementation of the <c>IVsUIElementPane</c> interface.</remarks>
     [Guid("581e89c0-e423-4453-bde3-a0403d5f380d")]
-    public class EntityReferencesToolWindow : EntityReferencesToolWindowBase, IVsSelectionEvents
+    public class EntityReferencesToolWindow : ToolWindowPane, IVsSelectionEvents
     {
         #region Private data members
         //=====================================================================
@@ -53,11 +57,12 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <summary>
         /// Constructor
         /// </summary>
-        public EntityReferencesToolWindow()
+        public EntityReferencesToolWindow() : base(null)
         {
             var ucEntityReferences = new EntityReferencesControl { AllowAnimatedGif = true };
 
-            base.Content = ucEntityReferences;
+            this.Caption = "Entity References";
+            this.Content = ucEntityReferences;
 
             ucEntityReferences.FileContentNeeded += ucEntityReferences_FileContentNeeded;
         }
