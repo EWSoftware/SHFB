@@ -6,7 +6,7 @@
       <para>The MS Help Viewer system maintains a catalog of all help packages currently installed on a machine.
 This catalog determines what books are included in each package as well as maintaining references between the
 packages.  More information can be found on the <externalLink><linkText>Introducing MS Help Viewer 1.0</linkText>
-<linkAlternateText>MS Help Viewer</linkAlternateText> <linkUri>http://www.helpware.net/mshelp3/intro.htm</linkUri>
+<linkAlternateText>MS Help Viewer</linkAlternateText> <linkUri>http://kb.helpwaregroup.com/ms-help-viewer/hvinfo</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>  page at the HelpWare Group website.</para>
     </introduction>
 

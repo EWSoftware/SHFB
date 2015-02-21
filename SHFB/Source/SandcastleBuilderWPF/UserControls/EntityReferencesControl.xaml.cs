@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 02/20/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
 // and table of content entries and allows them to be dragged and dropped into a topic editor window.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -656,7 +656,7 @@ namespace SandcastleBuilder.WPF.UserControls
                                     !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
                                 !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
                                     !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform,
-                                currentProject.MSBuildOutDir);
+                                currentProject.MSBuildOutDir, false);
 
                             // Add Visual Studio solution macros if necessary
                             if(lastSolution != null)

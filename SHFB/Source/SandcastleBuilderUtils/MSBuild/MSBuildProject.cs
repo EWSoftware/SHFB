@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 02/20/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
 // process.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -441,11 +441,13 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="configuration">The active configuration</param>
         /// <param name="platform">The active platform</param>
         /// <param name="outDir">The output directory</param>
-        /// <remarks>If the platform is set to any variation of "Any CPU" and
-        /// it isn't found in the project, it will be converted to "AnyCPU"
-        /// (no space).  This works around an issue with Team Build that
-        /// includes the space even though it should not be present.</remarks>
-        public void SetConfiguration(string configuration, string platform, string outDir)
+        /// <param name="usesProjectSpecificOutput">True if the build is using project-specific output folders, 
+        /// false if not.</param>
+        /// <remarks>If the platform is set to any variation of "Any CPU" and it isn't found in the project, it
+        /// will be converted to "AnyCPU" (no space).  This works around an issue with Team Build that includes
+        /// the space even though it should not be present.</remarks>
+        public void SetConfiguration(string configuration, string platform, string outDir,
+          bool usesProjectSpecificOutput)
         {
             // If we didn't load the project, we won't modify its settings.
             // Typically, they already match in that case.
@@ -468,12 +470,15 @@ namespace SandcastleBuilder.Utils.MSBuild
                 {
                     // .NET 4.5 supports a property that tells MSBuild to put the project output into a
                     // project-specific folder in OutDir.
-                    var projectSpecificFolder = msBuildProject.AllEvaluatedProperties.FirstOrDefault(
-                        p => p.Name == "GenerateProjectSpecificOutputFolder");
+                    if(usesProjectSpecificOutput)
+                    {
+                        // The output directory will contain the SHFB project name so we need to remove it first
+                        if(outDir[outDir.Length - 1] == '\\')
+                            outDir = outDir.Substring(0, outDir.Length - 1);
 
-                    if(projectSpecificFolder != null && !String.IsNullOrWhiteSpace(projectSpecificFolder.EvaluatedValue) &&
-                      Convert.ToBoolean(projectSpecificFolder.EvaluatedValue, CultureInfo.InvariantCulture))
-                        outDir = Path.Combine(outDir, Path.GetFileNameWithoutExtension(msBuildProject.FullPath));
+                        outDir = Path.Combine(Path.GetDirectoryName(outDir),
+                            Path.GetFileNameWithoutExtension(msBuildProject.FullPath));
+                    }
 
                     msBuildProject.SetGlobalProperty(ProjectElement.OutDir, outDir);
                 }

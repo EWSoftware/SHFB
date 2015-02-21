@@ -55,7 +55,7 @@
 			<visualStudio version="Visual Studio 2010" location="Visual Studio 2010\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2012" location="Visual Studio 2012\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
-			<visualStudio version="Visual Studio 2015" location="Visual Studio 14\Code Snippets\Xml\My Xml Snippets" />
+			<visualStudio version="Visual Studio 2015" location="Visual Studio 2015\Code Snippets\Xml\My Xml Snippets" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />

@@ -20,11 +20,11 @@ collections and titles, it is a rather lengthy process and it does not always wo
 		<para>The easiest approach to deploying and registering Help 2 collections is to use the shareware tool
 <externalLink>
   <linkText>H2Reg.exe</linkText>
-  <linkUri>http://www.helpware.net/mshelp2/h2reg.htm</linkUri>
+  <linkUri>http://www.helpwaregroup.com/products/h2reg</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink> from <externalLink>
   <linkText>The Helpware Group</linkText>
-  <linkUri>http://www.helpware.net</linkUri>
+  <linkUri>http://www.helpwaregroup.com</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink>.  It is a command line tool that can be included by scripted installers as well as Windows
 Installer packages as a custom action.</para>

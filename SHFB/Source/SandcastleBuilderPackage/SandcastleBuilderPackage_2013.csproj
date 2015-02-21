@@ -845,7 +845,7 @@
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project_VS2013.csproj">
+    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project_2013.csproj">
       <Project>{CACB60A9-1E76-4F92-8831-B134A658C695}</Project>
       <Name>Microsoft.VisualStudio.Project</Name>
     </ProjectReference>

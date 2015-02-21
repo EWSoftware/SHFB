@@ -834,7 +834,16 @@
 														<xsl:value-of select="concat('P:', substring-before(substring(@inheritedFrom, 3), '.get_'), '.', substring-after(@inheritedFrom, '.get_'))"/>
 													</xsl:when>
 													<xsl:when test="contains(@inheritedFrom, '.set_')">
-														<xsl:value-of select="concat('P:', substring-before(substring(@inheritedFrom, 3), '.set_'), '.', substring-after(@inheritedFrom, '.set_'))"/>
+														<!-- For the setter, we need to strip the last parameter too -->
+														<xsl:variable name="lastParam">
+															<xsl:call-template name="t_getLastParameter">
+																<xsl:with-param name="p_string" select="@inheritedFrom" />
+															</xsl:call-template>
+														</xsl:variable>
+														<xsl:variable name="setterName">
+															<xsl:value-of select="concat('P:', substring-before(substring(@inheritedFrom, 3), '.set_'), '.', substring-after(@inheritedFrom, '.set_'))"/>
+														</xsl:variable>
+														<xsl:value-of select="concat(substring-before($setterName, $lastParam), ')')"/>
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:value-of select="@inheritedFrom"/>
@@ -871,6 +880,21 @@
 				<w:spacing w:after="0" />
 			</w:pPr>
 		</w:p>
+	</xsl:template>
+
+	<!-- Gets the parameter following the last comma in the given string -->
+	<xsl:template name="t_getLastParameter">
+		<xsl:param name="p_string" />
+		<xsl:choose>
+			<xsl:when test="contains($p_string, ',')">
+				<xsl:call-template name="t_getLastParameter">
+					<xsl:with-param name="p_string" select="substring-after($p_string, ',')" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat(',', $p_string)" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->

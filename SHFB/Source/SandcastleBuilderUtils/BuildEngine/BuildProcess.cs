@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 02/20/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -2271,7 +2271,17 @@ AllDone:
 
                 using(projRef = new MSBuildProject(reference.EvaluatedInclude))
                 {
-                    projRef.SetConfiguration(project.Configuration, project.Platform, project.MSBuildOutDir);
+                    // .NET 4.5 supports a property that tells MSBuild to put the project output into a
+                    // project-specific folder in OutDir.
+                    var projectSpecificFolder = project.MSBuildProject.AllEvaluatedProperties.FirstOrDefault(
+                        p => p.Name == "GenerateProjectSpecificOutputFolder");
+
+                    bool usesProjectSpecificOutput = (projectSpecificFolder != null &&
+                      !String.IsNullOrWhiteSpace(projectSpecificFolder.EvaluatedValue) &&
+                      Convert.ToBoolean(projectSpecificFolder.EvaluatedValue, CultureInfo.InvariantCulture));
+
+                    projRef.SetConfiguration(project.Configuration, project.Platform, project.MSBuildOutDir,
+                        usesProjectSpecificOutput);
 
                     referenceDictionary.Add(projRef.AssemblyName, Tuple.Create("Reference",
                         Path.GetFileNameWithoutExtension(projRef.AssemblyName),
@@ -2308,6 +2318,15 @@ AllDone:
                             // These are handled below
                             this.ReportProgress("    Found project '{0}'", sourceProject.ProjectFileName);
 
+                            // .NET 4.5 supports a property that tells MSBuild to put the project output into a
+                            // project-specific folder in OutDir.
+                            var projectSpecificFolder = project.MSBuildProject.AllEvaluatedProperties.FirstOrDefault(
+                                p => p.Name == "GenerateProjectSpecificOutputFolder");
+
+                            bool usesProjectSpecificOutput = (projectSpecificFolder != null &&
+                              !String.IsNullOrWhiteSpace(projectSpecificFolder.EvaluatedValue) &&
+                              Convert.ToBoolean(projectSpecificFolder.EvaluatedValue, CultureInfo.InvariantCulture));
+
                             projRef = new MSBuildProject(sourceProject.ProjectFileName);
 
                             // Use the project file configuration and platform properties if they are set.  If not,
@@ -2317,7 +2336,7 @@ AllDone:
                                     !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
                                 !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
                                     !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform,
-                                project.MSBuildOutDir);
+                                project.MSBuildOutDir, usesProjectSpecificOutput);
 
                             // Add Visual Studio solution macros if necessary
                             if(lastSolution != null)

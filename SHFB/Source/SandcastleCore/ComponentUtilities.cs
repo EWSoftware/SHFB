@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 02/20/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -111,11 +111,14 @@ namespace Sandcastle.Core
             if(toolsFolder == null)
             {
                 // Special case for Visual Studio.  Try for SHFBROOT first since the VSPackage needs it as we
-                // will be running from the assembly in the extension's folder.
+                // will be running from the assembly in the extension's folder which does not contain all of the
+                // supporting files.
                 string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+                // We must check for the local app data folder as well as the All Users location
                 if(assemblyLocation.IndexOf(Environment.GetFolderPath(
-                  Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1)
+                  Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1 ||
+                  assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     toolsFolder = Environment.GetEnvironmentVariable("SHFBROOT");
                 }
