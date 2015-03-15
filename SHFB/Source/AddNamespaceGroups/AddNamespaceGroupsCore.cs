@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroupsCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/23/2014
-// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
+// Updated : 03/06/2015
+// Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This utility is used to add namespace groups to a reflection data file.  The namespace groups can be used to
@@ -220,7 +220,7 @@ namespace Microsoft.Ddue.Tools
                     }
 
                     // Group namespaces and write out the group entries
-                    foreach(var group in GroupNamespaces(namespaces, maxParts))
+                    foreach(var group in GroupNamespaces(namespaces, maxParts, (projectRoot != null)))
                     {
                         if(Canceled)
                             break;
@@ -329,10 +329,13 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to group the namespaces based on their common root
         /// </summary>
-        /// <param name="namespaces">An enumerable list of namespaces to group</param>
-        /// <param name="maxParts">The maximum number of namespace parts to consider for grouping</param>
+        /// <param name="namespaces">An enumerable list of namespaces to group.</param>
+        /// <param name="maxParts">The maximum number of namespace parts to consider for grouping.</param>
+        /// <param name="hasRootNamespaceContainer">True if the project has a root namespace container, false
+        /// if not.  This controls whether or not the root group is retained.</param>
         /// <returns>An enumerable list of the grouped namespaces</returns>
-        private static IEnumerable<NamespaceGroup> GroupNamespaces(IEnumerable<string> namespaces, int maxParts)
+        private static IEnumerable<NamespaceGroup> GroupNamespaces(IEnumerable<string> namespaces, int maxParts,
+          bool hasRootNamespaceContainer)
         {
             Dictionary<string, NamespaceGroup> groups = new Dictionary<string,NamespaceGroup>();
             NamespaceGroup match;
@@ -402,25 +405,70 @@ namespace Microsoft.Ddue.Tools
             }
 
             // If a group only contains one group entry, pull that sub-group up into the parent and remove
-            // the sub-group.
-            foreach(var group in groups.Values.ToList())
-                if(group.Children.Count == 1 && group.Children[0][0] == 'G')
+            // the sub-group.  Don't do it for the root namespace container or if the namespace itself will
+            // appear with the group entry.
+            foreach(var group in groups.ToList())
+                if((group.Key.Length != 0 || hasRootNamespaceContainer)  && group.Value.Children.Count == 1 &&
+                  group.Value.Children[0][0] == 'G' && !namespaces.Contains(group.Value.Namespace))
                 {
-                    root = "N" + group.Children[0].Substring(1);
+                    root = "N" + group.Value.Children[0].Substring(1);
 
-                    if(namespaces.Contains(root))
-                        group.Children.Add(root);
+                    // Ignore it if already removed
+                    if(groups.ContainsKey(group.Key))
+                    {
+                        if(namespaces.Contains(root))
+                            group.Value.Children.Add(root);
 
-                    group.Children.RemoveAt(0);
-                    group.Children.AddRange(groups[root].Children);
-                    groups.Remove(root);
+                        group.Value.Children.RemoveAt(0);
+                        group.Value.Children.AddRange(groups[root].Children);
+                        groups.Remove(root);
+                    }
+                }
+
+            var rootGroup = groups[String.Empty];
+            root = "N" + rootGroup.Children[0].Substring(1);
+
+            if(groups.Count > 1 && rootGroup.Children.Count == 1 && hasRootNamespaceContainer)
+            {
+                // Special case.  If we've got a root group with only one child and there is a root namespace
+                // container, pull the content for the group into the root and remove the child.
+                if(namespaces.Contains(root))
+                    rootGroup.Children.Add(root);
+
+                rootGroup.Children.RemoveAt(0);
+                rootGroup.Children.AddRange(groups[root].Children);
+                groups.Remove(root);
+            }
+            else
+                if(groups.Count > 1 && rootGroup.Children.Count == 1 && !namespaces.Contains(root))
+                {
+                    // Special case.  If the root group doesn't exist as a namespace and only has one child, pull
+                    // the content for the group into the root and remove the child.  However, if the group has
+                    // more than one namespace starting with the first namespace, keep the group and name it
+                    // after the first entry.
+                    var childGroup = groups[root];
+
+                    string name = childGroup.Children[0] + ".";
+
+                    if(!childGroup.Children.Skip(1).All(c => c.StartsWith(name, StringComparison.Ordinal)))
+                    {
+                        rootGroup.Children.RemoveAt(0);
+                        rootGroup.Children.AddRange(childGroup.Children);
+                        groups.Remove(root);
+                    }
+                    else
+                    {
+                        childGroup.Namespace = name.Substring(0, name.Length - 1);
+                        rootGroup.Children.RemoveAt(0);
+                        rootGroup.Children.Add("G" + childGroup.Namespace.Substring(1));
+                    }
                 }
 
             // In the final pass, for each group key that is a namespace, add the namespace to its children.
             // Also change the name of the namespace group.  Once done, return it to the caller.
             foreach(var group in groups.Values)
             {
-                if(namespaces.Contains(group.Namespace))
+                if(namespaces.Contains(group.Namespace) && !group.Children.Contains(group.Namespace))
                     group.Children.Add(group.Namespace);
 
                 if(group.Namespace.Length != 0)

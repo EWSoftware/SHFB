@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : branding-Website.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2015
+// Updated : 03/04/2015
 // Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 //           Portions Copyright 2014 Sam Harwell, All rights reserved
 //
@@ -539,9 +539,11 @@ function SearchForKeywords(keywords, fileInfo, wordDictionary, sortByTitle)
         matches[word] = occurrences;
         var occurrenceIndices = [];
 
-        // Get a list of the file indices for this match
+        // Get a list of the file indices for this match.  These are 64-bit numbers but JavaScript only does
+        // bit shifts on 32-bit values so we divide by 2^16 to get the same effect as ">> 16" and use floor()
+        // to truncate the result.
         for(var ind in occurrences)
-            occurrenceIndices.push(occurrences[ind] >> 16);
+            occurrenceIndices.push(Math.floor(occurrences[ind] / Math.pow(2, 16)));
 
         if(isFirst)
         {
@@ -585,7 +587,9 @@ function SearchForKeywords(keywords, fileInfo, wordDictionary, sortByTitle)
             {
                 var entry = occurrences[ind];
 
-                if((entry >> 16) == matchingIdx)
+                // These are 64-bit numbers but JavaScript only does bit shifts on 32-bit values so we divide
+                // by 2^16 to get the same effect as ">> 16" and use floor() to truncate the result.
+                if(Math.floor(entry / Math.pow(2, 16)) == matchingIdx)
                     matchCount += (entry & 0xFFFF);
             }
         }

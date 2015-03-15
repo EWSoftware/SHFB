@@ -10,7 +10,7 @@
              xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
              xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="900" MinWidth="100">
+             d:DesignHeight="550" d:DesignWidth="900" MinWidth="100" FontSize="12">
   <UserControl.BindingGroup>
     <BindingGroup />
   </UserControl.BindingGroup>

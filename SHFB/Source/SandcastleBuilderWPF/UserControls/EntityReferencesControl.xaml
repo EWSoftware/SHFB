@@ -6,7 +6,7 @@
              xmlns:shfbWPF="clr-namespace:SandcastleBuilder.WPF"
              xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="300" FontSize="11" Name="ucEntityReferences"
+             d:DesignHeight="400" d:DesignWidth="300" FontSize="12" Name="ucEntityReferences"
              IsVisibleChanged="ucEntityReferences_IsVisibleChanged">
   <UserControl.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />

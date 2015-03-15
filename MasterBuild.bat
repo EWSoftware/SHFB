@@ -42,6 +42,7 @@ REM Skip help file and setup build if there is no reflection data yet
 IF NOT EXIST %SHFBROOT%\Data\.NETFramework\*.xml GOTO MissingReflectionData
 
 CD ..\..\Documentation
+IF EXIST .\WebHelp\*.* RD /S /Q .\WebHelp
 
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 

@@ -456,10 +456,20 @@ least one type:</para>
 <codeInline>MyCompany.MyProduct</codeInline> would be created with child entries for each of the namespaces
 including its namesake because it contains types.  If the maximum is increased to three, a new subgroup would be
 created below it for <codeInline>MyCompany.MyProduct.Web</codeInline> to contain the controls and design
-namespaces beneath it.  Since no types appear in the group's namesake an child entry is not added for it.</para>
+namespaces beneath it.  Since no types appear in the group's namesake a child entry is not added for it.</para>
 
 				<para>The group topics are similar in nature to namespace topics in that you can add comments to them
-using the <ui>Namespace Summaries</ui> option in the <ui>Summaries</ui> project property category.</para>
+using the <ui>Namespace Summaries</ui> option in the <ui>Summaries</ui> project property category or use a
+<codeInline>NamespaceGroupDoc</codeInline> class to manage the comments in the source code.</para>
+
+				<para>Be aware that namespaces without any types may not result in a group topic.  This is done to
+prevent group entries that contain a single topic that is itself a group.  In the example above, if the
+<codeInline>MyCompany.MyProduct</codeInline> namespace contained no types, a group would not be created and all
+topics would be listed at the root level.  In such cases, if you still want a root container topic, enable the
+Root Namespace Container project option and place any comments for the group in the Project Summary project
+option.  In a similar fashion, if the Root Namespace Container option is enabled and a root group is created as
+in the above example, it is removed and its content is listed in the root namespace container topic to prevent a
+single group entry from appearing by itself below the root namespace container.</para>
 
 			</content>
 		</section>

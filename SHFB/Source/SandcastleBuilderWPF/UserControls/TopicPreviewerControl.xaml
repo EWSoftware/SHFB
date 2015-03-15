@@ -11,7 +11,7 @@
              xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
              xmlns:shfbWPF="clr-namespace:SandcastleBuilder.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600"
+             d:DesignHeight="300" d:DesignWidth="600" FontSize="12"
              IsVisibleChanged="ucTopicPreviewer_IsVisibleChanged">
   <UserControl.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />

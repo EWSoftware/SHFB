@@ -119,9 +119,10 @@ version value from 0.0.0.0 to 65535.65535.65535.65535.</para>
 			<title>Ignore If Unresolved Entries</title>
 			<content>
 				<para>This tab is used to enter one or more assembly names to ignore if they are unresolved.  By default,
-it contains a single entry for the Crystal Reports <codeInline>BusinessObjects.Licensing.KeycodeDecoder</codeInline>
-assembly which is not distributed and can cause documentation projects that include Crystal Reports projects to
-fail when built.</para>
+it contains two entries: one for the Crystal Reports <codeInline>BusinessObjects.Licensing.KeycodeDecoder</codeInline>
+assembly and another for the Visual Studio <codeInline>Microsoft.VisualStudio.TestTools.UITest.Playback</codeInline>
+assembly.  Both of those are not distributed and can cause documentation projects that include them indirectly
+through other reference assemblies to fail when built.</para>
 
 				<para>Type the name of an assembly to add without a path or extension, just the name reported by the
 <application>MRefBuilder</application> tool when it fails due to the missing assembly.  Click the <ui>Add</ui>

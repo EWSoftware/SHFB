@@ -108,7 +108,10 @@ namespace SandcastleBuilder.PlugIns
                 lbIgnoreIfUnresolved.Items.Add(nav.Value);
 
             if(lbIgnoreIfUnresolved.Items.Count == 0)
+            {
                 lbIgnoreIfUnresolved.Items.Add("BusinessObjects.Licensing.KeycodeDecoder");
+                lbIgnoreIfUnresolved.Items.Add("Microsoft.VisualStudio.TestTools.UITest.Playback");
+            }
 
             lbIgnoreIfUnresolved.SelectedIndex = 0;
         }

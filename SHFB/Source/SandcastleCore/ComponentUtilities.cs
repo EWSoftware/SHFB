@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2015
+// Updated : 03/12/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -115,10 +115,11 @@ namespace Sandcastle.Core
                 // supporting files.
                 string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                // We must check for the local app data folder as well as the All Users location
+                // We must check for the local app data folder as well as the All Users and shadow copy locations
                 if(assemblyLocation.IndexOf(Environment.GetFolderPath(
                   Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1 ||
-                  assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1)
+                  assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1 ||
+                  assemblyLocation.IndexOf(@"\AppData\Local\Assembly\", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     toolsFolder = Environment.GetEnvironmentVariable("SHFBROOT");
                 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="750" MinWidth="100">
+             d:DesignHeight="300" d:DesignWidth="750" MinWidth="100" FontSize="12">
   <UserControl.BindingGroup>
     <BindingGroup />
   </UserControl.BindingGroup>
