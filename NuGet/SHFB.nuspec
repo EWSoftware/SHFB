@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE package [
+	<!ENTITY deploy "..\SHFB\Deploy">
+	<!ENTITY commonExcludes "&deploy;\**\*.pdb;&deploy;\**\*vshost*;&deploy;\**\*CodeAnalysis*">
+]>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB</id>
@@ -15,12 +19,12 @@
 		<tags>SHFB documentation sandcastle help XML comments</tags>
 	</metadata>
 	<files>
-		<file src="..\SHFB\Deploy\Data\**\*.*" target="tools\Data" />
-		<file src="..\SHFB\Deploy\PresentationStyles\**\*.*" target="tools\PresentationStyles" />
-		<file src="..\SHFB\Deploy\ProductionTransforms\**\*.*" target="tools\ProductionTransforms" />
-		<file src="..\SHFB\Deploy\SyntaxContent\**\*.*" target="tools\SyntaxContent" />
-		<file src="..\SHFB\Deploy\Templates\**\*.*" target="tools\Templates" />
-		<file src="..\SHFB\Deploy\*.*" target="tools" exclude="..\SHFB\Deploy\ICSharpCode*;..\SHFB\Deploy\SandcastleBuilderGUI*;..\SHFB\Deploy\WeifenLuo*;..\SHFB\Deploy\BuildComponents.xml;..\SHFB\Deploy\ColorizerLibrary.xml;..\SHFB\Deploy\Sandcastle*.xml;..\SHFB\Deploy\SyntaxComponents.xml;..\SHFB\Deploy\*Hunspell*;..\SHFB\Deploy\SHFBProjectLauncher*" />
+		<file src="&deploy;\Data\**\*.*" target="tools\Data" exclude="&commonExcludes;" />
+		<file src="&deploy;\PresentationStyles\**\*.*" target="tools\PresentationStyles" exclude="&commonExcludes;" />
+		<file src="&deploy;\ProductionTransforms\**\*.*" target="tools\ProductionTransforms" exclude="&commonExcludes;" />
+		<file src="&deploy;\SyntaxContent\**\*.*" target="tools\SyntaxContent" exclude="&commonExcludes;" />
+		<file src="&deploy;\Templates\**\*.*" target="tools\Templates" exclude="&commonExcludes;" />
+		<file src="&deploy;\*.*" target="tools" exclude="&deploy;\ICSharpCode*;&deploy;\SandcastleBuilderGUI*;&deploy;\WeifenLuo*;&deploy;\BuildComponents.xml;&deploy;\ColorizerLibrary.xml;&deploy;\Sandcastle*.xml;&deploy;\SyntaxComponents.xml;&deploy;\*Hunspell*;&deploy;\SHFBProjectLauncher*;&deploy;\ESent*.xml;&deploy;\GenerateInheritedDocs.xml;&deploy;\HelpLibraryManagerLauncher.xml;&deploy;\NHunSpell.xml;&deploy;\SandcastleBuilderGUI.xml;&deploy;\SandcastleHtmlExtract.xml;&deploy;\reflection.org;&commonExcludes;" />
 		<file src="ReadMe.txt" target="ReadMe.txt" />
 	</files>
 </package>
