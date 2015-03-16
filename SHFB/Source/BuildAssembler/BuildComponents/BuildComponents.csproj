@@ -10,14 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Ddue.Tools</RootNamespace>
     <AssemblyName>BuildComponents</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>

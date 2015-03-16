@@ -19,14 +19,6 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <PublishUrl>http://localhost/SandcastleHtmlExtract/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>

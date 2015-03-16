@@ -28,10 +28,6 @@
     </DocumentationSources>
     <CppCommentsFixup>False</CppCommentsFixup>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
     <ApiFilter />
     <ComponentConfigurations />
     <HelpAttributes />

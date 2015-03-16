@@ -137,10 +137,6 @@
     </HelpAttributes>
     <VendorName>EWSoftware</VendorName>
     <ProductTitle>Sandcastle Help File Builder</ProductTitle>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>

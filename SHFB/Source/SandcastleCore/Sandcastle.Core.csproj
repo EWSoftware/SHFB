@@ -10,14 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sandcastle.Core</RootNamespace>
     <AssemblyName>Sandcastle.Core</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>

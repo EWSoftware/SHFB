@@ -15,14 +15,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseCodebase>true</UseCodebase>
     <ApplicationIcon>Resources\Package.ico</ApplicationIcon>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
   <PropertyGroup>
