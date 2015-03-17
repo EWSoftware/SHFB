@@ -151,7 +151,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                 // As noted, we only support the C# library
                 if(library == null)
-                    if(objectManager.FindLibrary(new Guid("58f1bad0-2288-45b9-ac3a-d56398f7781d"), out library) != VSConstants.S_OK)
+                    if(objectManager.FindLibrary(new Guid(BrowseLibraryGuids80.CSharp), out library) != VSConstants.S_OK)
                         return false;
 
                 var criteria = new VSOBSEARCHCRITERIA2
