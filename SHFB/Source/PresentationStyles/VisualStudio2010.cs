@@ -39,7 +39,7 @@ namespace Sandcastle.PresentationStyles
         /// <inheritdoc />
         public override string Location
         {
-            get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }
+            get { return ComponentUtilities.AssemblyFolder(null); }
         }
 
         /// <summary>

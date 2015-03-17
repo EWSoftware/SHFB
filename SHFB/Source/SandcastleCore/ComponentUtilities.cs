@@ -104,6 +104,44 @@ namespace Sandcastle.Core
         //=====================================================================
 
         /// <summary>
+        /// This is used to get the physical location of the specified assembly
+        /// </summary>
+        /// <param name="assembly">The assembly for which to get the physical location (the currently executing
+        /// (calling) assembly if null).</param>
+        /// <returns>This returns the actual location of the assembly, where it was found versus where it is
+        /// executing from, which may be different if shadow copied.  This is required in order to find
+        /// supporting files which will not be present in the shadow copied location.</returns>
+        public static string AssemblyFolder(Assembly assembly)
+        {
+            string location = null;
+
+            try
+            {
+                if(assembly == null)
+                    assembly = Assembly.GetCallingAssembly();
+
+                Uri codeBase = new Uri(assembly.CodeBase);
+
+                if(codeBase.IsFile)
+                    location = codeBase.LocalPath;
+                else
+                    location = assembly.Location;
+
+                location = Path.GetDirectoryName(location);
+            }
+            catch
+            {
+                // Ignore errors.  If there are any, just return the Location value or the current folder.
+                if(assembly != null)
+                    location = Path.GetDirectoryName(assembly.Location);
+                else
+                    location = Directory.GetCurrentDirectory();
+            }
+
+            return location;
+        }
+
+        /// <summary>
         /// Set the paths used to find component configuration files and assemblies
         /// </summary>
         private static void SetPaths()
@@ -113,13 +151,12 @@ namespace Sandcastle.Core
                 // Special case for Visual Studio.  Try for SHFBROOT first since the VSPackage needs it as we
                 // will be running from the assembly in the extension's folder which does not contain all of the
                 // supporting files.
-                string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string assemblyLocation = AssemblyFolder(null);
 
-                // We must check for the local app data folder as well as the All Users and shadow copy locations
+                // We must check for the local app data folder as well as the All Users locations
                 if(assemblyLocation.IndexOf(Environment.GetFolderPath(
                   Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1 ||
-                  assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1 ||
-                  assemblyLocation.IndexOf(@"\AppData\Local\Assembly\", StringComparison.OrdinalIgnoreCase) != -1)
+                  assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     toolsFolder = Environment.GetEnvironmentVariable("SHFBROOT");
                 }

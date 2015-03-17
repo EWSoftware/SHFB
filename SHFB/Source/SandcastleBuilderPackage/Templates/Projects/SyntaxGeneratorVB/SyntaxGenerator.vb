@@ -1,8 +1,8 @@
 Imports System
 Imports System.IO
-Imports System.Reflection
 Imports System.Xml.XPath
 
+Imports Sandcastle.Core
 Imports Sandcastle.Core.BuildAssembler.SyntaxGenerator
 
 ' Search for "TODO" to find changes that you need to make to this syntax generator template.
@@ -66,7 +66,7 @@ Namespace $safeprojectname$
             ''' <inheritdoc />
             Public ReadOnly Property ResourceItemFileLocation As String
                 Get
-                    Return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent")
+                    Return Path.Combine(ComponentUtilities.AssemblyFolder(Nothing), "SyntaxContent")
                 End Get
             End Property
 

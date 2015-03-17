@@ -2,7 +2,7 @@
 // System  : Sandcastle XslTransform Tool
 // File    : XslTransform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2013
+// Updated : 03/16/2015
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to make XslTransform callable from MSBuild projects.
@@ -93,8 +93,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
         public override bool Execute()
         {
             List<string> args = new List<string>();
-            string sandcastlePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                currentDirectory = null;
+            string currentDirectory = null;
             bool success = false;
 
             // Log messages via MSBuild
@@ -129,7 +128,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
                     if(transform.StartsWith("~/", StringComparison.Ordinal) || transform.StartsWith("~\\",
                       StringComparison.Ordinal))
                     {
-                        args.Add("/xsl:" + Path.Combine(sandcastlePath, transform.Substring(2)));
+                        args.Add("/xsl:" + Path.Combine(ComponentUtilities.ToolsFolder, transform.Substring(2)));
                     }
                     else
                         if(!Path.IsPathRooted(transform))

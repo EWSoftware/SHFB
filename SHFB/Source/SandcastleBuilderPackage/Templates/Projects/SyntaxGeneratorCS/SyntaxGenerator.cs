@@ -1,8 +1,8 @@
 using System;
 using System.IO;
-using System.Reflection;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 // Search for "TODO" to find changes that you need to make to this syntax generator template.
@@ -65,7 +65,7 @@ namespace $safeprojectname$
             {
                 get
                 {
-                    return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent");
+                    return Path.Combine(ComponentUtilities.AssemblyFolder(null), "SyntaxContent");
                 }
             }
 

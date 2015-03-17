@@ -99,8 +99,8 @@ namespace Microsoft.Ddue.Tools
 
             // Load the configuration file
             XPathDocument config;
-            string configDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string configFile = Path.Combine(configDirectory, "MRefBuilder.config");
+            string configDirectory = ComponentUtilities.ToolsFolder,
+                configFile = Path.Combine(ComponentUtilities.ToolsFolder, "MRefBuilder.config");
 
             if(results.Options["config"].IsPresent)
             {

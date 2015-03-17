@@ -11,9 +11,8 @@
 // their Copy to Output Folder property to "Copy if newer".
 //
 
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
@@ -37,7 +36,7 @@ namespace $safeprojectname$
         /// <inheritdoc />
         public override string Location
         {
-            get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }
+            get { return ComponentUtilities.AssemblyFolder(null); }
         }
 
         /// <summary>

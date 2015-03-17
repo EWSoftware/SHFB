@@ -17,9 +17,9 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
@@ -47,7 +47,7 @@ namespace Microsoft.Ddue.Tools
             {
                 get
                 {
-                    return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SyntaxContent");
+                    return Path.Combine(ComponentUtilities.AssemblyFolder(null), "SyntaxContent");
                 }
             }
 

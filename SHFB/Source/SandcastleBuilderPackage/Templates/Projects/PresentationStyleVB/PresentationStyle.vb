@@ -10,9 +10,8 @@
 ' their Copy to Output Folder property to "Copy if newer".
 '
 
+Imports System
 Imports System.Collections.Generic
-Imports System.IO
-Imports System.Reflection
 
 Imports Sandcastle.Core
 Imports Sandcastle.Core.PresentationStyle
@@ -37,7 +36,7 @@ Namespace safeprojectname
         ''' <inheritdoc />
         Public Overrides ReadOnly Property Location As String
             Get
-                Return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                Return ComponentUtilities.AssemblyFolder(Nothing)
             End Get
         End Property
 

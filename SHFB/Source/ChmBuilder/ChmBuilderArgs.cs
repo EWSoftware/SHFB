@@ -10,6 +10,8 @@ using System;
 using System.IO;
 using System.Reflection;
 
+using Sandcastle.Core;
+
 namespace Microsoft.Ddue.Tools
 {
     public class ChmBuilderArgs
@@ -67,8 +69,7 @@ namespace Microsoft.Ddue.Tools
         {
             this.LanguageId = 1033;
             this.TocFile = String.Empty;
-            this.ConfigurationFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "ChmBuilder.config");
+            this.ConfigurationFile = Path.Combine(ComponentUtilities.ToolsFolder, "ChmBuilder.config");
         }
         #endregion
     }

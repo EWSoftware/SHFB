@@ -52,12 +52,34 @@ namespace Sandcastle.Core
         //=====================================================================
 
         /// <summary>
-        /// Get a configuration file for the currently executing assembly.
+        /// Get a configuration file for the currently executing (the calling) assembly
         /// </summary>
         /// <returns>An XML document containing the configuration</returns>
+        /// <remarks>This returns the configuration from the actual location of the assembly, where it was found
+        /// versus where it is executing from, which may be different if shadow copied.</remarks>
         public static XPathDocument GetConfigurationFile()
         {
-            return GetConfigurationFile(Assembly.GetCallingAssembly().Location + ".config");
+            string location = null;
+
+            var assembly = Assembly.GetCallingAssembly();
+
+            try
+            {
+                Uri codeBase = new Uri(assembly.CodeBase);
+
+                if(codeBase.IsFile)
+                    location = codeBase.LocalPath;
+                else
+                    location = assembly.Location;
+            }
+            catch
+            {
+                // Ignore errors.  If there are any, just return the Location value.
+                if(assembly != null)
+                    location = assembly.Location;
+            }
+
+            return GetConfigurationFile(location + ".config");
         }
 
         /// <summary>
