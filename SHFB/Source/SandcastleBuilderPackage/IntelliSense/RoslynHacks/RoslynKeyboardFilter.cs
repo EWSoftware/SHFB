@@ -75,12 +75,12 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         private bool HandleReturn()
         {
-            return HandleCompletion();
+            return HandleCompletion('\n');
         }
 
         private bool HandleTab()
         {
-            return HandleCompletion();
+            return HandleCompletion('\t');
         }
 
         private bool HandleTypeChar(char typedChar)
@@ -89,14 +89,15 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             {
             case '/':
             case '>':
-                return HandleCompletion();
+            case ' ':
+                return HandleCompletion(typedChar);
 
             default:
                 return false;
             }
         }
 
-        private bool HandleCompletion()
+        private bool HandleCompletion(char commitCharacter)
         {
             ReadOnlyCollection<ICompletionSession> completionSessions = _completionBroker.GetSessions(_textView);
             if (completionSessions.Count == 0)
@@ -114,8 +115,33 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
                 return false;
             }
 
+            string insertionText = selectionStatus.Completion.InsertionText;
             completionSession.Commit();
-            return true;
+
+            bool passCharacterToEditor;
+            switch (commitCharacter)
+            {
+            case '/':
+            case '>':
+                // if the insertion text doesn't end with '>' or '/>', allow the user to complete the item and insert
+                // the closing element character by typing '/' or '>'.
+                passCharacterToEditor = !insertionText.EndsWith(">");
+                break;
+
+            case ' ':
+                // only pass the space through if the completion item doesn't contain any replaceable elements
+                passCharacterToEditor = insertionText.IndexOf('\xFF') < 0;
+                break;
+
+            case '\n':
+            case '\t':
+            default:
+                // these items trigger completion, but aren't written to the output
+                passCharacterToEditor = false;
+                break;
+            }
+
+            return !passCharacterToEditor;
         }
     }
 }
