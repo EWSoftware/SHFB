@@ -214,7 +214,7 @@ namespace SandcastleBuilder.Package.IntelliSense
             CompletionSet additionalCompletionSet = new CompletionSet("", "", completionSets[0].ApplicableTo,
                 completions, Enumerable.Empty<Completion>());
 
-            completionSets[0] = new AugmentedCompletionSet(completionSets[0], additionalCompletionSet);
+            completionSets[0] = new AugmentedCompletionSet(session, completionSets[0], additionalCompletionSet);
         }
 
         /// <inheritdoc />
