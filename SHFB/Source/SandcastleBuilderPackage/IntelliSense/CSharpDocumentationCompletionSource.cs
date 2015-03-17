@@ -171,28 +171,25 @@ namespace SandcastleBuilder.Package.IntelliSense
 
                 // Language-specific keyword extensions.  The C# provider allows these at any level but
                 // Sandcastle only uses them if they are inline.
-                //
-                // NOTE: The display text on these MUST be prefixed with "langword" or it will cause VS2013 to
-                // crash whenever "<see" is typed into an XML comment.  Adding the prefix works around the issue.
                 completions.AddRange(new[]
                 {
-                    new Completion("langword null", prefix + "see langword=\"null\"/>", "Inserts the language-specific " +
+                    new Completion("null", prefix + "see langword=\"null\"/>", "Inserts the language-specific " +
                         "keyword 'null'.", macroIconSource, ""),
-                    new Completion("langword static", prefix + "see langword=\"static\"/>", "Inserts the " +
+                    new Completion("static", prefix + "see langword=\"static\"/>", "Inserts the " +
                         "language-specific keyword 'static'.", macroIconSource, ""),
-                    new Completion("langword virtual", prefix + "see langword=\"virtual\"/>", "Inserts the " +
+                    new Completion("virtual", prefix + "see langword=\"virtual\"/>", "Inserts the " +
                         "language-specific keyword 'virtual'.", macroIconSource, ""),
-                    new Completion("langword true", prefix + "see langword=\"true\"/>", "Inserts the language-specific " +
+                    new Completion("true", prefix + "see langword=\"true\"/>", "Inserts the language-specific " +
                         "keyword 'true'.", macroIconSource, ""),
-                    new Completion("langword false", prefix + "see langword=\"false\"/>", "Inserts the " +
+                    new Completion("false", prefix + "see langword=\"false\"/>", "Inserts the " +
                         "language-specific keyword 'false'.", macroIconSource, ""),
-                    new Completion("langword abstract", prefix + "see langword=\"abstract\"/>", "Inserts the " +
+                    new Completion("abstract", prefix + "see langword=\"abstract\"/>", "Inserts the " +
                         "language-specific keyword 'abstract'.", macroIconSource, ""),
-                    new Completion("langword async", prefix + "see langword=\"async\"/>", "Inserts the " +
+                    new Completion("async", prefix + "see langword=\"async\"/>", "Inserts the " +
                         "language-specific keyword 'async'.", macroIconSource, ""),
-                    new Completion("langword await", prefix + "see langword=\"await\"/>", "Inserts the " +
+                    new Completion("await", prefix + "see langword=\"await\"/>", "Inserts the " +
                         "language-specific keyword 'await'.", macroIconSource, ""),
-                    new Completion("langword async/await", prefix + "see langword=\"async/await\"/>", "Inserts the " +
+                    new Completion("async/await", prefix + "see langword=\"async/await\"/>", "Inserts the " +
                         "language-specific keyword 'async/await'.", macroIconSource, "")
                 });
             }
