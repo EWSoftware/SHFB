@@ -173,10 +173,6 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <NamingMethod>Guid</NamingMethod>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
     <Preliminary>True</Preliminary>
     <CppCommentsFixup>False</CppCommentsFixup>
     <CatalogProductId>VS</CatalogProductId>

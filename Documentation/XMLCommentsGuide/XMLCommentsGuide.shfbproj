@@ -131,10 +131,6 @@
     <CleanIntermediates>True</CleanIntermediates>
     <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ProjectSummary>This project demonstrates the use of the various XML comments elements.</ProjectSummary>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
     <TransformComponentArguments>
       <Argument Key="logoFile" Value="Sandcastle.jpg" xmlns="" />
       <Argument Key="logoHeight" Value="" xmlns="" />

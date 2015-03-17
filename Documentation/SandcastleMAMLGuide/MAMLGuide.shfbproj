@@ -56,10 +56,6 @@
     <ApiFilter />
     <DocumentationSources />
     <NamespaceSummaries />
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <IndentHtml>False</IndentHtml>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
