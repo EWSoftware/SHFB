@@ -21,7 +21,7 @@ bld/
 [Oo]bj/
 
 # Roslyn cache directories
-*.ide/
+*.vs/
 
 # Visual Studio profiler
 *.psess
