@@ -307,8 +307,31 @@ function OnMouseDown(event)
 // Resize the TOC as the sizer is dragged
 function OnMouseMove(event)
 {
-    tocWidth = (event.clientX > 700) ? 700 : (event.clientX < 100) ? 100 : event.clientX;
+    currentTocWidth = tocWidth;
 
+    desiredWidth = event.clientX;
+    movingRight = desiredWidth > currentTocWidth;
+
+    if (movingRight) {
+        increments = Math.floor((desiredWidth - currentTocWidth + 3) / 15.0);
+        if (increments <= 0) {
+            return;
+        }
+
+        desiredWidth = currentTocWidth + 15 * increments;
+    } else {
+        increments = Math.floor((currentTocWidth - desiredWidth + 3) / 15.0);
+        if (increments <= 0) {
+            return;
+        }
+
+        desiredWidth = currentTocWidth - 15 * increments;
+    }
+
+    desiredWidth = desiredWidth > 700 ? 700 : desiredWidth;
+    desiredWidth = desiredWidth < 100 ? 100 : desiredWidth;
+
+    tocWidth = desiredWidth;
     ResizeToc();
 }
 
