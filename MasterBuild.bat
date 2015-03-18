@@ -21,26 +21,10 @@ IF ERRORLEVEL 1 GOTO End
 
 IF ERRORLEVEL 1 GOTO End
 
-REM Build the package using the lowest Visual Studio version available
-IF NOT EXIST "%VS100COMNTOOLS%..\IDE\devenv.exe" GOTO VS2012
-
-"%NUGET%" restore "SandcastleBuilderPackage_2010.sln"
-"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage_2010.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%NUGET%" restore "SandcastleBuilderPackage.sln"
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 GOTO BuildDocs
-
-:VS2012
-IF NOT EXIST "%VS110COMNTOOLS%..\IDE\devenv.exe" GOTO VS2013
-
-"%NUGET%" restore "SandcastleBuilderPackage_2012.sln"
-"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage_2012.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
-IF ERRORLEVEL 1 GOTO End
-GOTO BuildDocs
-
-:VS2013
-"%NUGET%" restore "SandcastleBuilderPackage_2013.sln"
-"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage_2013.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
-IF ERRORLEVEL 1 GOTO End
 
 :BuildDocs
 
