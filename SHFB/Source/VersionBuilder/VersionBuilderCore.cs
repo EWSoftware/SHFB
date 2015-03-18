@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -112,19 +113,24 @@ namespace Microsoft.Ddue.Tools
                 if(String.IsNullOrEmpty(attribute))
                     ConsoleApplication.WriteMessage(LogLevel.Error, "Every version element must have a file attribute.");
 
+                string ripOldString = navigator2.GetAttribute("ripOldApis", String.Empty);
+                bool ripOld = ripOldString == "1" || String.Equals("true", ripOldString, StringComparison.OrdinalIgnoreCase);
+
                 name = Environment.ExpandEnvironmentVariables(name);
-                VersionInfo item = new VersionInfo(attribute, group, name);
+                VersionInfo item = new VersionInfo(attribute, group, name, ripOld);
                 allVersions.Add(item);
             }
 
             string str5 = String.Empty;
 
             foreach(VersionInfo info2 in allVersions)
-                if(info2.Group != str5)
+                if(!info2.RipOldApis && (!rip || info2.Group != str5))
                 {
                     latestVersions.Add(info2.Name);
                     str5 = info2.Group;
                 }
+
+            bool ripAny = rip || allVersions.Any(i => i.RipOldApis);
 
             if(Cancel)
             {
@@ -289,7 +295,7 @@ namespace Microsoft.Ddue.Tools
                 }
             }
 
-            if(rip)
+            if(ripAny)
                 RemoveOldApis(versionIndex, latestVersions);
 
             ConsoleApplication.WriteMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
@@ -418,7 +424,7 @@ namespace Microsoft.Ddue.Tools
                                                 {
                                                     foreach(string str13 in dictionary5.Keys)
                                                     {
-                                                        if(dictionary6.ContainsKey(str13) || (rip && !IsLatestElement(dictionary5[str13].Versions.Values, latestVersions)))
+                                                        if(dictionary6.ContainsKey(str13) || (ripAny && !IsLatestElement(dictionary5[str13].Versions.Values, latestVersions)))
                                                         {
                                                             continue;
                                                         }

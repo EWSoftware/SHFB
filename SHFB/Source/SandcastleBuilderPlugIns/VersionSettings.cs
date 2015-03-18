@@ -46,6 +46,7 @@ namespace SandcastleBuilder.PlugIns
 
         private string frameworkLabel, version, reflectionFilename;
         private FilePath helpFileProject;
+        private bool ripOldApis;
         #endregion
 
         #region Properties
@@ -97,6 +98,17 @@ namespace SandcastleBuilder.PlugIns
                 if(String.IsNullOrEmpty(version))
                     version = "1.0";
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to remove old APIs from
+        /// the final output.
+        /// </summary>
+        [Category("Framework"), Description("Remove old APIs no longer in latest versions")]
+        public bool RipOldApis
+        {
+            get { return ripOldApis; }
+            set { ripOldApis = value; }
         }
 
         /// <summary>
@@ -199,8 +211,8 @@ namespace SandcastleBuilder.PlugIns
         /// <returns>A <see cref="VersionSettings"/> object containing the
         /// settings from the XPath navigator.</returns>
         /// <remarks>It should contain an element called <c>version</c>
-        /// with three attributes (<c>label</c>, <c>version</c> and
-        /// <c>helpFileProject</c>).</remarks>
+        /// with four attributes (<c>label</c>, <c>version</c>,
+        /// <c>ripOldApis</c>, and <c>helpFileProject</c>).</remarks>
         public static VersionSettings FromXPathNavigator(
           IBasePathProvider pathProvider, XPathNavigator navigator)
         {
@@ -212,6 +224,10 @@ namespace SandcastleBuilder.PlugIns
                     String.Empty).Trim();
                 vs.Version = navigator.GetAttribute("version",
                     String.Empty).Trim();
+
+                string ripOldApis = navigator.GetAttribute("ripOldApis", String.Empty);
+                vs.RipOldApis = !String.IsNullOrEmpty(ripOldApis) && Convert.ToBoolean(ripOldApis);
+
                 vs.HelpFileProject = new FilePath(navigator.GetAttribute(
                     "helpFileProject", String.Empty).Trim(), pathProvider);
             }
@@ -248,6 +264,10 @@ namespace SandcastleBuilder.PlugIns
 
             attr = config.CreateAttribute("version");
             attr.Value = version;
+            node.Attributes.Append(attr);
+
+            attr = config.CreateAttribute("ripOldApis");
+            attr.Value = ripOldApis.ToString();
             node.Attributes.Append(attr);
 
             attr = config.CreateAttribute("helpFileProject");
