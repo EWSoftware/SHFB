@@ -174,6 +174,19 @@ namespace Microsoft.Ddue.Tools
                 document.LoadXml(document.OuterXml);
             }
 
+            if (settings.OutputMethod == XmlOutputMethod.Html)
+            {
+                XmlDocumentType documentType = document.CreateDocumentType("html", null, null, null);
+                if (document.DocumentType != null)
+                {
+                    document.ReplaceChild(documentType, document.DocumentType);
+                }
+                else
+                {
+                    document.InsertBefore(documentType, document.FirstChild);
+                }
+            }
+
             // Save the document.
 
             // selectExpression determines which nodes get saved. If there is no selectExpression we simply

@@ -51,6 +51,7 @@
 	<xsl:template match="/document" name="t_document">
 		<html>
 			<head>
+				<meta charset="utf-8"/>
 				<link rel="shortcut icon">
 					<includeAttribute name="href" item="iconPath">
 						<parameter>
@@ -81,7 +82,6 @@
 					<xsl:text> </xsl:text>
 				</script>
 
-				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 				<xsl:call-template name="t_insertNoIndexNoFollow"/>
 				<title>
 					<xsl:call-template name="t_topicTitlePlain"/>
