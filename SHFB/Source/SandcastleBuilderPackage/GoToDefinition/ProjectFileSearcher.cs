@@ -47,7 +47,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         //=====================================================================
 
         private SVsServiceProvider serviceProvider;
-        private IWpfTextView textView;
+        private ITextView textView;
         private Solution currentSolution;
         private List<MSBuildProject> shfbProjects;
 
@@ -97,7 +97,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// active project is determined by using the DTE object which may not be correct (the active project may
         /// not contain the current document).  This is only used to try and figure out which project to search
         /// first.</param>
-        public ProjectFileSearcher(SVsServiceProvider serviceProvider, IWpfTextView textView)
+        public ProjectFileSearcher(SVsServiceProvider serviceProvider, ITextView textView)
         {
             this.serviceProvider = serviceProvider;
             this.textView = textView;
