@@ -32,6 +32,9 @@ namespace SandcastleBuilder.Package.IntelliSense
     /// </summary>
     internal class AugmentedCompletionSet : CompletionSet, IDisposable
     {
+        // This is the completion session, or null if no completion session was provided
+        private readonly ICompletionSession _session;
+
         // This is the original completion set
         private readonly CompletionSet _source;
 
@@ -44,18 +47,23 @@ namespace SandcastleBuilder.Package.IntelliSense
         private readonly BulkObservableCollection<Completion> _completions = new BulkObservableCollection<Completion>();
         private readonly BulkObservableCollection<Completion> _completionBuilders = new BulkObservableCollection<Completion>();
 
+        // This is set to true the first time the best match is calculated for this completion set.
+        private bool _calculatedBestMatch = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AugmentedCompletionSet"/> class from the specified
         /// <paramref name="source"/> <see cref="CompletionSet"/> and a second completion set used to augment the
         /// source set.
         /// </summary>
+        /// <param name="session">The completion session, or <see langword="null"/> if no completion session was
+        /// provided.</param>
         /// <param name="source">The source completion set.</param>
         /// <param name="secondSource">The second completion set used to augment <paramref name="source"/></param>
         /// <exception cref="ArgumentNullException">If <paramref name="source"/> is <see langword="null"/>.
         /// <para>-or-</para>
         /// <para>If <paramref name="secondSource"/> is <see langword="null"/>.</para>
         /// </exception>
-        public AugmentedCompletionSet(CompletionSet source, CompletionSet secondSource) :
+        public AugmentedCompletionSet(ICompletionSession session, CompletionSet source, CompletionSet secondSource) :
             base(source.Moniker, source.DisplayName, source.ApplicableTo, source.Completions, source.CompletionBuilders)
         {
             if(source == null)
@@ -64,6 +72,7 @@ namespace SandcastleBuilder.Package.IntelliSense
             if(secondSource == null)
                 throw new ArgumentNullException("secondSource");
 
+            _session = session;
             _source = source;
             _secondSource = secondSource;
             UpdateCompletionLists();
@@ -183,6 +192,17 @@ namespace SandcastleBuilder.Package.IntelliSense
                     this.SelectionStatus = _secondSource.SelectionStatus;
                 else
                     base.SelectBestMatch();
+
+            if (!_calculatedBestMatch && _session != null && RoslynHacks.RoslynUtilities.IsFinalRoslyn)
+            {
+                // Roslyn doesn't automatically commit a selected unique item when Ctrl+Space is pressed. This block
+                // triggers the completion manually in this case, but only if the selection is unique at the time
+                // Ctrl+Space is pressed (when _calculatedBestMatch is false).
+                if (SelectionStatus.IsSelected && SelectionStatus.IsUnique)
+                    _session.Commit();
+            }
+
+            _calculatedBestMatch = true;
         }
 
         /// <inheritdoc />
