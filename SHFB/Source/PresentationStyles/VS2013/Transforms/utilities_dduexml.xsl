@@ -174,7 +174,7 @@
 				<!-- Don't render the 'Change History' section here; it's handled in the t_writeChangeHistorySection template. -->
 				<xsl:when test="ddue:title = 'Change History'"/>
 
-				<xsl:when test="($total = 0) or ($total = 1)">
+				<xsl:when test="$total = 0">
 					<xsl:call-template name="t_putSection">
 						<xsl:with-param name="p_title">
 							<xsl:apply-templates select="ddue:title" mode="section"/>
