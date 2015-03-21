@@ -139,17 +139,8 @@ ul ul {
 ul ul ul {
 	list-style-type: square;
 }
-dl {
-	margin-top: 0px;
-	margin-bottom: 10px;
-}
 dt {
-	font-weight: bold;
-	margin-top: 5px;
-}
-dd {
-	margin-left: 20px;
-	margin-bottom: 5px;
+	font-weight: 600;
 }
 pre {
 	font-family: Consolas, Courier, monospace;
