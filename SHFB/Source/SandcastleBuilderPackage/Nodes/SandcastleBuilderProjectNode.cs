@@ -38,10 +38,12 @@ using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using IOleDataObject = Microsoft.VisualStudio.OLE.Interop.IDataObject;
+using OLECMDEXECOPT = Microsoft.VisualStudio.OLE.Interop.OLECMDEXECOPT;
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
-using VsMenus = Microsoft.VisualStudio.Project.VsMenus;
+using vsCommandStatus = EnvDTE.vsCommandStatus;
+using VsMenus = Microsoft.VisualStudio.Shell.VsMenus;
 
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
@@ -106,7 +108,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         /// <param name="itemId">The drop target node ID</param>
         /// <returns>True if the drop can occur, false if not</returns>
-        protected internal override bool CanTargetNodeAcceptDrop(uint itemId)
+        public override bool CanTargetNodeAcceptDrop(uint itemId)
         {
             HierarchyNode targetNode = NodeFromItemId(itemId);
 
@@ -143,9 +145,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="package">The package to which the project node is
         /// related.</param>
         public SandcastleBuilderProjectNode(ProjectPackage package)
+            : base(package)
         {
-            this.Package = package;
-
             // Add the project node images
             imageIndex = this.ImageHandler.ImageList.Images.Count;
 
@@ -173,22 +174,22 @@ namespace SandcastleBuilder.Package.Nodes
         {
             // The following properties classes are specific to Sandcastle
             // Builder so we can use their GUIDs directly.
-            base.AddCATIDMapping(typeof(SandcastleBuilderProjectNodeProperties),
+            base.AddCatIdMapping(typeof(SandcastleBuilderProjectNodeProperties),
                 typeof(SandcastleBuilderProjectNodeProperties).GUID);
-            base.AddCATIDMapping(typeof(SandcastleBuilderFileNodeProperties),
+            base.AddCatIdMapping(typeof(SandcastleBuilderFileNodeProperties),
                 typeof(SandcastleBuilderFileNodeProperties).GUID);
-            base.AddCATIDMapping(typeof(DocumentationSourceNodeProperties),
+            base.AddCatIdMapping(typeof(DocumentationSourceNodeProperties),
                 typeof(DocumentationSourceNodeProperties).GUID);
 
             // The following are not specific to Sandcastle Builder and as such we need a separate GUID
             // (we simply used guidgen.exe to create new guids).
-            base.AddCATIDMapping(typeof(ProjectNodeProperties), new Guid("CD4A4A5D-345C-4faf-9BDC-AB3F04DEE02F"));
-            base.AddCATIDMapping(typeof(FolderNodeProperties), new Guid("9D0F0FAA-F7B1-43ee-A8CF-046B80F2384B"));
-            base.AddCATIDMapping(typeof(ReferenceNodeProperties), new Guid("0B6EF0B6-8699-470d-A8A1-16F745810073"));
-            base.AddCATIDMapping(typeof(ProjectReferencesProperties), new Guid("C67FE7AC-629F-458e-A3B9-597E69C4C41D"));
+            base.AddCatIdMapping(typeof(ProjectNodeProperties), new Guid("CD4A4A5D-345C-4faf-9BDC-AB3F04DEE02F"));
+            base.AddCatIdMapping(typeof(FolderNodeProperties), new Guid("9D0F0FAA-F7B1-43ee-A8CF-046B80F2384B"));
+            base.AddCatIdMapping(typeof(ReferenceNodeProperties), new Guid("0B6EF0B6-8699-470d-A8A1-16F745810073"));
+            base.AddCatIdMapping(typeof(ProjectReferencesProperties), new Guid("C67FE7AC-629F-458e-A3B9-597E69C4C41D"));
 
             // This one we use the same as Sandcastle Builder file nodes since both refer to files
-            base.AddCATIDMapping(typeof(FileNodeProperties), typeof(SandcastleBuilderFileNodeProperties).GUID);
+            base.AddCatIdMapping(typeof(FileNodeProperties), typeof(SandcastleBuilderFileNodeProperties).GUID);
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="cmd">The command for which to query the status</param>
         /// <param name="result">An out parameter specifying the QueryStatusResult of the command.</param>
         /// <returns>Returns true if handled, false if not.</returns>
-        private static bool QueryStatusOnCommonCommands(Guid cmdGroup, uint cmd, ref QueryStatusResult result)
+        private static bool QueryStatusOnCommonCommands(Guid cmdGroup, uint cmd, ref vsCommandStatus result)
         {
             if(cmdGroup == VsMenus.guidStandardCommandSet97)
             {
@@ -214,7 +215,7 @@ namespace SandcastleBuilder.Package.Nodes
                     case VsCommands.ToolboxAddItem:
                     case VsCommands.ToolsDebugProcesses:
                     case VsCommands.ToggleBreakpoint:
-                        result |= QueryStatusResult.INVISIBLE | QueryStatusResult.SUPPORTED;
+                        result |= vsCommandStatus.vsCommandStatusInvisible | vsCommandStatus.vsCommandStatusSupported;
                         return true;
                 }
             }
@@ -225,7 +226,7 @@ namespace SandcastleBuilder.Package.Nodes
                 {
                     case VsCommands2K.PROJSTARTDEBUG:
                     case VsCommands2K.PROJSTEPINTO:
-                        result |= QueryStatusResult.INVISIBLE | QueryStatusResult.SUPPORTED;
+                        result |= vsCommandStatus.vsCommandStatusInvisible | vsCommandStatus.vsCommandStatusSupported;
                         return true;
                 }
             }
@@ -413,7 +414,7 @@ namespace SandcastleBuilder.Package.Nodes
                 targetNode = this;
 
             // Try to get it as a directory based project
-            List<string> filesDropped = DragDropHelper.GetDroppedFiles(DragDropHelper.CF_VSSTGPROJECTITEMS,
+            IList<string> filesDropped = DragDropHelper.GetDroppedFiles(DragDropHelper.CF_VSSTGPROJECTITEMS,
                 dataObject, out dropDataType);
 
             if(filesDropped.Count == 0)
@@ -491,7 +492,7 @@ namespace SandcastleBuilder.Package.Nodes
                                 string hintPath = f;
 
                                 if(Path.IsPathRooted(hintPath))
-                                    hintPath = PackageUtilities.GetPathDistance(this.ProjectMgr.BaseURI.Uri,
+                                    hintPath = PackageUtilities.GetPathDistance(this.ProjectManager.BaseUri.Uri,
                                         new Uri(hintPath));
 
                                 node.ItemNode.SetMetadata(ProjectFileConstants.Name, null);
@@ -518,7 +519,7 @@ namespace SandcastleBuilder.Package.Nodes
                     VSADDRESULT[] vsaddresults = new VSADDRESULT[1];
                     vsaddresults[0] = VSADDRESULT.ADDRESULT_Failure;
 
-                    int addResult = this.AddItem(targetNode.ID, VSADDITEMOPERATION.VSADDITEMOP_OPENFILE, null,
+                    int addResult = this.AddItem(targetNode.Id, VSADDITEMOPERATION.VSADDITEMOP_OPENFILE, null,
                         (uint)filesDropped.Count, filesDroppedAsArray, IntPtr.Zero, vsaddresults);
 
                     if(addResult != VSConstants.S_OK && addResult != VSConstants.S_FALSE &&
@@ -576,7 +577,7 @@ namespace SandcastleBuilder.Package.Nodes
         public override int UpgradeProject(uint grfUpgradeFlags)
         {
             Version schemaVersion;
-            string propertyValue = base.GetProjectProperty("SHFBSchemaVersion");
+            string propertyValue = base.GetProjectProperty("SHFBSchemaVersion", _PersistStorageType.PST_PROJECT_FILE);
 
             if(String.IsNullOrEmpty(propertyValue) || !Version.TryParse(propertyValue, out schemaVersion) ||
               schemaVersion > SandcastleProject.SchemaVersion)
@@ -626,7 +627,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="path">The path to the folder</param>
         /// <param name="element">The project element</param>
         /// <returns>A reference to the folder node</returns>
-        protected internal override FolderNode CreateFolderNode(string path, ProjectElement element)
+        public override FolderNode CreateFolderNode(string path, ProjectElement element)
         {
             string fullPath = Path.Combine(this.ProjectFolder, path);
 
@@ -700,12 +701,10 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="file">The file to be added</param>
         /// <returns>A ProjectElement describing the newly added file</returns>
         /// <remarks>Appropriate metadata is added based on the file's extension</remarks>
-        protected internal override ProjectElement AddFileToMsBuild(string file)
+        public override ProjectElement AddFileToMSBuild(string file)
         {
             SandcastleBuildAction buildAction = SandcastleProject.DefaultBuildAction(file);
-            string itemPath = PackageUtilities.MakeRelative(base.FileName, file);
-
-            ProjectElement newItem = this.CreateMsBuildFileItem(itemPath, buildAction.ToString());
+            ProjectElement newItem = AddFileToMSBuild(file, buildAction.ToString(), null);
 
             // Set the default ID and alternate text if it is an Image element
             if(buildAction == SandcastleBuildAction.Image)
@@ -728,7 +727,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// This is overridden as a convenient place to create and load the project properties and documentation
         /// sources node.  It is also used to set the SHFBROOT environment variable if overridden locally.
         /// </summary>
-        protected internal override void LoadNonBuildInformation()
+        public override void LoadNonBuildInformation()
         {
             try
             {
@@ -741,7 +740,7 @@ namespace SandcastleBuilder.Package.Nodes
                 // GUI instead.
                 if(String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SHFBROOT")))
                 {
-                    var prop = this.ProjectMgr.BuildProject.GetProperty("SHFBROOT");
+                    var prop = this.ProjectManager.BuildProject.GetProperty("SHFBROOT");
 
                     // This will remain in effect for the duration of the process including for projects loaded
                     // after this one that don't override it locally.  A restart will reset it.
@@ -752,7 +751,7 @@ namespace SandcastleBuilder.Package.Nodes
                         if(!String.IsNullOrWhiteSpace(path))
                         {
                             if(!Path.IsPathRooted(path))
-                                path = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath),
+                                path = Path.Combine(Path.GetDirectoryName(this.ProjectManager.BuildProject.FullPath),
                                     path);
 
                             Environment.SetEnvironmentVariable("SHFBROOT", path);
@@ -804,9 +803,9 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <inheritdoc />
-        protected override QueryStatusResult QueryStatusCommandFromOleCommandTarget(Guid cmdGroup, uint cmd, out bool handled)
+        protected override vsCommandStatus QueryStatusCommandFromOleCommandTarget(Guid cmdGroup, uint cmd, out bool handled)
         {
-            QueryStatusResult result = QueryStatusResult.NOTSUPPORTED;
+            vsCommandStatus result = vsCommandStatus.vsCommandStatusUnsupported;
 
             if(QueryStatusOnCommonCommands(cmdGroup, cmd, ref result))
             {
@@ -819,15 +818,15 @@ namespace SandcastleBuilder.Package.Nodes
 
         /// <inheritdoc />
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,
-          ref QueryStatusResult result)
+          ref vsCommandStatus result)
         {
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet &&
               (cmd == PkgCmdIDList.OpenInStandaloneGUI || cmd == PkgCmdIDList.ViewBuildLog))
             {
-                result |= QueryStatusResult.SUPPORTED;
+                result |= vsCommandStatus.vsCommandStatusSupported;
 
                 if(!base.BuildInProgress)
-                    result |= QueryStatusResult.ENABLED;
+                    result |= vsCommandStatus.vsCommandStatusEnabled;
 
                 return VSConstants.S_OK;
             }
@@ -839,7 +838,7 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <inheritdoc />
-        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn,
+        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, OLECMDEXECOPT nCmdexecopt, IntPtr pvaIn,
           IntPtr pvaOut)
         {
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet)
@@ -864,9 +863,10 @@ namespace SandcastleBuilder.Package.Nodes
         /// This is overridden to set the Verbose Logging build option
         /// </summary>
         /// <param name="config">The configuration to use</param>
-        protected internal override void SetConfiguration(string config)
+        /// <param name="platform">The platform to use</param>
+        public override void SetConfiguration(string config, string platform)
         {
-            base.SetConfiguration(config);
+            base.SetConfiguration(config, platform);
 
             var package = (SandcastleBuilderPackage)this.Package;
             var options = package.GeneralOptions;
@@ -877,14 +877,14 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <inheritdoc />
-        public override MSBuildResult Build(uint vsopts, string config, IVsOutputWindowPane output, string target)
+        public override MSBuildResult Build(uint vsopts, string config, string platform, IVsOutputWindowPane output, string target)
         {
             // TODO: Opening the Tools menu during a build fails because it executes a build for the AllProjectOutputs group.
             // Don't know why yet.  Is this the best workaround?
             if(base.BuildInProgress)
                 return MSBuildResult.Successful;
 
-            return base.Build(vsopts, config, output, target);
+            return base.Build(vsopts, config, platform, output, target);
         }
 
         /// <summary>
@@ -932,7 +932,7 @@ namespace SandcastleBuilder.Package.Nodes
                     string hintPath = selectorData.bstrFile;
 
                     if(Path.IsPathRooted(hintPath))
-                        hintPath = PackageUtilities.GetPathDistance(this.ProjectMgr.BaseURI.Uri, new Uri(hintPath));
+                        hintPath = PackageUtilities.GetPathDistance(this.ProjectManager.BaseUri.Uri, new Uri(hintPath));
 
                     node.ItemNode.SetMetadata(ProjectFileConstants.Name, null);
                     node.ItemNode.SetMetadata(ProjectFileConstants.AssemblyName, null);
@@ -948,14 +948,14 @@ namespace SandcastleBuilder.Package.Nodes
         /// This is overridden to handle drop operations correctly in a help file builder project
         /// </summary>
         /// <inheritdoc />
-        public override int Drop(IOleDataObject pDataObject, uint grfKeyState, uint itemid, ref uint pdwEffect)
+        public override int Drop(IOleDataObject pDataObject, uint grfKeyState, uint itemid, ref DropEffects pdwEffect)
         {
             DropDataType dropDataType = DropDataType.None;
 
             if(pDataObject == null)
                 return VSConstants.E_INVALIDARG;
 
-            pdwEffect = (uint)DropEffect.None;
+            pdwEffect = DropEffects.None;
 
             // If the source is within the project, let the base class handle it
             if(this.SourceDraggedOrCutOrCopied)
@@ -973,7 +973,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             // Since we can get a mix of files that may not necessarily be moved into the project (i.e.
             // documentation sources and references), we'll always act as if they were copied.
-            pdwEffect = (uint)DropEffect.Copy;
+            pdwEffect = DropEffects.Copy;
 
             return (dropDataType != DropDataType.Shell) ? VSConstants.E_FAIL : VSConstants.S_OK;
         }

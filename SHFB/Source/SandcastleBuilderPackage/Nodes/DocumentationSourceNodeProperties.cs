@@ -30,6 +30,7 @@ using System.Xml.Linq;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Utils;
@@ -182,7 +183,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         private void CheckProjectIsEditable()
         {
-            if(!base.Node.ProjectMgr.QueryEditProjectFile(false))
+            if(!base.Node.ProjectManager.QueryEditProjectFile(false))
                 throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
         }
 
@@ -228,7 +229,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             ((DocumentationSourcesContainerNode)base.Node.Parent).StoreDocumentationSources();
 
-            this.Node.ReDraw(UIHierarchyElement.Caption);
+            this.Node.Redraw(UIHierarchyElements.Caption);
         }
 
         /// <summary>
@@ -306,7 +307,7 @@ namespace SandcastleBuilder.Package.Nodes
         {
             get
             {
-                return Path.GetDirectoryName(this.Node.ProjectMgr.BuildProject.FullPath);
+                return Path.GetDirectoryName(this.Node.ProjectManager.BuildProject.FullPath);
             }
         }
 
@@ -328,7 +329,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>The string to use as the replacement</returns>
         private string OnBuildVarMatch(Match match)
         {
-            return (this.Node.ProjectMgr.GetProjectProperty(match.Groups[1].Value) ?? String.Empty);
+            return (this.Node.ProjectManager.GetProjectProperty(match.Groups[1].Value, _PersistStorageType.PST_PROJECT_FILE) ?? String.Empty);
         }
         #endregion
     }

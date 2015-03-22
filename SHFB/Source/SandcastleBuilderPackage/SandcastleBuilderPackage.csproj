@@ -83,6 +83,11 @@
       <Private>False</Private>
       <HintPath>..\packages\VSSDK.CoreUtility.10.10.0.2\lib\net40\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Designer.Interfaces, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+      <HintPath>..\packages\VSSDK.Designer.7.0.4\lib\net20\Microsoft.VisualStudio.Designer.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Editor, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
       <HintPath>..\packages\VSSDK.Editor.10.10.0.2\lib\net40\Microsoft.VisualStudio.Editor.dll</HintPath>
@@ -98,6 +103,9 @@
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>False</Private>
       <HintPath>..\packages\VSSDK.OLE.Interop.7.0.4\lib\net20\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Project.10.0">
+      <HintPath>..\packages\Microsoft.VisualStudio.Project.10.0.1.0.0-alpha005\lib\net40\Microsoft.VisualStudio.Project.10.0.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Settings, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <HintPath>..\packages\VSSDK.Settings.10.10.0.4\lib\net40\Microsoft.VisualStudio.Settings.dll</HintPath>
@@ -173,10 +181,25 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+      <HintPath>..\packages\VSSDK.VSLangProj.7.0.4\lib\net20\VSLangProj.dll</HintPath>
+    </Reference>
     <Reference Include="VSLangProj100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
       <HintPath>..\packages\VSSDK.VSLangProj.10.10.0.0\lib\net20\VSLangProj100.dll</HintPath>
+    </Reference>
+    <Reference Include="VSLangProj2, Version=7.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+      <HintPath>..\packages\VSSDK.VSLangProj.7.0.4\lib\net20\VSLangProj2.dll</HintPath>
+    </Reference>
+    <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+      <HintPath>..\packages\VSSDK.VSLangProj.8.8.0.4\lib\net20\VSLangProj80.dll</HintPath>
     </Reference>
     <Reference Include="VSLangProj90, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -207,6 +230,7 @@
     <Compile Include="Editors\SiteMapEditorPane.cs" />
     <Compile Include="Editors\TokenEditorFactory.cs" />
     <Compile Include="Editors\TokenEditorPane.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="GoToDefinition\CodeEntitySearcher.cs" />
     <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
@@ -868,10 +892,6 @@
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project.csproj">
-      <Project>{CACB60A9-1E76-4F92-8831-B134A658C695}</Project>
-      <Name>Microsoft.VisualStudio.Project</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>

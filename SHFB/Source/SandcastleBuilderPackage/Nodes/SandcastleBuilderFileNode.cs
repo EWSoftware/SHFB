@@ -27,6 +27,8 @@ using System.IO;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
+using vsCommandStatus = EnvDTE.vsCommandStatus;
+using VsMenus = Microsoft.VisualStudio.Shell.VsMenus;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -63,7 +65,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// object.</returns>
         protected override NodeProperties CreatePropertiesObject()
         {
-            if(this.IsNonMemberItem)
+            if(this.IsNonmemberItem)
                 return new FileNodeProperties(this);
 
             return new SandcastleBuilderFileNodeProperties(this);
@@ -109,14 +111,14 @@ namespace SandcastleBuilder.Package.Nodes
                         break;
 
                     case ".xamlcfg":    // Use the default XML file icon
-                        return this.ProjectMgr.ImageHandler.GetIconHandle((int)ProjectNode.ImageName.XMLFile);
+                        return this.ProjectManager.ImageHandler.GetIconHandle((int)ImageName.XmlFile);
 
                     default:
                         break;
                 }
 
                 if(index != HierarchyNode.NoImage)
-                    return this.ProjectMgr.ImageHandler.GetIconHandle(this.ProjectMgr.ImageIndex + index);
+                    return this.ProjectManager.ImageHandler.GetIconHandle(this.ProjectManager.ImageIndex + index);
             }
 
             return base.GetIconHandle(open);
@@ -124,11 +126,11 @@ namespace SandcastleBuilder.Package.Nodes
 
         /// <inheritdoc />
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,
-          ref QueryStatusResult result)
+          ref vsCommandStatus result)
         {
             if(cmdGroup == VsMenus.guidStandardCommandSet97 && (VsCommands)cmd == VsCommands.ViewCode)
             {
-                result |= QueryStatusResult.INVISIBLE | QueryStatusResult.SUPPORTED;
+                result |= vsCommandStatus.vsCommandStatusInvisible | vsCommandStatus.vsCommandStatusSupported;
                 return VSConstants.S_OK;
             }
 

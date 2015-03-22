@@ -25,6 +25,10 @@ using System.Windows.Forms;
 
 using SandcastleBuilder.Utils;
 
+#if !STANDALONEGUI
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
+#endif
+
 namespace SandcastleBuilder.Package.PropertyPages
 {
     /// <summary>
@@ -148,7 +152,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 tags |= MissingTags.Value;
 
 #if !STANDALONEGUI
-            this.ProjectMgr.SetProjectProperty("MissingTags", tags.ToString());
+            this.ProjectMgr.SetProjectProperty("MissingTags", _PersistStorageType.PST_PROJECT_FILE, tags.ToString());
 #else
             this.CurrentProject.MSBuildProject.SetProperty("MissingTags", tags.ToString());
 #endif

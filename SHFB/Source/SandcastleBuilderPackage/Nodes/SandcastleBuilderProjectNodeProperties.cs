@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.Project;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -51,11 +52,11 @@ namespace SandcastleBuilder.Package.Nodes
         {
             get
             {
-                return this.Node.ProjectMgr.GetProjectProperty("TargetFramework");
+                return this.Node.ProjectManager.GetProjectProperty("TargetFramework", _PersistStorageType.PST_PROJECT_FILE);
             }
             set
             {
-                this.Node.ProjectMgr.SetProjectProperty("TargetFramework", value);
+                this.Node.ProjectManager.SetProjectProperty("TargetFramework", _PersistStorageType.PST_PROJECT_FILE, value);
             }
         }
 
@@ -69,11 +70,11 @@ namespace SandcastleBuilder.Package.Nodes
         {
             get
             {
-                return this.Node.ProjectMgr.GetProjectProperty(ProjectFileConstants.AssemblyName);
+                return this.Node.ProjectManager.GetProjectProperty(ProjectFileConstants.AssemblyName, _PersistStorageType.PST_PROJECT_FILE);
             }
             set
             {
-                this.Node.ProjectMgr.SetProjectProperty(ProjectFileConstants.AssemblyName, value);
+                this.Node.ProjectManager.SetProjectProperty(ProjectFileConstants.AssemblyName, _PersistStorageType.PST_PROJECT_FILE, value);
             }
         }
 
@@ -87,11 +88,11 @@ namespace SandcastleBuilder.Package.Nodes
         {
             get
             {
-                return this.Node.ProjectMgr.GetProjectProperty(ProjectFileConstants.RootNamespace);
+                return this.Node.ProjectManager.GetProjectProperty(ProjectFileConstants.RootNamespace, _PersistStorageType.PST_PROJECT_FILE);
             }
             set
             {
-                this.Node.ProjectMgr.SetProjectProperty(ProjectFileConstants.RootNamespace, value);
+                this.Node.ProjectManager.SetProjectProperty(ProjectFileConstants.RootNamespace, _PersistStorageType.PST_PROJECT_FILE, value);
             }
         }
         #endregion

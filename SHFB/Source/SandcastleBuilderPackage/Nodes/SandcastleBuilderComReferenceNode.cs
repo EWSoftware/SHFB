@@ -26,6 +26,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
+using vsCommandStatus = EnvDTE.vsCommandStatus;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -73,11 +74,11 @@ namespace SandcastleBuilder.Package.Nodes
 
         /// <inheritdoc />
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,
-          ref QueryStatusResult result)
+          ref vsCommandStatus result)
         {
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet && cmd == PkgCmdIDList.AddDocSource)
             {
-                result |= QueryStatusResult.SUPPORTED | QueryStatusResult.INVISIBLE;
+                result |= vsCommandStatus.vsCommandStatusSupported | vsCommandStatus.vsCommandStatusInvisible;
                 return VSConstants.S_OK;
             }
 
@@ -89,7 +90,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// operations.
         /// </summary>
         /// <returns>The documentation sources parent node</returns>
-        protected internal override HierarchyNode GetDragTargetHandlerNode()
+        public override HierarchyNode GetDragTargetHandlerNode()
         {
             return this.Parent;
         }

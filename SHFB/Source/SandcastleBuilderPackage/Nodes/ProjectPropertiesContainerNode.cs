@@ -27,8 +27,11 @@ using System.Text;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Project;
+using OLECMDEXECOPT = Microsoft.VisualStudio.OLE.Interop.OLECMDEXECOPT;
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
+using vsCommandStatus = EnvDTE.vsCommandStatus;
+using VsMenus = Microsoft.VisualStudio.Shell.VsMenus;
 using WindowCommandIds = Microsoft.VisualStudio.VSConstants.VsUIHierarchyWindowCmdIds;
 
 using Microsoft.VisualStudio;
@@ -73,7 +76,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// shows up.</remarks>
         public override int MenuCommandId
 		{
-            get { return Microsoft.VisualStudio.Project.VsMenus.IDM_VS_CTXT_REFERENCE; }
+            get { return VsMenus.IDM_VS_CTXT_REFERENCE; }
 		}
 
         /// <summary>
@@ -138,7 +141,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>Returns the handle to the icon to use for the node</returns>
 		public override object GetIconHandle(bool open)
 		{
-            return this.ProjectMgr.ImageHandler.GetIconHandle(this.ProjectMgr.ImageIndex +
+            return this.ProjectManager.ImageHandler.GetIconHandle(this.ProjectManager.ImageIndex +
                 (int)ProjectImageIndex.ProjectProperties);
         }
 
@@ -146,7 +149,7 @@ namespace SandcastleBuilder.Package.Nodes
 		/// This is overridden to prevent the node from being dragged
 		/// </summary>
 		/// <returns>Always returns null</returns>
-		protected internal override StringBuilder PrepareSelectedNodesForClipBoard()
+		public override StringBuilder PrepareSelectedNodesForClipboard()
 		{
 			return null;
 		}
@@ -177,11 +180,11 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>If the method succeeds, it returns <c>S_OK</c>. If it
         /// fails, it returns an error code.</returns>
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,
-          ref QueryStatusResult result)
+          ref vsCommandStatus result)
 		{
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet && cmd == PkgCmdIDList.AddDocSource)
             {
-                result |= QueryStatusResult.SUPPORTED | QueryStatusResult.INVISIBLE;
+                result |= vsCommandStatus.vsCommandStatusSupported | vsCommandStatus.vsCommandStatusInvisible;
                 return VSConstants.S_OK;
             }
 
@@ -201,7 +204,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// output.  It can be null.</param>
         /// <returns>If the method succeeds, it returns <c>S_OK</c>. If it
         /// fails, it returns an error code.</returns>
-        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn,
+        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, OLECMDEXECOPT nCmdexecopt, IntPtr pvaIn,
           IntPtr pvaOut)
 		{
             // Open the Project Properties window when double-clicked or Properties is selected
@@ -211,7 +214,7 @@ namespace SandcastleBuilder.Package.Nodes
                 IntPtr ip = (IntPtr)(-1);
                 IVsWindowFrame frame = null;
 
-                ((IVsProject2)this.ProjectMgr).ReopenItem(VSConstants.VSITEMID_ROOT,
+                ((IVsProject2)this.ProjectManager).ReopenItem(VSConstants.VSITEMID_ROOT,
                     VSConstants.GUID_ProjectDesignerEditor, null, Guid.Empty, ip, out frame);
 
                 return VSConstants.S_OK;

@@ -84,7 +84,7 @@ namespace SandcastleBuilder.Package
                 if(cancel == 0 && success != 0)
                 {
                     // Open the help file on a successful build if so requested
-                    projectNode = cfg.ProjectMgr as SandcastleBuilderProjectNode;
+                    projectNode = cfg.ProjectManager as SandcastleBuilderProjectNode;
                     options = SandcastleBuilderPackage.Instance.GeneralOptions;
 
                     if(projectNode != null && options != null)
@@ -93,7 +93,7 @@ namespace SandcastleBuilder.Package
                         else
                             if((action & (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_CLEAN) != 0)
                             {
-                                var window = cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
+                                var window = cfg.ProjectManager.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
                                     BuildLogToolWindow;
 
                                 if(window != null)
@@ -104,7 +104,7 @@ namespace SandcastleBuilder.Package
                     if(cancel == 0 && success == 0)
                     {
                         // Open the build log tool window on a failed build if so requested
-                        projectNode = cfg.ProjectMgr as SandcastleBuilderProjectNode;
+                        projectNode = cfg.ProjectManager as SandcastleBuilderProjectNode;
                         options = SandcastleBuilderPackage.Instance.GeneralOptions;
 
                         if(projectNode != null && options != null)
@@ -114,7 +114,7 @@ namespace SandcastleBuilder.Package
                             {
                                 // The user doesn't want it opened.  However, if it's already open, refresh the
                                 // log file reference so that it shows the correct file when it is displayed.
-                                var window = cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
+                                var window = cfg.ProjectManager.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
                                     BuildLogToolWindow;
 
                                 if(window != null && ((IVsWindowFrame)window.Frame).IsVisible() == VSConstants.S_OK)
