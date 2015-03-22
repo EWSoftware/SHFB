@@ -35,21 +35,21 @@
       OutputPaths="MRefBuilder.rsp" />
 
     <!-- Generate the reflection data file for the assemblies. -->
-    <Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="true"
+    <Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="false"
       Command="&quot;$(ToolsRoot)\MRefBuilder.exe&quot; @MRefBuilder.rsp /out:&quot;$(TmpPath)\Reflection.org&quot;" />
 
     <!-- Merge duplicate topics if any and add XAML syntax data -->
     <Copy SourceFiles="$(TmpPath)\Reflection.org" DestinationFiles="$(TmpPath)\reflection.all" />
 
-    <Exec ContinueOnError="false" IgnoreExitCode="true"
+    <Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="false"
       Command="&quot;$(ToolsRoot)\XslTransform.exe&quot; /xsl:&quot;$(ProductionTransforms)\MergeDuplicates.xsl&quot; /xsl:&quot;$(ProductionTransforms)\AddXamlSyntaxData.xsl&quot; &quot;$(TmpPath)\Reflection.all&quot; /out:&quot;$(TmpPath)\Reflection.org&quot;" />
 
     <!-- Use the VS2005 doc model transform.  It will work for all styles. -->
-    <Exec ContinueOnError="false" IgnoreExitCode="true"
+    <Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="false"
       Command="&quot;$(ToolsRoot)\XslTransform.exe&quot; /xsl:&quot;$(ProductionTransforms)\ApplyVSDocModel.xsl&quot; /xsl:&quot;$(ProductionTransforms)\AddFilenames.xsl&quot; &quot;$(TmpPath)\Reflection.org&quot; /out:&quot;$(TmpPath)\Reflection.xml&quot; /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false" />
 
     <!-- Segregate the reflection data by namespace -->
-    <Exec ContinueOnError="false" IgnoreExitCode="true"
+    <Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="false"
       Command="&quot;$(ToolsRoot)\SegregateByNamespace.exe&quot; &quot;$(TmpPath)\Reflection.xml&quot; /out:&quot;$(DestPath)&quot;" />
 
     <!-- Remove the temporary files and folders when done -->
