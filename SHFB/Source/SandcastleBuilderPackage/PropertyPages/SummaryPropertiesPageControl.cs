@@ -32,6 +32,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 
 using SandcastleBuilder.Package.Nodes;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
@@ -155,7 +156,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(summariesChanged)
                 {
 #if !STANDALONEGUI
-                    this.ProjectMgr.SetProjectProperty("NamespaceSummaries", namespaceSummaries.ToXml());
+                    this.ProjectMgr.SetProjectProperty("NamespaceSummaries", _PersistStorageType.PST_PROJECT_FILE, namespaceSummaries.ToXml());
 #else
                     this.CurrentProject.MSBuildProject.SetProperty("NamespaceSummaries", namespaceSummaries.ToXml());
 #endif

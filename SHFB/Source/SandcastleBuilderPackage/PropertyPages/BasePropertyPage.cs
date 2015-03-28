@@ -661,7 +661,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                         if(this.IsEscapedProperty(boundProperty))
                             propValue = EscapeValueAttribute.Escape(propValue);
 
-                       this.ProjectMgr.SetProjectProperty(boundProperty, propValue);
+                       this.ProjectMgr.SetProjectProperty(boundProperty, _PersistStorageType.PST_PROJECT_FILE, propValue);
                     }
                 }
             }
@@ -812,7 +812,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     ProjectConfig config = (ProjectConfig)ppunk[i];
 
                     if(this.ProjectMgr == null)
-                        this.ProjectMgr = config.ProjectMgr;
+                        this.ProjectMgr = config.ProjectManager;
 
                     configs.Add(config);
                 }
@@ -823,7 +823,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(ppunk[0] is NodeProperties)
                 {
                     if(this.ProjectMgr == null)
-                        this.ProjectMgr = (ppunk[0] as NodeProperties).Node.ProjectMgr;
+                        this.ProjectMgr = (ppunk[0] as NodeProperties).Node.ProjectManager;
 
                     Dictionary<string, ProjectConfig> configsMap = new Dictionary<string, ProjectConfig>();
 
@@ -831,7 +831,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     {
                         NodeProperties property = (NodeProperties)ppunk[i];
                         IVsCfgProvider provider;
-                        ErrorHandler.ThrowOnFailure(property.Node.ProjectMgr.GetCfgProvider(out provider));
+                        ErrorHandler.ThrowOnFailure(property.Node.ProjectManager.GetCfgProvider(out provider));
                         uint[] expected = new uint[1];
                         ErrorHandler.ThrowOnFailure(provider.GetCfgs(0, null, expected, null));
 

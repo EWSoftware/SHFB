@@ -33,6 +33,18 @@
 		</BuildDependsOn>
 	</PropertyGroup>
 
+	<ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
+		<AvailableItemName Include="Image" />
+		<AvailableItemName Include="CodeSnippets" />
+		<AvailableItemName Include="Tokens" />
+		<AvailableItemName Include="ContentLayout" />
+		<AvailableItemName Include="SiteMap" />
+		<AvailableItemName Include="TopicTransform" />
+		<AvailableItemName Include="Content" />
+		<AvailableItemName Include="ResourceItems" />
+		<AvailableItemName Include="XamlConfiguration" />
+	</ItemGroup>
+
 	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
 
 	<!-- The Core Build Help target -->

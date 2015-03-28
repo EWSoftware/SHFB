@@ -43,19 +43,6 @@ namespace SandcastleBuilder.Package.Nodes
     {
         #region Hidden properties
         //=====================================================================
-
-        /// <summary>
-        /// This is overridden to hide the default build action property since the help file builder
-        /// supports several other build actions.
-        /// </summary>
-        /// <remarks>Use <see cref="SandcastleBuildAction"/> instead.</remarks>
-        [Browsable(false), AutomationBrowsable(false)]
-        public override BuildAction BuildAction
-        {
-            get { return base.BuildAction; }
-            set { base.BuildAction = value; }
-        }
-
         /// <summary>
         /// The URL of the item
         /// </summary>
@@ -77,8 +64,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is used to get or set the Sandcastle Help File Builder build action
         /// </summary>
-        [Category("Advanced"), DisplayName("Build Action"), Description("The build action for this item"),
-          RefreshProperties(RefreshProperties.All), PropertyPageTypeConverter(typeof(BuildActionEnumConverter))]
+        [Browsable(false)]
         public SandcastleBuildAction SandcastleBuildAction
         {
             get
@@ -227,7 +213,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// Constructor
         /// </summary>
         /// <param name="node">The node that contains the properties to expose via the Property Browser.</param>
-        public SandcastleBuilderFileNodeProperties(HierarchyNode node) : base(node)
+        public SandcastleBuilderFileNodeProperties(FileNode node) : base(node)
         {
         }
         #endregion
@@ -252,7 +238,7 @@ namespace SandcastleBuilder.Package.Nodes
         //=====================================================================
 
         /// <summary>
-        /// This is used to filter the properties based on the <see cref="BuildAction" />
+        /// This is used to filter the properties based on the <see cref="Utils.BuildAction" />
         /// </summary>
         /// <param name="pdc">The property descriptor collection to filter</param>
         /// <returns>The filtered property descriptor collection</returns>

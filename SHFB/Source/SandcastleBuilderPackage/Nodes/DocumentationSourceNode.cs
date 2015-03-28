@@ -27,6 +27,7 @@ using System.Text;
 using System.Xml.Linq;
 
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
+using VsMenus = Microsoft.VisualStudio.Shell.VsMenus;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -119,10 +120,10 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>The automation object for the node</returns>
         public override object GetAutomationObject()
 		{
-			if(this.ProjectMgr == null || this.ProjectMgr.IsClosed)
+			if(this.ProjectManager == null || this.ProjectManager.IsClosed)
 				return null;
 
-            return new OADocumentationSourceItem(this.ProjectMgr.GetAutomationObject()
+            return new OADocumentationSourceItem(this.ProjectManager.GetAutomationObject()
                 as OASandcastleBuilderProject, this);
         }
 
@@ -142,7 +143,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>Returns the handle to the icon to use for the node</returns>
         public override object GetIconHandle(bool open)
 		{
-			return this.ProjectMgr.ImageHandler.GetIconHandle(this.ProjectMgr.ImageIndex +
+			return this.ProjectManager.ImageHandler.GetIconHandle(this.ProjectManager.ImageIndex +
                 (int)ProjectImageIndex.DocumentationSource);
 		}
 
@@ -151,7 +152,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// to specify the item moniker.
 		/// </summary>
 		/// <returns>The moniker for this item</returns>
-		public override string GetMkDocument()
+		public override string GetMKDocument()
 		{
 			return this.Url;
 		}
@@ -160,7 +161,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// This is overridden to prevent the node from being dragged
         /// </summary>
         /// <returns>Always returns null</returns>
-        protected internal override StringBuilder PrepareSelectedNodesForClipBoard()
+        public override StringBuilder PrepareSelectedNodesForClipboard()
         {
             return null;
         }
@@ -191,7 +192,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// operations.
         /// </summary>
         /// <returns>The documentation sources parent node</returns>
-        protected internal override HierarchyNode GetDragTargetHandlerNode()
+        public override HierarchyNode GetDragTargetHandlerNode()
         {
             return this.Parent;
         }

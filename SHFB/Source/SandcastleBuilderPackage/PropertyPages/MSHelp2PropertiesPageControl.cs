@@ -28,6 +28,7 @@ using Microsoft.Build.Evaluation;
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 using SandcastleBuilder.Utils;
 
@@ -169,7 +170,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     attributes.Sort();
 
 #if !STANDALONEGUI
-                    this.ProjectMgr.SetProjectProperty("HelpAttributes", attributes.ToXml());
+                    this.ProjectMgr.SetProjectProperty("HelpAttributes", _PersistStorageType.PST_PROJECT_FILE, attributes.ToXml());
 #else
                     this.CurrentProject.MSBuildProject.SetProperty("HelpAttributes", attributes.ToXml());
 #endif

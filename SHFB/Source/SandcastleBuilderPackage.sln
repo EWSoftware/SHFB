@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderPackage", 
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0} = {72331A21-C452-4BE4-BFDB-B8029A6BC1C0}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Project", "MPFProj_VS2010\Microsoft.VisualStudio.Project.csproj", "{CACB60A9-1E76-4F92-8831-B134A658C695}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderUtils", "SandcastleBuilderUtils\SandcastleBuilderUtils.csproj", "{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
@@ -31,10 +29,6 @@ Global
 		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CACB60A9-1E76-4F92-8831-B134A658C695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CACB60A9-1E76-4F92-8831-B134A658C695}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CACB60A9-1E76-4F92-8831-B134A658C695}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CACB60A9-1E76-4F92-8831-B134A658C695}.Release|Any CPU.Build.0 = Release|Any CPU
 		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Release|Any CPU.ActiveCfg = Release|Any CPU

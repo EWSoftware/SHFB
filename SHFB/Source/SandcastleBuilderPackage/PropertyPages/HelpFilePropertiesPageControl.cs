@@ -42,6 +42,7 @@ using SandcastleBuilder.Utils.Design;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -398,7 +399,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(control.Name == "cblSyntaxFilters")
             {
 #if !STANDALONEGUI
-                this.ProjectMgr.SetProjectProperty("SyntaxFilters",
+                this.ProjectMgr.SetProjectProperty("SyntaxFilters", _PersistStorageType.PST_PROJECT_FILE,
                     ComponentUtilities.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
                         cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
 #else
@@ -443,7 +444,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(cboPresentationStyle.SelectedIndex == -1)
             {
 #if !STANDALONEGUI
-                string prop = base.ProjectMgr.GetProjectProperty("PresentationStyle");
+                string prop = base.ProjectMgr.GetProjectProperty("PresentationStyle", _PersistStorageType.PST_PROJECT_FILE);
 #else
                 string prop = base.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
 #endif

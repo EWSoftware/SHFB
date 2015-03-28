@@ -59,7 +59,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         protected override ProjectReferenceNode CreateProjectReferenceNode(ProjectElement element)
         {
-            return new SandcastleBuilderProjectReferenceNode(this.ProjectMgr, element);
+            return new SandcastleBuilderProjectReferenceNode(this.ProjectManager, element);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SandcastleBuilder.Package.Nodes
         protected override ProjectReferenceNode CreateProjectReferenceNode(
           VSCOMPONENTSELECTORDATA selectorData)
         {
-            return new SandcastleBuilderProjectReferenceNode(this.ProjectMgr,
+            return new SandcastleBuilderProjectReferenceNode(this.ProjectManager,
                 selectorData.bstrTitle, selectorData.bstrFile, selectorData.bstrProjRef);
         }
 
@@ -82,7 +82,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             try
             {
-                node = new SandcastleBuilderAssemblyReferenceNode(this.ProjectMgr, element);
+                node = new SandcastleBuilderAssemblyReferenceNode(this.ProjectManager, element);
             }
             catch(ArgumentNullException e)
             {
@@ -118,7 +118,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             try
             {
-                node = new SandcastleBuilderAssemblyReferenceNode(this.ProjectMgr, fileName);
+                node = new SandcastleBuilderAssemblyReferenceNode(this.ProjectManager, fileName);
             }
             catch(ArgumentNullException e)
             {
@@ -150,7 +150,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>A COM reference node</returns>
         protected override ComReferenceNode CreateComReferenceNode(ProjectElement reference)
         {
-            return new SandcastleBuilderComReferenceNode(this.ProjectMgr, reference);
+            return new SandcastleBuilderComReferenceNode(this.ProjectManager, reference);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace SandcastleBuilder.Package.Nodes
         protected override ComReferenceNode CreateComReferenceNode(VSCOMPONENTSELECTORDATA selectorData,
           string wrapperTool = null)
         {
-            return new SandcastleBuilderComReferenceNode(this.ProjectMgr, selectorData);
+            return new SandcastleBuilderComReferenceNode(this.ProjectManager, selectorData);
         }
         #endregion
     }

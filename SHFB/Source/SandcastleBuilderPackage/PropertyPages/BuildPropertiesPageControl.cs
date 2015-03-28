@@ -37,6 +37,7 @@ using SandcastleBuilder.Utils;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -226,7 +227,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     f => f.Format.ToString()).ToArray());
 
 #if !STANDALONEGUI
-                this.ProjectMgr.SetProjectProperty("HelpFileFormat", formats);
+                this.ProjectMgr.SetProjectProperty("HelpFileFormat", _PersistStorageType.PST_PROJECT_FILE, formats);
 #else
                 this.CurrentProject.MSBuildProject.SetProperty("HelpFileFormat", formats);
 #endif

@@ -34,6 +34,7 @@ using Microsoft.Build.Evaluation;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 
 using Sandcastle.Core;
@@ -217,7 +218,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.ProjectMgr == null)
                 return false;
 
-            this.ProjectMgr.SetProjectProperty("PlugInConfigurations", currentConfigs.ToXml());
+            this.ProjectMgr.SetProjectProperty("PlugInConfigurations", _PersistStorageType.PST_PROJECT_FILE, currentConfigs.ToXml());
 #else
             if(base.CurrentProject == null)
                 return false;

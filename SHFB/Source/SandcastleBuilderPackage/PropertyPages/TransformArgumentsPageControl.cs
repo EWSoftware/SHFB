@@ -39,6 +39,7 @@ using SandcastleBuilder.Utils;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Package.Nodes;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -311,7 +312,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.ProjectMgr == null)
                 return false;
 
-            this.ProjectMgr.SetProjectProperty("TransformComponentArguments", reader.ReadInnerXml());
+            this.ProjectMgr.SetProjectProperty("TransformComponentArguments", _PersistStorageType.PST_PROJECT_FILE, reader.ReadInnerXml());
 #else
             if(this.CurrentProject == null)
                 return false;

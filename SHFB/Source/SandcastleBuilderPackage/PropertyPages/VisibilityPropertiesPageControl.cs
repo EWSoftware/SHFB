@@ -31,6 +31,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 
 using SandcastleBuilder.Package.Nodes;
+using _PersistStorageType = Microsoft.VisualStudio.Shell.Interop._PersistStorageType;
 #endif
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
@@ -180,7 +181,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 if(filterChanged)
                 {
-                    this.ProjectMgr.SetProjectProperty("ApiFilter", apiFilter);
+                    this.ProjectMgr.SetProjectProperty("ApiFilter", _PersistStorageType.PST_PROJECT_FILE, apiFilter);
                     filterChanged = false;
                 }
 
@@ -241,7 +242,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 items |= VisibleItems.NoPIATypes;
 
 #if !STANDALONEGUI
-            this.ProjectMgr.SetProjectProperty("VisibleItems", items.ToString());
+            this.ProjectMgr.SetProjectProperty("VisibleItems", _PersistStorageType.PST_PROJECT_FILE, items.ToString());
 #else
             this.CurrentProject.MSBuildProject.SetProperty("VisibleItems", items.ToString());
 #endif

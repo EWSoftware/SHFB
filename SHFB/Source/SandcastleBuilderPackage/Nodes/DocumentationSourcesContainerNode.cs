@@ -34,6 +34,9 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Project;
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
+using vsCommandStatus = EnvDTE.vsCommandStatus;
+using VsMenus = Microsoft.VisualStudio.Shell.VsMenus;
+using OLECMDEXECOPT = Microsoft.VisualStudio.OLE.Interop.OLECMDEXECOPT;
 
 using Microsoft.VisualStudio;
 
@@ -81,7 +84,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// shows up.</remarks>
         public override int MenuCommandId
 		{
-            get { return Microsoft.VisualStudio.Project.VsMenus.IDM_VS_CTXT_REFERENCE; }
+            get { return VsMenus.IDM_VS_CTXT_REFERENCE; }
 		}
 
         /// <summary>
@@ -138,12 +141,12 @@ namespace SandcastleBuilder.Package.Nodes
         public void StoreDocumentationSources()
         {
             // Check out the project file if necessary
-            if(!this.ProjectMgr.QueryEditProjectFile(false))
+            if(!this.ProjectManager.QueryEditProjectFile(false))
                 throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
 
             var reader = documentationSources.CreateReader();
             reader.MoveToContent();
-            this.ProjectMgr.SetProjectProperty("DocumentationSources", reader.ReadInnerXml());
+            this.ProjectManager.SetProjectProperty("DocumentationSources", _PersistStorageType.PST_PROJECT_FILE, reader.ReadInnerXml());
         }
 
         /// <summary>
@@ -154,7 +157,7 @@ namespace SandcastleBuilder.Package.Nodes
             ProjectProperty prop;
             string docSources = null;
 
-            prop = prop = this.ProjectMgr.BuildProject.GetProperty("DocumentationSources");
+            prop = prop = this.ProjectManager.BuildProject.GetProperty("DocumentationSources");
 
             if(prop != null)
                 docSources = prop.UnevaluatedValue;
@@ -165,7 +168,7 @@ namespace SandcastleBuilder.Package.Nodes
             documentationSources = XDocument.Parse("<DocumentationSources>" + docSources + "</DocumentationSources>");
 
             foreach(var ds in documentationSources.Root.Descendants())
-                this.AddChild(new DocumentationSourceNode(this.ProjectMgr, ds));
+                this.AddChild(new DocumentationSourceNode(this.ProjectManager, ds));
         }
 
         /// <summary>
@@ -178,7 +181,7 @@ namespace SandcastleBuilder.Package.Nodes
             string ext, otherFile;
 
             // Check out the project file if necessary
-            if(!this.ProjectMgr.QueryEditProjectFile(false))
+            if(!this.ProjectManager.QueryEditProjectFile(false))
                 throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
 
             using(OpenFileDialog dlg = new OpenFileDialog())
@@ -189,7 +192,7 @@ namespace SandcastleBuilder.Package.Nodes
                     "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
                     "XML Comments Files (*.xml)|*.xml|Visual Studio Solution Files (*.sln)|*.sln|" +
                     "Visual Studio Project Files (*.*proj)|*.*proj|All Files (*.*)|*.*";
-                dlg.InitialDirectory = this.ProjectMgr.ProjectFolder;
+                dlg.InitialDirectory = this.ProjectManager.ProjectFolder;
                 dlg.DefaultExt = "dll";
                 dlg.Multiselect = true;
 
@@ -261,7 +264,7 @@ namespace SandcastleBuilder.Package.Nodes
         {
             // Default to using a relative path based on the project folder
             filename = FolderPath.AbsoluteToRelativePath(
-                Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), filename);
+                Path.GetDirectoryName(this.ProjectManager.BuildProject.FullPath), filename);
 
             XElement docSource = new XElement("DocumentationSource", new XAttribute("sourceFile", filename));
 
@@ -269,7 +272,7 @@ namespace SandcastleBuilder.Package.Nodes
               d => d.Attribute("sourceFile").Value.Equals(filename, StringComparison.OrdinalIgnoreCase)))
             {
                 documentationSources.Root.Add(docSource);
-                this.AddChild(new DocumentationSourceNode(this.ProjectMgr, docSource));
+                this.AddChild(new DocumentationSourceNode(this.ProjectManager, docSource));
             }
         }
         #endregion
@@ -283,10 +286,10 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>The automation object for the node</returns>
         public override object GetAutomationObject()
 		{
-			if(this.ProjectMgr == null || this.ProjectMgr.IsClosed)
+			if(this.ProjectManager == null || this.ProjectManager.IsClosed)
 				return null;
 
-            return new OADocSourcesFolderItem(this.ProjectMgr.GetAutomationObject()
+            return new OADocSourcesFolderItem(this.ProjectManager.GetAutomationObject()
                 as OASandcastleBuilderProject, this);
 		}
 
@@ -307,7 +310,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>Returns the handle to the icon to use for the node</returns>
 		public override object GetIconHandle(bool open)
 		{
-            return this.ProjectMgr.ImageHandler.GetIconHandle(this.ProjectMgr.ImageIndex + (open ?
+            return this.ProjectManager.ImageHandler.GetIconHandle(this.ProjectManager.ImageIndex + (open ?
                 (int)ProjectImageIndex.DocumentationSourcesOpen :
                 (int)ProjectImageIndex.DocumentationSourcesClosed));
         }
@@ -316,7 +319,7 @@ namespace SandcastleBuilder.Package.Nodes
 		/// This is overridden to prevent the node from being dragged
 		/// </summary>
 		/// <returns>Always returns null</returns>
-		protected internal override StringBuilder PrepareSelectedNodesForClipBoard()
+		public override StringBuilder PrepareSelectedNodesForClipboard()
 		{
 			return null;
 		}
@@ -347,17 +350,17 @@ namespace SandcastleBuilder.Package.Nodes
         /// <returns>If the method succeeds, it returns <c>S_OK</c>. If it
         /// fails, it returns an error code.</returns>
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,
-          ref QueryStatusResult result)
+          ref vsCommandStatus result)
 		{
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet && cmd == PkgCmdIDList.AddDocSource)
             {
-                result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
+                result |= vsCommandStatus.vsCommandStatusSupported | vsCommandStatus.vsCommandStatusEnabled;
                 return VSConstants.S_OK;
             }
 
             if(cmdGroup == VsMenus.guidStandardCommandSet97 && (VsCommands)cmd == VsCommands.PropSheetOrProperties)
             {
-                result |= QueryStatusResult.SUPPORTED | QueryStatusResult.INVISIBLE;
+                result |= vsCommandStatus.vsCommandStatusSupported | vsCommandStatus.vsCommandStatusInvisible;
                 return VSConstants.S_OK;
             }
 
@@ -377,7 +380,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// output.  It can be null.</param>
         /// <returns>If the method succeeds, it returns <c>S_OK</c>. If it
         /// fails, it returns an error code.</returns>
-        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn,
+        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, OLECMDEXECOPT nCmdexecopt, IntPtr pvaIn,
           IntPtr pvaOut)
 		{
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet && (int)cmd == PkgCmdIDList.AddDocSource)

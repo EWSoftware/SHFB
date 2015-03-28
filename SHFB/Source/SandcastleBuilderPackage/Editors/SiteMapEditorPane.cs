@@ -244,7 +244,7 @@ namespace SandcastleBuilder.Package.Editors
                         e.Handled = true;
 
                         if(thisNode != null)
-                            thisNode.ProjectMgr.RefreshProject();
+                            thisNode.ProjectManager.RefreshProject();
                     }
                 }
         }
@@ -312,18 +312,18 @@ namespace SandcastleBuilder.Package.Editors
                 // If we have a topic, use it's parent as the parent for the new topic.  If not, we'll use the
                 // parent of the content layout file.
                 if(base.UIControl.CurrentTopic != null && base.UIControl.CurrentTopic.SourceFile.Path.Length != 0)
-                    topicNode = thisNode.ProjectMgr.FindChild(base.UIControl.CurrentTopic.SourceFile) as FileNode;
+                    topicNode = thisNode.ProjectManager.FindChild(base.UIControl.CurrentTopic.SourceFile) as FileNode;
 
-                project = (IVsProject3)thisNode.ProjectMgr;
-                strBrowseLocations = Path.GetDirectoryName(thisNode.ProjectMgr.BaseURI.Uri.LocalPath);
-                projectGuid = thisNode.ProjectMgr.ProjectGuid;
+                project = (IVsProject3)thisNode.ProjectManager;
+                strBrowseLocations = Path.GetDirectoryName(thisNode.ProjectManager.BaseUri.Uri.LocalPath);
+                projectGuid = thisNode.ProjectManager.ProjectGuid;
                 addItemDialog = this.GetService(typeof(IVsAddProjectItemDlg)) as IVsAddProjectItemDlg;
 
                 uiFlags = (uint)(__VSADDITEMFLAGS.VSADDITEM_AddNewItems |
                     __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName |
                     __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView);
 
-                int hr = addItemDialog.AddProjectItemDlg((topicNode ?? thisNode).ID, ref projectGuid, project,
+                int hr = addItemDialog.AddProjectItemDlg((topicNode ?? thisNode).Id, ref projectGuid, project,
                     uiFlags, "Other Content", "Html Page", ref strBrowseLocations, ref strFilter,
                     out iDontShowAgain);
 
@@ -331,7 +331,7 @@ namespace SandcastleBuilder.Package.Editors
                 // to the collection.
                 if(hr == VSConstants.S_OK)
                 {
-                    var node = thisNode.ProjectMgr.GetSelectedNodes().FirstOrDefault();
+                    var node = thisNode.ProjectManager.GetSelectedNodes().FirstOrDefault();
 
                     if(node != null && node.Url.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
                       node.Url.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
@@ -372,7 +372,7 @@ namespace SandcastleBuilder.Package.Editors
                     }
 
                     if(thisNode != null)
-                        thisNode.ProjectMgr.RefreshProject();
+                        thisNode.ProjectManager.RefreshProject();
                 }
             }
         }
@@ -404,7 +404,7 @@ namespace SandcastleBuilder.Package.Editors
                         siteMapFile.ProjectElement.Project);
 
                     if(thisNode != null)
-                        thisNode.ProjectMgr.RefreshProject();
+                        thisNode.ProjectManager.RefreshProject();
                 }
 
                 if(newTopics.Count != 0)
