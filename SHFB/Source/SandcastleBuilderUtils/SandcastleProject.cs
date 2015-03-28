@@ -3149,6 +3149,7 @@ namespace SandcastleBuilder.Utils
                 case ".js":
                 case ".topic":
                 case ".txt":
+                case ".zip":
                     return BuildAction.Content;
 
                 case ".bmp":        // Images for conceptual content.  The default used to be Content but
@@ -3331,7 +3332,10 @@ namespace SandcastleBuilder.Utils
                 // the relative and full paths for a match.
                 if(itemPath == filePath.PersistablePath || itemPath == filePath.Path)
                 {
-                    newFileItem = new FileItem(new ProjectElement(this, item));
+                    newFileItem = new FileItem(new ProjectElement(this, item))
+                    {
+                        BuildAction = buildAction,
+                    };
                     break;
                 }
             }
