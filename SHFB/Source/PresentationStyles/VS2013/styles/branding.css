@@ -239,7 +239,7 @@ div.caption {
 	cursor: pointer;
 }
 .collapsibleSection {
-	margin-top: 5px;
+	padding: 0 0 0 20px;
 }
 
 /* Syntax and code snippet styles */
