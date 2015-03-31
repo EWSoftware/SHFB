@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 03/28/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -1553,20 +1553,19 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the MS Help Viewer 2.x content catalog name.
+        /// This is used to get or set a non-standard MS Help Viewer 2.x content catalog name.
         /// </summary>
-        /// <remarks>If not specified, the default is "VisualStudio11" for Visual Studio 2012.  If using Visual
-        /// Studio 2013, change it to "VisualStudio12".</remarks>
-        [Category("MS Help Viewer"), Description("Specify the MS Help Viewer 2.x content catalog name.  For " +
-          "Visual Studio 2012 use \"VisualStudio11\".  For Visual Studio 2013 use \"VisualStudio12\"."),
-          DefaultValue("VisualStudio11"), EscapeValue]
+        /// <remarks>If not specified, the default will be set based on the Visual Studio version catalog related
+        /// to the Help Viewer (VisualStudio11 for Visual Studio 2012 for example)</remarks>
+        [Category("MS Help Viewer"), Description("Specify a non-standard MS Help Viewer 2.x content catalog " +
+          "name.  Leave blank to use the default"), DefaultValue(""), EscapeValue]
         public string CatalogName
         {
             get { return catalogName; }
             set
             {
-                if(value == null || value.Trim().Length == 0)
-                    value = "VisualStudio11";
+                if(String.IsNullOrWhiteSpace(value))
+                    value = String.Empty;
                 else
                     value = Uri.EscapeDataString(Uri.UnescapeDataString(value.Trim()));
 
@@ -3149,6 +3148,7 @@ namespace SandcastleBuilder.Utils
                 case ".js":
                 case ".topic":
                 case ".txt":
+                case ".zip":
                     return BuildAction.Content;
 
                 case ".bmp":        // Images for conceptual content.  The default used to be Content but

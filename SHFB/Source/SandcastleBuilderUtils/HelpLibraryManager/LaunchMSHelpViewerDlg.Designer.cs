@@ -40,6 +40,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.rbOpenCurrent = new System.Windows.Forms.RadioButton();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.rbLaunchContentManager = new System.Windows.Forms.RadioButton();
             this.rbRemove = new System.Windows.Forms.RadioButton();
             this.rbInstall = new System.Windows.Forms.RadioButton();
             this.lblAction = new System.Windows.Forms.Label();
@@ -66,7 +67,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(586, 350);
+            this.btnCancel.Location = new System.Drawing.Point(586, 380);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnCancel, "Cancel: Close without opening the help file");
@@ -78,7 +79,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 350);
+            this.btnOK.Location = new System.Drawing.Point(12, 380);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnOK, "OK: Execute the selected action");
@@ -102,16 +103,28 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.rbLaunchContentManager);
             this.grpOptions.Controls.Add(this.rbRemove);
             this.grpOptions.Controls.Add(this.rbInstall);
             this.grpOptions.Controls.Add(this.rbOpenCurrent);
             this.grpOptions.Enabled = false;
             this.grpOptions.Location = new System.Drawing.Point(12, 227);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Size = new System.Drawing.Size(662, 117);
+            this.grpOptions.Size = new System.Drawing.Size(662, 147);
             this.grpOptions.TabIndex = 2;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
+            // 
+            // rbLaunchContentManager
+            // 
+            this.rbLaunchContentManager.AutoSize = true;
+            this.rbLaunchContentManager.Location = new System.Drawing.Point(40, 110);
+            this.rbLaunchContentManager.Name = "rbLaunchContentManager";
+            this.rbLaunchContentManager.Size = new System.Drawing.Size(262, 21);
+            this.rbLaunchContentManager.TabIndex = 3;
+            this.rbLaunchContentManager.TabStop = true;
+            this.rbLaunchContentManager.Text = "&Launch help viewer content manager";
+            this.rbLaunchContentManager.UseVisualStyleBackColor = true;
             // 
             // rbRemove
             // 
@@ -175,7 +188,8 @@
             this.cboHelpViewerVersion.Items.AddRange(new object[] {
             "1.0",
             "2.0",
-            "2.1"});
+            "2.1",
+            "2.2"});
             this.cboHelpViewerVersion.Location = new System.Drawing.Point(402, 194);
             this.cboHelpViewerVersion.Name = "cboHelpViewerVersion";
             this.cboHelpViewerVersion.Size = new System.Drawing.Size(59, 24);
@@ -187,7 +201,7 @@
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(686, 394);
+            this.ClientSize = new System.Drawing.Size(686, 424);
             this.Controls.Add(this.cboHelpViewerVersion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblAction);
@@ -225,5 +239,6 @@
         private System.Windows.Forms.PictureBox pbWait;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboHelpViewerVersion;
+        private System.Windows.Forms.RadioButton rbLaunchContentManager;
     }
 }

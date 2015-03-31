@@ -254,15 +254,14 @@
             // 
             // txtCatalogName
             // 
-            this.epNotes.SetError(this.txtCatalogName, "For Visual Studio 2012 use \"VisualStudio11\".  For Visual Studio 2013 use \"VisualS" +
-        "tudio12\".");
+            this.epNotes.SetError(this.txtCatalogName, "Only specify this if using a custom catalog name.\r\n" +
+                "Leave blank for the default Visual Studio catalog name.");
             this.epNotes.SetIconPadding(this.txtCatalogName, 5);
             this.txtCatalogName.Location = new System.Drawing.Point(279, 83);
             this.txtCatalogName.Name = "txtCatalogName";
             this.txtCatalogName.Size = new System.Drawing.Size(209, 27);
             this.txtCatalogName.TabIndex = 5;
             this.txtCatalogName.Tag = "CatalogName";
-            this.txtCatalogName.Text = "VisualStudio11";
             // 
             // label11
             // 

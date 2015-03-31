@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/29/2015
+// Updated : 03/24/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -285,11 +285,6 @@ namespace SandcastleBuilder.Package
                 menuItem = new OleMenuCommand(ViewMshcHelpExecuteHandler, null, ViewMshcHelpQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
 
-                // Create the command for button LaunchHelpLibMgr
-                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.LaunchHelpLibMgr);
-                menuItem = new OleMenuCommand(LaunchHelpLibMgrExecuteHandler, null, LaunchHelpLibMgrQueryStatusHandler, commandId);
-                mcs.AddCommand(menuItem);
-
                 // Create the command for button ViewAspNetWebsite
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewAspNetWebsite);
                 menuItem = new OleMenuCommand(ViewAspNetWebsiteExecuteHandler, null, ViewAspNetWebsiteQueryStatusHandler, commandId);
@@ -328,11 +323,6 @@ namespace SandcastleBuilder.Package
                 // Create the command for button TopicPreviewerWindow
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.TopicPreviewerWindow);
                 menuItem = new OleMenuCommand(TopicPreviewerWindowExecuteHandler, commandId);
-                mcs.AddCommand(menuItem);
-
-                // Create the command for button LaunchContentMgr
-                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.LaunchContentMgr);
-                menuItem = new OleMenuCommand(LaunchContentMgrExecuteHandler, null, LaunchContentMgrQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
 
                 // Create the command for button ViewDocxHelp
@@ -672,90 +662,6 @@ namespace SandcastleBuilder.Package
                 {
                     dlg.ShowDialog();
                 }
-        }
-
-        /// <summary>
-        /// Set the state of the Launch Help Library 1.0 Manager command
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void LaunchHelpLibMgrQueryStatusHandler(object sender, EventArgs e)
-        {
-            SetViewHelpCommandState((OleMenuCommand)sender, null);
-        }
-
-        /// <summary>
-        /// Launch the Help Library Manager 1.0 for interactive use based on the current project's settings
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void LaunchHelpLibMgrExecuteHandler(object sender, EventArgs e)
-        {
-            try
-            {
-                SandcastleProject project = CurrentSandcastleProject;
-
-                if(project != null)
-                {
-                    HelpLibraryManager hlm = new HelpLibraryManager();
-
-                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
-                        "/product \"{0}\" /version \"{1}\" /locale {2}", project.CatalogProductId,
-                        project.CatalogVersion, project.Language.Name));
-                }
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL,
-                    "Unable to launch Help Library Manager.  Reason:\r\n{0}", ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Set the state of the Launch Help Viewer 2.x Content Manager command
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void LaunchContentMgrQueryStatusHandler(object sender, EventArgs e)
-        {
-            SetViewHelpCommandState((OleMenuCommand)sender, null);
-        }
-
-        /// <summary>
-        /// Launch the Launch Help Viewer 2.x Content Manager for interactive use based on the current project's
-        /// settings.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void LaunchContentMgrExecuteHandler(object sender, EventArgs e)
-        {
-            Version version;
-
-            try
-            {
-                SandcastleProject project = CurrentSandcastleProject;
-
-                if(project != null)
-                {
-                    if(project.CatalogName == "VisualStudio11")
-                        version = new Version(2, 0);
-                    else
-                        version = new Version(2, 1);
-
-                    HelpLibraryManager hlm = new HelpLibraryManager(version);
-
-                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
-                        "/catalogName \"{0}\" /locale {1} /manage", project.CatalogName, project.Language.Name));
-                }
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, "Unable to launch Help Viewer 2.x " +
-                    "Content Manager.  Reason:\r\n{0}\r\n\r\nIs the catalog name correct in the project?",
-                    ex.Message);
-            }
         }
 
         /// <summary>

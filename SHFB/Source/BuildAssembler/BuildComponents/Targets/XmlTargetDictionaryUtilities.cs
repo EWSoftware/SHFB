@@ -36,7 +36,7 @@ namespace Microsoft.Ddue.Tools.Targets
         // Member data
         private static XPathExpression apiOverloadIdExpression = XPathExpression.Compile("string(overload/@api | memberdata/@overload)");
 
-        // explicit implmentation data
+        // explicit implementation data
         private static XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile("boolean(memberdata/@visibility='private' and proceduredata/@virtual='true' and boolean(implements/member))");
         private static XPathExpression apiImplementedMembersExpression = XPathExpression.Compile("implements/member");
 

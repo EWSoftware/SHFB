@@ -16,6 +16,7 @@
 // 03/03/2014 - EFW - Added code to default to looking up target IDs if not found in the reflection data but
 // they start with "System." or "Microsoft.".  This should help add links to MSDN content for Microsoft SDKs
 // without having to add additional reference link data to the help project.
+// 03/28/2015 - EFW - Changed the href-format attribute to a nested hrefFormat element.
 
 using System;
 using System.Collections.Generic;
@@ -148,9 +149,9 @@ namespace Microsoft.Ddue.Tools
             if(!String.IsNullOrEmpty(baseUrlValue))
                 baseUrl = XPathExpression.Compile(baseUrlValue);
 
-            // url-format is a string format that is used to format the value of local href attributes. The default is
-            // "{0}.htm" for backwards compatibility.
-            hrefFormat = configuration.GetAttribute("href-format", String.Empty);
+            // hrefFormat is a string format that is used to format the value of local href attributes. The
+            // default is "{0}.htm" if not specified.
+            hrefFormat = (string)configuration.Evaluate("string(hrefFormat/@value)");
 
             if(String.IsNullOrWhiteSpace(hrefFormat))
                 hrefFormat = "{0}.htm";

@@ -2,23 +2,23 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2014
-// Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
+// Updated : 03/24/2015
+// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to interact with the Help Library Manager.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-//===============================================================================================================
-// 1.0.0.0  07/03/2010  EFW  Created the code
-// 1.0.0.1  03/24/2012  EFW  Merged changes submitted by Don Fehr
-// 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
-// -------  03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/03/2010  EFW  Created the code
+// 03/24/2012  EFW  Merged changes submitted by Don Fehr
+// 10/05/2012  EFW  Added support for Help Viewer 2.0
+// 03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
 //===============================================================================================================
 
 using System;
@@ -126,6 +126,30 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
         #region Public helper methods
         //=====================================================================
+
+        /// <summary>
+        /// This is used to get the default MS Help Viewer 2.x catalog name based on the help viewer version
+        /// </summary>
+        /// <param name="viewerVersion">The help viewer version</param>
+        /// <returns>The default catalog name for the related help viewer version or null if it could not be
+        /// determined.</returns>
+        public static string DefaultCatalogName(Version viewerVersion)
+        {
+            switch(viewerVersion.Minor)
+            {
+                case 0:     // Visual Studio 2012
+                    return "VisualStudio11";
+
+                case 1:     // Visual Studio 2013
+                    return "VisualStudio12";
+
+                case 2:     // Visual Studio 2015
+                    return "VisualStudio14";
+
+                default:
+                    return null;
+            }
+        }
 
         /// <summary>
         /// This is used to find the installed locale of the specified product version for Help Viewer 1.0

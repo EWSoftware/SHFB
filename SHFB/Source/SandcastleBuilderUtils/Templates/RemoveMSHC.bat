@@ -11,6 +11,8 @@ IF "%1%"=="H2" GOTO HelpViewer2
 IF "%1%"=="h2" GOTO HelpViewer2
 IF "%1%"=="H21" GOTO HelpViewer21
 IF "%1%"=="h21" GOTO HelpViewer21
+IF "%1%"=="H21" GOTO HelpViewer22
+IF "%1%"=="h21" GOTO HelpViewer22
 
 REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "{@CatalogProductId}" /version "{@CatalogVersion}" /locale {@Locale} /uninstall /silent /vendor "{@VendorName}" /productName "{@ProductTitle}" /mediaBookList "{@HelpTitle}"
@@ -20,13 +22,20 @@ GOTO Exit
 :HelpViewer2
 
 REM Help Viewer 2.0
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}"
 
 GOTO Exit
 
 :HelpViewer21
 
 REM Help Viewer 2.1
-HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /catalogName {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.1 {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}"
+
+GOTO Exit
+
+:HelpViewer22
+
+REM Help Viewer 2.2
+HelpLibraryManagerLauncher.exe /viewerVersion 2.2 {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}"
 
 :Exit

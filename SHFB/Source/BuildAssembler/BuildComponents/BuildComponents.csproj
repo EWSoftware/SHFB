@@ -95,7 +95,6 @@
     <Compile Include="Snippets\SnippetIdentifier.cs" />
     <Compile Include="Snippets\StoredSnippet.cs" />
     <Compile Include="Targets\ArtTarget.cs" />
-    <Compile Include="BrandingComponent.cs" />
     <Compile Include="Targets\ConceptualLinkInfo.cs" />
     <Compile Include="FileCreatedEventArgs.cs" />
     <Compile Include="HxfGeneratorComponent.cs" />

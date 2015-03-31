@@ -42,7 +42,7 @@ namespace SandcastleBuilder.Package.ToolWindows
     /// usually implemented by the package implementer.  This class derives from the <c>ToolWindowPane</c> class
     /// provided from the MPF in order to use its implementation of the <c>IVsUIElementPane</c> interface.</remarks>
     [Guid("581e89c0-e423-4453-bde3-a0403d5f380d")]
-    public class EntityReferencesToolWindow : ToolWindowPane, IVsSelectionEvents
+    public sealed class EntityReferencesToolWindow : ToolWindowPane, IVsSelectionEvents
     {
         #region Private data members
         //=====================================================================

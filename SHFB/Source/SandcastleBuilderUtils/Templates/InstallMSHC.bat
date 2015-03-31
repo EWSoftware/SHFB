@@ -11,6 +11,8 @@ IF "%1%"=="H2" GOTO HelpViewer2
 IF "%1%"=="h2" GOTO HelpViewer2
 IF "%1%"=="H21" GOTO HelpViewer21
 IF "%1%"=="h21" GOTO HelpViewer21
+IF "%1%"=="H22" GOTO HelpViewer22
+IF "%1%"=="h22" GOTO HelpViewer22
 
 REM Help Viewer 1.0
 REM Uninstall first in case it is already there.  If not, it won't install below.  We'll ignore any error output
@@ -32,10 +34,10 @@ GOTO Exit
 REM Help Viewer 2.0
 REM Uninstall first in case it is already there.  If not, it won't install below.  We'll ignore any error output
 REM by redirecting it to NUL.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}" > NUL
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}" > NUL
 
 REM Install the new content.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName {@CatalogName} /locale {@Locale} /wait 0 /operation install /sourceUri "%CD%\{@HtmlHelpName}.msha"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 {@CatalogName} /locale {@Locale} /wait 0 /operation install /sourceUri "%CD%\{@HtmlHelpName}.msha"
 
 GOTO Exit
 
@@ -44,9 +46,21 @@ GOTO Exit
 REM Help Viewer 2.1
 REM Uninstall first in case it is already there.  If not, it won't install below.  We'll ignore any error output
 REM by redirecting it to NUL.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /catalogName {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}" > NUL
+HelpLibraryManagerLauncher.exe /viewerVersion 2.1 {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}" > NUL
 
 REM Install the new content.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /catalogName {@CatalogName} /locale {@Locale} /wait 0 /operation install /sourceUri "%CD%\{@HtmlHelpName}.msha"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.1 {@CatalogName} /locale {@Locale} /wait 0 /operation install /sourceUri "%CD%\{@HtmlHelpName}.msha"
+
+GOTO Exit
+
+:HelpViewer22
+
+REM Help Viewer 2.2
+REM Uninstall first in case it is already there.  If not, it won't install below.  We'll ignore any error output
+REM by redirecting it to NUL.
+HelpLibraryManagerLauncher.exe /viewerVersion 2.2 {@CatalogName} /locale {@Locale} /wait 0 /operation uninstall /vendor "{@VendorName}" /productName "{@ProductTitle}" /bookList "{@HelpTitle}" > NUL
+
+REM Install the new content.
+HelpLibraryManagerLauncher.exe /viewerVersion 2.2 {@CatalogName} /locale {@Locale} /wait 0 /operation install /sourceUri "%CD%\{@HtmlHelpName}.msha"
 
 :Exit

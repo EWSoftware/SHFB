@@ -2,16 +2,16 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 11/18/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved.
-//           Portions Copyright 2014, Sam Harwell, All rights reserved.
+// Updated : 03/24/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved.
+//           Portions Copyright 2014-2015, Sam Harwell, All rights reserved.
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add elements for the lightweight website style such as a search
 // box and a table of contents in the topics similar to the current MSDN lightweight style.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -236,17 +235,13 @@ namespace SandcastleBuilder.PlugIns
                 foreach(XElement child in children)
                     tocNav.Add(GenerateTocChild(child));
 
-                XmlWriterSettings htmlWriterSettings = new XmlWriterSettings();
-                htmlWriterSettings.OmitXmlDeclaration = true;
-                htmlWriterSettings.ConformanceLevel = ConformanceLevel.Fragment;
-
-                PropertyInfo outputMethod = typeof(XmlWriterSettings).GetProperty("OutputMethod");
-                outputMethod.SetValue(htmlWriterSettings, XmlOutputMethod.Html, null);
-
                 XElement resizableBar =
                     new XElement("div",
                         new XAttribute("id", "tocResizableEW"),
-                        new XAttribute("onmousedown", "OnMouseDown(event);"));
+                        new XAttribute("onmousedown", "OnMouseDown(event);"),
+                        // Add empty text to force full start/end element.  This allows for proper display in the
+                        // browser while still allowing XHTML output that's valid for post-processing.
+                        new XText(String.Empty));
 
                 XElement resizeUi =
                     new XElement("div",
@@ -274,13 +269,6 @@ namespace SandcastleBuilder.PlugIns
                         resizableBar,
                         resizeUi);
 
-                StringBuilder stringBuilder = new StringBuilder();
-
-                using(XmlWriter writer = XmlWriter.Create(stringBuilder, htmlWriterSettings))
-                {
-                    leftNav.WriteTo(writer);
-                }
-
                 string path = Path.Combine(builder.WorkingFolder, @"Output\Website", current.Attribute("Url").Value);
                 string outputFile = File.ReadAllText(path, Encoding.UTF8);
 
@@ -303,7 +291,7 @@ namespace SandcastleBuilder.PlugIns
                 pos = outputFile.IndexOf("<div class=\"topicContent\"", StringComparison.Ordinal);
 
                 if(pos != -1)
-                    outputFile = outputFile.Insert(pos, stringBuilder.ToString());
+                    outputFile = outputFile.Insert(pos, leftNav.ToString(SaveOptions.DisableFormatting));
 
                 if(expandRootNode)
                 {

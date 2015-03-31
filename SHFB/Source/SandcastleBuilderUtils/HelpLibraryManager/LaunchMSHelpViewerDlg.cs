@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2013
-// Note    : Copyright 2010-2013, Eric Woodruff, All rights reserved
+// Updated : 03/24/2015
+// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to determine the state of the current MS Help Viewer content and offer options to install,
@@ -14,13 +14,14 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.0.0  07/05/2010  EFW  Created the code
-// 1.9.3.0  04/02/2011  EFW  Made it project independent so that it could be used in the VSPackage too
-// 1.9.3.4  03/24/2012  EFW  Merged changes from Don Fehr
-// 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
-// 1.9.9.0  12/14/2013  EFW  Added support for Help Viewer 2.1
+// 07/05/2010  EFW  Created the code
+// 04/02/2011  EFW  Made it project independent so that it could be used in the VSPackage too
+// 03/24/2012  EFW  Merged changes from Don Fehr
+// 10/05/2012  EFW  Added support for Help Viewer 2.0
+// 12/14/2013  EFW  Added support for Help Viewer 2.1
+// 03/24/2015  EFW  Added support for Help Viewer 2.2 and added Open Content Manager option
 //===============================================================================================================
 
 using System;
@@ -36,8 +37,8 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.MicrosoftHelpViewer
 {
     /// <summary>
-    /// This form is used determine the state of the current MS Help Viewer content and offer options to install,
-    /// launch, or remove it.
+    /// This form is used determine the state of the current MS Help Viewer content and offer options to
+    /// install it, launch it, remove it, or open the content manager.
     /// </summary>
     public partial class LaunchMSHelpViewerDlg : Form
     {
@@ -54,7 +55,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             /// <summary>Install content from the last build and open it</summary>
             Install,
             /// <summary>Remove the current content</summary>
-            Remove
+            Remove,
+            /// <summary>Open the content manager</summary>
+            OpenContentManager
         }
         #endregion
 
@@ -73,7 +76,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             /// <summary>Content is being installed</summary>
             InstallingContent,
             /// <summary>Content is being opened</summary>
-            OpeningContent
+            OpeningContent,
+            /// <summary>Opening the content manager</summary>
+            OpeningContentManager
         }
         #endregion
 
@@ -81,7 +86,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         //=====================================================================
 
         private SandcastleProject project;
-        private string helpFilePath, setupFile, msHelpViewer;
+        private string helpFilePath, setupFile, msHelpViewer, catalogName;
         private BackgroundWorker actionThread;
         private Thread runningThread;
         private Version viewerVersion;
@@ -152,8 +157,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             {
                 HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
 
-                // Remove old content.  We'll remove it if installing to be sure that
-                // the latest copy is installed.
+                // Remove old content.  We'll remove it if installing to be sure that the latest copy is
+                // installed.
                 if(action == ThreadAction.Install || action == ThreadAction.Remove)
                 {
                     if(action == ThreadAction.Install)
@@ -172,8 +177,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     else
                         arguments = String.Format(CultureInfo.InvariantCulture,
                             "/catalogName \"{0}\" /locale {1} /wait 0 /operation uninstall /vendor \"{2}\" " +
-                            "/productName \"{3}\" /bookList \"{4}\" ",
-                            project.CatalogName, project.Language.Name,
+                            "/productName \"{3}\" /bookList \"{4}\" ", catalogName, project.Language.Name,
                             !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name",
                             !String.IsNullOrEmpty(project.ProductTitle) ? project.ProductTitle : project.HelpTitle,
                             project.HelpTitle);
@@ -202,7 +206,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                             project.CatalogVersion, project.Language.Name, contentSetupFile);
                     else
                         arguments = String.Format(CultureInfo.InvariantCulture, "/catalogName \"{0}\" " +
-                            "/locale {1} /wait 0 /operation install /sourceUri \"{2}\"", project.CatalogName,
+                            "/locale {1} /wait 0 /operation install /sourceUri \"{2}\"", catalogName,
                             project.Language.Name, contentSetupFile);
 
                     // Always interactive and must run as administrator.  We can't run silently as we don't have
@@ -228,11 +232,29 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                             msHelpViewer = "ms-xhelp:///?method=page&id=-1";
                         else
                             if(viewerVersion.Major == 2)
-                                arguments = "/catalogname \"" + project.CatalogName + "\"";
+                                arguments = "/catalogname \"" + catalogName + "\"";
                     }
 
                     actionThread.ReportProgress(0, (int)ThreadState.OpeningContent);
                     System.Diagnostics.Process.Start(msHelpViewer, arguments);
+                }
+
+                if(action == ThreadAction.OpenContentManager)
+                {
+                    actionThread.ReportProgress(0, (int)ThreadState.OpeningContentManager);
+
+                    // Can't do anything if the Help Library Manager is not installed
+                    if(hlm.HelpLibraryManagerPath == null)
+                        throw new HelpLibraryManagerException(viewerVersion,
+                            HelpLibraryManagerException.HelpLibraryManagerNotFound);
+
+                    if(viewerVersion.Major == 1)
+                        hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
+                            "/product \"{0}\" /version \"{1}\" /locale {2}", project.CatalogProductId,
+                            project.CatalogVersion, project.Language.Name));
+                    else
+                        hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
+                            "/catalogName \"{0}\" /locale {1} /manage", catalogName, project.Language.Name));
                 }
             }
             catch(ThreadAbortException)
@@ -295,7 +317,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                         if(rbInstall.Enabled)
                             rbInstall.Checked = true;
                         else
-                            btnOK.Enabled = false;
+                            rbLaunchContentManager.Checked = true;
                     }
                     else
                         this.Close();   // Close if content was opened
@@ -386,23 +408,35 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     txtInfo.AppendText("The help file does not appear to be installed yet.\r\n");
                     rbOpenCurrent.Enabled = rbRemove.Enabled = false;
                 }
-
-                if(rbOpenCurrent.Enabled)
-                    rbOpenCurrent.Checked = true;
-                else
-                    if(rbInstall.Enabled)
-                        rbInstall.Checked = true;
-
-                btnOK.Enabled = (rbOpenCurrent.Enabled || rbInstall.Enabled || rbRemove.Enabled);
             }
             catch(Exception ex)
             {
                 txtInfo.AppendText("Problem: " + ex.Message + "\r\n");
-                btnOK.Enabled = false;
+                rbOpenCurrent.Enabled = rbRemove.Enabled = false;
             }
 
-            if(!btnOK.Enabled)
-                txtInfo.AppendText("\r\nNo action can be taken.");
+            if(rbOpenCurrent.Enabled)
+                rbOpenCurrent.Checked = true;
+            else
+                if(rbInstall.Enabled)
+                    rbInstall.Checked = true;
+                else
+                    rbLaunchContentManager.Checked = true;
+
+            if(!rbOpenCurrent.Enabled && !rbInstall.Enabled && !rbRemove.Enabled)
+                txtInfo.AppendText("\r\nNo action can be taken with the help content.");
+
+            // Determine the catalog name here as it's used in a lot of places and varies by version if not
+            // defined in the project.
+            catalogName = !String.IsNullOrWhiteSpace(project.CatalogName) ? project.CatalogName :
+                HelpLibraryManager.DefaultCatalogName(viewerVersion);
+
+            // If it looks like a default value, warn the user if it doesn't match.  It may need to be cleared.
+            if(!String.IsNullOrWhiteSpace(project.CatalogName) && project.CatalogName.StartsWith("VisualStudio",
+              StringComparison.Ordinal) && project.CatalogName != HelpLibraryManager.DefaultCatalogName(viewerVersion))
+                txtInfo.AppendText("\r\n\r\nWARNING:  The project's catalog name property is set to '" +
+                    project.CatalogName + "' which does not match the default catalog name for the selected " +
+                    "version of the help viewer.  If necessary, clear the catalog name property value.");
         }
 
         /// <summary>
@@ -439,7 +473,10 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 if(rbInstall.Checked)
                     action = ThreadAction.Install;
                 else
-                    action = ThreadAction.Remove;
+                    if(rbRemove.Checked)
+                        action = ThreadAction.Remove;
+                    else
+                        action = ThreadAction.OpenContentManager;
 
             lblAction.Text = "Please wait...";
             pbWait.Visible = lblAction.Visible = true;

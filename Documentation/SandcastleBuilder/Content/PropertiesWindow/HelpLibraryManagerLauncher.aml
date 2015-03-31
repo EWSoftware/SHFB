@@ -101,9 +101,8 @@ HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
 	/sourceMedia "C:\FullPathToFile\HelpContentSetup.msha"
 
 REM Help Viewer 2.0
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
-	/locale en-us /wait 0 /operation install
-	/sourceUri "C:\FullPathToFile\TestCaseProject.msha"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
+	/operation install /sourceUri "C:\FullPathToFile\TestCaseProject.msha"
 </code>
 
 	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>, <codeInline>locale</codeInline>,
@@ -174,8 +173,8 @@ HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
 	/mediaBookList "Sandcastle Test Case Library"
 
 REM Help Viewer 2.0
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
-	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
+	/operation uninstall /vendor "EWSoftware"
 	/productName "Sandcastle Help File Builder Example Project"
 	/bookList "Sandcastle Test Case Library"
 </code>

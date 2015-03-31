@@ -2,22 +2,23 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerLauncher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2014
-// Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
+// Updated : 03/24/2015
+// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main program entry point.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  07/03/2010  EFW  Created the code
-// 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
-// -------  03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
+// 07/03/2010  EFW  Created the code
+// 10/05/2012  EFW  Added support for Help Viewer 2.0
+// 03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
+// 03/24/2015  EFW  Made catalogName optional and set a default based on the viewer version
 //===============================================================================================================
 
 using System;
@@ -141,9 +142,18 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                             HelpLibraryManagerException.InvalidCmdArgs,
                             "/version is only valid for Help Viewer 1.0");
 
+                    // If not specified, default the catalog name based on the viewer version
                     if(String.IsNullOrEmpty(catalogName))
-                        throw new HelpLibraryManagerException(viewerVersion,
-                            HelpLibraryManagerException.MissingCommandLineArgument, "/catalogName");
+                    {
+                        catalogName = HelpLibraryManager.DefaultCatalogName(viewerVersion);
+
+                        if(catalogName == null)
+                            throw new HelpLibraryManagerException(viewerVersion,
+                                HelpLibraryManagerException.MissingCommandLineArgument, "/catalogName");
+
+                        Console.WriteLine("Catalog name not specified, the default catalog name '{0}' will " +
+                            "be used.", catalogName);
+                    }
                 }
 
                 HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
@@ -271,8 +281,8 @@ special characters.
 
 /help or /?         Show this help.
 
-/viewerVersion ver  Specify 1.0 (the default) to use Help Viewer 1.0 or 2.0 to
-                    use Help Viewer 2.0.
+/viewerVersion ver  Specify 1.0 (the default) to use Help Viewer 1.0 or 2.x to
+                    use Help Viewer 2.x where 'x' is the minor version.
 
 /product id         Specify the product ID.  This option is required for Help
                     Viewer 1.0.  Omit for Help Viewer 2.0.
@@ -280,8 +290,9 @@ special characters.
 /version ver        Specify the product version.  This option is required for
                     Help Viewer 1.0.  Omit for Help Viewer 2.0.
 
-/catalogName name   Specify the catalog name.  This option is required for
-                    Help Viewer 2.0.  Omit for Help Viewer 1.0.
+/catalogName name   Specify the catalog name.  Omit for Help Viewer 1.0.
+                    Optional for Help Viewer 2.x.  If not specified, it
+                    defaults to the related Visual Studio version catalog.
 
 /locale loc         Specify the locale.  Optional.  If not specified an attempt
                     is made to determine the default locale based on the
@@ -298,8 +309,8 @@ HelpLibraryManagerLauncher.exe /product VS /version 100
 
 Install a help file in Help Viewer 2.0:
 
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
-    /operation install /sourceUri HelpContentSetup.msha
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /operation install
+    /sourceUri HelpContentSetup.msha
 ");
 
             Console.WriteLine("\r\nRemove a help file from Help Viewer 1.0:\r\n\r\n" +
@@ -308,9 +319,8 @@ HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
 "    /mediaBookList \"Standalone Build Components\"");
 
             Console.WriteLine("\r\nRemove a help file from Help Viewer 2.0:\r\n\r\n" +
-"HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11\r\n" +
-"    /operation uninstall /vendor \"EWSoftware\"\r\n" +
-"    /productName \"Sandcastle Help File Builder\"\r\n" +
+"HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /operation uninstall " +
+"    /vendor \"EWSoftware\" /productName \"Sandcastle Help File Builder\"\r\n" +
 "    /bookList \"Standalone Build Components\"");
         }
         #endregion

@@ -49,6 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SandcastleBuilder.Package.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -207,6 +208,7 @@
     <Compile Include="Editors\SiteMapEditorPane.cs" />
     <Compile Include="Editors\TokenEditorFactory.cs" />
     <Compile Include="Editors\TokenEditorPane.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="GoToDefinition\CodeEntitySearcher.cs" />
     <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
@@ -394,7 +396,6 @@
     <None Include="Images\ComponentAdd.png" />
     <Resource Include="Resources\EntityReferences.bmp" />
     <Resource Include="Resources\TopicPreview.bmp" />
-    <Resource Include="Resources\HelpContentManager.bmp" />
     <Resource Include="Resources\HtmlEncode.bmp" />
     <Resource Include="Resources\Component.ico" />
     <Resource Include="Resources\Docx.bmp" />
@@ -848,7 +849,6 @@
     <Resource Include="Resources\ViewHelpFile.bmp" />
     <Resource Include="Resources\HtmlHelp.bmp" />
     <Resource Include="Resources\Help2.bmp" />
-    <Resource Include="Resources\HelpLibManager.bmp" />
     <Resource Include="Resources\HtmlWebsite.bmp" />
     <Resource Include="Resources\AspNetWebsite.bmp" />
     <Resource Include="Resources\MSHelpViewer.bmp" />

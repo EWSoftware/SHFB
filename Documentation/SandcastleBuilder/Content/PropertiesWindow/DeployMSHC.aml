@@ -86,6 +86,8 @@ IF "%1%"=="H2" GOTO HelpViewer2
 IF "%1%"=="h2" GOTO HelpViewer2
 IF "%1%"=="H21" GOTO HelpViewer21
 IF "%1%"=="h21" GOTO HelpViewer21
+IF "%1%"=="H22" GOTO HelpViewer22
+IF "%1%"=="h22" GOTO HelpViewer22
 
 REM Help Viewer 1.0
 REM Uninstall first in case it is already there.  If not, it won't install
@@ -112,14 +114,14 @@ GOTO Exit
 REM Help Viewer 2.0
 REM Uninstall first in case it is already there.  If not, it won't install
 REM below.  We'll ignore any error output by redirecting it to NUL.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0
 	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
 	/productName "Sandcastle Help File Builder Example Project"
 	/bookList "Sandcastle Test Case Library" &gt; NUL
 
 REM Install the new content.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
-	/locale en-us /wait 0 /operation install /sourceUri "%CD%\TestCaseProject.msha"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
+	/operation install /sourceUri "%CD%\TestCaseProject.msha"
 
 GOTO Exit
 
@@ -128,14 +130,30 @@ GOTO Exit
 REM Help Viewer 2.1
 REM Uninstall first in case it is already there.  If not, it won't install
 REM below.  We'll ignore any error output by redirecting it to NUL.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /catalogName VisualStudio12
-	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /locale en-us /wait 0
+	/operation uninstall /vendor "EWSoftware"
 	/productName "Sandcastle Help File Builder Example Project"
 	/bookList "Sandcastle Test Case Library" &gt; NUL
 
 REM Install the new content.
-HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /catalogName VisualStudio12
-	/locale en-us /wait 0 /operation install /sourceUri "%CD%\TestCaseProject.msha"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /locale en-us /wait 0
+	/operation install /sourceUri "%CD%\TestCaseProject.msha"
+
+GOTO Exit
+
+:HelpViewer22
+
+REM Help Viewer 2.2
+REM Uninstall first in case it is already there.  If not, it won't install
+REM below.  We'll ignore any error output by redirecting it to NUL.
+HelpLibraryManagerLauncher.exe /viewerVersion 2.2 /locale en-us /wait 0
+	/operation uninstall /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/bookList "Sandcastle Test Case Library" &gt; NUL
+
+REM Install the new content.
+HelpLibraryManagerLauncher.exe /viewerVersion 2.2 /locale en-us /wait 0
+	/operation install /sourceUri "%CD%\TestCaseProject.msha"
 
 :Exit
 </code>
@@ -161,6 +179,8 @@ IF "%1%"=="H2" GOTO HelpViewer2
 IF "%1%"=="h2" GOTO HelpViewer2
 IF "%1%"=="H21" GOTO HelpViewer21
 IF "%1%"=="h21" GOTO HelpViewer21
+IF "%1%"=="H22" GOTO HelpViewer22
+IF "%1%"=="h22" GOTO HelpViewer22
 
 REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
@@ -173,8 +193,8 @@ GOTO Exit
 :HelpViewer2
 
 REM Help Viewer 2.0
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
-	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
+	/operation uninstall /vendor "EWSoftware"
 	/productName "Sandcastle Help File Builder Example Project"
 	/bookList "Sandcastle Test Case Library" &gt; NUL
 
@@ -183,8 +203,18 @@ GOTO Exit
 :HelpViewer21
 
 REM Help Viewer 2.1
-HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /catalogName VisualStudio12
-	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.1 /locale en-us /wait 0
+	/operation uninstall /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/bookList "Sandcastle Test Case Library" &gt; NUL
+
+GOTO Exit
+
+:HelpViewer22
+
+REM Help Viewer 2.2
+HelpLibraryManagerLauncher.exe /viewerVersion 2.2 /locale en-us /wait 0
+	/operation uninstall /vendor "EWSoftware"
 	/productName "Sandcastle Help File Builder Example Project"
 	/bookList "Sandcastle Test Case Library" &gt; NUL
 

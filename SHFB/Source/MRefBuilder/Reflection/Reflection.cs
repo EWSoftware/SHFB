@@ -10,6 +10,8 @@
 // parameters lists with generic types.
 // 07/31/2014 - EFW - Applied fix from Jared Moore related to generic template parameter matching under a
 // specific set of conditions.
+// 03/27/2015 - EFW - Fixed another issue in ParametersMatch() related to array types in method parameters
+// in derived generics types.
 
 using System;
 using System.Collections.Generic;
@@ -420,6 +422,34 @@ namespace Microsoft.Ddue.Tools.Reflection
                         type2 = type2.GetTemplateType();
 
                         if(!type2.IsStructurallyEquivalentTo(type1))
+                            return false;
+                    }
+
+                    // !EFW - Comparing array types may be dangerous but, as it turns out, is necessary.  If
+                    // two overloads take an array as a parameter, it always returns the first overload as the
+                    // match in derived types.  As such, we do need to compare the array element types.  For
+                    // generic types, we can get the underlying template type from the declaring method's type
+                    // and match that.
+                    // https://github.com/EWSoftware/SHFB/issues/57
+                    if(type1.NodeType == NodeType.ArrayType)
+                    {
+                        type1 = ((ArrayType)type1).ElementType;
+                        type2 = ((ArrayType)type2).ElementType;
+
+                        if(type2.IsTemplateParameter)
+                        {
+                            // Get the position from the second set of parameters
+                            int pos = GetTemplateParameterPosition(parameters2[i].DeclaringMethod.DeclaringType,
+                                type2.Name.Name);
+
+                            // Get the actual type from the first set of parameters
+                            var declType = parameters1[i].DeclaringMethod.DeclaringType;
+
+                            if(pos != -1 && declType.TemplateArguments != null && pos < declType.TemplateArguments.Count)
+                                type2 = declType.TemplateArguments[pos];
+                        }
+
+                        if(type1.NodeType != type2.NodeType || !type2.IsStructurallyEquivalentTo(type1))
                             return false;
                     }
                 }

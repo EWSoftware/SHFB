@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 03/24/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main form for the application.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -1453,7 +1453,6 @@ namespace SandcastleBuilder.Gui
         {
             miViewHtmlHelp1.Enabled = ((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0);
             miViewMSHelp2.Enabled = ((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0);
-            miViewMSHelpViewer.Enabled = ((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0);
             miViewAspNetWebsite.Enabled = miViewHtmlWebsite.Enabled =
                 ((project.HelpFileFormat & HelpFileFormats.Website) != 0);
             miViewOpenXml.Enabled = ((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0);
@@ -1461,7 +1460,7 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// View the help file produced by the last build.  Pick the first available format
+        /// View the help file produced by the last build.  Pick the first available format.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -1681,46 +1680,6 @@ namespace SandcastleBuilder.Gui
                 MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
                     "Unable to open ASP.NET website '{0}'\r\nReason: {1}", outputPath, ex.Message),
                     Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        /// <summary>
-        /// Launch Help Library Manager 1.0 or Help Viewer 2.0 content manager for interactive use based on the
-        /// current project's settings
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void miLaunchHlm_Click(object sender, EventArgs e)
-        {
-            Version version;
-
-            try
-            {
-                if(sender == miLaunchHlm)
-                    version = new Version(1, 0);
-                else
-                    if(project.CatalogName == "VisualStudio11")
-                        version = new Version(2, 0);
-                    else
-                        version = new Version(2, 1);
-
-                HelpLibraryManager hlm = new HelpLibraryManager(version);
-
-                if(sender == miLaunchHlm)
-                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
-                        "/product \"{0}\" /version \"{1}\" /locale {2}", project.CatalogProductId,
-                        project.CatalogVersion, project.Language.Name));
-                else
-                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
-                        "/catalogName \"{0}\" /locale {1} /manage", project.CatalogName, project.Language.Name));
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Unable to launch help library " +
-                    "content manager.  Reason:\r\n{0}\r\n\r\nIs the catalog name correct in the project?",
-                    ex.Message), Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 

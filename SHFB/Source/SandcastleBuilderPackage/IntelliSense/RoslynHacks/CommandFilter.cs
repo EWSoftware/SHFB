@@ -51,10 +51,10 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             set
             {
                 ThrowIfDisposed();
-                if (_connected == value)
+                if(_connected == value)
                     return;
 
-                if (value)
+                if(value)
                 {
                     _next = Connect();
                     _connected = value;
@@ -65,9 +65,9 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
                     {
                         Disconnect();
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
-                        if (!IsDisposing || ErrorHandler.IsCriticalException(e))
+                        if(!IsDisposing || ErrorHandler.IsCriticalException(e))
                             throw;
                     }
                     finally
@@ -100,7 +100,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         /// <inheritdoc/>
         public void Dispose()
         {
-            if (IsDisposing)
+            if(IsDisposing)
                 throw new InvalidOperationException("Detected a recursive invocation of Dispose");
 
             try
@@ -125,7 +125,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         /// <param name="disposing"><see langword="true"/> if this method is being called from <see cref="Dispose()"/>; otherwise, <see langword="false"/> if this method is being called from a finalizer.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if(disposing)
             {
                 Enabled = false;
             }
@@ -158,7 +158,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         /// <exception cref="ObjectDisposedException">If the current instance has been disposed.</exception>
         protected void ThrowIfDisposed()
         {
-            if (IsDisposed)
+            if(IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
         }
 
@@ -166,11 +166,11 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         {
             int rc = VSConstants.S_OK;
 
-            if (!HandlePreExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut) && _next != null)
+            if(!HandlePreExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut) && _next != null)
             {
                 // Pass it along the chain.
                 rc = this.InnerExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-                if (!ErrorHandler.Succeeded(rc))
+                if(!ErrorHandler.Succeeded(rc))
                     return rc;
 
                 HandlePostExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
@@ -201,7 +201,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         private int InnerExec(ref Guid commandGroup, uint commandId, OLECMDEXECOPT executionOptions, IntPtr pvaIn, IntPtr pvaOut)
         {
-            if (_next != null)
+            if(_next != null)
                 return _next.Exec(ref commandGroup, commandId, (uint)executionOptions, pvaIn, pvaOut);
 
             return (int)OleConstants.OLECMDERR_E_NOTSUPPORTED;
@@ -250,19 +250,18 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         int IOleCommandTarget.Exec(ref Guid guidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
             ushort lo = (ushort)(nCmdexecopt & (uint)0xffff);
-            ushort hi = (ushort)(nCmdexecopt >> 16);
 
-            switch (lo)
+            switch(lo)
             {
-            case (ushort)OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP:
-                if ((nCmdexecopt >> 16) == VsMenus.VSCmdOptQueryParameterList)
-                {
-                    return QueryParameterList(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
-                }
-                break;
+                case (ushort)OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP:
+                    if((nCmdexecopt >> 16) == VsMenus.VSCmdOptQueryParameterList)
+                    {
+                        return QueryParameterList(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
+                    }
+                    break;
 
-            default:
-                return ExecCommand(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
+                default:
+                    return ExecCommand(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
             }
 
             return (int)OleConstants.OLECMDERR_E_NOTSUPPORTED;
@@ -272,12 +271,12 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         int IOleCommandTarget.QueryStatus(ref Guid guidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
             Guid cmdGroup = guidCmdGroup;
-            for (uint i = 0; i < cCmds; i++)
+            for(uint i = 0; i < cCmds; i++)
             {
                 OLECMDF status = QueryCommandStatus(ref cmdGroup, prgCmds[i].cmdID);
-                if (status == default(OLECMDF) && _next != null)
+                if(status == default(OLECMDF) && _next != null)
                 {
-                    if (_next != null)
+                    if(_next != null)
                         return _next.QueryStatus(ref cmdGroup, cCmds, prgCmds, pCmdText);
                     else
                         return (int)OleConstants.OLECMDERR_E_NOTSUPPORTED;

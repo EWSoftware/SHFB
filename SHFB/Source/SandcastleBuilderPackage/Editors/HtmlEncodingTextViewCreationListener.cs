@@ -48,9 +48,6 @@ namespace SandcastleBuilder.Package.Editors
         [Import]
         private IVsEditorAdaptersFactoryService adaptersFactory = null;
 
-        [Import]
-        internal IContentTypeRegistryService ContentTypeRegistryService { get; set; }
-
         #endregion
 
         #region IVsTextViewCreationListener implementation

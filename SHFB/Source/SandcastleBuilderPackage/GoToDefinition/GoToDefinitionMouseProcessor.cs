@@ -146,7 +146,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
             {
                 var currentMousePosition = this.RelativeToView(e.GetPosition(this.TextView.VisualElement));
 
-                if(!this.InDragOperation(mouseDownAnchorPoint.Value, currentMousePosition))
+                if(!InDragOperation(mouseDownAnchorPoint.Value, currentMousePosition))
                 {
                     ctrlState.Enabled = false;
 
@@ -183,7 +183,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     // Check and see if this is a drag.  If so, clear the highlight.
                     var currentMousePosition = this.RelativeToView(e.GetPosition(this.TextView.VisualElement));
 
-                    if(this.InDragOperation(mouseDownAnchorPoint.Value, currentMousePosition))
+                    if(InDragOperation(mouseDownAnchorPoint.Value, currentMousePosition))
                     {
                         mouseDownAnchorPoint = null;
                         this.SetHighlightSpan(null, null);
@@ -227,7 +227,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <param name="anchorPoint">The mouse anchor point</param>
         /// <param name="currentPoint">The current mouse point</param>
         /// <returns>True if in a drag operation, false if not</returns>
-        private bool InDragOperation(Point anchorPoint, Point currentPoint)
+        private static bool InDragOperation(Point anchorPoint, Point currentPoint)
         {
             // If the mouse up is more than a drag away from the mouse down, this is a drag
             return Math.Abs(anchorPoint.X - currentPoint.X) >= SystemParameters.MinimumHorizontalDragDistance ||

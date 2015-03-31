@@ -75,9 +75,8 @@ HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us /silen
 	/sourceMedia "C:\FullPathToFile\Documentation.msha"
 
 REM Help Viewer 2.0
-HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
-	/locale en-us /wait 0 /operation install /silent
-	/sourceUri "C:\FullPathToFile\Documentation.msha"
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
+	/operation install /silent /sourceUri "C:\FullPathToFile\Documentation.msha"
 </code>
 			</listItem>
 

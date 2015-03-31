@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PkgCmdID.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2015
+// Updated : 03/24/2015
 // Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,7 +14,7 @@
 // documentation, and source files.
 //
 //    Date     Who  Comments
-//===============================================================================================================
+// ==============================================================================================================
 // 05/20/2013  EFW  Created the code
 //===============================================================================================================
 
@@ -35,8 +35,6 @@ namespace SandcastleBuilder.Package
         public const uint ViewHxSHelp = 0x0008;
         /// <summary>View MS Help View output</summary>
         public const uint ViewMshcHelp = 0x0009;
-        /// <summary>Launch MS Help Viewer 1.0 library manager</summary>
-        public const uint LaunchHelpLibMgr = 0x000A;
         /// <summary>View ASP.NET website output (development web server)</summary>
         public const uint ViewAspNetWebsite = 0x000B;
         /// <summary>View HTML web site output (file system)</summary>
@@ -53,8 +51,6 @@ namespace SandcastleBuilder.Package
         public const uint EntityReferencesWindow = 0x002A;
         /// <summary>Open the Topic Previewer tool window</summary>
         public const uint TopicPreviewerWindow = 0x0030;
-        /// <summary>Open the MS Help Viewer 2.x content manager</summary>
-        public const uint LaunchContentMgr = 0x0031;
         /// <summary>HTML encode selection</summary>
         public const uint HtmlEncode = 0x0032;
         /// <summary>View Open XML help output</summary>

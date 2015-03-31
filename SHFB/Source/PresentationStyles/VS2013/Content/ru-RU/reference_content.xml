@@ -3,8 +3,8 @@
 
   <!-- note text -->
   <item id="notDocumented">Это API не документировано.</item>
-  <item id="preliminary">Это предварительная документация, которая в будущем может измениться.</item>
-	
+  <item id="preliminaryText">Это предварительная документация, которая в будущем может измениться.</item>
+
 	<!-- main window stuff -->
 	<item id="productTitle">Библиотека классов .NET Framework</item>
 

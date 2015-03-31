@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 03/24/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to transform and generate the files used to define and compile the help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -966,7 +966,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "catalogname":
-                    replaceWith = project.CatalogName;
+                    if(!String.IsNullOrWhiteSpace(project.CatalogName))
+                        replaceWith = "/catalogName \"" + project.CatalogName + "\"";
+                    else
+                        replaceWith = String.Empty;
                     break;
 
                 case "catalogproductid":

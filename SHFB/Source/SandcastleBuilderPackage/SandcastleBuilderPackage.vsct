@@ -97,21 +97,9 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<CommandName>cmdidViewMshcHelp</CommandName>
-					<ButtonText>View M&amp;S Help Viewer (.mshc) File</ButtonText>
-					<MenuText>View M&amp;S Help Viewer (.mshc) File</MenuText>
-					<ToolTipText>View M&amp;S Help Viewer (.mshc) File</ToolTipText>
-				</Strings>
-			</Button>
-
-			<Button guid="guidSandcastleBuilderPackageCommandSet" id="LaunchHelpLibMgr" priority="0x0101">
-				<Icon guid="HelpLibManager.bmpGuid" id="HelpLibManager.bmpId" />
-				<CommandFlag>DefaultInvisible</CommandFlag>
-				<CommandFlag>DynamicVisibility</CommandFlag>
-				<Strings>
-					<CommandName>cmdidLaunchHelpLibMgr</CommandName>
-					<ButtonText>La&amp;unch Help Library Manager 1.0</ButtonText>
-					<MenuText>La&amp;unch Help Library Manager 1.0</MenuText>
-					<ToolTipText>La&amp;unch Help Library Manager 1.0</ToolTipText>
+					<ButtonText>View M&amp;S Help Viewer (.mshc) File/Content Manager</ButtonText>
+					<MenuText>View M&amp;S Help Viewer (.mshc) File/Content Manager</MenuText>
+					<ToolTipText>View M&amp;S Help Viewer (.mshc) File/Content Manager</ToolTipText>
 				</Strings>
 			</Button>
 
@@ -202,18 +190,6 @@
 				</Strings>
 			</Button>
 
-			<Button guid="guidSandcastleBuilderPackageCommandSet" id="LaunchContentMgr" priority="0x0102">
-				<Icon guid="HelpContentManager.bmpGuid" id="HelpContentManager.bmpId" />
-				<CommandFlag>DefaultInvisible</CommandFlag>
-				<CommandFlag>DynamicVisibility</CommandFlag>
-				<Strings>
-					<CommandName>cmdidLaunchContentMgr</CommandName>
-					<ButtonText>Lau&amp;nch Help Viewer 2.0 Content Manager</ButtonText>
-					<MenuText>Lau&amp;nch Help Viewer 2.0 Content Manager</MenuText>
-					<ToolTipText>Lau&amp;nch Help Viewer 2.0 Content Manager</ToolTipText>
-				</Strings>
-			</Button>
-
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="HtmlEncode" priority="0x0100">
 				<Icon guid="HtmlEncode.bmpGuid" id="HtmlEncode.bmpId" />
 				<CommandFlag>DefaultDisabled</CommandFlag>
@@ -271,7 +247,6 @@
 			<Bitmap guid="HtmlHelp.bmpGuid" href="Resources\HtmlHelp.bmp" usedList="HtmlHelp.bmpId" />
 			<Bitmap guid="Help2.bmpGuid" href="Resources\Help2.bmp" usedList="Help2.bmpId" />
 			<Bitmap guid="MSHelpViewer.bmpGuid" href="Resources\MSHelpViewer.bmp" usedList="MSHelpViewer.bmpId" />
-			<Bitmap guid="HelpLibManager.bmpGuid" href="Resources\HelpLibManager.bmp" usedList="HelpLibManager.bmpId" />
 			<Bitmap guid="AspNetWebsite.bmpGuid" href="Resources\AspNetWebsite.bmp" usedList="AspNetWebsite.bmpId" />
 			<Bitmap guid="HtmlWebsite.bmpGuid" href="Resources\HtmlWebsite.bmp" usedList="HtmlWebsite.bmpId" />
 			<Bitmap guid="FAQ.bmpGuid" href="Resources\FAQ.bmp" usedList="FAQ.bmpId" />
@@ -279,7 +254,6 @@
 			<Bitmap guid="LogFile.bmpGuid" href="Resources\LogFile.bmp" usedList="LogFile.bmpId" />
 			<Bitmap guid="EntityReferences.bmpGuid" href="Resources\EntityReferences.bmp" usedList="EntityReferences.bmpId" />
 			<Bitmap guid="TopicPreview.bmpGuid" href="Resources\TopicPreview.bmp" usedList="TopicPreview.bmpId" />
-			<Bitmap guid="HelpContentManager.bmpGuid" href="Resources\HelpContentManager.bmp" usedList="HelpContentManager.bmpId" />
 			<Bitmap guid="HtmlEncode.bmpGuid" href="Resources\HtmlEncode.bmp" usedList="HtmlEncode.bmpId" />
 			<Bitmap guid="Docx.bmpGuid" href="Resources\Docx.bmp" usedList="Docx.bmpId" />
 		</Bitmaps>
@@ -299,9 +273,6 @@
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="HxSHelpGroup" />
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewMshcHelp" priority="0x0100">
-			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
-		</CommandPlacement>
-		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="LaunchHelpLibMgr" priority="0x0101">
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewAspNetWebsite" priority="0x0100">
@@ -342,9 +313,6 @@
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101">
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" />
-		</CommandPlacement>
-		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="LaunchContentMgr" priority="0x0102">
-			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="HtmlEncode" priority="0x0100">
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBEditorCommandGroup" />
@@ -465,7 +433,6 @@
 			<IDSymbol name="ViewHtmlHelp" value="0x0007" />
 			<IDSymbol name="ViewHxSHelp" value="0x0008" />
 			<IDSymbol name="ViewMshcHelp" value="0x0009" />
-			<IDSymbol name="LaunchHelpLibMgr" value="0x000A" />
 			<IDSymbol name="ViewAspNetWebsite" value="0x000B" />
 			<IDSymbol name="ViewHtmlWebsite" value="0x000C" />
 			<IDSymbol name="ViewFaq" value="0x0019" />
@@ -474,7 +441,6 @@
 			<IDSymbol name="ViewBuildLog" value="0x0020" />
 			<IDSymbol name="EntityReferencesWindow" value="0x002A" />
 			<IDSymbol name="TopicPreviewerWindow" value="0x0030" />
-			<IDSymbol name="LaunchContentMgr" value="0x0031" />
 			<IDSymbol name="HtmlEncode" value="0x0032" />
 			<IDSymbol name="ViewDocxHelp" value="0x0038" />
 			<IDSymbol name="ViewHelpMenu" value="0x000F" />
@@ -497,10 +463,6 @@
 
 		<GuidSymbol name="MSHelpViewer.bmpGuid" value="{eb2ed59a-8262-48dc-9f59-bab070bd4a58}">
 			<IDSymbol name="MSHelpViewer.bmpId" value="1" />
-		</GuidSymbol>
-
-		<GuidSymbol name="HelpLibManager.bmpGuid" value="{655f4fc1-0287-44f5-85e6-70d702984ccd}">
-			<IDSymbol name="HelpLibManager.bmpId" value="1" />
 		</GuidSymbol>
 
 		<GuidSymbol name="AspNetWebsite.bmpGuid" value="{8e8669cc-c445-4357-a96b-5797bee36ac4}">
@@ -529,10 +491,6 @@
 
 		<GuidSymbol name="TopicPreview.bmpGuid" value="{6c232f18-db48-45c7-8316-bc589a975a1b}">
 			<IDSymbol name="TopicPreview.bmpId" value="1" />
-		</GuidSymbol>
-
-		<GuidSymbol name="HelpContentManager.bmpGuid" value="{bee92097-9765-42e0-bc8f-a1f56a8b29f2}">
-			<IDSymbol name="HelpContentManager.bmpId" value="1" />
 		</GuidSymbol>
 
 		<GuidSymbol name="HtmlEncode.bmpGuid" value="{9726fa79-209e-40f3-9274-7829931528b4}">
