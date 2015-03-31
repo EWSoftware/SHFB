@@ -221,7 +221,7 @@ private string Search(List<string> keywords, List<string> fileInfo,
 		sb.Append("<ol>");
 
     foreach(Ranking r in rankings)
-        sb.AppendFormat("<li><a href=\"{0}\" \" target=\"_blank\">{1}</a></li>", r.Filename, r.PageTitle);
+        sb.AppendFormat("<li><a href=\"{0}\" target=\"_blank\">{1}</a></li>", r.Filename, r.PageTitle);
 
 		sb.Append("</ol>");
 
