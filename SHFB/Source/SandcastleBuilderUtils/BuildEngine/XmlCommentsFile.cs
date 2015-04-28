@@ -41,7 +41,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private static Regex reFixupComments1 = new Regex("`[0-9]+(\\{)");
         private static Regex reFixupComments2 = new Regex("(member name=\".*?System\\.Collections\\.Generic.*?)(\\^)");
-        private static Regex reFixupComments3 = new Regex("cref=\"!:([EFMNPT]|Overload):");
+        private static Regex reFixupComments3 = new Regex("cref=\"!:([EFMNPTG]|Overload):");
         private static Regex reInteriorPtrFixup = new Regex(@"cli\.interior_ptr{([^}]+?)}");
 
         private string sourcePath;
