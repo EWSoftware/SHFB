@@ -352,19 +352,22 @@ namespace Microsoft.Ddue.Tools
             foreach(string space in namespaces.Reverse())
             {
                 parts = space.Split('.');
-                partCount = parts.Length >= maxParts ? maxParts : parts.Length - 1;
+                for (partCount = parts.Length-1; partCount >= maxParts; partCount--)
+                {
+                    if (parts.Length - 1 <= partCount)
+                        root = String.Join(".", parts, 0, parts.Length - 1);
+                    else
+                        root = String.Join(".", parts, 0, partCount);
 
-                if(parts.Length - 1 <= partCount)
-                    root = String.Join(".", parts, 0, parts.Length - 1);
-                else
-                    root = String.Join(".", parts, 0, partCount);
+                    // Create a new group to represent the namespace if there are child namespaces and it is not
+                    // there already.  A group is only created if it will contain more than one namespace. Namespaces
+                    // without any children will end up in their parent as a standard namespace entry.
 
-                // Create a new group to represent the namespace if there are child namespaces and it is not
-                // there already.  A group is only created if it will contain more than one namespace. Namespaces
-                // without any children will end up in their parent as a standard namespace entry.
-                if(root.Length > 2 && !groups.ContainsKey(root) &&
-                  namespaces.Count(n => n.StartsWith(root + ".", StringComparison.Ordinal)) > 1)
-                    groups.Add(root, new NamespaceGroup { Namespace = root });
+                    if (root.Length > 2 && !groups.ContainsKey(root) &&
+                        !namespaces.Contains(root) &&
+                        namespaces.Count(n => n.StartsWith(root + ".", StringComparison.Ordinal)) > 1)
+                        groups.Add(root, new NamespaceGroup { Namespace = root });
+                }
             }
 
             // Now place the namespaces in the appropriate group.  Include the group keys as they may not be
@@ -373,7 +376,7 @@ namespace Microsoft.Ddue.Tools
               n => n).Select(n => n.Key))
             {
                 parts = space.Split('.');
-                partCount = parts.Length >= maxParts ? maxParts : parts.Length - 1;
+                partCount = parts.Length - 1;
 
                 while(partCount > -1)
                 {
