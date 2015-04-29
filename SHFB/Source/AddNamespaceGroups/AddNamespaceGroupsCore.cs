@@ -343,6 +343,11 @@ namespace Microsoft.Ddue.Tools
             string root;
             int partCount;
 
+            // If the shortest namespace has more than one part, increase the maximum number of parts
+            // to account for the base length.
+            if (namespaces.Count() != 0)
+                maxParts += namespaces.Min(n => n.Split('.').Length) - 1;
+
             // This serves as the root group.  If a project element is present in the reflection file, its
             // list of elements will be replaced by the list in this group.  If not, this group is written to
             // the file to serve as a place holder for the TOC XSL transformation.
