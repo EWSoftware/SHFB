@@ -7106,6 +7106,20 @@
                 <File Id="fil78817A2D876D563F5461AA620D89084C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Content\de-DE\shared_content_mshc.xml" />
               </Component>
             </Directory>
+            <Directory Id="dir52B18124EA294F67ADEB18AE4C66838A" Name="es-ES">
+              <Component Id="cmpF15AD8A865774041A8041E0344A87191" Guid="{341C5923-F8FE-486B-87DE-E30927DBB93F}">
+                <File Id="fil289568761578439F80937A8742520806" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Content\es-ES\conceptual_content.xml" />
+              </Component>
+              <Component Id="cmpC8DB963EC07F42F68FE619167D1CFB97" Guid="{FF0B6C6A-6F54-4188-A28F-E7FB00E7EE70}">
+                <File Id="fil335FCA3FF51A45A4A5E97D686FCC95F7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Content\es-ES\reference_content.xml" />
+              </Component>
+              <Component Id="cmpC083B0D8D7424CF9ABCB109D52A74BE3" Guid="{34C5EABA-0876-4117-89E9-9F2A692600F4}">
+                <File Id="fil6F854147E84B4C32AC40CE561076BB18" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Content\es-ES\shared_content.xml" />
+              </Component>
+              <Component Id="cmp562CDACE5737433196D56EEE289DE3DF" Guid="{97BEF335-184A-4AD1-B816-6CF56065365F}">
+                <File Id="filEE4D8D058F524AC2A89BE21C6E838726" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Content\es-ES\shared_content_mshc.xml" />
+              </Component>
+            </Directory>
             <Directory Id="dirBB0AA500DFB5B36574BE957B80215DC6" Name="ru-RU">
               <Component Id="cmp03C769467F3E841B2C9D093E6A0D8814" Guid="{1662F042-275D-4B15-B447-6E1A69B1C2B5}">
                 <File Id="filDE3F47F2DD7B10AD3563739F388671DB" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Content\ru-RU\conceptual_content.xml" />
@@ -10305,6 +10319,10 @@
       <ComponentRef Id="cmp58CCF08BC1907A646D43676651CBFDCF" />
       <ComponentRef Id="cmp5896F84D46377B285FA1D6E4EA2EB239" />
       <ComponentRef Id="cmpFD287BA2C6CE31FA234FA6067AFCF9E6" />
+      <ComponentRef Id="cmpF15AD8A865774041A8041E0344A87191" />
+      <ComponentRef Id="cmpC8DB963EC07F42F68FE619167D1CFB97" />
+      <ComponentRef Id="cmpC083B0D8D7424CF9ABCB109D52A74BE3" />
+      <ComponentRef Id="cmp562CDACE5737433196D56EEE289DE3DF" />
     </ComponentGroup>
   </Fragment>
 </Wix>
