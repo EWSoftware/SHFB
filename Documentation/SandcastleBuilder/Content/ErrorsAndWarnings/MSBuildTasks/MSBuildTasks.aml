@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="a9c0c9b3-c7d6-4904-bf2b-450f56fb0578" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Select a build task error or warning below:</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="e4b1c387-d296-42ed-9458-7c6b460b5c35" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="c47b9dfb-e27c-4af2-b9e9-68258a8eca01" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="93d73e6e-2b07-4bc4-9535-c706dbf8540a" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="a707806a-1173-4a0e-a21d-7b2d5a42f7fe" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="842594b8-d1ba-4baa-9082-de991e376d4f" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="e8c8417f-ac01-450c-8aef-984a69ecbb93" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="20cf4894-e127-46f7-a0f3-6da7252f3652" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="13b7b97f-6a6d-442a-aabf-b00a026b54c0" />
+						</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="ad93a5f8-5f2b-430b-9947-ad58f8520aca" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Select an HTML extract tool error or warning below:</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="0f17b9b9-8e80-41d7-85cc-d9a97ff529ea" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="7cf02d57-8cb3-4f29-ab90-236ae57f9c23" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="cc3ac64c-a882-47ff-b104-bf497f56b42d" />
+						</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

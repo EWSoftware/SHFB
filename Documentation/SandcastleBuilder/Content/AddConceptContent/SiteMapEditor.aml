@@ -7,19 +7,8 @@
     <introduction>
       <para>Adding a site map file to the project and setting its <codeInline>BuildAction</codeInline> to
 <codeInline>SiteMap</codeInline> allows you to define the table of contents layout for the additional content
-HTML files. This allows you to specify a layout that is different than the physical folder structure of the
+markdown and HTML files.  The layout in the site map file can differ from the physical folder structure of the
 content files.</para>
-
-			<alert class="warning">
-				<para><legacyBold>Deprecated</legacyBold></para>
-
-				<para>The additional content model of adding extra content to a help file has been deprecated.  While it
-will continue to be supported and will not be removed, it will not receive any more features or updates.  Going
-forward, <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> is the preferred
-method of adding non-reference content to the help file.  The additional content feature can still be used to
-<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link> and add supporting files
-to the help file.</para>
-			</alert>
 
 			<autoOutline lead="none" excludeRelatedTopics="true" />
     </introduction>
@@ -95,8 +84,8 @@ it.</para>
 
 			<definedTerm>Title</definedTerm>
 			<definition>
-				<para>This is used as the title for the topic.  In addition, it will be used as the table of contents
-title.</para>
+				<para>This is used as the title for empty container nodes.  For nodes with a file, the title is extracted
+from the topic file at build time.  It can be set for informational purposes while editing the site map file.</para>
 			</definition>
 
 			<definedTerm>Use as the default topic</definedTerm>
@@ -139,7 +128,7 @@ standard <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3">content placeme
 			
 		</definitionTable>		
 		
-		<para>The toolbar above the tree is used to perform various actions on the site map file such as adding
+		<para>The tool bar above the tree is used to perform various actions on the site map file such as adding
 new topics, deleting topics, rearranging them, etc.  These options are also available in a context menu accessed
 by right clicking on a topic in the tree.  The commands (from left to right) and their associated context menu
 options perform the following actions:</para>
@@ -287,7 +276,6 @@ the selected topic.</para>
 
     <relatedTopics>
       <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
-      <link xlink:href="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" />
     </relatedTopics>
 
   </developerConceptualDocument>

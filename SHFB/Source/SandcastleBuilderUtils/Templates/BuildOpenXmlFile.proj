@@ -22,7 +22,7 @@
 
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
 
-  <!-- The Build MS Help Viewer file target -->
+  <!-- The Build Open XML file target -->
   <Target Name="BuildOpenXmlFile">
 
     <!-- Build the help file -->

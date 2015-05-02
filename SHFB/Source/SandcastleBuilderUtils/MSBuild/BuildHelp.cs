@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 03/30/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to build help file output using the Sandcastle Help File Builder
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -23,6 +23,7 @@
 // -------  12/21/2013  EFW  Removed support for SHFBCOMPONENT root as the ComponentPath project property
 //                           handles its functionality now.
 //          02/15/2014  EFW  Added support for the Open XML output format
+//          03/30/2015  EFW  Added support for the Markdown output format
 //===============================================================================================================
 
 using System;
@@ -222,6 +223,23 @@ namespace SandcastleBuilder.Utils.MSBuild
             }
         }
 
+        /// <summary>
+        /// This is used to return a list of the Markdown (md) files that resulted from the build
+        /// </summary>
+        [Output]
+        public ITaskItem[] MarkdownFiles
+        {
+            get
+            {
+                List<ITaskItem> files = new List<ITaskItem>();
+
+                if(buildProcess != null && lastBuildStep == BuildStep.Completed)
+                    foreach(string file in buildProcess.MarkdownFiles)
+                        files.Add(new TaskItem(file));
+
+                return files.ToArray();
+            }
+        }
 
         /// <summary>
         /// This is used to return a list of all files that resulted from the

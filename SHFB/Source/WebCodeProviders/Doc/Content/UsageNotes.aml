@@ -40,7 +40,7 @@ project.</para>
 							<para>The comments files produced using the VB.NET <codeInline>/doc+</codeInline> option are
 not placed in the folder to which the project was published. Instead, they are left in the system's temporary
 ASP.NET folder for the related .NET version (i.e.
-<localUri>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Temporary ASP.NET files</localUri> so you must
+<localUri>C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\Temporary ASP.NET files</localUri> so you must
 locate and retrieve them after each build.</para>
 						</listItem>
 					</list>
@@ -144,8 +144,8 @@ hurt anything if they are both present.</para>
         type="EWSoftware.CodeDom.CSharpCodeProviderWithDocs,
               EWSoftware.CodeDom, Version=1.1.0.0, Culture=neutral,
               PublicKeyToken=d633d7d5b41cbb65"&gt;
-        &lt;!-- NOTE: Change value to "v3.5" for .NET 3.5 projects -->
-        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v2.0&quot;/&gt;
+        &lt;!-- NOTE: Change version value as needed (v3.5, v4.0, etc.) -->
+        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v4.0&quot;/&gt;
       &lt;/compiler&gt;
 
       &lt;!-- For VB.NET --&gt;
@@ -154,8 +154,8 @@ hurt anything if they are both present.</para>
         type="EWSoftware.CodeDom.VBCodeProviderWithDocs,
               EWSoftware.CodeDom, Version=1.1.0.0, Culture=neutral,
               PublicKeyToken=d633d7d5b41cbb65"&gt;
-        &lt;!-- NOTE: Change value to "v3.5" for .NET 3.5 projects -->
-        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v2.0&quot;/&gt;
+        &lt;!-- NOTE: Change version value as needed (v3.5, v4.0, etc.) -->
+        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v4.0&quot;/&gt;
       &lt;/compiler&gt;
     &lt;/compilers&gt;
   &lt;/system.codedom&gt;
@@ -234,11 +234,12 @@ publishing.</para>
       <content>
         <para>Using the <legacyBold>aspnet_compiler</legacyBold> tool, it is possible to automate the
 publishing of a website project.  The tool is located in the .NET Framework folder.  For .NET 2.0 through
-3.5, this is usually <localUri>C:\Windows\Microsoft.NET\Framework\v2.0.50727</localUri>.  To run it, issue
-a command similar to the following (lines wrapped for display purposes):</para>
+3.5, this is usually <localUri>C:\Windows\Microsoft.NET\Framework\v2.0.50727</localUri>.  For .NET 4, this
+is usually <localUri>C:\Windows\Microsoft.NET\Framework\v4.0.30319</localUri>.  To run it, issue a command
+similar to the following (lines wrapped for display purposes):</para>
 
 <code language="none" title=" ">
-C:\Windows\Microsoft.NET\Framework\v2.0.50727\aspnet_compiler
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_compiler
     -f -v /MyWebSite
     -p C:\Path\To\MyWebsite C:\Publish\MyWebSite
 </code>

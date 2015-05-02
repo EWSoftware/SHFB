@@ -445,7 +445,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     string ext = Path.GetExtension(currentTopicWindow.Filename).ToLowerInvariant();
 
-                    // TODO: Need a config file to map extensions to parsers, add support for code files too
                     switch(ext)
                     {
                         case ".aml":

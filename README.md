@@ -3,6 +3,10 @@ Welcome to the **Sandcastle Help File Builder** project.
 * [Get the current release](https://github.com/EWSoftware/SHFB/releases)
 * [Ask a question or open an issue](https://github.com/EWSoftware/SHFB/issues)
 * [Frequently Asked Questions (FAQ)](http://ewsoftware.github.io/SHFB/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm)
+* [Sandcastle Help File Builder Help](http://EWSoftware.github.io/SHFB)
+* [Sandcastle Tools Help](http://EWSoftware.github.io/SandcastleTools)
+* [Sandcastle MAML Guide](http://EWSoftware.github.io/MAMLGuide)
+* [Sandcastle XML Comments Guide](http://EWSoftware.github.io/XMLCommentsGuide)
 
 This project is composed of two separate parts that work together: the Sandcastle tools and the Sandcastle Help
 File Builder.  The Sandcastle tools are used to create help files for managed class libraries containing both

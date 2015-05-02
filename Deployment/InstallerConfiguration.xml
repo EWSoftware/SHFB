@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2015.1.12.0" />
+	<sandcastle version="v2015.5.2.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -12,10 +12,10 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://EWSoftware.github.io/SandcastleTools/html/f478aa7e-3b41-4411-b6eb-e70bea1644a9.htm"
-				description="Sandcastle Tools v2015.1.12.0 Release Notes" />
-			<whatsNew url="http://EWSoftware.github.io/SHFB/html/930f1daa-1a38-4659-84c9-91c81e204c73.htm"
-				description="Sandcastle Help File Builder v2015.1.12.0 Release Notes" />
+			<whatsNew url="http://EWSoftware.github.io/SandcastleTools/html/1ce85143-552c-4777-874c-c8b3fa5658ed.htm"
+				description="Sandcastle Tools v2015.5.2.0 Release Notes" />
+			<whatsNew url="http://EWSoftware.github.io/SHFB/html/e2fcc636-0781-4232-8c7e-fb5edbe40026.htm"
+				description="Sandcastle Help File Builder v2015.5.2.0 Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -25,7 +25,7 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="2015.1.12.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.0" shfbVersion="2015.5.2.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
 			installerName="SHFBVisualStudioPackage.vsix">

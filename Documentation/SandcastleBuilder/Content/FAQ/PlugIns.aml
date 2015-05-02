@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="93cf23ae-5577-42c1-84fb-cd11a25def4d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to build process plug-ins.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="ConfigPlugIn">
+			<title>How do I configure the plug-ins with project-specific settings?</title>
+			<content>
+				<para>Use the <ui>Plug-Ins</ui> project property category.  Select the plug-ins from the list on the
+property page, add it to the project, and click the <ui>Configure</ui> button.</para>
+			</content>
+		</section>
+
+		<section address="PlugInInfo">
+			<title>Where can I find more information on the plug-ins supplied with the help file builder?</title>
+			<content>
+				<para>See the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" /> help topic for more information
+and links to details about each plug-in.</para>
+			</content>
+		</section>
+
+		<section address="CreatePlugIn">
+			<title>How can I create my own custom plug-ins?</title>
+			<content>
+				<para>For information on writing your own custom plug-ins, see the
+<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" /> help topic.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

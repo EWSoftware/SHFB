@@ -1,5 +1,6 @@
 Imports System
 Imports System.IO
+Imports System.Reflection
 Imports System.Xml.XPath
 
 Imports Sandcastle.Core
@@ -66,7 +67,7 @@ Namespace $safeprojectname$
             ''' <inheritdoc />
             Public ReadOnly Property ResourceItemFileLocation As String
                 Get
-                    Return Path.Combine(ComponentUtilities.AssemblyFolder(Nothing), "SyntaxContent")
+                    Return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent")
                 End Get
             End Property
 

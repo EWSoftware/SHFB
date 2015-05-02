@@ -27,7 +27,7 @@ unlike other Visual Studio projects and require additional steps in order to gen
 
 				<alert class="tip">
 					<para>If not using the Visual Studio IDE, the various managed language compilers support a
-<replaceable>/doc</replaceable> command line option that will produce the XML comments file.  See your language
+<codeInline>/doc</codeInline> command line option that will produce the XML comments file.  See your language
 compiler command line option documentation for details.</para>
 	  </alert>
 
@@ -52,7 +52,7 @@ at the same time or select each configuration individually and repeat the next s
             </step>
             <step>
               <content>
-                <para>In the <ui>Output</ui> section, check the checkbox next to the <ui>Xml documentation file</ui>
+                <para>In the <ui>Output</ui> section, check the checkbox next to the <ui>XML documentation file</ui>
 text box and specify a name for the XML file.  Although not required, a common convention is to name the XML
 comments file after the related assembly (except with a <localUri>.xml</localUri> extension).  The assembly name
 can be found on the <ui>Application</ui> property page.</para>
@@ -145,7 +145,7 @@ Basic information on XML comments and how to use them can also be found at eithe
 
 				<para>Although it is not mentioned in the XML tag documentation, you can use HTML markup within your XML
 comments to provide additional formatting, embed images, etc.  See the
-<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#HtmlTags">FAQ</link> for more information.</para>
+<link xlink:href="b92db9c5-9d0c-4d65-ac6e-d3d25adb4093#HtmlTags">FAQ</link> for more information.</para>
 		</content>
 	</section>
 

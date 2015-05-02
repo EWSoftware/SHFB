@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
@@ -36,7 +37,7 @@ namespace $safeprojectname$
         /// <inheritdoc />
         public override string Location
         {
-            get { return ComponentUtilities.AssemblyFolder(null); }
+            get { return ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()); }
         }
 
         /// <summary>

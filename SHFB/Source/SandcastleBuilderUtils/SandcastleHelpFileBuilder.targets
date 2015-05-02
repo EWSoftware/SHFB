@@ -50,6 +50,7 @@
 			<Output TaskParameter="HelpViewerFiles" ItemName="HelpViewerFiles" />
 			<Output TaskParameter="WebsiteFiles" ItemName="WebsiteFiles" />
 			<Output TaskParameter="OpenXmlFiles" ItemName="OpenXmlFiles" />
+			<Output TaskParameter="MarkdownFiles" ItemName="MarkdownFiles" />
 			<Output TaskParameter="AllHelpFiles" ItemName="AllHelpFiles" />
 		</SandcastleBuilder.Utils.MSBuild.BuildHelp>
 

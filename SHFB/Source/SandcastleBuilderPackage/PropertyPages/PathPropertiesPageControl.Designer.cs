@@ -80,9 +80,10 @@
             this.txtOutputPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOutputPath.DefaultFolder = System.Environment.SpecialFolder.MyDocuments;
+            this.epWarning.SetError(this.txtOutputPath, "WARNING: When building a web site or markdown output, the prior content of\n" +
+    "the output folder will be erased without warning before copying the new\n" +
+    "content to it!");
             this.epNotes.SetError(this.txtOutputPath, "The default is a .\\Help folder relative to the project folder");
-            this.epWarning.SetError(this.txtOutputPath, "WARNING: When building a web site, the prior content of the output folder will be" +
-        "\nerased without warning before copying the new content to it!");
             this.epNotes.SetIconPadding(this.txtOutputPath, 5);
             this.epWarning.SetIconPadding(this.txtOutputPath, 25);
             this.txtOutputPath.Location = new System.Drawing.Point(246, 317);
@@ -101,9 +102,9 @@
             this.txtWorkingPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtWorkingPath.DefaultFolder = System.Environment.SpecialFolder.MyDocuments;
-            this.epNotes.SetError(this.txtWorkingPath, "The default is a .\\Working folder under the Output Path folder");
             this.epWarning.SetError(this.txtWorkingPath, "WARNING: All files and folders in this path will be erased without warning\nwhen t" +
         "he build starts!");
+            this.epNotes.SetError(this.txtWorkingPath, "The default is a .\\Working folder under the Output Path folder");
             this.epNotes.SetIconPadding(this.txtWorkingPath, 5);
             this.epWarning.SetIconPadding(this.txtWorkingPath, 25);
             this.txtWorkingPath.Location = new System.Drawing.Point(246, 354);
@@ -119,8 +120,8 @@
             this.txtComponentPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtComponentPath.DefaultFolder = System.Environment.SpecialFolder.MyDocuments;
-            this.epNotes.SetError(this.txtComponentPath, "Use this to find project-specific build components.\nIf blank, the project folder" +
-        " is searched.");
+            this.epNotes.SetError(this.txtComponentPath, "Use this to find project-specific build components.\nIf blank, the project folder " +
+        "is searched.");
             this.epNotes.SetIconPadding(this.txtComponentPath, 5);
             this.txtComponentPath.Location = new System.Drawing.Point(246, 224);
             this.txtComponentPath.Name = "txtComponentPath";

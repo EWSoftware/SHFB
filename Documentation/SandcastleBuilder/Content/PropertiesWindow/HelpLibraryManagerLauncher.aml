@@ -42,7 +42,9 @@ an error message stating that you need to run the Help Library Manager to initia
 			<listItem>
 				<para>It checks for the required <codeInline>product</codeInline> and <codeInline>version</codeInline>
 or <codeInline>catalogName</codeInline> command line options.  If not specified, it exits with an error message
-stating which one was missing.</para>
+stating which one was missing.  For Help Viewer 2.x, if a <codeInline>catalogName</codeInline> is not specified,
+it defaults to the appropriate catalog name for the Visual Studio version associated with the specified help
+viewer version.</para>
 			</listItem>
 
 			<listItem>

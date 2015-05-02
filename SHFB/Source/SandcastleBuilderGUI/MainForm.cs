@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
+// Updated : 04/01/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,6 +31,7 @@
 // 1.9.3.4  01/20/2012  EFW  Updated to use the new topic previewer window
 // 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
 // -------  02/15/2014  EFW  Added support for the Open XML output format
+//          04/01/2015  EFW  Added support for the Markdown file format
 //===============================================================================================================
 
 using System;
@@ -1481,7 +1482,10 @@ namespace SandcastleBuilder.Gui
                         if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
                             miViewBuiltHelpFile_Click(miViewOpenXml, e);
                         else
-                            miViewAspNetWebsite_Click(sender, e);
+                            if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+                                miViewBuiltHelpFile_Click(miViewHelpFile, e);
+                            else
+                                miViewAspNetWebsite_Click(sender, e);
         }
 
         /// <summary>
@@ -1525,7 +1529,10 @@ namespace SandcastleBuilder.Gui
                     if(sender == miViewOpenXml)
                         outputPath += project.HtmlHelpName + ".docx";
                     else
-                        outputPath += "Index.html";
+                        if(sender == miViewHelpFile)
+                            outputPath += "_Sidebar.md";
+                        else
+                            outputPath += "Index.html";
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)

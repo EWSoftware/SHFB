@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="ddf6af72-2798-4c90-be78-94df03939ada" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers general questions and issues.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="GettingStarted">
+			<title>How do I use Sandcastle and the help file builder?</title>
+			<content>
+				<para>Read through the topics in the <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" /> section
+in the table of contents.  These will give you an overview of how to use Sandcastle, the help file builder, and
+how to set up your projects to generate XML comments.</para>
+			</content>
+		</section>
+
+		<section address="WhereDidItGo">
+			<title>I have been using version 1.7.0.0 or earlier.  The latest release is a significant change. Where did
+option/feature X go?</title>
+			<content>
+				<para>Be sure to read through the version history starting at <link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
+since it contains all of the information about the change in project format and the user interface.  The
+<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2#WhereIsIt">Where Did That Feature Go?</link> section in
+that topic contains information about how to find features or equivalent functionality in the new release.</para>
+			</content>
+		</section>
+
+		<section address="WebProjects">
+			<title>How do I document a web application or a website project?</title>
+			<content>
+				<para>See the  <link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42" /> topic for details.</para>
+			</content>
+		</section>
+		
+		<section address="NamingMethod">
+			<title>How can I create a link to a conceptual topic/namespace element's help topic from an external source
+such as application code or a page in an external website?</title>
+			<content>
+				<para>Set the project's <codeInline>NamingMethod</codeInline> property based on your preference and see
+the <link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#NamingMethod">NamingMethod</link> help topic for
+examples that show how to open specific topics based on the selected naming method from application code and how
+to determine the URL for a website link.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -32,8 +32,8 @@
 	<item id="title_example">Example</item>
 
 	<!-- AutoOutline boilerplate -->
-	<item id="boilerplate_autoOutlineTopLevelIntro">This topic contains the following sections.</item>
-	<item id="boilerplate_autoOutlineSubsectionIntro">This section contains the following subsections.</item>
+	<item id="boilerplate_autoOutlineTopLevelIntro">This topic contains the following sections:</item>
+	<item id="boilerplate_autoOutlineSubsectionIntro">This section contains the following subsections:</item>
 
 	<!-- Resolve the autoOutline token -->
 	<item id="autoOutline">

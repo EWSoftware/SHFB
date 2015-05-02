@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="ff4e514b-29ad-4329-a754-4ae7d6008587" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to the conceptual content and additional content.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="Transform">
+			<title>I want my additional content (HTML) pages to look like the selected presentation style used in the
+API topics. How can I do that?</title>
+			<content>
+				<para>The preferred method for adding additional content (also known as conceptual content) to a project
+is to use Microsoft Assistance Markup Language (MAML).  To have the HTML topics match the presentation style,
+convert them to MAML.  See the <link xlink:href="5292ce5c-fda1-4a77-9155-a11755ef1730" /> topics for more
+information.</para>
+			</content>
+		</section>
+
+		<section address="DefaultTopic">
+			<title>How do I arrange the conceptual content pages and specify which is the default topic?</title>
+			<content>
+				<para>The <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">content layout file editor</link> is
+used to define the content layout and the default topic.</para>
+			</content>
+		</section>
+	
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

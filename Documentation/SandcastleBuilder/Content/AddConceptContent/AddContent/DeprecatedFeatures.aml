@@ -3,20 +3,13 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>These features are included for backward compatibility with NDoc and prior versions of the help file
-builder.  These features are unsupported for the MS Help Viewer help file format.</para>
+builder.  These features are unsupported for the MS Help Viewer help file format and some of the more recent
+presentation styles.</para>
     </introduction>
 
 <section>
-	<title>Deprecated Features</title>
 	<content>
-		<alert class="note">
-			<para>The additional content model of adding extra content to a help file has been deprecated.  While it
-will continue to be supported and will not be removed, it will not receive any more features or updates.  Going
-forward, <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> is the preferred
-method of adding non-reference content to the help file.  The additional content feature can still be used to
-<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link> and add supporting files to
-the help file.</para>
-		</alert>
+		<token>DeprecatedContent</token>
 
 		<list class="bullet">
 			<listItem>

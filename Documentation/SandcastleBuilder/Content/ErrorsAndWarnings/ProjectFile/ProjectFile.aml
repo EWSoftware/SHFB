@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="49ca6b97-3caf-4a0b-b70d-0e2ae56bb277" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Select a project file error or warning below:</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="f6258ea1-df3f-4397-81e4-3e0a39abcdc2" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="d813065b-c867-44a8-9315-56fc951c374e" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="2c0b4d20-b8a3-40ce-b3ac-fff52918b454" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="c5acba93-0ecf-449c-b968-df0572f75203" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="1d095fa4-c79c-4728-988d-48ad040f8c1c" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="b490911e-d7ce-42ee-920a-1615f6bc3b19" />
+						</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

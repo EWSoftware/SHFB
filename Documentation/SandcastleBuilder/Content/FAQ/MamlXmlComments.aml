@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="b92db9c5-9d0c-4d65-ac6e-d3d25adb4093" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to Microsoft Assistance Markup Language (MAML)
+and XML comments.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="LearnMAML">
+			<title>How can I learn about Microsoft Assistance Markup Language (MAML) and how to use it?</title>
+			<content>
+				<para>See the <externalLink>
+					<linkText>Sandcastle MAML Guide</linkText>
+					<linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
+					<linkUri>http://ewsoftware.github.io/MAMLGuide</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink> for information on MAML and how to use it.  See the topics in the
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> section of this help file for information on adding
+conceptual content to help file builder projects.</para>
+			</content>
+		</section>
+
+		<section address="LearnMAML">
+			<title>How can I learn about XML comments elements and how to use them?</title>
+			<content>
+				<para>
+					See the <externalLink>
+						<linkText>Sandcastle XML Comments Guide</linkText>
+						<linkAlternateText>Sandcastle XML Comments Guide</linkAlternateText>
+						<linkUri>http://ewsoftware.github.io/XMLCommentsGuide</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink> for information on XML comments and how to use them.</para>
+			</content>
+		</section>
+
+		<section address="Generics">
+			<title>How do I specify a generic such as IEnumerable&lt;T&gt; in a cref target and/or XML comments?</title>
+			<content>
+				<para>Use curly braces in <codeInline>cref</codeInline> targets and HTML entities (&amp;lt; and &amp;gt;)
+in the general XML comments.  For example:</para>
+
+<code language="cs" title=" ">
+/// &lt;remarks&gt;
+/// &lt;para&gt;See &lt;see cref="IEnumerable{T}"/&gt; for more information.&lt;/para&gt;
+/// &lt;para&gt;Another reference to &lt;c&gt;IEnumerable&amp;lt;T&amp;gt;&lt;/c&gt; that is not a link.&lt;/para&gt;
+/// &lt;/remarks&gt;
+</code>
+			</content>
+		</section>
+
+		<section address="HtmlTags">
+			<title>Can I use HTML markup in my XML comments?</title>
+			<content>
+				<para>Yes, you can use HTML markup in your XML comments to add additional formatting.  You can also use
+the <codeInline>img</codeInline> element to embed an image in a namespace element's XML comments.  Since the
+comments are XML, all HTML elements must be specified with a closing element or as self-closing (i.e
+&lt;p&gt;This is a paragraph&lt;/p&gt; or &lt;p/&gt;New paragraph).</para>
+
+				<alert class="note">
+					<para>Be aware that certain help file formats such as Open XML provide limited support for HTML
+elements within XML comments.</para>
+				</alert>
+			</content>
+		</section>
+
+		<section address="HtmlTags">
+			<title>Can I use HTML markup in my MAML topics?</title>
+			<content>
+				<para>Not directly.  However, you can wrap a block of HTML in a <codeInline>markup</codeInline> element
+so that it passes through as-is.  However, this circumvents the purpose of MAML which is to separate the
+topic's content from the physical markup.  You are much better off using an equivalent MAML element to format
+the content if one exists.  See the <codeInline>markup</codeInline> element topic in the <externalLink>
+					<linkText>Sandcastle MAML Guide</linkText>
+					<linkAlternateText>markup</linkAlternateText>
+					<linkUri>http://ewsoftware.github.io/MAMLGuide/html/aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e.htm</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink> for more information.</para>
+
+			</content>
+		</section>
+
+		<section address="EmbedImage">
+			<title>How can I embed an image in a namespace, type, or member's help topic?</title>
+			<content>
+				<para>Embedding an image in an element's help topic is a two step process.  First, you must add the image
+to the help file builder project as a content item (add it using the Project Explorer window and set the
+<codeInline>BuildAction</codeInline> to <codeInline>Content</codeInline>).  The second step is to edit the
+member's XML comments (<codeInline>summary</codeInline>, <codeInline>remarks</codeInline>, etc.) to add the
+<codeInline>img</codeInline> tag.  To embed an image in the project summary or namespace comments, add the image
+tag to the help file builder's <codeInline>ProjectSummary</codeInline> property text or to a namespace's comments
+using the <codeInline>NamespaceSummaries</codeInline> project property.</para>
+
+				<para>Below are two examples of embedding an image in the XML comments.  Note that all namespace help
+topics reside in an <localUri>.\html</localUri> folder so you must use a relative path to go up one level to
+find the image file.  The first example assumes that the image is copied to the root of the help project.  As
+such, no additional path beyond the relative indicator is required.  The second example assumes that the image
+is copied to an <localUri>.\Images</localUri> folder.  In that case, you must also specify the folder name.  As
+noted above, the image tag must be self-closing to conform to the XML specification.</para>
+
+<code language="cs" title="Example &lt;img&gt; Tag Usage">
+/// &lt;summary&gt;
+/// A class member.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;An image: &lt;img src="../Process.gif"/&gt;&lt;/remarks&gt;
+public void TestMethod()
+{
+    // ... Method implementation ...
+}
+
+/// &lt;summary&gt;
+/// A useful class.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
+/// UML Diagram: &lt;img src="../Images/TestClassUML.gif" alt="UML Diagram" /&gt;
+/// &lt;/remarks&gt;
+public TestClass
+{
+    // ... Class implementation ...
+}
+</code>
+			</content>
+		</section>
+
+		<section address="RefLinks">
+			<title>How can I create a link to a namespace element's help topic from a conceptual content topic?</title>
+			<content>
+				<para>Use the <link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" /> to add a link to the topic.
+Select the <ui>Code Entities</ui> option, search for the member, drag it's ID from the results pane, and drop it
+in the topic where you want it.</para>
+			</content>
+		</section>
+
+		<section address="LinkFromComments">
+			<title>How can I create a link to an conceptual content/additional content page from a namespace, type, or
+member help topic?</title>
+			<content>
+				<para>For conceptual content (MAML) topics, use a <codeInline>conceptualLink</codeInline> element to
+reference the topic.  The <externalLink>
+					<linkText>XML Comments Guide</linkText>
+					<linkAlternateText>conceptualLink</linkAlternateText>
+					<linkUri>http://ewsoftware.github.io/XMLCommentsGuide/html/db2703b4-12bc-4cf5-8642-544b41002809.htm</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink> contains more information and examples.  The <link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
+can be used to add a link.  Set the <ui>Type</ui> to "Table of Contents", change the <ui>Insert as</ui> option
+to "XML comments conceptualLink", drag the topic from the table of contents to the XML comments, and drop it
+where you want it.</para>
+
+				<para>For HTML pages, edit the member's XML comments (summary, remarks, etc) to add an anchor
+(<codeInline>&lt;a&gt;</codeInline>) tag that points to the additional content page. To add a link in the
+Project Summary or Namespace comments, add the anchor tag to the help file builder's Project Summary notes
+or namespace comments.  Below are two examples of adding a link in the XML comments.  Note that all namespace
+help topics reside in an <localUri>.\html</localUri> folder so you must use a relative path to go up one level to
+find the additional content file.  The first example assumes that the file is copied to the root of the help
+project.  As such, no additional path beyond the relative indicator is required.  The second example assumes that
+the file is copied to a <localUri>.\Tutorials</localUri> folder.  In that case, you must also specify the folder
+name.</para>
+
+<code language="cs" title="Linking to Additional Content">
+/// &lt;summary&gt;
+/// A class member.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;Class usage tutorial:
+/// &lt;a href="../SomeClassTutorial.html"&gt;SomeClass Tutorial&lt;/a&gt;
+/// &lt;/remarks&gt;
+public void TestMethod()
+{
+    // ... Method implementation ...
+}
+
+/// &lt;summary&gt;
+/// A useful class.  For more information see the
+/// &lt;a href="../Tutorials/SomeClass.html"&gt;tutorial&lt;/a&gt;.
+/// &lt;/summary&gt;
+public TestClass
+{
+    // ... Class implementation ...
+}
+</code>
+			</content>
+		</section>
+
+		<section address="AttachedPropsEvents">
+			<title>How can I document WPF attached events and attached properties?</title>
+			<content>
+				<para>See the XML comments guide, specifically the topics on the <externalLink>
+					<linkText>AttachedEventComments</linkText>
+					<linkAlternateText>AttachedEventComments</linkAlternateText>
+					<linkUri>http://ewsoftware.github.io/XMLCommentsGuide/html/3563f000-5677-4cd9-afd7-4e3f2a7fe4fc.htm</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink> and <externalLink>
+						<linkText>AttachedPropertyComments</linkText>
+						<linkAlternateText>AttachedPropertyComments</linkAlternateText>
+						<linkUri>http://ewsoftware.github.io/XMLCommentsGuide/html/c0346d23-f376-4948-8f9a-d17b2f1acef3.htm</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink> elements.  Examples are provided.</para>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

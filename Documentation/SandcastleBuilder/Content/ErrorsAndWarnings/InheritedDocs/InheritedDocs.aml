@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="077ce20b-7998-4fec-8d79-16d990e1cf3b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Select an inherited documentation tool error or warning below:</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="ceaee6cc-6393-40c6-bca4-869b0553f2b3" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="ac7c5fc5-134a-495c-a743-f4f577ffa31a" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="f6fd25df-5d9c-449e-a63a-32c05ee731d7" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="c472d97b-e5b9-4e60-8746-dc1ec660167b" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="82ead344-5447-484d-acfe-e778b7ac12cf" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="93aecba9-ef0e-40d8-a82e-34399bee6ca3" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="6038c08c-de58-4579-a018-bdbbce3134f5" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="efa6ca2b-c052-4555-90d8-a9cc9093f793" />
+						</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

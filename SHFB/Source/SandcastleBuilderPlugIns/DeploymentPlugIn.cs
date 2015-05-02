@@ -2,26 +2,27 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/09/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 04/03/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to deploy the resulting help file output to a location other
 // than the output folder (i.e. a file share, an FTP site, a web server, etc.).
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.2.0  09/09/2007  EFW  Created the code
-// 1.6.0.5  02/18/2008  EFW  Added support for relative deployment paths
-// 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
-// 1.8.0.3  07/06/2009  EFW  Added support for Help Viewer deployment
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
-//          03/09/2014  EFW  Updated to support Open XML file deployment
+// 09/09/2007  EFW  Created the code
+// 02/18/2008  EFW  Added support for relative deployment paths
+// 08/13/2008  EFW  Updated to support the new project format
+// 07/06/2009  EFW  Added support for Help Viewer deployment
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 03/09/2014  EFW  Updated to support Open XML file deployment
+// 04/03/2015  EFW  Updated to support Markdown content deployment
 //===============================================================================================================
 
 using System;
@@ -61,8 +62,9 @@ namespace SandcastleBuilder.PlugIns
         private BuildProcess builder;
 
         // Plug-in configuration options
-        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer, deployWebsite, deployOpenXml;
-        private bool deleteAfterDeploy, renameMSHA;
+        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer, deployWebsite, deployOpenXml,
+            deployMarkdown;
+        private bool deleteAfterDeploy, verboseLogging, renameMSHA;
         #endregion
 
         #region IPlugIn implementation
@@ -132,6 +134,11 @@ namespace SandcastleBuilder.PlugIns
             if(!String.IsNullOrEmpty(value))
                 deleteAfterDeploy = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
 
+            value = root.GetAttribute("verboseLogging", String.Empty);
+
+            if(!String.IsNullOrEmpty(value))
+                verboseLogging = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
+
             if(root.IsEmptyElement)
                 throw new BuilderException("ODP0001", "The Output Deployment plug-in has not been " +
                     "configured yet");
@@ -141,6 +148,7 @@ namespace SandcastleBuilder.PlugIns
             deployHelpViewer = DeploymentLocation.FromXPathNavigator(root, "helpViewer");
             deployWebsite = DeploymentLocation.FromXPathNavigator(root, "website");
             deployOpenXml = DeploymentLocation.FromXPathNavigator(root, "openXml");
+            deployMarkdown = DeploymentLocation.FromXPathNavigator(root, "markdown");
 
             msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
 
@@ -150,7 +158,8 @@ namespace SandcastleBuilder.PlugIns
 
             // At least one deployment location must be defined
             if(deployHelp1.Location == null && deployHelp2.Location == null &&
-              deployHelpViewer.Location == null && deployWebsite.Location == null && deployOpenXml.Location == null)
+              deployHelpViewer.Location == null && deployWebsite.Location == null &&
+              deployOpenXml.Location == null && deployMarkdown.Location == null)
                 throw new BuilderException("ODP0002", "The output deployment plug-in must have at least " +
                     "one configured deployment location");
 
@@ -178,6 +187,11 @@ namespace SandcastleBuilder.PlugIns
             if(deployOpenXml.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
                 builder.ReportWarning("ODP0003", "Open XML will be generated but not deployed due to " +
+                    "missing deployment location information");
+
+            if(deployMarkdown.Location == null &&
+              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+                builder.ReportWarning("ODP0003", "Markdown content will be generated but not deployed due to " +
                     "missing deployment location information");
         }
 
@@ -217,6 +231,12 @@ namespace SandcastleBuilder.PlugIns
                 builder.ReportProgress("Deploying Open XML files");
                 this.DeployOutput(builder.OpenXmlFiles, deployOpenXml);
             }
+
+            if(builder.CurrentFormat == HelpFileFormats.Markdown)
+            {
+                builder.ReportProgress("Deploying markdown content files");
+                this.DeployOutput(builder.MarkdownFiles, deployMarkdown);
+            }
         }
         #endregion
 
@@ -233,7 +253,7 @@ namespace SandcastleBuilder.PlugIns
             WebClient webClient = null;
             Uri destUri, target = location.Location;
             string rootPath, destFile, destPath;
-            int basePathLength = builder.OutputFolder.Length;
+            int fileCount = 0, basePathLength = builder.OutputFolder.Length;
 
             if(target == null)
             {
@@ -291,7 +311,8 @@ namespace SandcastleBuilder.PlugIns
 
                     if(webClient == null)
                     {
-                        builder.ReportProgress("    Deploying {0} to {1}", sourceFile, destFile);
+                        if(verboseLogging)
+                            builder.ReportProgress("    Deploying {0} to {1}", sourceFile, destFile);
 
                         destPath = Path.GetDirectoryName(destFile);
 
@@ -303,7 +324,9 @@ namespace SandcastleBuilder.PlugIns
                     else
                     {
                         destUri = new Uri(destFile);
-                        builder.ReportProgress("    Deploying {0} to {1}", sourceFile, destUri);
+
+                        if(verboseLogging)
+                            builder.ReportProgress("    Deploying {0} to {1}", sourceFile, destUri);
 
                         webClient.UploadFile(destUri, sourceFile);
                     }
@@ -311,7 +334,18 @@ namespace SandcastleBuilder.PlugIns
                     // If not wanted, remove the source file after deployment
                     if(deleteAfterDeploy)
                         File.Delete(sourceFile);
+
+                    if(!verboseLogging)
+                    {
+                        fileCount++;
+
+                        if((fileCount % 500) == 0)
+                            builder.ReportProgress("    Deployed {0} files", fileCount);
+                    }
                 }
+
+                if(!verboseLogging)
+                    builder.ReportProgress("    Finished deploying {0} files", fileCount);
             }
             finally
             {

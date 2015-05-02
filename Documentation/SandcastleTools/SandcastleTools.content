@@ -73,7 +73,12 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
-    <Topic id="f478aa7e-3b41-4411-b6eb-e70bea1644a9" visible="True" isSelected="true" title="Version 2015.1.12.0">
+    <Topic id="1ce85143-552c-4777-874c-c8b3fa5658ed" visible="True" isSelected="true" title="Version 2015.5.2.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2015.5.2.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f478aa7e-3b41-4411-b6eb-e70bea1644a9" visible="True" title="Version 2015.1.12.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2015.1.12.0" />
       </HelpKeywords>

@@ -553,7 +553,7 @@ files into HTML files if a user-defined transformation file is not supplied.</pa
 
 			<alert class="warning">
 				<para>This feature has been deprecated in favor of using conceptual content.  While it will continue to
-be supported, it will receive no future enhancements.</para>
+be supported in the near term, it will receive no future enhancements and will eventually be removed.</para>
 			</alert>
 		</entry>
   </row>

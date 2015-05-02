@@ -239,7 +239,7 @@ as needed in the example above.  See the <externalLink><linkText>Getting Started
 <linkUri>http://mshcmigrate.helpmvp.com/default/starthere</linkUri>
 <linkTarget>_blank</linkTarget></externalLink> page at the HelpWare Group website for more information on
 installing help files and viewing help content.  A standalone viewer (<externalLink><linkText>H3Viewer.exe</linkText>
-<linkAlternateText>Optional alternate text</linkAlternateText>
+<linkAlternateText>Alternate MSHC file viewer</linkAlternateText>
 <linkUri>http://mshcmigrate.helpmvp.com/viewer</linkUri><linkTarget>_blank</linkTarget>
 </externalLink>) is also available there.</para>
 

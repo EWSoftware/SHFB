@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="79b4dbda-239c-4bae-9bf5-bfb53384fe6d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to general build failures.</para>
+
+			<alert class="tip">
+				<para>Most build failures contain an error number such as BE0065.  See the
+<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" /> topic to locate the error or warning number for more
+details about its cause and possible solutions.</para>
+			</alert>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="BuildTools">
+			<title>Why does the build fail telling me that it cannot find the Sandcastle or help compiler tools?</title>
+			<content>
+				<para>First and foremost, be sure that you have installed the latest version of the help file builder and
+any required help compiler(s).  The help compilers are not part of the help file builder and must be downloaded
+and installed separately.  See the <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> topic for
+information on where to download the required tools.  If you have the tools installed, but in a non-standard
+location, you may need to specify the paths to the tools.  See the
+<link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" /> topic for more information.</para>
+			</content>
+		</section>
+
+		<section address="MissingDLL">
+			<title>Why does my build fail with an error saying that it cannot find an assembly?</title>
+			<content>
+				<para>When you added documentation sources to the project, you may have specified the wrong name or
+perhaps chose the assembly from the wrong folder (i.e. <localUri>.\Debug</localUri> instead of
+<localUri>.\Release</localUri>).  Check the assembly path and filename and verify that it does exist.  If the
+path is correct, make sure the assembly actually exists.  Rebuild your project if necessary to recreate it.</para>
+
+				<para>If using a solution or project as the documentation source, be sure that the configuration and
+platform settings are correct and that the assemblies exist for the given combination of configuration and
+platform.  Check both the global settings and, if necessary the documentation source settings to find out what
+configuration and platform are expected.  The build log may also indicate which configuration and platform where
+found and used.</para>
+			</content>
+		</section>
+
+		<section address="UnresolvedAssembly">
+			<title>Why does my build fail with an "Unresolved assembly reference" error?</title>
+			<content>
+				<para>If the build fails in the <legacyBold>Generating reflection information</legacyBold> step with an
+error that starts "<legacyBold>Error: Unresolved assembly reference</legacyBold>", you need to add the named
+assembly as a reference.  This is done by adding a reference to it in the <codeInline>References</codeInline>
+node in the Project Explorer window.  See the <link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" /> topic
+for more information on adding reference items.</para>
+
+				<para>Another common cause of this error is not setting the project's <ui>Framework Version</ui> property
+correctly.  For example, you may have left it set to .NET Framework 4.5 but you are actually documenting a .NET
+Portable or Silverlight framework assembly.  You can typically tell if this is the case as the version number in
+the error message will not match the framework version in the project.  Correcting the project framework version
+should resolve the issue.  Using a Visual Studio solution or project as the documentation source is recommended
+as the help file builder will figure out the framework version and references automatically based on the project
+settings.</para>
+
+				<para>In some cases, the documented assembly may reference an assembly with a version that is different
+than the one you have or may reference an assembly that you do not have.  In such cases the
+<link xlink:href="f5051d32-b973-4fe1-9ffe-e30531007691" /> can be added to the project to resolve these issues.
+See the referenced topic for more information.</para>
+			</content>
+		</section>
+
+		<section address="AutoResolve">
+			<title>Why can't Sandcastle resolve all dependent assembly references automatically?</title>
+			<content>
+				<para>Sandcastle, specifically <application>MRefBuilder</application>, uses CCI (Common Compiler
+Infrastructure) for assembly reflection.  CCI searches the current directory for dependent assemblies as well as
+any directories specified by the <localUri>/dep</localUri> (Dependencies) command line option.  CCI does not
+attempt to open a dependent assembly until some information from that assembly is needed. CCI is used because
+technically, CCI never "loads" any assembly; it just parses the data in the assembly file.  That is why CCI can
+reflect over a foreign <codeInline>mscorlib</codeInline> while <codeInline>System.Reflection</codeInline> cannot.
+This allows Sandcastle to be used for documenting assemblies built with any version of the .NET Framework.  CCI
+is also used by <application>FxCop</application>.</para>
+			</content>
+		</section>
+
+		<section address="LockedAssembly">
+			<title>After building a help file, I cannot rebuild the projects for the documented assemblies due to an
+error that says they are already in use by another process.  Why?</title>
+			<content>
+				<para>The build engine searches the project folder and all subfolders as well as the project's
+Component Path property folder if specified for Managed Extensibility Framework (MEF) components that can be used
+for build components, plug-ins, syntax generators, and presentation styles.  Unfortunately, MEF does not unload
+assemblies that it does not need.  If your documented assemblies are in a subfolder below where the help file
+builder project is stored or the specified Component Path location, they will be loaded during the component
+search and will not be released until you close Visual Studio or the standalone GUI.</para>
+
+				<para>The solution is simple.  Move the help file builder project to its own sub-folder so that it
+does not get to search the folders containing the assemblies being documented.  If using the Component Path
+property to specify a location to search for components, place them in a sub-folder or another location so that
+it will not find the documented assemblies as well.</para>
+			</content>
+		</section>
+		
+		<section address="NoAPIs">
+			<title>Why does my build fail with an error saying "No APIs found to document"?</title>
+			<content>
+				<para>Classes need to be declared public in your code, you need to enable the <ui>Document Privates</ui>
+and/or <ui>Document Internals</ui> project property so that Sandcastle documents the internal/private members, or
+you need to include at least one assembly and at least one namespace to document.  There should be at least one
+assembly, solution, or project file listed in the <ui>Documentation Sources</ui> node in the Project Explorer
+window.  Use the <ui>Namespaces Summaries</ui> or <ui>API Filter</ui> project property editor to be sure that
+you have at least one valid item that is checked and thus included.  If you are using the API Filter property,
+check it to make sure you have not accidentally excluded everything.</para>
+			</content>
+		</section>
+
+		<section address="OrcasNamer">
+			<title>Why does my build fail in MRefBuilder with a NullReferenceException related to OrcasNamer.WriteType?</title>
+			<content>
+				<para>The most likely cause of this problem is that you have the project's <ui>Framework Version</ui>
+property set to .NET 1.0 or .NET 1.1 but you are trying to document a .NET 2.0 or later assembly.  Check the
+property to make sure that it is set appropriately for your assembly.</para>
+			</content>
+		</section>
+
+		<section address="Proxy">
+			<title>My build fails because I am behind a proxy server and it cannot connect to the MSDN web service.
+How do I fix it?</title>
+			<content>
+				<para>If the SDK link type project property related to the help file format you are building is set to
+<codeInline>MSDN</codeInline>, <application>BuildAssembler</application> will attempt to contact the MSDN web
+service to resolve links to SDK topics.  If you are behind a proxy server, this will most likely fail and will
+abort the build process with an error similar to "<legacyBold>HTTP status 407: Proxy Authentication
+Required</legacyBold>" or "<legacyBold>HTTP status 417: Expectation Failed</legacyBold>".  The simplest fix is
+to set the <codeInline>HtmlSdkLinkType</codeInline> and <codeInline>WebsiteSdkLinkType</codeInline> properties
+to <codeInline>None</codeInline> and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to
+<codeInline>Id</codeInline>. The downside for the HTML Help 1 and website formats is that you will not get links
+to online SDK content.  For the MS Help Viewer formats, the noted value generates links to the local help content
+when merged with the collection.</para>
+
+			<para>It has been reported that creating a <localUri>BuildAssembler.exe.config</localUri> file in the same
+folder as <application>BuildAssembler.exe</application> (the root help file builder installation folder) and
+putting one of the following in it may allow it to work with the proxy server:</para>
+
+<code language="xml" title="Method 1 (this works most often so try it first):">
+&lt;configuration&gt;
+	&lt;system.net&gt;
+		&lt;defaultProxy useDefaultCredentials="true"&gt;
+			&lt;proxy usesystemdefault="true"/&gt;
+		&lt;/defaultProxy&gt;
+		&lt;!-- Add this setting if you get an HTTP 417 error. --&gt;
+		&lt;settings&gt;
+			&lt;servicePointManager expect100Continue="false" /&gt;
+		&lt;/settings&gt;
+	&lt;/system.net&gt;
+&lt;/configuration&gt;
+</code>
+
+<code language="xml" title="Method 2:">
+&lt;configuration&gt;
+	&lt;system.net&gt;
+		&lt;defaultProxy enabled="true" useDefaultCredentials="true"&gt;
+			&lt;proxy bypassonlocal="true"
+				proxyaddress="http://yourproxy:8080" /&gt;
+		&lt;/defaultProxy&gt;
+		&lt;!-- Add this setting if you get an HTTP 417 error. --&gt;
+		&lt;settings&gt;
+			&lt;servicePointManager expect100Continue="false" /&gt;
+		&lt;/settings&gt;
+	&lt;/system.net&gt;
+&lt;/configuration&gt;
+</code>
+
+<code language="xml" title="Method 3 (use this if your company uses a proxy configuration script):">
+&lt;configuration&gt;
+	&lt;system.net&gt;
+		&lt;defaultProxy useDefaultCredentials="true"&gt;
+			&lt;proxy scriptLocation="http://your.server.com/proxy.pac"
+				usesystemdefault="true" /&gt;
+		&lt;/defaultProxy&gt;
+		&lt;!-- Add this setting if you get an HTTP 417 error. --&gt;
+		&lt;settings&gt;
+			&lt;servicePointManager expect100Continue="false" /&gt;
+		&lt;/settings&gt;
+	&lt;/system.net&gt;
+&lt;/configuration&gt;
+</code>
+			</content>
+		</section>
+
+		<section address="BuildAssemblerHang">
+			<title>My builds seem to hang during the BuildAssembler step.  Why?</title>
+			<content>
+				<para>If your builds seem to hang during the <application>BuildAssembler</application> step, set the
+<codeInline>HtmlSdkLinkType</codeInline> and <codeInline>WebsiteSdkLinkType</codeInline> properties to
+<codeInline>None</codeInline> and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to
+<codeInline>Id</codeInline>.  This will get it to run faster with the side-effect that you will not have links to
+online SDK content for the HTML Help 1 and website help formats.  The only other alternative is to be patient and
+wait for it to finish.  On a slow connection, it can take a very long time.  If you are building an MS Help
+Viewer (MSHC) file, you can set the related option as noted above so that it generates links to the local help
+content when merged with the collection.</para>
+
+				<alert class="note">
+					<para>The member IDs are looked up and the results are cached locally the first time they are
+encountered.  As such, subsequent builds of the same help file should be much faster.</para>
+				</alert>
+			</content>
+		</section>
+
+		<section address="OutOfMemory">
+			<title>I'm getting an Out of Memory exception during a very large build.  How do I prevent it?</title>
+			<content>
+				<para>When performing a build that generates an extremely large amount of output, you may encounter an
+<codeInline>OutOfMemoryException</codeInline> if verbose logging is enabled in the help file builder GUI.  If
+this occurs, turn off the <ui>Build window verbose logging enabled</ui> option in the user preferences.  Full
+details are still written to the log file and can be viewed after the build.</para>
+
+				<para>If the build is running out of memory during the BuildAssembler step, you can utilize the cached
+build components which can drastically reduce the amount of memory used by BuildAssembler as they utilize
+databases to cache the information.  See the <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" /> help
+topic and its subtopics for full details.  Add the components to the project using the Components category in the
+project properties window.  There are two version (ESent and SQL Server) and each is comprised of three separate
+components (Comments Index Cache, Reflection Index Data Cache, and Resolve Reference Links Cache).  Be sure to
+add them as a matched set to get the full benefits.  The ESent build components are the easiest to use as they
+require no additional set up.  They use ESE databases created on first use to cache the information.  It takes a
+good 30 minutes to an hour to build the initial caches when they don’t exist for the base framework information.
+Once done, subsequent builds are faster than the first and require much less memory.  The SQL Server components
+index the base framework data a lot faster thus the initial cache building process is quicker but it does require
+access to a SQL server instance (Full, Express, and LocalDB versions are supported).  Once the caches exist,
+subsequent builds are pretty much equivalent to the ESent version with regard to speed and memory usage.  It is
+suggested that you only caching the base framework data first.  If BuildAssembler still runs out of memory, you
+can enable caching of the project data as well.  This caches just about everything in the database and frees up
+the most memory but that comes at the expense of longer build times.</para>
+
+				<para>If the error persists, you may be trying to document too many assemblies or one that contains an
+extremely large number of namespaces and/or types.  The only solution in this case is to break up the project
+so that it documents fewer namespaces and/or types thus reducing the amount of memory required.  If you are
+building the help on a 32-bit system, switching to a 64-bit system with more memory may allow the build to
+complete.</para>
+
+				<para>If the Help 1 compiler fails due to an out of memory condition, it is doubtful that there is much
+that can be done.  Since it’s a 32-bit process, the Help 1 compiler won’t use more memory than the maximum
+addressable by a 32-bit process (somewhere between 2GB and 4GB depending on various factors).  Switching to an
+alternate output format such as MS Help Viewer or breaking the project up into smaller parts are probably the
+only solutions for it.</para>
+
+			</content>
+		</section>
+
+		<section address="ConceptualOnly">
+			<title>I want to create a help file without an assembly.  When I try to build the help file, it fails and
+tells me I need at least one documentation source.  Why?</title>
+			<content>
+				<para>Sandcastle was designed to document code based on a set of XML comments and API information found
+in a reflection information file.  As such, it requires at least one assembly in order to produce a help file
+containing API documentation.  If you do not include at least one assembly with a namespace containing at least
+one public class, the help file cannot be produced.</para>
+
+				<para>However, you can use the <link xlink:href="2d483967-30cb-421c-81ff-fdba705e1e6b" /> to produce a
+help file based on conceptual content alone.  To do so, add the plug-in to the project via the <ui>Plug-Ins</ui>
+project property category, add conceptual content to the project, and build the help file.  See the
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> topic for more information about how to utilize
+conceptual content.</para>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

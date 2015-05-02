@@ -23,15 +23,15 @@ second file will be used rather than those in the first file.</para>
 that a subsequent comments file is overriding the comments for the given ID
 with an alternate set of comments.  This can happen frequently in the base
 .NET Framework classes.  If the second set of comments used are not appropriate,
-you may need to take steps to rearrrange the files, remove the duplicate set
+you may need to take steps to rearrange the files, remove the duplicate set
 of comments, or supply an additional file that further overrides the comments.</para>
       </content>
     </section>
 
     <relatedTopics>
-    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
-    <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
-    </relatedTopics>
+			<link xlink:href="077ce20b-7998-4fec-8d79-16d990e1cf3b" />
+			<link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

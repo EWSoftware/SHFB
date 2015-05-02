@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ProjectFileSearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2015
+// Updated : 04/28/2015
 // Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -10,7 +10,7 @@
 // topics, images, code references, and tokens.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -128,7 +128,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     if(TopicIdCache.Instance.IsIndexingTopics)
                         return true;
 
-                    string topicTitle, topicFilename, relativePath;
+                    string topicTitle, topicFilename, relativePath, anchor = null;
+
+                    // Remove anchor name references.  We'll try to select it in the opened file.
+                    if(id.IndexOf('#') != -1)
+                    {
+                        anchor = "address=\"" + id.Substring(id.IndexOf('#') + 1) + "\"";
+                        id = id.Substring(0, id.IndexOf('#'));
+                    }
 
                     if(!TopicIdCache.Instance.GetTopicInfo(id, out topicTitle, out topicFilename, out relativePath))
                     {
@@ -145,6 +152,15 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         if(window != null)
                         {
                             window.Activate();
+
+                            if(!String.IsNullOrWhiteSpace(anchor))
+                            {
+                                var selection = window.Selection as TextSelection;
+
+                                if(selection != null)
+                                    selection.FindText(anchor);
+                            }
+
                             return true;
                         }
                     }
@@ -228,6 +244,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 // Topic IDs must be matched to files so a separate cache is maintained for them
                 if(idType == IdType.Link)
                 {
+                    // Remove anchor name reference
+                    if(id.IndexOf('#') != -1)
+                        id = id.Substring(0, id.IndexOf('#'));
+
                     bool found = TopicIdCache.Instance.GetTopicInfo(id, out title, out filename, out relativePath);
 
                     // Tell the user if still indexing.  We may not have a filename yet.
@@ -239,7 +259,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     else
                         if(!found)
                         {
-                            // Not found, try reindexing to update the info
+                            // Not found, try re-indexing to update the info
                             TopicIdCache.Instance.SetCurrentSolutionAndProjects(currentSolution.FullName, shfbProjects);
 
                             // If it exists, we should at least have a title at this point so go get it

@@ -51,8 +51,8 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(758, 63);
             this.txtConnectionString.TabIndex = 0;
-            this.txtConnectionString.Text = "Data Source=(localdb)\\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;A" +
-    "pplication Name=\"Sandcastle BuildAssembler\"";
+            this.txtConnectionString.Text = "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=Sandcastle;Integrated Security" +
+    "=True;Application Name=\"Sandcastle BuildAssembler\"";
             this.txtConnectionString.Enter += new System.EventHandler(this.TextBox_Enter);
             // 
             // txtDBScript

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
+// Updated : 04/01/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,6 +21,7 @@
 // 1.9.3.4  01/21/2012  EFW  Added support for the Topic Previewer tool window
 // 1.9.5.0  10/06/2012  EFW  Added support for Help Viewer 2.0
 // -------  03/08/2014  EFW  Added support for the Open XML file format
+//          04/01/2015  EFW  Added support for the Markdown file format
 //===============================================================================================================
 
 using System;
@@ -427,21 +428,24 @@ namespace SandcastleBuilder.Package
                         if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
                             this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
                         else
-                            if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                                Utility.OpenUrl(projectNode.StartWebServerInstance());
+                            if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+                                this.ViewBuiltHelpFile(project, 0);
                             else
-                            {
-                                // This format opens a modal dialog box so we'll use it last if nothing else is
-                                // selected.
-                                var options = this.GeneralOptions;
+                                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                                    Utility.OpenUrl(projectNode.StartWebServerInstance());
+                                else
+                                {
+                                    // This format opens a modal dialog box so we'll use it last if nothing else
+                                    // is selected.
+                                    var options = this.GeneralOptions;
 
-                                if(options != null)
-                                    using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project,
-                                      options.MSHelpViewerPath))
-                                    {
-                                        dlg.ShowDialog();
-                                    }
-                            }
+                                    if(options != null)
+                                        using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project,
+                                          options.MSHelpViewerPath))
+                                        {
+                                            dlg.ShowDialog();
+                                        }
+                                }
             }
         }
 
@@ -450,7 +454,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="project">The project to use or null to use the current project</param>
         /// <param name="commandId">The ID of the command that invoked the request which determines the help
-        /// file format launched.</param>
+        /// file format launched.  Zero is used for markdown content since there is no viewer for it.</param>
         private void ViewBuiltHelpFile(SandcastleProject project, uint commandId)
         {
             string outputPath, help2Viewer = null;
@@ -497,7 +501,10 @@ namespace SandcastleBuilder.Package
                     if(commandId == PkgCmdIDList.ViewDocxHelp)
                         outputPath += project.HtmlHelpName + ".docx";
                     else
-                        outputPath += "Index.html";
+                        if(commandId == 0)
+                            outputPath += "_Sidebar.md";
+                        else
+                            outputPath += "Index.html";
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
@@ -534,7 +541,20 @@ namespace SandcastleBuilder.Package
                       outputPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
                         System.Diagnostics.Process.Start(outputPath);
                     else
-                        Utility.OpenUrl(outputPath);
+                        if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var dte = Utility.GetServiceFromPackage<DTE, SDTE>(true);
+
+                            if(dte != null)
+                            {
+                                var doc = dte.ItemOperations.OpenFile(outputPath, EnvDTE.Constants.vsViewKindPrimary);
+
+                                if(doc != null)
+                                    doc.Activate();
+                            }
+                        }
+                        else
+                            Utility.OpenUrl(outputPath);
             }
             catch(Exception ex)
             {

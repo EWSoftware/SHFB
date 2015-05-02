@@ -256,7 +256,7 @@ namespace SandcastleBuilder.InheritedDocumentation
         }
         #endregion
 
-        #region Root level documenation inheritance methods
+        #region Root level documentation inheritance methods
         //=====================================================================
 
         /// <summary>

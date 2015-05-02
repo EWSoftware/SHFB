@@ -1113,28 +1113,19 @@
 				<w:p>
 					<!-- Platform icons -->
 					<xsl:if test="normalize-space($v_supportedOnCf)!=''">
-						<img>
-							<includeAttribute name="src" item="iconPath">
-								<parameter>CFW.gif</parameter>
-							</includeAttribute>
+						<img src="../media/CW.gif">
 							<includeAttribute name="alt" item="altText_CompactFramework"/>
 							<includeAttribute name="title" item="altText_CompactFramework"/>
 						</img>
 					</xsl:if>
 					<xsl:if test="normalize-space($v_supportedOnXna)!=''">
-						<img>
-							<includeAttribute name="src" item="iconPath">
-								<parameter>xna.gif</parameter>
-							</includeAttribute>
+						<img src="../media/xna.gif">
 							<includeAttribute name="alt" item="altText_XNAFramework"/>
 							<includeAttribute name="title" item="altText_XNAFramework"/>
 						</img>
 					</xsl:if>
 					<xsl:if test="normalize-space($v_supportedOnSilverlightMobile)!=''">
-						<img>
-							<includeAttribute name="src" item="iconPath">
-								<parameter>slMobile.gif</parameter>
-							</includeAttribute>
+						<img src="../media/slMobile.gif">
 							<includeAttribute name="alt" item="altText_SilverlightMobile"/>
 							<includeAttribute name="title" item="altText_SilverlightMobile"/>
 						</img>
@@ -1392,6 +1383,14 @@
 			<includeAttribute name="alt" item="{concat('altText_', $p_typeVisibility, $typeSubgroup)}"/>
 			<includeAttribute name="title" item="{concat('altText_', $p_typeVisibility, $typeSubgroup)}"/>
 		</img>
+
+		<xsl:if test=".//example">
+			<img src="../media/CodeExample.png">
+				<includeAttribute name="alt" item="altText_CodeExample"/>
+				<includeAttribute name="title" item="altText_CodeExample"/>
+			</img>
+		</xsl:if>
+
 	</xsl:template>
 
 	<xsl:template name="t_putMemberIcons">
@@ -1468,12 +1467,18 @@
 		</xsl:if>
 
 		<xsl:if test="$p_supportedOnSilverlightMobile!=''">
-			<img src="slMobile.gif">
+			<img src="../media/slMobile.gif">
 				<includeAttribute name="alt" item="altText_SilverlightMobile"/>
 				<includeAttribute name="title" item="altText_SilverlightMobile"/>
 			</img>
 		</xsl:if>
 
+		<xsl:if test=".//example">
+			<img src="../media/CodeExample.png">
+				<includeAttribute name="alt" item="altText_CodeExample"/>
+				<includeAttribute name="title" item="altText_CodeExample"/>
+			</img>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="t_getEnumMemberDescription">

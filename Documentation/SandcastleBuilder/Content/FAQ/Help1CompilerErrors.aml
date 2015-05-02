@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="0ad71ecb-3d68-4219-bea6-d4ac45017ded" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common issues related to the Help 1 compiler (Microsoft HTML Help Workshop).</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="HHC3002">
+			<title>Why is the help compiler failing with HHC3002 and HHC3004 errors referencing non-HTML files such as
+images?</title>
+			<content>
+				<para>See <link xlink:href="e076c319-ff84-40dc-bb00-ff4c72718215" />.</para>
+			</content>
+		</section>
+
+		<section address="HHC6000">
+			<title>Why is the help compiler failing with HHC6000 and HHC5007 errors referencing "disk full" and "fatal
+navigational compilation" errors?</title>
+			<content>
+				<para>Check the log file for the <application>MRefBuilder</application> output.  It will most likely
+report that it found and documented zero types.  This is caused by not having any public types in the documented
+assemblies or not specifying any assemblies at all to document (i.e. the Documentation Sources project node is
+empty or only contains XML comments files).  Sandcastle requires at least one assembly and will not document
+internal and private code by default.  Be sure to declare at least one class public.  If all classes really are
+supposed to be private and/or internal, set the <ui>Document Privates</ui> and/or <ui>Document Internals</ui>
+project properties to true.</para>
+			</content>
+		</section>
+
+		<section address="HHC6003">
+			<title>Why is the help compiler failing with an HHC6003 error stating that itircl.dll has not been
+registered?</title>
+			<content>
+				<para>This error affects a small number of people and is caused by one of the help components
+(<localUri>itcc.dll</localUri>) either not getting installed or not getting registered correctly.  Search your
+system for the DLL.  If not found, you can either locate it on another system that has the Help 1 components or
+you can search Google for it.  Once you obtain it, you will need to copy it to the failing system and register
+it.  This can be done by running the following command from a command prompt.  Adjust the path to the DLL as
+necessary based on its location on your system.</para>
+
+<code language="none" title=" ">
+regsvr32 C:\Windows\System\itcc.dll
+</code>
+			</content>
+		</section>
+
+		<section address="Help1Crash">
+			<title>The help 1 compiler (HHC.EXE) crashes with an exit code of -1073741515.  What does that mean?</title>
+			<content>
+				<para>Typically, this means that the help 1 compiler is not installed correctly or is missing one or more
+of its components.  Download and install the Microsoft HTML Help Workshop to correct the problem.  A link for the
+download can be found in the <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> topic.  You may need to
+do this even if the guided installer detects that the help 1 compiler is installed.  The HTML Help Workshop
+installer may also state that it is already installed as well.  Complete the installation anyway to ensure that
+all of the required components are present and registered correctly.</para>
+
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -12,21 +12,26 @@
 			<title>Help file formats (HelpFileFormats)</title>
 			<content>
 				<para>This property lets you specify the type of help file to build (HTML Help 1, MS Help 2, MS Help
-Viewer, a website, an Open XML document, or various combinations of these options when supported by the selected
-presentation style).  The default is to produce an HTML Help 1 format file.  To build multiple formats at the
-same time, put a check next to each type that you want to build concurrently.</para>
+Viewer, a website, an Open XML document, markdown content, or various combinations of these options when
+supported by the selected presentation style).  The default is to produce an HTML Help 1 format file.  To build
+multiple formats at the same time, put a check next to each type that you want to build concurrently.</para>
 
 				<alert class="warning">
-					<para>Be aware that if an option is selected that produces a website, the output folder specified by
-the <codeInline>Output Path</codeInline> property will be cleared of all of its current content without any
-prompting before the web site content is copied to it.  In other words, don't do something stupid like set it to
-the root of your C: drive or your desktop folder.  The help file builder will take steps to try and prevent this
-from happening.  When producing a help file alone, the output folder is not cleared.</para>
+					<para>Be aware that if an option is selected that produces a website or markdown content, the output
+folder specified by the <codeInline>Output Path</codeInline> property will be cleared of all of its current
+content without any prompting before the web site content is copied to it.  In other words, don't do something
+stupid like set it to the root of your C: drive or your desktop folder.  The help file builder will take steps to
+try and prevent this from happening.  When producing a help file alone, the output folder is not cleared.</para>
 				</alert>
 
 				<alert class="note">
-					<para>The Open XML format has certain requirements that must be met in order to produce a valid
-document.  See the <link xlink:href="c5e7e920-2cb4-4f78-b167-634361d85263" /> topic for details.</para>
+					<para>The Open XML format has certain limitations and requirements that must be met in order to produce
+a valid document.  See the <link xlink:href="c5e7e920-2cb4-4f78-b167-634361d85263" /> topic for details.</para>
+				</alert>
+
+				<alert class="note">
+					<para>The Markdown format has certain limitations.  See the
+<link xlink:href="6f0a80ec-b8ef-45d6-a55a-1fb7a6545ddc" /> topic for details.</para>
 				</alert>
 
 				<para>When producing a website, various additional files will be copied to the root of the output folder

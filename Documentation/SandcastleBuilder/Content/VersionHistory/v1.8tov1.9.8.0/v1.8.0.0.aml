@@ -424,7 +424,7 @@ error means along with possible solutions.</para>
 				<para>Just prior to building a Help 1 (CHM) file, warnings are issued if the working path, the
 <codeInline>HTMLHelpName</codeInline> property, or any filename contains ".h" or a comma.  Paths or files
 containing ".h" or a comma can cause odd compiler crashes.  If you see this warning and the
-<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#HHC3002">help compiler fails</link>, change the names of
+<link xlink:href="0ad71ecb-3d68-4219-bea6-d4ac45017ded#HHC3002">help compiler fails</link>, change the names of
 the paths or files listed in the warning(s).</para>
 			</listItem>
 
@@ -446,7 +446,7 @@ to <codeInline>VS2005</codeInline>.</para>
 
 			<listItem>
 				<para>Implemented basic find and replace support in the topic editor window (Ctrl+F and Ctrl+H).  Also
-added Goto Line (Ctrl+G) and expanded the number of elements that can be inserted from the toolbar.</para>
+added Goto Line (Ctrl+G) and expanded the number of elements that can be inserted from the tool bar.</para>
 			</listItem>
 
 			<listItem>

@@ -2,22 +2,22 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 04/01/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to hold the conceptual content for a project during a build
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  04/24/2008  EFW  Created the code
-// 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
-// 1.9.7.0  04/03/2013  EFW  Added support for merging content from another project (plug-in support)
+// 04/24/2008  EFW  Created the code
+// 06/06/2010  EFW  Added support for multi-format build output
+// 04/03/2013  EFW  Added support for merging content from another project (plug-in support)
 //===============================================================================================================
 
 using System.Collections.ObjectModel;
@@ -162,9 +162,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             if(missingFile)
                 throw new BuilderException("BE0053", "One or more code snippets files could not be found");
 
-            // Save the image info to a shared content file and copy the
-            // image files to the working folder.
-            folder = builder.WorkingFolder + "Media";
+            // Save the image info to a shared content file and copy the image files to the working folder
+            folder = builder.WorkingFolder + "media";
 
             if(!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);

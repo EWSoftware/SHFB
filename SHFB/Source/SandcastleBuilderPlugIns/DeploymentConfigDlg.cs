@@ -2,23 +2,24 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/09/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 04/03/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the Output Deployment plug-in
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.2.0  09/24/2007  EFW  Created the code
-// 1.8.0.3  07/05/2009  EFW  Added support for MS Help Viewer deployment
-// 1.9.4.0  02/06/2012  EFW  Added support for renaming MSHA file
-// -------  03/09/2014  EFW  Added support for Open XML deployment
+// 09/24/2007  EFW  Created the code
+// 07/05/2009  EFW  Added support for MS Help Viewer deployment
+// 02/06/2012  EFW  Added support for renaming MSHA file
+// 03/09/2014  EFW  Added support for Open XML deployment
+// 04/03/2014  EFW  Added support for markdown content deployment
 //===============================================================================================================
 
 using System;
@@ -86,6 +87,11 @@ namespace SandcastleBuilder.PlugIns
             if(!String.IsNullOrEmpty(value))
                 chkDeleteAfterDeploy.Checked = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
 
+            value = root.GetAttribute("verboseLogging", String.Empty);
+
+            if(!String.IsNullOrEmpty(value))
+                chkVerboseLogging.Checked = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
+
             // Get HTML Help 1 deployment information
             ucHtmlHelp1.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "help1x"));
 
@@ -110,6 +116,9 @@ namespace SandcastleBuilder.PlugIns
 
             // Get Open XML deployment information
             ucOpenXml.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "openXml"));
+
+            // Get markdown content deployment information
+            ucMarkdownContent.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "markdown"));
         }
         #endregion
 
@@ -154,7 +163,7 @@ namespace SandcastleBuilder.PlugIns
         {
             XmlAttribute attr;
             XmlNode root, mshv;
-            DeploymentLocation htmlHelp1, msHelp2, msHelpViewer, website, openXml;
+            DeploymentLocation htmlHelp1, msHelp2, msHelpViewer, website, openXml, markdown;
             bool isValid = false;
 
             epErrors.Clear();
@@ -164,6 +173,7 @@ namespace SandcastleBuilder.PlugIns
             msHelpViewer = ucMSHelpViewer.CreateDeploymentLocation();
             website = ucWebsite.CreateDeploymentLocation();
             openXml = ucOpenXml.CreateDeploymentLocation();
+            markdown = ucMarkdownContent.CreateDeploymentLocation();
 
             if(htmlHelp1 == null)
                 tabConfig.SelectedIndex = 0;
@@ -180,10 +190,14 @@ namespace SandcastleBuilder.PlugIns
                             if(openXml == null)
                                 tabConfig.SelectedIndex = 4;
                             else
-                                isValid = true;
+                                if(markdown == null)
+                                    tabConfig.SelectedIndex = 5;
+                                else
+                                    isValid = true;
 
             if(isValid && htmlHelp1.Location == null && msHelp2.Location == null &&
-              msHelpViewer.Location == null && website.Location == null && openXml.Location == null)
+              msHelpViewer.Location == null && website.Location == null && openXml.Location == null &&
+              markdown.Location == null)
             {
                 tabConfig.SelectedIndex = 0;
                 epErrors.SetError(chkDeleteAfterDeploy, "At least one help file format must have a target " +
@@ -206,11 +220,22 @@ namespace SandcastleBuilder.PlugIns
 
             attr.Value = chkDeleteAfterDeploy.Checked.ToString().ToLowerInvariant();
 
+            attr = root.Attributes["verboseLogging"];
+
+            if(attr == null)
+            {
+                attr = config.CreateAttribute("verboseLogging");
+                root.Attributes.Append(attr);
+            }
+
+            attr.Value = chkVerboseLogging.Checked.ToString().ToLowerInvariant();
+
             htmlHelp1.ToXml(config, root, "help1x");
             msHelp2.ToXml(config, root, "help2x");
             msHelpViewer.ToXml(config, root, "helpViewer");
             website.ToXml(config, root, "website");
             openXml.ToXml(config, root, "openXml");
+            markdown.ToXml(config, root, "markdown");
 
             mshv = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
 

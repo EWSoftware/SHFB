@@ -1,6 +1,9 @@
 <content xml:space="preserve">
 <!-- Translations provided by Sergey Zhurikhin -->
 
+	<!-- This is not used by the presentation style but some build components may expect it to exist -->
+	<item id="iconPath">../media/{0}</item>
+
   <!-- Topic title -->
   <item id="boilerplate_pageTitle">{0}</item>
 

@@ -101,7 +101,7 @@ you can reduce the build time.</para>
 
                 <alert class="note">
                   <para>When the SDK link type properties are set to <codeInline>MSDN</codeInline>, the build may
-fail if you are behind a proxy server.  See the <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#Proxy">FAQ</link>
+fail if you are behind a proxy server.  See the <link xlink:href="79b4dbda-239c-4bae-9bf5-bfb53384fe6d#Proxy">FAQ</link>
 for the workaround.</para>
                 </alert>
 

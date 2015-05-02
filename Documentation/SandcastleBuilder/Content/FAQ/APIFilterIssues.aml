@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="cef40c0a-8029-4157-a7b7-ada26ea8f7e3" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to the API Filter.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="FilterConflict1">
+			<title>I used the Namespace Summaries project option to exclude a namespace but it is still showing up in
+the help file. Why?</title>
+			<content>
+				<para>Check the build log in the section where it generated the API filter.  You will probably see a
+warning there about the exclusion conflicting with the API filter.  The API filter always wins.  To fix the
+issue, edit the <ui>API Filter</ui> project property and exclude the item there.</para>
+			</content>
+		</section>
+
+		<section address="FilterConflict2">
+			<title>I used the &lt;exclude /&gt; tag feature to exclude a namespace/type/member but it is still showing
+up in the help file.  Why?</title>
+			<content>
+				<para>See the answer to the <link xlink:href="#FilterConflict1">previous question</link>.</para>
+			</content>
+		</section>
+
+		<section address="FilterConflict3">
+			<title>I used the Namespace Summaries project option to exclude a namespace.  I now want it included but it
+is not showing up.  Why?</title>
+			<content>
+				<para>Check the <ui>API Filter</ui> project property as it is probably being excluded in there.  This
+situation does not generate a warning in the log so you have to check for it manually.  Simply place a checkmark
+next to the item you want to have included.</para>
+			</content>
+		</section>
+
+		<section address="FilterConflict4">
+			<title>I used the &lt;exclude /&gt; tag to exclude a namespace/type/member.  I removed the tag as I now
+want it included but it is not showing up.  Why?</title>
+			<content>
+				<para>See the answer to the <link xlink:href="#FilterConflict3">previous question</link>.</para>
+			</content>
+		</section>
+
+		<section address="CheckedUnchecked">
+			<title>Why does the API filter uncheck/check the parent namespace/type if I uncheck/check more than half of
+the types/members?</title>
+			<content>
+				<para>This behavior is by design.  See the <legacyBold>Including and Excluding Members</legacyBold>
+section of the <link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c#IncludeExclude" /> help
+topic.  It is done to create a more efficient filter.  If more than half of the members are omitted, the parent
+is written out as an exclude entry with child entries just for those marked for inclusion.  If more than half are
+included, the opposite occurs.  Building the help file will result in the proper members being included or
+excluded.  If you think you are seeing incorrect behavior with regard to the resulting help file, please supply
+an example that demonstrates the problem.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="0dc360c6-16af-44e6-bf0e-ad922d5c733e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to presentation styles.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="Configure">
+			<title>Can presentation styles be configured?</title>
+			<content>
+				<para>Not in the way that build components and plug-ins can be configured.  However, most presentation
+styles do expose XSL transformation arguments that can be modified using the
+<link xlink:href="c584509f-0b18-49a8-ab06-114b0058a739">Transform Args</link> project property category.</para>
+			</content>
+		</section>
+
+		<section address="MixedFormats">
+			<title>Why can't I create a help project that contains a combination of Open XML/Markdown and another format?</title>
+			<content>
+				<para>Open XML and Markdown presentation styles do not generate HTML output like the other help file
+formats do.  As such, they cannot be combined in a single project.  Create a separate project to generate Open
+XML or Markdown help output.</para>
+			</content>
+		</section>
+
+		<section address="ModifyStyle">
+			<title>I want to modify aspects of the presentation style such as the style sheets used or make changes to
+the scripts.  How do I do that?</title>
+			<content>
+				<para>For minor changes to content, use the <link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">stock
+content file replacement</link> ability of the help file builder.  For more significant changes or changes that
+require modifications to the XSL transformations, you will need to create your own presentation style or clone
+one of the existing ones.</para>
+			</content>
+		</section>
+
+		<section address="CreateStyle">
+			<title>How can I create my own presentation style or clone one of the existing ones?</title>
+			<content>
+				<para>For information on creating your own presentation styles, see the
+<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic.</para>
+			</content>
+		</section>
+
+		<section address="CreateSyntaxComponent">
+			<title>How do I add a syntax section for a new language that doesn't appear in the list of current syntax
+filter generators?</title>
+			<content>
+				<para>For information on creating your own syntax filter generators, see the
+<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic.
+				</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

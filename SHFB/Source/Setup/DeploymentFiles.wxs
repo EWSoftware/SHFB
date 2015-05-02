@@ -5633,6 +5633,213 @@
             <File Id="filAAC6EF310297B0F2103B3F2095B1CC7C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Web.Config" />
           </Component>
         </Directory>
+        <Directory Id="dirE19A8ABC0845D52041F40D8A10E0A90D" Name="Markdown">
+          <Directory Id="dir76833C41B27232762C8293F2C22CC5E4" Name="Configuration">
+            <Component Id="cmpF1975FB4AC7FBB62B0D37F75A936F217" Guid="{F398F7DF-8BF9-41B6-A147-33D3B24C889D}">
+              <File Id="fil10BA16C0EC67590093E9A492461F1E57" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Configuration\SHFBConceptual.config" />
+            </Component>
+            <Component Id="cmp881AA4CFF8A94F0CBDDC041D96302284" Guid="{FCA21775-2B70-450E-8C17-2D01E3943366}">
+              <File Id="fil9E083A1F3532D22BAE914CA8BD37AAC3" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Configuration\SHFBReference.config" />
+            </Component>
+          </Directory>
+          <Directory Id="dir98743B8D3DBB9DC1C306A2626A7040B0" Name="Content">
+            <Component Id="cmpBC88B88212A17C016F2C12D8C878120F" Guid="{31EEC66A-998A-4579-A8D8-DC6119CDD4BB}">
+              <File Id="filC63309B3F33240CD42A219D6C57BB4D1" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Content\ConceptualContent.xml" />
+            </Component>
+            <Component Id="cmpFFC8CFA43007A1903667C640BF157E6A" Guid="{55AF9AE8-0B91-42A3-B98E-F89124F78A02}">
+              <File Id="fil1921BA286A3B273F4DC0DF8B6073B8E1" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Content\ReferenceContent.xml" />
+            </Component>
+            <Component Id="cmpB0F9E472A6FE98CB662E716DB1EA2998" Guid="{052F6A1D-E15D-42A0-BEDA-78E96C223222}">
+              <File Id="fil9EC5880523B061AEBB0A82993476B346" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Content\SharedContent.xml" />
+            </Component>
+            <Directory Id="dir87BBBE32C6B300FB2ADDD868C58F4B13" Name="ru-RU">
+              <Component Id="cmpD3543F8BFB9B5D4E5C3ECA215D1CCE01" Guid="{7B7E14B7-2A3E-40BD-813D-7D4D388B9528}">
+                <File Id="filE3471D529335D6B8B6C354CEFDEE9FCC" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Content\ru-RU\ConceptualContent.xml" />
+              </Component>
+              <Component Id="cmpE3EAF6B3DBA24B1C8E9D64D7F2532BA9" Guid="{202F3AFC-761A-44D3-939A-838886561794}">
+                <File Id="fil3E9D09A8301B37E029BEFB77218DEE44" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Content\ru-RU\ReferenceContent.xml" />
+              </Component>
+              <Component Id="cmp1F7891C004E2D659B512206E7997B2B2" Guid="{AB909057-D39C-4709-BD3E-6C2E2AF08644}">
+                <File Id="fil68F80F63E4A986454FC4050837D3553D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Content\ru-RU\SharedContent.xml" />
+              </Component>
+            </Directory>
+          </Directory>
+          <Directory Id="dirC3AA6E24AE6C96E5CE0DB2D958ACDE09" Name="Data">
+            <Component Id="cmp5B52675F831F1A578B8D939BDDC471A1" Guid="{77E06E06-EBD6-4722-BB84-931C767389D0}">
+              <File Id="filDD0B2E626E4B6449B712AEA7576126DB" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Data\bibliography.xml" />
+            </Component>
+          </Directory>
+          <Directory Id="dir1F8677113D320653BBED204A7F185A25" Name="MarkdownContent">
+            <Component Id="cmp6630A341145BA15A38F14A87E0497314" Guid="{8CBC9384-2D0D-4867-B731-048DD1962F88}">
+              <File Id="fil9FBBCE2EB583053722DBE547DEB576E7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\MarkdownContent\_Footer.md" />
+            </Component>
+          </Directory>
+          <Directory Id="dir40F7C454738D482F3E661BF9BE43E254" Name="media">
+            <Component Id="cmp1321B0596258A7D0CE8FE722821AD630" Guid="{4AD6411D-8842-4E0A-9AB9-C0F3C60B0E80}">
+              <File Id="fil24F89CF54EA29428530BCD92613C5833" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\AlertCaution.png" />
+            </Component>
+            <Component Id="cmp7EE26FE4A470B2A090ABACCF0717F87C" Guid="{A805B0BF-FA95-43B2-8925-777B27C36ECB}">
+              <File Id="filDC18BA11B2102CE19DDDFFE18A38BAB8" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\AlertNote.png" />
+            </Component>
+            <Component Id="cmpFC8ADB77D01180273E9C681BCA8F7F7B" Guid="{CA563C02-39F5-4C94-B01E-3C5C634A66B3}">
+              <File Id="fil2ECB9021FF0C3B4F171FACB01592AF50" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\AlertSecurity.png" />
+            </Component>
+            <Component Id="cmpA935290962E753EB01E8A9ACE83EEA32" Guid="{656FC2AC-701D-4859-9255-355FE2303AD7}">
+              <File Id="filB97169F11F67561EA1AEEF6A1F96F38F" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\CFW.gif" />
+            </Component>
+            <Component Id="cmpDA7450AB6C5113026DF7F64C6806DDBE" Guid="{78A3AB89-0959-4560-BAFC-F7DD202EFBC5}">
+              <File Id="fil5E52476D3C72DFB5803B724BA3DD06E5" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\CodeExample.png" />
+            </Component>
+            <Component Id="cmp2A9D46C39E524E97EE76C6CC078F3F6F" Guid="{25B24EA4-15C9-428B-A03E-34019A89E490}">
+              <File Id="filE729A1644DA55C2BE191C2C9D42D9CE2" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privclass.gif" />
+            </Component>
+            <Component Id="cmp1E7004658ED4CB33635534EA3994A7AB" Guid="{A70EC433-4FCD-4D31-9577-659F88BF1A7D}">
+              <File Id="fil166A050A381B4C53A463676F21BE9449" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privdelegate.gif" />
+            </Component>
+            <Component Id="cmp7D734740FB18C7F905DCA0728D383058" Guid="{9FB4BEAD-FC78-4440-821F-26837191BEF7}">
+              <File Id="filE79516A1225DF53BC2DF440FF7560ACD" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privenumeration.gif" />
+            </Component>
+            <Component Id="cmp19F42839CD8F943FB0B8B2DA4D7F9825" Guid="{FF305FCC-F6E6-4374-A170-AF640506A1FB}">
+              <File Id="fil89685EFCE2CEB9585F7E46B6502EE4ED" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privevent.gif" />
+            </Component>
+            <Component Id="cmp86AFB5D164A950FA516B71FC7AABFB50" Guid="{AABE487E-00A9-4EB6-9E27-F15D9F5A26CD}">
+              <File Id="fil36B2DA0899C28484876E240A40EAD9E0" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privextension.gif" />
+            </Component>
+            <Component Id="cmp9223EE1E051204DB85DCFB47899566AB" Guid="{D3A239B1-7444-408B-9319-097259ACF691}">
+              <File Id="fil7E57FBAE17AD9AAD402B7A9F98AB4A7F" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privfield.gif" />
+            </Component>
+            <Component Id="cmpBC0D881BF5ADCAC6292DAE424EDA22E6" Guid="{2A27B091-4D1C-40F4-A2F7-117FB9DD3C59}">
+              <File Id="fil16BCFBCA2FAC9DD97BAEC333DCC079A7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privinterface.gif" />
+            </Component>
+            <Component Id="cmpED0E223CED7E9D2565094AA5126447B8" Guid="{0332EFCE-E938-49D4-9A5C-9BC664CDE2C4}">
+              <File Id="fil5F38EB0313D8D01F7B776BB0DE629C0D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privmethod.gif" />
+            </Component>
+            <Component Id="cmpA04224E7F77339062F0555D593A5225D" Guid="{8634B28E-F2BD-4E9B-868A-35A3BC35CC4B}">
+              <File Id="fil05E2586ACDE9D089A5B02DC6C486EA86" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privproperty.gif" />
+            </Component>
+            <Component Id="cmp63BFC2016EF6CB4E7BEF730A6B782147" Guid="{EF0A47BF-5043-4767-88BC-C71074FB245A}">
+              <File Id="fil4B186D39C93F2D4D62A58D482C55AE4C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\privstructure.gif" />
+            </Component>
+            <Component Id="cmp78A8EBA0DEE54E72C424E39D38EA6E36" Guid="{BD195DA1-CEEE-4672-B12A-BECE25A7DC0B}">
+              <File Id="fil28F033D3AE548AD6729B9225C010A81B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protclass.gif" />
+            </Component>
+            <Component Id="cmpC636F30B858EAC5EAA099C63998183B6" Guid="{F8077664-6AA7-4055-A768-4C872409BEBD}">
+              <File Id="filE1539D8E0E75698DF20E5DD8D8545275" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protdelegate.gif" />
+            </Component>
+            <Component Id="cmp213ED22CF208EA2F9EBECB1B1C2356C6" Guid="{410641BF-07EB-4369-B500-074B8B4AB221}">
+              <File Id="fil51D3F83BCA9AC3A7F6CA9F33DB994C95" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protenumeration.gif" />
+            </Component>
+            <Component Id="cmp5B3420FAA4BAFBFC5B5DF89E31639C90" Guid="{13919791-8190-48E2-9B95-93BAEDD6AAA0}">
+              <File Id="fil80E3BC505A63BF4682B2518A1B8CF1E1" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protevent.gif" />
+            </Component>
+            <Component Id="cmp0525A9C77A9943B94ADCB8DD157B681B" Guid="{E5F14A61-BB4E-40D7-B517-DC5F6C8D60F9}">
+              <File Id="fil83AEBCFBCEBD7E6338CC50543A870B81" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protextension.gif" />
+            </Component>
+            <Component Id="cmp64060E7E13AA094D47ABD4C5764E4E24" Guid="{CEEBA7CE-82A9-413C-B62B-E12D8E89162D}">
+              <File Id="fil172CA75D96440E73DD959571066C023F" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protfield.gif" />
+            </Component>
+            <Component Id="cmp352D107310AFF4FE632E9776489D3FD1" Guid="{BC8B0CC2-C261-4A1B-8397-E65AE264DFE9}">
+              <File Id="filAB7BFE5A980CD3AF354A2872FF9F190F" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protinterface.gif" />
+            </Component>
+            <Component Id="cmp5C9EE921D1CE311934ED0BA7486BA6CC" Guid="{9D5C695B-D6FD-40CC-98F6-FF6DD2BC3308}">
+              <File Id="fil9689F24A439913D87473A37FF032A51E" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protmethod.gif" />
+            </Component>
+            <Component Id="cmpBE68253E1172FFD6B97CE88324E587D6" Guid="{EEC61F14-B1A5-47E8-BD4A-F38059670662}">
+              <File Id="filF86829BA01AC1050072C7D33B86CB102" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protoperator.gif" />
+            </Component>
+            <Component Id="cmpA2ADFBAD684F5C948C492714FA86B9A5" Guid="{EFB4B0A6-801E-4E90-B765-6EB0EFB96848}">
+              <File Id="fil3FB820614832AA2F555B37A20A313EC6" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protproperty.gif" />
+            </Component>
+            <Component Id="cmpA7E798833936AF755BBCEA927BA93408" Guid="{8D1392F1-E809-4A16-A60E-9C39DE213EC4}">
+              <File Id="fil4DE7DB29BC02B6EFC17DA9B7FD31FD14" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\protstructure.gif" />
+            </Component>
+            <Component Id="cmp63937E736FF1523514E602CF8EC1B9DB" Guid="{882323B9-6921-4162-8BB0-B12BAF1D0CC5}">
+              <File Id="fil55FA80F3BB68C4CF1669318F069294E4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubclass.gif" />
+            </Component>
+            <Component Id="cmpBDA0D18AF9660486E2580AC77EECCA7D" Guid="{AA9AC3C7-01C1-4E7F-BCDB-C2885F7F1CFA}">
+              <File Id="filCA1565A5DDA55A2B2FE0D0A5BBF1A3F3" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubdelegate.gif" />
+            </Component>
+            <Component Id="cmp05AD87405021872EF500E3B56BEBB9C0" Guid="{498CB87C-ED90-44D4-BD00-AEC571945C82}">
+              <File Id="filD88AA12D6E66492E2BC1225A01C19F5D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubenumeration.gif" />
+            </Component>
+            <Component Id="cmpF473503D8AE7993EDDD07ADD9D9791F0" Guid="{2C89B690-5A8D-4137-9EDA-0E8DD005E461}">
+              <File Id="fil0B13009EA3982662B7E0EA6B8A278915" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubevent.gif" />
+            </Component>
+            <Component Id="cmpD1EDAA5F537458DE7CEA15C2D5C4C96F" Guid="{3F597622-164F-497B-80B0-68F39C961EE3}">
+              <File Id="fil372A13F1EB8318F31142EF4A68C723C1" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubextension.gif" />
+            </Component>
+            <Component Id="cmpF2A672883B1E5FDA87163258F2F3693F" Guid="{D9A9C1F7-8037-4284-8D4F-D9C07963D036}">
+              <File Id="fil5091ACE5A4092F0372E6CCC57157556F" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubfield.gif" />
+            </Component>
+            <Component Id="cmpE912F0A70C9E5D0FC3005932295874DA" Guid="{4E52C971-376D-409D-99FF-ABCB0A9F8E56}">
+              <File Id="fil4A2FB5711A19F748187A5FAE6A40BC52" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubinterface.gif" />
+            </Component>
+            <Component Id="cmp9CE7778A118126D0727BEBC74C47A30C" Guid="{68F0FE7E-D596-4471-AAB1-E847F73CF111}">
+              <File Id="fil87AAB5323B8D84FF8BCFD2FE6BA4DCB4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubmethod.gif" />
+            </Component>
+            <Component Id="cmp2969192584A55D9AE7E2BEF35838AADF" Guid="{037E01BC-BD23-47EE-976F-306B60B99702}">
+              <File Id="fil70E5B78CC2F88FA72AA33AADF0A1ACCF" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\puboperator.gif" />
+            </Component>
+            <Component Id="cmp3EC8B5C9AE414041050BA25AE3788757" Guid="{387D0089-54B9-4597-B880-7779CEE641E5}">
+              <File Id="filE8CF562C5E535760D155821040205ED4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubproperty.gif" />
+            </Component>
+            <Component Id="cmp0E8222B3303AAC40B03B1D89B5AC9679" Guid="{DE3C8D9A-8607-4A98-9B1A-D4E0FFC50492}">
+              <File Id="filC1BEBC4D5CD54BE57E377B775EB4CD11" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\pubstructure.gif" />
+            </Component>
+            <Component Id="cmp388A49AB03EE13D0DA0E421FF8676D32" Guid="{561C305D-C456-4B1E-9B34-4337397B53C9}">
+              <File Id="filC2294119CD12B629617F99274445C3BA" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\slMobile.gif" />
+            </Component>
+            <Component Id="cmp2F1F0B1779C2CFA6DEA80568892C52B0" Guid="{C7B2536B-587D-4828-A49E-CD8A87D8D2F5}">
+              <File Id="filE030DD1EC2BC1D0646A545A22FB89D0B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\static.gif" />
+            </Component>
+            <Component Id="cmpB79341BDCEB4E8AC1927079700367AB7" Guid="{C7447BAE-A202-4DA1-BA8E-8EEA91AF45E5}">
+              <File Id="filF335809D15E31A96739C52C630340BD0" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\media\xna.gif" />
+            </Component>
+          </Directory>
+          <Directory Id="dir6B5863862B8A61A2644872FB1E5EBA69" Name="SHFBContent">
+            <Component Id="cmpBAF25D6FC92A3AAE77D256A4D39A3CD3" Guid="{1E55E5EA-D2E7-4FC5-AC50-746C4D4180D5}">
+              <File Id="fil4232B63A7D5AF963C014A27074A234A4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\SHFBContent\en-US.xml" />
+            </Component>
+            <Component Id="cmpECD836C061B54E5B8E230FBB679B27E3" Guid="{1C52236D-9444-4D91-837D-06F015A785E0}">
+              <File Id="fil61D347C1945DA57678486915EB9E4C37" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\SHFBContent\ru-RU.xml" />
+            </Component>
+          </Directory>
+          <Directory Id="dir9FF469028F2A99F5C857D9A4788CD31C" Name="Transforms">
+            <Component Id="cmp95D1DED6DBA3F324DE6F5A7CED448B2A" Guid="{7ABDDFA0-A910-4A4B-A032-0061EBFE9244}">
+              <File Id="fil45B737D3402C09DEB1BD21FE81D7AAB9" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\Bibliography.xsl" />
+            </Component>
+            <Component Id="cmp95E9B125833F9C1B42C3EA493A57F434" Guid="{C864FB32-9242-4043-A6E1-875C5224FC0F}">
+              <File Id="fil5C059737306DF8A4C1B2625CC2C8D4D5" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\CodeTemplates.xsl" />
+            </Component>
+            <Component Id="cmp6158EBAD5CE826DAF5CA712760E28BC4" Guid="{0A39E1BC-A360-4345-B698-BE2E41AF633D}">
+              <File Id="fil2F4A07D32C3F4F9DCFE7CC7EAFA102A7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\ConceptualTopicTypes.xsl" />
+            </Component>
+            <Component Id="cmp085D4D33E9F20EE35479D2FCFBF4546F" Guid="{2CB79BD2-E713-47D4-99DC-F5E491001466}">
+              <File Id="filB93F02E4EBDF4FC69159FD89AD5A28E4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\GlobalTemplates.xsl" />
+            </Component>
+            <Component Id="cmpDDBCD19D4378FD1A16EFD31F8D5CB020" Guid="{36D90D24-36A9-413C-8898-476C58486B48}">
+              <File Id="fil181CFA10F8E694CF1EF53FBE0BFA9FDE" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\MainConceptual.xsl" />
+            </Component>
+            <Component Id="cmpC6EE12FA473E40B686F74A41C240151B" Guid="{DC6A44CA-9439-4FD5-B926-852F017CC14F}">
+              <File Id="fil69A4A407C5CB5EA1F6AC6CBEB75B2F08" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\MainSandcastle.xsl" />
+            </Component>
+            <Component Id="cmpAA1589B49CD490E8418A12468B4A86BC" Guid="{40BA9554-0471-4AA2-A048-4AECA68F93B8}">
+              <File Id="fil497941E33BA6DFF60039E89D9EC894F0" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\MAMLSeeAlsoTemplates.xsl" />
+            </Component>
+            <Component Id="cmpD8929510BA75E677D5C6F487651B3892" Guid="{2C9FE7EB-D24D-445D-A870-CB4FB331EA75}">
+              <File Id="filAFDE75450C5CB93A98C905CB19E29E4D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\MAMLTemplates.xsl" />
+            </Component>
+            <Component Id="cmp583A473D3FFFF52D39B0C71AF8675417" Guid="{3596879C-CF94-4F04-A255-E47A3772EFA1}">
+              <File Id="filF9B4DA0DF619B4014384B24ED7B24712" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\ReferenceUtilities.xsl" />
+            </Component>
+            <Component Id="cmpE5F4635E618FCCB3D60172565F673875" Guid="{3DC4D083-1A9A-4DAE-9AF1-65FF65462854}">
+              <File Id="fil971292792DEE49A9D0BE80EA7E9C943C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\SkeletonAPI.xml" />
+            </Component>
+            <Component Id="cmp1C1BA3B5BBA12C2236090B479F18957A" Guid="{257551AA-E4D9-4F7B-9728-7A6F5F5C6135}">
+              <File Id="fil1254213F3F8B5748B33F1523BD3EE062" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Transforms\SkeletonConceptual.xml" />
+            </Component>
+          </Directory>
+        </Directory>
         <Directory Id="dir67A6AD6029ACC0B0DC4B16E331BCDE0A" Name="OpenXml">
           <Directory Id="dir1E325ACCCD83643C243D8379CBB65341" Name="Configuration">
             <Component Id="cmp9351A48C808692941A6AAA1D19325FAF" Guid="{2B729B5A-8527-4E52-9F39-5B808FFC88B2}">
@@ -7739,7 +7946,10 @@
         <Component Id="cmp9F539118EE8DBC3372AA56CBF26CB438" Guid="{2DB7991A-F658-44C1-968A-2522C69B36E4}">
           <File Id="fil6A3D20D03ED801873EC0B09C70124799" KeyPath="yes" Source="$(var.RootFolder)\Templates\GenerateIntermediateTOC.proj" />
         </Component>
-        <Component Id="cmp98297E1AC6515DCC74BBB25DD07354BB" Guid="{CF85AD22-161C-4DE3-9DC8-28A06D28F9CE}">
+        <Component Id="cmp8C06FBFFE6EEAA7EC06527B3F527776F" Guid="{99E27306-9E3D-4E88-926F-BFBB9E4EE009}">
+          <File Id="filD69F0DBB9389E23AB5330F475E2E2966" KeyPath="yes" Source="$(var.RootFolder)\Templates\GenerateMarkdownContent.proj" />
+        </Component>
+        <Component Id="cmp98297E1AC6515DCC74BBB25DD07354BB" Guid="{EAA78843-055E-4947-B605-F164A2D526BE}">
           <File Id="fil8BEE49B56D220DC17D5C8C93E95701D2" KeyPath="yes" Source="$(var.RootFolder)\Templates\GenerateRefInfo.proj" />
         </Component>
         <Component Id="cmp1D45DF5DCB875988BDC832C36C76815A" Guid="{19F5A32C-686F-4582-8027-C05BF1A938A0}">
@@ -9649,6 +9859,69 @@
       <ComponentRef Id="cmpBC3473637F9B2F5B954B03C8A8AB2C1C" />
       <ComponentRef Id="cmp277DD37F7612FC7F6E1A73776198F8C7" />
       <ComponentRef Id="cmpD34C1E8E9A4572114ED5425D05B485DC" />
+      <ComponentRef Id="cmpF1975FB4AC7FBB62B0D37F75A936F217" />
+      <ComponentRef Id="cmp881AA4CFF8A94F0CBDDC041D96302284" />
+      <ComponentRef Id="cmpBC88B88212A17C016F2C12D8C878120F" />
+      <ComponentRef Id="cmpFFC8CFA43007A1903667C640BF157E6A" />
+      <ComponentRef Id="cmpB0F9E472A6FE98CB662E716DB1EA2998" />
+      <ComponentRef Id="cmpD3543F8BFB9B5D4E5C3ECA215D1CCE01" />
+      <ComponentRef Id="cmpE3EAF6B3DBA24B1C8E9D64D7F2532BA9" />
+      <ComponentRef Id="cmp1F7891C004E2D659B512206E7997B2B2" />
+      <ComponentRef Id="cmp5B52675F831F1A578B8D939BDDC471A1" />
+      <ComponentRef Id="cmp6630A341145BA15A38F14A87E0497314" />
+      <ComponentRef Id="cmp1321B0596258A7D0CE8FE722821AD630" />
+      <ComponentRef Id="cmp7EE26FE4A470B2A090ABACCF0717F87C" />
+      <ComponentRef Id="cmpFC8ADB77D01180273E9C681BCA8F7F7B" />
+      <ComponentRef Id="cmpA935290962E753EB01E8A9ACE83EEA32" />
+      <ComponentRef Id="cmpDA7450AB6C5113026DF7F64C6806DDBE" />
+      <ComponentRef Id="cmp2A9D46C39E524E97EE76C6CC078F3F6F" />
+      <ComponentRef Id="cmp1E7004658ED4CB33635534EA3994A7AB" />
+      <ComponentRef Id="cmp7D734740FB18C7F905DCA0728D383058" />
+      <ComponentRef Id="cmp19F42839CD8F943FB0B8B2DA4D7F9825" />
+      <ComponentRef Id="cmp86AFB5D164A950FA516B71FC7AABFB50" />
+      <ComponentRef Id="cmp9223EE1E051204DB85DCFB47899566AB" />
+      <ComponentRef Id="cmpBC0D881BF5ADCAC6292DAE424EDA22E6" />
+      <ComponentRef Id="cmpED0E223CED7E9D2565094AA5126447B8" />
+      <ComponentRef Id="cmpA04224E7F77339062F0555D593A5225D" />
+      <ComponentRef Id="cmp63BFC2016EF6CB4E7BEF730A6B782147" />
+      <ComponentRef Id="cmp78A8EBA0DEE54E72C424E39D38EA6E36" />
+      <ComponentRef Id="cmpC636F30B858EAC5EAA099C63998183B6" />
+      <ComponentRef Id="cmp213ED22CF208EA2F9EBECB1B1C2356C6" />
+      <ComponentRef Id="cmp5B3420FAA4BAFBFC5B5DF89E31639C90" />
+      <ComponentRef Id="cmp0525A9C77A9943B94ADCB8DD157B681B" />
+      <ComponentRef Id="cmp64060E7E13AA094D47ABD4C5764E4E24" />
+      <ComponentRef Id="cmp352D107310AFF4FE632E9776489D3FD1" />
+      <ComponentRef Id="cmp5C9EE921D1CE311934ED0BA7486BA6CC" />
+      <ComponentRef Id="cmpBE68253E1172FFD6B97CE88324E587D6" />
+      <ComponentRef Id="cmpA2ADFBAD684F5C948C492714FA86B9A5" />
+      <ComponentRef Id="cmpA7E798833936AF755BBCEA927BA93408" />
+      <ComponentRef Id="cmp63937E736FF1523514E602CF8EC1B9DB" />
+      <ComponentRef Id="cmpBDA0D18AF9660486E2580AC77EECCA7D" />
+      <ComponentRef Id="cmp05AD87405021872EF500E3B56BEBB9C0" />
+      <ComponentRef Id="cmpF473503D8AE7993EDDD07ADD9D9791F0" />
+      <ComponentRef Id="cmpD1EDAA5F537458DE7CEA15C2D5C4C96F" />
+      <ComponentRef Id="cmpF2A672883B1E5FDA87163258F2F3693F" />
+      <ComponentRef Id="cmpE912F0A70C9E5D0FC3005932295874DA" />
+      <ComponentRef Id="cmp9CE7778A118126D0727BEBC74C47A30C" />
+      <ComponentRef Id="cmp2969192584A55D9AE7E2BEF35838AADF" />
+      <ComponentRef Id="cmp3EC8B5C9AE414041050BA25AE3788757" />
+      <ComponentRef Id="cmp0E8222B3303AAC40B03B1D89B5AC9679" />
+      <ComponentRef Id="cmp388A49AB03EE13D0DA0E421FF8676D32" />
+      <ComponentRef Id="cmp2F1F0B1779C2CFA6DEA80568892C52B0" />
+      <ComponentRef Id="cmpB79341BDCEB4E8AC1927079700367AB7" />
+      <ComponentRef Id="cmpBAF25D6FC92A3AAE77D256A4D39A3CD3" />
+      <ComponentRef Id="cmpECD836C061B54E5B8E230FBB679B27E3" />
+      <ComponentRef Id="cmp95D1DED6DBA3F324DE6F5A7CED448B2A" />
+      <ComponentRef Id="cmp95E9B125833F9C1B42C3EA493A57F434" />
+      <ComponentRef Id="cmp6158EBAD5CE826DAF5CA712760E28BC4" />
+      <ComponentRef Id="cmp085D4D33E9F20EE35479D2FCFBF4546F" />
+      <ComponentRef Id="cmpDDBCD19D4378FD1A16EFD31F8D5CB020" />
+      <ComponentRef Id="cmpC6EE12FA473E40B686F74A41C240151B" />
+      <ComponentRef Id="cmpAA1589B49CD490E8418A12468B4A86BC" />
+      <ComponentRef Id="cmpD8929510BA75E677D5C6F487651B3892" />
+      <ComponentRef Id="cmp583A473D3FFFF52D39B0C71AF8675417" />
+      <ComponentRef Id="cmpE5F4635E618FCCB3D60172565F673875" />
+      <ComponentRef Id="cmp1C1BA3B5BBA12C2236090B479F18957A" />
       <ComponentRef Id="cmp9351A48C808692941A6AAA1D19325FAF" />
       <ComponentRef Id="cmpE42D44D752EB5972F188CA601E965B07" />
       <ComponentRef Id="cmp7BFB2B96184C2517B56DD00D05256157" />
@@ -10297,6 +10570,7 @@
       <ComponentRef Id="cmpB008DFF82923DF6D1214490A59FEFAA3" />
       <ComponentRef Id="cmp1A97D15EBCE367E305131ED96A15D474" />
       <ComponentRef Id="cmp9F539118EE8DBC3372AA56CBF26CB438" />
+      <ComponentRef Id="cmp8C06FBFFE6EEAA7EC06527B3F527776F" />
       <ComponentRef Id="cmp98297E1AC6515DCC74BBB25DD07354BB" />
       <ComponentRef Id="cmp1D45DF5DCB875988BDC832C36C76815A" />
       <ComponentRef Id="cmpD5D795EC85FCC9607B62B1DD77B42AA4" />

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1aea789d-b226-4b39-b534-4c97c256fac8" revisionNumber="1">
+	<developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+		<introduction>
+			<para>Select a category below to view common problems and solutions along with some known issues with
+Sandcastle and help files that you may encounter.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="ddf6af72-2798-4c90-be78-94df03939ada" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="f5b58289-dd25-45b6-b616-5b8af6ba3739" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="79b4dbda-239c-4bae-9bf5-bfb53384fe6d" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="0ad71ecb-3d68-4219-bea6-d4ac45017ded" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="097c63eb-3ceb-4d5b-bbe4-1e55c56d39b7" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="cef40c0a-8029-4157-a7b7-ada26ea8f7e3" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="ff4e514b-29ad-4329-a754-4ae7d6008587" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="b92db9c5-9d0c-4d65-ac6e-d3d25adb4093" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="e72030c7-616f-492f-900b-7648b75e9d5f" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="93cf23ae-5577-42c1-84fb-cd11a25def4d" />
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<link xlink:href="0dc360c6-16af-44e6-bf0e-ad922d5c733e" />
+						</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+			<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

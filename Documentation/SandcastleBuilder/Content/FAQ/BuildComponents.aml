@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="e72030c7-616f-492f-900b-7648b75e9d5f" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to build components.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="ConfigComp">
+			<title>How do I configure the custom build components with project-specific settings?</title>
+			<content>
+				<para>Use the <ui>Components</ui> project property category.  Select the component from the list on the
+property page, add it to the project, and click the <ui>Configure</ui> button.
+				</para>
+			</content>
+		</section>
+
+		<section address="CompInfo">
+			<title>Where can I find more information on the custom build components supplied with the help file builder?</title>
+			<content>
+				<para>See the <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" /> help topic for more information
+and links to details about each component.</para>
+			</content>
+		</section>
+
+		<section address="CreateComp">
+			<title>How can I create my own custom build components?</title>
+			<content>
+				<para>For information on writing your own custom build components, see the
+<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

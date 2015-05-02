@@ -368,10 +368,10 @@ and they are always placed in the <localUri>html/</localUri> folder.</para>
   <content>
 		<para>This property is used to choose the presentation style that determines the layout and appearance of
 the help topics.  Several styles are provided: <codeInline>VS2013</codeInline> (the default),
-<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, <codeInline>VS2005</codeInline>
-(deprecated), <codeInline>Prototype</codeInline> (deprecated), and <codeInline>Hana</codeInline> (deprecated).
-The files for each style are located in the <localUri>.\PresentationStyles</localUri> folder under the main help
-file builder installation folder.</para>
+<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, <codeInline>Markdown Content</codeInline>,
+<codeInline>VS2005</codeInline> (deprecated), <codeInline>Prototype</codeInline> (deprecated), and
+<codeInline>Hana</codeInline> (deprecated).  The files for each style are located in the
+<localUri>.\PresentationStyles</localUri> folder under the main help file builder installation folder.</para>
 
 	</content>
 

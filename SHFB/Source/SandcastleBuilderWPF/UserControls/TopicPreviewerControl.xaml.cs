@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/29/2015
+// Updated : 04/28/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,11 +25,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 using ColorizerLibrary;
@@ -472,7 +474,16 @@ namespace SandcastleBuilder.WPF.UserControls
                     if(topic.IsSelected)
                         tvContent_SelectedItemChanged(this, new RoutedPropertyChangedEventArgs<object>(null, null));
                     else
+                    {
                         topic.IsSelected = true;
+
+                        // We need to force the SelectedItemChanged event to run so that the document instance is
+                        // updated before we get to the fragment check below.  Haven't found a better way to do
+                        // this but it works.
+                        if(Application.Current != null && Application.Current.Dispatcher != null)
+                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                                new ThreadStart(delegate { }));
+                    }
 
                     wasFound = true;
                 }

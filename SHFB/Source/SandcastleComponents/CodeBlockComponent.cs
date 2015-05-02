@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/23/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 04/24/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -38,6 +38,7 @@
 //                           presentation style XSL transformations.
 // -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
 //          02/27/2014  EFW  Added support for the Open XML help file format
+//          04/24/2015  EFW  Added support for the Markdown help file format
 //===============================================================================================================
 
 using System;
@@ -258,10 +259,10 @@ namespace SandcastleBuilder.Components
         // The style sheet, script, and image files to include and the output path
         private string stylesheet, scriptFile;
 
-        // Line numbering, outlining, keep see tags, remove region markers, disabled, files copied and Open XML
-        // flags.
+        // Line numbering, outlining, keep see tags, remove region markers, disabled, files copied, Open XML,
+        // and Markdown flags.
         private bool numberLines, outliningEnabled, keepSeeTags, removeRegionMarkers, isDisabled,
-            colorizerFilesCopied, isOpenXml;
+            colorizerFilesCopied, isOpenXml, isMarkdown;
 
         // The base path to use for file references with relative paths, the syntax and style filenames, and the
         // default language.
@@ -355,6 +356,10 @@ namespace SandcastleBuilder.Components
                 // The Open XML format doesn't support all features and requires a custom transformation
                 if(value.IndexOf("OpenXML", StringComparison.OrdinalIgnoreCase) != -1)
                     isOpenXml = true;
+
+                // The Markdown format doesn't support any features
+                if(value.IndexOf("Markdown", StringComparison.OrdinalIgnoreCase) != -1)
+                    isMarkdown = true;
             }
 
             if(outputPaths.Count == 0)
@@ -396,8 +401,8 @@ namespace SandcastleBuilder.Components
             nav = configuration.SelectSingleNode("colorizer");
 
             if(nav == null)
-                throw new ConfigurationErrorsException("You must specify a <colorizer> element to define the " +
-                    "code colorizer options.");
+                throw new ConfigurationErrorsException("You must specify a <colorizer> element to define " +
+                    "the code colorizer options.");
 
             // The file and URL values are all required
             syntaxFile = nav.GetAttribute("syntaxFile", String.Empty);
@@ -413,11 +418,11 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("You must specify a 'styleFile' attribute on the " +
                     "<colorizer> element.");
 
-            if(String.IsNullOrEmpty(stylesheet) && !isOpenXml)
+            if(String.IsNullOrEmpty(stylesheet) && !isOpenXml && !isMarkdown)
                 throw new ConfigurationErrorsException("You must specify a 'stylesheet' attribute on the " +
                     "<colorizer> element");
 
-            if(String.IsNullOrEmpty(scriptFile) && !isOpenXml)
+            if(String.IsNullOrEmpty(scriptFile) && !isOpenXml && !isMarkdown)
                 throw new ConfigurationErrorsException("You must specify a 'scriptFile' attribute on the " +
                     "<colorizer> element");
 
@@ -434,7 +439,7 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("The specified style file could not be found: " +
                     styleFile);
 
-            if(!isOpenXml)
+            if(!isOpenXml && !isMarkdown)
             {
                 stylesheet = Path.GetFullPath(stylesheet);
                 scriptFile = Path.GetFullPath(scriptFile);
@@ -482,11 +487,16 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
                     "'defaultTitle' attribute.");
 
-            value = nav.GetAttribute("disabled", String.Empty);
+            if(!isMarkdown)
+            {
+                value = nav.GetAttribute("disabled", String.Empty);
 
-            if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out isDisabled))
-                throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                    "'disabled' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out isDisabled))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "'disabled' attribute.");
+            }
+            else
+                isDisabled = true;      // Markdown doesn't support anything so it is always disabled
 
             if(isOpenXml)
             {
@@ -879,7 +889,7 @@ namespace SandcastleBuilder.Components
                 return;
 
             // Only copy the files if needed
-            if(!colorizerFilesCopied && !isOpenXml)
+            if(!colorizerFilesCopied && !isOpenXml && !isMarkdown)
             {
                 foreach(string outputPath in outputPaths)
                 {
@@ -909,7 +919,7 @@ namespace SandcastleBuilder.Components
                 colorizerFilesCopied = true;
             }
 
-            if(!isOpenXml)
+            if(!isOpenXml && !isMarkdown)
             {
                 // Find the <head> section
                 head = tt.Document.SelectSingleNode("html/head");

@@ -193,7 +193,7 @@ namespace SandcastleBuilder.PlugIns
                 // Strip out superfluous "^"
                 { "(member name=\".*?System\\.Collections\\.Generic.*?)(\\^)", "$1" },
                 // Fix-up valid cref attributes that the compiler couldn't figure out
-                { "cref=\"!:([EFMNPT]|Overload):", "cref=\"$1:" },
+                { "cref=\"!:([EFGMNPT]|Overload):", "cref=\"$1:" },
                 // Convert interior_ptr<T> to an explicit dereference
                 { @"cli\.interior_ptr{([^}]+?)}", "$1@!System.Runtime.CompilerServices.IsExplicitlyDereferenced" } };
 

@@ -51,11 +51,12 @@ changed with the <codeInline>Working Path</codeInline> property.  This property 
 as the <codeInline>Working Path</codeInline> property as the working path folder is cleared prior to the build.</para>
 
 				<alert class="warning">
-					<para>Be aware that if an option is selected that produces a website, the output folder specified by
-the <codeInline>Output Path</codeInline> property will be cleared of all of its current content without any
-prompting before the web site content is copied to it.  In other words, don't do something stupid like set it to
-the root of your C: drive or your desktop folder.    The help file builder will try to take steps to ensure this
-does not happen.  When producing Help 1, Help 2, and/or MS Help Viewer files, the output folder is not cleared.</para>
+					<para>Be aware that if an option is selected that produces a website or markdown content, the output
+folder specified by the <codeInline>Output Path</codeInline> property will be cleared of all of its current
+content without any prompting before the web site content is copied to it.  In other words, don't do something
+stupid like set it to the root of your C: drive or your desktop folder.    The help file builder will try to take
+steps to ensure this does not happen.  When producing Help 1, Help 2, and/or MS Help Viewer files, the output
+folder is not cleared.</para>
 				</alert>
 
 			</content>

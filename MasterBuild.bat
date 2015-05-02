@@ -21,6 +21,9 @@ IF ERRORLEVEL 1 GOTO End
 
 IF ERRORLEVEL 1 GOTO End
 
+REM Enforce use of VS 2010 SDK if present.  If not it tries to use the VS 2011 SDK even if its not there.
+IF EXIST "%ProgramFiles(x86)%\MSBuild\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" SET VisualStudioVersion=10.0
+
 "%NUGET%" restore "SandcastleBuilderPackage.sln"
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
@@ -46,6 +49,10 @@ CD ..\SHFB\Source
 
 IF ERRORLEVEL 1 GOTO End
 
+ECHO *
+ECHO * All builds completed successfully.
+ECHO *
+
 CD ..\..\NuGet
 
 BuildNuGet.bat
@@ -63,9 +70,5 @@ ECHO *
 ECHO *
 
 :End
-
-ECHO *
-ECHO * The tools have been built successfully.
-ECHO *
 
 ENDLOCAL

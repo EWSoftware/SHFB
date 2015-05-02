@@ -164,11 +164,12 @@ generated document manually.  Since adding all of the information may unnecessar
 it may be better to add it in a single topic somewhere near the start of the document.</para>
 
 						<alert class="tip">
-							<para>As in other help file formats, stock content item overrides are supported.  Including a
-<localUri>word/header.xml</localUri> and/or <localUri>word/footer.xml</localUri> file with appropriate, valid
-content in your project can be used to override the default header and/or footer in the generated document.
-Similarly, including a <localUri>word/styles.xml</localUri> file with valid content will override the default
-style sheet used in the document.</para>
+							<para>As in other help file formats, stock content file overrides are supported.  Including a
+<localUri>word/header.xml</localUri> and/or <localUri>word/footer.xml</localUri> file containing appropriate,
+valid content in your project with the Build Action set to <codeInline>Content</codeInline> will override the
+default header and/or footer in the generated document.  Similarly, including a <localUri>word/styles.xml</localUri>
+file containing valid content with the Build Action set to <codeInline>Content</codeInline> will override the
+default style sheet used in the document.</para>
 						</alert>
 					</listItem>
 

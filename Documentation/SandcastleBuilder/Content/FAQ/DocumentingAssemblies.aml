@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="f5b58289-dd25-45b6-b616-5b8af6ba3739" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic covers common questions and issues related to documenting assemblies.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="DepAsm1">
+			<title>My project relies on third-party assemblies and/or interop assemblies that do not have XML comments
+files.  How can I document my assemblies without them?</title>
+			<content>
+				<para>Third-party assemblies with or without XML comments files and Visual Studio generated interop
+assemblies do not need to be documented.  They are considered to be dependent or reference assemblies.  As such,
+add them to the <codeInline>References</codeInline> node in the Project Explorer window rather than as
+documentation sources.  See the <link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" /> topic for more
+information.</para>
+			</content>
+		</section>
+
+		<section address="DepAsm2">
+			<title>My project uses third party assemblies but I don't want to include them in my documentation.  How do
+I exclude them?
+			</title>
+			<content>
+				<para>See the answer to the <link xlink:href="#DepAsm1">previous question</link>.</para>
+			</content>
+		</section>
+
+		<section address="IntelliSense">
+			<title>How can I create an IntelliSense XML comments file that contains information on only the members
+documented in the help file and excludes all of the private member details?</title>
+			<content>
+				<para>Add the <link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" /> to the project using the
+<codeInline>ComponentConfigurations</codeInline> project property.</para>
+			</content>
+		</section>
+
+		<section address="SharedSettings">
+			<title>How can I share project summary and namespace settings between multiple help file builder projects?</title>
+			<content>
+				<para>Create a standalone XML comments file and add it to the project as a documentation source.  See the
+<link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" /> help topic for details.</para>
+			</content>
+		</section>
+
+		<section address="CreateComments">
+			<title>I have an assembly without code and without an XML comments file for which I'd like to create
+documentation and/or an Intellisense file.  How can I do that?</title>
+			<content>
+				<para>Create a blank XML comments file like the following and name it after the assembly with a
+<localUri>.xml</localUri> extension:</para>
+
+<code language="xml" title="Blank XML Comments File">
+&lt;?xml version="1.0"?&gt;
+&lt;doc&gt;
+	&lt;assembly&gt;
+		&lt;name&gt;YourAssemblyNameHere&lt;/name&gt;
+	&lt;/assembly&gt;
+	&lt;members&gt;
+	&lt;/members&gt;
+&lt;/doc&gt;
+</code>
+
+				<para>Create a new help file builder project and add just that assembly and comments file to it as
+documentation sources.  Select the <codeInline>ComponentConfigurations</codeInline> property and click the "..."
+button to the right of it.  In the Component Configurations dialog, add the
+<link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" /> to the project.  Next, set the project's
+<link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36">Show Missing Tags</link> properties to your liking.  This
+will force the build to add "missing" notes for all items that you might want to document.  Build the project and
+you will find a new XML comments file named after the assembly in the project's output folder.  Edit the
+<codeInline>&lt;member&gt;</codeInline> elements in the XML comments file to add the comments that you want for
+each member.  For example:</para>
+
+<code language="xml" title="Member Comments Example">
+&lt;member name="M:SandcastleBuilder.Utils.XmlCommentsFileCollection.FindMember(System.String)"&gt;
+	&lt;summary&gt;
+	Search all comments files for the specified member.  If not found, add the
+	blank member to the first file.
+	&lt;/summary&gt;
+	&lt;param name="memberName"&gt;The member name for which to search.&lt;/param&gt;
+	&lt;returns&gt;The XML node of the found or added member&lt;/returns&gt;
+&lt;/member&gt;
+</code>
+
+				<para>When you are done, replace your original placeholder file with the one generated from the build
+with your edited comments.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

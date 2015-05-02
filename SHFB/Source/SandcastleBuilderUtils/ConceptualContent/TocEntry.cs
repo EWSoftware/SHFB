@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 04/01/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a table of contents entry.  This is used to build the table of
 // contents entries for additional content items.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -120,8 +120,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public string DestinationFile { get; set; }
 
         /// <summary>
-        /// The ID of the item when it represents a TOC entry from a content
-        /// layout file.
+        /// The ID of the item when it represents a TOC entry from a content layout file
         /// </summary>
         [Browsable(false)]
         public string Id { get; set; }
@@ -139,8 +138,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public string LinkText { get; set; }
 
         /// <summary>
-        /// This is used to get or set the entry's title in the table of
-        /// contents.
+        /// This is used to get or set the entry's title in the table of contents
         /// </summary>
         [Category("Content Item"), Description("The table of contents title")]
         public string Title
@@ -150,8 +148,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 if(value != title)
                 {
-                    if(value != null && value.Trim().Length == 0)
-                        value = null;
+                    if(String.IsNullOrWhiteSpace(value))
+                        value = Path.GetFileNameWithoutExtension(this.SourceFile);
 
                     title = value;
                     this.OnPropertyChanged("Title");
@@ -160,8 +158,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the item is the default
-        /// topic for the help file.
+        /// This is used to get or set whether or not the item is the default topic for the help file
         /// </summary>
         [Browsable(false)]
         public bool IsDefaultTopic
@@ -615,6 +612,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 case HelpFileFormats.MSHelp2:
                 case HelpFileFormats.Website:
                 case HelpFileFormats.OpenXml:
+                case HelpFileFormats.Markdown:
                     if(!String.IsNullOrEmpty(this.DestinationFile) && format == HelpFileFormats.Website)
                         url = this.DestinationFile.Replace('\\', '/');
                     else

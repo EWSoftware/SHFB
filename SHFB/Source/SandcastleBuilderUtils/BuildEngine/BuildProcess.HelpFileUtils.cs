@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 03/31/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
 // and find the default help file page
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -379,9 +379,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This is called to copy the standard content files (icons, scripts, style sheets, and other standard
         /// presentation style content) to the help output folders.
         /// </summary>
-        /// <remarks>This creates the base folder <b>Output\</b>, one folder for each help file format, and an
-        /// <b>.\html</b> folder under each of those.  It then copies the stock icon, script, and style sheet
-        /// files from the defined presentation style help content folders.</remarks>
+        /// <remarks>This creates the base folder <strong>Output\</strong> and one folder for each help file
+        /// format.  It then copies the stock icon, script, and style sheet files from the defined presentation
+        /// style help content folders.</remarks>
         private void CopyStandardHelpContent()
         {
             int idx = 0;
@@ -392,7 +392,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return;
 
             this.ExecutePlugIns(ExecutionBehaviors.Before);
-            this.EnsureOutputFoldersExist("html");
+            this.EnsureOutputFoldersExist(null);
 
             foreach(HelpFileFormats value in Enum.GetValues(typeof(HelpFileFormats)))
                 if((project.HelpFileFormat & value) != 0)
@@ -445,7 +445,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     fileCount++;
 
-                    if((fileCount % 100) == 0)
+                    if((fileCount % 500) == 0)
                         this.ReportProgress("Copied {0} files", fileCount);
                 }
             }
@@ -472,9 +472,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="format">The HTML help file format</param>
         /// <returns>The full list of all files for the help project</returns>
         /// <remarks>The help file list is expanded to ensure that we get all additional content including all
-        /// nested subfolders.  The <b>format</b> parameter determines the format of the returned file list.  For
-        /// HTML Help 1, it returns a list of the filenames.  For MS Help 2, it returns the list formatted with
-        /// the necessary XML markup.</remarks>
+        /// nested subfolders.  The <paramref name="format"/> parameter determines the format of the returned
+        /// file list.  For HTML Help 1, it returns a list of the filenames.  For MS Help 2, it returns the list
+        /// formatted with the necessary XML markup.</remarks>
         private string HelpProjectFileList(string folder, HelpFileFormats format)
         {
             StringBuilder sb = new StringBuilder(10240);
@@ -669,7 +669,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <param name="subFolder">The subfolder name or null to ensure that the base folders exist.</param>
         /// <remarks>This creates the named folder under the help format specific folder beneath the
-        /// <b>.\Output</b> folder.</remarks>
+        /// <strong>.\Output</strong> folder.</remarks>
         public void EnsureOutputFoldersExist(string subFolder)
         {
             if(this.HelpFormatOutputFolders.Count == 0)
@@ -680,10 +680,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             @"{0}Output\{1}\", workingFolder, value));
             }
 
-            if(!String.IsNullOrEmpty(subFolder))
-                foreach(string baseFolder in this.HelpFormatOutputFolders)
-                    if(!Directory.Exists(baseFolder + subFolder))
-                        Directory.CreateDirectory(baseFolder + subFolder);
+            foreach(string baseFolder in this.HelpFormatOutputFolders)
+                if(!Directory.Exists(baseFolder + subFolder))
+                    Directory.CreateDirectory(baseFolder + subFolder);
         }
         #endregion
     }

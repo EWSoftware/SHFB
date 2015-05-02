@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroupsCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2015
+// Updated : 04/28/2015
 // Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -10,7 +10,7 @@
 // combine namespaces with a common root into entries in the table of contents in the generated help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -337,11 +337,16 @@ namespace Microsoft.Ddue.Tools
         private static IEnumerable<NamespaceGroup> GroupNamespaces(IEnumerable<string> namespaces, int maxParts,
           bool hasRootNamespaceContainer)
         {
-            Dictionary<string, NamespaceGroup> groups = new Dictionary<string,NamespaceGroup>();
+            Dictionary<string, NamespaceGroup> groups = new Dictionary<string, NamespaceGroup>();
             NamespaceGroup match;
             string[] parts;
             string root;
             int partCount;
+
+            // If the shortest namespace has more than one part, increase the maximum number of parts to account
+            // for the base length.
+            if(namespaces.Count() != 0)
+                maxParts += namespaces.Min(n => n.Split('.').Length) - 1;
 
             // This serves as the root group.  If a project element is present in the reflection file, its
             // list of elements will be replaced by the list in this group.  If not, this group is written to
@@ -408,7 +413,7 @@ namespace Microsoft.Ddue.Tools
             // the sub-group.  Don't do it for the root namespace container or if the namespace itself will
             // appear with the group entry.
             foreach(var group in groups.ToList())
-                if((group.Key.Length != 0 || hasRootNamespaceContainer)  && group.Value.Children.Count == 1 &&
+                if((group.Key.Length != 0 || hasRootNamespaceContainer) && group.Value.Children.Count == 1 &&
                   group.Value.Children[0][0] == 'G' && !namespaces.Contains(group.Value.Namespace))
                 {
                     root = "N" + group.Value.Children[0].Substring(1);

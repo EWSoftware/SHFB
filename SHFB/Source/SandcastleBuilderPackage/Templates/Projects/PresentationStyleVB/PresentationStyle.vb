@@ -12,6 +12,7 @@
 
 Imports System
 Imports System.Collections.Generic
+Imports System.Reflection
 
 Imports Sandcastle.Core
 Imports Sandcastle.Core.PresentationStyle
@@ -36,7 +37,7 @@ Namespace safeprojectname
         ''' <inheritdoc />
         Public Overrides ReadOnly Property Location As String
             Get
-                Return ComponentUtilities.AssemblyFolder(Nothing)
+                Return ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly())
             End Get
         End Property
 

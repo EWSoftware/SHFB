@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
+// Updated : 04/02/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -76,25 +76,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        // A stack used to check for circular build component dependencies
-        private Stack<string> mergeStack;
-
         // Regular expressions used for encoding detection and parsing
         private static Regex reXmlEncoding = new Regex("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
 
-        private static Regex reField = new Regex(
-            @"{@(?<Field>\w*?)(:(?<Format>.*?))?}");
+        private static Regex reField = new Regex(@"{@(?<Field>\w*?)(:(?<Format>.*?))?}");
 
         private MatchEvaluator fieldMatchEval;
         #endregion
 
         /// <summary>
-        /// Transform the specified template text by inserting the necessary
-        /// values into the place holders tags.
+        /// Transform the specified template text by inserting the necessary values into the place holders tags
         /// </summary>
         /// <param name="templateText">The template text to transform</param>
-        /// <param name="args">An optional list of arguments to format into the 
-        /// template before transforming it.</param>
+        /// <param name="args">An optional list of arguments to format into the  template before transforming it</param>
         /// <returns>The transformed text</returns>
         public string TransformText(string templateText, params object[] args)
         {
@@ -189,14 +183,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This is used to read in a file using an appropriate encoding method
         /// </summary>
         /// <param name="filename">The file to load</param>
-        /// <param name="encoding">Pass the default encoding to use.  On
-        /// return, it contains the actual encoding for the file.</param>
+        /// <param name="encoding">Pass the default encoding to use.  On return, it contains the actual encoding
+        /// for the file.</param>
         /// <returns>The contents of the file.</returns>
-        /// <remarks>When reading the file, use the default encoding specified
-        /// but detect the encoding if byte order marks are present.  In
-        /// addition, if the template is an XML file and it contains an
-        /// encoding identifier in the XML tag, the file is read using
-        /// that encoding.</remarks>
+        /// <remarks>When reading the file, use the default encoding specified but detect the encoding if byte
+        /// order marks are present.  In addition, if the template is an XML file and it contains an encoding
+        /// identifier in the XML tag, the file is read using that encoding.</remarks>
         public static string ReadWithEncoding(string filename, ref Encoding encoding)
         {
             Encoding fileEnc;
@@ -1073,6 +1065,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         CultureInfo.InvariantCulture);
                     break;
 
+                case "hrefformat":
+                    if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+                        replaceWith = "<hrefFormat value=\"{0}\" />";
+                    else
+                        replaceWith = String.Empty;
+                    break;
+
                 case "sandcastlepath":
                     // This is obsolete but will still appear in the older component and plug-in configurations.
                     // Throw an exception that describes what to do to fix it.
@@ -1156,22 +1155,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         private void MergeComponentConfigurations()
         {
-            Dictionary<string, XmlNode> outputNodes = new Dictionary<string, XmlNode>();
-            BuildComponentFactory factory;
-            BuildComponentConfiguration projectComp;
             XmlDocument config;
-            XmlNode rootNode, configNode, clone;
-            XmlNodeList outputFormats;
-            string configName, compConfig;
+            XmlNode configNode;
+            string configName;
 
             this.ReportProgress(BuildStep.MergeCustomConfigs, "Merging custom build component configurations");
 
             // Reset the adjusted instance values to match the configuration instance values
             foreach(var component in buildComponents.Values)
             {
-                var p = component.ReferenceBuildPlacement;
-                p.AdjustedInstance = p.Instance;
-
                 component.ReferenceBuildPlacement.AdjustedInstance = component.ReferenceBuildPlacement.Instance;
                 component.ConceptualBuildPlacement.AdjustedInstance = component.ConceptualBuildPlacement.Instance;
             }
@@ -1186,8 +1178,56 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             config = new XmlDocument();
             config.Load(configName);
+
+            this.MergeConfigurations(config, false);
+            config.Save(configName);
+
+            // Do the same for conceptual.config if necessary
+            if(conceptualContent.ContentLayoutFiles.Count != 0)
+            {
+                configName = workingFolder + "conceptual.config";
+                this.ReportProgress(configName);
+
+                config = new XmlDocument();
+                config.Load(configName);
+
+                this.MergeConfigurations(config, true);
+
+                // Remove the example component if there are no snippets file
+                if(conceptualContent.CodeSnippetFiles.Count == 0)
+                {
+                    this.ReportProgress("    Removing unused ExampleComponent.");
+
+                    var rootNode = config.SelectSingleNode("configuration/dduetools/builder/components");
+                    configNode = rootNode.SelectSingleNode("component[@id='Example Component']");
+
+                    if(configNode != null)
+                        configNode.ParentNode.RemoveChild(configNode);
+                }
+
+                config.Save(configName);
+            }
+
+            this.ExecutePlugIns(ExecutionBehaviors.After);
+        }
+
+        /// <summary>
+        /// This handles merging the build component configurations into the given configuration file
+        /// </summary>
+        /// <param name="config">The configuration file into which the configurations are merged</param>
+        /// <param name="isConceptualConfig">True for a conceptual configuration file, false for a reference
+        /// configuration file.</param>
+        private void MergeConfigurations(XmlDocument config, bool isConceptualConfig)
+        {
+            Dictionary<string, XmlNode> outputNodes = new Dictionary<string, XmlNode>();
+            BuildComponentFactory factory;
+            BuildComponentConfiguration projectComp;
+            XmlNode rootNode, configNode, clone;
+            XmlNodeList outputFormats;
+            PlacementAction placement;
+            string compConfig, configType;
+
             rootNode = config.SelectSingleNode("configuration/dduetools/builder/components");
-            mergeStack = new Stack<string>();
 
             foreach(string id in project.ComponentConfigurations.Keys)
             {
@@ -1198,8 +1238,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "The project contains a reference to a custom build component '{0}' that could not " +
                         "be found.", id));
 
-                if(factory.ReferenceBuildPlacement.Placement == PlacementAction.None)
-                    this.ReportProgress("    Skipping component '{0}', not used in reference build", id);
+                if(isConceptualConfig)
+                {
+                    placement = factory.ConceptualBuildPlacement.Placement;
+                    configType = "conceptual";
+                }
+                else
+                {
+                    placement = factory.ReferenceBuildPlacement.Placement;
+                    configType = "reference";
+                }
+
+                if(placement == PlacementAction.None)
+                    this.ReportProgress("    Skipping component '{0}', not used in {1} build", id, configType);
                 else
                     if(projectComp.Enabled)
                     {
@@ -1223,7 +1274,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         if(outputNodes.Count == 0)
                         {
                             // Replace the component in the file
-                            this.MergeComponent(id, factory, rootNode, configNode, false);
+                            this.MergeComponent(id, factory, rootNode, configNode, isConceptualConfig, null);
                         }
                         else
                         {
@@ -1231,100 +1282,35 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             outputFormats = rootNode.SelectNodes(
                                 "component[@id='Multi-format Output Component']/helpOutput");
 
-                            foreach(XmlNode format in outputFormats)
+                            if(outputFormats.Count != 0)
                             {
-                                clone = configNode.Clone();
-                                clone.FirstChild.InnerXml = outputNodes[format.Attributes["format"].Value].InnerXml;
-                                this.MergeComponent(id, factory, format, clone, false);
+                                foreach(XmlNode format in outputFormats)
+                                {
+                                    clone = configNode.Clone();
+                                    clone.FirstChild.InnerXml += outputNodes[format.Attributes["format"].Value].InnerXml;
+                                    this.MergeComponent(id, factory, format, clone, isConceptualConfig, null);
+                                }
+                            }
+                            else
+                            {
+                                // Some presentation styles only support one help format.  In those cases, get
+                                // the configuration for that format and use it alone.
+                                XmlNode format;
+
+                                if(outputNodes.TryGetValue(project.HelpFileFormat.ToString(), out format))
+                                {
+                                    configNode.FirstChild.InnerXml += format.InnerXml;
+                                    this.MergeComponent(id, factory, rootNode, configNode, isConceptualConfig, null);
+                                }
+                                else
+                                    this.ReportProgress("    Skipping component '{0}', configuration for help " +
+                                        "format '{1}' not found", id, project.HelpFileFormat);
                             }
                         }
                     }
                     else
                         this.ReportProgress("    The configuration for '{0}' is disabled and will not be used.", id);
             }
-
-            config.Save(configName);
-
-            // Do the same for conceptual.config if necessary
-            if(conceptualContent.ContentLayoutFiles.Count != 0)
-            {
-                configName = workingFolder + "conceptual.config";
-                this.ReportProgress(configName);
-
-                config = new XmlDocument();
-                config.Load(configName);
-                rootNode = config.SelectSingleNode("configuration/dduetools/builder/components");
-                mergeStack.Clear();
-
-                foreach(string id in project.ComponentConfigurations.Keys)
-                {
-                    projectComp = project.ComponentConfigurations[id];
-
-                    if(!buildComponents.TryGetValue(id, out factory))
-                        throw new BuilderException("BE0021", String.Format(CultureInfo.CurrentCulture,
-                            "The project contains a reference to a custom build component '{0}' that could " +
-                            "not be found.", id));
-
-                    if(factory.ConceptualBuildPlacement.Placement == PlacementAction.None)
-                        this.ReportProgress("    Skipping component '{0}', not used in conceptual build", id);
-                    else
-                        if(projectComp.Enabled)
-                        {
-                            compConfig = projectComp.Configuration;
-
-                            // Replace template tags.  They may be nested.
-                            while(reField.IsMatch(compConfig))
-                                compConfig = reField.Replace(compConfig, fieldMatchEval);
-
-                            configNode = config.CreateDocumentFragment();
-                            configNode.InnerXml = compConfig;
-                            outputNodes.Clear();
-
-                            foreach(XmlNode match in configNode.SelectNodes("//helpOutput"))
-                            {
-                                outputNodes.Add(match.Attributes["format"].Value, match);
-                                match.ParentNode.RemoveChild(match);
-                            }
-
-                            // Is it output format specific?
-                            if(outputNodes.Count == 0)
-                            {
-                                // Replace the component in the file
-                                this.MergeComponent(id, factory, rootNode, configNode, true);
-                            }
-                            else
-                            {
-                                // Replace the component in each output format node
-                                outputFormats = rootNode.SelectNodes(
-                                    "component[@id='Multi-format Output Component']/helpOutput");
-
-                                foreach(XmlNode format in outputFormats)
-                                {
-                                    clone = configNode.Clone();
-                                    clone.FirstChild.InnerXml = outputNodes[format.Attributes["format"].Value].InnerXml;
-                                    this.MergeComponent(id, factory, format, clone, true);
-                                }
-                            }
-                        }
-                        else
-                            this.ReportProgress("    The configuration for '{0}' is disabled and will not be used.", id);
-                }
-
-                // Remove the example component if there are no snippets file
-                if(conceptualContent.CodeSnippetFiles.Count == 0)
-                {
-                    this.ReportProgress("    Removing unused ExampleComponent.");
-                    configNode = rootNode.SelectSingleNode("component[@id='Example Component']");
-
-                    if(configNode != null)
-                        configNode.ParentNode.RemoveChild(configNode);
-                }
-
-                config.Save(configName);
-            }
-
-            this.ExecutePlugIns(ExecutionBehaviors.After);
-            mergeStack = null;
         }
 
         /// <summary>
@@ -1337,8 +1323,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="configNode">The configuration node to merge</param>
         /// <param name="isConceptualConfig">True if this is a conceptual content configuration file or false if
         /// it is a reference build configuration file.</param>
+        /// <param name="mergeStack">A stack used to check for circular build component dependencies.  Pass null
+        /// on the first non-recursive call.</param>
         private void MergeComponent(string id, BuildComponentFactory factory, XmlNode rootNode, XmlNode configNode,
-          bool isConceptualConfig)
+          bool isConceptualConfig, Stack<string> mergeStack)
         {
             BuildComponentFactory dependencyFactory;
             ComponentPlacement position;
@@ -1348,6 +1336,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // Merge dependent component configurations first
             if(factory.Dependencies.Any())
+            {
+                if(mergeStack == null)
+                    mergeStack = new Stack<string>();
+
                 foreach(string dependency in factory.Dependencies)
                 {
                     node = rootNode.SelectSingleNode("component[@id='" + dependency + "']");
@@ -1368,9 +1360,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportProgress("    Merging '{0}' dependency for '{1}'", dependency, id);
 
                     mergeStack.Push(dependency);
-                    this.MergeComponent(dependency, dependencyFactory, rootNode, node, isConceptualConfig);
+                    this.MergeComponent(dependency, dependencyFactory, rootNode, node, isConceptualConfig, mergeStack);
                     mergeStack.Pop();
                 }
+            }
 
             position = (!isConceptualConfig) ? factory.ReferenceBuildPlacement : factory.ConceptualBuildPlacement;
 

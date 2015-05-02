@@ -44,9 +44,12 @@ namespace SandcastleBuilder.PlugIns
             this.ucMSHelpViewer = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
             this.pgWebsite = new System.Windows.Forms.TabPage();
             this.ucWebsite = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
-            this.chkDeleteAfterDeploy = new System.Windows.Forms.CheckBox();
             this.pgOpenXml = new System.Windows.Forms.TabPage();
             this.ucOpenXml = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
+            this.pgMarkdown = new System.Windows.Forms.TabPage();
+            this.ucMarkdownContent = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
+            this.chkDeleteAfterDeploy = new System.Windows.Forms.CheckBox();
+            this.chkVerboseLogging = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.tabConfig.SuspendLayout();
             this.pgHtmlHelp1.SuspendLayout();
@@ -54,6 +57,7 @@ namespace SandcastleBuilder.PlugIns
             this.pgMSHelpViewer.SuspendLayout();
             this.pgWebsite.SuspendLayout();
             this.pgOpenXml.SuspendLayout();
+            this.pgMarkdown.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -62,7 +66,7 @@ namespace SandcastleBuilder.PlugIns
             this.btnCancel.Location = new System.Drawing.Point(538, 379);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -73,7 +77,7 @@ namespace SandcastleBuilder.PlugIns
             this.btnOK.Location = new System.Drawing.Point(12, 379);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
-            this.btnOK.TabIndex = 2;
+            this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
             this.btnOK.UseVisualStyleBackColor = true;
@@ -102,11 +106,12 @@ namespace SandcastleBuilder.PlugIns
             this.tabConfig.Controls.Add(this.pgMSHelpViewer);
             this.tabConfig.Controls.Add(this.pgWebsite);
             this.tabConfig.Controls.Add(this.pgOpenXml);
+            this.tabConfig.Controls.Add(this.pgMarkdown);
             this.tabConfig.Location = new System.Drawing.Point(12, 42);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.SelectedIndex = 0;
             this.tabConfig.Size = new System.Drawing.Size(614, 331);
-            this.tabConfig.TabIndex = 1;
+            this.tabConfig.TabIndex = 2;
             // 
             // pgHtmlHelp1
             // 
@@ -191,15 +196,6 @@ namespace SandcastleBuilder.PlugIns
             this.ucWebsite.Size = new System.Drawing.Size(596, 257);
             this.ucWebsite.TabIndex = 0;
             // 
-            // chkDeleteAfterDeploy
-            // 
-            this.chkDeleteAfterDeploy.Location = new System.Drawing.Point(12, 12);
-            this.chkDeleteAfterDeploy.Name = "chkDeleteAfterDeploy";
-            this.chkDeleteAfterDeploy.Size = new System.Drawing.Size(291, 24);
-            this.chkDeleteAfterDeploy.TabIndex = 0;
-            this.chkDeleteAfterDeploy.Text = "Delete source files &after deploying them";
-            this.chkDeleteAfterDeploy.UseVisualStyleBackColor = true;
-            // 
             // pgOpenXml
             // 
             this.pgOpenXml.Controls.Add(this.ucOpenXml);
@@ -218,12 +214,49 @@ namespace SandcastleBuilder.PlugIns
             this.ucOpenXml.Size = new System.Drawing.Size(596, 257);
             this.ucOpenXml.TabIndex = 0;
             // 
+            // pgMarkdown
+            // 
+            this.pgMarkdown.Controls.Add(this.ucMarkdownContent);
+            this.pgMarkdown.Location = new System.Drawing.Point(4, 25);
+            this.pgMarkdown.Name = "pgMarkdown";
+            this.pgMarkdown.Padding = new System.Windows.Forms.Padding(3);
+            this.pgMarkdown.Size = new System.Drawing.Size(606, 302);
+            this.pgMarkdown.TabIndex = 5;
+            this.pgMarkdown.Text = "Markdown Content";
+            this.pgMarkdown.UseVisualStyleBackColor = true;
+            // 
+            // ucMarkdownContent
+            // 
+            this.ucMarkdownContent.Location = new System.Drawing.Point(5, 12);
+            this.ucMarkdownContent.Name = "ucMarkdownContent";
+            this.ucMarkdownContent.Size = new System.Drawing.Size(596, 257);
+            this.ucMarkdownContent.TabIndex = 0;
+            // 
+            // chkDeleteAfterDeploy
+            // 
+            this.chkDeleteAfterDeploy.Location = new System.Drawing.Point(12, 12);
+            this.chkDeleteAfterDeploy.Name = "chkDeleteAfterDeploy";
+            this.chkDeleteAfterDeploy.Size = new System.Drawing.Size(291, 24);
+            this.chkDeleteAfterDeploy.TabIndex = 0;
+            this.chkDeleteAfterDeploy.Text = "Delete source files &after deploying them";
+            this.chkDeleteAfterDeploy.UseVisualStyleBackColor = true;
+            // 
+            // chkVerboseLogging
+            // 
+            this.chkVerboseLogging.Location = new System.Drawing.Point(309, 12);
+            this.chkVerboseLogging.Name = "chkVerboseLogging";
+            this.chkVerboseLogging.Size = new System.Drawing.Size(259, 24);
+            this.chkVerboseLogging.TabIndex = 1;
+            this.chkVerboseLogging.Text = "Log the names of all files deployed";
+            this.chkVerboseLogging.UseVisualStyleBackColor = true;
+            // 
             // DeploymentConfigDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(638, 423);
+            this.Controls.Add(this.chkVerboseLogging);
             this.Controls.Add(this.chkDeleteAfterDeploy);
             this.Controls.Add(this.tabConfig);
             this.Controls.Add(this.lnkProjectSite);
@@ -244,6 +277,7 @@ namespace SandcastleBuilder.PlugIns
             this.pgMSHelpViewer.PerformLayout();
             this.pgWebsite.ResumeLayout(false);
             this.pgOpenXml.ResumeLayout(false);
+            this.pgMarkdown.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -268,5 +302,8 @@ namespace SandcastleBuilder.PlugIns
         private System.Windows.Forms.CheckBox chkRenameMSHA;
         private System.Windows.Forms.TabPage pgOpenXml;
         private DeploymentConfigUserControl ucOpenXml;
+        private System.Windows.Forms.TabPage pgMarkdown;
+        private DeploymentConfigUserControl ucMarkdownContent;
+        private System.Windows.Forms.CheckBox chkVerboseLogging;
     }
 }

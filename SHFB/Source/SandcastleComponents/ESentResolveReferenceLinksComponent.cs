@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2014
+// Updated : 04/01/2015
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
 // targets in persistent ESENT databases.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.7.0  12/31/2012  EFW  Created the code
-// -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
+// 12/31/2012  EFW  Created the code
+// 12/26/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -86,7 +86,8 @@ namespace SandcastleBuilder.Components
             {
                 get
                 {
-                    return @"<locale value=""{@Locale}"" />
+                    return @"{@HRefFormat}
+<locale value=""{@Locale}"" />
 <linkTarget value=""{@SdkLinkTarget}"" />
 
 <helpOutput format=""HtmlHelp1"">
@@ -123,6 +124,28 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""Website"">
+	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		type=""{@WebsiteSdkLinkType}"" id=""FrameworkTargets""
+		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
+		{@ReferenceLinkNamespaceFiles}
+	</targets>
+	<targets files=""reflection.xml"" type=""Local"" id=""ProjectTargets"" />
+</helpOutput>
+
+<helpOutput format=""OpenXml"">
+	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+		type=""{@WebsiteSdkLinkType}"" id=""FrameworkTargets""
+		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
+		{@ReferenceLinkNamespaceFiles}
+	</targets>
+	<targets files=""reflection.xml"" type=""Local"" id=""ProjectTargets"" />
+</helpOutput>
+
+<helpOutput format=""Markdown"">
 	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
 		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
 	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""

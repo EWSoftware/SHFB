@@ -6,16 +6,7 @@
     <introduction>
       <para>This topic describes the topic file transformation option.</para>
 
-			<alert class="warning">
-				<para><legacyBold>Deprecated</legacyBold></para>
-				<para>The additional content model of adding extra content to a help file has been deprecated.  While it
-will continue to be supported and will not be removed, it will not receive any more features or updates.  Going
-forward, <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> is the preferred
-method of adding non-reference content to the help file.  The additional content feature can still be used to
-<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link> and add supporting files to
-the help file.</para>
-			</alert>
-
+			<token>DeprecatedContent</token>
     </introduction>
 
 <section>

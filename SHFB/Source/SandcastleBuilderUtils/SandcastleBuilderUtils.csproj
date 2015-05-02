@@ -185,6 +185,9 @@
     <Compile Include="MSBuild\BuildHelp.cs" />
     <Compile Include="MSBuild\CleanHelp.cs" />
     <Compile Include="MSBuild\BuildOpenXmlFile.cs" />
+    <Compile Include="MSBuild\GenerateMarkdownContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MSBuild\MSBuildProject.cs" />
     <Compile Include="MSBuild\NumberingStyle.cs" />
     <Compile Include="MSBuild\SelectProjectsDlg.cs">
@@ -353,6 +356,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\TransformManifest.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateMarkdownContent.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

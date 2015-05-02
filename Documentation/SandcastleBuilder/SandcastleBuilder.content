@@ -501,13 +501,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="additional content, overview" />
       </HelpKeywords>
-      <Topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" visible="True" title="Replacing Stock Content">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="additional content, replace stock content" />
-          <HelpKeyword index="K" term="additional content, style sheet" />
-          <HelpKeyword index="K" term="change style" />
-        </HelpKeywords>
-      </Topic>
       <Topic id="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" visible="True" title="Deprecated Features">
         <HelpKeywords>
           <HelpKeyword index="K" term="additional content, deprecated features" />
@@ -541,12 +534,6 @@
             <HelpKeyword index="K" term="additional content, table of contents layout (folder based)" />
           </HelpKeywords>
         </Topic>
-        <Topic id="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" visible="True" title="Site Map File Editor">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, site map file" />
-            <HelpKeyword index="K" term="additional content, table of contents layout (site map based)" />
-          </HelpKeywords>
-        </Topic>
         <Topic id="a31e4dd4-7466-4c12-b734-60bd50fc91af" visible="True" title="Topic File Transformation">
           <HelpKeywords>
             <HelpKeyword index="K" term="additional content, presentation style look and feel" />
@@ -554,6 +541,19 @@
           </HelpKeywords>
         </Topic>
       </Topic>
+    </Topic>
+    <Topic id="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" visible="True" title="Site Map File Editor">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="additional content, site map file" />
+        <HelpKeyword index="K" term="additional content, table of contents layout (site map based)" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" visible="True" title="Replacing Stock Content">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="additional content, replace stock content" />
+        <HelpKeyword index="K" term="additional content, style sheet" />
+        <HelpKeyword index="K" term="change style" />
+      </HelpKeywords>
     </Topic>
   </Topic>
   <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
@@ -742,7 +742,7 @@
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
-    <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" title="Build Engine">
+    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" title="Build Engine">
       <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
           <HelpKeyword index="K" term="error, BE0001" />
@@ -1106,7 +1106,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="5d721885-2307-4df0-a0d5-1bd332ccfeae" visible="True" noFile="true" title="Generate Inherited Documentation">
+    <Topic id="077ce20b-7998-4fec-8d79-16d990e1cf3b" visible="True" title="Generate Inherited Documentation">
       <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, GID0001" />
@@ -1148,7 +1148,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="bfc1ad84-8316-4e4f-abb7-ada9d79eff16" visible="True" noFile="true" title="HTML Extract">
+    <Topic id="ad93a5f8-5f2b-430b-9947-ad58f8520aca" visible="True" title="HTML Extract">
       <Topic id="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" visible="True" title="SHE0001: LCID '[id]' not found in configuration file">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, SHE0001" />
@@ -1170,7 +1170,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="5d8bf748-a38f-422c-bae7-9ae5f210347c" visible="True" noFile="true" title="MSBuild Tasks">
+    <Topic id="a9c0c9b3-c7d6-4904-bf2b-450f56fb0578" visible="True" title="MSBuild Tasks">
       <Topic id="e4b1c387-d296-42ed-9458-7c6b460b5c35" visible="True" title="B1X0001: A help compiler path must be specified">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, B1X0001" />
@@ -1217,7 +1217,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="5e17c24b-0626-4864-96ee-372d226af346" visible="True" noFile="true" title="Plug-Ins">
+    <Topic id="43dfa3da-529d-404d-917e-d5a630131834" visible="True" title="Plug-Ins">
       <Topic id="26e07376-2016-4e02-8ac1-7cc1dd971463" visible="True" title="ACP0001: The Additional Content Only plug-in requires...">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, ACP001" />
@@ -1264,7 +1264,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="580ad347-ae7f-4fa2-a064-ec7115e0663e" visible="True" noFile="true" title="Project File">
+    <Topic id="49ca6b97-3caf-4a0b-b70d-0e2ae56bb277" visible="True" title="Project File">
       <Topic id="f6258ea1-df3f-4397-81e4-3e0a39abcdc2" visible="True" title="PRJ0001: Invalid or missing SchemaVersion">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, PRJ0001" />
@@ -1296,7 +1296,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="11957043-0f49-40fc-9ee8-6c9ed97f2fa8" visible="True" noFile="true" title="Project File Converters">
+    <Topic id="0f53b3c3-9b51-4a83-8ed1-546947fe47bd" visible="True" title="Project File Converters">
       <Topic id="6c55e03c-0b22-4913-ab2a-f0148309b2b5" visible="True" title="CVT0001: Unable to parse value '[value]' for property '[name]'">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, CVT0001" />
@@ -1357,16 +1357,72 @@
       <HelpKeyword index="K" term="open XML" />
     </HelpKeywords>
   </Topic>
+  <Topic id="6f0a80ec-b8ef-45d6-a55a-1fb7a6545ddc" visible="True" title="Markdown Content Help File Format">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="markdown content" />
+    </HelpKeywords>
+  </Topic>
   <Topic id="1aea789d-b226-4b39-b534-4c97c256fac8" visible="True" title="Frequently Asked Questions (FAQ)" linkText="FAQ">
     <HelpKeywords>
-      <HelpKeyword index="K" term="errors, HHC3002" />
-      <HelpKeyword index="K" term="errors, HHC3004" />
-      <HelpKeyword index="K" term="errors, HHC5007" />
-      <HelpKeyword index="K" term="errors, HHC6000" />
-      <HelpKeyword index="K" term="errors, HHC6003" />
-      <HelpKeyword index="K" term="FAQ" />
-      <HelpKeyword index="K" term="Frequently asked questions" />
+      <HelpKeyword index="K" term="FAQ, frequently asked questions" />
     </HelpKeywords>
+    <Topic id="ddf6af72-2798-4c90-be78-94df03939ada" visible="True" title="General Questions">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, general questions" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f5b58289-dd25-45b6-b616-5b8af6ba3739" visible="True" title="Documenting Assemblies">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, documenting assemblies" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="79b4dbda-239c-4bae-9bf5-bfb53384fe6d" visible="True" title="Build Failures">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, build failures" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0ad71ecb-3d68-4219-bea6-d4ac45017ded" visible="True" title="Help 1 Compiler Errors">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, help 1 compiler errors" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="097c63eb-3ceb-4d5b-bbe4-1e55c56d39b7" visible="True" title="Help File Issues">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, help file issues" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="cef40c0a-8029-4157-a7b7-ada26ea8f7e3" visible="True" title="API Filter Issues">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, API filter issues" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ff4e514b-29ad-4329-a754-4ae7d6008587" visible="True" title="Conceptual Content/Additional Content">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, conceptual content" />
+        <HelpKeyword index="K" term="FAQ, additional content" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="b92db9c5-9d0c-4d65-ac6e-d3d25adb4093" visible="True" title="MAML/XML Comments">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, MAML" />
+        <HelpKeyword index="K" term="FAQ, XML comments" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e72030c7-616f-492f-900b-7648b75e9d5f" visible="True" title="Build Components">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, build components" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="93cf23ae-5577-42c1-84fb-cd11a25def4d" visible="True" title="Build Process Plug-Ins">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, build process plug-ins" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0dc360c6-16af-44e6-bf0e-ad922d5c733e" visible="True" title="Presentation Styles">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="FAQ, presentation styles" />
+      </HelpKeywords>
+    </Topic>
   </Topic>
   <Topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" visible="True" title="Links to Resources">
     <HelpKeywords>
@@ -1392,7 +1448,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="930f1daa-1a38-4659-84c9-91c81e204c73" visible="True" isSelected="true" title="Version 2015.1.12.0">
+    <Topic id="e2fcc636-0781-4232-8c7e-fb5edbe40026" visible="True" isSelected="true" title="Version 2015.5.2.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2015.5.2.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="930f1daa-1a38-4659-84c9-91c81e204c73" visible="True" title="Version 2015.1.12.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2015.1.12.0" />
       </HelpKeywords>

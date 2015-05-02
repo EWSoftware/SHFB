@@ -32,12 +32,47 @@
       <PlugInConfig id="Additional Content Only" enabled="True">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="Output Deployment" enabled="True"><configuration deleteAfterDeploy="true"><deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="help2x" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="helpViewer" location="" renameMSHA="false"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="website" location="..\WebHelp\SandcastleTools\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="openXml" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="Output Deployment" enabled="True">
+        <configuration deleteAfterDeploy="true">
+          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="help2x" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="helpViewer" location="" renameMSHA="false">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="website" location="..\WebHelp\SandcastleTools\">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="openXml" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
     <WorkingPath />
-    <CatalogName>VisualStudio11</CatalogName>
+    <CatalogName>
+    </CatalogName>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
@@ -47,7 +82,7 @@
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
-    <HelpFileVersion>2015.1.12.0</HelpFileVersion>
+    <HelpFileVersion>2015.5.2.0</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
@@ -139,6 +174,7 @@
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />
     <None Include="Content\VersionHistory\v2014.11.22.0.aml" />
+    <None Include="Content\VersionHistory\v2015.5.2.0.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/28/2015
+// Updated : 03/31/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -3146,6 +3146,7 @@ namespace SandcastleBuilder.Utils
                 case ".htm":
                 case ".html":
                 case ".js":
+                case ".md":
                 case ".topic":
                 case ".txt":
                 case ".zip":
