@@ -11,8 +11,8 @@ Visual Studio package.  With Visual Studio 2015 on the horizon, I need to reduce
 I can realistically provide support.  Four versions is starting to be too many.</para>
 
 				<para>For a list of the deprecated features slated for removal, see <externalLink>
-<linkText>work item #XX</linkText>
-<linkAlternateText>work item #XX</linkAlternateText>
+<linkText>work item #83</linkText>
+<linkAlternateText>work item #83</linkAlternateText>
 <linkUri>https://GitHub.com/EWSoftware/SHFB/issues/83</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink>.</para>
