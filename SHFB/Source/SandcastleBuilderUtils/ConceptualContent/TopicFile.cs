@@ -180,21 +180,17 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 return;
             }
 
-            // Don't bother parsing HTML files but support them for passing
-            // through stuff like title pages which may not need to look like
-            // the API topics.
+            // Don't bother parsing HTML files but support them for passing through stuff like title pages which
+            // may not need to look like the API topics.
             ext = Path.GetExtension(fileItem.FullPath).ToLowerInvariant();
 
-            if(ext == ".htm" || ext == ".html" || ext == ".topic")
+            if(ext == ".htm" || ext == ".html")
             {
                 docType = DocumentType.Html;
 
-                if(ext != ".topic")
-                {
-                    contentParsed = true;
-                    this.ParseIdFromHtml();
-                    return;
-                }
+                contentParsed = true;
+                this.ParseIdFromHtml();
+                return;
             }
 
             try

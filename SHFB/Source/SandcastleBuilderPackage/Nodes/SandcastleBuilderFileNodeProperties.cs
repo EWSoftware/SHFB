@@ -1,25 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Package
 // File    : SandcastleBuilderFileNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that exposes the properties for the
-// SandcastleBuilderFileNode object.
+// This file contains the class that exposes the properties for the SandcastleBuilderFileNode object
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
-//=============================================================================
+//    Date     Who  Comments
+//===============================================================================================================
+// 03/27/2011  EFW  Created the code
+// 04/08/2012  EFW  Added support for XAML configuration files
+// 05/03/2015  EFW  Removed support for topic transformation files
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -256,8 +255,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         /// <param name="pdc">The property descriptor collection to filter</param>
         /// <returns>The filtered property descriptor collection</returns>
-        private PropertyDescriptorCollection FilterProperties(
-          PropertyDescriptorCollection pdc)
+        private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection pdc)
         {
             List<string> removeProps = new List<string>();
 
@@ -267,7 +265,6 @@ namespace SandcastleBuilder.Package.Nodes
                 case SandcastleBuildAction.CodeSnippets:
                 case SandcastleBuildAction.ResourceItems:
                 case SandcastleBuildAction.Tokens:
-                case SandcastleBuildAction.TopicTransform:
                 case SandcastleBuildAction.XamlConfiguration:
                     removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
                         "SortOrder", "ExcludeFromToc" });

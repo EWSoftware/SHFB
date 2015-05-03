@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/01/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -99,7 +99,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
           "a display page in the help file."), DefaultValue(null),
           Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           RefreshProperties(RefreshProperties.All), FileDialog("Select the additional content",
-           "HTML files (*.htm, *.html, *.topic)|*.htm;*.html;*.topic|All Files (*.*)|*.*",
+           "HTML files (*.htm, *.html)|*.htm;*.html|All Files (*.*)|*.*",
            FileDialogType.FileOpen)]
         public FilePath SourceFile
         {
@@ -693,9 +693,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             if(String.IsNullOrEmpty(path))
                 path = "#";
-
-            if(path.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                path = Path.ChangeExtension(path, ".html");
 
             if(String.IsNullOrEmpty(innerText))
                 return String.Format(CultureInfo.CurrentCulture,

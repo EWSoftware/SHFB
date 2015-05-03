@@ -342,7 +342,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 using(OpenFileDialog dlg = new OpenFileDialog())
                 {
                     dlg.Title = "Select the additional content topic file";
-                    dlg.Filter = "Additional Content Topics (*.htm, *.html, *.md, *.topic)|*.htm;*.html;*.md;*.topic|" +
+                    dlg.Filter = "Additional Content Topics (*.htm, *.html, *.md)|*.htm;*.html;*.md|" +
                         "All files (*.*)|*.*";
                     dlg.DefaultExt = "html";
                     dlg.InitialDirectory = projectPath;

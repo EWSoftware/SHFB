@@ -2,24 +2,25 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/26/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to manage the project items and files.
+// This file contains the form used to manage the project items and files
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-//===============================================================================================================
-// 1.8.0.0  07/26/2008  EFW  Created the code
-// 1.8.0.3  12/04/2009  EFW  Added support for resource item files
-// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
-// 1.9.5.0  09/08/2012  EFW  Updated to support Windows Store App projects
-// 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
+//    Date     Who  Comments
+// =====================================================================================================
+// 07/26/2008  EFW  Created the code
+// 12/04/2009  EFW  Added support for resource item files
+// 04/08/2012  EFW  Added support for XAML configuration files
+// 09/08/2012  EFW  Updated to support Windows Store App projects
+// 10/22/2012  EFW  Updated to support .winmd documentation sources
+// 05/03/2015  EFW  Removed support for topic transformation files
 //===============================================================================================================
 
 using System;
@@ -286,7 +287,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         case ".html":
                         case ".js":
                         case ".log":
-                        case ".topic":
                         case ".txt":
                         case ".xml":
                             editor = new TopicEditorWindow(fullName);
@@ -298,7 +298,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     break;
 
                 case BuildAction.CodeSnippets:
-                case BuildAction.TopicTransform:
                 case BuildAction.XamlConfiguration:
                     editor = new TopicEditorWindow(fullName);
                     break;
@@ -686,7 +685,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         case ".html":
                         case ".js":
                         case ".log":
-                        case ".topic":
                         case ".txt":
                         case ".xml":
                             return false;
@@ -697,7 +695,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 case BuildAction.CodeSnippets:
                 case BuildAction.Image:
-                case BuildAction.TopicTransform:
                 case BuildAction.XamlConfiguration:
                     return false;
 
@@ -1857,8 +1854,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                         fileTree.LoadTree(toAdd);
 
-                        // If it's a conceptual content topic file, set the
-                        // unique ID in it.
+                        // If it's a conceptual content topic file, set the unique ID in it
                         if(isConceptual)
                             try
                             {

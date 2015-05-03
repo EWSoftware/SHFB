@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/02/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -571,17 +571,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "defaulttopic":
-                    if(defaultTopic.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                        replaceWith = Path.ChangeExtension(defaultTopic, ".html");
-                    else
-                        replaceWith = defaultTopic;
+                    replaceWith = defaultTopic;
                     break;
 
                 case "webdefaulttopic":
-                    if(defaultTopic.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                        replaceWith = Path.ChangeExtension(defaultTopic, ".html").Replace('\\', '/');
-                    else
-                        replaceWith = defaultTopic.Replace('\\', '/');
+                    replaceWith = defaultTopic.Replace('\\', '/');
                     break;
 
                 case "targetframeworkidentifier":

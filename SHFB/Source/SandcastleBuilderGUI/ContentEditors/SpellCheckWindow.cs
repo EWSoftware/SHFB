@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/10/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to handle spell checking in the text editor windows
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.8.0  05/11/2013  EFW  Created the code
+// 05/11/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -459,7 +459,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         case ".sitemap":
                         case ".snippets":
                         case ".tokens":
-                        case ".topic":
                         case ".xaml":
                         case ".xml":
                         case ".xsl":

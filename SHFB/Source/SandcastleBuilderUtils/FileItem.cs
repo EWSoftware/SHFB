@@ -1,27 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : FileItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a file that is part of the project
-// (MAML/additional content, site map, stylesheet, etc.).
+// This file contains a class representing a file that is part of the project (MAML/additional content, site map,
+// style sheet, etc.).
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  07/24/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -37,8 +36,8 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This class represents a file that is part of the project
-    /// (MAML/additional content, site map, stylesheet, etc.).
+    /// This class represents a file that is part of the project (MAML/additional content, site map, style
+    /// sheet, etc.).
     /// </summary>
     public class FileItem : BaseBuildItem, ICustomTypeDescriptor
     {
@@ -535,7 +534,6 @@ namespace SandcastleBuilder.Utils
                 case BuildAction.CodeSnippets:
                 case BuildAction.ResourceItems:
                 case BuildAction.Tokens:
-                case BuildAction.TopicTransform:
                 case BuildAction.XamlConfiguration:
                     removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder",
                         "ExcludeFromToc" });

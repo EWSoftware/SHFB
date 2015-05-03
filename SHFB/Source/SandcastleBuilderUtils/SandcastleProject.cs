@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -3147,7 +3147,6 @@ namespace SandcastleBuilder.Utils
                 case ".html":
                 case ".js":
                 case ".md":
-                case ".topic":
                 case ".txt":
                 case ".zip":
                     return BuildAction.Content;
@@ -3176,10 +3175,6 @@ namespace SandcastleBuilder.Utils
 
                 case ".xamlcfg":
                     return BuildAction.XamlConfiguration;
-
-                case ".xsl":
-                case ".xslt":
-                    return BuildAction.TopicTransform;
 
                 default:    // Anything else defaults to None
                     break;

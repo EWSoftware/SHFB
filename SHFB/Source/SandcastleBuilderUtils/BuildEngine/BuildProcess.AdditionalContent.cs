@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/23/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to merge the additional content into the working folder and build the table
@@ -24,7 +24,7 @@
 // 1.5.0.0  06/19/2007  EFW  Various additions and updates for the June CTP
 // 1.5.0.2  07/03/2007  EFW  Added support for content site map file
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
-// 1.6.0.0  09/28/2007  EFW  Added support for transforming *.topic files
+// 1.6.0.0  09/28/2007  EFW  Added support for transforming topic transformation files
 // 1.6.0.1  10/29/2007  EFW  Link resolution now works on any tag with a cref attribute in it
 // 1.6.0.7  04/12/2007  EFW  Added support for a split table of contents
 // 1.8.0.0  07/26/2008  EFW  Modified to support the new project format
@@ -32,6 +32,7 @@
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.0.0  06/30/2010  EFW  Removed splitting of TOC collection
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
+// -------  05/03/2015  EFW  Removed support for transforming topic transformation files
 //===============================================================================================================
 
 using System;
@@ -119,10 +120,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private CodeColorizer codeColorizer;    // The code colorizer
 
-        // XSL transformation variables
-        private string xslStylesheet;
-        private XslCompiledTransform xslTransform;
-        private XsltArgumentList xslArguments;
         #endregion
 
         /// <summary>
@@ -170,18 +167,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 filename = Path.Combine(dirName, Path.GetFileName(source));
 
                 if(source.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
-                  source.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
-                  source.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
+                  source.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
                 {
                     tocEntry = BuildProcess.GetTocInfo(source);
 
                     // Exclude the page if so indicated via the item metadata
                     if(fileItem.ExcludeFromToc)
                         tocEntry.IncludePage = false;
-
-                    // .topic files get transformed into .html files
-                    if(source.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                        filename = Path.ChangeExtension(filename, ".html");
 
                     tocEntry.SourceFile = new FilePath(source, project);
                     tocEntry.DestinationFile = filename;
@@ -227,8 +219,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // it is handled separately.
                     if(tocEntry != null &&
                       (tocEntry.HasLinks || tocEntry.HasCodeBlocks ||
-                      tocEntry.NeedsColorizing || tocEntry.HasProjectTags ||
-                      source.EndsWith(".topic", StringComparison.OrdinalIgnoreCase)))
+                      tocEntry.NeedsColorizing || tocEntry.HasProjectTags))
                     {
                         // Figure out the path to the root if needed
                         parts = tocEntry.DestinationFile.Split('\\');
@@ -375,22 +366,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     site.DestinationFile = Path.GetFileName(source);
                     filename = site.DestinationFile;
 
-                    // .topic files get transformed into .html files
-                    if(source.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                        site.DestinationFile = Path.ChangeExtension(site.DestinationFile, ".html");
-
                     // Check to see if anything needs resolving
                     if(source.EndsWith(".htm", StringComparison.OrdinalIgnoreCase) ||
-                      source.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
-                      source.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
+                      source.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
                         match = BuildProcess.GetTocInfo(source);
 
                     foreach(string baseFolder in this.HelpFormatOutputFolders)
                     {
                         // If the file contains items that need to be resolved, it is handled separately
                         if(match != null && (match.HasLinks || match.HasCodeBlocks ||
-                          match.NeedsColorizing || match.HasProjectTags ||
-                          source.EndsWith(".topic", StringComparison.OrdinalIgnoreCase)))
+                          match.NeedsColorizing || match.HasProjectTags))
                         {
                             // Files are always copied to the root
                             pathToRoot = String.Empty;
@@ -474,11 +459,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             string content, script, syntaxFile;
             int pos;
 
-            // For topics, change the extension back to ".topic".  It's ".html" in the TOC as that's what it ends
-            // up as after transformation.
-            if(sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                destFile = Path.ChangeExtension(destFile, ".topic");
-
             this.ReportProgress("{0} -> {1}", sourceFile, destFile);
 
             // When reading the file, use the default encoding but detect the encoding if byte order marks are
@@ -509,8 +489,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Add the links to the colorizer style sheet and script files unless it's going to be
                 // transformed.  In which case, the links should be in the XSL style sheet.
-                if(!sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase) &&
-                  !sourceFile.EndsWith(".xsl", StringComparison.OrdinalIgnoreCase))
+                if(!sourceFile.EndsWith(".xsl", StringComparison.OrdinalIgnoreCase))
                 {
                     script = String.Format(CultureInfo.InvariantCulture,
                         "<link type='text/css' rel='stylesheet' href='{0}styles/highlight.css' />" +
@@ -602,10 +581,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 sw.Write(content);
             }
-
-            // Transform .topic files into .html files
-            if(sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
-                this.XslTransform(destFile);
         }
 
         /// <summary>
@@ -853,155 +828,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Return the HTML encoded block
             return "<pre xml:space=\"preserve\" " + options + ">" + HttpUtility.HtmlEncode(
                 codeBlock) + "</pre>";
-        }
-
-        /// <summary>
-        /// This is used to transform a *.topic file into a *.html file using an XSLT transformation based on the
-        /// presentation style.
-        /// </summary>
-        /// <param name="sourceFile">The source topic filename</param>
-        private void XslTransform(string sourceFile)
-        {
-            TocEntry tocInfo;
-            XmlReader reader = null;
-            XmlWriter writer = null;
-            XsltSettings settings;
-            XmlReaderSettings readerSettings;
-            XmlWriterSettings writerSettings;
-            Encoding enc = Encoding.Default;
-            FileItemCollection transforms;
-            string content;
-
-            string sourceStylesheet, destFile = Path.ChangeExtension(sourceFile, ".html");
-
-            try
-            {
-                readerSettings = new XmlReaderSettings();
-                readerSettings.CloseInput = true;
-                readerSettings.DtdProcessing = DtdProcessing.Parse;
-
-                // Create the transform on first use
-                if(xslTransform == null)
-                {
-                    transforms = new FileItemCollection(project, BuildAction.TopicTransform);
-
-                    if(transforms.Count != 0)
-                    {
-                        if(transforms.Count > 1)
-                            this.ReportWarning("BE0011", "Multiple topic transformations found.  Using '{0}'",
-                                transforms[0].FullPath);
-
-                        sourceStylesheet = transforms[0].FullPath;
-                    }
-                    else
-                        sourceStylesheet = templateFolder + project.PresentationStyle + ".xsl";
-
-                    xslStylesheet = workingFolder + Path.GetFileName(sourceStylesheet);
-                    tocInfo = BuildProcess.GetTocInfo(sourceStylesheet);
-
-                    // The style sheet may contain shared content items so we must resolve it this way rather
-                    // than using TransformTemplate.
-                    this.ResolveLinksAndCopy(sourceStylesheet, xslStylesheet, tocInfo);
-
-                    xslTransform = new XslCompiledTransform();
-                    settings = new XsltSettings(true, true);
-                    xslArguments = new XsltArgumentList();
-
-                    xslTransform.Load(XmlReader.Create(xslStylesheet, readerSettings), settings,
-                        new XmlUrlResolver());
-                }
-
-                this.ReportProgress("Applying XSL transformation '{0}' to '{1}'.", xslStylesheet, sourceFile);
-
-                reader = XmlReader.Create(sourceFile, readerSettings);
-                writerSettings = xslTransform.OutputSettings.Clone();
-                writerSettings.CloseOutput = true;
-                writerSettings.Indent = false;
-
-                writer = XmlWriter.Create(destFile, writerSettings);
-
-                xslArguments.Clear();
-                xslArguments.AddParam("pathToRoot", String.Empty, pathToRoot);
-                xslTransform.Transform(reader, xslArguments, writer);
-            }
-            catch(Exception ex)
-            {
-                throw new BuilderException("BE0017", String.Format(CultureInfo.CurrentCulture,
-                    "Unexpected error using '{0}' to transform additional content file '{1}' to '{2}'.  The " +
-                    "error is: {3}\r\n{4}", xslStylesheet, sourceFile, destFile, ex.Message,
-                    (ex.InnerException == null) ? String.Empty : ex.InnerException.Message));
-            }
-            finally
-            {
-                if(reader != null)
-                    reader.Close();
-
-                if(writer != null)
-                {
-                    writer.Flush();
-                    writer.Close();
-                }
-            }
-
-            // The source topic file is deleted as the transformed file takes its place
-            File.Delete(sourceFile);
-
-            // <span> and <script> tags cannot be self-closing if empty.  The template may contain them correctly
-            // but when written out as XML, they get converted to self-closing tags which breaks them.  To fix
-            // them, convert them to full start and close tags.
-            content = BuildProcess.ReadWithEncoding(destFile, ref enc);
-            content = reSpanScript.Replace(content, "<$1$2></$1>");
-
-            // An XSL transform might have added tags and include items that need replacing so run it through
-            // those options if needed.
-            tocInfo = BuildProcess.GetTocInfo(destFile);
-
-            // Expand <code> tags if necessary
-            if(tocInfo.HasCodeBlocks)
-                content = reCodeBlock.Replace(content, codeBlockMatchEval);
-
-            // Colorize <pre> tags if necessary
-            if(tocInfo.NeedsColorizing || tocInfo.HasCodeBlocks)
-            {
-                // Initialize code colorizer on first use
-                if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder +
-                        @"PresentationStyles\Colorizer\highlight.xml", ComponentUtilities.ToolsFolder +
-                        @"PresentationStyles\Colorizer\highlight.xsl");
-
-                // Set the path the "Copy" image
-                codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";
-
-                // Colorize it and replace the "Copy" literal text with the shared content include item so that
-                // it gets localized.
-                content = codeColorizer.ProcessAndHighlightText(content);
-                content = content.Replace(codeColorizer.CopyText + "</span", "<include item=\"copyCode\"/></span");
-                tocInfo.HasProjectTags = true;
-            }
-
-            // Use a regular expression to find and replace all tags with cref attributes with a link to the help
-            // file content.  This needs to happen after the code block processing as they may contain <see> tags
-            // that need to be resolved.
-            if(tocInfo.HasLinks || tocInfo.HasCodeBlocks)
-                content = reResolveLinks.Replace(content, linkMatchEval);
-
-            // Replace project option tags with project option values
-            if(tocInfo.HasProjectTags)
-            {
-                // Project tags can be nested
-                while(reProjectTags.IsMatch(content))
-                    content = reProjectTags.Replace(content, fieldMatchEval);
-
-                // Shared content items can be nested
-                while(reSharedContent.IsMatch(content))
-                    content = reSharedContent.Replace(content, contentMatchEval);
-            }
-
-            // Write the file back out with the appropriate encoding
-            using(StreamWriter sw = new StreamWriter(destFile, false, enc))
-            {
-                sw.Write(content);
-            }
         }
     }
 }
