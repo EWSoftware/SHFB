@@ -125,13 +125,6 @@
       <DependentUpon>DeploymentConfigUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HierarchicalTocConfigDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HierarchicalTocConfigDlg.Designer.cs">
-      <DependentUpon>HierarchicalTocConfigDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HierarchicalTocPlugIn.cs" />
     <Compile Include="IntelliSenseOnlyPlugIn.cs" />
     <Compile Include="LightweightWebsiteStylePlugIn.cs" />
     <Compile Include="MemberIDFixUpPlugIn.cs" />
@@ -220,10 +213,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DeploymentConfigUserControl.resx">
       <DependentUpon>DeploymentConfigUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HierarchicalTocConfigDlg.resx">
-      <DependentUpon>HierarchicalTocConfigDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MemberIDFixUpPlugInConfigDlg.resx">
       <DependentUpon>MemberIDFixUpPlugInConfigDlg.cs</DependentUpon>

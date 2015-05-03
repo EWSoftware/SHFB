@@ -13,12 +13,6 @@
 		<PreviewImage>VSIXPreview.png</PreviewImage>
 		<InstalledByMsi>false</InstalledByMsi>
 		<SupportedProducts>
-			<VisualStudio Version="10.0">
-				<Edition>Pro</Edition>
-			</VisualStudio>
-			<VisualStudio Version="11.0">
-				<Edition>Pro</Edition>
-			</VisualStudio>
 			<VisualStudio Version="12.0">
 				<Edition>Pro</Edition>
 			</VisualStudio>
