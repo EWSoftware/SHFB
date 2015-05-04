@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@
 //                           handles its functionality now.
 //          02/15/2014  EFW  Added support for the Open XML output format
 //          03/30/2015  EFW  Added support for the Markdown output format
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -152,24 +153,6 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is used to return a list of the MS Help 2 (HxS) files that resulted from the build
-        /// </summary>
-        [Output]
-        public ITaskItem[] Help2Files
-        {
-            get
-            {
-                List<ITaskItem> files = new List<ITaskItem>();
-
-                if(buildProcess != null && lastBuildStep == BuildStep.Completed)
-                    foreach(string file in buildProcess.Help2Files)
-                        files.Add(new TaskItem(file));
-
-                return files.ToArray();
-            }
-        }
-
-        /// <summary>
         /// This is used to return a list of the MS Help Viewer (mshc) files that resulted from the build
         /// </summary>
         [Output]
@@ -242,8 +225,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is used to return a list of all files that resulted from the
-        /// build (all help formats).
+        /// This is used to return a list of all files that resulted from the build (all help formats)
         /// </summary>
         [Output]
         public ITaskItem[] AllHelpFiles
@@ -251,10 +233,10 @@ namespace SandcastleBuilder.Utils.MSBuild
             get
             {
                 return this.Help1Files.Concat(
-                    this.Help2Files.Concat(
                     this.HelpViewerFiles.Concat(
                     this.WebsiteFiles.Concat(
-                    this.OpenXmlFiles)))).ToArray();
+                    this.OpenXmlFiles.Concat(
+                    this.MarkdownFiles)))).ToArray();
             }
         }
         #endregion
@@ -514,10 +496,6 @@ namespace SandcastleBuilder.Utils.MSBuild
                     {
                         case HelpFileFormats.HtmlHelp1:
                             outputPath += ".chm";
-                            break;
-
-                        case HelpFileFormats.MSHelp2:
-                            outputPath += ".hxs";
                             break;
 
                         case HelpFileFormats.MSHelpViewer:

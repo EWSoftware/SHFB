@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the presentation style definition for the Visual Studio 2010 presentation style.
@@ -50,8 +50,8 @@ namespace Sandcastle.PresentationStyles
             // The base path of the presentation style files relative to the assembly's location
             this.BasePath = "VS2010";
 
-            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelp2 |
-                HelpFileFormats.MSHelpViewer | HelpFileFormats.Website;
+            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelpViewer |
+                HelpFileFormats.Website;
 
             this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
             

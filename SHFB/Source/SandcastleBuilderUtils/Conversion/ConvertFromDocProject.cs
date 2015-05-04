@@ -2,22 +2,22 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromDocProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert project files created by DocProject to the MSBuild format project
 // files used by SHFB.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  07/23/2008  EFW  Created the code
-// 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
+// 07/23/2008  EFW  Created the code
+// 01/08/2012  EFW  Added constructor to support use from VSPackage
 //===============================================================================================================
 
 using System;
@@ -207,19 +207,6 @@ namespace SandcastleBuilder.Utils.Conversion
                     case "Sandcastle_UseFriendlyHtmlFileNames":
                         if(String.Compare(attr.Value, "True", StringComparison.OrdinalIgnoreCase) == 0)
                             project.NamingMethod = NamingMethod.MemberName;
-                        break;
-
-                    case "Sandcastle_ProduceHelp1x":
-                        if(String.Compare(attr.Value, "False", StringComparison.OrdinalIgnoreCase) == 0)
-                            if(project.HelpFileFormat == HelpFileFormats.HtmlHelp1)
-                                project.HelpFileFormat = HelpFileFormats.MSHelp2;
-                            else
-                                project.HelpFileFormat &= ~HelpFileFormats.HtmlHelp1;
-                        break;
-
-                    case "Sandcastle_ProduceHelp2x":
-                        if(String.Compare(attr.Value, "True", StringComparison.OrdinalIgnoreCase) == 0)
-                            project.HelpFileFormat |= HelpFileFormats.MSHelp2;
                         break;
 
                     case "Sandcastle_GenerateRootApiTopic":

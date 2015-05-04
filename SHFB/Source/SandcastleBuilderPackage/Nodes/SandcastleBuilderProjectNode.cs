@@ -667,7 +667,6 @@ namespace SandcastleBuilder.Package.Nodes
                 typeof(BuildPropertiesPageControl).GUID,
                 typeof(HelpFilePropertiesPageControl).GUID,
                 typeof(Help1WebsitePropertiesPageControl).GUID,
-                typeof(MSHelp2PropertiesPageControl).GUID,
                 typeof(MSHelpViewerPropertiesPageControl).GUID,
                 typeof(SummaryPropertiesPageControl).GUID,
                 typeof(VisibilityPropertiesPageControl).GUID,

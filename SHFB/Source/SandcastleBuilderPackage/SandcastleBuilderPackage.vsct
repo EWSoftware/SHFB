@@ -79,18 +79,6 @@
 				</Strings>
 			</Button>
 
-			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHxSHelp" priority="0x0100">
-				<Icon guid="Help2.bmpGuid" id="Help2.bmpId" />
-				<CommandFlag>DefaultInvisible</CommandFlag>
-				<CommandFlag>DynamicVisibility</CommandFlag>
-				<Strings>
-					<CommandName>cmdidViewHxSHelp</CommandName>
-					<ButtonText>View &amp;MS Help 2 (.HxS) File</ButtonText>
-					<MenuText>View &amp;MS Help 2 (.HxS) File</MenuText>
-					<ToolTipText>View &amp;MS Help 2 (.HxS) File</ToolTipText>
-				</Strings>
-			</Button>
-
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewMshcHelp" priority="0x0100">
 				<Icon guid="MSHelpViewer.bmpGuid" id="MSHelpViewer.bmpId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -245,7 +233,6 @@
 		<Bitmaps>
 			<Bitmap guid="ViewHelpFile.bmpGuid" href="Resources\ViewHelpFile.bmp" usedList="ViewHelpFile.bmpId" />
 			<Bitmap guid="HtmlHelp.bmpGuid" href="Resources\HtmlHelp.bmp" usedList="HtmlHelp.bmpId" />
-			<Bitmap guid="Help2.bmpGuid" href="Resources\Help2.bmp" usedList="Help2.bmpId" />
 			<Bitmap guid="MSHelpViewer.bmpGuid" href="Resources\MSHelpViewer.bmp" usedList="MSHelpViewer.bmpId" />
 			<Bitmap guid="AspNetWebsite.bmpGuid" href="Resources\AspNetWebsite.bmp" usedList="AspNetWebsite.bmpId" />
 			<Bitmap guid="HtmlWebsite.bmpGuid" href="Resources\HtmlWebsite.bmp" usedList="HtmlWebsite.bmpId" />
@@ -268,9 +255,6 @@
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlHelp" priority="0x0100">
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="ChmHelpGroup" />
-		</CommandPlacement>
-		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHxSHelp" priority="0x0100">
-			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="HxSHelpGroup" />
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewMshcHelp" priority="0x0100">
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
@@ -431,7 +415,6 @@
 			<IDSymbol name="AddDocSource" value="0x0001" />
 			<IDSymbol name="ViewHelpFile" value="0x0006" />
 			<IDSymbol name="ViewHtmlHelp" value="0x0007" />
-			<IDSymbol name="ViewHxSHelp" value="0x0008" />
 			<IDSymbol name="ViewMshcHelp" value="0x0009" />
 			<IDSymbol name="ViewAspNetWebsite" value="0x000B" />
 			<IDSymbol name="ViewHtmlWebsite" value="0x000C" />
@@ -455,10 +438,6 @@
 
 		<GuidSymbol name="HtmlHelp.bmpGuid" value="{f3d38ea1-078d-4a76-afae-9ec407394773}">
 			<IDSymbol name="HtmlHelp.bmpId" value="1" />
-		</GuidSymbol>
-
-		<GuidSymbol name="Help2.bmpGuid" value="{d72da1b8-a3a7-4a2e-83c2-f2dea5b10bc4}">
-			<IDSymbol name="Help2.bmpId" value="1" />
 		</GuidSymbol>
 
 		<GuidSymbol name="MSHelpViewer.bmpGuid" value="{eb2ed59a-8262-48dc-9f59-bab070bd4a58}">

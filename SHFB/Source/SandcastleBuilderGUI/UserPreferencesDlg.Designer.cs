@@ -34,8 +34,6 @@ namespace SandcastleBuilder.Gui
             this.btnOK = new System.Windows.Forms.Button();
             this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.chkVerboseLogging = new System.Windows.Forms.CheckBox();
-            this.txtHTMLHelp2ViewerPath = new System.Windows.Forms.TextBox();
-            this.btnSelectHxSViewer = new System.Windows.Forms.Button();
             this.udcASPNetDevServerPort = new System.Windows.Forms.NumericUpDown();
             this.tabPreferences = new System.Windows.Forms.TabControl();
             this.pgGeneral = new System.Windows.Forms.TabPage();
@@ -59,8 +57,10 @@ namespace SandcastleBuilder.Gui
             this.lblBuildExample = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.pgSpellChecking = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.btnRemoveWord = new System.Windows.Forms.Button();
+            this.lbUserDictionary = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnDefaultAttributes = new System.Windows.Forms.Button();
             this.btnRemoveAttribute = new System.Windows.Forms.Button();
@@ -90,9 +90,6 @@ namespace SandcastleBuilder.Gui
             this.lbContentEditors = new SandcastleBuilder.Utils.Controls.RefreshableItemListBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lbUserDictionary = new System.Windows.Forms.ListBox();
-            this.btnRemoveWord = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).BeginInit();
             this.tabPreferences.SuspendLayout();
             this.pgGeneral.SuspendLayout();
@@ -131,7 +128,7 @@ namespace SandcastleBuilder.Gui
             // 
             // chkVerboseLogging
             // 
-            this.chkVerboseLogging.Location = new System.Drawing.Point(262, 204);
+            this.chkVerboseLogging.Location = new System.Drawing.Point(262, 196);
             this.chkVerboseLogging.Name = "chkVerboseLogging";
             this.chkVerboseLogging.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkVerboseLogging, "Verbose Logging: Check this box to display all output messages.  Uncheck to displ" +
@@ -140,30 +137,9 @@ namespace SandcastleBuilder.Gui
             this.chkVerboseLogging.Text = "&Build output verbose logging enabled";
             this.chkVerboseLogging.UseVisualStyleBackColor = true;
             // 
-            // txtHTMLHelp2ViewerPath
-            // 
-            this.txtHTMLHelp2ViewerPath.Location = new System.Drawing.Point(262, 18);
-            this.txtHTMLHelp2ViewerPath.Name = "txtHTMLHelp2ViewerPath";
-            this.txtHTMLHelp2ViewerPath.Size = new System.Drawing.Size(358, 23);
-            this.statusBarTextProvider1.SetStatusBarText(this.txtHTMLHelp2ViewerPath, "MS Help 2 (.HxS) Viewer: Enter the path and filename of the application used to v" +
-        "iew MS Help 2 files");
-            this.txtHTMLHelp2ViewerPath.TabIndex = 1;
-            // 
-            // btnSelectHxSViewer
-            // 
-            this.btnSelectHxSViewer.Location = new System.Drawing.Point(621, 17);
-            this.btnSelectHxSViewer.Name = "btnSelectHxSViewer";
-            this.btnSelectHxSViewer.Size = new System.Drawing.Size(32, 25);
-            this.statusBarTextProvider1.SetStatusBarText(this.btnSelectHxSViewer, "Select Viewer: Browser for the MS Help 2 viewer application");
-            this.btnSelectHxSViewer.TabIndex = 2;
-            this.btnSelectHxSViewer.Text = "...";
-            this.toolTip1.SetToolTip(this.btnSelectHxSViewer, "Select MS Help 2 viewer application");
-            this.btnSelectHxSViewer.UseVisualStyleBackColor = true;
-            this.btnSelectHxSViewer.Click += new System.EventHandler(this.btnSelectViewer_Click);
-            // 
             // udcASPNetDevServerPort
             // 
-            this.udcASPNetDevServerPort.Location = new System.Drawing.Point(262, 74);
+            this.udcASPNetDevServerPort.Location = new System.Drawing.Point(262, 66);
             this.udcASPNetDevServerPort.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -220,12 +196,9 @@ namespace SandcastleBuilder.Gui
             this.pgGeneral.Controls.Add(this.label5);
             this.pgGeneral.Controls.Add(this.lblBuildExample);
             this.pgGeneral.Controls.Add(this.label6);
-            this.pgGeneral.Controls.Add(this.txtHTMLHelp2ViewerPath);
             this.pgGeneral.Controls.Add(this.udcASPNetDevServerPort);
             this.pgGeneral.Controls.Add(this.chkVerboseLogging);
             this.pgGeneral.Controls.Add(this.label2);
-            this.pgGeneral.Controls.Add(this.label1);
-            this.pgGeneral.Controls.Add(this.btnSelectHxSViewer);
             this.pgGeneral.Location = new System.Drawing.Point(4, 25);
             this.pgGeneral.Name = "pgGeneral";
             this.pgGeneral.Padding = new System.Windows.Forms.Padding(3);
@@ -237,7 +210,7 @@ namespace SandcastleBuilder.Gui
             // 
             // chkPerUserProjectState
             // 
-            this.chkPerUserProjectState.Location = new System.Drawing.Point(262, 128);
+            this.chkPerUserProjectState.Location = new System.Drawing.Point(262, 120);
             this.chkPerUserProjectState.Name = "chkPerUserProjectState";
             this.chkPerUserProjectState.Size = new System.Drawing.Size(320, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkPerUserProjectState, "Save Project State: Check this box to save the window layout for each project per" +
@@ -248,7 +221,7 @@ namespace SandcastleBuilder.Gui
             // 
             // txtMSHelpViewerPath
             // 
-            this.txtMSHelpViewerPath.Location = new System.Drawing.Point(262, 46);
+            this.txtMSHelpViewerPath.Location = new System.Drawing.Point(262, 22);
             this.txtMSHelpViewerPath.Name = "txtMSHelpViewerPath";
             this.txtMSHelpViewerPath.Size = new System.Drawing.Size(358, 23);
             this.statusBarTextProvider1.SetStatusBarText(this.txtMSHelpViewerPath, "MS Help Viewer (.mshc) Viewer: Enter the path and filename of the application use" +
@@ -257,7 +230,7 @@ namespace SandcastleBuilder.Gui
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(6, 46);
+            this.label8.Location = new System.Drawing.Point(6, 22);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(250, 23);
             this.label8.TabIndex = 3;
@@ -266,7 +239,7 @@ namespace SandcastleBuilder.Gui
             // 
             // btnSelectMSHCViewer
             // 
-            this.btnSelectMSHCViewer.Location = new System.Drawing.Point(621, 45);
+            this.btnSelectMSHCViewer.Location = new System.Drawing.Point(621, 21);
             this.btnSelectMSHCViewer.Name = "btnSelectMSHCViewer";
             this.btnSelectMSHCViewer.Size = new System.Drawing.Size(32, 25);
             this.statusBarTextProvider1.SetStatusBarText(this.btnSelectMSHCViewer, "Select Viewer: Browser for the MS Help Viewer viewer application");
@@ -279,7 +252,7 @@ namespace SandcastleBuilder.Gui
             // chkEnterMatching
             // 
             this.chkEnterMatching.AutoSize = true;
-            this.chkEnterMatching.Location = new System.Drawing.Point(92, 425);
+            this.chkEnterMatching.Location = new System.Drawing.Point(92, 417);
             this.chkEnterMatching.Name = "chkEnterMatching";
             this.chkEnterMatching.Size = new System.Drawing.Size(349, 21);
             this.statusBarTextProvider1.SetStatusBarText(this.chkEnterMatching, "Enter Matching: When checked, matching brackets, parentheses, and quotes will be " +
@@ -291,7 +264,7 @@ namespace SandcastleBuilder.Gui
             // chkShowLineNumbers
             // 
             this.chkShowLineNumbers.AutoSize = true;
-            this.chkShowLineNumbers.Location = new System.Drawing.Point(92, 399);
+            this.chkShowLineNumbers.Location = new System.Drawing.Point(92, 391);
             this.chkShowLineNumbers.Name = "chkShowLineNumbers";
             this.chkShowLineNumbers.Size = new System.Drawing.Size(230, 21);
             this.statusBarTextProvider1.SetStatusBarText(this.chkShowLineNumbers, "Show Line Numbers: Check this box to show line numbers in the text editor");
@@ -301,7 +274,7 @@ namespace SandcastleBuilder.Gui
             // 
             // chkOpenHelp
             // 
-            this.chkOpenHelp.Location = new System.Drawing.Point(262, 234);
+            this.chkOpenHelp.Location = new System.Drawing.Point(262, 226);
             this.chkOpenHelp.Name = "chkOpenHelp";
             this.chkOpenHelp.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkOpenHelp, "Open Help: Check this to open the help file after a successful build");
@@ -318,7 +291,7 @@ namespace SandcastleBuilder.Gui
             "Save changes to open documents only",
             "Prompt to save all changes",
             "Don\'t save any changes"});
-            this.cboBeforeBuildAction.Location = new System.Drawing.Point(262, 174);
+            this.cboBeforeBuildAction.Location = new System.Drawing.Point(262, 166);
             this.cboBeforeBuildAction.Name = "cboBeforeBuildAction";
             this.cboBeforeBuildAction.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.cboBeforeBuildAction, "Before Build: Select the action to take before performing a build");
@@ -326,7 +299,7 @@ namespace SandcastleBuilder.Gui
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(135, 174);
+            this.label7.Location = new System.Drawing.Point(135, 166);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(121, 23);
             this.label7.TabIndex = 9;
@@ -335,7 +308,7 @@ namespace SandcastleBuilder.Gui
             // 
             // btnEditorFont
             // 
-            this.btnEditorFont.Location = new System.Drawing.Point(487, 396);
+            this.btnEditorFont.Location = new System.Drawing.Point(487, 388);
             this.btnEditorFont.Name = "btnEditorFont";
             this.btnEditorFont.Size = new System.Drawing.Size(32, 25);
             this.btnEditorFont.TabIndex = 22;
@@ -345,7 +318,7 @@ namespace SandcastleBuilder.Gui
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(352, 397);
+            this.label3.Location = new System.Drawing.Point(352, 389);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(129, 23);
             this.label3.TabIndex = 21;
@@ -358,7 +331,7 @@ namespace SandcastleBuilder.Gui
             this.lblEditorExample.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblEditorExample.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEditorExample.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblEditorExample.Location = new System.Drawing.Point(525, 371);
+            this.lblEditorExample.Location = new System.Drawing.Point(525, 363);
             this.lblEditorExample.Name = "lblEditorExample";
             this.lblEditorExample.Size = new System.Drawing.Size(128, 75);
             this.lblEditorExample.TabIndex = 23;
@@ -367,7 +340,7 @@ namespace SandcastleBuilder.Gui
             // 
             // btnBuildFont
             // 
-            this.btnBuildFont.Location = new System.Drawing.Point(487, 306);
+            this.btnBuildFont.Location = new System.Drawing.Point(487, 298);
             this.btnBuildFont.Name = "btnBuildFont";
             this.btnBuildFont.Size = new System.Drawing.Size(32, 25);
             this.btnBuildFont.TabIndex = 18;
@@ -377,7 +350,7 @@ namespace SandcastleBuilder.Gui
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(435, 307);
+            this.label4.Location = new System.Drawing.Point(435, 299);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 23);
             this.label4.TabIndex = 17;
@@ -386,7 +359,7 @@ namespace SandcastleBuilder.Gui
             // 
             // btnBuildForeground
             // 
-            this.btnBuildForeground.Location = new System.Drawing.Point(397, 306);
+            this.btnBuildForeground.Location = new System.Drawing.Point(397, 298);
             this.btnBuildForeground.Name = "btnBuildForeground";
             this.btnBuildForeground.Size = new System.Drawing.Size(32, 25);
             this.btnBuildForeground.TabIndex = 16;
@@ -396,7 +369,7 @@ namespace SandcastleBuilder.Gui
             // 
             // btnBuildBackground
             // 
-            this.btnBuildBackground.Location = new System.Drawing.Point(262, 306);
+            this.btnBuildBackground.Location = new System.Drawing.Point(262, 298);
             this.btnBuildBackground.Name = "btnBuildBackground";
             this.btnBuildBackground.Size = new System.Drawing.Size(32, 25);
             this.btnBuildBackground.TabIndex = 14;
@@ -406,7 +379,7 @@ namespace SandcastleBuilder.Gui
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(300, 307);
+            this.label5.Location = new System.Drawing.Point(300, 299);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(91, 23);
             this.label5.TabIndex = 15;
@@ -419,7 +392,7 @@ namespace SandcastleBuilder.Gui
             this.lblBuildExample.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblBuildExample.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBuildExample.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblBuildExample.Location = new System.Drawing.Point(525, 281);
+            this.lblBuildExample.Location = new System.Drawing.Point(525, 273);
             this.lblBuildExample.Name = "lblBuildExample";
             this.lblBuildExample.Size = new System.Drawing.Size(128, 75);
             this.lblBuildExample.TabIndex = 19;
@@ -428,7 +401,7 @@ namespace SandcastleBuilder.Gui
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(82, 307);
+            this.label6.Location = new System.Drawing.Point(82, 299);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(174, 23);
             this.label6.TabIndex = 13;
@@ -437,21 +410,12 @@ namespace SandcastleBuilder.Gui
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(46, 68);
+            this.label2.Location = new System.Drawing.Point(46, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(210, 47);
             this.label2.TabIndex = 6;
             this.label2.Text = "&ASP.NET Development Web Server Port";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(43, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(213, 23);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "MS &Help 2 (.HxS) Viewer Path";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pgSpellChecking
             // 
@@ -477,6 +441,39 @@ namespace SandcastleBuilder.Gui
             this.pgSpellChecking.TabIndex = 2;
             this.pgSpellChecking.Text = "Spell Checking";
             this.pgSpellChecking.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(461, 73);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(206, 23);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "User Dictionary for Language";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnRemoveWord
+            // 
+            this.btnRemoveWord.Location = new System.Drawing.Point(461, 213);
+            this.btnRemoveWord.Name = "btnRemoveWord";
+            this.btnRemoveWord.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnRemoveWord, "Remove Word: Remove the selected word from the user dictionary");
+            this.btnRemoveWord.TabIndex = 10;
+            this.btnRemoveWord.Text = "Remove";
+            this.toolTip1.SetToolTip(this.btnRemoveWord, "Remove selected word from user dictionary");
+            this.btnRemoveWord.UseVisualStyleBackColor = true;
+            this.btnRemoveWord.Click += new System.EventHandler(this.btnRemoveWord_Click);
+            // 
+            // lbUserDictionary
+            // 
+            this.lbUserDictionary.FormattingEnabled = true;
+            this.lbUserDictionary.IntegralHeight = false;
+            this.lbUserDictionary.ItemHeight = 16;
+            this.lbUserDictionary.Location = new System.Drawing.Point(461, 99);
+            this.lbUserDictionary.Name = "lbUserDictionary";
+            this.lbUserDictionary.Size = new System.Drawing.Size(216, 108);
+            this.lbUserDictionary.Sorted = true;
+            this.statusBarTextProvider1.SetStatusBarText(this.lbUserDictionary, "User Dictionary: Ignored words in the user dictionary file");
+            this.lbUserDictionary.TabIndex = 9;
             // 
             // groupBox2
             // 
@@ -799,39 +796,6 @@ namespace SandcastleBuilder.Gui
             // 
             this.epErrors.ContainerControl = this;
             // 
-            // lbUserDictionary
-            // 
-            this.lbUserDictionary.FormattingEnabled = true;
-            this.lbUserDictionary.IntegralHeight = false;
-            this.lbUserDictionary.ItemHeight = 16;
-            this.lbUserDictionary.Location = new System.Drawing.Point(461, 99);
-            this.lbUserDictionary.Name = "lbUserDictionary";
-            this.lbUserDictionary.Size = new System.Drawing.Size(216, 108);
-            this.lbUserDictionary.Sorted = true;
-            this.statusBarTextProvider1.SetStatusBarText(this.lbUserDictionary, "User Dictionary: Ignored words in the user dictionary file");
-            this.lbUserDictionary.TabIndex = 9;
-            // 
-            // btnRemoveWord
-            // 
-            this.btnRemoveWord.Location = new System.Drawing.Point(461, 213);
-            this.btnRemoveWord.Name = "btnRemoveWord";
-            this.btnRemoveWord.Size = new System.Drawing.Size(75, 24);
-            this.statusBarTextProvider1.SetStatusBarText(this.btnRemoveWord, "Remove Word: Remove the selected word from the user dictionary");
-            this.btnRemoveWord.TabIndex = 10;
-            this.btnRemoveWord.Text = "Remove";
-            this.toolTip1.SetToolTip(this.btnRemoveWord, "Remove selected word from user dictionary");
-            this.btnRemoveWord.UseVisualStyleBackColor = true;
-            this.btnRemoveWord.Click += new System.EventHandler(this.btnRemoveWord_Click);
-            // 
-            // label10
-            // 
-            this.label10.Location = new System.Drawing.Point(461, 73);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(206, 23);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "User Dictionary for Language";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // UserPreferencesDlg
             // 
             this.AcceptButton = this.btnOK;
@@ -872,9 +836,6 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.CheckBox chkVerboseLogging;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtHTMLHelp2ViewerPath;
-        private System.Windows.Forms.Button btnSelectHxSViewer;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown udcASPNetDevServerPort;
         private System.Windows.Forms.ErrorProvider epErrors;

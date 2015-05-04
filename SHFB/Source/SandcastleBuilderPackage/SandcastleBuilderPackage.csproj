@@ -302,12 +302,6 @@
     <Compile Include="PropertyPages\MSHelpViewerPropertiesPageControl.Designer.cs">
       <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropertyPages\MSHelp2PropertiesPageControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyPages\MSHelp2PropertiesPageControl.Designer.cs">
-      <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="PropertyPages\UserDefinedPropertiesPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -799,9 +793,6 @@
     <EmbeddedResource Include="PropertyPages\MSHelpViewerPropertiesPageControl.resx">
       <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropertyPages\MSHelp2PropertiesPageControl.resx">
-      <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PropertyPages\TransformArgumentsPageControl.resx">
       <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -849,7 +840,6 @@
     <Resource Include="Resources\CodeSnippets.ico" />
     <Resource Include="Resources\ViewHelpFile.bmp" />
     <Resource Include="Resources\HtmlHelp.bmp" />
-    <Resource Include="Resources\Help2.bmp" />
     <Resource Include="Resources\HtmlWebsite.bmp" />
     <Resource Include="Resources\AspNetWebsite.bmp" />
     <Resource Include="Resources\MSHelpViewer.bmp" />

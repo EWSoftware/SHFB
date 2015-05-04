@@ -46,7 +46,6 @@
 				DumpLogOnFailure="$(DumpLogOnFailure)"
 				AlwaysLoadProject="$(AlwaysLoadProject)">
 			<Output TaskParameter="Help1Files" ItemName="Help1Files" />
-			<Output TaskParameter="Help2Files" ItemName="Help2Files" />
 			<Output TaskParameter="HelpViewerFiles" ItemName="HelpViewerFiles" />
 			<Output TaskParameter="WebsiteFiles" ItemName="WebsiteFiles" />
 			<Output TaskParameter="OpenXmlFiles" ItemName="OpenXmlFiles" />

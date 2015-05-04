@@ -100,7 +100,6 @@
     <Compile Include="BuildEngine\PartialBuildType.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
-    <Compile Include="BuildEngine\BuildProcess.MSHelp2.cs" />
     <Compile Include="BuildEngine\BuildProcess.NamespaceRipping.cs" />
     <Compile Include="BuildEngine\BuildProcess.Namespaces.cs" />
     <Compile Include="BuildEngine\BuildProcess.AdditionalContent.cs" />
@@ -110,7 +109,6 @@
     <Compile Include="BuildEngine\BuildProcess.cs" />
     <Compile Include="BuildEngine\BuildStep.cs" />
     <Compile Include="BuildComponent\ComponentConfigurationDictionary.cs" />
-    <Compile Include="CollectionTocStyle.cs" />
     <Compile Include="COMReferenceItem.cs" />
     <Compile Include="ConceptualContent\CodeEntityReference.cs" />
     <Compile Include="ConceptualContent\CodeReference.cs" />
@@ -181,7 +179,6 @@
     <Compile Include="InheritedDocumentation\IndexedCommentsCache.cs" />
     <Compile Include="InheritedDocumentation\InheritedDocsException.cs" />
     <Compile Include="MSBuild\Build1xHelpFile.cs" />
-    <Compile Include="MSBuild\Build2xHelpFile.cs" />
     <Compile Include="MSBuild\BuildHelp.cs" />
     <Compile Include="MSBuild\CleanHelp.cs" />
     <Compile Include="MSBuild\BuildOpenXmlFile.cs" />
@@ -265,9 +262,6 @@
     <Content Include="Templates\Build1xHelpFile.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\Build2xHelpFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Templates\BuildConceptualTopics.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -283,9 +277,6 @@
     <Content Include="Templates\ExtractHtmlInfo.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\Generate2xTOC.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Templates\GenerateInheritedDocs.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -299,33 +290,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\Help1x.hhp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x.HxC">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x.HxF">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_A.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_B.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_F.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_H2Reg.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_K.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_NamedURLIndex.HxK">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help2x_S.HxK">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\HelpContentSetup.msha">
@@ -490,7 +454,6 @@
     <Compile Include="FileItemCollection.cs" />
     <Compile Include="HtmlSdkLinkType.cs" />
     <Compile Include="MSBuild\BuildHelpViewerFile.cs" />
-    <Compile Include="MSHelp2SdkLinkType.cs" />
     <Compile Include="MSHelpViewerSdkLinkType.cs" />
     <Compile Include="ProjectFileConfiguration.cs" />
     <Compile Include="SdkLinkTarget.cs" />

@@ -149,14 +149,6 @@
       <Link>PropertyPages\MissingTagPropertiesPageControl.designer.cs</Link>
       <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelp2PropertiesPageControl.cs">
-      <Link>PropertyPages\MSHelp2PropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelp2PropertiesPageControl.designer.cs">
-      <Link>PropertyPages\MSHelp2PropertiesPageControl.designer.cs</Link>
-      <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.cs">
       <Link>PropertyPages\MSHelpViewerPropertiesPageControl.cs</Link>
       <SubType>UserControl</SubType>
@@ -369,14 +361,11 @@
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.resx">
       <Link>PropertyPages\HelpFilePropertiesPageControl.resx</Link>
       <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.resx">
       <Link>PropertyPages\MissingTagPropertiesPageControl.resx</Link>
       <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MSHelp2PropertiesPageControl.resx">
-      <Link>PropertyPages\MSHelp2PropertiesPageControl.resx</Link>
-      <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.resx">
       <Link>PropertyPages\MSHelpViewerPropertiesPageControl.resx</Link>

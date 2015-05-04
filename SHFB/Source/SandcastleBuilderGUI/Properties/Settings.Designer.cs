@@ -78,18 +78,6 @@ namespace SandcastleBuilder.Gui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string HTMLHelp2ViewerPath {
-            get {
-                return ((string)(this["HTMLHelp2ViewerPath"]));
-            }
-            set {
-                this["HTMLHelp2ViewerPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("12345")]
         public int ASPNETDevServerPort {
             get {

@@ -22,8 +22,6 @@
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
-    <HtmlHelp2xCompilerPath>
-    </HtmlHelp2xCompilerPath>
     <WorkingPath>
     </WorkingPath>
     <CleanIntermediates>False</CleanIntermediates>
@@ -40,7 +38,7 @@
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
     <PresentationStyle>VS2013</PresentationStyle>
-    <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision}</HelpFileVersion>
+    <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
         <component id="Code Block Component">
@@ -70,10 +68,9 @@
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
     <HelpAttributes>
-      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
-      <HelpAttribute name="DocSet" value="NetFramework" />
-      <HelpAttribute name="TargetOS" value="Windows" />
-    </HelpAttributes>
+      <HelpAttribute name="DocSet" value="{@HtmlEncHelpName}" />
+<HelpAttribute name="DocSet" value="NetFramework" />
+<HelpAttribute name="TargetOS" value="Windows" /></HelpAttributes>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
       <NamespaceSummaryItem name="TestDoc" isDocumented="True">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
@@ -105,30 +102,68 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="XPath Reflection File Filter" enabled="False"><configuration><expressions><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression></expressions></configuration></PlugInConfig>
-<PlugInConfig id="Bibliography Support" enabled="False"><configuration><bibliography path="{@ProjectFolder}Bibliography.xml" /></configuration></PlugInConfig>
-<PlugInConfig id="Completion Notification" enabled="False"><configuration><smtpServer host="mail.somecompany.org" port="25" /><userCredentials useDefault="true" userName="" password="" /><fromEMail address="SHFB@SomeCompany.org" /><successEMail address="EWoodruff@SomeCompany.org" attachLog="false" /><failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" /><xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" /></configuration></PlugInConfig>
-<PlugInConfig id="DBCS Fix for CHM Builds" enabled="False"><configuration><sbAppLocale path="C:\Utils\SBAppLocale.exe" /></configuration></PlugInConfig>
-<PlugInConfig id="Wildcard Assembly References" enabled="False"><configuration><references><reference path="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" /><reference path="..\..\SHFB\Deploy\" wildcard="*.dll" recurse="true" /></references></configuration></PlugInConfig>
-<PlugInConfig id="Additional Reference Links" enabled="False"><configuration /></PlugInConfig>
-<PlugInConfig id="IntelliSense Only" enabled="False"><configuration /></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
+        <configuration>
+          <expressions>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression>
+          </expressions>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Bibliography Support" enabled="False">
+        <configuration>
+          <bibliography path="{@ProjectFolder}Bibliography.xml" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Completion Notification" enabled="False">
+        <configuration>
+          <smtpServer host="mail.somecompany.org" port="25" />
+          <userCredentials useDefault="true" userName="" password="" />
+          <fromEMail address="SHFB@SomeCompany.org" />
+          <successEMail address="EWoodruff@SomeCompany.org" attachLog="false" />
+          <failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" />
+          <xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
+        <configuration>
+          <sbAppLocale path="C:\Utils\SBAppLocale.exe" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Wildcard Assembly References" enabled="False">
+        <configuration>
+          <references>
+            <reference path="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" />
+            <reference path="..\..\SHFB\Deploy\" wildcard="*.dll" recurse="true" />
+          </references>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Additional Reference Links" enabled="False">
+        <configuration />
+      </PlugInConfig>
+      <PlugInConfig id="IntelliSense Only" enabled="False">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>MSHelpViewer</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <Version>1.20.34.123</Version>
     <Major>1</Major>
     <Minor>20</Minor>
     <Build>34</Build>
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
-    <HelpTitle>Sandcastle Test Case Library {%40Version}</HelpTitle>
+    <HelpTitle>Sandcastle Test Case Library {%40HelpFileVersion}</HelpTitle>
     <SyntaxFilters>Standard</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
     <VendorName>EWSoftware</VendorName>
-    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
     <TocOrder>3</TocOrder>
@@ -154,7 +189,8 @@
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
-    <CatalogName>VisualStudio12</CatalogName>
+    <CatalogName>
+    </CatalogName>
     <ComponentPath>
     </ComponentPath>
     <PostBuildEvent>

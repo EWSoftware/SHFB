@@ -1,31 +1,29 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to manage the project's files in the
-// Project Explorer tree view control.
+// This file contains the class used to manage the project's files in the Project Explorer tree view control
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.0  07/28/2008  EFW  Created the code
-// 1.8.0.3  12/04/2009  EFW  Added support for resource item files
-// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/28/2008  EFW  Created the code
+// 12/04/2009  EFW  Added support for resource item files
+// 04/08/2012  EFW  Added support for XAML configuration files
+// 05/03/2015  EFW  Removed support for topic transformation files
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -34,11 +32,9 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.Gui.ContentEditors
 {
     /// <summary>
-    /// This is used to load the <see cref="ProjectExplorerWindow" />
-    /// tree view with the project file tree.
+    /// This is used to load the <see cref="ProjectExplorerWindow" /> tree view with the project file tree
     /// </summary>
-    /// <remarks>It is also used to handle such tasks as renaming, removing,
-    /// and adding nodes.</remarks>
+    /// <remarks>It is also used to handle such tasks as renaming, removing, and adding nodes</remarks>
     public class FileTree
     {
         #region Private data members
@@ -53,8 +49,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="treeControl">The <see cref="TreeView"/> control
-        /// with which this instance is associated.</param>
+        /// <param name="treeControl">The <see cref="TreeView"/> control with which this instance is associated</param>
         public FileTree(TreeView treeControl)
         {
             treeView = treeControl;
@@ -65,14 +60,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         /// <summary>
-        /// This is used to get an appropriate icon for the node based on the
-        /// filename.
+        /// This is used to get an appropriate icon for the node based on the filename
         /// </summary>
         /// <param name="filename">The filename associated with the node</param>
         private static NodeIcon NodeIconFromFilename(string filename)
         {
-            string ext = Path.GetExtension(filename).ToLower(
-                CultureInfo.InvariantCulture);
+            string ext = Path.GetExtension(filename).ToLowerInvariant();
 
             switch(ext)
             {
@@ -86,7 +79,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 case ".htm":
                 case ".html":
                 case ".js":
-                case ".topic":
                 case ".txt":
                     return NodeIcon.Content;
 
@@ -114,9 +106,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 case ".tokens":
                     return NodeIcon.TokenFile;
 
-                case ".xsl":
-                    return NodeIcon.TopicTransform;
-
                 default:
                     break;
             }
@@ -125,8 +114,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <summary>
-        /// Insert the node into the collection in the correct position based
-        /// on its name
+        /// Insert the node into the collection in the correct position based on its name
         /// </summary>
         /// <param name="nodes">The node collection</param>
         /// <param name="newNode">The new node</param>
@@ -168,14 +156,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// Load the tree with the folder and file items
         /// </summary>
-        /// <param name="files">The folder and file build items from the
-        /// project</param>
+        /// <param name="files">The folder and file build items from the project</param>
         public void LoadTree(Collection<FileItem> files)
         {
-            SortedDictionary<string, FileItem> fileItems =
-                new SortedDictionary<string,FileItem>();
-            List<string> folderNames = new List<string>(),
-                additionalFolders = new List<string>();
+            SortedDictionary<string, FileItem> fileItems = new SortedDictionary<string,FileItem>();
+            List<string> folderNames = new List<string>(), additionalFolders = new List<string>();
             SandcastleProject project = null;
             FileItem fileItem;
             TreeNode root, itemNode;
@@ -256,8 +241,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     if(name.IndexOf('\\') != -1)
                     {
-                        matches = treeView.Nodes.Find(name.Substring(0,
-                            name.LastIndexOf('\\') + 1), true);
+                        matches = treeView.Nodes.Find(name.Substring(0, name.LastIndexOf('\\') + 1), true);
 
                         if(matches.Length == 1)
                         {
@@ -274,10 +258,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     itemNode = new TreeNode(name);
                     itemNode.Name = folder;
-                    itemNode.Tag = new NodeData(BuildAction.Folder, fileItem,
-                        null);
-                    itemNode.ImageIndex = itemNode.SelectedImageIndex =
-                        (int)NodeIcon.GeneralFolder;
+                    itemNode.Tag = new NodeData(BuildAction.Folder, fileItem, null);
+                    itemNode.ImageIndex = itemNode.SelectedImageIndex = (int)NodeIcon.GeneralFolder;
 
                     AddNode(root.Nodes, itemNode);
                 }
@@ -307,10 +289,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     itemNode = new TreeNode(Path.GetFileName(key));
                     itemNode.Name = key;
-                    itemNode.Tag = new NodeData(fileItem.BuildAction,
-                        fileItem, null);
-                    itemNode.ImageIndex = itemNode.SelectedImageIndex =
-                        (int)NodeIconFromFilename(key);
+                    itemNode.Tag = new NodeData(fileItem.BuildAction, fileItem, null);
+                    itemNode.ImageIndex = itemNode.SelectedImageIndex = (int)NodeIconFromFilename(key);
 
                     AddNode(root.Nodes, itemNode);
                 }
@@ -322,8 +302,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <summary>
-        /// Refresh the path info in each child node due to a renamed parent
-        /// folder node.
+        /// Refresh the path info in each child node due to a renamed parent folder node
         /// </summary>
         /// <param name="node">The node in which to refresh the children</param>
         public void RefreshPathsInChildren(TreeNode node)
@@ -341,11 +320,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <summary>
-        /// Remove the children of a folder node from the project.
+        /// Remove the children of a folder node from the project
         /// </summary>
         /// <param name="node">The parent folder node</param>
-        /// <param name="permanently">True to delete the items or false
-        /// to just remove them from the project.</param>
+        /// <param name="permanently">True to delete the items or false to just remove them from the project</param>
         public void RemoveNode(TreeNode node, bool permanently)
         {
             NodeData nodeData;
@@ -371,8 +349,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 // Remove the node itself
                 nodeData = (NodeData)node.Tag;
                 fileItem = (FileItem)nodeData.Item;
-                projectFolder = Path.GetDirectoryName(
-                    fileItem.ProjectElement.Project.Filename);
+                projectFolder = Path.GetDirectoryName(fileItem.ProjectElement.Project.Filename);
                 fileItem.ProjectElement.RemoveFromProjectFile();
                 node.Remove();
 
@@ -380,8 +357,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     if(fileItem.BuildAction == BuildAction.Folder)
                     {
                         // If in or below the folder to remove, get out of it
-                        if(FolderPath.TerminatePath(
-                          Directory.GetCurrentDirectory()).StartsWith(
+                        if(FolderPath.TerminatePath(Directory.GetCurrentDirectory()).StartsWith(
                           fileItem.Include, StringComparison.OrdinalIgnoreCase))
                             Directory.SetCurrentDirectory(projectFolder);
 

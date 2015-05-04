@@ -54,7 +54,6 @@
 // 1.8.0.3  12/06/2009  EFW  Removed support for ShowFeedbackControl
 // 1.9.0.0  06/19/2010  EFW  Added properties to support MS Help Viewer.  Removed ProjectLinkType property.
 //                           Replaced SdkLinkType with help format specific SDK link type properties.
-#endregion
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight Framework versions
 // 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
@@ -64,16 +63,17 @@
 //                           Added the CatalogName property for Help Viewer 2.0 support.
 // 1.9.6.0  10/13/2012  EFW  Removed the BrandingPackageName and SelfBranded properties.  Added support for
 //                           transform component arguments.
+#endregion
 // 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 // -------  12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //          12/20/2013  EFW  Added support for the ComponentPath project property
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -160,7 +160,7 @@ namespace SandcastleBuilder.Utils
         private PlugInConfigurationDictionary plugInConfigs;
 
         // Path and build-related properties
-        private FolderPath hhcPath, hxcompPath, workingPath, componentPath;
+        private FolderPath hhcPath, workingPath, componentPath;
         private FilePath buildLogFile;
         private string outputPath, frameworkVersion;
         private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent,
@@ -171,21 +171,19 @@ namespace SandcastleBuilder.Utils
 
         // Help file properties
         private ContentPlacement contentPlacement;
-        private bool binaryTOC, includeFavorites, preliminary, rootNSContainer, includeStopWordList, indentHtml;
+        private bool binaryTOC, includeFavorites, preliminary, rootNSContainer, indentHtml;
         private string helpTitle, htmlHelpName, copyrightHref, copyrightText, feedbackEMailAddress,
             feedbackEMailLinkText, headerText, footerText, projectSummary, rootNSTitle, presentationStyle,
-            plugInNamespaces, helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion,
-            tocParentId, tocParentVersion, catalogProductId, catalogVersion, catalogName;
+            helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion, tocParentId,
+            tocParentVersion, catalogProductId, catalogVersion, catalogName;
         private CultureInfo language;
         private HtmlSdkLinkType htmlSdkLinkType, websiteSdkLinkType;
-        private MSHelp2SdkLinkType help2SdkLinkType;
         private MSHelpViewerSdkLinkType helpViewerSdkLinkType;
         private SdkLinkTarget sdkLinkTarget;
         private NamingMethod namingMethod;
-        private CollectionTocStyle collectionTocStyle;
         private int tocOrder;
 
-        // Help 2 additional attributes
+        // MS Help additional attributes
         private MSHelpAttrCollection helpAttributes;
 
         // Show Missing Tags options
@@ -202,7 +200,6 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property returns the MSBuild project property cache
         /// </summary>
-        [Browsable(false), XmlIgnore]
         private Dictionary<string, ProjectProperty> ProjectPropertyCache
         {
             get
@@ -218,22 +215,19 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This read-only property is used to get the underlying MSBuild
-        /// project.
+        /// This read-only property is used to get the underlying MSBuild project
         /// </summary>
-        [Browsable(false), XmlIgnore]
         public Project MSBuildProject
         {
             get { return msBuildProject; }
         }
 
         /// <summary>
-        /// This read-only property is used to get whether or not the project
-        /// is using final values for the project properties.
+        /// This read-only property is used to get whether or not the project is using final values for the
+        /// project properties.
         /// </summary>
-        /// <value>If true, final values (i.e. evaluated values used at build
-        /// time) are being returned by the properties in this instance.</value>
-        [Browsable(false), XmlIgnore]
+        /// <value>If true, final values (i.e. evaluated values used at build time) are being returned by the
+        /// properties in this instance.</value>
         public bool UsingFinalValues
         {
             get { return usingFinalValues; }
@@ -242,19 +236,17 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the filename for the project
         /// </summary>
-        [Browsable(false), XmlIgnore]
         public string Filename
         {
             get { return msBuildProject.FullPath; }
         }
 
         /// <summary>
-        /// This is used to get or set the configuration to use when building
-        /// the project.
+        /// This is used to get or set the configuration to use when building the project
         /// </summary>
-        /// <value>This value is used for project documentation sources and
-        /// project references so that the correct items are used from them.</value>
-        [Browsable(false), XmlIgnore]
+        /// <value>This value is used for project documentation sources and project references so that the
+        /// correct items are used from them.</value>
+        [XmlIgnore]
         public string Configuration
         {
             get
@@ -283,12 +275,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the platform to use when building the
-        /// project.
+        /// This is used to get or set the platform to use when building the project
         /// </summary>
-        /// <value>This value is used for project documentation sources and
-        /// project references so that the correct items are used from them.</value>
-        [Browsable(false), XmlIgnore]
+        /// <value>This value is used for project documentation sources and project references so that the
+        /// correct items are used from them.</value>
+        [XmlIgnore]
         public string Platform
         {
             get
@@ -317,12 +308,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the MSBuild <c>OutDir</c> property value
-        /// that is defined when using Team Build.
+        /// This is used to get or set the MSBuild <c>OutDir</c> property value that is defined when using Team
+        /// Build.
         /// </summary>
-        /// <value>This value is used for project documentation sources and
-        /// project references so that the correct items are used from them.</value>
-        [Browsable(false), XmlIgnore]
+        /// <value>This value is used for project documentation sources and project references so that the
+        /// correct items are used from them.</value>
+        [XmlIgnore]
         public string MSBuildOutDir
         {
             get
@@ -352,41 +343,34 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get the dirty state of the project
         /// </summary>
-        [Browsable(false)]
         public bool IsDirty
         {
             get { return isDirty || msBuildProject.Xml.HasUnsavedChanges; }
         }
 
         /// <summary>
-        /// This is used to get a collection of reference dependencies (files,
-        /// GAC, COM, or project) for MRefBuilder if needed.
+        /// This is used to get a collection of reference dependencies (files, GAC, COM, or project) for
+        /// MRefBuilder if needed.
         /// </summary>
-        [Browsable(false)]
         public ReferenceItemCollection References
         {
             get { return references; }
         }
 
         /// <summary>
-        /// Returns the list of documentation sources to use in building the
-        /// help file.
+        /// Returns the list of documentation sources to use in building the help file
         /// </summary>
-        [Browsable(false)]
         public DocumentationSourceCollection DocumentationSources
         {
             get { return docSources; }
         }
 
         /// <summary>
-        /// This read-only property is used to get the build log file
-        /// location.
+        /// This read-only property is used to get the build log file location
         /// </summary>
-        /// <value>If <see cref="BuildLogFile"/> is set, it returns its
-        /// value.  If not set, it returns the full path created by using
-        /// the <see cref="OutputPath"/> property value and a filename of
-        /// <b>LastBuild.log</b>.</value>
-        [Browsable(false)]
+        /// <value>If <see cref="BuildLogFile"/> is set, it returns its value.  If not set, it returns the full
+        /// path created by using the <see cref="OutputPath"/> property value and a filename of
+        /// <strong>LastBuild.log</strong>.</value>
         public string LogFileLocation
         {
             get
@@ -406,11 +390,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get the copyright notice that appears in the footer
-        /// of each page with any hex value place holders replaced with their
-        /// actual character.
+        /// This is used to get the copyright notice that appears in the footer of each page with any hex value
+        /// place holders replaced with their actual character.
         /// </summary>
-        [Browsable(false)]
         public string DecodedCopyrightText
         {
             get
@@ -420,10 +402,8 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This read-only helper property returns the flags to use when
-        /// looking for missing tags.
+        /// This read-only helper property returns the flags to use when looking for missing tags
         /// </summary>
-        [Browsable(false)]
         public MissingTags MissingTags
         {
             get { return missingTags; }
@@ -435,10 +415,8 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This read-only helper property returns the flags used to indicate
-        /// which optional items to document.
+        /// This read-only helper property returns the flags used to indicate which optional items to document
         /// </summary>
-        [Browsable(false)]
         public VisibleItems VisibleItems
         {
             get { return visibleItems; }
@@ -450,12 +428,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This returns a collection of all build items in the project that
-        /// represent folders and files.
+        /// This returns a collection of all build items in the project that represent folders and files
         /// </summary>
-        /// <remarks>This collection is generated each time the property is
-        /// used.  As such, cache a copy if you need to use it repeatedly.</remarks>
-        [Browsable(false)]
+        /// <remarks>This collection is generated each time the property is used.  As such, cache a copy if you
+        /// need to use it repeatedly.</remarks>
         public Collection<FileItem> FileItems
         {
             get
@@ -477,7 +453,6 @@ namespace SandcastleBuilder.Utils
         /// <remarks>These are passed as arguments to the XSL transformations used by the <b>BuildAssembler</b>
         /// <c>TransformComponent</c>.</remarks>
         /// <returns>An enumerable list of transform component arguments</returns>
-        [Browsable(false)]
         public IEnumerable<TransformComponentArgument> TransformComponentArguments
         {
             get
@@ -504,7 +479,6 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// Returns the list of namespace summaries
         /// </summary>
-        [Category("Summaries"), Description("Namespaces to document and their related summary comments")]
         public NamespaceSummaryItemCollection NamespaceSummaries
         {
             get { return namespaceSummaries; }
@@ -513,9 +487,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the project summary comments
         /// </summary>
-        /// <remarks>These notes will appear in the root namespaces page if
-        /// entered.</remarks>
-        [Category("Summaries"), Description("Project summary comments"), EscapeValue]
+        /// <remarks>These notes will appear in the root namespaces page if entered</remarks>
+        [EscapeValue]
         public string ProjectSummary
         {
             get { return projectSummary; }
@@ -537,11 +510,8 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the path to a folder containing additional, project-specific build
         /// components.
         /// </summary>
-        /// <value>If left blank, the current project's folder is searched instead.</value>
-        [Category("Paths"), Description("This is used to get or set the path to a folder containing " +
-          "additional, project-specific build components."), DefaultValue(null),
-          Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select an additional build component location", Environment.SpecialFolder.MyDocuments)]
+        /// <value>If left blank, the current project's folder is searched instead</value>
+        [DefaultValue(null)]
         public FolderPath ComponentPath
         {
             get { return componentPath; }
@@ -558,15 +528,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the path to the HTML Help 1 compiler
-        /// (HHC.EXE).
+        /// This is used to get or set the path to the HTML Help 1 compiler (HHC.EXE).
         /// </summary>
-        /// <value>You only need to set this if the builder cannot determine
-        /// the path for itself.</value>
-        [Category("Paths"), Description("The path to the HTML Help 1 compiler (HHC.EXE).  This only needs to " +
-          "be set if the builder cannot determine the path for itself."), DefaultValue(null),
-          Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the HTML Help 1 compiler installation location", Environment.SpecialFolder.ProgramFiles)]
+        /// <value>You only need to set this if the builder cannot determine the path for itself</value>
+        [DefaultValue(null)]
         public FolderPath HtmlHelp1xCompilerPath
         {
             get { return hhcPath; }
@@ -583,45 +548,14 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the path to the MS Help 2 compiler
-        /// (HXCOMP.EXE).
+        /// This is used to get or set the path to which the help files will be generated
         /// </summary>
-        /// <value>You only need to set this if the builder cannot determine
-        /// the path for itself.</value>
-        [Category("Paths"), Description("The path to the MS Help 2 compiler (HXCOMP.EXE).  This only needs to " +
-          "be set if the builder cannot determine the path for itself."), DefaultValue(null),
-          Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the MS Help 2 compiler installation location", Environment.SpecialFolder.ProgramFiles)]
-        public FolderPath HtmlHelp2xCompilerPath
-        {
-            get { return hxcompPath; }
-            set
-            {
-                if(value == null)
-                    value = new FolderPath(this);
-
-                this.SetProjectProperty("HtmlHelp2xCompilerPath", value);
-                hxcompPath = value;
-                hxcompPath.PersistablePathChanging += PathProperty_Changing;
-                hxcompPath.PersistablePathChanged += PathProperty_Changed;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the path to which the help files
-        /// will be generated.
-        /// </summary>
-        /// <remarks>The default is to create it in a folder called
-        /// <b>Help</b> in the same folder as the project file.
-        /// <p/><b>Warning:</b> If building a web site, the output folder's
-        /// prior content will be erased without warning prior to copying
-        /// the new web site content to it!</remarks>
-        [Category("Paths"), Description("The path to which the help files will be generated.  The default is " +
-          "to save it to the .\\Help folder relative to the project file's folder.  WARNING: When building a " +
-          "web site, the prior content of the output folder will be erased without warning before copying the " +
-          "new content to it!"), DefaultValue(@".\Help\"),
-          Editor(typeof(FolderPathStringEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the output location for the help file", Environment.SpecialFolder.Personal)]
+        /// <remarks><para>The default is to create it in a folder called <strong>Help</strong> in the same
+        /// folder as the project file.</para>
+        /// 
+        /// <para><strong>Warning:</strong> If building a web site, the output folder's prior content will be
+        /// erased without warning prior to copying the new web site content to it!</para></remarks>
+        [DefaultValue(@".\Help\")]
         public string OutputPath
         {
             get { return outputPath; }
@@ -641,24 +575,16 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the path to the working folder used
-        /// during the build process to store the intermediate files.
+        /// This is used to get or set the path to the working folder used during the build process to store the
+        /// intermediate files.
         /// </summary>
-        /// <value>This can be used to perform the build in a different
-        /// location with a shorter path if you encounter errors due to long
-        /// file path names.  If not specified, it defaults to a folder
-        /// called <b>.\Working</b> under the folder specified by the
-        /// <see cref="OutputPath"/> property.
-        /// <p/><b>Warning:</b> All files and folders in the path specified
-        /// in this property will be erased without warning when the build
-        /// starts.</value>
-        [Category("Paths"), Description("An alternate location to use for " +
-          "the intermediate build files.  If not set, it defaults to " +
-          ".\\Working under the OutputPath folder.  WARNING: All files and " +
-          "folders in this path will be erased without warning when the " +
-          "build starts!"), DefaultValue(null),
-          Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the working files location", Environment.SpecialFolder.Personal)]
+        /// <value><para>This can be used to perform the build in a different location with a shorter path if you
+        /// encounter errors due to long file path names.  If not specified, it defaults to a folder called
+        /// <strong>.\Working</strong> under the folder specified by the <see cref="OutputPath"/> property.</para>
+        /// 
+        /// <para><strong>Warning:</strong> All files and folders in the path specified in this property will be
+        /// erased without warning when the build starts.</para></value>
+        [DefaultValue(null)]
         public FolderPath WorkingPath
         {
             get { return workingPath; }
@@ -684,9 +610,7 @@ namespace SandcastleBuilder.Utils
         /// <value>The default is <c>AllMessages</c> to report all messages.</value>
         /// <remarks>Setting this property to <c>OnlyWarningsAndErrors</c> or <c>OnlyErrors</c> can
         /// significantly reduce the size of the build log for large projects.</remarks>
-        [Category("Build"), Description("This sets the verbosity level of the BuildAssembler tool.  Setting it " +
-          "to OnlyWarningsAndErrors or OnlyErrors can significantly reduce the size of the build log for " +
-          "large projects."), DefaultValue(BuildAssemblerVerbosity.OnlyWarningsAndErrors)]
+        [DefaultValue(BuildAssemblerVerbosity.OnlyWarningsAndErrors)]
         public BuildAssemblerVerbosity BuildAssemblerVerbosity
         {
             get { return buildAssemblerVerbosity; }
@@ -701,8 +625,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether intermediate files are deleted after a successful build
         /// </summary>
         /// <value>The default value is true.</value>
-        [Category("Build"), Description("If set to true, intermediate files are deleted after a successful build"),
-          DefaultValue(true)]
+        [DefaultValue(true)]
         public bool CleanIntermediates
         {
             get { return cleanIntermediates; }
@@ -717,8 +640,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether or not the log file is retained after a successful build
         /// </summary>
         /// <value>The default value is true.</value>
-        [Category("Build"), Description("If set to true, the log file is retained after a successful build.  " +
-          "If false, it is deleted."), DefaultValue(true)]
+        [DefaultValue(true)]
         public bool KeepLogFile
         {
             get { return keepLogFile; }
@@ -734,11 +656,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>If not specified, a default name of <b>LastBuild.log</b> is used and the file is saved in the
         /// path identified in the <see cref="OutputPath" /> property.</value>
-        [Category("Build"), Description("The build log filename.  If not specified, a file called " +
-          "LastBuild.log is created in the folder identified by the OutputPath property."), DefaultValue(null),
-          Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-          FileDialog("Select the log file location", "Log files (*.log)|*.log|All Files (*.*)|*.*",
-          FileDialogType.FileSave)]
+        [DefaultValue(null)]
         public FilePath BuildLogFile
         {
             get { return buildLogFile; }
@@ -760,11 +678,7 @@ namespace SandcastleBuilder.Utils
         /// <value>The default is to produce an HTML Help 1 format file built using HHC.exe.</value>
         /// <remarks>If building a web site, the output folder will be cleared before the new content is copied
         /// to it.</remarks>
-        [Category("Build"), Description("Specify the type of help produced (HTML Help 1 built with HHC.EXE, " +
-          "MS Help 2 built with HXCOMP.EXE, MS Help Viewer which is a compressed container file, and/or a web " +
-          "site.  WARNING: When building a web site, the prior content of the output folder will be erased " +
-          "without warning before copying the new content to it!"), DefaultValue(HelpFileFormats.HtmlHelp1),
-          Editor(typeof(FlagsEnumEditor), typeof(UITypeEditor))]
+        [DefaultValue(HelpFileFormats.HtmlHelp1)]
         public HelpFileFormats HelpFileFormat
         {
             get { return helpFileFormat; }
@@ -780,9 +694,7 @@ namespace SandcastleBuilder.Utils
         /// rendered in their standard format by the Sandcastle XSL transformations.
         /// </summary>
         /// <value>The default is false so that the Code Block Component is used by default.</value>
-        [Category("Build"), Description("Set this to true to disable the custom Code Block Component and " +
-          "render all <code> elements in their default format using the Sandcastle XSL transformations"),
-          DefaultValue(false)]
+        [DefaultValue(false)]
         public bool DisableCodeBlockComponent
         {
             get { return disableCodeBlockComponent; }
@@ -804,8 +716,7 @@ namespace SandcastleBuilder.Utils
         /// this option is not needed for comments files generated by them.  Set this to true if the project
         /// contains C++ compiler generated XML comments files and your project contains methods that take
         /// generic types for parameters.</remarks>
-        [Category("Build"), Description("Set this to true to work around a C++ compiler generated XML " +
-          "comments file issue."), DefaultValue(false)]
+        [DefaultValue(false)]
         public bool CppCommentsFixup
         {
             get { return cppCommentsFixup; }
@@ -822,8 +733,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>If set to null, it will default to the most recent version of the basic .NET Framework
         /// installed.</remarks>
-        [Category("Build"), Description("The .NET Framework version used to resolve references to system types."),
-          EscapeValue]
+        [EscapeValue]
         public string FrameworkVersion
         {
             get { return frameworkVersion; }
@@ -844,8 +754,6 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>This allows you to configure the settings for third party build components if they
         /// support it.</remarks>
-        [Category("Build"), Description("Configuration options for third party build components such as the " +
-          "Code Block Colorizer")]
         public ComponentConfigurationDictionary ComponentConfigurations
         {
             get { return componentConfigs; }
@@ -856,8 +764,6 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>This allows you to select and configure the settings for third party build process
         /// plug-ins.</remarks>
-        [Category("Build"), Description("Configuration options for third party build process plug-ins such " +
-          "as the AjaxDoc plug-in")]
         public PlugInConfigurationDictionary PlugInConfigurations
         {
             get { return plugInConfigs; }
@@ -868,9 +774,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>This is mainly a debugging aid.  Leave it set to false, the default to produce more compact
         /// HTML.</value>
-        [Category("Build"), Description("Debugging aid.  If set to true, the HTML rendered by BuildAssembler " +
-          "is indented to make it more readable.  Leave it set to false to produce more compact HTML."),
-          DefaultValue(false)]
+        [DefaultValue(false)]
         public bool IndentHtml
         {
             get { return indentHtml; }
@@ -886,16 +790,11 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the placement of any additional and
-        /// conceptual content items in the table of contents.
+        /// This is used to get or set the placement of any additional and conceptual content items in the table
+        /// of contents.
         /// </summary>
-        /// <value>The default is to place additional and conceptual content
-        /// items above the namespaces.</value>
-        [Category("Help File"),
-          Description("Specify whether the additional and conceptual content items appear above or below " +
-          "the namespaces in the table of contents.  This will be ignored if the TOC is split via a " +
-          "custom tag or a site map/conceptual content topic setting."),
-          DefaultValue(ContentPlacement.AboveNamespaces)]
+        /// <value>The default is to place additional and conceptual content items above the namespaces</value>
+        [DefaultValue(ContentPlacement.AboveNamespaces)]
         public ContentPlacement ContentPlacement
         {
             get { return contentPlacement; }
@@ -907,13 +806,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not all pages should be
-        /// marked with a "preliminary documentation" warning in the page
-        /// header.
+        /// This is used to get or set whether or not all pages should be marked with a "preliminary
+        /// documentation" warning in the page header.
         /// </summary>
-        [Category("Help File"), Description("If true, all pages will contain " +
-            "a 'preliminary documentation' warning in the page header"),
-            DefaultValue(false)]
+        [DefaultValue(false)]
         public bool Preliminary
         {
             get { return preliminary; }
@@ -925,19 +821,13 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not a root namespace entry
-        /// is added to the table of contents to act as a container for the
-        /// namespaces from the documented assemblies.
+        /// This is used to get or set whether or not a root namespace entry is added to the table of contents to
+        /// act as a container for the namespaces from the documented assemblies.
         /// </summary>
-        /// <value>If true, a root <b>Namespaces</b> table of contents entry
-        /// will be created as the container of the namespaces in the
-        /// documented assemblies.  If false, the default, the namespaces are
+        /// <value>If true, a root <strong>Namespaces</strong> table of contents entry will be created as the
+        /// container of the namespaces in the documented assemblies.  If false, the default, the namespaces are
         /// listed in the table of contents as root entries.</value>
-        [Category("Help File"), Description("If true, a root \"Namespaces\" " +
-          "table of contents entry will be created as the container of the " +
-          "namespaces in the documented assemblies.  If false, the default, " +
-          "the namespaces are listed in the table of contents as root entries."),
-          DefaultValue(false)]
+        [DefaultValue(false)]
         public bool RootNamespaceContainer
         {
             get { return rootNSContainer; }
@@ -949,15 +839,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set an alternate title for the root
-        /// namespaces page and the root table of contents container that
-        /// appears when <see cref="RootNamespaceContainer"/> is set to true.
+        /// This is used to get or set an alternate title for the root namespaces page and the root table of
+        /// contents container that appears when <see cref="RootNamespaceContainer"/> is set to true.
         /// </summary>
-        /// <value>If left blank (the default), the localized version of the
-        /// text "Namespaces" will be used.</value>
-        [Category("Help File"), Description("An alternate title for the root " +
-          "namespaces page and the root table of contents container."),
-          DefaultValue(""), EscapeValue]
+        /// <value>If left blank (the default), the localized version of the text "Namespaces" will be used</value>
+        [DefaultValue(""), EscapeValue]
         public string RootNamespaceTitle
         {
             get { return rootNSTitle; }
@@ -979,9 +865,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>If <c>true</c>, namespace grouping is enabled. Otherwise, namespace grouping is not enabled.</value>
         /// <remarks>Namespace groups are determined automatically and may be documented as well.</remarks>
-        [Category("Help file"), Description("If true, and if the presentation style supports it, this enables " +
-          "the namespace grouping feature.  The namespace groups behave like normal namespaces but they may " +
-          "not contain types or anything else.  Each group is determined automatically."), DefaultValue(false)]
+        [DefaultValue(false)]
         public bool NamespaceGrouping
         {
             get { return namespaceGrouping; }
@@ -998,8 +882,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>The minimum and default is 2.  A higher value results in more namespace groups.</value>
         /// <remarks>Namespace groups are determined automatically and may be documented as well.</remarks>
-        [Category("Help file"), Description("This is used to get or set the maximum number of namespace parts " +
-          "to consider when namespace grouping is enabled."), DefaultValue(2)]
+        [DefaultValue(2)]
         public int MaximumGroupParts
         {
             get { return maximumGroupParts; }
@@ -1016,8 +899,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the help file's title
         /// </summary>
-        [Category("Help File"), Description("The title for the help file"),
-          DefaultValue("A Sandcastle Documented Class Library"), EscapeValue]
+        [DefaultValue("A Sandcastle Documented Class Library"), EscapeValue]
         public string HelpTitle
         {
             get { return helpTitle; }
@@ -1034,14 +916,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the name of the compiled help file.
-        /// Do not include a path or the extension.  For MS Help 2 builds,
-        /// this is also used as the collection namespace name (avoid spaces).
+        /// This is used to get or set the name of the compiled help file
         /// </summary>
-        [Category("Help File"), Description("The name of the compiled help " +
-          "file.  Do not include a path or the extension.  For MS Help 2 " +
-          "builds, this is also used as the collection namespace name " +
-          "(avoid spaces)."), DefaultValue("Documentation"), EscapeValue]
+        /// <remarks>Do not include a path or the extension.  For MS Help Viewer builds, avoid periods,
+        /// ampersands, and pound signs as they are not valid in the help file name.</remarks>
+        [DefaultValue("Documentation"), EscapeValue]
         public string HtmlHelpName
         {
             get { return htmlHelpName; }
@@ -1058,6 +937,26 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
+        /// This is used to get or set the version number applied to the help file
+        /// </summary>
+        /// <remarks>The default is 1.0.0.0</remarks>
+        [DefaultValue("1.0.0.0"), EscapeValue]
+        public string HelpFileVersion
+        {
+            get { return helpFileVersion; }
+            set
+            {
+                if(value == null || value.Trim().Length == 0)
+                    value = "1.0.0.0";
+                else
+                    value = value.Trim();
+
+                this.SetProjectProperty("HelpFileVersion", value);
+                helpFileVersion = value;
+            }
+        }
+
+        /// <summary>
         /// This is used to get or set the language option for the help file and to determine which set of
         /// presentation resource files to use.
         /// </summary>
@@ -1066,9 +965,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>, the
         /// <see cref="CatalogVersion"/>, and the <c>Language</c> code. For example, the English Visual Studio 10
         /// catalog is <c>VS_100_EN-US</c>.</remarks>
-        [Category("Help File"), Description("The help file language.  For MS Help Viewer 1.0, this is the " +
-          "Locale portion of the Catalog ID."), DefaultValue(typeof(CultureInfo), "en-US"),
-          TypeConverter(typeof(LanguageResourceConverter))]
+        [DefaultValue(typeof(CultureInfo), "en-US")]
         public CultureInfo Language
         {
             get { return language; }
@@ -1083,13 +980,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the URL to use as the link for the
-        /// copyright notice.
+        /// This is used to get or set the URL to use as the link for the copyright notice
         /// </summary>
-        /// <value>If not set, the see cref="CopyrighText"/> (if any) is not
-        /// turned into a clickable link.</value>
-        [Category("Help File"), Description("The URL reference for the copyright notice"),
-            DefaultValue(""), EscapeValue]
+        /// <value>If not set, the <see cref="CopyrightText"/> (if any) is not turned into a clickable link</value>
+        [DefaultValue(""), EscapeValue]
         public string CopyrightHref
         {
             get { return copyrightHref; }
@@ -1106,14 +1000,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the copyright notice that appears in
-        /// the footer of each page.
+        /// This is used to get or set the copyright notice that appears in the footer of each page
         /// </summary>
-        /// <remarks>If not set, no copyright note will appear.  If a
-        /// <see cref="CopyrightHref" /> is specified without copyright text,
-        /// the URL appears instead.</remarks>
-        [Category("Help File"), Description("The copyright notice for the page footer"),
-            DefaultValue(""), EscapeValue]
+        /// <remarks>If not set, no copyright note will appear.  If a <see cref="CopyrightHref" /> is specified
+        /// without copyright text, the URL appears instead.</remarks>
+        [DefaultValue(""), EscapeValue]
         public string CopyrightText
         {
             get { return copyrightText; }
@@ -1130,16 +1021,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the feedback e-mail address that
-        /// appears in the footer of each page.
+        /// This is used to get or set the feedback e-mail address that appears in the footer of each page
         /// </summary>
-        /// <remarks>If not set, no feedback link will appear.  If
-        /// <see cref="FeedbackEMailLinkText"/> is set, that text will appear
-        /// as the text for the link.  If not set, the e-mail address is used
-        /// as the link text.</remarks>
-        [Category("Help File"), Description("The feedback e-mail address that " +
-          "will appear in the footer of each page"), DefaultValue(""),
-          EscapeValue]
+        /// <remarks>If not set, no feedback link will appear.  If <see cref="FeedbackEMailLinkText"/> is set,
+        /// that text will appear as the text for the link.  If not set, the e-mail address is used as the link
+        /// text.</remarks>
+        [DefaultValue(""), EscapeValue]
         public string FeedbackEMailAddress
         {
             get { return feedbackEMailAddress; }
@@ -1156,15 +1043,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the feedback e-mail link text that
-        /// appears in the feedback e-mail link in the footer of each page.
+        /// This is used to get or set the feedback e-mail link text that appears in the feedback e-mail link in
+        /// the footer of each page.
         /// </summary>
-        /// <remarks>If set, this text will appear as the link text for the
-        /// <see cref="FeedbackEMailAddress"/> link.  If not set, the e-mail
-        /// address is used for the link text.</remarks>
-        [Category("Help File"), Description("The text to display in place " +
-          "of the e-mail address in the feedback e-mail link."),
-          DefaultValue(""), EscapeValue]
+        /// <remarks>If set, this text will appear as the link text for the <see cref="FeedbackEMailAddress"/>
+        /// link.  If not set, the e-mail address is used for the link text.</remarks>
+        [DefaultValue(""), EscapeValue]
         public string FeedbackEMailLinkText
         {
             get { return feedbackEMailLinkText; }
@@ -1181,11 +1065,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set additional text that should appear
-        /// in the header of every page.
+        /// This is used to get or set additional text that should appear in the header of every page
         /// </summary>
-        [Category("Help File"), Description("Additional text for the header " +
-          "in every page"), DefaultValue(""), EscapeValue]
+        [DefaultValue(""), EscapeValue]
         public string HeaderText
         {
             get { return headerText; }
@@ -1202,11 +1084,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set additional text that should appear
-        /// in the footer of every page.
+        /// This is used to get or set additional text that should appear in the footer of every page
         /// </summary>
-        [Category("Help File"), Description("Additional text for the footer " +
-          "in every page"), DefaultValue(""), EscapeValue]
+        [DefaultValue(""), EscapeValue]
         public string FooterText
         {
             get { return footerText; }
@@ -1223,15 +1103,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the target window for MSDN SDK links.
+        /// This is used to get or set the target window for MSDN SDK links
         /// </summary>
-        /// <value>The default is <b>Blank</b> to open the MSDN topics in a
-        /// new window.  This option only has an effect on the
-        /// <see cref="HtmlSdkLinkType"/>, <see cref="MSHelp2SdkLinkType"/>,
-        /// <see cref="MSHelpViewerSdkLinkType"/>, and <see cref="WebsiteSdkLinkType"/>
-        /// properties if they are set to <b>MSDN</b>.</value>
-        [Category("Help File"), Description("Specify where MSDN link targets " +
-          "will be opened in the browser"), DefaultValue(SdkLinkTarget.Blank)]
+        /// <value>The default is <c>Blank</c> to open the MSDN topics in a new window.  This option only has an
+        /// effect on the <see cref="HtmlSdkLinkType"/>, <see cref="MSHelpViewerSdkLinkType"/>, and
+        /// <see cref="WebsiteSdkLinkType"/> properties if they are set to <c>MSDN</c>.</value>
+        [DefaultValue(SdkLinkTarget.Blank)]
         public SdkLinkTarget SdkLinkTarget
         {
             get { return sdkLinkTarget; }
@@ -1243,11 +1120,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the presentation style for the help topic pages.
+        /// This is used to get or set the presentation style for the help topic pages
         /// </summary>
-        /// <value>The default is to use the VS2013 style.</value>
-        [Category("Help File"), Description("Select which presentation style to use for the generated " +
-          "help topic pages"), EscapeValue, RefreshProperties(RefreshProperties.Repaint)]
+        /// <value>The default is to use the VS2013 style</value>
+        [EscapeValue]
         public string PresentationStyle
         {
             get { return presentationStyle; }
@@ -1267,8 +1143,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the naming method used to generate the help topic filenames
         /// </summary>
         /// <value>The default is to use GUID values as the filenames</value>
-        [Category("Help File"), Description("Specify the naming method to use for the help topic filenames"),
-          DefaultValue(NamingMethod.Guid)]
+        [DefaultValue(NamingMethod.Guid)]
         public NamingMethod NamingMethod
         {
             get { return namingMethod; }
@@ -1281,12 +1156,10 @@ namespace SandcastleBuilder.Utils
 
         /// <summary>
         /// This is used to get or set the language filters which determines which languages appear in the
-        /// <b>Syntax</b> section of the help topics.
+        /// <strong>Syntax</strong> section of the help topics.
         /// </summary>
-        /// <value>The default is <b>Standard</b> (C#, VB.NET, and C++).</value>
-        [Category("Help File"), Description("Select which languages will appear in the Syntax section of each " +
-          "help topic.  Select values from the dropdown or enter a comma-separated list of values."),
-          DefaultValue("Standard")]
+        /// <value>The default is <strong>Standard</strong> (C#, VB.NET, and C++)</value>
+        [DefaultValue("Standard")]
         public string SyntaxFilters
         {
             get { return syntaxFilters; }
@@ -1304,12 +1177,9 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the path to the Sandcastle components
         /// </summary>
-        /// <remarks>This can significantly reduce the amount of time
-        /// required to load a very large help document.</remarks>
-        [Category("HTML Help 1"), Description("Create a binary table of " +
-            "contents file.  This can significantly reduce the amount " +
-            "of time required to load a very large help document."),
-          DefaultValue(true)]
+        /// <remarks>This can significantly reduce the amount of time required to load a very large help
+        /// document.</remarks>
+        [DefaultValue(true)]
         public bool BinaryTOC
         {
             get { return binaryTOC; }
@@ -1321,15 +1191,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the type of links used to reference
-        /// other help topics referring to framework (SDK) help topics in
-        /// HTML Help 1 help files.
+        /// This is used to get or set the type of links used to reference other help topics referring to
+        /// framework (SDK) help topics in HTML Help 1 help files.
         /// </summary>
-        /// <value>The default is to produce links to online MSDN content.</value>
-        [Category("HTML Help 1"), Description("Specify which type of links to " +
-          "create when referencing other help topics related to framework " +
-          "(SDK) topics.  None = No links, MSDN = Online links to MSDN help topics."),
-          DefaultValue(HtmlSdkLinkType.Msdn)]
+        /// <value>The default is to produce links to online MSDN content</value>
+        [DefaultValue(HtmlSdkLinkType.Msdn)]
         public HtmlSdkLinkType HtmlSdkLinkType
         {
             get { return htmlSdkLinkType; }
@@ -1341,11 +1207,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not a Favorites tab will
-        /// appear in the help file.
+        /// This is used to get or set whether or not a Favorites tab will appear in the help file
         /// </summary>
-        [Category("HTML Help 1"), Description("Set to true to include a " +
-            "Favorites tab in the compiled help file"), DefaultValue(false)]
+        [DefaultValue(false)]
         public bool IncludeFavorites
         {
             get { return includeFavorites; }
@@ -1357,126 +1221,6 @@ namespace SandcastleBuilder.Utils
         }
         #endregion
 
-        #region MS Help 2 properties
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to get or set the collection table of contents style
-        /// used when plugged into an MS Help 2 collection.
-        /// </summary>
-        /// <remarks>The default is <b>Hierarchical</b>.</remarks>
-        [Category("MS Help 2"), Description("This defines the collection " +
-          "table of contents style used when plugged into an MS Help 2 " +
-          "collection"), DefaultValue(CollectionTocStyle.Hierarchical)]
-        public CollectionTocStyle CollectionTocStyle
-        {
-            get { return collectionTocStyle; }
-            set
-            {
-                this.SetProjectProperty("CollectionTocStyle", value);
-                collectionTocStyle = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the type of links used to reference
-        /// other help topics referring to framework (SDK) help topics in
-        /// MS Help 2 help files.
-        /// </summary>
-        /// <value>The default is to produce links to online MSDN content.</value>
-        [Category("MS Help 2"), Description("Specify which type of links to " +
-          "create when referencing other help topics related to framework " +
-          "(SDK) topics.  None = No links, Index = Local Index links, MSDN = Online links to MSDN help topics."),
-          DefaultValue(MSHelp2SdkLinkType.Msdn)]
-        public MSHelp2SdkLinkType MSHelp2SdkLinkType
-        {
-            get { return help2SdkLinkType; }
-            set
-            {
-                this.SetProjectProperty("MSHelp2SdkLinkType", value);
-                help2SdkLinkType = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not to include the stop word
-        /// list used to identify words to omit from the Help 2 full text
-        /// search index.
-        /// </summary>
-        [Category("MS Help 2"), Description("Indicate whether or not to " +
-          "include the stop word list used to identify words to omit from " +
-          "the Help 2 full text search index"), DefaultValue(true)]
-        public bool IncludeStopWordList
-        {
-            get { return includeStopWordList; }
-            set
-            {
-                this.SetProjectProperty("IncludeStopWordList", value);
-                includeStopWordList = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set a comma-separated list of namespaces
-        /// that the collection will be plugged into when deployed using
-        /// <b>H2Reg.exe</b>.
-        /// </summary>
-        [Category("MS Help 2"), Description("Specify a comma-separated " +
-          "list of namespaces that the collection will be plugged into " +
-          "when deployed using H2Reg.exe."),
-          DefaultValue("ms.vsipcc+, ms.vsexpresscc+"), EscapeValue]
-        public string PlugInNamespaces
-        {
-            get { return plugInNamespaces; }
-            set
-            {
-                if(value == null || value.Trim().Length == 0)
-                    value = "ms.vsipcc+, ms.vsexpresscc+";
-                else
-                    value = value.Trim();
-
-                this.SetProjectProperty("PlugInNamespaces", value);
-                plugInNamespaces = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the version number applied to the
-        /// help file.
-        /// </summary>
-        /// <remarks>The default is 1.0.0.0</remarks>
-        [Category("MS Help 2"), Description("Specify the version number " +
-          "that should be applied to the help file (#.#.#.#)"),
-          DefaultValue("1.0.0.0"), EscapeValue]
-        public string HelpFileVersion
-        {
-            get { return helpFileVersion; }
-            set
-            {
-                if(value == null || value.Trim().Length == 0)
-                    value = "1.0.0.0";
-                else
-                    value = value.Trim();
-
-                this.SetProjectProperty("HelpFileVersion", value);
-                helpFileVersion = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get a collection of additional Help 2 attributes
-        /// that will be added to each generated help topic.
-        /// </summary>
-        /// <remarks>The attributes are added by a custom build component in
-        /// the BuildAssembler step.</remarks>
-        [Category("MS Help 2"), Description("Additional help attributes " +
-          "to add to each generated help topic")]
-        public MSHelpAttrCollection HelpAttributes
-        {
-            get { return helpAttributes; }
-        }
-        #endregion
-
         #region MS Help Viewer properties
         //=====================================================================
 
@@ -1485,9 +1229,7 @@ namespace SandcastleBuilder.Utils
         /// framework (SDK) help topics in MS Help Viewer help files.
         /// </summary>
         /// <value>The default is to produce links to online MSDN content.</value>
-        [Category("MS Help Viewer"), Description("Specify which type of links to create when referencing other " +
-          "help topics related to framework (SDK) topics.  None = No links, Id = Local Id links, " +
-          "MSDN = Online links to MSDN help topics."), DefaultValue(MSHelpViewerSdkLinkType.Msdn)]
+        [DefaultValue(MSHelpViewerSdkLinkType.Msdn)]
         public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType
         {
             get { return helpViewerSdkLinkType; }
@@ -1499,17 +1241,17 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the Product ID portion of the MS Help Viewer 1.0 Catalog ID.
+        /// This is used to get or set the Product ID portion of the MS Help Viewer 1.0 Catalog ID
         /// </summary>
-        /// <remarks>If not specified, the default is "VS".
+        /// <remarks><para>If not specified, the default is "VS".</para>
+        /// 
         /// <para>The MS Help Viewer Catalog 1.0 ID is composed of the <c>CatalogProductId</c> the
         /// <see cref="CatalogVersion"/>, and the <see cref="Language"/> code. For example, the English Visual
         /// Studio 10 catalog is <c>VS_100_EN-US</c>.</para>
+        /// 
         /// <note type="note">For styles other than VS2010, you should used the default value.</note>
         /// </remarks>
-        [Category("MS Help Viewer"), Description("Specify the Product ID portion of the MS Help Viewer 1.0 " +
-          "Catalog ID.  If not set, the default is \"VS\" (for \"Visual Studio\")."), DefaultValue("VS"),
-          EscapeValue]
+        [DefaultValue("VS"), EscapeValue]
         public string CatalogProductId
         {
             get { return catalogProductId; }
@@ -1526,17 +1268,17 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the Version portion of the MS Help Viewer 1.0 Catalog ID.
+        /// This is used to get or set the Version portion of the MS Help Viewer 1.0 Catalog ID
         /// </summary>
-        /// <remarks>If not specified, the default is "100".
+        /// <remarks><para>If not specified, the default is "100".</para>
+        /// 
         /// <para>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>, the
         /// <c>CatalogVersion</c>, and the <see cref="Language"/> code. For example, the English Visual Studio 10
         /// catalog is <c>VS_100_EN-US</c>.</para>
+        /// 
         /// <note type="note">For styles other than VS2010, you should used the default value.</note>
         /// </remarks>
-        [Category("MS Help Viewer"), Description("Specify the Version portion of the MS Help Viewer 1.0 " +
-          "Catalog ID.  If not set, the default is \"100\" (meaning \"10.0\")."), DefaultValue("100"),
-          EscapeValue]
+        [DefaultValue("100"), EscapeValue]
         public string CatalogVersion
         {
             get { return catalogVersion; }
@@ -1553,12 +1295,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set a non-standard MS Help Viewer 2.x content catalog name.
+        /// This is used to get or set a non-standard MS Help Viewer 2.x content catalog name
         /// </summary>
         /// <remarks>If not specified, the default will be set based on the Visual Studio version catalog related
-        /// to the Help Viewer (VisualStudio11 for Visual Studio 2012 for example)</remarks>
-        [Category("MS Help Viewer"), Description("Specify a non-standard MS Help Viewer 2.x content catalog " +
-          "name.  Leave blank to use the default"), DefaultValue(""), EscapeValue]
+        /// to the Help Viewer (VisualStudio11 for Visual Studio 2012 for example).</remarks>
+        [DefaultValue(""), EscapeValue]
         public string CatalogName
         {
             get { return catalogName; }
@@ -1579,8 +1320,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>The default if not specified will be "Vendor Name".  The value must not contain the ':',
         /// '\', '/', '.', ',', '#', or '&amp;' characters.</remarks>
-        [Category("MS Help Viewer"), Description("Specify the vendor name for the help file.  If not set, " +
-          "'Vendor Name' will be used at build time."), DefaultValue(""), EscapeValue]
+        [DefaultValue(""), EscapeValue]
         public string VendorName
         {
             get { return vendorName; }
@@ -1604,8 +1344,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>The default if not specified will be the value of the <see cref="HelpTitle" />
         /// property.</remarks>
-        [Category("MS Help Viewer"), Description("Specify the product title for the help file.  If not set, " +
-          "the value of the HelpTitle property will be used at build time."), DefaultValue(""), EscapeValue]
+        [DefaultValue(""), EscapeValue]
         public string ProductTitle
         {
             get { return productTitle; }
@@ -1624,9 +1363,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the topic version for each topic in the help file
         /// </summary>
-        /// <remarks>The default is "100" (meaning 10.0).</remarks>
-        [Category("MS Help Viewer"), Description("Specify the topic version for each topic in the help file.  " +
-          "If not set, the default is '100' (meaning 10.0)"), DefaultValue("100"), EscapeValue]
+        /// <remarks>The default is "100" (meaning 10.0)</remarks>
+        [DefaultValue("100"), EscapeValue]
         public string TopicVersion
         {
             get { return topicVersion; }
@@ -1643,14 +1381,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the table of contents parent for each root
-        /// topic in the help file.
+        /// This is used to get or set the table of contents parent for each root topic in the help file
         /// </summary>
-        /// <remarks>The default is "-1" to show the root topics in the root of the main table of
-        /// content.</remarks>
-        [Category("MS Help Viewer"), Description("Specify the table of content parent topic ID.  " +
-          "Use -1 to place root elements in the root of the main table of content."), DefaultValue("-1"),
-          EscapeValue]
+        /// <remarks>The default is "-1" to show the root topics in the root of the main table of content</remarks>
+        [DefaultValue("-1"), EscapeValue]
         public string TocParentId
         {
             get { return tocParentId; }
@@ -1669,9 +1403,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the topic version of the <see cref="TocParentId" /> topic
         /// </summary>
-        /// <remarks>The default is "100".</remarks>
-        [Category("MS Help Viewer"), Description("Specify the topic version of the TOC parent topic.  " +
-          "If not set, the default is '100' (meaning 10.0)"), DefaultValue("100"), EscapeValue]
+        /// <remarks>The default is "100" meaning "10.0"</remarks>
+        [DefaultValue("100"), EscapeValue]
         public string TocParentVersion
         {
             get { return tocParentVersion; }
@@ -1693,9 +1426,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>The default is -1 to let the build engine determine the best value to use based on the
         /// other project properties.</remarks>
-        [Category("MS Help Viewer"), Description("Specify the sort order to use when adding conceptual " +
-          "topics to the table of contents.  Leave this set to -1 to let the build engine determine " +
-          "the sort order based on the other project settings."), DefaultValue(-1)]
+        [DefaultValue(-1)]
         public int TocOrder
         {
             get { return tocOrder; }
@@ -1708,21 +1439,27 @@ namespace SandcastleBuilder.Utils
                 tocOrder = value;
             }
         }
+
+        /// <summary>
+        /// This is used to get a collection of additional MS Help attributes that will be added to each
+        /// generated help topic.
+        /// </summary>
+        /// <remarks>The attributes are added by a custom build component in the BuildAssembler step</remarks>
+        public MSHelpAttrCollection HelpAttributes
+        {
+            get { return helpAttributes; }
+        }
         #endregion
 
         #region Website properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the type of links used to reference
-        /// other help topics referring to framework (SDK) help topics in
-        /// HTML Help 1 help files.
+        /// This is used to get or set the type of links used to reference other help topics referring to
+        /// framework (SDK) help topics in HTML Help 1 help files.
         /// </summary>
-        /// <value>The default is to produce links to online MSDN content.</value>
-        [Category("Website"), Description("Specify which type of links to " +
-          "create when referencing other help topics related to framework " +
-          "(SDK) topics.  None = No links, MSDN = Online links to MSDN help topics."),
-          DefaultValue(HtmlSdkLinkType.Msdn)]
+        /// <value>The default is to produce links to online MSDN content</value>
+        [DefaultValue(HtmlSdkLinkType.Msdn)]
         public HtmlSdkLinkType WebsiteSdkLinkType
         {
             get { return websiteSdkLinkType; }
@@ -1738,16 +1475,11 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set whether or not missing namespace
-        /// comments are indicated in the help file.
+        /// This is used to get or set whether or not missing namespace comments are indicated in the help file
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that the &lt;summary&gt; tag is missing.  A message
-        /// is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to namespace help topics if the namespace " +
-          "comments are missing.  If set to false, it is not."),
-          DefaultValue(true), XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that the &lt;summary&gt; tag
+        /// is missing.  A message is also written to the log file.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool ShowMissingNamespaces
         {
             get { return ((missingTags & MissingTags.Namespace) != 0); }
@@ -1761,16 +1493,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;summary&gt;
-        /// tags are indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;summary&gt; tags are indicated in the help file
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that the &lt;summary&gt; tag is missing.  A message
-        /// is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if the <summary> tag is " +
-          "missing.  If set to false, it is not."), DefaultValue(true),
-          XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that the &lt;summary&gt; tag
+        /// is missing.  A message is also written to the log file.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool ShowMissingSummaries
         {
             get { return ((missingTags & MissingTags.Summary) != 0); }
@@ -1784,16 +1511,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;param&gt;
-        /// tags are indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;param&gt; tags are indicated in the help file
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that a &lt;param&gt; tag is missing.  A message
-        /// is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if a <param> tag is " +
-          "missing.  If set to false, it is not."), DefaultValue(true),
-          XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that a &lt;param&gt; tag is
+        /// missing.  A message is also written to the log file.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool ShowMissingParams
         {
             get { return ((missingTags & MissingTags.Parameter) != 0); }
@@ -1807,16 +1529,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;typeparam&gt;
-        /// tags on generic types and methods are indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;typeparam&gt; tags on generic types and methods
+        /// are indicated in the help file.
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that a &lt;typeparam&gt; tag is missing from a generic
-        /// type or method.  A message is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if a <typeparam> tag is " +
-          "missing on a generic type or method.  If set to false, it is not."),
-          DefaultValue(true), XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that a &lt;typeparam&gt; tag
+        /// is missing from a generic type or method.  A message is also written to the log file.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool ShowMissingTypeParams
         {
             get { return ((missingTags & MissingTags.TypeParameter) != 0); }
@@ -1830,16 +1548,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;returns&gt;
-        /// tags are indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;returns&gt; tags are indicated in the help file
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that the &lt;returns&gt; tag is missing.  A message
-        /// is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if the <returns> tag is " +
-          "missing.  If set to false, it is not."), DefaultValue(true),
-          XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that the &lt;returns&gt; tag
+        /// is missing.  A message is also written to the log file.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool ShowMissingReturns
         {
             get { return ((missingTags & MissingTags.Returns) != 0); }
@@ -1853,16 +1566,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;value&gt;
-        /// tags are indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;value&gt; tags are indicated in the help file
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that the &lt;value&gt; tag is missing.  A message
-        /// is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if the <value> tag is " +
-          "missing.  If set to false, it is not."), DefaultValue(false),
-          XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that the &lt;value&gt; tag is
+        /// missing.  A message is also written to the log file.</value>
+        [DefaultValue(false), XmlIgnore]
         public bool ShowMissingValues
         {
             get { return ((missingTags & MissingTags.Value) != 0); }
@@ -1876,16 +1584,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;remarks&gt;
-        /// tags are indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;remarks&gt; tags are indicated in the help file
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that the &lt;remarks&gt; tag is missing.  A message
-        /// is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if the <remarks> tag is " +
-          "missing.  If set to false, it is not."), DefaultValue(false),
-          XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that the &lt;remarks&gt; tag
+        /// is missing.  A message is also written to the log file.</value>
+        [DefaultValue(false), XmlIgnore]
         public bool ShowMissingRemarks
         {
             get { return ((missingTags & MissingTags.Remarks) != 0); }
@@ -1899,20 +1602,14 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not constructors are
-        /// automatically documented if they are missing the &lt;summary&gt;
-        /// tag and for classes with compiler generated constructors.
+        /// This is used to get or set whether or not constructors are automatically documented if they are
+        /// missing the &lt;summary&gt; tag and for classes with compiler generated constructors.
         /// </summary>
-        /// <value>Set this to true to automatically add default text for the
-        /// &lt;summary&gt; tag on constructors that are missing it and for
-        /// classes with a compiler generated constructor.  If set to false
-        /// and <see cref="ShowMissingSummaries"/> is true, a "missing summary"
-        /// warning will appear instead.  A message is also written to the log
-        /// file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "default message is added to constructors that are missing their " +
-          "<summary> tag.  If set to false, it is not."), DefaultValue(true),
-          XmlIgnore]
+        /// <value>Set this to true to automatically add default text for the &lt;summary&gt; tag on constructors
+        /// that are missing it and for classes with a compiler generated constructor.  If set to false and
+        /// <see cref="ShowMissingSummaries"/> is true, a "missing summary" warning will appear instead.  A
+        /// message is also written to the log file.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool AutoDocumentConstructors
         {
             get { return ((missingTags & MissingTags.AutoDocumentCtors) != 0); }
@@ -1926,23 +1623,16 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not dispose methods are
-        /// automatically documented if they are missing the &lt;summary&gt;
-        /// tag and for classes with compiler generated dispose methods.
+        /// This is used to get or set whether or not dispose methods are automatically documented if they are
+        /// missing the &lt;summary&gt; tag and for classes with compiler generated dispose methods.
         /// </summary>
-        /// <value>Set this to true to automatically add default text for the
-        /// &lt;summary&gt; tag on dispose methods that are missing it and for
-        /// classes with compiler generated dispose methods.  If set to false
-        /// and <see cref="ShowMissingSummaries"/> is true, a "missing summary"
-        /// warning will appear instead.  A message is also written to the log
-        /// file.  If a <c>Dispose(Boolean)</c> method is present, its parameter
-        /// will also be auto-documented if necessary.  If set to false and
-        /// <see cref="ShowMissingParams" /> is true, a "missing parameter"
-        /// message will appear instead.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "default message is added to dispose methods that are missing their " +
-          "<summary> tag.  If set to false, it is not."), DefaultValue(true),
-          XmlIgnore]
+        /// <value>Set this to true to automatically add default text for the &lt;summary&gt; tag on dispose
+        /// methods that are missing it and for classes with compiler generated dispose methods.  If set to false
+        /// and <see cref="ShowMissingSummaries"/> is true, a "missing summary" warning will appear instead.  A
+        /// message is also written to the log file.  If a <c>Dispose(Boolean)</c> method is present, its
+        /// parameter will also be auto-documented if necessary.  If set to false and <see cref="ShowMissingParams" />
+        /// is true, a "missing parameter" message will appear instead.</value>
+        [DefaultValue(true), XmlIgnore]
         public bool AutoDocumentDisposeMethods
         {
             get { return ((missingTags & MissingTags.AutoDocumentDispose) != 0); }
@@ -1956,17 +1646,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not missing &lt;include&gt;
-        /// tag target documentation is indicated in the help file.
+        /// This is used to get or set whether or not missing &lt;include&gt; tag target documentation is
+        /// indicated in the help file.
         /// </summary>
-        /// <value>Set this to true to add a message to the help topic
-        /// to indicate that the &lt;include&gt; tag's target documentation is
-        /// missing.  A message is also written to the log file.</value>
-        [Category("Show Missing Tags"), Description("If set to true, a " +
-          "message is added to the help topic if the target documentation " +
-          "for an <include> tag was not found.  If set to false, it is not.  " +
-          "This option only has effect with C# generated XML comments files."),
-          DefaultValue(false), XmlIgnore]
+        /// <value>Set this to true to add a message to the help topic to indicate that the &lt;include&gt; tag's
+        /// target documentation is missing.  A message is also written to the log file.</value>
+        [DefaultValue(false), XmlIgnore]
         public bool ShowMissingIncludeTargets
         {
             get { return ((missingTags & MissingTags.IncludeTargets) != 0); }
@@ -1988,9 +1673,7 @@ namespace SandcastleBuilder.Utils
         /// syntax portion of the help file.
         /// </summary>
         /// <value>Set to true to document attributes or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, attributes on types and members are documented " +
-          "in the syntax portion of the help pages.  If set to false, they are not."), DefaultValue(false),
-          XmlIgnore]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentAttributes
         {
             get { return ((visibleItems & VisibleItems.Attributes) != 0); }
@@ -2007,8 +1690,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether or not explicit interface implementations are documented
         /// </summary>
         /// <value>Set to true to document explicit interface implementations or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, explicit interface implementations are " +
-          "documented.  If set to false, they are not."), DefaultValue(false), XmlIgnore]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentExplicitInterfaceImplementations
         {
             get { return ((visibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0); }
@@ -2025,8 +1707,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether or not inherited members are documented
         /// </summary>
         /// <value>Set to true to document inherited members or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, inherited members are documented.  If set to " +
-          "false, they are not."), DefaultValue(true), RefreshProperties(RefreshProperties.All), XmlIgnore]
+        [DefaultValue(true), XmlIgnore]
         public bool DocumentInheritedMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedMembers) != 0); }
@@ -2047,9 +1728,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>Set to true to document inherited framework members or false to hide them.  For this to work,
         /// <see cref="DocumentInheritedMembers"/> must also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, inherited framework members are documented.  If " +
-          "set to false, they are not.  NOTE: To work, DocumentInheritedMembers must also be set to True."),
-          DefaultValue(true), XmlIgnore, RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(true), XmlIgnore]
         public bool DocumentInheritedFrameworkMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedFrameworkMembers) != 0); }
@@ -2071,10 +1750,7 @@ namespace SandcastleBuilder.Utils
         /// <value>Set to true to document inherited internal framework members or false to hide them.  For this
         /// to work, <see cref="DocumentInheritedFrameworkMembers"/> and <see cref="DocumentInternals"/> must
         /// also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, inherited internal framework members are " +
-          "documented.  If set to false, they are not.  NOTE: To work, DocumentInheritedFrameworkMembers and " +
-          "DocumentInternals also be set to True."), DefaultValue(false), XmlIgnore,
-          RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentInheritedFrameworkInternalMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0); }
@@ -2098,10 +1774,7 @@ namespace SandcastleBuilder.Utils
         /// <value>Set to true to document inherited private framework members or false to hide them.  For this
         /// to work, <see cref="DocumentInheritedFrameworkMembers"/> and <see cref="DocumentPrivates"/> must also
         /// be enabled.</value>
-        [Category("Visibility"), Description("If set to true, inherited private framework members are " +
-          "documented.  If set to false, they are not.  NOTE: To work, DocumentInheritedFrameworkMembers and " +
-          "DocumentPrivates also be set to True."), DefaultValue(false), XmlIgnore,
-          RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentInheritedFrameworkPrivateMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0); }
@@ -2123,9 +1796,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether or not internal members are documented in the help file
         /// </summary>
         /// <value>Set to true to document internal members or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, internal members are documented in the help " +
-          "file.  If set to false, they are not."), DefaultValue(false), XmlIgnore,
-          RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentInternals
         {
             get { return ((visibleItems & VisibleItems.Internals) != 0); }
@@ -2145,9 +1816,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether or not private members are documented in the help file
         /// </summary>
         /// <value>Set to true to document private members or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, private members are documented in the help " +
-          "file.  If set to false, they are not."), DefaultValue(false), XmlIgnore,
-          RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentPrivates
         {
             get { return ((visibleItems & VisibleItems.Privates) != 0); }
@@ -2170,9 +1839,7 @@ namespace SandcastleBuilder.Utils
         /// <see cref="DocumentPrivates"/> must also be enabled.</value>
         /// <remarks>Private fields are most often used to back properties and do not have documentation.  With
         /// this set to false, they are omitted from the help file to reduce unnecessary clutter.</remarks>
-        [Category("Visibility"), Description("If set to true, private fields are documented in the help file.  " +
-          "If set to false, they are not.  NOTE: To work, DocumentPrivates must also be set to True."),
-          DefaultValue(false), XmlIgnore]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentPrivateFields
         {
             get { return ((visibleItems & VisibleItems.PrivateFields) != 0); }
@@ -2189,9 +1856,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set whether or not protected members are documented in the help file
         /// </summary>
         /// <value>Set to true to document protected members or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, protected members are documented in the help " +
-          "file.  If set to false, they are not."), DefaultValue(true), XmlIgnore,
-          RefreshProperties(RefreshProperties.All)]
+        [DefaultValue(true), XmlIgnore]
         public bool DocumentProtected
         {
             get { return ((visibleItems & VisibleItems.Protected) != 0); }
@@ -2210,9 +1875,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>Set to true to document protected members of sealed classes or false to hide them. For this to
         /// work, <see cref="DocumentProtected"/> must also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, protected members of sealed classes are " +
-          "documented in the help file.  If set to false, they are not.  NOTE: To work, DocumentProtected " +
-          "must also be enabled."), RefreshProperties(RefreshProperties.All), DefaultValue(false), XmlIgnore]
+        [DefaultValue(false), XmlIgnore]
         public bool DocumentSealedProtected
         {
             get { return ((visibleItems & VisibleItems.SealedProtected) != 0); }
@@ -2231,9 +1894,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>Set to true to document "protected internal" members as "protected" only or false to document
         /// them normally.  This option is ignored if <see cref="DocumentProtected"/> is false.</value>
-        [Category("Visibility"), Description("If set to true, \"protected internal\" members are documented as " +
-          "\"protected\" only.  If set to false, they documented normally.  NOTE: This option is ignored if " +
-          "DocumentProtected is false"), DefaultValue(true), XmlIgnore]
+        [DefaultValue(true), XmlIgnore]
         public bool DocumentProtectedInternalAsProtected
         {
             get { return ((visibleItems & VisibleItems.ProtectedInternalAsProtected) != 0); }
@@ -2251,9 +1912,7 @@ namespace SandcastleBuilder.Utils
         /// are documented in the help file.
         /// </summary>
         /// <value>Set to true to document no-PIA COM types or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, no-PIA (Primary Interop Assembly) embedded " +
-          "interop types are documented in the help file.  If set to false, they are not."), DefaultValue(true),
-          XmlIgnore]
+        [DefaultValue(true), XmlIgnore]
         public bool DocumentNoPIATypes
         {
             get { return ((visibleItems & VisibleItems.NoPIATypes) != 0); }
@@ -2269,8 +1928,6 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get the API filter collection.
         /// </summary>
-        [Category("Visibility"), Description("The API filter used to remove " +
-          "unwanted elements from the help file.")]
         public ApiFilterCollection ApiFilter
         {
             get { return apiFilter; }
@@ -2281,7 +1938,6 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <inheritdoc />
-        [Browsable(false), XmlIgnore]
         public string BasePath
         {
             get
@@ -2519,8 +2175,6 @@ namespace SandcastleBuilder.Utils
                 propName = "BuildLogFile";
             else if(changedPath == hhcPath)
                 propName = "HtmlHelp1xCompilerPath";
-            else if(changedPath == hxcompPath)
-                propName = "HtmlHelp2xCompilerPath";
             else if(changedPath == workingPath)
                 propName = "WorkingPath";
             else if(changedPath == componentPath)
@@ -2573,11 +2227,11 @@ namespace SandcastleBuilder.Utils
             string helpFormats;
             Dictionary<string, string> translateFormat = new Dictionary<string, string> {
                 { "HTMLHELP1X", "HtmlHelp1" },
-                { "HTMLHELP2X", "MSHelp2" },
-                { "HELP1XANDHELP2X", "HtmlHelp1, MSHelp2" },
+                { "HTMLHELP2X", "HtmlHelp1" },
+                { "HELP1XANDHELP2X", "HtmlHelp1" },
                 { "HELP1XANDWEBSITE", "HtmlHelp1, Website" },
-                { "HELP2XANDWEBSITE", "MSHelp2, Website" },
-                { "HELP1XAND2XANDWEBSITE", "HtmlHelp1, MSHelp2, Website" } };
+                { "HELP2XANDWEBSITE", "Website" },
+                { "HELP1XAND2XANDWEBSITE", "HtmlHelp1, Website" } };
 
             try
             {
@@ -2814,18 +2468,15 @@ namespace SandcastleBuilder.Utils
                 return;
 
             if(String.IsNullOrEmpty(propertyName))
-                throw new ArgumentNullException("propertyName",
-                    "Property name cannot be null or empty");
+                throw new ArgumentNullException("propertyName", "Property name cannot be null or empty");
 
             if(!propertyCache.TryGetValue(propertyName, out localProp))
-                throw new ArgumentException("Unknown local property name: " +
-                    propertyName, "propertyName");
+                throw new ArgumentException("Unknown local property name: " + propertyName, "propertyName");
 
-            // Currently there are no configuration-specific project properties.
-            // If that changes, the current configuration should be set before
-            // calling this.  It may also be handled elsewhere and the project
-            // cache will be set to null so that this refreshes it when needed.
-            // See the MPF ProjectNode class for an example.
+            // Currently there are no configuration-specific project properties.  If that changes, the current
+            // configuration should be set before calling this.  It may also be handled elsewhere and the project
+            // cache will be set to null so that this refreshes it when needed.  See the MPF ProjectNode class
+            // for an example.
 
             if(!this.ProjectPropertyCache.TryGetValue(propertyName, out projProp))
                 oldValue = null;
@@ -2843,8 +2494,7 @@ namespace SandcastleBuilder.Utils
             }
             else
             {
-                // FilePath objects should use the PersistablePath property
-                // which isn't expanded.
+                // FilePath objects should use the PersistablePath property which isn't expanded
                 filePath = propertyValue as FilePath;
 
                 if(filePath != null)
@@ -2853,13 +2503,11 @@ namespace SandcastleBuilder.Utils
                     newValue = propertyValue.ToString();
             }
 
-            // If oldValue is null, set it to the default value for
-            // the property.  That way it won't get created if it
-            // doesn't need to be.
+            // If oldValue is null, set it to the default value for the property.  That way it won't get created
+            // if it doesn't need to be.
             if(oldValue == null)
             {
-                defValue = pdcCache[propertyName].Attributes[
-                    typeof(DefaultValueAttribute)] as DefaultValueAttribute;
+                defValue = pdcCache[propertyName].Attributes[typeof(DefaultValueAttribute)] as DefaultValueAttribute;
 
                 if(defValue != null && defValue.Value != null)
                     oldValue = defValue.Value.ToString();
@@ -2868,8 +2516,7 @@ namespace SandcastleBuilder.Utils
             // Only do the work if this is different to what we had
             if(String.Compare(oldValue, newValue, StringComparison.Ordinal) != 0)
             {
-                // See if the project can be edited.  If not, abort the change
-                // by throwing an exception.
+                // See if the project can be edited.  If not, abort the change by throwing an exception.
                 CancelEventArgs ce = new CancelEventArgs();
                 this.OnQueryEditProjectFile(ce);
 
@@ -2877,8 +2524,7 @@ namespace SandcastleBuilder.Utils
                     throw new OperationCanceledException("Project cannot be edited");
 
                 // Escape the value if necessary
-                escAttr = pdcCache[propertyName].Attributes[
-                    typeof(EscapeValueAttribute)] as EscapeValueAttribute;
+                escAttr = pdcCache[propertyName].Attributes[typeof(EscapeValueAttribute)] as EscapeValueAttribute;
 
                 if(escAttr != null)
                     msBuildProject.SetProperty(propertyName, EscapeValueAttribute.Escape(newValue));
@@ -2889,8 +2535,7 @@ namespace SandcastleBuilder.Utils
                 projectPropertyCache = null;
 
                 // Notify everyone of the property change
-                this.OnProjectPropertyChanged(new ProjectPropertyChangedEventArgs(
-                    propertyName, oldValue, newValue));
+                this.OnProjectPropertyChanged(new ProjectPropertyChangedEventArgs(propertyName, oldValue, newValue));
             }
         }
         #endregion
@@ -2930,7 +2575,7 @@ namespace SandcastleBuilder.Utils
                 loadingProperties = removeProjectWhenDisposed = true;
 
                 contentPlacement = ContentPlacement.AboveNamespaces;
-                cleanIntermediates = keepLogFile = binaryTOC = includeStopWordList = true;
+                cleanIntermediates = keepLogFile = binaryTOC = true;
 
                 this.BuildLogFile = null;
 
@@ -2944,26 +2589,22 @@ namespace SandcastleBuilder.Utils
                 buildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
                 helpFileFormat = HelpFileFormats.HtmlHelp1;
                 htmlSdkLinkType = websiteSdkLinkType = HtmlSdkLinkType.Msdn;
-                help2SdkLinkType = MSHelp2SdkLinkType.Msdn;
                 helpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
                 sdkLinkTarget = SdkLinkTarget.Blank;
                 presentationStyle = Constants.DefaultPresentationStyle;
                 namingMethod = NamingMethod.Guid;
                 syntaxFilters = ComponentUtilities.DefaultSyntaxFilter;
-                collectionTocStyle = CollectionTocStyle.Hierarchical;
                 helpFileVersion = "1.0.0.0";
                 tocOrder = -1;
                 maximumGroupParts = 2;
 
                 this.OutputPath = null;
-                this.HtmlHelp1xCompilerPath = this.HtmlHelp2xCompilerPath = this.WorkingPath =
-                    this.ComponentPath = null;
+                this.HtmlHelp1xCompilerPath = this.WorkingPath = this.ComponentPath = null;
 
                 this.HelpTitle = this.HtmlHelpName = this.CopyrightHref = this.CopyrightText =
                     this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText = this.FooterText =
-                    this.ProjectSummary = this.RootNamespaceTitle = this.PlugInNamespaces = this.TopicVersion =
-                    this.TocParentId = this.TocParentVersion = this.CatalogProductId = this.CatalogVersion =
-                    this.CatalogName = null;
+                    this.ProjectSummary = this.RootNamespaceTitle = this.TopicVersion = this.TocParentId =
+                    this.TocParentVersion = this.CatalogProductId = this.CatalogVersion = this.CatalogName = null;
                 this.FrameworkVersion = null;
 
                 language = new CultureInfo("en-US");
@@ -3474,7 +3115,6 @@ namespace SandcastleBuilder.Utils
             {
                 this.SetProjectProperty("BuildLogFile", buildLogFile);
                 this.SetProjectProperty("HtmlHelp1xCompilerPath", hhcPath);
-                this.SetProjectProperty("HtmlHelp2xCompilerPath", hxcompPath);
                 this.SetProjectProperty("WorkingPath", workingPath);
                 this.SetProjectProperty("ComponentPath", componentPath);
             }

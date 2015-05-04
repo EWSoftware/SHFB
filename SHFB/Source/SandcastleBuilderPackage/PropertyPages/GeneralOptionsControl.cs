@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GeneralOptionsControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,10 +14,11 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.7.0  03/04/2013  EFW  Added link to display the About box
+// 03/27/2011  EFW  Created the code
+// 03/04/2013  EFW  Added link to display the About box
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -58,20 +59,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 epErrors.Clear();
 
-                string filePath = txtHxSViewerPath.Text.Trim();
-
-                if(filePath.Length != 0)
-                {
-                    txtHxSViewerPath.Text = filePath = Path.GetFullPath(filePath);
-
-                    if(!File.Exists(filePath))
-                    {
-                        epErrors.SetError(btnSelectHxSViewer, "The viewer application does not exist");
-                        isValid = false;
-                    }
-                }
-
-                filePath = txtMSHelpViewerPath.Text.Trim();
+                string filePath = txtMSHelpViewerPath.Text.Trim();
 
                 if(filePath.Length != 0)
                 {
@@ -112,7 +100,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="optionsPage">The options page</param>
         public void SetValues(SandcastleBuilderOptionsPage optionsPage)
         {
-            txtHxSViewerPath.Text = optionsPage.HxsViewerPath;
             txtMSHelpViewerPath.Text = optionsPage.MSHelpViewerPath;
             udcASPNetDevServerPort.Value = optionsPage.AspNetDevelopmentServerPort;
             chkVerboseLogging.Checked = optionsPage.VerboseLogging;
@@ -138,7 +125,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             if(this.IsValid)
             {
-                optionsPage.HxsViewerPath = txtHxSViewerPath.Text;
                 optionsPage.MSHelpViewerPath = txtMSHelpViewerPath.Text;
                 optionsPage.AspNetDevelopmentServerPort = (int)udcASPNetDevServerPort.Value;
                 optionsPage.VerboseLogging = chkVerboseLogging.Checked;
@@ -170,22 +156,16 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnSelectViewer_Click(object sender, EventArgs e)
         {
-            TextBox tb = (sender == btnSelectHxSViewer) ? txtHxSViewerPath : txtMSHelpViewerPath;
-
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
-                if(tb == txtHxSViewerPath)
-                    dlg.Title = "Select the MS Help 2 (.HxS) viewer application";
-                else
-                    dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
-
+                dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
                 dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
                 dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 dlg.DefaultExt = "exe";
 
                 // If one is selected, use that file
                 if(dlg.ShowDialog() == DialogResult.OK)
-                    tb.Text = dlg.FileName;
+                    txtMSHelpViewerPath.Text = dlg.FileName;
             }
         }
 

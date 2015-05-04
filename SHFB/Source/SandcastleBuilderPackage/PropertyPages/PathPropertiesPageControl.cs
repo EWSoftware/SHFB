@@ -2,22 +2,23 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/20/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Path category properties
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
-// -------  12/20/2013  EFW  Added support for the ComponentPath project property
+// 03/27/2011  EFW  Created the code
+// 10/28/2012  EFW  Updated for use in the standalone GUI
+// 12/20/2013  EFW  Added support for the ComponentPath project property
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -87,7 +88,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 SandcastleProject project = base.CurrentProject;
 #endif
                 txtHtmlHelp1xCompilerPath.Folder = new FolderPath(project);
-                txtHtmlHelp2xCompilerPath.Folder = new FolderPath(project);
                 txtComponentPath.Folder = new FolderPath(project);
                 txtOutputPath.Folder = new FolderPath(project);
                 txtWorkingPath.Folder = new FolderPath(project);

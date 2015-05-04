@@ -99,7 +99,7 @@ namespace SandcastleBuilder.Utils.Design
         /// </summary>
         private static StandardValuesCollection InitializeStandardValues()
         {
-            // Determine the available language resources by see what stop word list translations are available
+            // Determine the available language resources by seeing what stop word list translations are available
             string name = Path.Combine(ComponentUtilities.ToolsFolder, @"PresentationStyles\Shared\StopWordList");
 
             return new StandardValuesCollection(Directory.EnumerateFiles(name, "*.txt").Select(

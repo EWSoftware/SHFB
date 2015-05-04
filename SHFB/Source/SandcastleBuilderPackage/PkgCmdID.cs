@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PkgCmdID.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,8 +31,6 @@ namespace SandcastleBuilder.Package
         public const uint ViewHelpFile = 0x0006;
         /// <summary>View HTML Help output</summary>
         public const uint ViewHtmlHelp = 0x0007;
-        /// <summary>View Help 2 output</summary>
-        public const uint ViewHxSHelp = 0x0008;
         /// <summary>View MS Help View output</summary>
         public const uint ViewMshcHelp = 0x0009;
         /// <summary>View ASP.NET website output (development web server)</summary>

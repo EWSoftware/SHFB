@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -65,6 +65,7 @@
 //          05/14/2014  EFW  Added support for presentation style plug-in dependencies
 //          12/14/2014  EFW  Updated to use framework-specific reflection data folders
 //          03/30/2015  EFW  Added support for the Markdown output format
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -128,15 +129,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private StreamWriter swLog;
 
         // Build output file lists
-        private Collection<string> help1Files, help2Files, helpViewerFiles, websiteFiles, openXmlFiles, markdownFiles;
+        private Collection<string> help1Files, helpViewerFiles, websiteFiles, openXmlFiles, markdownFiles;
 
         // Progress event arguments
         private BuildProgressEventArgs progressArgs;
         private DateTime buildStart, stepStart;
 
         // Various paths and other strings
-        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, hxcompFolder,
-            languageFolder, defaultTopic, namespacesTopic, reflectionFile, msBuildExePath;
+        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, languageFolder,
+            defaultTopic, namespacesTopic, reflectionFile, msBuildExePath;
 
         private Collection<string> helpFormatOutputFolders;
 
@@ -162,7 +163,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             @"Build FAILED|\w+\s*:\s*Error\s.*?:|\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase |
             RegexOptions.Multiline);
 
-        private static Regex reKillProcess = new Regex("hhc|hxcomp|BuildAssembler|XslTransform|MRefBuilder|" +
+        private static Regex reKillProcess = new Regex("hhc|BuildAssembler|XslTransform|MRefBuilder|" +
             "GenerateInheritedDocs|SandcastleHtmlExtract", RegexOptions.IgnoreCase);
         #endregion
 
@@ -229,14 +230,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string Help1CompilerFolder
         {
             get { return hhcFolder; }
-        }
-
-        /// <summary>
-        /// This returns the name of the MS Help 2 compiler folder determined by the build process
-        /// </summary>
-        public string Help2CompilerFolder
-        {
-            get { return hxcompFolder; }
         }
 
         /// <summary>
@@ -366,15 +359,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public Collection<string> Help1Files
         {
             get { return help1Files; }
-        }
-
-        /// <summary>
-        /// This returns a list of the MS Help 2 (HxS) files that were built
-        /// </summary>
-        /// <remarks>If the MS Help 2 format was not built, this returns an empty collection</remarks>
-        public Collection<string> Help2Files
-        {
-            get { return help2Files; }
         }
 
         /// <summary>
@@ -591,7 +575,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             excludeElementEval = new MatchEvaluator(OnExcludeElement);
 
             help1Files = new Collection<string>();
-            help2Files = new Collection<string>();
             helpViewerFiles = new Collection<string>();
             websiteFiles = new Collection<string>();
             openXmlFiles = new Collection<string>();
@@ -622,7 +605,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
-            Version version;
             string resolvedPath, helpFile, languageFile, scriptFile, hintPath, message = null;
             SandcastleProject originalProject = null;
             int waitCount;
@@ -702,11 +684,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(workingFolder == outputFolder)
                     throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
                         "set to the same path");
-
-                // For MS Help 2, the HTML Help Name cannot contain spaces
-                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0 && this.ResolvedHtmlHelpName.IndexOf(' ') != -1)
-                    throw new BuilderException("BE0031", "For MS Help 2 builds, the HtmlHelpName property " +
-                        "cannot contain spaces as they are not valid in the collection name.");
 
                 // For MS Help Viewer, the HTML Help Name cannot contain periods, ampersands, or pound signs
                 if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
@@ -845,11 +822,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0 && File.Exists(helpFile))
                         File.Delete(helpFile);
 
-                    helpFile = Path.ChangeExtension(helpFile, ".hxs");
-
-                    if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0 && File.Exists(helpFile))
-                        File.Delete(helpFile);
-
                     helpFile = Path.ChangeExtension(helpFile, ".mshc");
 
                     if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 && File.Exists(helpFile))
@@ -883,24 +855,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
                 Directory.CreateDirectory(workingFolder);
-
-                // Make sure the HelpFileVersion property is in the form of a real version number
-                try
-                {
-                    if(project.HelpFileVersion.IndexOf('{') == -1)
-                        version = new Version(project.HelpFileVersion);
-                    else
-                        version = new Version(this.TransformText(project.HelpFileVersion));
-
-                    if(version.Build == -1 || version.Revision == -1)
-                        throw new FormatException("The version number must specify all four parts.  " +
-                            "Specify zero for unused parts.");
-                }
-                catch(Exception ex)
-                {
-                    throw new BuilderException("BE0066", "The HelpFileVersion property value '" +
-                        project.HelpFileVersion + "' is not in the correct format (#.#.#.#)", ex);
-                }
 
                 this.GarbageCollect();
 
@@ -1419,54 +1373,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
                         this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m Build1xHelpFile.proj");
-                        this.GatherBuildOutputFilenames();
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-                }
-
-                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
-                {
-                    // Generate the table of contents and set the default topic
-                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
-                        "Generating MS Help 2 table of contents file...");
-
-                    currentFormat = HelpFileFormats.MSHelp2;
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        scriptFile = this.TransformTemplate("Generate2xTOC.proj", templateFolder, workingFolder);
-
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n Generate2xTOC.proj");
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
-                    // Generate the help project files
-                    this.ReportProgress(BuildStep.GenerateHelpProject, "Generating MS Help 2 project files...");
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-                        foreach(string projectFile in Directory.EnumerateFiles(templateFolder, "Help2x*.*"))
-                            this.TransformTemplate(Path.GetFileName(projectFile), templateFolder, workingFolder);
-
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
-                    // Build the MS Help 2 help file
-                    this.ReportProgress(BuildStep.CompilingHelpFile, "Compiling MS Help 2 file...");
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        scriptFile = this.TransformTemplate("Build2xHelpFile.proj", templateFolder, workingFolder);
-
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m Build2xHelpFile.proj");
-
-                        // Clean up the collection files
-                        this.CleanUpCollectionFiles();
-
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
@@ -2071,11 +1977,6 @@ AllDone:
                     patterns[0] = this.ResolvedHtmlHelpName + "*.chm";
                     break;
 
-                case HelpFileFormats.MSHelp2:
-                    patterns[0] = this.ResolvedHtmlHelpName + "*.Hx?";
-                    patterns[1] = this.ResolvedHtmlHelpName + "*.ini";
-                    break;
-
                 case HelpFileFormats.MSHelpViewer:
                     patterns[0] = this.ResolvedHtmlHelpName + "*.msh?";
                     patterns[1] = "Install_" + this.ResolvedHtmlHelpName + "*.bat";
@@ -2109,10 +2010,6 @@ AllDone:
                             help1Files.Add(file);
                             break;
 
-                        case HelpFileFormats.MSHelp2:
-                            help2Files.Add(file);
-                            break;
-
                         case HelpFileFormats.MSHelpViewer:
                             helpViewerFiles.Add(file);
                             break;
@@ -2126,8 +2023,9 @@ AllDone:
                             break;
 
                         default:    // Website
-                            if(!help1Files.Contains(file) && !help2Files.Contains(file) &&
-                              !helpViewerFiles.Contains(file))
+                            // Open XML and Markdown are distinct and cannot be combined with web output so
+                            // there's no need to exclude them here.
+                            if(!help1Files.Contains(file) && !helpViewerFiles.Contains(file))
                                 websiteFiles.Add(file);
                             break;
                     }
@@ -2169,38 +2067,6 @@ AllDone:
                     hhcFolder += @"\";
 
                 this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
-            }
-
-            if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
-            {
-                hxcompFolder = project.HtmlHelp2xCompilerPath;
-
-                if(hxcompFolder.Length == 0)
-                {
-                    this.ReportProgress("Searching for HTML Help 2 compiler...");
-
-                    // Search the Visual Studio SDK folders first as it usually has a more recent version
-                    hxcompFolder = BuildProcess.FindSdkExecutable("hxcomp.exe");
-
-                    // If not found there, try the default installation folders
-                    if(hxcompFolder.Length == 0)
-                    {
-                        hxcompFolder = BuildProcess.FindOnFixedDrives(
-                            @"\Common Files\Microsoft Shared\Help 2.0 Compiler");
-
-                        if(hxcompFolder.Length == 0)
-                            hxcompFolder = BuildProcess.FindOnFixedDrives(@"\Microsoft Help 2.0 SDK");
-                    }
-                }
-
-                if(hxcompFolder.Length == 0 || !Directory.Exists(hxcompFolder))
-                    throw new BuilderException("BE0038", "Could not find the path to the MS Help 2 " +
-                        "compiler.  See error topic in help file for details.\r\n");
-
-                if(hxcompFolder[hxcompFolder.Length - 1] != '\\')
-                    hxcompFolder += @"\";
-
-                this.ReportProgress("Found MS Help 2 help compiler in '{0}'", hxcompFolder);
             }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);

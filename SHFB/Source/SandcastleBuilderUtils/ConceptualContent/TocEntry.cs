@@ -554,13 +554,11 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// Convert the table of contents entry and its children to a string
-        /// in the specified help file format.
+        /// Convert the table of contents entry and its children to a string in the specified help file format
         /// </summary>
         /// <param name="format">The help file format to use</param>
         /// <returns>The entries in specified help format</returns>
-        /// <exception cref="ArgumentException">This is thrown if the
-        /// format is not <b>HtmlHelp1</b> or <b>MSHelp2</b>.</exception>
+        /// <exception cref="ArgumentException">This is thrown if the format is not <c>HtmlHelp1</c></exception>
         public string ToString(HelpFileFormats format)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -609,7 +607,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     }
                     break;
             
-                case HelpFileFormats.MSHelp2:
                 case HelpFileFormats.Website:
                 case HelpFileFormats.OpenXml:
                 case HelpFileFormats.Markdown:

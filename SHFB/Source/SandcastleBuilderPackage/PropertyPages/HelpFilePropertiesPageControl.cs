@@ -267,12 +267,16 @@ namespace SandcastleBuilder.Package.PropertyPages
                 txtHelpTitle.Text = txtHelpTitle.Text.Trim();
                 txtHtmlHelpName.Text = txtHtmlHelpName.Text.Trim();
                 txtRootNamespaceTitle.Text = txtRootNamespaceTitle.Text.Trim();
+                txtHelpFileVersion.Text = txtHelpFileVersion.Text.Trim();
 
                 if(txtHelpTitle.Text.Length == 0)
                     txtHelpTitle.Text = "A Sandcastle Documented Class Library";
 
                 if(txtHtmlHelpName.Text.Length == 0)
                     txtHtmlHelpName.Text = "Documentation";
+
+                if(txtHelpFileVersion.Text.Length == 0)
+                    txtHelpFileVersion.Text = "1.0.0.0";
 
                 if(udcMaximumGroupParts.Text.Trim().Length == 0)
                     udcMaximumGroupParts.Value = 2;
@@ -287,6 +291,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             switch(propertyName)
             {
                 case "HelpTitle":
+                case "HelpFileVersion":
                 case "HtmlHelpName":
                 case "CopyrightHref":
                 case "CopyrightText":

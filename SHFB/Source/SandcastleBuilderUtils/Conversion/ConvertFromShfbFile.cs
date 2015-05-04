@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromShfbFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/12/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert version 1.7.0.0 and prior SHFB project files to the new MSBuild
 // format project files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -93,17 +93,16 @@ namespace SandcastleBuilder.Utils.Conversion
             // changes from version to version.
             renameProps.Add("showAttributes", "DocumentAttributes");        // v1.0.0.0 name
             renameProps.Add("hhcPath", "HtmlHelp1xCompilerPath");           // v1.3.3.1 and prior
-            renameProps.Add("hxcompPath", "HtmlHelp2xCompilerPath");        // v1.3.3.1 and prior
             renameProps.Add("rootNSContainer", "RootNamespaceContainer");   // v1.3.3.1 and prior
 
             // The HelpFileFormat enum values changed in v1.8.0.3
             Dictionary<string, string> translateFormat = new Dictionary<string, string> {
                 { "HTMLHELP1X", "HtmlHelp1" },
-                { "HTMLHELP2X", "MSHelp2" },
-                { "HELP1XANDHELP2X", "HtmlHelp1, MSHelp2" },
+                { "HTMLHELP2X", "HtmlHelp1" },
+                { "HELP1XANDHELP2X", "HtmlHelp1" },
                 { "HELP1XANDWEBSITE", "HtmlHelp1, Website" },
-                { "HELP2XANDWEBSITE", "MSHelp2, Website" },
-                { "HELP1XAND2XANDWEBSITE", "HtmlHelp1, MSHelp2, Website" } };
+                { "HELP2XANDWEBSITE", "Website" },
+                { "HELP1XAND2XANDWEBSITE", "HtmlHelp1, Website" } };
 
             try
             {
@@ -134,7 +133,10 @@ namespace SandcastleBuilder.Utils.Conversion
 
                         switch(propName)
                         {
-                            case "project":     // Ignore the main project node
+                            case "project":     // Ignore the main project node and removed properties
+                            case "hxcompPath":
+                            case "HtmlHelp2xCompilerPath":
+                            case "TopicFileTransform":
                                 break;
 
                             case "PurgeDuplicateTopics":
@@ -157,7 +159,6 @@ namespace SandcastleBuilder.Utils.Conversion
                                     case "local":
                                         base.Project.HtmlSdkLinkType = base.Project.WebsiteSdkLinkType =
                                             HtmlSdkLinkType.None;
-                                        base.Project.MSHelp2SdkLinkType = MSHelp2SdkLinkType.Index;
                                         base.Project.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Id;
                                         break;
 
@@ -250,21 +251,6 @@ namespace SandcastleBuilder.Utils.Conversion
                                     base.Project.AddFileToProject(
                                         base.FullPath(path), dest);
                                     this.UpdateSiteMap(dest);
-                                }
-                                break;
-
-                            case "TopicFileTransform":
-                                // In 1.6.0.7, this became a sub-property
-                                // of the additional content collection.
-                                path = xr.GetAttribute("path");
-
-                                if(path != null && path.Trim().Length > 0)
-                                {
-                                    dest = Path.Combine(base.ProjectFolder,
-                                        Path.GetFileName(path));
-                                    dest = Path.ChangeExtension(dest, ".xsl");
-                                    base.Project.AddFileToProject(
-                                        base.FullPath(path), dest);
                                 }
                                 break;
 
@@ -369,16 +355,6 @@ namespace SandcastleBuilder.Utils.Conversion
                 dest = Path.ChangeExtension(dest, ".sitemap");
                 base.Project.AddFileToProject(base.FullPath(source), dest);
                 this.UpdateSiteMap(dest);
-            }
-
-            // Add topic file transformation if defined
-            source = xr.GetAttribute("topicFileTransform");
-
-            if(source != null && source.Trim().Length > 0)
-            {
-                dest = Path.Combine(base.ProjectFolder, Path.GetFileName(source));
-                dest = Path.ChangeExtension(dest, ".xsl");
-                base.Project.AddFileToProject(base.FullPath(source), dest);
             }
 
             if(!xr.IsEmptyElement)

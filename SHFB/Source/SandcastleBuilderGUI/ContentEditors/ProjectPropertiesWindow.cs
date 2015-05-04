@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the project properties
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 07/27/2008  EFW  Created the code
 // 10/28/2012  EFW  Rewrote to use the property pages from the VSPackage
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -300,7 +301,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 typeof(BuildPropertiesPageControl),
                 typeof(HelpFilePropertiesPageControl),
                 typeof(Help1WebsitePropertiesPageControl),
-                typeof(MSHelp2PropertiesPageControl),
                 typeof(MSHelpViewerPropertiesPageControl),
                 typeof(SummaryPropertiesPageControl),
                 typeof(VisibilityPropertiesPageControl),

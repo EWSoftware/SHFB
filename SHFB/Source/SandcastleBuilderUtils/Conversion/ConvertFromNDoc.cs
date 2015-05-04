@@ -2,22 +2,22 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/26/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert NDoc 1.x project files to the MSBuild format project files used by
 // SHFB.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-//===============================================================================================================
-// 1.8.0.0  07/23/2008  EFW  Created the code
-// 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/23/2008  EFW  Created the code
+// 01/08/2012  EFW  Added constructor to support use from VSPackage
 //===============================================================================================================
 
 using System;
@@ -372,14 +372,6 @@ namespace SandcastleBuilder.Utils.Conversion
                                 fileItem.ExcludeFromToc = true;
                                 break;
 
-                            case "CollectionTOCStyle":
-                                project.CollectionTocStyle =
-                                    (CollectionTocStyle)Enum.Parse(
-                                    typeof(CollectionTocStyle),
-                                    child.GetAttribute("value", String.Empty),
-                                    true);
-                                break;
-
                             case "DocSetList":
                                 list = child.GetAttribute("value",
                                     String.Empty).Split(',');
@@ -387,12 +379,6 @@ namespace SandcastleBuilder.Utils.Conversion
                                 foreach(string docSet in list)
                                     project.HelpAttributes.Add("DocSet",
                                         docSet.Trim());
-                                break;
-
-                            case "IncludeDefaultStopWordList":
-                                project.IncludeStopWordList = Convert.ToBoolean(
-                                    child.GetAttribute("value", String.Empty),
-                                    CultureInfo.InvariantCulture);
                                 break;
 
                             case "Version":
@@ -427,13 +413,11 @@ namespace SandcastleBuilder.Utils.Conversion
                                 if(child.GetAttribute("value", String.Empty) == "True")
                                 {
                                     project.HtmlSdkLinkType = project.WebsiteSdkLinkType = HtmlSdkLinkType.Msdn;
-                                    project.MSHelp2SdkLinkType = MSHelp2SdkLinkType.Msdn;
                                     project.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
                                 }
                                 else
                                 {
                                     project.HtmlSdkLinkType = project.WebsiteSdkLinkType = HtmlSdkLinkType.None;
-                                    project.MSHelp2SdkLinkType = MSHelp2SdkLinkType.Index;
                                     project.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Id;
                                 }
                                 break;

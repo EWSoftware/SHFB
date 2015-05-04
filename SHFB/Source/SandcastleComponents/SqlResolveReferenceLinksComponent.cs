@@ -99,17 +99,6 @@ namespace SandcastleBuilder.Components
 	<targets files=""reflection.xml"" type=""Local"" groupId=""Project_{@UniqueID}"" />
 </helpOutput>
 
-<helpOutput format=""MSHelp2"">
-	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
-		projectLocalCacheSize=""2500"" cacheProject=""false"" />
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
-	<targets base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
-		type=""{@MSHelp2SdkLinkType}"" groupId=""FrameworkTargets"">
-		{@ReferenceLinkNamespaceFiles}
-	</targets>
-	<targets files=""reflection.xml"" type=""Index"" groupId=""Project_{@UniqueID}"" />
-</helpOutput>
-
 <helpOutput format=""MSHelpViewer"">
 	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />

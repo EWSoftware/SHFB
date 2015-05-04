@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -10,7 +10,7 @@
 // within them.  It can also include code from an external file or a region within the file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -86,7 +86,6 @@ namespace SandcastleBuilder.Components
     ///          used in the SaveComponent instances. --&gt;
     ///     &lt;outputPaths&gt;
     ///       &lt;path value="Output\HtmlHelp1\" /&gt;
-    ///       &lt;path value="Output\MSHelp2\" /&gt;
     ///       &lt;path value="Output\MSHelpViewer\" /&gt;
     ///       &lt;path value="Output\Website\" /&gt;
     ///     &lt;/outputPaths&gt;

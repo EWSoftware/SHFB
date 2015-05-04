@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/01/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 // 1.9.5.0  10/06/2012  EFW  Added support for Help Viewer 2.0
 // -------  03/08/2014  EFW  Added support for the Open XML file format
 //          04/01/2015  EFW  Added support for the Markdown file format
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -87,7 +88,6 @@ namespace SandcastleBuilder.Package
     [ProvideObject(typeof(Help1WebsitePropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(HelpFilePropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(MissingTagPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
-    [ProvideObject(typeof(MSHelp2PropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(MSHelpViewerPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(PathPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(PlugInPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
@@ -276,11 +276,6 @@ namespace SandcastleBuilder.Package
                 menuItem = new OleMenuCommand(ViewHtmlHelpExecuteHandler, null, ViewHtmlHelpQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
 
-                // Create the command for button ViewHxSHelp
-                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewHxSHelp);
-                menuItem = new OleMenuCommand(ViewHxSHelpExecuteHandler, null, ViewHxSHelpQueryStatusHandler, commandId);
-                mcs.AddCommand(menuItem);
-
                 // Create the command for button ViewMshcHelp
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewMshcHelp);
                 menuItem = new OleMenuCommand(ViewMshcHelpExecuteHandler, null, ViewMshcHelpQueryStatusHandler, commandId);
@@ -422,30 +417,27 @@ namespace SandcastleBuilder.Package
                 if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                     this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewHtmlHelp);
                 else
-                    if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
-                        this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewHxSHelp);
+                    if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+                        this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
                     else
-                        if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
-                            this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
+                        if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+                            this.ViewBuiltHelpFile(project, 0);
                         else
-                            if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
-                                this.ViewBuiltHelpFile(project, 0);
+                            if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                                Utility.OpenUrl(projectNode.StartWebServerInstance());
                             else
-                                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                                    Utility.OpenUrl(projectNode.StartWebServerInstance());
-                                else
-                                {
-                                    // This format opens a modal dialog box so we'll use it last if nothing else
-                                    // is selected.
-                                    var options = this.GeneralOptions;
+                            {
+                                // This format opens a modal dialog box so we'll use it last if nothing else
+                                // is selected.
+                                var options = this.GeneralOptions;
 
-                                    if(options != null)
-                                        using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project,
-                                          options.MSHelpViewerPath))
-                                        {
-                                            dlg.ShowDialog();
-                                        }
-                                }
+                                if(options != null)
+                                    using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project,
+                                        options.MSHelpViewerPath))
+                                    {
+                                        dlg.ShowDialog();
+                                    }
+                            }
             }
         }
 
@@ -457,7 +449,7 @@ namespace SandcastleBuilder.Package
         /// file format launched.  Zero is used for markdown content since there is no viewer for it.</param>
         private void ViewBuiltHelpFile(SandcastleProject project, uint commandId)
         {
-            string outputPath, help2Viewer = null;
+            string outputPath;
 
             if(project == null)
             {
@@ -468,9 +460,6 @@ namespace SandcastleBuilder.Package
             }
 
             var options = this.GeneralOptions;
-
-            if(options != null)
-                help2Viewer = options.HxsViewerPath;
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
@@ -484,27 +473,13 @@ namespace SandcastleBuilder.Package
             if(commandId == PkgCmdIDList.ViewHtmlHelp)
                 outputPath += project.HtmlHelpName + ".chm";
             else
-                if(commandId == PkgCmdIDList.ViewHxSHelp)
-                {
-                    outputPath += project.HtmlHelpName + ".hxs";
-
-                    if(String.IsNullOrEmpty(help2Viewer) || !File.Exists(help2Viewer))
-                    {
-                        Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_WARNING, "MS Help 2 files must be registered in a " +
-                            "collection to be viewed or you can use a standalone viewer.  Use Tools | Options | Sandcastle " +
-                            "Help File Builder to define a standalone viewer.  See Links to Resources in the help file if " +
-                            "you need one.");
-                        return;
-                    }
-                }
+                if(commandId == PkgCmdIDList.ViewDocxHelp)
+                    outputPath += project.HtmlHelpName + ".docx";
                 else
-                    if(commandId == PkgCmdIDList.ViewDocxHelp)
-                        outputPath += project.HtmlHelpName + ".docx";
+                    if(commandId == 0)
+                        outputPath += "_Sidebar.md";
                     else
-                        if(commandId == 0)
-                            outputPath += "_Sidebar.md";
-                        else
-                            outputPath += "Index.html";
+                        outputPath += "Index.html";
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
@@ -534,27 +509,24 @@ namespace SandcastleBuilder.Package
 
             try
             {
-                if(outputPath.EndsWith(".hxs", StringComparison.OrdinalIgnoreCase))
-                    System.Diagnostics.Process.Start(help2Viewer, outputPath);
+                if(outputPath.EndsWith(".chm", StringComparison.OrdinalIgnoreCase) ||
+                    outputPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+                    System.Diagnostics.Process.Start(outputPath);
                 else
-                    if(outputPath.EndsWith(".chm", StringComparison.OrdinalIgnoreCase) ||
-                      outputPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
-                        System.Diagnostics.Process.Start(outputPath);
-                    else
-                        if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+                    if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var dte = Utility.GetServiceFromPackage<DTE, SDTE>(true);
+
+                        if(dte != null)
                         {
-                            var dte = Utility.GetServiceFromPackage<DTE, SDTE>(true);
+                            var doc = dte.ItemOperations.OpenFile(outputPath, EnvDTE.Constants.vsViewKindPrimary);
 
-                            if(dte != null)
-                            {
-                                var doc = dte.ItemOperations.OpenFile(outputPath, EnvDTE.Constants.vsViewKindPrimary);
-
-                                if(doc != null)
-                                    doc.Activate();
-                            }
+                            if(doc != null)
+                                doc.Activate();
                         }
-                        else
-                            Utility.OpenUrl(outputPath);
+                    }
+                    else
+                        Utility.OpenUrl(outputPath);
             }
             catch(Exception ex)
             {
@@ -633,26 +605,6 @@ namespace SandcastleBuilder.Package
         private void ViewHtmlHelpExecuteHandler(object sender, EventArgs e)
         {
             this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlHelp);
-        }
-
-        /// <summary>
-        /// Set the state of the View MS Help 2 file command
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void ViewHxSHelpQueryStatusHandler(object sender, EventArgs e)
-        {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.MSHelp2);
-        }
-
-        /// <summary>
-        /// View the last built MS Help 2 file
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void ViewHxSHelpExecuteHandler(object sender, EventArgs e)
-        {
-            this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHxSHelp);
         }
 
         /// <summary>

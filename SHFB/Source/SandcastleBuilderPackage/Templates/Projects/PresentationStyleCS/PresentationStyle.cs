@@ -53,8 +53,8 @@ namespace $safeprojectname$
 
             // TODO: Adjust the rest of these properties as needed.
 
-            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelp2 |
-                HelpFileFormats.MSHelpViewer | HelpFileFormats.Website;
+            this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelpViewer |
+                HelpFileFormats.Website;
 
             this.SupportsNamespaceGrouping = this.SupportsCodeSnippetGrouping = true;
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : HelpFileFormats.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@
 // -------  01/04/2014  EFW  Moved the code to Sandcastle.Core
 //          02/15/2014  EFW  Added support for the Open XML output format
 //          03/30/2015  EFW  Added support for the Markdown output format
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -38,15 +39,13 @@ namespace Sandcastle.Core
     {
         /// <summary>HTML Help 1 (.chm) format built with HHC.EXE</summary>
         HtmlHelp1    = 0x0001,
-        /// <summary>MS Help 2 (.HxS) format built with HXCOMP.EXE</summary>
-        MSHelp2      = 0x0002,
         /// <summary>MS Help Viewer (.mshc) format, a ZIP file containing the help content</summary>
-        MSHelpViewer = 0x0004,
+        MSHelpViewer = 0x0002,
         /// <summary>A website with a basic TOC and search panes</summary>
-        Website      = 0x0008,
+        Website      = 0x0004,
         /// <summary>Open XML (.docx) format, compatible with Microsoft Word and Open Office</summary>
-        OpenXml      = 0x0010,
+        OpenXml      = 0x0008,
         /// <summary>Markdown (.md) format, suitable for use in wikis such as those for GitHub projects</summary>
-        Markdown     = 0x0020
+        Markdown     = 0x0010
     }
 }

@@ -48,6 +48,7 @@
 //          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //          12/26/2013  EFW  Updated to use MEF to load BuildAssembler build components
 //          08/05/2014  EFW  Added support for getting a list of syntax generator resource item files
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -234,7 +235,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             FileItemCollection fileItems;
             StringBuilder sb;
             string replaceWith, fieldName;
-            string[] parts;
 
             fieldName = match.Groups["Field"].Value.ToLowerInvariant();
 
@@ -333,10 +333,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "hhcpath":
                     replaceWith = hhcFolder;
-                    break;
-
-                case "hxcomppath":
-                    replaceWith = hxcompFolder;
                     break;
 
                 case "disablecodeblockcomponent":
@@ -611,17 +607,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         @"{0}Output\{1}", workingFolder, HelpFileFormats.HtmlHelp1), HelpFileFormats.HtmlHelp1);
                     break;
 
-                case "help2xprojectfiles":
-                    replaceWith = this.HelpProjectFileList(String.Format(CultureInfo.InvariantCulture,
-                        @"{0}Output\{1}", workingFolder, HelpFileFormats.MSHelp2), HelpFileFormats.MSHelp2);
-                    break;
-
                 case "htmlsdklinktype":
                     replaceWith = project.HtmlSdkLinkType.ToString().ToLowerInvariant();
-                    break;
-
-                case "mshelp2sdklinktype":
-                    replaceWith = project.MSHelp2SdkLinkType.ToString().ToLowerInvariant();
                     break;
 
                 case "mshelpviewersdklinktype":
@@ -795,56 +782,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         replaceWith = String.Empty;
                     break;
 
-                case "stopwordfile":
-                    if(project.IncludeStopWordList)
-                        replaceWith = "StopWordFile=\"StopWordList.txt\"";
-                    else
-                        replaceWith = String.Empty;
-                    break;
-
-                case "stopwordlistfilename":
-                    if(project.IncludeStopWordList)
-                        replaceWith = "StopWordList.txt";
-                    else
-                        replaceWith = String.Empty;
-                    break;
-
-                case "collectiontocstyle":
-                    replaceWith = project.CollectionTocStyle.ToString();
-                    break;
-
                 case "helpfileversion":
                     replaceWith = project.HelpFileVersion;
-                    break;
-
-                case "h2regpluginentries":
-                    parts = project.PlugInNamespaces.Split(',');
-                    sb = new StringBuilder(1024);
-
-                    foreach(string ns in parts)
-                    {
-                        replaceWith = ns.Trim();
-
-                        if(replaceWith.Length != 0)
-                            sb.AppendFormat("{0}|_DEFAULT|{1}|_DEFAULT\r\n", replaceWith, project.HtmlHelpName);
-                    }
-
-                    replaceWith = sb.ToString();
-                    break;
-
-                case "h2regmergenamespaces":
-                    parts = project.PlugInNamespaces.Split(',');
-                    sb = new StringBuilder(1024);
-
-                    foreach(string ns in parts)
-                    {
-                        replaceWith = ns.Trim();
-
-                        if(replaceWith.Length != 0)
-                            sb.AppendFormat("{0}|AUTO\r\n", replaceWith);
-                    }
-
-                    replaceWith = sb.ToString();
                     break;
 
                 case "helpattributes":
