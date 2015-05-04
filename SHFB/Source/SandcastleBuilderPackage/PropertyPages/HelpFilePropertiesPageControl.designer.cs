@@ -94,7 +94,7 @@
             // 
             // txtCopyrightText
             // 
-            this.txtCopyrightText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtCopyrightText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtCopyrightText, "This value is treated as plain text");
             this.epNotes.SetIconPadding(this.txtCopyrightText, 5);
@@ -106,7 +106,7 @@
             // 
             // txtHeaderText
             // 
-            this.txtHeaderText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtHeaderText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtHeaderText, "HTML elements are supported within this property\'s value");
             this.epNotes.SetIconPadding(this.txtHeaderText, 5);
@@ -118,7 +118,7 @@
             // 
             // txtFooterText
             // 
-            this.txtFooterText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtFooterText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtFooterText, "HTML elements are supported within this property\'s value");
             this.epNotes.SetIconPadding(this.txtFooterText, 5);
@@ -130,7 +130,7 @@
             // 
             // txtHtmlHelpName
             // 
-            this.txtHtmlHelpName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtHtmlHelpName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtHtmlHelpName, "Do not include a path or extension.  For MS Help Viewer builds, avoid periods,\r\n" +
                 "ampersands, and pound signs as they are not valid in the help file name.");
@@ -157,7 +157,7 @@
             // 
             // txtRootNamespaceTitle
             // 
-            this.txtRootNamespaceTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtRootNamespaceTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtRootNamespaceTitle, "If not set, a default title of \"Namespaces\" is used");
             this.epNotes.SetIconPadding(this.txtRootNamespaceTitle, 5);
@@ -239,7 +239,7 @@
             // 
             // txtCopyrightHref
             // 
-            this.txtCopyrightHref.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtCopyrightHref.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCopyrightHref.Location = new System.Drawing.Point(254, 449);
             this.txtCopyrightHref.Name = "txtCopyrightHref";
@@ -258,7 +258,7 @@
             // 
             // txtFeedbackEMailAddress
             // 
-            this.txtFeedbackEMailAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtFeedbackEMailAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFeedbackEMailAddress.Location = new System.Drawing.Point(254, 515);
             this.txtFeedbackEMailAddress.Name = "txtFeedbackEMailAddress";
@@ -277,7 +277,7 @@
             // 
             // txtFeedbackEMailLinkText
             // 
-            this.txtFeedbackEMailLinkText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtFeedbackEMailLinkText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFeedbackEMailLinkText.Location = new System.Drawing.Point(254, 548);
             this.txtFeedbackEMailLinkText.Name = "txtFeedbackEMailLinkText";
@@ -314,7 +314,7 @@
             // 
             // txtHelpTitle
             // 
-            this.txtHelpTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtHelpTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtHelpTitle.Location = new System.Drawing.Point(254, 12);
             this.txtHelpTitle.Name = "txtHelpTitle";
@@ -442,7 +442,7 @@
             // 
             // cblSyntaxFilters
             // 
-            this.cblSyntaxFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cblSyntaxFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cblSyntaxFilters.FormattingEnabled = true;
             this.cblSyntaxFilters.Location = new System.Drawing.Point(254, 615);
@@ -464,7 +464,7 @@
             // 
             // txtHelpFileVersion
             // 
-            this.txtHelpFileVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtHelpFileVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtHelpFileVersion.Location = new System.Drawing.Point(254, 78);
             this.txtHelpFileVersion.Name = "txtHelpFileVersion";
