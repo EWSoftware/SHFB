@@ -137,8 +137,8 @@
       <Link>PropertyPages\HelpFilePropertiesPageControl.cs</Link>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.designer.cs">
-      <Link>PropertyPages\HelpFilePropertiesPageControl.designer.cs</Link>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.Designer.cs">
+      <Link>PropertyPages\HelpFilePropertiesPageControl.Designer.cs</Link>
       <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.cs">
