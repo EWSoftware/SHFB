@@ -2154,7 +2154,6 @@ AllDone:
             MSBuildProject projRef;
             XPathDocument testComments;
             XPathNavigator navComments;
-            XmlCommentsFile comments;
             int fileCount;
             string workingPath, lastSolution = null;
 
@@ -2481,13 +2480,7 @@ AllDone:
                 File.SetAttributes(workingPath, FileAttributes.Normal);
 
                 // Add the file to the XML comments file collection
-                comments = new XmlCommentsFile(workingPath);
-
-                // Fix up comments for CPP comments files?
-                if(project.CppCommentsFixup)
-                    comments.FixupComments();
-
-                commentsFiles.Add(comments);
+                commentsFiles.Add(new XmlCommentsFile(workingPath));
 
                 this.ReportProgress("    {0} -> {1}", commentsName, workingPath);
             }
