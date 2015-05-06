@@ -363,7 +363,7 @@ namespace Microsoft.Ddue.Tools
                 // there already.  A group is only created if it will contain more than one namespace. Namespaces
                 // without any children will end up in their parent as a standard namespace entry.
                 if(root.Length > 2 && !groups.ContainsKey(root) &&
-                  namespaces.Count(n => n.StartsWith(root + ".", StringComparison.Ordinal)) > 1)
+                  namespaces.Count(n => n.StartsWith(root, StringComparison.Ordinal)) > 1)
                     groups.Add(root, new NamespaceGroup { Namespace = root });
             }
 
