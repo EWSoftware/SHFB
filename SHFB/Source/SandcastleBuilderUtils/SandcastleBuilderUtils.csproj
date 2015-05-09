@@ -102,7 +102,6 @@
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
     <Compile Include="BuildEngine\BuildProcess.NamespaceRipping.cs" />
     <Compile Include="BuildEngine\BuildProcess.Namespaces.cs" />
-    <Compile Include="BuildEngine\BuildProcess.AdditionalContent.cs" />
     <Compile Include="BuildEngine\BuildProcess.PlugIns.cs" />
     <Compile Include="BuildEngine\BuildProcess.Transform.cs" />
     <Compile Include="BuildEngine\BuildProgressEventArgs.cs" />

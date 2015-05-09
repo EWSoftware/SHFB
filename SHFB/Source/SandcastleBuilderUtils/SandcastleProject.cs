@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2015
+// Updated : 05/07/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2010,65 +2010,6 @@ namespace SandcastleBuilder.Utils
 
             if(handler != null)
                 handler(this, e);
-        }
-        #endregion
-
-        #region Designer methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to see if the <see cref="NamespaceSummaries"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a collection and we don't want to lose all
-        /// items accidentally.</remarks>
-        private bool ShouldSerializeNamespaceSummaries()
-        {
-            return (this.NamespaceSummaries.Count != 0);
-        }
-
-        /// <summary>
-        /// This is used to see if the <see cref="ComponentConfigurations"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a dictionary and we don't want to lose all
-        /// items accidentally.</remarks>
-        private bool ShouldSerializeComponentConfigurations()
-        {
-            return (this.ComponentConfigurations.Count != 0);
-        }
-
-        /// <summary>
-        /// This is used to see if the <see cref="PlugInConfigurations"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a dictionary and we don't want to lose all
-        /// items accidentally.</remarks>
-        private bool ShouldSerializePlugInConfigurations()
-        {
-            return (this.PlugInConfigurations.Count != 0);
-        }
-
-        /// <summary>
-        /// This is used to see if the <see cref="ApiFilter"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a collection and we don't want to lose all
-        /// items accidentally.</remarks>
-        private bool ShouldSerializeApiFilter()
-        {
-            return (this.ApiFilter.Count != 0);
-        }
-
-        /// <summary>
-        /// This is used to see if the <see cref="HelpAttributes"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a collection and we don't want to lose all
-        /// items accidentally.</remarks>
-        private bool ShouldSerializeHelpAttributes()
-        {
-            return (this.HelpAttributes.Count != 0);
         }
         #endregion
 

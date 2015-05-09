@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/08/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -363,13 +363,9 @@ namespace SandcastleBuilder.Utils.Conversion
                             case "EmptyIndexTermPage":
                             case "IntroductionPage":
                             case "NavFailPage":
-                                value = this.FullPath(child.GetAttribute(
-                                    "value", String.Empty));
-                                destFile = Path.Combine(base.ProjectFolder,
-                                    Path.GetFileName(value));
-                                fileItem = project.AddFileToProject(value,
-                                    destFile);
-                                fileItem.ExcludeFromToc = true;
+                                value = this.FullPath(child.GetAttribute("value", String.Empty));
+                                destFile = Path.Combine(base.ProjectFolder, Path.GetFileName(value));
+                                fileItem = project.AddFileToProject(value, destFile);
                                 break;
 
                             case "DocSetList":

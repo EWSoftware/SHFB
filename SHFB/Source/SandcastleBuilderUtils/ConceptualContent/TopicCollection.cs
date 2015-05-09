@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/07/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,9 +41,8 @@ using SandcastleBuilder.Utils.BuildEngine;
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This collection class is used to hold the conceptual content topics for a project.
+    /// This collection class is used to hold the conceptual content topics for a project
     /// </summary>
-    /// <remarks>This class is serializable so that it can be copied to the clipboard.</remarks>
     public class TopicCollection : BindingList<Topic>, ITableOfContents
     {
         #region Private data members
@@ -56,8 +55,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the project file item associated
-        /// with the collection.
+        /// This read-only property returns the project file item associated with the collection
         /// </summary>
         public FileItem FileItem
         {
@@ -88,8 +86,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the topic at which the API table of contents is
-        /// to be inserted or parented.
+        /// This is used to get the topic at which the API table of contents is to be inserted or parented
         /// </summary>
         /// <value>This will return null if no parent location has been set</value>
         public Topic ApiContentInsertionPoint
@@ -112,8 +109,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the topic that will serve as the root content
-        /// container in MS Help Viewer output.
+        /// This is used to get the topic that will serve as the root content container in MS Help Viewer output
         /// </summary>
         /// <value>This will return null if one is not defined</value>
         public Topic MSHVRootContentContainer
@@ -138,9 +134,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This can be used to get a topic by its unique ID (case-insensitive)
         /// </summary>
-        /// <param name="id">The ID of the item to get.</param>
-        /// <value>Returns the topic with the specified
-        /// <see cref="Topic.Id" /> or null if not found.</value>
+        /// <param name="id">The ID of the item to get</param>
+        /// <value>Returns the topic with the specified <see cref="Topic.Id" /> or null if not found</value>
         public Topic this[string id]
         {
             get
@@ -173,11 +168,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="file">The content layout file associated with the
-        /// collection.</param>
-        /// <remarks>Topics are not loaded until the <see cref="Load" /> method
-        /// is called.  If the <b>file</b> parameter is null, this is assumed
-        /// to be a child topic collection.</remarks>
+        /// <param name="file">The content layout file associated with the collection</param>
+        /// <remarks>Topics are not loaded until the <see cref="Load" /> method is called.  If the <c>file</c>
+        /// parameter is null, this is assumed to be a child topic collection.</remarks>
         public TopicCollection(FileItem file)
         {
             fileItem = file;
@@ -190,8 +183,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to sort the collection
         /// </summary>
-        /// <remarks>Values are sorted by display title.  Comparisons are
-        /// case-sensitive.</remarks>
+        /// <remarks>Values are sorted by display title.  Comparisons are case-sensitive.</remarks>
         public void Sort()
         {
             ((List<Topic>)base.Items).Sort((x, y) =>
@@ -222,8 +214,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used to find all topics and sub-topics that match the specified predicate recursively
         /// </summary>
         /// <param name="match">The match predicate</param>
-        /// <param name="expandParentIfFound">True to expand the parent if a child node matches or false
-        /// to leave it as is.  Expanding the node ensures it is visible in the bound tree view.</param>
+        /// <param name="expandParentIfFound">True to expand the parent if a child node matches or false to leave
+        /// it as is.  Expanding the node ensures it is visible in the bound tree view.</param>
         /// <returns>An enumerable list of all matches</returns>
         public IEnumerable<Topic> Find(Predicate<Topic> match, bool expandParentIfFound)
         {
@@ -253,8 +245,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Load the collection from the related file
         /// </summary>
-        /// <remarks>This will be done automatically at constructor.  This can
-        /// be called to reload the collection if needed.</remarks>
+        /// <remarks>This will be done automatically at constructor.  This can be called to reload the collection
+        /// if needed.</remarks>
         public void Load()
         {
             XmlReaderSettings settings = new XmlReaderSettings();
@@ -314,8 +306,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This gets all possible content files from the project and attempts
-        /// to match them to the topics in the collection by ID.
+        /// This gets all possible content files from the project and attempts to match them to the topics in the
+        /// collection by ID.
         /// </summary>
         public void MatchProjectFilesToTopics()
         {
@@ -323,15 +315,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             FileItem topicItem;
             TopicFile topicFile;
 
-            string ext, none = BuildAction.None.ToString(),
-                content = BuildAction.Content.ToString();
+            string ext, none = BuildAction.None.ToString();
 
             foreach(ProjectItem item in project.MSBuildProject.AllEvaluatedItems)
-                if(item.ItemType == none || item.ItemType == content)
+                if(item.ItemType == none)
                 {
                     ext = Path.GetExtension(item.EvaluatedInclude).ToLowerInvariant();
 
-                    if(ext == ".aml" || ext == ".htm" || ext == ".html")
+                    if(ext == ".aml")
                     {
                         topicItem = new FileItem(new ProjectElement(project, item));
                         topicFile = new TopicFile(topicItem);
@@ -377,8 +368,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used by contained items to notify the parent that a child
-        /// list changed and thus the collection should be marked as dirty.
+        /// This is used by contained items to notify the parent that a child list changed and thus the
+        /// collection should be marked as dirty.
         /// </summary>
         /// <param name="t">The topic that changed</param>
         /// <param name="e">The list change event arguments from the child collection</param>
@@ -394,9 +385,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// Set the topic file in any entry that has a matching ID
         /// </summary>
         /// <param name="topicFile">The topic file</param>
-        /// <remarks>The IDs should be unique across all entries but, if a
-        /// duplicate exists, this will help find it as we'll get a more
-        /// descriptive error later in the build.</remarks>
+        /// <remarks>The IDs should be unique across all entries but, if a duplicate exists, this will help find
+        /// it as we'll get a more descriptive error later in the build.</remarks>
         private void SetTopic(TopicFile topicFile)
         {
             foreach(Topic t in this)
@@ -414,15 +404,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This creates copies of the conceptual topic files in the build
-        /// process's working folder.
+        /// This creates copies of the conceptual topic files in the build process's working folder
         /// </summary>
         /// <param name="folder">The folder in which to place the topic files</param>
         /// <param name="builder">The build process</param>
-        /// <remarks>Each topic file will be named using its
-        /// <see cref="Topic.Id" />.  If necessary, its content will be
-        /// wrapped in a <c>&lt;topic&gt;</c> element.  Sub-topics are written
-        /// out recursively.</remarks>
+        /// <remarks>Each topic file will be named using its <see cref="Topic.Id" />.  If necessary, its content
+        /// will be wrapped in a <c>&lt;topic&gt;</c> element.  Sub-topics are written out recursively.</remarks>
         public void GenerateConceptualTopics(string folder, BuildProcess builder)
         {
             Encoding enc;
@@ -444,17 +431,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                             "The conceptual topic '{0}' (ID: {1}) must either specify a " +
                             "topic file or it must contains sub-topics", t.DisplayTitle, t.Id));
 
-                    // No file, it's just a container node.  However, MS Help view does not
-                    // support empty container nodes so we must generate a dummy file to
-                    // serve as its content.
+                    // No file, it's just a container node.  However, MS Help view does not support empty
+                    // container nodes so we must generate a dummy file to serve as its content.
                     if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                     {
                         enc = Encoding.Default;
 
                         // When reading the file, use the default encoding but
                         // detect the encoding if byte order marks are present.
-                        templateText = BuildProcess.ReadWithEncoding(
-                            builder.TemplateFolder + "PlaceHolderNode.aml", ref enc);
+                        templateText = BuildProcess.ReadWithEncoding(builder.TemplateFolder +
+                            "PlaceHolderNode.aml", ref enc);
                             
                         templateText = templateText.Replace("{@GUID}", t.Id);
 
@@ -485,45 +471,23 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         "The conceptual content file '{0}' with ID '{1}' is not valid: {2}",
                         t.TopicFile.FullPath, t.Id, t.TopicFile.ErrorMessage));
 
-                if(t.DocumentType != DocumentType.Html)
-                {
-                    destFile = Path.Combine(folder, t.Id + ".xml");
-                    builder.ReportProgress("    {0} -> {1}", t.TopicFile.FullPath, destFile);
+                destFile = Path.Combine(folder, t.Id + ".xml");
+                builder.ReportProgress("    {0} -> {1}", t.TopicFile.FullPath, destFile);
 
-                    // The IDs must be unique
-                    if(File.Exists(destFile))
-                        throw new BuilderException("BE0058", String.Format(CultureInfo.CurrentCulture,
-                            "Two conceptual content files have the same ID ({0}).  The file with the " +
-                            "duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
+                // The IDs must be unique
+                if(File.Exists(destFile))
+                    throw new BuilderException("BE0058", String.Format(CultureInfo.CurrentCulture,
+                        "Two conceptual content files have the same ID ({0}).  The file with the " +
+                        "duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
 
-                    File.Copy(t.TopicFile.FullPath, destFile);
-                    File.SetAttributes(destFile, FileAttributes.Normal);
+                File.Copy(t.TopicFile.FullPath, destFile);
+                File.SetAttributes(destFile, FileAttributes.Normal);
 
-                    // Add referenced namespaces to the build process
-                    var rn = builder.ReferencedNamespaces;
+                // Add referenced namespaces to the build process
+                var rn = builder.ReferencedNamespaces;
 
-                    foreach(string ns in t.TopicFile.GetReferencedNamespaces(builder.FrameworkReflectionDataFolder))
-                        rn.Add(ns);
-                }
-                else
-                {
-                    builder.EnsureOutputFoldersExist("html");
-
-                    foreach(string baseFolder in builder.HelpFormatOutputFolders)
-                    {
-                        destFile = Path.Combine(baseFolder, "html\\" + t.Id + ".htm");
-                        builder.ReportProgress("    {0} -> {1}", t.TopicFile.FullPath, destFile);
-
-                        // The IDs must be unique
-                        if(File.Exists(destFile))
-                            throw new BuilderException("BE0058", String.Format(CultureInfo.CurrentCulture,
-                                "Two conceptual content files have the same ID ({0}).  The file " +
-                                "with the duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
-
-                        builder.ResolveLinksAndCopy(t.TopicFile.FullPath, destFile,
-                            BuildProcess.GetTocInfo(t.TopicFile.FullPath));
-                    }
-                }
+                foreach(string ns in t.TopicFile.GetReferencedNamespaces(builder.FrameworkReflectionDataFolder))
+                    rn.Add(ns);
 
                 if(t.Subtopics.Count != 0)
                     t.Subtopics.GenerateConceptualTopics(folder, builder);
@@ -535,21 +499,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// Add all topics from the specified folder recursively to the
-        /// collection and to the given project file.
+        /// Add all topics from the specified folder recursively to the collection and to the given project file
         /// </summary>
         /// <param name="folder">The folder from which to get the files</param>
-        /// <param name="basePath">The base path to remove from files copied
-        /// from another folder into the project folder.  On the first call,
-        /// this should match the <paramref name="folder"/> value.</param>
+        /// <param name="basePath">The base path to remove from files copied from another folder into the project
+        /// folder.  On the first call, this should match the <paramref name="folder"/> value.</param>
         /// <param name="project">The project to which the files are added</param>
-        /// <remarks>Only actual conceptual content topic files are added.
-        /// They must have a ".aml" extension and must be one of the valid
-        /// <see cref="DocumentType">document types</see>.  Folders will be
-        /// added as sub-topics recursively.  If a file with the same name
-        /// as the folder exists, it will be associated with the container
-        /// node.  If no such file exists, an empty container node is created.
-        /// </remarks>
+        /// <remarks>Only actual conceptual content topic files are added.  They must have a ".aml" extension and
+        /// must be one of the valid <see cref="DocumentType">document types</see>.  Folders will be added as
+        /// sub-topics recursively.  If a file with the same name as the folder exists, it will be associated
+        /// with the container node.  If no such file exists, an empty container node is created.</remarks>
         public void AddTopicsFromFolder(string folder, string basePath, SandcastleProject project)
         {
             FileItem newItem;
@@ -620,8 +579,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is overridden to set the inserted item's parent to this
-        /// collection.
+        /// This is overridden to set the inserted item's parent to this collection
         /// </summary>
         /// <inheritdoc />
         protected override void InsertItem(int index, Topic item)
@@ -631,8 +589,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is overridden to set the inserted item's parent to this
-        /// collection.
+        /// This is overridden to set the inserted item's parent to this collection
         /// </summary>
         /// <inheritdoc />
         protected override void SetItem(int index, Topic item)
@@ -656,8 +613,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used to get the build item related to the content layout
-        /// file containing the collection items.
+        /// This is used to get the build item related to the content layout file containing the collection items
         /// </summary>
         public FileItem ContentLayoutFile
         {

@@ -2,24 +2,25 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FileItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/08/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a file that is part of the project (MAML/additional content, site map,
-// style sheet, etc.).
+// This file contains a class representing a file that is part of the project (MAML/additional content, site
+// map, style sheet, etc.).
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  07/24/2008  EFW  Created the code
-// 1.8.0.3  12/04/2009  EFW  Added support for resource item files
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
+// 07/24/2008  EFW  Created the code
+// 12/04/2009  EFW  Added support for resource item files
+// 07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 04/08/2012  EFW  Added support for XAML configuration files
+// 05/08/2015  EFW  Removed support for ExcludeFromToc metadata item
 //===============================================================================================================
 
 using System;
@@ -47,7 +48,7 @@ namespace SandcastleBuilder.Utils
         private BuildAction buildAction;
         private FilePath includePath, linkPath;
         private string imageId, altText;
-        private bool copyToMedia, excludeFromToc;
+        private bool copyToMedia;
         private int sortOrder;
 
         private static Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
@@ -59,12 +60,10 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to set or get the build action of the item
         /// </summary>
-        /// <value>If set to <b>Image</b>, <see cref="ImageId"/> and
-        /// <see cref="AlternateText" /> will be set to the filename if not
-        /// set already.</value>
+        /// <value>If set to <c>Image</c>, <see cref="ImageId"/> and <see cref="AlternateText" /> will be set to
+        /// the filename if not set already.</value>
         [Category("Build Action"), Description("The build action for this item"),
-          RefreshProperties(RefreshProperties.All),
-          TypeConverter(typeof(BuildActionEnumConverter))]
+          RefreshProperties(RefreshProperties.All), TypeConverter(typeof(BuildActionEnumConverter))]
         public BuildAction BuildAction
         {
             get { return buildAction; }
@@ -101,47 +100,38 @@ namespace SandcastleBuilder.Utils
             get { return includePath; }
             set
             {
-                if(value == null || value.Path.Length == 0 ||
-                  value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
-                    throw new ArgumentException("A file path must be " +
-                        "specified and cannot contain wildcards (* or ?)",
-                        "value");
+                if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
+                    throw new ArgumentException("A file path must be specified and cannot contain wildcards " +
+                        "(* or ?)", "value");
 
                 // Do this first in case the project isn't editable
                 base.ProjectElement.Include = value.PersistablePath;
 
                 includePath = value;
-                includePath.PersistablePathChanging += new EventHandler(
-                    includePath_PersistablePathChanging);
+                includePath.PersistablePathChanging += includePath_PersistablePathChanging;
             }
-
         }
 
         /// <summary>
         /// This is used to set or get the link path
         /// </summary>
-        /// <value>If the item has no link path, this returns the
-        /// <see cref="Include" /> path.</value>
+        /// <value>If the item has no link path, this returns the <see cref="Include" /> path</value>
         [Browsable(false)]
         public FilePath Link
         {
             get { return (linkPath == null) ? includePath : linkPath; }
             set
             {
-                if(value != null && value.Path.Length != 0 &&
-                  value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
-                    throw new ArgumentException("A file path must be " +
-                        "specified and cannot contain wildcards (* or ?)",
-                        "value");
+                if(value != null && value.Path.Length != 0 && value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
+                    throw new ArgumentException("A file path must be specified and cannot contain wildcards " +
+                        "(* or ?)", "value");
 
                 if(value != null && value.Path.Length != 0)
                 {
                     // Do this first in case the project isn't editable
-                    base.ProjectElement.SetMetadata(ProjectElement.LinkPath,
-                        value.PersistablePath);
+                    base.ProjectElement.SetMetadata(ProjectElement.LinkPath, value.PersistablePath);
                     linkPath = value;
-                    linkPath.PersistablePathChanging += new EventHandler(
-                        linkPath_PersistablePathChanging);
+                    linkPath.PersistablePathChanging += linkPath_PersistablePathChanging;
                 }
                 else
                 {
@@ -243,9 +233,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set an ID for a conceptual content image
         /// </summary>
-        /// <remarks>This is used to indicate that an image file is part of
-        /// the conceptual content.  Image items without an ID are not
-        /// valid and will be ignored.</remarks>
+        /// <remarks>This is used to indicate that an image file is part of the conceptual content.  Image items
+        /// without an ID are not valid and will be ignored.</remarks>
         [Category("Metadata"), Description("The ID for a conceptual content image"), DefaultValue(null)]
         public string ImageId
         {
@@ -263,8 +252,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set alternate text for an image
         /// </summary>
-        [Category("Metadata"), Description("Image alternate text"),
-          DefaultValue(null)]
+        [Category("Metadata"), Description("Image alternate text"), DefaultValue(null)]
         public string AlternateText
         {
             get { return altText; }
@@ -279,15 +267,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether an item is copied to the output
-        /// folder during a build.
+        /// This is used to get or set whether an item is copied to the output folder during a build
         /// </summary>
-        /// <remarks>If this is set to true, the image will always be copied to
-        /// the build's media folder.  If false, it is only copied if referenced
-        /// in a topic.</remarks>
-        [Category("Metadata"), Description("If set to true, the image will " +
-          "always be copied to the build's media folder.  If false, it is " +
-          "only copied if referenced in a topic."), DefaultValue(false)]
+        /// <remarks>If this is set to true, the image will always be copied to the build's media folder.  If
+        /// false, it is only copied if referenced in a topic.</remarks>
+        [Category("Metadata"), Description("If set to true, the image will always be copied to the build's " +
+          "media folder.  If false, it is only copied if referenced in a topic."), DefaultValue(false)]
         public bool CopyToMedia
         {
             get { return copyToMedia; }
@@ -299,39 +284,16 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// For content items such as HTML pages, this is used to get or set
-        /// whether or not the item is excluded from the table of contents.
+        /// This is used to get or set the sort order for content layout and site map files
         /// </summary>
-        /// <remarks>If true, the item is not included in the table of contents.
-        /// If false, it will be included.</remarks>
-        [Category("Metadata"), Description("For content items such as HTML " +
-          "pages, this is used to specify whether or not the item is " +
-          "excluded from the table of contents."), DefaultValue(false)]
-        public bool ExcludeFromToc
-        {
-            get { return excludeFromToc; }
-            set
-            {
-                base.ProjectElement.SetMetadata(ProjectElement.ExcludeFromToc,
-                    value.ToString(CultureInfo.InvariantCulture));
-                excludeFromToc = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the sort order for content layout and
-        /// site map files.
-        /// </summary>
-        [Category("Metadata"), Description("For content layout and site map " +
-          "files, this defines the sort order for merging them into the " +
-          "table of contents."), DefaultValue(0)]
+        [Category("Metadata"), Description("For content layout and site map files, this defines the sort " +
+          "order for merging them into the table of contents."), DefaultValue(0)]
         public int SortOrder
         {
             get { return sortOrder; }
             set
             {
-                base.ProjectElement.SetMetadata(ProjectElement.SortOrder,
-                    value.ToString(CultureInfo.InvariantCulture));
+                base.ProjectElement.SetMetadata(ProjectElement.SortOrder, value.ToString(CultureInfo.InvariantCulture));
                 sortOrder = value;
             }
         }
@@ -341,28 +303,25 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to handle changes in the <see cref="Include" />
-        /// properties such that the path gets stored in the project file.
+        /// This is used to handle changes in the <see cref="Include" /> properties such that the path gets
+        /// stored in the project file.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void includePath_PersistablePathChanging(object sender,
-          EventArgs e)
+        private void includePath_PersistablePathChanging(object sender, EventArgs e)
         {
             base.ProjectElement.Include = includePath.PersistablePath;
         }
 
         /// <summary>
-        /// This is used to handle changes in the <see cref="Link" />
-        /// properties such that the path gets stored in the project file.
+        /// This is used to handle changes in the <see cref="Link" /> properties such that the path gets stored
+        /// in the project file.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void linkPath_PersistablePathChanging(object sender,
-          EventArgs e)
+        private void linkPath_PersistablePathChanging(object sender, EventArgs e)
         {
-            base.ProjectElement.SetMetadata(ProjectElement.LinkPath,
-                includePath.PersistablePath);
+            base.ProjectElement.SetMetadata(ProjectElement.LinkPath, includePath.PersistablePath);
         }
         #endregion
 
@@ -375,43 +334,31 @@ namespace SandcastleBuilder.Utils
         /// <param name="element">The project element</param>
         internal FileItem(ProjectElement element) : base(element)
         {
-            buildAction = (BuildAction)Enum.Parse(typeof(BuildAction),
-                base.ProjectElement.ItemName, true);
-            includePath = new FilePath(base.ProjectElement.Include,
-                base.ProjectElement.Project);
-            includePath.PersistablePathChanging += new EventHandler(
-                includePath_PersistablePathChanging);
+            buildAction = (BuildAction)Enum.Parse(typeof(BuildAction), base.ProjectElement.ItemName, true);
+            includePath = new FilePath(base.ProjectElement.Include, base.ProjectElement.Project);
+            includePath.PersistablePathChanging += includePath_PersistablePathChanging;
+
             base.ProjectElement.Include = includePath.PersistablePath;
 
             if(base.ProjectElement.HasMetadata(ProjectElement.LinkPath))
             {
-                linkPath = new FilePath(base.ProjectElement.GetMetadata(
-                    ProjectElement.LinkPath), base.ProjectElement.Project);
-                linkPath.PersistablePathChanging += new EventHandler(
-                    linkPath_PersistablePathChanging);
+                linkPath = new FilePath(base.ProjectElement.GetMetadata(ProjectElement.LinkPath),
+                    base.ProjectElement.Project);
+                linkPath.PersistablePathChanging += linkPath_PersistablePathChanging;
             }
 
             if(base.ProjectElement.HasMetadata(ProjectElement.ImageId))
-                imageId = base.ProjectElement.GetMetadata(
-                    ProjectElement.ImageId);
+                imageId = base.ProjectElement.GetMetadata(ProjectElement.ImageId);
 
             if(base.ProjectElement.HasMetadata(ProjectElement.AlternateText))
-                altText = base.ProjectElement.GetMetadata(
-                    ProjectElement.AlternateText);
+                altText = base.ProjectElement.GetMetadata(ProjectElement.AlternateText);
 
             if(base.ProjectElement.HasMetadata(ProjectElement.CopyToMedia))
-                if(!Boolean.TryParse(ProjectElement.GetMetadata(
-                  ProjectElement.CopyToMedia), out copyToMedia))
+                if(!Boolean.TryParse(ProjectElement.GetMetadata(ProjectElement.CopyToMedia), out copyToMedia))
                     copyToMedia = false;
 
-            if(base.ProjectElement.HasMetadata(ProjectElement.ExcludeFromToc))
-                if(!Boolean.TryParse(ProjectElement.GetMetadata(
-                  ProjectElement.ExcludeFromToc), out excludeFromToc))
-                    excludeFromToc = false;
-
             if(base.ProjectElement.HasMetadata(ProjectElement.SortOrder))
-                if(!Int32.TryParse(ProjectElement.GetMetadata(
-                  ProjectElement.SortOrder), out sortOrder))
+                if(!Int32.TryParse(ProjectElement.GetMetadata(ProjectElement.SortOrder), out sortOrder))
                     sortOrder = 0;
         }
         #endregion
@@ -424,12 +371,11 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         public void RefreshPaths()
         {
-            this.includePath = new FilePath(base.ProjectElement.Include,
-                base.ProjectElement.Project);
+            this.includePath = new FilePath(base.ProjectElement.Include, base.ProjectElement.Project);
 
             if(base.ProjectElement.HasMetadata(ProjectElement.LinkPath))
-                this.Link = new FilePath(base.ProjectElement.GetMetadata(
-                    ProjectElement.LinkPath), base.ProjectElement.Project);
+                this.Link = new FilePath(base.ProjectElement.GetMetadata(ProjectElement.LinkPath),
+                    base.ProjectElement.Project);
         }
         #endregion
 
@@ -493,8 +439,7 @@ namespace SandcastleBuilder.Utils
         /// <inheritdoc />
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
-            PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(
-                this, attributes, true);
+            PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(this, attributes, true);
 
             return this.FilterProperties(pdc);
         }
@@ -502,8 +447,7 @@ namespace SandcastleBuilder.Utils
         /// <inheritdoc />
         public PropertyDescriptorCollection GetProperties()
         {
-            PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(
-                this, true);
+            PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(this, true);
 
             return this.FilterProperties(pdc);
         }
@@ -535,8 +479,7 @@ namespace SandcastleBuilder.Utils
                 case BuildAction.ResourceItems:
                 case BuildAction.Tokens:
                 case BuildAction.XamlConfiguration:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder",
-                        "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder" });
                     break;
 
                 case BuildAction.Content:
@@ -545,29 +488,27 @@ namespace SandcastleBuilder.Utils
 
                 case BuildAction.Folder:
                     removeProps.AddRange(new string[] { "BuildAction", "ImageId", "AlternateText", "CopyToMedia",
-                        "SortOrder", "ExcludeFromToc" });
+                        "SortOrder" });
                     break;
 
                 case BuildAction.Image:
-                    removeProps.AddRange(new string[] { "SortOrder", "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "SortOrder" });
                     break;
 
                 case BuildAction.ContentLayout:
                 case BuildAction.SiteMap:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
-                        "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia" });
                     break;
 
                 default:    // Leave them all in
                     break;
             }
 
-            PropertyDescriptorCollection adjustedProps = new
-                PropertyDescriptorCollection(new PropertyDescriptor[] { });
+            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(new PropertyDescriptor[] { });
 
             foreach(PropertyDescriptor pd in pdc)
                 if(removeProps.IndexOf(pd.Name) == -1)
-                        adjustedProps.Add(pd);
+                    adjustedProps.Add(pd);
 
             return adjustedProps;
         }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SiteMapEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/01/2015
+// Updated : 05/08/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -465,7 +465,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Select the conceptual topic file(s)";
-                dlg.Filter = "HTML Files (*.htm, *.html)|*.htm;*.html|All files (*.*)|*.*";
+                dlg.Filter = "HTML Files (*.htm, *.html, *.md)|*.htm;*.html;*.md|All files (*.*)|*.*";
                 dlg.DefaultExt = "html";
                 dlg.InitialDirectory = (t != null && t.SourceFile.Path.Length != 0) ?
                     Path.GetDirectoryName(t.SourceFile) : projectPath;

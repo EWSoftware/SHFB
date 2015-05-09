@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/08/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -222,9 +222,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             using(SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.Title = "Save Content File As";
-                dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, *.content, *.sitemap, " +
-                    "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                    "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|Content Layout Files " +
+                dlg.Filter = "Project Files (*.aml, *.htm*, *.md, *.css, *.js, *.content, *.sitemap, " +
+                    "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.md;*.css;*.js;*.content;*.sitemap;*.tokens;" +
+                    "*.snippets;*.items|Content Files (*.aml, *.htm*, *.md)|*.aml;*.htm*;*.md|Content Layout Files " +
                     "(*.content, *.sitemap)|*.content;*.sitemap|All Files (*.*)|*.*";
                 dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
                 dlg.InitialDirectory = Directory.GetCurrentDirectory();
@@ -286,7 +286,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             else
                 selectedText = String.Empty;
 
-            if(extension == ".htm" || extension == ".html")
+            if(extension == ".htm" || extension == ".html" || extension == ".md")
                 ContentEditorControl.InsertString(textArea, topic.ToAnchor(selectedText));
             else
                 ContentEditorControl.InsertString(textArea, topic.ToLink(selectedText));
@@ -312,7 +312,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             else
                 selectedText = String.Empty;
 
-            if(extension == ".htm" || extension == ".html")
+            if(extension == ".htm" || extension == ".html" || extension == ".md")
                 ContentEditorControl.InsertString(textArea, tocEntry.ToAnchor(selectedText));
             else
                 ContentEditorControl.InsertString(textArea, tocEntry.Title);    // Not supported in MAML topics

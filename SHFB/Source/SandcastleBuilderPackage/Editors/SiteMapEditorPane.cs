@@ -221,7 +221,7 @@ namespace SandcastleBuilder.Package.Editors
                 using(WinFormsOpenFileDialog dlg = new WinFormsOpenFileDialog())
                 {
                     dlg.Title = "Select the additional content topic file";
-                    dlg.Filter = "Additional Content Topics (*.htm, *.html)|*.htm;*.html|" +
+                    dlg.Filter = "Additional Content Topics (*.htm, *.html, *.md)|*.htm;*.html;*.md|" +
                         "All files (*.*)|*.*";
                     dlg.DefaultExt = "html";
                     dlg.InitialDirectory = projectPath;
@@ -354,7 +354,7 @@ namespace SandcastleBuilder.Package.Editors
             using(WinFormsOpenFileDialog dlg = new WinFormsOpenFileDialog())
             {
                 dlg.Title = "Select the conceptual topic file(s)";
-                dlg.Filter = "HTML Files (*.htm, *.html)|*.htm;*.html|All files (*.*)|*.*";
+                dlg.Filter = "HTML Files (*.htm, *.html, *.md)|*.htm;*.html;*.md|All files (*.*)|*.*";
                 dlg.DefaultExt = "html";
                 dlg.InitialDirectory = (t != null && t.SourceFile.Path.Length != 0) ?
                     Path.GetDirectoryName(t.SourceFile) : projectPath;

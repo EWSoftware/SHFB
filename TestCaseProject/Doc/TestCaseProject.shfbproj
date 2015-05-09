@@ -69,8 +69,9 @@
     </DocumentationSources>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlEncHelpName}" />
-<HelpAttribute name="DocSet" value="NetFramework" />
-<HelpAttribute name="TargetOS" value="Windows" /></HelpAttributes>
+      <HelpAttribute name="DocSet" value="NetFramework" />
+      <HelpAttribute name="TargetOS" value="Windows" />
+    </HelpAttributes>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
       <NamespaceSummaryItem name="TestDoc" isDocumented="True">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
@@ -151,7 +152,7 @@
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>MSHelpViewer</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Major>1</Major>
     <Minor>20</Minor>

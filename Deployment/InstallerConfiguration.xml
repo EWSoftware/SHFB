@@ -20,7 +20,6 @@
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
 			<page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
-			<page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
 		</page>
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->

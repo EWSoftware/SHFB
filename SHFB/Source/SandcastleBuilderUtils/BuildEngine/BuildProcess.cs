@@ -569,9 +569,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             progressArgs = new BuildProgressEventArgs();
 
             fieldMatchEval = new MatchEvaluator(OnFieldMatch);
-            contentMatchEval = new MatchEvaluator(OnContentMatch);
-            linkMatchEval = new MatchEvaluator(OnLinkMatch);
-            codeBlockMatchEval = new MatchEvaluator(OnCodeBlockMatch);
             excludeElementEval = new MatchEvaluator(OnExcludeElement);
 
             help1Files = new Collection<string>();

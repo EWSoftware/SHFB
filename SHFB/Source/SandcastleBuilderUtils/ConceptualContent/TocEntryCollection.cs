@@ -2,14 +2,15 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/07/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a collection class used to hold the table of contents entries for additional content items
+// This file contains a collection class used to hold the table of contents entries for content layout and site
+// map files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -20,24 +21,22 @@
 // 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
 // 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
+// -------  05/07/2015  EFW  Removed all deprecated code
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml;
 
-using Sandcastle.Core;
-
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This collection class is used to hold the table of contents entries for additional content items
+    /// This collection class is used to hold the table of contents entries for content layout and site map files
     /// </summary>
     public class TocEntryCollection : BindingList<TocEntry>, ITableOfContents
     {
@@ -51,8 +50,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the project file item associated
-        /// with the collection.
+        /// This read-only property returns the project file item associated with the collection
         /// </summary>
         public FileItem FileItem
         {
@@ -83,8 +81,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the topic at which the API table of contents is
-        /// to be inserted or parented.
+        /// This is used to get the topic at which the API table of contents is to be inserted or parented
         /// </summary>
         /// <value>This will return null if no parent location has been set</value>
         public TocEntry ApiContentInsertionPoint
@@ -107,8 +104,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the parent item that will contain the API table
-        /// of contents.
+        /// This is used to get the parent item that will contain the API table of contents
         /// </summary>
         /// <returns>The parent item or null if it is the root collection.</returns>
         public TocEntry ApiContentParent
@@ -133,11 +129,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the parent collection that contains the item
-        /// where the API table of contents is to be inserted.
+        /// This is used to get the parent collection that contains the item where the API table of contents is
+        /// to be inserted.
         /// </summary>
-        /// <returns>The parent collection if there is a location defined or
-        /// null if there isn't one.</returns>
+        /// <returns>The parent collection if there is a location defined or null if there isn't one</returns>
         public TocEntryCollection ApiContentParentCollection
         {
             get
@@ -163,8 +158,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This can be used to get a topic by its unique ID (case-insensitive)
         /// </summary>
         /// <param name="id">The ID of the item to get.</param>
-        /// <value>Returns the topic with the specified
-        /// <see cref="TocEntry.Id" /> or null if not found.</value>
+        /// <value>Returns the topic with the specified <see cref="TocEntry.Id" /> or null if not found</value>
         public TocEntry this[string id]
         {
             get
@@ -201,8 +195,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="siteMap">The site map file associated with the
-        /// collection.</param>
+        /// <param name="siteMap">The site map file associated with the collection</param>
         public TocEntryCollection(FileItem siteMap)
         {
             siteMapFile = siteMap;
@@ -246,8 +239,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used to find all topics and sub-topics that match the specified predicate recursively
         /// </summary>
         /// <param name="match">The match predicate</param>
-        /// <param name="expandParentIfFound">True to expand the parent if a child node matches or false
-        /// to leave it as is.  Expanding the node ensures it is visible in the bound tree view.</param>
+        /// <param name="expandParentIfFound">True to expand the parent if a child node matches or false to leave
+        /// it as is.  Expanding the node ensures it is visible in the bound tree view.</param>
         /// <returns>An enumerable list of all matches</returns>
         public IEnumerable<TocEntry> Find(Predicate<TocEntry> match, bool expandParentIfFound)
         {
@@ -277,36 +270,24 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Convert the table of contents entry and its children to a string
         /// </summary>
-        /// <returns>The entries in HTML 1.x help format</returns>
+        /// <returns>The entries in string format</returns>
         public override string ToString()
         {
-            return this.ToString(HelpFileFormats.HtmlHelp1);
-        }
-
-        /// <summary>
-        /// Convert the table of contents entry and its children to a string
-        /// in the specified help file format.
-        /// </summary>
-        /// <param name="format">The help file format to use</param>
-        /// <returns>The entries in the specified help format</returns>
-        public string ToString(HelpFileFormats format)
-        {
             StringBuilder sb = new StringBuilder(1024);
-            this.ConvertToString(format, sb);
+
+            this.ConvertToString(sb);
+
             return sb.ToString();
         }
 
         /// <summary>
-        /// This is used to convert the collection to a string and append it
-        /// to the specified string builder.
+        /// This is used to convert the collection to a string and append it to the specified string builder
         /// </summary>
-        /// <param name="format">The help file format to use</param>
-        /// <param name="sb">The string builder to which the information is
-        /// appended.</param>
-        internal void ConvertToString(HelpFileFormats format, StringBuilder sb)
+        /// <param name="sb">The string builder to which the collection is appended</param>
+        internal void ConvertToString(StringBuilder sb)
         {
             foreach(TocEntry te in this)
-                te.ConvertToString(format, sb);
+                te.ConvertToString(sb);
         }
         #endregion
 
@@ -331,7 +312,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     sw.WriteLine("<topic id=\"{0}\" file=\"{0}\" sortOrder=\"{1}\">",
                         WebUtility.HtmlEncode(rootContainerId), rootOrder);
 
-                sw.WriteLine(this.ToString(HelpFileFormats.MSHelpViewer));
+                sw.WriteLine(this.ToString());
 
                 if(!String.IsNullOrEmpty(rootContainerId))
                     sw.WriteLine("</topic>");
@@ -348,8 +329,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used to locate the default topic if one exists
         /// </summary>
         /// <returns>The default topic if found or null if not found</returns>
-        /// <remarks>The first entry found is returned.  Nodes are searched
-        /// recursively.</remarks>
+        /// <remarks>The first entry found is returned.  Nodes are searched recursively.</remarks>
         public TocEntry FindDefaultTopic()
         {
             TocEntry defaultTopic;
@@ -372,69 +352,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This will remove excluded nodes from a TOC created off of the
-        /// additional content items in a project.  In addition, it merges
-        /// the information from folder entries into the folder nodes.
+        /// This is used to load the table of contents entries from the site map file associated with the
+        /// collection.
         /// </summary>
-        /// <param name="parent">The parent node</param>
-        public void RemoveExcludedNodes(TocEntry parent)
-        {
-            TocEntry current;
-            string source;
-
-            for(int idx = 0; idx < this.Count; idx++)
-            {
-                current = this[idx];
-                source = current.SourceFile;
-
-                if(parent != null && !String.IsNullOrEmpty(source))
-                {
-                    // If the filename matches the folder, copy the info to
-                    // the parent folder item.
-                    source = source.ToLowerInvariant();
-
-                    if(Path.GetDirectoryName(source).EndsWith(
-                      Path.GetFileNameWithoutExtension(source),
-                      StringComparison.Ordinal))
-                    {
-                        parent.Title = current.Title;
-
-                        if(current.IncludePage)
-                        {
-                            parent.SourceFile = current.SourceFile;
-                            parent.DestinationFile = current.DestinationFile;
-                            parent.IsDefaultTopic = current.IsDefaultTopic;
-                        }
-
-                        parent.SortOrder = current.SortOrder;
-                        parent.ApiParentMode = current.ApiParentMode;
-                        current.IncludePage = false;
-                    }
-                }
-
-                // If not to be included in the TOC, remove it
-                if(!current.IncludePage)
-                {
-                    this.Remove(current);
-                    idx--;
-                }
-                else                        
-                    if(current.Children.Count != 0)
-                        current.Children.RemoveExcludedNodes(current);
-            }
-        }
-
-        /// <summary>
-        /// This is used to load the table of contents entries from the site
-        /// map file associated with the collection.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">This is thrown if a
-        /// site map has not been associated with the collection.</exception>
+        /// <exception cref="InvalidOperationException">This is thrown if a site map has not been associated with
+        /// the collection.</exception>
         public void Load()
         {
             if(siteMapFile == null)
-                throw new InvalidOperationException("A site map has not " +
-                    "been associated with the collection");
+                throw new InvalidOperationException("A site map has not been associated with the collection");
 
             XmlDocument siteMap = new XmlDocument();
             TocEntry entry;
@@ -450,16 +376,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to save the table of contents entries to the site map
-        /// file associated with the collection.
+        /// This is used to save the table of contents entries to the site map file associated with the
+        /// collection.
         /// </summary>
-        /// <exception cref="InvalidOperationException">This is thrown if a
-        /// site map has not been associated with the collection.</exception>
+        /// <exception cref="InvalidOperationException">This is thrown if a site map has not been associated with
+        /// the collection.</exception>
         public void Save()
         {
             if(siteMapFile == null)
-                throw new InvalidOperationException("A site map has not " +
-                    "been associated with the collection");
+                throw new InvalidOperationException("A site map has not been associated with the collection");
 
             XmlDocument siteMap = new XmlDocument();
 
@@ -510,8 +435,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used by contained items to notify the parent that a child
-        /// list changed and thus the collection should be marked as dirty.
+        /// This is used by contained items to notify the parent that a child list changed and thus the
+        /// collection should be marked as dirty.
         /// </summary>
         /// <param name="t">The item that changed</param>
         /// <param name="e">The list change event arguments from the child collection</param>
@@ -528,19 +453,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// Add all topics from the specified folder recursively to the
-        /// collection and to the given project file.
+        /// Add all topics from the specified folder recursively to the collection and to the given project file
         /// </summary>
         /// <param name="folder">The folder from which to get the files</param>
-        /// <param name="basePath">The base path to remove from files copied
-        /// from another folder into the project folder.  On the first call,
-        /// this should match the <paramref name="folder"/> value.</param>
+        /// <param name="basePath">The base path to remove from files copied from another folder into the project
+        /// folder.  On the first call, this should match the <paramref name="folder"/> value.</param>
         /// <param name="project">The project to which the files are added</param>
-        /// <remarks>Only actual HTML content topic files are added.  They must
-        /// have a ".htm?" extension.  Folders will be added as sub-topics
-        /// recursively.  If a file with the same name as the folder exists,
-        /// it will be associated with the container node.  If no such file
-        /// exists, an empty container node is created.</remarks>
+        /// <remarks>Only actual HTML and markdown content topic files are added.  They must have a ".htm?" or
+        /// "*.md" extension.  Folders will be added as sub-topics recursively.  If a file with the same name as
+        /// the folder exists, it will be associated with the container node.  If no such file exists, an empty
+        /// container node is created.</remarks>
         public void AddTopicsFromFolder(string folder, string basePath, SandcastleProject project)
         {
             TocEntry topic, removeTopic;
@@ -550,7 +472,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 basePath += "\\";
 
             // Add files
-            foreach(string file in Directory.EnumerateFiles(folder, "*.htm?"))
+            foreach(string file in Directory.EnumerateFiles(folder, "*.htm?").Concat(
+              Directory.EnumerateFiles(folder, "*.md")))
             {
                 // The file must reside under the project path
                 if(Path.GetDirectoryName(file).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
@@ -585,8 +508,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 foreach(TocEntry t in topic.Children)
                     if(Path.GetFileNameWithoutExtension(t.SourceFile) == name)
                     {
-                        // If found, remove it as it represents the container
-                        // node.
+                        // If found, remove it as it represents the container node
                         topic.Title = name;
                         topic.SourceFile = t.SourceFile;
                         removeTopic = t;
@@ -603,8 +525,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is overridden to set the inserted item's parent to this
-        /// collection.
+        /// This is overridden to set the inserted item's parent to this collection
         /// </summary>
         /// <inheritdoc />
         protected override void InsertItem(int index, TocEntry item)
@@ -614,8 +535,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is overridden to set the inserted item's parent to this
-        /// collection.
+        /// This is overridden to set the inserted item's parent to this collection
         /// </summary>
         /// <inheritdoc />
         protected override void SetItem(int index, TocEntry item)
@@ -639,8 +559,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used to get the site map file associated with the
-        /// collection.
+        /// This is used to get the site map file associated with the collection
         /// </summary>
         public FileItem ContentLayoutFile
         {
@@ -652,7 +571,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="toc">The table of contents collection</param>
         /// <param name="pathProvider">The base path provider</param>
-        /// <param name="includeInvisibleItems">Ignored here as sitemaps do not support this option..</param>
+        /// <param name="includeInvisibleItems">Ignored here as site maps do not support this option</param>
         public void GenerateTableOfContents(TocEntryCollection toc, IBasePathProvider pathProvider,
           bool includeInvisibleItems)
         {
