@@ -1,33 +1,30 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : NodeIcon.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the enumerated type that defines the node icon index
-// values for the project explorer.
+// This file contains the enumerated type that defines the node icon index values for the project explorer
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.0  07/29/2008  EFW  Created the code
-// 1.8.0.3  12/04/2009  EFW  Added support for resource item files
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/29/2008  EFW  Created the code
+// 12/04/2009  EFW  Added support for resource item files
+//===============================================================================================================
 
 using System;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
     /// <summary>
-    /// This defines the <see cref="ProjectExplorerWindow" /> tree view node
-    /// icon index values.
+    /// This defines the <see cref="ProjectExplorerWindow" /> tree view node icon index values
     /// </summary>
     [Serializable]
     public enum NodeIcon
@@ -50,15 +47,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
         ImageFile,
         /// <summary>Code snippets file</summary>
         CodeSnippets,
-        /// <summary>Conceptual content layout/sitemap file</summary>
+        /// <summary>Conceptual content layout/site map file</summary>
         ContentLayout,
         /// <summary>Conceptual content token file</summary>
         TokenFile,
-        /// <summary>Additional content topic transformation file</summary>
-        TopicTransform,
         /// <summary>XML file</summary>
         XmlFile,
-        /// <summary>General content file (MAML, HTML, stylesheet, etc.)</summary>
+        /// <summary>General content file (MAML, HTML, style sheet, etc.)</summary>
         Content,
         /// <summary>Resource item file</summary>
         ResourceItemFile

@@ -2,16 +2,16 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to add additional reference link targets to the Reflection Index Data
 // and Resolve Reference Links build components so that links can be created to other third party help in a
-// Help 2 collection.
+// help collection or additional online MSDN content.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -43,15 +43,15 @@ using SandcastleBuilder.Utils.BuildEngine;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is designed to add additional reference link targets to the <b>Reflection Index
-    /// Data</b> and <b>Resolve Reference Links</b> build components so that links can be created to other third
-    /// party help in Help 2/MS Help Viewer collections or additional online MSDN content.
+    /// This plug-in class is designed to add additional reference link targets to the <strong>Reflection Index
+    /// Data</strong> and <strong>Resolve Reference Links</strong> build components so that links can be created
+    /// to other third party help in a help collection or additional online MSDN content.
     /// </summary>
     [HelpFileBuilderPlugInExport("Additional Reference Links", IsConfigurable = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to add additional reference link targets to the Reflection Index " +
         "Data and Resolve Reference Links build component so that links can be created to other third " +
-        "party help in a Help 2 collection, MS Help Viewer collection, or additional online MSDN content.")]
+        "party help in a help collection or additional online MSDN content.")]
     public sealed class AdditionalReferenceLinksPlugIn : IPlugIn
     {
         #region Private data members
@@ -355,15 +355,11 @@ namespace SandcastleBuilder.PlugIns
                                 attr.Value = vs.HtmlSdkLinkType.ToString();
                                 break;
 
-                            case HelpFileFormats.MSHelp2:
-                                attr.Value = vs.MSHelp2SdkLinkType.ToString();
-                                break;
-
                             case HelpFileFormats.MSHelpViewer:
                                 attr.Value = vs.MSHelpViewerSdkLinkType.ToString();
                                 break;
 
-                            default:    // Website and Open XML format
+                            default:    // Website, Open XML, and markdown formats
                                 attr.Value = vs.WebsiteSdkLinkType.ToString();
                                 break;
                         }
@@ -416,7 +412,6 @@ namespace SandcastleBuilder.PlugIns
             {
                 // For the plug-in, we'll override some project settings
                 project.HtmlHelp1xCompilerPath = new FolderPath(builder.Help1CompilerFolder, true, project);
-                project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
 

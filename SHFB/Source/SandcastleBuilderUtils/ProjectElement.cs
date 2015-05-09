@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ProjectElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 05/08/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a wrapper class for build items in the project.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  06/23/2008  EFW  Created the code
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 06/23/2008  EFW  Created the code
+// 07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //===============================================================================================================
 
 using System;
@@ -75,8 +75,6 @@ namespace SandcastleBuilder.Utils
         public const string AlternateText = "AlternateText";
         /// <summary>Copy to media folder</summary>
         public const string CopyToMedia = "CopyToMedia";
-        /// <summary>Exclude from table of contents</summary>
-        public const string ExcludeFromToc = "ExcludeFromToc";
         /// <summary>Sort order</summary>
         public const string SortOrder = "SortOrder";
 

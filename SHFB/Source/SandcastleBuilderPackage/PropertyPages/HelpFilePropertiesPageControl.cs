@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/01/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help File category properties.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -267,12 +267,16 @@ namespace SandcastleBuilder.Package.PropertyPages
                 txtHelpTitle.Text = txtHelpTitle.Text.Trim();
                 txtHtmlHelpName.Text = txtHtmlHelpName.Text.Trim();
                 txtRootNamespaceTitle.Text = txtRootNamespaceTitle.Text.Trim();
+                txtHelpFileVersion.Text = txtHelpFileVersion.Text.Trim();
 
                 if(txtHelpTitle.Text.Length == 0)
                     txtHelpTitle.Text = "A Sandcastle Documented Class Library";
 
                 if(txtHtmlHelpName.Text.Length == 0)
                     txtHtmlHelpName.Text = "Documentation";
+
+                if(txtHelpFileVersion.Text.Length == 0)
+                    txtHelpFileVersion.Text = "1.0.0.0";
 
                 if(udcMaximumGroupParts.Text.Trim().Length == 0)
                     udcMaximumGroupParts.Value = 2;
@@ -287,6 +291,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             switch(propertyName)
             {
                 case "HelpTitle":
+                case "HelpFileVersion":
                 case "HtmlHelpName":
                 case "CopyrightHref":
                 case "CopyrightText":
@@ -447,11 +452,19 @@ namespace SandcastleBuilder.Package.PropertyPages
 #else
                 string prop = base.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
 #endif
-                // Try to get it based on the current setting.  If still not found, use the first one.
+                // Try to get it based on the current setting.  If still not found, use the default.
                 pss = presentationStyles.FirstOrDefault(s => s.Id.Equals(prop, StringComparison.OrdinalIgnoreCase));
 
                 if(pss == null)
-                    cboPresentationStyle.SelectedIndex = 0;
+                {
+                    pss = presentationStyles.FirstOrDefault(s => s.Id.Equals(Constants.DefaultPresentationStyle,
+                        StringComparison.OrdinalIgnoreCase));
+
+                    if(pss == null)
+                        cboPresentationStyle.SelectedIndex = 0;
+                    else
+                        cboPresentationStyle.SelectedValue = pss.Id;
+                }
                 else
                     cboPresentationStyle.SelectedValue = pss.Id;
 

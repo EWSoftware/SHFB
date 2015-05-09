@@ -37,8 +37,6 @@ namespace SandcastleBuilder.PlugIns
             this.tabConfig = new System.Windows.Forms.TabControl();
             this.pgHtmlHelp1 = new System.Windows.Forms.TabPage();
             this.ucHtmlHelp1 = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
-            this.pgMSHelp2 = new System.Windows.Forms.TabPage();
-            this.ucMSHelp2 = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
             this.pgMSHelpViewer = new System.Windows.Forms.TabPage();
             this.chkRenameMSHA = new System.Windows.Forms.CheckBox();
             this.ucMSHelpViewer = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
@@ -53,7 +51,6 @@ namespace SandcastleBuilder.PlugIns
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.tabConfig.SuspendLayout();
             this.pgHtmlHelp1.SuspendLayout();
-            this.pgMSHelp2.SuspendLayout();
             this.pgMSHelpViewer.SuspendLayout();
             this.pgWebsite.SuspendLayout();
             this.pgOpenXml.SuspendLayout();
@@ -102,7 +99,6 @@ namespace SandcastleBuilder.PlugIns
             // tabConfig
             // 
             this.tabConfig.Controls.Add(this.pgHtmlHelp1);
-            this.tabConfig.Controls.Add(this.pgMSHelp2);
             this.tabConfig.Controls.Add(this.pgMSHelpViewer);
             this.tabConfig.Controls.Add(this.pgWebsite);
             this.tabConfig.Controls.Add(this.pgOpenXml);
@@ -130,24 +126,6 @@ namespace SandcastleBuilder.PlugIns
             this.ucHtmlHelp1.Name = "ucHtmlHelp1";
             this.ucHtmlHelp1.Size = new System.Drawing.Size(596, 257);
             this.ucHtmlHelp1.TabIndex = 0;
-            // 
-            // pgMSHelp2
-            // 
-            this.pgMSHelp2.Controls.Add(this.ucMSHelp2);
-            this.pgMSHelp2.Location = new System.Drawing.Point(4, 25);
-            this.pgMSHelp2.Name = "pgMSHelp2";
-            this.pgMSHelp2.Padding = new System.Windows.Forms.Padding(3);
-            this.pgMSHelp2.Size = new System.Drawing.Size(606, 302);
-            this.pgMSHelp2.TabIndex = 1;
-            this.pgMSHelp2.Text = "MS Help 2";
-            this.pgMSHelp2.UseVisualStyleBackColor = true;
-            // 
-            // ucMSHelp2
-            // 
-            this.ucMSHelp2.Location = new System.Drawing.Point(5, 12);
-            this.ucMSHelp2.Name = "ucMSHelp2";
-            this.ucMSHelp2.Size = new System.Drawing.Size(596, 257);
-            this.ucMSHelp2.TabIndex = 0;
             // 
             // pgMSHelpViewer
             // 
@@ -272,7 +250,6 @@ namespace SandcastleBuilder.PlugIns
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             this.tabConfig.ResumeLayout(false);
             this.pgHtmlHelp1.ResumeLayout(false);
-            this.pgMSHelp2.ResumeLayout(false);
             this.pgMSHelpViewer.ResumeLayout(false);
             this.pgMSHelpViewer.PerformLayout();
             this.pgWebsite.ResumeLayout(false);
@@ -291,12 +268,10 @@ namespace SandcastleBuilder.PlugIns
         private System.Windows.Forms.LinkLabel lnkProjectSite;
         private System.Windows.Forms.TabControl tabConfig;
         private System.Windows.Forms.TabPage pgHtmlHelp1;
-        private System.Windows.Forms.TabPage pgMSHelp2;
         private System.Windows.Forms.TabPage pgWebsite;
         private System.Windows.Forms.CheckBox chkDeleteAfterDeploy;
         private System.Windows.Forms.TabPage pgMSHelpViewer;
         private DeploymentConfigUserControl ucHtmlHelp1;
-        private DeploymentConfigUserControl ucMSHelp2;
         private DeploymentConfigUserControl ucMSHelpViewer;
         private DeploymentConfigUserControl ucWebsite;
         private System.Windows.Forms.CheckBox chkRenameMSHA;

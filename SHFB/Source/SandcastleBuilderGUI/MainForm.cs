@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/01/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -32,6 +32,7 @@
 // 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
 // -------  02/15/2014  EFW  Added support for the Open XML output format
 //          04/01/2015  EFW  Added support for the Markdown file format
+//          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -1453,7 +1454,6 @@ namespace SandcastleBuilder.Gui
         private void ctxViewHelpMenu_Opening(object sender, CancelEventArgs e)
         {
             miViewHtmlHelp1.Enabled = ((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0);
-            miViewMSHelp2.Enabled = ((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0);
             miViewAspNetWebsite.Enabled = miViewHtmlWebsite.Enabled =
                 ((project.HelpFileFormat & HelpFileFormats.Website) != 0);
             miViewOpenXml.Enabled = ((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0);
@@ -1473,23 +1473,20 @@ namespace SandcastleBuilder.Gui
             if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 miViewBuiltHelpFile_Click(miViewHtmlHelp1, e);
             else
-                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
-                    miViewBuiltHelpFile_Click(miViewMSHelp2, e);
+                if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
+                    miViewMSHelpViewer_Click(sender, e);
                 else
-                    if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
-                        miViewMSHelpViewer_Click(sender, e);
+                    if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
+                        miViewBuiltHelpFile_Click(miViewOpenXml, e);
                     else
-                        if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
-                            miViewBuiltHelpFile_Click(miViewOpenXml, e);
+                        if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
+                            miViewBuiltHelpFile_Click(miViewHelpFile, e);
                         else
-                            if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
-                                miViewBuiltHelpFile_Click(miViewHelpFile, e);
-                            else
-                                miViewAspNetWebsite_Click(sender, e);
+                            miViewAspNetWebsite_Click(sender, e);
         }
 
         /// <summary>
-        /// View the last build HTML Help 1 file, MS Help 2 file, or website Index.aspx/Index.html page
+        /// View the last build help output
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -1498,7 +1495,7 @@ namespace SandcastleBuilder.Gui
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
-            string outputPath = project.OutputPath, help2Viewer = Settings.Default.HTMLHelp2ViewerPath;
+            string outputPath = project.OutputPath;
 
             // If the output path contains MSBuild variables, get the evaluated value from the project
             if(outputPath.IndexOf("$(", StringComparison.Ordinal) != -1)
@@ -1512,27 +1509,13 @@ namespace SandcastleBuilder.Gui
             if(sender == miViewHtmlHelp1)
                 outputPath += project.HtmlHelpName + ".chm";
             else
-                if(sender == miViewMSHelp2)
-                {
-                    outputPath += project.HtmlHelpName + ".hxs";
-
-                    if(help2Viewer.Length == 0 || !File.Exists(help2Viewer))
-                    {
-                        MessageBox.Show("MS Help 2 files must be registered in a collection to be viewed " +
-                            "or you can use a standalone viewer.  Use Project | User Preferences to define a " +
-                            "standalone viewer.  See Links to Resources in the help file if you need one.",
-                            Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                }
+                if(sender == miViewOpenXml)
+                    outputPath += project.HtmlHelpName + ".docx";
                 else
-                    if(sender == miViewOpenXml)
-                        outputPath += project.HtmlHelpName + ".docx";
+                    if(sender == miViewHelpFile)
+                        outputPath += "_Sidebar.md";
                     else
-                        if(sender == miViewHelpFile)
-                            outputPath += "_Sidebar.md";
-                        else
-                            outputPath += "Index.html";
+                        outputPath += "Index.html";
 
             // If there are substitution tags present, have a go at resolving them
             if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
@@ -1562,10 +1545,7 @@ namespace SandcastleBuilder.Gui
 
             try
             {
-                if(outputPath.EndsWith(".hxs", StringComparison.OrdinalIgnoreCase))
-                    System.Diagnostics.Process.Start(help2Viewer, outputPath);
-                else
-                    System.Diagnostics.Process.Start(outputPath);
+                System.Diagnostics.Process.Start(outputPath);
             }
             catch(Exception ex)
             {

@@ -20,7 +20,6 @@
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
 			<page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
-			<page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
 		</page>
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
@@ -31,26 +30,18 @@
 			installerName="SHFBVisualStudioPackage.vsix">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
 					 be in version order from earliest to most recent. -->
-			<visualStudio version="10.0" name="Visual Studio 2010" location="%VS100COMNTOOLS%\..\IDE" />
-			<visualStudio version="11.0" name="Visual Studio 2012" location="%VS110COMNTOOLS%\..\IDE" />
 			<visualStudio version="12.0" name="Visual Studio 2013" location="%VS120COMNTOOLS%\..\IDE" />
 			<visualStudio version="14.0" name="Visual Studio 2015" location="%VS140COMNTOOLS%\..\IDE" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
-			<visualStudio version="Visual Studio 2008" location="%VS90COMNTOOLS%\..\..\Xml\Schemas" />
-			<visualStudio version="Visual Studio 2010" location="%VS100COMNTOOLS%\..\..\Xml\Schemas" />
-			<visualStudio version="Visual Studio 2012" location="%VS110COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are
 					 in the My Documents folder. -->
-			<visualStudio version="Visual Studio 2008" location="Visual Studio 2008\Code Snippets\Xml\My Xml Snippets" />
-			<visualStudio version="Visual Studio 2010" location="Visual Studio 2010\Code Snippets\Xml\My Xml Snippets" />
-			<visualStudio version="Visual Studio 2012" location="Visual Studio 2012\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2015" location="Visual Studio 2015\Code Snippets\Xml\My Xml Snippets" />
 		</page>

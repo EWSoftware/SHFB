@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/07/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a conceptual content topic.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -39,8 +39,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// <summary>
     /// This represents a conceptual content topic.
     /// </summary>
-    /// <remarks>This class is serializable so that it can be copied to the clipboard</remarks>
-    [DefaultProperty("Title")]
     public class Topic : INotifyPropertyChanged
     {
         #region Private data members
@@ -61,19 +59,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to track the topic's parent collection
         /// </summary>
-        /// <remarks>This is used by the designer to move items around within
-        /// the collection.</remarks>
-        [Browsable(false)]
+        /// <remarks>This is used by the designer to move items around within the collection</remarks>
         public TopicCollection Parent { get; internal set; }
 
         /// <summary>
-        /// This is used to get or set the topic file information related to
-        /// the topic.
+        /// This is used to get or set the topic file information related to the topic
         /// </summary>
-        /// <value>If there is no topic file, this topic serves as a container
-        /// node for its sub-topics and no content will be displayed for it
-        /// when selected in the help file's table of contents.</value>
-        [Browsable(false)]
+        /// <value>If there is no topic file, this topic serves as a container node for its sub-topics and no
+        /// content will be displayed for it when selected in the help file's table of contents.</value>
         public TopicFile TopicFile
         {
             get { return topicFile; }
@@ -98,21 +91,19 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This read-only property returns true if there is no associated
-        /// topic file by choice rather than it not being found.
+        /// This read-only property returns true if there is no associated topic file by choice rather than it
+        /// not being found.
         /// </summary>
-        [Browsable(false)]
         public bool NoTopicFile
         {
             get { return noFile; }
         }
 
         /// <summary>
-        /// This is used to get the content ID from the content layout file.
+        /// This is used to get the content ID from the content layout file
         /// </summary>
-        /// <remarks>This should match an ID from a project file.  If not,
-        /// it will serve as an container node with no associated topic.</remarks>
-        [Browsable(false)]
+        /// <remarks>This should match an ID from a project file.  If not, it will serve as an container node
+        /// with no associated topic.</remarks>
         public string ContentId
         {
             get { return contentId; }
@@ -121,7 +112,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get the unique ID of the topic
         /// </summary>
-        [Category("File"), Description("The unique ID of the topic")]
         public string Id
         {
             get
@@ -136,7 +126,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get the topic's revision number
         /// </summary>
-        [Category("File"), Description("The topic's revision number")]
         public int RevisionNumber
         {
             get
@@ -151,7 +140,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get the filename of the related project file (if any)
         /// </summary>
-        [Category("File"), Description("The associated project file (if any)")]
         public string TopicFilename
         {
             get
@@ -171,21 +159,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This read-only property is used to get the document type
         /// </summary>
-        [Browsable(false)]
         public DocumentType DocumentType
         {
             get { return topicFile.DocumentType; }
         }
 
         /// <summary>
-        /// This is used to get the required title that should be used for the
-        /// topic.
+        /// This is used to get the required title that should be used for the topic
         /// </summary>
-        /// <value>If not set, the topic filename without a path or extension
-        /// is used.</value>
-        [Category("Topic"), Description("The required topic title.  If " +
-          "not set, it will use the filename without a path or extension."),
-          DefaultValue(null)]
+        /// <value>If not set, the topic filename without a path or extension is used</value>
         public string Title
         {
             get { return title; }
@@ -204,15 +186,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get or set the topic's optional table of contents
-        /// title.
+        /// This is used to get or set the topic's optional table of contents title
         /// </summary>
-        /// <value>This can be used to provide a different topic title in the
-        /// table of contents.  If not set, it will be set to the
-        /// <see cref="Title" /> value.</value>
-        [Category("Topic"), Description("The optional table of contents " +
-          "title.  If not set, it will use the Title property value."),
-          DefaultValue(null)]
+        /// <value>This can be used to provide a different topic title in the table of contents.  If not set, it
+        /// will be set to the <see cref="Title" /> value.</value>
         public string TocTitle
         {
             get { return tocTitle; }
@@ -231,14 +208,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get or set the topic's optional link text.
+        /// This is used to get or set the topic's optional link text
         /// </summary>
-        /// <value>This can be used to provide different text that is used in
-        /// links that refer to the topic.  If not set, it will be set to the
-        /// <see cref="Title" /> value.</value>
-        [Category("Topic"), Description("The optional text to use for links " +
-          "that refer to this topic.  If not set, it will use the Title " +
-          "property value."), DefaultValue(null)]
+        /// <value>This can be used to provide different text that is used in links that refer to the topic.  If
+        /// not set, it will be set to the <see cref="Title" /> value.</value>
         public string LinkText
         {
             get { return linkText; }
@@ -256,14 +229,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the topic is visible
-        /// in the table of contents.
+        /// This is used to get or set whether or not the topic is visible in the table of contents
         /// </summary>
-        /// <value>If set to false, the item will still be added to the
-        /// help file but to be accessible, a link to it must appear in
-        /// one of the other topics.</value>
-        [Category("Topic"), Description("Indicate whether or not the " +
-          "topic is visible in the table of contents"), DefaultValue(true)]
+        /// <value>If set to false, the item will still be added to the help file but to be accessible, a link to
+        /// it must appear in one of the other topics.</value>
         public bool Visible
         {
             get { return isVisible; }
@@ -275,8 +244,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     this.OnPropertyChanged("Visible");
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
-                    // The default topic must be visible.  The MSHV root must not be visible.
-                    // A hidden topic cannot be the API insertion point.
+                    // The default topic must be visible.  The MSHV root must not be visible.  A hidden topic
+                    // cannot be the API insertion point.
                     if(!isVisible)
                     {
                         this.IsDefaultTopic = false;
@@ -289,39 +258,28 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the additional attributes that will be added
-        /// to MAML topic.
+        /// This is used to get the additional attributes that will be added to MAML topic
         /// </summary>
-        [Category("Topic Metadata"), Description("Additional help attributes " +
-          "to add to the generated help topic (MAML topics only)")]
         public MSHelpAttrCollection HelpAttributes
         {
             get { return helpAttributes; }
         }
 
         /// <summary>
-        /// This is used to get the index keywords that will be added to the
-        /// MAML topic.
+        /// This is used to get the index keywords that will be added to the MAML topic
         /// </summary>
-        [Category("Topic Metadata"), Description("Help index keyword that " +
-          "should be add to the generated help topic (MAML topics only)")]
         public MSHelpKeywordCollection Keywords
         {
             get { return keywords; }
         }
 
         /// <summary>
-        /// This read-only property is used to get a title for display
-        /// (i.e. in the designer).
+        /// This read-only property is used to get a title for display (i.e. in the designer)
         /// </summary>
-        /// <value>If there is a <see cref="TocTitle" /> specified, it is used.
-        /// If not, the <see cref="Title" /> value is used.  If it does not
-        /// contain a value, the filename without the path and extension is
-        /// used.  If the file has not been specified, does not exist, the
-        /// document type is not recognized, or it is invalid (i.e. badly
-        /// formed), it returns an appropriate message describing the
-        /// problem.</value>
-        [Browsable(false)]
+        /// <value>If there is a <see cref="TocTitle" /> specified, it is used.  If not, the <see cref="Title" />
+        /// value is used.  If it does not contain a value, the filename without the path and extension is used.
+        /// If the file has not been specified, does not exist, the document type is not recognized, or it is
+        /// invalid (i.e. badly formed), it returns an appropriate message describing the problem.</value>
         public string DisplayTitle
         {
             get
@@ -349,19 +307,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get the sub-topics beneath this topic.
+        /// This is used to get the sub-topics beneath this topic
         /// </summary>
-        [Browsable(false)]
         public TopicCollection Subtopics
         {
             get { return subtopics; }
         }
 
         /// <summary>
-        /// This is used to when merging TOC files to determine the default
-        /// topic.
+        /// This is used to when merging TOC files to determine the default topic
         /// </summary>
-        [Browsable(false)]
         public bool IsDefaultTopic
         {
             get { return isDefaultTopic; }
@@ -373,7 +328,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     this.OnPropertyChanged("IsDefaultTopic");
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
-                    // The default topic must be visible and cannot be the MSHV root container.
+                    // The default topic must be visible and cannot be the MSHV root container
                     if(isDefaultTopic)
                     {
                         this.Visible = true;
@@ -384,10 +339,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to specify how API content is parented to this topic
-        /// or the topic's parent
+        /// This is used to specify how API content is parented to this topic or the topic's parent
         /// </summary>
-        [Browsable(false)]
         public ApiParentMode ApiParentMode
         {
             get { return apiParentMode; }
@@ -410,10 +363,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the topic will server as
-        /// the root content container in MS Help Viewer output
+        /// This is used to get or set whether or not the topic will server as the root content container in MS
+        /// Help Viewer output
         /// </summary>
-        [Browsable(false)]
         public bool IsMSHVRootContentContainer
         {
             get { return isMSHVRoot; }
@@ -425,8 +377,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     this.OnPropertyChanged("IsMSHVRootContentContainer");
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
-                    // The MSHV root container must not be visible and cannot be the default topic
-                    // or API insertion point.
+                    // The MSHV root container must not be visible and cannot be the default topic or API
+                    // insertion point.
                     if(isMSHVRoot)
                     {
                         this.Visible = this.IsDefaultTopic = false;
@@ -441,9 +393,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get or set whether or not the entity is selected
         /// </summary>
-        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved
-        /// so that its state is remembered when reloaded.</remarks>
-        [Browsable(false)]
+        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved so that
+        /// its state is remembered when reloaded.</remarks>
         public bool IsSelected
         {
             get { return isSelected; }
@@ -460,9 +411,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get or set whether or not the entity is expanded
         /// </summary>
-        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved
-        /// so that its state is remembered when reloaded.</remarks>
-        [Browsable(false)]
+        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved so that
+        /// its state is remembered when reloaded.</remarks>
         public bool IsExpanded
         {
             get { return isExpanded && this.Subtopics.Count != 0; }
@@ -477,7 +427,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
         
         /// <summary>
-        /// This returns a description of the topic that can be used as a tooltip
+        /// This returns a description of the topic that can be used as a tool tip
         /// </summary>
         public string ToolTip
         {
@@ -524,38 +474,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
         #endregion
 
-        #region Designer methods
-        //=====================================================================
-        // Designer methods
-
-        /// <summary>
-        /// This is used to see if the <see cref="HelpAttributes"/> property
-        /// should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// collection and we don't want to lose all items accidentally.</remarks>
-        private bool ShouldSerializeHelpAttributes()
-        {
-            return (this.HelpAttributes.Count != 0);
-        }
-
-        /// <summary>
-        /// This is used to see if the <see cref="Keywords"/> property should
-        /// be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// collection and we don't want to lose all items accidentally.</remarks>
-        private bool ShouldSerializeKeywords()
-        {
-            return (this.Keywords.Count != 0);
-        }
-        #endregion
-
-        #region Constructors
+        #region Constructor
         //=====================================================================
 
         /// <summary>
@@ -604,7 +523,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        /// <remarks>This may not be the best way to handle this.</remarks>
+        /// <remarks>This may not be the best way to handle this</remarks>
         private void childList_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(this.Parent != null)
@@ -616,11 +535,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used to load the topic information from the project
-        /// file.
+        /// This is used to load the topic information from the project file
         /// </summary>
-        /// <param name="xr">The XML text reader from which the information
-        /// is loaded.</param>
+        /// <param name="xr">The XML text reader from which the information is loaded</param>
         internal void ReadXml(XmlReader xr)
         {
             Topic newTopic;
@@ -689,8 +606,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to save the topic information to the project file
         /// </summary>
-        /// <param name="xw">The XML text writer to which the information
-        /// is written.</param>
+        /// <param name="xw">The XML text writer to which the information is written</param>
         internal void WriteXml(XmlWriter xw)
         {
             xw.WriteStartElement("Topic");
@@ -759,8 +675,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 // Link text is optional
                 if(!String.IsNullOrEmpty(linkText))
-                    linkElement = String.Format(CultureInfo.InvariantCulture,
-                        "    <linkText>{0}</linkText>\r\n", WebUtility.HtmlEncode(linkText));
+                    linkElement = String.Format(CultureInfo.InvariantCulture, "    <linkText>{0}</linkText>\r\n",
+                        WebUtility.HtmlEncode(linkText));
 
                 // It's small enough that we'll just write it out as a string rather than using an XML writer
                 using(StreamWriter sw = new StreamWriter(Path.Combine(folder, this.Id + ".cmp.xml"),
@@ -791,8 +707,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// as well.</remarks>
         internal void WriteMetadata(XmlWriter writer, BuildProcess builder)
         {
-            // MS Help Viewer doesn't support empty place holders so we automatically
-            // generate a dummy place holder file for them.
+            // MS Help Viewer doesn't support empty place holders so we automatically generate a dummy place
+            // holder file for them.
             if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
             {
                 writer.WriteStartElement("topic");
@@ -856,8 +772,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     writer.WriteEndElement();
                 }
 
-                // If this is the default topic and the NamedUrlIndex keywords
-                // for DefaultPage and/or HomePage are not present, add them.
+                // If this is the default topic and the NamedUrlIndex keywords for DefaultPage and/or HomePage
+                // are not present, add them.
                 if(this.IsDefaultTopic)
                 {
                     if(!keywords.Contains(new MSHelpKeyword("NamedUrlIndex", "DefaultPage")))
@@ -886,19 +802,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// Write out the <b>BuildAssembler</b> manifest entry
+        /// Write out the <strong>BuildAssembler</strong> manifest entry
         /// </summary>
         /// <param name="writer">The XML writer to which the entry is written</param>
         /// <param name="builder">The build process</param>
-        /// <remarks>This will recursively write out entries for sub-topics
-        /// as well.</remarks>
+        /// <remarks>This will recursively write out entries for sub-topics as well</remarks>
         internal void WriteManifest(XmlWriter writer, BuildProcess builder)
         {
-            // MS Help Viewer doesn't support empty place holders so we automatically
-            // generate a dummy place holder file for them.  Don't add an entry for
-            // raw HTML files.
-            if((!noFile && topicFile.DocumentType != DocumentType.Html) ||
-              (noFile && (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0))
+            // MS Help Viewer doesn't support empty place holders so we automatically generate a dummy place
+            // holder file for them.
+            if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
             {
                 writer.WriteStartElement("topic");
                 writer.WriteAttributeString("id", this.Id);

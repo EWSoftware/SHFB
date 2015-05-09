@@ -32,16 +32,13 @@
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnSelectMSHCViewer = new System.Windows.Forms.Button();
-            this.btnSelectHxSViewer = new System.Windows.Forms.Button();
             this.lnkSHFBInfo = new System.Windows.Forms.LinkLabel();
             this.txtMSHelpViewerPath = new System.Windows.Forms.TextBox();
             this.lblMSHelpViewer = new System.Windows.Forms.Label();
             this.chkOpenHelpAfterBuild = new System.Windows.Forms.CheckBox();
-            this.txtHxSViewerPath = new System.Windows.Forms.TextBox();
             this.udcASPNetDevServerPort = new System.Windows.Forms.NumericUpDown();
             this.chkVerboseLogging = new System.Windows.Forms.CheckBox();
             this.lblASPPort = new System.Windows.Forms.Label();
-            this.lblHelp2Viewer = new System.Windows.Forms.Label();
             this.chkUseExternalBrowser = new System.Windows.Forms.CheckBox();
             this.chkOpenLogViewerOnFailure = new System.Windows.Forms.CheckBox();
             this.chkEnableExtendedXmlComments = new System.Windows.Forms.CheckBox();
@@ -59,7 +56,7 @@
             // 
             // btnSelectMSHCViewer
             // 
-            this.btnSelectMSHCViewer.Location = new System.Drawing.Point(393, 88);
+            this.btnSelectMSHCViewer.Location = new System.Drawing.Point(393, 33);
             this.btnSelectMSHCViewer.Margin = new System.Windows.Forms.Padding(4);
             this.btnSelectMSHCViewer.Name = "btnSelectMSHCViewer";
             this.btnSelectMSHCViewer.Size = new System.Drawing.Size(40, 34);
@@ -69,22 +66,10 @@
             this.btnSelectMSHCViewer.UseVisualStyleBackColor = true;
             this.btnSelectMSHCViewer.Click += new System.EventHandler(this.btnSelectViewer_Click);
             // 
-            // btnSelectHxSViewer
-            // 
-            this.btnSelectHxSViewer.Location = new System.Drawing.Point(393, 29);
-            this.btnSelectHxSViewer.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSelectHxSViewer.Name = "btnSelectHxSViewer";
-            this.btnSelectHxSViewer.Size = new System.Drawing.Size(40, 34);
-            this.btnSelectHxSViewer.TabIndex = 2;
-            this.btnSelectHxSViewer.Text = "...";
-            this.toolTip1.SetToolTip(this.btnSelectHxSViewer, "Select MS Help 2 HxS viewer application");
-            this.btnSelectHxSViewer.UseVisualStyleBackColor = true;
-            this.btnSelectHxSViewer.Click += new System.EventHandler(this.btnSelectViewer_Click);
-            // 
             // lnkSHFBInfo
             // 
             this.lnkSHFBInfo.AutoSize = true;
-            this.lnkSHFBInfo.Location = new System.Drawing.Point(5, 537);
+            this.lnkSHFBInfo.Location = new System.Drawing.Point(5, 482);
             this.lnkSHFBInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lnkSHFBInfo.Name = "lnkSHFBInfo";
             this.lnkSHFBInfo.Size = new System.Drawing.Size(239, 20);
@@ -96,7 +81,7 @@
             // 
             // txtMSHelpViewerPath
             // 
-            this.txtMSHelpViewerPath.Location = new System.Drawing.Point(9, 92);
+            this.txtMSHelpViewerPath.Location = new System.Drawing.Point(9, 37);
             this.txtMSHelpViewerPath.Margin = new System.Windows.Forms.Padding(4);
             this.txtMSHelpViewerPath.Name = "txtMSHelpViewerPath";
             this.txtMSHelpViewerPath.Size = new System.Drawing.Size(382, 27);
@@ -105,7 +90,7 @@
             // lblMSHelpViewer
             // 
             this.lblMSHelpViewer.AutoSize = true;
-            this.lblMSHelpViewer.Location = new System.Drawing.Point(5, 68);
+            this.lblMSHelpViewer.Location = new System.Drawing.Point(5, 13);
             this.lblMSHelpViewer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMSHelpViewer.Name = "lblMSHelpViewer";
             this.lblMSHelpViewer.Size = new System.Drawing.Size(313, 20);
@@ -116,7 +101,7 @@
             // chkOpenHelpAfterBuild
             // 
             this.chkOpenHelpAfterBuild.AutoSize = true;
-            this.chkOpenHelpAfterBuild.Location = new System.Drawing.Point(23, 258);
+            this.chkOpenHelpAfterBuild.Location = new System.Drawing.Point(23, 203);
             this.chkOpenHelpAfterBuild.Margin = new System.Windows.Forms.Padding(4);
             this.chkOpenHelpAfterBuild.Name = "chkOpenHelpAfterBuild";
             this.chkOpenHelpAfterBuild.Size = new System.Drawing.Size(267, 24);
@@ -124,17 +109,9 @@
             this.chkOpenHelpAfterBuild.Text = "&Open help file after successful build";
             this.chkOpenHelpAfterBuild.UseVisualStyleBackColor = true;
             // 
-            // txtHxSViewerPath
-            // 
-            this.txtHxSViewerPath.Location = new System.Drawing.Point(9, 33);
-            this.txtHxSViewerPath.Margin = new System.Windows.Forms.Padding(4);
-            this.txtHxSViewerPath.Name = "txtHxSViewerPath";
-            this.txtHxSViewerPath.Size = new System.Drawing.Size(382, 27);
-            this.txtHxSViewerPath.TabIndex = 1;
-            // 
             // udcASPNetDevServerPort
             // 
-            this.udcASPNetDevServerPort.Location = new System.Drawing.Point(303, 138);
+            this.udcASPNetDevServerPort.Location = new System.Drawing.Point(303, 83);
             this.udcASPNetDevServerPort.Margin = new System.Windows.Forms.Padding(4);
             this.udcASPNetDevServerPort.Maximum = new decimal(new int[] {
             99999,
@@ -159,7 +136,7 @@
             // chkVerboseLogging
             // 
             this.chkVerboseLogging.AutoSize = true;
-            this.chkVerboseLogging.Location = new System.Drawing.Point(23, 183);
+            this.chkVerboseLogging.Location = new System.Drawing.Point(23, 128);
             this.chkVerboseLogging.Margin = new System.Windows.Forms.Padding(4);
             this.chkVerboseLogging.Name = "chkVerboseLogging";
             this.chkVerboseLogging.Size = new System.Drawing.Size(283, 24);
@@ -169,7 +146,7 @@
             // 
             // lblASPPort
             // 
-            this.lblASPPort.Location = new System.Drawing.Point(14, 136);
+            this.lblASPPort.Location = new System.Drawing.Point(14, 81);
             this.lblASPPort.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblASPPort.Name = "lblASPPort";
             this.lblASPPort.Size = new System.Drawing.Size(281, 29);
@@ -177,21 +154,10 @@
             this.lblASPPort.Text = "&ASP.NET Development Web Server Port";
             this.lblASPPort.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblHelp2Viewer
-            // 
-            this.lblHelp2Viewer.AutoSize = true;
-            this.lblHelp2Viewer.Location = new System.Drawing.Point(5, 9);
-            this.lblHelp2Viewer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblHelp2Viewer.Name = "lblHelp2Viewer";
-            this.lblHelp2Viewer.Size = new System.Drawing.Size(203, 20);
-            this.lblHelp2Viewer.TabIndex = 0;
-            this.lblHelp2Viewer.Text = "MS &Help 2 (.HxS) Viewer Path";
-            this.lblHelp2Viewer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // chkUseExternalBrowser
             // 
             this.chkUseExternalBrowser.AutoSize = true;
-            this.chkUseExternalBrowser.Location = new System.Drawing.Point(23, 296);
+            this.chkUseExternalBrowser.Location = new System.Drawing.Point(23, 241);
             this.chkUseExternalBrowser.Margin = new System.Windows.Forms.Padding(4);
             this.chkUseExternalBrowser.Name = "chkUseExternalBrowser";
             this.chkUseExternalBrowser.Size = new System.Drawing.Size(347, 24);
@@ -202,7 +168,7 @@
             // chkOpenLogViewerOnFailure
             // 
             this.chkOpenLogViewerOnFailure.AutoSize = true;
-            this.chkOpenLogViewerOnFailure.Location = new System.Drawing.Point(23, 221);
+            this.chkOpenLogViewerOnFailure.Location = new System.Drawing.Point(23, 166);
             this.chkOpenLogViewerOnFailure.Margin = new System.Windows.Forms.Padding(4);
             this.chkOpenLogViewerOnFailure.Name = "chkOpenLogViewerOnFailure";
             this.chkOpenLogViewerOnFailure.Size = new System.Drawing.Size(279, 24);
@@ -213,7 +179,7 @@
             // chkEnableExtendedXmlComments
             // 
             this.chkEnableExtendedXmlComments.AutoSize = true;
-            this.chkEnableExtendedXmlComments.Location = new System.Drawing.Point(23, 348);
+            this.chkEnableExtendedXmlComments.Location = new System.Drawing.Point(23, 293);
             this.chkEnableExtendedXmlComments.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnableExtendedXmlComments.Name = "chkEnableExtendedXmlComments";
             this.chkEnableExtendedXmlComments.Size = new System.Drawing.Size(382, 24);
@@ -224,7 +190,7 @@
             // chkEnableGoToDefinition
             // 
             this.chkEnableGoToDefinition.AutoSize = true;
-            this.chkEnableGoToDefinition.Location = new System.Drawing.Point(23, 386);
+            this.chkEnableGoToDefinition.Location = new System.Drawing.Point(23, 331);
             this.chkEnableGoToDefinition.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnableGoToDefinition.Name = "chkEnableGoToDefinition";
             this.chkEnableGoToDefinition.Size = new System.Drawing.Size(345, 24);
@@ -236,7 +202,7 @@
             // lblSetColorNote
             // 
             this.lblSetColorNote.AutoSize = true;
-            this.lblSetColorNote.Location = new System.Drawing.Point(46, 494);
+            this.lblSetColorNote.Location = new System.Drawing.Point(46, 439);
             this.lblSetColorNote.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSetColorNote.Name = "lblSetColorNote";
             this.lblSetColorNote.Size = new System.Drawing.Size(365, 20);
@@ -247,7 +213,7 @@
             // chkEnableGoToDefinitionInCRef
             // 
             this.chkEnableGoToDefinitionInCRef.AutoSize = true;
-            this.chkEnableGoToDefinitionInCRef.Location = new System.Drawing.Point(51, 461);
+            this.chkEnableGoToDefinitionInCRef.Location = new System.Drawing.Point(51, 406);
             this.chkEnableGoToDefinitionInCRef.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnableGoToDefinitionInCRef.Name = "chkEnableGoToDefinitionInCRef";
             this.chkEnableGoToDefinitionInCRef.Size = new System.Drawing.Size(279, 24);
@@ -258,7 +224,7 @@
             // chkEnableCtrlClickGoToDefinition
             // 
             this.chkEnableCtrlClickGoToDefinition.AutoSize = true;
-            this.chkEnableCtrlClickGoToDefinition.Location = new System.Drawing.Point(51, 423);
+            this.chkEnableCtrlClickGoToDefinition.Location = new System.Drawing.Point(51, 368);
             this.chkEnableCtrlClickGoToDefinition.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnableCtrlClickGoToDefinition.Name = "chkEnableCtrlClickGoToDefinition";
             this.chkEnableCtrlClickGoToDefinition.Size = new System.Drawing.Size(270, 24);
@@ -271,9 +237,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.lblHelp2Viewer);
-            this.Controls.Add(this.txtHxSViewerPath);
-            this.Controls.Add(this.btnSelectHxSViewer);
             this.Controls.Add(this.lblMSHelpViewer);
             this.Controls.Add(this.txtMSHelpViewerPath);
             this.Controls.Add(this.btnSelectMSHCViewer);
@@ -291,9 +254,9 @@
             this.Controls.Add(this.lnkSHFBInfo);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(435, 565);
+            this.MinimumSize = new System.Drawing.Size(435, 510);
             this.Name = "GeneralOptionsControl";
-            this.Size = new System.Drawing.Size(435, 565);
+            this.Size = new System.Drawing.Size(435, 510);
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).EndInit();
             this.ResumeLayout(false);
@@ -307,14 +270,11 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TextBox txtMSHelpViewerPath;
         private System.Windows.Forms.Label lblMSHelpViewer;
-        private System.Windows.Forms.Label lblHelp2Viewer;
         private System.Windows.Forms.Button btnSelectMSHCViewer;
         private System.Windows.Forms.CheckBox chkOpenHelpAfterBuild;
-        private System.Windows.Forms.TextBox txtHxSViewerPath;
         private System.Windows.Forms.NumericUpDown udcASPNetDevServerPort;
         private System.Windows.Forms.CheckBox chkVerboseLogging;
         private System.Windows.Forms.Label lblASPPort;
-        private System.Windows.Forms.Button btnSelectHxSViewer;
         private System.Windows.Forms.CheckBox chkUseExternalBrowser;
         private System.Windows.Forms.CheckBox chkOpenLogViewerOnFailure;
         private System.Windows.Forms.LinkLabel lnkSHFBInfo;

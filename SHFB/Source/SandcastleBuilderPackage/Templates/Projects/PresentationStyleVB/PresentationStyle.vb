@@ -53,8 +53,8 @@ Namespace safeprojectname
 
             ' TODO: Adjust the rest of these properties as needed.
 
-            Me.SupportedFormats = HelpFileFormats.HtmlHelp1 Or HelpFileFormats.MSHelp2 Or
-                HelpFileFormats.MSHelpViewer Or HelpFileFormats.Website
+            Me.SupportedFormats = HelpFileFormats.HtmlHelp1 Or HelpFileFormats.MSHelpViewer Or
+                HelpFileFormats.Website
 
             Me.SupportsNamespaceGrouping = True
             Me.SupportsCodeSnippetGrouping = True

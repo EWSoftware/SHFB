@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : Build1xHelpFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/03/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to run HHC.EXE which is used to compile a Help 1 (CHM) help file
@@ -205,7 +205,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <summary>
         /// This is overridden to invert the result of the HHC exit code
         /// </summary>
-        /// <returns>True on success, false on failure.  HXCOMP is backwards and returns 0 on failures and 1 on
+        /// <returns>True on success, false on failure.  HHC is backwards and returns 0 on failures and 1 on
         /// success.  We invert the result to be consistent with other tasks.</returns>
         protected override bool HandleTaskExecutionErrors()
         {

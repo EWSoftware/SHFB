@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AjaxDocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 05/04/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to generate XML comments and reflection file information for Atlas
 // client script libraries using AjaxDoc.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -206,10 +206,6 @@ namespace SandcastleBuilder.PlugIns
 
                         // Add the file to the XML comments file collection
                         comments = new XmlCommentsFile(workingPath);
-
-                        // Fix up comments for CPP comments files?
-                        if(builder.CurrentProject.CppCommentsFixup)
-                            comments.FixupComments();
 
                         builder.CommentsFiles.Add(comments);
                         builder.ReportProgress("    {0} -> {1}", commentsName, workingPath);

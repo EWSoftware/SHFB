@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,6 +23,7 @@
 // 12/17/2013  EFW  Updated to use MEF for the plug-ins
 // 03/09/2014  EFW  Updated to support Open XML file deployment
 // 04/03/2015  EFW  Updated to support Markdown content deployment
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -62,8 +63,7 @@ namespace SandcastleBuilder.PlugIns
         private BuildProcess builder;
 
         // Plug-in configuration options
-        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer, deployWebsite, deployOpenXml,
-            deployMarkdown;
+        private DeploymentLocation deployHelp1, deployHelpViewer, deployWebsite, deployOpenXml, deployMarkdown;
         private bool deleteAfterDeploy, verboseLogging, renameMSHA;
         #endregion
 
@@ -144,7 +144,6 @@ namespace SandcastleBuilder.PlugIns
                     "configured yet");
 
             deployHelp1 = DeploymentLocation.FromXPathNavigator(root, "help1x");
-            deployHelp2 = DeploymentLocation.FromXPathNavigator(root, "help2x");
             deployHelpViewer = DeploymentLocation.FromXPathNavigator(root, "helpViewer");
             deployWebsite = DeploymentLocation.FromXPathNavigator(root, "website");
             deployOpenXml = DeploymentLocation.FromXPathNavigator(root, "openXml");
@@ -157,8 +156,7 @@ namespace SandcastleBuilder.PlugIns
                 renameMSHA = false;
 
             // At least one deployment location must be defined
-            if(deployHelp1.Location == null && deployHelp2.Location == null &&
-              deployHelpViewer.Location == null && deployWebsite.Location == null &&
+            if(deployHelp1.Location == null && deployHelpViewer.Location == null && deployWebsite.Location == null &&
               deployOpenXml.Location == null && deployMarkdown.Location == null)
                 throw new BuilderException("ODP0002", "The output deployment plug-in must have at least " +
                     "one configured deployment location");
@@ -167,11 +165,6 @@ namespace SandcastleBuilder.PlugIns
             if(deployHelp1.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 builder.ReportWarning("ODP0003", "HTML Help 1 will be generated but not deployed due to " +
-                    "missing deployment location information");
-
-            if(deployHelp2.Location == null &&
-              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
-                builder.ReportWarning("ODP0003", "MS Help 2 will be generated but not deployed due to " +
                     "missing deployment location information");
 
             if(deployHelpViewer.Location == null &&
@@ -206,12 +199,6 @@ namespace SandcastleBuilder.PlugIns
             {
                 builder.ReportProgress("Deploying HTML Help 1 file");
                 this.DeployOutput(builder.Help1Files, deployHelp1);
-            }
-
-            if(builder.CurrentFormat == HelpFileFormats.MSHelp2)
-            {
-                builder.ReportProgress("Deploying MS Help 2 files");
-                this.DeployOutput(builder.Help2Files, deployHelp2);
             }
 
             if(builder.CurrentFormat == HelpFileFormats.MSHelpViewer)

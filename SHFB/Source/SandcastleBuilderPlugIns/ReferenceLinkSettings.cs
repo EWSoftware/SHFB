@@ -1,26 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ReferenceLinkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing reference link settings for the
-// Additional Reference Links plug-in.
+// This file contains a class representing reference link settings for the Additional Reference Links plug-in
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.6.0.5  02/25/2008  EFW  Created the code
-// 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
-// 1.9.0.0  06/20/2010  EFW  Updated to support multi-format build output
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 02/25/2008  EFW  Created the code
+// 08/13/2008  EFW  Updated to support the new project format
+// 06/20/2010  EFW  Updated to support multi-format build output
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -62,13 +61,6 @@ namespace SandcastleBuilder.PlugIns
         [Category("Link"), Description("The reference link type to use for HTML Help 1 files"),
           DefaultValue(HtmlSdkLinkType.None)]
         public HtmlSdkLinkType HtmlSdkLinkType { get; set; }
-
-        /// <summary>
-        /// This is used to get or set the MS Help 2 SDK link type for the target
-        /// </summary>
-        [Category("Link"), Description("The reference link type to use for MS Help 2 files"),
-          DefaultValue(MSHelp2SdkLinkType.Index)]
-        public MSHelp2SdkLinkType MSHelp2SdkLinkType { get; set; }
 
         /// <summary>
         /// This is used to get or set the MS Help Viewer SDK link type for the target
@@ -118,8 +110,8 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {   
-                return String.Format(CultureInfo.CurrentCulture, "{0} (HTML: {1}, Help 2: {2}, MSHC: {3}, Website: {4})",
-                    helpFileProject.PersistablePath, this.HtmlSdkLinkType, this.MSHelp2SdkLinkType,
+                return String.Format(CultureInfo.CurrentCulture, "{0} (HTML: {1}, MSHC: {2}, " +
+                    "Website/Markdown/Open XML: {3})", helpFileProject.PersistablePath, this.HtmlSdkLinkType,
                     this.MSHelpViewerSdkLinkType, this.WebsiteSdkLinkType);
             }
         }
@@ -149,7 +141,6 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public ReferenceLinkSettings()
         {
-            this.MSHelp2SdkLinkType = MSHelp2SdkLinkType.Index;
             this.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Id;
         }
         #endregion
@@ -181,8 +172,6 @@ namespace SandcastleBuilder.PlugIns
                 {
                     rl.HtmlSdkLinkType = (HtmlSdkLinkType)Enum.Parse(typeof(HtmlSdkLinkType), navigator.GetAttribute(
                         "htmlSdkLinkType", String.Empty).Trim(), true);
-                    rl.MSHelp2SdkLinkType = (MSHelp2SdkLinkType)Enum.Parse(typeof(MSHelp2SdkLinkType),
-                        navigator.GetAttribute("help2SdkLinkType", String.Empty).Trim(), true);
                     rl.MSHelpViewerSdkLinkType = (MSHelpViewerSdkLinkType)Enum.Parse(typeof(MSHelpViewerSdkLinkType),
                         navigator.GetAttribute("helpViewerSdkLinkType", String.Empty).Trim(), true);
                     rl.WebsiteSdkLinkType = (HtmlSdkLinkType)Enum.Parse(typeof(HtmlSdkLinkType), navigator.GetAttribute(
@@ -222,10 +211,6 @@ namespace SandcastleBuilder.PlugIns
 
             attr = config.CreateAttribute("htmlSdkLinkType");
             attr.Value = this.HtmlSdkLinkType.ToString();
-            node.Attributes.Append(attr);
-
-            attr = config.CreateAttribute("help2SdkLinkType");
-            attr.Value = this.MSHelp2SdkLinkType.ToString();
             node.Attributes.Append(attr);
 
             attr = config.CreateAttribute("helpViewerSdkLinkType");

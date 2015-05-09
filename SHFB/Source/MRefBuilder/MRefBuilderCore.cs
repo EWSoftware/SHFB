@@ -12,6 +12,7 @@
 // configuration file provide finer grained control over the members included in the output.
 // 12/10/2013 - EFW - Added MSBuild task support.
 // 10/16/2014 - EFW - Added support for WindowsStoreAndPhoneNamer.
+// 05/09/2015 - EFW - Removed the deprecated /internal command line option and platform configuration options
 
 using System;
 using System.IO;
@@ -69,9 +70,6 @@ namespace Microsoft.Ddue.Tools
                 "MRefBuilder.config is used", "configFilePath"));
             options.Add(new ListOption("dep", "Specify assemblies to load for dependencies.",
                 "dependencyAssembly"));
-            options.Add(new BooleanOption("internal", "Specify whether to document internal as well as " +
-                "externally exposed APIs.  *** DEPRECATED:  Use the visibility settings in the MRefBuilder.config " +
-                "file instead which provide finer grained control over the exposed API members."));
 
             // Process options
             ParseArgumentsResult results = options.ParseArguments(args);
@@ -132,58 +130,26 @@ namespace Microsoft.Ddue.Tools
             }
 
             // Adjust the target platform
-            XPathNodeIterator platformNodes = config.CreateNavigator().Select("/configuration/dduetools/platform");
+            var platformNode = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/platform");
 
-            if(platformNodes.MoveNext())
+            if(platformNode == null)
             {
-                XPathNavigator platformNode = platformNodes.Current;
-                version = platformNode.GetAttribute("version", String.Empty);
-                path = platformNode.GetAttribute("path", String.Empty);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "A platform element is required to define the " +
+                    "framework type and version to use.");
+                return 1;
+            }
 
-                // !EFW - Added support for the new platform attributes and the framework XML file
-                if(!String.IsNullOrEmpty(version) && !String.IsNullOrEmpty(path))
-                {
-                    // Set the framework using the legacy attributes.  If set properly, they will document
-                    // other framework types but it uses the standard .NET assemblies which contain more
-                    // classes and methods that are not relevant to the other frameworks.
-                    path = Environment.ExpandEnvironmentVariables(path);
-                
-                    if(!Directory.Exists(path))
-                    {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, "The specified target platform " +
-                            "directory '{0}' does not exist.", path);
-                        return 1;
-                    }
-                
-                    if(version == "2.0")
-                        TargetPlatform.SetToV2(path);
-                    else
-                        if(version == "1.1")
-                            TargetPlatform.SetToV1_1(path);
-                        else
-                            if(version == "1.0")
-                                TargetPlatform.SetToV1(path);
-                            else
-                            {
-                                ConsoleApplication.WriteMessage(LogLevel.Error, "Unknown target platform " +
-                                    "version '{0}'.", version);
-                                return 1;
-                            }
-                }
-                else
-                {
-                    // Use the new framework definition file
-                    framework = platformNode.GetAttribute("framework", String.Empty);
+            // !EFW - Use the framework definition file to load core framework assembly reference information
+            version = platformNode.GetAttribute("version", String.Empty);
+            framework = platformNode.GetAttribute("framework", String.Empty);
 
-                    if(!String.IsNullOrEmpty(framework) && !String.IsNullOrEmpty(version))
-                        TargetPlatform.SetFrameworkInformation(framework, version);
-                    else
-                    {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, "Unknown target framework " +
-                            "version '{0} {1}'.", framework, version);
-                        return 1;
-                    }
-                }
+            if(!String.IsNullOrEmpty(framework) && !String.IsNullOrEmpty(version))
+                TargetPlatform.SetFrameworkInformation(framework, version);
+            else
+            {
+                ConsoleApplication.WriteMessage(LogLevel.Error, "Unknown target framework " +
+                    "version '{0} {1}'.", framework, version);
+                return 1;
             }
 
             // Create an API member namer
@@ -378,25 +344,6 @@ namespace Microsoft.Ddue.Tools
                 // Create a builder
                 ApiVisitor = new ManagedReflectionWriter(output, namer, resolver,
                     new ApiFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools")));
-
-                // If the deprecated /internal+ option is used, expose everything via the filter to mimic the
-                // behavior of prior versions.
-                if(results.Options["internal"].IsPresent && (bool)results.Options["internal"].Value)
-                {
-                    ApiVisitor.ApiFilter.IncludeAttributes =
-                        ApiVisitor.ApiFilter.IncludeExplicitInterfaceImplementations =
-                        ApiVisitor.ApiFilter.IncludePrivates =
-                        ApiVisitor.ApiFilter.IncludePrivateFields =
-                        ApiVisitor.ApiFilter.IncludeInternals =
-                        ApiVisitor.ApiFilter.IncludeProtected =
-                        ApiVisitor.ApiFilter.IncludeSealedProtected =
-                        ApiVisitor.ApiFilter.IncludeInheritedMembers =
-                        ApiVisitor.ApiFilter.IncludeInheritedFrameworkMembers =
-                        ApiVisitor.ApiFilter.IncludeInheritedFrameworkPrivateMembers =
-                        ApiVisitor.ApiFilter.IncludeInheritedFrameworkInternalMembers =
-                        ApiVisitor.ApiFilter.IncludeNoPIATypes = true;
-                    ApiVisitor.ApiFilter.IncludeProtectedInternalAsProtected = false;
-                }
 
                 // Register add-ins to the builder
                 XPathNodeIterator addinNodes = config.CreateNavigator().Select("/configuration/dduetools/addins/addin");

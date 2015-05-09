@@ -1,24 +1,23 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/25/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 05/08/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the enumerated type that defines the conceptual document
-// types.
+// This file contains the enumerated type that defines the conceptual document types
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all// applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.6.0.7  04/25/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/25/2008  EFW  Created the code
+// 05/08/2015  EFW  Removed support raw HTML files
+//===============================================================================================================
 
 using System;
 
@@ -74,7 +73,5 @@ namespace SandcastleBuilder.Utils
         DeveloperWhitePaperDocument,
         /// <summary>XML Reference document</summary>
         DeveloperXmlReference,
-        /// <summary>Raw HTML</summary>
-        Html
     }
 }

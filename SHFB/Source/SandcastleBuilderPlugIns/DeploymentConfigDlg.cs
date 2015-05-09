@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2015
+// Updated : 05/03/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 02/06/2012  EFW  Added support for renaming MSHA file
 // 03/09/2014  EFW  Added support for Open XML deployment
 // 04/03/2014  EFW  Added support for markdown content deployment
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -95,9 +96,6 @@ namespace SandcastleBuilder.PlugIns
             // Get HTML Help 1 deployment information
             ucHtmlHelp1.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "help1x"));
 
-            // Get MS Help 2 deployment information
-            ucMSHelp2.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "help2x"));
-
             // Get MS Help Viewer deployment information
             msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
 
@@ -163,13 +161,12 @@ namespace SandcastleBuilder.PlugIns
         {
             XmlAttribute attr;
             XmlNode root, mshv;
-            DeploymentLocation htmlHelp1, msHelp2, msHelpViewer, website, openXml, markdown;
+            DeploymentLocation htmlHelp1, msHelpViewer, website, openXml, markdown;
             bool isValid = false;
 
             epErrors.Clear();
 
             htmlHelp1 = ucHtmlHelp1.CreateDeploymentLocation();
-            msHelp2 = ucMSHelp2.CreateDeploymentLocation();
             msHelpViewer = ucMSHelpViewer.CreateDeploymentLocation();
             website = ucWebsite.CreateDeploymentLocation();
             openXml = ucOpenXml.CreateDeploymentLocation();
@@ -178,26 +175,22 @@ namespace SandcastleBuilder.PlugIns
             if(htmlHelp1 == null)
                 tabConfig.SelectedIndex = 0;
             else
-                if(msHelp2 == null)
-                    tabConfig.SelectedIndex = 1;
+                if(msHelpViewer == null)
+                    tabConfig.SelectedIndex = 2;
                 else
-                    if(msHelpViewer == null)
-                        tabConfig.SelectedIndex = 2;
+                    if(website == null)
+                        tabConfig.SelectedIndex = 3;
                     else
-                        if(website == null)
-                            tabConfig.SelectedIndex = 3;
+                        if(openXml == null)
+                            tabConfig.SelectedIndex = 4;
                         else
-                            if(openXml == null)
-                                tabConfig.SelectedIndex = 4;
+                            if(markdown == null)
+                                tabConfig.SelectedIndex = 5;
                             else
-                                if(markdown == null)
-                                    tabConfig.SelectedIndex = 5;
-                                else
-                                    isValid = true;
+                                isValid = true;
 
-            if(isValid && htmlHelp1.Location == null && msHelp2.Location == null &&
-              msHelpViewer.Location == null && website.Location == null && openXml.Location == null &&
-              markdown.Location == null)
+            if(isValid && htmlHelp1.Location == null && msHelpViewer.Location == null &&
+              website.Location == null && openXml.Location == null && markdown.Location == null)
             {
                 tabConfig.SelectedIndex = 0;
                 epErrors.SetError(chkDeleteAfterDeploy, "At least one help file format must have a target " +
@@ -231,7 +224,6 @@ namespace SandcastleBuilder.PlugIns
             attr.Value = chkVerboseLogging.Checked.ToString().ToLowerInvariant();
 
             htmlHelp1.ToXml(config, root, "help1x");
-            msHelp2.ToXml(config, root, "help2x");
             msHelpViewer.ToXml(config, root, "helpViewer");
             website.ToXml(config, root, "website");
             openXml.ToXml(config, root, "openXml");

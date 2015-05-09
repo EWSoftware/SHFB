@@ -26,7 +26,6 @@
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleCore\Sandcastle.Core.csproj" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
     </DocumentationSources>
-    <CppCommentsFixup>False</CppCommentsFixup>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <ApiFilter />
     <ComponentConfigurations />
@@ -35,7 +34,6 @@
     <PlugInConfigurations />
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
-    <HtmlHelp2xCompilerPath />
     <WorkingPath />
     <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
@@ -46,7 +44,6 @@
     <SyntaxFilters>Standard</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>VS2005</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <Language>en-US</Language>

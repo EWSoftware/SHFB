@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2015
+// Updated : 05/09/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -36,6 +36,7 @@
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -56,12 +57,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        // Branding manifest property constants
-        private const string ManifestPropertyHelpOutput = "helpOutput";
-        private const string ManifestPropertyPreBranding = "preBranding";
-        private const string ManifestPropertyNoTransforms = "noTransforms";
-        private const string ManifestPropertyOnlyTransforms = "onlyTransforms";
-        private const string ManifestPropertyOnlyIcons = "onlyIcons";
+        // The table of contents entries for the additional and conceptual content
+        private TocEntryCollection toc;
 
         #endregion
 
@@ -195,6 +192,107 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 tocXml.Save(workingFolder + "toc.xml");
             }
+        }
+
+        /// <summary>
+        /// This is used to merge the conceptual content table of contents with any additional content table of
+        /// contents information.
+        /// </summary>
+        private void MergeConceptualAndAdditionalContentTocInfo()
+        {
+            FileItemCollection siteMapFiles;
+            List<ITableOfContents> tocFiles;
+            TocEntryCollection siteMap;
+            TocEntry tocEntry;
+
+            this.ReportProgress(BuildStep.MergeTablesOfContents,
+                "Merging conceptual and additional tables of contents...");
+
+            if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                return;
+
+            this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+            // Add the conceptual content layout files
+            tocFiles = new List<ITableOfContents>();
+
+            foreach(TopicCollection topics in conceptualContent.Topics)
+                tocFiles.Add(topics);
+
+            // Load all site maps and add them to the list
+            siteMapFiles = new FileItemCollection(project, BuildAction.SiteMap);
+
+            foreach(FileItem fileItem in siteMapFiles)
+            {
+                this.ReportProgress("    Loading site map '{0}'", fileItem.FullPath);
+                siteMap = new TocEntryCollection(fileItem);
+                siteMap.Load();
+
+                // Copy site map files to the help format folders
+                foreach(TocEntry site in siteMap)
+                    this.CopySiteMapFiles(site);
+
+                tocFiles.Add(siteMap);
+            }
+
+            // Sort the files
+            tocFiles.Sort((x, y) =>
+            {
+                FileItem fx = x.ContentLayoutFile, fy = y.ContentLayoutFile;
+
+                if(fx.SortOrder < fy.SortOrder)
+                    return -1;
+
+                if(fx.SortOrder > fy.SortOrder)
+                    return 1;
+
+                return String.Compare(fx.Name, fy.Name, StringComparison.OrdinalIgnoreCase);
+            });
+
+            // Create the merged TOC.  Invisible items are excluded.
+            toc = new TocEntryCollection();
+
+            foreach(ITableOfContents file in tocFiles)
+                file.GenerateTableOfContents(toc, project, false);
+
+            if(toc.Count != 0)
+            {
+                // Look for the default topic
+                tocEntry = toc.FindDefaultTopic();
+
+                if(tocEntry != null)
+                    defaultTopic = tocEntry.DestinationFile;
+            }
+
+            this.ExecutePlugIns(ExecutionBehaviors.After);
+        }
+
+        /// <summary>
+        /// This is used to copy site map files to the help format output folders including those for any child
+        /// site map entries.
+        /// </summary>
+        /// <param name="site">The site entry containing the files to copy</param>
+        private void CopySiteMapFiles(TocEntry site)
+        {
+            if(site.SourceFile.Path.Length != 0)
+            {
+                // Set the destination filename which will always match the source filename for site map files.
+                site.DestinationFile = site.SourceFile.PersistablePath;
+
+                foreach(string baseFolder in this.HelpFormatOutputFolders)
+                    if(!File.Exists(baseFolder + site.DestinationFile))
+                    {
+                        this.ReportProgress("{0} -> {1}{2}", site.SourceFile, baseFolder, site.DestinationFile);
+
+                        // All attributes are turned off so that we can delete it later
+                        File.Copy(site.SourceFile, baseFolder + site.DestinationFile, true);
+                        File.SetAttributes(baseFolder + site.DestinationFile, FileAttributes.Normal);
+                    }
+            }
+
+            if(site.Children.Count != 0)
+                foreach(TocEntry entry in site.Children)
+                    this.CopySiteMapFiles(entry);
         }
 
         /// <summary>
@@ -376,6 +474,53 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
+        /// This is called to copy the additional content files to the help format content folders
+        /// </summary>
+        private void CopyAdditionalContent()
+        {
+            FileItemCollection contentItems;
+            string projectPath, source, filename, dirName;
+
+            this.ReportProgress(BuildStep.CopyAdditionalContent, "Copying additional content files...");
+
+            if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+            {
+                // Plug-ins might add or remove additional content so call them before checking to see if there
+                // is anything to copy.
+                this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                if(!project.HasItems(BuildAction.Content))
+                    this.ReportProgress("No additional content to copy");
+                else
+                {
+                    // Now copy the content files
+                    contentItems = new FileItemCollection(project, BuildAction.Content);
+                    projectPath = FolderPath.TerminatePath(Path.GetDirectoryName(originalProjectName));
+
+                    foreach(FileItem fileItem in contentItems)
+                    {
+                        source = fileItem.Include;
+                        dirName = Path.GetDirectoryName(fileItem.Link.ToString().Substring(projectPath.Length));
+                        filename = Path.Combine(dirName, Path.GetFileName(source));
+
+                        this.EnsureOutputFoldersExist(dirName);
+
+                        foreach(string baseFolder in this.HelpFormatOutputFolders)
+                        {
+                            this.ReportProgress("{0} -> {1}{2}", source, baseFolder, filename);
+
+                            // All attributes are turned off so that we can delete it later
+                            File.Copy(source, baseFolder + filename, true);
+                            File.SetAttributes(baseFolder + filename, FileAttributes.Normal);
+                        }
+                    }
+                }
+
+                this.ExecutePlugIns(ExecutionBehaviors.After);
+            }
+        }
+
+        /// <summary>
         /// This is called to copy the standard content files (icons, scripts, style sheets, and other standard
         /// presentation style content) to the help output folders.
         /// </summary>
@@ -414,9 +559,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <param name="sourcePath">The source path from which to copy</param>
         /// <param name="destPath">The destination path to which to copy</param>
-        /// <param name="verbose">True to list all files copied, false to display file counts instead</param>
         /// <param name="fileCount">A reference to the file count variable</param>
-        private void RecursiveCopy(string sourcePath, string destPath, bool verbose, ref int fileCount)
+        private void RecursiveCopy(string sourcePath, string destPath, ref int fileCount)
         {
             if(sourcePath == null)
                 throw new ArgumentNullException("sourcePath");
@@ -439,15 +583,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 File.Copy(name, filename, true);
                 File.SetAttributes(filename, FileAttributes.Normal);
 
-                if(verbose)
-                    this.ReportProgress("{0} -> {1}", name, filename);
-                else
-                {
-                    fileCount++;
+                fileCount++;
 
-                    if((fileCount % 500) == 0)
-                        this.ReportProgress("Copied {0} files", fileCount);
-                }
+                if((fileCount % 500) == 0)
+                    this.ReportProgress("Copied {0} files", fileCount);
             }
 
             // For "*.*", copy subfolders too
@@ -456,8 +595,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
-                        this.RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) +
-                            @"\", verbose, ref fileCount);
+                        this.RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
+                            ref fileCount);
             }
         }
         #endregion
@@ -567,7 +706,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             File.Copy(workingFolder + "WebKI.xml", outputFolder + "WebKI.xml");
 
             // Copy the help pages and related content
-            this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, false, ref fileCount);
+            this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, ref fileCount);
             this.ReportProgress("Copied {0} files for the website content", fileCount);
 
             this.GatherBuildOutputFilenames();
@@ -588,8 +727,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             string content;
 
-            // When reading the file, use the default encoding but detect the
-            // encoding if byte order marks are present.
+            // When reading the file, use the default encoding but detect the encoding if byte order marks are
+            // present.
             content = BuildProcess.ReadWithEncoding(workingFolder + "WebTOC.xml", ref enc);
 
             using(StringReader sr = new StringReader(content))

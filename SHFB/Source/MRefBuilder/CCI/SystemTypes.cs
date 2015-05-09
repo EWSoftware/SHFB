@@ -10,6 +10,7 @@
 // 04/20/2014 - EFW - Added a workaround for the .NET Micro Framework related to DictionaryEntry being a class
 // 01/06/2014 - EFW - Added a TargetPlatform.Platform member to allow other classes to find out what platform
 // is being used for the core framework types.
+// 05/09/2015 - EFW - Removed obsolete core framework assembly definitions and related methods.
 
 using System.Diagnostics;
 using System.IO;
@@ -58,12 +59,15 @@ namespace System.Compiler
             get
             {
                 Version v = TargetPlatform.TargetVersion;
+
                 if (v == null)
                 {
                     v = CoreSystemTypes.SystemAssembly.Version;
+
                     if (v == null)
                         v = typeof(object).Assembly.GetName().Version;
                 }
+
                 return v.Major > 1 || v.Minor > 2 || v.Minor == 2 && v.Build >= 3300;
             }
         }
@@ -78,347 +82,29 @@ namespace System.Compiler
             TargetPlatform.PlatformAssembliesLocation = "";
             SystemTypes.Clear();
         }
-        public static System.Collections.IDictionary StaticAssemblyCache
-        {
-            get { return Reader.StaticAssemblyCache; }
-        }
 
-        public static string Platform = ".NETFramework";
-        public static Version TargetVersion = new Version(2, 0, 50727);  // Default for a Whidbey compiler
+        public static string Platform;
+        public static Version TargetVersion;
         public static string TargetRuntimeVersion;
 
-        public static int LinkerMajorVersion
-        {
-            get
-            {
-                switch (TargetVersion.Major)
-                {
-                    case 2: return 8;
-                    case 1: return 7;
-                    default: return 6;
-                }
-            }
-        }
-        public static int LinkerMinorVersion
-        {
-            get
-            {
-                return TargetVersion.Minor;
-            }
-        }
+        public static string PlatformAssembliesLocation = String.Empty;
 
-        public static int MajorVersion { get { return TargetVersion.Major; } }
-        public static int MinorVersion { get { return TargetVersion.Minor; } }
-        public static int Build { get { return TargetVersion.Build; } }
-
-        public static string/*!*/ PlatformAssembliesLocation = String.Empty;
         private static TrivialHashtable assemblyReferenceFor;
-        public static TrivialHashtable/*!*/ AssemblyReferenceFor
+
+        public static TrivialHashtable AssemblyReferenceFor
         {
             get
             {
-                if (TargetPlatform.assemblyReferenceFor == null)
-                    TargetPlatform.SetupAssemblyReferenceFor();
-                //^ assume TargetPlatform.assemblyReferenceFor != null;
+                if(TargetPlatform.assemblyReferenceFor == null)
+                    throw new InvalidOperationException("AssemblyReferenceFor not set!  Has target platform " +
+                        "information been set?");
+
                 return TargetPlatform.assemblyReferenceFor;
             }
             set
             {
                 TargetPlatform.assemblyReferenceFor = value;
             }
-        }
-
-        private readonly static string[]/*!*/ FxAssemblyNames =
-          new string[]{"Accessibility", "CustomMarshalers", "IEExecRemote", "IEHost", "IIEHost", "ISymWrapper", 
-                    "Microsoft.JScript", "Microsoft.VisualBasic", "Microsoft.VisualBasic.Vsa", "Microsoft.VisualC",
-                    "Microsoft.Vsa", "Microsoft.Vsa.Vb.CodeDOMProcessor", "mscorcfg", "Regcode", "System",
-                    "System.Configuration.Install", "System.Data", "System.Design", "System.DirectoryServices",
-                    "System.Drawing", "System.Drawing.Design", "System.EnterpriseServices", 
-                    "System.Management", "System.Messaging", "System.Runtime.Remoting", "System.Runtime.Serialization.Formatters.Soap",
-                    "System.Security", "System.ServiceProcess", "System.Web", "System.Web.Mobile", "System.Web.RegularExpressions",
-                    "System.Web.Services", "System.Windows.Forms", "System.Xml", "TlbExpCode", "TlbImpCode", "cscompmgd",
-                    "vjswfchtml", "vjswfccw", "VJSWfcBrowserStubLib", "vjswfc", "vjslibcw", "vjslib", "vjscor", "VJSharpCodeProvider"};
-        private readonly static string[]/*!*/ FxAssemblyToken =
-          new string[]{"b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a",
-                    "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a",
-                    "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b77a5c561934e089",
-                    "b03f5f7f11d50a3a", "b77a5c561934e089", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a",
-                    "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", 
-                    "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b77a5c561934e089", "b03f5f7f11d50a3a",
-                    "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a",
-                    "b03f5f7f11d50a3a", "b77a5c561934e089", "b77a5c561934e089", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a",
-                    "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a", "b03f5f7f11d50a3a"};
-        private readonly static string[]/*!*/ FxAssemblyVersion1 =
-          new string[]{"1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0",
-                    "7.0.3300.0", "7.0.3300.0", "7.0.3300.0", "7.0.3300.0",
-                    "7.0.3300.0", "7.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0",
-                    "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0",
-                    "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0",
-                    "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", 
-                    "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0",
-                    "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "7.0.3300.0",
-                    "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "1.0.3300.0", "7.0.3300.0"};
-        private readonly static string[]/*!*/ FxAssemblyVersion1_1 =
-          new string[]{"1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0",
-                    "7.0.5000.0", "7.0.5000.0", "7.0.5000.0", "7.0.5000.0",
-                    "7.0.5000.0", "7.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0",
-                    "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0",
-                    "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", 
-                    "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", 
-                    "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0",
-                    "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "7.0.5000.0",
-                    "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "1.0.5000.0", "7.0.5000.0"};
-        private static string[]/*!*/ FxAssemblyVersion2Build3600 =
-          new string[]{"2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0",
-                    "8.0.1200.0", "8.0.1200.0", "8.0.1200.0", "8.0.1200.0",
-                    "8.0.1200.0", "8.0.1200.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0",
-                    "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0",
-                    "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", 
-                    "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", 
-                    "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0",
-                    "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "8.0.1200.0",
-                    "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "2.0.3600.0", "7.0.5000.0"};
-        private static string[]/*!*/ FxAssemblyVersion2 =
-          new string[]{"2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0",
-                    "8.0.0.0", "8.0.0.0", "8.0.0.0", "8.0.0.0",
-                    "8.0.0.0", "8.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0",
-                    "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0",
-                    "2.0.0.0", "2.0.0.0", "2.0.0.0", 
-                    "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", 
-                    "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0",
-                    "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "8.0.0.0",
-                    "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0"};
-
-        private static void SetupAssemblyReferenceFor()
-        {
-            Version version = TargetPlatform.TargetVersion;
-            if (version == null) version = typeof(object).Module.Assembly.GetName().Version;
-            TargetPlatform.SetTo(version);
-        }
-
-        public static void SetTo(Version/*!*/ version)
-        {
-            if(version == null)
-                throw new ArgumentNullException("version");
-
-            if(version.Major == 1)
-            {
-                if (version.Minor == 0 && version.Build == 3300) TargetPlatform.SetToV1();
-                else if (version.Minor == 0 && version.Build == 5000) TargetPlatform.SetToV1_1();
-                else if (version.Minor == 1 && version.Build == 9999) TargetPlatform.SetToPostV1_1(TargetPlatform.PlatformAssembliesLocation);
-            }
-            else if (version.Major == 2)
-            {
-                if (version.Minor == 0 && version.Build == 3600) TargetPlatform.SetToV2Beta1();
-                else TargetPlatform.SetToV2();
-            }
-            else
-                TargetPlatform.SetToV1();
-        }
-        public static void SetTo(Version/*!*/ version, string/*!*/ platformAssembliesLocation)
-        {
-            if(version == null)
-                throw new ArgumentNullException("version");
-
-            if(platformAssembliesLocation == null)
-                throw new ArgumentNullException("platformAssembliesLocation");
-
-            if(version.Major == 1)
-            {
-                if (version.Minor == 0 && version.Build == 3300) TargetPlatform.SetToV1(platformAssembliesLocation);
-                else if (version.Minor == 0 && version.Build == 5000) TargetPlatform.SetToV1_1(platformAssembliesLocation);
-                else if (version.Minor == 1 && version.Build == 9999) TargetPlatform.SetToPostV1_1(platformAssembliesLocation);
-            }
-            else if (version.Major == 2)
-            {
-                if (version.Minor == 0 && version.Build == 3600) TargetPlatform.SetToV2Beta1(platformAssembliesLocation);
-                else TargetPlatform.SetToV2(platformAssembliesLocation);
-            }
-            else
-                TargetPlatform.SetToV1(platformAssembliesLocation);
-        }
-        public static void SetToV1()
-        {
-            TargetPlatform.SetToV1(TargetPlatform.PlatformAssembliesLocation);
-        }
-        public static void SetToV1(string platformAssembliesLocation)
-        {
-            TargetPlatform.TargetVersion = new Version(1, 0, 3300);
-            TargetPlatform.TargetRuntimeVersion = "v1.0.3705";
-            if (platformAssembliesLocation == null || platformAssembliesLocation.Length == 0)
-                platformAssembliesLocation = TargetPlatform.PlatformAssembliesLocation = Path.Combine(Path.GetDirectoryName(typeof(object).Module.Assembly.Location), "..\\v1.0.3705");
-            else
-                TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            TargetPlatform.InitializeStandardAssemblyLocationsWithDefaultValues(platformAssembliesLocation);
-            TrivialHashtable assemblyReferenceFor = new TrivialHashtable(46);
-            for (int i = 0, n = TargetPlatform.FxAssemblyNames.Length; i < n; i++)
-            {
-                string name = TargetPlatform.FxAssemblyNames[i];
-                string version = TargetPlatform.FxAssemblyVersion1[i];
-                string token = TargetPlatform.FxAssemblyToken[i];
-                AssemblyReference aref = new AssemblyReference(name + ", Version=" + version + ", Culture=neutral, PublicKeyToken=" + token);
-                aref.Location = platformAssembliesLocation + "\\" + name + ".dll";
-                //^ assume name != null;
-                assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
-            }
-            TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-        }
-        public static void SetToV1_1()
-        {
-            TargetPlatform.SetToV1_1(TargetPlatform.PlatformAssembliesLocation);
-        }
-        public static void SetToV1_1(string/*!*/ platformAssembliesLocation)
-        {
-            TargetPlatform.TargetVersion = new Version(1, 0, 5000);
-            TargetPlatform.TargetRuntimeVersion = "v1.1.4322";
-            if (platformAssembliesLocation == null || platformAssembliesLocation.Length == 0)
-                platformAssembliesLocation = TargetPlatform.PlatformAssembliesLocation = Path.Combine(Path.GetDirectoryName(typeof(object).Module.Assembly.Location), "..\\v1.1.4322");
-            else
-                TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            TargetPlatform.InitializeStandardAssemblyLocationsWithDefaultValues(platformAssembliesLocation);
-            TrivialHashtable assemblyReferenceFor = new TrivialHashtable(46);
-            for (int i = 0, n = TargetPlatform.FxAssemblyNames.Length; i < n; i++)
-            {
-                string name = TargetPlatform.FxAssemblyNames[i];
-                string version = TargetPlatform.FxAssemblyVersion1_1[i];
-                string token = TargetPlatform.FxAssemblyToken[i];
-                AssemblyReference aref = new AssemblyReference(name + ", Version=" + version + ", Culture=neutral, PublicKeyToken=" + token);
-                aref.Location = platformAssembliesLocation + "\\" + name + ".dll";
-                //^ assume name != null;
-                assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
-            }
-            TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-        }
-        public static void SetToV2()
-        {
-            TargetPlatform.SetToV2(TargetPlatform.PlatformAssembliesLocation);
-        }
-        public static void SetToV2(string platformAssembliesLocation)
-        {
-            TargetPlatform.TargetVersion = new Version(2, 0, 50727);
-            TargetPlatform.TargetRuntimeVersion = "v2.0.50727";
-            TargetPlatform.GenericTypeNamesMangleChar = '`';
-            if (platformAssembliesLocation == null || platformAssembliesLocation.Length == 0)
-                platformAssembliesLocation = TargetPlatform.PlatformAssembliesLocation = Path.Combine(Path.GetDirectoryName(typeof(object).Module.Assembly.Location), "..\\v2.0.50727");
-            else
-                TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            TargetPlatform.InitializeStandardAssemblyLocationsWithDefaultValues(platformAssembliesLocation);
-            TrivialHashtable assemblyReferenceFor = new TrivialHashtable(46);
-            for (int i = 0, n = TargetPlatform.FxAssemblyNames.Length; i < n; i++)
-            {
-                string name = TargetPlatform.FxAssemblyNames[i];
-                string version = TargetPlatform.FxAssemblyVersion2[i];
-                string token = TargetPlatform.FxAssemblyToken[i];
-                AssemblyReference aref = new AssemblyReference(name + ", Version=" + version + ", Culture=neutral, PublicKeyToken=" + token);
-                aref.Location = platformAssembliesLocation + "\\" + name + ".dll";
-                //^ assume name != null;
-                assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
-            }
-            TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-        }
-        public static void SetToV2Beta1()
-        {
-            TargetPlatform.SetToV2Beta1(TargetPlatform.PlatformAssembliesLocation);
-        }
-        public static void SetToV2Beta1(string/*!*/ platformAssembliesLocation)
-        {
-            TargetPlatform.TargetVersion = new Version(2, 0, 3600);
-            TargetPlatform.GenericTypeNamesMangleChar = '!';
-            string dotNetDirLocation = null;
-            if (platformAssembliesLocation == null || platformAssembliesLocation.Length == 0)
-            {
-                DirectoryInfo dotNetDir = new FileInfo(new Uri(typeof(object).Module.Assembly.Location).LocalPath).Directory.Parent;
-                dotNetDirLocation = dotNetDir.FullName;
-                if (dotNetDirLocation != null) dotNetDirLocation = dotNetDirLocation.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
-                DateTime creationTime = DateTime.MinValue;
-                foreach (DirectoryInfo subdir in dotNetDir.GetDirectories("v2.0*"))
-                {
-                    if (subdir == null) continue;
-                    if (subdir.CreationTime < creationTime) continue;
-                    FileInfo[] mscorlibs = subdir.GetFiles("mscorlib.dll");
-                    if (mscorlibs != null && mscorlibs.Length == 1)
-                    {
-                        platformAssembliesLocation = subdir.FullName;
-                        creationTime = subdir.CreationTime;
-                    }
-                }
-            }
-            else
-                TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            if (dotNetDirLocation != null && (platformAssembliesLocation == null || platformAssembliesLocation.Length == 0))
-            {
-                int pos = dotNetDirLocation.IndexOf("FRAMEWORK");
-                if (pos > 0 && dotNetDirLocation.IndexOf("FRAMEWORK64") < 0)
-                {
-                    dotNetDirLocation = dotNetDirLocation.Replace("FRAMEWORK", "FRAMEWORK64");
-                    if (Directory.Exists(dotNetDirLocation))
-                    {
-                        DirectoryInfo dotNetDir = new DirectoryInfo(dotNetDirLocation);
-                        DateTime creationTime = DateTime.MinValue;
-                        foreach (DirectoryInfo subdir in dotNetDir.GetDirectories("v2.0*"))
-                        {
-                            if (subdir == null) continue;
-                            if (subdir.CreationTime < creationTime) continue;
-                            FileInfo[] mscorlibs = subdir.GetFiles("mscorlib.dll");
-                            if (mscorlibs != null && mscorlibs.Length == 1)
-                            {
-                                platformAssembliesLocation = subdir.FullName;
-                                creationTime = subdir.CreationTime;
-                            }
-                        }
-                    }
-                }
-            }
-            TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            TargetPlatform.InitializeStandardAssemblyLocationsWithDefaultValues(platformAssembliesLocation);
-            TrivialHashtable assemblyReferenceFor = new TrivialHashtable(46);
-            for (int i = 0, n = TargetPlatform.FxAssemblyNames.Length; i < n; i++)
-            {
-                string name = TargetPlatform.FxAssemblyNames[i];
-                string version = TargetPlatform.FxAssemblyVersion2Build3600[i];
-                string token = TargetPlatform.FxAssemblyToken[i];
-                AssemblyReference aref = new AssemblyReference(name + ", Version=" + version + ", Culture=neutral, PublicKeyToken=" + token);
-                aref.Location = platformAssembliesLocation + "\\" + name + ".dll";
-                //^ assume name != null;
-                assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
-            }
-            TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-        }
-
-        /// <summary>
-        /// Use this to set the target platform to a platform with a superset of the platform assemblies in version 1.1, but
-        /// where the public key tokens and versions numbers are determined by reading in the actual assemblies from
-        /// the supplied location. Only assemblies recognized as platform assemblies in version 1.1 will be unified.
-        /// </summary>
-        public static void SetToPostV1_1(string/*!*/ platformAssembliesLocation)
-        {
-            TargetPlatform.PlatformAssembliesLocation = platformAssembliesLocation;
-            TargetPlatform.TargetVersion = new Version(1, 1, 9999);
-            TargetPlatform.TargetRuntimeVersion = "v1.1.9999";
-            TargetPlatform.InitializeStandardAssemblyLocationsWithDefaultValues(platformAssembliesLocation);
-            TargetPlatform.assemblyReferenceFor = new TrivialHashtable(46);
-            string[] dlls = Directory.GetFiles(platformAssembliesLocation, "*.dll");
-            foreach (string dll in dlls)
-            {
-                if (dll == null) continue;
-                string assemName = Path.GetFileNameWithoutExtension(dll);
-                int i = Array.IndexOf(TargetPlatform.FxAssemblyNames, assemName);
-                if (i < 0) continue;
-                AssemblyNode assem = AssemblyNode.GetAssembly(Path.Combine(platformAssembliesLocation, dll));
-                if (assem == null) continue;
-                TargetPlatform.assemblyReferenceFor[Identifier.For(assem.Name).UniqueIdKey] = new AssemblyReference(assem);
-            }
-        }
-        private static void InitializeStandardAssemblyLocationsWithDefaultValues(string platformAssembliesLocation)
-        {
-            SystemAssemblyLocation.Location = platformAssembliesLocation + "\\mscorlib.dll";
-
-            if (SystemDataAssemblyLocation.Location == null)
-                SystemDataAssemblyLocation.Location = platformAssembliesLocation + "\\system.data.dll";
-
-            if (SystemXmlAssemblyLocation.Location == null)
-                SystemXmlAssemblyLocation.Location = platformAssembliesLocation + "\\system.xml.dll";
         }
 
         //!EFW
@@ -481,7 +167,6 @@ namespace System.Compiler
 
             TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
         }
-
     }
 
     public static class CoreSystemTypes

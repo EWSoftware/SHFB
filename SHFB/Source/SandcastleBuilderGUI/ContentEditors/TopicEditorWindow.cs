@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/08/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the conceptual topic files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -112,7 +112,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     case ".sitemap":
                     case ".snippets":
                     case ".tokens":
-                    case ".topic":
                     case ".xamlcfg":
                         editor.SetHighlighting("XML");
                         break;
@@ -223,9 +222,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             using(SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.Title = "Save Content File As";
-                dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, *.content, *.sitemap, " +
-                    "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                    "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|Content Layout Files " +
+                dlg.Filter = "Project Files (*.aml, *.htm*, *.md, *.css, *.js, *.content, *.sitemap, " +
+                    "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.md;*.css;*.js;*.content;*.sitemap;*.tokens;" +
+                    "*.snippets;*.items|Content Files (*.aml, *.htm*, *.md)|*.aml;*.htm*;*.md|Content Layout Files " +
                     "(*.content, *.sitemap)|*.content;*.sitemap|All Files (*.*)|*.*";
                 dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
                 dlg.InitialDirectory = Directory.GetCurrentDirectory();
@@ -287,7 +286,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             else
                 selectedText = String.Empty;
 
-            if(extension == ".htm" || extension == ".html")
+            if(extension == ".htm" || extension == ".html" || extension == ".md")
                 ContentEditorControl.InsertString(textArea, topic.ToAnchor(selectedText));
             else
                 ContentEditorControl.InsertString(textArea, topic.ToLink(selectedText));
@@ -313,7 +312,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             else
                 selectedText = String.Empty;
 
-            if(extension == ".htm" || extension == ".html")
+            if(extension == ".htm" || extension == ".html" || extension == ".md")
                 ContentEditorControl.InsertString(textArea, tocEntry.ToAnchor(selectedText));
             else
                 ContentEditorControl.InsertString(textArea, tocEntry.Title);    // Not supported in MAML topics

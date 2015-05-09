@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuildPropertiesPageControl));
             this.label1 = new System.Windows.Forms.Label();
             this.chkCleanIntermediates = new System.Windows.Forms.CheckBox();
-            this.chkCppCommentsFixup = new System.Windows.Forms.CheckBox();
             this.chkDisableCodeBlockComponent = new System.Windows.Forms.CheckBox();
             this.chkKeepLogFile = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -68,19 +67,6 @@
             this.chkCleanIntermediates.Tag = "CleanIntermediates";
             this.chkCleanIntermediates.Text = "&Clean intermediate files after a successful build";
             this.chkCleanIntermediates.UseVisualStyleBackColor = true;
-            // 
-            // chkCppCommentsFixup
-            // 
-            this.chkCppCommentsFixup.AutoSize = true;
-            this.epNotes.SetError(this.chkCppCommentsFixup, "The Member ID Fix-Ups plug-in can be used to fix these issues and others that you" +
-        " define");
-            this.chkCppCommentsFixup.Location = new System.Drawing.Point(292, 205);
-            this.chkCppCommentsFixup.Name = "chkCppCommentsFixup";
-            this.chkCppCommentsFixup.Size = new System.Drawing.Size(419, 24);
-            this.chkCppCommentsFixup.TabIndex = 9;
-            this.chkCppCommentsFixup.Tag = "CppCommentsFixup";
-            this.chkCppCommentsFixup.Text = "Fix up method signature issues in C++ XML comments files";
-            this.chkCppCommentsFixup.UseVisualStyleBackColor = true;
             // 
             // chkDisableCodeBlockComponent
             // 
@@ -138,10 +124,10 @@
             this.chkIndentHtml.AutoSize = true;
             this.epNotes.SetError(this.chkIndentHtml, "Build component debugging aid.  Leave this unchecked for normal builds\nto produce" +
         " more compact HTML");
-            this.chkIndentHtml.Location = new System.Drawing.Point(292, 235);
+            this.chkIndentHtml.Location = new System.Drawing.Point(292, 205);
             this.chkIndentHtml.Name = "chkIndentHtml";
             this.chkIndentHtml.Size = new System.Drawing.Size(180, 24);
-            this.chkIndentHtml.TabIndex = 10;
+            this.chkIndentHtml.TabIndex = 9;
             this.chkIndentHtml.Tag = "IndentHtml";
             this.chkIndentHtml.Text = "Indent rendered HTML";
             this.chkIndentHtml.UseVisualStyleBackColor = true;
@@ -184,19 +170,19 @@
             // 
             this.cboBuildAssemblerVerbosity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboBuildAssemblerVerbosity.FormattingEnabled = true;
-            this.cboBuildAssemblerVerbosity.Location = new System.Drawing.Point(431, 273);
+            this.cboBuildAssemblerVerbosity.Location = new System.Drawing.Point(431, 255);
             this.cboBuildAssemblerVerbosity.MaxDropDownItems = 16;
             this.cboBuildAssemblerVerbosity.Name = "cboBuildAssemblerVerbosity";
             this.cboBuildAssemblerVerbosity.Size = new System.Drawing.Size(214, 28);
-            this.cboBuildAssemblerVerbosity.TabIndex = 12;
+            this.cboBuildAssemblerVerbosity.TabIndex = 11;
             this.cboBuildAssemblerVerbosity.Tag = "BuildAssemblerVerbosity";
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(241, 275);
+            this.label4.Location = new System.Drawing.Point(241, 257);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(184, 23);
-            this.label4.TabIndex = 11;
+            this.label4.TabIndex = 10;
             this.label4.Text = "BuildAssembler &Verbosity";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -213,12 +199,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.chkKeepLogFile);
             this.Controls.Add(this.chkDisableCodeBlockComponent);
-            this.Controls.Add(this.chkCppCommentsFixup);
             this.Controls.Add(this.chkCleanIntermediates);
             this.Controls.Add(this.label1);
-            this.MinimumSize = new System.Drawing.Size(770, 310);
+            this.MinimumSize = new System.Drawing.Size(770, 300);
             this.Name = "BuildPropertiesPageControl";
-            this.Size = new System.Drawing.Size(795, 310);
+            this.Size = new System.Drawing.Size(795, 300);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -229,7 +214,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkCleanIntermediates;
-        private System.Windows.Forms.CheckBox chkCppCommentsFixup;
         private System.Windows.Forms.CheckBox chkDisableCodeBlockComponent;
         private System.Windows.Forms.CheckBox chkKeepLogFile;
         private System.Windows.Forms.Label label2;

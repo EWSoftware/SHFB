@@ -2,33 +2,30 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 05/08/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a conceptual content topic file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-//===============================================================================================================
-// 1.8.0.0  08/07/2008  EFW  Created the code
-// 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
+//    Date     Who  Comments
+// ==============================================================================================================
+// 08/07/2008  EFW  Created the code
+// 01/02/2013  EFW  Added method to get referenced namespaces
+// 05/08/2015  EFW  Removed support for raw HTML files
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
-
-using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
@@ -39,10 +36,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     {
         #region Private data members
         //=====================================================================
-
-        private static Regex reMeta = new Regex("\\<meta\\s*name\\s*=" +
-            "\\s*\"(?<Name>\\w*?)\"\\s*content\\s*=\\s*\"(?<Content>.*?)\"",
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         private FileItem fileItem;
         private DocumentType docType;
@@ -121,8 +114,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This read-only property is used to return the error message if
-        /// <see cref="DocumentType" /> returns <b>Invalid</b>.
+        /// This read-only property is used to return the error message if <see cref="DocumentType" /> returns
+        /// <c>Invalid</c>.
         /// </summary>
         public string ErrorMessage
         {
@@ -137,8 +130,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// Constructor
         /// </summary>
         /// <param name="file">The file build item from the project</param>
-        /// <exception cref="ArgumentNullException">This is thrown if the file
-        /// item is null.</exception>
+        /// <exception cref="ArgumentNullException">This is thrown if the file item is null</exception>
         public TopicFile(FileItem file)
         {
             if(file == null)
@@ -153,17 +145,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This will parse the file content and extract the document type,
-        /// unique ID, and revision number.
+        /// This will parse the file content and extract the document type, unique ID, and revision number
         /// </summary>
-        /// <param name="reparse">If false and the file has already been
-        /// parsed, the method just returns.  If true, the file is reparsed
-        /// to refresh the information.</param>
+        /// <param name="reparse">If false and the file has already been parsed, the method just returns.  If
+        /// true, the file is reparsed to refresh the information.</param>
         public void ParseContent(bool reparse)
         {
             XmlReaderSettings settings = new XmlReaderSettings();
             XmlReader xr = null;
-            string attrValue, ext;
+            string attrValue;
             int rev;
 
             if(!reparse && contentParsed)
@@ -178,23 +168,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 docType = DocumentType.NotFound;
                 return;
-            }
-
-            // Don't bother parsing HTML files but support them for passing
-            // through stuff like title pages which may not need to look like
-            // the API topics.
-            ext = Path.GetExtension(fileItem.FullPath).ToLowerInvariant();
-
-            if(ext == ".htm" || ext == ".html" || ext == ".topic")
-            {
-                docType = DocumentType.Html;
-
-                if(ext != ".topic")
-                {
-                    contentParsed = true;
-                    this.ParseIdFromHtml();
-                    return;
-                }
             }
 
             try
@@ -277,29 +250,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to parse the ID and revision number from an HTML file
-        /// </summary>
-        private void ParseIdFromHtml()
-        {
-            Encoding enc = Encoding.Default;
-            int rev;
-
-            string content = BuildProcess.ReadWithEncoding(fileItem.FullPath,
-                ref enc);
-
-            MatchCollection matches = reMeta.Matches(content);
-
-            foreach(Match m in matches)
-                if(m.Groups[1].Value == "id")
-                    id = m.Groups[2].Value;
-                else
-                    if(m.Groups[1].Value == "revisionNumber" &&
-                      Int32.TryParse(m.Groups[2].Value, out rev))
-                        revision = rev;
-        }
-
-        /// <summary>
-        /// This is used to get an enumerable list of unique namespaces from the given reflection data file
+        /// This is used to get an enumerable list of unique namespaces referenced in the topic
         /// </summary>
         /// <param name="reflectionDataPath">The reflection data path containing the valid namespace files</param>
         /// <returns>An enumerable list of unique namespaces in the topic</returns>
@@ -326,6 +277,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     // Strip off member name?
                     if(!ns.StartsWith("R:", StringComparison.OrdinalIgnoreCase) &&
+                      !ns.StartsWith("G:", StringComparison.OrdinalIgnoreCase) &&
                       !ns.StartsWith("N:", StringComparison.OrdinalIgnoreCase) &&
                       !ns.StartsWith("T:", StringComparison.OrdinalIgnoreCase))
                     {

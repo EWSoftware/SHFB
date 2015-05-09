@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/18/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/08/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the XML comments files
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -193,6 +193,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         // Strip off member name?
                         if(!ns.StartsWith("R:", StringComparison.OrdinalIgnoreCase) &&
+                          !ns.StartsWith("G:", StringComparison.OrdinalIgnoreCase) &&
                           !ns.StartsWith("N:", StringComparison.OrdinalIgnoreCase) &&
                           !ns.StartsWith("T:", StringComparison.OrdinalIgnoreCase))
                         {

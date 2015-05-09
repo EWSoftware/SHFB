@@ -22,8 +22,6 @@
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
-    <HtmlHelp2xCompilerPath>
-    </HtmlHelp2xCompilerPath>
     <WorkingPath>
     </WorkingPath>
     <CleanIntermediates>False</CleanIntermediates>
@@ -40,7 +38,7 @@
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
     <PresentationStyle>VS2013</PresentationStyle>
-    <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision}</HelpFileVersion>
+    <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision} Beta</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
         <component id="Code Block Component">
@@ -51,18 +49,26 @@
           <colorizer syntaxFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xml" styleFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}PresentationStyles\Colorizer\highlight.css" scriptFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
         </component>
       </ComponentConfig>
-<ComponentConfig id="API Token Resolution" enabled="True"><component id="API Token Resolution">{@TokenFiles}
-<replace elements="/*//token" item="string(.)" /></component></ComponentConfig>
-<ComponentConfig id="IntelliSense Component" enabled="True"><component id="IntelliSense Component"><!-- Output options (optional)
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <!-- Output options (optional)
   Attributes:
     Include namespaces (false by default)
     Namespaces comments filename ("Namespaces" if not specified or empty)
-    Output folder (current folder if not specified or empty) --><output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" /></component></ComponentConfig></ComponentConfigurations>
+    Output folder (current folder if not specified or empty) -->
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+        </component>
+      </ComponentConfig>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
     <HelpAttributes>
-      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
+      <HelpAttribute name="DocSet" value="{@HtmlEncHelpName}" />
       <HelpAttribute name="DocSet" value="NetFramework" />
       <HelpAttribute name="TargetOS" value="Windows" />
     </HelpAttributes>
@@ -129,11 +135,6 @@
           <sbAppLocale path="C:\Utils\SBAppLocale.exe" />
         </configuration>
       </PlugInConfig>
-      <PlugInConfig id="Hierarchical Table of Contents" enabled="False">
-        <configuration>
-          <toc minParts="2" insertBelow="False" />
-        </configuration>
-      </PlugInConfig>
       <PlugInConfig id="Wildcard Assembly References" enabled="False">
         <configuration>
           <references>
@@ -153,19 +154,17 @@
     </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <Version>1.20.34.123</Version>
     <Major>1</Major>
     <Minor>20</Minor>
     <Build>34</Build>
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
-    <HelpTitle>Sandcastle Test Case Library {%40Version}</HelpTitle>
+    <HelpTitle>Sandcastle Test Case Library {%40HelpFileVersion}</HelpTitle>
     <SyntaxFilters>Standard</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
     <VendorName>EWSoftware</VendorName>
-    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
     <TocOrder>3</TocOrder>
@@ -191,7 +190,8 @@
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
-    <CatalogName>VisualStudio12</CatalogName>
+    <CatalogName>
+    </CatalogName>
     <ComponentPath>
     </ComponentPath>
     <PostBuildEvent>

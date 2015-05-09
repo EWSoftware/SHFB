@@ -94,8 +94,6 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.miViewHtmlHelp1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
-            this.miViewMSHelp2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.miViewMSHelpViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             this.miViewAspNetWebsite = new System.Windows.Forms.ToolStripMenuItem();
@@ -455,8 +453,6 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator10,
             this.miViewHtmlHelp1,
             this.toolStripSeparator16,
-            this.miViewMSHelp2,
-            this.toolStripSeparator17,
             this.miViewMSHelpViewer,
             this.toolStripSeparator18,
             this.miViewAspNetWebsite,
@@ -466,7 +462,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator19,
             this.miOpenHelpAfterBuild});
             this.ctxViewHelpMenu.Name = "ctxViewHelpMenu";
-            this.ctxViewHelpMenu.Size = new System.Drawing.Size(424, 248);
+            this.ctxViewHelpMenu.Size = new System.Drawing.Size(424, 216);
             this.ctxViewHelpMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ctxViewHelpMenu_Opening);
             // 
             // miViewHelpFile
@@ -498,19 +494,6 @@ namespace SandcastleBuilder.Gui
             // 
             this.toolStripSeparator16.Name = "toolStripSeparator16";
             this.toolStripSeparator16.Size = new System.Drawing.Size(420, 6);
-            // 
-            // miViewMSHelp2
-            // 
-            this.miViewMSHelp2.Name = "miViewMSHelp2";
-            this.miViewMSHelp2.Size = new System.Drawing.Size(423, 26);
-            this.sbStatusBarText.SetStatusBarText(this.miViewMSHelp2, "View MS Help 2 (.HxS) help file");
-            this.miViewMSHelp2.Text = "View &MS Help 2 (.HxS) File";
-            this.miViewMSHelp2.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
-            // 
-            // toolStripSeparator17
-            // 
-            this.toolStripSeparator17.Name = "toolStripSeparator17";
-            this.toolStripSeparator17.Size = new System.Drawing.Size(420, 6);
             // 
             // miViewMSHelpViewer
             // 
@@ -1117,7 +1100,6 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.ToolStripMenuItem miViewHelpFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripMenuItem miViewHtmlHelp1;
-        private System.Windows.Forms.ToolStripMenuItem miViewMSHelp2;
         private System.Windows.Forms.ToolStripMenuItem miViewAspNetWebsite;
         private System.Windows.Forms.ToolStripMenuItem miViewHtmlWebsite;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
@@ -1152,7 +1134,6 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.ToolStripButton tsbProjectExplorer;
         private System.Windows.Forms.ToolStripButton tsbPreviewTopic;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
         private System.Windows.Forms.ToolStripMenuItem miViewMSHelpViewer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripMenuItem miViewOpenXml;

@@ -17,9 +17,6 @@
     <Setting Name="VerboseLogging" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="HTMLHelp2ViewerPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="ASPNETDevServerPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12345</Value>
     </Setting>

@@ -2,22 +2,23 @@
 // System  : Sandcastle Help File Builder
 // File    : UserPreferencesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 05/03/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to allow the user to modify help file builder preferences unrelated to projects
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.0.0  06/23/2007  EFW  Created the code
-// 1.5.0.2  07/02/2007  EFW  Added content file editor collection option
-// 1.9.8.0  05/14/2013  EFW  Added spell checking options
+// 06/23/2007  EFW  Created the code
+// 07/02/2007  EFW  Added content file editor collection option
+// 05/14/2013  EFW  Added spell checking options
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -59,7 +60,6 @@ namespace SandcastleBuilder.Gui
             cboDefaultLanguage.Items.AddRange(
                 SpellCheckerConfiguration.AvailableDictionaryLanguages.OrderBy(c => c.Name).ToArray());
 
-            txtHTMLHelp2ViewerPath.Text = Settings.Default.HTMLHelp2ViewerPath;
             txtMSHelpViewerPath.Text = Settings.Default.MSHelpViewerPath;
             udcASPNetDevServerPort.Value = Settings.Default.ASPNETDevServerPort;
             chkPerUserProjectState.Checked = Settings.Default.PerUserProjectState;
@@ -116,20 +116,7 @@ namespace SandcastleBuilder.Gui
             if(this.DialogResult == DialogResult.Cancel)
                 return;
 
-            string filePath = txtHTMLHelp2ViewerPath.Text.Trim();
-
-            if(filePath.Length != 0)
-            {
-                txtHTMLHelp2ViewerPath.Text = filePath = Path.GetFullPath(filePath);
-
-                if(!File.Exists(filePath))
-                {
-                    epErrors.SetError(btnSelectHxSViewer, "The viewer application does not exist");
-                    e.Cancel = true;
-                }
-            }
-
-            filePath = txtMSHelpViewerPath.Text.Trim();
+            string filePath = txtMSHelpViewerPath.Text.Trim();
 
             if(filePath.Length != 0)
             {
@@ -150,7 +137,6 @@ namespace SandcastleBuilder.Gui
                     lblBuildExample.ForeColor = SystemColors.WindowText;
                 }
 
-                Settings.Default.HTMLHelp2ViewerPath = txtHTMLHelp2ViewerPath.Text;
                 Settings.Default.MSHelpViewerPath = txtMSHelpViewerPath.Text;
                 Settings.Default.ASPNETDevServerPort = (int)udcASPNetDevServerPort.Value;
                 Settings.Default.PerUserProjectState = chkPerUserProjectState.Checked;
@@ -208,22 +194,16 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void btnSelectViewer_Click(object sender, EventArgs e)
         {
-            TextBox tb = (sender == btnSelectHxSViewer) ? txtHTMLHelp2ViewerPath : txtMSHelpViewerPath;
-
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
-                if(tb == txtHTMLHelp2ViewerPath)
-                    dlg.Title = "Select the MS Help 2 (.HxS) viewer application";
-                else
-                    dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
-
+                dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
                 dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
                 dlg.InitialDirectory = Directory.GetCurrentDirectory();
                 dlg.DefaultExt = "exe";
 
                 // If one is selected, use that file
                 if(dlg.ShowDialog() == DialogResult.OK)
-                    tb.Text = dlg.FileName;
+                    txtMSHelpViewerPath.Text = dlg.FileName;
             }
         }
 

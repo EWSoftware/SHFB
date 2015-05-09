@@ -1,25 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Package
 // File    : SandcastleBuilderFileNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 05/08/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that exposes the properties for the
-// SandcastleBuilderFileNode object.
+// This file contains the class that exposes the properties for the SandcastleBuilderFileNode object
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
-//=============================================================================
+//    Date     Who  Comments
+//===============================================================================================================
+// 03/27/2011  EFW  Created the code
+// 04/08/2012  EFW  Added support for XAML configuration files
+// 05/03/2015  EFW  Removed support for topic transformation files and ExcludeFromToc metadata
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -45,8 +44,8 @@ namespace SandcastleBuilder.Package.Nodes
         //=====================================================================
 
         /// <summary>
-        /// This is overridden to hide the default build action property since the help file builder
-        /// supports several other build actions.
+        /// This is overridden to hide the default build action property since the help file builder supports
+        /// several other build actions.
         /// </summary>
         /// <remarks>Use <see cref="SandcastleBuildAction"/> instead.</remarks>
         [Browsable(false), AutomationBrowsable(false)]
@@ -59,8 +58,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// The URL of the item
         /// </summary>
-        /// <remarks>The examples don't show this property but it does get used.  If not present,
-        /// an exception is thrown.</remarks>
+        /// <remarks>The examples don't show this property but it does get used.  If not present, an exception is
+        /// thrown.</remarks>
         [Browsable(false)]
         public string URL
         {
@@ -103,9 +102,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is used to get or set an ID for a conceptual content image
         /// </summary>
-        /// <remarks>This is used to indicate that an image file is part of
-        /// the conceptual content.  Image items without an ID are not
-        /// valid and will be ignored.</remarks>
+        /// <remarks>This is used to indicate that an image file is part of the conceptual content.  Image items
+        /// without an ID are not valid and will be ignored.</remarks>
         [Category("Metadata"), Description("The ID for a conceptual content image"), DefaultValue(null),
           DisplayName("Image ID")]
         public string ImageId
@@ -138,12 +136,10 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// This is used to get or set whether an item is copied to the output
-        /// folder during a build.
+        /// This is used to get or set whether an item is copied to the output folder during a build
         /// </summary>
-        /// <remarks>If this is set to true, the image will always be copied to
-        /// the build's media folder.  If false, it is only copied if referenced
-        /// in a topic.</remarks>
+        /// <remarks>If this is set to true, the image will always be copied to the build's media folder.  If
+        /// false, it is only copied if referenced in a topic.</remarks>
         [Category("Metadata"), Description("If set to true, the image will always be copied to the " +
           "build's media folder.  If false, it is only copied if referenced in a topic."),
           DefaultValue(false), DisplayName("Copy To Media")]
@@ -153,8 +149,7 @@ namespace SandcastleBuilder.Package.Nodes
             {
                 bool value;
 
-                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(
-                  SandcastleBuilderProjectElement.CopyToMedia), out value))
+                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuilderProjectElement.CopyToMedia), out value))
                     return false;
 
                 return value;
@@ -167,36 +162,7 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// For content items such as HTML pages, this is used to get or set
-        /// whether or not the item is excluded from the table of contents.
-        /// </summary>
-        /// <remarks>If true, the item is not included in the table of contents.
-        /// If false, it will be included.</remarks>
-        [Category("Metadata"), Description("For content items such as HTML pages, this is used to " +
-          "specify whether or not the item is excluded from the table of contents."), DefaultValue(false),
-          DisplayName("Exclude From TOC")]
-        public bool ExcludeFromToc
-        {
-            get
-            {
-                bool value;
-
-                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(
-                  SandcastleBuilderProjectElement.ExcludeFromToc), out value))
-                    return false;
-
-                return value;
-            }
-            set
-            {
-                this.Node.ItemNode.SetMetadata(SandcastleBuilderProjectElement.ExcludeFromToc,
-                    value.ToString(CultureInfo.InvariantCulture));
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the sort order for content layout and
-        /// site map files.
+        /// This is used to get or set the sort order for content layout and site map files
         /// </summary>
         [Category("Metadata"), Description("For content layout and site map files, this defines the " +
           "sort order for merging them into the table of contents."), DefaultValue(0), DisplayName("Sort Order")]
@@ -206,8 +172,7 @@ namespace SandcastleBuilder.Package.Nodes
             {
                 int value;
 
-                if(!Int32.TryParse(this.Node.ItemNode.GetMetadata(
-                  SandcastleBuilderProjectElement.SortOrder), out value))
+                if(!Int32.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuilderProjectElement.SortOrder), out value))
                     return 0;
 
                 return value;
@@ -256,8 +221,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// </summary>
         /// <param name="pdc">The property descriptor collection to filter</param>
         /// <returns>The filtered property descriptor collection</returns>
-        private PropertyDescriptorCollection FilterProperties(
-          PropertyDescriptorCollection pdc)
+        private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection pdc)
         {
             List<string> removeProps = new List<string>();
 
@@ -267,10 +231,8 @@ namespace SandcastleBuilder.Package.Nodes
                 case SandcastleBuildAction.CodeSnippets:
                 case SandcastleBuildAction.ResourceItems:
                 case SandcastleBuildAction.Tokens:
-                case SandcastleBuildAction.TopicTransform:
                 case SandcastleBuildAction.XamlConfiguration:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
-                        "SortOrder", "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder" });
                     break;
 
                 case SandcastleBuildAction.Content:
@@ -279,21 +241,19 @@ namespace SandcastleBuilder.Package.Nodes
                     break;
 
                 case SandcastleBuildAction.Image:
-                    removeProps.AddRange(new string[] { "SortOrder", "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "SortOrder" });
                     break;
 
                 case SandcastleBuildAction.ContentLayout:
                 case SandcastleBuildAction.SiteMap:
-                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
-                        "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia" });
                     break;
 
                 default:    // Leave them all in
                     break;
             }
 
-            PropertyDescriptorCollection adjustedProps = new
-                PropertyDescriptorCollection(new PropertyDescriptor[] { });
+            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(new PropertyDescriptor[] { });
 
             // NOTE: Visual Studio requires that the property descriptors be wrapped in a
             // DesignPropertyDescriptor.  In addition, any TypeConverterAttribute must be
