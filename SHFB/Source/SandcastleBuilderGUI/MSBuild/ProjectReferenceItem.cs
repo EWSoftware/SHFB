@@ -1,8 +1,8 @@
 //===============================================================================================================
-// System  : Sandcastle Help File Builder Utilities
+// System  : Sandcastle Help File Builder
 // File    : ProjectReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2015
+// Updated : 05/13/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,11 +14,12 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.1.0.0  08/23/2006  EFW  Created the code
-// 1.8.0.0  06/30/2008  EFW  Rewrote to support the MSBuild project format
-// -------  12/29/2013  EFW  Added support for the ReferenceOutputAssembly metadata item
+// 08/23/2006  EFW  Created the code
+// 06/30/2008  EFW  Rewrote to support the MSBuild project format
+// 12/29/2013  EFW  Added support for the ReferenceOutputAssembly metadata item
+// 05/13/2015  EFW  Moved the file to the GUI project as it is only used there
 //===============================================================================================================
 
 using System;
@@ -26,14 +27,17 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
 
+using Microsoft.Build.Evaluation;
+
+using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.MSBuild;
 
-namespace SandcastleBuilder.Utils
+namespace SandcastleBuilder.Gui.MSBuild
 {
     /// <summary>
-    /// This represents a project reference item that can be used by <b>MRefBuilder</b> to locate assembly
-    /// dependencies for the assemblies being documented.
+    /// This represents a project reference item that can be used by <strong>MRefBuilder</strong> to locate
+    /// assembly dependencies for the assemblies being documented.
     /// </summary>
     public class ProjectReferenceItem : ReferenceItem
     {
@@ -64,7 +68,7 @@ namespace SandcastleBuilder.Utils
                         "(* or ?)", "value");
 
                 // Do this first in case the project isn't editable
-                base.ProjectElement.Include = value.PersistablePath;
+                this.Include = value.PersistablePath;
 
                 projectPath = value;
                 projectPath.PersistablePathChanging += projectPath_PersistablePathChanging;
@@ -83,8 +87,7 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is overridden to return the project name rather than the
-        /// file path.
+        /// This is overridden to return the project name rather than the file path
         /// </summary>
         public override string Reference
         {
@@ -95,11 +98,11 @@ namespace SandcastleBuilder.Utils
         /// This is used to get the project reference's GUID
         /// </summary>
         [Category("Metadata"), Description("The project reference's GUID")]
-        public string Project
+        public string ProjectGuid
         {
             get
             {
-                return base.ProjectElement.GetMetadata(ProjectElement.ProjectGuid);
+                return this.GetMetadata(BuildItemMetadata.ProjectGuid);
             }
         }
 
@@ -111,7 +114,7 @@ namespace SandcastleBuilder.Utils
         {
             get
             {
-                return base.ProjectElement.GetMetadata(ProjectElement.Name);
+                return this.GetMetadata(BuildItemMetadata.Name);
             }
         }
 
@@ -128,15 +131,14 @@ namespace SandcastleBuilder.Utils
                 bool value;
 
                 // If not present or valid, default to true
-                if(!Boolean.TryParse(base.ProjectElement.GetMetadata(ProjectElement.ReferenceOutputAssembly), out value))
+                if(!Boolean.TryParse(this.GetMetadata(BuildItemMetadata.ReferenceOutputAssembly), out value))
                     value = true;
 
                 return value;
             }
             set
             {
-                base.ProjectElement.SetMetadata(ProjectElement.ReferenceOutputAssembly,
-                    value.ToString().ToLowerInvariant());
+                this.SetMetadata(BuildItemMetadata.ReferenceOutputAssembly, value.ToString().ToLowerInvariant());
             }
         }
         #endregion
@@ -145,30 +147,29 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to handle changes in the <see cref="ProjectPath" />
-        /// properties such that the hint path gets stored in the project file.
+        /// This is used to handle changes in the <see cref="ProjectPath" /> properties such that the hint path
+        /// gets stored in the project file.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void projectPath_PersistablePathChanging(object sender,
-          EventArgs e)
+        private void projectPath_PersistablePathChanging(object sender, EventArgs e)
         {
-            base.ProjectElement.Include = projectPath.PersistablePath;
+            this.Include = projectPath.PersistablePath;
             this.GetProjectMetadata(true);
+            this.OnPropertyChanged("ProjectPath");
         }
 
         /// <summary>
-        /// This is used to get the build item meta data from the referenced
-        /// project.
+        /// This is used to get the build item meta data from the referenced project
         /// </summary>
-        /// <param name="refresh">True to force the metadata to be refreshed,
-        /// false to only retrieve it if it doesn't exist.</param>
+        /// <param name="refresh">True to force the metadata to be refreshed, false to only retrieve it if it
+        /// doesn't exist.</param>
         private void GetProjectMetadata(bool refresh)
         {
             string name;
 
-            if(!refresh && base.ProjectElement.HasMetadata(ProjectElement.Name) &&
-              base.ProjectElement.HasMetadata(ProjectElement.ProjectGuid))
+            if(!refresh && this.HasMetadata(BuildItemMetadata.Name) &&
+              this.HasMetadata(BuildItemMetadata.ProjectGuid))
                 return;
 
             using(MSBuildProject project = new MSBuildProject(projectPath))
@@ -179,30 +180,45 @@ namespace SandcastleBuilder.Utils
                 name = Path.GetFileNameWithoutExtension(project.AssemblyName);
 
                 if(!String.IsNullOrEmpty(name))
-                    base.ProjectElement.SetMetadata(ProjectElement.Name, name);
+                    this.SetMetadata(BuildItemMetadata.Name, name);
                 else
-                    base.ProjectElement.SetMetadata(ProjectElement.Name, "(Invalid project type)");
+                    this.SetMetadata(BuildItemMetadata.Name, "(Invalid project type)");
 
-                base.ProjectElement.SetMetadata(ProjectElement.ProjectGuid, project.ProjectGuid);
+                this.SetMetadata(BuildItemMetadata.ProjectGuid, project.ProjectGuid);
             }
         }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
         /// <summary>
-        /// Internal Constructor
+        /// This constructor is used to wrap an existing reference
         /// </summary>
-        /// <param name="element">The project element</param>
-        internal ProjectReferenceItem(ProjectElement element) : base(element)
+        /// <param name="project">The project that owns the reference</param>
+        /// <param name="existingItem">The existing reference</param>
+        /// <overloads>There are two overloads for the constructor</overloads>
+        internal ProjectReferenceItem(SandcastleProject project, ProjectItem existingItem) : base(project, existingItem)
         {
-            projectPath = new FilePath(base.ProjectElement.Include,
-                base.ProjectElement.Project);
-            projectPath.PersistablePathChanging += new EventHandler(
-                projectPath_PersistablePathChanging);
+            projectPath = new FilePath(this.Include, this.Project);
+            projectPath.PersistablePathChanging += projectPath_PersistablePathChanging;
             this.GetProjectMetadata(false);
-            base.ProjectElement.Include = projectPath.PersistablePath;
+            this.Include = projectPath.PersistablePath;
+        }
+
+        /// <summary>
+        /// This constructor is used to create a new reference and add it to the project
+        /// </summary>
+        /// <param name="project">The project that will own the reference</param>
+        /// <param name="itemType">The type of reference to create</param>
+        /// <param name="itemPath">The path to the reference</param>
+        internal ProjectReferenceItem(SandcastleProject project, string itemType, string itemPath) :
+          base(project, itemType, itemPath)
+        {
+            projectPath = new FilePath(this.Include, this.Project);
+            projectPath.PersistablePathChanging += projectPath_PersistablePathChanging;
+            this.GetProjectMetadata(false);
+            this.Include = projectPath.PersistablePath;
         }
         #endregion
     }

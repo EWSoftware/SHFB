@@ -2,23 +2,23 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 05/16/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a namespace summary item that can be used to add comments to a
 // namespace in the help file or exclude it completely from the help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.2.0.0  08/02/2006  EFW  Created the code
-// 1.8.0.0  06/30/2008  EFW  Rewrote to support the MSBuild project format
-// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
+// 08/02/2006  EFW  Created the code
+// 06/30/2008  EFW  Rewrote to support the MSBuild project format
+// 11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 //===============================================================================================================
 
 using System;
@@ -30,87 +30,82 @@ namespace SandcastleBuilder.Utils
     /// This represents a a namespace summary item that can be used to add comments to a namespace in the help
     /// file or exclude it completely from the help file.
     /// </summary>
-    [DefaultProperty("Summary")]
-    public class NamespaceSummaryItem : PropertyBasedCollectionItem
+    public class NamespaceSummaryItem
     {
         #region Private data members
         //=====================================================================
 
-        private bool isDocumented;
         private string name, summary;
+        private bool isDocumented;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <summary>
+        /// This read-only property is used to get the namespace name
+        /// </summary>
+        public string Name
+        {
+            get { return (name.Length == 0) ? "(global)" : name; }
+        }
+
+        /// <summary>
         /// This read-only property is used to check whether or not this is a namespace group
         /// </summary>
-        [Category("Summary"), Description("If true, this is a namespace group.  If false, it is a normal namespace"),
-          DefaultValue(false)]
         public Boolean IsGroup { get; private set; }
 
         /// <summary>
         /// This is used to get or set whether or not the namespace is included in the help file
         /// </summary>
-        [Category("Summary"), Description("If true, the namespace and its contents will appear in the help " +
-          "file.  If false, it is excluded."), DefaultValue(true)]
         public bool IsDocumented
         {
             get { return isDocumented; }
             set
             {
-                base.CheckProjectIsEditable();
                 isDocumented = value;
+                this.IsDirty = true;
             }
         }
 
         /// <summary>
         /// This is used to get or set the namespace summary comments
         /// </summary>
-        [Category("Summary"), Description("The summary comments for the namespace."), DefaultValue("")]
         public string Summary
         {
             get { return summary; }
             set
             {
-                base.CheckProjectIsEditable();
-
-                if(value == null || value.Trim().Length == 0)
-                    summary = String.Empty;
-                else
-                    summary = value.Trim();
+                summary = (value ?? String.Empty).Trim();
+                this.IsDirty = true;
             }
         }
 
         /// <summary>
-        /// This read-only property is used to get the namespace name
+        /// This read-only property can be used to determine if the namespace summary item was changed
         /// </summary>
-        [Category("Summary"), Description("The namespace's name."), DefaultValue("(global)")]
-        public string Name
-        {
-            get { return (name.Length == 0) ? "(global)" : name; }
-        }
+        public bool IsDirty { get; private set; }
+
         #endregion
 
         #region Constructor
         //=====================================================================
 
         /// <summary>
-        /// Internal constructor
+        /// Constructor
         /// </summary>
         /// <param name="itemName">The namespace's name</param>
         /// <param name="isGroup">This indicates whether or not the namespace is a group namespace</param>
         /// <param name="isDocumented">This indicates whether or not the namespace is to be documented</param>
         /// <param name="summaryText">The summary text</param>
-        /// <param name="project">The owning project</param>
-        internal NamespaceSummaryItem(string itemName, bool isGroup, bool isDocumented, string summaryText,
-          SandcastleProject project) : base(project)
+        public NamespaceSummaryItem(string itemName, bool isGroup, bool isDocumented, string summaryText)
         {
+            this.name = (itemName ?? String.Empty);
             this.IsGroup = isGroup;
-            this.name = itemName;
-            this.summary = summaryText;
-            this.isDocumented = isDocumented;
+            this.IsDocumented = isDocumented;
+            this.Summary = summaryText;
+            this.IsDirty = false;
         }
         #endregion
 

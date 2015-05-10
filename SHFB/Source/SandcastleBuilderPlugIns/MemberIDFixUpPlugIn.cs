@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : MemberIdFixUpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 05/24/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to fix up member IDs in the XML comments files due to quirks in
@@ -11,7 +11,7 @@
 // data.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -116,7 +117,8 @@ namespace SandcastleBuilder.PlugIns
                 {
                     MatchExpression = nav.GetAttribute("matchExpression", String.Empty),
                     ReplacementValue = nav.GetAttribute("replacementValue", String.Empty),
-                    MatchAsRegEx = Convert.ToBoolean(nav.GetAttribute("matchAsRegEx", String.Empty))
+                    MatchAsRegEx = Convert.ToBoolean(nav.GetAttribute("matchAsRegEx", String.Empty),
+                        CultureInfo.InvariantCulture)
                 });
 
             if(expressions.Count == 0)

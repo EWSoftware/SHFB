@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/07/2015
+// Updated : 06/05/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,13 +13,14 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  04/24/2008  EFW  Created the code
-// 1.8.0.0  08/07/2008  EFW  Modified for use with the new project format
-// 1.9.0.0  06/06/2010  EFW  Added support for MS Help Viewer output
-// 1.9.0.0  07/01/2010  EFW  Added support for API parent mode setting
-// 1.9.3.3  12/15/2011  EFW  Updated for use with the new content layout editor
+// 04/24/2008  EFW  Created the code
+// 08/07/2008  EFW  Modified for use with the new project format
+// 06/06/2010  EFW  Added support for MS Help Viewer output
+// 07/01/2010  EFW  Added support for API parent mode setting
+// 12/15/2011  EFW  Updated for use with the new content layout editor
+// 06/05/2015  EFW  Removed support for Help 2 attributes
 //===============================================================================================================
 
 using System;
@@ -27,17 +28,17 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 
 using Sandcastle.Core;
-
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This represents a conceptual content topic.
+    /// This represents a conceptual content topic
     /// </summary>
     public class Topic : INotifyPropertyChanged
     {
@@ -49,7 +50,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         private string contentId, title, tocTitle, linkText;
         private bool noFile, isSelected, isExpanded, isVisible, isDefaultTopic, isMSHVRoot;
         private ApiParentMode apiParentMode;
-        private MSHelpAttrCollection helpAttributes;
         private MSHelpKeywordCollection keywords;
         #endregion
 
@@ -152,7 +152,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     return "(Not found)";
                 }
 
-                return topicFile.FileItem.Include.PersistablePath;
+                return topicFile.ContentFile.PersistablePath;
             }
         }
 
@@ -179,7 +179,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         value = null;
 
                     title = value;
-                    this.OnPropertyChanged("Title");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("DisplayTitle");
                 }
             }
@@ -201,7 +201,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         value = null;
 
                     tocTitle = value;
-                    this.OnPropertyChanged("TocTitle");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("DisplayTitle");
                 }
             }
@@ -223,7 +223,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         value = null;
 
                     linkText = value;
-                    this.OnPropertyChanged("LinkText");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -241,7 +241,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isVisible)
                 {
                     isVisible = value;
-                    this.OnPropertyChanged("Visible");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
                     // The default topic must be visible.  The MSHV root must not be visible.  A hidden topic
@@ -255,14 +255,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         this.IsMSHVRootContentContainer = false;
                 }
             }
-        }
-
-        /// <summary>
-        /// This is used to get the additional attributes that will be added to MAML topic
-        /// </summary>
-        public MSHelpAttrCollection HelpAttributes
-        {
-            get { return helpAttributes; }
         }
 
         /// <summary>
@@ -325,7 +317,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isDefaultTopic)
                 {
                     isDefaultTopic = value;
-                    this.OnPropertyChanged("IsDefaultTopic");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
                     // The default topic must be visible and cannot be the MSHV root container
@@ -349,7 +341,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != apiParentMode)
                 {
                     apiParentMode = value;
-                    this.OnPropertyChanged("ApiParentMode");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
                     // The API parent node must be visible and cannot be the MSHV root container
@@ -374,7 +366,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isMSHVRoot)
                 {
                     isMSHVRoot = value;
-                    this.OnPropertyChanged("IsMSHVRootContentContainer");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
 
                     // The MSHV root container must not be visible and cannot be the default topic or API
@@ -403,7 +395,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isSelected)
                 {
                     isSelected = value;
-                    this.OnPropertyChanged("IsSelected");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -421,7 +413,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isExpanded)
                 {
                     isExpanded = value;
-                    this.OnPropertyChanged("IsExpanded");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -484,12 +476,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             contentId = Guid.NewGuid().ToString();
             subtopics = new TopicCollection(null);
-            helpAttributes = new MSHelpAttrCollection(null);
             keywords = new MSHelpKeywordCollection();
             this.Visible = true;
 
             subtopics.ListChanged += childList_ListChanged;
-            helpAttributes.ListChanged += childList_ListChanged;
             keywords.ListChanged += childList_ListChanged;
         }
         #endregion
@@ -506,7 +496,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This raises the <see cref="PropertyChanged"/> event
         /// </summary>
         /// <param name="propertyName">The property name that changed</param>
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
             var handler = PropertyChanged;
 
@@ -588,18 +578,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         break;
 
                     if(xr.NodeType == XmlNodeType.Element)
-                        if(xr.Name == "HelpAttributes")
-                            helpAttributes.ReadXml(xr);
+                        if(xr.Name == "HelpKeywords")
+                            keywords.ReadXml(xr);
                         else
-                            if(xr.Name == "HelpKeywords")
-                                keywords.ReadXml(xr);
-                            else
-                                if(xr.Name == "Topic")
-                                {
-                                    newTopic = new Topic();
-                                    newTopic.ReadXml(xr);
-                                    this.Subtopics.Add(newTopic);
-                                }
+                            if(xr.Name == "Topic")
+                            {
+                                newTopic = new Topic();
+                                newTopic.ReadXml(xr);
+                                this.Subtopics.Add(newTopic);
+                            }
                 }
         }
 
@@ -645,9 +632,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             if(linkText != null)
                 xw.WriteAttributeString("linkText", linkText);
-
-            if(helpAttributes.Count != 0)
-                helpAttributes.WriteXml(xw, true);
 
             if(keywords.Count != 0)
                 keywords.WriteXml(xw);
@@ -719,7 +703,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 // Write out the help file version project property value
                 writer.WriteStartElement("item");
                 writer.WriteAttributeString("id", "PBM_FileVersion");
-                writer.WriteValue(builder.TransformText(builder.CurrentProject.HelpFileVersion));
+                writer.WriteValue(builder.SubstitutionTags.TransformText(builder.CurrentProject.HelpFileVersion));
                 writer.WriteEndElement();
 
                 // If no title is specified, use the display title
@@ -736,30 +720,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(!String.IsNullOrEmpty(tocTitle))
                     writer.WriteElementString("tableOfContentsTitle", tocTitle);
 
-                // Each topic includes the project-level help attributes
-                foreach(MSHelpAttr attr in builder.CurrentProject.HelpAttributes)
-                {
-                    writer.WriteStartElement("attribute");
-                    writer.WriteAttributeString("name", attr.AttributeName);
-
-                    // Replace tags with their project property value
-                    writer.WriteValue(builder.TransformText(attr.AttributeValue));
-
-                    writer.WriteEndElement();
-                }
-
-                // Add topic-specific attributes
-                foreach(MSHelpAttr attr in helpAttributes)
-                {
-                    writer.WriteStartElement("attribute");
-                    writer.WriteAttributeString("name", attr.AttributeName);
-
-                    // Replace tags with their project property value
-                    writer.WriteValue(builder.TransformText(attr.AttributeValue));
-
-                    writer.WriteEndElement();
-                }
-
                 // Add topic-specific index keywords
                 foreach(MSHelpKeyword kw in keywords)
                 {
@@ -767,30 +727,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     writer.WriteAttributeString("index", kw.Index);
 
                     // Replace tags with their project property value
-                    writer.WriteValue(builder.TransformText(kw.Term));
+                    writer.WriteValue(builder.SubstitutionTags.TransformText(kw.Term));
 
                     writer.WriteEndElement();
-                }
-
-                // If this is the default topic and the NamedUrlIndex keywords for DefaultPage and/or HomePage
-                // are not present, add them.
-                if(this.IsDefaultTopic)
-                {
-                    if(!keywords.Contains(new MSHelpKeyword("NamedUrlIndex", "DefaultPage")))
-                    {
-                        writer.WriteStartElement("keyword");
-                        writer.WriteAttributeString("index", "NamedUrlIndex");
-                        writer.WriteValue("DefaultPage");
-                        writer.WriteEndElement();
-                    }
-
-                    if(!keywords.Contains(new MSHelpKeyword("NamedUrlIndex", "HomePage")))
-                    {
-                        writer.WriteStartElement("keyword");
-                        writer.WriteAttributeString("index", "NamedUrlIndex");
-                        writer.WriteValue("HomePage");
-                        writer.WriteEndElement();
-                    }
                 }
 
                 writer.WriteEndElement();   // </topic>

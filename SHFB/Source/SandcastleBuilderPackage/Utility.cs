@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 06/06/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a utility class with extension and utility methods.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -20,11 +20,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 using Microsoft.VisualStudio;
@@ -32,7 +30,7 @@ using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SandcastleBuilder.Package.Properties;
-using SandcastleBuilderProjectElement = SandcastleBuilder.Utils.ProjectElement;
+using SandcastleBuildItemMetadata = SandcastleBuilder.Utils.BuildItemMetadata;
 
 namespace SandcastleBuilder.Package
 {
@@ -43,10 +41,6 @@ namespace SandcastleBuilder.Package
     {
         #region Private data members
         //=====================================================================
-
-        // PlatformUI assembly loaded flag and environment colors type
-        private static bool shellAssemblyLoaded;
-        private static Type environmentColors;
 
         // This is used to insert spaces for the Image project element alternate text
         private static Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
@@ -97,13 +91,13 @@ namespace SandcastleBuilder.Package
         {
             string baseName = Path.GetFileNameWithoutExtension(element.GetMetadata(ProjectFileConstants.Include));
 
-            if(String.IsNullOrEmpty(element.GetMetadata(SandcastleBuilderProjectElement.ImageId)))
-                element.SetMetadata(SandcastleBuilderProjectElement.ImageId, baseName);
+            if(String.IsNullOrEmpty(element.GetMetadata(SandcastleBuildItemMetadata.ImageId)))
+                element.SetMetadata(SandcastleBuildItemMetadata.ImageId, baseName);
 
-            if(String.IsNullOrEmpty(element.GetMetadata(SandcastleBuilderProjectElement.AlternateText)))
+            if(String.IsNullOrEmpty(element.GetMetadata(SandcastleBuildItemMetadata.AlternateText)))
             {
                 baseName = baseName.Replace("_", " ");
-                element.SetMetadata(SandcastleBuilderProjectElement.AlternateText,
+                element.SetMetadata(SandcastleBuildItemMetadata.AlternateText,
                     reInsertSpaces.Replace(baseName, " $&").Trim());
             }
         }
@@ -249,56 +243,6 @@ namespace SandcastleBuilder.Package
             }
 
             return new Font("Segoe UI", 9.0f);
-        }
-
-        // TODO: This can go away in VS 2012 and later.  See remarks.
-        /// <summary>
-        /// This is used get a Visual Studio theme key in a version-agnostic manner.
-        /// </summary>
-        /// <param name="key">The theme key to get</param>
-        /// <param name="alternateValue">An alternate value to use if not found or not supported</param>
-        /// <returns>The theme key to use or the alternate value if not found or supported.  It will return null
-        /// if this is Visual Studio 2010 which doesn't support the EnvironmentColors type.</returns>
-        /// <remarks>When built exclusively under Visual Studio 2012 or later, this can go away in favor of
-        /// using <c>EnvironmentColors</c> to access the named theme key.</remarks>
-        public static object GetThemeKey(string key, object alternateValue)
-        {
-            if(!shellAssemblyLoaded)
-            {
-                try
-                {
-                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "msenv.dll");
-
-                    if(File.Exists(path))
-                    {
-                        FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(path);
-
-                        // Do not attempt to load it on VS2010, just use the alternate value
-                        if(fvi.ProductMajorPart < 11)
-                            return null;
-
-                        var vsShell = Assembly.Load("Microsoft.VisualStudio.Shell.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-
-                        if(vsShell != null)
-                            environmentColors = vsShell.GetType("Microsoft.VisualStudio.PlatformUI.EnvironmentColors");
-                    }
-                }
-                catch(Exception ex)
-                {
-                    // Ignore exceptions, we'll just use the alternate value
-                    System.Diagnostics.Debug.WriteLine(ex);
-                }
-
-                shellAssemblyLoaded = true;
-            }
-
-            if(environmentColors != null)
-            {
-                var prop = environmentColors.GetProperty(key);
-                return prop.GetValue(null, null);
-            }
-
-            return alternateValue;
         }
         #endregion
     }

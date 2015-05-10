@@ -61,7 +61,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             resourceItemsPath = fileItem.FullPath;
 
             ucResourceItemEditor.ContentModified += ucResourceItemEditor_ContentModified;
-            ucResourceItemEditor.LoadResourceItemsFile(resourceItemsPath, resourceItemsFile.ProjectElement.Project);
+            ucResourceItemEditor.LoadResourceItemsFile(resourceItemsPath, resourceItemsFile.Project);
         }
         #endregion
 
@@ -76,7 +76,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
-            string projectPath = Path.GetDirectoryName(resourceItemsFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(resourceItemsFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
             {

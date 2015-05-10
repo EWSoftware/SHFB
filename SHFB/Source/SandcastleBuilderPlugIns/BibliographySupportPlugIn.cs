@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/09/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/23/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add bibliography support to the topics
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.1  11/07/2008  EFW  Created the code
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 11/07/2008  EFW  Created the code
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
@@ -133,7 +133,7 @@ namespace SandcastleBuilder.PlugIns
 
             // If relative, the path is relative to the project folder
             bibliographyFile = FilePath.RelativeToAbsolutePath(builder.ProjectFolder,
-                builder.TransformText(bibliographyFile));
+                builder.SubstitutionTags.TransformText(bibliographyFile));
 
             if(!File.Exists(bibliographyFile))
                 throw new BuilderException("BIP0003", "Unable to locate bibliography file at " + bibliographyFile);

@@ -369,8 +369,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return;
 
             // Create an API filter collection that we can edit
-            ApiFilterCollection filter = new ApiFilterCollection(
-                ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject);
+            ApiFilterCollection filter = new ApiFilterCollection { Project =
+                ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject };
 #else
             if(base.CurrentProject == null)
                 return;
@@ -380,7 +380,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return;
 
             // Create an API filter collection that we can edit
-            ApiFilterCollection filter = new ApiFilterCollection(base.CurrentProject);
+            ApiFilterCollection filter = new ApiFilterCollection { Project = base.CurrentProject };
 #endif
             filter.FromXml(apiFilter);
 

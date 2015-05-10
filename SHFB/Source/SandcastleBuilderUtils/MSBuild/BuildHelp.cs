@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 06/06/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,18 +13,18 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//     Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  06/27/2008  EFW  Created the code
-// 1.8.0.1  12/19/2008  EFW  Updated to work with MSBuild 3.5 and Team Build
-// 1.8.0.2  04/20/2009  EFW  Added DumpLogOnFailure property
-// 1.8.0.3  07/06/2009  EFW  Added support for MS Help Viewer output files
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// -------  12/21/2013  EFW  Removed support for SHFBCOMPONENT root as the ComponentPath project property
-//                           handles its functionality now.
-//          02/15/2014  EFW  Added support for the Open XML output format
-//          03/30/2015  EFW  Added support for the Markdown output format
-//          05/03/2015  EFW  Removed support for the MS Help 2 file format
+// 06/27/2008  EFW  Created the code
+// 12/19/2008  EFW  Updated to work with MSBuild 3.5 and Team Build
+// 04/20/2009  EFW  Added DumpLogOnFailure property
+// 07/06/2009  EFW  Added support for MS Help Viewer output files
+// 07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 12/21/2013  EFW  Removed support for SHFBCOMPONENT root as the ComponentPath project property handles its
+//                  functionality now.
+// 02/15/2014  EFW  Added support for the Open XML output format
+// 03/30/2015  EFW  Added support for the Markdown output format
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -34,6 +34,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
@@ -52,7 +53,7 @@ namespace SandcastleBuilder.Utils.MSBuild
     /// <remarks>All messages from this task are logged with a high priority since it will run for a long time
     /// and we need to see the progress messages to know it's doing something.  If set to Normal and ran from
     /// within Visual Studio, it won't show the progress messages when the logging options are set to Minimal.</remarks>
-    public class BuildHelp : Task, ICancelableTask
+    public class BuildHelp : Task, ICancelableTask, IProgress<BuildProgressEventArgs>
     {
         #region Private data members
         //=====================================================================
@@ -67,6 +68,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         private BuildProcess buildProcess;
         private BuildStep lastBuildStep;
 
+        private CancellationTokenSource cts;
         private bool buildCancelled;
         #endregion
 
@@ -332,26 +334,32 @@ namespace SandcastleBuilder.Utils.MSBuild
                         msBuildProject = new Project(this.ProjectFile);
                     }
 
-                    msBuildProject.SetGlobalProperty(ProjectElement.Configuration, this.Configuration);
-                    msBuildProject.SetGlobalProperty(ProjectElement.Platform, this.Platform);
+                    msBuildProject.SetGlobalProperty(BuildItemMetadata.Configuration, this.Configuration);
+                    msBuildProject.SetGlobalProperty(BuildItemMetadata.Platform, this.Platform);
 
                     // Override the OutDir property if defined for Team Build.  Ignore ".\" as that's our default.
                     if(!String.IsNullOrEmpty(this.OutDir) && this.OutDir != @".\")
-                        msBuildProject.SetGlobalProperty(ProjectElement.OutDir, this.OutDir);
+                        msBuildProject.SetGlobalProperty(BuildItemMetadata.OutDir, this.OutDir);
 
                     msBuildProject.ReevaluateIfNecessary();
                 }
 
+                cts = new CancellationTokenSource();
+
                 // Associate the MSBuild project with a SHFB project instance and build it
                 using(sandcastleProject = new SandcastleProject(msBuildProject))
                 {
-                    buildProcess = new BuildProcess(sandcastleProject);
-                    buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
-                    buildProcess.BuildProgress += buildProcess_BuildProgress;
+                    buildProcess = new BuildProcess(sandcastleProject)
+                    {
+                        ProgressReportProvider = this,
+                        CancellationToken = cts.Token
+                    };
 
                     // Since this is an MSBuild task, we'll run it directly rather than in a background thread
                     Log.LogMessage(MessageImportance.High, "Building {0}", msBuildProject.FullPath);
                     buildProcess.Build();
+
+                    lastBuildStep = buildProcess.CurrentBuildStep;
                 }
             }
             catch(Exception ex)
@@ -361,6 +369,12 @@ namespace SandcastleBuilder.Utils.MSBuild
             }
             finally
             {
+                if(cts != null)
+                {
+                    cts.Dispose();
+                    cts = null;
+                }
+
                 // If we loaded it, we must unload it.  If not, it is cached and may cause problems later.
                 if(removeProjectWhenDisposed && msBuildProject != null)
                 {
@@ -472,91 +486,6 @@ namespace SandcastleBuilder.Utils.MSBuild
 
             return lastMatchingProject;
         }
-
-        /// <summary>
-        /// This is called by the build process thread to update the application with the current build step
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildStepChanged(object sender, BuildProgressEventArgs e)
-        {
-            string outputPath;
-
-            if(!this.Verbose)
-                Log.LogMessage(MessageImportance.High, e.BuildStep.ToString());
-
-            if(e.HasCompleted)
-            {
-                // If successful, report the location of the help file/website
-                if(e.BuildStep == BuildStep.Completed)
-                {
-                    outputPath = buildProcess.OutputFolder + buildProcess.ResolvedHtmlHelpName;
-
-                    switch(sandcastleProject.HelpFileFormat)
-                    {
-                        case HelpFileFormats.HtmlHelp1:
-                            outputPath += ".chm";
-                            break;
-
-                        case HelpFileFormats.MSHelpViewer:
-                            outputPath += ".mshc";
-                            break;
-
-                        case HelpFileFormats.OpenXml:
-                            outputPath += ".docx";
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    // Report single file or multi-format output location
-                    if(File.Exists(outputPath))
-                        Log.LogMessage(MessageImportance.High, "The help file is located at: {0}", outputPath);
-                    else
-                        Log.LogMessage(MessageImportance.High, "The help output is located at: {0}", buildProcess.OutputFolder);
-                }
-
-                if(File.Exists(buildProcess.LogFilename))
-                    Log.LogMessage(MessageImportance.High, "Build details can be found in {0}", buildProcess.LogFilename);
-            }
-
-            lastBuildStep = e.BuildStep;
-        }
-
-        /// <summary>
-        /// This is called by the build process thread to update the task with information about progress
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildProgress(object sender, BuildProgressEventArgs e)
-        {
-            Match m = reParseMessage.Match(e.Message);
-
-            // Always log errors and warnings
-            if(m.Success)
-            {
-                if(String.Compare(m.Groups[3].Value, "warning", StringComparison.OrdinalIgnoreCase) == 0)
-                    Log.LogWarning(null, m.Groups[4].Value, m.Groups[4].Value,
-                        m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
-                else
-                    if(String.Compare(m.Groups[3].Value, "error", StringComparison.OrdinalIgnoreCase) == 0)
-                        Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
-                            m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
-                    else
-                        Log.LogMessage(MessageImportance.High, e.Message);
-            }
-            else
-                if(this.Verbose)
-                    Log.LogMessage(MessageImportance.High, e.Message);
-                else
-                {
-                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
-                    // wanted.  Errors will kill the build so we don't have to deal with them here.
-                    if(reWarning.IsMatch(e.Message))
-                        Log.LogWarning(e.Message);
-                }
-        }
         #endregion
 
         #region ICancelableTask Members
@@ -570,8 +499,91 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             buildCancelled = true;
 
-            if(buildProcess != null)
-                buildProcess.BuildCanceled = true;
+            if(cts != null)
+                cts.Cancel();
+        }
+        #endregion
+
+        #region IProgress<BuildProgressEventArgs> Members
+        //=====================================================================
+
+        /// <summary>
+        /// This is called by the build process to report build progress
+        /// </summary>
+        /// <param name="value">The event arguments</param>
+        /// <remarks>Since the build is synchronous in this task, we need to implement the interface and report
+        /// progress synchronously as well or the final few messages can get lost and it looks like the build
+        /// failed.</remarks>
+        public void Report(BuildProgressEventArgs value)
+        {
+            Match m = reParseMessage.Match(value.Message);
+            string outputPath;
+
+            // Always log errors and warnings
+            if(m.Success)
+            {
+                if(String.Compare(m.Groups[3].Value, "warning", StringComparison.OrdinalIgnoreCase) == 0)
+                    Log.LogWarning(null, m.Groups[4].Value, m.Groups[4].Value,
+                        m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
+                else
+                    if(String.Compare(m.Groups[3].Value, "error", StringComparison.OrdinalIgnoreCase) == 0)
+                        Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
+                            m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
+                    else
+                        Log.LogMessage(MessageImportance.High, value.Message);
+            }
+            else
+                if(this.Verbose)
+                    Log.LogMessage(MessageImportance.High, value.Message);
+                else
+                {
+                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
+                    // wanted.  Errors will kill the build so we don't have to deal with them here.
+                    if(reWarning.IsMatch(value.Message))
+                        Log.LogWarning(value.Message);
+                }
+
+            if(value.StepChanged)
+            {
+                if(!this.Verbose)
+                    Log.LogMessage(MessageImportance.High, value.BuildStep.ToString());
+
+                if(value.HasCompleted)
+                {
+                    // If successful, report the location of the help file/website
+                    if(value.BuildStep == BuildStep.Completed)
+                    {
+                        outputPath = buildProcess.OutputFolder + buildProcess.ResolvedHtmlHelpName;
+
+                        switch(sandcastleProject.HelpFileFormat)
+                        {
+                            case HelpFileFormats.HtmlHelp1:
+                                outputPath += ".chm";
+                                break;
+
+                            case HelpFileFormats.MSHelpViewer:
+                                outputPath += ".mshc";
+                                break;
+
+                            case HelpFileFormats.OpenXml:
+                                outputPath += ".docx";
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        // Report single file or multi-format output location
+                        if(File.Exists(outputPath))
+                            Log.LogMessage(MessageImportance.High, "The help file is located at: {0}", outputPath);
+                        else
+                            Log.LogMessage(MessageImportance.High, "The help output is located at: {0}", buildProcess.OutputFolder);
+                    }
+
+                    if(File.Exists(buildProcess.LogFilename))
+                        Log.LogMessage(MessageImportance.High, "Build details can be found in {0}", buildProcess.LogFilename);
+                }
+            }
         }
         #endregion
     }

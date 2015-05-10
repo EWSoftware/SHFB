@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AjaxDocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2015
+// Updated : 05/25/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,13 +14,13 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.2.0  09/09/2007  EFW  Created the code
-// 1.6.0.1  10/19/2007  EFW  Added execution behavior for ValidateAssemblies
-// 1.6.0.6  03/10/2008  EFW  Added support for the API filter
-// 1.8.0.0  08/12/2008  EFW  Modified to support the new project format
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 09/09/2007  EFW  Created the code
+// 10/19/2007  EFW  Added execution behavior for ValidateAssemblies
+// 03/10/2008  EFW  Added support for the API filter
+// 08/12/2008  EFW  Modified to support the new project format
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
@@ -47,12 +47,15 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is designed to generate XML comments and reflection file information for Atlas client
     /// script libraries using AjaxDoc.
     /// </summary>
+    /// <remarks><note type="note">If you want the visibility settings and API filter applied, add the Manual
+    /// Visibility/API filter plug-in to the project as well.</note></remarks>
     [HelpFileBuilderPlugInExport("AjaxDoc Builder", IsConfigurable = true, RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nAjaxDoc is Copyright \xA9 " +
       "2006-2013 Bertrand Le Roy, All Rights Reserved",
       Description = "This plug-in is used to generate XML comments and reflection information for Atlas " +
         "client script libraries using AjaxDoc that can then be used by the Sandcastle Help File " +
-        "Builder to produce a help file.")]
+        "Builder to produce a help file.\r\n\r\nNOTE: If you want the visibility settings and API filter " +
+        "applied, add the Manual Visibility/API filter plug-in to the project as well.")]
     public sealed class AjaxDocPlugIn : IPlugIn
     {
         #region Private data members
@@ -184,32 +187,30 @@ namespace SandcastleBuilder.PlugIns
             {
                 builder.ExecuteBeforeStepPlugIns();
 
-                foreach(DocumentationSource ds in builder.CurrentProject.DocumentationSources)
-                    foreach(string commentsName in DocumentationSource.CommentsFiles(ds.SourceFile,
-                      ds.IncludeSubFolders))
+                foreach(string commentsName in builder.CurrentProject.DocumentationSources.SelectMany(ds => ds.CommentsFiles))
+                {
+                    workingPath = builder.WorkingFolder + Path.GetFileName(commentsName);
+
+                    // Warn if there is a duplicate and copy the comments file to a unique name to preserve
+                    // its content.
+                    if(File.Exists(workingPath))
                     {
-                        workingPath = builder.WorkingFolder + Path.GetFileName(commentsName);
+                        workingPath = builder.WorkingFolder + Guid.NewGuid().ToString("B");
 
-                        // Warn if there is a duplicate and copy the comments file to a unique name to preserve
-                        // its content.
-                        if(File.Exists(workingPath))
-                        {
-                            workingPath = builder.WorkingFolder + Guid.NewGuid().ToString("B");
-
-                            builder.ReportWarning("BE0063", "'{0}' matches a previously copied comments " +
-                                "filename.  The duplicate will be copied to a unique name to preserve the " +
-                                "comments it contains.", commentsName);
-                        }
-
-                        File.Copy(commentsName, workingPath, true);
-                        File.SetAttributes(workingPath, FileAttributes.Normal);
-
-                        // Add the file to the XML comments file collection
-                        comments = new XmlCommentsFile(workingPath);
-
-                        builder.CommentsFiles.Add(comments);
-                        builder.ReportProgress("    {0} -> {1}", commentsName, workingPath);
+                        builder.ReportWarning("BE0063", "'{0}' matches a previously copied comments " +
+                            "filename.  The duplicate will be copied to a unique name to preserve the " +
+                            "comments it contains.", commentsName);
                     }
+
+                    File.Copy(commentsName, workingPath, true);
+                    File.SetAttributes(workingPath, FileAttributes.Normal);
+
+                    // Add the file to the XML comments file collection
+                    comments = new XmlCommentsFile(workingPath);
+
+                    builder.CommentsFiles.Add(comments);
+                    builder.ReportProgress("    {0} -> {1}", commentsName, workingPath);
+                }
 
                 builder.ExecuteAfterStepPlugIns();
                 return;
@@ -316,7 +317,7 @@ namespace SandcastleBuilder.PlugIns
             // AjaxDoc 1.1 prefixes all member names with "J#" which causes BuildAssembler's
             // ResolveReferenceLinksComponent component in the Sept 2007 CTP to crash.  As such, we'll strip it
             // out.  I can't see a need for it anyway.
-            content = BuildProcess.ReadWithEncoding(workingPath, ref enc);
+            content = Utility.ReadWithEncoding(workingPath, ref enc);
             content = content.Replace(":J#", ":");
 
             using(StreamWriter sw = new StreamWriter(workingPath, false, enc))
@@ -324,7 +325,7 @@ namespace SandcastleBuilder.PlugIns
                 sw.Write(content);
             }
 
-            content = BuildProcess.ReadWithEncoding(builder.ReflectionInfoFilename, ref enc);
+            content = Utility.ReadWithEncoding(builder.ReflectionInfoFilename, ref enc);
             content = content.Replace(":J#", ":");
 
             using(StreamWriter sw = new StreamWriter(builder.ReflectionInfoFilename, false, enc))
@@ -332,15 +333,8 @@ namespace SandcastleBuilder.PlugIns
                 sw.Write(content);
             }
 
-            builder.ReportProgress("Applying visibility settings manually");
-            builder.ApplyVisibilityProperties(builder.ReflectionInfoFilename);
-
-            // Don't apply the API filter settings in a partial build
-            if(builder.PartialBuildType == PartialBuildType.None && builder.BuildApiFilter.Count != 0)
-            {
-                builder.ReportProgress("Applying API filter manually");
-                builder.ApplyManualApiFilter(builder.BuildApiFilter, builder.ReflectionInfoFilename);
-            }
+            // NOTE: If you want the visibility settings and API filter applied, add the Manual Visibility/API
+            // filter plug-in to the project as well.
 
             // Allow After step plug-ins to run
             builder.ExecuteAfterStepPlugIns();

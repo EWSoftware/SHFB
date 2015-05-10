@@ -2,24 +2,24 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/14/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 05/17/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the methods that handle the plug-ins during the build process
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.2.0  09/12/2007  EFW  Created the code
-// 1.6.0.6  03/13/2008  EFW  Wrapped plug-in log output in an XML element
-// 1.8.0.1  11/14/2008  EFW  Added execution priority support
-// -------  12/18/2013  EFW  Updated to use MEF for the plug-ins
-//          05/14/2014  EFW  Added support for presentation style plug-in dependencies
+// 09/12/2007  EFW  Created the code
+// 03/13/2008  EFW  Wrapped plug-in log output in an XML element
+// 11/14/2008  EFW  Added execution priority support
+// 12/18/2013  EFW  Updated to use MEF for the plug-ins
+// 05/14/2014  EFW  Added support for presentation style plug-in dependencies
 //===============================================================================================================
 
 using System;
@@ -39,17 +39,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private Dictionary<string, IPlugIn> loadedPlugIns;
         private BuildStep lastBeforeStep, lastAfterStep;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This returns a <see cref="Dictionary{TKey, TValue}"/> containing the currently loaded plug-ins.
+        /// This returns a <see cref="Dictionary{TKey, TValue}"/> containing the currently loaded plug-ins
         /// </summary>
         /// <value>The key is the plug in ID.  The value is a reference to an <see cref="IPlugIn"/> interface
         /// for the plug-in.</value>
-        /// <remarks>This allows you to access other plug-ins to facilitate sharing of information between them.</remarks>
+        /// <remarks>This allows you to access other plug-ins to facilitate sharing of information between them</remarks>
         public Dictionary<string, IPlugIn> LoadedPlugIns
         {
             get { return loadedPlugIns; }
@@ -151,13 +152,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             List<IPlugIn> executeList;
             ExecutionContext context;
-            BuildStep step;
+            BuildStep step = this.CurrentBuildStep;
             int numberExecuted = 0;
 
             if(loadedPlugIns == null)
                 return false;
-
-            step = progressArgs.BuildStep;
 
             // Find plug-ins that need to be executed
             executeList = loadedPlugIns.Values.Where(p => p.ExecutionPoints.RunsAt(step, behavior)).ToList();
@@ -203,34 +202,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This can be used by plug-ins using the
-        /// <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior to execute plug-ins that want to run
-        /// before the plug-in executes its main processing.
+        /// This can be used by plug-ins using the <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior
+        /// to execute plug-ins that want to run before the plug-in executes its main processing.
         /// </summary>
         /// <remarks>This will only run once per step.  Any subsequent calls by other plug-ins will be ignored.</remarks>
         public void ExecuteBeforeStepPlugIns()
         {
-            // Only execute once per step
-            if(lastBeforeStep != progressArgs.BuildStep)
+            if(lastBeforeStep != this.CurrentBuildStep)
             {
                 this.ExecutePlugIns(ExecutionBehaviors.Before);
-                lastBeforeStep = progressArgs.BuildStep;
+                lastBeforeStep = this.CurrentBuildStep;
             }
         }
 
         /// <summary>
-        /// This can be used by plug-ins using the
-        /// <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior to execute plug-ins that want to run
-        /// after the plug-in has executed its main processing.
+        /// This can be used by plug-ins using the <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior
+        /// to execute plug-ins that want to run after the plug-in has executed its main processing.
         /// </summary>
         /// <remarks>This will only run once per step.  Any subsequent calls by other plug-ins will be ignored.</remarks>
         public void ExecuteAfterStepPlugIns()
         {
-            // Only execute once per step
-            if(lastAfterStep != progressArgs.BuildStep)
+            if(lastAfterStep != this.CurrentBuildStep)
             {
                 this.ExecutePlugIns(ExecutionBehaviors.After);
-                lastAfterStep = progressArgs.BuildStep;
+                lastAfterStep = this.CurrentBuildStep;
             }
         }
     }

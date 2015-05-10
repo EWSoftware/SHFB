@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : GenerateMarkdownContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2015
+// Updated : 05/24/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -123,7 +123,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                                 if(topic != null)
                                 {
-                                    title = this.ApplyChanges(topic) ?? key;
+                                    title = ApplyChanges(topic) ?? key;
 
                                     // Remove the containing document element and save the inner content
                                     string content = topic.ToString(SaveOptions.DisableFormatting);
@@ -133,7 +133,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                     if(pos != -1)
                                         content = content.Substring(pos + 1).TrimStart();
 
-                                    pos = content.IndexOf("</document>");
+                                    pos = content.IndexOf("</document>", StringComparison.Ordinal);
 
                                     if(pos != -1)
                                         content = content.Substring(0, pos);
@@ -217,7 +217,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <param name="topic">The topic to which the changes are applied</param>
         /// <returns>The page title if one could be found</returns>
-        private string ApplyChanges(XDocument topic)
+        private static string ApplyChanges(XDocument topic)
         {
             string topicTitle = null;
             var root = topic.Root;

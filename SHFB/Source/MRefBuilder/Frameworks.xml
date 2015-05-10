@@ -727,7 +727,6 @@
 			</Location>
 			<Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.3.1.0">
 				<AssemblyDetails Filename="FSharp.Core.dll" Name="FSharp.Core" Version="4.3.1.0" PublicKeyToken="b03f5f7f11d50a3a" />
-				<AssemblyDetails Filename="policy.4.3.FSharp.Core.dll" Name="policy.4.3.FSharp.Core" Version="4.3.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 			</Location>
 		</AssemblyLocations>
 	</Framework>
@@ -867,12 +866,11 @@
 			</Location>
 			<Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.3.1.0">
 				<AssemblyDetails Filename="FSharp.Core.dll" Name="FSharp.Core" Version="4.3.1.0" PublicKeyToken="b03f5f7f11d50a3a" />
-				<AssemblyDetails Filename="policy.4.3.FSharp.Core.dll" Name="policy.4.3.FSharp.Core" Version="4.3.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 			</Location>
 		</AssemblyLocations>
 	</Framework>
 
-	<Framework Platform=".NETFramework" Version="4.5.2" Title=".NET Framework 4.5.2" Redirect=".NET Framework 4.5.3">
+	<Framework Platform=".NETFramework" Version="4.5.2" Title=".NET Framework 4.5.2" Redirect=".NET Framework 4.6">
 		<AssemblyLocations>
 			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2">
 				<AssemblyDetails Filename="Accessibility.dll" Name="Accessibility" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -1007,14 +1005,13 @@
 			</Location>
 			<Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.3.1.0">
 				<AssemblyDetails Filename="FSharp.Core.dll" Name="FSharp.Core" Version="4.3.1.0" PublicKeyToken="b03f5f7f11d50a3a" />
-				<AssemblyDetails Filename="policy.4.3.FSharp.Core.dll" Name="policy.4.3.FSharp.Core" Version="4.3.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 			</Location>
 		</AssemblyLocations>
 	</Framework>
 
-	<Framework Platform=".NETFramework" Version="4.5.3" Title=".NET Framework 4.5.3">
+	<Framework Platform=".NETFramework" Version="4.6" Title=".NET Framework 4.6">
 		<AssemblyLocations>
-			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.3">
+			<Location IsCore="true" Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6">
 				<AssemblyDetails Filename="Accessibility.dll" Name="Accessibility" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="CustomMarshalers.dll" Name="CustomMarshalers" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 				<AssemblyDetails Filename="ISymWrapper.dll" Name="ISymWrapper" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -1147,7 +1144,6 @@
 			</Location>
 			<Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.4.0.0">
 				<AssemblyDetails Filename="FSharp.Core.dll" Name="FSharp.Core" Version="4.4.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
-				<AssemblyDetails Filename="policy.4.4.0.0.FSharp.Core.dll" Name="policy.4.4.0,0.FSharp.Core" Version="4.4.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
 			</Location>
 		</AssemblyLocations>
 	</Framework>

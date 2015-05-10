@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -17,7 +17,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SandcastleBuilder.Utils.xml</DocumentationFile>
     <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,6 +56,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\SandcastleBuilder.Utils.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -91,31 +93,32 @@
       <Link>HelpLibraryManager\HelpLibraryManagerUnsafeNativeMethods.cs</Link>
     </Compile>
     <Compile Include="ApiEntryType.cs" />
-    <Compile Include="BaseBuildItem.cs" />
     <Compile Include="BuildAssemblerVerbosity.cs" />
     <Compile Include="BuildComponent\BuildComponentConfiguration.cs" />
     <Compile Include="BuildComponent\HelpFileBuilderPlugInExportAttribute.cs" />
     <Compile Include="BuildComponent\IPlugInMetadata.cs" />
     <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
     <Compile Include="BuildEngine\PartialBuildType.cs" />
+    <Compile Include="BuildEngine\SubstitutionTagReplacement.cs" />
+    <Compile Include="BuildEngine\TaskRunner.cs" />
+    <Compile Include="BuildItemMetadata.cs" />
+    <Compile Include="ConceptualContent\ContentFile.cs" />
+    <Compile Include="ConceptualContent\IContentFileProvider.cs" />
+    <Compile Include="Design\SubstitutionTagAttribute.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
-    <Compile Include="BuildEngine\BuildProcess.NamespaceRipping.cs" />
     <Compile Include="BuildEngine\BuildProcess.Namespaces.cs" />
     <Compile Include="BuildEngine\BuildProcess.PlugIns.cs" />
-    <Compile Include="BuildEngine\BuildProcess.Transform.cs" />
+    <Compile Include="BuildEngine\BuildProcess.ConfigFiles.cs" />
     <Compile Include="BuildEngine\BuildProgressEventArgs.cs" />
     <Compile Include="BuildEngine\BuildProcess.cs" />
     <Compile Include="BuildEngine\BuildStep.cs" />
     <Compile Include="BuildComponent\ComponentConfigurationDictionary.cs" />
-    <Compile Include="COMReferenceItem.cs" />
     <Compile Include="ConceptualContent\CodeEntityReference.cs" />
     <Compile Include="ConceptualContent\CodeReference.cs" />
     <Compile Include="ConceptualContent\ConceptualContentSettings.cs" />
-    <Compile Include="ConceptualContent\ContentType.cs" />
     <Compile Include="ConceptualContent\DocumentType.cs" />
     <Compile Include="ConceptualContent\ImageReference.cs" />
-    <Compile Include="ConceptualContent\ImageReferenceCollection.cs" />
     <Compile Include="ConceptualContent\Token.cs" />
     <Compile Include="ConceptualContent\TokenCollection.cs" />
     <Compile Include="ConceptualContent\Topic.cs" />
@@ -138,13 +141,6 @@
     </Compile>
     <Compile Include="Controls\FolderPathUserControl.designer.cs">
       <DependentUpon>FolderPathUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Conversion\ConvertFromShfbFile.cs" />
-    <Compile Include="Conversion\NewFromOtherFormatDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Conversion\NewFromOtherFormatDlg.designer.cs">
-      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Design\ApiFilterEditorDlg.cs">
       <SubType>Form</SubType>
@@ -192,8 +188,6 @@
     <Compile Include="MSBuild\SelectProjectsDlg.Designer.cs">
       <DependentUpon>SelectProjectsDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="MSHelpAttr.cs" />
-    <Compile Include="MSHelpAttrCollection.cs" />
     <Compile Include="ApiFilter.cs" />
     <Compile Include="ApiFilterCollection.cs" />
     <Compile Include="MSHelpKeyword.cs" />
@@ -205,10 +199,7 @@
     <Compile Include="BuildComponent\PlugInConfiguration.cs" />
     <Compile Include="BuildComponent\PlugInConfigurationDictionary.cs" />
     <Compile Include="ProjectElement.cs" />
-    <Compile Include="ProjectPropertyChangedEventArgs.cs" />
-    <Compile Include="ProjectReferenceItem.cs" />
     <Compile Include="Properties\AssemblyInfoShared.cs" />
-    <Compile Include="PropertyBasedCollectionItem.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="XPath\MatchesRegexFunction.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -218,8 +209,6 @@
     </Compile>
     <Compile Include="NamingMethod.cs" />
     <Compile Include="VisibleItems.cs" />
-    <Compile Include="ReferenceItem.cs" />
-    <Compile Include="ReferenceItemCollection.cs" />
     <Compile Include="Design\LanguageResourceConverter.cs" />
     <Compile Include="Controls\RefreshableItemListBox.cs">
       <SubType>Component</SubType>
@@ -240,7 +229,6 @@
     <Compile Include="Controls\StatusBarTextProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="BuildEngine\BuildProcess.PurgeItems.cs" />
     <Compile Include="SandcastleProject.cs" />
     <Compile Include="ConceptualContent\TocEntry.cs" />
     <Compile Include="ConceptualContent\TocEntryCollection.cs" />
@@ -329,9 +317,6 @@
     <EmbeddedResource Include="Controls\DividerGroupBox.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Conversion\NewFromOtherFormatDlg.resx">
-      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Design\ApiFilterEditorDlg.resx">
       <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -431,18 +416,10 @@
     <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />
     <Compile Include="BuildAction.cs" />
     <Compile Include="ConceptualContent\ApiParentMode.cs" />
-    <Compile Include="ConceptualContent\CodeSnippetCollection.cs" />
     <Compile Include="ConceptualContent\ITableOfContents.cs" />
     <Compile Include="ConceptualContent\ResourceItem.cs" />
     <Compile Include="ConceptualContent\TopicFile.cs" />
-    <Compile Include="Conversion\ConvertConceptualContent.cs" />
-    <Compile Include="Conversion\ConvertFromDocProject.cs" />
-    <Compile Include="Conversion\ConvertFromMSExampleGui.cs" />
-    <Compile Include="Conversion\ConvertFromNDoc.cs" />
-    <Compile Include="Conversion\ConvertFromSandcastleGui.cs" />
-    <Compile Include="Conversion\ConvertToMSBuildFormat.cs" />
     <Compile Include="Design\BuildActionEnumConverter.cs" />
-    <Compile Include="Design\DynamicReadOnlyPropertyDescriptor.cs" />
     <Compile Include="Design\NamespaceSummaryItemEditorDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -450,7 +427,6 @@
       <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="FileItem.cs" />
-    <Compile Include="FileItemCollection.cs" />
     <Compile Include="HtmlSdkLinkType.cs" />
     <Compile Include="MSBuild\BuildHelpViewerFile.cs" />
     <Compile Include="MSHelpViewerSdkLinkType.cs" />

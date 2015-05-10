@@ -5,7 +5,7 @@
 		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="209" />
 		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
 		<ProjectType>CSharp</ProjectType>
-		<RequiredFrameworkVersion>4.0</RequiredFrameworkVersion>
+		<RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
 		<CreateNewFolder>true</CreateNewFolder>
 		<DefaultName>BuildComponent</DefaultName>
 		<SortOrder>1010</SortOrder>

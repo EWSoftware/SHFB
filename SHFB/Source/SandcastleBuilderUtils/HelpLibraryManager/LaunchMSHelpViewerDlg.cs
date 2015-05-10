@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
+// Updated : 06/05/2015
 // Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -91,7 +91,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         private Thread runningThread;
         private Version viewerVersion;
 
-        private static int lastVersionSelected;
+        private static int lastVersionSelected = 2;
         #endregion
 
         #region Constructor
@@ -361,7 +361,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 try
                 {
                     var bp = new SandcastleBuilder.Utils.BuildEngine.BuildProcess(project);
-                    helpFilePath = bp.TransformText(helpFilePath);
+                    helpFilePath = bp.SubstitutionTags.TransformText(helpFilePath);
                     setupFile = Path.ChangeExtension(helpFilePath, ".msha");
                 }
                 catch

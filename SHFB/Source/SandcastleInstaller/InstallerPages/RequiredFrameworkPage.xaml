@@ -11,7 +11,7 @@
       <Paragraph><Bold FontSize="16">Microsoft .NET Framework</Bold></Paragraph>
       <Paragraph> The Sandcastle tools are written using the .NET Framework.  As such, it is required that
 the proper version be present in order to run all of the necessary tools installed by this package.  This
-application and most of the existing tools and components will run on .NET 4.0.  Some third-party build
+application and most of the existing tools and components will run on .NET 4.5.  Some third-party build
 tools may require a more recent version of the .NET Framework.</Paragraph>
 
     </FlowDocument>

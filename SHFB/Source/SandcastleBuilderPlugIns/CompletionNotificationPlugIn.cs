@@ -2,23 +2,23 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 05/23/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to run after the build completes to send notification of the completion
 // status via e-mail.  The log file can be sent as an attachment.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.2.0  09/09/2007  EFW  Created the code
-// 1.6.0.6  03/09/2008  EFW  Added support for log file XSL transform
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 09/09/2007  EFW  Created the code
+// 03/09/2008  EFW  Added support for log file XSL transform
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
@@ -174,7 +174,8 @@ namespace SandcastleBuilder.PlugIns
             node = root.SelectSingleNode("xslTransform");
 
             if(node != null)
-                xslTransformFile = builder.TransformText(node.GetAttribute("filename", String.Empty).Trim());
+                xslTransformFile = builder.SubstitutionTags.TransformText(node.GetAttribute("filename",
+                    String.Empty).Trim());
 
             if((!credentials.UseDefaultCredentials && (credentials.UserName.Length == 0 ||
               credentials.Password.Length == 0)) || failureEMailAddress.Length == 0)

@@ -119,17 +119,19 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // Pass it the Sandcastle project instance as we use the designer dialog to edit the collection
                 // and it obtains it from the collection to do the required partial build.
 #if !STANDALONEGUI
-                namespaceSummaries = new NamespaceSummaryItemCollection(
-                    ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
-                summariesChanged = false;
+                namespaceSummaries = new NamespaceSummaryItemCollection
+                {
+                    Project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject
+                };
 
                 projProp = this.ProjectMgr.BuildProject.GetProperty("NamespaceSummaries");
 #else
-                namespaceSummaries = new NamespaceSummaryItemCollection(base.CurrentProject);
-                summariesChanged = false;
+                namespaceSummaries = new NamespaceSummaryItemCollection() { Project = base.CurrentProject };
 
                 projProp = this.CurrentProject.MSBuildProject.GetProperty("NamespaceSummaries");
 #endif
+                summariesChanged = false;
+
                 if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                     namespaceSummaries.FromXml(projProp.UnevaluatedValue);
 

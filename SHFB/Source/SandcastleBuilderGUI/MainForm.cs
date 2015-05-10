@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/24/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,26 +13,26 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  08/02/2006  EFW  Created the code
-// 1.3.1.2  10/18/2006  EFW  Moved file logging to the BuildProcess class.  Added a Verbose Logging user setting.
-// 1.5.0.0  06/23/2007  EFW  Added user preferences dialog box and help file viewer options.
-// 1.5.0.2  07/03/2007  EFW  Added support for content file editor definitions and a content site map file.
-// 1.6.0.2  11/02/2007  EFW  Reworked support for custom build components
-// 1.6.0.3  11/16/2007  EFW  Added "Open After Build" option
-// 1.6.0.4  01/22/2008  EFW  Added support for drag and drop from Explorer
-// 1.6.0.7  04/24/2008  EFW  Added support for conceptual content
-// 1.8.0.0  06/20/2008  EFW  Converted the project to use an MSBuild file.  Changed the UI to a more Visual
-//                           Studio-like layout better suited to editing the project.
-// 1.9.0.0  07/05/2010  EFW  Added support for MS Help Viewer
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.3.4  01/08/2012  EFW  Updated to use shared NewFromOtherFormatDlg
-// 1.9.3.4  01/20/2012  EFW  Updated to use the new topic previewer window
-// 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
-// -------  02/15/2014  EFW  Added support for the Open XML output format
-//          04/01/2015  EFW  Added support for the Markdown file format
-//          05/03/2015  EFW  Removed support for the MS Help 2 file format
+// 08/02/2006  EFW  Created the code
+// 10/18/2006  EFW  Moved file logging to the BuildProcess class.  Added a Verbose Logging user setting
+// 06/23/2007  EFW  Added user preferences dialog box and help file viewer options
+// 07/03/2007  EFW  Added support for content file editor definitions and a content site map file
+// 11/02/2007  EFW  Reworked support for custom build components
+// 11/16/2007  EFW  Added "Open After Build" option
+// 01/22/2008  EFW  Added support for drag and drop from Explorer
+// 04/24/2008  EFW  Added support for conceptual content
+// 06/20/2008  EFW  Converted the project to use an MSBuild file.  Changed the UI to a more Visual Studio-like
+//                  layout better suited to editing the project.
+// 07/05/2010  EFW  Added support for MS Help Viewer
+// 07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0
+// 01/08/2012  EFW  Updated to use shared NewFromOtherFormatDlg
+// 01/20/2012  EFW  Updated to use the new topic previewer window
+// 10/05/2012  EFW  Added support for Help Viewer 2.0
+// 02/15/2014  EFW  Added support for the Open XML output format
+// 04/01/2015  EFW  Added support for the Markdown file format
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format and the project converters
 //===============================================================================================================
 
 using System;
@@ -49,6 +49,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Microsoft.Build.Exceptions;
@@ -58,7 +59,6 @@ using Sandcastle.Core;
 using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.Conversion;
 using SandcastleBuilder.Utils.Controls;
 using SandcastleBuilder.Utils.Design;
 
@@ -78,8 +78,8 @@ namespace SandcastleBuilder.Gui
         //=====================================================================
 
         private SandcastleProject project;
-        private Thread buildThread;
         private BuildProcess buildProcess;
+        private CancellationTokenSource cancellationTokenSource;
         private Process webServer;
         private ProjectExplorerWindow projectExplorer;
         private ProjectPropertiesWindow projectProperties;
@@ -271,16 +271,14 @@ namespace SandcastleBuilder.Gui
         {
             List<string> values;
 
-            project = new SandcastleProject(projectName, mustExist);
-            project.DocumentationSourcesChanged += new EventHandler(project_Modified);
-            project.DirtyChanged += new EventHandler(project_Modified);
+            project = new SandcastleProject(projectName, mustExist, false);
 
             projectExplorer.CurrentProject = projectProperties.CurrentProject = project;
 
             if(entityReferencesWindow != null)
                 entityReferencesWindow.CurrentProject = project;
 
-            this.project_Modified(this, EventArgs.Empty);
+            this.UpdateFilenameInfo();
 
             // Get the configuration and platform values
             values = project.MSBuildProject.ConditionedProperties["Configuration"];
@@ -540,14 +538,15 @@ namespace SandcastleBuilder.Gui
         /// <summary>
         /// This is used to update the filename information in the title bar
         /// </summary>
-        private void UpdateFilenameInfo()
+        internal void UpdateFilenameInfo()
         {
             if(project == null)
                 this.Text = Constants.AppName;
             else
                 this.Text = String.Format(CultureInfo.CurrentCulture, "{0}{1} - {2}",
                     Path.GetFileNameWithoutExtension(project.Filename),
-                    (project.IsDirty) ? "*" : String.Empty, Constants.AppName);
+                    (project.IsDirty || (projectProperties != null && projectProperties.IsDirty)) ? "*" :
+                    String.Empty, Constants.AppName);
         }
 
         /// <summary>
@@ -744,16 +743,8 @@ namespace SandcastleBuilder.Gui
                     {
                         System.Diagnostics.Debug.Write(pex);
 
-                        if(pex.Message.IndexOf("<project>", StringComparison.Ordinal) != -1)
-                        {
-                            MessageBox.Show("The project file format is invalid.  If this project was created " +
-                                "with an earlier version of the Sandcastle Help File Builder, use the File | " +
-                                "New Project from Other Format option to convert it to the latest project file " +
-                                "format.", Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        else
-                            MessageBox.Show(pex.Message, Constants.AppName, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                        MessageBox.Show("The project file format is invalid: " + pex.Message, Constants.AppName,
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch(Exception ex)
                     {
@@ -773,8 +764,11 @@ namespace SandcastleBuilder.Gui
             BaseContentEditor content;
             string state;
 
-            if(buildThread != null && buildThread.IsAlive)
+            if(cancellationTokenSource != null)
             {
+                if(cancellationTokenSource.IsCancellationRequested)
+                    return;
+
                 if(MessageBox.Show("A build is currently taking place.  Do you want to abort it and exit?",
                   Constants.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
@@ -783,6 +777,7 @@ namespace SandcastleBuilder.Gui
                 }
 
                 miCancelBuild_Click(sender, e);
+                return;
             }
 
             if(!projectExplorer.AskToSaveProject())
@@ -909,74 +904,12 @@ namespace SandcastleBuilder.Gui
         //=====================================================================
 
         /// <summary>
-        /// This updates the state of the form when the project is modified
+        /// This is used to report build progress
         /// </summary>
-        /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void project_Modified(object sender, EventArgs e)
+        private void buildProcess_ReportProgress(BuildProgressEventArgs e)
         {
-            if(this.InvokeRequired)
-            {
-                this.Invoke(new EventHandler(project_Modified), new object[] { sender, e });
-                return;
-            }
-
-            this.UpdateFilenameInfo();
-
-            projectProperties.RefreshProperties();
-        }
-
-        /// <summary>
-        /// This is called by the build process thread to update the main window with the current build step
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildStepChanged(object sender, BuildProgressEventArgs e)
-        {
-            if(this.InvokeRequired)
-            {
-                // Ignore it if we've already shut down or it hasn't
-                // completed yet.
-                if(!this.IsDisposed)
-                    this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildStepChanged),
-                        new object[] { sender, e });
-            }
-            else
-            {
-                if(!Settings.Default.VerboseLogging)
-                    outputWindow.AppendText(e.BuildStep.ToString());
-
-                if(e.HasCompleted)
-                {
-                    StatusBarTextProvider.ResetProgressBar();
-                    this.SetUIEnabledState(true);
-                    outputWindow.LogFile = buildProcess.LogFilename;
-
-                    buildThread = null;
-                    buildProcess = null;
-
-                    if(e.BuildStep == BuildStep.Completed && Settings.Default.OpenHelpAfterBuild)
-                        miViewHelpFile.PerformClick();
-                }
-            }
-        }
-
-        /// <summary>
-        /// This is called by the build process thread to update the main window with information about its
-        /// progress.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildProgress(object sender, BuildProgressEventArgs e)
-        {
-            if(this.InvokeRequired)
-            {
-                // Ignore it if we've already shut down
-                if(!this.IsDisposed)
-                    this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildProgress),
-                        new object[] { sender, e });
-            }
-            else
+            if(!this.IsDisposed)
             {
                 if(e.BuildStep < BuildStep.Completed)
                     StatusBarTextProvider.UpdateProgress((int)e.BuildStep);
@@ -985,8 +918,11 @@ namespace SandcastleBuilder.Gui
                     outputWindow.AppendText(e.Message);
                 else
                 {
-                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
-                    // wanted.  Errors will kill the build so we don't have to deal with them here.
+                    if(e.StepChanged)
+                        outputWindow.AppendText(e.BuildStep.ToString());
+
+                    // If not doing verbose logging, show warnings.  Errors will kill the build so we don't have to
+                    // deal with them here.
                     if(reWarning.IsMatch(e.Message))
                         outputWindow.AppendText(e.Message);
                 }
@@ -1036,44 +972,6 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// Create a new project from a project file that is in a different format (i.e. SHFB 1.7.0.0 or earlier
-        /// or NDoc 1.x)
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void miNewFromOtherFormat_Click(object sender, EventArgs e)
-        {
-            if(this.CloseProject())
-                using(NewFromOtherFormatDlg dlg = new NewFromOtherFormatDlg())
-                {
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                    {
-                        try
-                        {
-                            this.Cursor = Cursors.WaitCursor;
-                            this.CreateProject(dlg.NewProjectFilename, true);
-                            this.UpdateFilenameInfo();
-                            MainForm.UpdateMruList(project.Filename);
-
-                            MessageBox.Show("The project was converted successfully", Constants.AppName,
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        catch(Exception ex)
-                        {
-                            System.Diagnostics.Debug.Write(ex);
-                            MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-                        }
-                        finally
-                        {
-                            this.Cursor = Cursors.Default;
-                            projectProperties.RefreshProperties();
-                        }
-                    }
-                }
-        }
-
-        /// <summary>
         /// Open an existing help project
         /// </summary>
         /// <param name="sender">The sender of the event</param>
@@ -1101,20 +999,8 @@ namespace SandcastleBuilder.Gui
                         {
                             System.Diagnostics.Debug.Write(pex);
 
-                            if(dlg.FileName.EndsWith(".shfb", StringComparison.OrdinalIgnoreCase) ||
-                              pex.Message.IndexOf("<project>", StringComparison.Ordinal) != -1)
-                            {
-                                MessageBox.Show("The project file format is invalid.  " +
-                                    "If this project was created with an earlier " +
-                                    "version of the Sandcastle Help File Builder, " +
-                                    "use the File | New Project from Other Format " +
-                                    "option to convert it to the latest project file " +
-                                    "format.", Constants.AppName,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                            else
-                                MessageBox.Show(pex.Message, Constants.AppName,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("The project file format is invalid: " + pex.Message,
+                                Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         catch(Exception ex)
                         {
@@ -1193,19 +1079,8 @@ namespace SandcastleBuilder.Gui
                 {
                     System.Diagnostics.Debug.Write(pex);
 
-                    if(pex.Message.IndexOf("<project>", StringComparison.Ordinal) != -1)
-                    {
-                        MessageBox.Show("The project file format is invalid.  " +
-                            "If this project was created with an earlier " +
-                            "version of the Sandcastle Help File Builder, " +
-                            "use the File | New Project from Other Format " +
-                            "option to convert it to the latest project file " +
-                            "format.", Constants.AppName,
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                        MessageBox.Show(pex.Message, Constants.AppName,
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("The project file format is invalid: " + pex.Message, Constants.AppName,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch(Exception ex)
                 {
@@ -1248,7 +1123,7 @@ namespace SandcastleBuilder.Gui
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void miBuildProject_Click(object sender, EventArgs e)
+        private async void miBuildProject_Click(object sender, EventArgs e)
         {
             if(project == null || !this.SaveBeforeBuild())
                 return;
@@ -1257,16 +1132,37 @@ namespace SandcastleBuilder.Gui
             this.SetUIEnabledState(false);
             Application.DoEvents();
 
-            buildProcess = new BuildProcess(project);
-            buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
-            buildProcess.BuildProgress += buildProcess_BuildProgress;
-
             StatusBarTextProvider.InitializeProgressBar(0, (int)BuildStep.Completed, "Building help file");
 
-            buildThread = new Thread(new ThreadStart(buildProcess.Build));
-            buildThread.Name = "Help file builder thread";
-            buildThread.IsBackground = true;
-            buildThread.Start();
+            try
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+
+                buildProcess = new BuildProcess(project)
+                {
+                    ProgressReportProvider = new Progress<BuildProgressEventArgs>(buildProcess_ReportProgress),
+                    CancellationToken = cancellationTokenSource.Token,
+                };
+
+                await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token);
+            }
+            finally
+            {
+                if(cancellationTokenSource != null)
+                {
+                    cancellationTokenSource.Dispose();
+                    cancellationTokenSource = null;
+                }
+
+                StatusBarTextProvider.ResetProgressBar();
+                this.SetUIEnabledState(true);
+                outputWindow.LogFile = buildProcess.LogFilename;
+
+                if(buildProcess.CurrentBuildStep == BuildStep.Completed && Settings.Default.OpenHelpAfterBuild)
+                    miViewHelpFile.PerformClick();
+
+                buildProcess = null;
+            }
         }
 
         /// <summary>
@@ -1276,29 +1172,11 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miCancelBuild_Click(object sender, EventArgs e)
         {
-            if(buildThread != null && buildThread.IsAlive)
+            if(cancellationTokenSource != null)
             {
-                try
-                {
-                    this.Cursor = Cursors.WaitCursor;
-                    StatusBarTextProvider.UpdateProgress("Cancelling build...");
-                    buildThread.Abort();
-
-                    while(buildThread != null && !buildThread.Join(1000))
-                        Application.DoEvents();
-
-                    StatusBarTextProvider.ResetProgressBar();
-                    System.Diagnostics.Debug.WriteLine("Thread stopped");
-                }
-                finally
-                {
-                    this.Cursor = Cursors.Default;
-                    buildThread = null;
-                    buildProcess = null;
-                }
+                StatusBarTextProvider.UpdateProgress("Cancelling build...");
+                cancellationTokenSource.Cancel();
             }
-
-            this.SetUIEnabledState(true);
         }
         #endregion
 
@@ -1523,7 +1401,7 @@ namespace SandcastleBuilder.Gui
                 try
                 {
                     var bp = new BuildProcess(project);
-                    outputPath = bp.TransformText(outputPath);
+                    outputPath = bp.SubstitutionTags.TransformText(outputPath);
                 }
                 catch
                 {

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/17/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -157,7 +157,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Load the tree with the folder and file items
         /// </summary>
         /// <param name="files">The folder and file build items from the project</param>
-        public void LoadTree(Collection<FileItem> files)
+        public void LoadTree(IList<FileItem> files)
         {
             SortedDictionary<string, FileItem> fileItems = new SortedDictionary<string,FileItem>();
             List<string> folderNames = new List<string>(), additionalFolders = new List<string>();
@@ -169,7 +169,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             string[] parts;
 
             if(files.Count > 0)
-                project = files[0].ProjectElement.Project;
+                project = files[0].Project;
 
             try
             {
@@ -178,11 +178,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 // First, get a list of all folders and files in sorted order
                 foreach(FileItem item in files)
                 {
-                    name = item.Link.PersistablePath;
+                    name = item.LinkPath.PersistablePath;
 
                     // Resolve MSBuild and environment variable references
                     if(name.IndexOf("$(", StringComparison.Ordinal) != -1 || name.IndexOf('%') != -1)
-                        name = FilePath.AbsoluteToRelativePath(item.Link.BasePath, item.Link);
+                        name = FilePath.AbsoluteToRelativePath(item.LinkPath.BasePath, item.LinkPath);
 
                     // Ignore duplicate items if any are found
                     if(!fileItems.ContainsKey(name))
@@ -258,7 +258,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     itemNode = new TreeNode(name);
                     itemNode.Name = folder;
-                    itemNode.Tag = new NodeData(BuildAction.Folder, fileItem, null);
+                    itemNode.Tag = new NodeData(BuildAction.Folder, fileItem);
                     itemNode.ImageIndex = itemNode.SelectedImageIndex = (int)NodeIcon.GeneralFolder;
 
                     AddNode(root.Nodes, itemNode);
@@ -289,7 +289,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                     itemNode = new TreeNode(Path.GetFileName(key));
                     itemNode.Name = key;
-                    itemNode.Tag = new NodeData(fileItem.BuildAction, fileItem, null);
+                    itemNode.Tag = new NodeData(fileItem.BuildAction, fileItem);
                     itemNode.ImageIndex = itemNode.SelectedImageIndex = (int)NodeIconFromFilename(key);
 
                     AddNode(root.Nodes, itemNode);
@@ -349,8 +349,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 // Remove the node itself
                 nodeData = (NodeData)node.Tag;
                 fileItem = (FileItem)nodeData.Item;
-                projectFolder = Path.GetDirectoryName(fileItem.ProjectElement.Project.Filename);
-                fileItem.ProjectElement.RemoveFromProjectFile();
+                projectFolder = Path.GetDirectoryName(fileItem.Project.Filename);
+                fileItem.RemoveFromProjectFile();
                 node.Remove();
 
                 if(permanently)
@@ -358,15 +358,15 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     {
                         // If in or below the folder to remove, get out of it
                         if(FolderPath.TerminatePath(Directory.GetCurrentDirectory()).StartsWith(
-                          fileItem.Include, StringComparison.OrdinalIgnoreCase))
+                          fileItem.IncludePath, StringComparison.OrdinalIgnoreCase))
                             Directory.SetCurrentDirectory(projectFolder);
 
-                        if(Directory.Exists(fileItem.Include))
-                            Directory.Delete(fileItem.Include, true);
+                        if(Directory.Exists(fileItem.IncludePath))
+                            Directory.Delete(fileItem.IncludePath, true);
                     }
                     else
-                        if(File.Exists(fileItem.Include))
-                            File.Delete(fileItem.Include);
+                        if(File.Exists(fileItem.IncludePath))
+                            File.Delete(fileItem.IncludePath);
             }
             finally
             {

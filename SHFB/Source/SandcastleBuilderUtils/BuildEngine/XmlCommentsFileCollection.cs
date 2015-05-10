@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2015
+// Updated : 05/27/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,14 +13,14 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.3.1.0  09/26/2006  EFW  Created the code
-// 1.6.0.2  11/10/2007  EFW  Moved the CommentFileList method from XmlCommentsFileCollection to this class
-// 1.6.0.5  03/02/2008  EFW  Added support for the <inheritdoc /> tag
-// 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
-// 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
-// -------  09/18/2014  EFW  Added support for NamespaceGroupDoc classes
+// 09/26/2006  EFW  Created the code
+// 11/10/2007  EFW  Moved the CommentFileList method from XmlCommentsFileCollection to this class
+// 03/02/2008  EFW  Added support for the <inheritdoc /> tag
+// 03/08/2008  EFW  Added support for NamespaceDoc classes
+// 01/02/2013  EFW  Added method to get referenced namespaces
+// 09/18/2014  EFW  Added support for NamespaceGroupDoc classes
 //===============================================================================================================
 
 using System;
@@ -32,7 +32,8 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
-using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -175,21 +176,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public IEnumerable<string> GetReferencedNamespaces(IEnumerable<string> validNamespaces)
         {
             HashSet<string> seenNamespaces = new HashSet<string>();
-            XPathNavigator nav;
             string ns;
 
             foreach(XmlCommentsFile f in this)
             {
-                nav = f.Members.CreateNavigator();
+                // Find all comments elements with a reference.  XML comments files may be ill-formed so
+                // ignore any elements without a cref attribute.
+                var crefs = ComponentUtilities.XmlStreamAxis(f.SourcePath, new[] { "event", "exception",
+                    "inheritdoc", "permission", "see", "seealso" }).Select(
+                    el => (string)el.Attribute("cref")).Where(c => c != null);
 
-                // Find all comments elements with a reference
-                var nodes = nav.Select("//event/@cref | //exception/@cref | //inheritdoc/@cref | " +
-                    "@permission/@cref | //see/@cref | //seealso/@cref");
-
-                foreach(XPathNavigator n in nodes)
-                    if(n.Value.Length > 2 && n.Value[1] == ':' && n.Value.IndexOfAny(new[] { '.', '(' }) != -1)
+                foreach(string refId in crefs)
+                    if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(new[] { '.', '(' }) != -1)
                     {
-                        ns = n.Value.Trim();
+                        ns = refId.Trim();
 
                         // Strip off member name?
                         if(!ns.StartsWith("R:", StringComparison.OrdinalIgnoreCase) &&

@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
+// Updated : 05/24/2015
+// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used as the base class for standalone GUI property pages
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB. This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.6.0  10/28/2012  EFW  Created the code
+// 10/28/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -97,8 +97,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 {
                     isDirty = value;
 
-                    if(this.CurrentProject != null && isDirty && !this.CurrentProject.IsDirty)
-                        this.CurrentProject.MarkAsDirty();
+                    if(this.CurrentProject != null && isDirty)
+                        this.OnDirtyChanged(EventArgs.Empty);
                 }
             }
         }
@@ -154,6 +154,27 @@ namespace SandcastleBuilder.Package.PropertyPages
         public static Collection<string> CustomUserControls
         {
             get { return customUserControls; }
+        }
+        #endregion
+
+        #region Events
+        //=====================================================================
+
+        /// <summary>
+        /// This event is raised when the dirty property changes
+        /// </summary>
+        public event EventHandler DirtyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="DirtyChanged"/> event
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        protected void OnDirtyChanged(EventArgs e)
+        {
+            var handler = DirtyChanged;
+
+            if(handler != null)
+                handler(this, e);
         }
         #endregion
 

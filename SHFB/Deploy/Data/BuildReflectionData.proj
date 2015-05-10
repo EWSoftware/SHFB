@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Reflection" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project ToolsVersion="12.0" DefaultTargets="Reflection" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!-- Default project property values -->
   <PropertyGroup>

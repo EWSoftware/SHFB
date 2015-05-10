@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 05/24/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,16 +13,16 @@
 // This notice, the author's name, and all copyright notices must remain intact in all applications,
 // documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/18/2011  EFW  Created the code
-// 1.9.3.3  12/11/2011  EFW  Added support for Entity References tool window
-// 1.9.3.3  12/26/2011  EFW  Added support for the SHFB file editors
-// 1.9.3.4  01/21/2012  EFW  Added support for the Topic Previewer tool window
-// 1.9.5.0  10/06/2012  EFW  Added support for Help Viewer 2.0
-// -------  03/08/2014  EFW  Added support for the Open XML file format
-//          04/01/2015  EFW  Added support for the Markdown file format
-//          05/03/2015  EFW  Removed support for the MS Help 2 file format
+// 03/18/2011  EFW  Created the code
+// 12/11/2011  EFW  Added support for Entity References tool window
+// 12/26/2011  EFW  Added support for the SHFB file editors
+// 01/21/2012  EFW  Added support for the Topic Previewer tool window
+// 10/06/2012  EFW  Added support for Help Viewer 2.0
+// 03/08/2014  EFW  Added support for the Open XML file format
+// 04/01/2015  EFW  Added support for the Markdown file format
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
@@ -402,7 +402,7 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// View the last build HTML Help 1 file, MS Help 2 file, MS Help Viewer, or website Index.aspx page
+        /// View the last built help output
         /// </summary>
         /// <param name="projectNode">The project node for which to open the help file</param>
         internal void ViewBuiltHelpFile(SandcastleBuilderProjectNode projectNode)
@@ -415,13 +415,13 @@ namespace SandcastleBuilder.Package
                     return;
 
                 if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
-                    this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewHtmlHelp);
+                    ViewBuiltHelpFile(project, PkgCmdIDList.ViewHtmlHelp);
                 else
                     if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
-                        this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
+                        ViewBuiltHelpFile(project, PkgCmdIDList.ViewDocxHelp);
                     else
                         if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
-                            this.ViewBuiltHelpFile(project, 0);
+                            ViewBuiltHelpFile(project, 0);
                         else
                             if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                                 Utility.OpenUrl(projectNode.StartWebServerInstance());
@@ -442,12 +442,12 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// View the last build HTML Help 1 file, MS Help 2 file, or website Index.html page
+        /// View the last built help output
         /// </summary>
         /// <param name="project">The project to use or null to use the current project</param>
         /// <param name="commandId">The ID of the command that invoked the request which determines the help
         /// file format launched.  Zero is used for markdown content since there is no viewer for it.</param>
-        private void ViewBuiltHelpFile(SandcastleProject project, uint commandId)
+        private static void ViewBuiltHelpFile(SandcastleProject project, uint commandId)
         {
             string outputPath;
 
@@ -458,8 +458,6 @@ namespace SandcastleBuilder.Package
                 if(project == null)
                     return;
             }
-
-            var options = this.GeneralOptions;
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
@@ -487,7 +485,7 @@ namespace SandcastleBuilder.Package
                 try
                 {
                     var bp = new SandcastleBuilder.Utils.BuildEngine.BuildProcess(project);
-                    outputPath = bp.TransformText(outputPath);
+                    outputPath = bp.SubstitutionTags.TransformText(outputPath);
                 }
                 catch
                 {
@@ -604,7 +602,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void ViewHtmlHelpExecuteHandler(object sender, EventArgs e)
         {
-            this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlHelp);
+            ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlHelp);
         }
 
         /// <summary>
@@ -676,7 +674,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void ViewHtmlWebsiteExecuteHandler(object sender, EventArgs e)
         {
-            this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlWebsite);
+            ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlWebsite);
         }
 
         /// <summary>
@@ -696,7 +694,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void ViewDocxHelpExecuteHandler(object sender, EventArgs e)
         {
-            this.ViewBuiltHelpFile(null, PkgCmdIDList.ViewDocxHelp);
+            ViewBuiltHelpFile(null, PkgCmdIDList.ViewDocxHelp);
         }
 
         /// <summary>

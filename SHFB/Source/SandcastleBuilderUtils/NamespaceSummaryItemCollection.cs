@@ -2,29 +2,28 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/16/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the namespace summary item information
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.2.0.0  09/04/2006  EFW  Created the code
-// 1.8.0.0  06/30/2008  EFW  Rewrote to support MSBuild project format
-// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members public so that it can be used from the
-//                           VSPackage.
-// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
+// 09/04/2006  EFW  Created the code
+// 06/30/2008  EFW  Rewrote to support MSBuild project format
+// 04/07/2011  EFW  Made the constructor and from/to XML members public so that it can be used from the
+//                  VSPackage.
+// 11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -37,47 +36,16 @@ namespace SandcastleBuilder.Utils
     /// </summary>
     /// <remarks>Namespaces that appear in the assemblies but not in this list are documented by default and
     /// will appear without a namespace summary.</remarks>
-    public class NamespaceSummaryItemCollection : BindingList<NamespaceSummaryItem>
+    public class NamespaceSummaryItemCollection : List<NamespaceSummaryItem>
     {
-        #region Private data members
-        //=====================================================================
-
-        private SandcastleProject projectFile;
-        private bool isDirty;
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to get a reference to the project that owns the collection
+        /// This is used to get or set a reference to the project that owns the collection
         /// </summary>
-        public SandcastleProject Project
-        {
-            get { return projectFile; }
-        }
-
-        /// <summary>
-        /// This is used to get or set the dirty state of the collection
-        /// </summary>
-        public bool IsDirty
-        {
-            get
-            {
-                foreach(NamespaceSummaryItem nsi in this)
-                    if(nsi.IsDirty)
-                        return true;
-
-                return isDirty;
-            }
-            set
-            {
-                foreach(NamespaceSummaryItem nsi in this)
-                    nsi.IsDirty = value;
-
-                isDirty = value;
-            }
-        }
+        /// <remarks>This is used by collection editors to get a reference to the owning project</remarks>
+        public SandcastleProject Project { get; set; }
 
         /// <summary>
         /// Indexer.  This can be used to retrieve the summary information for the specified namespace
@@ -88,7 +56,7 @@ namespace SandcastleBuilder.Utils
         {
             get
             {
-                if(name == null || name.Length == 0)
+                if(String.IsNullOrWhiteSpace(name))
                     name = "(global)";
 
                 foreach(NamespaceSummaryItem nsi in this)
@@ -97,32 +65,6 @@ namespace SandcastleBuilder.Utils
 
                 return null;
             }
-        }
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="project">The project that owns the collection</param>
-        public NamespaceSummaryItemCollection(SandcastleProject project)
-        {
-            projectFile = project;
-        }
-        #endregion
-
-        #region Sort the collection
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to sort the namespace items by name
-        /// </summary>
-        public void Sort()
-        {
-            ((List<NamespaceSummaryItem>)this.Items).Sort(
-                (x, y) => Comparer<string>.Default.Compare(x.Name, y.Name) );
         }
         #endregion
 
@@ -136,14 +78,12 @@ namespace SandcastleBuilder.Utils
         /// <remarks>The information is stored as an XML fragment</remarks>
         public void FromXml(string namespaceSummaries)
         {
-            XmlTextReader xr = null;
             string name, groupValue;
             bool isDocumented, isGroup;
 
-            try
+            using(var xr = new XmlTextReader(namespaceSummaries, XmlNodeType.Element,
+              new XmlParserContext(null, null, null, XmlSpace.Default)))
             {
-                xr = new XmlTextReader(namespaceSummaries, XmlNodeType.Element,
-                    new XmlParserContext(null, null, null, XmlSpace.Default));
                 xr.MoveToContent();
 
                 while(!xr.EOF)
@@ -163,13 +103,6 @@ namespace SandcastleBuilder.Utils
 
                     xr.Read();
                 }
-            }
-            finally
-            {
-                if(xr != null)
-                    xr.Close();
-
-                isDirty = false;
             }
         }
 
@@ -227,7 +160,7 @@ namespace SandcastleBuilder.Utils
 
             if(item == null)
             {
-                item = new NamespaceSummaryItem(name, isGroup, isDocumented, summary, projectFile);
+                item = new NamespaceSummaryItem(name, isGroup, isDocumented, summary);
                 base.Add(item);
             }
 
@@ -250,23 +183,9 @@ namespace SandcastleBuilder.Utils
                 throw new ArgumentException("The given namespace exists in the collection and cannot be a " +
                     "temporary item", "name");
 
-            item = new NamespaceSummaryItem(name, isGroup, !String.IsNullOrEmpty(name), String.Empty, projectFile);
+            item = new NamespaceSummaryItem(name, isGroup, !String.IsNullOrEmpty(name), String.Empty);
 
             return item;
-        }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
-
-        /// <summary>
-        /// This is overridden to mark the collection as dirty when it changes
-        /// </summary>
-        /// <param name="e">The event arguments</param>
-        protected override void OnListChanged(ListChangedEventArgs e)
-        {
-            isDirty = true;
-            base.OnListChanged(e);
         }
         #endregion
     }

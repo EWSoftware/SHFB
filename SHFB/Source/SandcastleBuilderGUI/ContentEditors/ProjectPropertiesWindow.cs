@@ -144,6 +144,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 page.Visible = (currentProject != null);
             }
         }
+
+        /// <summary>
+        /// Notify the main form when a property page is changed
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void page_DirtyChanged(object sender, EventArgs e)
+        {
+            MainForm.Host.UpdateFilenameInfo();
+        }
         #endregion
 
         #region Methods overrides and helper methods
@@ -193,7 +203,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <inheritdoc />
         public override bool IsDirty
         {
-            get { return MainForm.Host.ProjectExplorer.IsDirty; }
+            get
+            {
+                return MainForm.Host.ProjectExplorer.IsDirty ||
+                    pnlPropertyPages.Controls.Cast<BasePropertyPage>().Any(p => p.IsDirty);
+            }
             set { /* Handled by the property pages and the main form */ }
         }
 
@@ -333,6 +347,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 {
                     page = (BasePropertyPage)Activator.CreateInstance(pageType);
                     page.Visible = false;
+                    page.DirtyChanged += page_DirtyChanged;
 
                     node = tvPropertyPages.Nodes.Add(page.Title);
                     node.Tag = page;

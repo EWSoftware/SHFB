@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
@@ -24,14 +24,12 @@
     </HtmlHelp1xCompilerPath>
     <HtmlHelp2xCompilerPath>
     </HtmlHelp2xCompilerPath>
-    <SandcastlePath>
-    </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>ColorizerLibrary Documentation</HelpTitle>
-    <CopyrightText>Copyright \xA9 2003-2013, Jonathan de Halleux.  Portions Copyright \xA9 2006-2013, Eric Woodruff.</CopyrightText>
-    <PresentationStyle>VS2005</PresentationStyle>
+    <CopyrightText>Copyright \xA9 2003-2015, Jonathan de Halleux.  Portions Copyright \xA9 2006-2015, Eric Woodruff.</CopyrightText>
+    <PresentationStyle>VS2013</PresentationStyle>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -39,8 +37,9 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-<NamespaceSummaryItem name="ColorizerLibrary" isDocumented="True">The core namespace of the library.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="ColorizerLibrary.Controls" isDocumented="True">This contains an ASP.NET control to display colorized text.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="ColorizerLibrary" isDocumented="True">The core namespace of the library.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ColorizerLibrary.Controls" isDocumented="True">This contains an ASP.NET control to display colorized text.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <ApiFilter />
     <HelpAttributes />
@@ -57,6 +56,15 @@
     <NamingMethod>Guid</NamingMethod>
     <Language>en-US</Language>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2015
+// Updated : 05/27/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -68,7 +68,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(comments == null)
                 {
                     enc = Encoding.UTF8;
-                    BuildProcess.ReadWithEncoding(sourcePath, ref enc);
+                    Utility.ReadWithEncoding(sourcePath, ref enc);
                 }
 
                 return enc;
@@ -82,47 +82,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             get
             {
-                XmlNode node;
-                string content, origPath = sourcePath;
-
                 if(comments == null)
                 {
                     // Although Visual Studio doesn't add an encoding, the files are UTF-8 encoded
                     enc = Encoding.UTF8;
+
                     comments = new XmlDocument();
 
-                    do
-                    {
-                        // Read it with the appropriate encoding
-                        content = BuildProcess.ReadWithEncoding(sourcePath, ref enc);
-                        comments.LoadXml(content);
-
-                        // If redirected, load the specified file
-                        node = comments.SelectSingleNode("doc/@redirect");
-
-                        if(node != null)
-                        {
-                            sourcePath = Environment.ExpandEnvironmentVariables(node.Value);
-
-                            // Some may contain %CORSYSDIR% which may not be defined.  If so, use an appropriate
-                            // default.
-                            if(sourcePath.IndexOf("%CORSYSDIR%", StringComparison.Ordinal) != -1)
-                            {
-                                sourcePath = sourcePath.Replace("%CORSYSDIR%",
-                                    @"%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\");
-                                sourcePath = Environment.ExpandEnvironmentVariables(sourcePath);
-                            }
-                        }
-
-                    } while(node != null);
-
-                    // If redirected, point back to the temporary copy and make sure it gets saved to keep the
-                    // comments for the builds.
-                    if(sourcePath != origPath)
-                    {
-                        sourcePath = origPath;
-                        wasModified = true;
-                    }
+                    // Read it with the appropriate encoding
+                    comments.LoadXml(Utility.ReadWithEncoding(sourcePath, ref enc));
 
                     comments.NodeChanged += comments_NodeChanged;
                     comments.NodeInserted += comments_NodeChanged;

@@ -1,23 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SiteMapEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 05/17/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to edit site map files
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/20/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/20/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -148,7 +147,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(siteMapFile == null)
                 throw new ArgumentNullException("siteMapFile", "A site map file item must be specified");
 
-            topics = new TocEntryCollection(siteMapFile);
+            topics = new TocEntryCollection(siteMapFile.ToContentFile());
             topics.Load();
 
             // This works around a legacy support issue related to object equality
@@ -380,7 +379,7 @@ namespace SandcastleBuilder.WPF.UserControls
         private void cmdAddItem_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             TocEntry currentTopic = this.CurrentTopic,
-                newTopic = new TocEntry(topics.FileItem.ProjectElement.Project)
+                newTopic = new TocEntry(topics.ContentLayoutFile.BasePathProvider)
                 {
                     Title = "Table of Contents Container",
                     UniqueId = Guid.NewGuid()

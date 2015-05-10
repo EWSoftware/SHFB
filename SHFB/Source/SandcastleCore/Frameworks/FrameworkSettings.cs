@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : FrameworkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2015
+// Updated : 05/27/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,11 +13,11 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.5.0  09/09/2012  EFW  Created the code
-// 1.9.7.0  01/03/2013  EFW  Added method to get referenced namespaces
-// -------- 01/02/2014  EFW  Moved the frameworks code to Sandcastle.Core
+// 09/09/2012  EFW  Created the code
+// 01/03/2013  EFW  Added method to get referenced namespaces
+// 01/02/2014  EFW  Moved the frameworks code to Sandcastle.Core
 //===============================================================================================================
 
 using System;
@@ -26,7 +26,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 namespace Sandcastle.Core.Frameworks
 {
@@ -308,25 +307,22 @@ namespace Sandcastle.Core.Frameworks
           IEnumerable<string> searchNamespaces, IEnumerable<string> validNamespaces)
         {
             HashSet<string> seenNamespaces = new HashSet<string>();
-            XPathDocument doc;
-            XPathNavigator nav;
             string ns;
 
             foreach(string path in this.CommentsFileLocations(language))
                 foreach(string file in Directory.EnumerateFiles(Path.GetDirectoryName(path),
                   Path.GetFileName(path)).Where(f => searchNamespaces.Contains(Path.GetFileNameWithoutExtension(f))))
                 {
-                    doc = new XPathDocument(file);
-                    nav = doc.CreateNavigator();
+                    // Find all comments elements with a reference.  XML comments files may be ill-formed so
+                    // ignore any elements without a cref attribute.
+                    var crefs = ComponentUtilities.XmlStreamAxis(file, new[] { "event", "exception",
+                        "inheritdoc", "permission", "see", "seealso" }).Select(
+                        el => (string)el.Attribute("cref")).Where(c => c != null);
 
-                    // Find all comments elements with a reference
-                    var nodes = nav.Select("//event/@cref | //exception/@cref | //inheritdoc/@cref | " +
-                        "@permission/@cref | //see/@cref | //seealso/@cref");
-
-                    foreach(XPathNavigator n in nodes)
-                        if(n.Value.Length > 2 && n.Value[1] == ':' && n.Value.IndexOfAny(new[] { '.', '(' }) != -1)
+                    foreach(string refId in crefs)
+                        if(refId.Length > 2 && refId[1] == ':' && refId.IndexOfAny(new[] { '.', '(' }) != -1)
                         {
-                            ns = n.Value.Trim();
+                            ns = refId.Trim();
 
                             // Strip off member name?
                             if(!ns.StartsWith("R:", StringComparison.OrdinalIgnoreCase) &&

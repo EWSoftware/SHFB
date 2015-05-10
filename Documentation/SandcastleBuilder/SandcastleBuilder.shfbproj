@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{dea33d54-a820-4458-85eb-8c52ff13508d}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.9.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -22,13 +22,11 @@
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
-    <HtmlHelp2xCompilerPath>
-    </HtmlHelp2xCompilerPath>
     <WorkingPath>
     </WorkingPath>
     <BuildLogFile>
     </BuildLogFile>
-    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2015, Eric Woodruff, All rights reserved</CopyrightText>
@@ -81,6 +79,8 @@
       <NamespaceSummaryItem name="SandcastleBuilder.Components (Group)" isGroup="True" isDocumented="True">This namespace contains &lt;strong&gt;BuildAssembler&lt;/strong&gt; related namespaces.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Utils (Group)" isGroup="True" isDocumented="True">This namespace contains all of the other utility and build engine related namespaces.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.WPF (Group)" isGroup="True" isDocumented="True">This namespace contains the WPF related namespaces</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Gui (Group)" isGroup="True" isDocumented="True">This namespace contains the standlone GUI related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Gui.MSBuild" isDocumented="True">This namespace contains classes used to edit the MSBuild project elements</NamespaceSummaryItem>
     </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
@@ -131,22 +131,12 @@
       </PlugInConfig>
     </PlugInConfigurations>
     <Preliminary>False</Preliminary>
-    <HelpAttributes>
-      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
-      <HelpAttribute name="DocSet" value="NetFramework" />
-      <HelpAttribute name="TargetOS" value="Windows" />
-    </HelpAttributes>
     <VendorName>EWSoftware</VendorName>
     <ProductTitle>Sandcastle Help File Builder</ProductTitle>
-    <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
-    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
-    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
-    <IncludeStopWordList>True</IncludeStopWordList>
     <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
-    <CppCommentsFixup>False</CppCommentsFixup>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <NamingMethod>Guid</NamingMethod>

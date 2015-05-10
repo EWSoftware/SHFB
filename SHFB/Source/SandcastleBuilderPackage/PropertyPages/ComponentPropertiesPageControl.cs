@@ -181,7 +181,6 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.ProjectMgr == null || currentProject == null)
                 return false;
 
-            currentConfigs = new ComponentConfigurationDictionary(currentProject);
             projProp = this.ProjectMgr.BuildProject.GetProperty("ComponentConfigurations");
 #else
             if(componentContainer == null || base.CurrentProject == null ||
@@ -191,9 +190,10 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(base.CurrentProject == null)
                 return false;
 
-            currentConfigs = new ComponentConfigurationDictionary(base.CurrentProject);
             projProp = base.CurrentProject.MSBuildProject.GetProperty("ComponentConfigurations");
 #endif
+            currentConfigs = new ComponentConfigurationDictionary();
+
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                 currentConfigs.FromXml(projProp.UnevaluatedValue);
 

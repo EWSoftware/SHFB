@@ -179,7 +179,6 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(this.ProjectMgr == null || currentProject == null)
                 return false;
 
-            currentConfigs = new PlugInConfigurationDictionary(currentProject);
             projProp = this.ProjectMgr.BuildProject.GetProperty("PlugInConfigurations");
 #else
             if(componentContainer == null || base.CurrentProject == null ||
@@ -189,9 +188,10 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(base.CurrentProject == null)
                 return false;
 
-            currentConfigs = new PlugInConfigurationDictionary(base.CurrentProject);
             projProp = base.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
 #endif
+            currentConfigs = new PlugInConfigurationDictionary();
+
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                 currentConfigs.FromXml(projProp.UnevaluatedValue);
 
@@ -323,6 +323,18 @@ namespace SandcastleBuilder.Package.PropertyPages
             PlugInConfiguration plugInConfig;
             string newConfig, currentConfig, key = (string)lbProjectPlugIns.SelectedItem;
 
+#if !STANDALONEGUI
+            SandcastleProject currentProject = null;
+
+            if(base.ProjectMgr != null)
+                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+#else
+            SandcastleProject currentProject = base.CurrentProject;
+#endif
+            if(currentProject == null)
+                return;
+
             if(availablePlugIns != null)
             {
                 var plugIn = availablePlugIns.FirstOrDefault(p => p.Metadata.Id == key);
@@ -344,7 +356,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     {
                         // Plug-in instances are shared.  The container will dispose of the plug-in when it is
                         // disposed of.
-                        newConfig = plugIn.Value.ConfigurePlugIn(currentConfigs.ProjectFile, currentConfig);
+                        newConfig = plugIn.Value.ConfigurePlugIn(currentProject, currentConfig);
 
                         // Only store it if new or if it changed
                         if(currentConfig != newConfig)

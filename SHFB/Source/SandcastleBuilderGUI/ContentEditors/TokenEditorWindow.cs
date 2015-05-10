@@ -99,7 +99,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
-            string projectPath = Path.GetDirectoryName(tokenFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(tokenFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
             {

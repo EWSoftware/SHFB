@@ -2,25 +2,25 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/22/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 05/23/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
 // encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.5  02/18/2008  EFW  Created the code
-// 1.8.0.0  07/15/2008  EFW  Updated for use with MSBuild project format
-// 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
-//          07/31/2014  EFW  Made the localize app optional
+// 02/18/2008  EFW  Created the code
+// 07/15/2008  EFW  Updated for use with MSBuild project format
+// 06/07/2010  EFW  Added support for multi-format build output
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 07/31/2014  EFW  Made the localize app optional
 //===============================================================================================================
 
 using System;
@@ -139,7 +139,7 @@ namespace SandcastleBuilder.PlugIns
             {
                 // If relative, the path is relative to the project folder
                 sbAppLocalePath = FilePath.RelativeToAbsolutePath(builder.ProjectFolder,
-                    builder.TransformText(sbAppLocalePath));
+                    builder.SubstitutionTags.TransformText(sbAppLocalePath));
 
                 if(!File.Exists(sbAppLocalePath))
                     throw new BuilderException("DFP0003", "Unable to locate SBAppLocale tool at " + sbAppLocalePath);
@@ -177,7 +177,8 @@ namespace SandcastleBuilder.PlugIns
 
                 builder.PresentationStyle.CopyHelpContent(HelpFileFormats.HtmlHelp1, String.Format(
                     CultureInfo.InvariantCulture, @"{0}Output\{1}", builder.WorkingFolder, HelpFileFormats.HtmlHelp1),
-                    builder.ReportProgress, (name, source, dest) => builder.TransformTemplate(name, source, dest));
+                    builder.ReportProgress, (name, source, dest) =>
+                        builder.SubstitutionTags.TransformTemplate(name, source, dest));
 
                 builder.ReportProgress("Adding DBCS Fix localization folder");
 

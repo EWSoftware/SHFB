@@ -1,41 +1,36 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : Token.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 05/16/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a conceptual content token that can
-// be used to insert a common item, value, or construct into topics.
+// This file contains a class representing a conceptual content token that can be used to insert a common item,
+// value, or construct into topics.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.6.0.7  04/24/2008  EFW  Created the code
-// 1.8.0.0  07/25/2008  EFW  Reworked to support new MSBuild project format
-// 1.9.3.3  12/22/2011  EFW  Updated for use with the new token file editor
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/24/2008  EFW  Created the code
+// 07/25/2008  EFW  Reworked to support new MSBuild project format
+// 12/22/2011  EFW  Updated for use with the new token file editor
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
+using System.Runtime.CompilerServices;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This represents a conceptual content token that can be used to insert
-    /// a common item, value, or construct into topics.
+    /// This represents a conceptual content token that can be used to insert a common item, value, or construct
+    /// into topics.
     /// </summary>
-    /// <remarks>This class is serializable so that it can be copied to the
-    /// clipboard.</remarks>
-    [Serializable, DefaultProperty("TokenName")]
     public class Token : INotifyPropertyChanged
     {
         #region Private data members
@@ -51,21 +46,20 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get or set the token name
         /// </summary>
-        /// <value>If the value null or empty, a new GUID is assigned as the name</value>
-        [Category("Token"), Description("The name of the token"), DefaultValue(null)]
+        /// <value>If the value is null or empty, a new GUID is assigned as the name</value>
         public string TokenName
         {
             get { return tokenName; }
             set
             {
-                if(String.IsNullOrEmpty(value) || value != tokenName)
+                if(value == null || value != tokenName)
                 {
-                    if(value == null || value.Trim().Length == 0)
+                    if(String.IsNullOrWhiteSpace(value))
                         tokenName = Guid.NewGuid().ToString();
                     else
                         tokenName = value;
 
-                    this.OnPropertyChanged("TokenName");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -73,11 +67,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get or set the token value
         /// </summary>
-        /// <value>The value can contain help file builder replacement tags.
-        /// These will be replaced at build time with the appropriate project
-        /// value.</value>
-        [Category("Token"), Description("The value of the token"), DefaultValue(null),
-          Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+        /// <value>The value can contain help file builder replacement tags.  These will be replaced at build
+        /// time with the appropriate project value.</value>
         public string TokenValue
         {
             get { return tokenValue; }
@@ -86,16 +77,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != tokenValue)
                 {
                     tokenValue = value;
-                    this.OnPropertyChanged("TokenValue");
+                    this.OnPropertyChanged();
                 }
             }
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the entity is selected
+        /// This is used to get or set whether or not the token is selected
         /// </summary>
         /// <remarks>Used by the editor for binding in the list box</remarks>
-        [Browsable(false)]
         public bool IsSelected
         {
             get { return isSelected; }
@@ -104,7 +94,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isSelected)
                 {
                     isSelected = value;
-                    this.OnPropertyChanged("IsSelected");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -116,10 +106,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <remarks>The token name defaults to "NoName"</remarks>
-        public Token()
+        /// <remarks>The token name defaults to a GUID</remarks>
+        public Token() : this(null, null)
         {
-            this.TokenName = null;
         }
 
         /// <summary>
@@ -146,7 +135,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This raises the <see cref="PropertyChanged"/> event
         /// </summary>
         /// <param name="propertyName">The property name that changed</param>
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
             var handler = PropertyChanged;
 

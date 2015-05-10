@@ -1,50 +1,42 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ITableOfContents.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 05/17/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains an interface used to interact with project files that
-// can generate table of contents entries.
+// This file contains an interface used to interact with project files that can generate table of contents
+// entries.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.0  08/12/2008  EFW  Created the code
-//=============================================================================
-
-using System;
-
-using SandcastleBuilder.Utils.ConceptualContent;
+//    Date     Who  Comments
+// ==============================================================================================================
+// 08/12/2008  EFW  Created the code
+//===============================================================================================================
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This interface is used to interact with project files that can generate
-    /// table of contents entries.
+    /// This interface is used to interact with project files that can generate table of contents entries
     /// </summary>
     public interface ITableOfContents
     {
         /// <summary>
-        /// Get the content layout <see cref="FileItem" />
+        /// This is used to get the content layout file metadata
         /// </summary>
-        FileItem ContentLayoutFile { get; }
+        ContentFile ContentLayoutFile { get; }
 
         /// <summary>
         /// Generate the table of contents for the conceptual topics
         /// </summary>
         /// <param name="toc">The table of contents collection</param>
-        /// <param name="pathProvider">The base path provider</param>
         /// <param name="includeInvisibleItems">True to include items marked invisible (useful for previewing)
         /// or false to exclude them.</param>
-        void GenerateTableOfContents(TocEntryCollection toc, IBasePathProvider pathProvider,
-            bool includeInvisibleItems);
+        void GenerateTableOfContents(TocEntryCollection toc, bool includeInvisibleItems);
     }
 }

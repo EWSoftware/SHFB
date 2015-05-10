@@ -2,40 +2,42 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/18/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/27/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
 // from the reflection information file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.2.0.0  09/04/2006  EFW  Created the code
-// 1.3.1.0  09/29/2006  EFW  Reworked to insert "missing summary" note for all
-//                           namespaces without a summary.
-// 1.3.2.0  11/10/2006  EFW  Reworked to support external XML comments files
-// 1.4.0.2  05/11/2007  EFW  Missing namespace messages are now optional
-// 1.5.0.2  07/19/2007  EFW  Namespace removal is now handled by the MRefBuilder
-//                           ripping feature.
-// 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
-// 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
-// 1.9.9.0  12/14/2013  EFW  Added support for namespace grouping
-// -------  09/18/2014  EFW  Added support for NamespaceGroupDoc classes
+// 09/04/2006  EFW  Created the code
+// 09/29/2006  EFW  Reworked to insert "missing summary" note for all namespaces without a summary
+// 11/10/2006  EFW  Reworked to support external XML comments files
+// 05/11/2007  EFW  Missing namespace messages are now optional
+// 07/19/2007  EFW  Namespace removal is now handled by the MRefBuilder ripping feature
+// 09/13/2007  EFW  Added support for calling plug-ins
+// 03/08/2008  EFW  Added support for NamespaceDoc classes
+// 12/14/2013  EFW  Added support for namespace grouping
+// 09/18/2014  EFW  Added support for NamespaceGroupDoc classes
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 
+using Sandcastle.Core;
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
@@ -62,12 +64,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
         #endregion
 
+        #region Namespace summary methods
+        //=====================================================================
+
         /// <summary>
         /// This is called to generate the namespace summary file
         /// </summary>
         private void GenerateNamespaceSummaries()
         {
-            XmlNodeList nsElements;
             XmlNode member;
             NamespaceSummaryItem nsi;
             string nsName = null, summaryText;
@@ -116,14 +120,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.AddNamespaceComments(member, project.ProjectSummary);
                 }
 
-                // Get all the namespace nodes
-                nsElements = apisNode.SelectNodes("api[starts-with(@id, 'N:') or (starts-with(@id, 'G:') and " +
-                    "not(topicdata/@group='rootGroup'))]");
+                // Get all the namespace and namespace group nodes from the reflection information file
+                var nsElements =
+                    ComponentUtilities.XmlStreamAxis(reflectionFile, "api").Where(el =>
+                    {
+                        string id = el.Attribute("id").Value;
+
+                        return (id.Length > 1 && id[1] == ':' && (id[0] == 'N' || id[0] == 'G') &&
+                            el.Element("topicdata").Attribute("group").Value != "rootGroup");
+                    }).Select(el => el.Attribute("id").Value);
 
                 // Add the namespace summaries
-                foreach(XmlNode n in nsElements)
+                foreach(var n in nsElements)
                 {
-                    nsName = n.Attributes["id"].Value;
+                    nsName = n;
 
                     nsi = project.NamespaceSummaries[nsName.StartsWith("N:", StringComparison.Ordinal) ?
                         nsName.Substring(2) : nsName.Substring(2) + " (Group)"];
@@ -140,20 +150,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         summaryText = String.Empty;
                     }
 
-                    // As of 1.5.0.2, namespace removal is handled by the MRefBuilder ripping feature so we don't
-                    // have to deal with it here anymore.
-
-                    // MRefBuilder bug, June CTP and prior.  If ripped, an empty node still appears in the
-                    // reflection file that needs to go away when using /internal+.
-                    if(n.SelectSingleNode("elements").ChildNodes.Count == 0)
-                        n.ParentNode.RemoveChild(n);
-                    else
-                        if(isDocumented)
-                        {
-                            // If documented, add the summary text
-                            member = commentsFiles.FindMember(nsName);
-                            this.AddNamespaceComments(member, summaryText);
-                        }
+                    if(isDocumented)
+                    {
+                        // If documented, add the summary text
+                        member = commentsFiles.FindMember(nsName);
+                        this.AddNamespaceComments(member, summaryText);
+                    }
                 }
             }
             catch(Exception ex)
@@ -202,5 +204,43 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // The ShowMissingComponent handles adding the "missing" error message to the topic.
         }
+        #endregion
+
+        #region Get referenced namespaces
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get an enumerable list of unique namespaces from the given reflection data file
+        /// </summary>
+        /// <param name="reflectionInfoFile">The reflection data file to search for namespaces</param>
+        /// <param name="validNamespaces">An enumerable list of valid namespaces</param>
+        /// <returns>An enumerable list of unique namespaces</returns>
+        public static IEnumerable<string> GetReferencedNamespaces(string reflectionInfoFile,
+          IEnumerable<string> validNamespaces)
+        {
+            HashSet<string> seenNamespaces = new HashSet<string>();
+            string ns;
+
+            // Find all type references and extract the namespace from them.  This is a rather brute force way
+            // of doing it but the type element can appear in various places.  This way we find them all.
+            // Examples: ancestors/type/@api, returns/type/@api, parameter/type/@api,
+            // parameter/referenceTo/type/@api, attributes/attribute/argument/type/@api,
+            // returns/type/specialization/type/@api, containers/type/@api, overrides/member/type/@api
+            var typeRefs = ComponentUtilities.XmlStreamAxis(reflectionInfoFile, "type").Select(
+                el => el.Attribute("api").Value);
+
+            foreach(string typeName in typeRefs)
+                if(typeName.Length > 2 && typeName.IndexOf('.') != -1)
+                {
+                    ns = typeName.Substring(2, typeName.LastIndexOf('.') - 2);
+
+                    if(validNamespaces.Contains(ns) && !seenNamespaces.Contains(ns))
+                    {
+                        seenNamespaces.Add(ns);
+                        yield return ns;
+                    }
+                }
+        }
+        #endregion
     }
 }

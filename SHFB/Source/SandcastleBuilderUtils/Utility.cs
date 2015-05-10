@@ -2,26 +2,28 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 05/10/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a utility class with extension and utility methods.
+// This file contains a utility class with extension and utility methods
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/15/2011  EFW  Created the code
+// 12/15/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Sandcastle.Core;
@@ -37,6 +39,14 @@ namespace SandcastleBuilder.Utils
     /// </summary>
     public static class Utility
     {
+        #region Private data members
+        //=====================================================================
+
+        // Regular expressions used for encoding detection and parsing
+        private static Regex reXmlEncoding = new Regex("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
+
+        #endregion
+
         #region General utility methods
         //=====================================================================
 
@@ -175,6 +185,52 @@ namespace SandcastleBuilder.Utils
                 return FrameworkDictionary.DefaultFrameworkTitle;
 
             return fs.Title;
+        }
+        #endregion
+
+        #region Build process helper and extension methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to read in a file using an appropriate encoding method
+        /// </summary>
+        /// <param name="filename">The file to load</param>
+        /// <param name="encoding">Pass the default encoding to use.  On return, it contains the actual encoding
+        /// for the file.</param>
+        /// <returns>The contents of the file</returns>
+        /// <remarks>When reading the file, it uses the default encoding specified but detects the encoding if
+        /// byte order marks are present.  In addition, if the template is an XML file and it contains an
+        /// encoding identifier in the XML tag, the file is read using that encoding.</remarks>
+        public static string ReadWithEncoding(string filename, ref Encoding encoding)
+        {
+            Encoding fileEnc;
+            string content;
+
+            using(StreamReader sr = new StreamReader(filename, encoding, true))
+            {
+                content = sr.ReadToEnd();
+                encoding = sr.CurrentEncoding;
+            }
+
+            Match m = reXmlEncoding.Match(content);
+
+            // Re-read an XML file using the correct encoding?
+            if(m.Success)
+            {
+                fileEnc = Encoding.GetEncoding(m.Groups["Encoding"].Value);
+
+                if(fileEnc != encoding)
+                {
+                    encoding = fileEnc;
+
+                    using(StreamReader sr = new StreamReader(filename, encoding, true))
+                    {
+                        content = sr.ReadToEnd();
+                    }
+                }
+            }
+
+            return content;
         }
         #endregion
     }
