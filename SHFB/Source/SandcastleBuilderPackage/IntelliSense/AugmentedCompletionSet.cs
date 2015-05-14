@@ -76,6 +76,39 @@ namespace SandcastleBuilder.Package.IntelliSense
             _source = source;
             _secondSource = secondSource;
             UpdateCompletionLists();
+            SelectionStatusChanged += HandleSelectionStatusChanged;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CompletionSet.SelectionStatusChanged"/> event for the current completion set by
+        /// passing the event on to the underlying completion sets.
+        /// </summary>
+        /// <remarks>
+        /// <para>Setting the <see cref="CompletionSet.SelectionStatus"/> property of an underlying completion set will
+        /// raise the expected event. However, the completion set which did not provide the newly selected item will
+        /// throw an <see cref="ArgumentException"/> when we attempt to set the value. We use exception handling instead
+        /// of searching the sets in advance to avoid the cost of iterating over each of the completion items every time
+        /// the selection changes.</para>
+        /// </remarks>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void HandleSelectionStatusChanged(object sender, ValueChangedEventArgs<CompletionSelectionStatus> e)
+        {
+            try
+            {
+                _source.SelectionStatus = e.NewValue;
+            }
+            catch (ArgumentException)
+            {
+            }
+
+            try
+            {
+                _secondSource.SelectionStatus = e.NewValue;
+            }
+            catch (ArgumentException)
+            {
+            }
         }
 
         /// <inheritdoc />
