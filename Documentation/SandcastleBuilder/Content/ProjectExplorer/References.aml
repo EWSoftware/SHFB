@@ -7,7 +7,7 @@ a target, especially those found in the Global Assembly Cache (GAC).  As such, i
 and load them when needed (the <system>/dep</system> command line option).  The <ui>References</ui> project node
 is used to specify a list of dependencies used by the <application>MRefBuilder</application> tool when it
 generates reflection information for the documentation source assemblies.  Dependency information allows
-inherited members to be listed for a type but the information will not appear in the table of contents of the
+inherited members to be listed for a type but topics will not be generated for them and the information will not appear in the table of contents of the
 help file.</para>
 		</introduction>
 
