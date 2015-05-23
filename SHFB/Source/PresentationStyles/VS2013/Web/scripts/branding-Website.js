@@ -421,7 +421,7 @@ function PerformSearch()
     });
 
     var letters = [];
-    var wordDictionary = [];
+    var wordDictionary = {};
     var wordNotFound = false;
 
     // Load the keyword files for each keyword starting letter
