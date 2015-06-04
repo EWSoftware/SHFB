@@ -95,10 +95,9 @@ function Initialize(extension)
         for(idx = 0; idx < options.length; idx++)
             if(options[idx] == "topic" && idx + 1 < options.length)
             {
-                // Don't allow references outside the current site
-                if(options[idx + 1].length > 1 && options[idx + 1][0] != '/' && options[idx + 1][0] != '.')
+                // Don't allow javascript, or references outside the current site
+                if(options[idx + 1].match(/^\w[\w\/.]*$/))
                     topicContent.src = options[idx + 1];
-
                 break;
             }
     }
