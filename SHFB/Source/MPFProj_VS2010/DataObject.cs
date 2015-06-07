@@ -450,7 +450,7 @@ namespace Microsoft.VisualStudio.Project
             }
             finally
             {
-                if(data != null)
+                if(data != IntPtr.Zero)
                 {
                     UnsafeNativeMethods.GlobalUnLock(data);
                 }

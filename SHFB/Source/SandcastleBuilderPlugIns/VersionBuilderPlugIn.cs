@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 06/06/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,13 +14,13 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.3  12/01/2007  EFW  Created the code
-// 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
-// 1.9.0.0  06/27/2010  EFW  Added support for /rip option
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
-//          12/28/2013  EFW  Updated to run VersionBuilder tool as an MSBuild task in GenerateRefInfo.proj
+// 12/01/2007  EFW  Created the code
+// 08/13/2008  EFW  Updated to support the new project format
+// 06/27/2010  EFW  Added support for /rip option
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 12/28/2013  EFW  Updated to run VersionBuilder tool as an MSBuild task in GenerateRefInfo.proj
 //===============================================================================================================
 
 using System;
@@ -47,7 +47,7 @@ namespace SandcastleBuilder.PlugIns
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to generate version information for the current project and others " +
         "related to the same product and merge that information into a single help file for all of them.")]
-    public sealed class VersionBuilderPlugIn : IPlugIn
+    public sealed class VersionBuilderPlugIn : IPlugIn, IProgress<BuildProgressEventArgs>
     {
         #region Private data members
         //=====================================================================
@@ -196,22 +196,9 @@ namespace SandcastleBuilder.PlugIns
             foreach(VersionSettings vs in allVersions)
             {
                 // Not needed for current project
-                if(vs.HelpFileProject == null)
-                    continue;
-
-                using(SandcastleProject tempProject = new SandcastleProject(vs.HelpFileProject, true))
+                if(vs.HelpFileProject != null)
                 {
-                    // Set the configuration and platform here so that they are evaluated property in project
-                    // properties when the project is loaded below.
-                    tempProject.Configuration = builder.CurrentProject.Configuration;
-                    tempProject.Platform = builder.CurrentProject.Platform;
-
-                    // This looks odd but is necessary.  If we are in Visual Studio, the above constructor may
-                    // return an instance that uses an underlying MSBuild project loaded in Visual Studio.
-                    // Since the BuildProject() method modifies the project, those changes are propagated to the
-                    // Visual Studio copy which we do not want to happen.  As such, we use this constructor to
-                    // clone the MSBuild project XML thus avoiding modifications to the original project.
-                    using(SandcastleProject project = new SandcastleProject(tempProject))
+                    using(SandcastleProject project = new SandcastleProject(vs.HelpFileProject, true, true))
                     {
                         // We'll use a working folder below the current project's working folder
                         workingPath = builder.WorkingFolder + vs.HelpFileProject.GetHashCode().ToString("X",
@@ -226,10 +213,10 @@ namespace SandcastleBuilder.PlugIns
                             throw new BuilderException("VBP0003", "Unable to build prior version project: " +
                                 project.Filename);
                     }
-                }
 
-                // Save the reflection file location as we need it later
-                vs.ReflectionFilename = workingPath + "reflection.org";
+                    // Save the reflection file location as we need it later
+                    vs.ReflectionFilename = workingPath + "reflection.org";
+                }
             }
 
             // Create the Version Builder configuration and add the parameters to the transform project
@@ -266,7 +253,6 @@ namespace SandcastleBuilder.PlugIns
             XmlDocument sharedContent;
             XmlNode root, node;
             string sharedContentFilename, hashValue;
-            List<string> uniqueVersions = new List<string>();
 
             builder.ReportProgress("Removing standard version information items from shared content file");
 
@@ -356,6 +342,9 @@ namespace SandcastleBuilder.PlugIns
 
             try
             {
+                project.Configuration = builder.CurrentProject.Configuration;
+                project.Platform = builder.CurrentProject.Platform;
+
                 // For the plug-in, we'll override some project settings
                 project.HtmlHelp1xCompilerPath = new FolderPath(builder.Help1CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
@@ -367,12 +356,16 @@ namespace SandcastleBuilder.PlugIns
                 if(!String.IsNullOrEmpty(outDir) && outDir != @".\")
                     project.MSBuildOutDir = outDir;
 
-                buildProcess = new BuildProcess(project, PartialBuildType.GenerateReflectionInfo);
+                buildProcess = new BuildProcess(project, PartialBuildType.GenerateReflectionInfo)
+                {
+                    ProgressReportProvider = this,
+                    CancellationToken = builder.CancellationToken
+                };
 
-                buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
-
-                // Since this is a plug-in, we'll run it directly rather than in a background thread
+                // Since this is a plug-in, we'll run it synchronously rather than as a background task
                 buildProcess.Build();
+
+                lastBuildStep = buildProcess.CurrentBuildStep;
 
                 // Add the list of the comments files in the other project to this build
                 if(lastBuildStep == BuildStep.Completed)
@@ -386,17 +379,6 @@ namespace SandcastleBuilder.PlugIns
             }
 
             return (lastBuildStep == BuildStep.Completed);
-        }
-
-        /// <summary>
-        /// This is called by the build process thread to update the application with the current build step
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildStepChanged(object sender, BuildProgressEventArgs e)
-        {
-            builder.ReportProgress(e.BuildStep.ToString());
-            lastBuildStep = e.BuildStep;
         }
 
         /// <summary>
@@ -485,6 +467,23 @@ namespace SandcastleBuilder.PlugIns
             property.InnerText = ripOldApis.ToString().ToLowerInvariant();
 
             project.Save(projectFile);
+        }
+        #endregion
+
+        #region IProgress<BuildProgressEventArgs> Members
+        //=====================================================================
+
+        /// <summary>
+        /// This is called by the build process to report build progress for the reference link projects
+        /// </summary>
+        /// <param name="value">The event arguments</param>
+        /// <remarks>Since the build is synchronous in this plug-in, we need to implement the interface and
+        /// report progress synchronously as well or the final few messages can get lost and it looks like the
+        /// build failed.</remarks>
+        public void Report(BuildProgressEventArgs value)
+        {
+            if(value.StepChanged)
+                builder.ReportProgress(value.BuildStep.ToString());
         }
         #endregion
     }

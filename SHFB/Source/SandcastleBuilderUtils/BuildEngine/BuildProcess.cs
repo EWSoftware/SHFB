@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 06/05/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,7 +19,7 @@
 // 1.0.0.0  08/04/2006  EFW  Created the code
 // 1.3.0.0  09/09/2006  EFW  Added support for website output
 // 1.3.1.0  09/29/2006  EFW  Added support for the ShowMissing* properties
-// 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the the Document* properties
+// 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the Document* properties
 // 1.3.2.0  11/10/2006  EFW  Added support for DocumentAssembly.CommentsOnly
 // 1.3.4.0  12/24/2006  EFW  Various additions and updates
 // 1.4.0.0  03/07/2007  EFW  Added support for the March 2007 CTP
@@ -78,10 +78,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
-using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
@@ -131,20 +129,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         // Build output file lists
         private Collection<string> help1Files, helpViewerFiles, websiteFiles, openXmlFiles, markdownFiles;
 
-        // Progress event arguments
-        private BuildProgressEventArgs progressArgs;
+        // Build progress tracking
         private DateTime buildStart, stepStart;
+        private bool buildCancelling;
 
         // Various paths and other strings
         private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, languageFolder,
-            defaultTopic, namespacesTopic, reflectionFile, msBuildExePath;
+            defaultTopic, reflectionFile, msBuildExePath;
 
         private Collection<string> helpFormatOutputFolders;
-
-        // Process information for the tools and scripts
-        private Process currentProcess;
-        private Thread stdOutThread, stdErrThread;
-        private bool errorDetected;
 
         private CultureInfo language;   // The project language
 
@@ -153,27 +146,38 @@ namespace SandcastleBuilder.Utils.BuildEngine
         // The current help file format being generated
         private HelpFileFormats currentFormat;
 
-        // The current reflection information file used in various steps
-        private XmlDocument reflectionInfo;
-        private XmlNode apisNode;
+        // Substitution tag replacement handler and task runner
+        private SubstitutionTagReplacement substitutionTags;
+        private TaskRunner taskRunner;
 
-        // Regular expressions used for error message checking
-        private static Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
-            @"Fatal Error|Unexpected error.*|HHC\d+: Error|(Fatal )?Error HXC\d+):|Process is terminated|" +
-            @"Build FAILED|\w+\s*:\s*Error\s.*?:|\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase |
-            RegexOptions.Multiline);
-
-        private static Regex reKillProcess = new Regex("hhc|BuildAssembler|XslTransform|MRefBuilder|" +
-            "GenerateInheritedDocs|SandcastleHtmlExtract", RegexOptions.IgnoreCase);
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to get the cancellation state of the build
+        /// This is used to get or set the progress report provider
         /// </summary>
-        public bool BuildCanceled { get; set; }
+        /// <remarks>If not set, no progress will be reported by the build</remarks>
+        public IProgress<BuildProgressEventArgs> ProgressReportProvider { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the cancellation token for the build if running as a task
+        /// </summary>
+        public CancellationToken CancellationToken { get; set; }
+
+        /// <summary>
+        /// This read-only property is used to get the current build step
+        /// </summary>
+        public BuildStep CurrentBuildStep { get; private set; }
+
+        /// <summary>
+        /// This read-only property returns the build start time
+        /// </summary>
+        public DateTime BuildStart
+        {
+            get { return buildStart; }
+        }
 
         /// <summary>
         /// This returns the path to MSBuild.exe
@@ -242,6 +246,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 return Path.Combine(ComponentUtilities.ToolsFolder, "Data", frameworkSettings.Platform);
             }
+        }
+
+        /// <summary>
+        /// This read-only property returns the language used for resource items, etc.
+        /// </summary>
+        public CultureInfo Language
+        {
+            get { return language; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the resource item file language folder name
+        /// </summary>
+        public string LanguageFolder
+        {
+            get { return languageFolder; }
         }
 
         /// <summary>
@@ -398,6 +418,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
+        /// This returns the task runner instance
+        /// </summary>
+        public TaskRunner TaskRunner
+        {
+            get { return taskRunner; }
+        }
+
+        /// <summary>
+        /// This returns the substitution tag replacement handler instance
+        /// </summary>
+        public SubstitutionTagReplacement SubstitutionTags
+        {
+            get { return substitutionTags; }
+        }
+
+        /// <summary>
         /// This controls whether or not the API filter is suppressed
         /// </summary>
         /// <value>By default, it is not suppressed and the API filter will be applied.  The API Filter designer
@@ -470,7 +506,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <remarks>The path is relative to the root of the output folder (i.e. html/DefaultTopic.htm)</remarks>
         public string DefaultTopicFile
         {
-            get { return defaultTopic; }
+            get { return defaultTopic ?? String.Empty; }
         }
 
         /// <summary>
@@ -479,7 +515,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public string ResolvedHelpTitle
         {
-            get { return this.TransformText(project.HelpTitle); }
+            get { return substitutionTags.TransformText(project.HelpTitle); }
         }
 
         /// <summary>
@@ -488,7 +524,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public string ResolvedHtmlHelpName
         {
-            get { return this.TransformText(project.HtmlHelpName); }
+            get { return substitutionTags.TransformText(project.HtmlHelpName); }
         }
 
         /// <summary>
@@ -506,44 +542,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return referencedNamespaces;
             }
         }
-        #endregion
-
-        #region Events
-        //=====================================================================
 
         /// <summary>
-        /// This event is raised to report a change in the build step
+        /// This read-only property returns the MEF component container
         /// </summary>
-        public event EventHandler<BuildProgressEventArgs> BuildStepChanged;
-
-        /// <summary>
-        /// This raises the <see cref="BuildStepChanged"/> event.
-        /// </summary>
-        /// <param name="e">The event arguments</param>
-        protected virtual void OnBuildStepChanged(BuildProgressEventArgs e)
+        internal CompositionContainer ComponentContainer
         {
-            var handler = BuildStepChanged;
-
-            if(handler != null)
-                handler(this, e);
+            get { return componentContainer; }
         }
 
         /// <summary>
-        /// This event is raised to report progress information throughout
-        /// each build step.
+        /// This read-only property returns the syntax generator metadata
         /// </summary>
-        public event EventHandler<BuildProgressEventArgs> BuildProgress;
-
-        /// <summary>
-        /// This raises the <see cref="BuildProgress"/> event.
-        /// </summary>
-        /// <param name="e">The event arguments</param>
-        protected virtual void OnBuildProgress(BuildProgressEventArgs e)
+        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators
         {
-            var handler = BuildProgress;
-
-            if(handler != null)
-                handler(this, e);
+            get { return syntaxGenerators; }
         }
         #endregion
 
@@ -565,11 +578,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             apiTocOrder = -1;
             apiTocParentId = rootContentContainerId = String.Empty;
-
-            progressArgs = new BuildProgressEventArgs();
-
-            fieldMatchEval = new MatchEvaluator(OnFieldMatch);
-            excludeElementEval = new MatchEvaluator(OnExcludeElement);
 
             help1Files = new Collection<string>();
             helpViewerFiles = new Collection<string>();
@@ -596,26 +604,25 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// Call this method to perform the build on the project.
         /// </summary>
-        /// <event cref="BuildStepChanged">This event fires when the current build step changes.</event>
-        /// <event cref="BuildProgress">This event fires to report progress information.</event>
         public void Build()
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
             string resolvedPath, helpFile, languageFile, scriptFile, hintPath, message = null;
             SandcastleProject originalProject = null;
-            int waitCount;
 
             System.Diagnostics.Debug.WriteLine("Build process starting\r\n");
 
             try
             {
+                taskRunner = new TaskRunner(this);
+
                 // If the project isn't using final values suitable for the build, create a copy of the
                 // project that is using final values.
                 if(!project.UsingFinalValues)
                 {
                     originalProject = project;
-                    project = new SandcastleProject(originalProject);
+                    project = new SandcastleProject(originalProject.MSBuildProject);
                 }
 
                 Assembly asm = Assembly.GetExecutingAssembly();
@@ -625,6 +632,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 buildStart = stepStart = DateTime.Now;
 
+                // The version of MSBuild to use is based on the tools version set in the project
                 msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
                     t => t.ToolsVersion == project.MSBuildProject.ToolsVersion).ToolsPath, "MSBuild.exe");
 
@@ -681,13 +689,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(workingFolder == outputFolder)
                     throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
                         "set to the same path");
-
-                // For MS Help Viewer, the HTML Help Name cannot contain periods, ampersands, or pound signs
-                if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
-                  this.ResolvedHtmlHelpName.IndexOfAny(new[] { '.', '#', '&' }) != -1)
-                    throw new BuilderException("BE0075", "For MS Help Viewer builds, the HtmlHelpName property " +
-                        "cannot contain periods, ampersands, or pound signs as they are not valid in the " +
-                        "help file name.");
 
                 // Make sure we can find the tools
                 this.FindTools();
@@ -775,6 +776,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "help file formats.  Supported formats: {1}", style.Metadata.Id,
                         presentationStyle.SupportedFormats));
 
+                // Create the substitution tag replacement handler now as we have everything it needs
+                substitutionTags = new SubstitutionTagReplacement(this);
+
                 // Load the plug-ins if necessary
                 if(project.PlugInConfigurations.Count != 0 || presentationStyle.PlugInDependencies.Count != 0)
                     this.LoadPlugIns();
@@ -811,6 +815,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             this.ExecutePlugIns(ExecutionBehaviors.After);
                         }
                     }
+
+                    // For MS Help Viewer, the HTML Help Name cannot contain periods, ampersands, or pound signs
+                    if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
+                      this.ResolvedHtmlHelpName.IndexOfAny(new[] { '.', '#', '&' }) != -1)
+                        throw new BuilderException("BE0075", "For MS Help Viewer builds, the HtmlHelpName property " +
+                            "cannot contain periods, ampersands, or pound signs as they are not valid in the " +
+                            "help file name.");
 
                     // If the help file is open, it will fail to build so try to get rid of it now before we
                     // get too far into it.
@@ -851,9 +862,54 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     throw;
                 }
 
-                Directory.CreateDirectory(workingFolder);
+                if((project.HelpFileFormat & (HelpFileFormats.Website | HelpFileFormats.Markdown)) != 0)
+                {
+                    this.ReportProgress("-------------------------------");
+                    this.ReportProgress("Clearing any prior web/markdown output...");
 
-                this.GarbageCollect();
+                    // Purge all files and folders from the output path except for the working folder and the
+                    // build log.  Read-only and/or hidden files and folders are ignored as they are assumed to
+                    // be under source control.
+                    foreach(string file in Directory.EnumerateFiles(outputFolder))
+                        if(!file.EndsWith(Path.GetFileName(this.LogFilename), StringComparison.Ordinal))
+                            if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
+                                File.Delete(file);
+                            else
+                                this.ReportProgress("    Ignoring read-only/hidden file {0}", file);
+
+                    foreach(string folder in Directory.EnumerateDirectories(outputFolder))
+                        try
+                        {
+                            // Ignore the working folder in case it wasn't removed above
+                            if(!folder.Equals(workingFolder.Substring(0, workingFolder.Length - 1), StringComparison.OrdinalIgnoreCase))
+                            {
+                                // Some source control providers have a mix of read-only/hidden files within a
+                                // folder that isn't read-only/hidden (i.e. Subversion).  In such cases, leave
+                                // the folder alone.
+                                if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(
+                                  f => (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
+                                {
+                                    this.ReportProgress("    Did not delete folder '{0}' as it contains " +
+                                        "read-only or hidden folders/files", folder);
+                                }
+                                else
+                                    if((File.GetAttributes(folder) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
+                                        Directory.Delete(folder, true);
+                                    else
+                                        this.ReportProgress("    Ignoring read-only/hidden folder {0}", folder);
+                            }
+                        }
+                        catch(IOException ioEx)
+                        {
+                            this.ReportProgress("    Ignoring folder '{0}': {1}", folder, ioEx.Message);
+                        }
+                        catch(UnauthorizedAccessException uaEx)
+                        {
+                            this.ReportProgress("    Ignoring folder '{0}': {1}", folder, uaEx.Message);
+                        }
+                }
+
+                Directory.CreateDirectory(workingFolder);
 
                 // Validate the documentation source information, gather assembly and reference info, and copy
                 // XML comments files to the working folder.
@@ -899,7 +955,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    this.TransformTemplate(Path.GetFileName(languageFile), Path.GetDirectoryName(languageFile),
+                    substitutionTags.TransformTemplate(Path.GetFileName(languageFile), Path.GetDirectoryName(languageFile),
                         workingFolder);
                     File.Move(workingFolder + Path.GetFileName(languageFile), workingFolder + "SHFBContent.xml");
 
@@ -922,8 +978,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    this.TransformTemplate("MRefBuilder.config", templateFolder, workingFolder);
-                    scriptFile = this.TransformTemplate("GenerateRefInfo.proj", templateFolder, workingFolder);
+                    substitutionTags.TransformTemplate("MRefBuilder.config", templateFolder, workingFolder);
+                    scriptFile = substitutionTags.TransformTemplate("GenerateRefInfo.proj", templateFolder, workingFolder);
 
                     try
                     {
@@ -936,9 +992,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                             // Make sure hint paths are correct by adding the project folder to any relative
                             // paths.  Skip any containing MSBuild variable references.
-                            if(projectItem.HasMetadata(ProjectElement.HintPath))
+                            if(projectItem.HasMetadata(BuildItemMetadata.HintPath))
                             {
-                                hintPath = projectItem.GetMetadataValue(ProjectElement.HintPath);
+                                hintPath = projectItem.GetMetadataValue(BuildItemMetadata.HintPath);
 
                                 if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
                                   StringComparison.Ordinal) == -1)
@@ -950,7 +1006,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                     if(hintPath.Length > 259 || Path.GetDirectoryName(hintPath).Length > 247)
                                         hintPath = FolderPath.AbsoluteToRelativePath(workingFolder, hintPath);
 
-                                    projectItem.SetMetadataValue(ProjectElement.HintPath, hintPath);
+                                    projectItem.SetMetadataValue(BuildItemMetadata.HintPath, hintPath);
                                 }
                             }
                         }
@@ -975,12 +1031,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     // Silverlight build targets are only available for 32-bit builds regardless of the framework
                     // version and require the 32-bit version of MSBuild in order to load the target file correctly.
-                    if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase) &&
-                      msBuildExePath.IndexOf("Framework64", StringComparison.OrdinalIgnoreCase) != -1)
-                        this.RunProcess(msBuildExePath.Replace("Framework64", "Framework"),
-                            "/nologo /clp:NoSummary /v:n GenerateRefInfo.proj");
+                    if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                        taskRunner.Run32BitProject("GenerateRefInfo.proj", false);
                     else
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n GenerateRefInfo.proj");
+                        taskRunner.RunProject("GenerateRefInfo.proj", false);
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
@@ -997,10 +1051,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    scriptFile = this.TransformTemplate("TransformManifest.proj", templateFolder, workingFolder);
+                    scriptFile = substitutionTags.TransformTemplate("TransformManifest.proj", templateFolder, workingFolder);
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n TransformManifest.proj");
+
+                    taskRunner.RunProject("TransformManifest.proj", false);
 
                     // Change the reflection file extension before running the ExecutionBehaviors.After plug-ins
                     // so that the plug-ins (if any) get the correct filename.
@@ -1022,12 +1077,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Load the transformed reflection information file
                 reflectionFile = workingFolder + "reflection.xml";
 
-                reflectionInfo = new XmlDocument();
-                reflectionInfo.Load(reflectionFile);
-                apisNode = reflectionInfo.SelectSingleNode("reflection/apis");
-
                 // If there is nothing to document, stop the build
-                if(apisNode.ChildNodes.Count == 0)
+                if(!ComponentUtilities.XmlStreamAxis(reflectionFile, "api").Any())
                     throw new BuilderException("BE0033", "No APIs found to document.  See error topic in " +
                         "help file for details.");
 
@@ -1045,11 +1096,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        this.TransformTemplate("GenerateInheritedDocs.config", templateFolder, workingFolder);
-                        scriptFile = this.TransformTemplate("GenerateInheritedDocs.proj", templateFolder, workingFolder);
+                        substitutionTags.TransformTemplate("GenerateInheritedDocs.config", templateFolder, workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("GenerateInheritedDocs.proj", templateFolder,
+                            workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m GenerateInheritedDocs.proj");
+
+                        taskRunner.RunProject("GenerateInheritedDocs.proj", true);
+                        
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 
@@ -1059,23 +1113,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 commentsFiles.Save();
 
-                this.GarbageCollect();
-
                 this.EnsureOutputFoldersExist(null);
 
                 // Copy conceptual content files if there are topics or tokens.  Tokens can be replaced in
                 // XML comments files so we check for them too.
-                if(conceptualContent == null)
-                    conceptualContent = new ConceptualContentSettings(project);
-
-                if(conceptualContent.ContentLayoutFiles.Count != 0 || conceptualContent.TokenFiles.Count != 0)
+                if(this.ConceptualContent.ContentLayoutFiles.Count != 0 || this.ConceptualContent.TokenFiles.Count != 0)
                 {
                     this.ReportProgress(BuildStep.CopyConceptualContent, "Copying conceptual content...");
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        conceptualContent.CopyContentFiles(this);
+                        this.ConceptualContent.CopyContentFiles(this);
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 
@@ -1085,7 +1134,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        conceptualContent.CreateConfigurationFiles(this);
+                        this.ConceptualContent.CreateConfigurationFiles(this);
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
                 }
@@ -1106,11 +1155,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    scriptFile = this.TransformTemplate("GenerateIntermediateTOC.proj", templateFolder, workingFolder);
+                    scriptFile = substitutionTags.TransformTemplate("GenerateIntermediateTOC.proj", templateFolder,
+                        workingFolder);
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n GenerateIntermediateTOC.proj");
+                    taskRunner.RunProject("GenerateIntermediateTOC.proj", false);
 
                     // Determine the API content placement
                     this.DetermineApiContentPlacement();
@@ -1125,19 +1175,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
-                }
-
-                // The June 2007 CTP removed the root namespace container from the TOC so we'll get
-                // the default project page filename from the reflection information file.
-                XmlNode defTopic = apisNode.SelectSingleNode("api[starts-with(@id, 'R:Project')]/file/@name");
-
-                if(defTopic != null)
-                {
-                    namespacesTopic = defTopic.Value;
-
-                    // Use it as the default topic if one wasn't specified explicitly in the additional content
-                    if(defaultTopic == null)
-                        defaultTopic = @"html\" + namespacesTopic + ".htm";
                 }
 
                 // Create the Sandcastle configuration file
@@ -1160,7 +1197,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Get namespaces referenced in the reflection data (plug-ins are responsible for adding
                 // additional namespaces if they add other reflection data files).
-                foreach(string n in this.GetReferencedNamespaces(reflectionFile, validNamespaces))
+                foreach(string n in GetReferencedNamespaces(reflectionFile, validNamespaces))
                     rn.Add(n);
 
                 // Get namespaces from the Framework comments files of the referenced namespaces.  This adds
@@ -1190,20 +1227,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     // The configuration varies based on the style.  We'll use a common name (sandcastle.config).
                     resolvedPath = presentationStyle.ResolvePath(presentationStyle.ReferenceBuildConfiguration);
-                    this.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
+                    substitutionTags.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
                         workingFolder);
 
                     if(!Path.GetFileName(resolvedPath).Equals("sandcastle.config", StringComparison.OrdinalIgnoreCase))
                         File.Move(workingFolder + Path.GetFileName(resolvedPath), workingFolder + "sandcastle.config");
 
                     // The conceptual content configuration file is only created if needed.
-                    if(conceptualContent.ContentLayoutFiles.Count != 0)
+                    if(this.ConceptualContent.ContentLayoutFiles.Count != 0)
                     {
                         this.ReportProgress("    conceptual.config");
 
                         resolvedPath = presentationStyle.ResolvePath(presentationStyle.ConceptualBuildConfiguration);
 
-                        this.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
+                        substitutionTags.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
                             workingFolder);
 
                         if(!Path.GetFileName(resolvedPath).Equals("conceptual.config", StringComparison.OrdinalIgnoreCase))
@@ -1216,27 +1253,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Merge the build component custom configurations
                 this.MergeComponentConfigurations();
 
-                reflectionInfo = null;
                 commentsFiles = null;
-                apisNode = null;
-
-                this.GarbageCollect();
 
                 // Build the conceptual help topics
-                if(conceptualContent.ContentLayoutFiles.Count != 0)
+                if(this.ConceptualContent.ContentLayoutFiles.Count != 0)
                 {
                     this.ReportProgress(BuildStep.BuildConceptualTopics, "Building conceptual help topics...");
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = this.TransformTemplate("BuildConceptualTopics.proj", templateFolder, workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("BuildConceptualTopics.proj", templateFolder,
+                            workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n BuildConceptualTopics.proj");
+
+                        taskRunner.RunProject("BuildConceptualTopics.proj", false);
+                        
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
-
-                    this.GarbageCollect();
                 }
 
                 // Build the reference help topics
@@ -1244,10 +1278,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    scriptFile = this.TransformTemplate("BuildReferenceTopics.proj", templateFolder, workingFolder);
+                    scriptFile = substitutionTags.TransformTemplate("BuildReferenceTopics.proj", templateFolder,
+                        workingFolder);
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n BuildReferenceTopics.proj");
+                                        
+                    taskRunner.RunProject("BuildReferenceTopics.proj", false);
+                    
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
 
@@ -1255,51 +1292,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.CombineIntermediateTocFiles();
 
                 // The last part differs based on the help file format
-                if((project.HelpFileFormat & (HelpFileFormats.Website | HelpFileFormats.Markdown)) != 0)
-                {
-                    this.ReportProgress("\r\nClearing any prior web/markdown output");
-
-                    // Purge all files and folders from the output path except for the working folder
-                    // and the build log.  This is done first as the CHM and HxS files end up in the
-                    // same output folder.  However, the website output is built last so that unnecessary
-                    // files are not compiled into the CHM and HxS files.  Read-only and/or hidden files
-                    // and folders are ignored as they are assumed to be under source control.
-                    foreach(string file in Directory.EnumerateFiles(outputFolder))
-                        if(!file.EndsWith(Path.GetFileName(this.LogFilename), StringComparison.Ordinal))
-                            if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
-                                File.Delete(file);
-                            else
-                                this.ReportProgress("    Ignoring read-only/hidden file {0}", file);
-
-                    foreach(string folder in Directory.EnumerateDirectories(outputFolder))
-                        try
-                        {
-                            // Ignore the working folder
-                            if(!folder.Equals(workingFolder.Substring(0, workingFolder.Length - 1), StringComparison.OrdinalIgnoreCase))
-                            {
-                                // Some source control providers have a mix of read-only/hidden files within a folder
-                                // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
-                                if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(f =>
-                                  (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
-                                    this.ReportProgress("    Did not delete folder '{0}' as it contains " +
-                                        "read-only or hidden folders/files", folder);
-                                else
-                                    if((File.GetAttributes(folder) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
-                                        Directory.Delete(folder, true);
-                                    else
-                                        this.ReportProgress("    Ignoring read-only/hidden folder {0}", folder);
-                            }
-                        }
-                        catch(IOException ioEx)
-                        {
-                            this.ReportProgress("    Ignoring folder '{0}': {1}", folder, ioEx.Message);
-                        }
-                        catch(UnauthorizedAccessException uaEx)
-                        {
-                            this.ReportProgress("    Ignoring folder '{0}': {1}", folder, uaEx.Message);
-                        }
-                }
-
                 if((project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 | HelpFileFormats.Website)) != 0)
                 {
                     this.ReportProgress(BuildStep.ExtractingHtmlInfo,
@@ -1307,10 +1299,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = this.TransformTemplate("ExtractHtmlInfo.proj", templateFolder, workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("ExtractHtmlInfo.proj", templateFolder,
+                            workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m ExtractHtmlInfo.proj");
+
+                        taskRunner.RunProject("ExtractHtmlInfo.proj", true);
+
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
                 }
@@ -1357,7 +1352,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.TransformTemplate("Help1x.hhp", templateFolder, workingFolder);
+                        substitutionTags.TransformTemplate("Help1x.hhp", templateFolder, workingFolder);
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 
@@ -1366,10 +1361,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = this.TransformTemplate("Build1xHelpFile.proj", templateFolder, workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("Build1xHelpFile.proj", templateFolder,
+                            workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m Build1xHelpFile.proj");
+
+                        taskRunner.RunProject("Build1xHelpFile.proj", true);
+                        
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
@@ -1416,28 +1414,32 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        this.TransformTemplate("HelpContentSetup.msha", templateFolder, workingFolder);
+                        substitutionTags.TransformTemplate("HelpContentSetup.msha", templateFolder, workingFolder);
 
                         // Rename the content setup file to use the help filename to keep them related and
                         // so that multiple output files can be sent to the same output folder.
                         File.Move(workingFolder + "HelpContentSetup.msha", workingFolder + this.ResolvedHtmlHelpName + ".msha");
 
                         // Generate the example install and remove scripts
-                        this.TransformTemplate("InstallMSHC.bat", templateFolder, workingFolder);
-                        File.Move(workingFolder + "InstallMSHC.bat", workingFolder + "Install_" + this.ResolvedHtmlHelpName + ".bat");
+                        substitutionTags.TransformTemplate("InstallMSHC.bat", templateFolder, workingFolder);
+                        File.Move(workingFolder + "InstallMSHC.bat", workingFolder + "Install_" +
+                            this.ResolvedHtmlHelpName + ".bat");
 
-                        this.TransformTemplate("RemoveMSHC.bat", templateFolder, workingFolder);
-                        File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" + this.ResolvedHtmlHelpName + ".bat");
+                        substitutionTags.TransformTemplate("RemoveMSHC.bat", templateFolder, workingFolder);
+                        File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" +
+                            this.ResolvedHtmlHelpName + ".bat");
 
                         // Copy the launcher utility
                         File.Copy(ComponentUtilities.ToolsFolder + "HelpLibraryManagerLauncher.exe",
                             workingFolder + "HelpLibraryManagerLauncher.exe");
                         File.SetAttributes(workingFolder + "HelpLibraryManagerLauncher.exe", FileAttributes.Normal);
 
-                        scriptFile = this.TransformTemplate("BuildHelpViewerFile.proj", templateFolder, workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("BuildHelpViewerFile.proj", templateFolder,
+                            workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m BuildHelpViewerFile.proj");
+
+                        taskRunner.RunProject("BuildHelpViewerFile.proj", true);
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1504,10 +1506,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = this.TransformTemplate("BuildOpenXmlFile.proj", templateFolder, workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("BuildOpenXmlFile.proj", templateFolder,
+                            workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m BuildOpenXmlFile.proj");
+
+                        taskRunner.RunProject("BuildOpenXmlFile.proj", true);
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1551,11 +1555,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
-                        scriptFile = this.TransformTemplate("GenerateMarkdownContent.proj", templateFolder,
-                            workingFolder);
+                        scriptFile = substitutionTags.TransformTemplate("GenerateMarkdownContent.proj",
+                            templateFolder, workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m GenerateMarkdownContent.proj");
+
+                        taskRunner.RunProject("GenerateMarkdownContent.proj", true);
 
                         this.GatherBuildOutputFilenames();
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1590,8 +1595,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                 }
 AllDone:
-                progressArgs.HasCompleted = true;
-
                 TimeSpan runtime = DateTime.Now - buildStart;
 
                 this.ReportProgress(BuildStep.Completed, "\r\nBuild completed successfully at {0}.  " +
@@ -1600,82 +1603,40 @@ AllDone:
 
                 System.Diagnostics.Debug.WriteLine("Build process finished successfully\r\n");
             }
-            catch(ThreadAbortException )
+            catch(OperationCanceledException )
             {
-                // Kill off the process, known child processes, and the STDOUT and STDERR threads too if
-                // necessary.
-                if(currentProcess != null && !currentProcess.HasExited)
-                {
-                    DateTime procStart;
+                buildCancelling = true;
 
-                    // Only kill potential matches started after the current process's start time.  It's not
-                    // perfect if you've got two or more SHFB builds running concurrently but it's the best
-                    // we can do without getting really complicated which I'm not prepared to do since this is
-                    // an extremely low occurrence issue.
-                    try
-                    {
-                        procStart = currentProcess.StartTime;
-                        currentProcess.Kill();
-                    }
-                    catch
-                    {
-                        // If we can't get the start time, assume the build start time
-                        procStart = buildStart;
-                    }
-
-                    foreach(Process p in Process.GetProcesses())
-                        try
-                        {
-                            if(reKillProcess.IsMatch(p.ProcessName) && !p.HasExited && p.StartTime > procStart)
-                            {
-                                System.Diagnostics.Debug.WriteLine("Killing " + p.ProcessName);
-                            
-                                p.Kill();
-                            }
-                        }
-                        catch
-                        {
-                            // Ignore exceptions, the process had probably already exited
-                        }
-                }
-
-                if(stdOutThread != null && stdOutThread.IsAlive)
-                {
-                    stdOutThread.Abort();
-                    waitCount = 0;
-
-                    while(waitCount < 5 && !stdOutThread.Join(1000))
-                        waitCount++;
-                }
-
-                if(stdErrThread != null && stdErrThread.IsAlive)
-                {
-                    stdErrThread.Abort();
-                    waitCount = 0;
-
-                    while(waitCount < 5 && !stdErrThread.Join(1000))
-                        waitCount++;
-                }
-
-                progressArgs.HasCompleted = true;
                 this.ReportError(BuildStep.Canceled, "BE0064", "BUILD CANCELLED BY USER");
+
                 System.Diagnostics.Debug.WriteLine("Build process aborted\r\n");
             }
             catch(Exception ex)
             {
-                BuilderException bex = ex as BuilderException;
                 System.Diagnostics.Debug.WriteLine(ex);
-                progressArgs.HasCompleted = true;
+
+                var agEx = ex as AggregateException;
+
+                if(agEx != null)
+                    foreach(var inEx in agEx.InnerExceptions)
+                    {
+                        if(message != null)
+                            message += "\r\n\r\n";
+
+                        message += inEx.Message + "\r\n" + inEx.StackTrace;
+                    }
 
                 do
                 {
                     if(message != null)
-                        message += "\r\n";
+                        message += "\r\n\r\n";
 
                     message += ex.Message + "\r\n" + ex.StackTrace;
                     ex = ex.InnerException;
 
                 } while(ex != null);
+
+                var bex = ex as BuilderException;
 
                 // NOTE: Message may contain format markers so pass it as a format argument
                 if(bex != null)
@@ -1687,9 +1648,6 @@ AllDone:
             }
             finally
             {
-                if(currentProcess != null)
-                    currentProcess.Dispose();
-
                 try
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
@@ -1714,8 +1672,6 @@ AllDone:
                 }
                 finally
                 {
-                    this.GarbageCollect();
-
                     if(swLog != null)
                     {
                         swLog.WriteLine("</buildStep>\r\n</shfbBuild>");
@@ -1730,7 +1686,7 @@ AllDone:
                         project = originalProject;
                     }
 
-                    if(progressArgs.BuildStep == BuildStep.Completed && !project.KeepLogFile)
+                    if(this.CurrentBuildStep == BuildStep.Completed && !project.KeepLogFile)
                         File.Delete(this.LogFilename);
                 }
             }
@@ -1748,7 +1704,7 @@ AllDone:
         /// <overloads>This method has two overloads.</overloads>
         public void ReportProgress(string message, params object[] args)
         {
-            this.ReportProgress(progressArgs.BuildStep, message, args);
+            this.ReportProgress(this.CurrentBuildStep, message, args);
         }
 
         /// <summary>
@@ -1776,7 +1732,7 @@ AllDone:
         {
             string warningMessage = String.Format(CultureInfo.CurrentCulture, message, args);
 
-            this.ReportProgress(progressArgs.BuildStep, "SHFB: Warning {0}: {1}", warningCode, warningMessage);
+            this.ReportProgress(this.CurrentBuildStep, "SHFB: Warning {0}: {1}", warningCode, warningMessage);
         }
 
         /// <summary>
@@ -1785,81 +1741,60 @@ AllDone:
         /// <param name="step">The current build step</param>
         /// <param name="message">The message to report</param>
         /// <param name="args">A list of arguments to format into the message text</param>
-        /// <event cref="BuildStepChanged">This event fires when the current build step changes</event>
-        /// <event cref="BuildProgress">This event fires to report progress information</event>
         protected void ReportProgress(BuildStep step, string message, params object[] args)
         {
+            BuildProgressEventArgs pa;
             TimeSpan runtime;
 
-            bool stepChanged = (progressArgs.BuildStep != step);
+            if(this.CancellationToken != CancellationToken.None && !buildCancelling)
+                this.CancellationToken.ThrowIfCancellationRequested();
+
+            bool stepChanged = (this.CurrentBuildStep != step);
 
             if(stepChanged)
             {
-                // Don't bother for the initialization steps
+                // Don't bother reporting elapsed time for the initialization steps
                 if(step > BuildStep.GenerateSharedContent)
                 {
                     runtime = DateTime.Now - stepStart;
-                    progressArgs.Message = String.Format(CultureInfo.CurrentCulture, "    Last step " +
-                        "completed in {0:00}:{1:00}:{2:00.0000}", Math.Floor(runtime.TotalSeconds / 3600),
-                        Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60));
+
+                    pa = new BuildProgressEventArgs(this.CurrentBuildStep, false,
+                        String.Format(CultureInfo.CurrentCulture, "    Last step completed in " +
+                        "{0:00}:{1:00}:{2:00.0000}", Math.Floor(runtime.TotalSeconds / 3600),
+                        Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60)));
 
                     if(swLog != null)
-                        swLog.WriteLine(progressArgs.Message);
+                        swLog.WriteLine(pa.Message);
 
-                    this.OnBuildProgress(progressArgs);
+                    if(this.ProgressReportProvider != null)
+                        this.ProgressReportProvider.Report(pa);
                 }
 
-                progressArgs.Message = "-------------------------------";
-                this.OnBuildProgress(progressArgs);
+                if(this.ProgressReportProvider != null)
+                    this.ProgressReportProvider.Report(new BuildProgressEventArgs(this.CurrentBuildStep, false,
+                        "-------------------------------"));
 
                 stepStart = DateTime.Now;
-                progressArgs.BuildStep = step;
+                this.CurrentBuildStep = step;
 
                 if(swLog != null)
                     swLog.WriteLine("</buildStep>\r\n<buildStep step=\"{0}\">", step);
             }
 
-            progressArgs.Message = String.Format(CultureInfo.CurrentCulture, message, args);
+            pa = new BuildProgressEventArgs(this.CurrentBuildStep, stepChanged,
+                String.Format(CultureInfo.CurrentCulture, message, args));
 
             // Save the message to the log file
             if(swLog != null)
-                swLog.WriteLine(HttpUtility.HtmlEncode(progressArgs.Message));
+                swLog.WriteLine(HttpUtility.HtmlEncode(pa.Message));
 
-            // Report progress first and then the step change so that any final information gets saved to the log
-            // file.
-            this.OnBuildProgress(progressArgs);
-
-            if(stepChanged)
-                OnBuildStepChanged(progressArgs);
-
-            if(this.BuildCanceled && !progressArgs.HasCompleted)
-                throw new BuilderException("BUILD CANCELLED");
+            if(this.ProgressReportProvider != null)
+                this.ProgressReportProvider.Report(pa);
         }
         #endregion
 
         #region Helper methods
         //=====================================================================
-
-        /// <summary>
-        /// Force garbage collection to reduce memory usage.
-        /// </summary>
-        /// <remarks>The reflection information file and XML comments files
-        /// can be quite large.  To reduce memory usage, we force a garbage
-        /// collection to get rid of all the discarded objects.</remarks>
-        private void GarbageCollect()
-        {
-#if DEBUG
-            this.ReportProgress("\r\n  GC: Memory used before: {0:0,0}",
-                GC.GetTotalMemory(false));
-#endif
-            GC.Collect(2);
-            GC.WaitForPendingFinalizers();
-            GC.Collect(2);
-#if DEBUG
-            this.ReportProgress("  GC: Memory used after: {0:0,0}\r\n",
-                GC.GetTotalMemory(false));
-#endif
-        }
 
         /// <summary>
         /// Make sure the path isn't one the user would regret having nuked without warning
@@ -2168,7 +2103,7 @@ AllDone:
             // to see if the project has any.
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            if(project.DocumentationSources.Count == 0)
+            if(project.DocumentationSources.Count() == 0)
                 throw new BuilderException("BE0039", "The project does not have any documentation sources defined");
 
             // Clone the project's references.  These will be added to a build project later on so we'll note the
@@ -2185,7 +2120,7 @@ AllDone:
             foreach(ProjectItem reference in project.MSBuildProject.GetItems("ProjectReference"))
             {
                 // Ignore references used only for MSBuild dependency determination
-                var refOutput = reference.GetMetadata(ProjectElement.ReferenceOutputAssembly);
+                var refOutput = reference.GetMetadata(BuildItemMetadata.ReferenceOutputAssembly);
 
                 if(refOutput != null && refOutput.EvaluatedValue.Equals("false", StringComparison.OrdinalIgnoreCase))
                 {
@@ -2225,7 +2160,7 @@ AllDone:
 
                     this.ReportProgress("Source: {0}", ds.SourceFile);
 
-                    foreach(var sourceProject in DocumentationSource.Projects(ds.SourceFile, ds.IncludeSubFolders,
+                    foreach(var sourceProject in ds.Projects(
                       !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
                       !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform))
                     {
@@ -2275,7 +2210,7 @@ AllDone:
                         fileCount++;
                     }
 
-                    foreach(string asmName in DocumentationSource.Assemblies(ds.SourceFile, ds.IncludeSubFolders))
+                    foreach(string asmName in ds.Assemblies)
                     {
                         if(!assembliesList.Contains(asmName))
                         {
@@ -2290,8 +2225,7 @@ AllDone:
                         fileCount++;
                     }
 
-                    foreach(string commentsName in DocumentationSource.CommentsFiles(ds.SourceFile,
-                      ds.IncludeSubFolders))
+                    foreach(string commentsName in ds.CommentsFiles)
                     {
                         if(!commentsList.Contains(commentsName))
                         {
@@ -2340,9 +2274,9 @@ AllDone:
                                 "Unable to obtain assembly name from project file '{0}' using Configuration " +
                                 "'{1}', Platform '{2}'", msbProject.ProjectFile.FullPath,
                                 msbProject.ProjectFile.AllEvaluatedProperties.Last(
-                                    p => p.Name == ProjectElement.Configuration).EvaluatedValue,
+                                    p => p.Name == BuildItemMetadata.Configuration).EvaluatedValue,
                                 msbProject.ProjectFile.AllEvaluatedProperties.Last(
-                                    p => p.Name == ProjectElement.Platform).EvaluatedValue));
+                                    p => p.Name == BuildItemMetadata.Platform).EvaluatedValue));
 
                         workingPath = msbProject.XmlCommentsFile;
 
@@ -2487,172 +2421,6 @@ AllDone:
                     "any member comments.");
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
-        }
-        #endregion
-
-        #region Run an external tool or process
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to run a step in the build process
-        /// </summary>
-        /// <param name="fileToRun">The file to execute.  This will be one of the template batch files with all
-        /// the necessary values for the paths and options plugged into it.</param>
-        /// <param name="args">The arguments to pass to the file if any.</param>
-        public void RunProcess(string fileToRun, string args)
-        {
-            int waitCount;
-
-            if(fileToRun == null)
-                throw new ArgumentNullException("fileToRun");
-
-            currentProcess = new Process();
-            errorDetected = false;
-
-            ProcessStartInfo psi = currentProcess.StartInfo;
-
-            // Set CreateNoWindow to true to suppress the window rather than setting  WindowStyle to hidden as
-            // WindowStyle has no effect on command prompt windows and they always appear.
-            psi.CreateNoWindow = true;
-            psi.FileName = fileToRun;
-            psi.Arguments = args;
-            psi.WorkingDirectory = workingFolder;
-            psi.UseShellExecute = false;
-            psi.RedirectStandardOutput = psi.RedirectStandardError = true;
-
-            this.ReportProgress(String.Format(CultureInfo.CurrentCulture, "[{0}]", fileToRun));
-            currentProcess.Start();
-
-            // Spawn two threads so that we can capture both STDOUT
-            // and STDERR without the risk of a deadlock.
-            stdOutThread = new Thread(ReadStdOut);
-            stdOutThread.Start();
-
-            stdErrThread = new Thread(ReadStdErr);
-            stdErrThread.Start();
-
-            currentProcess.WaitForExit();
-            waitCount = 0;
-
-            // Give the output threads a chance to finish
-            while(waitCount < 5 && stdOutThread.IsAlive && !stdOutThread.Join(1000))
-                waitCount++;
-
-            waitCount = 0;
-
-            while(waitCount < 5 && stdErrThread.IsAlive && !stdErrThread.Join(1000))
-                waitCount++;
-
-            currentProcess.Dispose();
-            currentProcess = null;
-            stdOutThread = stdErrThread = null;
-
-            // Stop if an error was detected
-            if(errorDetected)
-                throw new BuilderException("BE0043", "Unexpected error detected in last build step.  See " +
-                    "output above for details.");
-        }
-
-        /// <summary>
-        /// This is the thread procedure used to capture standard output text
-        /// </summary>
-        private void ReadStdOut()
-        {
-            string line;
-
-            try
-            {
-                do
-                {
-                    line = currentProcess.StandardOutput.ReadLine();
-
-                    if(line != null)
-                        this.ReportToolOutput(line);
-
-                } while(line != null);
-            }
-            catch(ThreadAbortException)
-            {
-                System.Diagnostics.Debug.WriteLine("ReadStdOut thread aborted\r\n");
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                System.Diagnostics.Debug.WriteLine("ReadStdOut thread failed\r\n");
-
-                try
-                {
-                    if(currentProcess != null)
-                        currentProcess.Kill();
-                }
-                catch
-                {
-                    // Ignore exceptions as the process may already have exited
-                }
-            }
-
-            System.Diagnostics.Debug.WriteLine("ReadStdOut thread stopped\r\n");
-        }
-
-        /// <summary>
-        /// This is the thread procedure used to capture standard error text
-        /// </summary>
-        private void ReadStdErr()
-        {
-            string line;
-
-            try
-            {
-                do
-                {
-                    line = currentProcess.StandardError.ReadLine();
-
-                    if(line != null)
-                        this.ReportToolOutput(line);
-
-                } while(line != null);
-            }
-            catch(ThreadAbortException)
-            {
-                System.Diagnostics.Debug.WriteLine("ReadStdErr thread aborted\r\n");
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                System.Diagnostics.Debug.WriteLine("ReadStdErr thread failed\r\n");
-
-                try
-                {
-                    if(currentProcess != null)
-                        currentProcess.Kill();
-                }
-                catch
-                {
-                    // Ignore exceptions as the process may already have exited
-                }
-            }
-
-            System.Diagnostics.Debug.WriteLine("ReadStdErr thread stopped\r\n");
-        }
-
-        /// <summary>
-        /// Report the output from the currently running tool
-        /// </summary>
-        /// <param name="line">The line to report</param>
-        private void ReportToolOutput(string line)
-        {
-            // The ReportProgress method uses String.Format so double any braces in the output
-            if(line.IndexOf('{') != -1)
-                line = line.Replace("{", "{{");
-
-            if(line.IndexOf('}') != -1)
-                line = line.Replace("}", "}}");
-
-            // Check for errors
-            if(reErrorCheck.IsMatch(line))
-                errorDetected = true;
-
-            this.ReportProgress(line);
         }
         #endregion
     }

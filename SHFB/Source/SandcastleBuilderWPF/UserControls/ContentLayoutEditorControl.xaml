@@ -460,8 +460,8 @@
                     Name="chkMSHelpViewRoot" Margin="3,3" IsChecked="{Binding IsMSHVRootContentContainer, Mode=TwoWay}" TabIndex="18" />
                 <Label Content="API Content" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="6" />
                 <ComboBox Grid.Column="1" Grid.Row="6" Margin="3,3" Width="180" HorizontalAlignment="Left"
-               Name="cboApiParentMode" SelectedValuePath="Key" DisplayMemberPath="Value"
-               SelectedValue="{Binding ApiParentMode, Mode=TwoWay}" TabIndex="19" />
+									Name="cboApiParentMode" SelectedValuePath="Key" DisplayMemberPath="Value"
+									SelectedValue="{Binding ApiParentMode, Mode=TwoWay}" TabIndex="19" />
               </Grid>
             </Expander>
           </Border>
@@ -476,26 +476,9 @@
               DataContext="{Binding ElementName=tvContent, Path=SelectedValue.Keywords}"
               ItemsSource="{Binding}" TabIndex="21">
                 <DataGrid.Columns>
-                  <DataGridComboBoxColumn x:Name="dgcboIndex" Header="Index" Width="130"
-                  SelectedItemBinding="{Binding Index, Mode=TwoWay}" />
+                  <DataGridComboBoxColumn x:Name="dgcboIndex" Header="Index" Width="130" SelectedValuePath="Key"
+										DisplayMemberPath="Value" SelectedValueBinding="{Binding Index, Mode=TwoWay}" />
                   <DataGridTextColumn Header="Term(s)" Width="250" Binding="{Binding Term, Mode=TwoWay}" />
-                </DataGrid.Columns>
-              </DataGrid>
-            </Expander>
-          </Border>
-          <Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5,2" Padding="2">
-            <Expander Header="Help Attributes" Name="expHelpAttributes" IsExpanded="True"
-            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-            DataContext="{Binding ElementName=tvContent, Path=SelectedItem}" MaxHeight="200" TabIndex="22"
-            KeyboardNavigation.TabNavigation="Local">
-              <DataGrid Name="dgHelpAttributes" AutoGenerateColumns="False" CanUserAddRows="True"
-              CanUserReorderColumns="False" CanUserSortColumns="False" MinRowHeight="20" MinHeight="100"
-              RowHeaderWidth="25"
-              DataContext="{Binding ElementName=tvContent, Path=SelectedValue.HelpAttributes}"
-              ItemsSource="{Binding}" TabIndex="23">
-                <DataGrid.Columns>
-                  <DataGridTextColumn Header="Name" Width="200" Binding="{Binding AttributeName, Mode=TwoWay}" />
-                  <DataGridTextColumn Header="Value" Width="200" Binding="{Binding AttributeValue, Mode=TwoWay}" />
                 </DataGrid.Columns>
               </DataGrid>
             </Expander>

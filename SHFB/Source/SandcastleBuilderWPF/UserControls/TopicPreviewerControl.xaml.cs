@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/28/2015
+// Updated : 05/17/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -223,7 +223,6 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <remarks>Token information is also loaded here and passed on to the converter.</remarks>
         private void LoadTableOfContentsInfo()
         {
-            FileItemCollection imageFiles, tokenFiles, contentLayoutFiles;
             List<ITableOfContents> tocFiles;
             TopicCollection contentLayout;
             TokenCollection tokens;
@@ -247,7 +246,6 @@ namespace SandcastleBuilder.WPF.UserControls
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
             base.RaiseEvent(args);
 
-            currentProject.EnsureProjectIsCurrent(false);
             lblCurrentProject.Text = currentProject.Filename;
             browserHistory.Clear();
             historyLocation = -1;
@@ -259,12 +257,8 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 // Get the image files.  This information is used to resolve media link elements in the
                 // topic files.
-                imageFiles = new FileItemCollection(currentProject, BuildAction.Image);
-
-                foreach(FileItem file in imageFiles)
-                    if(!String.IsNullOrEmpty(file.ImageId))
-                        converter.MediaFiles[file.ImageId] = new KeyValuePair<string, string>(file.FullPath,
-                            file.AlternateText);
+                foreach(var file in currentProject.ImagesReferences)
+                    converter.MediaFiles[file.Id] = new KeyValuePair<string, string>(file.FullPath, file.AlternateText);
             }
             catch(Exception ex)
             {
@@ -278,11 +272,8 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 converter.Tokens.Clear();
 
-                // Get the token files.  This information is used to resolve token elements in the
-                // topic files.
-                tokenFiles = new FileItemCollection(currentProject, BuildAction.Tokens);
-
-                foreach(FileItem file in tokenFiles)
+                // Get the token files.  This information is used to resolve token elements in the topic files.
+                foreach(var file in currentProject.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath))
                 {
                     // If open in an editor, use the edited values
                     if(!args.TokenFiles.TryGetValue(file.FullPath, out tokens))
@@ -309,27 +300,24 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 converter.TopicTitles.Clear();
 
-                // Get the content layout files.  Site maps are ignored.  We don't support rendering them.
-                contentLayoutFiles = new FileItemCollection(currentProject, BuildAction.ContentLayout);
+                // Load the content layout files.  Site maps are ignored as we don't support rendering them.
                 tocFiles = new List<ITableOfContents>();
 
-                // Add the conceptual content layout files
-                foreach(FileItem file in contentLayoutFiles)
+                foreach(var contentFile in currentProject.ContentFiles(BuildAction.ContentLayout))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.ContentLayoutFiles.TryGetValue(file.FullPath, out contentLayout))
+                    if(!args.ContentLayoutFiles.TryGetValue(contentFile.FullPath, out contentLayout))
                     {
-                        contentLayout = new TopicCollection(file);
+                        contentLayout = new TopicCollection(contentFile);
                         contentLayout.Load();
                     }
 
                     tocFiles.Add(contentLayout);
                 }
 
-                // Sort the files
                 tocFiles.Sort((x, y) =>
                 {
-                    FileItem fx = x.ContentLayoutFile, fy = y.ContentLayoutFile;
+                    ContentFile fx = x.ContentLayoutFile, fy = y.ContentLayoutFile;
 
                     if(fx.SortOrder < fy.SortOrder)
                         return -1;
@@ -337,13 +325,13 @@ namespace SandcastleBuilder.WPF.UserControls
                     if(fx.SortOrder > fy.SortOrder)
                         return 1;
 
-                    return String.Compare(fx.Name, fy.Name, StringComparison.OrdinalIgnoreCase);
+                    return String.Compare(fx.Filename, fy.Filename, StringComparison.OrdinalIgnoreCase);
                 });
 
-                // Create the merged TOC.  For the purpose of adding links, we'll include everything
-                // even topics marked as invisible.
+                // Create the merged TOC.  For the purpose of adding links, we'll include everything even topics
+                // marked as invisible.
                 foreach(ITableOfContents file in tocFiles)
-                    file.GenerateTableOfContents(tableOfContents, currentProject, true);
+                    file.GenerateTableOfContents(tableOfContents, true);
 
                 // Pass the topic IDs and titles on to the converter for use in hyperlinks
                 foreach(var t in tableOfContents.All())

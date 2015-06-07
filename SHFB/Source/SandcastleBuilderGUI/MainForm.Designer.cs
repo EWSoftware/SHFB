@@ -58,7 +58,6 @@ namespace SandcastleBuilder.Gui
             this.sbStatusBarText = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.miProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miNewProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.miNewFromOtherFormat = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.miOpenProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miCloseProject = new System.Windows.Forms.ToolStripMenuItem();
@@ -152,7 +151,6 @@ namespace SandcastleBuilder.Gui
             // 
             this.miProject.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miNewProject,
-            this.miNewFromOtherFormat,
             this.toolStripSeparator2,
             this.miOpenProject,
             this.miCloseProject,
@@ -187,15 +185,6 @@ namespace SandcastleBuilder.Gui
             this.sbStatusBarText.SetStatusBarText(this.miNewProject, "Start a brand new project");
             this.miNewProject.Text = "&New Project";
             this.miNewProject.Click += new System.EventHandler(this.miNewProject_Click);
-            // 
-            // miNewFromOtherFormat
-            // 
-            this.miNewFromOtherFormat.Name = "miNewFromOtherFormat";
-            this.miNewFromOtherFormat.Size = new System.Drawing.Size(304, 26);
-            this.sbStatusBarText.SetStatusBarText(this.miNewFromOtherFormat, "Create a new Sandcastle Help File Builder project from an existing project that i" +
-        "s in a different format");
-            this.miNewFromOtherFormat.Text = "Ne&w Project from Other Format...";
-            this.miNewFromOtherFormat.Click += new System.EventHandler(this.miNewFromOtherFormat_Click);
             // 
             // toolStripSeparator2
             // 
@@ -462,6 +451,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator19,
             this.miOpenHelpAfterBuild});
             this.ctxViewHelpMenu.Name = "ctxViewHelpMenu";
+            this.ctxViewHelpMenu.OwnerItem = this.tsbViewHelpFile;
             this.ctxViewHelpMenu.Size = new System.Drawing.Size(424, 216);
             this.ctxViewHelpMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ctxViewHelpMenu_Opening);
             // 
@@ -1086,7 +1076,6 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.ToolStripMenuItem miRecentProjects;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator miExplorerSeparator;
-        private System.Windows.Forms.ToolStripMenuItem miNewFromOtherFormat;
         private System.Windows.Forms.ToolStripMenuItem miHelp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;

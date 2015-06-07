@@ -43,6 +43,22 @@ namespace SandcastleBuilder.Utils.MSBuild
     /// </summary>
     public class MSBuildProject : IDisposable
     {
+        #region Global property name constants
+        //=====================================================================
+
+        /// <summary>Solution path (directory and filename) global property</summary>
+        public const string SolutionPath = "SolutionPath";
+        /// <summary>Solution directory global property</summary>
+        public const string SolutionDir = "SolutionDir";
+        /// <summary>Solution filename (no path) global property</summary>
+        public const string SolutionFileName = "SolutionFileName";
+        /// <summary>Solution name (no path or extension) global property</summary>
+        public const string SolutionName = "SolutionName";
+        /// <summary>Solution extension global property</summary>
+        public const string SolutionExt = "SolutionExt";
+
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -79,7 +95,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     throw new InvalidOperationException("Configuration has not been set");
 
                 // Give precedence to OutDir if defined.  Ignore ".\" as that's our default.
-                if(properties.TryGetValue(ProjectElement.OutDir, out prop))
+                if(properties.TryGetValue(BuildItemMetadata.OutDir, out prop))
                 {
                     outputPath = prop.EvaluatedValue;
                   
@@ -101,7 +117,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                 outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
 
                                 // The ProjectName property can override the actual project name
-                                if(properties.TryGetValue(ProjectElement.ProjectName, out prop))
+                                if(properties.TryGetValue(BuildItemMetadata.ProjectName, out prop))
                                     outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
                                 else
                                     outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
@@ -188,7 +204,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         if(!Path.IsPathRooted(docFile))
                         {
                             // Give precedence to OutDir if defined.  Ignore ".\" as that's our default.
-                            if(properties.TryGetValue(ProjectElement.OutDir, out prop))
+                            if(properties.TryGetValue(BuildItemMetadata.OutDir, out prop))
                             {
                                 outputPath = prop.EvaluatedValue;
 
@@ -211,7 +227,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                             outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
 
                                             // The ProjectName property can override the actual project name
-                                            if(properties.TryGetValue(ProjectElement.ProjectName, out prop))
+                                            if(properties.TryGetValue(BuildItemMetadata.ProjectName, out prop))
                                                 outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
                                             else
                                                 outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
@@ -456,15 +472,15 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(platform.Equals("Any CPU", StringComparison.OrdinalIgnoreCase))
                 {
                     List<string> values = new List<string>(
-                        msBuildProject.ConditionedProperties[ProjectElement.Platform]);
+                        msBuildProject.ConditionedProperties[BuildItemMetadata.Platform]);
 
                     if(values.IndexOf(platform) == -1 &&
                       values.IndexOf(SandcastleProject.DefaultPlatform) != -1)
                         platform = SandcastleProject.DefaultPlatform;
                 }
 
-                msBuildProject.SetGlobalProperty(ProjectElement.Configuration, configuration);
-                msBuildProject.SetGlobalProperty(ProjectElement.Platform, platform);
+                msBuildProject.SetGlobalProperty(BuildItemMetadata.Configuration, configuration);
+                msBuildProject.SetGlobalProperty(BuildItemMetadata.Platform, platform);
 
                 if(!String.IsNullOrEmpty(outDir))
                 {
@@ -480,7 +496,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                             Path.GetFileNameWithoutExtension(msBuildProject.FullPath));
                     }
 
-                    msBuildProject.SetGlobalProperty(ProjectElement.OutDir, outDir);
+                    msBuildProject.SetGlobalProperty(BuildItemMetadata.OutDir, outDir);
                 }
 
                 msBuildProject.ReevaluateIfNecessary();
@@ -503,14 +519,11 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Typically, they already match in that case.
             if(removeProjectWhenDisposed)
             {
-                msBuildProject.SetGlobalProperty(ProjectElement.SolutionPath, solutionName);
-                msBuildProject.SetGlobalProperty(ProjectElement.SolutionDir, FolderPath.TerminatePath(
-                    Path.GetDirectoryName(solutionName)));
-                msBuildProject.SetGlobalProperty(ProjectElement.SolutionFileName,
-                    Path.GetFileName(solutionName));
-                msBuildProject.SetGlobalProperty(ProjectElement.SolutionName,
-                    Path.GetFileNameWithoutExtension(solutionName));
-                msBuildProject.SetGlobalProperty(ProjectElement.SolutionExt, Path.GetExtension(solutionName));
+                msBuildProject.SetGlobalProperty(SolutionPath, solutionName);
+                msBuildProject.SetGlobalProperty(SolutionDir, FolderPath.TerminatePath(Path.GetDirectoryName(solutionName)));
+                msBuildProject.SetGlobalProperty(SolutionFileName, Path.GetFileName(solutionName));
+                msBuildProject.SetGlobalProperty(SolutionName, Path.GetFileNameWithoutExtension(solutionName));
+                msBuildProject.SetGlobalProperty(SolutionExt, Path.GetExtension(solutionName));
 
                 msBuildProject.ReevaluateIfNecessary();
 

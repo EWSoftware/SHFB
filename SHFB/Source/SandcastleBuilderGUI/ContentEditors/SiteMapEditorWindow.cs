@@ -131,7 +131,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
-            string projectPath = Path.GetDirectoryName(siteMapFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
             {
@@ -140,7 +140,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 return false;
             }
 
-            siteMapFile.Include = new FilePath(filename, siteMapFile.ProjectElement.Project);
+            siteMapFile.IncludePath = new FilePath(filename, siteMapFile.Project);
 
             this.Text = Path.GetFileName(filename);
             this.ToolTipText = filename;
@@ -160,19 +160,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TocEntry newTopic, currentTopic = ucSiteMapEditor.CurrentTopic;
             string newPath = filename, projectPath = Path.GetDirectoryName(
-                siteMapFile.ProjectElement.Project.Filename);
+                siteMapFile.Project.Filename);
 
             // The file must reside under the project path
             if(!Path.GetDirectoryName(filename).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
                 newPath = Path.Combine(projectPath, Path.GetFileName(filename));
 
             // Add the file to the project if not already there
-            siteMapFile.ProjectElement.Project.AddFileToProject(filename, newPath);
+            siteMapFile.Project.AddFileToProject(filename, newPath);
 
             // Add the topic to the editor's collection
-            newTopic = new TocEntry(siteMapFile.ProjectElement.Project)
+            newTopic = new TocEntry(siteMapFile.Project)
             {
-                SourceFile = new FilePath(newPath, siteMapFile.ProjectElement.Project),
+                SourceFile = new FilePath(newPath, siteMapFile.Project),
                 Title = Path.GetFileNameWithoutExtension(newPath)
             };
 
@@ -336,7 +336,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void ucSiteMapEditor_AssociateTopic(object sender, RoutedEventArgs e)
         {
             TocEntry t = ucSiteMapEditor.CurrentTopic;
-            string newPath, projectPath = Path.GetDirectoryName(siteMapFile.ProjectElement.Project.Filename);
+            string newPath, projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
 
             if(t != null)
                 using(OpenFileDialog dlg = new OpenFileDialog())
@@ -357,9 +357,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
 
                         // Add the file to the project if not already there
-                        siteMapFile.ProjectElement.Project.AddFileToProject(dlg.FileName, newPath);
+                        siteMapFile.Project.AddFileToProject(dlg.FileName, newPath);
 
-                        t.SourceFile = new FilePath(newPath, siteMapFile.ProjectElement.Project);
+                        t.SourceFile = new FilePath(newPath, siteMapFile.Project);
 
                         // Let the caller know we associated a file with the topic
                         e.Handled = true;
@@ -460,7 +460,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void cmdAddExistingFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             TocEntry t = ucSiteMapEditor.CurrentTopic;
-            string projectPath = Path.GetDirectoryName(siteMapFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
 
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
@@ -496,7 +496,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TocEntryCollection parent, newTopics = new TocEntryCollection(null);
             TocEntry selectedTopic = ucSiteMapEditor.CurrentTopic;
-            string projectPath = Path.GetDirectoryName(siteMapFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
             int idx;
 
             using(FolderBrowserDialog dlg = new FolderBrowserDialog())
@@ -512,7 +512,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         MouseCursor.Current = MouseCursors.WaitCursor;
 
                         newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath,
-                            siteMapFile.ProjectElement.Project);
+                            siteMapFile.Project);
 
                         MainForm.Host.ProjectExplorer.RefreshProject();
                     }

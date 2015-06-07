@@ -1,24 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Guided Installation
 // File    : RequiredFrameworkPage.cs
 // Author  : Eric Woodruff
-// Updated : 03/06/2011
+// Updated : 05/09/2015
 // Compiler: Microsoft Visual C#
 //
-// This file contains a page used to help the user download and install the
-// minimum .NET Framework version.
+// This file contains a page used to help the user download and install the minimum .NET Framework version
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  02/05/2011  EFW  Created the code
-// 1.1.0.0  03/06/2012  EFW  Converted to use WPF
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 02/05/2011  EFW  Created the code
+// 03/06/2012  EFW  Converted to use WPF
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -38,7 +35,7 @@ namespace Sandcastle.Installer.InstallerPages
         #region Private data members
         //=====================================================================
 
-        private Version minVersion;
+        private Version minVersion, installerVersion;
         private List<string> allVersions;
         #endregion
 
@@ -78,8 +75,8 @@ namespace Sandcastle.Installer.InstallerPages
         {
             get
             {
-                string required = minVersion.ToString();
-
+                // We could look at the registry but we'll take the simple approach as most of the time,
+                // nothing will require a later version than what we are running under.
                 allVersions.Clear();
                 allVersions.AddRange(
                     Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.System) +
@@ -92,13 +89,12 @@ namespace Sandcastle.Installer.InstallerPages
 
                         }).Select(d => d.Substring(d.LastIndexOf('\\') + 2)));
 
-                foreach(var page in this.Installer.AllPages)
-                {
-                    Version v = page.RequiredFrameworkVersion;
+                minVersion = this.Installer.AllPages.Max(p => p.RequiredFrameworkVersion) ?? minVersion;
 
-                    if(v != null && v > minVersion)
-                        minVersion = v;
-                }
+                if(minVersion <= installerVersion)
+                    return true;
+
+                string required = minVersion.ToString();
 
                 return allVersions.Any(v => v == required || v.StartsWith(required, StringComparison.Ordinal));
             }
@@ -113,7 +109,7 @@ namespace Sandcastle.Installer.InstallerPages
         /// </summary>
         public RequiredFrameworkPage()
         {
-            minVersion = new Version(4, 0);
+            minVersion = installerVersion = new Version(4, 5);
             allVersions = new List<string>();
 
             InitializeComponent();
@@ -156,64 +152,43 @@ namespace Sandcastle.Installer.InstallerPages
                 fdDocument.Blocks.Add(para);
             }
             else
-                if(minVersion.Major == 4)
-                {
-                    fdDocument.Blocks.Add(new Paragraph(new Run(String.Format(CultureInfo.CurrentCulture,
-                        "The .NET Framework {0} is required by the following tools installed by this package:",
-                        minVersion))));
+            {
+                fdDocument.Blocks.Add(new Paragraph(new Run(String.Format(CultureInfo.CurrentCulture,
+                    "The .NET Framework {0} is required by the following tools installed by this package:",
+                    minVersion))));
 
-                    var list = new List();
+                var list = new List();
 
-                    list.ListItems.AddRange(this.Installer.AllPages.Where(
-                        p => p.RequiredFrameworkVersion >= minVersion).Select(
-                        p => new ListItem(new Paragraph(new Run(p.PageTitle)))));
+                list.ListItems.AddRange(this.Installer.AllPages.Where(
+                    p => p.RequiredFrameworkVersion >= minVersion).Select(
+                    p => new ListItem(new Paragraph(new Run(p.PageTitle)))));
 
-                    fdDocument.Blocks.Add(list);
-                    fdDocument.Blocks.Add(new Paragraph(new Run("To install it, do the following:")));
+                fdDocument.Blocks.Add(list);
+                fdDocument.Blocks.Add(new Paragraph(new Run("To install it, do the following:")));
 
-                    list = new List();
+                list = new List();
                     
-                    para = new Paragraph(new Run("Click this link to go to the download page: "));
-                    para.Inlines.Add(new Hyperlink(new Run(".NET Framework 4.0")) {
-                        NavigateUri = new Uri("http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&displaylang=en") });
+                para = new Paragraph(new Run("Click this link to go to the download page: "));
+                para.Inlines.Add(new Hyperlink(new Run(".NET Framework and .NET SDKs")) {
+                    NavigateUri = new Uri("https://msdn.microsoft.com/en-us/vstudio/aa496123")
+                });
 
-                    list.ListItems.Add(new ListItem(para));
+                list.ListItems.Add(new ListItem(para));
 
-                    para = new Paragraph();
-                    para.Inlines.AddRange(new Inline[] {
-                        new Run("Once the page opens, click the "), new Bold(new Run("Download")),
-                        new Run(" button.") });
-                    list.ListItems.Add(new ListItem(para));
+                para = new Paragraph();
+                para.Inlines.AddRange(new Inline[] {
+                    new Run("Once the page opens, download and install the required version.") });
+                list.ListItems.Add(new ListItem(para));
 
-                    para = new Paragraph();
-                    para.Inlines.AddRange(new Inline[] {
-                        new Run("When prompted, click the "), new Bold(new Run("Run")),
-                        new Run(" button to download and immediately run the installer.") });
-                    list.ListItems.Add(new ListItem(para));
+                para = new Paragraph();
+                para.Inlines.AddRange(new Inline[] {
+                    new Run("When it has finished, come back to this application and click the "),
+                    new Bold(new Run("Next")),
+                    new Run(" button to continue installing the rest of the tools.") });
+                list.ListItems.Add(new ListItem(para));
 
-                    para = new Paragraph();
-                    para.Inlines.AddRange(new Inline[] {
-                        new Run("When it has finished, come back to this application and click the "),
-                        new Bold(new Run("Next")),
-                        new Run(" button to continue installing the rest of the tools.") });
-                    list.ListItems.Add(new ListItem(para));
-
-                    fdDocument.Blocks.Add(list);
-                }
-                else
-                {
-                    para = new Paragraph(new Run("One or more tools require a .NET Framework version not " +
-                        "recognized by this application.  Please visit the "));
-
-                    para.Inlines.Add(new Hyperlink(new Run(".NET Framework"))
-                    {
-                        NavigateUri = new Uri("http://www.microsoft.com/net/")
-                    });
-
-                    para.Inlines.Add(new Run(" website to download the latest version."));
-
-                    fdDocument.Blocks.Add(para);
-                }
+                fdDocument.Blocks.Add(list);
+            }
 
             base.ShowPage();
         }

@@ -1,39 +1,34 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ResourceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2009
-// Note    : Copyright 2009, Eric Woodruff, All rights reserved
+// Updated : 05/16/2015
+// Note    : Copyright 2009-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a Sandcastle transformation resource
-// item that can be used to insert a common item, value, or construct into
-// generated topics.
+// This file contains a class representing a Sandcastle transformation resource item that can be used to insert
+// a common item, value, or construct into generated topics.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.3  12/04/2009  EFW  Created the code
-// 1.9.3.3  12/22/2011  EFW  Updated for use with the new resource item file
-//                           editor.
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/04/2009  EFW  Created the code
+// 12/22/2011  EFW  Updated for use with the new resource item file editor
+//===============================================================================================================
 
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
+using System.Runtime.CompilerServices;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This represents a Sandcastle transformation resource item that can be
-    /// used to insert a common item, value, or construct into generated topics.
+    /// This represents a Sandcastle transformation resource item that can be used to insert a common item,
+    /// value, or construct into generated topics.
     /// </summary>
-    [DefaultProperty("Id")]
     public class ResourceItem : INotifyPropertyChanged
     {
         #region Private data members
@@ -47,8 +42,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the name of the file containing the
-        /// resource item.
+        /// This is used to get or set the name of the file containing the resource item
         /// </summary>
         public string SourceFile
         {
@@ -58,7 +52,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != sourceFile)
                 {
                     sourceFile = value;
-                    this.OnPropertyChanged("SourceFile");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -66,7 +60,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This read-only property is used to get the item ID
         /// </summary>
-        [Category("ResourceItem"), Description("The resource item ID"), DefaultValue(null)]
         public string Id
         {
             get { return itemId; }
@@ -75,11 +68,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get or set the item value
         /// </summary>
-        /// <value>The value can contain help file builder replacement tags.
-        /// These will be replaced at build time with the appropriate project
-        /// value.</value>
-        [Category("ResourceItem"), Description("The value of the item"), DefaultValue(null),
-          Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+        /// <value>The value can contain help file builder replacement tags.  These will be replaced at build
+        /// time with the appropriate project value.</value>
         public string Value
         {
             get { return itemValue; }
@@ -88,7 +78,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != itemValue)
                 {
                     itemValue = value;
-                    this.OnPropertyChanged("Value");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -97,7 +87,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used to get or set whether or not the entity is selected
         /// </summary>
         /// <remarks>Used by the editor for binding in the list box</remarks>
-        [Browsable(false)]
         public bool IsSelected
         {
             get { return isSelected; }
@@ -106,16 +95,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isSelected)
                 {
                     isSelected = value;
-                    this.OnPropertyChanged("IsSelected");
+                    this.OnPropertyChanged();
                 }
             }
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the item has been edited
-        /// and thus overrides a default item with the same ID.
+        /// This is used to get or set whether or not the item has been edited and thus overrides a default item
+        /// with the same ID.
         /// </summary>
-        [Browsable(false)]
         public bool IsOverridden
         {
             get { return isOverridden; }
@@ -124,7 +112,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isOverridden)
                 {
                     isOverridden = value;
-                    this.OnPropertyChanged("IsOverridden");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -161,7 +149,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This raises the <see cref="PropertyChanged"/> event
         /// </summary>
         /// <param name="propertyName">The property name that changed</param>
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
             var handler = PropertyChanged;
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 03/24/2015
+// Updated : 06/05/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -46,9 +46,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         // Bad characters for the vendor name property
         private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
 
-        private MSHelpAttrCollection attributes;
-        private bool attributesChanged;
-
         #endregion
 
         #region Constructor
@@ -74,14 +71,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 { MSHelpViewerSdkLinkType.Msdn.ToString(), "Online links to MSDN help topics" },
                 { MSHelpViewerSdkLinkType.Id.ToString(), "ID links within the collection" },
                 { MSHelpViewerSdkLinkType.None.ToString(), "No SDK links" } }).ToList();
-
-            dgvHelpAttributes.AutoGenerateColumns = false;
-
-            dgvHelpAttributes.EditingControlShowing += (s, e) =>
-            {
-                attributesChanged = true;
-                base.OnPropertyChanged(s, e);
-            };
         }
         #endregion
 
@@ -93,8 +82,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             get
             {
-                dgvHelpAttributes.EndEdit();
-
                 txtCatalogProductId.Text = txtCatalogProductId.Text.Trim();
                 txtCatalogVersion.Text = txtCatalogVersion.Text.Trim();
                 txtCatalogName.Text = txtCatalogName.Text.Trim();
@@ -149,133 +136,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 default:
                     return false;
             }
-        }
-
-        /// <inheritdoc />
-        protected override bool BindControlValue(System.Windows.Forms.Control control)
-        {
-            ProjectProperty projProp;
-
-#if !STANDALONEGUI
-            if(this.ProjectMgr == null)
-                return false;
-#else
-            if(this.CurrentProject == null)
-                return false;
-#endif
-            if(control.Name == "dgvHelpAttributes")
-            {
-                attributesChanged = false;
-
-#if !STANDALONEGUI
-                attributes = new MSHelpAttrCollection(
-                    ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
-                projProp = this.ProjectMgr.BuildProject.GetProperty("HelpAttributes");
-#else
-                attributes = new MSHelpAttrCollection(this.CurrentProject);
-                projProp = this.CurrentProject.MSBuildProject.GetProperty("HelpAttributes");
-#endif
-                if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
-                    attributes.FromXml(projProp.UnevaluatedValue);
-
-                dgvHelpAttributes.DataSource = attributes;
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <inheritdoc />
-        protected override bool StoreControlValue(System.Windows.Forms.Control control)
-        {
-#if !STANDALONEGUI
-            if(this.ProjectMgr == null)
-                return false;
-#else
-            if(this.CurrentProject == null)
-                return false;
-#endif
-            if(control.Name == "dgvHelpAttributes")
-            {
-                if(attributesChanged)
-                {
-                    dgvHelpAttributes.EndEdit();
-                    dgvHelpAttributes.DataSource = null;
-                    attributes.Sort();
-
-#if !STANDALONEGUI
-                    this.ProjectMgr.SetProjectProperty("HelpAttributes", attributes.ToXml());
-#else
-                    this.CurrentProject.MSBuildProject.SetProperty("HelpAttributes", attributes.ToXml());
-#endif
-                    attributesChanged = false;
-
-                    dgvHelpAttributes.DataSource = attributes;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-        #endregion
-
-        #region Event handlers
-        //=====================================================================
-
-        /// <summary>
-        /// Add new help attribute
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void btnAddAttribute_Click(object sender, EventArgs e)
-        {
-            dgvHelpAttributes.EndEdit();
-            attributes.Add("NoName", null);
-            dgvHelpAttributes.CurrentCell = dgvHelpAttributes[0, attributes.Count - 1];
-            dgvHelpAttributes.Focus();
-            this.IsDirty = attributesChanged = true;
-        }
-
-        /// <summary>
-        /// Delete the selected attribute
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void btnDeleteAttribute_Click(object sender, EventArgs e)
-        {
-            int idx;
-
-            if(dgvHelpAttributes.SelectedRows.Count != 0)
-            {
-                idx = dgvHelpAttributes.SelectedRows[0].Index;
-
-                if(idx < attributes.Count)
-                {
-                    dgvHelpAttributes.EndEdit();
-                    attributes.RemoveAt(idx);
-                    this.IsDirty = attributesChanged = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Insert a default set of attributes if they are not already there
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void btnDefaultAttributes_Click(object sender, EventArgs e)
-        {
-            dgvHelpAttributes.EndEdit();
-            dgvHelpAttributes.DataSource = null;
-
-            attributes.Add("DocSet", "NetFramework");
-            attributes.Add("DocSet", "{@HtmlEncHelpName}");
-            attributes.Add("TargetOS", "Windows");
-            attributes.Sort();
-
-            dgvHelpAttributes.DataSource = attributes;
-            this.IsDirty = attributesChanged = true;
         }
         #endregion
     }

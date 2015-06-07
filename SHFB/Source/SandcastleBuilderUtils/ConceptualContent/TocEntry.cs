@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/07/2015
+// Updated : 05/16/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -32,6 +32,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 
@@ -130,7 +131,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         value = Path.GetFileNameWithoutExtension(this.SourceFile);
 
                     title = value;
-                    this.OnPropertyChanged("Title");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -146,7 +147,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isDefaultTopic)
                 {
                     isDefaultTopic = value;
-                    this.OnPropertyChanged("IsDefaultTopic");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
                 }
             }
@@ -170,7 +171,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != apiParentMode)
                 {
                     apiParentMode = value;
-                    this.OnPropertyChanged("ApiParentMode");
+                    this.OnPropertyChanged();
                     this.OnPropertyChanged("ToolTip");  // Affects tool tip too
                 }
             }
@@ -189,7 +190,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isSelected)
                 {
                     isSelected = value;
-                    this.OnPropertyChanged("IsSelected");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -207,7 +208,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(value != isExpanded)
                 {
                     isExpanded = value;
-                    this.OnPropertyChanged("IsExpanded");
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -340,7 +341,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This raises the <see cref="PropertyChanged"/> event
         /// </summary>
         /// <param name="propertyName">The property name that changed</param>
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
             var handler = PropertyChanged;
 

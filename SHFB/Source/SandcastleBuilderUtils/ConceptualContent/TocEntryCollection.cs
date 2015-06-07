@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/07/2015
+// Updated : 05/17/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,14 +14,14 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.3.0.0  09/17/2006  EFW  Created the code
-// 1.5.0.2  07/03/2007  EFW  Added support for saving as a site map file
-// 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
-// 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
-// 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
-// -------  05/07/2015  EFW  Removed all deprecated code
+// 09/17/2006  EFW  Created the code
+// 07/03/2007  EFW  Added support for saving as a site map file
+// 08/11/2008  EFW  Modified to support the new project format
+// 06/15/2010  EFW  Added support for MS Help Viewer TOC format
+// 12/20/2011  EFW  Updated for use with the new content layout editor
+// 05/07/2015  EFW  Removed all deprecated code
 //===============================================================================================================
 
 using System;
@@ -43,19 +43,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region Private data members
         //=====================================================================
 
-        private FileItem siteMapFile;
+        private ContentFile siteMapFile;
+
         #endregion
 
         #region Properties
         //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the project file item associated with the collection
-        /// </summary>
-        public FileItem FileItem
-        {
-            get { return siteMapFile; }
-        }
 
         /// <summary>
         /// This is used to get the default topic
@@ -195,10 +188,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="siteMap">The site map file associated with the collection</param>
-        public TocEntryCollection(FileItem siteMap)
+        /// <param name="siteMapFile">The site map file associated with the collection</param>
+        public TocEntryCollection(ContentFile siteMapFile)
         {
-            siteMapFile = siteMap;
+            this.siteMapFile = siteMapFile;
         }
         #endregion
 
@@ -369,7 +362,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             foreach(XmlNode site in siteMap.ChildNodes[1].ChildNodes)
             {
-                entry = new TocEntry(siteMapFile.ProjectElement.Project);
+                entry = new TocEntry(siteMapFile.BasePathProvider);
                 entry.LoadSiteMapNode(site);
                 base.Add(entry);
             }
@@ -558,22 +551,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region ITableOfContents implementation
         //=====================================================================
 
-        /// <summary>
-        /// This is used to get the site map file associated with the collection
-        /// </summary>
-        public FileItem ContentLayoutFile
+        /// <inheritdoc />
+        public ContentFile ContentLayoutFile
         {
             get { return siteMapFile; }
         }
 
-        /// <summary>
-        /// This is used to merge this TOC with another one
-        /// </summary>
-        /// <param name="toc">The table of contents collection</param>
-        /// <param name="pathProvider">The base path provider</param>
-        /// <param name="includeInvisibleItems">Ignored here as site maps do not support this option</param>
-        public void GenerateTableOfContents(TocEntryCollection toc, IBasePathProvider pathProvider,
-          bool includeInvisibleItems)
+        /// <inheritdoc />
+        /// <remarks>The <paramref name="includeInvisibleItems"/> parameter is ignored as site maps do not
+        /// support them.</remarks>
+        public void GenerateTableOfContents(TocEntryCollection toc, bool includeInvisibleItems)
         {
             foreach(TocEntry t in this)
                 toc.Add(t);

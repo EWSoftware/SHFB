@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2015
+// Updated : 06/06/2015
 // Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,6 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -320,15 +321,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     break;
             }
 
-            // Set the styles in order to support other themes in VS 2012 and later
-            object themeKey = Utility.GetThemeKey("ToolTipBrushKey", SystemColors.ControlLightBrushKey);
-
-            if(themeKey != null)
-            {
-                textBlock.SetResourceReference(TextBlock.BackgroundProperty, themeKey);
-                textBlock.SetResourceReference(TextBlock.ForegroundProperty,
-                    Utility.GetThemeKey("ToolTipTextBrushKey", SystemColors.ControlTextBrushKey));
-            }
+            // Set the styles in order to support other themes
+            textBlock.SetResourceReference(TextBlock.BackgroundProperty, EnvironmentColors.ToolTipBrushKey);
+            textBlock.SetResourceReference(TextBlock.ForegroundProperty, EnvironmentColors.ToolTipTextBrushKey);
 
             return textBlock;
         }

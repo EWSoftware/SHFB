@@ -1,13 +1,13 @@
 //===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ResolveConceptualLinksComponent.cs
-// Note    : Copyright 2010-2013 Microsoft Corporation
+// Note    : Copyright 2010-2015 Microsoft Corporation
 //
 // This file contains a modified version of the original ResolveConceptualLinksComponent that allows the use of
 // inner text from the <link> tag and also allows the use of anchor references (#anchorName) in the link target.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -18,6 +18,7 @@
 // GUIDs are still preferred as they are guaranteed to be unique which is important for Help 2 and MS Help
 // Viewer content.  Duplicate IDs across multiple sets of content would cause linking issues in the collections.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 06/05/2015 - EFW - Removed support for the Help 2 Index link type
 //===============================================================================================================
 
 using System;
@@ -244,12 +245,6 @@ namespace Microsoft.Ddue.Tools
                     case ConceptualLinkType.Local:
                         writer.WriteStartElement("a");
                         writer.WriteAttributeString("href", url);
-                        break;
-
-                    case ConceptualLinkType.Index:
-                        writer.WriteStartElement("MSHelp", "link", "http://msdn.microsoft.com/mshelp");
-                        writer.WriteAttributeString("keywords", info.Target);
-                        writer.WriteAttributeString("tabindex", "0");
                         break;
 
                     case ConceptualLinkType.Id:

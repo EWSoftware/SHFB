@@ -2,39 +2,39 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : NamespaceSummaryItemEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/17/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit namespace summaries and to indicate which namespaces should appear
 // in the help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.2.0.0  09/04/2006  EFW  Created the code
-// 1.4.0.0  02/12/2007  EFW  Added the ability to delete old namespaces
-// 1.6.0.4  01/17/2008  EFW  Added more error info to help diagnose exceptions when an assembly fails to load
-// 1.6.0.6  03/07/2008  EFW  Added filter options and reworked the namespace extract to use a partial build
-//                           rather than the assembly loader to prevent "assembly not found" errors caused by
-//                           nested dependencies.
-// 1.8.0.0  06/30/2008  EFW  Reworked to support MSBuild project format
+// 09/04/2006  EFW  Created the code
+// 02/12/2007  EFW  Added the ability to delete old namespaces
+// 01/17/2008  EFW  Added more error info to help diagnose exceptions when an assembly fails to load
+// 03/07/2008  EFW  Added filter options and reworked the namespace extract to use a partial build rather than
+//                  the assembly loader to prevent "assembly not found" errors caused by nested dependencies.
+// 06/30/2008  EFW  Reworked to support MSBuild project format
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
-
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.Design
@@ -54,13 +54,6 @@ namespace SandcastleBuilder.Utils.Design
         private class NamespaceComparer : IComparer<String>
         {
             internal const string GroupSuffix = " (Group)";
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            public NamespaceComparer()
-            {
-            }
 
             /// <inheritdoc />
             int IComparer<string>.Compare(string x, string y)
@@ -83,8 +76,9 @@ namespace SandcastleBuilder.Utils.Design
         private NamespaceSummaryItemCollection nsColl;
         private Dictionary<string, List<string>> namespaceInfo;
         private SortedDictionary<string, NamespaceSummaryItem> namespaceItems;
-        private Thread buildThread;
         private BuildProcess buildProcess;
+        private CancellationTokenSource cancellationTokenSource;
+
         #endregion
 
         #region Constructor
@@ -111,86 +105,13 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is called by the build process thread to update the main window with the current build step
+        /// This is used to report build progress
         /// </summary>
-        /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildStepChanged(object sender, BuildProgressEventArgs e)
+        private void buildProcess_ReportProgress(BuildProgressEventArgs e)
         {
-            if(this.InvokeRequired)
-            {
-                try
-                {
-                    // Ignore it if we've already shut down or it hasn't completed yet
-                    if(!this.IsDisposed)
-                        this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildStepChanged),
-                            new object[] { sender, e });
-                }
-                catch(Exception)
-                {
-                    // Ignore these as we still get one occasionally due to the object being disposed or the
-                    // handle not being valid even though we do check for it first.
-                }
-            }
-            else
-            {
+            if(e.StepChanged)
                 lblProgress.Text = e.BuildStep.ToString();
-
-                if(e.HasCompleted)
-                {
-                    // Switch back to the current project's folder
-                    Directory.SetCurrentDirectory(Path.GetDirectoryName(nsColl.Project.Filename));
-
-                    // If successful, load the namespace nodes, and enable the UI
-                    if(e.BuildStep == BuildStep.Completed)
-                    {
-                        this.LoadNamespaces(buildProcess.ReflectionInfoFilename);
-
-                        cboAssembly.Enabled = txtSearchText.Enabled = btnApplyFilter.Enabled = btnAll.Enabled =
-                            btnNone.Enabled = true;
-                    }
-
-                    pbWait.Visible = lblProgress.Visible = false;
-                    lbNamespaces.Focus();
-
-                    buildThread = null;
-                    buildProcess = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// This is called by the build process thread to update the main window with information about its
-        /// progress.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildProgress(object sender, BuildProgressEventArgs e)
-        {
-            if(this.InvokeRequired)
-            {
-                try
-                {
-                    // Ignore it if we've already shut down
-                    if(!this.IsDisposed)
-                        this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildProgress),
-                            new object[] { sender, e });
-                }
-                catch(Exception)
-                {
-                    // Ignore these as we still get one occasionally due to the object being disposed or the
-                    // handle not being valid even though we do check for it first.
-                }
-            }
-            else
-            {
-                if(e.BuildStep == BuildStep.Failed)
-                {
-                    MessageBox.Show("Unable to build project to obtain API information.  Please perform a " +
-                        "normal build to identify and correct the problem.", Constants.AppName,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
         }
 
         /// <summary>
@@ -309,7 +230,7 @@ namespace SandcastleBuilder.Utils.Design
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void NamespacesDlg_Load(object sender, EventArgs e)
+        private async void NamespacesDlg_Load(object sender, EventArgs e)
         {
             string tempPath;
 
@@ -319,11 +240,9 @@ namespace SandcastleBuilder.Utils.Design
             try
             {
                 // Clone the project for the build and adjust its properties for our needs
-                tempProject = new SandcastleProject(nsColl.Project);
+                tempProject = new SandcastleProject(nsColl.Project.MSBuildProject);
 
-                // The temporary project resides in the same folder as the current project (by filename only, it
-                // isn't saved) to maintain relative paths.  However, build output is stored in a temporary
-                // folder and it keeps the intermediate files.
+                // Build output is stored in a temporary folder and it keeps the intermediate files
                 tempProject.CleanIntermediates = false;
                 tempPath = Path.GetTempFileName();
 
@@ -335,20 +254,58 @@ namespace SandcastleBuilder.Utils.Design
 
                 tempProject.OutputPath = tempPath;
 
-                buildProcess = new BuildProcess(tempProject, PartialBuildType.TransformReflectionInfo);
-                buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
-                buildProcess.BuildProgress += buildProcess_BuildProgress;
+                cancellationTokenSource = new CancellationTokenSource();
 
-                buildThread = new Thread(new ThreadStart(buildProcess.Build));
-                buildThread.Name = "Namespace partial build thread";
-                buildThread.IsBackground = true;
-                buildThread.Start();
+                buildProcess = new BuildProcess(tempProject, PartialBuildType.TransformReflectionInfo)
+                {
+                    ProgressReportProvider = new Progress<BuildProgressEventArgs>(buildProcess_ReportProgress),
+                    CancellationToken = cancellationTokenSource.Token
+                };
+
+                await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token);
+
+                if(!cancellationTokenSource.IsCancellationRequested)
+                {
+                    // Switch back to the current project's folder
+                    Directory.SetCurrentDirectory(Path.GetDirectoryName(nsColl.Project.Filename));
+
+                    // If successful, load the namespace nodes, and enable the UI
+                    if(buildProcess.CurrentBuildStep == BuildStep.Completed)
+                    {
+                        this.LoadNamespaces(buildProcess.ReflectionInfoFilename);
+
+                        cboAssembly.Enabled = txtSearchText.Enabled = btnApplyFilter.Enabled = btnAll.Enabled =
+                            btnNone.Enabled = true;
+                    }
+                    else
+                        MessageBox.Show("Unable to build project to obtain API information.  Please perform a " +
+                            "normal build to identify and correct the problem.", Constants.AppName,
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    pbWait.Visible = lblProgress.Visible = false;
+                    lbNamespaces.Focus();
+                }
+                else
+                {
+                    this.DialogResult = DialogResult.Cancel;
+                    this.Close();
+                }
+
+                buildProcess = null;
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 MessageBox.Show("Unable to build project to obtain API information.  Error: " + ex.Message,
                     Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if(cancellationTokenSource != null)
+                {
+                    cancellationTokenSource.Dispose();
+                    cancellationTokenSource = null;
+                }
             }
         }
 
@@ -359,7 +316,7 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void NamespacesDlg_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(buildThread != null && buildThread.IsAlive)
+            if(cancellationTokenSource != null && this.DialogResult != DialogResult.Cancel)
             {
                 if(MessageBox.Show("A build is currently taking place to obtain namespace information.  Do " +
                   "you want to abort it and close this form?", Constants.AppName, MessageBoxButtons.YesNo,
@@ -369,32 +326,21 @@ namespace SandcastleBuilder.Utils.Design
                     return;
                 }
 
-                try
+                if(cancellationTokenSource != null)
                 {
-                    this.Cursor = Cursors.WaitCursor;
-
-                    if(buildThread != null)
-                        buildThread.Abort();
-
-                    while(buildThread != null && !buildThread.Join(1000))
-                        Application.DoEvents();
-
-                    System.Diagnostics.Debug.WriteLine("Thread stopped");
+                    cancellationTokenSource.Cancel();
+                    e.Cancel = true;
                 }
-                finally
-                {
-                    this.Cursor = Cursors.Default;
-                    buildThread = null;
-                    buildProcess = null;
-                }
+
+                return;
             }
 
             // Add new items that were modified
-            foreach(NamespaceSummaryItem item in lbNamespaces.Items)
-                if(item.IsDirty && nsColl[item.Name] == null)
+            foreach(var item in lbNamespaces.Items.OfType<NamespaceSummaryItem>().Where(ns => ns.IsDirty))
+                if(nsColl[item.Name] == null)
                     nsColl.Add(item);
 
-            this.DialogResult = nsColl.IsDirty ? DialogResult.OK : DialogResult.Cancel;
+            this.DialogResult = nsColl.Any(ns => ns.IsDirty) ? DialogResult.OK : DialogResult.Cancel;
 
             if(tempProject != null)
             {
@@ -412,10 +358,6 @@ namespace SandcastleBuilder.Utils.Design
                 tempProject.Dispose();
                 tempProject = null;
             }
-
-            GC.Collect(2);
-            GC.WaitForPendingFinalizers();
-            GC.Collect(2);
         }
 
         /// <summary>

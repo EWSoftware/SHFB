@@ -93,7 +93,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(String.IsNullOrEmpty(exclusions) || !File.Exists(exclusions))
                 throw new ArgumentException("Exclusion file cannot be null or an empty string and must exist");
 
-            content = BuildProcess.ReadWithEncoding(exclusions, ref enc);
+            content = Utility.ReadWithEncoding(exclusions, ref enc);
             content = reCondenseWS.Replace(content, " ");
             lang = language;
 
@@ -136,7 +136,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             foreach(string name in Directory.EnumerateFiles(filePath, "*.htm?", SearchOption.AllDirectories))
             {
-                content = BuildProcess.ReadWithEncoding(name, ref enc);
+                content = Utility.ReadWithEncoding(name, ref enc);
 
                 // Extract the page title
                 m = rePageTitle.Match(content);

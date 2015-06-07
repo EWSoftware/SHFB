@@ -1,24 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 05/24/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that defines the Sancastle Help File Builder
-// project factory.
+// This file contains the class that defines the Sandcastle Help File Builder project factory
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/22/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/22/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -47,6 +45,7 @@ namespace SandcastleBuilder.Package
         //=====================================================================
 
         private const int PUVFF_SXSBACKUP = 0x00000020;
+
         #endregion
 
         #region Constructor
@@ -74,8 +73,7 @@ namespace SandcastleBuilder.Package
 
             SandcastleBuilderProjectNode project = new SandcastleBuilderProjectNode(package);
 
-            project.SetSite((IOleServiceProvider)((IServiceProvider)package).GetService(
-                typeof(IOleServiceProvider)));
+            project.SetSite((IOleServiceProvider)((IServiceProvider)package).GetService(typeof(IOleServiceProvider)));
 
             return project;
         }
@@ -179,7 +177,8 @@ namespace SandcastleBuilder.Package
             // If file was modified during the checkout, confirm that it still needs upgrading
             if((moreInfo & (uint)tagVSQueryEditResultFlags.QER_MaybeChanged) != 0)
             {
-                this.UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out ignored);
+                this.UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired,
+                    out pguidNewProjectFactory, out ignored);
 
                 if(pUpgradeRequired == 0)
                 {
@@ -199,9 +198,8 @@ namespace SandcastleBuilder.Package
 
                 // The SancastleProject class contains all the code needed to update the project so all we need
                 // to do is load a copy and force it to save a new copy.
-                using(SandcastleProject p = new SandcastleProject(bstrFileName, true))
+                using(SandcastleProject p = new SandcastleProject(bstrFileName, true, false))
                 {
-                    p.UpgradeProjectProperties();
                     p.SaveProject(bstrFileName);
                 }
 
@@ -225,10 +223,10 @@ namespace SandcastleBuilder.Package
 
             XDocument project = XDocument.Load(bstrFileName);
 
-            // Check the ToolsVerion attribute first.  It should be 4.0 or better.
+            // Check the ToolsVerion attribute first.  It should be 4.0 or later
             var toolsVersionAttr = project.Root.Attribute("ToolsVersion");
 
-            if(toolsVersionAttr == null || String.IsNullOrEmpty(toolsVersionAttr.Value) ||
+            if(toolsVersionAttr == null || String.IsNullOrWhiteSpace(toolsVersionAttr.Value) ||
               !Version.TryParse(toolsVersionAttr.Value, out toolsVersion) || toolsVersion.Major < 4)
                 pUpgradeRequired = 1;
             else

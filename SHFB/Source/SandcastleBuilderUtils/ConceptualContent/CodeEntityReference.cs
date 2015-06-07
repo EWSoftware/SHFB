@@ -1,60 +1,41 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : CodeEntityReference.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/12/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 05/24/2015
+// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a conceptual content code entity
-// reference link.
+// This file contains a class representing a conceptual content code entity reference link
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.6.0.7  05/12/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 05/12/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
-using System.IO;
-using System.Xml;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This represents a conceptual content CodeEntityReference that can be used to insert
-    /// a common item, value, or construct into topics.
+    /// This represents a conceptual content CodeEntityReference that can be used to insert a common item, value,
+    /// or construct into topics.
     /// </summary>
-    /// <remarks>This class is serializable so that it can be copied to the
-    /// clipboard.</remarks>
-    [Serializable, DefaultProperty("Id")]
     public class CodeEntityReference
     {
-        #region Private data members
-        //=====================================================================
-
-        private string id;
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
         /// This is used to get or set the CodeEntityReference name
         /// </summary>
-        public string Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        public string Id { get; set; }
+
         #endregion
 
         #region Constructor
@@ -63,10 +44,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="refId">The reference ID</param>
-        public CodeEntityReference(string refId)
+        /// <param name="id">The reference ID</param>
+        public CodeEntityReference(string id)
         {
-            id = refId;
+            this.Id = id;
         }
         #endregion
 
@@ -74,25 +55,23 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// Convert the entity to its <c>&lt;codeEntityReference&gt;</c> element
-        /// form
+        /// Convert the entity to its <c>&lt;codeEntityReference&gt;</c> element form
         /// </summary>
-        /// <returns>The entity in its <c>&lt;codeEntityReference&gt;</c>
-        /// element form</returns>
+        /// <returns>The entity in its <c>&lt;codeEntityReference&gt;</c> element form</returns>
         public string ToCodeEntityReference()
         {
             string autoUpgrade;
 
             // If it's a member, add the autoUpgrade attribute so that
             // overloads are preferred if found.
-            if(id[0] == 'M')
+            if(this.Id[0] == 'M')
                 autoUpgrade = " autoUpgrade=\"true\"";
             else
                 autoUpgrade = String.Empty;
 
             // The name will not be fully qualified by default
-            return String.Concat("<codeEntityReference qualifyHint=\"false\"",
-                autoUpgrade, ">", id, "</codeEntityReference>");
+            return String.Concat("<codeEntityReference qualifyHint=\"false\"", autoUpgrade, ">", this.Id,
+                "</codeEntityReference>");
         }
 
         /// <summary>
@@ -101,7 +80,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>The token in its <c>&lt;see&gt;</c> element form</returns>
         public string ToSee()
         {
-            return String.Concat("<see cref=\"", id, "\" />");
+            return String.Concat("<see cref=\"", this.Id, "\" />");
         }
         #endregion
     }

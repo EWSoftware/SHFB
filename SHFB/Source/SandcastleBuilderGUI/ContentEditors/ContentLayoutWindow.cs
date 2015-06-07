@@ -129,7 +129,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
-            string projectPath = Path.GetDirectoryName(contentLayoutFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
             {
@@ -138,7 +138,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 return false;
             }
 
-            contentLayoutFile.Include = new FilePath(filename, contentLayoutFile.ProjectElement.Project);
+            contentLayoutFile.IncludePath = new FilePath(filename, contentLayoutFile.Project);
 
             this.Text = Path.GetFileName(filename);
             this.ToolTipText = filename;
@@ -158,19 +158,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             Topic newTopic, currentTopic = ucContentLayoutEditor.CurrentTopic;
             string newPath = filename, projectPath = Path.GetDirectoryName(
-                contentLayoutFile.ProjectElement.Project.Filename);
+                contentLayoutFile.Project.Filename);
 
             // The file must reside under the project path
             if(!Path.GetDirectoryName(filename).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
                 newPath = Path.Combine(projectPath, Path.GetFileName(filename));
 
             // Add the file to the project if not already there
-            FileItem newItem = contentLayoutFile.ProjectElement.Project.AddFileToProject(filename, newPath);
+            FileItem newItem = contentLayoutFile.Project.AddFileToProject(filename, newPath);
 
             // Add the topic to the editor's collection
             newTopic = new Topic
             {
-                TopicFile = new TopicFile(newItem)
+                TopicFile = new TopicFile(newItem.ToContentFile())
             };
 
             if(addAsChild && currentTopic != null)
@@ -334,7 +334,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             FileItem newItem;
             Topic t = ucContentLayoutEditor.CurrentTopic;
-            string newPath, projectPath = Path.GetDirectoryName(contentLayoutFile.ProjectElement.Project.Filename);
+            string newPath, projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
             if(t != null)
                 using(OpenFileDialog dlg = new OpenFileDialog())
@@ -354,10 +354,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             newPath = Path.Combine(projectPath, Path.GetFileName(newPath));
 
                         // Add the file to the project if not already there
-                        newItem = contentLayoutFile.ProjectElement.Project.AddFileToProject(
-                            dlg.FileName, newPath);
+                        newItem = contentLayoutFile.Project.AddFileToProject(dlg.FileName, newPath);
 
-                        t.TopicFile = new TopicFile(newItem);
+                        t.TopicFile = new TopicFile(newItem.ToContentFile());
 
                         // Let the caller know we associated a file with the topic
                         e.Handled = true;
@@ -458,7 +457,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void cmdAddExistingFile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Topic t = ucContentLayoutEditor.CurrentTopic;
-            string projectPath = Path.GetDirectoryName(contentLayoutFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
@@ -495,7 +494,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TopicCollection parent, newTopics = new TopicCollection(null);
             Topic selectedTopic = ucContentLayoutEditor.CurrentTopic;
-            string projectPath = Path.GetDirectoryName(contentLayoutFile.ProjectElement.Project.Filename);
+            string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
             int idx;
 
             using(FolderBrowserDialog dlg = new FolderBrowserDialog())
@@ -511,7 +510,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         MouseCursor.Current = MouseCursors.WaitCursor;
 
                         newTopics.AddTopicsFromFolder(dlg.SelectedPath, dlg.SelectedPath,
-                            contentLayoutFile.ProjectElement.Project);
+                            contentLayoutFile.Project);
 
                         MainForm.Host.ProjectExplorer.RefreshProject();
                     }

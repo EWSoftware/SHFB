@@ -179,7 +179,7 @@ namespace SandcastleBuilder.PlugIns
                 foreach(var r in assemblies)
                 {
                     projectItem = msBuildProject.AddItem("Reference", r.Key)[0];
-                    projectItem.SetMetadataValue(ProjectElement.HintPath, r.Value);
+                    projectItem.SetMetadataValue(BuildItemMetadata.HintPath, r.Value);
                     builder.ReportProgress("    Added reference {0} ({1})", r.Key, r.Value);
                 }
 

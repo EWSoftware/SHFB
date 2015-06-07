@@ -17,6 +17,7 @@
 // they start with "System." or "Microsoft.".  This should help add links to MSDN content for Microsoft SDKs
 // without having to add additional reference link data to the help project.
 // 03/28/2015 - EFW - Changed the href-format attribute to a nested hrefFormat element.
+// 06/05/2015 - EFW - Removed support for the Help 2 Index and LocalOrIndex link types
 
 using System;
 using System.Collections.Generic;
@@ -315,13 +316,6 @@ namespace Microsoft.Ddue.Tools
                         else
                             options = options & ~DisplayOptions.ShowParameters;
                     }
-
-                    // If link type is Local or Index, determine which
-                    if(type == ReferenceLinkType.LocalOrIndex)
-                        if(targets.TryGetValue(key, out keyTarget) && target != null && target.Container == keyTarget.Container)
-                            type = ReferenceLinkType.Local;
-                        else
-                            type = ReferenceLinkType.Index;
                 }
 
                 // Suppress the link if so requested.  Links to this page are not live.
@@ -404,12 +398,6 @@ namespace Microsoft.Ddue.Tools
 
                         writer.WriteStartElement("a");
                         writer.WriteAttributeString("href", href);
-                        break;
-
-                    case ReferenceLinkType.Index:
-                        writer.WriteStartElement("MSHelp", "link", "http://msdn.microsoft.com/mshelp");
-                        writer.WriteAttributeString("keywords", targetId);
-                        writer.WriteAttributeString("tabindex", "0");
                         break;
 
                     case ReferenceLinkType.Msdn:

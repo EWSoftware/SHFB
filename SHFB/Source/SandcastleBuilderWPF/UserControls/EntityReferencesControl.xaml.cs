@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2015
+// Updated : 05/23/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,16 +14,17 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/04/2011  EFW  Created the code
-// 1.9.6.0  12/08/2012  EFW  Added support for XML comments conceptualLink TOC entry format
+// 12/04/2011  EFW  Created the code
+// 12/08/2012  EFW  Added support for XML comments conceptualLink TOC entry format
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -154,7 +155,6 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         private List<EntityReference> LoadTokenInfo()
         {
-            FileItemCollection tokenFiles;
             EntityReference tokenFileEntity = null;
             TokenCollection tokenColl;
 
@@ -163,14 +163,11 @@ namespace SandcastleBuilder.WPF.UserControls
 
             tokens = new List<EntityReference>();
 
-            currentProject.EnsureProjectIsCurrent(false);
-            tokenFiles = new FileItemCollection(currentProject, BuildAction.Tokens);
-
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
             base.RaiseEvent(args);
 
-            foreach(FileItem tokenFile in tokenFiles)
+            foreach(var tokenFile in currentProject.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath))
                 try
                 {
                     if(File.Exists(tokenFile.FullPath))
@@ -244,27 +241,20 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         private List<EntityReference> LoadImageInfo()
         {
-            ImageReferenceCollection imagesRefs;
-
             if(images != null)
                 return images;
 
             images = new List<EntityReference>();
 
-            currentProject.EnsureProjectIsCurrent(false);
-            imagesRefs = new ImageReferenceCollection(currentProject);
-
-            foreach(ImageReference ir in imagesRefs)
-                if(!String.IsNullOrEmpty(ir.Id))
-                    images.Add(new EntityReference
-                    {
-                        EntityType = EntityType.Image,
-                        Id = ir.Id,
-                        Label = ir.DisplayTitle,
-                        ToolTip = String.Format(CultureInfo.CurrentCulture, "ID: {0}\nFile: {1}",
-                            ir.Id, ir.FullPath),
-                        Tag = ir
-                    });
+            foreach(var ir in currentProject.ImagesReferences.OrderBy(i => i.DisplayTitle).ThenBy(i => i.Id))
+                images.Add(new EntityReference
+                {
+                    EntityType = EntityType.Image,
+                    Id = ir.Id,
+                    Label = ir.DisplayTitle,
+                    ToolTip = String.Format(CultureInfo.CurrentCulture, "ID: {0}\nFile: {1}", ir.Id, ir.FullPath),
+                    Tag = ir
+                });
 
             if(images.Count != 0)
                 images[0].IsSelected = true;
@@ -281,7 +271,6 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         private List<EntityReference> LoadTableOfContentsInfo()
         {
-            FileItemCollection contentLayoutFiles, siteMapFiles;
             List<ITableOfContents> tocFiles;
             TopicCollection contentLayout;
             TocEntryCollection siteMap, mergedToc;
@@ -299,20 +288,15 @@ namespace SandcastleBuilder.WPF.UserControls
 
             try
             {
-                // Get the content layout and site map files
-                currentProject.EnsureProjectIsCurrent(false);
-
-                contentLayoutFiles = new FileItemCollection(currentProject, BuildAction.ContentLayout);
-                siteMapFiles = new FileItemCollection(currentProject, BuildAction.SiteMap);
                 tocFiles = new List<ITableOfContents>();
 
-                // Add the conceptual content layout files
-                foreach(FileItem file in contentLayoutFiles)
+                // Load all content layout files and add them to the list
+                foreach(var contentFile in currentProject.ContentFiles(BuildAction.ContentLayout))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.ContentLayoutFiles.TryGetValue(file.FullPath, out contentLayout))
+                    if(!args.ContentLayoutFiles.TryGetValue(contentFile.FullPath, out contentLayout))
                     {
-                        contentLayout = new TopicCollection(file);
+                        contentLayout = new TopicCollection(contentFile);
                         contentLayout.Load();
                     }
 
@@ -320,22 +304,21 @@ namespace SandcastleBuilder.WPF.UserControls
                 }
 
                 // Load all site maps and add them to the list
-                foreach(FileItem fileItem in siteMapFiles)
+                foreach(var contentFile in currentProject.ContentFiles(BuildAction.SiteMap))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.SiteMapFiles.TryGetValue(fileItem.FullPath, out siteMap))
+                    if(!args.SiteMapFiles.TryGetValue(contentFile.FullPath, out siteMap))
                     {
-                        siteMap = new TocEntryCollection(fileItem);
+                        siteMap = new TocEntryCollection(contentFile);
                         siteMap.Load();
                     }
 
                     tocFiles.Add(siteMap);
                 }
 
-                // Sort the files
                 tocFiles.Sort((x, y) =>
                 {
-                    FileItem fx = x.ContentLayoutFile, fy = y.ContentLayoutFile;
+                    ContentFile fx = x.ContentLayoutFile, fy = y.ContentLayoutFile;
 
                     if(fx.SortOrder < fy.SortOrder)
                         return -1;
@@ -343,15 +326,15 @@ namespace SandcastleBuilder.WPF.UserControls
                     if(fx.SortOrder > fy.SortOrder)
                         return 1;
 
-                    return String.Compare(fx.Name, fy.Name, StringComparison.OrdinalIgnoreCase);
+                    return String.Compare(fx.Filename, fy.Filename, StringComparison.OrdinalIgnoreCase);
                 });
 
-                // Create the merged TOC.  For the purpose of adding links, we'll include everything
-                // even topics marked as invisible.
+                // Create the merged TOC.  For the purpose of adding links, we'll include everything even topics
+                // marked as invisible.
                 mergedToc = new TocEntryCollection();
 
                 foreach(ITableOfContents file in tocFiles)
-                    file.GenerateTableOfContents(mergedToc, currentProject, true);
+                    file.GenerateTableOfContents(mergedToc, true);
 
                 // Convert the TOC info to entity references
                 foreach(var t in mergedToc)
@@ -440,7 +423,6 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         private List<EntityReference> LoadCodeSnippetInfo()
         {
-            FileItemCollection codeSnippetFiles;
             EntityReference snippetFileEntity = null;
             XPathDocument snippets;
             XPathNavigator navSnippets;
@@ -451,10 +433,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             codeSnippets = new List<EntityReference>();
 
-            currentProject.EnsureProjectIsCurrent(false);
-            codeSnippetFiles = new FileItemCollection(currentProject, BuildAction.CodeSnippets);
-
-            foreach(FileItem snippetFile in codeSnippetFiles)
+            foreach(var snippetFile in currentProject.ContentFiles(BuildAction.CodeSnippets).OrderBy(f => f.LinkPath))
                 try
                 {
                     if(File.Exists(snippetFile.FullPath))
@@ -599,8 +578,6 @@ namespace SandcastleBuilder.WPF.UserControls
             MSBuildProject projRef;
             string lastSolution = null;
 
-            currentProject.EnsureProjectIsCurrent(false);
-
             // Index the framework comments based on the framework version in the project
             FrameworkSettings frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
                 currentProject.FrameworkVersion);
@@ -619,7 +596,7 @@ namespace SandcastleBuilder.WPF.UserControls
             }
 
             // Index the comments file documentation sources
-            foreach(string file in currentProject.DocumentationSources.CommentsFiles)
+            foreach(string file in currentProject.DocumentationSources.SelectMany(ds => ds.CommentsFiles))
             {
                 indexTokenSource.Token.ThrowIfCancellationRequested();
 
@@ -628,9 +605,9 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // Also, index the comments files in project documentation sources
             foreach(DocumentationSource ds in currentProject.DocumentationSources)
-                foreach(var sourceProject in DocumentationSource.Projects(ds.SourceFile, ds.IncludeSubFolders,
-                    !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
-                    !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform))
+                foreach(var sourceProject in ds.Projects(
+                  !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : currentProject.Configuration,
+                  !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : currentProject.Platform))
                 {
                     indexTokenSource.Token.ThrowIfCancellationRequested();
 

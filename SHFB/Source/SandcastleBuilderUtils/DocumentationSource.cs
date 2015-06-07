@@ -2,38 +2,37 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
+// Updated : 05/24/2015
+// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a documentation source such as an assembly, an XML comments file, a
 // solution, or a project.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  08/02/2006  EFW  Created the code
-// 1.3.2.0  11/10/2006  EFW  Added CommentsOnly property.
-// 1.3.4.0  12/31/2006  EFW  Converted path properties to FilePath objects
-// 1.6.0.7  04/16/2008  EFW  Added support for wildcards
-// 1.8.0.0  06/23/2008  EFW  Rewrote to support the MSBuild project format
-// 1.8.0.4  06/05/2010  EFW  Added support for getting build include status and configuration settings from the
-//                           solution file.
-// 1.9.6.0  10/22/2012  EFW  Added support for .winmd documentation sources
+// 08/02/2006  EFW  Created the code
+// 11/10/2006  EFW  Added CommentsOnly property.
+// 12/31/2006  EFW  Converted path properties to FilePath objects
+// 04/16/2008  EFW  Added support for wildcards
+// 06/23/2008  EFW  Rewrote to support the MSBuild project format
+// 06/05/2010  EFW  Added support for getting build include status and configuration settings from solution file
+// 10/22/2012  EFW  Added support for .winmd documentation sources
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 using SandcastleBuilder.Utils.Design;
@@ -41,12 +40,13 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This represents an assembly, an XML comments file, a Visual Studio Solution (C#, VB.NET, or J#), or a
-    /// Visual Studio solution containing one or more C#, VB.NET or J# projects to use for building a help file.
+    /// This represents an assembly, an XML comments file, a Visual Studio managed code project (C#, VB.NET,
+    /// etc.), or a Visual Studio solution containing one or more managed code projects from which information
+    /// is obtained to build a help file.
     /// </summary>
     /// <remarks>Wildcards are supported in the <see cref="SourceFile"/> property.</remarks>
     [DefaultProperty("SourceFile")]
-    public class DocumentationSource : PropertyBasedCollectionItem
+    public class DocumentationSource : INotifyPropertyChanged
     {
         #region Private data members
         //=====================================================================
@@ -65,6 +65,7 @@ namespace SandcastleBuilder.Utils
             "E6FDF86B-F3D1-11D4-8576-0002A516ECE8" +    // J#
             ")\\}\"\\) = \".*?\", \"(?!http)" +
             "(?<Path>.*?proj)\", \"\\{(?<GUID>.*?)\\}\"", RegexOptions.Multiline);
+
         #endregion
 
         #region Properties
@@ -84,12 +85,8 @@ namespace SandcastleBuilder.Utils
             get { return configuration; }
             set
             {
-                base.CheckProjectIsEditable();
-
-                if(value != null)
-                    value = value.Trim();
-
-                configuration = value;
+                configuration = (value ?? String.Empty).Trim();
+                this.OnPropertyChanged();
             }
         }
 
@@ -100,19 +97,14 @@ namespace SandcastleBuilder.Utils
         /// <value>If not set, the platform value from the owning help file project will be used.  This will be
         /// ignored for assembly and XML comments file entries.</value>
         [Category("Project"), Description("The platform to use for a solution or project documentation " +
-          "source.  If blank, the platform from the owning help file project will be used."),
-          DefaultValue(null)]
+          "source.  If blank, the platform from the owning help file project will be used."), DefaultValue(null)]
         public string Platform
         {
             get { return platform; }
             set
             {
-                base.CheckProjectIsEditable();
-
-                if(value != null)
-                    value = value.Trim();
-
-                platform = value;
+                platform = (value ?? String.Empty).Trim();
+                this.OnPropertyChanged();
             }
         }
 
@@ -138,14 +130,11 @@ namespace SandcastleBuilder.Utils
             set
             {
                 if(value == null || value.Path.Length == 0)
-                    throw new ArgumentException("A file path must be specified",
-                        "value");
-
-                base.CheckProjectIsEditable();
+                    throw new ArgumentException("A file path must be specified", "value");
 
                 sourceFile = value;
-                sourceFile.PersistablePathChanging += new EventHandler(
-                    sourceFile_PersistablePathChanging);
+                sourceFile.PersistablePathChanging += (s, e) => this.OnPropertyChanged("SourceFile");
+                this.OnPropertyChanged();
             }
         }
 
@@ -163,13 +152,13 @@ namespace SandcastleBuilder.Utils
             get { return includeSubFolders; }
             set
             {
-                base.CheckProjectIsEditable();
                 includeSubFolders = value;
+                this.OnPropertyChanged();
             }
         }
 
         /// <summary>
-        /// This returns a description of the entry suitable for display in a bound list control
+        /// This returns a description of the entry suitable for display in a bound list control or property grid
         /// </summary>
         [Browsable(false)]
         public string SourceDescription
@@ -188,82 +177,17 @@ namespace SandcastleBuilder.Utils
 
                 if((ext.IndexOfAny(wildcards) != -1 || ext == ".sln" ||
                   ext.EndsWith("proj", StringComparison.Ordinal)) &&
-                  (!String.IsNullOrEmpty(configuration) ||
-                  !String.IsNullOrEmpty(platform)))
+                  (!String.IsNullOrEmpty(configuration) || !String.IsNullOrEmpty(platform)))
+                {
                     config = String.Format(CultureInfo.InvariantCulture, " ({0}|{1})",
                         (String.IsNullOrEmpty(configuration)) ? "$(Configuration)" : configuration,
                         (String.IsNullOrEmpty(platform)) ? "$(Platform)" : platform);
+                }
 
-                if(path.IndexOfAny(wildcards) != -1 && includeSubFolders)
+                if(path.IndexOfAny(wildcards) != -1 && this.IncludeSubFolders)
                     subFolders = " including subfolders";
 
                 return String.Concat(path, config, subFolders);
-            }
-        }
-        #endregion
-
-        #region Private helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to handle changes in the <see cref="FilePath" /> properties such that the source path
-        /// gets stored in the project file.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void sourceFile_PersistablePathChanging(object sender, EventArgs e)
-        {
-            base.CheckProjectIsEditable();
-        }
-
-        /// <summary>
-        /// Extract all project files from the given Visual Studio solution file
-        /// </summary>
-        /// <param name="solutionFile">The Visual Studio solution from which to extract the projects.</param>
-        /// <param name="configuration">The configuration to use</param>
-        /// <param name="platform">The platform to use</param>
-        /// <param name="projectFiles">The collection used to return the extracted projects.</param>
-        private static void ExtractProjectsFromSolution(string solutionFile,
-          string configuration, string platform, Collection<ProjectFileConfiguration> projectFiles)
-        {
-            Regex reIsInBuild;
-            Match buildMatch;
-            string solutionContent, folder = Path.GetDirectoryName(solutionFile);
-
-            using(StreamReader sr = new StreamReader(solutionFile))
-            {
-                solutionContent = sr.ReadToEnd();
-            }
-
-            // Only add projects that are likely to contain assemblies
-            MatchCollection projects = reExtractProjectGuids.Matches(solutionContent);
-
-            foreach(Match solutionMatch in projects)
-            {
-                // See if the project is included in the build and get the configuration and platform
-                reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
-                    @"\{{{0}\}}\.{1}\|{2}\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
-                    solutionMatch.Groups["GUID"].Value, configuration, platform), RegexOptions.IgnoreCase);
-
-                buildMatch = reIsInBuild.Match(solutionContent);
-
-                // If the platform is "AnyCPU" and it didn't match, try "Any CPU" (with a space)
-                if(!buildMatch.Success && platform.Equals("AnyCPU", StringComparison.OrdinalIgnoreCase))
-                {
-                    reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
-                        @"\{{{0}\}}\.{1}\|Any CPU\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
-                        solutionMatch.Groups["GUID"].Value, configuration), RegexOptions.IgnoreCase);
-
-                    buildMatch = reIsInBuild.Match(solutionContent);
-                }
-
-                if(buildMatch.Success)
-                    projectFiles.Add(new ProjectFileConfiguration(Path.Combine(folder,
-                      solutionMatch.Groups["Path"].Value))
-                    {
-                        Configuration = buildMatch.Groups["Configuration"].Value.Trim(),
-                        Platform = buildMatch.Groups["Platform"].Value.Trim()
-                    });
             }
         }
         #endregion
@@ -275,18 +199,38 @@ namespace SandcastleBuilder.Utils
         /// Internal constructor
         /// </summary>
         /// <param name="filename">The filename of the documentation source</param>
-        /// <param name="projConfig">The configuration to use for projects</param>
-        /// <param name="projPlatform">The platform to use for projects</param>
-        /// <param name="subFolders">True to include subfolders, false to only search the top-level folder.</param>
-        /// <param name="project">The owning project</param>
-        internal DocumentationSource(string filename, string projConfig, string projPlatform, bool subFolders,
-          SandcastleProject project) : base(project)
+        /// <param name="configuration">The configuration to use for projects</param>
+        /// <param name="platform">The platform to use for projects</param>
+        /// <param name="includeSubfolders">True to include subfolders, false to only search the top-level folder</param>
+        /// <param name="basePathProvider">The base path provider</param>
+        internal DocumentationSource(string filename, string configuration, string platform, bool includeSubfolders,
+          IBasePathProvider basePathProvider)
         {
-            sourceFile = new FilePath(filename, project);
-            sourceFile.PersistablePathChanging += sourceFile_PersistablePathChanging;
-            configuration = projConfig;
-            platform = projPlatform;
-            includeSubFolders = subFolders;
+            this.includeSubFolders = includeSubfolders;
+            this.configuration = configuration;
+            this.platform = platform;
+            this.SourceFile = new FilePath(filename, basePathProvider);
+        }
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        //=====================================================================
+
+        /// <summary>
+        /// The property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="PropertyChanged"/> event
+        /// </summary>
+        /// <param name="propertyName">The property name that changed</param>
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            var handler = PropertyChanged;
+
+            if(handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -329,123 +273,111 @@ namespace SandcastleBuilder.Utils
         }
         #endregion
 
-        #region Wildcard expansion methods
+        #region Wildcard expansion properties and methods
         //=====================================================================
 
         /// <summary>
-        /// This returns a collection of assemblies based on the specified wildcard.
+        /// This read-only property returns an enumerable list of assemblies based on the current settings
         /// </summary>
-        /// <param name="wildcard">The wildcard to use to find assemblies.</param>
-        /// <param name="includeSubfolders">If true and the wildcard parameter includes wildcard characters,
-        /// subfolders will be searched as well.  If not, only the top-level folder is searched.</param>
-        /// <returns>A list of assemblies matching the wildcard</returns>
-        public static Collection<string> Assemblies(string wildcard, bool includeSubfolders)
+        /// <returns>An enumerable list of assemblies matching the <see cref="SourceFile"/> path.  Sub-folders
+        /// are only included if <see cref="IncludeSubFolders"/> is set to true.</returns>
+        public IEnumerable<string> Assemblies
         {
-            Collection<string> assemblies = new Collection<string>();
-            SearchOption searchOpt = SearchOption.TopDirectoryOnly;
-            string dirName;
-
-            dirName = Path.GetDirectoryName(wildcard);
-
-            if(Directory.Exists(dirName))
+            get
             {
-                if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubfolders)
-                    searchOpt = SearchOption.AllDirectories;
+                SearchOption searchOpt = SearchOption.TopDirectoryOnly;
+                string wildcard = sourceFile, dirName = Path.GetDirectoryName(wildcard);
 
-                foreach(string f in Directory.EnumerateFiles(dirName,
-                  Path.GetFileName(wildcard), searchOpt).Where(
-                  f => f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
-                  f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
-                  f.EndsWith(".winmd", StringComparison.OrdinalIgnoreCase)))
-                    assemblies.Add(f);
+                if(Directory.Exists(dirName))
+                {
+                    if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
+                        searchOpt = SearchOption.AllDirectories;
+
+                    foreach(string filename in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt).Where(
+                      f => f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
+                      f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
+                      f.EndsWith(".winmd", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        yield return filename;
+                    }
+                }
             }
-
-            return assemblies;
         }
 
         /// <summary>
-        /// This returns a collection of XML comments files based on the specified wildcard.
+        /// This read-only property returns an enumerable list of XML comments files based on the current settings
         /// </summary>
-        /// <param name="wildcard">The wildcard to use to find comments
-        /// files.</param>
-        /// <param name="includeSubfolders">If true and the wildcard parameter includes wildcard characters,
-        /// subfolders will be searched as well.  If not, only the top-level folder is searched.</param>
-        /// <returns>A list of XML comments files matching the wildcard</returns>
-        public static Collection<string> CommentsFiles(string wildcard, bool includeSubfolders)
+        /// <returns>An enumerable list of XML comments files matching the <see cref="SourceFile"/> path.
+        /// Sub-folders are only included if <see cref="IncludeSubFolders"/> is set to true.</returns>
+        public IEnumerable<string> CommentsFiles
         {
-            Collection<string> comments = new Collection<string>();
-            SearchOption searchOpt = SearchOption.TopDirectoryOnly;
-            string dirName;
-
-            dirName = Path.GetDirectoryName(wildcard);
-
-            if(Directory.Exists(dirName))
+            get
             {
-                if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubfolders)
-                    searchOpt = SearchOption.AllDirectories;
+                SearchOption searchOpt = SearchOption.TopDirectoryOnly;
+                string wildcard = sourceFile, dirName = Path.GetDirectoryName(wildcard);
 
-                foreach(string f in Directory.EnumerateFiles(dirName,
-                  Path.GetFileName(wildcard), searchOpt).Where(f => f.EndsWith(".xml",
-                  StringComparison.OrdinalIgnoreCase)))
-                    comments.Add(f);
+                if(Directory.Exists(dirName))
+                {
+                    if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
+                        searchOpt = SearchOption.AllDirectories;
+
+                    foreach(string filename in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt).Where(
+                      f => f.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)))
+                        yield return filename;
+                }
             }
-
-            return comments;
         }
 
         /// <summary>
-        /// This returns a collection of MSBuild project filenames based on the specified wildcard.
+        /// This returns an enumerable list of MSBuild project file configurations based on the current settings
+        /// and the given configuration and platform.
         /// </summary>
-        /// <param name="wildcard">The wildcard to use to find solutions and
-        /// projects.</param>
-        /// <param name="includeSubfolders">If true and the wildcard parameter includes wildcard characters,
-        /// subfolders will be searched as well.  If not, only the top-level folder is searched.</param>
-        /// <param name="configuration">The configuration to use</param>
-        /// <param name="platform">The platform to use</param>
-        /// <returns>A list of projects matching the wildcard.  Any solution files (.sln) found are returned
-        /// last, each followed by the projects extracted from it.</returns>
-        public static Collection<ProjectFileConfiguration> Projects(string wildcard,
-          bool includeSubfolders, string configuration, string platform)
+        /// <param name="configurationName">The configuration to use</param>
+        /// <param name="platformName">The platform to use</param>
+        /// <returns>An enumerable list of project configurations matching the <see cref="SourceFile"/> path.
+        /// Sub-folders are only included if <see cref="IncludeSubFolders"/> is set to true.  Any solution files
+        /// (.sln) found are returned last, each followed by the projects extracted from them.</returns>
+        public IEnumerable<ProjectFileConfiguration> Projects(string configurationName, string platformName)
         {
             List<string> solutions = new List<string>();
-            Collection<ProjectFileConfiguration> projects = new Collection<ProjectFileConfiguration>();
             SearchOption searchOpt = SearchOption.TopDirectoryOnly;
-            string dirName;
+            string dirName, wildcard = sourceFile;
 
             dirName = Path.GetDirectoryName(wildcard);
 
             if(Directory.Exists(dirName))
             {
-                if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubfolders)
+                if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
                     searchOpt = SearchOption.AllDirectories;
 
-                foreach(string f in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt))
+                foreach(string filename in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt))
                 {
-                    if(f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
-                        solutions.Add(f);
+                    if(filename.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                        solutions.Add(filename);
                     else
-                        if(f.EndsWith("proj", StringComparison.OrdinalIgnoreCase))
-                            projects.Add(new ProjectFileConfiguration(f));
+                        if(filename.EndsWith("proj", StringComparison.OrdinalIgnoreCase))
+                            yield return new ProjectFileConfiguration(filename);
                 }
 
                 // Add solutions last followed by the projects that they contain.  The caller can then set
                 // solution specific values in each project related to the solution.
                 foreach(string s in solutions)
                 {
-                    projects.Add(new ProjectFileConfiguration(s));
-                    ExtractProjectsFromSolution(s, configuration, platform, projects);
+                    yield return new ProjectFileConfiguration(s);
+
+                    foreach(var config in ExtractProjectsFromSolution(s, configurationName, platformName))
+                        yield return config;
                 }
             }
-
-            return projects;
         }
 
         /// <summary>
-        /// This is used to get a list of all projects in a solution file
+        /// This is used to get a list of all projects in a solution file regardless of configuration and
+        /// platform.
         /// </summary>
         /// <param name="solutionFile">The solution filename from which to get the project names</param>
-        /// <returns>An enumerable list of the projects within the solution regardless of which configuration or
-        /// platform build combination in which they are enabled.</returns>
+        /// <returns>An enumerable list of the projects within the solution regardless of configuration or
+        /// platform build combinations in which they are enabled.</returns>
         public static IEnumerable<string> ProjectsIn(string solutionFile)
         {
             string solutionContent, folder = Path.GetDirectoryName(solutionFile);
@@ -460,6 +392,56 @@ namespace SandcastleBuilder.Utils
 
             foreach(Match solutionMatch in projects)
                 yield return solutionMatch.Groups["Path"].Value;
+        }
+
+        /// <summary>
+        /// Extract all project files from the given Visual Studio solution file
+        /// </summary>
+        /// <param name="solutionFile">The Visual Studio solution from which to extract the projects.</param>
+        /// <param name="configuration">The configuration to use</param>
+        /// <param name="platform">The platform to use</param>
+        /// <returns>An enumerable list of project configurations that were extracted from the solution</returns>
+        private static IEnumerable<ProjectFileConfiguration> ExtractProjectsFromSolution(string solutionFile,
+          string configuration, string platform)
+        {
+            Regex reIsInBuild;
+            Match buildMatch;
+            string solutionContent, folder = Path.GetDirectoryName(solutionFile);
+
+            using(StreamReader sr = new StreamReader(solutionFile))
+            {
+                solutionContent = sr.ReadToEnd();
+            }
+
+            // Only add projects that are likely to contain assemblies
+            MatchCollection projects = reExtractProjectGuids.Matches(solutionContent);
+
+            foreach(Match solutionMatch in projects)
+            {
+                // See if the project is included in the build and get the configuration and platform
+                reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
+                    @"\{{{0}\}}\.{1}\|{2}\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
+                    solutionMatch.Groups["GUID"].Value, configuration, platform), RegexOptions.IgnoreCase);
+
+                buildMatch = reIsInBuild.Match(solutionContent);
+
+                // If the platform is "AnyCPU" and it didn't match, try "Any CPU" (with a space)
+                if(!buildMatch.Success && platform.Equals("AnyCPU", StringComparison.OrdinalIgnoreCase))
+                {
+                    reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
+                        @"\{{{0}\}}\.{1}\|Any CPU\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
+                        solutionMatch.Groups["GUID"].Value, configuration), RegexOptions.IgnoreCase);
+
+                    buildMatch = reIsInBuild.Match(solutionContent);
+                }
+
+                if(buildMatch.Success)
+                    yield return new ProjectFileConfiguration(Path.Combine(folder, solutionMatch.Groups["Path"].Value))
+                    {
+                        Configuration = buildMatch.Groups["Configuration"].Value.Trim(),
+                        Platform = buildMatch.Groups["Platform"].Value.Trim()
+                    };
+            }
         }
         #endregion
     }

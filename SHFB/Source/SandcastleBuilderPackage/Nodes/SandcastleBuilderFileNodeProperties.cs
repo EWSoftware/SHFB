@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : SandcastleBuilderFileNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2015
+// Updated : 05/13/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -30,7 +30,7 @@ using Microsoft.VisualStudio.Project;
 
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuildAction = SandcastleBuilder.Utils.BuildAction;
-using SandcastleBuilderProjectElement = SandcastleBuilder.Utils.ProjectElement;
+using SandcastleBuildItemMetadata = SandcastleBuilder.Utils.BuildItemMetadata;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -108,13 +108,13 @@ namespace SandcastleBuilder.Package.Nodes
           DisplayName("Image ID")]
         public string ImageId
         {
-            get { return this.Node.ItemNode.GetMetadata(SandcastleBuilderProjectElement.ImageId); }
+            get { return this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.ImageId); }
             set
             {
                 if(value != null)
                     value = value.Trim();
 
-                this.Node.ItemNode.SetMetadata(SandcastleBuilderProjectElement.ImageId, value);
+                this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.ImageId, value);
             }
         }
 
@@ -125,13 +125,13 @@ namespace SandcastleBuilder.Package.Nodes
           DisplayName("Alternate Text")]
         public string AlternateText
         {
-            get { return this.Node.ItemNode.GetMetadata(SandcastleBuilderProjectElement.AlternateText); }
+            get { return this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.AlternateText); }
             set
             {
                 if(value != null)
                     value = value.Trim();
 
-                this.Node.ItemNode.SetMetadata(SandcastleBuilderProjectElement.AlternateText, value);
+                this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.AlternateText, value);
             }
         }
 
@@ -149,14 +149,14 @@ namespace SandcastleBuilder.Package.Nodes
             {
                 bool value;
 
-                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuilderProjectElement.CopyToMedia), out value))
+                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.CopyToMedia), out value))
                     return false;
 
                 return value;
             }
             set
             {
-                this.Node.ItemNode.SetMetadata(SandcastleBuilderProjectElement.CopyToMedia,
+                this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.CopyToMedia,
                     value.ToString(CultureInfo.InvariantCulture));
             }
         }
@@ -172,14 +172,14 @@ namespace SandcastleBuilder.Package.Nodes
             {
                 int value;
 
-                if(!Int32.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuilderProjectElement.SortOrder), out value))
+                if(!Int32.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.SortOrder), out value))
                     return 0;
 
                 return value;
             }
             set
             {
-                this.Node.ItemNode.SetMetadata(SandcastleBuilderProjectElement.SortOrder,
+                this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.SortOrder,
                     value.ToString(CultureInfo.InvariantCulture));
             }
         }

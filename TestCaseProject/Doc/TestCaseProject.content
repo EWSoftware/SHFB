@@ -208,10 +208,6 @@
     </Topic>
   </Topic>
   <Topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" visible="True" title="Common Inline Elements">
-    <HelpAttributes>
-      <HelpAttribute name="NoName" value="Common Inline Elements" />
-      <HelpAttribute name="NoName" value="Inline Elements" />
-    </HelpAttributes>
     <HelpKeywords>
       <HelpKeyword index="K" term="Common Inline Elements" />
     </HelpKeywords>

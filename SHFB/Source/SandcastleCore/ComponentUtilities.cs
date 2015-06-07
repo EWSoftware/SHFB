@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2015
+// Updated : 05/27/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -10,24 +10,23 @@
 // plug-ins, syntax generators, and presentation styles.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.2  11/01/2007  EFW  Created the code
-// 1.8.0.0  10/06/2008  EFW  Changed the default location of custom components
-// 1.8.0.3  07/04/2009  EFW  Merged build component and plug-in folder
-// 1.8.0.3  11/10/2009  EFW  Added support for custom syntax filter components
-// 1.8.0.4  03/07/2010  EFW  Added support for SHFBCOMPONENTROOT
-// -------  12/17/2013  EFW  Removed the SandcastlePath property and all references to it.  Updated to use MEF
-//                           to load plug-ins.
-//          12/20/2013  EFW  Updated to use MEF to load the syntax filters and removed support for
-//                           SHFBCOMPONENTROOT.
-//          12/26/2013  EFW  Updated to use MEF to load BuildAssembler build components
-//          01/02/2014  EFW  Moved the component manager class to Sandcastle.Core
-//          08/05/2014  EFW  Added support for getting a list of syntax generator resource item files
+// 11/01/2007  EFW  Created the code
+// 10/06/2008  EFW  Changed the default location of custom components
+// 07/04/2009  EFW  Merged build component and plug-in folder
+// 11/10/2009  EFW  Added support for custom syntax filter components
+// 03/07/2010  EFW  Added support for SHFBCOMPONENTROOT
+// 12/17/2013  EFW  Removed the SandcastlePath property and all references to it.  Updated to use MEF to load
+//                  plug-ins.
+// 12/20/2013  EFW  Updated to use MEF to load the syntax filters and removed support for SHFBCOMPONENTROOT
+// 12/26/2013  EFW  Updated to use MEF to load BuildAssembler build components
+// 01/02/2014  EFW  Moved the component manager class to Sandcastle.Core
+// 08/05/2014  EFW  Added support for getting a list of syntax generator resource item files
 //===============================================================================================================
 
 using System;
@@ -39,6 +38,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
@@ -518,6 +519,65 @@ namespace Sandcastle.Core
                     if(path != null)
                         yield return path;
                 }
+            }
+        }
+        #endregion
+
+        #region XML stream axis methods
+        //=====================================================================
+
+        /// <summary>
+        /// This provides a fast and efficient way of querying large XML files for a specific element type
+        /// </summary>
+        /// <param name="xmlFile">The XML file to search</param>
+        /// <param name="elementName">The element name for which to search</param>
+        /// <returns>An enumerable list of <see cref="XElement"/> instances for each of the found nodes</returns>
+        /// <remarks>This version only looks for a single element type which cannot contain nested instances of
+        /// the given element.</remarks>
+        /// <overloads>
+        /// <summary>There are two overloads for this method</summary>
+        /// <remarks>Using these methods to search for specific elements avoids having to load the entire file
+        /// which can be quite costly in terms of memory when it is extremely large.  It is typically faster as
+        /// well since it doesn't have to load and parse the whole file before starting the search.</remarks>
+        /// </overloads>
+        public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
+        {
+            using(XmlReader reader = XmlReader.Create(xmlFile))
+            {
+                while(reader.ReadToFollowing(elementName))
+                    yield return (XElement)XElement.ReadFrom(reader);
+            }
+        }
+
+        /// <summary>
+        /// This provides a fast and efficient way of querying large XML files for specific element types which
+        /// themselves may contain instances of the given elements.
+        /// </summary>
+        /// <param name="xmlFile">The XML file to search</param>
+        /// <param name="elementNames">An enumerable list of element names for which to search</param>
+        /// <returns>An enumerable list of <see cref="XElement"/> instances for each of the found nodes including
+        /// any nested instances of elements with those names.</returns>
+        /// <remarks>If the element contains nested instances of the elements, the parent is returned first
+        /// followed by the nested elements (one level deep only).</remarks>
+        public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, IEnumerable<string> elementNames)
+        {
+            HashSet<string> elements = new HashSet<string>(elementNames);
+
+            using(XmlReader reader = XmlReader.Create(xmlFile))
+            {
+                reader.MoveToContent();
+
+                while(reader.Read())
+                    if(reader.NodeType == XmlNodeType.Element && elementNames.Contains(reader.Name))
+                    {
+                        var root = (XElement)XElement.ReadFrom(reader);
+
+                        yield return root;
+
+                        // We'll only look one level deep and no further
+                        foreach(var d in root.Descendants().Where(d => elements.Contains(d.Name.ToString())))
+                            yield return d;
+                    }
             }
         }
         #endregion

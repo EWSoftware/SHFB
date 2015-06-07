@@ -2,22 +2,22 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 05/15/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an API entry that is to be removed from the reflection information
 // using MRefBuilder's namespace ripping feature.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.0.2  07/16/2007  EFW  Created the code
-// 1.8.0.0  07/08/2008  EFW  Rewrote to support MSBuild project format
+// 07/16/2007  EFW  Created the code
+// 07/08/2008  EFW  Rewrote to support MSBuild project format
 //===============================================================================================================
 
 using System;
@@ -32,7 +32,7 @@ namespace SandcastleBuilder.Utils
     /// This represents an API entry that is to be removed from the reflection information using MRefBuilder's
     /// namespace ripping feature.
     /// </summary>
-    public class ApiFilter : IComparable<ApiFilter>, ICloneable
+    public class ApiFilter : IComparable<ApiFilter>
     {
         #region Private data members
         //=====================================================================
@@ -148,27 +148,6 @@ namespace SandcastleBuilder.Utils
         }
         #endregion
 
-        #region ICloneable Members
-        //=====================================================================
-
-        /// <summary>
-        /// Clone the API filter
-        /// </summary>
-        /// <returns>A clone of the filter</returns>
-        public object Clone()
-        {
-            ApiFilter clone = new ApiFilter(entryType, fullName, isExposed);
-
-            clone.FilterName = filterName;
-            clone.IsProjectExclude = isProjectExclude;
-
-            foreach(ApiFilter child in children)
-                clone.Children.Add((ApiFilter)child.Clone());
-
-            return clone;
-        }
-        #endregion
-
         #region Constructors
         //=====================================================================
 
@@ -178,13 +157,12 @@ namespace SandcastleBuilder.Utils
         /// <overloads>There are two overloads for the constructor</overloads>
         internal ApiFilter()
         {
-            // Child collections do not contain a project reference
-            children = new ApiFilterCollection(null);
+            children = new ApiFilterCollection();
             isExposed = true;
         }
 
         /// <summary>
-        /// Constructor.  This takes the API type and the full name
+        /// Constructor.  This takes the API type and the full name.
         /// </summary>
         /// <param name="apiType">The API entry type</param>
         /// <param name="name">The fully qualified name</param>
@@ -267,12 +245,11 @@ namespace SandcastleBuilder.Utils
 
         #region Read/write as XML methods
         //=====================================================================
-        // These are used to read and write the settings to the project file
 
         /// <summary>
-        /// This is used to load the content item information from the project file.
+        /// This is used to load the API filter information from the project file
         /// </summary>
-        /// <param name="xr">The XML text reader from which the information is loaded.</param>
+        /// <param name="xr">The XML text reader from which the information is loaded</param>
         internal void FromXml(XmlTextReader xr)
         {
             ApiFilter filter;
@@ -308,9 +285,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to save the content item information to the project file.
+        /// This is used to save the content item information to the project file
         /// </summary>
-        /// <param name="xw">The XML text writer to which the information is written.</param>
+        /// <param name="xw">The XML text writer to which the information is written</param>
         internal void ToXml(XmlTextWriter xw)
         {
             xw.WriteStartElement("Filter");
@@ -328,7 +305,6 @@ namespace SandcastleBuilder.Utils
 
             xw.WriteEndElement();
         }
-
         #endregion
 
         #region Static helper methods
