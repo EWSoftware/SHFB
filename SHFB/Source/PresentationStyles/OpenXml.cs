@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 06/19/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the presentation style definition for the Open XML presentation style.
@@ -78,6 +78,9 @@ namespace OpenXML
                 null, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " +
                 "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " +
                 "assembly file version value if specified."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("includeEnumValues", false, true,
+                "true", "Set this to 'true' to include the column for the numeric value of each field in " +
+                "enumerated type topics.  Set it to 'false' to omit the numeric values column."));
         }
     }
 }

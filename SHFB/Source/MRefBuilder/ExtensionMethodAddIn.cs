@@ -10,6 +10,8 @@
 // caused by certain compiler generated types.
 // 07/25/2012 - EFW - Fixed RecordExtensionMethods() to prevent a crash in an odd case
 // 11/25/2013 - EFW - Cleaned up the code and removed unused members
+// 06/16/2015 - EFW - Fixed the extension method parameter comparisons so that it doesn't add extension methods
+// to types with matching method signatures.
 
 using System;
 using System.Collections.Generic;
@@ -379,9 +381,9 @@ namespace Microsoft.Ddue.Tools
                 if(!method.TemplateParametersMatch(extensionMethod.TemplateParameters))
                     continue;
 
-                // Do both methods have the same number of parameters (not counting the extension method's first
-                // parameter which identifies the extended type)?
-                if(method.Parameters.Count != extensionMethod.Parameters.Count - 1)
+                // !EFW - Don't exclude the first parameter, it does need to be included.
+                // Do both methods have the same number of parameters?
+                if(method.Parameters.Count != extensionMethod.Parameters.Count)
                     continue;
 
                 // Do the parameter types of both methods match?
@@ -399,8 +401,9 @@ namespace Microsoft.Ddue.Tools
         /// <returns>True if they match, false if not</returns>
         private static bool DoParameterTypesMatch(ParameterList extensionParams, ParameterList methodParams)
         {
+            // !EFW - Don't ignore the first extension method parameter, it does need to be included.
             for(int i = 0; i < methodParams.Count; i++)
-                if(methodParams[i].Type.FullName != extensionParams[i + 1].Type.FullName)
+                if(methodParams[i].Type.FullName != extensionParams[i].Type.FullName)
                     return false;
 
             return true;

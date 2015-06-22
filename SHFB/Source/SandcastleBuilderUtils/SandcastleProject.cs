@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
+// Updated : 06/19/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1420,6 +1420,15 @@ namespace SandcastleBuilder.Utils
         public bool DocumentNoPIATypes
         {
             get { return ((this.VisibleItems & VisibleItems.NoPIATypes) != 0); }
+        }
+
+        /// <summary>
+        /// This read-only property is used to get whether or not public compiler generated types and members are
+        /// documented in the help file.
+        /// </summary>
+        public bool DocumentPublicCompilerGenerated
+        {
+            get { return ((this.VisibleItems & VisibleItems.PublicCompilerGenerated) != 0); }
         }
 
         /// <summary>

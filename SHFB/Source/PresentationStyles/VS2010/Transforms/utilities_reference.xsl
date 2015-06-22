@@ -17,8 +17,8 @@
 	============================================================================================= -->
 
 	<xsl:param name="key"/>
-	<xsl:param name="componentizeBy">namespace</xsl:param>
 	<xsl:param name="maxVersionParts" />
+	<xsl:param name="includeEnumValues" select="string('true')" />
 
 	<!-- ============================================================================================
 	Global Variables
@@ -655,45 +655,29 @@
 		<meta name="container">
 			<xsl:attribute name="content">
 				<xsl:choose>
-					<xsl:when test="$componentizeBy='assembly'">
-						<xsl:choose>
-							<xsl:when test="normalize-space(/document/reference/containers/library/@assembly)">
-								<xsl:value-of select="normalize-space(/document/reference/containers/library/@assembly)"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>Namespaces</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
+					<!-- get the namespace name from containers/namespace/@api for most members -->
+					<xsl:when test="normalize-space(substring-after(/document/reference/containers/namespace/@api,':'))">
+						<xsl:value-of select="normalize-space(substring-after(/document/reference/containers/namespace/@api,':'))"/>
 					</xsl:when>
-					<!-- the default is to componentize by namespace. For non-componentized builds, the <meta name="container"> value is ignored. -->
+					<!-- use 'default_namespace' for members in the default namespace (where namespace/@api == 'N:') -->
+					<xsl:when test="normalize-space(/document/reference/containers/namespace/@api)">
+						<xsl:text>default_namespace</xsl:text>
+					</xsl:when>
+					<!-- for the default namespace topic, use 'default_namespace' -->
+					<xsl:when test="/document/reference/apidata[@group='namespace' and @name='']">
+						<xsl:text>default_namespace</xsl:text>
+					</xsl:when>
+					<!-- for other namespace topics, get the name from apidata/@name -->
+					<xsl:when test="/document/reference/apidata/@group='namespace'">
+						<xsl:value-of select="normalize-space(/document/reference/apidata/@name)"/>
+					</xsl:when>
 					<xsl:otherwise>
-						<xsl:choose>
-							<!-- get the namespace name from containers/namespace/@api for most members -->
-							<xsl:when test="normalize-space(substring-after(/document/reference/containers/namespace/@api,':'))">
-								<xsl:value-of select="normalize-space(substring-after(/document/reference/containers/namespace/@api,':'))"/>
-							</xsl:when>
-							<!-- use 'default_namespace' for members in the default namespace (where namespace/@api == 'N:') -->
-							<xsl:when test="normalize-space(/document/reference/containers/namespace/@api)">
-								<xsl:text>default_namespace</xsl:text>
-							</xsl:when>
-							<!-- for the default namespace topic, use 'default_namespace' -->
-							<xsl:when test="/document/reference/apidata[@group='namespace' and @name='']">
-								<xsl:text>default_namespace</xsl:text>
-							</xsl:when>
-							<!-- for other namespace topics, get the name from apidata/@name -->
-							<xsl:when test="/document/reference/apidata/@group='namespace'">
-								<xsl:value-of select="normalize-space(/document/reference/apidata/@name)"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>unknown</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:text>unknown</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
 		</meta>
-		<meta name="file"
-					content="{/document/reference/file/@name}"/>
+		<meta name="file" content="{/document/reference/file/@name}"/>
 		<meta name="guid">
 			<xsl:attribute name="content">
 				<xsl:value-of select="/document/reference/file/@name"/>
@@ -812,9 +796,11 @@
 								<th>
 									<include item="header_memberName"/>
 								</th>
-								<th>
-									<include item="header_memberValue"/>
-								</th>
+								<xsl:if test="$includeEnumValues='true'">
+									<th>
+										<include item="header_memberValue"/>
+									</th>
+								</xsl:if>
 								<th>
 									<include item="header_memberDescription"/>
 								</th>
@@ -1139,38 +1125,29 @@
 				<!-- Platform icons -->
 				<xsl:if test="normalize-space($v_supportedOnCf)!=''">
 					<img data="netcfw">
-						<includeAttribute name="src"
-															item="iconPath">
+						<includeAttribute name="src" item="iconPath">
 							<parameter>CFW.gif</parameter>
 						</includeAttribute>
-						<includeAttribute name="alt"
-															item="altText_CompactFramework"/>
-						<includeAttribute name="title"
-															item="altText_CompactFramework"/>
+						<includeAttribute name="alt" item="altText_CompactFramework"/>
+						<includeAttribute name="title" item="altText_CompactFramework"/>
 					</img>
 				</xsl:if>
 				<xsl:if test="normalize-space($v_supportedOnXna)!=''">
 					<img data="xnafw">
-						<includeAttribute name="src"
-															item="iconPath">
+						<includeAttribute name="src" item="iconPath">
 							<parameter>xna.gif</parameter>
 						</includeAttribute>
-						<includeAttribute name="alt"
-															item="altText_XNAFramework"/>
-						<includeAttribute name="title"
-															item="altText_XNAFramework"/>
+						<includeAttribute name="alt" item="altText_XNAFramework"/>
+						<includeAttribute name="title" item="altText_XNAFramework"/>
 					</img>
 				</xsl:if>
 				<xsl:if test="normalize-space($v_supportedOnSilverlightMobile)!=''">
 					<img data="silverlight_mobile">
-						<includeAttribute name="src"
-															item="iconPath">
+						<includeAttribute name="src" item="iconPath">
 							<parameter>slMobile.gif</parameter>
 						</includeAttribute>
-						<includeAttribute name="alt"
-															item="altText_SilverlightMobile"/>
-						<includeAttribute name="title"
-															item="altText_SilverlightMobile"/>
+						<includeAttribute name="alt" item="altText_SilverlightMobile"/>
+						<includeAttribute name="title" item="altText_SilverlightMobile"/>
 					</img>
 				</xsl:if>
 			</td>
@@ -1180,9 +1157,11 @@
 					<xsl:value-of select="apidata/@name"/>
 				</span>
 			</td>
-			<td>
-				<xsl:value-of select="value"/>
-			</td>
+			<xsl:if test="$includeEnumValues='true'">
+				<td>
+					<xsl:value-of select="value"/>
+				</td>
+			</xsl:if>
 			<td>
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>

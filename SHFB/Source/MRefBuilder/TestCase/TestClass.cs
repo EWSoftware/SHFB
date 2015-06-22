@@ -13,7 +13,8 @@
 //===============================================================================================================
 
 // For debugging:
-// /out:reflection.org C:\CP\TFS01\SHFB\SHFB\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
+// Command line arguments: /out:reflection.org C:\GH\SHFB\SHFB\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
+// Working directory: C:\GH\SHFB\SHFB\Deploy\
 
 using System.Runtime.CompilerServices;
 

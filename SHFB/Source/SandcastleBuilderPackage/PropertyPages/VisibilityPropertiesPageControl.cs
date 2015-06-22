@@ -2,22 +2,23 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/03/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 06/19/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Visibility category properties
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
-// 1.9.9.0  12/03/2013  EFW  Added support for no-PIA types
+// 03/27/2011  EFW  Created the code
+// 10/28/2012  EFW  Updated for use in the standalone GUI
+// 12/03/2013  EFW  Added support for no-PIA types
+// 06/19/2015  EFW  Added support for public compiler generated types/members
 //===============================================================================================================
 
 using System;
@@ -81,6 +82,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             chkProtectedInternalAsProtected.CheckedChanged += base.OnPropertyChanged;
             chkSealedProtected.CheckedChanged += base.OnPropertyChanged;
             chkNoPIATypes.CheckedChanged += base.OnPropertyChanged;
+            chkPublicCompilerGenerated.CheckedChanged += base.OnPropertyChanged;
         }
         #endregion
 
@@ -161,6 +163,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             chkProtectedInternalAsProtected.Checked = ((items & VisibleItems.ProtectedInternalAsProtected) != 0);
             chkSealedProtected.Checked = ((items & VisibleItems.SealedProtected) != 0);
             chkNoPIATypes.Checked = ((items & VisibleItems.NoPIATypes) != 0);
+            chkPublicCompilerGenerated.Checked = ((items & VisibleItems.PublicCompilerGenerated) != 0);
 
             return true;
         }
@@ -239,6 +242,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             if(chkNoPIATypes.Checked)
                 items |= VisibleItems.NoPIATypes;
+
+            if(chkPublicCompilerGenerated.Checked)
+                items |= VisibleItems.PublicCompilerGenerated;
 
 #if !STANDALONEGUI
             this.ProjectMgr.SetProjectProperty("VisibleItems", items.ToString());

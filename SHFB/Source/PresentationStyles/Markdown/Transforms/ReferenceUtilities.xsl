@@ -12,8 +12,8 @@
 	============================================================================================= -->
 
 	<xsl:param name="key"/>
-	<xsl:param name="componentizeBy">namespace</xsl:param>
 	<xsl:param name="maxVersionParts" />
+	<xsl:param name="includeEnumValues" select="string('true')" />
 
 	<!-- ============================================================================================
 	Global Variables
@@ -681,9 +681,11 @@
 							<th>
 								<include item="header_memberName"/>
 							</th>
-							<th>
-								<include item="header_memberValue"/>
-							</th>
+							<xsl:if test="$includeEnumValues='true'">
+								<th>
+									<include item="header_memberValue"/>
+								</th>
+							</xsl:if>
 							<th>
 								<include item="header_memberDescription"/>
 							</th>
@@ -1049,9 +1051,11 @@
 				<xsl:value-of select="apidata/@name"/>
 				<xsl:text>**</xsl:text>
 			</td>
-			<td>
-				<xsl:value-of select="value"/>
-			</td>
+			<xsl:if test="$includeEnumValues='true'">
+				<td>
+					<xsl:value-of select="value"/>
+				</td>
+			</xsl:if>
 			<td>
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>

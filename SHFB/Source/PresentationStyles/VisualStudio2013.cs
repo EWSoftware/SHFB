@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 06/19/2015
 // Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -109,6 +109,9 @@ namespace Sandcastle.PresentationStyles
                 "cs", "The default language to use for syntax sections, code snippets, and a language-specific " +
                 "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " +
                 "third-party syntax generator if you want to use a non-standard language as the default."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("includeEnumValues", false, true,
+                "true", "Set this to 'true' to include the column for the numeric value of each field in " +
+                "enumerated type topics.  Set it to 'false' to omit the numeric values column."));
 
             // Add the plug-in dependencies
             this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));

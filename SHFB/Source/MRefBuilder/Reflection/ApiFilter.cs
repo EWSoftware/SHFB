@@ -19,6 +19,7 @@
 // 01/09/2013 - EFW - Added a workaround to allow documenting the compiler generated public types in WINMD
 // assemblies that actually represent user code.
 // 12/10/2014 - EFW - Added prefix exclusion for "put_" used on Windows Store/Phone assembly properties
+// 06/19/2015 - EFW - Added support for including public compiler generated types/members
 
 using System;
 using System.Collections.Generic;
@@ -283,6 +284,24 @@ namespace Microsoft.Ddue.Tools.Reflection
                     visibleItems &= ~VisibleItems.NoPIATypes;
             }
         }
+
+        /// <summary>
+        /// This is used to get or set whether or not public compiler generated types/members are included in the
+        /// output.
+        /// </summary>
+        /// <value>Set to true to include public compiler generated types/members or false to hide them.
+        /// Protected, internal, and private compiler generated types/members are always excluded.</value>
+        public bool IncludePublicCompilerGenerated
+        {
+            get { return ((visibleItems & VisibleItems.PublicCompilerGenerated) != 0); }
+            set
+            {
+                if(value)
+                    visibleItems |= VisibleItems.PublicCompilerGenerated;
+                else
+                    visibleItems &= ~VisibleItems.PublicCompilerGenerated;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -314,6 +333,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             this.IncludeSealedProtected = (bool)configuration.Evaluate("boolean(visibility/sealedProtected[@expose='true'])");
             this.IncludeProtectedInternalAsProtected = (bool)configuration.Evaluate("boolean(visibility/protectedInternalAsProtected[@expose='true'])");
             this.IncludeNoPIATypes = (bool)configuration.Evaluate("boolean(visibility/noPIATypes[@expose='true'])");
+            this.IncludePublicCompilerGenerated = (bool)configuration.Evaluate("boolean(visibility/publicCompilerGenerated[@expose='true'])");
 
             // API filter
             XPathNavigator apiFilterNode = configuration.SelectSingleNode("apiFilter");
@@ -450,19 +470,21 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 // !EFW - Bug fix.  Compiler generated types can be public (i.e. member using the fixed keyword).
                 // Don't include compiler-generated types.  Check this and all parents for a compiler generated
-                // attribute.  No-PIA types are kept if wanted though.
+                // attribute.  No-PIA types are kept if wanted though as are public compiler generated types
+                // if explicitly indicated via the visibility settings.
                 TypeNode curType = type;
 
                 while(curType != null)
                 {
                     if(curType.Attributes.Any(
                       attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
-                      (!this.IncludeNoPIATypes || !IsEmbeddedInteropType(curType)))
+                      (!this.IncludeNoPIATypes || !IsEmbeddedInteropType(curType)) &&
+                      (!this.IncludePublicCompilerGenerated || !type.IsPublic))
                     {
                         // !EFW - Hack for WINDMD assemblies.  For these, the compiler hides the original class
                         // as an internal class prefixed with "<CLR>" and generates a type with the public
-                        // members and tagged with a CompilerGenerated attribute.  So, is compiler generated but
-                        // has a match "<CLR>" prefixed type, let it through.
+                        // members and tagged with a CompilerGenerated attribute.  So, if compiler generated but
+                        // has a matching "<CLR>" prefixed type, let it through.
                         if(curType.DeclaringModule != null && !curType.DeclaringModule.Types.Any(
                           t => t.Name.Name == "<CLR>" + curType.Name.Name))
                             return false;
@@ -564,8 +586,9 @@ namespace Microsoft.Ddue.Tools.Reflection
               member.Name.Name == "value__")
                 return false;
 
-            // Members marked as compiler-generated are not exposed
-            if(member.Attributes.Any(attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute"))
+            // Members marked as compiler-generated are not exposed unless public and wanted
+            if(member.Attributes.Any(attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
+             (!this.IncludePublicCompilerGenerated || !member.IsPublic))
                 return false;
 
             // If not visible based on the visibility settings, ignore it
