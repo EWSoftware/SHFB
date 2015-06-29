@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
+// Updated : 06/26/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -430,7 +430,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public SubstitutionTagReplacement SubstitutionTags
         {
-            get { return substitutionTags; }
+            get
+            {
+                // The tag handler is created in the build process.  However, some code uses it for simple
+                // transformations that don't rely on items created during the build.  In those cases, return
+                // an instance that will work for simple substitutions such as project property values.
+                if(substitutionTags == null)
+                    substitutionTags = new SubstitutionTagReplacement(this);
+
+                return substitutionTags;
+            }
         }
 
         /// <summary>

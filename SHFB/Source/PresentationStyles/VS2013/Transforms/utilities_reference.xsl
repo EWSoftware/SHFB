@@ -813,71 +813,61 @@
 		<!-- Constructor table -->
 		<xsl:call-template name="t_putMemberListSection">
 			<xsl:with-param name="p_headerGroup">constructor</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="$filteredOverloadElements[apidata[@subgroup='constructor']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
-		</xsl:call-template>
-
-		<!-- Method table -->
-		<xsl:call-template name="t_putMemberListSection">
-			<xsl:with-param name="p_headerGroup">method</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="$filteredOverloadElements[apidata[@subgroup='method' and not(@subsubgroup)]][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
-		</xsl:call-template>
-
-		<!-- Operator table -->
-		<xsl:call-template name="t_putMemberListSection">
-			<xsl:with-param name="p_headerGroup">operator</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="$filteredOverloadElements[apidata[@subsubgroup='operator']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
-		</xsl:call-template>
-
-		<!-- Extension method table -->
-		<xsl:call-template name="t_putMemberListSection">
-			<xsl:with-param name="p_headerGroup">extensionMethod</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="$filteredOverloadElements[apidata[@subsubgroup='extension']]"/>
-		</xsl:call-template>
-
-		<!-- Field table -->
-		<xsl:call-template name="t_putMemberListSection">
-			<xsl:with-param name="p_headerGroup">field</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="element[apidata[@subgroup='field']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
+			<xsl:with-param name="p_members" select="$filteredOverloadElements[apidata[@subgroup='constructor']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
 		</xsl:call-template>
 
 		<!-- Property table -->
 		<xsl:call-template name="t_putMemberListSection">
 			<xsl:with-param name="p_headerGroup">property</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="$filteredOverloadElements[apidata[@subgroup='property' and not(@subsubgroup)]][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
+			<xsl:with-param name="p_members" select="$filteredOverloadElements[apidata[@subgroup='property' and not(@subsubgroup)]][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
 		</xsl:call-template>
 
-		<!-- Attached property table -->
+		<!-- Method table -->
 		<xsl:call-template name="t_putMemberListSection">
-			<xsl:with-param name="p_headerGroup">attachedProperty</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="element[apidata[@subsubgroup='attachedProperty']]"/>
+			<xsl:with-param name="p_headerGroup">method</xsl:with-param>
+			<xsl:with-param name="p_members" select="$filteredOverloadElements[apidata[@subgroup='method' and not(@subsubgroup)]][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
 		</xsl:call-template>
 
 		<!-- Event table -->
 		<xsl:call-template name="t_putMemberListSection">
 			<xsl:with-param name="p_headerGroup">event</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="element[apidata[@subgroup='event' and not(@subsubgroup)]][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
+			<xsl:with-param name="p_members" select="element[apidata[@subgroup='event' and not(@subsubgroup)]][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
+		</xsl:call-template>
+
+		<!-- Operator table -->
+		<xsl:call-template name="t_putMemberListSection">
+			<xsl:with-param name="p_headerGroup">operator</xsl:with-param>
+			<xsl:with-param name="p_members" select="$filteredOverloadElements[apidata[@subsubgroup='operator']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
+		</xsl:call-template>
+
+		<!-- Field table -->
+		<xsl:call-template name="t_putMemberListSection">
+			<xsl:with-param name="p_headerGroup">field</xsl:with-param>
+			<xsl:with-param name="p_members" select="element[apidata[@subgroup='field']][.//memberdata[@visibility='public' or @visibility='family' or @visibility='family or assembly' or @visibility='assembly'] or (.//memberdata[@visibility='private'] and not(.//proceduredata[@virtual = 'true']))]"/>
+		</xsl:call-template>
+
+		<!-- Attached property table -->
+		<xsl:call-template name="t_putMemberListSection">
+			<xsl:with-param name="p_headerGroup">attachedProperty</xsl:with-param>
+			<xsl:with-param name="p_members" select="element[apidata[@subsubgroup='attachedProperty']]"/>
 		</xsl:call-template>
 
 		<!-- Attached event table -->
 		<xsl:call-template name="t_putMemberListSection">
 			<xsl:with-param name="p_headerGroup">attachedEvent</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="element[apidata[@subsubgroup='attachedEvent']]"/>
+			<xsl:with-param name="p_members" select="element[apidata[@subsubgroup='attachedEvent']]"/>
+		</xsl:call-template>
+
+		<!-- Extension method table -->
+		<xsl:call-template name="t_putMemberListSection">
+			<xsl:with-param name="p_headerGroup">extensionMethod</xsl:with-param>
+			<xsl:with-param name="p_members" select="$filteredOverloadElements[apidata[@subsubgroup='extension']]"/>
 		</xsl:call-template>
 
 		<!-- EII table -->
 		<xsl:call-template name="t_putMemberListSection">
 			<xsl:with-param name="p_headerGroup">explicitInterfaceImplementation</xsl:with-param>
-			<xsl:with-param name="p_members"
-											select="$filteredOverloadElements[.//memberdata[@visibility='private'] and .//proceduredata[@virtual = 'true']]"/>
+			<xsl:with-param name="p_members" select="$filteredOverloadElements[.//memberdata[@visibility='private'] and .//proceduredata[@virtual = 'true']]"/>
 		</xsl:call-template>
 
 	</xsl:template>

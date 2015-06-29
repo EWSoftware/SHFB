@@ -460,7 +460,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             // !EFW - Added a check for exposed members in unexposed types.  This effectively exposes the type
             // and it should be included whenever this check occurs for it.
-            if(!typeExposedCache.TryGetValue(type.FullName, out exposed))
+            if(!typeExposedCache.TryGetValue(type.DeclaringModule.Name + "/" + type.FullName, out exposed))
             {
                 exposed = apiFilter.IsExposedType(type);
 
@@ -500,8 +500,10 @@ namespace Microsoft.Ddue.Tools.Reflection
                 if(!this.IncludeNoPIATypes && IsEmbeddedInteropType(type))
                     exposed = false;
 
-                // Cache the result 
-                typeExposedCache.Add(type.FullName, exposed);
+                // Cache the result.  Use the declaring module and full type name as the key so that an internal
+                // type in one assembly doesn't hide a public type of the same name in another assembly if the
+                // internal one is seen first.
+                typeExposedCache.Add(type.DeclaringModule.Name + "/" + type.FullName, exposed);
             }
 
             return exposed;

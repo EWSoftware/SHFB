@@ -153,6 +153,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
                         Console.WriteLine("Catalog name not specified, the default catalog name '{0}' will " +
                             "be used.", catalogName);
+
+                        execArgs.Add("/catalogName");
+                        execArgs.Add(catalogName);
                     }
                 }
 

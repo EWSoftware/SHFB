@@ -145,8 +145,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 
-			<!-- Insert the Fields topic, if present -->
-			<xsl:for-each select="key('index', concat('Fields.', $typeId))">
+			<!-- Insert the Properties topic, if present -->
+			<xsl:for-each select="key('index', concat('Properties.', $typeId))">
 				<xsl:call-template name="AddMemberListTree"/>
 			</xsl:for-each>
 
@@ -155,18 +155,18 @@
 				<xsl:call-template name="AddMemberListTree"/>
 			</xsl:for-each>
 
+			<!-- Insert the Events topic, if present -->
+			<xsl:for-each select="key('index', concat('Events.', $typeId))">
+				<xsl:call-template name="AddMemberListTree"/>
+			</xsl:for-each>
+
 			<!-- Insert the Operators topic, if present -->
 			<xsl:for-each select="key('index', concat('Operators.', $typeId))">
 				<xsl:call-template name="AddMemberListTree"/>
 			</xsl:for-each>
 
-			<!-- Insert the Properties topic, if present -->
-			<xsl:for-each select="key('index', concat('Properties.', $typeId))">
-				<xsl:call-template name="AddMemberListTree"/>
-			</xsl:for-each>
-
-			<!-- Insert the Events topic, if present -->
-			<xsl:for-each select="key('index', concat('Events.', $typeId))">
+			<!-- Insert the Fields topic, if present -->
+			<xsl:for-each select="key('index', concat('Fields.', $typeId))">
 				<xsl:call-template name="AddMemberListTree"/>
 			</xsl:for-each>
 

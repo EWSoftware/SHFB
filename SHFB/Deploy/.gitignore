@@ -1,10 +1,17 @@
-# Ignore everything in this directory
-*
-# Except these folders and files
-!.gitignore
-!Deploy/Schemas/
-!Deploy/Snippets/
-!Deploy/Data/*.bat
-!Deploy/Data/*.config
-!Deploy/Data/*.proj
-!Deploy/Data/*.xsl
+# Ignore these files and folders in this directory
+/*.config
+/*.dll
+/*.exe*
+/*.pdb
+/*.targets
+/*.xml
+/Data/**/*.xml
+ConceptualTemplates/*
+Extras/*
+Help/*
+ItemTemplates/*
+PresentationStyles/*
+ProductionTransforms/*
+Spelling/*
+SyntaxContent*/
+Templates/*

@@ -1,0 +1,140 @@
+﻿<Window x:Class="ReflectionDataManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:local="clr-namespace:ReflectionDataManager"
+        Title="Reflection Data Manager" Width="800" Height="600" MinWidth="600" MinHeight="450"
+				Icon="pack://application:,,,/Resources/ReflectionData.ico" Closing="Window_Closing">
+	<Window.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.New" Executed="cmdNew_Executed" />
+		<CommandBinding Command="ApplicationCommands.Open" Executed="cmdOpen_Executed" />
+		<CommandBinding Command="ApplicationCommands.Save" Executed="cmdSave_Executed" />
+		<CommandBinding Command="ApplicationCommands.SaveAs" Executed="cmdSaveAs_Executed" />
+		<CommandBinding Command="local:ReflectionDataCommands.Build" Executed="cmdBuild_Executed" />
+		<CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />
+		<CommandBinding Command="ApplicationCommands.Close" Executed="cmdClose_Executed" />
+	</Window.CommandBindings>
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolToVisibilityKey" />
+		<local:VersionConverter x:Key="VersionConverterKey" />
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0">
+			<MenuItem Header="_File">
+				<MenuItem Command="ApplicationCommands.New" />
+				<MenuItem Command="ApplicationCommands.Open" />
+				<Separator />
+				<MenuItem Command="ApplicationCommands.Save" />
+				<MenuItem Command="ApplicationCommands.SaveAs" />
+				<Separator />
+				<MenuItem Command="local:ReflectionDataCommands.Build" />
+				<Separator />
+				<MenuItem Header="_About Reflection Data Manager" Command="ApplicationCommands.Help" />
+				<Separator />
+				<MenuItem Header="E_xit" Command="ApplicationCommands.Close" />
+			</MenuItem>
+		</Menu>
+		<DockPanel Grid.Row="1" Name="grdMain" LastChildFill="True">
+			<Border DockPanel.Dock="Top" BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5,2" Padding="10">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Label Grid.Column="0" Grid.Row="0" Margin="3" Content="_Platform ID" HorizontalAlignment="Right"
+						Target="{Binding ElementName=cboPlatform}" />
+					<ComboBox Grid.Column="1" Grid.Row="0" Margin="3" Width="150"
+						HorizontalAlignment="Left" Name="cboPlatform" SelectionChanged="cboPlatform_SelectionChanged"
+						SelectedValue="{Binding Path=Platform}" />
+					<Label Grid.Column="2" Grid.Row="0" Margin="3" Content="_Version ID" HorizontalAlignment="Right"
+						Target="{Binding ElementName=txtVersion}" />
+					<TextBox Grid.Column="3" Grid.Row="0" Margin="3" Width="150" HorizontalAlignment="Left"
+						Name="txtVersion" Text="{Binding Path=Version, Converter={StaticResource VersionConverterKey}}" />
+					<Label Grid.Column="0" Grid.Row="1" Margin="3" Content="_Title" HorizontalAlignment="Right"
+						Target="{Binding ElementName=txtTitle}" />
+					<TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Margin="3" Name="txtTitle"
+						Text="{Binding Path=Title}" />
+					<Label Grid.Column="0" Grid.Row="2" Margin="3" Content="_Notes" HorizontalAlignment="Right"
+						Target="{Binding ElementName=txtNotes}" />
+					<TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Margin="3" Name="txtNotes"
+						VerticalScrollBarVisibility="Visible" AcceptsReturn="True" TextWrapping="Wrap" Height="50"
+						Text="{Binding Path=Notes}" />
+					<Label Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Margin="3,0"
+						Content="Contains core framework assemblies"
+						Visibility="{Binding Path=IsCoreFramework, Converter={StaticResource BoolToVisibilityKey}}"/>
+					<Label Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Margin="3,0"
+						Content="All System types in mscorlib are redirected to other assemblies"
+						Visibility="{Binding Path=AllSystemTypesRedirected, Converter={StaticResource BoolToVisibilityKey}}"/>
+				</Grid>
+			</Border>
+			<Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5,2" Padding="10" Name="bdAssemblyLocation">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Label Grid.Column="0" Grid.Row="0" Margin="3" Content="Assem_bly Location"
+						HorizontalAlignment="Right" />
+					<Grid Grid.Column="1" Grid.Row="0" Margin="3">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<Grid.CommandBindings>
+							<CommandBinding Command="ApplicationCommands.Replace" Executed="cmdReplace_Executed" CanExecute="Command_CanExecute" />
+							<CommandBinding Command="NavigationCommands.Refresh" Executed="cmdRefresh_Executed" CanExecute="Command_CanExecute" />
+						</Grid.CommandBindings>
+						<TextBox Grid.Column="0" Margin="3" Name="txtAssemblyPath" HorizontalAlignment="Stretch"
+							Text="{Binding Path=StoredPath, UpdateSourceTrigger=LostFocus}"/>
+						<Button Grid.Column="1" Name="btnSelectFolder" Margin="3" Content="..." Width="23"
+              ToolTip="Select the assembly location" Command="ApplicationCommands.Replace" />
+						<Button Grid.Column="2" Name="btnRefresh" Margin="3" Content="Refres_h" Width="60"
+              ToolTip="Refresh the list of assemblies" Command="NavigationCommands.Refresh" />
+					</Grid>
+					<ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="3" Name="lbAssemblyDetails"
+						ItemsSource="{Binding Path=AllAssemblies}">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<CheckBox IsChecked="{Binding Path=IsIncluded}">
+									<TextBlock Text="{Binding Path=Description}" />
+								</CheckBox>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+					<StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"  Margin="3" Orientation="Horizontal">
+						<StackPanel.CommandBindings>
+							<CommandBinding Command="NavigationCommands.PreviousPage" Executed="cmdPreviousPage_Executed" CanExecute="Command_CanExecute" />
+							<CommandBinding Command="NavigationCommands.NextPage" Executed="cmdNextPage_Executed" CanExecute="Command_CanExecute" />
+							<CommandBinding Command="ApplicationCommands.Delete" Executed="cmdDelete_Executed" CanExecute="Command_CanExecute"  />
+						</StackPanel.CommandBindings>
+						<Button Margin="3" Name="btnPrevious" Content="P_revious" Width="80" Command="NavigationCommands.PreviousPage"
+							ToolTip="Move to the previous location" />
+						<Button Margin="3" Name="btnNext" Content="Ne_xt" Width="80" Command="NavigationCommands.NextPage"
+							ToolTip="Move to the next location" />
+						<Button Margin="3" Name="btnAdd" Content="_Add" Width="80" ToolTip="Add a new location" Click="btnAdd_Click" />
+						<Button Margin="3" Name="btnRemove" Content="Re_move" Width="80" Command="ApplicationCommands.Delete"
+							ToolTip="Remove the selected location" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</DockPanel>
+	</Grid>
+</Window>

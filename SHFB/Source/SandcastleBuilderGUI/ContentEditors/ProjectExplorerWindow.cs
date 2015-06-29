@@ -201,7 +201,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             DialogResult dr;
             bool result = true;
 
-            if(currentProject != null && currentProject.IsDirty)
+            if(MainForm.Host.ProjectProperties.IsDirty)
             {
                 dr = MessageBox.Show("Do you want to save your changes to this project?  Click YES to save " +
                   "changes, NO to discard them, or CANCEL to stay here and make more changes.", Constants.AppName,

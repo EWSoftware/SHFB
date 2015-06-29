@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
+// Updated : 06/26/2015
 // Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -10,7 +10,7 @@
 // launch, or remove it.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -33,6 +33,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.MicrosoftHelpViewer
 {
@@ -181,6 +182,21 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                             !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name",
                             !String.IsNullOrEmpty(project.ProductTitle) ? project.ProductTitle : project.HelpTitle,
                             project.HelpTitle);
+
+                    // If there are substitution tags present, have a go at resolving them
+                    if(arguments.IndexOf("{@", StringComparison.Ordinal) != -1)
+                    {
+                        try
+                        {
+                            var bp = new BuildProcess(project);
+                            arguments = bp.SubstitutionTags.TransformText(arguments);
+                        }
+                        catch(Exception ex)
+                        {
+                            throw new InvalidOperationException("Unable to transform substitution tags: " +
+                                ex.Message, ex);
+                        }
+                    }
 
                     // This doesn't have to run as an administrator
                     errorCode = hlm.RunAsNormalUser(arguments, ProcessWindowStyle.Minimized);

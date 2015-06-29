@@ -113,7 +113,7 @@
                                   ]
                                 ]" />
 									<!-- When the reflection data includes multiple versions, $overloadSet may include multiple elements that have 
-                       the same signature (same params and return type), which we call a signatureset. 
+                       the same signature (same params and return type), which we call a signature set. 
                        For example, NetFx and CF apis that have the same signature but different ids. 
                        These are treated as a primary <element> node for the NetFx api, with a nested <element> node for CF api.
                   -->
@@ -124,7 +124,7 @@
 											<xsl:with-param name="typeId" select="$typeId"/>
 										</xsl:call-template>
 									</xsl:variable>
-									<!-- it's an overload if there are multiple signaturesets -->
+									<!-- it's an overload if there are multiple signature sets -->
 									<xsl:if test="count(msxsl:node-set($signatureSet)/*) &gt; 1">
 										<!-- the api is overloaded, so add @overload = idOfOverloadTopic -->
 										<xsl:attribute name="overload">
@@ -381,7 +381,7 @@
 				<xsl:with-param name="typeId" select="$typeId" />
 			</xsl:call-template>
 
-			<!-- propety list topic -->
+			<!-- property list topic -->
 			<xsl:call-template name="AddMemberlistAPI">
 				<xsl:with-param name="subgroup">property</xsl:with-param>
 				<xsl:with-param name="topicSubgroup">Properties</xsl:with-param>
@@ -740,7 +740,7 @@
 										<xsl:if test="count(msxsl:node-set($nonPrimaryVersionElementSet)/*) &gt; 0">
 											<xsl:attribute name="signatureset"/>
 										</xsl:if>
-										<!-- copy attributes and innerxml from the original element node -->
+										<!-- copy attributes and inner xml from the original element node -->
 										<xsl:choose>
 											<xsl:when test="local-name()='element'">
 												<xsl:copy-of select="@*"/>
@@ -752,7 +752,7 @@
 												</xsl:for-each>
 											</xsl:otherwise>
 										</xsl:choose>
-										<!-- for the secondary version groups, copy in the signatureset's latest member (if different from primary member) -->
+										<!-- for the secondary version groups, copy in the signature set's latest member (if different from primary member) -->
 										<xsl:copy-of select="msxsl:node-set($nonPrimaryVersionElementSet)/*"/>
 									</element>
 								</xsl:for-each>
@@ -877,7 +877,7 @@
 		<xsl:variable name="memberName">
 			<xsl:choose>
 				<xsl:when test="$apidataName='.ctor' or $apidataName='.cctor'">ctor</xsl:when>
-				<!-- for explicit interface implementation members, return the membername with # instead of ., so it matches cref ids -->
+				<!-- for explicit interface implementation members, return the member name with # instead of ., so it matches cref ids -->
 				<xsl:when test="memberdata[@visibility='private'] and proceduredata[@virtual = 'true']">
 					<xsl:value-of select="translate($apidataName,'.','#')"/>
 				</xsl:when>
@@ -1068,7 +1068,7 @@
                   <xsl:copy-of select="msxsl:node-set($signatureSet)/*"/>
                 </xsl:when> -->
 								<!-- no overload topics for extension methods -->
-								<!-- but we need to mark the elements as overloaded (so the memberlist link shows parameters) -->
+								<!-- but we need to mark the elements as overloaded (so the member list link shows parameters) -->
 								<xsl:when test="$subsubgroup='extension'">
 									<xsl:for-each select="msxsl:node-set($signatureSet)/*">
 										<element>

@@ -59,7 +59,12 @@ namespace SegregateByNamespace
             string outputPath = null;
 
             if(result.Options["out"].IsPresent)
+            {
                 outputPath = Environment.ExpandEnvironmentVariables((string)result.Options["out"].Value);
+
+                if(!Directory.Exists(outputPath))
+                    Directory.CreateDirectory(outputPath);
+            }
 
             try
             {

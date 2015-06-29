@@ -375,6 +375,9 @@
     <Content Include="OpenXml\DocumentParts\media\CFW.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="OpenXml\DocumentParts\media\CodeExample.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="OpenXml\DocumentParts\media\privclass.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

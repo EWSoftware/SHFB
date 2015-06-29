@@ -94,13 +94,7 @@
     <Content Include="ProductionTransforms\AddXamlSyntaxData.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ProductionTransforms\ApplyPrototypeDocModel.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="ProductionTransforms\ApplyVSDocModel.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ProductionTransforms\CreatePrototypeToc.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ProductionTransforms\CreateVSToc.xsl">
@@ -113,9 +107,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ProductionTransforms\ReflectionToManifest.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ProductionTransforms\TocToHxsContents.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
