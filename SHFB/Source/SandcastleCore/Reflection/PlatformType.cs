@@ -20,8 +20,6 @@
 // 06/21/2015  EFW  Moved to the Reflection namespace and reworked for use with the Reflection Data Manager
 //===============================================================================================================
 
-// TODO: Move to Sandcastle.Core project
-
 using System.Collections.Generic;
 
 namespace Sandcastle.Core.Reflection

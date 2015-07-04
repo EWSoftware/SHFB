@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/26/2015
+// Updated : 07/02/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -85,7 +85,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
-using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.Reflection;
 using Sandcastle.Core.PresentationStyle;
 
 using SandcastleBuilder.Utils.BuildComponent;
@@ -113,7 +113,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private Dictionary<string, BuildComponentFactory> buildComponents;
 
         // Framework, assembly, and reference information
-        private FrameworkSettings frameworkSettings;
+        private ReflectionDataSetDictionary reflectionDataDictionary;
+        private ReflectionDataSet frameworkReflectionData;
         private Collection<string> assembliesList;
         private Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>> referenceDictionary;
         private HashSet<string> referencedNamespaces;
@@ -238,13 +239,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         /// <summary>
         /// This returns the name of the folder that contains the reflection data for the selected framework
-        /// platform (.NETFramework, .NETCore, .NETPortable, etc.).
+        /// platform and version (.NETFramework 4.5, .NETCore 4.5, Silverlight 5.0, etc.).
         /// </summary>
         public string FrameworkReflectionDataFolder
         {
             get
             {
-                return Path.Combine(ComponentUtilities.ToolsFolder, "Data", frameworkSettings.Platform);
+                return Path.GetDirectoryName(frameworkReflectionData.Filename);
             }
         }
 
@@ -320,11 +321,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This read-only property returns the framework settings used by the build
+        /// This read-only property returns the framework reflection data dictionary used by the build
         /// </summary>
-        public FrameworkSettings FrameworkSettings
+        public ReflectionDataSetDictionary ReflectionDataSetDictionary
         {
-            get { return frameworkSettings; }
+            get { return reflectionDataDictionary; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the framework reflection data settings used by the build
+        /// </summary>
+        public ReflectionDataSet FrameworkReflectionData
+        {
+            get { return frameworkReflectionData; }
         }
 
         /// <summary>
@@ -718,35 +727,41 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     Environment.SetEnvironmentVariable("SHFBROOT", ComponentUtilities.ToolsFolder);
                 }
 
-                // Get the framework settings to use for the build
-                frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
-                    project.FrameworkVersion);
+                this.ReportProgress("Locating components in the following folder(s):");
 
-                if(frameworkSettings == null)
+                if(!String.IsNullOrEmpty(project.ComponentPath))
+                    this.ReportProgress("    {0}", project.ComponentPath);
+
+                this.ReportProgress("    {0}", Path.GetDirectoryName(project.Filename));
+
+                this.ReportProgress("    {0}", ComponentUtilities.ComponentsFolder);
+                this.ReportProgress("    {0}", ComponentUtilities.ToolsFolder);
+
+                // Get the framework reflection data settings to use for the build
+                reflectionDataDictionary = new ReflectionDataSetDictionary(new[] { project.ComponentPath,
+                    Path.GetDirectoryName(project.Filename) });
+                frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(project.FrameworkVersion, true);
+
+                if(frameworkReflectionData == null)
                     throw new BuilderException("BE0071", String.Format(CultureInfo.CurrentCulture,
                         "Unable to locate information for the project framework version '{0}' or a suitable " +
                         "redirected version on this system.  See error number help topic for details.",
                         project.FrameworkVersion));
 
-                if(!Directory.Exists(this.FrameworkReflectionDataFolder))
+                this.ReportProgress("Framework reflection data location: {0}", this.FrameworkReflectionDataFolder);
+
+                if(!Directory.EnumerateFiles(this.FrameworkReflectionDataFolder, "*.xml").Any())
                     throw new BuilderException("BE0032", "Reflection data files for the selected framework " +
-                        "do not exist yet (" + this.FrameworkReflectionDataFolder + ").  See help file for " +
+                        "do not exist yet (" + frameworkReflectionData.Title + ").  See help file for " +
                         "details about this error number.");
 
                 // Warn if a different framework is being used for the build
-                if(frameworkSettings.Title != project.FrameworkVersion)
+                if(frameworkReflectionData.Title != project.FrameworkVersion)
                     this.ReportWarning("BE0072", "Project framework version '{0}' not found.  It has been " +
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
-                        frameworkSettings.Title);
+                        frameworkReflectionData.Title);
 
                 // Get the composition container used to find build components in the rest of the build process
-                this.ReportProgress("Locating components in the following folder(s):");
-
-                if(!String.IsNullOrEmpty(project.ComponentPath))
-                    this.ReportProgress("   {0}", project.ComponentPath);
-
-                this.ReportProgress("   {0}", Path.GetDirectoryName(project.Filename));
-
                 componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
                     Path.GetDirectoryName(project.Filename) });
 
@@ -1211,7 +1226,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Get namespaces from the Framework comments files of the referenced namespaces.  This adds
                 // references for stuff like designer and support classes not directly referenced anywhere else.
-                foreach(string n in frameworkSettings.GetReferencedNamespaces(language, rn, validNamespaces).ToList())
+                foreach(string n in frameworkReflectionData.GetReferencedNamespaces(language, rn, validNamespaces).ToList())
                     rn.Add(n);
 
                 // If F# syntax is being generated, add some of the F# namespaces as the syntax sections generate
@@ -1635,6 +1650,8 @@ AllDone:
                         message += inEx.Message + "\r\n" + inEx.StackTrace;
                     }
 
+                var bex = ex as BuilderException;
+
                 do
                 {
                     if(message != null)
@@ -1644,8 +1661,6 @@ AllDone:
                     ex = ex.InnerException;
 
                 } while(ex != null);
-
-                var bex = ex as BuilderException;
 
                 // NOTE: Message may contain format markers so pass it as a format argument
                 if(bex != null)
@@ -2323,10 +2338,10 @@ AllDone:
                             "documentation project.  See the error number topic in the help file for details.");
 
                     // If a project with a higher framework version was found, switch to that version now
-                    var projectFramework = FrameworkDictionary.AllFrameworks.FrameworkMatching(
+                    var projectFramework = reflectionDataDictionary.CoreFrameworkMatching(
                         targetFrameworksSeen.First(), new Version(targetFrameworkVersionsSeen.Max(f => f)), true);
 
-                    if(frameworkSettings != projectFramework)
+                    if(frameworkReflectionData != projectFramework)
                     {
                         // If redirected and no suitable version was found, we can't go any further
                         if(projectFramework == null)
@@ -2341,7 +2356,7 @@ AllDone:
                             "the build.", project.FrameworkVersion, projectFramework.Title);
 
                         project.FrameworkVersion = projectFramework.Title;
-                        frameworkSettings = projectFramework;
+                        frameworkReflectionData = projectFramework;
                     }
                 }
             }
@@ -2368,7 +2383,7 @@ AllDone:
                 // Filter out references related to the framework.  MRefBuilder will resolve these
                 // automatically.
                 foreach(string key in keys)
-                    if(frameworkSettings.ContainsAssembly(key))
+                    if(frameworkReflectionData.ContainsAssembly(key))
                         referenceDictionary.Remove(key);
                     else
                         this.ReportProgress("    {0}", key);

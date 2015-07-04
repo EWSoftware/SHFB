@@ -15,6 +15,7 @@
 // 05/09/2015 - EFW - Removed the deprecated /internal command line option and platform configuration options
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -26,6 +27,7 @@ using System.Compiler;
 
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
+using Sandcastle.Core.Reflection;
 
 using Microsoft.Ddue.Tools.Reflection;
 
@@ -143,8 +145,17 @@ namespace Microsoft.Ddue.Tools
             version = platformNode.GetAttribute("version", String.Empty);
             framework = platformNode.GetAttribute("framework", String.Empty);
 
+            // Get component locations used to find additional reflection data definition files
+            List<string> componentFolders = new List<string>();
+            var locations = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/componentLocations");
+
+            if(locations != null)
+                foreach(XPathNavigator folder in locations.Select("location/@folder"))
+                    if(!String.IsNullOrWhiteSpace(folder.Value) && Directory.Exists(folder.Value))
+                        componentFolders.Add(folder.Value);
+
             if(!String.IsNullOrEmpty(framework) && !String.IsNullOrEmpty(version))
-                TargetPlatform.SetFrameworkInformation(framework, version);
+                TargetPlatform.SetFrameworkInformation(framework, version, componentFolders);
             else
             {
                 ConsoleApplication.WriteMessage(LogLevel.Error, "Unknown target framework " +
@@ -155,10 +166,12 @@ namespace Microsoft.Ddue.Tools
             // Create an API member namer
             ApiNamer namer;
 
-            // Apply a different naming method to assemblies using the Windows Store or Windows Phone frameworks
-            if(framework == ".NETCore" || framework == ".NETPortable" || framework == "WindowsPhone" ||
-              framework == "WindowsPhoneApp")
+            // Apply a different naming method to assemblies using these frameworks
+            if(framework == PlatformType.DotNetCore || framework == PlatformType.DotNetPortable ||
+              framework == PlatformType.WindowsPhone || framework == PlatformType.WindowsPhoneApp)
+            {
                 namer = new WindowsStoreAndPhoneNamer();
+            }
             else
                 namer = new OrcasNamer();
 

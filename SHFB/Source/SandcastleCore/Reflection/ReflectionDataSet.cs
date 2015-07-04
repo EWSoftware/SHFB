@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/28/2015
+// Updated : 06/30/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,8 +21,6 @@
 // 01/02/2014  EFW  Moved the frameworks code to Sandcastle.Core
 // 06/24/2015  EFW  Changed the framework settings classes to reflection data to be more general in nature
 //===============================================================================================================
-
-// TODO: Move to Sandcastle.Core project
 
 using System;
 using System.Collections.Generic;
@@ -300,6 +298,19 @@ namespace Sandcastle.Core.Reflection
         }
 
         /// <summary>
+        /// This read-only property is used to get the core framework location if there is one
+        /// </summary>
+        /// <value>The core framework location or null if there isn't one</value>
+        /// <remarks>The core location is determined by searching for <c>mscorlib</c> in the assembly set</remarks>
+        public AssemblyLocation CoreFrameworkLocation
+        {
+            get
+            {
+                return assemblyLocations.FirstOrDefault(a => a.IsCoreLocation);
+            }
+        }
+
+        /// <summary>
         /// This read-only property returns a bindable list of assembly locations
         /// </summary>
         public IBindingList AssemblyLocations
@@ -346,7 +357,7 @@ namespace Sandcastle.Core.Reflection
             {
                 AssemblyLocation al = assemblyLocations.FirstOrDefault(l => l.IsCoreLocation);
 
-                return (al != null && File.Exists(al.IncludedAssemblies.First().Filename));
+                return (al != null && al.IncludedAssemblies.Any() && File.Exists(al.IncludedAssemblies.First().Filename));
             }
         }
 
@@ -398,7 +409,8 @@ namespace Sandcastle.Core.Reflection
         /// File constructor
         /// </summary>
         /// <param name="filename">The filename from which to load the reflection data set information</param>
-        public ReflectionDataSet(string filename) : this()
+        public ReflectionDataSet(string filename)
+            : this()
         {
             this.Filename = filename;
 
@@ -455,7 +467,6 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This is used to save the reflection data set information to an XML file
         /// </summary>
-        /// <param name="filename">The filename to which the information is saved</param>
         public void Save()
         {
             if(String.IsNullOrWhiteSpace(this.Filename))

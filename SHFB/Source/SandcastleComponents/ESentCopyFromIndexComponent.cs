@@ -82,7 +82,7 @@ namespace SandcastleBuilder.Components
                 {
                     return @"<index name=""reflection"" value=""/reflection/apis/api"" key=""@id"" cache=""15"" localCacheSize=""2500""
 	frameworkCachePath=""{@LocalDataFolder}Cache\ReflectionIndexCache"" projectCachePath="""">
-	<data base=""{@SHFBFolder}Data\{@TargetFrameworkIdentifier}"" recurse=""true"" files=""*.xml""
+	<data base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		duplicateWarning=""false"" groupId=""ReflectionIndexCache"">
 		{@ReferenceLinkNamespaceFiles}
 	</data>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/29/2015
+// Updated : 07/03/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -40,7 +41,7 @@ namespace ReflectionDataManager
     /// <remarks>This generates the reflection data for the given data set and segregates it by namespace.  The
     /// resulting reflection data files are stored in the same folder as the reflection data set configuration
     /// file.</remarks>
-    public class BuildProcess : IDisposable
+    public sealed class BuildProcess : IDisposable
     {
         #region Private data members
         //=====================================================================
@@ -118,6 +119,8 @@ namespace ReflectionDataManager
                 // Ignore errors but log them when debugging
                 System.Diagnostics.Debug.WriteLine(ex);
             }
+
+            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -150,7 +153,7 @@ namespace ReflectionDataManager
             content = content.Replace("{@HtmlEncWorkingFolder}", WebUtility.HtmlEncode(workingFolder));
 
             content = content.Replace("{@Assemblies}", String.Join("\r\n", dataSet.IncludedAssemblies.Select(
-                a => String.Format("<Assembly Include=\"{0}\" />", a.Filename))));
+                a => String.Format(CultureInfo.InvariantCulture, "<Assembly Include=\"{0}\" />", a.Filename))));
 
             projectFile = Path.Combine(workingFolder, "BuildReflectionData.proj");
             File.WriteAllText(projectFile, content);
@@ -160,13 +163,15 @@ namespace ReflectionDataManager
             string targetPath = Path.GetDirectoryName(dataSet.Filename);
 
             if(this.ProgressProvider != null)
-                this.ProgressProvider.Report(String.Format("Clearing reflection data files from {0}...", targetPath));
+                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
+                    "Clearing reflection data files from {0}...", targetPath));
 
             foreach(string file in Directory.EnumerateFiles(targetPath, "*.xml"))
                 File.Delete(file);
 
             if(this.ProgressProvider != null)
-                this.ProgressProvider.Report(String.Format("Copying new reflection data files to {0}...", targetPath));
+                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
+                    "Copying new reflection data files to {0}...", targetPath));
 
             foreach(string file in Directory.EnumerateFiles(workingFolder + @"\Segregated"))
                 File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
@@ -187,10 +192,10 @@ namespace ReflectionDataManager
             Process currentProcess = null;
 
             if(processFilename == null)
-                throw new ArgumentNullException("process");
+                throw new ArgumentNullException("processFilename");
 
             if(this.ProgressProvider != null)
-                this.ProgressProvider.Report(String.Format("[{0}{1}]", processFilename,
+                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture, "[{0}{1}]", processFilename,
                     !String.IsNullOrWhiteSpace(targetFile) ? " - " + targetFile : String.Empty));
 
             if(arguments == null)
@@ -234,7 +239,7 @@ namespace ReflectionDataManager
                             if(!hasExited && this.CancellationToken != null &&
                               this.CancellationToken.IsCancellationRequested)
                             {
-                                this.TerminateProcess(currentProcess);
+                                TerminateProcess(currentProcess);
                                 throw new OperationCanceledException();
                             }
 
@@ -250,7 +255,7 @@ namespace ReflectionDataManager
             }
             catch(AggregateException ex)
             {
-                this.TerminateProcess(currentProcess);
+                TerminateProcess(currentProcess);
 
                 var canceledEx = ex.InnerExceptions.FirstOrDefault(e => e is OperationCanceledException);
 
@@ -261,7 +266,7 @@ namespace ReflectionDataManager
             }
             catch
             {
-                this.TerminateProcess(currentProcess);
+                TerminateProcess(currentProcess);
                 throw;
             }
             finally
@@ -274,7 +279,7 @@ namespace ReflectionDataManager
         /// <summary>
         /// Terminate the current process
         /// </summary>
-        private void TerminateProcess(Process currentProcess)
+        private static void TerminateProcess(Process currentProcess)
         {
             if(currentProcess != null && !currentProcess.HasExited)
                 try

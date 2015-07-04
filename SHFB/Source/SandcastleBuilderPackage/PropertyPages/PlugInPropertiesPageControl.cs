@@ -84,7 +84,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// Try to load information about all available plug-ins so that they can be added to the project
         /// </summary>
-        /// <returns>True on success, false on failure or if no project is loaded</returns>
         private void LoadAvailablePlugInMetadata()
         {
             SandcastleProject currentProject = null;

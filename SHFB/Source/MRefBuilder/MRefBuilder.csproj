@@ -148,12 +148,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Frameworks.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>Sandcastle.Core</Name>

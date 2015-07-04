@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2015
+// Updated : 07/01/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -86,7 +86,7 @@ using System.Xml.Serialization;
 using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
-using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.Reflection;
 using Sandcastle.Core.PresentationStyle;
 
 using SandcastleBuilder.Utils.BuildComponent;
@@ -640,7 +640,7 @@ namespace SandcastleBuilder.Utils
                 // Let bad values through.  The property pages or the build engine will catch bad values if
                 // necessary.
                 if(String.IsNullOrWhiteSpace(value))
-                    value = FrameworkDictionary.DefaultFrameworkTitle;
+                    value = ReflectionDataSetDictionary.DefaultFrameworkTitle;
 
                 frameworkVersion = value;
             }
@@ -1805,7 +1805,7 @@ namespace SandcastleBuilder.Utils
                             if(schemaVersion.Major == 1 && (schemaVersion.Minor < 9 ||
                               (schemaVersion.Minor == 9 && schemaVersion.Build < 5)))
                             {
-                                this.SetLocalProperty(prop.Name, Utility.ConvertFromOldValue(prop.UnevaluatedValue));
+                                this.SetLocalProperty(prop.Name, ConvertOldFrameworkVersion(prop.UnevaluatedValue));
                                 msBuildProject.SetProperty("FrameworkVersion", this.FrameworkVersion);
                             }
                             else
@@ -1908,6 +1908,53 @@ namespace SandcastleBuilder.Utils
             }
 
             property.SetValue(this, parsedValue, null);
+        }
+
+        /// <summary>
+        /// This is used to convert old SHFB project framework version values to the new framework version values
+        /// </summary>
+        /// <param name="oldValue">The old value to convert</param>
+        /// <returns>The equivalent new value</returns>
+        private static string ConvertOldFrameworkVersion(string oldValue)
+        {
+            ReflectionDataSet dataSet;
+
+            if(String.IsNullOrWhiteSpace(oldValue))
+                return ReflectionDataSetDictionary.DefaultFrameworkTitle;
+
+            oldValue = oldValue.Trim();
+
+            if(oldValue.IndexOf(".NET ", StringComparison.OrdinalIgnoreCase) != -1 || Char.IsDigit(oldValue[0]))
+            {
+                oldValue = oldValue.ToUpperInvariant().Replace(".NET ", String.Empty).Trim();
+
+                if(oldValue.Length == 0)
+                    oldValue = "4.0";
+                else
+                    if(oldValue.Length > 3)
+                        oldValue = oldValue.Substring(0, 3);
+
+                oldValue = ".NET Framework " + oldValue;
+            }
+            else
+                if(oldValue.IndexOf("Silverlight ", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    oldValue = oldValue.ToUpperInvariant().Trim();
+
+                    if(oldValue.EndsWith(".0", StringComparison.Ordinal))
+                        oldValue = oldValue.Substring(0, oldValue.Length - 2);
+                }
+                else
+                    if(oldValue.IndexOf("Portable ", StringComparison.OrdinalIgnoreCase) != -1)
+                        oldValue = ".NET Portable Library 4.0 (Legacy)";
+
+            var rdsd = new ReflectionDataSetDictionary(null);
+
+            // If not found, use the default
+            if(!rdsd.TryGetValue(oldValue, out dataSet))
+                return ReflectionDataSetDictionary.DefaultFrameworkTitle;
+
+            return dataSet.Title;
         }
         #endregion
 

@@ -103,11 +103,11 @@
     <Compile Include="CommandLine\SwitchOption.cs" />
     <Compile Include="ConsoleApplication.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Frameworks\AssemblyDetails.cs" />
-    <Compile Include="Frameworks\AssemblyLocation.cs" />
-    <Compile Include="Frameworks\FrameworkDictionary.cs" />
-    <Compile Include="Frameworks\FrameworkSettings.cs" />
-    <Compile Include="Frameworks\PlatformType.cs" />
+    <Compile Include="Reflection\AssemblyDetails.cs" />
+    <Compile Include="Reflection\AssemblyLocation.cs" />
+    <Compile Include="Reflection\ReflectionDataSetDictionary.cs" />
+    <Compile Include="Reflection\ReflectionDataSet.cs" />
+    <Compile Include="Reflection\PlatformType.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HelpFileFormats.cs" />
     <Compile Include="LogLevel.cs" />
