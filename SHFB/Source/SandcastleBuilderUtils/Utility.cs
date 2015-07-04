@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2015
+// Updated : 07/01/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,7 +27,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Sandcastle.Core;
-using Sandcastle.Core.Frameworks;
 
 using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -136,55 +135,6 @@ namespace SandcastleBuilder.Utils
                 return point.Priority;
 
             return ExecutionPoint.DefaultPriority;
-        }
-        #endregion
-
-        #region Project conversion helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to convert old SHFB project framework version values to the new framework version values
-        /// </summary>
-        /// <param name="oldValue">The old value to convert</param>
-        /// <returns>The equivalent new value</returns>
-        internal static string ConvertFromOldValue(string oldValue)
-        {
-            FrameworkSettings fs = null;
-
-            if(String.IsNullOrWhiteSpace(oldValue))
-                return FrameworkDictionary.DefaultFrameworkTitle;
-
-            oldValue = oldValue.Trim();
-
-            if(oldValue.IndexOf(".NET ", StringComparison.OrdinalIgnoreCase) != -1 || Char.IsDigit(oldValue[0]))
-            {
-                oldValue = oldValue.ToUpperInvariant().Replace(".NET ", String.Empty).Trim();
-
-                if(oldValue.Length == 0)
-                    oldValue = "4.0";
-                else
-                    if(oldValue.Length > 3)
-                        oldValue = oldValue.Substring(0, 3);
-
-                oldValue = ".NET Framework " + oldValue;
-            }
-            else
-                if(oldValue.IndexOf("Silverlight ", StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    oldValue = oldValue.ToUpperInvariant().Trim();
-
-                    if(oldValue.EndsWith(".0", StringComparison.Ordinal))
-                        oldValue = oldValue.Substring(0, oldValue.Length - 2);
-                }
-                else
-                    if(oldValue.IndexOf("Portable ", StringComparison.OrdinalIgnoreCase) != -1)
-                        oldValue = ".NET Portable Library 4.0 (Legacy)";
-
-            // If not found, default to .NET 4.0
-            if(!FrameworkDictionary.AllFrameworks.TryGetValue(oldValue, out fs))
-                return FrameworkDictionary.DefaultFrameworkTitle;
-
-            return fs.Title;
         }
         #endregion
 

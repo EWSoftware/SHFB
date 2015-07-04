@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/03/2015
+// Updated : 07/01/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,18 +13,19 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.4.0  03/31/2012  EFW  Added BuildAssembler Verbosity property
-// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
-// -------  02/15/2014  EFW  Added support for the Open XML output format
-//          03/30/2015  EFW  Added support for the Markdown output format
-//          05/03/2015  EFW  Removed support for the MS Help 2 file format
+// 03/27/2011  EFW  Created the code
+// 03/31/2012  EFW  Added BuildAssembler Verbosity property
+// 10/28/2012  EFW  Updated for use in the standalone GUI
+// 02/15/2014  EFW  Added support for the Open XML output format
+// 03/30/2015  EFW  Added support for the Markdown output format
+// 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -32,7 +33,7 @@ using System.Windows.Forms;
 using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
-using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.Reflection;
 
 using SandcastleBuilder.Utils;
 
@@ -74,6 +75,14 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
         #endregion
 
+        #region Private data members
+        //=====================================================================
+
+        private ReflectionDataSetDictionary reflectionDataSets;
+        private string messageBoxTitle, lastProjectName;
+
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -84,6 +93,11 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+#if !STANDALONEGUI
+            messageBoxTitle = Resources.PackageTitle;
+#else
+            messageBoxTitle = Constants.AppName;
+#endif
             // Set the maximum size to prevent an unnecessary vertical scrollbar
             this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
@@ -108,6 +122,54 @@ namespace SandcastleBuilder.Package.PropertyPages
                 { BuildAssemblerVerbosity.OnlyErrors.ToString(), "Only Errors" } }).ToList();
 
             cboBuildAssemblerVerbosity.SelectedIndex = 1;
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Try to load information about all available framework reflection data sets
+        /// </summary>
+        /// <param name="currentProject">The current Sandcastle project</param>
+        private void LoadReflectionDataSetInfo(SandcastleProject currentProject)
+        {
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+
+                if(currentProject != null)
+                    reflectionDataSets = new ReflectionDataSetDictionary(new[] {
+                        currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                else
+                    reflectionDataSets = new ReflectionDataSetDictionary(null);
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, messageBoxTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+
+            if(reflectionDataSets.Keys.Count == 0)
+            {
+                epWarning.SetError(cboFrameworkVersion, "No valid reflection data sets found.  Do you need " +
+                    "to install the NuGet packages for them?");
+
+                MessageBox.Show("No valid reflection data sets found", messageBoxTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                reflectionDataSets.Add(ReflectionDataSetDictionary.DefaultFrameworkTitle,
+                    new ReflectionDataSet { Title = ReflectionDataSetDictionary.DefaultFrameworkTitle });
+            }
+            else
+                epWarning.SetError(cboFrameworkVersion, String.Empty);
         }
         #endregion
 
@@ -151,28 +213,24 @@ namespace SandcastleBuilder.Package.PropertyPages
             HelpFileFormats format;
             int idx;
 
-            // Load the framework versions of first use so that we have a chance to set the Sandcastle tools
-            // path if necessary.
-            if(control.Name == "cboFrameworkVersion" && cboFrameworkVersion.Items.Count == 0)
+            if(control.Name == "cboFrameworkVersion")
             {
-                try
-                {
-                    cboFrameworkVersion.Items.AddRange(FrameworkDictionary.AllFrameworks.Keys.ToArray());
-                    cboFrameworkVersion.SelectedItem = FrameworkDictionary.DefaultFrameworkTitle;
-                }
-                catch(Exception ex)
-                {
 #if !STANDALONEGUI
-                    MessageBox.Show("Unable to determine framework versions:\r\n\r\n" + ex.Message +
-                        "\r\n\r\nYou may need to set the Sandcastle Path project property first.",
-                        Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SandcastleProject currentProject = null;
+
+                if(base.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+                if(reflectionDataSets == null || currentProject == null || currentProject.Filename != lastProjectName)
+                    this.LoadReflectionDataSetInfo(currentProject);
 #else
-                    MessageBox.Show("Unable to determine framework versions:\r\n\r\n" + ex.Message +
-                        "\r\n\r\nYou may need to set the Sandcastle Path project property first.",
-                        Sandcastle.Core.Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if(reflectionDataSets == null || base.CurrentProject == null || base.CurrentProject.Filename != lastProjectName)
+                    this.LoadReflectionDataSetInfo(base.CurrentProject);
 #endif
-                    return true;
-                }
+
+                cboFrameworkVersion.Items.Clear();
+                cboFrameworkVersion.Items.AddRange(reflectionDataSets.Keys.OrderBy(k => k).ToArray());
+                cboFrameworkVersion.SelectedItem = ReflectionDataSetDictionary.DefaultFrameworkTitle;
 
                 return false;
             }

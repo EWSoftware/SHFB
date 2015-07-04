@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Markdown.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2015
+// Updated : 07/03/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,7 +25,7 @@ using System.Reflection;
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
 
-namespace Markdown
+namespace Sandcastle.PresentationStyles
 {
     /// <summary>
     /// This defines a presentation style used to generate markdown content (GitHub flavored)

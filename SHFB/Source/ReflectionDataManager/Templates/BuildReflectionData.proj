@@ -4,6 +4,8 @@
 		AssemblyFile="{@SHFBFolder}\MRefBuilder.exe" />
 	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
 		AssemblyFile="{@SHFBFolder}\XslTransform.exe" />
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace"
+		AssemblyFile="{@SHFBFolder}\SegregateByNamespace.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
@@ -29,8 +31,11 @@
 			OutputFile="reflection.xml" />
 
 		<!-- Segregate the reflection data by namespace -->
-		<Exec ContinueOnError="ErrorAndStop" IgnoreExitCode="false"
-			Command="&quot;{@SHFBFolder}\SegregateByNamespace.exe&quot; &quot;$(WorkingFolder)\Reflection.xml&quot; /out:&quot;$(WorkingFolder)\Segregated&quot;" />
+		<Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace
+			WorkingFolder="$(WorkingFolder)"
+			ReflectionFilename="reflection.xml"
+			OutputFolder=".\Segregated" />
+
 	</Target>
 
 	<ItemGroup>

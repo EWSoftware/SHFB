@@ -36,7 +36,18 @@ GOTO BuildDocs
 :BuildDocs
 
 REM Skip help file and setup build if there is no reflection data yet
-IF NOT EXIST %SHFBROOT%\Data\.NETFramework\*.xml GOTO MissingReflectionData
+IF EXIST %SHFBROOT%\Data\.NETFramework\*.xml GOTO ReflectionDataExists
+
+ECHO *
+ECHO * Reflection data does not exist for the frameworks.  Building default set for the latest version
+ECHO * of the .NETFramework platform on this system.  See the ReadMe.txt file for more information.
+ECHO *
+
+%SHFBROOT%ReflectionDataManager /platform:.NETFramework
+
+IF ERRORLEVEL 1 GOTO End
+
+:ReflectionDataExists
 
 CD ..\..\Documentation
 IF EXIST .\WebHelp\*.* RD /S /Q .\WebHelp
@@ -61,16 +72,6 @@ CD ..\..\NuGet
 BuildNuGet.bat
 
 CD ..
-
-GOTO End
-
-:MissingReflectionData
-ECHO *
-ECHO *
-ECHO * Reflection data has not been built yet.  Help file and setup file generation skipped.
-ECHO * See ReadMe.txt for more information on running BuildReflectionData.bat.
-ECHO *
-ECHO *
 
 :End
 

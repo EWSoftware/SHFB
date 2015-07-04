@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>EWSoftware.SHFB.Silverlight</id>
+		<version>5.0</version>
+		<title>Sandcastle Help File Builder Silverlight Reflection Data Set</title>
+		<authors>Eric Woodruff</authors>
+		<owners>Eric Woodruff</owners>
+		<licenseUrl>https://github.com/EWSoftware/SHFB/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>This package contains the Silverlight reflection information data set for use with the EWSoftware.SHFB package.</description>
+		<copyright>Eric Woodruff (c) 2006-2015</copyright>
+		<tags>SHFB sandcastle reflection information data set</tags>
+		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one
+				 renders the package uninstallable because its "not compatible with any projects in the solution".
+				 Not sure what that means other than we can't have a dependency here. -->
+	</metadata>
+	<files>
+		<file src="..\SHFB\Deploy\Data\Silverlight\*.*" target="tools\Data\Silverlight" />
+	</files>
+</package>

@@ -12,6 +12,7 @@
 // is being used for the core framework types.
 // 05/09/2015 - EFW - Removed obsolete core framework assembly definitions and related methods.
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -86,6 +87,7 @@ namespace System.Compiler
         public static string Platform;
         public static Version TargetVersion;
         public static string TargetRuntimeVersion;
+        public static bool AllSystemTypesRedirected;
 
         public static string PlatformAssembliesLocation = String.Empty;
 
@@ -113,46 +115,48 @@ namespace System.Compiler
         /// </summary>
         /// <param name="platformType">The platform type</param>
         /// <param name="version">The framework version</param>
-        public static void SetFrameworkInformation(string platformType, string version)
+        public static void SetFrameworkInformation(string platformType, string version,
+          IEnumerable<string> componentLocations)
         {
-            var fs = Sandcastle.Core.Frameworks.FrameworkDictionary.AllFrameworks.FrameworkMatching(
-                platformType, new Version(version), true);
+            var rdsd = new Sandcastle.Core.Reflection.ReflectionDataSetDictionary(componentLocations);
+            var dataSet = rdsd.CoreFrameworkMatching(platformType, new Version(version), true);
 
-            if(fs == null)
+            if(dataSet == null)
                 throw new InvalidOperationException(String.Format("Unable to locate information for the " +
                     "framework version '{0} {1}' or a suitable redirected version on this system",
                     platformType, version));
 
-            var coreLocation = fs.AssemblyLocations.First(l => l.IsCoreLocation);
+            var coreLocation = dataSet.CoreFrameworkLocation;
 
             if(coreLocation == null)
                 throw new InvalidOperationException(String.Format("A core framework location has not been " +
                     "defined for the framework '{0} {1}'", platformType, version));
 
-            TargetPlatform.Platform = fs.Platform;
-            TargetPlatform.TargetVersion = fs.Version;
-            TargetPlatform.TargetRuntimeVersion = "v" + fs.Version.ToString();
+            TargetPlatform.Platform = dataSet.Platform;
+            TargetPlatform.TargetVersion = dataSet.Version;
+            TargetPlatform.TargetRuntimeVersion = "v" + dataSet.Version.ToString();
+            TargetPlatform.AllSystemTypesRedirected = dataSet.AllSystemTypesRedirected;
             TargetPlatform.GenericTypeNamesMangleChar = '`';
             TargetPlatform.PlatformAssembliesLocation = coreLocation.Path;
 
             // Set references to the common core framework assemblies
-            var ad = fs.FindAssembly("mscorlib");
+            var ad = dataSet.FindAssembly("mscorlib");
 
             if(ad != null)
                 SystemAssemblyLocation.Location = ad.Filename;
 
-            ad = fs.FindAssembly("System.Data");
+            ad = dataSet.FindAssembly("System.Data");
 
             if(ad != null)
                 SystemDataAssemblyLocation.Location = ad.Filename;
 
-            ad = fs.FindAssembly("System.Xml");
+            ad = dataSet.FindAssembly("System.Xml");
 
             if(ad != null)
                 SystemXmlAssemblyLocation.Location = ad.Filename;
 
             // Load references to all the other framework assemblies
-            var allAssemblies = fs.AllAssemblies.ToList();
+            var allAssemblies = dataSet.IncludedAssemblies.ToList();
 
             TrivialHashtable assemblyReferenceFor = new TrivialHashtable(allAssemblies.Count);
 

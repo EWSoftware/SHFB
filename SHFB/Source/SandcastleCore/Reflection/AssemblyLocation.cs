@@ -21,8 +21,6 @@
 // 06/21/2015  EFW  Moved to the Reflection namespace and reworked for use with the Reflection Data Manager
 //===============================================================================================================
 
-// TODO: Move to Sandcastle.Core project
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -137,7 +135,8 @@ namespace Sandcastle.Core.Reflection
         /// Private constructor
         /// </summary>
         /// <param name="storedPath">The stored path to use</param>
-        private AssemblyLocation(string storedPath) : this()
+        private AssemblyLocation(string storedPath)
+            : this()
         {
             this.storedPath = storedPath;
         }
@@ -219,7 +218,7 @@ namespace Sandcastle.Core.Reflection
                 foreach(var d in assemblyDetails.ToList())
                     if(!File.Exists(d.Filename))
                         assemblyDetails.Remove(d);
-                
+
                 // Add missing entries
                 foreach(string assembly in Directory.EnumerateFiles(this.Path, "*.dll").Concat(
                   Directory.EnumerateFiles(this.Path, "*.winmd")))

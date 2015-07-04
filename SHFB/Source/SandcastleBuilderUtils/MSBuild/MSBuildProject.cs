@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/20/2015
+// Updated : 07/01/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,18 +14,17 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-//===============================================================================================================
-// 1.8.0.0  07/11/2008  EFW  Created the code
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.3.2  08/20/2011  EFW  Updated to support Portable .NET Framework
-// 1.9.5.0  09/08/2012  EFW  Updated to support Windows Store App projects
-// 1.9.6.0  10/22/2012  EFW  Updated to support the .winmd output type
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/11/2008  EFW  Created the code
+// 07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 08/20/2011  EFW  Updated to support Portable .NET Framework
+// 09/08/2012  EFW  Updated to support Windows Store App projects
+// 10/22/2012  EFW  Updated to support the .winmd output type
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,7 +32,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Exceptions;
 
-using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.Reflection;
 
 namespace SandcastleBuilder.Utils.MSBuild
 {

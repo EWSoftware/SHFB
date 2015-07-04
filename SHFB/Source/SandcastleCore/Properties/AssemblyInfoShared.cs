@@ -24,7 +24,13 @@ using System.Runtime.InteropServices;
 // General assembly information
 [assembly: AssemblyProduct("Sandcastle Tools")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
+
+#if !EWSOFTWARECOPYRIGHT
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
+#else
+[assembly: AssemblyCopyright(AssemblyInfo.EWSoftwareCopyright)]
+#endif
+
 [assembly: AssemblyCulture("")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
@@ -81,7 +87,10 @@ internal static partial class AssemblyInfo
     // the file version above but includes the century on the year.
     public const string ProductVersion = "2015.5.2.0";
 
-    // Assembly copyright information
+    // Assembly shared copyright information
     public const string Copyright = "Copyright \xA9 2006-2015, Microsoft Corporation, All Rights Reserved.\r\n" +
-        "Portions Copyright \xA9 2006-2014, Eric Woodruff, All Rights Reserved.";
+        "Portions Copyright \xA9 2006-2015, Eric Woodruff, All Rights Reserved.";
+
+    // Assembly copyright information, EWSoftware only
+    public const string EWSoftwareCopyright = "Copyright \xA9 2006-2015, Eric Woodruff, All Rights Reserved";
 }

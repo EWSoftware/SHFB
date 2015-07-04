@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
+// Updated : 07/01/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -33,7 +33,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.XPath;
 
-using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.Reflection;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -579,15 +579,17 @@ namespace SandcastleBuilder.WPF.UserControls
             string lastSolution = null;
 
             // Index the framework comments based on the framework version in the project
-            FrameworkSettings frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
-                currentProject.FrameworkVersion);
+            var reflectionDataDictionary = new ReflectionDataSetDictionary(new[] { currentProject.ComponentPath,
+                    Path.GetDirectoryName(currentProject.Filename) });
+            var frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(
+                currentProject.FrameworkVersion, true);
 
-            if(frameworkSettings == null)
+            if(frameworkReflectionData == null)
                 throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
                     "Unable to locate information for a framework version or its redirect: {0}",
                     currentProject.FrameworkVersion));
 
-            foreach(var location in frameworkSettings.CommentsFileLocations(currentProject.Language))
+            foreach(var location in frameworkReflectionData.CommentsFileLocations(currentProject.Language))
             {
                 indexTokenSource.Token.ThrowIfCancellationRequested();
 

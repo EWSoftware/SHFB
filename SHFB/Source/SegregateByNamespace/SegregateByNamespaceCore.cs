@@ -1,5 +1,6 @@
 ﻿// Change history:
 // 12/15/2013 - EFW - Added check for invalid filename characters in the namespace filenames
+// 07/03/2015 - EFW - Added MSBuild task support
 
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,13 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 
-namespace SegregateByNamespace
+namespace Microsoft.Ddue.Tools
 {
-    public static class Program
+    /// <summary>
+    /// This takes a reflection data file and splits it into multiple reflection data files, each containing the
+    /// types from a specific namespace.
+    /// </summary>
+    public static class SegregateByNamespaceCore
     {
         // Fields
         private static XPathExpression apiExpression = XPathExpression.Compile("/*/apis/api");
@@ -21,7 +26,16 @@ namespace SegregateByNamespace
         private static XPathExpression assemblyNameExpression = XPathExpression.Compile("string(containers/library/@assembly)");
         private static XPathExpression namespaceIdExpression = XPathExpression.Compile("string(@id)");
 
-        // Methods
+        /// <summary>
+        /// This property is used to cancel the operation from the MSBuild task
+        /// </summary>
+        public static bool Canceled { get; set; }
+
+        /// <summary>
+        /// Main program entry point
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
         public static int Main(string[] args)
         {
             XPathDocument document;
@@ -30,7 +44,7 @@ namespace SegregateByNamespace
 
             OptionCollection options = new OptionCollection {
                 new SwitchOption("?", "Show this help page."),
-                new StringOption("out", "Specify an output directory. If unspecified, output goes to the " +
+                new StringOption("out", "Specify an output directory.  If not specified, output goes to the " +
                     "current directory.", "outputDirectory")
             };
 
@@ -40,7 +54,7 @@ namespace SegregateByNamespace
             {
                 Console.WriteLine("SegregateByNamespace [options] reflectionDataFile");
                 options.WriteOptionSummary(Console.Out);
-                return 0;
+                return 1;
             }
 
             if(!result.Success)
@@ -85,9 +99,10 @@ namespace SegregateByNamespace
                 return 1;
             }
 
-            WriteNamespaceFiles(document, outputPath);
+            if(!Canceled)
+                WriteNamespaceFiles(document, outputPath);
 
-            return 0;
+            return Canceled ? 1 : 0;
         }
 
         private static void WriteNamespaceFiles(XPathDocument source, string outputDir)
@@ -107,6 +122,9 @@ namespace SegregateByNamespace
 
                 foreach(XPathNavigator navigator in iterator)
                 {
+                    if(Canceled)
+                        return;
+
                     current = (string)navigator.Evaluate(apiNamespaceExpression);
 
                     if(!String.IsNullOrEmpty(current))
@@ -126,6 +144,9 @@ namespace SegregateByNamespace
 
                 foreach(string currentKey in dictionary.Keys)
                 {
+                    if(Canceled)
+                        return;
+
                     string filename = currentKey.Substring(2) + ".xml";
 
                     if(filename == ".xml")
@@ -149,6 +170,9 @@ namespace SegregateByNamespace
 
                     foreach(string assemblyName in dictionary3.Keys)
                     {
+                        if(Canceled)
+                            return;
+
                         XPathNavigator navigator2 = source.CreateNavigator().SelectSingleNode(
                             "/*/assemblies/assembly[@name='" + assemblyName + "']");
 
@@ -165,6 +189,9 @@ namespace SegregateByNamespace
 
                 foreach(XPathNavigator navigator in iterator)
                 {
+                    if(Canceled)
+                        return;
+
                     current = (string)navigator.Evaluate(apiNamespaceExpression);
 
                     if(string.IsNullOrEmpty(current))
@@ -176,6 +203,9 @@ namespace SegregateByNamespace
 
                 foreach(XmlWriter w in dictionary2.Values)
                 {
+                    if(Canceled)
+                        return;
+
                     w.WriteEndElement();
                     w.WriteEndElement();
                     w.WriteEndDocument();

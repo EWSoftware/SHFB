@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE package [
 	<!ENTITY deploy "..\SHFB\Deploy">
-	<!ENTITY commonExcludes "&deploy;\**\*.pdb;&deploy;\**\*vshost*;&deploy;\**\*CodeAnalysis*">
+	<!ENTITY commonExcludes "&deploy;\**\.gitignore;&deploy;\**\*.pdb;&deploy;\**\*vshost*;&deploy;\**\*CodeAnalysis*">
 ]>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
@@ -14,17 +14,18 @@
 		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This package allows you to deploy the Sandcastle Help File Builder tools inside of a project to build help files without installing the tools manually such as on a build server.  Some limitations apply.</description>
+		<description>This package allows you to deploy the Sandcastle Help File Builder tools inside of a project to build help files without installing the tools manually such as on a build server.  Some limitations apply.  You will also need to install the reflection data set packages that you need for your projects.</description>
 		<copyright>Eric Woodruff (c) 2006-2015</copyright>
 		<tags>SHFB documentation sandcastle help XML comments</tags>
+		<!-- Note that we do not add dependencies on the reflection data set packages.  The idea here is that you
+				 only need to install the packages that you actually need. -->
 	</metadata>
 	<files>
-		<file src="&deploy;\Data\**\*.*" target="tools\Data" exclude="&commonExcludes;" />
 		<file src="&deploy;\PresentationStyles\**\*.*" target="tools\PresentationStyles" exclude="&commonExcludes;" />
 		<file src="&deploy;\ProductionTransforms\**\*.*" target="tools\ProductionTransforms" exclude="&commonExcludes;" />
 		<file src="&deploy;\SyntaxContent\**\*.*" target="tools\SyntaxContent" exclude="&commonExcludes;" />
 		<file src="&deploy;\Templates\**\*.*" target="tools\Templates" exclude="&commonExcludes;" />
-		<file src="&deploy;\*.*" target="tools" exclude="&deploy;\ICSharpCode*;&deploy;\SandcastleBuilderGUI*;&deploy;\WeifenLuo*;&deploy;\BuildComponents.xml;&deploy;\ColorizerLibrary.xml;&deploy;\Sandcastle*.xml;&deploy;\SyntaxComponents.xml;&deploy;\*Hunspell*;&deploy;\SHFBProjectLauncher*;&deploy;\ESent*.xml;&deploy;\GenerateInheritedDocs.xml;&deploy;\HelpLibraryManagerLauncher.xml;&deploy;\NHunSpell.xml;&deploy;\SandcastleBuilderGUI.xml;&deploy;\SandcastleHtmlExtract.xml;&deploy;\reflection.org;&commonExcludes;" />
+		<file src="&deploy;\*.*" target="tools" exclude="&deploy;\ICSharpCode*;&deploy;\SandcastleBuilderGUI*;&deploy;\WeifenLuo*;&deploy;\ReflectionDataManager*.*;&deploy;\BuildComponents.xml;&deploy;\ColorizerLibrary.xml;&deploy;\Sandcastle*.xml;&deploy;\SyntaxComponents.xml;&deploy;\*Hunspell*;&deploy;\SHFBProjectLauncher*;&deploy;\ESent*.xml;&deploy;\GenerateInheritedDocs.xml;&deploy;\HelpLibraryManagerLauncher.xml;&deploy;\NHunSpell.xml;&deploy;\SandcastleBuilderGUI.xml;&deploy;\SandcastleHtmlExtract.xml;&deploy;\reflection.org;&commonExcludes;" />
 		<file src="ReadMe.txt" target="ReadMe.txt" />
 	</files>
 </package>

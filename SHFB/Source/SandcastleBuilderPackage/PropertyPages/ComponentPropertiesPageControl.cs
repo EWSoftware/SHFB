@@ -85,7 +85,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// Try to load information about all available build components so that they can be added to the project
         /// </summary>
-        /// <returns>True on success, false on failure or if no project is loaded</returns>
         private void LoadAvailableBuildComponentMetadata()
         {
             SandcastleProject currentProject = null;

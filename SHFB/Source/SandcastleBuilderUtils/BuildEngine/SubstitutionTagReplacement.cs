@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
+// Updated : 07/02/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -32,7 +32,6 @@ using System.Xml.XPath;
 using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
-using Sandcastle.Core.Frameworks;
 using Sandcastle.Core.PresentationStyle;
 
 using SandcastleBuilder.Utils.Design;
@@ -566,7 +565,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string TargetFrameworkIdentifier()
         {
-            return currentBuild.FrameworkSettings.Platform;
+            return currentBuild.FrameworkReflectionData.Platform;
         }
 
         /// <summary>
@@ -576,7 +575,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string FrameworkVersion()
         {
-            return currentBuild.FrameworkSettings.Version.ToString();
+            return currentBuild.FrameworkReflectionData.Version.ToString();
         }
 
         /// <summary>
@@ -586,7 +585,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string FrameworkVersionShort()
         {
-            return currentBuild.FrameworkSettings.Version.ToString(2);
+            return currentBuild.FrameworkReflectionData.Version.ToString(2);
+        }
+
+        /// <summary>
+        /// The framework reflection data folder
+        /// </summary>
+        [SubstitutionTag]
+        private string FrameworkReflectionDataFolder()
+        {
+            return currentBuild.FrameworkReflectionDataFolder;
         }
         #endregion
 
@@ -1334,26 +1342,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <returns>The list of framework comments file sources in the appropriate format</returns>
         private string FrameworkCommentList(bool forImport)
         {
-            FrameworkSettings settings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
-                sandcastleProject.FrameworkVersion);
+            var dataSet = currentBuild.FrameworkReflectionData;
             string folder, wildcard;
 
             replacementValue.Clear();
 
             // Build the list based on the type and what actually exists
-            foreach(var location in settings.CommentsFileLocations(sandcastleProject.Language))
+            foreach(var location in dataSet.CommentsFileLocations(sandcastleProject.Language))
             {
                 folder = Path.GetDirectoryName(location);
                 wildcard = Path.GetFileName(location);
 
                 if(!forImport)
                 {
-                    // Files are cached by platform, version, and location.  The groupId attribute can be
-                    // used by caching components to identify the cache and its location.
+                    // Files are cached by platform, version, and location.  The groupId attribute can be used by
+                    // caching components to identify the cache and its location.
                     replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
                         "recurse=\"false\" duplicateWarning=\"false\" groupId=\"{2}_{3}_{4:X}\" />\r\n",
-                        folder, wildcard, settings.Platform, settings.Version,
-                        location.GetHashCode());
+                        folder, wildcard, dataSet.Platform, dataSet.Version, location.GetHashCode());
                 }
                 else
                     replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<import path=\"{0}\" file=\"{1}\" " +
