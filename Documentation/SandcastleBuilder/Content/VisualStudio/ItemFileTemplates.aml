@@ -42,8 +42,8 @@ by the standalone GUI.  Follow these steps to create your own custom item file t
 		<list class="ordered">
 			<listItem>
 				<para>Create the template file.  Name the file whatever you like and give it an appropriate extension.  The
-content of the template file will be used as the default content for the file when it is added to a project.  An example conceptual
-content template is shown below:</para>
+content of the template file will be used as the default content for the file when it is added to a project.  An
+example conceptual content template is shown below:</para>
 
 <alert class="tip">
   <para>For conceptual content item templates, replace the topic's GUID value with the text "<codeInline>$guid1$</codeInline>".
@@ -78,9 +78,9 @@ This will cause Visual Studio to automatically insert a new GUID value in the to
 
 			<listItem>
 				<para>In order for Visual Studio to know how to display and use your template file, you must create a
-VSTemplate file to accompany it.  This is an XML file with a <localUri>.vstemplate</localUri> extension.  The base
-filename should match the base filename of your template file (i.e. <localUri>BlankTopic.vstemplate</localUri> for the
-<localUri>BlankTopic.aml</localUri> template file).  An example is shown below:</para>
+VSTemplate file to accompany it.  This is an XML file with a <localUri>.vstemplate</localUri> extension.  The
+base filename should match the base filename of your template file (i.e. <localUri>BlankTopic.vstemplate</localUri>
+for the <localUri>BlankTopic.aml</localUri> template file).  An example is shown below:</para>
 
 <code language="xml" title="Example VSTemplate File: BlankTopic.vstemplate">
 &lt;VSTemplate Version="3.0.0" Type="Item"
@@ -242,18 +242,19 @@ paths.</para>
 			</listItem>
 
 			<listItem>
-				<para>Create the folder <localUri>[My Documents]\Visual Studio 2010\Templates\ItemTemplates\SHFBProject\</localUri>
-where "<localUri>[My Documents]</localUri>" is the location of your personal documents folder.  This is the root folder for your
-custom help file builder item template files.</para>
+				<para>Create the folder <localUri>[My Documents]\Visual Studio XXXX\Templates\ItemTemplates\SHFBProject\</localUri>
+where "<localUri>[My Documents]</localUri>" is the location of your personal documents folder and "XXXX" is the
+version of Visual Studio into which you want to add the templates.  This is the root folder for your custom help
+file builder item template files.</para>
 			</listItem>
 
 			<listItem>
-				<para>To separate your custom templates from the standard item templates, create a subfolder such
-as <localUri>.\Custom Templates</localUri> beneath the root folder created in the prior step.  This will make it easy
-to filter the list to your custom templates.  Additional subfolders can be used to further subcategorize the files as
-needed.  For example, if you want to categorize your templates as conceptual content or other content, create a
-<localUri>.\Conceptual Content</localUri> and/or <localUri>.\Other Content</localUri> subfolder beneath the
-custom templates folder.</para>
+				<para>To separate your custom templates from the standard item templates, create a subfolder such as
+<localUri>.\Custom Templates</localUri> beneath the root folder created in the prior step.  This will make it
+easy to filter the list to your custom templates.  Additional subfolders can be used to further sub-categorize
+the files as needed.  For example, if you want to categorize your templates as conceptual content or other
+content, create a <localUri>.\Conceptual Content</localUri> and/or <localUri>.\Other Content</localUri> subfolder
+beneath the custom templates folder.</para>
 			</listItem>
 			
 			<listItem>
@@ -261,8 +262,8 @@ custom templates folder.</para>
 			</listItem>
 
 			<listItem>
-				<para>When you open the <ui>Add New Item</ui> dialog, you should now see your custom
-templates listed in the appropriate location.  An example is shown below:</para>
+				<para>When you open the <ui>Add New Item</ui> dialog, you should now see your custom templates listed in
+the appropriate location.  An example is shown below:</para>
 
 				<mediaLink>
 					<image xlink:href="VSCustomTemplates" placement="center" />

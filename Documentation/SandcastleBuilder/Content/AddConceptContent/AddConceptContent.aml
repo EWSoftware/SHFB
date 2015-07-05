@@ -37,10 +37,9 @@ capabilities.  The main difference is that the XSL transformations are
 responsible for applying the style and formatting, not the elements in the
 MAML topics. It does take some getting used to but the end result is well
 worth it.  The look of the conceptual topics is much more consistent with that
-of the reference topics. As such, preference will be given to conceptual
-content when adding features to the help file builder.  While it will continue
-to support the older additional content models, they will not receive any
-further enhancements.</para>
+of the reference topics. As such, preference has been given to conceptual
+content when adding features to the help file builder.  Support for the older
+additional content model has been reduced to simple inclusion of the files.</para>
 
   </content>
 </section>

@@ -3,26 +3,34 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>Error BE0032: Reflection data files for the selected framework do not exist yet
-(<localUri>folderName</localUri>)</para>
+(<localUri>platform/version</localUri>)</para>
 		</introduction>
 
 		<section>
 			<title>Cause</title>
 			<content>
-				<para>This error will occur if the reflection data folder for the selected framework does not exist
-yet in the <localUri>%SHFBROOT%\Data\</localUri> folder.</para>
+				<para>This error will occur if the reflection data XML files for the selected framework do not exist
+yet.  For the standard reflection data set files supplied with the help file builder, these will reside in
+subfolders under the <localUri>%SHFBROOT%\Data\</localUri> folder, each named after the respective framework.</para>
 			</content>
 		</section>
 
 		<section>
 			<title>Solution</title>
 			<content>
-				<para>The files in the named folder are required to document members inherited from base framework
+				<para>The XML files in the named folder are required to document members inherited from base framework
 classes.  If you get this error, check to be sure that the <environmentVariable>SHFBROOT</environmentVariable>
 environment variable points to the latest copy of the Sandcastle Help File Builder and tools (usually in the
 <localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help File Builder</localUri> folder) and that a folder exists
 in the <localUri>.\Data\</localUri> folder named after the selected framework.  If it does not, you should
 reinstall the Sandcastle Help File Builder.</para>
+
+				<para>If using the Sandcastle Help File Builder NuGet package, it may mean that you need to install one
+or more of the help file builder Reflection Data Set packages which contain the necessary files.  If multiple
+versions of the platform package exist, install the latest release as it will cover all prior releases as well.
+Be sure to set the project's <codeInline>Component Path</codeInline> project property to the packages folder if
+it is not under the help file build project folder.  Once installed and the component path is set, you may need
+to close and reopen the project in order for it to detect the newly installed files.</para>
 
 			</content>
 		</section>

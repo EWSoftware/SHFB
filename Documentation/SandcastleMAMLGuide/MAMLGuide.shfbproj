@@ -166,7 +166,6 @@
     <Tokens Include="..\SandcastleBuilder\CommonTokens.tokens">
       <Link>CommonTokens.tokens</Link>
     </Tokens>
-    <Tokens Include="MAMLGuide.tokens" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Donate.aml" />

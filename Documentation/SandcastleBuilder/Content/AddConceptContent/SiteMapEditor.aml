@@ -94,11 +94,11 @@ from the topic file at build time.  It can be set for informational purposes whi
 acts as a toggle.  Check it on a topic to set it as the default.  If another topic was previously marked as the
 default topic, the option is removed from it.  Unchecking it on the same topic turns it off and no topic will be
 selected as the default topic.  In such cases, the root namespaces page will be the default topic for the help
-file.  When set, a green circle icon with a checkmark appears next to the topic in the content layout tree to
+file.  When set, a green circle icon with a check mark appears next to the topic in the content layout tree to
 indicate its status.</para>
 			
 				<alert class="note">
-					<para>This option only has an effect on Help 1, Help 2, and Website output.  MS Help Viewer does not
+					<para>This option only has an effect on Help 1, markdown, and website output.  MS Help Viewer does not
 support site maps or the deprecated additional content model.</para>
 				</alert>
 			</definition>

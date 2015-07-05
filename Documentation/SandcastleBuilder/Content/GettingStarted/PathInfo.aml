@@ -68,12 +68,12 @@ folder.  As such, the relative path to the assembly that will be documented and 
 modify it using the <codeInline>Help Content Output Path</codeInline> property.</para>
 
 				<alert class="warning">
-					<para>Be aware that if an option is selected that produces a website, the output folder specified by
-the <codeInline>Help Content Output Path</codeInline> property will be cleared of all of its current content
-without any prompting before the web site content is copied to it.  In other words, don't do something stupid
-like set it to the root of your C: drive or your desktop folder.  The help file builder will check for common
-special folders to prevent this from happening but always be sure to confirm the folder name that you enter.
-When producing a Help 1 (.chm), Help 2 (.HxS), and/or MS Help Viewer (.mshc) file without the website output
+					<para>Be aware that if an option is selected that produces a website or markdown output, the output
+folder specified by the <codeInline>Help Content Output Path</codeInline> property will be cleared of all of its
+current content without any prompting before the web site content is copied to it.  In other words, don't do
+something stupid like set it to the root of your C: drive or your desktop folder.  The help file builder will
+check for common special folders to prevent this from happening but always be sure to confirm the folder name
+that you enter.  When producing a Help 1 (.chm) and/or MS Help Viewer (.mshc) file without the website output
 format, the output folder is not cleared.</para>
 
 					<para>A similar warning applies to the <codeInline>Working Path</codeInline> property.  Its content is

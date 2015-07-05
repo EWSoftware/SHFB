@@ -14,13 +14,6 @@ comments.</para>
 			<content>
 				<list class="bullet">
 					<listItem>
-						<para><ui>MS Help 2 (.HxS) Viewer Path</ui> - This allows you to specify the path to an external
-application that can be used to view MS Help 2 (.HxS) files.  If you need one, see the
-<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download location of the
-<application>H2 Viewer</application>.</para>
-					</listItem>
-
-					<listItem>
 						<para><ui>Alternate MS Help Viewer (.mshc) Viewer Path</ui> - This allows you to specify the path to
 an external application that can be used to view MS Help Viewer (.mshc) files.  If you need one, see the
 <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download location of the
@@ -88,7 +81,7 @@ that you can diagnose the problem.</para>
 					<listItem>
 						<para><ui>Open help file after successful build</ui> - If enabled, the help file will be opened after
 a successful build.  The format opened will depend on the format chosen in the <codeInline>Help File Format</codeInline>
-project property.  Preference is given to Help 1, then Help 2, then MS Help Viewer, and finally website output.
+project property.  Preference is given to Help 1, then MS Help Viewer, markdown, and finally website output.
 In the standalone GUI, this option can also be toggled on and off via the <ui>Documentation | View Help File</ui>
 menu.</para>
 					</listItem>

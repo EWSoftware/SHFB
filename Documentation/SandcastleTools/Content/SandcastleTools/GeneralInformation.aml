@@ -56,12 +56,12 @@ means of documenting unmanaged native code assemblies with Sandcastle.  However,
 unmanaged API could be converted to a reflection information file, it would be possible to produce a help file.</para>
 
 				<para>It is important to note that Sandcastle itself does not generate the end result, a compiled help
-file such as a Help 1 (CHM), MS Help 2 (HxS), or an MS Help Viewer (MSHC) file.  Instead, it relies on
-third-party tools such as the Help 1 compiler in the HTML Help Workshop, the Help 2 compiler in the Visual Studio
-SDK, or the third-party front ends to compress the content into an MS Help Viewer archive.  The HTML output by
-Sandcastle is ready to use for website output but it lacks a front end to display the table of content in any
-meaningful way and does not provide for searching or a keyword index.  Third-party tools such as the Sandcastle
-Help File Builder can fill these gaps for you.</para>
+file such as a Help 1 file (CHM), an MS Help Viewer file (MSHC) file, or an Open XML document.  Instead, it
+relies on third-party tools such as the Help 1 compiler in the HTML Help Workshop or the third-party front ends
+to compress the content into an MS Help Viewer archive or Open XML document.  The HTML output by Sandcastle is
+ready to use for website output but it lacks a front end to display the table of content in any meaningful way
+and does not provide for searching or a keyword index.  Third-party tools such as the Sandcastle Help File
+Builder can fill these gaps for you.</para>
 			</content>
 		</section>
 

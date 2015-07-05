@@ -184,7 +184,6 @@
     <Folder Include="Content\VersionHistory\v1.8tov1.9.8.0" />
     <Folder Include="Content\VisualStudio" />
     <Folder Include="Content\VersionHistory\v1.0to1.7\" />
-    <Folder Include="Content\GettingStarted\ProjectConverters\" />
     <Folder Include="Content\ErrorsAndWarnings\ProjectFile\" />
     <Folder Include="Content\ErrorsAndWarnings\PlugIns\" />
     <Folder Include="Content\ErrorsAndWarnings\MSBuildTasks\" />
@@ -197,7 +196,6 @@
     <Folder Include="Content\GettingStarted\" />
     <Folder Include="Content\PropertiesWindow\" />
     <Folder Include="Content\AddConceptContent\" />
-    <Folder Include="Content\AddConceptContent\AddContent\" />
     <Folder Include="Content\AddConceptContent\ConceptContent\" />
     <Folder Include="Content\PlugIns\" />
     <Folder Include="Content\VersionHistory\" />
@@ -208,7 +206,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\AddConceptContent\AddContent.aml" />
-    <None Include="Content\AddConceptContent\ReplaceStock.aml" />
     <None Include="Content\AddConceptContent\SiteMapEditor.aml" />
     <None Include="Content\BenefitsAndFeatures.aml" />
     <None Include="Content\CompConfig\APITokenResolution.aml" />
@@ -252,6 +249,7 @@
     <None Include="Content\OpenXmlFormat.aml" />
     <None Include="Content\PlugIns\IntelliSenseOnlyPlugIn.aml" />
     <None Include="Content\PlugIns\LightweightWebsiteStylePlugIn.aml" />
+    <None Include="Content\PlugIns\ManualVisibilityApiFilterPlugIn.aml" />
     <None Include="Content\PlugIns\MemberIdFixUpsPlugIn.aml" />
     <None Include="Content\PropertiesWindow\BuildEvents.aml" />
     <None Include="Content\PropertiesWindow\ComponentConfigs.aml" />
@@ -259,6 +257,7 @@
     <None Include="Content\PropertiesWindow\SigningContent.aml" />
     <None Include="Content\PropertiesWindow\TransformComponentArgs.aml" />
     <None Include="Content\PropertiesWindow\UserDefinedProps.aml" />
+    <None Include="Content\ReplaceStock.aml" />
     <None Include="Content\TopicPreviewerWindow.aml" />
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.8.0.0.aml" />
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.8.0.1.aml" />
@@ -294,12 +293,10 @@
     <None Include="Content\PlugIns\WildcardReferencesPlugIn.aml" />
     <None Include="Content\PropertiesWindow\HelpLibraryManagerLauncher.aml" />
     <None Include="Content\AddConceptContent\ConceptContent\ContentPlacement.aml" />
-    <None Include="Content\AddConceptContent\AddContent\DeprecatedFeatures.aml" />
     <None Include="Content\CompConfig\MultiFormatOutputComponent.aml" />
     <None Include="Content\PropertiesWindow\DeployMSHC.aml" />
     <None Include="Content\PropertiesWindow\WebsiteProps.aml" />
     <None Include="Content\PropertiesWindow\MSHelpViewerProps.aml" />
-    <None Include="Content\PropertiesWindow\MSHelp2Props.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0069.aml" />
     <None Include="Content\VersionHistory\v1.0to1.7\v1.0to1.7.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0068.aml" />
@@ -372,21 +369,18 @@
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0005.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0006.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0039.aml" />
-    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0038.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0037.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0034.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0033.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0003.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0002.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0032.aml" />
-    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0031.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0030.aml" />
     <None Include="Content\ErrorsAndWarnings\Converters\CVT0006.aml" />
     <None Include="Content\ErrorsAndWarnings\Converters\CVT0005.aml" />
     <None Include="Content\ErrorsAndWarnings\Converters\CVT0004.aml" />
     <None Include="Content\ErrorsAndWarnings\Converters\CVT0003.aml" />
     <None Include="Content\ErrorsAndWarnings\Converters\CVT0002.aml" />
-    <None Include="Content\GettingStarted\ProjectConverters\ProjectConverters.aml" />
     <None Include="Content\VersionHistory\v1.0to1.7\v1.0.0.0.aml" />
     <None Include="Content\VersionHistory\v1.0to1.7\v1.0.0.1.aml" />
     <None Include="Content\VersionHistory\v1.0to1.7\v1.1.0.0.aml" />
@@ -417,13 +411,11 @@
     <None Include="Content\GettingStarted\ConsoleBuild.aml" />
     <None Include="Content\CustomBuild.aml" />
     <None Include="Content\CustomHdrFtr.aml" />
-    <None Include="Content\PropertiesWindow\DeployHelp2.aml" />
     <None Include="Content\Donate.aml" />
     <None Include="Content\LangRes.aml" />
     <None Include="Content\License.aml" />
     <None Include="Content\Links.aml" />
     <None Include="Content\GettingStarted\LogFile.aml" />
-    <None Include="Content\PropertiesWindow\NamedUrlIndex.aml" />
     <None Include="Content\GettingStarted\TeamBuild.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\Welcome.aml" />
@@ -449,12 +441,6 @@
     <None Include="Content\PropertiesWindow\ShowMissingProps.aml" />
     <None Include="Content\PropertiesWindow\VisProps.aml" />
     <None Include="Content\AddConceptContent\AddConceptContent.aml" />
-    <None Include="Content\AddConceptContent\AddContent\ColorizePreTags.aml" />
-    <None Include="Content\AddConceptContent\AddContent\DefineLayout.aml" />
-    <None Include="Content\AddConceptContent\AddContent\ImportCodeBlocks.aml" />
-    <None Include="Content\AddConceptContent\AddContent\RefLinks.aml" />
-    <None Include="Content\AddConceptContent\AddContent\SharedContent.aml" />
-    <None Include="Content\AddConceptContent\AddContent\TopicFileTransform.aml" />
     <None Include="Content\AddConceptContent\ConceptContent\ConceptContent.aml" />
     <None Include="Content\AddConceptContent\ConceptContent\ContentLayoutEditor.aml" />
     <None Include="Content\AddConceptContent\ConceptContent\Tokens.aml" />
@@ -472,11 +458,6 @@
     <None Include="Content\PlugIns\TocExcludePlugIn.aml" />
     <None Include="Content\PlugIns\VersionBuilderPlugIn.aml" />
     <None Include="Content\KnownIssues.aml" />
-    <None Include="Content\GettingStarted\ProjectConverters\PriorSHFBProject.aml" />
-    <None Include="Content\GettingStarted\ProjectConverters\NDoc1xProjects.aml" />
-    <None Include="Content\GettingStarted\ProjectConverters\DocProject1x.aml" />
-    <None Include="Content\GettingStarted\ProjectConverters\SandcastleGUI.aml" />
-    <None Include="Content\GettingStarted\ProjectConverters\ExampleGUIProjects.aml" />
     <None Include="Content\ProjectExplorer\ProjectExplorer.aml" />
     <None Include="Content\ErrorsAndWarnings\ProjectFile\PRJ0002.aml" />
     <None Include="Content\ErrorsAndWarnings\ProjectFile\PRJ0003.aml" />
@@ -504,7 +485,6 @@
     <None Include="Content\ProjectExplorer\References.aml" />
     <None Include="Content\ProjectExplorer\FileItems.aml" />
     <None Include="Content\ProjectExplorer\BuildActions.aml" />
-    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0066.aml" />
     <None Include="Content\PlugIns\BibliographySupport.aml" />
     <None Include="Content\PlugIns\AssemblyBindingRedirection.aml" />
   </ItemGroup>

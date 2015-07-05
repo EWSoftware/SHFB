@@ -151,10 +151,10 @@ assemblies and their associated XML comments files.</para>
           <term termId="Sandcastle">Sandcastle</term>
         </terms>
         <definition>
-          <para>Sandcastle is a set of tools produced by Microsoft that can be used to build help files for .NET
-managed libraries, conceptual content, or a mix of both.  Microsoft officially discontinued development in
-October 2012.  The Sandcastle tools have been merged with the <token>SHFB</token> project and are developed and
-supported there now as part of that project.</para>
+					<para>Sandcastle is a set of tools originally produced by Microsoft that can be used to build help
+files for .NET managed libraries, conceptual content, or a mix of both.  Microsoft officially discontinued
+development in October 2012.  The Sandcastle tools have been merged with the <token>SHFB</token> project and are
+developed and supported there now as part of that project.</para>
         </definition>
         <relatedEntry termId="SHFB" />
       </glossaryEntry>
@@ -171,7 +171,7 @@ which can also be built from the command line using MSBuild or integrated into V
 build scripts to produce a help file when your application projects are built.  In addition, it provides a set of
 additional features beyond those supplied with Sandcastle that can improve your help file and make it easier to
 deploy.  A Visual Studio integration package is also available for it that integrates the project management
-and build features into Visual Studio 2010 or later.</para>
+and build features into <token>VisualStudioMinVersion</token> or later.</para>
         </definition>
         <relatedEntry termId="Sandcastle" />
       </glossaryEntry>

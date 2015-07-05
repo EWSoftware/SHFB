@@ -19,7 +19,7 @@ member list pages.</para>
 						<para>If you have custom presentation styles, you will need to update your BuildAssembler
 configuration files by replacing the <localUri>Data\Reflection</localUri> path with a path to a specific
 framework (i.e. <localUri>Data\.NETFramework</localUri>).  If using the Sandcastle Help File Builder, replace
-the reference with the substitution tag as follows: <localUri>Data\{@TargetFrameworkIdentifier}</localUri>.</para>
+the reference with the substitution tag as follows: <localUri>{@FrameworkReflectionDataFolder}</localUri>.</para>
 					</listItem>
 					
 					<listItem>

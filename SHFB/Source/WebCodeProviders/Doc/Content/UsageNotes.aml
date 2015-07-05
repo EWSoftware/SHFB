@@ -4,7 +4,7 @@
     <introduction>
       <autoOutline />
       <para>A question that comes up with some regularity is how to produce a help file from the XML
-comments in the code for a web project using <token>Sandcastle</token>. There are two types of web project:
+comments in the code for a web project using the <token>SHFB</token>. There are two types of web project:
 a <legacyItalic>web application</legacyItalic> project and a <legacyItalic>website</legacyItalic> project
 (both include a web service and an AJAX-enabled variant of the project type). A web application project is
 the simplest to document as it generates a single assembly with a fixed name much like any other non-web
@@ -218,9 +218,6 @@ such, just add one entry with the path set to <localUri>[appPath]\bin\App_*.dll<
 <legacyItalic>[appPath]</legacyItalic> is the path to the published website and another entry with the path
 set to <localUri>[docPath]\App_*.xml</localUri> where <legacyItalic>[docPath]</legacyItalic> is the path to
 the XML comments files.</para>
-
-        <para><token>DocProject</token> 1.11.0 RC and later also supports wildcards in the
-<legacyBold>External Sources</legacyBold> dialog for assemblies and XML comments files.</para>
 
         <para>Since the code providers are not needed after the website is published, you can delete the
 <codeInline>system.codedom</codeInline> section from the published <localUri>Web.Config</localUri> file and
@@ -473,9 +470,7 @@ comments files for website projects in order to create help files for them.</par
     </section>
 
     <relatedTopics>
-      <token>Sandcastle</token>
       <token>SHFB</token>
-      <token>DocProject</token>
       <codeEntityReference qualifyHint="false">T:EWSoftware.CodeDom.CSharpCodeProviderWithDocs</codeEntityReference>
       <codeEntityReference qualifyHint="false">T:EWSoftware.CodeDom.VBCodeProviderWithDocs</codeEntityReference>
     </relatedTopics>

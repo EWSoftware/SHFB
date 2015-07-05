@@ -20,16 +20,6 @@ message stating that it could not be found.</para>
 			</content>
 		</section>
 
-		<section address="HXCompPath">
-			<title>MS Help 2 compiler path (HtmlHelp2xCompilerPath)</title>
-			<content>
-				<para>This property lets you specify the path to the MS Help 2 compiler (<localUri>HXCOMP.EXE</localUri>).
-By default, the builder will try to locate it automatically by searching the <localUri>Program Files</localUri>
-special folder on all fixed hard drives.  As such, you only need to specify the path if the build fails with a
-message stating that it could not be found.</para>
-			</content>
-		</section>
-
 		<section address="ComponentPath">
 			<title>Project-specific components path (ComponentPath)</title>
 			<content>
@@ -55,7 +45,7 @@ as the <codeInline>Working Path</codeInline> property as the working path folder
 folder specified by the <codeInline>Output Path</codeInline> property will be cleared of all of its current
 content without any prompting before the web site content is copied to it.  In other words, don't do something
 stupid like set it to the root of your C: drive or your desktop folder.    The help file builder will try to take
-steps to ensure this does not happen.  When producing Help 1, Help 2, and/or MS Help Viewer files, the output
+steps to ensure this does not happen.  When producing Help 1, MS Help Viewer, and/or Open XML files, the output
 folder is not cleared.</para>
 				</alert>
 

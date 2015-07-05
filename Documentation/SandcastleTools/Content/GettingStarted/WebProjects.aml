@@ -48,7 +48,7 @@ files</localUri> so you must locate and retrieve them after each build.</para>
     </list>
 
     <para>To work around the limitations present when documenting website projects, you can use the custom code
-providers made available with the Sandcastle tools installer (one for C# and one for VB.NET).  By using these
+providers made available with the Sandcastle Help File Builder (one for C# and one for VB.NET).  By using these
 code providers, you can specify a folder to which the XML comments files should be copied.  This saves you from
 having to locate and copy them manually and solves the issue of the C# compiler not being able to output one
 comments file per assembly.  Below are instructions for documenting each type of web project and information

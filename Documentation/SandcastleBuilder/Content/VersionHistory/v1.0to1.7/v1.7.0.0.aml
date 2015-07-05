@@ -523,11 +523,10 @@ paths for the deployment locations.  Relative file paths will be relative to the
 					<listItem>
 						<para>The table of contents entries for additional content items can now be split such that some
 appear before and some after the API topics.  The <codeInline>ContentPlacement</codeInline> property's setting
-will be ignored if the table of contents is split via a <link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link>
-in one of the additional content files or a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link>
-is defined that specifies a split table of contents.  In such cases, items prior to the entry with the "split"
-option will appear before the API content.  The item with the "split" option and all items after it will appear
-below the API content.</para>
+will be ignored if the table of contents is split via a custom tag in one of the additional content files or a
+<link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link> is defined that specifies a split table
+of contents.  In such cases, items prior to the entry with the "split" option will appear before the API content.
+The item with the "split" option and all items after it will appear below the API content.</para>
 					</listItem>
 
 					<listItem>
@@ -629,7 +628,7 @@ license used by Sandcastle itself.</para>
 				<para>A set of custom code providers is now available that simplifies obtaining XML comments files for C#
 and VB.NET website projects.  In combination with the new wildcard support in the help file builder's Assemblies
 to Document list, producing a help file for websites is now a much simpler task. Use the custom code providers
-available as part of the Sandcastle tools installer.</para>
+available as part of the Sandcastle Help File Builder.</para>
 			</content>
 		</section>
 

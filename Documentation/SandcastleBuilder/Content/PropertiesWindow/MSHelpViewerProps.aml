@@ -50,7 +50,7 @@ installation script.  If not set, it defaults to "100" to use the standard Visua
 	<content>
 		<para>This property is used to specify a non-standard MS Help Viewer 2.x content catalog name to use for the
 installation script.  If not set, it defaults to the default catalog based on the related version of Visual
-Studio, <codeInline>VisualStudio11</codeInline> for Visual Studio 2012 for example.</para>
+Studio, <codeInline>VisualStudio12</codeInline> for Visual Studio 2013 for example.</para>
 
 		<alert class="note">
 			<para>Typically, this property will be left blank to install the content into the same catalog as the
@@ -129,7 +129,6 @@ define where the MSDN links will open in the browser.</para>
 		<relatedTopics>
 			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
 			<link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1" />
-			<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
 			<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
 			<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" />
 			<link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />

@@ -121,8 +121,7 @@ saved as an absolute rather than a relative path.</para>
 
 					<listItem>
 						<para>It is now possible to resolve project option values and shared content items in additional
-content files.  See the <link xlink:href="8ea650b6-ab50-4288-a930-baf5b58a4cb0" /> help topic in the
-<link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" /> section for details.</para>
+content files.</para>
 					</listItem>
 
 					<listItem>

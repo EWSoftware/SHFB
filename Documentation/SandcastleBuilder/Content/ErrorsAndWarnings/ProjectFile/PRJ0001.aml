@@ -8,23 +8,19 @@
     <section>
       <title>Cause</title>
       <content>
-        <para>This error is caused by a missing schema version property in the
-project.</para>
+        <para>This error is caused by a missing schema version property in the project.</para>
       </content>
     </section>
 
     <section>
       <title>Solution</title>
       <content>
-        <para>The most likely cause of this error is that you have attempted
-to load a project file that is not valid for use with the current release of
-the help file builder.  Only projects using the newer MSBuild format can be
-loaded with version 1.8.0.0 and later.  Use the
-<link xlink:href="5864f501-6433-4bd3-825d-1843b9b27540">project converter</link>
-to convert older projects to the new format.</para>
-		<para>Another cause is loading an MSBuild project file that was not
-created by the help file builder.  Depending on what the project file is for,
-you may be able to convert it to the help file builder format too.</para>
+        <para>The most likely cause of this error is that you have attempted to load a project file that is not
+valid for use with the current release of the help file builder.  Only projects using the newer MSBuild format
+can be loaded with version 1.8.0.0 and later.  Recreate the project with the current help file builder release.</para>
+
+		<para>Another cause is loading an MSBuild project file that was not created by the help file builder.
+Depending on what the project file is for, you may be able to convert it to the help file builder format too.</para>
       </content>
     </section>
 

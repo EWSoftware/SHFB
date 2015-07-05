@@ -18,7 +18,7 @@ will be placed according to the <codeInline>Content Placement</codeInline> proje
 namespace topics.  If set to <codeInline>Below Namespaces</codeInline>, they will appear after the namespace
 topics.</para>
         
-    <para>In Help 1, Help 2, and Website output, if no conceptual content is present or no topic is marked as
+    <para>In Help 1, markdown, and website output, if no conceptual content is present or no topic is marked as
 the default topic, the root namespaces page will be selected as the default topic for the help file.</para>
       </content>
     </section>
@@ -33,8 +33,8 @@ editor</link>.</para>
 				<list class="bullet">
 					<listItem>
 						<para>The <ui>Use as the default topic</ui> option can be used to mark a conceptual topic as the
-default topic for Help 1, Help2, and Website output.  This option has no effect in MS Help Viewer files as there
-is no option to specify a default topic.</para>
+default topic for Help 1, markdown, and website output.  This option has no effect in MS Help Viewer files as
+there is no option to specify a default topic.</para>
 					</listItem>
 
 					<listItem>

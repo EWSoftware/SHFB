@@ -3,7 +3,7 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>Error BE0071: Unable to locate information for the project framework version
-'<legacyItalic>XXXX</legacyItalic>' or a suitable redirected version on this system</para>
+'<legacyItalic>XXXX</legacyItalic>' or a suitable redirected version on this system.</para>
 		</introduction>
 
 		<section>
@@ -24,7 +24,7 @@ will attempt to redirect usage to a later version of the framework if one can be
 specified version or a later version cannot be found, you will need to install the selected or later version of
 the framework specified in the project on the system.</para>
 
-				<para>The framework assemblies are search for in the Reference Assemblies folder
+				<para>The framework assemblies are searched for in the Reference Assemblies folder
 (<localUri>%ProgramFiles(x86)\Reference Assemblies\Microsoft\Framework</localUri>).  If you have not
 installed a version of Visual Studio related to the indicated framework version or the related targeting pack,
 the reference assemblies may not exist there.  The simplest solution is to download and install the appropriate
@@ -34,6 +34,14 @@ the reference assemblies may not exist there.  The simplest solution is to downl
 	<linkUri>http://msdn.microsoft.com/en-us/vstudio/dn250998.aspx</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink> or copy the reference assemblies from another system that does have them.</para>
+				
+				<para>If using the Sandcastle Help File Builder NuGet package, it may mean that you need to install one
+or more of the help file builder Reflection Data Set packages which contain the necessary files.  If multiple
+versions of the platform package exist, install the latest release as it will cover all prior releases as well.
+Be sure to set the project's <codeInline>Component Path</codeInline> project property to the packages folder if
+it is not under the help file build project folder.  Once installed and the component path is set, you may need
+to close and reopen the project in order for it to detect the newly installed files.</para>
+
 			</content>
 		</section>
 

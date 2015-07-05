@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="d377a638-6dfc-4041-ba7b-97561de26f0d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This plug-in can be used to manually apply the visibility settings and API filter from the project to
+the reflection data file if <application>MRefBuilder</application> is not used.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<alert class="important">
+					<para>Use of this plug-in is only necessary if the <legacyBold>Generate Reflection Information</legacyBold>
+build step is suppressed or replaced by some other means as in the AjaxDoc Builder plug-in for example.  In such
+cases, the visibility settings and API filter are not applied unless this plug-in is used.  If the reflection 
+information file is produced by <application>MRefBuilder.exe</application>, there is no need to use this plug-in
+as it will apply the visibility settings and API filter automatically to the file that it produces.</para>
+				</alert>
+
+				<para>This plug-in has no configurable options.  If used, it gets the visibility and API filter settings
+from the containing project.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -33,22 +33,30 @@ help file's window.</para>
 		<para>This property is used to specify the name of the resulting help file.  This name is used during the
 build process for a couple of other files so be sure that you do not specify a path or an extension on this
 value.  It should only specify the name part of the file.  The extension will always be <localUri>.chm</localUri>
-(HTML Help 1), <localUri>.HxS</localUri> (MS Help 2), or <localUri>.mshc</localUri> (MS Help Viewer) and the path
-is controlled via the <codeInline>Output Path</codeInline> property.</para>
+(HTML Help 1) or <localUri>.mshc</localUri> (MS Help Viewer) and the path is controlled via the
+<codeInline>Output Path</codeInline> property.</para>
 
 <alert class="note">
-  <para>For MS Help 2 builds, this name is used as the collection namespace name.  In such cases, spaces in the
-name are not allowed and, if any are found in the name, the build will fail.</para>
-
 	<para>This value will also be used as the suffix for the root namespace container page ID
 (<codeInline>R:Project_XXX</codeInline>) with spaces replaced by underscores.  This suffix is required to keep
-the root namespace container page ID unique across all help files so that there  are no duplicate IDs when
+the root namespace container page ID unique across all help files so that there are no duplicate IDs when
 generating MS Help Viewer output.</para>
 </alert>
   </content>
 </section>
 
-<section address="Language">
+		<section address="HelpFileVersion">
+			<title>Help file version (HelpFileVersion)</title>
+			<content>
+				<para>This property is used to specify the version number associated with the help file.  You can set it
+to match the version number of the product to which the help file belongs.  The value is a string which allows you
+to use custom project properties to define the value (i.e. <codeInline>{@Version}</codeInline> or
+<codeInline>{@Major}.{@Minor}.{@Build}.{@Revision}</codeInline>).  The property itself can be used as a
+substitution tag in other properties such as the header or footer text properties.</para>
+			</content>
+		</section>
+
+		<section address="Language">
   <title>Help file language (Language)</title>
   <content>
 		<para>This property allows you to specify the language to use for the compiled help file.  The default is to
@@ -368,9 +376,8 @@ and they are always placed in the <localUri>html/</localUri> folder.</para>
   <content>
 		<para>This property is used to choose the presentation style that determines the layout and appearance of
 the help topics.  Several styles are provided: <codeInline>VS2013</codeInline> (the default),
-<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, <codeInline>Markdown Content</codeInline>,
-<codeInline>VS2005</codeInline> (deprecated), <codeInline>Prototype</codeInline> (deprecated), and
-<codeInline>Hana</codeInline> (deprecated).  The files for each style are located in the
+<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, and
+<codeInline>Markdown Content</codeInline>.  The files for each style are located in the
 <localUri>.\PresentationStyles</localUri> folder under the main help file builder installation folder.</para>
 
 	</content>
@@ -405,13 +412,12 @@ table of contents.  By default, they will appear above the namespaces.  By setti
 <codeInline>Below namespaces</codeInline>, you can make the items appear below the namespace entries in the table
 of contents.</para>
 
-	<para>This property's setting will be ignored if the table of contents is split via a
-<link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link> in one of the additional content files,
-a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link> is defined that specifies a split table
-of contents, or <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual content</link> is defined with
-an entry marked as the split location.  In such cases, items prior to the entry with the "split" option will
-appear before the API content. The item with the "split" option and all items after it will appear below the API
-content.  See the <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" /> topic for more information.</para>
+	<para>This property's setting will be ignored if a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site
+map</link> is defined that specifies a split table of contents, or
+<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual content</link> is defined with an entry marked
+as the split location.  In such cases, items prior to the entry with the "split" option will appear before the
+API content. The item with the "split" option and all items after it will appear below the API content.  See the
+<link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" /> topic for more information.</para>
   </content>
 </section>
 

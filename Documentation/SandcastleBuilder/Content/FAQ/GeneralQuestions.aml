@@ -45,6 +45,34 @@ to determine the URL for a website link.</para>
 			</content>
 		</section>
 
+		<section address="BuildEvents">
+			<title>Why don't my project's pre-build and/or post-build events evaluate and run correctly?</title>
+			<content>
+				<para>Pre-build and post-build events were not always supported in help file builder projects.  Older
+projects created before they were supported do not contain the necessary properties and they will be incorrectly
+added to the first property group if modified in the property pages.</para>
+
+				<para>The pre-build and post-build event properties need to be added in a new property group at the very
+end of the project after the help file builder target file import as shown in the following example:</para>
+
+<code language="xml" title=" ">
+&lt;Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" /&gt;
+
+&lt;PropertyGroup&gt;
+	&lt;PreBuildEvent&gt;ECHO "Hello from the pre-build event"&lt;/PreBuildEvent&gt;
+	&lt;PostBuildEvent&gt;ECHO "Hello from the post-build event"&lt;/PostBuildEvent&gt;
+	&lt;RunPostBuildEvent&gt;OnBuildSuccess&lt;/RunPostBuildEvent&gt;
+&lt;/PropertyGroup&gt;
+</code>
+
+				<para>This is necessary to allow the <codeInline>PreBuildEvent</codeInline> and
+<codeInline>PostBuildEvent</codeInline> targets to be evaluated correctly.  They are imported from
+<localUri>Microsoft.Common.Targets</localUri>.  You can edit the help file builder project in a text editor and
+move the properties to the end of the file manually to correct the problem.</para>
+			
+			</content>
+		</section>
+
 		<relatedTopics>
 			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
 		</relatedTopics>

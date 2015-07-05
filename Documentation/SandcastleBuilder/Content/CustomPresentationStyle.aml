@@ -214,17 +214,17 @@ be relative to the presentation style's base path.</para>
 							</listItem>
 							<listItem>
 								<para>
-									<codeInline>MSHelp2</codeInline> - MS Help 2 (.HxS)
-								</para>
-							</listItem>
-							<listItem>
-								<para>
 									<codeInline>MSHelpViewer</codeInline> - MS Help Viewer (.mshc)
 								</para>
 							</listItem>
 							<listItem>
 								<para>
 									<codeInline>OpenXml</codeInline> - Open XML document (.docx)
+								</para>
+							</listItem>
+							<listItem>
+								<para>
+									<codeInline>Markdown</codeInline> - Markdown output
 								</para>
 							</listItem>
 							<listItem>

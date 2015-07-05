@@ -13,13 +13,13 @@
   <content>
 		<list class="bullet">
 			<listItem>
-				<para>The <externalLink>
-<linkText>.NET Framework 4.0</linkText>
-<linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&amp;displaylang=en</linkUri>
+				<para><externalLink>
+<linkText>Microsoft .NET Frameworks and SDKs</linkText>
+<linkUri>https://msdn.microsoft.com/en-us/vstudio/aa496123</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>.</para>
 			</listItem>
 			<listItem>
-				<para>The latest version of Microsoft's <token>Sandcastle</token> (currently the <token>SandcastleVersion</token>
+				<para>The latest version of the <token>SHFB</token> (currently the <token>SandcastleVersion</token>
 release as of <token>BuildDate</token>).</para>
 			</listItem>
 			<listItem>
@@ -71,20 +71,6 @@ usage see the <legacyBold>The Sandcastle MAML Guide</legacyBold> also included w
 </externalLink></para>
 	</listItem>
 </list>
-  </content>
-</section>
-
-<section address="BuildTools">
-  <title>Build and Project Management Tools</title>
-  <content>
-  	<list class="bullet">
-      <listItem>
-				<para><token>SHFB</token></para>
-      </listItem>
-      <listItem>
-				<para><token>DocProject</token></para>
-      </listItem>
-    </list>
   </content>
 </section>
 

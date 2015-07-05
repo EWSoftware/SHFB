@@ -21,8 +21,7 @@ the life of the project.</para>
 <link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />, and
 <link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" /> release notes as a significant number of changes
 occurred to the project file format and the standalone GUI across those releases.  Any existing projects will
-need to be <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">converted</link> to the new project file
-format before they can be used with the new version.</para>
+need to be converted to the new project file format before they can be used with the new version.</para>
 
 					<para>Other breaking changes may have been made since the last release you were using.  Please review
 the release notes from all releases after it to the latest to find changes that may require you to update your

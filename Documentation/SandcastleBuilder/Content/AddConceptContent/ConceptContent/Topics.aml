@@ -113,11 +113,11 @@ from the table of contents.</para>
 acts as a toggle.  Check it on a topic to set it as the default.  If another topic was previously marked as the
 default topic, the option is removed from it.  Unchecking it on the same topic turns it off and no topic will be
 selected as the default topic.  In such cases, the root namespaces page will be the default topic for the help
-file.  When set, a green circle icon with a checkmark appears next to the topic in the content layout tree to
+file.  When set, a green circle icon with a check mark appears next to the topic in the content layout tree to
 indicate its status.</para>
 			
 				<alert class="note">
-					<para>This option only has an effect on Help 1, Help 2, and Website output.  MS Help Viewer does not
+					<para>This option only has an effect on Help 1, markdown, and website output.  MS Help Viewer does not
 support the specification of a default topic.</para>
 				</alert>
 			</definition>
@@ -195,24 +195,6 @@ are added to it automatically at build time so there is no need to add them via 
 				</alert>
 			</definition>
 
-			<definedTerm>Help Attributes</definedTerm>
-			<definition>
-				<para>This grid allows you to add custom <codeInline>MSHelp:Attr</codeInline> attributes to the topic.
-In the grid for this property, enter the property name and the value for it.  Attribute values can contain
-<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution tags</link> which will be converted to their
-appropriate value at build time.  To delete an attribute, select it in the grid and hit the <ui>Delete</ui>
-key.</para>
-
-				<alert class="tip">
-					<para>Project-level help attributes in the project <codeInline>HelpAttributes</codeInline> property
-will be added automatically to each topic at build time and do not need to be added here.</para>
-				</alert>
-
-				<alert class="note">
-					<para>Attributes will only be added to MAML topics, not HTML files.</para>
-				</alert>
-			</definition>
-			
 		</definitionTable>
 
   </content>

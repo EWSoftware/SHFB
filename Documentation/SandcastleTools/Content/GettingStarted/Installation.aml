@@ -34,9 +34,9 @@ additional tools not included in the guided installation that you may find usefu
   <content>
 		<para>The latest version of the Sandcastle Help File Builder and Tools can always be found at the
 <token>SHFB</token> project site (<token>SandcastleVersion</token> when this help file was produced).
-The <externalLink><linkText>.NET Framework 4.0</linkText>
-<linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9CFB2D51-5FF4-4491-B0E5-B386F32C0992</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is required to run the tools.</para>
+The <externalLink><linkText>.NET Framework 4.5</linkText>
+<linkUri>https://msdn.microsoft.com/en-us/vstudio/aa496123</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> or later is required to run the tools.</para>
 			
 		<alert class="note">
   		<para>The underlying Sandcastle tools were originally created by Microsoft.  The help file builder uses
@@ -57,31 +57,13 @@ type:</para>
 </externalLink> for building HTML Help 1 (.chm) help files.</para>
 	</listItem>
 
-    <listItem>
-		<para>The MS Help 2 compiler for building MS Help 2 (.HxS) help files.  This must be downloaded and
-installed as part of the <externalLink>
-  <linkText>Visual Studio 2005 SDK v4.0</linkText>
-  <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=51A5C65B-C020-4E08-8AC0-3EB9C06996F4&amp;displaylang=en</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> or the
-<externalLink>
-  <linkText>Visual Studio 2008 SDK v1.0</linkText>
-  <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink>.  Note that the latest version of the Visual Studio 2008 SDK does not contain the Help 2 compiler
-so you must download the 1.0 version.  The latest release can be installed after it if you need it.</para>
-	</listItem>
-
 	<listItem>
 		<para>The Help Library Manager and Help Library Agent for installing and viewing MS Help Viewer (.mshc)
 help files.  These are installed as part of Visual Studio.</para>
 	</listItem>
 </list>
 
-	<para>The tools can be installed in any order.  Be aware that if installing the Visual Studio 2005 or 2008 SDK
-to obtain the Help 2 compiler that both contain outdated versions of the Sandcastle tools.  This old release can
-be ignored and should not cause any issues since the latest tools are installed in the same folder as the
-help file builder and it only looks there for them.</para>
+	<para>The tools can be installed in any order.</para>
 
 <alert class="note">
   <para>You may need to reboot the system in order for any environment variable changes to take effect.</para>
@@ -97,12 +79,6 @@ they be installed as well.</para>
 
 <list class="bullet">
     <listItem>
-		<para>To view MS Help 2 files without registering them, you can use the <externalLink><linkText>H2 Viewer</linkText>
-  <linkUri>http://www.helpwaregroup.com/products/h2viewer</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink> (free for personal use).</para>
-	</listItem>
-
-    <listItem>
 		<para>To view MS Help Viewer files with a full table of content and index support rather than in the
 default browser, you can use the <externalLink><linkText>H3 Viewer</linkText>
 <linkUri>http://mshcmigrate.helpmvp.com/viewer</linkUri>
@@ -110,18 +86,9 @@ default browser, you can use the <externalLink><linkText>H3 Viewer</linkText>
 	</listItem>
 
     <listItem>
-		<para>To register MS Help 2 files both for testing and as part of your product installation, download the
-shareware tool <externalLink>
-  <linkText>H2Reg.exe</linkText><linkUri>http://www.helpwaregroup.com/products/h2reg</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> from <externalLink><linkText>The Helpware Group</linkText>
-  <linkUri>http://www.helpwaregroup.com</linkUri><linkTarget>_blank</linkTarget> </externalLink>.</para>
-	</listItem>
-
-    <listItem>
-		<para>If you are going to document website projects, install the
+		<para>If you are going to document website projects, the
 <link xlink:href="2D292E99-83FF-4978-B1F8-CF70385C3B4F">Custom Web Code Providers</link> included as part of the
-Sandcastle tools installer.  These make it easy to document website projects by extracting the XML comments files
+Sandcastle Help File Builder make it easy to document website projects by extracting the XML comments files
 to a location of your choosing when the website is deployed.</para>
 	</listItem>
 
@@ -135,15 +102,6 @@ to a location of your choosing when the website is deployed.</para>
 them useful.</para>
 
 <list class="bullet">
-  <listItem>
-	  <para>If you are documenting .NET 1.1 applications and need the Help 2 compiler tools, you can download the
-<externalLink>
-  <linkText>Visual Studio .NET Help Integration Kit 2003</linkText>
-  <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink>.</para>
-	</listItem>
-
     <listItem>
 		<para>For a Visual Studio add-in used to create XML comments automatically, check out SubMain's
 <externalLink>
@@ -155,7 +113,7 @@ them useful.</para>
 
 	<listItem>
 		<para>If you need to convert HTML additional content topics to MAML, you can use the <legacyBold>HTML to MAML
-Converter</legacyBold> utility included with the Sandcastle tools installer.</para>
+Converter</legacyBold> utility included with the Sandcastle Help File Builder.</para>
 	</listItem>
 
 </list>

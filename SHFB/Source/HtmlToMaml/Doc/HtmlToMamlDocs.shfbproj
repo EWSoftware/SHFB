@@ -123,7 +123,9 @@
     <None Include="Content\ConversionRules\ConversionRulesElements\Remove.aml" />
   </ItemGroup>
   <ItemGroup>
-    <Tokens Include="Tokens.tokens" />
+    <Tokens Include="..\..\..\..\Documentation\SandcastleBuilder\CommonTokens.tokens">
+      <Link>CommonTokens.tokens</Link>
+    </Tokens>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />

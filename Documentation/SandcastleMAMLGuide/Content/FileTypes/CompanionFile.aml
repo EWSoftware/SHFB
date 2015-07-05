@@ -6,9 +6,8 @@
 particular conceptual topic.  There will be one companion file for each conceptual content topic.</para>
 
 			<alert class="note">
-				<para>If using a build tool such as the <token>SHFB</token> or <token>DocProject</token>, the companion
-files are created for you automatically as part of the build process and you do not need to maintain them
-yourself.</para>
+				<para>If using a build tool such as the <token>SHFB</token>, the companion files are created for you
+automatically as part of the build process and you do not need to maintain them yourself.</para>
 			</alert>
 		</introduction>
 

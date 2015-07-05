@@ -19,9 +19,9 @@ When set to <codeInline>MSDN</codeInline>, the
 define where the MSDN links will open in the browser.</para>
 
 				<alert class="note">
-					<para>This property is also used as the SDK link type setting for the Open XML help file format.  For
-the Open XML format, the SDK Link Target property is ignored and all MSDN links are opened in an external
-browser instance.</para>
+					<para>This property is also used as the SDK link type setting for the Open XML and Markdown help file
+formats.  For the Open XML format, the SDK Link Target property is ignored and all MSDN links are opened in an
+external browser instance.</para>
 				</alert>
 			</content>
 		</section>
@@ -29,7 +29,6 @@ browser instance.</para>
 		<relatedTopics>
 			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
 			<link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1" />
-			<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
 			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
 		</relatedTopics>
 

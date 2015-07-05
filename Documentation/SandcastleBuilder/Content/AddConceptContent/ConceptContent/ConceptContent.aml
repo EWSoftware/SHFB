@@ -16,14 +16,14 @@ match it in appearance and features.  This allows you to utilize the various bui
 the presentation style of the topics.</para>
 
 <alert class="tip">
-  <para>A guide to using MAML with Sandcastle is included with the Sandcastle tools installer.  Open it using the
-<legacyBold>Sandcastle MAML Guide</legacyBold> link in the <legacyBold>Sandcastle</legacyBold> group of the
-<legacyBold>All Programs</legacyBold> menu after installing Sandcastle.</para>
+  <para>A guide to using MAML with Sandcastle is included with the Sandcastle Help File Builder.  Open it using
+the <legacyBold>Sandcastle MAML Guide</legacyBold> link in the <legacyBold>Sandcastle Help File Builder</legacyBold>
+group of the <legacyBold>Start Menu</legacyBold> after installing the help file builder.</para>
 </alert>
 
 <alert class="tip">
   <para>If you need to convert HTML topics to MAML topics, the <legacyBold>HTML to MAML Converter</legacyBold> is
-also available as part of the Sandcastle tools installer.</para>
+also available as part of the extra tools included with the installer.</para>
 </alert>
     </introduction>
 

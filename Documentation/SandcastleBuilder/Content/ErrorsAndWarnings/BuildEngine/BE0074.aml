@@ -10,7 +10,7 @@ the selected help file formats.  Supported formats: <legacyItalic>YYYY</legacyIt
       <title>Cause</title>
       <content>
         <para>The presentation style selected in the help file builder project's <codeInline>PresentationStyle</codeInline>
-property does not support one or more of the selected output formats (Help 1, Help 2, MS Help Viewer, or Website).</para>
+property does not support one or more of the selected output formats (Help 1, MS Help Viewer, Markdown or Website).</para>
       </content>
     </section>
 
@@ -18,10 +18,9 @@ property does not support one or more of the selected output formats (Help 1, He
       <title>Solution</title>
       <content>
         <para>In order to be built correctly, the selected presentation style must support all of the selected
-help file output formats.  Certain styles may be written for a specific help file formats or, as in the case of
-the Prototype and Hana styles, have been deprecated and have not been updated to support later file formats such
-as MS Help Viewer.  Either unselect the unsupported format(s) or choose a different presentation style that does
-support the selected format(s).</para>
+help file output formats.  Certain styles may be written for a specific help file formats or may have been
+deprecated and have not been updated to support later file formats such as MS Help Viewer.  Either unselect the
+unsupported format(s) or choose a different presentation style that does support the selected format(s).</para>
       </content>
     </section>
 

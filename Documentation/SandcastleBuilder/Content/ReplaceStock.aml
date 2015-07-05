@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>It is possible to replace the stock content files that are included in each help file (style sheets,
+scripts, icons, images, etc.).  The stock content is copied from a presentation style sub-folders which can be
+found under the <localUri>.\PresentationStyles</localUri> folder of the root help file builder installation
+folder.  Each presentation style has its own folder such as <localUri>.\VS2010</localUri>,
+<localUri>.\VS2013</localUri>, etc.</para>
+    </introduction>
+
+<section>
+  <content>
+		<para>The folder structure for the content that gets added to each help file is the typically the same in
+each and consists of the following:</para>
+
+		<list class="bullet">
+			<listItem>
+				<para>The <localUri>icons\</localUri> folder contains stock help file images (i.e. for property icons,
+method icons, etc.).</para>
+			</listItem>
+			<listItem>
+				<para>The <localUri>scripts\</localUri> folder contains stock JavaScript files.</para>
+			</listItem>
+			<listItem>
+				<para>The <localUri>styles\</localUri> folder contains stock style sheets.</para>
+			</listItem>
+		</list>
+
+		<para>In addition, an <localUri>html\</localUri> folder is created when the help file is built to contain the
+help pages generated from the documented assemblies and conceptual content.  You can place additional HTML files
+to add to the project in a folder by the same name in your project or you can place them in the root of the
+project.  Be sure to use an appropriate relative path on image references or links to other HTML pages based on
+the folder in which you place the content.</para>
+
+		<para>Modifying the Sandcastle copy of the presentation files directly will affect all help files that you
+build with the help file builder.  For example, if you want to modify the style sheet for all projects you create
+with the help file builder, edit the <localUri>branding.css</localUri> files in the <localUri>.\styles</localUri>
+folders.  The files do not need to be added to your project in that case.  The downside to this approach is that
+you must maintain the changes with each new release of the help file builder.  In such cases, it is better to
+<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7">create your own presentation style</link> based on the
+existing one.</para>
+
+		<para>If you want to modify the files on a per project basis, that is when you would copy them to your
+project's folder.  By adding the file to the project that resides in a like-named folder and has the same
+filename, you can replace the default file of the same name copied by the presentation style. In the example
+above, you would do the following:</para>
+
+		<list class="ordered">
+			<listItem>
+				<para>Right click on the project name in the Solution Explorer window and select the option to add a new
+folder.  Call it <localUri>styles</localUri> to match the folder in the presentation style.</para>
+			</listItem>
+
+			<listItem>
+				<para>Copy the style sheet files from the presentation file folder to the new project folder.  For
+example, if using the VS2013 presentation style, copy the <localUri>branding.css</localUri>,
+<localUri>branding-Help1.css</localUri>, <localUri>branding-HelpViewer.css</localUri>, and
+<localUri>branding-Website.css</localUri> files from the <localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help
+File Builder\PresentationStyles\VS2013\styles</localUri> folder.</para>
+			</listItem>
+
+			<listItem>
+				<para>Modify the style sheet files as needed.  As an example, open the <localUri>branding.css</localUri>
+file in the project and change the <codeInline>collapsibleRegionTitle</codeInline> style's font and add a color
+entry to make the text green:</para>
+
+<code language="none" title=" ">
+.collapsibleRegionTitle {
+	font-family: Arial !important;
+	font-style: normal !important;
+	font-size: 3em;
+	color: green;
+	margin-top: 9px;
+	margin-bottom: 19px;
+	padding-top: 20px;
+	padding-bottom: 5px;
+	cursor: pointer;
+}
+</code>
+			</listItem>
+
+			<listItem>
+				<para>Save the changes, build the help project, and then open the resulting help file.  Note that the
+section headers are now larger and green.</para>
+			</listItem>
+
+			<listItem>
+				<para>Most of the styles are contained in the <localUri>branding.css</localUri> file.  The other files
+are format-specific overrides that change the styles slightly in the help format indicated by the filename
+suffix so that the topics look fairly consistent across all help formats.  You can view the HTML for the
+rendered topics to determine the elements and/or class names that may need modifying in the style sheet.</para>
+			</listItem>
+
+		</list>
+
+		<alert class="note">
+			<para>The presentation styles are all different and their files are not interchangeable.  As such, if you
+change the presentation style, you must copy the matching files from the new presentation style and modify them
+with your changes.</para>
+		</alert>
+		
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

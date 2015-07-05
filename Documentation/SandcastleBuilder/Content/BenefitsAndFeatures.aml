@@ -21,21 +21,15 @@ tools to take advantage of their features.</para>
 					</listItem>
 
 					<listItem>
-						<para>An extension package is available for Visual Studio 2010 and later that lets you create, manage,
-and build projects from within Visual Studio.  In addition to providing a familiar environment for project
-management, it also gives you access to the additional features provided by Visual Studio such as source control
-for your help file projects.</para>
+						<para>An extension package is available for <token>VisualStudioMinVersion</token> and later that lets
+you create, manage, and build projects from within Visual Studio.  In addition to providing a familiar
+environment for project management, it also gives you access to the additional features provided by Visual Studio
+such as source control for your help file projects.</para>
 					</listItem>
 
 					<listItem>
-						<para>The help file builder can produce an HTML Help 1 (.chm) file, an MS Help 2 (.HxS) file,
-an MS Help Viewer (.mshc) file, an Open XML (.docx) document, and/or a website.</para>
-					</listItem>
-
-					<listItem>
-						<para>The MS Help 2 output includes a valid set of collection files and an <localUri>H2Reg.exe</localUri>
-configuration file to simplify deployment and integration of the help file into existing collections such as those
-used by Visual Studio.</para>
+						<para>The help file builder can produce an HTML Help 1 (.chm) file, an MS Help Viewer (.mshc) file,
+an Open XML (.docx) document, a website, and/or markdown content.</para>
 					</listItem>
 
 					<listItem>
@@ -63,12 +57,6 @@ feature is available as well with support for ASP.NET, PHP, and client-side scri
 within the standalone GUI, from the command line using <application>MSBuild</application>, or in a post-build
 step for a Visual Studio project that runs <application>MSBuild</application>.  Support for full Visual Studio
 integration is also available with the above mentioned extension package.</para>
-					</listItem>
-
-					<listItem>
-						<para>A project file conversion option is provided to convert projects from other third-party tools
-such as NDoc, DocProject, SandcastleGUI, and the example GUI provided with Sandcastle to the help file builder's
-MSBuild project format.</para>
 					</listItem>
 
 					<listItem>
@@ -266,12 +254,6 @@ elements such as default constructors and finalizers.</para>
 IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API
 members.  This can greatly reduce the size of the IntelliSense files and removes all private implementation
 details when only documenting the public API.</para>
-					</listItem>
-
-					<listItem>
-						<para>A help attribute component that can be used to add extra <codeInline>MSHelp:Attr</codeInline>
-attributes to each generated API topic.  This is useful for adding extra <codeInline>DocSet</codeInline> and other
-attributes to the topics that are not added by the default Sandcastle transformations.</para>
 					</listItem>
 
 					<listItem>

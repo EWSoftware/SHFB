@@ -11,10 +11,11 @@
 		<section address="HelpFileFormats">
 			<title>Help file formats (HelpFileFormats)</title>
 			<content>
-				<para>This property lets you specify the type of help file to build (HTML Help 1, MS Help 2, MS Help
-Viewer, a website, an Open XML document, markdown content, or various combinations of these options when
-supported by the selected presentation style).  The default is to produce an HTML Help 1 format file.  To build
-multiple formats at the same time, put a check next to each type that you want to build concurrently.</para>
+				<para>This property lets you specify the type of help file to build (HTML Help 1, MS Help Viewer, a
+website, an Open XML document, markdown content, or various combinations of these options when supported by the
+selected presentation style).  The default is to produce an HTML Help 1 format file.  To build multiple formats
+at the same time, put a check next to each type that you want to build concurrently.  The Open XML and Markdown
+formats cannot be combined with other formats as they produce such drastically different output.</para>
 
 				<alert class="warning">
 					<para>Be aware that if an option is selected that produces a website or markdown content, the output
@@ -129,19 +130,6 @@ log file is always kept after a failed build.</para>
 disabled so that the <codeInline>&lt;code&gt;</codeInline> elements are rendered in their default format by the
 Sandcastle XSL transformations with no colorization.  The only thing it will do is import external code and
 normalize the leading whitespace.</para>
-
-			</content>
-		</section>
-
-		<section address="CppFixup">
-			<title>Fix up method signatures in C++ XML comments files (CppCommentsFixup)</title>
-			<content>
-				<para>This option is used to fix some issues with C++ XML comments.  The C++ compiler generates
-non-standard method signatures in the XML comments files in certain situations.  The methods affected usually
-involve generics.  The C++ compiler also has problems resolving references to some members if it has not seen
-them yet.  These are prefixed with "<codeInline>!:</codeInline>" which is removed by the fix-up code.  If you
-find some C++ methods that fail to get documented, set this project property to true to have the help file
-builder attempt to fix them up so that they can be documented.</para>
 
 			</content>
 		</section>

@@ -232,19 +232,10 @@ HTML encoded).</para>
   </row>
   <row>
     <entry>
-			<para>{@HXCompPath}</para>
+			<para>{@Help1xProjectFiles}</para>
 		</entry>
     <entry>
-			<para>This tag expands to the path to the MS Help 2 compiler.  This will be the path that the help builder
-found or the <codeInline>HtmlHelp2xCompilerPath</codeInline> project option if it is specified instead.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>{@Help1xProjectFiles} and {@Help2xProjectFiles}</para>
-		</entry>
-    <entry>
-			<para>These tags appear in the help file project templates and are used to return a list of all files that
+			<para>This tag appears in the help file project templates and is used to return a list of all files that
 should be compiled into the help file.</para>
 		</entry>
   </row>
@@ -378,21 +369,11 @@ its <codeInline>BuildAction</codeInline> set to <codeInline>ResourceItems</codeI
   </row>
   <row>
     <entry>
-			<para>{@StopWordFile}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the <codeInline>StopWordFile</codeInline> option in the Help 2 project file when
-the <codeInline>IncludeStopWordFile</codeInline> project property is set to true.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>{@SyntaxFilters} and {@SyntaxFiltersDropDown}</para>
 		</entry>
     <entry>
 			<para>These tags expand to the language filter components that determine which languages appear in the
-<legacyBold>Syntax</legacyBold> section of each help topic and the dropdown in the upper right corner of the
-topic in the Prototype style.</para>
+<legacyBold>Syntax</legacyBold> section of each help topic.</para>
 		</entry>
   </row>
   <row>
@@ -486,11 +467,11 @@ installation folder.</para>
   </tableHeader>
   <row>
     <entry>
-			<para>Build1xHelpFile.proj, Build2xHelpFile.proj, BuildHelpViewerFile.proj</para>
+			<para>Build1xHelpFile.proj, BuildHelpViewerFile.proj, BuildOpenXmlFile.proj, GenerateMarkdownContent.proj</para>
 		</entry>
     <entry>
-			<para>These MSBuild projects are used to build the HTML Help 1 and MS Help 2 help file projects
-respectively and copy the resulting help file and supporting files to the project's output folder.  The
+			<para>These MSBuild projects are used to build the HTML Help 1, MS Help Viewer, Open XML, and markdown help
+projects respectively and copy the resulting output and supporting files to the project's output folder.  The
 MS Help Viewer version simply copies the supporting files to the project's output folder as the build engine
 compresses the topics into the archive that becomes the MSHC file.</para>
 		</entry>
@@ -525,12 +506,11 @@ encountered while using the HTML Help 1 compiler with certain languages that req
   </row>
   <row>
     <entry>
-			<para>GenerateIntermediateTOC.proj and Generate2xTOC.proj</para>
+			<para>GenerateIntermediateTOC.proj</para>
 		</entry>
     <entry>
-			<para>These MSBuild projects are used to generate the intermediate table of contents file and the MS Help 2
-specific table of contents file by performing an XSL transformation on the <localUri>reflection.xml</localUri>
-file.</para>
+			<para>This MSBuild projects is used to generate the intermediate table of contents file by performing an
+XSL transformation on the <localUri>reflection.xml</localUri> file.</para>
 		</entry>
   </row>
   <row>
@@ -545,33 +525,11 @@ contains information about the types in each assembly.</para>
   </row>
   <row>
     <entry>
-			<para>Hana.xsl, Prototype.xsl, and VS2005.xsl</para>
-		</entry>
-    <entry>
-			<para>These are the default XSL transformation files used to convert additional content <localUri>.topic</localUri>
-files into HTML files if a user-defined transformation file is not supplied.</para>
-
-			<alert class="warning">
-				<para>This feature has been deprecated in favor of using conceptual content.  While it will continue to
-be supported in the near term, it will receive no future enhancements and will eventually be removed.</para>
-			</alert>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>Help1x.hhp</para>
 		</entry>
     <entry>
 			<para>This is the help file project template for HTML Help 1 help files.  This defines the basic help file
 options and the help window properties.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>Help2x*.*</para>
-		</entry>
-    <entry>
-			<para>This set of files defines the help file project templates for MS Help 2 help files.</para>
 		</entry>
   </row>
 	<row>

@@ -45,8 +45,7 @@ file project from the command line or in automated scripts.</para>
 			<listItem>
 				<para>Due to the change in format, help file builder projects from prior versions will need to be
 converted before use with the latest release.  Once converted, they cannot be changed back or used with prior
-versions of the help file builder.  See the <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" /> topic for
-details.</para>
+versions of the help file builder.</para>
 			</listItem>
 
 			<listItem>
@@ -334,11 +333,10 @@ to update the available items if you make changes to their related project files
 
 			<definedTerm>New Project From NDoc Project/Visual Studio Project</definedTerm>
 			<definition>
-				<para>The option to create a new project from an NDoc project (or
-<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">various other project types</link>) can be found in the
-<ui>File | New Project from Other Format</ui> menu option.  The option to create a project from a Visual Studio
-solution or project has been removed.  Visual Studio 2005/2008 solution and project files are supported natively
-as documentation sources.</para>
+				<para>The option to create a new project from an NDoc project (or various other project types) can be
+found in the <ui>File | New Project from Other Format</ui> menu option.  The option to create a project from a
+Visual Studio solution or project has been removed.  Visual Studio 2005/2008 solution and project files are
+supported natively as documentation sources.</para>
 			</definition>
 
 			<definedTerm>Locating Third-Party Custom Build Components, Plug-Ins, and User-Defined Templates</definedTerm>

@@ -27,7 +27,7 @@ to alter the paths below if you installed Visual Studio and/or Sandcastle in dif
 			<content>
 				<para>Create a subfolder named <localUri>MAML</localUri> under Visual Studio's global schema
 cache folder which is located at <localUri>%ProgramFiles%\Microsoft Visual Studio [x.x]\Xml\Schemas</localUri> where
-"<localUri>[x.x]</localUri>" is each version of Visual studio such as "9.0" (VS 2008) and "10.0" (VS 2010).  You
+"<localUri>[x.x]</localUri>" is each version of Visual studio such as "12.0" (VS 2013) and "14.0" (VS 2015).  You
 can repeat the following steps for each version of Visual Studio that you have installed.</para>
 			</content>
 		</step>

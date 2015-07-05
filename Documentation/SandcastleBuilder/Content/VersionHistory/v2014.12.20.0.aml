@@ -20,7 +20,7 @@ allows for only the framework-specific base class members to be included on the 
 
 						<para>If you have custom presentation styles, you will need to update your BuildAssembler
 configuration files by replacing the <localUri>Data\Reflection</localUri> path with the substitution tag as
-follows: <localUri>Data\{@TargetFrameworkIdentifier}</localUri>.</para>
+follows: <localUri>{@FrameworkReflectionDataFolder}</localUri>.</para>
 					</listItem>
 
 					<listItem>

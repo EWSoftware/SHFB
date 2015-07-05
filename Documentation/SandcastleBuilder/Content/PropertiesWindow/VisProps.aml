@@ -156,7 +156,20 @@ Examples of these types are the Microsoft Office reference assemblies used in Of
 
   </content>
 </section>
-		
+
+<section address="PubCompGen">
+  <title>Public compiler generated types and members</title>
+  <content>
+		<para>When set to false, the default, the help file builder will remove all compiler generated types and
+members from the help file.  This is usually the desired behavior as compiler generated types are typically
+internal constructs that are not wanted in the help file.  However, in some cases, the compiler generated types
+may be wanted such as for compiler generated resource classes or data access classes.  When true, such types and
+members are included but only if they are public.  Any private, internal, and protected compiler generated types
+and members will still be removed.</para>
+
+  </content>
+</section>
+
 <section address="DocProtInt">
   <title>Document "protected internal" members as "protected" instead (DocumentProtectedInternalAsProtected)</title>
   <content>

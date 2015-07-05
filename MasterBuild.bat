@@ -39,8 +39,14 @@ REM Skip help file and setup build if there is no reflection data yet
 IF EXIST %SHFBROOT%\Data\.NETFramework\*.xml GOTO ReflectionDataExists
 
 ECHO *
-ECHO * Reflection data does not exist for the frameworks.  Building default set for the latest version
-ECHO * of the .NETFramework platform on this system.  See the ReadMe.txt file for more information.
+ECHO *
+ECHO * Reflection data does not exist for the frameworks.  Building default
+ECHO * set for the latest version of the .NETFramework platform on this
+ECHO * system.  See the System Requirements and Building the Code wiki topic
+ECHO * for topic for more information:
+ECHO *
+ECHO * https://github.com/EWSoftware/SHFB/wiki/System-Requirements-and-Building-the-Code
+ECHO *
 ECHO *
 
 %SHFBROOT%ReflectionDataManager /platform:.NETFramework

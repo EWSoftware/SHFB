@@ -47,7 +47,7 @@ element.  An example is shown below (lines wrapped for display purposes):</para>
 &lt;PropertyGroup&gt;
 	&lt;!-- NOTE: Update the version number in the path to match the package version --&gt;
 	&lt;SHFBROOT Condition=" '$(SHFBROOT)' == '' "&gt;$(MSBuildThisFileDirectory)..\packages\
-EWSoftware.SHFB.2014.11.22.0\Tools\&lt;/SHFBROOT&gt;
+EWSoftware.SHFB.2015.5.2.0\Tools\&lt;/SHFBROOT&gt;
 
 	... other SHFB project properties ...
 
@@ -59,10 +59,10 @@ tools where the environment variable is defined but still allow it to be built o
 deployment.</para>
 
 				<alert class="important">
-					<para>The Help 1 and MS Help 2 help file formats are unsupported in the XCOPY/NuGet deployment scenario
-as they require additional tools and components to be installed.  If these tools and components are missing on
-the build server, the help file build will fail.  Only the Website, MS Help Viewer, and Open XML help file
-formats are guaranteed to work as they have no external tool dependencies.</para>
+					<para>The Help 1 file format is unsupported in the XCOPY/NuGet deployment scenario as it requires
+additional tools and components to be installed.  If these tools and components are missing on the build server,
+the help file build will fail.  Only the MS Help Viewer, Open XML, website, and markdown help file formats are
+guaranteed to work as they have no external tool dependencies.</para>
 				</alert>
 			</content>
 		</section>

@@ -4,10 +4,6 @@
   xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
   xmlns:xlink="http://www.w3.org/1999/xlink">
 
-  <item id="DocProject"><ddue:externalLink>
-    <ddue:linkText>DocProject</ddue:linkText>
-    <ddue:linkUri>http://DocProject.CodePlex.com</ddue:linkUri>
-</ddue:externalLink></item>
   <item id="Sandcastle"><ddue:externalLink>
     <ddue:linkText>Sandcastle</ddue:linkText>
     <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>

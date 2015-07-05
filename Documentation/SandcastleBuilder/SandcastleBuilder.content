@@ -59,36 +59,6 @@
         <HelpKeyword index="K" term="Getting started, create a new project" />
       </HelpKeywords>
     </Topic>
-    <Topic id="f68822d2-97ba-48da-a98b-46747983b4a0" visible="True" title="Project File Converters">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="converters, all" />
-      </HelpKeywords>
-      <Topic id="5864f501-6433-4bd3-825d-1843b9b27540" visible="True" title="SHFB v1.7.0.0 or Earlier Converter">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="converters, SHFB v1.7.0.0 or earlier" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="0a38fb2a-1166-4a4f-bd76-12390655df5c" visible="True" title="NDoc 1.x Converter">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="converters, NDoc 1.x" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="6236b6e2-b27f-45d6-a8de-7a7913ff7ce1" visible="True" title="DocProject 1.x Converter">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="converters, DocProject 1.x" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="b91996c3-4c92-4c99-8958-92ce04bca0f9" visible="True" title="SandcastleGUI 1.x Converter">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="converters, SandcastleGUI 1.x" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="14a10de0-b38b-403d-8fc3-4d36a737e3b3" visible="True" title="Sandcastle Example GUI Converter">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="converters, example GUI" />
-        </HelpKeywords>
-      </Topic>
-    </Topic>
     <Topic id="576b6a36-0808-4857-bec0-e6eeeae4e36b" visible="True" title="Relative and Absolute Paths">
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, absolute and relative paths" />
@@ -238,7 +208,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, BuildLogFile" />
         <HelpKeyword index="K" term="properties, CleanIntermediates" />
-        <HelpKeyword index="K" term="properties, CppCommentsFixup" />
         <HelpKeyword index="K" term="properties, DisableCodeBlockComponent" />
         <HelpKeyword index="K" term="properties, FrameworkVersion" />
         <HelpKeyword index="K" term="properties, HelpFileFormat" />
@@ -283,42 +252,10 @@
         <HelpKeyword index="K" term="property categories, Website" />
       </HelpKeywords>
     </Topic>
-    <Topic id="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" visible="True" title="MS Help 2 Category Properties">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="properties, CollectionTocStyle" />
-        <HelpKeyword index="K" term="properties, HelpAttributes" />
-        <HelpKeyword index="K" term="properties, HelpFileVersion" />
-        <HelpKeyword index="K" term="properties, IncludeStopWordList" />
-        <HelpKeyword index="K" term="properties, MSHelp2SdkLinkType" />
-        <HelpKeyword index="K" term="properties, PlugInNamespaces" />
-        <HelpKeyword index="K" term="property categories, MS Help 2" />
-      </HelpKeywords>
-      <Topic id="74664b00-b83f-450a-833a-25984ba812e3" visible="True" title="Named URL Index Support">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="NamedUrlIndex" />
-          <HelpKeyword index="K" term="named URL index, NamedUrlIndex" />
-          <HelpKeyword index="K" term="named URL index, AboutPageIcon" />
-          <HelpKeyword index="K" term="named URL index, AboutPageInfo" />
-          <HelpKeyword index="K" term="named URL index, DefaultPage" />
-          <HelpKeyword index="K" term="named URL index, EmptyIndexTerm" />
-          <HelpKeyword index="K" term="named URL index, FilterEditPage" />
-          <HelpKeyword index="K" term="named URL index, HomePage" />
-          <HelpKeyword index="K" term="named URL index, NavFailPage" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" visible="True" title="Deploying an MS Help 2 File">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="deployment, MS Help 2" />
-          <HelpKeyword index="K" term="HXS" />
-          <HelpKeyword index="K" term="MS Help 2" />
-        </HelpKeywords>
-      </Topic>
-    </Topic>
     <Topic id="5f743a6e-3239-409a-a8c1-0bff4b5375f4" visible="True" title="MS Help Viewer Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, MSHelpViewerSdkLinkType" />
         <HelpKeyword index="K" term="properties, ProductTitle" />
-        <HelpKeyword index="K" term="properties, SelfBranded" />
         <HelpKeyword index="K" term="properties, TocOrder" />
         <HelpKeyword index="K" term="properties, TocParentId" />
         <HelpKeyword index="K" term="properties, TocParentVersion" />
@@ -346,7 +283,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" isExpanded="true" title="Summaries Category Properties">
+    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Summaries Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, NamespaceSummaries" />
         <HelpKeyword index="K" term="properties, ProjectSummary" />
@@ -408,7 +345,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="property categories, Paths" />
         <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
-        <HelpKeyword index="K" term="properties, HtmlHelp2xCompilerPath" />
         <HelpKeyword index="K" term="properties, OutputPath" />
         <HelpKeyword index="K" term="properties, ComponentPath" />
         <HelpKeyword index="K" term="properties, WorkingPath" />
@@ -467,7 +403,7 @@
       <HelpKeyword index="K" term="resource item file editor" />
     </HelpKeywords>
   </Topic>
-  <Topic id="5292ce5c-fda1-4a77-9155-a11755ef1730" visible="True" title="Conceptual and Additional Content">
+  <Topic id="5292ce5c-fda1-4a77-9155-a11755ef1730" visible="True" isExpanded="true" title="Conceptual and Additional Content">
     <HelpKeywords>
       <HelpKeyword index="K" term="additional content, general overview" />
       <HelpKeyword index="K" term="conceptual content, general overview" />
@@ -501,46 +437,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="additional content, overview" />
       </HelpKeywords>
-      <Topic id="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" visible="True" title="Deprecated Features">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="additional content, deprecated features" />
-        </HelpKeywords>
-        <Topic id="d80219be-54ba-4c5f-8903-83ef29fbaa00" visible="True" title="Syntax Highlighting &lt;pre&gt; Tag Content">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, syntax highlighting code" />
-          </HelpKeywords>
-        </Topic>
-        <Topic id="1863a4d7-61b6-4dde-862d-a358d0cfbd54" visible="True" title="Importing and Colorizing Code from Source Files">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, import code blocks" />
-          </HelpKeywords>
-        </Topic>
-        <Topic id="8ea650b6-ab50-4288-a930-baf5b58a4cb0" visible="True" title="Project Properties and Shared Content">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, resolve project property values" />
-            <HelpKeyword index="K" term="additional content, resolve shared content" />
-          </HelpKeywords>
-        </Topic>
-        <Topic id="3e3772fb-f8d2-49cf-8199-5f61f2d57ce8" visible="True" title="Linking to Namespace Content">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, &lt;see&gt; tag" />
-            <HelpKeyword index="K" term="additional content, cref attribute" />
-            <HelpKeyword index="K" term="additional content, resolve reference links" />
-            <HelpKeyword index="K" term="XML comment tags, see (in additional content)" />
-          </HelpKeywords>
-        </Topic>
-        <Topic id="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589" visible="True" title="Defining the Table of Contents Layout">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, table of contents layout (folder based)" />
-          </HelpKeywords>
-        </Topic>
-        <Topic id="a31e4dd4-7466-4c12-b734-60bd50fc91af" visible="True" title="Topic File Transformation">
-          <HelpKeywords>
-            <HelpKeyword index="K" term="additional content, presentation style look and feel" />
-            <HelpKeyword index="K" term="additional content, XSL transformation" />
-          </HelpKeywords>
-        </Topic>
-      </Topic>
     </Topic>
     <Topic id="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" visible="True" title="Site Map File Editor">
       <HelpKeywords>
@@ -548,15 +444,8 @@
         <HelpKeyword index="K" term="additional content, table of contents layout (site map based)" />
       </HelpKeywords>
     </Topic>
-    <Topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" visible="True" title="Replacing Stock Content">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="additional content, replace stock content" />
-        <HelpKeyword index="K" term="additional content, style sheet" />
-        <HelpKeyword index="K" term="change style" />
-      </HelpKeywords>
-    </Topic>
   </Topic>
-  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
+  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" isExpanded="true" title="Build Process Plug-Ins">
     <HelpKeywords>
       <HelpKeyword index="K" term="plug-ins, configuring" />
       <HelpKeyword index="K" term="plug-ins, overview" />
@@ -617,6 +506,11 @@
     <Topic id="0acf46fe-e7c3-4f3f-a4ca-df86f3630286" visible="True" title="Lightweight Website Style Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, lightweight website style plug-in" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d377a638-6dfc-4041-ba7b-97561de26f0d" visible="True" title="Manual Visibility/API Filter Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, manual visibility/API filter plug-in" />
       </HelpKeywords>
     </Topic>
     <Topic id="17d977a6-e3dc-4ef4-9bbf-718ef4823854" visible="True" title="Member ID Fix-Ups Plug-In">
@@ -888,12 +782,7 @@
           <HelpKeyword index="K" term="errors, BE0030" />
         </HelpKeywords>
       </Topic>
-      <Topic id="8e2f5ce6-0815-4635-949d-4b314926bb3d" visible="True" title="BE0031: For MS Help 2 builds, the HtmlHelpName property cannot contain spaces">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0031" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="bc38b398-4cca-4972-b4b5-966def8428b4" visible="True" title="BE0032: Reflection data files do not exist yet">
+      <Topic id="bc38b398-4cca-4972-b4b5-966def8428b4" visible="True" title="BE0032: Reflection data files for the selected framework do not exist yet">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0032" />
         </HelpKeywords>
@@ -911,11 +800,6 @@
       <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path the the HTML Help 1 compiler">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0037" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="b9604d2f-3c75-4b84-9164-82e2dbaa75e5" visible="True" title="BE0038: Could not find the path the the MS Help 2 compiler">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0038" />
         </HelpKeywords>
       </Topic>
       <Topic id="2d72ecc9-b388-44f4-a76a-5786ca708b4f" visible="True" title="BE0039: The project does not have any documentation sources defined">
@@ -1055,11 +939,6 @@
           <HelpKeyword index="K" term="errors, BE0065" />
         </HelpKeywords>
       </Topic>
-      <Topic id="e4c00c10-9368-4790-b1c4-4a47adeb2af9" visible="True" title="BE0066: The HelpFileVersion property value '[value]' is not in the correct format">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0066" />
-        </HelpKeywords>
-      </Topic>
       <Topic id="355bb237-acf6-4df8-bfc6-d89736837abb" visible="True" title="BE0067: Unable to obtain assembly name from project file">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0067" />
@@ -1085,7 +964,7 @@
           <HelpKeyword index="K" term="errors, BE0071" />
         </HelpKeywords>
       </Topic>
-      <Topic id="d91955b7-1b2d-421b-8d75-b364afcad41e" visible="True" title="BE0072: Project framework version '{0}' not found.  It has been redirected.">
+      <Topic id="d91955b7-1b2d-421b-8d75-b364afcad41e" visible="True" title="BE0072: Project framework version 'XXXX' not found.  It has been redirected.">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, BE0072" />
         </HelpKeywords>
@@ -1329,6 +1208,13 @@
       </Topic>
     </Topic>
   </Topic>
+  <Topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" visible="True" isSelected="true" title="Replacing Stock Presentation Style Content">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="additional content, replace stock content" />
+      <HelpKeyword index="K" term="additional content, style sheet" />
+      <HelpKeyword index="K" term="change style" />
+    </HelpKeywords>
+  </Topic>
   <Topic id="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" visible="True" title="Localizing Language Resource Files">
     <HelpKeywords>
       <HelpKeyword index="K" term="customize, language resource files" />
@@ -1448,7 +1334,7 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="e2fcc636-0781-4232-8c7e-fb5edbe40026" visible="True" isSelected="true" title="Version 2015.5.2.0">
+    <Topic id="e2fcc636-0781-4232-8c7e-fb5edbe40026" visible="True" title="Version 2015.5.2.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2015.5.2.0" />
       </HelpKeywords>

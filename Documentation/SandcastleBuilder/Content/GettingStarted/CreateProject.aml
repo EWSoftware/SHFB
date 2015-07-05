@@ -89,14 +89,14 @@ what they mean and possible solutions to fix the problem.</para>
                 <alert class="note">
                   <para>The build process can consume a lot of memory and, if your system has less than 1GB, it
 may take much more time to complete a build.  Another factor that can affect the build time are the
-<codeInline>Html SDK Link Type</codeInline>, <codeInline>MS Help 2 SDK Link Type</codeInline>,
-<codeInline>MS Help Viewer SDK Link Type</codeInline>, and <codeInline>Website SDK Link Type</codeInline> project
-property settings.  By default, they are all set to <codeInline>MSDN</codeInline> which causes the
-<application>BuildAssembler</application> tool to contact the MSDN web service to resolve links to online content
-for all .NET Framework types and members.  If your internet connection is slow, the resulting build will take longer.
-See the documentation for the above noted SDK link type properties for information on their possible values and the
-<link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build components</link> topic for information on how
-you can reduce the build time.</para>
+<codeInline>Html SDK Link Type</codeInline>, <codeInline>MS Help Viewer SDK Link Type</codeInline>, and
+<codeInline>Website SDK Link Type</codeInline> project property settings.  By default, they are all set to
+<codeInline>MSDN</codeInline> which causes the <application>BuildAssembler</application> tool to contact the MSDN
+web service to resolve links to online content for all .NET Framework types and members.  If your internet
+connection is slow, the resulting build will take longer.  See the documentation for the above noted SDK link
+type properties for information on their possible values and the
+<link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build components</link> topic for information on
+how you can reduce the build time.</para>
                 </alert>
 
                 <alert class="note">
@@ -111,14 +111,8 @@ for the workaround.</para>
               <content>
                 <para>Once the build process finishes, you can select the <ui>Documentation | View Help File</ui> menu
 option to view the help file.  The default <ui>View Help File</ui> option displays the help format based on which type
-or types where built (Help 1, Help 2, MS Help Viewer, or website).  You can also select a specific help format to view
+or types where built (Help 1, MS Help Viewer, Markdown, or website).  You can also select a specific help format to view
 if multiple formats were built as determined by the <codeInline>Help File Format</codeInline> project property.</para>
-
-                <alert class="note">
-                  <para>In order to view MS Help 2 files, a separate viewer application is required and must be
-defined in the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />.  See the
-<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for information on how to obtain one.</para>
-                </alert>
 
                 <alert class="note">
                   <para>The ASP.NET website is started using the built-in development web server supplied with .NET 2.0
@@ -136,45 +130,6 @@ welcome topic for some general information on adding and managing conceptual con
 on conceptual content.  See the <legacyBold>Sandcastle MAML Guide</legacyBold> help file for more information on
 the MAML elements that are used to create conceptual topic files.</para>
 
-        <para>If you have been using a different documentation tool, you may be able to create a Sandcastle Help File
-Builder project based on the other tool's project file.</para>
-
-        <procedure>
-          <title>Create a New Project From Another Project Format</title>
-          <steps class="ordered">
-            <step>
-              <content>
-                <para>Select <ui>File | New Project from Other Format</ui></para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>Select the <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">project format</link>
-from the dropdown.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>Enter the project name to be converted or click the "..." button to the right of the textbox
-to browse for a project to convert.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>Enter the folder name in which to place the converted project and its related files or click
-the "..." button to the right of the textbox to browse for a location.  This folder must be different from the folder
-containing the source project being converted.  The folder will be created if it does not exist.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>Click the <ui>Convert</ui> button to perform the project conversion.  If successful, the
-converted project is opened ready for use.</para>
-              </content>
-            </step>
-          </steps>
-        </procedure>
-
       </content>
     </section>
 
@@ -188,7 +143,6 @@ help file to learn more about the other features available in the help file buil
     <relatedTopics>
       <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
       <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
-      <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
       <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
       <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
       <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />

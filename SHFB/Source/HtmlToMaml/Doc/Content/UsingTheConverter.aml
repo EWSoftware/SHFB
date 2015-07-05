@@ -34,8 +34,9 @@ ConvertHtmlToMaml.exe C:\MyLibrary\Doc C:\MyLibrary\Content
 </code>
 
 			<para>An optional parameter, <system>/companion</system>, can also be specified to create companion
-files for the converted topics.  This is useful if your documentation tool, such as <token>DocProject</token>,
-makes use of them to store the topic title, help attributes, and index keywords.</para>
+files for the converted topics.  This is useful if your documentation tool, such as
+<application>DocProject</application>, makes use of them to store the topic title, help attributes, and index
+keywords.</para>
 
 <code language="none" title="Create Optional Companion Files">
 ConvertHtmlToMaml.exe C:\MyLibrary\Doc C:\MyLibrary\Content /companion
