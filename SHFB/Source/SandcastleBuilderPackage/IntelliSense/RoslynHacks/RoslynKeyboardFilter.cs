@@ -109,9 +109,9 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
             CompletionSet completionSet = completionSession.SelectedCompletionSet;
             CompletionSelectionStatus selectionStatus = completionSet.SelectionStatus;
-            if (selectionStatus.Completion.GetType().Name == "CustomCommitCompletion")
+            if (!(selectionStatus.Completion is SandcastleCompletion))
             {
-                // let Roslyn handle its own completions
+                // let other providers handle their own completions
                 return false;
             }
 

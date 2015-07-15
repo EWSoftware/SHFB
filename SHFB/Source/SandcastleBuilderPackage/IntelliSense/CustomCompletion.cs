@@ -31,11 +31,11 @@ namespace SandcastleBuilder.Package.IntelliSense
     /// Represents a completion item, including the icon, insertion text, and display text, in a CompletionSet.
     /// </summary>
     /// <remarks>
-    /// This class extends the <see cref="Completion"/> class by allowing the <see cref="Completion.InsertionText"/>
-    /// to contain a <c>\xFF</c> character to represent the placement of the caret after the completion is
-    /// inserted into the editor.
+    /// This class extends the <see cref="SandcastleCompletion"/> class by allowing the
+    /// <see cref="Completion.InsertionText"/> to contain a <c>\xFF</c> character to represent the placement of the
+    /// caret after the completion is inserted into the editor.
     /// </remarks>
-    internal sealed class CustomCompletion : Completion, ICustomCommit
+    internal sealed class CustomCompletion : SandcastleCompletion, ICustomCommit
     {
         private readonly ICompletionSession session;
 
