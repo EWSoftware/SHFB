@@ -17,6 +17,8 @@
 
 using System;
 
+using Microsoft.Ddue.Tools.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>

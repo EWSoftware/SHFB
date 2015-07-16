@@ -29,7 +29,7 @@
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <HelpTitle>EWSoftware.CodeDom Namespace Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>Copyright \xA9 2008-2014, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>Copyright \xA9 2008-2015, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <HelpFileVersion>1.1.0.0</HelpFileVersion>
@@ -46,7 +46,7 @@
     <ApiFilter />
     <PlugInConfigurations>
       <PlugInConfig id="Output Deployment" enabled="True">
-        <configuration deleteAfterDeploy="false">
+        <configuration deleteAfterDeploy="true" verboseLogging="false">
           <deploymentLocation id="help1x" location="..\..\..\Deploy\Help\">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
@@ -65,7 +65,19 @@
               <userCredentials useDefault="true" userName="" password="" />
             </proxyCredentials>
           </deploymentLocation>
-          <deploymentLocation id="website" location="">
+          <deploymentLocation id="website" location="..\..\..\..\Documentation\WebHelp\EWSoftwareCodeDom">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="openXml" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="markdown" location="">
             <userCredentials useDefault="true" userName="" password="" />
             <proxyCredentials useProxy="false" proxyServer="">
               <userCredentials useDefault="true" userName="" password="" />
@@ -82,7 +94,7 @@
     <Language>en-US</Language>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -21,6 +22,9 @@ namespace Microsoft.Ddue.Tools
 {
     public static class VersionBuilderCore
     {
+        private static Dictionary<string, Dictionary<String, XPathNavigator>> extensionMethods = 
+            new Dictionary<string, Dictionary<String, XPathNavigator>>();
+
         /// <summary>
         /// This is used to cancel the MSBuild task
         /// </summary>
@@ -144,7 +148,6 @@ namespace Microsoft.Ddue.Tools
 
             Dictionary<string, List<KeyValuePair<string, string>>> versionIndex = new Dictionary<string, List<KeyValuePair<string, string>>>();
             Dictionary<string, Dictionary<string, ElementInfo>> dictionary2 = new Dictionary<string, Dictionary<string, ElementInfo>>();
-            Dictionary<string, Dictionary<String, XPathNavigator>> extensionMethods = new Dictionary<string, Dictionary<String, XPathNavigator>>();
             XPathExpression expression2 = XPathExpression.Compile("string(/api/@id)");
             XPathExpression expression4 = XPathExpression.Compile("/api/elements/element");
             XPathExpression expression = XPathExpression.Compile("/api/attributes/attribute[type[@api='T:System.ObsoleteAttribute']]");
@@ -574,23 +577,34 @@ namespace Microsoft.Ddue.Tools
 
         private static void RemoveOldApis(Dictionary<string, List<KeyValuePair<string, string>>> versionIndex, List<string> latestVersions)
         {
-            string[] array = new string[versionIndex.Count];
-            versionIndex.Keys.CopyTo(array, 0);
-
-            foreach(string str in array)
+            foreach(string key in versionIndex.Keys.ToList())
             {
-                List<KeyValuePair<string, string>> list = versionIndex[str];
-                bool flag = true;
+                var list = versionIndex[key];
+                bool remove = true;
 
                 foreach(KeyValuePair<string, string> pair in list)
                     if(latestVersions.Contains(pair.Key))
                     {
-                        flag = false;
+                        remove = false;
                         break;
                     }
 
-                if(flag)
-                    versionIndex.Remove(str);
+                if(remove)
+                {
+                    versionIndex.Remove(key);
+
+                    // Remove from extension methods too
+                    foreach(string typeKey in extensionMethods.Keys.ToList())
+                    {
+                        var extMethods = extensionMethods[typeKey];
+
+                        if(extMethods.ContainsKey(key))
+                            extMethods.Remove(key);
+
+                        if(extMethods.Count == 0)
+                            extensionMethods.Remove(typeKey);
+                    }
+                }
             }
         }
 

@@ -30,8 +30,8 @@ without installing the tools manually such as on a build server.  The following 
   Example:
 
     <PropertyGroup>
-      <!-- NOTE: Update the version number in the path to match the package version -->
-      <SHFBROOT Condition=" '$(SHFBROOT)' == '' ">$(MSBuildThisFileDirectory)..\packages\EWSoftware.SHFB.2015.5.2.0\Tools\</SHFBROOT>
+      <!-- NOTE: Update the version number in the path (YYYY.M.D.R) to match the package version -->
+      <SHFBROOT Condition=" '$(SHFBROOT)' == '' ">$(MSBuildThisFileDirectory)..\packages\EWSoftware.SHFB.YYYY.M.D.R\Tools\</SHFBROOT>
 
       ... other SHFB project properties ...
 

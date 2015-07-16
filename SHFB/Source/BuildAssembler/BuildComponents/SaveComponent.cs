@@ -22,7 +22,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component is used to save the generated document or parts of it to a file

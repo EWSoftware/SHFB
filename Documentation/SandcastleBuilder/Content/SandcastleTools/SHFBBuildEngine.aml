@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="ede54bc8-7027-48be-ba0c-66d8f24bdccd" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The help file builder build engine utilizes the properties and settings from a help file builder
+MSBuild project (<localUri>.shfbproj</localUri>) to compile a help file.  The
+<localUri>SandcastleHelpFileBuilder.targets</localUri> file defines the various targets and tasks used to control
+the build process.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>TODO: Add one or more sections with content</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

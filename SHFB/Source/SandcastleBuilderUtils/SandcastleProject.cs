@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/01/2015
+// Updated : 07/15/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1810,6 +1810,23 @@ namespace SandcastleBuilder.Utils
                             }
                             else
                                 this.SetLocalProperty(prop.Name, prop.UnevaluatedValue);
+                            break;
+
+                        case "PresentationStyle":
+                            // Convert removed presentation styles to the current default presentation style
+                            switch(prop.UnevaluatedValue)
+                            {
+                                case "Hana":
+                                case "Prototype":
+                                case "VS2005":
+                                    this.SetLocalProperty(prop.Name, Constants.DefaultPresentationStyle);
+                                    msBuildProject.SetProperty("PresentationStyle", Constants.DefaultPresentationStyle);
+                                    break;
+
+                                default:
+                                    this.SetLocalProperty(prop.Name, prop.UnevaluatedValue);
+                                    break;
+                            }
                             break;
 
                         default:

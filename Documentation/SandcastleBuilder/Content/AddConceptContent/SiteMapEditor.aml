@@ -99,7 +99,7 @@ indicate its status.</para>
 			
 				<alert class="note">
 					<para>This option only has an effect on Help 1, markdown, and website output.  MS Help Viewer does not
-support site maps or the deprecated additional content model.</para>
+support site maps.</para>
 				</alert>
 			</definition>
 

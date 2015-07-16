@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="5f73b7b1-473c-4740-bdfc-e662192910fc" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This tool, <localUri>HelpLibraryManagerLauncher.exe</localUri>, is used to install and remove
+Microsoft Help Viewer content.  See the  <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8">related topic</link>
+in the MS Help Viewer Category Properties section for usage notes.</para>
+		</introduction>
+
+		<relatedTopics>
+			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+			<codeEntityReference qualifyHint="false">T:SandcastleBuilder.MicrosoftHelpViewer.HelpLibraryManager</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

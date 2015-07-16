@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="7440cb1c-05f6-4fee-9c4f-06c8b8460567" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>TODO: Add content</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>http://blogs.msdn.com/b/sandcastle/archive/2006/08/14/699129.aspx</para>
+
+				<para>http://www.codeproject.com/Articles/16740/Creating-Custom-Build-Components-for-Sandcastle</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

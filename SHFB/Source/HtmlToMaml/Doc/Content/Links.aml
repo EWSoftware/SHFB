@@ -1,80 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <para>This topics contains links to various resources that you may find useful.</para>
-    </introduction>
+		<introduction>
+			<para>This topics contains links to various resources that you may find useful.</para>
+		</introduction>
 
-<section>
-  <title>Links to Resources</title>
-  <content>
-		<list class="bullet">
-			<listItem>
-				<para><externalLink>
-<linkText>Microsoft .NET Frameworks and SDKs</linkText>
-<linkUri>https://msdn.microsoft.com/en-us/vstudio/aa496123</linkUri>
-<linkTarget>_blank</linkTarget></externalLink>.</para>
-			</listItem>
-			<listItem>
-				<para>The latest version of the <token>SHFB</token> (currently the <token>SandcastleVersion</token>
+		<section>
+			<title>Links to Resources</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<externalLink>
+								<linkText>Microsoft .NET Frameworks and SDKs</linkText>
+								<linkUri>https://msdn.microsoft.com/en-us/vstudio/aa496123</linkUri>
+								<linkTarget>_blank</linkTarget>
+							</externalLink>.
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>The latest version of the <token>SHFB</token> (currently the <token>SandcastleVersion</token>
 release as of <token>BuildDate</token>).</para>
-			</listItem>
-			<listItem>
-				<para>To discuss the Sandcastle tools and extras, suggest new features, report bugs, and request help
+					</listItem>
+
+					<listItem>
+						<para>To discuss the Sandcastle tools and extras, suggest new features, report bugs, and request help
 using them, visit the <token>SHFB</token> project site.</para>
-			</listItem>
-			<listItem>
-				<para>For discussion and questions about help systems in general, visit the <externalLink>
+					</listItem>
+
+					<listItem>
+						<para>For discussion and questions about help systems in general, visit the <externalLink>
 <linkText>Visual Studio General Questions forum</linkText>
 <linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
-<linkTarget>_blank</linkTarget></externalLink>.</para>
-			</listItem>
-			<listItem>
-				<para>The retired <externalLink>
+<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The retired <externalLink>
 <linkText>Microsoft Developer Documentation and Help System forum</linkText>
 <linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink> may also provide information on older help systems.</para>
-			</listItem>
-			<listItem>
-				<para><externalLink>
-<linkText>The Sandcastle Blog</linkText>
-<linkUri>http://blogs.msdn.com/sandcastle/default.aspx</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> provides news about Sandcastle and blog entries describing how its various features work.</para>
-			</listItem>
-		</list>
+					</listItem>
 
-	</content>
-</section>
+				</list>
+			</content>
+		</section>
 
-<section>
-  <title>MAML Information and Guides</title>
-  <content>
-<list class="bullet">
-	<listItem>
-		<para>For a comprehensive list of MAML documentation tags and a description of their attributes and
-usage see the <legacyBold>The Sandcastle MAML Guide</legacyBold> also included with Sandcastle extras.</para>
-	</listItem>
-	<listItem>
-		<para>For general background information, see the Wikipedia entry <externalLink>
-<linkText>Microsoft Assistance Markup Language</linkText>
-<linkUri>http://en.wikipedia.org/wiki/Microsoft_Assistance_Markup_Language</linkUri>
+		<section>
+			<title>MAML Information and Guides</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>For a comprehensive list of MAML documentation tags and a description of their attributes and
+usage see the <externalLink>
+<linkText>Sandcastle MAML Guide</linkText>
+<linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
+<linkUri>https://EWSoftware.GitHub.io/MAMLGuide</linkUri>
 <linkTarget>_blank</linkTarget>
+</externalLink> also included with the help file builder.</para>
+					</listItem>
+
+					<listItem>
+						<para>For general background information, see the Wikipedia entry
+<externalLink>
+	<linkText>Microsoft Assistance Markup Language</linkText>
+	<linkUri>http://en.wikipedia.org/wiki/Microsoft_Assistance_Markup_Language</linkUri>
+	<linkTarget>_blank</linkTarget>
 </externalLink> or, for schema information, see the MAML information at	<externalLink>
-<linkText>help-info.de</linkText>
-<linkUri>http://www.help-info.de/en/Help_Info_AP_Help/longhorn_maml_example.htm</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink></para>
-	</listItem>
-</list>
-  </content>
-</section>
+	<linkText>help-info.de</linkText>
+	<linkUri>http://www.help-info.de/en/Help_Info_AP_Help/longhorn_maml_example.htm</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
 
-    <relatedTopics/>
+		<relatedTopics/>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

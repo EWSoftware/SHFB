@@ -23,7 +23,6 @@ using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.XPath;
@@ -31,7 +30,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using Microsoft.Ddue.Tools;
+using Microsoft.Ddue.Tools.BuildComponent;
 using Microsoft.Ddue.Tools.Commands;
 
 using SandcastleBuilder.Components.Commands;

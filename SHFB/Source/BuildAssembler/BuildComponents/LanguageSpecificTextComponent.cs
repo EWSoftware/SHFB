@@ -28,7 +28,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This component is used to convert the span style language-specific text elements to the script style

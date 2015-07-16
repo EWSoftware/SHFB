@@ -594,15 +594,6 @@
     <Content Include="Shared\StopWordList\zh-CN.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2010\Configuration\conceptual.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Configuration\sandcastle-mshc.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Configuration\sandcastle.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="VS2010\icons\CodeExample.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1294,15 +1285,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="VS2013\Configuration\conceptual.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Configuration\sandcastle-mshc.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Configuration\sandcastle.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="VS2013\Configuration\SHFBConceptual.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

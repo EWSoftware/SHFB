@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="66f0b914-3e4f-4fa5-bee7-67879a74a018" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This tool, <localUri>AddNamespaceGroups.exe</localUri>, is used to add namespace group entries to a
+reflection information file.  Namespace groups consist of a list of namespaces that share a common number of root
+parts.  These entries are used to create namespace group topics within the help file similar to the namespace
+list topics.</para>
+
+			<para>See the <link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#NSGrouping">NamespaceGrouping/MaximumGroupParts</link>
+project property help for a description of how namespace grouping works.</para>
+
+		</introduction>
+
+		<section>
+			<title>Command Line Parameters</title>
+			<content>
+				<para>This tool can be executed from the command line.  The following parameters are available.</para>
+
+				<definitionTable>
+					<definedTerm>/out:[outputFile]</definedTerm>
+					<definition>
+						<para>Optional.  This is used to specify the name of the file to which the updated reflection
+information is written.  If not specified, the output is written to the console.</para>
+					</definition>
+
+					<definedTerm>/maxParts:###</definedTerm>
+					<definition>
+						<para>Optional.  This is used to specify the maximum number of namespace parts to consider when
+creating groups.  A higher value creates more groups.  The default (and minimum) is 2.</para>
+					</definition>
+
+					<definedTerm>reflectionDataFile</definedTerm>
+					<definition>
+						<para>Required.  Specify the reflection information file to which namespace group information is to
+be added.</para>
+					</definition>
+				</definitionTable>
+
+<code language="none" title="Example Usage">
+AddNamespaceGroups.exe /out:reflection.grouped /maxParts:2 reflection.xml					
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>MSBuild Task Properties</title>
+			<content>
+				<para>This tool can be executed as an MSBuild task.  The following properties are available.</para>
+
+				<definitionTable>
+					<definedTerm>WorkingFolder</definedTerm>
+					<definition>
+						<para>Optional.  This property is used to set the working folder.  If not set, the current directory
+is used as the working folder.</para>
+					</definition>
+
+					<definedTerm>InputFile</definedTerm>
+					<definition>
+						<para>Required.  This property is used to specify the reflection information file to which namespace
+group information is added.</para>
+					</definition>
+					
+					<definedTerm>OutputFile</definedTerm>
+					<definition>
+						<para>Required.  This property is used to set the output filename.  This file will contain the
+original reflection data along with any added namespace group entries.</para>
+					</definition>
+
+					<definedTerm>MaximumParts</definedTerm>
+					<definition>
+						<para>Optional.  This property is used to pass in the maximum number of namespace parts to consider
+when creating groups.  If not specified, the default is 2.</para>
+					</definition>
+
+				</definitionTable>
+
+<code language="xml" title="Example Usage">
+&lt;UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.AddNamespaceGroups"
+	AssemblyFile="C:\HelpFileBuilderTools\AddNamespaceGroups.exe" /&gt;
+
+&lt;PropertyGroup&gt;
+	&lt;WorkingFolder&gt;&lt;/WorkingFolder&gt;
+	&lt;MaximumParts&gt;2&lt;/MaximumParts&gt;
+	&lt;NamespaceGrouping&gt;true&lt;/NamespaceGrouping&gt;
+&lt;/PropertyGroup&gt;
+
+&lt;!-- Execute conditionally based on whether or not namespace grouping is enabled --&gt;
+&lt;Microsoft.Ddue.Tools.MSBuild.AddNamespaceGroups
+	WorkingFolder="$(WorkingFolder)"
+	MaximumParts="$(MaximumParts)"
+	InputFile="reflection.ungrouped"
+	OutputFile="reflection.xml"
+	Condition=" '$(NamespaceGrouping)' == 'true' " /&gt;
+</code>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+			<codeEntityReference qualifyHint="false">T:Microsoft.Ddue.Tools.MSBuild.AddNamespaceGroups</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

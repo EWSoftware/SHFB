@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="930f1daa-1a38-4659-84c9-91c81e204c73" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2015.1.12.0." />
+		</introduction>
+
+		<section address="HelpFileBuilder">
+			<title>Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Added support for using the built-in Go To Definition context menu option (bound to the F12 key
+by default) to go to XML comments and MAML link element targets.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an option to disable the Ctrl+Click Go To Definition option.  You can turn this off if
+you prefer using the context menu/F12 methods of invoking the option.</para>
+					</listItem>
+
+					<listItem>
+						<para>The Extended XML comments/Go To Definition settings are now stored in the Visual Studio user
+settings.  This allows them to differ between Visual Studio versions.  As such, you will need to set them to your
+liking if you modified them in the prior release.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="MRefBuilder">
+			<title>MRefBuilder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Removed resetting of <localUri>mscorlib</localUri> for frameworks that forward all of its types
+to other assemblies.  This prevents a stack overflow with those framework types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <localUri>Frameworks.xml</localUri> file to include <localUri>mscorlib</localUri>
+for all framework versions.  This fixes a problem with the framework-specific reflection data introduced in the
+last release.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Removed the <codeInline>conceptualLink</codeInline> elements from the Russian language
+reference content files in the VS2010 and VS2013 presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the VS2013 website script so that it expands empty container nodes if the title is
+clicked rather than doing nothing.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Sergey Zhurikhin for the new and updated Russian language resource files for the
+Open XML, VS2010, and VS2013 presentation styles.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="063f61e1-2040-431f-b53c-91b826027ac6" />
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

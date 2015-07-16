@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e2fcc636-0781-4232-8c7e-fb5edbe40026" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<alert class="important">
+				<para>In a future release, support for all deprecated features will be removed in an effort to simplify
+and clean up the code base.  With so many deprecated features, it is starting to get unwieldy when adding support
+for new features and presentation styles.  As such, the deprecated features need to be removed.  In addition,
+when the deprecated features are removed, I plan on dropping support for Visual Studio 2010 and 2012 from the
+Visual Studio package.  With Visual Studio 2015 on the horizon, I need to reduce the number of versions for which
+I can realistically provide support.  Four versions is starting to be too many.</para>
+
+				<para>For a list of the deprecated features slated for removal, see <externalLink>
+<linkText>work item #83</linkText>
+<linkAlternateText>work item #83</linkAlternateText>
+<linkUri>https://GitHub.com/EWSoftware/SHFB/issues/83</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+			</alert>
+
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2015.5.2.0." />
+		</introduction>
+
+		<section address="HelpFileBuilder">
+			<title>Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed handling of the <codeInline>GenerateProjectSpecificOutputFolder</codeInline> MSBuild
+option so that it finds the documentation source assembly and XML comments files correctly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed determination of the tools folder when running from the VSPackage so that the build
+engine can find the supporting files correctly when the package is installed for all users.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed determination of the tools folder so that the build engine can find the supporting files
+correctly in cases where the assemblies are running from the shadow copy folder.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a few theme and font size issues in the VSPackage.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed component configuration merging so that it merges help output format specific
+configuration elements correctly in presentation styles that do not use the multi-format output build component.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the multi-format output component configuration merging so that configuration elements
+outside of the help format specific sections are not lost.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed Go To Definition so that it supports anchor names in MAML link elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the topic previewer so that links with anchor names work consistently.</para>
+					</listItem>
+
+					<listItem>
+						<para>Applied fix from dgedge33 to the Member ID Fix-Ups plug-in so that
+<codeInline>cref</codeInline> fix-ups are applied to group topic IDs as well.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>Microsoft.VisualStudio.TestTools.UITest.Playback</codeInline> to the default
+list of "ignore if unresolved" assemblies in the binding redirection plug-in's default configuration.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Lightweight TOC plug-in so that it outputs the TOC elements as valid XML allowing the
+topics to be post-processed and transformed by other tools.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for Help Viewer 2.2 which comes with Visual Studio 2015.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <application>HelpLibraryManagerLauncher</application> tool so that the
+<codeInline>catalogName</codeInline> parameter is optional.  If not specified, it defaults to the appropriate
+catalog name for the Visual Studio version associated with the specified help viewer version.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>CatalogName</codeInline> project option now has a default value of an empty
+string.  This allows the catalog name to be determined based solely on the help viewer version being used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <ui>Launch Help Content Manager</ui> menu commands from the standalone GUI and the
+VSPackage.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a <ui>Launch Content Manager</ui> option to the <ui>View MS Help Viewer</ui> interactive
+dialog box.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the new Markdown Content help format.  There are limitations so see the
+related <link xlink:href="6f0a80ec-b8ef-45d6-a55a-1fb7a6545ddc" /> topic for details.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the ESent and SQL Server cached data components to work with the new markdown format.
+If you switch to the markdown presentation style in an existing project with these components, they will need to
+be removed and re-added to pick up the new configuration elements.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed some bugs in the <codeInline>AddNamespaceGroups</codeInline> tool and made inclusion of
+the root container more consistent based on the content and whether or not a root namespace container is
+present.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed another issue in MRefBuilder's <codeInline>ParametersMatch()</codeInline> method related
+to array types in method parameters in derived generic types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the obsolete <codeInline>BrandingComponent</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the <codeInline>href-Format</codeInline> attribute on the <codeInline>ResolveReferenceLinksComponent</codeInline>
+to a nested <codeInline>hrefFormat</codeInline> configuration element so that it can be altered in derived
+components.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the code contracts setter transformations so that they correctly strip the last parameter
+on the setter contracts elements to form the proper member ID for MSDN lookups.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the keyword search script in the VS2013 presentation style so that it correctly decodes
+the file indices when there are more than 65,535 files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged various VS2013 presentation style adjustments from Sam Harwell.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed a superfluous quote from the URL in the VS2013 presentation style's
+<localUri>SearchHelp.aspx</localUri> reported by Joris Zwart.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed period to colon in auto-outline lead-in text content items reported by neoliet.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a Markdown Content presentation style that generates GitHub flavored markdown topic
+files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Alexis Yannuzzi for supplying Spanish translations for the VS 2013 presentation style
+content item files.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

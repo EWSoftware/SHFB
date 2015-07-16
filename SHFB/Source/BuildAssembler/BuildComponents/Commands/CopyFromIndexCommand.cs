@@ -17,6 +17,8 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
+using Microsoft.Ddue.Tools.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Commands
 {
     /// <summary>

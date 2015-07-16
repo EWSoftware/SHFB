@@ -9,7 +9,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
 	// the storage system
 

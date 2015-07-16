@@ -33,6 +33,11 @@ using Sandcastle.Core.CommandLine;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This utility is used to add namespace groups to a reflection data file.  The namespace groups can be
+    /// used to combine namespaces with a common root into entries in the table of contents in the generated
+    /// help file.
+    /// </summary>
     public static class AddNamespaceGroupsCore
     {
         #region Namespace group class

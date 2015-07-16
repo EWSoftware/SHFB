@@ -29,7 +29,7 @@ namespace Sandcastle.Core
         //=====================================================================
 
         /// <summary>
-        /// The verbosity level for the <see cref="O:Microsoft.Ddue.Tools.CommandLine.WriteMessage"/>
+        /// The verbosity level for the <see cref="O:Sandcastle.Core.ConsoleApplication.WriteMessage"/>
         /// methods.
         /// </summary>
         /// <value>The default level is <see cref="LogLevel.Info"/> so that all messages are displayed.
@@ -57,6 +57,7 @@ namespace Sandcastle.Core
         /// <returns>An XML document containing the configuration</returns>
         /// <remarks>This returns the configuration from the actual location of the assembly, where it was found
         /// versus where it is executing from, which may be different if shadow copied.</remarks>
+        /// <overloads>There are two overloads for this method</overloads>
         public static XPathDocument GetConfigurationFile()
         {
             string location = null;
@@ -85,6 +86,7 @@ namespace Sandcastle.Core
         /// <summary>
         /// Load the specified configuration file
         /// </summary>
+        /// <param name="file">The configuration file to load</param>
         /// <returns>An XML document containing the configuration</returns>
         public static XPathDocument GetConfigurationFile(string file)
         {

@@ -15,7 +15,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component executes a set of build components on the topic based on the result of an XPath

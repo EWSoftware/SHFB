@@ -13,8 +13,8 @@ item as well.</para>
 
 			<alert class="tip">
 				<para>You can simplify your project comments for derived classes, interface implementations, overridden
-members, and other members with common comments by making use of the
-<link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d">&lt;inheritdoc /&gt;</link> tag.</para>
+members, and other members with common comments by making use of the <codeInline>inheritdoc</codeInline> XML
+comments element.</para>
 			</alert>
 
 			<autoOutline lead="none" excludeRelatedTopics="true" />

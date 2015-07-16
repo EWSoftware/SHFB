@@ -17,7 +17,7 @@ using Microsoft.Ddue.Tools.Commands;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component copies elements from one or more XML files determined using an XPath query into the

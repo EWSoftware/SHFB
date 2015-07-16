@@ -19,7 +19,7 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 // still have problems with spaces
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// Task grabber component

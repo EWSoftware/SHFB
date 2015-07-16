@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="04f289d0-20bd-4873-9012-6c77a21c0f0a" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This tool, <localUri>SegregateByNamespace.exe</localUri>, takes a reflection information file and
+splits it into separate reflection information files, each named after and containing the types from a single
+namespace.  This is used to make the reflection information for a framework more modular so that BuildAssembler
+components can load information for just the namespaces they need rather than all of them.</para>
+
+			<para>This tool is used by the <link xlink:href="032f1fab-6625-4ffb-9316-57fb3e4a03ff" /> when it builds
+reflection information for the reflection data sets.</para>
+		</introduction>
+
+		<section>
+			<title>Command Line Parameters</title>
+			<content>
+				<para>This tool can be executed from the command line.  The following parameters are available.</para>
+
+				<definitionTable>
+					<definedTerm>/out:[folderPath]</definedTerm>
+					<definition>
+						<para>Optional.  This is used to specify the output folder to which the namespace reflection
+information files are written.  If not specified, the files are written to the current directory.</para>
+					</definition>
+
+					<definedTerm>reflectionDataFile</definedTerm>
+					<definition>
+						<para>Required.  Specify the reflection information file to be split.</para>
+					</definition>
+				</definitionTable>
+
+<code language="none" title="Example Usage">
+SegregateByNamespace.exe /out:.\Segregated reflection.xml					
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>MSBuild Task Properties</title>
+			<content>
+				<para>This tool can be executed as an MSBuild task.  The following properties are available.</para>
+
+				<definitionTable>
+					<definedTerm>WorkingFolder</definedTerm>
+					<definition>
+						<para>Optional.  This property is used to set the working folder.  If not set, the current directory
+is used as the working folder.</para>
+					</definition>
+
+					<definedTerm>OutputFolder</definedTerm>
+					<definition>
+						<para>Optional.  This property is used to set the output folder to which the namespace reflection
+information files are written.  If not specified, the files are written to the working folder.</para>
+					</definition>
+
+					<definedTerm>ReflectionFilename</definedTerm>
+					<definition>
+						<para>Required.  This property is used to specify the reflection information file to be split.</para>
+					</definition>
+				</definitionTable>
+
+<code language="xml" title="Example Usage">
+&lt;UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace"
+	AssemblyFile="C:\HelpFileBuilderTools\SegregateByNamespace.exe" /&gt;
+
+&lt;PropertyGroup&gt;
+	&lt;WorkingFolder&gt;&lt;/WorkingFolder&gt;
+&lt;/PropertyGroup&gt;
+
+&lt;Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace
+	WorkingFolder="$(WorkingFolder)"
+	ReflectionFilename="reflection.xml"
+	OutputFolder=".\Segregated" /&gt;
+</code>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+			<codeEntityReference qualifyHint="false">T:Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

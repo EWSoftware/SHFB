@@ -15,7 +15,7 @@
 using System.Xml;
 using System.Xml.Xsl;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This class is used to contain information for an XSLT transformation

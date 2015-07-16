@@ -27,7 +27,7 @@ using Microsoft.Ddue.Tools.Commands;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// InheritDocumentationComponent class.

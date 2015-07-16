@@ -3,14 +3,11 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>The topics in this section describe the various changes made to the Sandcastle Help File Builder for
-versions 1.8.0.0 through 1.9.8.0.</para>
+versions 1.8.0.0 through 1.9.8.0.  Select a version below to see a description of its changes.</para>
 		</introduction>
 
 		<section>
-			<title>Version History</title>
 			<content>
-				<para>Select a version below to see a description of its changes.</para>
-
 				<list class="bullet">
 					<listItem>
 						<para><link xlink:href="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" /></para>

@@ -16,7 +16,7 @@
 using System;
 using System.Xml;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This is used by the <see cref="TransformComponent"/> to indicate that it has finished transforming the

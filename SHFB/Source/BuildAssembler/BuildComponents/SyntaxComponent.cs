@@ -32,7 +32,7 @@ using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 using Microsoft.Ddue.Tools.UI;
 using Microsoft.Ddue.Tools.Snippets;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component is used to generate syntax sections for API member topics

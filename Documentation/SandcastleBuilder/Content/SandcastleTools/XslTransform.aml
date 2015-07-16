@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="36b6f77e-5662-4e1f-a075-bae885db0401" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This tool, <localUri>XslTransform.exe</localUri>, is used to transform an XML file using one or more
+specified XSL transformations.  It is used at various points in the build process to add entries to the
+reflection information file using additional XSL transformations, transform the reflection information file to
+produce the topic manifest for BuildAssembler, etc.</para>
+
+		</introduction>
+
+		<section>
+			<title>Command Line Parameters</title>
+			<content>
+				<para>This tool can be executed from the command line.  The following parameters are available.</para>
+
+				<definitionTable>
+					<definedTerm>/xsl:xsltPath1[,xsltPath2,...]</definedTerm>
+					<definition>
+						<para>Required.  This is used to specify one or more XSL transformation files as a comma-separated
+list.  The transformations will be applied to the target XML file in the order specified.</para>
+					</definition>
+
+					<definedTerm>/arg:name=value[,name=value,...]</definedTerm>
+					<definition>
+						<para>Optional.  This is used to specify one or more XSL transformation arguments as a
+comma-separated list.  The arguments must be in the form "<codeInline>name=value</codeInline>".  They will be
+passed in to each XSL transformation.</para>
+					</definition>
+
+					<definedTerm>/out:[outputFile]</definedTerm>
+					<definition>
+						<para>Optional.  This is used to specify the name of the file to which the transformed XML is
+written.  If not specified, the output is written to the console.</para>
+					</definition>
+
+					<definedTerm>/w</definedTerm>
+					<definition>
+						<para>Optional.  This is used to specify that insignificant whitespace should not be ignored.  If
+omitted, insignificant whitespace is ignored.</para>
+					</definition>
+
+					<definedTerm>xmlFile</definedTerm>
+					<definition>
+						<para>Required.  Specify the XML file that will be transformed.</para>
+					</definition>
+				</definitionTable>
+
+<code language="none" title="Example Usage">
+XslTransform.exe /xsl:Transform1.xslt,Transform2.xslt /arg:Param1=true,Param2=Test
+  /out:reflection.transformed reflection.xml					
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>MSBuild Task Properties</title>
+			<content>
+				<para>This tool can be executed as an MSBuild task.  The following properties are available.</para>
+
+				<definitionTable>
+					<definedTerm>WorkingFolder</definedTerm>
+					<definition>
+						<para>Optional.  This property is used to set the working folder.  If not set, the current directory
+is used as the working folder.</para>
+					</definition>
+
+					<definedTerm>InputFile</definedTerm>
+					<definition>
+						<para>Required.  This property is used to specify the XML file to transform.</para>
+					</definition>
+					
+					<definedTerm>OutputFile</definedTerm>
+					<definition>
+						<para>Required.  This property is used to set the output filename.  This file will contain the
+transformed content from the input file.</para>
+					</definition>
+
+					<definedTerm>Transformations</definedTerm>
+					<definition>
+						<para>Required.  This property is used to pass in the list of transformations to run.  Separate
+multiple transforms with a semi-colon.  Paths starting with "<localUri>~/</localUri>" or "<localUri>~\</localUri>"
+are assumed to refer to a Sandcastle transformation file and will be fully qualified with the root Sandcastle
+tools folder (the folder of the executing assembly).  Relative paths are assumed to be relative to the working
+folder.  Absolute paths are not modified.</para>
+					</definition>
+
+					<definedTerm>Arguments</definedTerm>
+					<definition>
+						<para>
+							Optional.  This property is used to pass in any optional XSL transform arguments.  The arguments
+must be in the form "<codeInline>name=value</codeInline>".  Separate multiple arguments with a semi-colon.
+They will be passed in to each XSL transformation.</para>
+					</definition>
+				</definitionTable>
+
+<code language="xml" title="Example Usage">
+&lt;UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
+	AssemblyFile="C:\HelpFileBuilderTools\XslTransform.exe" /&gt;
+
+&lt;PropertyGroup&gt;
+	&lt;WorkingFolder&gt;&lt;/WorkingFolder&gt;
+&lt;/PropertyGroup&gt;
+
+&lt;Microsoft.Ddue.Tools.MSBuild.XslTransform
+	WorkingFolder="$(WorkingFolder)"
+	Transformations="~\Transforms\MergeDuplicates.xsl;~\Transforms\AddXamlSyntax.xsl"
+	InputFile="reflection.org"
+	OutputFile="reflection.xml" /&gt;
+</code>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+			<codeEntityReference qualifyHint="false">T:Microsoft.Ddue.Tools.MSBuild.XslTransform</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

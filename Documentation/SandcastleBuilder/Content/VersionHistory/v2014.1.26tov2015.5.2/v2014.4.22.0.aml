@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="81b04099-bcd7-4caa-8a21-13624d9e290d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.4.22.0." />
+		</introduction>
+
+		<section address="HelpFileBuilder">
+			<title>Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the referenced namespace extraction code so that it finds referenced types regardless of
+where they appear in the reflection data.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the component search so that it ignores security exceptions such as being denied access
+to certain subfolders.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed HelpLibraryManagerLauncher so that it correctly detects the default locale for Help
+Viewer 1.0 and 2.x when multiple help languages are present on the system.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the TOC Exclusion plug-in so that it runs in the correct build steps.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up some issues with non-GUID topic IDs that needed encoding in the intermediate TOC
+files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the build engine to throw an exception with a message indicating that the
+component/plug-in configurations need to be updated if the old <codeInline>{@SandcastlePath}</codeInline>
+replacement tag is encountered.</para>
+					</listItem>
+
+					<listItem>
+						<para>Enabled <codeInline>PreBuildEvent</codeInline>, <codeInline>PostBuildEvent</codeInline>, and
+<codeInline>RunPostBuildEvent</codeInline> property support in the help file builder targets file.  A property
+page was added to allow editing the properties in the standalone GUI and the Visual Studio Package.
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged the C# IntelliSense extension code from Sam Harwell into the Visual Studio package to
+provide support for the extended XML comments elements from Sandcastle.  Note that other languages do not support
+the extensions.  Visual Basic does not provide any context to extend the XML comments easily and other languages
+like F# and C++ don't appear to provide XML comments IntelliSense at all.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the new Open XML help file format and presentation style.</para>
+
+						<alert class="important">
+							<para>The Open XML format has some specific requirements.  See the
+<link xlink:href="c5e7e920-2cb4-4f78-b167-634361d85263" /> topic for details and information on troubleshooting
+problems with the resulting output.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the new VS2013 presentation style.  This is currently a clone of the VS2010
+style with some changes to get rid of the background images, alter the syntax and code block tabs styles, and add
+collapsible sections.  A future release will make further changes to bring it closer to the online Visual Studio
+content style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in MRefBuilder in <codeInline>TypeNode.GetMatchingMethod()</codeInline> reported by
+Sam Harwell.  Type parameter counts are compared as well in order to get a correct match on overloaded methods in
+cases where one has and one does not have generic parameters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added more code to <codeInline>ParametersMatch()</codeInline> in MRefBuilder to try and get a
+proper match when comparing parameters lists with generic types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that it does not fail when parsing .NET Micro Framework assemblies.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to default to looking up target IDs starting with "<codeInline>System.</codeInline>"
+or "<codeInline>Microsoft.</codeInline>" using the MSDN web service if not found in the project reflection data
+sources rather than reporting them as unknown reference links. This should help add links to MSDN content for
+Microsoft SDKs without having to add additional reference link data to the help project. If not found on MSDN,
+they will be reported as unresolved reference links.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the AddNamespaceGroups tool to merge sub-groups into the parent if they are the only
+child of the parent group</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed leading blank lines and trailing whitespace to get rid of excess whitespace in the
+resulting code sections produced by the <codeInline>ExampleComponent</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>In <codeInline>ShowMissingComponent</codeInline>, self-closing <codeInline>conceptualLink</codeInline>,
+<codeInline>see</codeInline>, <codeInline>paramref</codeInline>, and <codeInline>typeparamref</codeInline>
+elements will also satisfy the documentation check.  For example: <codeInline>&lt;returns&gt; &lt;see cref="String"/&gt;
+&lt;/returns&gt;</codeInline>).
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for an <codeInline>outputMethod</codeInline> attribute on the BuildAssembler
+<codeInline>SaveComponent</codeInline> to allow defining how the content is written out (i.e. HTML rules rather
+than XML rules).  However, the default will remain XML and the existing presentation styles will continue to use
+XML rules since they work fine with them.  Note that using HTML rules can introduce unintended side-effects to
+the generated output such as non-XHTML compliant formatting, self-closing elements getting converted to full
+opening/closing element pairs etc.  Also, there are alternatives that make it unnecessary such as using an
+"<codeInline>&lt;xsl:comment/&gt;</codeInline>" or "<codeInline>&lt;xsl:text&gt; &lt;/xsl:text&gt;</codeInline>"
+element to enforce non-self-closing output of an element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the .NET Micro Framework versions 4.2 and 4.3.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added a new Open XML presentation style that can be used to produce Open XML documents. These
+are convertible to other proprietary formats such as PDF.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up some minor issues in the Hana, Prototype, VS2005, and VS2010 presentation styles such
+as incorrect style names, extraneous elements, and obsolete resource items found while creating the Open XML
+presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to the <codeInline>codeEntityReference</codeInline> MAML element for a
+<codeInline>linkText</codeInline> attribute that can be added to override the default member ID link text with
+link text of your choosing.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the <codeInline>TOCTitle</codeInline> metadata attribute for namespaces so that it
+only outputs the namespace name to match the online MSDN content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>ApplyVSDocModel.xsl</localUri> so that it correctly includes the type element
+for member list pages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Cleaned up the VS2010 presentation style by removing a lot of unused elements.  Also removed
+all the unused branding templates and moved most of the processing back into the presentation style as a first
+step to getting rid of branding completely.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up a number of minor issues in all presentation styles found while removing the branding
+transformations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a VS2013 presentation style.  This is currently a clone of the VS2010 style with some
+changes to get rid of the background images, alter the syntax and code block tabs styles, and add collapsible
+sections.  A future release will make further changes to bring it closer to the online Visual Studio content
+style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

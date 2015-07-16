@@ -3,16 +3,6 @@
   <item id="BuildDateFormatted">{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</item>
   <item id="BuildDateFull">{@BuildDate}</item>
   <item id="CopyrightInfo">{@CopyrightInfo}</item>
-  <item id="DeprecatedContent"><ddue:alert class="warning" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <ddue:para><ddue:legacyBold>Deprecated</ddue:legacyBold></ddue:para>
-  <ddue:para>The additional content model of adding extra content to a help file's table of contents has been deprecated.  While the
-features described in this topic will continue to be supported in the near term, they will not receive any more updates or fixes and will
-eventually be removed in a future release without further notice.  Going forward,
-<ddue:link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</ddue:link>
-is the preferred method of adding non-reference content to the help file.  The additional content feature can still be used to
-<ddue:link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</ddue:link> files and add supporting
-files to the help file.</ddue:para>
-</ddue:alert></item>
   <item id="FeedbackEMailAddress">{@FeedbackEMailAddress}</item>
   <item id="SolutionDocSource"><ddue:alert class="tip" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 	  <ddue:para>Given that solutions and projects are supported as

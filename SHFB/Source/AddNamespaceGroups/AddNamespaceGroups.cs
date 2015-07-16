@@ -28,6 +28,11 @@ using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.MSBuild
 {
+    /// <summary>
+    /// This task is used to add namespace groups to a reflection data file.  The namespace groups can be
+    /// used to combine namespaces with a common root into entries in the table of contents in the generated
+    /// help file.
+    /// </summary>
     public class AddNamespaceGroups : Task, ICancelableTask
     {
         #region Task properties

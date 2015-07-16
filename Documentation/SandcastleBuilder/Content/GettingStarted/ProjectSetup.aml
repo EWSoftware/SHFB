@@ -1,184 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" revisionNumber="1">
-  <developerWalkthroughDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <para>This walkthrough will describe the steps needed to enable XML comments file output in your Visual
-Studio projects, provides information on where to get more information on using XML comments to decorate your
-code, and describes how to open help file builder projects from within Visual Studio.</para>
+		<introduction>
+			<para>XML comments must be added to your code to document the various types and their members.  In
+addition, you must enable XML comments file output for the project.  For information on enabling XML comments
+in your project and decorating your code with them, see the
+<externalLink>
+	<linkText>Enabling and Using XML Comments</linkText>
+	<linkAlternateText>Enabling and Using XML Comments</linkAlternateText>
+	<linkUri>https://EWSoftware.GitHub.io/XMLCommentsGuide/html/57C91630-95D6-4E3E-AF24-3415CC569AC8.htm</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> walkthrough topic in the
+<externalLink>
+	<linkText>Sandcastle XML Comments Guide</linkText>
+	<linkAlternateText>Sandcastle XML Comments Guide</linkAlternateText>
+	<linkUri>https://EWSoftware.GitHub.io/XMLCommentsGuide</linkUri>
+	<linkTarget>_blank</linkTarget>
+	</externalLink>.</para>
 
-	<autoOutline lead="none" />
-    </introduction>
+		</introduction>
 
-    <section address="Setup">
-      <title>Enabling XML Comments File Generation</title>
-      <content>
-				<para>In order to create a help file that contains reference content (API documentation), you must enable
-XML comments in your Visual Studio projects so that an XML file is generated to contain them when the project is
-built.</para>
-
-				<alert class="note">
-					<para>If you are trying to document a website project, see the
-<link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42" /> topic for some necessary information as they are
-unlike other Visual Studio projects and require additional steps in order to generate XML comments files.</para>
-				</alert>
-
-				<alert class="tip">
-					<para>If not using the Visual Studio IDE, the various managed language compilers support a
-<codeInline>/doc</codeInline> command line option that will produce the XML comments file.  See your language
-compiler command line option documentation for details.</para>
-	  </alert>
-
-        <procedure>
-          <title>All Projects Except Managed C++ Projects</title>
-          <steps class="ordered">
-            <step>
-              <content>
-                <para>In the Solution Explorer, right click on the project and select <ui>Properties</ui>.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>Select the <ui>Build</ui> property page.</para>
-
-								<alert class="note">
-									<para>The XML comments filename is a configuration option.  As such, you can either select the
-<ui>All Configurations</ui> option at the top of the page to set the XML comments options for all configurations
-at the same time or select each configuration individually and repeat the next steps for each one.</para>
-								</alert>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>In the <ui>Output</ui> section, check the checkbox next to the <ui>XML documentation file</ui>
-text box and specify a name for the XML file.  Although not required, a common convention is to name the XML
-comments file after the related assembly (except with a <localUri>.xml</localUri> extension).  The assembly name
-can be found on the <ui>Application</ui> property page.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>If you have a solution with multiple projects that need to be documented, repeat the above
-steps for each project in the solution.  It is recommended that you give each project's XML comments file a
-unique name.</para>
-              </content>
-            </step>
-          </steps>
-        </procedure>
-
-				<para>If documenting a managed C++ project, the procedure differs and you need to follow these steps
-instead.</para>
-				
-        <procedure>
-          <title>Managed C++ Projects</title>
-          <steps class="ordered">
-            <step>
-              <content>
-                <para>In the Solution Explorer, right click on the project and select <ui>Properties</ui>.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>Expand the <ui>Configuration Properties</ui> category and then expand the <ui>C/C++</ui>
-sub-category and select the <ui>Output Files</ui> option below it.</para>
-
-								<alert class="note">
-									<para>The XML comments file option is a configuration option.  As such, you can either select
-the <ui>All Configurations</ui> option at the top of the dialog box to set the XML comments options for all
-configurations at the same time or select each configuration individually and repeat the next step for each
-one.</para>
-								</alert>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>In the <ui>Output Files</ui> options, change the <ui>Generate XML Documentation Files</ui>
-option to <userInput>Yes (/doc)</userInput>.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-              	<para>By default, the comments file is named after the project target with a <localUri>.xml</localUri>
-extension and is placed in the target folder.  If you want to change the name, select the <ui>XML Document Generator</ui>
-category below the <ui>Configuration Properties</ui> category and change the filename using the <ui>Output
-Document File</ui> property.</para>
-              </content>
-            </step>
-            <step>
-              <content>
-                <para>If you have a solution with multiple projects that need to be documented, repeat the above
-steps for each project in the solution.  If you explicitly specify a name for the comments file, it is
-recommended that you give each project's XML comments file a unique name.</para>
-              </content>
-            </step>
-          </steps>
-      	  <conclusion>
-						<content>
-							<para>Once the above has been done, Visual Studio will create the XML comments file each time the
-project is built.</para>
-						</content>							
-					</conclusion>
-        </procedure>
-      </content>
-    </section>
-
-    <section address="DecorateCode">
-      <title>Decorating Your Code</title>
+		<section>
 			<content>
-				<para>In addition to setting the project option to create the file, you must also add XML comments to
-your source code.  At a minimum, you should add a <codeInline>&lt;summary&gt;</codeInline> tag to each public
-type and to the public and protected members of those types.  There are many other tags available that will help
-improve the quality of your documentation.</para>
+				<para>Once you have enabled XML comments in your project and added some comments to your code, you are
+ready to <link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7">create your first help file builder project</link>.
+				</para>
+			</content>
+		</section>
 
-				<para>For a comprehensive list of XML documentation elements and a description of their attributes and
-usage, see the <legacyBold>Sandcastle XML Comments Guide</legacyBold> installed as part of the Sandcastle tools.
-Basic information on XML comments and how to use them can also be found at either
-<externalLink><linkText>XML Documentation Comments (C# Programming Guide)</linkText>
-<linkUri>http://msdn.microsoft.com/en-us/library/b2s063f7.aspx?ppud=4</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> or <externalLink><linkText>Documenting Your Code with XML
-(Visual Basic)</linkText>
-<linkUri>http://msdn.microsoft.com/en-us/library/ms172652.aspx</linkUri>
-<linkTarget>_blank</linkTarget></externalLink>.</para>
+		<relatedTopics>
+			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+			<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+			<link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7" />
 
-				<para>Although it is not mentioned in the XML tag documentation, you can use HTML markup within your XML
-comments to provide additional formatting, embed images, etc.  See the
-<link xlink:href="b92db9c5-9d0c-4d65-ac6e-d3d25adb4093#HtmlTags">FAQ</link> for more information.</para>
-		</content>
-	</section>
-
-    <nextSteps>
-    	<content>
-				<para>Now that you have enabled XML comments in your project and added some comments to your code, you
-are ready to <link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7">create your first help file builder
-project</link>.</para></content>
-    </nextSteps>
-
-    <relatedTopics>
-    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
-	<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
-	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
-	<link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7" />
-	<link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />
-	<link xlink:href="ec822059-b179-4add-984d-485580050ffb" />
-	
-    <externalLink>
-<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
-<linkAlternateText>Taming Sandcastle</linkAlternateText>
-<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink>
-
-	<externalLink>
-<linkText>Sandcastle Wall Chart</linkText>
-<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
-<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink>
-	
-    </relatedTopics>
-  </developerWalkthroughDocument>
+		</relatedTopics>
+	</developerConceptualDocument>
 
 </topic>

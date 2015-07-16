@@ -324,8 +324,7 @@ shorter title or description to use as the default link text.</para>
 
 				<list class="bullet">
 					<listItem>
-						<para>Added support for the <codeInline>&lt;inheritdoc /&gt;</codeInline> XML comments tag. See the
-<link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" /> topic in the help file for details.</para>
+						<para>Added support for the <codeInline>&lt;inheritdoc /&gt;</codeInline> XML comments tag.</para>
 					</listItem>
 
 					<listItem>
@@ -483,9 +482,9 @@ files for various foreign languages.</para>
 							</listItem>
 
 							<listItem>
-								<para><link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /> - This is used to rearrange the
-table of contents such that namespaces are nested within their parent namespaces rather than appearing as a flat
-list of all namespaces at the root level.</para>
+								<para>Hierarchical TOC Plug-In - This is used to rearrange the table of contents such that
+namespaces are nested within their parent namespaces rather than appearing as a flat list of all namespaces at
+the root level.</para>
 							</listItem>
 
 							<listItem>

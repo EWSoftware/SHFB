@@ -45,9 +45,9 @@ element.  An example is shown below (lines wrapped for display purposes):</para>
 
 <code language="xml" title=" ">
 &lt;PropertyGroup&gt;
-	&lt;!-- NOTE: Update the version number in the path to match the package version --&gt;
+	&lt;!-- NOTE: Update the version number in the path (YYYY.M.D.R) to match the package version --&gt;
 	&lt;SHFBROOT Condition=" '$(SHFBROOT)' == '' "&gt;$(MSBuildThisFileDirectory)..\packages\
-EWSoftware.SHFB.2015.5.2.0\Tools\&lt;/SHFBROOT&gt;
+EWSoftware.SHFB.YYYY.M.D.R\Tools\&lt;/SHFBROOT&gt;
 
 	... other SHFB project properties ...
 
@@ -63,10 +63,15 @@ deployment.</para>
 additional tools and components to be installed.  If these tools and components are missing on the build server,
 the help file build will fail.  Only the MS Help Viewer, Open XML, website, and markdown help file formats are
 guaranteed to work as they have no external tool dependencies.</para>
+
+					<para>For NuGet installations, you must also install one or more of the Reflection Data Set packages
+based on which platform types you need: .NETCore, .NETFramework, .NETMicroFramework, .NETPortable, Silverlight,
+WindowsPhone, and/or WindowsPhoneApp.  If multiple versions are available for any given reflection data set
+package, download the latest version as it will cover all prior versions as well.  For example, the
+.NETFramework 4.6 package covers all .NET Framework versions from 1.0 to 4.6.</para>
 				</alert>
 			</content>
 		</section>
-
 
 		<relatedTopics>
 			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />

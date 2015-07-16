@@ -16,6 +16,8 @@
 
 using System.Collections.ObjectModel;
 
+using Microsoft.Ddue.Tools.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>

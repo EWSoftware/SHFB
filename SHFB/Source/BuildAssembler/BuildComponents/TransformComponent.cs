@@ -20,7 +20,7 @@ using System.Xml.Xsl;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component is used to transform the intermediate topic to its final form such as an HTML

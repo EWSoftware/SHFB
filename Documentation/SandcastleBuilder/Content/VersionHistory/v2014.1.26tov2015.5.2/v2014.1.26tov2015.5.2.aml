@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="006F71C5-D279-4A4C-AF34-B5CC28D560C5" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section describe the various changes made to the Sandcastle Help File Builder for
+versions 2014.1.26.0 Beta through 2015.5.2.0.  Select a version below to see a description of its changes.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="e2fcc636-0781-4232-8c7e-fb5edbe40026" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="930f1daa-1a38-4659-84c9-91c81e204c73" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="063f61e1-2040-431f-b53c-91b826027ac6" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="7238a41e-1375-4038-8bf1-d699f4dae668" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="3405263f-a9eb-4ce4-b90f-87c31ab76d85" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="81b04099-bcd7-4caa-8a21-13624d9e290d" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="8f7fa83f-c989-426f-b8b1-c42c333a4d0a" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="1139ca15-af64-48a2-9187-ccc1aec389d4" />
+						</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

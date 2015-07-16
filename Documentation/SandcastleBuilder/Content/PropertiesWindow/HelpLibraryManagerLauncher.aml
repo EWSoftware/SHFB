@@ -102,14 +102,14 @@ REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
 	/sourceMedia "C:\FullPathToFile\HelpContentSetup.msha"
 
-REM Help Viewer 2.0
+REM Help Viewer 2.x
 HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
 	/operation install /sourceUri "C:\FullPathToFile\TestCaseProject.msha"
 </code>
 
 	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>, <codeInline>locale</codeInline>,
-and <codeInline>catalogName</codeInline> options uniquely identify the catalog into which your help file will be
-installed.  By default, the help file builder project properties are set to install it in the Visual Studio
+and <codeInline>viewerVersion</codeInline> options uniquely identify the catalog into which your help file will
+be installed.  By default, the help file builder project properties are set to install it in the Visual Studio
 catalog.  The <codeInline>sourceMedia</codeInline>/<codeInline>sourceUri</codeInline> option tells it to install
 the content based on the settings in the specified <localUri>HelpContentSetup.msha</localUri> file.  For more
 information on the available command line options, see the <externalLink><linkText>Help Library Manager
@@ -174,7 +174,7 @@ HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
 	/productName "Sandcastle Help File Builder Example Project"
 	/mediaBookList "Sandcastle Test Case Library"
 
-REM Help Viewer 2.0
+REM Help Viewer 2.x
 HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
 	/operation uninstall /vendor "EWSoftware"
 	/productName "Sandcastle Help File Builder Example Project"
@@ -182,7 +182,7 @@ HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /locale en-us /wait 0
 </code>
 
 	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>, <codeInline>locale</codeInline>,
-and <codeInline>catalogName</codeInline> parameters identify the catalog from which to remove the content.  The
+and <codeInline>viewerVersion</codeInline> parameters identify the catalog from which to remove the content.  The
 <codeInline>vendor</codeInline>, <codeInline>mediaBookList</codeInline>/<codeInline>bookList</codeInline>, and
 <codeInline>productName</codeInline> values should match the values from the <localUri>HelpContentSetup.msha</localUri>
 file.  The <codeInline>uninstall</codeInline> and <codeInline>silent</codeInline> options tell it to uninstall

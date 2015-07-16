@@ -24,6 +24,8 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
+using Microsoft.Ddue.Tools.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.UI
 {
     /// <summary>

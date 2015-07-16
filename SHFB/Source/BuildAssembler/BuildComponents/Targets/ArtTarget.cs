@@ -16,6 +16,8 @@
 
 using System.Xml.XPath;
 
+using Microsoft.Ddue.Tools.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>

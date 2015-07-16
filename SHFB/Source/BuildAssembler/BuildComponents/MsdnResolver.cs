@@ -24,9 +24,9 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Services.Protocols;
 
-using Microsoft.Ddue.Tools.MtpsContentService;
+using Microsoft.Ddue.Tools.BuildComponent.MtpsContentService;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This is used to perform lookups using the Microsoft/TechNet Publishing System (MTPS) content service

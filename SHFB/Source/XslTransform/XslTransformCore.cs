@@ -18,6 +18,9 @@ using Sandcastle.Core.CommandLine;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This tool is used to transform an XML file using one or more specified XSL transformations
+    /// </summary>
     public static class XslTransformCore
     {
         #region Properties
@@ -59,7 +62,7 @@ namespace Microsoft.Ddue.Tools
 
             if(results.Options["?"].IsPresent)
             {
-                Console.WriteLine("XslTransformer xsl_file [xml_file] [options]");
+                Console.WriteLine("XslTransform [options] xml_file");
                 options.WriteOptionSummary(Console.Out);
                 return 1;
             }

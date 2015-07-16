@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8f7fa83f-c989-426f-b8b1-c42c333a4d0a" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.2.15.0 Beta.</para>
+		</introduction>
+
+		<section>
+			<title>Help File Builder</title>
+			<content>
+				<para>No changes were made to the help file builder or Visual Studio package in this release.  See the
+<link xlink:href="1139ca15-af64-48a2-9187-ccc1aec389d4" /> release notes for important information on breaking
+changes made to the help file builder and tools for these beta releases.</para>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Sandcastle Tools</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the syntax generators so that they skip the getter/setter attribute code if no
+getter/setter info is present (i.e. AjaxDoc reflection data files).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that it does not crash under certain conditions when generating extension
+method information.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a problem with the presentation style base classes so that they work properly when a base
+path is not set.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the VS2010 style's formatting of the <codeInline>list</codeInline> XML comments element
+so that it is consistent with the other presentation styles when <codeInline>term</codeInline> and
+<codeInline>description</codeInline> elements are used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the VS2010 style so that it generates the member list in the class topic rather than
+as a separate Member List topic to match MSDN.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the unnecessary paragraph element from the auto-outline resource items.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

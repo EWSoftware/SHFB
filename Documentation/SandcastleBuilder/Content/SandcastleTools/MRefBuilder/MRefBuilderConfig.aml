@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="38abe82f-cdbd-4ccf-89eb-697d85b41a8e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>TODO: Add content</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>http://blogs.msdn.com/b/sandcastle/archive/2008/06/18/filtering-apis-using-sandcastle.aspx</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f0580494-a33b-47b4-a962-6162aced4b30" />
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -28,6 +28,9 @@ using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.MSBuild
 {
+    /// <summary>
+    /// This task is used to transform an XML file using one or more specified XSL transformations
+    /// </summary>
     public class XslTransform : Task, ICancelableTask
     {
         #region Task properties
@@ -55,9 +58,9 @@ namespace Microsoft.Ddue.Tools.MSBuild
         /// This is used to pass in the list of transformations to run
         /// </summary>
         /// <remarks>Separate multiple transforms with a semi-colon.  Paths starting with "~/" or "~\" are
-        /// assumed to refer to a Sandcastle transformations and will be fully qualified with the root Sandcastle
-        /// tools folder (the folder of the executing assembly).  Relative paths are assumed to be relative to
-        /// the working folder.  Absolute paths are not modified.</remarks>
+        /// assumed to refer to a Sandcastle transformation file and will be fully qualified with the root
+        /// Sandcastle tools folder (the folder of the executing assembly).  Relative paths are assumed to
+        /// be relative to the working folder.  Absolute paths are not modified.</remarks>
         [Required]
         public string[] Transformations { get; set; }
 

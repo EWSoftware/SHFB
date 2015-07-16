@@ -41,7 +41,7 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using Microsoft.Ddue.Tools.UI;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component is used to generate IntelliSense files based on the documented APIs.

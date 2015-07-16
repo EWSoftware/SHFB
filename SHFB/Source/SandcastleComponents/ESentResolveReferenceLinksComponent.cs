@@ -32,7 +32,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using Microsoft.Ddue.Tools;
+using Microsoft.Ddue.Tools.BuildComponent;
 using Microsoft.Ddue.Tools.Targets;
 
 using Microsoft.Isam.Esent.Collections.Generic;

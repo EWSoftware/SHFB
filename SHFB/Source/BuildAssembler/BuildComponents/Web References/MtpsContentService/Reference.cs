@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace Microsoft.Ddue.Tools.MtpsContentService {
+namespace Microsoft.Ddue.Tools.BuildComponent.MtpsContentService {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -44,7 +44,7 @@ namespace Microsoft.Ddue.Tools.MtpsContentService {
         
         /// <remarks/>
         public ContentService() {
-            this.Url = global::Microsoft.Ddue.Tools.Properties.Settings.Default.BuildComponents_MtpsContentService_ContentService;
+            this.Url = global::Microsoft.Ddue.Tools.BuildComponent.Properties.Settings.Default.BuildComponents_MtpsContentService_ContentService;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;

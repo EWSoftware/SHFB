@@ -22,7 +22,7 @@ using Microsoft.Ddue.Tools.Targets;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This build component is used to replace a given set of elements with the content of shared content items

@@ -124,6 +124,7 @@ namespace Sandcastle.Core.Reflection
             /// Create an instance from an XML element
             /// </summary>
             /// <param name="redirection">The binding redirection settings</param>
+            /// <returns>The binding redirection settings created from the XML element</returns>
             public static BindingRedirection FromXml(XElement redirection)
             {
                 var br = new BindingRedirection

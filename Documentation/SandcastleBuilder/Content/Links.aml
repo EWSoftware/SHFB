@@ -1,171 +1,188 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-	  <autoOutline lead="This topics contains links to various resources that you may find useful." />
+		<introduction>
+			<autoOutline lead="This topics contains links to various resources that you may find useful."
+				excludeRelatedTopics="true" />
 
-<alert class="note">
-  <para>For a list of required tools and suggested additional tools, see the
+			<alert class="note">
+				<para>For a list of required tools and suggested additional tools, see the
 <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> topic.</para>
-</alert>
-    </introduction>
+			</alert>
+		</introduction>
 
-<section address="Guides">
-  <title>Guides and Articles</title>
-  <content><para>The following are various guides and articles that will help
-you become familiar with XML comments, conceptual content, and Sandcastle.</para>
-<list class="bullet">
-    <listItem>
-			<para>For a comprehensive list of XML documentation elements and a description of their attributes and
-usage, see the <legacyBold>Sandcastle XML Comments Guide</legacyBold> installed as part of the Sandcastle
-tools.</para></listItem>
+		<section address="Guides">
+			<title>Guides and Articles</title>
+			<content>
+				<para>The following are various guides and articles that will help you become familiar with XML comments,
+conceptual content, and Sandcastle.</para>
 
-    <listItem>
-			<para>For a comprehensive list of MAML documentation elements used in conceptual content and a description
-of their attributes and usage, see the <legacyBold>Sandcastle MAML Guide</legacyBold> installed as part of the
-Sandcastle tools.</para></listItem>
-
-	<listItem>
-		<para>Special thanks to <externalLink>
-  <linkText>Alessandro Del Sole</linkText>
-  <linkUri>http://community.visual-basic.it/Alessandro</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink> for featuring the Sandcastle Help File Builder in his
-Italian language book <externalLink>
-  <linkText>Programming with Visual Basic 2005 Beyond the Code</linkText>
-  <linkUri>http://community.visual-basic.it/alessandro/articles/19644.aspx</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink>.</para></listItem>
-
-	<listItem>
-		<para>The following article is outdated now but does contain some useful information:
-			<externalLink>
-<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
-<linkAlternateText>Taming Sandcastle</linkAlternateText>
-<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+				<list class="bullet">
+					<listItem>
+						<para>For a comprehensive list of XML documentation elements and a description of their attributes
+and usage, see the <legacyBold>Sandcastle XML Comments Guide</legacyBold> installed as part of the help file
+builder (also <externalLink>
+<linkText>available online</linkText>
+<linkAlternateText>Sandcastle XML Comments Guide</linkAlternateText>
+<linkUri>https://EWSoftware.GitHub.io/XMLCommentsGuide</linkUri>
 <linkTarget>_blank</linkTarget>
-</externalLink></para></listItem>
+</externalLink>).</para>
+					</listItem>
 
-	<listItem><para>For a wall chart that contains condensed information on the various XML comment elements,
+					<listItem>
+						<para>For a comprehensive list of MAML documentation elements used in conceptual content and a
+description of their attributes and usage, see the <legacyBold>Sandcastle MAML Guide</legacyBold> installed as
+part of the the help file builder (also <externalLink>
+<linkText>available online</linkText>
+<linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
+<linkUri>https://EWSoftware.GitHub.io/MAMLGuide</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>).</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							Special thanks to <externalLink>
+<linkText>Alessandro Del Sole</linkText>
+<linkUri>http://community.visual-basic.it/Alessandro</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> for featuring the Sandcastle Help File Builder in his Italian language book <externalLink>
+<linkText>Programming with Visual Basic 2005 Beyond the Code</linkText>
+<linkUri>http://community.visual-basic.it/alessandro/articles/19644.aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The following article is outdated now but does contain some useful information:
+<externalLink>
+	<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
+	<linkAlternateText>Taming Sandcastle</linkAlternateText>
+	<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+					</listItem>
+
+					<listItem>
+						<para>For a wall chart that contains condensed information on the various XML comment elements,
 see this PDF file also by Michael Sorens:
 <externalLink>
-<linkText>Sandcastle Wall Chart</linkText>
-<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
-<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink></para></listItem>
-</list>
-
-  </content>
-</section>
-
-<section address="ThirdParty">
-  <title>Third-party Build Components, Plug-Ins, and Tools</title>
-  <content>
-		<para>The following components can add new features to the help topics generated by Sandcastle.</para>
-
-<list class="bullet">
-	<listItem>
-		<para>For a list of components supplied with the help file builder, see the
-<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" /> topic.</para>
-	</listItem>
-
-	<listItem>
-		<para>For a list of supplied plug-ins used to alter and extend the help file builder's build process,
-see the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" /> topic.</para>
-	</listItem>
-
-	<listItem>
-		<para><externalLink><linkText>XML Schema Documenter</linkText>
-<linkUri>https://github.com/terrajobst/xsddoc</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> - This plug-in allows you to integrate reference documentation
-for XML schemas into your help files.</para>
-	</listItem>
-
-	<listItem>
-		<para><externalLink><linkText>Sandcastle LaTeX</linkText>
-<linkUri>https://github.com/cuda/latex-sandcastle/</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink> - This custom build component converts LaTeX embedded in XML
-comments to images in the final help file.  The component utilizes mimeTeX 1.7.</para>
-	</listItem>
-
-</list>
-
-	<para>The following third-party tools are also available for use with Sandcastle and the help file builder.</para>
-
-<list class="bullet">
-    <listItem>
-			<para>Code Project Article: <externalLink>
-  <linkText>Producing Documentation for SQL Server Objects Using Sandcastle</linkText>
-  <linkUri>http://www.codeproject.com/Articles/21271/SQL-XML-Documentation</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink></para>
-	</listItem>
-
-    <listItem>
-			<para><externalLink>
-  <linkText>ShoBiz</linkText>
-  <linkUri>http://shobiz.codeplex.com/</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> - This is a BizTalk tool that generates Sandcastle documentation from BizTalk artifacts
-deployed into the databases. It promotes documentation as part of the solution lifecycle.  The
-documentation structure mimics the Admin Console and extracts documentation comments from all
-sources.</para>
-	</listItem>
-
-</list>
-
-  </content>
-</section>
-
-<section address="Discussion">
-  <title>Discussion Groups, Blogs, Etc.</title>
-  <content><para>The following resources provide places to discuss Sandcastle
-and the related tools, report bugs, and ask for help.</para>
-
-<list class="bullet">
-	<listItem>
-		<para>To discuss the help file builder, suggest new features, report bugs in it, and request help
-using it, visit the <token>SHFB</token> project site.</para>
-	</listItem>
-	<listItem>
-		<para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help
-using it, visit the <token>SHFB</token> project site.</para>
-	</listItem>
-	<listItem>
-		<para>For discussion and questions about help systems in general, visit the <externalLink>
-  <linkText>Visual Studio General Questions forum</linkText>
-  <linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
-  <linkTarget>_blank</linkTarget>
+	<linkText>Sandcastle Wall Chart</linkText>
+	<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
+	<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
+	<linkTarget>_blank</linkTarget>
 </externalLink>.</para>
-	</listItem>
-	<listItem>
-		<para>The retired <externalLink>
-  <linkText>Microsoft Developer Documentation and Help System forum</linkText>
-  <linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
-  <linkTarget>_blank</linkTarget>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="ThirdParty">
+			<title>Third-party Build Components, Plug-Ins, and Tools</title>
+			<content>
+				<para>The following components can add new features to the help topics generated by Sandcastle.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>For a list of components supplied with the help file builder, see the
+<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" /> topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>For a list of supplied plug-ins used to alter and extend the help file builder's build process,
+see the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" /> topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<externalLink>
+								<linkText>XML Schema Documenter</linkText>
+								<linkUri>https://github.com/terrajobst/xsddoc</linkUri>
+								<linkTarget>_blank</linkTarget>
+							</externalLink> - This plug-in allows you to integrate reference documentation for XML schemas into
+your help files.</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<externalLink>
+								<linkText>Sandcastle LaTeX</linkText>
+								<linkUri>https://github.com/cuda/latex-sandcastle/</linkUri>
+								<linkTarget>_blank</linkTarget>
+							</externalLink> - This custom build component converts LaTeX embedded in XML comments to images in
+the final help file.  The component utilizes mimeTeX 1.7.</para>
+					</listItem>
+
+				</list>
+
+				<para>The following third-party tools are also available for use with Sandcastle and the help file
+builder.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Code Project Article: <externalLink>
+<linkText>Producing Documentation for SQL Server Objects Using Sandcastle</linkText>
+<linkUri>http://www.codeproject.com/Articles/21271/SQL-XML-Documentation</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink></para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<externalLink>
+								<linkText>ShoBiz</linkText>
+								<linkUri>http://shobiz.codeplex.com/</linkUri>
+								<linkTarget>_blank</linkTarget>
+							</externalLink> - This is a BizTalk tool that generates Sandcastle documentation from BizTalk
+artifacts deployed into the databases. It promotes documentation as part of the solution lifecycle.  The
+documentation structure mimics the Admin Console and extracts documentation comments from all sources.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Discussion">
+			<title>Discussion Groups, Blogs, Etc.</title>
+			<content>
+				<para>The following resources provide places to discuss Sandcastle and the related tools, report bugs,
+and ask for help.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>To discuss the help file builder and Sandcastle Tools, suggest new features, report bugs in
+them, and request help using it, visit the <token>SHFB</token> project site.</para>
+					</listItem>
+
+					<listItem>
+						<para>For discussion and questions about help systems in general, visit the <externalLink>
+<linkText>Visual Studio General Questions forum</linkText>
+<linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The retired <externalLink>
+<linkText>Microsoft Developer Documentation and Help System forum</linkText>
+<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+<linkTarget>_blank</linkTarget>
 </externalLink> may also provide information on older help systems.</para>
-	</listItem>
+					</listItem>
 
-	<listItem>
-		<para><externalLink>
-  <linkText>The Sandcastle Blog</linkText>
-  <linkUri>http://blogs.msdn.com/sandcastle/default.aspx</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> provides news about Sandcastle and blog entries describing how its various features
-work.</para>
-	</listItem>
-</list>
+				</list>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-	<relatedTopics>
-		<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
-	</relatedTopics>
+		<relatedTopics>
+			<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

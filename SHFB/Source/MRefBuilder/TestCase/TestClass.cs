@@ -20,6 +20,7 @@ using System.Runtime.CompilerServices;
 
 namespace MyClassLibrary
 {
+/*
     /// <summary>
     /// Test parameter attributes
     /// </summary>
@@ -35,5 +36,65 @@ namespace MyClassLibrary
             [CallerLineNumber]int callerLineNumber = 0, [CallerFilePath]string callerFilePath = "")
         {
         }
+    }*/
+
+    /// <summary>
+    /// Test
+    /// </summary>
+    internal interface IValidatable
+    {
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>True or false</returns>
+        bool IsValid(object value);
+    }
+
+    /// <summary>
+    /// Test
+    /// </summary>
+    public interface IUpdateable
+    {
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>True or false</returns>
+        bool IsUpdateable(object value);
+    }
+
+    /// <summary>
+    /// Test
+    /// </summary>
+    public class NotificationDelivery : IValidatable, IUpdateable
+    {
+        #region IValidatable Members
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool IsValid(object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
+        #region IUpdateable Members
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool IsUpdateable(object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
     }
 }

@@ -147,8 +147,15 @@ namespace Sandcastle.Core.Reflection
                 f.Version == version);
 
             if((dataSet == null || !dataSet.IsPresent) && withRedirect)
+            {
                 dataSet = this.Values.Where(v => v.Platform == platform && v.IsCoreFramework).OrderBy(
-                    v => v.Version).FirstOrDefault(v => v.Version > version && v.IsPresent);
+                    v => v.Version).LastOrDefault(v => v.Version.Major == version.Major &&
+                         v.Version.Minor == version.Minor && v.IsPresent);
+
+                if(dataSet == null)
+                    dataSet = this.Values.Where(v => v.Platform == platform && v.IsCoreFramework).OrderBy(
+                        v => v.Version).FirstOrDefault(v => v.Version > version && v.IsPresent);
+            }
 
             return dataSet;
         }

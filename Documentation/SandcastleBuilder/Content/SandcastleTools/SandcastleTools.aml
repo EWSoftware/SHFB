@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section describe the underlying tools, components, and build engine.  You can skip
+this section if you have no interest in how the underlying tools work.  Otherwise, select a topic below to learn
+more about the various tools and components used to build the help files.</para>
+		</introduction>
+
+		<section>
+			<content>
+
+				<alert class="note">
+					<para>Author Credits</para>
+
+					<para>The information and images in the General Information and Architecture topics were originally
+created by Dave Sexton as part of the wiki content for the Sandcastle Styles project that used to exist on
+CodePlex.</para>
+
+					<para>Some of the information in the Sandcastle tool topics was created by Anand Raman on the old
+Sandcastle blog.  The information has been updated to reflect the current state of the tools and enhancements
+made to support new features.</para>
+				</alert>
+
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="5a8fa02a-01cd-466e-a2c1-2bb30190cc5a" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="80c983f4-1a97-473b-b614-2b4d671d50ca" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="f0580494-a33b-47b4-a962-6162aced4b30" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="36b6f77e-5662-4e1f-a075-bae885db0401" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="66f0b914-3e4f-4fa5-bee7-67879a74a018" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="cdac64ac-3d78-4d30-b528-ce1e9aacfb24" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="e3a49da5-e80c-4878-b904-72f902c31709" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="7440cb1c-05f6-4fee-9c4f-06c8b8460567" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="9b1f6e82-2c47-479c-84f0-ac06f1f31e4e" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="ecf9463d-f32d-41fa-af87-998ae5ce5ddc" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="032f1fab-6625-4ffb-9316-57fb3e4a03ff" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="04f289d0-20bd-4873-9012-6c77a21c0f0a" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="ede54bc8-7027-48be-ba0c-66d8f24bdccd" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="5f73b7b1-473c-4740-bdfc-e662192910fc" /></para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

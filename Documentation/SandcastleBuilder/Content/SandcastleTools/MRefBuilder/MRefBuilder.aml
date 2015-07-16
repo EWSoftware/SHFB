@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="f0580494-a33b-47b4-a962-6162aced4b30" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This tool, <localUri>MRefBuilder.exe</localUri>, reflects over a set of managed assemblies and
+creates an XML output file containing information about the APIs found in those assemblies.  APIs are namespaces,
+types, and members defined in the assemblies.  Reflection data includes, but is not limited to: visibility,
+return types, parameter names and types, inheritance data, whether a class is abstract or sealed, etc.  The
+output of MRefBuilder is consumed by the reference build component stack when creating API reference
+documentation.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>TODO: http://blogs.msdn.com/b/sandcastle/archive/2006/08/13/697859.aspx </para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

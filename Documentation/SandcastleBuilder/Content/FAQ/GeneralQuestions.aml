@@ -7,6 +7,17 @@
 			<autoOutline lead="none" excludeRelatedTopics="true" />
 		</introduction>
 
+		<section address="WhySandcastle">
+			<title>Why is it called Sandcastle?</title>
+			<content>
+				<para>From Anand Raman:  When Microsoft shipped Visual Studio 2005 (code named Whidbey) Microsoft
+internally used a "beach theme" code base called Coronado to build and ship the conceptual and managed reference
+content.  As a part of this beach theme, the managed reference reflection and build engine portion of the
+Coronado code base was called Sandcastle.  Internally, Sandcastle was used by developers across teams to produce
+documentation for their XML comments.</para>
+			</content>
+		</section>
+		
 		<section address="GettingStarted">
 			<title>How do I use Sandcastle and the help file builder?</title>
 			<content>
@@ -30,7 +41,12 @@ that topic contains information about how to find features or equivalent functio
 		<section address="WebProjects">
 			<title>How do I document a web application or a website project?</title>
 			<content>
-				<para>See the  <link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42" /> topic for details.</para>
+				<para> See the <externalLink>
+<linkText>Documenting Web Projects</linkText>
+<linkAlternateText>Documenting Web Projects</linkAlternateText>
+<linkUri>https://EWSoftware.GitHub.io/EWSoftwareCodeDom</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> help file for details.</para>
 			</content>
 		</section>
 		

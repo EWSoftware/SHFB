@@ -184,6 +184,7 @@ namespace Sandcastle.Core
         /// plug-ins, presentation styles, and BuildAssembler components and syntax generators).
         /// </summary>
         /// <param name="folders">An enumerable list of additional folders to search recursively for components.</param>
+        /// <returns>The a composition container that contains all of the available components</returns>
         /// <remarks>The following folders are searched in the following order.  If the given folder has not been
         /// specified or does not exist, it is ignored.
         /// 

@@ -20,6 +20,8 @@
 
 using System.Xml;
 
+using Microsoft.Ddue.Tools.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Snippets
 {
     /// <summary>

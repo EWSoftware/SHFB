@@ -8,7 +8,7 @@
     <ProjectGuid>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Ddue.Tools</RootNamespace>
+    <RootNamespace>Microsoft.Ddue.Tools.BuildComponent</RootNamespace>
     <AssemblyName>BuildComponents</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../SandcastleTools.snk</AssemblyOriginatorKeyFile>
@@ -275,10 +275,10 @@
     <None Include="Web References\MtpsContentService\default2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web References\MtpsContentService\getContentResponse.datasource">
+    <None Include="Web References\MtpsContentService\getContentResponse1.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\MtpsContentService\getNavigationPathsResponse.datasource">
+    <None Include="Web References\MtpsContentService\getNavigationPathsResponse1.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\MtpsContentService\Reference.map">

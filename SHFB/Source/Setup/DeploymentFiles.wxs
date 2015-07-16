@@ -5005,16 +5005,6 @@
 							Advertise="yes" />
 					</File>
         </Component>
-        <Component Id="cmp3F73BD264B071C75C723D7A62161BB4E" Guid="{DC3C33B6-E78B-4EC6-A2B7-9F08F862853D}">
-					<File Id="filA370385166EE5D4BFF8A9E98CCF9F35C" KeyPath="yes" Source="$(var.RootFolder)\Help\SandcastleTools.chm">
-						<Shortcut Id="SandcastleToolsHelp"
-							Directory="ShfbProgramMenuDir"
-							Icon="Help.ico"
-							Name="Sandcastle Tools Help"
-							Description="A help file for the Sandcastle tools and components"
-							Advertise="yes" />
-					</File>
-        </Component>
         <Component Id="cmp505A5D9DBA01FDAD156BE9BA7CC1CC49" Guid="{A6B1671E-6615-423C-AE3D-71E0D0A29B31}">
 					<File Id="fil677CDDAA2D2CE4C81AFAA51F161E8DF4" KeyPath="yes" Source="$(var.RootFolder)\Help\XMLCommentsGuide.chm">
 						<Shortcut Id="SandcastleXMLCommentsGuide"
@@ -5679,15 +5669,6 @@
         </Directory>
         <Directory Id="dir10D7A3FAC205D766411CB5F71AB66847" Name="VS2010">
           <Directory Id="dirC16A028AE83891EBD2D2265DBAAE6E91" Name="Configuration">
-            <Component Id="cmp276362DC8BB6CBE94EA4AD917D8C5425" Guid="{7053C2AB-BF2D-4A4B-8023-258EBA0CE67F}">
-              <File Id="fil527961B664E81535CFFBB653D560217A" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\conceptual.config" />
-            </Component>
-            <Component Id="cmp9D01643E1BE01C35C5B25FA3BD3BBC75" Guid="{EBD2375C-C78F-4BAF-823E-4864FA5A70E3}">
-              <File Id="filA6C132288FECED198380E94291934DE4" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\sandcastle-mshc.config" />
-            </Component>
-            <Component Id="cmp6D0C66A34B9E50ED64D809EAA12D1B9F" Guid="{2092CCC5-990D-4EB4-8AC1-4EAD797F20C3}">
-              <File Id="fil9B21EE884A0157DC3C31877A76CECF30" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\sandcastle.config" />
-            </Component>
             <Component Id="cmp7A1541417051508EA5FBA8066F99787B" Guid="{1E9E848B-F804-448A-B938-45380BE3987D}">
               <File Id="fil4F5C706BA4EC8E8ACFE88F2B51461566" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\SHFBConceptual.config" />
             </Component>
@@ -6025,15 +6006,6 @@
         </Directory>
         <Directory Id="dir519C9C610FA57369AC0260DD55241058" Name="VS2013">
           <Directory Id="dir36BF1DC8C6891EF285F63B4E0A9EAB06" Name="Configuration">
-            <Component Id="cmpBF5A45CC8C5255D0AD61D527CAEC9B58" Guid="{92EC3515-3B88-4C1A-A15B-F9DA1C4BB54A}">
-              <File Id="fil66280BA9E313EA9F88DE7F42D01B435D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\conceptual.config" />
-            </Component>
-            <Component Id="cmp498179DAEF4649087EE0C5176FFC66D9" Guid="{D81B2FF1-6301-40A7-A25C-4548B4B4E84F}">
-              <File Id="filDA92D29CCB4BBBCEF749C8C0A71D829B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\sandcastle-mshc.config" />
-            </Component>
-            <Component Id="cmpF11A340F99C38D53411C9F3D1E45338A" Guid="{0A07F3BD-391B-4261-B8E9-920D9F232871}">
-              <File Id="filBD49AAC19A06C90D7D61F64ADDE2AF1D" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\sandcastle.config" />
-            </Component>
             <Component Id="cmp978186560D69E5B71D9C2559AF2582BD" Guid="{D3282A1D-D70F-40E4-8CBF-279B5DC20993}">
               <File Id="fil4223414782E02A7F4715FC4155549D28" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\SHFBConceptual.config" />
             </Component>
@@ -8370,7 +8342,6 @@
       <ComponentRef Id="cmp5C3666CEAD1E964C1C72D5448985E5D0" />
       <ComponentRef Id="cmp5CB08457C45FC7254DEE3C556ADA2857" />
       <ComponentRef Id="cmp265DC0C2A9038D4CD5E7064AE9BFEFCC" />
-      <ComponentRef Id="cmp3F73BD264B071C75C723D7A62161BB4E" />
       <ComponentRef Id="cmp505A5D9DBA01FDAD156BE9BA7CC1CC49" />
       <ComponentRef Id="cmp17632694CF5ECAEA34194A2D1E40DBB6" />
       <ComponentRef Id="cmp48320C65EF1BF6F9219378E1F6C26A4B" />
@@ -8570,9 +8541,6 @@
       <ComponentRef Id="cmp7A02571EA12ED54AF6779BB284E64712" />
       <ComponentRef Id="cmp4DCA4C96764A90E438E8198C5D5DB54F" />
       <ComponentRef Id="cmpFF29D23988C0C68952D51F4843ABB5D4" />
-      <ComponentRef Id="cmp276362DC8BB6CBE94EA4AD917D8C5425" />
-      <ComponentRef Id="cmp9D01643E1BE01C35C5B25FA3BD3BBC75" />
-      <ComponentRef Id="cmp6D0C66A34B9E50ED64D809EAA12D1B9F" />
       <ComponentRef Id="cmp7A1541417051508EA5FBA8066F99787B" />
       <ComponentRef Id="cmp7FFE4449E1AE5288A9430990559F4498" />
       <ComponentRef Id="cmp1155E56D3C732302DD00EE8D2A1A23EB" />
@@ -8678,9 +8646,6 @@
       <ComponentRef Id="cmpAD13B4E7B253CAD8312626EE4DE1677C" />
       <ComponentRef Id="cmpB8042AF8962E09C7196453804DB3706A" />
       <ComponentRef Id="cmp29B107AC4FD574EE08E70783AFD192E1" />
-      <ComponentRef Id="cmpBF5A45CC8C5255D0AD61D527CAEC9B58" />
-      <ComponentRef Id="cmp498179DAEF4649087EE0C5176FFC66D9" />
-      <ComponentRef Id="cmpF11A340F99C38D53411C9F3D1E45338A" />
       <ComponentRef Id="cmp978186560D69E5B71D9C2559AF2582BD" />
       <ComponentRef Id="cmp6BF09057646772DD382BF57EEF8E1C8F" />
       <ComponentRef Id="cmpECA5F50969DDD583320F58EE8F1E8290" />

@@ -15,8 +15,8 @@ using Sandcastle.Core.CommandLine;
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
-    /// This takes a reflection data file and splits it into multiple reflection data files, each containing the
-    /// types from a specific namespace.
+    /// This tool takes a reflection data file and splits it into multiple reflection data files, each
+    /// containing the types from a specific namespace.
     /// </summary>
     public static class SegregateByNamespaceCore
     {

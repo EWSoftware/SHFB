@@ -27,6 +27,10 @@ using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.MSBuild
 {
+    /// <summary>
+    /// This task takes a reflection data file and splits it into multiple reflection data files, each
+    /// containing the types from a specific namespace.
+    /// </summary>
     public class SegregateByNamespace : Task, ICancelableTask
     {
         #region Task properties

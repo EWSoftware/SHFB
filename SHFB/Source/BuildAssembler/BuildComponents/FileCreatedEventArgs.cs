@@ -18,7 +18,7 @@
 using System;
 using System.IO;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This event arguments class is used by build components to indicate that they have saved a file of some

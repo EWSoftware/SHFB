@@ -33,7 +33,7 @@ using Microsoft.Ddue.Tools.Targets;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools
+namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
     /// This is a modified version of the original <c>ResolveConceptualLinksComponent</c> that is used to resolve

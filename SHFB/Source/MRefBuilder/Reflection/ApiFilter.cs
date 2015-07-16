@@ -514,16 +514,17 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// </summary>
         /// <param name="type">The type node for the interface</param>
         /// <returns>True if it is to be documented, false if not</returns>
+        /// <remarks>Note that if an interface is not documented, any non-explicitly implemented members will
+        /// still show up in the implementing class but will be listed as normal public members.</remarks>
         public virtual bool IsDocumentedInterface(TypeNode type)
         {
             if(type == null)
                 throw new ArgumentNullException("type");
 
             // ApiFilter was extended to support interfaces that are filtered out (embedded interop types) but
-            // still contribute to the list of a type's implemented interfaces.  See change to MrefWriter.cs,
-            // method GetExposedInterfaces.
-            if(!this.IncludeNoPIATypes && !IsEmbeddedInteropType(type))
-                return true;
+            // still contribute to the list of a type's implemented interfaces.
+            if(!this.IncludeNoPIATypes && IsEmbeddedInteropType(type))
+                return false;
 
             if(!this.IsVisible(type))
                 return false;

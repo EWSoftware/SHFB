@@ -1,13 +1,13 @@
 //===============================================================================================================
 // System  : Sandcastle Tools
 // File    : AssemblyInfoShared.cs
-// Updated : 05/02/2015
+// Updated : 07/11/2015
 // Note    : Copyright 2006-2015, Microsoft Corporation, All rights reserved
 //
 // Sandcastle tools common assembly attributes.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 //    Date     Who  Comments
@@ -22,15 +22,9 @@ using System.Runtime.InteropServices;
 // NOTE: See AssemblyInfo.cs for project-specific assembly attributes
 
 // General assembly information
-[assembly: AssemblyProduct("Sandcastle Tools")]
+[assembly: AssemblyProduct("Sandcastle Help File Builder and Tools")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-
-#if !EWSOFTWARECOPYRIGHT
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
-#else
-[assembly: AssemblyCopyright(AssemblyInfo.EWSoftwareCopyright)]
-#endif
-
 [assembly: AssemblyCulture("")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
@@ -87,10 +81,7 @@ internal static partial class AssemblyInfo
     // the file version above but includes the century on the year.
     public const string ProductVersion = "2015.5.2.0";
 
-    // Assembly shared copyright information
+    // Assembly copyright information
     public const string Copyright = "Copyright \xA9 2006-2015, Microsoft Corporation, All Rights Reserved.\r\n" +
         "Portions Copyright \xA9 2006-2015, Eric Woodruff, All Rights Reserved.";
-
-    // Assembly copyright information, EWSoftware only
-    public const string EWSoftwareCopyright = "Copyright \xA9 2006-2015, Eric Woodruff, All Rights Reserved";
 }

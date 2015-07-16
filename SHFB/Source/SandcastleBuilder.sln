@@ -6,35 +6,15 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderGui", "SandcastleBuilderGui\SandcastleBuilderGui.csproj", "{F5362C80-44E3-47E4-AAFD-49050B22B550}"
 	ProjectSection(ProjectDependencies) = postProject
 		{49720D17-40AD-4452-B60A-A5DEA226BA06} = {49720D17-40AD-4452-B60A-A5DEA226BA06}
-		{9708B799-DC83-4404-B8C6-FA444C310DCD} = {9708B799-DC83-4404-B8C6-FA444C310DCD}
-		{A96308E6-1F59-4378-9605-9D19DF9F697D} = {A96308E6-1F59-4378-9605-9D19DF9F697D}
-		{8E5E26EC-0352-4597-AD7B-1563C929CE20} = {8E5E26EC-0352-4597-AD7B-1563C929CE20}
-		{318728F4-8A9F-4A33-87F6-6E3A06629C3C} = {318728F4-8A9F-4A33-87F6-6E3A06629C3C}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderUtils", "SandcastleBuilderUtils\SandcastleBuilderUtils.csproj", "{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A96308E6-1F59-4378-9605-9D19DF9F697D} = {A96308E6-1F59-4378-9605-9D19DF9F697D}
-		{8E5E26EC-0352-4597-AD7B-1563C929CE20} = {8E5E26EC-0352-4597-AD7B-1563C929CE20}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleComponents", "SandcastleComponents\SandcastleComponents.csproj", "{9708B799-DC83-4404-B8C6-FA444C310DCD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderPlugIns", "SandcastleBuilderPlugIns\SandcastleBuilderPlugIns.csproj", "{49720D17-40AD-4452-B60A-A5DEA226BA06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleHtmlExtract", "SandcastleHtmlExtract\SandcastleHtmlExtract.csproj", "{8E5E26EC-0352-4597-AD7B-1563C929CE20}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateInheritedDocs", "GenerateInheritedDocs\GenerateInheritedDocs.csproj", "{A96308E6-1F59-4378-9605-9D19DF9F697D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpLibraryManagerLauncher", "HelpLibraryManagerLauncher\HelpLibraryManagerLauncher.csproj", "{318728F4-8A9F-4A33-87F6-6E3A06629C3C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderWPF", "SandcastleBuilderWPF\SandcastleBuilderWPF.csproj", "{D3B06405-3435-4329-9233-2DF1BF5028AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponentTargets", "BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj", "{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponents", "BuildAssembler\BuildComponents\BuildComponents.csproj", "{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject
@@ -56,38 +36,14 @@ Global
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9708B799-DC83-4404-B8C6-FA444C310DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9708B799-DC83-4404-B8C6-FA444C310DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9708B799-DC83-4404-B8C6-FA444C310DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9708B799-DC83-4404-B8C6-FA444C310DCD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49720D17-40AD-4452-B60A-A5DEA226BA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49720D17-40AD-4452-B60A-A5DEA226BA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49720D17-40AD-4452-B60A-A5DEA226BA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49720D17-40AD-4452-B60A-A5DEA226BA06}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E5E26EC-0352-4597-AD7B-1563C929CE20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E5E26EC-0352-4597-AD7B-1563C929CE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E5E26EC-0352-4597-AD7B-1563C929CE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E5E26EC-0352-4597-AD7B-1563C929CE20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A96308E6-1F59-4378-9605-9D19DF9F697D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A96308E6-1F59-4378-9605-9D19DF9F697D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A96308E6-1F59-4378-9605-9D19DF9F697D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A96308E6-1F59-4378-9605-9D19DF9F697D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU

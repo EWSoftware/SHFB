@@ -98,8 +98,12 @@ namespace Sandcastle.Core.BuildAssembler
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc />
-        /// <remarks>This implementation always returns zero</remarks>
+        /// <summary>
+        /// This method is not used
+        /// </summary>
+        /// <param name="baseUri">Not used</param>
+        /// <param name="nextBaseUri">Not used</param>
+        /// <returns>This implementation always returns zero</returns>
         public override int CompareDocument(string baseUri, string nextBaseUri)
         {
             return 0;

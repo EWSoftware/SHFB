@@ -3,14 +3,12 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>The topics in this section describe the various changes made to the Sandcastle Help File Builder for
-versions 1.0.0.0 through 1.7.0.0 which used a different project file format.</para>
+versions 1.0.0.0 through 1.7.0.0 which used a different project file format.  Select a version below to see a
+description of its changes.</para>
 		</introduction>
 
 		<section>
-			<title>Version History</title>
 			<content>
-				<para>Select a version below to see a description of its changes.</para>
-
 				<list class="bullet">
 					<listItem>
 						<para><link xlink:href="a44fe561-efb9-40ac-84eb-b1a00a4a9596" /></para>
