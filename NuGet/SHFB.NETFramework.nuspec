@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB.NETFramework</id>
-		<version>4.5.2</version>
+		<version>4.6</version>
 		<title>Sandcastle Help File Builder .NETFramework Reflection Data Set</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>

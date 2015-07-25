@@ -8,7 +8,7 @@ build engine.  These changes were necessary to move forward with new features an
 features more manageable.  Review the sections below for details.</para>
 			</alert>
 			
-			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2015.7.11.0." />
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2015.7.25.0." />
 		</introduction>
 
 		<section address="RemovedFeatures">

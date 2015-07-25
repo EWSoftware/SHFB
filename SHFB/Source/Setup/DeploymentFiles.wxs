@@ -2058,7 +2058,10 @@
           <Component Id="cmp9E0B921CB98356B1FAD0EB065FE81987" Guid="{83656605-224B-4013-A41F-CB2974B31237}">
             <File Id="fil39FCA24375B9E6AEF24E294C22E71640" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Data.xml" />
           </Component>
-          <Component Id="cmp8EE65C7EC60E8065E6B00AB3407AEA93" Guid="{BAD7196A-1590-4589-92C7-EF4D1796CB43}">
+          <Component Id="cmp6E285E7B59FE5DD5CA634A6A35DF3662" Guid="{871E81E7-6DD1-4373-9A97-09E63043709F}">
+            <File Id="filEBB7B36DB46DA209DD1B0AFA9B8E11EE" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Diagnostics.xml" />
+          </Component>
+          <Component Id="cmp8EE65C7EC60E8065E6B00AB3407AEA93" Guid="{8CE639A2-1889-4616-8F84-83A8C411FA04}">
             <File Id="fil6A58F60B46165638BBBF7CB54C7018A5" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Documents.DocumentStructures.xml" />
           </Component>
           <Component Id="cmp2DCAFA9A3BEE01A85A58241316C84255" Guid="{9C4A9872-DBF3-4E07-9EB4-3D813EFCEFA6}">
@@ -7374,6 +7377,7 @@
       <ComponentRef Id="cmpB93D4384F4C11FC3876D0F85BE2CB42F" />
       <ComponentRef Id="cmpC36F9C8172121B970B1C6AAD5F0E75E9" />
       <ComponentRef Id="cmp9E0B921CB98356B1FAD0EB065FE81987" />
+      <ComponentRef Id="cmp6E285E7B59FE5DD5CA634A6A35DF3662" />
       <ComponentRef Id="cmp8EE65C7EC60E8065E6B00AB3407AEA93" />
       <ComponentRef Id="cmp2DCAFA9A3BEE01A85A58241316C84255" />
       <ComponentRef Id="cmpF286F59F59135C9F5E71E3E33C0EA07A" />

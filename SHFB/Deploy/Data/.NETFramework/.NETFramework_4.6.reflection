@@ -62,6 +62,7 @@
       <AssemblyDetails Filename="System.DirectoryServices.Protocols.dll" Name="System.DirectoryServices.Protocols" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Drawing.dll" Name="System.Drawing" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Drawing.Design.dll" Name="System.Drawing.Design" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+      <AssemblyDetails Filename="System.Dynamic.dll" Name="System.Dynamic" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.EnterpriseServices.dll" Name="System.EnterpriseServices" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.IdentityModel.dll" Name="System.IdentityModel" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.IdentityModel.Selectors.dll" Name="System.IdentityModel.Selectors" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
@@ -76,6 +77,7 @@
       <AssemblyDetails Filename="System.Net.Http.dll" Name="System.Net.Http" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Net.Http.WebRequest.dll" Name="System.Net.Http.WebRequest" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Numerics.dll" Name="System.Numerics" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
+      <AssemblyDetails Filename="System.Numerics.Vectors.dll" Name="System.Numerics.Vectors" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Printing.dll" Name="System.Printing" Version="4.0.0.0" PublicKeyToken="31bf3856ad364e35" />
       <AssemblyDetails Filename="System.Reflection.Context.dll" Name="System.Reflection.Context" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.Runtime.Caching.dll" Name="System.Runtime.Caching" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -134,6 +136,7 @@
     </Location>
     <Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.4.0.0">
       <AssemblyDetails Filename="FSharp.Core.dll" Name="FSharp.Core" Version="4.4.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+      <AssemblyDetails Filename="policy.4.4.0.0.FSharp.Core.dll" Name="policy.4.4.0.0.FSharp.Core" Version="4.4.0.0" PublicKeyToken="b03f5f7f11d50a3a" IsExcluded="true" />
     </Location>
   </AssemblyLocations>
   <IgnoredNamespaces>

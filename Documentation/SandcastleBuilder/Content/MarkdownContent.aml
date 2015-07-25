@@ -26,6 +26,11 @@ for use on a markdown website.</para>
 					<listItem>
 						<para>As noted, the markdown generated is geared towards GitHub flavored markdown.  Results may vary
 on other sites.</para>
+
+						<alert class="important">
+							<para>The content generated is specifically for wiki sites.  It will not work properly if checked
+into a source repository and viewed from the source code browser.</para>
+						</alert>
 					</listItem>
 
 					<listItem>

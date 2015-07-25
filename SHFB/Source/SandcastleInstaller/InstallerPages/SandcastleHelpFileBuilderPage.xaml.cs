@@ -2,20 +2,20 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SandcastleHelpFileBuilderPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/28/2013
+// Updated : 07/25/2015
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  02/12/2011  EFW  Created the code
-// 1.1.0.0  04/14/2012  EFW  Converted to use WPF
-// 1.1.0.1  10/06/2012  EFW  Merged SHFB installer pages into the main project
+// 02/12/2011  EFW  Created the code
+// 04/14/2012  EFW  Converted to use WPF
+// 10/06/2012  EFW  Merged SHFB installer pages into the main project
 //===============================================================================================================
 
 using System;
@@ -97,15 +97,6 @@ namespace Sandcastle.Installer.InstallerPages
             {
                 if(!String.IsNullOrEmpty(shfbFolder))
                 {
-                    yield return new CompletionAction
-                    {
-                        Description = "Open the Sandcastle Tools help file",
-                        Action = new Action(() =>
-                        {
-                            Utility.Open(Path.Combine(shfbFolder, @"Help\SandcastleTools.chm"));
-                        })
-                    };
-
                     yield return new CompletionAction
                     {
                         Description = "Open the Sandcastle Help File Builder help file",

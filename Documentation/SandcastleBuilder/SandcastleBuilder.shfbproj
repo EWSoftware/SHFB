@@ -52,89 +52,91 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-<NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle &lt;strong&gt;BuildAssembler&lt;/strong&gt; tool.  The components are used to add additional features to the help topics such as a code colorization, alternate framework data caching implementations, etc.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to load and manage third-party build components that can be used with the help file builder and Sandcastle tools (plug-ins, build components, syntax generators, and presentation styles).</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.ConceptualContent" isDocumented="True">This namespace contains classes related to conceptual content items.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.Controls" isDocumented="True">This namespace contains various Windows Forms control classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.Design" isDocumented="True">This namespace contains various designer classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.Gac" isDocumented="True">This namespace contains a couple of classes used to interact with the GAC and to load assemblies in an alternate application domain.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.InheritedDocumentation" isDocumented="True">This namespace contains classes related to indexing comments files used when generating inherited documentation.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.XPath" isDocumented="True">This namespace contains some classes that extend XPath queries with some custom functions used in the API filter editor.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.HtmlExtract" isDocumented="True">This namespace contains documentation for the console mode application used to extract title and keyword information from HTML files for use in creating the CHM table of contents and keyword index files.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildEngine" isDocumented="True">This namespace contains the classes related to the build engine.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.Conversion" isDocumented="True">This namespace contains classes used to convert projects in other formats to the latest MSBuild project format used by the help file builder.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils.MSBuild" isDocumented="True">This namespace contains MSBuild related classes such as tasks and project file wrappers.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Gui" isDocumented="True">This namespace contains the classes for the standalone GUI help file builder and project manager.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Gui.ContentEditors" isDocumented="True">This namespace contains content editors used to edit the conceptual content items in the standalone GUI.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.InheritedDocumentation" isDocumented="True">This namespace contains documentation for the console mode application used to generate inherited documentation.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format and the installation tool.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.WPF" isDocumented="True">This namespace contains common classes used by the WPF user controls.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.WPF.Behaviors" isDocumented="True">This namespace contains behavior classes used by the WPF user controls.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.WPF.Commands" isDocumented="True">This namespace defines new commands used by the help file builder WPF user controls.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.WPF.Controls" isDocumented="True">This namespace contains WPF custom controls.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.WPF.UserControls" isDocumented="True">This namespace contains a set of WPF user controls used by both the standalone GUI and the Visual Studio package to provide a consistent set of features and functionality to the file editors and tool windows used in both.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="XamlGeneratedNamespace" isDocumented="False" />
-<NamespaceSummaryItem name="SandcastleBuilder.WPF.Maml" isDocumented="True">This namespace contains various classes used to convert MAML topics to WPF flow documents for previewing.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Package.PropertyPages" isDocumented="True">This namespace contains property pages for the standalone GUI and the Visual Studio package.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Components.Commands" isDocumented="True">This namespace contains command classes used by the &lt;strong&gt;BuildAssembler&lt;/strong&gt; derived &lt;strong&gt;CopyFromIndexComponent&lt;/strong&gt; classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Components.Targets" isDocumented="True">This namespace contains target data classes used by the &lt;strong&gt;BuildAssembler&lt;/strong&gt; derived &lt;strong&gt;ResolveReferenceLinksComponent&lt;/strong&gt; classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Components (Group)" isGroup="True" isDocumented="True">This namespace contains &lt;strong&gt;BuildAssembler&lt;/strong&gt; related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Utils (Group)" isGroup="True" isDocumented="True">This namespace contains all of the other utility and build engine related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.WPF (Group)" isGroup="True" isDocumented="True">This namespace contains the WPF related namespaces</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Gui (Group)" isGroup="True" isDocumented="True">This namespace contains the standlone GUI related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder.Gui.MSBuild" isDocumented="True">This namespace contains classes used to edit the MSBuild project elements</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Microsoft.Ddue (Group)" isGroup="True" isDocumented="True">This namespace group contains the Sandcastle tool related namespaces.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Microsoft.Ddue.Tools" isDocumented="True">This namespace contains the various Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Microsoft.Ddue.Tools.MSBuild" isDocumented="True">This namespace contains types that define the MSBuild task interfaces for the various Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core" isDocumented="True">This namespace contains common core types related to the Sandcastle tools.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to BuildAssembler.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler" isDocumented="True">This namespace contains types related to BuildAssembler.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.BuildComponent" isDocumented="True">This namespace contains BuildAssembler component types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isDocumented="True">This namespace contains BuildAssembler syntax generator types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.CommandLine" isDocumented="True">This namespace contains types used to interact with command line parameters.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle" isDocumented="True">This namespace contains presentation style related types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.Reflection" isDocumented="True">This namespace contains types used to manage reflection data sets.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Sandcastle.Core.UI" isDocumented="True">This namespace contains user interface related types.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SandcastleBuilder (Group)" isGroup="True" isDocumented="True">This namespace contains the help file builder related namespaces.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle &lt;strong&gt;BuildAssembler&lt;/strong&gt; tool.  The components are used to add additional features to the help topics such as a code colorization, alternate framework data caching implementations, etc.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to load and manage third-party build components that can be used with the help file builder and Sandcastle tools (plug-ins, build components, syntax generators, and presentation styles).</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.ConceptualContent" isDocumented="True">This namespace contains classes related to conceptual content items.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Controls" isDocumented="True">This namespace contains various Windows Forms control classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Design" isDocumented="True">This namespace contains various designer classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Gac" isDocumented="True">This namespace contains a couple of classes used to interact with the GAC and to load assemblies in an alternate application domain.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.InheritedDocumentation" isDocumented="True">This namespace contains classes related to indexing comments files used when generating inherited documentation.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.XPath" isDocumented="True">This namespace contains some classes that extend XPath queries with some custom functions used in the API filter editor.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.HtmlExtract" isDocumented="True">This namespace contains documentation for the console mode application used to extract title and keyword information from HTML files for use in creating the CHM table of contents and keyword index files.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildEngine" isDocumented="True">This namespace contains the classes related to the build engine.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Conversion" isDocumented="True">This namespace contains classes used to convert projects in other formats to the latest MSBuild project format used by the help file builder.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.MSBuild" isDocumented="True">This namespace contains MSBuild related classes such as tasks and project file wrappers.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Gui" isDocumented="True">This namespace contains the classes for the standalone GUI help file builder and project manager.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Gui.ContentEditors" isDocumented="True">This namespace contains content editors used to edit the conceptual content items in the standalone GUI.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.InheritedDocumentation" isDocumented="True">This namespace contains documentation for the console mode application used to generate inherited documentation.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format and the installation tool.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF" isDocumented="True">This namespace contains common classes used by the WPF user controls.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Behaviors" isDocumented="True">This namespace contains behavior classes used by the WPF user controls.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Commands" isDocumented="True">This namespace defines new commands used by the help file builder WPF user controls.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Controls" isDocumented="True">This namespace contains WPF custom controls.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.UserControls" isDocumented="True">This namespace contains a set of WPF user controls used by both the standalone GUI and the Visual Studio package to provide a consistent set of features and functionality to the file editors and tool windows used in both.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="XamlGeneratedNamespace" isDocumented="False" />
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Maml" isDocumented="True">This namespace contains various classes used to convert MAML topics to WPF flow documents for previewing.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Package.PropertyPages" isDocumented="True">This namespace contains property pages for the standalone GUI and the Visual Studio package.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components.Commands" isDocumented="True">This namespace contains command classes used by the &lt;strong&gt;BuildAssembler&lt;/strong&gt; derived &lt;strong&gt;CopyFromIndexComponent&lt;/strong&gt; classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components.Targets" isDocumented="True">This namespace contains target data classes used by the &lt;strong&gt;BuildAssembler&lt;/strong&gt; derived &lt;strong&gt;ResolveReferenceLinksComponent&lt;/strong&gt; classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components (Group)" isGroup="True" isDocumented="True">This namespace contains &lt;strong&gt;BuildAssembler&lt;/strong&gt; related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils (Group)" isGroup="True" isDocumented="True">This namespace contains all of the other utility and build engine related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF (Group)" isGroup="True" isDocumented="True">This namespace contains the WPF related namespaces</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Gui (Group)" isGroup="True" isDocumented="True">This namespace contains the standlone GUI related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Gui.MSBuild" isDocumented="True">This namespace contains classes used to edit the MSBuild project elements</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.Ddue (Group)" isGroup="True" isDocumented="True">This namespace group contains the Sandcastle tool related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.Ddue.Tools" isDocumented="True">This namespace contains the various Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.Ddue.Tools.MSBuild" isDocumented="True">This namespace contains types that define the MSBuild task interfaces for the various Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle (Group)" isGroup="True" isDocumented="True">This namespace group contains various namespaces related to the Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core" isDocumented="True">This namespace contains common core types related to the Sandcastle tools.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler (Group)" isGroup="True" isDocumented="True">This namespace group contains namespaces related to BuildAssembler.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler" isDocumented="True">This namespace contains types related to BuildAssembler.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.BuildComponent" isDocumented="True">This namespace contains BuildAssembler component types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isDocumented="True">This namespace contains BuildAssembler syntax generator types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.CommandLine" isDocumented="True">This namespace contains types used to interact with command line parameters.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.PresentationStyle" isDocumented="True">This namespace contains presentation style related types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.Reflection" isDocumented="True">This namespace contains types used to manage reflection data sets.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Sandcastle.Core.UI" isDocumented="True">This namespace contains user interface related types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder (Group)" isGroup="True" isDocumented="True">This namespace contains the help file builder related namespaces.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator" isExposed="True">
-  <Filter entryType="Class" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate" filterName="SyntaxGeneratorTemplate" isExposed="False">
-    <Filter entryType="Constructor" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.#ctor" filterName=".ctor" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.Initialize" filterName="Initialize" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedExplicit" filterName="IsUnsupportedExplicit" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedGeneric" filterName="IsUnsupportedGeneric" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedUnsafe" filterName="IsUnsupportedUnsafe" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedVarargs" filterName="IsUnsupportedVarargs" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteAttachedEventSyntax" filterName="WriteAttachedEventSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteAttachedPropertySyntax" filterName="WriteAttachedPropertySyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteCastSyntax" filterName="WriteCastSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteClassSyntax" filterName="WriteClassSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteConstructorSyntax" filterName="WriteConstructorSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteDelegateSyntax" filterName="WriteDelegateSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteEnumerationSyntax" filterName="WriteEnumerationSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteEventSyntax" filterName="WriteEventSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteFieldSyntax" filterName="WriteFieldSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteInterfaceSyntax" filterName="WriteInterfaceSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteMemberSyntax" filterName="WriteMemberSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteMethodSyntax" filterName="WriteMethodSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteNamespaceSyntax" filterName="WriteNamespaceSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteNormalMethodSyntax" filterName="WriteNormalMethodSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteOperatorSyntax" filterName="WriteOperatorSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WritePropertySyntax" filterName="WritePropertySyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteStructureSyntax" filterName="WriteStructureSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteSyntax" filterName="WriteSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteTypeSyntax" filterName="WriteTypeSyntax" isExposed="True" />
-    <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteWithLineBreakIfNeeded" filterName="WriteWithLineBreakIfNeeded" isExposed="True" />
-    <Filter entryType="Property" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.Language" filterName="Language" isExposed="True" />
-    <Filter entryType="Property" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.StyleId" filterName="StyleId" isExposed="True" />
-    <Filter entryType="Field" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.MaxPosition" filterName="MaxPosition" isExposed="True" />
-  </Filter>
-</Filter>
-<Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" /></ApiFilter>
+        <Filter entryType="Class" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate" filterName="SyntaxGeneratorTemplate" isExposed="False">
+          <Filter entryType="Constructor" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.#ctor" filterName=".ctor" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.Initialize" filterName="Initialize" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedExplicit" filterName="IsUnsupportedExplicit" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedGeneric" filterName="IsUnsupportedGeneric" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedUnsafe" filterName="IsUnsupportedUnsafe" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.IsUnsupportedVarargs" filterName="IsUnsupportedVarargs" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteAttachedEventSyntax" filterName="WriteAttachedEventSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteAttachedPropertySyntax" filterName="WriteAttachedPropertySyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteCastSyntax" filterName="WriteCastSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteClassSyntax" filterName="WriteClassSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteConstructorSyntax" filterName="WriteConstructorSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteDelegateSyntax" filterName="WriteDelegateSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteEnumerationSyntax" filterName="WriteEnumerationSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteEventSyntax" filterName="WriteEventSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteFieldSyntax" filterName="WriteFieldSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteInterfaceSyntax" filterName="WriteInterfaceSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteMemberSyntax" filterName="WriteMemberSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteMethodSyntax" filterName="WriteMethodSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteNamespaceSyntax" filterName="WriteNamespaceSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteNormalMethodSyntax" filterName="WriteNormalMethodSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteOperatorSyntax" filterName="WriteOperatorSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WritePropertySyntax" filterName="WritePropertySyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteStructureSyntax" filterName="WriteStructureSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteSyntax" filterName="WriteSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteTypeSyntax" filterName="WriteTypeSyntax" isExposed="True" />
+          <Filter entryType="Method" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.WriteWithLineBreakIfNeeded" filterName="WriteWithLineBreakIfNeeded" isExposed="True" />
+          <Filter entryType="Property" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.Language" filterName="Language" isExposed="True" />
+          <Filter entryType="Property" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.StyleId" filterName="StyleId" isExposed="True" />
+          <Filter entryType="Field" fullName="Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate.MaxPosition" filterName="MaxPosition" isExposed="True" />
+        </Filter>
+      </Filter>
+      <Filter entryType="Namespace" fullName="XamlGeneratedNamespace" isExposed="False" />
+    </ApiFilter>
     <PlugInConfigurations>
       <PlugInConfig id="Additional Reference Links" enabled="True">
         <configuration>
@@ -352,7 +354,7 @@
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2014.5.31.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.1.12.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.5.2.0.aml" />
-    <None Include="Content\VersionHistory\vNext.aml" />
+    <None Include="Content\VersionHistory\v2015.7.25.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

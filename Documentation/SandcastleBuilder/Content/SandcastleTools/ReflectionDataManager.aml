@@ -2,12 +2,194 @@
 <topic id="032f1fab-6625-4ffb-9316-57fb3e4a03ff" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<para>TODO: Add content</para>
+			<para>This tool is used to create reflection data set definition files for the various .NET frameworks
+and to build the reflection information files used by the other Sandcastle tools.  Reflection data set definition
+files have an extension of <localUri>.reflection</localUri>.</para>
+
+			<autoOutline excludeRelatedTopics="true" lead="none" />
 		</introduction>
 
-		<section>
+		<section address="CommandLine">
+			<title>Command Line Parameters</title>
 			<content>
-				<para>Add one or more sections with content</para>
+				<para>This tool can be executed from the command line to build reflection information for a given
+framework version.  If no command line parameters are specified, a form will open that allows you to load and
+edit reflection data set files and build them interactively.  The following parameters are available.</para>
+
+				<definitionTable>
+					<definedTerm>/platform:platformName</definedTerm>
+					<definition>
+						<para>Required.  Specify the platform to use for the build.  This should be one of the well-known
+platform type IDs: <codeInline>.NETCore</codeInline>, <codeInline>.NETFramework</codeInline>,
+<codeInline>.NETMicroFramework</codeInline>, <codeInline>.NETPortable</codeInline>,
+<codeInline>Silverlight</codeInline>, <codeInline>WindowsPhone</codeInline>, or
+<codeInline>WindowsPhoneApp</codeInline></para></definition>
+					
+					<definedTerm>/version:version</definedTerm>
+					
+					<definition>
+						<para>Optional.  Specify the version to use for the build.  If not specified, the most recent version
+for the specified platform is used.  Typically, this should be omitted so that the reflection data is generated
+off of the most recent version available.</para>
+					</definition>
+					
+					<definedTerm>/path:dataSetPath[,dataSetPath,dataSetPath,...]</definedTerm>
+					<definition>
+						<para>Optional.  Specify one or more additional paths to search for reflection data set files if
+necessary in a comma-separated list.  By default, the tools folder and the common application data folder are
+searched for reflection data set files automatically.  Use this option to specify a path containing a file
+not found in one of those standard locations such as a definition file for a new framework version.</para>
+					</definition>
+				</definitionTable>
+
+<code language="none" title="Example Usage">
+ReflectionDataManager.exe /platform:.NETFramework /version:4.6				
+</code>
+			
+			</content>
+		</section>
+
+		<section address="InteractiveMode">
+			<title>Interactive Mode</title>
+			<content>
+				<para>When ran with no command line parameters, a form will open that allows you to load and edit
+reflection data set definition files.  By default, the form is set up to create a new file.  The following menu
+options are available:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><ui>New</ui> - Clear any currently loaded reflection data set definition file settings and
+create a brand new file.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Open</ui> - Open an existing reflection data set definition file.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Save</ui> - Save the current reflection data set definition file.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Save As</ui> - Save the current reflection data set definition file to a new name.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Build Reflection Data</ui> - Build the reflection information for the currently loaded
+reflection data set definition file.  See the <link xlink:href="#BuildRefData">Building Reflection Data</link>
+section below for more information.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="DefinitionOptions">
+			<title>Reflection Data Set Definition Options</title>
+			<content>
+				<para>The reflection data set definition consists of the following information:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><ui>Platform ID</ui> - Select the platform ID with which the definition is associated.  This
+will be one of the standard platform type IDs: <codeInline>.NETCore</codeInline>, <codeInline>.NETFramework</codeInline>,
+<codeInline>.NETMicroFramework</codeInline>, <codeInline>.NETPortable</codeInline>,
+<codeInline>Silverlight</codeInline>, <codeInline>WindowsPhone</codeInline>, or
+<codeInline>WindowsPhoneApp</codeInline>.  These match the target framework identifier property values used in
+related Visual Studio project files.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Version ID</ui> - Enter the framework version with which the definition file is associated.
+These match the target framework version values used in related Visual Studio project files.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Title</ui> - Enter a title for the definition file that uniquely identifies it.  This is
+used by build tools such as the Sandcastle Help File Builder to offer a list of framework versions to use when
+building documentation projects.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Notes</ui> - If necessary, enter any notes about the definition file that may be useful to
+those using it.  It can be left blank.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Assembly Locations</ui> - The most important part of the definition file are the assembly
+locations.  The bottom half of the form allows you to add one or more locations that will be searched for
+assemblies and their related XML comments files.</para>
+
+						<para>Click the <ui>Add</ui> button to add a new framework location.  Enter a path in the
+<ui>Assembly Location</ui> text box or use the "<ui>...</ui>" button to select a path.  Once you select a path
+or tab out of the text box, the list of available assemblies will be loaded into the list box.  The path can
+contain environment variables such as <environmentVariable>ProgramFiles(x86)</environmentVariable>.  Any such
+variables will be resolved when searching for assemblies and comments files.  Only the given path is searched.
+Any subfolders it contains are not searched.  If necessary, subfolders can be added as additional locations.</para>
+
+						<para>Each assembly is preceded by a checkbox.  If checked, the given assembly is included in the
+definition set.  If unchecked, the assembly will be ignored and will not be parsed to generate reflection
+information.  This is useful if the folder contains unmanaged assemblies or managed assemblies that contain no
+useful information.  If editing an existing file and new assemblies have been added to the folder or old ones
+removed, clicking the <ui>Refresh</ui> button will update the list based on the assemblies that currently exist
+in the specified folder.</para>
+
+						<para>To remove an assembly location, click the <ui>Remove</ui> button.  To navigate between location
+entries, use the <ui>Previous</ui> and <ui>Next</ui> buttons.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="BuildRefData">
+			<title>Building Reflection Data</title>
+			<content>
+				<alert class="important">
+					<para>Reflection data set definition files should be saved into a folder that will be used to contain
+the related reflection information generated by building it.  The folder can contain multiple definition files if
+they are for different versions of the same platform.  For example, all of the <codeInline>.NETFramework</codeInline>
+definition files are grouped into a folder along with the reflection data for the latest version.</para>
+
+					<para>The build process will delete any existing <localUri>.xml</localUri> files from the folder
+containing the definition file being built and will copy the new reflection information files to the same
+location.</para>
+				</alert>
+				
+				<para>When the <ui>Build Reflection Data</ui> option is chosen, a new form opens.  From there, you can
+define some additional build parameters and generate the reflection information files.  The build parameters are
+as follows:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><ui>Ignored Namespaces</ui> - Use this section to enter a list of ignored namespaces.  Any
+namespace in this list will be omitted from the generated reflection information.  This is useful for omitting
+namespaces that contain no useful public types.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Ignored Unresolved Assembly Identities</ui> - Use this section to enter the identities of
+assemblies that cannot be resolved and should be ignored when generating reflection information.  Enter only the
+name part of the identity (i.e. <codeInline>Microsoft.Windows.Design.Extensibility</codeInline>).</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Binding Redirections</ui> - Use this section to enter assembly binding redirections to
+allow resolving of assemblies that reference a different version than the one available.  Enter the information
+from the assembly's strong name.  The <ui>Name</ui> part is required along with the <ui>Old Version</ui> to be
+redirected and the <ui>New Version</ui> to use in its place.  The <ui>Culture</ui> will default to neutral if not
+specified.  The <ui>Public Key Token</ui> will default to null if not specified.</para>
+					</listItem>
+
+				</list>
+
+				<para>To add an entry, select the blank row at the end and start typing in the values.  To delete an
+entry, click on the row header and hit the <ui>Delete</ui> key.</para>
+
+				<para>Click the <ui>Build</ui> button to generate the reflection information files.  The build progress
+is shown in the text box in the lower half of the form.  Once finished, you will find the reflection information
+files in the same location as the definition file.</para>
 			</content>
 		</section>
 

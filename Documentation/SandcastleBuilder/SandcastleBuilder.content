@@ -1187,7 +1187,7 @@
       <HelpKeyword index="K" term="markdown content" />
     </HelpKeywords>
   </Topic>
-  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isExpanded="true" title="Sandcastle Tools">
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" title="Sandcastle Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="sandcastle tools" />
     </HelpKeywords>
@@ -1201,7 +1201,7 @@
         <HelpKeyword index="K" term="tools, architecture" />
       </HelpKeywords>
     </Topic>
-    <Topic id="ede54bc8-7027-48be-ba0c-66d8f24bdccd" visible="True" isSelected="true" title="Help File Builder Build Engine">
+    <Topic id="ede54bc8-7027-48be-ba0c-66d8f24bdccd" visible="True" title="Help File Builder Build Engine">
       <HelpKeywords>
         <HelpKeyword index="K" term="tools, SHFB build engine" />
       </HelpKeywords>
@@ -1368,12 +1368,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="90c2bedf-fe6e-4f99-8a33-84b441701269" visible="True" title="Version vNext">
+    <Topic id="90c2bedf-fe6e-4f99-8a33-84b441701269" visible="True" isSelected="true" title="Version 2015.7.25.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="version, vNext" />
+        <HelpKeyword index="K" term="version, 2015.7.25.0" />
       </HelpKeywords>
     </Topic>
-    <Topic id="006F71C5-D279-4A4C-AF34-B5CC28D560C5" visible="True" title="Versions 2014.1.26.0 Beta through 2015.5.2.0">
+    <Topic id="006F71C5-D279-4A4C-AF34-B5CC28D560C5" visible="True" isExpanded="true" title="Versions 2014.1.26.0 Beta through 2015.5.2.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="prior versions, Versions 2014.1.26.0 Beta to 2015.5.2.0" />
       </HelpKeywords>
