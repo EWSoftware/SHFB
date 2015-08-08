@@ -246,6 +246,9 @@
     <Compile Include="ContentEditors\GotoLineDlg.Designer.cs">
       <DependentUpon>GotoLineDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="ContentEditors\MyScrollablePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ContentEditors\NodeData.cs" />
     <Compile Include="ContentEditors\NodeIcon.cs" />
     <Compile Include="ContentEditors\OutputWindow.cs">

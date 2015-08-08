@@ -61,7 +61,7 @@
             this.epNotes.SetIconPadding(this.txtCatalogProductId, 5);
             this.txtCatalogProductId.Location = new System.Drawing.Point(279, 12);
             this.txtCatalogProductId.Name = "txtCatalogProductId";
-            this.txtCatalogProductId.Size = new System.Drawing.Size(209, 27);
+            this.txtCatalogProductId.Size = new System.Drawing.Size(209, 23);
             this.txtCatalogProductId.TabIndex = 1;
             this.txtCatalogProductId.Tag = "CatalogProductId";
             this.txtCatalogProductId.Text = "VS";
@@ -81,7 +81,7 @@
             this.epNotes.SetIconPadding(this.txtCatalogVersion, 5);
             this.txtCatalogVersion.Location = new System.Drawing.Point(279, 45);
             this.txtCatalogVersion.Name = "txtCatalogVersion";
-            this.txtCatalogVersion.Size = new System.Drawing.Size(209, 27);
+            this.txtCatalogVersion.Size = new System.Drawing.Size(209, 23);
             this.txtCatalogVersion.TabIndex = 3;
             this.txtCatalogVersion.Tag = "CatalogVersion";
             this.txtCatalogVersion.Text = "100";
@@ -102,7 +102,7 @@
             this.cboMSHelpViewerSdkLinkType.Location = new System.Drawing.Point(279, 360);
             this.cboMSHelpViewerSdkLinkType.MaxDropDownItems = 16;
             this.cboMSHelpViewerSdkLinkType.Name = "cboMSHelpViewerSdkLinkType";
-            this.cboMSHelpViewerSdkLinkType.Size = new System.Drawing.Size(302, 28);
+            this.cboMSHelpViewerSdkLinkType.Size = new System.Drawing.Size(209, 23);
             this.cboMSHelpViewerSdkLinkType.TabIndex = 19;
             this.cboMSHelpViewerSdkLinkType.Tag = "MSHelpViewerSdkLinkType";
             // 
@@ -117,11 +117,13 @@
             // 
             // txtVendorName
             // 
+            this.txtVendorName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtVendorName, "If not set, \"Vendor Name\" will be used");
             this.epNotes.SetIconPadding(this.txtVendorName, 5);
             this.txtVendorName.Location = new System.Drawing.Point(279, 121);
             this.txtVendorName.Name = "txtVendorName";
-            this.txtVendorName.Size = new System.Drawing.Size(445, 27);
+            this.txtVendorName.Size = new System.Drawing.Size(209, 23);
             this.txtVendorName.TabIndex = 7;
             this.txtVendorName.Tag = "VendorName";
             // 
@@ -136,11 +138,13 @@
             // 
             // txtProductTitle
             // 
+            this.txtProductTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtProductTitle, "If not set, the Help Title property value will be used");
             this.epNotes.SetIconPadding(this.txtProductTitle, 5);
             this.txtProductTitle.Location = new System.Drawing.Point(279, 154);
             this.txtProductTitle.Name = "txtProductTitle";
-            this.txtProductTitle.Size = new System.Drawing.Size(445, 27);
+            this.txtProductTitle.Size = new System.Drawing.Size(209, 23);
             this.txtProductTitle.TabIndex = 9;
             this.txtProductTitle.Tag = "ProductTitle";
             // 
@@ -178,7 +182,7 @@
             0,
             -2147483648});
             this.udcTocOrder.Name = "udcTocOrder";
-            this.udcTocOrder.Size = new System.Drawing.Size(106, 27);
+            this.udcTocOrder.Size = new System.Drawing.Size(106, 23);
             this.udcTocOrder.TabIndex = 11;
             this.udcTocOrder.Tag = "TocOrder";
             this.udcTocOrder.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -192,7 +196,7 @@
             // 
             this.txtTopicVersion.Location = new System.Drawing.Point(279, 306);
             this.txtTopicVersion.Name = "txtTopicVersion";
-            this.txtTopicVersion.Size = new System.Drawing.Size(209, 27);
+            this.txtTopicVersion.Size = new System.Drawing.Size(209, 23);
             this.txtTopicVersion.TabIndex = 17;
             this.txtTopicVersion.Tag = "TopicVersion";
             this.txtTopicVersion.Text = "100";
@@ -210,7 +214,7 @@
             // 
             this.txtTocParentVersion.Location = new System.Drawing.Point(279, 273);
             this.txtTocParentVersion.Name = "txtTocParentVersion";
-            this.txtTocParentVersion.Size = new System.Drawing.Size(209, 27);
+            this.txtTocParentVersion.Size = new System.Drawing.Size(209, 23);
             this.txtTocParentVersion.TabIndex = 15;
             this.txtTocParentVersion.Tag = "TocParentVersion";
             this.txtTocParentVersion.Text = "100";
@@ -226,13 +230,11 @@
             // 
             // txtTocParentId
             // 
-            this.txtTocParentId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtTocParentId, "Use -1 to place the root elements at the root of the main table of contents");
             this.epNotes.SetIconPadding(this.txtTocParentId, 5);
             this.txtTocParentId.Location = new System.Drawing.Point(279, 240);
             this.txtTocParentId.Name = "txtTocParentId";
-            this.txtTocParentId.Size = new System.Drawing.Size(475, 27);
+            this.txtTocParentId.Size = new System.Drawing.Size(209, 23);
             this.txtTocParentId.TabIndex = 13;
             this.txtTocParentId.Tag = "TocParentId";
             this.txtTocParentId.Text = "-1";
@@ -259,7 +261,7 @@
             this.epNotes.SetIconPadding(this.txtCatalogName, 5);
             this.txtCatalogName.Location = new System.Drawing.Point(279, 83);
             this.txtCatalogName.Name = "txtCatalogName";
-            this.txtCatalogName.Size = new System.Drawing.Size(209, 27);
+            this.txtCatalogName.Size = new System.Drawing.Size(209, 23);
             this.txtCatalogName.TabIndex = 5;
             this.txtCatalogName.Tag = "CatalogName";
             // 
@@ -295,9 +297,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCatalogProductId);
             this.Controls.Add(this.label9);
-            this.MinimumSize = new System.Drawing.Size(765, 400);
+            this.MinimumSize = new System.Drawing.Size(529, 400);
             this.Name = "MSHelpViewerPropertiesPageControl";
-            this.Size = new System.Drawing.Size(795, 400);
+            this.Size = new System.Drawing.Size(529, 400);
             ((System.ComponentModel.ISupportInitialize)(this.udcTocOrder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);

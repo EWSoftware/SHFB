@@ -33,6 +33,7 @@
             // BasePropertyPage
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "BasePropertyPage";
             this.ResumeLayout(false);
