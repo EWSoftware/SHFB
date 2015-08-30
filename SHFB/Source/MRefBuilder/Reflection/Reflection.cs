@@ -12,6 +12,8 @@
 // specific set of conditions.
 // 03/27/2015 - EFW - Fixed another issue in ParametersMatch() related to array types in method parameters
 // in derived generics types.
+// 08/07/2015 - EFW - Expanded upon the 03/27 fix in ParametersMatch() to handle arrays with generic array
+// element types.
 
 using System;
 using System.Collections.Generic;
@@ -450,7 +452,18 @@ namespace Microsoft.Ddue.Tools.Reflection
                         }
 
                         if(type1.NodeType != type2.NodeType || !type2.IsStructurallyEquivalentTo(type1))
-                            return false;
+                        {
+                            // !EFW - Yet another edge case to check.  In this case for example,
+                            // KeyValue<int, int> didn't match KeyValue<TKey, TValue> and it failed to find any
+                            // matches.  The fix is to see if both types are generic and compare the template
+                            // parameter names.  This is getting rather complicated isn't it?
+                            // https://github.com/EWSoftware/SHFB/issues/154
+                            if(!type1.IsGeneric || !type2.IsGeneric || type1.Template == null || type2.Template == null ||
+                              type1.Template.TemplateParameters.Count != type2.Template.TemplateParameters.Count ||
+                              type1.Template.TemplateParameters.Select(t => t.Name.Name).Except(
+                              type2.Template.TemplateParameters.Select(t => t.Name.Name)).Count() != 0)
+                                return false;
+                        }
                     }
                 }
             }
