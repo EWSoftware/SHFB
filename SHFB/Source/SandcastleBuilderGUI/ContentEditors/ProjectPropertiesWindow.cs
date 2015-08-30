@@ -89,27 +89,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Event handlers
         //=====================================================================
 
-        /// <summary>
-        /// Resize the property pages when the parent panel size changes
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void pnlPropertyPages_SizeChanged(object sender, EventArgs e)
-        {
-            Size newSize;
-
-            foreach(Control c in pnlPropertyPages.Controls)
-            {
-                newSize = pnlPropertyPages.Size;
-
-                // If a vertical scrollbar will be shown, shrink the width to prevent an unnecessary
-                // horizontal scrollbar.
-                if(newSize.Height < c.MinimumSize.Height)
-                    newSize.Width -= SystemInformation.VerticalScrollBarWidth;
-
-                c.Size = newSize;
-            }
-        }
 
         /// <summary>
         /// Validate the current property page before allowing movement to another property page
@@ -139,6 +118,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(tvPropertyPages.SelectedNode != null)
             {
                 var page = (BasePropertyPage)tvPropertyPages.SelectedNode.Tag;
+
+                // set the contianer to obey the page's minimum size requirements
+                // and if the visible area is smaller than demanded - show the scrollbars
+                pnlPropertyPages.AutoScrollMinSize = page.MinimumSize;
+                page.Dock = DockStyle.Fill;
 
                 page.SetProject(currentProject);
                 page.Visible = (currentProject != null);
@@ -327,6 +311,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 typeof(BuildEventPropertiesPageControl)
             };
 
+            pnlPropertyPages.SuspendLayout();
             try
             {
                 tvPropertyPages.BeginUpdate();
@@ -367,7 +352,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             finally
             {
                 tvPropertyPages.EndUpdate();
-                pnlPropertyPages_SizeChanged(this, EventArgs.Empty);
+                pnlPropertyPages.ResumeLayout(true);
             }
         }
         #endregion

@@ -187,6 +187,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         public BasePropertyPage()
         {
             InitializeComponent();
+
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            UpdateStyles();
         }
         #endregion
 
