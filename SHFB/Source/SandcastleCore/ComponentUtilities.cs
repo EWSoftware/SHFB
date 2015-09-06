@@ -32,10 +32,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -55,8 +57,10 @@ namespace Sandcastle.Core
         //=====================================================================
 
         private static string toolsFolder, componentsFolder;
-
         private static Regex reSyntaxSplitter = new Regex(",\\s*");
+        private static readonly AggregateCatalog Catalog = new AggregateCatalog();
+        private static readonly HashSet<string> SearchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private static readonly object SyncRoot = new object();
 
         #endregion
 
@@ -205,111 +209,138 @@ namespace Sandcastle.Core
         /// copies in folders lower in the search order.</remarks>
         public static CompositionContainer CreateComponentContainer(IEnumerable<string> folders)
         {
-            var catalog = new AggregateCatalog();
-            HashSet<string> searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string folder in folders)
+            {
+                AddAssemblyCatalogs(folder, true);
+            }
 
-            foreach(string folder in folders)
-                AddAssemblyCatalogs(catalog, folder, searchedFolders, true);
-
-            AddAssemblyCatalogs(catalog, ComponentsFolder, searchedFolders, true);
+            AddAssemblyCatalogs(ComponentsFolder, true);
 
             // As noted in the comments above, the root SHFB folder is always searched first due to how MEF
             // uses directory catalogs.  This will add components from subfolders beneath it too.
-            AddAssemblyCatalogs(catalog, ToolsFolder, searchedFolders, true);
+            AddAssemblyCatalogs(ToolsFolder, true);
 
-            return new CompositionContainer(catalog);
+            return new CompositionContainer(Catalog);
         }
 
         /// <summary>
         /// This adds assembly catalogs to the given aggregate catalog for the given folder and all of its
         /// subfolders recursively.
         /// </summary>
-        /// <param name="catalog">The aggregate catalog to which the assembly catalogs are added.</param>
         /// <param name="folder">The root folder to search.  It and all subfolders recursively will be searched
-        /// for assemblies to add to the aggregate catalog.</param>
-        /// <param name="searchedFolders">A hash set of folders that have already been searched and added.</param>
+        ///     for assemblies to add to the aggregate catalog.</param>
         /// <param name="includeSubfolders">True to search subfolders recursively, false to only search the given
-        /// folder.</param>
+        ///     folder.</param>
         /// <remarks>It is done this way to prevent a single assembly that would normally be discovered via a
         /// directory catalog from preventing all assemblies from loading if it cannot be examined when the parts
         /// are composed (i.e. trying to load a Windows Store assembly on Windows 7).</remarks>
-        private static void AddAssemblyCatalogs(AggregateCatalog catalog, string folder,
-          HashSet<string> searchedFolders, bool includeSubfolders)
+        private static void AddAssemblyCatalogs(string folder, bool includeSubfolders)
         {
-            if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
+            if (String.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder) || SearchedFolders.Contains(folder))
             {
-                foreach(var file in Directory.EnumerateFiles(folder, "*.dll"))
+                return;
+            }
+
+            // since this may get executed by multiple threads, we need to lock and ensure that
+            // searchedFolders collections hasn't changed by another thread before we insert a new record in it
+            lock (SyncRoot)
+            {
+                if (SearchedFolders.Contains(folder))
                 {
-                    try
-                    {
-                        var asmCat = new AssemblyCatalog(file);
+                    return;
+                }
+                SearchedFolders.Add(folder);
+            }
 
-                        // Force MEF to load the assembly and figure out if there are any exports.  Valid
-                        // assemblies won't throw any exceptions and will contain parts and will be added to
-                        // the catalog.  Use Count() rather than Any() to ensure it touches all parts in case
-                        // that makes a difference.
-                        if(asmCat.Parts.Count() > 0)
-                            catalog.Catalogs.Add(asmCat);
-                        else
-                            asmCat.Dispose();
-                    }
-                    catch(FileNotFoundException ex)
-                    {
-                        // Ignore the errors we may expect to see but log them for debugging purposes
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(FileLoadException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(BadImageFormatException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(IOException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(System.Security.SecurityException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(UnauthorizedAccessException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(TypeLoadException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(ReflectionTypeLoadException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
+            foreach(var file in Directory.EnumerateFiles(folder, "*.dll"))
+            {
+                try
+                {
+                    var asmCat = new AssemblyCatalog(file);
 
-                        foreach(var lex in ex.LoaderExceptions)
-                            System.Diagnostics.Debug.WriteLine(lex);
+                    // Force MEF to load the assembly and figure out if there are any exports.  Valid
+                    // assemblies won't throw any exceptions and will contain parts and will be added to
+                    // the catalog.  Use Count() rather than Any() to ensure it touches all parts in case
+                    // that makes a difference.
+                    if (asmCat.Parts.Any())
+                    {
+                        // since this may get executed by multiple threads, we need to lock and ensure that
+                        // catalog.Catalogs collections hasn't changed by another thread before we insert a new record in it
+                        lock (SyncRoot)
+                        {
+                            if (Catalog.Catalogs.Cast<AssemblyCatalog>().All(x => x.Assembly != asmCat.Assembly))
+                            {
+                                Catalog.Catalogs.Add(asmCat);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        asmCat.Dispose();
                     }
                 }
+                catch(FileNotFoundException ex)
+                {
+                    // Ignore the errors we may expect to see but log them for debugging purposes
+                    Debug.WriteLine(ex);
+                }
+                catch(FileLoadException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch(BadImageFormatException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch(IOException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch(SecurityException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch(UnauthorizedAccessException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch(TypeLoadException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch(ReflectionTypeLoadException ex)
+                {
+                    Debug.WriteLine(ex);
 
-                // Enumerate subfolders separately so that we can skip future requests for the same folder
-                if(includeSubfolders)
-                    try
+                    foreach (var lex in ex.LoaderExceptions)
                     {
-                        foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                            AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
+                        Debug.WriteLine(lex);
                     }
-                    catch(IOException ex)
+                }
+            }
+
+            // Enumerate subfolders separately so that we can skip future requests for the same folder
+            if (includeSubfolders)
+            {
+                try
+                {
+                    foreach (string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
                     {
-                        System.Diagnostics.Debug.WriteLine(ex);
+                        AddAssemblyCatalogs(subfolder, false);
                     }
-                    catch(System.Security.SecurityException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
-                    catch(UnauthorizedAccessException ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                    }
+                }
+                catch (IOException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch (SecurityException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
             }
         }
         #endregion
