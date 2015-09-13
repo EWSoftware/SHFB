@@ -72,9 +72,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// This is used to get a list of all active property pages
         /// </summary>
         /// <remarks>The <see cref="BuildCompletedEventListener"/> uses this to flush pending changes to
-        /// property pages prior to a build occuring.  Typically, this happens automatically but it does
+        /// property pages prior to a build occurring.  Typically, this happens automatically but it does
         /// not if the build is invoked using the context menu on the project node.  The build event
-        /// listner is used to workaround this issue and ensure the project is current before the build
+        /// listener is used to workaround this issue and ensure the project is current before the build
         /// takes place.</remarks>
         internal static List<BasePropertyPage> AllPropertyPages
         {

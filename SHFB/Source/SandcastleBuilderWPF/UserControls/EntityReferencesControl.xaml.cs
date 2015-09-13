@@ -719,7 +719,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 switch(r.EntityType)
                 {
                     case EntityType.File:
-                        // Not useable
+                        // Not usable
                         break;
 
                     case EntityType.Token:

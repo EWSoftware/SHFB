@@ -155,7 +155,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     return true;
 
                 DialogResult dr = MessageBox.Show("Do you want to save your changes to '" + this.ToolTipText +
-                    "?  Click YES to to save them, NO to discard them, or CANCEL to stay here and make " +
+                    "?  Click YES to save them, NO to discard them, or CANCEL to stay here and make " +
                     "further changes.", "Topic Editor", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button3);
 
@@ -421,7 +421,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <summary>
-        /// This is overriden to prompt to save changes if necessary
+        /// This is override to prompt to save changes if necessary
         /// </summary>
         /// <param name="e">The event arguments</param>
         protected override void OnClosing(CancelEventArgs e)
@@ -908,7 +908,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 textArea.Caret.Position = textArea.Document.OffsetToPosition(offset + replaceWith.Length);
             }
 
-            // Find the next occurence, if any
+            // Find the next occurrence, if any
             return this.FindText(textToFind, caseSensitive);
         }
 

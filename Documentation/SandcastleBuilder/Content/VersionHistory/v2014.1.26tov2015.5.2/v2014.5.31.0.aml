@@ -202,7 +202,7 @@ be sure that it will find and handle them all.</para>
 							</listItem>
 
 							<listItem>
-								<para>Added code the the MSDN resolver to shut off further lookups and report failures due to the
+								<para>Added code to the MSDN resolver to shut off further lookups and report failures due to the
 service being down.  This prevents it from reporting all failures as missing content IDs.</para>
 							</listItem>
 

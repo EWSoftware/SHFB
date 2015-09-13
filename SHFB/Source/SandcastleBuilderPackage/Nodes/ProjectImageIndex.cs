@@ -36,7 +36,7 @@ namespace SandcastleBuilder.Package.Nodes
         DocumentationSourcesClosed,
         /// <summary>The documentation source node image</summary>
         DocumentationSource,
-        /// <summary>A content layout/sitemap file</summary>
+        /// <summary>A content layout/site map file</summary>
         ContentSiteMap,
         /// <summary>A resource items file</summary>
         ResourceItems,

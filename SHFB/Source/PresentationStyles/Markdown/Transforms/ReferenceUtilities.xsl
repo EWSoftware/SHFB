@@ -214,7 +214,7 @@
 		</include>
 	</xsl:template>
 
-	<!-- when positioned on a parameterized api, produces a (plain) comma-seperated list of parameter types -->
+	<!-- when positioned on a parameterized api, produces a (plain) comma-separated list of parameter types -->
 	<xsl:template name="t_parameterTypesPlain">
 		<xsl:if test="parameters/parameter">
 			<xsl:text>(</xsl:text>

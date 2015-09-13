@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <content xml:space="preserve">
 
   <!-- note text -->
@@ -383,7 +384,7 @@
   <item id="text_contravariant">This type parameter is contravariant. That is, you can use either the type you specified or any type that is less derived. </item>
   <item id="text_variance">For more information about covariance and contravariance, see <a href="http://msdn.microsoft.com/en-us/library/ee207183.aspx" target="_blank">Covariance and Contravariance (C# and Visual Basic).</a>.</item>
 
-  <!-- Non Cls Compliant boilerplate text-->
+  <!-- Non-CLS Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">This API is not CLS-compliant.</item>
   <item id="boilerplate_AltClsCompliant">The CLS-compliant alternative is {0}.</item>
   

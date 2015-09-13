@@ -1405,7 +1405,7 @@
 				</context>
 			</contexts>
 		</language>
-		<!-- Powershell language specification -->
+		<!-- PowerShell language specification -->
 		<language id="pshell" tabSize="4" name="PowerShell">
 			<!-- Code contexts: default (most common) is code. -->
 			<contexts default="code">
@@ -1423,7 +1423,7 @@
 					<regexp id="number" attribute="number" context="code" expression="0x[0-9a-fA-F]*|(((?&lt;=[^0-9])(\+|-))?)\b[0-9][0-9]*(\.[0-9]+)?" />
 					<!-- pshell cmdlets -->
 					<regexp id="pshellCmdlet" attribute="pshell-cmdlet" context="code" expression="(\b\w+-\b\w+)" />
-					<!-- keyword powershell -->
+					<!-- keyword PowerShell -->
 					<keyword attribute="keyword" context="code" family="kwpshelllangoo-keywords" />
 					<!-- keyword C-like -->
 					<keyword attribute="keyword" context="code" family="kwclang-keywords" />

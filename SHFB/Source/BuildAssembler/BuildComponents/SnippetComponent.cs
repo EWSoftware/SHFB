@@ -402,7 +402,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             {
                                 if(i > 0)
                                     writer.WriteString("\n...\n\n\n");
-                                // write the colorized or plaintext snippet text
+                                // write the colorized or plain text snippet text
                                 WriteSnippetText(values[i], writer);
                             }
 
@@ -425,7 +425,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         {
                             if(i > 0)
                                 writer.WriteString("\n...\n\n\n");
-                            // write the colorized or plaintext snippet text
+                            // write the colorized or plain text snippet text
                             WriteSnippetText(values[i], writer);
                         }
 
@@ -560,7 +560,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     writer.WriteStartElement("snippet");
                     writer.WriteAttributeString("language", snippet.Language.LanguageId);
                     writer.WriteString("\n");
-                    // write the colorized or plaintext snippet text
+                    // write the colorized or plain text snippet text
                     WriteSnippetText(snippet, writer);
                     writer.WriteEndElement();
                 }
@@ -574,7 +574,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 writer.WriteStartElement("snippet");
                 writer.WriteAttributeString("language", snippet.Language.LanguageId);
                 writer.WriteString("\n");
-                // write the colorized or plaintext snippet text
+                // write the colorized or plain text snippet text
                 WriteSnippetText(snippet, writer);
                 writer.WriteEndElement();
             }
@@ -594,7 +594,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
         private static ICollection<Region> ColorizeSnippet(string text, List<ColorizationRule> rules)
         {
-            // create a linked list consiting entirely of one uncolored region
+            // create a linked list consisting entirely of one uncolored region
             LinkedList<Region> regions = new LinkedList<Region>();
             regions.AddFirst(new Region(text));
 
@@ -623,7 +623,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         continue;
                     }
 
-                    // we found matches; break the region into colored and uncolered subregions
+                    // we found matches; break the region into colored and uncolored subregions
                     // index is where we are looking from; index-1 is the end of the last match
                     int index = 0;
 
@@ -1012,7 +1012,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         }
 
         /// <summary>
-        /// Parse an example subdir looking for source files containing snipppets.
+        /// Parse an example subfolder looking for source files containing snippets.
         /// </summary>
         /// <param name="directory">The directory to parse</param>
         /// <param name="language">the id of a programming language</param>

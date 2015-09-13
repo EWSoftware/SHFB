@@ -343,7 +343,7 @@ namespace SandcastleBuilder.Components.UI
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(228, 23);
             this.label6.TabIndex = 9;
-            this.label6.Text = "Colorized code &stylesheet file";
+            this.label6.Text = "Colorized code &style sheet file";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label7

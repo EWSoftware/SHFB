@@ -608,7 +608,7 @@ namespace SandcastleBuilder.Utils.Design
                         else
                             node.Checked = filter.IsExposed;
 
-                        // Simple tri-state workaround
+                        // Simple tristate workaround
                         if(filter.Children.Count != 0 && !filter.IsExposed)
                             node.BackColor = Color.LightBlue;
 
@@ -1191,7 +1191,7 @@ namespace SandcastleBuilder.Utils.Design
             // Apply the check state to all children
             if(setChildren && currentNode.Nodes.Count != 0)
             {
-                // Reset the background color incase it's a mixed state node
+                // Reset the background color in case it's a mixed state node
                 currentNode.BackColor = SystemColors.Window;
 
                 foreach(TreeNode child in currentNode.Nodes)

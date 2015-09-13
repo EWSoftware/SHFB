@@ -119,7 +119,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 var page = (BasePropertyPage)tvPropertyPages.SelectedNode.Tag;
 
-                // set the contianer to obey the page's minimum size requirements
+                // Set the container to obey the page's minimum size requirements
                 // and if the visible area is smaller than demanded - show the scrollbars
                 pnlPropertyPages.AutoScrollMinSize = page.MinimumSize;
                 page.Dock = DockStyle.Fill;

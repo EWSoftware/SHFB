@@ -16,7 +16,7 @@
       <FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
         <Paragraph><Bold FontSize="16">Sandcastle Help File Builder and Tools</Bold></Paragraph>
 
-        <Paragraph>The Sandcastle Help File Builder (SHFB) was created to provide project managment
+        <Paragraph>The Sandcastle Help File Builder (SHFB) was created to provide project management
 features, add the missing NDoc-like features that are used most often, and provide graphical and command
 line based tools to build a help file in an automated fashion using the Sandcastle Tools.  The most recent
 version of both can always be found at the <Hyperlink NavigateUri="https://GitHub.com/EWSoftware/SHFB">Sandcastle

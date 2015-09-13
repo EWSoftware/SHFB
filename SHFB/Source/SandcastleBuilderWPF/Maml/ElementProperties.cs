@@ -6,7 +6,7 @@
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to to pass parser state information to the
+// This file contains the class used to pass parser state information to the
 // various element handling methods.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy

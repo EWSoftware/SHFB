@@ -205,13 +205,13 @@ namespace SandcastleBuilder.Components.UI
 
             if(txtXsltStylesheetFile.Text.Length == 0)
             {
-                epErrors.SetError(txtXsltStylesheetFile, "The XSLT stylesheet filename is required");
+                epErrors.SetError(txtXsltStylesheetFile, "The XSLT style sheet filename is required");
                 isValid = false;
             }
 
             if(txtCssStylesheet.Text.Length == 0)
             {
-                epErrors.SetError(txtCssStylesheet, "The CSS stylesheet filename is required");
+                epErrors.SetError(txtCssStylesheet, "The CSS style sheet filename is required");
                 isValid = false;
             }
 
@@ -302,8 +302,8 @@ namespace SandcastleBuilder.Components.UI
                         if(b == btnSelectCssStylesheet)
                         {
                             t = txtCssStylesheet;
-                            dlg.Title = "Select the colorized code stylesheet file";
-                            dlg.Filter = "Stylesheet files (*.css)|*.css|All Files (*.*)|*.*";
+                            dlg.Title = "Select the colorized code style sheet file";
+                            dlg.Filter = "Style sheet files (*.css)|*.css|All Files (*.*)|*.*";
                             dlg.DefaultExt = "css";
                         }
                         else

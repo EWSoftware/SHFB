@@ -93,7 +93,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.btnReplace.Location = new System.Drawing.Point(155, 103);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(100, 32);
-            this.statusBarTextProvider1.SetStatusBarText(this.btnReplace, "Replace: Replace the next occurence of the search text");
+            this.statusBarTextProvider1.SetStatusBarText(this.btnReplace, "Replace: Replace the next occurrence of the search text");
             this.btnReplace.TabIndex = 6;
             this.btnReplace.Text = "&Replace";
             this.toolTip1.SetToolTip(this.btnReplace, "Replace next occurrence");

@@ -266,7 +266,7 @@
 		</include>
 	</xsl:template>
 
-	<!-- when positioned on a parameterized api, produces a (plain) comma-seperated list of parameter types -->
+	<!-- when positioned on a parameterized api, produces a (plain) comma-separated list of parameter types -->
 	<xsl:template name="t_parameterTypesPlain">
 		<xsl:if test="parameters/parameter">
 			<xsl:text>(</xsl:text>
@@ -498,7 +498,7 @@
 		</include>
 	</xsl:template>
 
-	<!-- When positioned on a generic api, produces a (decorated) comma-seperated list of template names -->
+	<!-- When positioned on a generic api, produces a (decorated) comma-separated list of template names -->
 	<xsl:template name="t_parameterTypesDecorated">
 		<xsl:if test="parameters/parameter">
 			<xsl:text>(</xsl:text>

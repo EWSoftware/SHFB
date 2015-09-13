@@ -1,6 +1,6 @@
 Entity
 	Name : string
-	Visiblity :
+	Visibility :
 	
 Namespace : Entity
 	Types : Type[]

@@ -61,7 +61,7 @@ additional elements such as logo images added to the topic using build component
 
 			<listItem>
 				<para>The spacing and font size on certain elements is slightly different but the overall appearance
-should be close enough for you to to get a good idea of how the topic will look in the resulting help file with
+should be close enough for you to get a good idea of how the topic will look in the resulting help file with
 the presentation style applied.</para>
 			</listItem>
 			

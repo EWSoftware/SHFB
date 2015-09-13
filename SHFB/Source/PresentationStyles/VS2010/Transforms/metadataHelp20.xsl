@@ -25,7 +25,7 @@
 				<xsl:call-template name="t_helpPriorityMetadata" />
 				<!-- attributes for api identification -->
 				<xsl:call-template name="t_apiTaggingMetadata" />
-				<!-- atributes for filtering -->
+				<!-- attributes for filtering -->
 				<xsl:call-template name="t_mshelpDevlangAttributes" />
 				<MSHelp:Attr Name="Locale">
 					<includeAttribute name="Value" item="locale" />

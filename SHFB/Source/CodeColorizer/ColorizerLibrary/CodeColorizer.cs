@@ -285,7 +285,7 @@ namespace ColorizerLibrary
         private XmlNode languages, keywordLists;
         private Dictionary<string, string> friendlyNames, alternateIds;
 
-        // Code stylesheet
+        // Code style sheet
         private XslCompiledTransform languageStyle;
 
         // Delegate for Regex.Replace
@@ -1169,7 +1169,7 @@ namespace ColorizerLibrary
                     // Append the regular expression
                     sb.Append(node.Value);
 
-                    // Add the regular expression to the dictionnary
+                    // Add the regular expression to the dictionary
                     rxDic.AddKey(languageNode, contextNode, ruleNode, node.Value);
                 }
                 else if(ruleNode.Name == "keyword")
@@ -1194,7 +1194,7 @@ namespace ColorizerLibrary
                     // Append the regular expression
                     sb.Append(node.Value);
 
-                    // Add it to the dictionnary too
+                    // Add it to the dictionary too
                     rxDic.AddKey(languageNode, contextNode, kwList, "(" + node.Value + ")");
                 }
 

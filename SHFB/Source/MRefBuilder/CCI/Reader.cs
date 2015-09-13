@@ -3028,7 +3028,7 @@ nextModRef:     ;
         internal TypeNode/*!*/ GetTypeFromDefHelper(int i)
         {
             // This is added to prevent loops. 
-            //  Check the code in GetTypeFromDef which checks != null before callig this function
+            //  Check the code in GetTypeFromDef which checks != null before calling this function
             this.tables.TypeDefTable[i - 1].Type = Class.Dummy;
             TypeDefRow typeDef = this.tables.TypeDefTable[i - 1];
             Identifier name = this.tables.GetIdentifier(typeDef.Name);

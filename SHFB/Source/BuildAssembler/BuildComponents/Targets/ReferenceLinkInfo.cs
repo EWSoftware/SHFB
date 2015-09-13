@@ -24,7 +24,7 @@ using Microsoft.Ddue.Tools.BuildComponent;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This class is used to hold reference link information used by by the
+    /// This class is used to hold reference link information used by the
     /// <see cref="ResolveReferenceLinksComponent"/>.
     /// </summary>
     public class ReferenceLinkInfo

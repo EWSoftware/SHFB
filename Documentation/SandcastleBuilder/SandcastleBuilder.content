@@ -768,7 +768,7 @@
           <HelpKeyword index="K" term="errors, BE0034" />
         </HelpKeywords>
       </Topic>
-      <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path the the HTML Help 1 compiler">
+      <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path to the HTML Help 1 compiler">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0037" />
         </HelpKeywords>

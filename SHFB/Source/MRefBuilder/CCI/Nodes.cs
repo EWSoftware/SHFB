@@ -5714,7 +5714,7 @@ doUTF8decoding:
                     return this.win32Resources;
                 if(this.provideResources != null)
                 {
-                    ResourceList dummy = this.Resources; //gets the win32 resources as as side effect
+                    ResourceList dummy = this.Resources; //gets the win32 resources as a side effect
                     if(dummy != null)
                         dummy = null;
                 }
@@ -11777,7 +11777,7 @@ returnFullName:
                     result = duplicates[0];
             }
             if(result == null)
-                //First see if the the current module has a class by this name in the empty namespace
+                //First see if the current module has a class by this name in the empty namespace
                 result = this.AssociatedModule.GetType(Identifier.Empty, name);
             if(result == null)
             {

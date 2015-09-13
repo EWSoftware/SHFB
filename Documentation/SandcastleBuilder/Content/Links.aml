@@ -35,7 +35,7 @@ builder (also <externalLink>
 					<listItem>
 						<para>For a comprehensive list of MAML documentation elements used in conceptual content and a
 description of their attributes and usage, see the <legacyBold>Sandcastle MAML Guide</legacyBold> installed as
-part of the the help file builder (also <externalLink>
+part of the help file builder (also <externalLink>
 <linkText>available online</linkText>
 <linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
 <linkUri>https://EWSoftware.GitHub.io/MAMLGuide</linkUri>

@@ -105,7 +105,7 @@ namespace SandcastleBuilder.Utils.Design
         /// This is used to get or set the parameters to pass to the
         /// application.
         /// </summary>
-        /// <remarks>The following macros can be used to subsitute item
+        /// <remarks>The following macros can be used to substitute item
         /// and path values into the argument string.
         /// <list type="table">
         ///    <listheader>

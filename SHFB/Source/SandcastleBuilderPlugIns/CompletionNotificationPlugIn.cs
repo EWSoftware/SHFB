@@ -320,7 +320,7 @@ namespace SandcastleBuilder.PlugIns
 
             try
             {
-                // Read in the log text we'll prefix it it with the error message if the transform fails
+                // Read in the log text we'll prefix it with the error message if the transform fails
                 using(StreamReader srdr = new StreamReader(builder.LogFilename))
                 {
                     html = srdr.ReadToEnd();

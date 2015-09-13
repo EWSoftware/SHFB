@@ -94,7 +94,7 @@ namespace SandcastleBuilder.WPF.Maml
         //=====================================================================
 
         // This is used to map alert class names to titles.  We could use a case-insensitive comparer here but
-        // the XML is case-sensitive so we'll stay case sensitive too so that erros in the title value show up.
+        // the XML is case-sensitive so we'll stay case sensitive too so that errors in the title value show up.
         // These could be localized but we're not doing that for now.
         private static Dictionary<string, string> alertTitles = new Dictionary<string, string>()
         {

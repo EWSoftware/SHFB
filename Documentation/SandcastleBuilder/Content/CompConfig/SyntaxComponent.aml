@@ -12,7 +12,7 @@ groups.  Adding the component to your project will also allow you to change the 
 if they have any configurable options.</para>
 
 			<alert class="tip">
-				<para>If you change the sort order of the languages, use the the <codeInline>defaultLangauge</codeInline>
+				<para>If you change the sort order of the languages, use the <codeInline>defaultLangauge</codeInline>
 transformation argument found on the <ui>Transform Args</ui> property page to set the default language selected
 so that it matches the first language in your chosen order.</para>
 			</alert>

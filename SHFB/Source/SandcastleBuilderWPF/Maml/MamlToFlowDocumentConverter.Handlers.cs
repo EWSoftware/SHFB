@@ -1215,7 +1215,7 @@ namespace SandcastleBuilder.WPF.Maml
         }
         #endregion
 
-        #region Misellaneous element handlers
+        #region Miscellaneous element handlers
         //=====================================================================
 
         /// <summary>
@@ -1290,7 +1290,7 @@ namespace SandcastleBuilder.WPF.Maml
 
                 if(list != null)
                 {
-                    // If not exluding related topics, add a link to the See Also section
+                    // If not excluding related topics, add a link to the See Also section
                     if(!excludeRelatedTopics)
                         list.ListItems.Add(new ListItem(new Paragraph(new Hyperlink(new Run("See Also"))
                         {
@@ -1359,7 +1359,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// </summary>
         /// <param name="props">The element properties</param>
         /// <remarks>For ignored elements, we don't return to the parent element after parsing
-        /// this one's children as there may be other sibiling elements after it.</remarks>
+        /// this one's children as there may be other sibling elements after it.</remarks>
         private static void IgnoredElement(ElementProperties props)
         {
             props.ReturnToParent = false;
@@ -1370,7 +1370,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// </summary>
         /// <param name="props">The element properties</param>
         /// <remarks>This ignores all child elements too.  For ignored elements, we don't return to the parent
-        /// element as there may be other sibiling elements after it.</remarks>
+        /// element as there may be other sibling elements after it.</remarks>
         private static void IgnoredElementWithChildren(ElementProperties props)
         {
             props.ParseChildren = props.ReturnToParent = false;

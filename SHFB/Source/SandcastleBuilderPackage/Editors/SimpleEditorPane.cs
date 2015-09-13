@@ -608,7 +608,7 @@ namespace SandcastleBuilder.Package.Editors
                         break;
                 }
 
-                // --- Pass back the commmand support flag
+                // --- Pass back the command support flag
                 prgCmds[0].cmdf = (uint)cmdf;
                 return VSConstants.S_OK;
             }
@@ -758,7 +758,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="pfIsDirty">true if the document has changed.</param>
         /// <returns>S_OK if the method succeeds.</returns>
         /// <remarks>
-        /// Override the <see cref="OnIsDirty"/> method to change the behaviour.
+        /// Override the <see cref="OnIsDirty"/> method to change the behavior.
         /// </remarks>
         // --------------------------------------------------------------------------------
         int IPersistFileFormat.IsDirty(out int pfIsDirty)
@@ -776,7 +776,7 @@ namespace SandcastleBuilder.Package.Editors
         /// </param>
         /// <returns>S_OK if the method succeeds.</returns>
         /// <remarks>
-        /// Override the <see cref="OnInitNew"/> method to change the behaviour.
+        /// Override the <see cref="OnInitNew"/> method to change the behavior.
         /// </remarks>
         // --------------------------------------------------------------------------------
         int IPersistFileFormat.InitNew(uint nFormatIndex)
@@ -904,7 +904,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="pszFilename">Pointer to the file name.</param>
         /// <returns>S_OK if the function succeeds.</returns>
         /// <remarks>
-        /// Override the <see cref="OnSaveCompleted"/> method to change the behaviour.
+        /// Override the <see cref="OnSaveCompleted"/> method to change the behavior.
         /// </remarks>
         // --------------------------------------------------------------------------------
         int IPersistFileFormat.SaveCompleted(string pszFilename)
@@ -925,7 +925,7 @@ namespace SandcastleBuilder.Package.Editors
         /// </param>
         /// <returns>S_OK if the function succeeds.</returns>
         /// <remarks>
-        /// Override the <see cref="OnGetCurFile"/> method to change the behaviour.
+        /// Override the <see cref="OnGetCurFile"/> method to change the behavior.
         /// </remarks>
         // --------------------------------------------------------------------------------
         int IPersistFileFormat.GetCurFile(out string ppszFilename, out uint pnFormatIndex)
@@ -943,7 +943,7 @@ namespace SandcastleBuilder.Package.Editors
         /// </param>
         /// <returns>S_OK if the method succeeds.</returns>
         /// <remarks>
-        /// Override the <see cref="OnGetFormatList"/> method to change the behaviour.
+        /// Override the <see cref="OnGetFormatList"/> method to change the behavior.
         /// </remarks>
         // --------------------------------------------------------------------------------
         int IPersistFileFormat.GetFormatList(out string ppszFormatList)
@@ -1138,7 +1138,7 @@ namespace SandcastleBuilder.Package.Editors
         /// </summary>
         /// <returns>S_OK if the function succeeds.</returns>
         /// <remarks>
-        /// Override the <see cref="OnCloseEditor"/> method to change the behaviour.
+        /// Override the <see cref="OnCloseEditor"/> method to change the behavior.
         /// </remarks>
         // --------------------------------------------------------------------------------
         int IVsPersistDocData.Close()

@@ -10,7 +10,7 @@ defined</para>
       <title>Cause</title>
       <content>
         <para>This error occurs if no documentation sources are defined in the
-the project and the Additional Content Only plug-in is not present in the
+project and the Additional Content Only plug-in is not present in the
 project or is disabled.</para>
       </content>
     </section>

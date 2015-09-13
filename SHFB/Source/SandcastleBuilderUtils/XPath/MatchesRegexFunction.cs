@@ -133,7 +133,7 @@ namespace SandcastleBuilder.Utils.XPath
             ignoreCase = Convert.ToBoolean(args[2],
                 CultureInfo.InvariantCulture);
 
-            // Create a unqiue ID for each expression.  We'll add a marker
+            // Create a unique ID for each expression.  We'll add a marker
             // for case-insensitive ones to keep them separate from any
             // matching case-sensitive ones.
             id = expression;

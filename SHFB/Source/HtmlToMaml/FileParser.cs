@@ -6,7 +6,7 @@
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class that is used to parse info of of HTML topics
+// This file contains a class that is used to parse info out of HTML topics
 // ready for the conversion to MAML.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
@@ -54,11 +54,11 @@ namespace HtmlToMamlConversion
 
         private static Regex reTopicId = new Regex(
             @"^\s*<meta\s+name=""id""\s+content=""(.*)""\s*/\s*>\s*$",
-            RegexOptions.IgnoreCase | RegexOptions.Multiline);  // Multiline to find begin and end markers
+            RegexOptions.IgnoreCase | RegexOptions.Multiline);  // Multi-line to find begin and end markers
 
         private static Regex reRevisionNumber = new Regex(
             @"^\s*<\s*meta\s+name=""revisionNumber""\s+content=""(.*)""\s*/\s*>\s*$",
-            RegexOptions.IgnoreCase | RegexOptions.Multiline);  // Multiline to find begin and end markers
+            RegexOptions.IgnoreCase | RegexOptions.Multiline);  // Multi-line to find begin and end markers
 
         private static Regex reBody = new Regex(
             @"<\s*body(Text)?[^>]*?>(?<Body>.*?)<\s*/\s*body(Text)?\s*>",

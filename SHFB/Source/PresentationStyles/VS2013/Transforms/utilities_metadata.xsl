@@ -208,7 +208,7 @@
 		<xsl:text>)</xsl:text>
 	</xsl:template>
 
-	<!-- produces a comma-seperated list of generic template parameter names -->
+	<!-- produces a comma-separated list of generic template parameter names -->
 	<!-- comma character is URL-encoded so as not to create sub-index entries -->
 	<xsl:template name="templateText">
 		<xsl:for-each select="*">

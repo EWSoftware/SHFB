@@ -198,7 +198,7 @@ namespace Sandcastle.Installer.InstallerPages
 
                     if(Directory.Exists(packagePath))
                     {
-                        // This is used to supress prompting if the package appears to be installed and the user
+                        // This is used to suppress prompting if the package appears to be installed and the user
                         // clicks Next to continue.  VS2012's VSIX installer puts the package in a randomly named
                         // folder so we'll have to search for it.
                         packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",

@@ -178,12 +178,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             string topicdataGroup = (string)referenceNode.Evaluate(topicdataGroupExpression);
             string topicdataSubgroup = (string)referenceNode.Evaluate(topicdataSubgroupExpression);
 
-            // get the namespace and typename of the current type to locate the filter information that applies to the current topic
-            // For filtering inherited members, the platform filters use the namespace and typename of the inheriting type, not the declaring type,
+            // get the namespace and type name of the current type to locate the filter information that applies to the current topic
+            // For filtering inherited members, the platform filters use the namespace and typ ename of the inheriting type, not the declaring type,
             string topicNamespaceName = (string)referenceNode.Evaluate(apiNamespaceNameExpression);
             string topicTypeName = (string)referenceNode.Evaluate(memberTypeNameExpression);
 
-            // write platforms info for normal api topics (excluding memberlist and overload list topics
+            // write platforms info for normal api topics (excluding member list and overload list topics
             if (topicdataGroup != "list" && topicdataSubgroup != "DerivedTypeList" && (apiGroup == "type" || apiGroup == "member") && versionFilters.Count > 0)
                 WriteApiPlatforms(referenceNode, apiGroup, topicTypeName, topicNamespaceName);
 

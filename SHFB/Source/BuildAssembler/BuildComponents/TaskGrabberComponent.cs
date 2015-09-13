@@ -291,7 +291,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         continue;
                     string key = keyNode.Value;
 
-                    // log multiple occurences of a single id
+                    // log multiple occurrences of a single id
                     if(index.ContainsKey(key))
                     {
                         WriteMessage(MessageLevel.Warn, "Entries for the key '{0}' occur in both '{1}' and '{2}'. The first entry will be used.", key, index[key], file);

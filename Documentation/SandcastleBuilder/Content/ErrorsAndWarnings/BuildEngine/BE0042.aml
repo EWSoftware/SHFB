@@ -10,7 +10,7 @@ the form of an assembly or a Visual Studio solution/project file</para>
       <title>Cause</title>
       <content>
         <para>This error occurs if there are no assembly documentation sources
-or Visual Studio solution/project documentation sources that contain a useable
+or Visual Studio solution/project documentation sources that contain a usable
 assembly for reference information.</para>
       </content>
     </section>

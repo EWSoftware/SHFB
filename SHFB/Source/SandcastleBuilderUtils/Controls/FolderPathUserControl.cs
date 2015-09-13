@@ -113,7 +113,7 @@ namespace SandcastleBuilder.Utils.Controls
             {
                 folderPath.PersistablePath = value;
 
-                // If set to a rooted path, set the Fixed Path opton
+                // If set to a rooted path, set the Fixed Path option
                 if(!String.IsNullOrEmpty(value) && Path.IsPathRooted(value))
                     this.IsFixedPath = true;
                 else

@@ -135,12 +135,15 @@
     <Content Include="Template\CopyCode.gif" />
     <Content Include="Template\highlight.css" />
     <Content Include="Template\highlight.js" />
-    <Content Include="Template\highlight.xml" />
+    <Content Include="Template\highlight.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Template\highlight.xsl" />
     <Content Include="Template\CopyCode_h.gif" />
     <Content Include="Template\highlight_flowDoc.xsl" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ColorizerLibrary.csproj.vsspell" />
     <None Include="ColorizerLibrary.snk" />
   </ItemGroup>
   <ItemGroup>

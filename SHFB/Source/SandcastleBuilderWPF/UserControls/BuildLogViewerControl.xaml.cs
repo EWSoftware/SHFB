@@ -136,7 +136,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             try
             {
-                // Read in the log text.  We'll prefix it it with the error message if the transform fails.
+                // Read in the log text.  We'll prefix it with the error message if the transform fails.
                 using(StreamReader sr = new StreamReader(logFile))
                 {
                     html = sr.ReadToEnd();

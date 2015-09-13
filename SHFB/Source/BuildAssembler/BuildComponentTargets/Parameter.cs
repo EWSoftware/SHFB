@@ -26,7 +26,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public string Name { get; private set; }
 
         /// <summary>
-        /// This read-only property returns the paramter type
+        /// This read-only property returns the parameter type
         /// </summary>
         public TypeReference ParameterType { get; private set; }
 

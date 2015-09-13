@@ -112,18 +112,22 @@
     </Content>
     <Content Include="SyntaxContent\de-DE\AspNet.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\de-DE\CSharp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SyntaxContent\de-DE\FSharp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\de-DE\JavaScript.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\de-DE\JScript.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\de-DE\JSharp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -136,9 +140,11 @@
     </Content>
     <Content Include="SyntaxContent\de-DE\VisualBasicUsage.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\de-DE\XAML.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\FSharp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -184,6 +190,7 @@
     </Content>
     <Content Include="SyntaxContent\ru-RU\XAML.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\VisualBasic.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -194,6 +201,10 @@
     <Content Include="SyntaxContent\XAML.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SyntaxContent\de-DE\de-DE.vsspell" />
+    <None Include="SyntaxContent\ru-RU\ru-RU.vsspell" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

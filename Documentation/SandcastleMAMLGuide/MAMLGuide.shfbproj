@@ -168,6 +168,7 @@
     </Tokens>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ConceptualTemplates\ConceptualTemplates.vsspell" />
     <None Include="Content\Donate.aml" />
     <None Include="Content\License.aml" />
     <None Include="Content\MiscElements\markup.aml" />

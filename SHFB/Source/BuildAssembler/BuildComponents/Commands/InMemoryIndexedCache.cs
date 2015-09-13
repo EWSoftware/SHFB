@@ -58,7 +58,7 @@ namespace Microsoft.Ddue.Tools.Commands
             /// This read-only property returns the XPath navigator for the specified key
             /// </summary>
             /// <param name="key">The key to look up</param>
-            /// <returns>The XPath navigagor associated with the key</returns>
+            /// <returns>The XPath navigator associated with the key</returns>
             public XPathNavigator this[string key]
             {
                 get { return index[key].Clone(); }
@@ -90,7 +90,7 @@ namespace Microsoft.Ddue.Tools.Commands
 
         // A simple caching mechanism.
         // This cache keeps track of the order that files are loaded in and always unloads the oldest one.
-        // This is better, but a document that is often accessed gets no "points" so it will eventualy be
+        // This is better, but a document that is often accessed gets no "points" so it will eventually be
         // thrown out even if it is used regularly.
         private int cacheSize;
         private Queue<string> queue;

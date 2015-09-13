@@ -166,7 +166,7 @@ namespace XMLCommentsExamples
         /// Filter priority example
         /// </summary>
         /// <remarks>This element is rarely used as <see cref="EditorBrowsableAttribute"/>
-        /// does the same thing thing and is effective across all languages.</remarks>
+        /// does the same thing and is effective across all languages.</remarks>
         /// <filterpriority>1</filterpriority>
         /// <conceptualLink target="0522f3bf-0a57-4d70-a2a5-d64a14c5bcc9" />
         public void FilterPriorityExample()
@@ -221,7 +221,7 @@ namespace XMLCommentsExamples
         ///   <item>Third item</item>
         /// </list>
         ///
-        /// <para>Bullet list with terms and definitions.  The term is highligted and
+        /// <para>Bullet list with terms and definitions.  The term is highlighted and
         /// separated from the definition with a dash.</para>
         /// 
         /// <list type="bullet">

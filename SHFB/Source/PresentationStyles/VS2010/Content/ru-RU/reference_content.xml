@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <content xml:space="preserve">
 <!-- Translations provided by Sergey Zhurikhin -->
 
@@ -383,7 +384,7 @@
   <item id="text_contravariant">Этот параметр типа является контрвариантным. Это означает, что можно использовать либо указанный тип, либо менее производный тип. </item>
   <item id="text_variance">Дополнительные сведения о ковариации и контрвариации см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/ee207183.aspx" target="_blank">Ковариация и контравариация в универсальных шаблонах</a>.</item>
   
-  <!-- Non Cls Compliant boilerplate text-->
+  <!-- Non-CLS Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">Этот интерфейс API CLS-несовместим.</item>
   <item id="boilerplate_AltClsCompliant">CLS-совместимая альтернатива - {0}.</item>
   

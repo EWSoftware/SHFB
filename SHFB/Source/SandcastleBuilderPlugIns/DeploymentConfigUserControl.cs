@@ -76,7 +76,7 @@ namespace SandcastleBuilder.PlugIns
         /// Validate the control values and, if valid, create and return a new
         /// deployment location settings object.
         /// </summary>
-        /// <returns>The deployment location settings if they are valud or
+        /// <returns>The deployment location settings if they are valid or
         /// null if they are not valid.</returns>
         public DeploymentLocation CreateDeploymentLocation()
         {

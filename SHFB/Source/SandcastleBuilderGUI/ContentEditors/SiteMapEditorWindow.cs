@@ -219,7 +219,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     return true;
 
                 DialogResult dr = WinFormsMessageBox.Show("Do you want to save your changes to '" +
-                    this.ToolTipText + "?  Click YES to to save them, NO to discard them, or " +
+                    this.ToolTipText + "?  Click YES to save them, NO to discard them, or " +
                     "CANCEL to stay here and make further changes.", Constants.AppName,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button3);

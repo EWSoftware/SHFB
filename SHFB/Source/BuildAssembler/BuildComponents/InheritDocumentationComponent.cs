@@ -75,7 +75,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         // XPathExpression for override members.
         private static XPathExpression overrideMemberExpression = XPathExpression.Compile("overrides/member/@api");
 
-        // XPathExpression for API member interface implementaions.
+        // XPathExpression for API member interface implementations.
         private static XPathExpression interfaceImplementationMemberExpression = XPathExpression.Compile("implements/member/@api");
 
         // XPathExpression for <inheritdoc /> nodes.

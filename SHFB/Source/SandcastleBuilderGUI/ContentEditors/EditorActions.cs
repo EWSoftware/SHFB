@@ -251,7 +251,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <summary>
-        /// Execute the Inser Closing Element action
+        /// Execute the Insert Closing Element action
         /// </summary>
         /// <param name="textArea">The text area in which to perform the
         /// action</param>

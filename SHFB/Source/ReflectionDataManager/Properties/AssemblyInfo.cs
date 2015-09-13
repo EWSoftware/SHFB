@@ -26,7 +26,7 @@ using System.Reflection;
 // attribute values to modify the information associated with an assembly.
 //
 [assembly: AssemblyTitle("Sandcastle Tools - Reflection Data Manager")]
-[assembly: AssemblyDescription("This is used to create reflection data defintion files for the various " +
+[assembly: AssemblyDescription("This is used to create reflection data definition files for the various " +
     ".NET frameworks and to build the reflection information files used by the other Sandcastle tools.")]
 
 [assembly: CLSCompliant(true)]

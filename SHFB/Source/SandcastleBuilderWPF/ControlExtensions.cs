@@ -195,7 +195,7 @@ namespace SandcastleBuilder.WPF
             {
                 multiplier = (double)maxWidths[column] / (double)minWidth;
 
-                // Limit the width to a maxmimum of five times the smallest column so that we don't squash
+                // Limit the width to a maximum of five times the smallest column so that we don't squash
                 // the smaller columns.
                 if(multiplier > 5.0)
                     multiplier = 5.0;

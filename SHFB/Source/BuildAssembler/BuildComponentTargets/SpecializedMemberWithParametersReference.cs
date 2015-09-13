@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a specialized member with paramters reference
+    /// This represents a specialized member with parameters reference
     /// </summary>
     [Serializable]
     public sealed class SpecializedMemberWithParametersReference : MemberReference

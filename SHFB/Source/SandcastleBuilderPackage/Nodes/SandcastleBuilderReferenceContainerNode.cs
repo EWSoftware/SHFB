@@ -73,7 +73,7 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// Creates an assembly refernce node from a project element.
+        /// Creates an assembly reference node from a project element.
         /// </summary>
         /// <returns>An assembly reference node</returns>
         protected override AssemblyReferenceNode CreateAssemblyReferenceNode(ProjectElement element)

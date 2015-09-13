@@ -95,6 +95,7 @@
     <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xml">
       <Link>Colorizer\highlight.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xsl">
       <Link>Colorizer\highlight.xsl</Link>
@@ -611,6 +612,7 @@
     </Content>
     <Content Include="VS2013\Content\de-DE\reference_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2013\Content\de-DE\shared_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -623,6 +625,7 @@
     </Content>
     <Content Include="VS2013\Content\es-ES\reference_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2013\Content\es-ES\shared_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -630,14 +633,29 @@
     <Content Include="VS2013\Content\es-ES\shared_content_mshc.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="VS2013\Content\fr-FR\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\fr-FR\reference_content.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\fr-FR\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\fr-FR\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="VS2013\Content\reference_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2013\Content\ru-RU\conceptual_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Content\ru-RU\reference_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2013\Content\ru-RU\shared_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -809,6 +827,7 @@
     </Content>
     <Content Include="VS2013\SHFBContent\pt-BR.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2013\SHFBContent\ru-RU.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -965,9 +984,11 @@
     </Content>
     <Content Include="VS2010\Content\de-DE\reference_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2010\Content\de-DE\shared_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2010\Content\de-DE\shared_content_mshc.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1159,6 +1180,7 @@
     </Content>
     <Content Include="VS2010\SHFBContent\zh-CHS.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="VS2010\SHFBContent\zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1333,6 +1355,22 @@
     <Content Include="Markdown\MarkdownContent\_Footer.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Markdown\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="Markdown\SHFBContent\SHFBContent.vsspell" />
+    <None Include="OpenXml\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="OpenXml\SHFBContent\SHFBContent.vsspell" />
+    <None Include="Shared\StopWordList\StopWordList.vsspell" />
+    <None Include="StandardPresentationStyles.csproj.vsspell" />
+    <None Include="VS2010\Content\de-DE\de-DE.vsspell" />
+    <None Include="VS2010\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="VS2010\SHFBContent\SHFBContent.vsspell" />
+    <None Include="VS2013\Content\de-DE\de-DE.vsspell" />
+    <None Include="VS2013\Content\es-ES\es-ES.vsspell" />
+    <None Include="VS2013\Content\fr-FR\fr-FR.vsspell" />
+    <None Include="VS2013\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="VS2013\SHFBContent\SHFBContent.vsspell" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

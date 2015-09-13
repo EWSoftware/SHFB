@@ -114,7 +114,7 @@ namespace ColorizerLibrary
 		}
 
 		/// <summary>
-		/// Resests internal run counter and time integrator
+		/// Resets internal run counter and time integrator
 		/// </summary>
 		public void Reset()
 		{

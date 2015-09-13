@@ -246,7 +246,7 @@
     <Compile Include="ContentEditors\GotoLineDlg.Designer.cs">
       <DependentUpon>GotoLineDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="ContentEditors\MyScrollablePanel.cs">
+    <Compile Include="ContentEditors\ScrollablePanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ContentEditors\NodeData.cs" />
@@ -497,6 +497,7 @@
     <Content Include="ItemTemplates\XAML Syntax.xamlcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="ItemTemplates\ItemTemplates.vsspell" />
     <None Include="Resources\SpellCheck.png" />
     <None Include="Resources\Spinner.gif" />
     <Content Include="Spelling\en_US.aff">

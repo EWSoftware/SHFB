@@ -344,7 +344,7 @@ namespace System.Compiler.Metadata
 
     /// <summary>
     /// Public only for use by the Framework. Do not use this class.
-    /// Well, if you really really must, use it only if you can tolerate keeping the file locked for at least as long as any Identifier
+    /// Well, if you really, really must, use it only if you can tolerate keeping the file locked for at least as long as any Identifier
     /// derived from the file stays alive.
     /// </summary>   
     unsafe public sealed class MemoryMappedFile : IDisposable, ISourceTextBuffer

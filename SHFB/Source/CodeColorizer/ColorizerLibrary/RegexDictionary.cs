@@ -116,7 +116,7 @@ namespace ColorizerLibrary
 		/// <summary>
 		/// Retrieve the regular expression options from the language node
 		/// </summary>
-		/// <param name="languageNode">langue name</param>
+		/// <param name="languageNode">language name</param>
 		/// <returns>RegexOptions enumeration combination</returns>
         private static RegexOptions GetRegexOptions(XmlNode languageNode)
 		{

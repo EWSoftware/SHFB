@@ -371,12 +371,12 @@ namespace Microsoft.Ddue.Tools
 
             if(notWriteable)
             {
-                // Output boilerplate for struct with no writeable properties 
+                // Output boilerplate for struct with no writable properties 
                 WriteXamlBoilerplate(XamlBoilerplateID.structXamlSyntax_nonXaml, writer);
             }
             else
             {
-                // All writeable structs in XAML assemblies are usable in XAML
+                // All writable structs in XAML assemblies are usable in XAML
                 // always show the Object Element Usage syntax
                 ObjectElementUsageForClassStruct(reflection, writer);
 

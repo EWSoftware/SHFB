@@ -116,7 +116,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         /// <summary>
-        /// This is used to get information from token and content layoutfiles open in editors
+        /// This is used to get information from token and content layout files open in editors
         /// so that current information is displayed for them in the topic previewer control.
         /// </summary>
         /// <param name="sender">The sender of the event</param>

@@ -39,7 +39,7 @@ using SandcastleBuilder.Package.Properties;
 namespace SandcastleBuilder.Package.Nodes
 {
     /// <summary>
-    /// This represents the project properties container node in a Sancastle
+    /// This represents the project properties container node in a Sandcastle
     /// Help File Builder project.
     /// </summary>
     /// <remarks>Unlike normal Visual Studio projects, we will not support

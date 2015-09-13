@@ -114,7 +114,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             // in the "tag".
                             attrName = tagSpan.GetText();
 
-                            // If it contains "cref", tne next XML doc attribute value will be the target
+                            // If it contains "cref", ten next XML doc attribute value will be the target
                             if(attrName.IndexOf("cref=", StringComparison.Ordinal) != -1 && enableInCRef)
                                 attrName = "cref";
 

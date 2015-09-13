@@ -225,7 +225,7 @@ namespace SandcastleBuilder.Components.Targets
                         catch(IOException e)
                         {
                             throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture,
-                                "An access error occured while opening the reference targets file '{0}'. The error " +
+                                "An access error occurred while opening the reference targets file '{0}'. The error " +
                                 "message is: {1}", file, e.GetExceptionMessage()));
                         }
                     }

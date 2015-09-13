@@ -32,7 +32,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectPropertiesWindow));
             this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.tvPropertyPages = new System.Windows.Forms.TreeView();
-            this.pnlPropertyPages = new MyScrollablePanel();
+            this.pnlPropertyPages = new ScrollablePanel();
             this.SuspendLayout();
             // 
             // tvPropertyPages
@@ -88,6 +88,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.TreeView tvPropertyPages;
-        private MyScrollablePanel pnlPropertyPages;
+        private ScrollablePanel pnlPropertyPages;
     }
 }

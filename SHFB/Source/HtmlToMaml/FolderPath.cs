@@ -19,7 +19,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.3.4.0  12/29/2006  EFW  Created the code
-// 1.8.0.0  06/23/2008  EFW  Reworked BasePath support to make it useable in
+// 1.8.0.0  06/23/2008  EFW  Reworked BasePath support to make it usable in
 //                           a multi-project environment like Visual Studio.
 //=============================================================================
 
