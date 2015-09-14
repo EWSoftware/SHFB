@@ -61,6 +61,7 @@
   <item id="devlang_trueKeyword">`true` (`True` в Visual Basic)</item>
   <item id="devlang_falseKeyword">`false` (`False` в Visual Basic)</item>
   <item id="devlang_abstractKeyword">`abstract` (`MustInherit` в Visual Basic)</item>
+  <item id="devlang_sealedKeyword">`sealed` (`NotInheritable` в Visual Basic)</item>
 
   <!-- Back to Top link text -->
   <item id="top">В начало страницы</item>

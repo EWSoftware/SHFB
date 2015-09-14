@@ -89,6 +89,7 @@ the tooltip.</para>
 <code language="xml" title=" ">
 &lt;see langword="null | Nothing | nullptr | static | shared | virtual |
     Overridable | true | True | false | False | abstract | MustInherit |
+    sealed | NotInheritable |
     async | await | async/await | Async | Await | Async/Await | let! |
     async/let!" /&gt;
 </code>

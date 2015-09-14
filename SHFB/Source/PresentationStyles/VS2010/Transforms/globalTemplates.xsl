@@ -234,7 +234,26 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template name="t_inKeyword">
+	<xsl:template name="t_sealedKeyword">
+		<xsl:param name="p_syntaxKeyword" select="''"/>
+		<xsl:choose>
+			<xsl:when test="$p_syntaxKeyword">
+				<span class="keyword">
+					<span class="languageSpecificText">
+						<span class="vb">NotInheritable</span>
+						<span class="nu">sealed</span>
+					</span>
+				</span>
+			</xsl:when>
+			<xsl:otherwise>
+				<span>
+					<include item="devlang_sealedKeyword"/>
+				</span>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+  <xsl:template name="t_inKeyword">
 		<span class="keyword">
 			<span class="languageSpecificText">
 				<span class="vb">In</span>

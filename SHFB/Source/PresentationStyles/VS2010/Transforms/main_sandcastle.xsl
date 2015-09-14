@@ -1102,6 +1102,11 @@
 					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
 				</xsl:call-template>
 			</xsl:when>
+			<xsl:when test="@langword='sealed' or @langword='NotInheritable'">
+				<xsl:call-template name="t_sealedKeyword">
+					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
+				</xsl:call-template>
+			</xsl:when>
 			<xsl:when test="@langword='async' or @langword='Async'">
 				<xsl:call-template name="t_asyncKeyword">
 					<xsl:with-param name="p_syntaxKeyword" select="$v_syntaxKeyword"/>
