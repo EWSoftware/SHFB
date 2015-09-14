@@ -253,7 +253,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-  <xsl:template name="t_inKeyword">
+	<xsl:template name="t_inKeyword">
 		<span class="keyword">
 			<span class="languageSpecificText">
 				<span class="vb">In</span>
