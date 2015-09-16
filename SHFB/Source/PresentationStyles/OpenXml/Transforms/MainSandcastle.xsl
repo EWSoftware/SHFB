@@ -1098,6 +1098,9 @@
 			<xsl:when test="@langword='abstract' or @langword='MustInherit'">
 				<include item="devlang_abstractKeyword"/>
 			</xsl:when>
+			<xsl:when test="@langword='sealed' or @langword='NotInheritable'">
+				<include item="devlang_sealedKeyword"/>
+			</xsl:when>
 			<xsl:when test="@langword='async' or @langword='async'">
 				<include item="devlang_asyncKeyword"/>
 			</xsl:when>

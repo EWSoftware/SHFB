@@ -905,6 +905,9 @@
 			<xsl:when test="$v_keyword='abstract' or $v_keyword='MustInherit'">
 				<include item="devlang_abstractKeyword"/>
 			</xsl:when>
+			<xsl:when test="$v_keyword='sealed' or $v_keyword='NotInheritable'">
+				<include item="devlang_sealedKeyword"/>
+			</xsl:when>
 			<xsl:when test="$v_keyword='async' or $v_keyword='Async'">
 				<include item="devlang_asyncKeyword"/>
 			</xsl:when>

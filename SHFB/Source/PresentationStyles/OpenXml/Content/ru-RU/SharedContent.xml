@@ -63,6 +63,7 @@
   <item id="devlang_trueKeyword"><span class="CodeInline">true</span> (<span class="CodeInline">True</span> в Visual Basic)</item>
   <item id="devlang_falseKeyword"><span class="CodeInline">false</span> (<span class="CodeInline">False</span> в Visual Basic)</item>
   <item id="devlang_abstractKeyword"><span class="CodeInline">abstract</span> (<span class="CodeInline">MustInherit</span> в Visual Basic)</item>
+  <item id="devlang_sealedKeyword"><span class="CodeInline">sealed</span> (<span class="CodeInline">NotInheritable</span> в Visual Basic)</item>
 
   <!-- Back to Top link text -->
   <item id="top">В начало страницы</item>
