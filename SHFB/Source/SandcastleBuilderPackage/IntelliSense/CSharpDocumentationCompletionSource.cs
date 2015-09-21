@@ -185,6 +185,8 @@ namespace SandcastleBuilder.Package.IntelliSense
                         "language-specific keyword 'false'.", macroIconSource, ""),
                     new SandcastleCompletion("abstract", prefix + "see langword=\"abstract\"/>", "Inserts the " +
                         "language-specific keyword 'abstract'.", macroIconSource, ""),
+                    new SandcastleCompletion("sealed", prefix + "see langword=\"sealed\"/>", "Inserts the " +
+                        "language-specific keyword 'sealed'.", macroIconSource, ""),
                     new SandcastleCompletion("async", prefix + "see langword=\"async\"/>", "Inserts the " +
                         "language-specific keyword 'async'.", macroIconSource, ""),
                     new SandcastleCompletion("await", prefix + "see langword=\"await\"/>", "Inserts the " +

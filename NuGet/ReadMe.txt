@@ -5,7 +5,8 @@ without installing the tools manually such as on a build server.  The following 
 
 - You must install one or more of the Reflection Data Set packages based on which platform types you need:
 
-  .NETCore, .NETFramework, .NETMicroFramework, .NETPortable, Silverlight, WindowsPhone, and/or WindowsPhoneApp.
+  .NETCore, .NETFramework, .NETMicroFramework, .NETPortable, Silverlight, WindowsPhone, WindowsPhoneApp,
+  and/or UniversalWindows.
 
   If multiple versions are available for any given reflection data set package, download the latest version as
   it will cover all prior versions as well.

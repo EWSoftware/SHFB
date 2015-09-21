@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyDetails.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/27/2015
+// Updated : 09/20/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // 09/09/2012  EFW  Created the code
 // 01/02/2014  EFW  Moved the frameworks code to Sandcastle.Core
 // 06/21/2015  EFW  Moved to the Reflection namespace and reworked for use with the Reflection Data Manager
+// 09/20/2015  EFW  Added support for relative paths on the saved assembly filenames
 //===============================================================================================================
 
 using System;
@@ -174,9 +175,14 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The new assembly details item</returns>
         internal static AssemblyDetails FromXml(string path, XElement details)
         {
+            string filename = details.Attribute("Filename").Value;
+
+            if(!Path.IsPathRooted(filename))
+                filename = Path.Combine(path, filename);
+
             var ad = new AssemblyDetails
             {
-                Filename = Path.Combine(path, details.Attribute("Filename").Value),
+                Filename = filename,
                 Name = details.Attribute("Name").Value,
                 Version = new Version(details.Attribute("Version").Value),
                 Culture = (string)details.Attribute("Culture"),
@@ -195,11 +201,17 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This is used to convert the assembly detail to an XML element
         /// </summary>
+        /// <param name="basePath">The base path for the assembly</param>
         /// <returns>The assembly details as an XML element</returns>
-        internal XElement ToXml()
+        internal XElement ToXml(string basePath)
         {
+            string filename = this.Filename;
+
+            if(filename.StartsWith(basePath, StringComparison.OrdinalIgnoreCase))
+                filename = filename.Substring(basePath.Length + 1);
+
             return new XElement("AssemblyDetails",
-                new XAttribute("Filename", Path.GetFileName(this.Filename)),
+                new XAttribute("Filename", filename),
                 new XAttribute("Name", this.Name),
                 new XAttribute("Version", this.Version.ToString()),
                 String.IsNullOrEmpty(this.Culture) ? null : new XAttribute("Culture", this.Culture),

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/27/2015
+// Updated : 09/20/2015
 // Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,6 +19,7 @@
 // 09/09/2012  EFW  Created the code
 // 01/02/2014  EFW  Moved the frameworks code to Sandcastle.Core
 // 06/21/2015  EFW  Moved to the Reflection namespace and reworked for use with the Reflection Data Manager
+// 09/20/2015  EFW  Added support for .NETCore 5.0 assemblies which are in a different folder format
 //===============================================================================================================
 
 using System;
@@ -29,6 +30,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
+
+using IOPath = System.IO.Path;
 
 namespace Sandcastle.Core.Reflection
 {
@@ -97,7 +100,8 @@ namespace Sandcastle.Core.Reflection
         {
             get
             {
-                return assemblyDetails.Any(a => a.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase));
+                return assemblyDetails.Any(a => a.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) ||
+                    a.Name.Equals("System.Runtime", StringComparison.OrdinalIgnoreCase));
             }
         }
 
@@ -191,7 +195,7 @@ namespace Sandcastle.Core.Reflection
         {
             XElement e = new XElement("Location", new XAttribute("Path", storedPath));
 
-            e.Add(assemblyDetails.OrderBy(a => a.Name).Select(a => a.ToXml()));
+            e.Add(assemblyDetails.OrderBy(a => a.Name).Select(a => a.ToXml(this.Path)));
 
             return e;
         }
@@ -207,6 +211,8 @@ namespace Sandcastle.Core.Reflection
         /// assemblies that no longer exist and add new assemblies.</param>
         public void DetermineAssemblyDetails(bool clearAndRefresh)
         {
+            string version, assemblyName;
+
             if(clearAndRefresh)
                 assemblyDetails.Clear();
 
@@ -234,6 +240,66 @@ namespace Sandcastle.Core.Reflection
                     {
                         // Ignore, not a .NET assembly
                         System.Diagnostics.Debug.WriteLine(ex.FileName);
+                    }
+                }
+
+                // The SDK folders for .NETCore 5.0 are typically in one of two formats so this gets a bit ugly.
+                foreach(string sdkFolder in Directory.EnumerateDirectories(this.Path))
+                {
+                    // RootFolder\AssemblyName\Version\ref\dotnet\
+                    version = Directory.EnumerateDirectories(sdkFolder).Where(
+                        d => Char.IsDigit(d[d.LastIndexOf('\\') + 1])).OrderBy(d => d).LastOrDefault();
+
+                    if(version != null)
+                    {
+                        assemblyName = IOPath.Combine(version, @"ref\dotnet",
+                            sdkFolder.Substring(sdkFolder.LastIndexOf('\\') + 1));
+
+                        if(File.Exists(assemblyName + ".dll"))
+                            assemblyName += ".dll";
+                        else
+                            if(File.Exists(assemblyName + ".winmd"))
+                                assemblyName += ".winmd";
+                            else
+                                assemblyName = null;
+
+                        if(assemblyName != null)
+                        {
+
+                            var details = AssemblyDetails.FromAssemblyName(
+                                AssemblyName.GetAssemblyName(assemblyName));
+
+                            if(!assemblyDescs.Contains(details.Description))
+                                assemblyDetails.Add(details);
+
+                            continue;
+                        }
+                    }
+
+                    // RootFolder\AssemblyName\Version\
+                    version = Directory.EnumerateDirectories(sdkFolder).Where(
+                        d => Char.IsDigit(d[d.LastIndexOf('\\') + 1])).OrderBy(d => d).LastOrDefault();
+
+                    if(version != null)
+                    {
+                        assemblyName = IOPath.Combine(version, sdkFolder.Substring(sdkFolder.LastIndexOf('\\') + 1));
+
+                        if(File.Exists(assemblyName + ".dll"))
+                            assemblyName += ".dll";
+                        else
+                            if(File.Exists(assemblyName + ".winmd"))
+                                assemblyName += ".winmd";
+                            else
+                                assemblyName = null;
+
+                        if(assemblyName != null)
+                        {
+                            var details = AssemblyDetails.FromAssemblyName(
+                                AssemblyName.GetAssemblyName(assemblyName));
+
+                            if(!assemblyDescs.Contains(details.Description))
+                                assemblyDetails.Add(details);
+                        }
                     }
                 }
             }

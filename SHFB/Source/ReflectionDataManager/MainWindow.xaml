@@ -70,7 +70,7 @@
 						Target="{Binding ElementName=txtNotes}" />
 					<TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Margin="3" Name="txtNotes"
 						VerticalScrollBarVisibility="Visible" AcceptsReturn="True" TextWrapping="Wrap" Height="50"
-						Text="{Binding Path=Notes}" />
+						Text="{Binding Path=Notes, UpdateSourceTrigger=PropertyChanged}" />
 					<Label Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Margin="3,0"
 						Content="Contains core framework assemblies"
 						Visibility="{Binding Path=IsCoreFramework, Converter={StaticResource BoolToVisibilityKey}}"/>

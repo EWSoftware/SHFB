@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2015
+// Updated : 09/20/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -143,6 +144,12 @@ namespace ReflectionDataManager
             content = content.Replace("{@IgnoreIfUnresolved}", dataSet.IgnoreIfUnresolvedConfiguration());
             content = content.Replace("{@BindingRedirections}", dataSet.BindingRedirectionConfiguration());
             content = content.Replace("{@IgnoredNamespaces}", dataSet.IgnoredNamespacesConfiguration());
+
+            if(!Path.GetDirectoryName(dataSet.Filename).StartsWith(Path.GetDirectoryName(
+              Assembly.GetExecutingAssembly().Location), StringComparison.OrdinalIgnoreCase))
+                content = content.Replace("{@ComponentLocations}", String.Format(CultureInfo.InvariantCulture,
+                    "<location folder=\"{0}\" />\r\n", WebUtility.HtmlEncode(Path.GetDirectoryName(
+                    dataSet.Filename))));
 
             File.WriteAllText(Path.Combine(workingFolder, "BuildReflectionData.config"), content);
 
