@@ -123,7 +123,7 @@ namespace SandcastleBuilder.WPF.UserControls
         public SiteMapEditorControl()
         {
             // Merge the shared resources
-            this.Resources.MergedDictionaries.Add(SharedResources.SplitButtonStyleResources);
+// TODO: Remove?            this.Resources.MergedDictionaries.Add(SharedResources.SplitButtonStyleResources);
 
             InitializeComponent();
 

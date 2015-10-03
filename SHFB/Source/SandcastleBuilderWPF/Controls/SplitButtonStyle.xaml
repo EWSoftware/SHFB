@@ -1,10 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ctrl="clr-namespace:SandcastleBuilder.WPF.Controls"
-                    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ctrl="clr-namespace:SandcastleBuilder.WPF.Controls"
+	xmlns:vsst="clr-namespace:SandcastleBuilder.WPF.Theme"
+	xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
 
   <!-- Used for Checkmark, Radio button, TreeViewItem, Expander ToggleButton glyphs -->
-  <SolidColorBrush x:Key="GlyphBrush" Color="#444"/>
+	<SolidColorBrush x:Key="GlyphBrush" Color="{Binding Source={x:Static vsst:ThemeColors.Instance}, Path=ComboBoxGlyphColor, Mode=OneWay}"/>
 
   <!-- SelectedBackgroundBrush is used for the Selected item in ListBoxItem, ComboBoxItem-->
   <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD"/>

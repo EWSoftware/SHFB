@@ -205,9 +205,6 @@
   <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Delete.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HtmlEncode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\HtmlEncode.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="BuildProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\BuildProject.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -219,5 +216,8 @@
   </data>
   <data name="SpellCheck" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SpellCheck.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HtmlEncode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\HtmlEncode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -326,25 +326,31 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Resource Include="Resources\LogFile.bmp" />
     <None Include="Images\MoveDown.bmp" />
     <None Include="Images\MoveUp.bmp" />
     <None Include="Images\Properties.bmp" />
     <None Include="Images\Delete.bmp" />
     <None Include="Images\PlugInAdd.png" />
     <None Include="Images\ComponentAdd.png" />
-    <Resource Include="Resources\EntityReferences.bmp" />
-    <Resource Include="Resources\TopicPreview.bmp" />
-    <Resource Include="Resources\HtmlEncode.bmp" />
     <Resource Include="Resources\Component.ico" />
-    <Resource Include="Resources\Docx.bmp" />
-    <Resource Include="Resources\ShowHelp.bmp" />
     <VSCTCompile Include="SandcastleBuilderPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <SubType>Designer</SubType>
     </VSCTCompile>
+    <Resource Include="Resources\AspNetWebsite.png" />
+    <Resource Include="Resources\MSHelpViewer.png" />
+    <Resource Include="Resources\ShowHelp.png" />
+    <Resource Include="Resources\HtmlWebsite.png" />
+    <Resource Include="Resources\LogFile.png" />
+    <Resource Include="Resources\EntityReferences.png" />
+    <Resource Include="Resources\Docx.png" />
+    <Resource Include="Resources\HtmlHelp.png" />
+    <Resource Include="Resources\FAQ.png" />
+    <Resource Include="Resources\ViewHelpFile.png" />
+    <Resource Include="Resources\TopicPreview.png" />
+    <Resource Include="Resources\HtmlEncode.png" />
     <Content Include="VSIXPreview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -767,6 +773,7 @@
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\SandcastleBuilderProjectNode.bmp" />
     <Resource Include="Resources\SiteMap.ico" />
@@ -778,12 +785,6 @@
     <Resource Include="Resources\JScriptFile.ico" />
     <Resource Include="Resources\MamlTopic.ico" />
     <Resource Include="Resources\CodeSnippets.ico" />
-    <Resource Include="Resources\ViewHelpFile.bmp" />
-    <Resource Include="Resources\HtmlHelp.bmp" />
-    <Resource Include="Resources\HtmlWebsite.bmp" />
-    <Resource Include="Resources\AspNetWebsite.bmp" />
-    <Resource Include="Resources\MSHelpViewer.bmp" />
-    <Resource Include="Resources\FAQ.bmp" />
     <None Include="Images\Information.ico" />
     <None Include="Images\Warning.ico" />
     <Content Include="VSIXPackage.jpg">
@@ -809,7 +810,7 @@
       <Name>SandcastleBuilderUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
-      <Project>{D3B06405-3435-4329-9233-2DF1BF5028AA}</Project>
+      <Project>{d3b06405-3435-4329-9233-2df1bf5028aa}</Project>
       <Name>SandcastleBuilderWPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">

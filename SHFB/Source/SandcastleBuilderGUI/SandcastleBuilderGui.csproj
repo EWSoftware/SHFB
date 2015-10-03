@@ -493,6 +493,7 @@
     <Content Include="Hunspellx86.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\HtmlEncode.png" />
     <Content Include="Images\SpellCheck.ico" />
     <Content Include="ItemTemplates\XAML Syntax.xamlcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -533,9 +534,9 @@
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
       <Name>SandcastleBuilderUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
-      <Project>{D3B06405-3435-4329-9233-2DF1BF5028AA}</Project>
-      <Name>SandcastleBuilderWPF</Name>
+    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF_GUI.csproj">
+      <Project>{d3b06405-3435-4329-9233-2df1bf5028aa}</Project>
+      <Name>SandcastleBuilderWPF_GUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
@@ -580,10 +581,8 @@
     <None Include="Images\Underline.bmp" />
     <None Include="Images\Redo.png" />
     <None Include="Images\Undo.png" />
-    <None Include="Images\HtmlEncode.bmp" />
     <None Include="Images\TokenFile.ico" />
     <None Include="Images\ResourceItemFile.ico" />
-    <None Include="Images\SpinningWheel.gif" />
     <Content Include="ItemTemplates\Site Map.sitemap">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -608,7 +607,6 @@
     <None Include="Images\Html.bmp" />
     <None Include="Images\SiteMap.png" />
     <None Include="Images\Xml.bmp" />
-    <None Include="Images\Xsl.bmp" />
     <None Include="Images\DocSource.png" />
     <None Include="Images\DocSourcesFolder.bmp" />
     <None Include="Images\Document.bmp" />

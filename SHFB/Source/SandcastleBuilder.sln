@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "CodeCol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderPlugIns", "SandcastleBuilderPlugIns\SandcastleBuilderPlugIns.csproj", "{49720D17-40AD-4452-B60A-A5DEA226BA06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderWPF", "SandcastleBuilderWPF\SandcastleBuilderWPF.csproj", "{D3B06405-3435-4329-9233-2DF1BF5028AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderWPF_GUI", "SandcastleBuilderWPF\SandcastleBuilderWPF_GUI.csproj", "{D3B06405-3435-4329-9233-2DF1BF5028AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject

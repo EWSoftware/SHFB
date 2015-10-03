@@ -56,7 +56,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpFile" priority="0x0100">
-				<Icon guid="ViewHelpFile.bmpGuid" id="ViewHelpFile.bmpId" />
+				<Icon guid="ViewHelpFile.pngGuid" id="ViewHelpFile.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -68,7 +68,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlHelp" priority="0x0100">
-				<Icon guid="HtmlHelp.bmpGuid" id="HtmlHelp.bmpId" />
+				<Icon guid="HtmlHelp.pngGuid" id="HtmlHelp.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -80,7 +80,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewMshcHelp" priority="0x0100">
-				<Icon guid="MSHelpViewer.bmpGuid" id="MSHelpViewer.bmpId" />
+				<Icon guid="MSHelpViewer.pngGuid" id="MSHelpViewer.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -92,7 +92,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewAspNetWebsite" priority="0x0100">
-				<Icon guid="AspNetWebsite.bmpGuid" id="AspNetWebsite.bmpId" />
+				<Icon guid="AspNetWebsite.pngGuid" id="AspNetWebsite.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -104,7 +104,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlWebsite" priority="0x0101">
-				<Icon guid="HtmlWebsite.bmpGuid" id="HtmlWebsite.bmpId" />
+				<Icon guid="HtmlWebsite.pngGuid" id="HtmlWebsite.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -116,7 +116,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewFaq" priority="0x0100">
-				<Icon guid="FAQ.bmpGuid" id="FAQ.bmpId" />
+				<Icon guid="FAQ.pngGuid" id="FAQ.pngId" />
 				<Strings>
 					<CommandName>cmdidViewFaq</CommandName>
 					<ButtonText>Frequently Asked Questions</ButtonText>
@@ -126,7 +126,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewShfbHelp" priority="0x0100">
-				<Icon guid="ShowHelp.bmpGuid" id="ShowHelp.bmpId" />
+				<Icon guid="ShowHelp.pngGuid" id="ShowHelp.pngId" />
 				<Strings>
 					<CommandName>cmdidViewShfbHelp</CommandName>
 					<ButtonText>Help on Sandcastle Help File Builder</ButtonText>
@@ -147,19 +147,19 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewBuildLog" priority="0x0101">
-				<Icon guid="LogFile.bmpGuid" id="LogFile.bmpId" />
+				<Icon guid="LogFile.pngGuid" id="LogFile.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<CommandName>cmdidViewBuildLog</CommandName>
-					<ButtonText>View Build Log Content</ButtonText>
-					<MenuText>View Build Log Content</MenuText>
-					<ToolTipText>View Build Log Content</ToolTipText>
+					<ButtonText>View Help Build Log Content</ButtonText>
+					<MenuText>View Help Build Log Content</MenuText>
+					<ToolTipText>View Help Build Log Content</ToolTipText>
 				</Strings>
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100">
-				<Icon guid="EntityReferences.bmpGuid" id="EntityReferences.bmpId" />
+				<Icon guid="EntityReferences.pngGuid" id="EntityReferences.pngId" />
 				<Strings>
 					<CommandName>cmdidEntityReferencesWindow</CommandName>
 					<ButtonText>Entity References Window</ButtonText>
@@ -169,7 +169,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101">
-				<Icon guid="TopicPreview.bmpGuid" id="TopicPreview.bmpId" />
+				<Icon guid="TopicPreview.pngGuid" id="TopicPreview.pngId" />
 				<Strings>
 					<CommandName>cmdidTopicPreviewerWindow</CommandName>
 					<ButtonText>Topic Previewer Window</ButtonText>
@@ -179,7 +179,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="HtmlEncode" priority="0x0100">
-				<Icon guid="HtmlEncode.bmpGuid" id="HtmlEncode.bmpId" />
+				<Icon guid="HtmlEncode.pngGuid" id="HtmlEncode.pngId" />
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -192,7 +192,7 @@
 			</Button>
 
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewDocxHelp" priority="0x0100">
-				<Icon guid="Docx.bmpGuid" id="Docx.bmpId" />
+				<Icon guid="Docx.pngGuid" id="Docx.pngId" />
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -231,18 +231,18 @@
 		</Menus>
 
 		<Bitmaps>
-			<Bitmap guid="ViewHelpFile.bmpGuid" href="Resources\ViewHelpFile.bmp" usedList="ViewHelpFile.bmpId" />
-			<Bitmap guid="HtmlHelp.bmpGuid" href="Resources\HtmlHelp.bmp" usedList="HtmlHelp.bmpId" />
-			<Bitmap guid="MSHelpViewer.bmpGuid" href="Resources\MSHelpViewer.bmp" usedList="MSHelpViewer.bmpId" />
-			<Bitmap guid="AspNetWebsite.bmpGuid" href="Resources\AspNetWebsite.bmp" usedList="AspNetWebsite.bmpId" />
-			<Bitmap guid="HtmlWebsite.bmpGuid" href="Resources\HtmlWebsite.bmp" usedList="HtmlWebsite.bmpId" />
-			<Bitmap guid="FAQ.bmpGuid" href="Resources\FAQ.bmp" usedList="FAQ.bmpId" />
-			<Bitmap guid="ShowHelp.bmpGuid" href="Resources\ShowHelp.bmp" usedList="ShowHelp.bmpId" />
-			<Bitmap guid="LogFile.bmpGuid" href="Resources\LogFile.bmp" usedList="LogFile.bmpId" />
-			<Bitmap guid="EntityReferences.bmpGuid" href="Resources\EntityReferences.bmp" usedList="EntityReferences.bmpId" />
-			<Bitmap guid="TopicPreview.bmpGuid" href="Resources\TopicPreview.bmp" usedList="TopicPreview.bmpId" />
-			<Bitmap guid="HtmlEncode.bmpGuid" href="Resources\HtmlEncode.bmp" usedList="HtmlEncode.bmpId" />
-			<Bitmap guid="Docx.bmpGuid" href="Resources\Docx.bmp" usedList="Docx.bmpId" />
+			<Bitmap guid="ViewHelpFile.pngGuid" href="Resources\ViewHelpFile.png" usedList="ViewHelpFile.pngId" />
+			<Bitmap guid="HtmlHelp.pngGuid" href="Resources\HtmlHelp.png" usedList="HtmlHelp.pngId" />
+			<Bitmap guid="MSHelpViewer.pngGuid" href="Resources\MSHelpViewer.png" usedList="MSHelpViewer.pngId" />
+			<Bitmap guid="AspNetWebsite.pngGuid" href="Resources\AspNetWebsite.png" usedList="AspNetWebsite.pngId" />
+			<Bitmap guid="HtmlWebsite.pngGuid" href="Resources\HtmlWebsite.png" usedList="HtmlWebsite.pngId" />
+			<Bitmap guid="FAQ.pngGuid" href="Resources\FAQ.png" usedList="FAQ.pngId" />
+			<Bitmap guid="ShowHelp.pngGuid" href="Resources\ShowHelp.png" usedList="ShowHelp.pngId" />
+			<Bitmap guid="LogFile.pngGuid" href="Resources\LogFile.png" usedList="LogFile.pngId" />
+			<Bitmap guid="EntityReferences.pngGuid" href="Resources\EntityReferences.png" usedList="EntityReferences.pngId" />
+			<Bitmap guid="TopicPreview.pngGuid" href="Resources\TopicPreview.png" usedList="TopicPreview.pngId" />
+			<Bitmap guid="HtmlEncode.pngGuid" href="Resources\HtmlEncode.png" usedList="HtmlEncode.pngId" />
+			<Bitmap guid="Docx.pngGuid" href="Resources\Docx.png" usedList="Docx.pngId" />
 		</Bitmaps>
 	</Commands>
 
@@ -432,52 +432,52 @@
 		</GuidSymbol>
 
 		<!-- Image GUIDs -->
-		<GuidSymbol name="ViewHelpFile.bmpGuid" value="{e8a9c47f-7950-4c47-a837-8cfae2e31671}">
-			<IDSymbol name="ViewHelpFile.bmpId" value="1" />
+		<GuidSymbol name="ViewHelpFile.pngGuid" value="{e8a9c47f-7950-4c47-a837-8cfae2e31671}">
+			<IDSymbol name="ViewHelpFile.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="HtmlHelp.bmpGuid" value="{f3d38ea1-078d-4a76-afae-9ec407394773}">
-			<IDSymbol name="HtmlHelp.bmpId" value="1" />
+		<GuidSymbol name="HtmlHelp.pngGuid" value="{f3d38ea1-078d-4a76-afae-9ec407394773}">
+			<IDSymbol name="HtmlHelp.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="MSHelpViewer.bmpGuid" value="{eb2ed59a-8262-48dc-9f59-bab070bd4a58}">
-			<IDSymbol name="MSHelpViewer.bmpId" value="1" />
+		<GuidSymbol name="MSHelpViewer.pngGuid" value="{eb2ed59a-8262-48dc-9f59-bab070bd4a58}">
+			<IDSymbol name="MSHelpViewer.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="AspNetWebsite.bmpGuid" value="{8e8669cc-c445-4357-a96b-5797bee36ac4}">
-			<IDSymbol name="AspNetWebsite.bmpId" value="1" />
+		<GuidSymbol name="AspNetWebsite.pngGuid" value="{8e8669cc-c445-4357-a96b-5797bee36ac4}">
+			<IDSymbol name="AspNetWebsite.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="HtmlWebsite.bmpGuid" value="{91eda879-4fc3-4406-a430-042466fa275d}">
-			<IDSymbol name="HtmlWebsite.bmpId" value="1" />
+		<GuidSymbol name="HtmlWebsite.pngGuid" value="{91eda879-4fc3-4406-a430-042466fa275d}">
+			<IDSymbol name="HtmlWebsite.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="FAQ.bmpGuid" value="{7a81b577-79eb-46cf-9255-0e07d047cc5e}">
-			<IDSymbol name="FAQ.bmpId" value="1" />
+		<GuidSymbol name="FAQ.pngGuid" value="{7a81b577-79eb-46cf-9255-0e07d047cc5e}">
+			<IDSymbol name="FAQ.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="ShowHelp.bmpGuid" value="{a2bf7c5b-454e-458f-ac41-2edc8caea2ec}">
-			<IDSymbol name="ShowHelp.bmpId" value="1" />
+		<GuidSymbol name="ShowHelp.pngGuid" value="{a2bf7c5b-454e-458f-ac41-2edc8caea2ec}">
+			<IDSymbol name="ShowHelp.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="LogFile.bmpGuid" value="{6c240cdf-4b36-4b47-816e-9167dc6628a4}">
-			<IDSymbol name="LogFile.bmpId" value="1" />
+		<GuidSymbol name="LogFile.pngGuid" value="{6c240cdf-4b36-4b47-816e-9167dc6628a4}">
+			<IDSymbol name="LogFile.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="EntityReferences.bmpGuid" value="{d3e0699b-a960-42b2-8660-81ce4f363991}">
-			<IDSymbol name="EntityReferences.bmpId" value="1" />
+		<GuidSymbol name="EntityReferences.pngGuid" value="{d3e0699b-a960-42b2-8660-81ce4f363991}">
+			<IDSymbol name="EntityReferences.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="TopicPreview.bmpGuid" value="{6c232f18-db48-45c7-8316-bc589a975a1b}">
-			<IDSymbol name="TopicPreview.bmpId" value="1" />
+		<GuidSymbol name="TopicPreview.pngGuid" value="{6c232f18-db48-45c7-8316-bc589a975a1b}">
+			<IDSymbol name="TopicPreview.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="HtmlEncode.bmpGuid" value="{9726fa79-209e-40f3-9274-7829931528b4}">
-			<IDSymbol name="HtmlEncode.bmpId" value="1" />
+		<GuidSymbol name="HtmlEncode.pngGuid" value="{9726fa79-209e-40f3-9274-7829931528b4}">
+			<IDSymbol name="HtmlEncode.pngId" value="1" />
 		</GuidSymbol>
 
-		<GuidSymbol name="Docx.bmpGuid" value="{7859a182-ba6a-49c5-9d1c-7a545467c0b6}">
-			<IDSymbol name="Docx.bmpId" value="1" />
+		<GuidSymbol name="Docx.pngGuid" value="{7859a182-ba6a-49c5-9d1c-7a545467c0b6}">
+			<IDSymbol name="Docx.pngId" value="1" />
 		</GuidSymbol>
 	</Symbols>
 
