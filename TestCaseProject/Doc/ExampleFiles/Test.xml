@@ -3,7 +3,7 @@
 xmlns='http://www.example.com/books' >
 <book>
 <title>Everything that you Need to Know</title>
-<author>I. M. Knowledgable</author>
+<author>I. M. Knowledgeable</author>
 <bk:price>15.50</bk:price>
 </book>
 </books>

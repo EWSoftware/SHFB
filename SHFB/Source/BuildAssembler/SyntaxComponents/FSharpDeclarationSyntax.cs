@@ -750,7 +750,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         // EFW - Added support for interop attributes stored in metadata
-        private static void WriteInteropAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
+        private void WriteInteropAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
         {
             if((bool)reflection.Evaluate(apiComImportTypeExpression))
                 WriteAttribute("T:System.Runtime.InteropServices.ComImportAttribute", true, writer);
@@ -1234,7 +1234,8 @@ namespace Microsoft.Ddue.Tools
 
         // References
 
-        private void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
             switch(reference.LocalName)
             {
@@ -1259,93 +1260,113 @@ namespace Microsoft.Ddue.Tools
                     WriteTypeReference(pointee, writer);
                     writer.WriteString(">");
                     break;
+
                 case "referenceTo":
                     XPathNavigator referee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(referee, writer);
                     break;
+
                 case "type":
                     string id = reference.GetAttribute("api", String.Empty);
                     WriteNormalTypeReference(id, writer);
                     XPathNodeIterator typeModifiers = reference.Select(typeModifiersExpression);
+
                     while(typeModifiers.MoveNext())
-                    {
                         WriteTypeReference(typeModifiers.Current, writer);
-                    }
+
                     break;
                 case "template":
                     string name = reference.GetAttribute("name", String.Empty);
                     writer.WriteString("'");
                     writer.WriteString(name);
                     XPathNodeIterator modifiers = reference.Select(typeModifiersExpression);
+
                     while(modifiers.MoveNext())
-                    {
                         WriteTypeReference(modifiers.Current, writer);
-                    }
+
                     break;
                 case "specialization":
                     writer.WriteString("<");
                     XPathNodeIterator arguments = reference.Select(specializationArgumentsExpression);
+
                     while(arguments.MoveNext())
                     {
                         if(arguments.CurrentPosition > 1)
                             writer.WriteString(", ");
+
                         WriteTypeReference(arguments.Current, writer);
                     }
+
                     writer.WriteString(">");
                     break;
             }
         }
 
-        // DONE
-        private static void WriteNormalTypeReference(string api, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteNormalTypeReference(string api, SyntaxWriter writer)
         {
             switch(api)
             {
                 case "T:System.Void":
                     writer.WriteReferenceLink(api, "unit");
                     break;
+
                 case "T:System.String":
                     writer.WriteReferenceLink(api, "string");
                     break;
+
                 case "T:System.Boolean":
                     writer.WriteReferenceLink(api, "bool");
                     break;
+
                 case "T:System.Byte":
                     writer.WriteReferenceLink(api, "byte");
                     break;
+
                 case "T:System.SByte":
                     writer.WriteReferenceLink(api, "sbyte");
                     break;
+
                 case "T:System.Char":
                     writer.WriteReferenceLink(api, "char");
                     break;
+
                 case "T:System.Int16":
                     writer.WriteReferenceLink(api, "int16");
                     break;
+
                 case "T:System.Int32":
                     writer.WriteReferenceLink(api, "int");
                     break;
+
                 case "T:System.Int64":
                     writer.WriteReferenceLink(api, "int64");
                     break;
+
                 case "T:System.UInt16":
                     writer.WriteReferenceLink(api, "uint16");
                     break;
+
                 case "T:System.UInt32":
                     writer.WriteReferenceLink(api, "uint32");
                     break;
+
                 case "T:System.UInt64":
                     writer.WriteReferenceLink(api, "uint64");
                     break;
+
                 case "T:System.Single":
                     writer.WriteReferenceLink(api, "float32");
                     break;
+
                 case "T:System.Double":
                     writer.WriteReferenceLink(api, "float");
                     break;
+
                 case "T:System.Decimal":
                     writer.WriteReferenceLink(api, "decimal");
                     break;
+
                 default:
                     writer.WriteReferenceLink(api);
                     break;

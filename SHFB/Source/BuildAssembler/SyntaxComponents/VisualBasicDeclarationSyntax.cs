@@ -13,6 +13,7 @@
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
+// 10/08/2015 - EFW - Added support for writing out the value of constant fields
 
 using System;
 using System.Globalization;
@@ -702,32 +703,38 @@ namespace Microsoft.Ddue.Tools
 
             if(!isSerialized)
                 WriteAttribute("T:System.NonSerializedAttribute", writer);
+
             WriteAttributes(reflection, writer);
             WriteVisibility(reflection, writer);
             writer.WriteString(" ");
+
             if(isStatic)
             {
                 if(isLiteral)
-                {
                     writer.WriteKeyword("Const");
-                }
                 else
-                {
                     writer.WriteKeyword("Shared");
-                }
+
                 writer.WriteString(" ");
             }
+
             if(isInitOnly)
             {
                 writer.WriteKeyword("ReadOnly");
                 writer.WriteString(" ");
             }
+
             writer.WriteIdentifier(name);
             writer.WriteString(" ");
             writer.WriteKeyword("As");
             writer.WriteString(" ");
             WriteTypeReference(type, writer);
 
+            if(isStatic && isLiteral)
+            {
+                writer.WriteString(" = ");
+                this.WriteConstantValue(reflection, writer);
+            }
         }
 
         // Visibility
@@ -1402,7 +1409,8 @@ namespace Microsoft.Ddue.Tools
 
         // References
 
-        private void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
             switch(reference.LocalName)
             {
@@ -1425,68 +1433,164 @@ namespace Microsoft.Ddue.Tools
                     WriteTypeReference(pointee, writer);
                     writer.WriteString("*");
                     break;
+
                 case "referenceTo":
                     XPathNavigator referee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(referee, writer);
                     break;
+
                 case "type":
                     string id = reference.GetAttribute("api", String.Empty);
                     WriteNormalTypeReference(id, writer);
                     XPathNodeIterator typeModifiers = reference.Select(typeModifiersExpression);
+
                     while(typeModifiers.MoveNext())
-                    {
                         WriteTypeReference(typeModifiers.Current, writer);
-                    }
+
                     break;
+
                 case "template":
                     string name = reference.GetAttribute("name", String.Empty);
                     writer.WriteString(name);
                     XPathNodeIterator modifiers = reference.Select(typeModifiersExpression);
+
                     while(modifiers.MoveNext())
-                    {
                         WriteTypeReference(modifiers.Current, writer);
-                    }
+
                     break;
+
                 case "specialization":
                     writer.WriteString("(");
                     writer.WriteKeyword("Of");
                     writer.WriteString(" ");
                     XPathNodeIterator arguments = reference.Select(specializationArgumentsExpression);
+
                     while(arguments.MoveNext())
                     {
                         if(arguments.CurrentPosition > 1)
                             writer.WriteString(", ");
+
                         WriteTypeReference(arguments.Current, writer);
                     }
+
                     writer.WriteString(")");
                     break;
             }
         }
 
-        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {
                 case "T:System.Int16":
                     writer.WriteReferenceLink(reference, "Short");
                     break;
+
                 case "T:System.Int32":
                     writer.WriteReferenceLink(reference, "Integer");
                     break;
+
                 case "T:System.Int64":
                     writer.WriteReferenceLink(reference, "Long");
                     break;
+
                 case "T:System.UInt16":
                     writer.WriteReferenceLink(reference, "UShort");
                     break;
+
                 case "T:System.UInt32":
                     writer.WriteReferenceLink(reference, "UInteger");
                     break;
+
                 case "T:System.UInt64":
                     writer.WriteReferenceLink(reference, "ULong");
                     break;
+
                 default:
                     writer.WriteReferenceLink(reference);
+                    break;
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void WriteConstantValue(XPathNavigator parent, SyntaxWriter writer)
+        {
+            XPathNavigator type = parent.SelectSingleNode(returnsTypeExpression);
+            XPathNavigator value = parent.SelectSingleNode(returnsValueExpression);
+
+            switch(value.LocalName)
+            {
+                case "nullValue":
+                    writer.WriteKeyword("Nothing");
+                    break;
+
+                case "enumValue":
+                    XPathNodeIterator fields = value.SelectChildren(XPathNodeType.Element);
+
+                    while(fields.MoveNext())
+                    {
+                        string name = fields.Current.GetAttribute("name", String.Empty);
+
+                        if(fields.CurrentPosition > 1)
+                        {
+                            writer.WriteString(" ");
+                            writer.WriteKeyword("Or");
+                            writer.WriteString(" ");
+                        }
+
+                        this.WriteTypeReference(type, writer);
+                        writer.WriteString(".");
+                        writer.WriteString(name);
+                    }
+                    break;
+
+                case "value":
+                    string text = value.Value;
+                    string typeId = type.GetAttribute("api", String.Empty);
+
+                    switch(typeId)
+                    {
+                        case "T:System.String":
+                            writer.WriteString("\"");
+                            writer.WriteString(text);
+                            writer.WriteString("\"");
+                            break;
+
+                        case "T:System.Boolean":
+                            writer.WriteKeyword(Convert.ToBoolean(text, CultureInfo.InvariantCulture) ?
+                                "True" : "False");
+                            break;
+
+                        case "T:System.Char":
+                            writer.WriteString("\"");
+                            writer.WriteString(text);
+                            writer.WriteString("\"C");
+                            break;
+
+                        // Decimal constants get converted to static read-only fields so no need to handle them here
+                        case "T:System.Byte":
+                        case "T:System.Double":
+                        case "T:System.SByte":
+                        case "T:System.Int16":
+                        case "T:System.Int64":
+                        case "T:System.Int32":
+                        case "T:System.UInt16":
+                        case "T:System.UInt32":
+                        case "T:System.UInt64":
+                            writer.WriteString(text);
+                            break;
+
+                        case "T:System.Single":
+                            writer.WriteString(text);
+                            writer.WriteString("F");
+                            break;
+
+                        default:
+                            // If not a recognized type, just write out the value so that something shows
+                            writer.WriteString(text);
+                            break;
+                    }
                     break;
             }
         }

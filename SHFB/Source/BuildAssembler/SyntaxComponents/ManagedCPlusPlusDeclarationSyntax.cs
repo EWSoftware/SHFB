@@ -12,6 +12,7 @@
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
+// 10/08/2015 - EFW - Added support for writing out the value of constant fields
 
 using System;
 using System.Globalization;
@@ -668,15 +669,13 @@ namespace Microsoft.Ddue.Tools
             if(isStatic)
             {
                 if(isLiteral)
-                {
                     writer.WriteKeyword("literal");
-                }
                 else
-                {
                     writer.WriteKeyword("static");
-                }
+
                 writer.WriteString(" ");
             }
+
             if(isInitOnly)
             {
                 writer.WriteKeyword("initonly");
@@ -710,6 +709,12 @@ namespace Microsoft.Ddue.Tools
                 WriteReturnValue(reflection, writer);
                 writer.WriteString(" ");
                 writer.WriteIdentifier(name);
+
+                if(isStatic && isLiteral)
+                {
+                    writer.WriteString(" = ");
+                    this.WriteConstantValue(reflection, writer);
+                }
             }
         }
 
@@ -1066,7 +1071,8 @@ namespace Microsoft.Ddue.Tools
 
         // Type references
 
-        private void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
             WriteTypeReference(reference, true, writer);
         }
@@ -1160,49 +1166,63 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {
                 case "T:System.Void":
                     writer.WriteReferenceLink(reference, "void");
                     break;
+
                 case "T:System.Boolean":
                     writer.WriteReferenceLink(reference, "bool");
                     break;
+
                 case "T:System.Byte":
                     writer.WriteReferenceLink(reference, "unsigned char");
                     break;
+
                 case "T:System.SByte":
                     writer.WriteReferenceLink(reference, "signed char");
                     break;
+
                 case "T:System.Char":
                     writer.WriteReferenceLink(reference, "wchar_t");
                     break;
+
                 case "T:System.Int16":
                     writer.WriteReferenceLink(reference, "short");
                     break;
+
                 case "T:System.Int32":
                     writer.WriteReferenceLink(reference, "int");
                     break;
+
                 case "T:System.Int64":
                     writer.WriteReferenceLink(reference, "long long");
                     break;
+
                 case "T:System.UInt16":
                     writer.WriteReferenceLink(reference, "unsigned short");
                     break;
+
                 case "T:System.UInt32":
                     writer.WriteReferenceLink(reference, "unsigned int");
                     break;
+
                 case "T:System.UInt64":
                     writer.WriteReferenceLink(reference, "unsigned long long");
                     break;
+
                 case "T:System.Single":
                     writer.WriteReferenceLink(reference, "float");
                     break;
+
                 case "T:System.Double":
                     writer.WriteReferenceLink(reference, "double");
                     break;
+
                 default:
                     writer.WriteReferenceLink(reference);
                     break;
@@ -1291,7 +1311,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         // EFW - Added support for interop attributes stored in metadata
-        private static void WriteInteropAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
+        private void WriteInteropAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
         {
             if((bool)reflection.Evaluate(apiComImportTypeExpression))
                 WriteAttribute("T:System.Runtime.InteropServices.ComImportAttribute", true, writer);

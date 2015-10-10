@@ -837,7 +837,8 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
             switch(reference.LocalName)
             {
@@ -854,71 +855,86 @@ namespace Microsoft.Ddue.Tools
 
                     writer.WriteString(")");
                     break;
+
                 case "pointerTo":
                     XPathNavigator pointee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(pointee, writer);
                     writer.WriteString("*");
                     break;
+
                 case "referenceTo":
                     XPathNavigator referee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(referee, writer);
                     break;
+
                 case "type":
                     string id = reference.GetAttribute("api", String.Empty);
                     WriteNormalTypeReference(id, writer);
                     XPathNodeIterator typeModifiers = reference.Select(typeModifiersExpression);
+
                     while(typeModifiers.MoveNext())
-                    {
                         WriteTypeReference(typeModifiers.Current, writer);
-                    }
+
                     break;
+
                 case "template":
                     string name = reference.GetAttribute("name", String.Empty);
                     writer.WriteString(name);
                     XPathNodeIterator modifiers = reference.Select(typeModifiersExpression);
+
                     while(modifiers.MoveNext())
-                    {
                         WriteTypeReference(modifiers.Current, writer);
-                    }
+
                     break;
+
                 case "specialization":
                     writer.WriteString("(");
                     writer.WriteKeyword("Of");
                     writer.WriteString(" ");
                     XPathNodeIterator arguments = reference.Select(specializationArgumentsExpression);
+
                     while(arguments.MoveNext())
                     {
                         if(arguments.CurrentPosition > 1)
                             writer.WriteString(", ");
+
                         WriteTypeReference(arguments.Current, writer);
                     }
+
                     writer.WriteString(")");
                     break;
             }
         }
 
-        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {
                 case "T:System.Int16":
                     writer.WriteReferenceLink(reference, "Short");
                     break;
+
                 case "T:System.Int32":
                     writer.WriteReferenceLink(reference, "Integer");
                     break;
+
                 case "T:System.Int64":
                     writer.WriteReferenceLink(reference, "Long");
                     break;
+
                 case "T:System.UInt16":
                     writer.WriteReferenceLink(reference, "UShort");
                     break;
+
                 case "T:System.UInt32":
                     writer.WriteReferenceLink(reference, "UInteger");
                     break;
+
                 case "T:System.UInt64":
                     writer.WriteReferenceLink(reference, "ULong");
                     break;
+
                 default:
                     writer.WriteReferenceLink(reference);
                     break;

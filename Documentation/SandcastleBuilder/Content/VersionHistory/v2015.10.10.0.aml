@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5a0130e2-a2ab-493c-a720-be43589e8b1c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2015.10.9.0." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<para>The base <codeEntityReference qualifyHint="false">T:Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxGeneratorTemplate</codeEntityReference>
+class was modified to allow syntax generators to write out constant field values in the syntax section.  The
+<codeInline>WriteTypeReference</codeInline> and <codeInline>WriteNormalTypeReference</codeInline> methods were
+added as virtual methods and a new <codeInline>WriteConstantValue</codeInline> method was added.  If you have
+created your own syntax generator classes, you may need to modify the two above noted methods in your own classes
+by either removing them if they match the base functionality or changing them from private methods to protected
+override methods.  You can also add support to the <codeInline>WriteFieldSyntax</codeInline> method to output the
+value for constant fields.  Regardless of whether or not you used the above methods, you will need to rebuild
+your syntax generators using the latest Sandcastle Help File Builder assemblies.</para>
+
+			</content>
+		</section>
+
+		<section address="HelpFileBuilder">
+			<title>Help File Builder </title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Merged changes from RussKie that prevent flickering when resizing the standalone GUI's main
+window.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for Universal Windows application projects as documentation sources.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a NuGet package for the .NET for Universal Windows framework data.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added Visual Studio theme support to all help file builder package tool windows and editors and
+updated the icons so that they look better when used with the dark theme.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Visual Studio package to install for all users rather than just the current user.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated the BuildAssembler and MRefBuilder configuration files with explicit UTF-8 encoding to
+fix issues with component paths that contain certain foreign language characters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the C#, VB.NET, and C++ syntax generators to output the value of constant fields.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Merged changes from Rob Siklos to add support for the <codeInline>virtual</codeInline> and
+<codeInline>abstract</codeInline> language keywords on the <codeInline>see</codeInline> XML comments element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Based on a suggestion from Stoffelche, added support for the <codeInline>autoUpgrade</codeInline>
+and <codeInline>qualifyHint</codeInline> attributes on the <codeInline>see</codeInline> and
+<codeInline>seealso</codeInline> XML comments elements.  This matches the behavior of the
+<codeInline>codeEntityReference</codeInline> MAML element with regard to qualifying member names and going to the
+overloads page.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

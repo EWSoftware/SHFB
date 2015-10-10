@@ -2,21 +2,21 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 10/06/2012
+// Updated : 10/08/2015
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.1  04/23/2011  EFW  Created the code
-// 1.1.0.0  04/14/2012  EFW  Converted to use WPF
-// 1.1.0.1  09/22/2012  EFW  Updated for use with the VS 2012 VSIX installer
-// 1.1.0.1  10/06/2012  EFW  Merged SHFB installer pages into the main project
+// 04/23/2011  EFW  Created the code
+// 04/14/2012  EFW  Converted to use WPF
+// 09/22/2012  EFW  Updated for use with the VS 2012 VSIX installer
+// 10/06/2012  EFW  Merged SHFB installer pages into the main project
 //===============================================================================================================
 
 using System;
@@ -141,8 +141,7 @@ namespace Sandcastle.Installer.InstallerPages
         }
 
         /// <summary>
-        /// This is overridden to figure out if the Sandcastle Help File
-        /// Builder is installed.
+        /// This is overridden to figure out if the Sandcastle Help File Builder is installed
         /// </summary>
         public override void ShowPage()
         {
@@ -163,8 +162,8 @@ namespace Sandcastle.Installer.InstallerPages
 
                 // Get the path to the VSIX installer.  It will be in one of the Visual Studio folders and we
                 // need to find latest one as it will install the package in the latest version as well as any
-                // earlier versions (true so far for VS2012 anyway).  The configuration elements should be in
-                // version order from earliest to most recent.
+                // earlier versions (true so far through VS2015 anyway).  The configuration elements should be
+                // in version order from earliest to most recent.
                 foreach(var kvp in vsixInstallerLocations)
                 {
                     installerPath = Path.GetFullPath(Path.Combine(
@@ -190,6 +189,7 @@ namespace Sandcastle.Installer.InstallerPages
                     return;
                 }
 
+                // Version 2015.7.25.0 and earlier were installed for the current user only
                 basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
                 foreach(var kvp in vsixInstallerLocations)
@@ -198,9 +198,31 @@ namespace Sandcastle.Installer.InstallerPages
 
                     if(Directory.Exists(packagePath))
                     {
-                        // This is used to suppress prompting if the package appears to be installed and the user
-                        // clicks Next to continue.  VS2012's VSIX installer puts the package in a randomly named
-                        // folder so we'll have to search for it.
+                        // This is used to suppress prompting if the package appears to be installed and the
+                        // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
+                        // a randomly named folder so we'll have to search for it.
+                        packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                            SearchOption.AllDirectories).FirstOrDefault();
+
+                        if(packagePath != null)
+                        {
+                            packagePaths.Add(Path.GetDirectoryName(packagePath));
+                            packageInstalled = true;
+                        }
+                    }
+                }
+
+                // Versions after 2015.7.25.0 are installed for all users
+                basePath = Environment.GetFolderPath(Environment.Is64BitProcess ?
+                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
+
+                foreach(var kvp in vsixInstallerLocations)
+                {
+                    packagePath = Path.Combine(basePath, "Microsoft Visual Studio " + kvp.Key,
+                        @"Common7\IDE\Extensions");
+
+                    if(Directory.Exists(packagePath))
+                    {
                         packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
                             SearchOption.AllDirectories).FirstOrDefault();
 

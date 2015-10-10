@@ -11,22 +11,32 @@ over the life of the project.
 			<title>Version History</title>
 			<content>
 				<para>Select a version below to see a description of its changes.</para>
+
 				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="380415aa-8aca-4abf-a1ae-bf8566c229f1" />
+						</para>
+					</listItem>
+
 					<listItem>
 						<para>
 							<link xlink:href="bd1918e3-1af8-49e7-b26b-bfedb0574a19" />
 						</para>
 					</listItem>
+
 					<listItem>
 						<para>
 							<link xlink:href="2be51e6c-c457-44ee-9031-b0b0c1d03e6b" />
 						</para>
 					</listItem>
+
 					<listItem>
 						<para>
 							<link xlink:href="a5108a60-fdf8-412a-bd74-c182cd2832ec" />
 						</para>
 					</listItem>
+
 					<listItem>
 						<para>
 							<link xlink:href="40c5a184-aae2-4296-bc55-949e65e9909a" />

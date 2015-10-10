@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeSnippetGrouping\TestSnippets.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DocumentationInheritance\AttachedEventsAndProperties.cs" />
     <Compile Include="DocumentationInheritance\CustomException.cs" />
     <Compile Include="DocumentationInheritance\GenericClass.cs" />

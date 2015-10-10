@@ -15,7 +15,7 @@ namespace TestDoc
         /// <summary>Type value</summary>
         public Type TypeValue { get; set; }
 
-        /// <summary>Enumeration valuie</summary>
+        /// <summary>Enumeration value</summary>
         public KnownColor EnumValue { get; set; }
 
         /// <summary>String value</summary>

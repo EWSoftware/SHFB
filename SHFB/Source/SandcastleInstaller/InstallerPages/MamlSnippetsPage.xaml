@@ -14,14 +14,21 @@
     </Grid.RowDefinitions>
 
     <FlowDocumentScrollViewer Grid.Row="0">
-      <FlowDocument FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+      <FlowDocument FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left" Background="White">
         <Paragraph><Bold FontSize="16">MAML Snippets for Visual Studio</Bold></Paragraph>
 
         <Paragraph>The Sandcastle MAML snippet files can be integrated into the Visual Studio local snippet cache
 so that you can have a list of common block and inline elements available for insertion as snippets while editing
 MAML topic files within Visual Studio.  Select the versions of Visual Studio in which to install the snippets and
-click the <Bold>Install Snippets</Bold> button.  If you choose to skip this, you can run this application again
-to install the snippets at a later date.  Click the <Bold>Next</Bold> button to continue with the next step.</Paragraph>
+click the <Bold>Install Snippets</Bold> button.</Paragraph>
+				
+				<Paragraph>The snippet cache is located in your My Documents folder.  If running this installer under
+a different administrative account, the options below may be disabled.  Use the <Bold>Change Folder</Bold>
+button below to manually select your My Documents folder.</Paragraph>
+
+				<Paragraph>If you choose to skip this, you can run this application again to install the snippets at a
+later date.  Click the <Bold>Next</Bold> button to continue with the next step.
+				</Paragraph>
 
         <Section Name="secResults" />
 
@@ -34,6 +41,8 @@ to install the snippets at a later date.  Click the <Bold>Next</Bold> button to 
       <Button Name="btnInstallSnippets" Content="_Install Snippets" Padding="10,3" Margin="10"
         ToolTip="Install the Sandcastle MAML snippets for use with Visual Studio"
         Click="btnInstallSnippets_Click" />
-    </StackPanel>
+			<Button Name="btnChangeFolder" Content="_Change Folder" Padding="10,3" Margin="10"
+        ToolTip="Change the location of the My Documents folder" Click="btnChangeFolder_Click" />
+		</StackPanel>
   </Grid>
 </sci:BasePage>

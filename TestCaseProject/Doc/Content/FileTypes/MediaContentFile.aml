@@ -31,7 +31,7 @@ the location of the image file.  A relative or absolute path can be used as long
 as it can be located at build time.  If you would like to display alternate
 text when the mouse hovers over the image, nest an <codeInline>altText</codeInline>
 element within the image element as shown in the first item in the example
-above.  The inner text for it defines the alterntate text to display.</para>
+above.  The inner text for it defines the alternate text to display.</para>
         <alert class="note">
           <para>The unique ID is not case-sensitive.  The example above uses GUID
 values for the ID but you are free to use any unique value that you like.</para>

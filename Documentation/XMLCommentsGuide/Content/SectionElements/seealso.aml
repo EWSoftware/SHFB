@@ -21,11 +21,11 @@ used based on the need.</para>
 					<title>Code Reference</title>
 					<content>
 <code language="xml" title=" ">
-&lt;seealso cref="member" /&gt;
+&lt;seealso cref="member" [qualifyHint="true"] [autoUpgrade="true"] /&gt;
 	
 or
 
-&lt;seealso cref="member"&gt;inner text&lt;/seealso&gt;
+&lt;seealso cref="member" [autoUpgrade="true"]&gt;inner text&lt;/seealso&gt;
 </code>
 
 						<para>The code reference form uses a <codeInline>cref</codeInline> attribute to specify the
@@ -36,7 +36,10 @@ the reference is within the containing class or if the appropriate <codeInline>u
 
 						<para>If the self-closing form is used, the inner text of the link will be set to the member name
 without a namespace or type qualifier.  You can specify inner text on the element to use an alternate value for
-the link text or to add a qualifying namespace or type to the member name.</para>
+the link text or to add a qualifying namespace or type to the member name.  By adding the
+<codeInline>qualifyHint</codeInline> attribute and setting it to true, you can indicate that the inner text
+should be qualified.  Type names are fully qualified with their namespace.  Class members are qualified with
+their class name.</para>
 
 						<para>When specifying type, field, property, event, and non-overloaded method names, the name alone
 will suffice as the <codeInline>cref</codeInline> attribute value.  However, when referencing overloaded methods,
@@ -46,8 +49,13 @@ used (i.e. <codeInline>int</codeInline> or <codeInline>string</codeInline> for C
 or <codeInline>String</codeInline> for VB).  They can also be specified using the .NET Framework type names such
 as <codeInline>Int32</codeInline>, <codeInline>System.Int32</codeInline>, etc.  If an overload takes no
 parameters, just specify an empty set of parentheses.  If you want to link to the auto-generated member overloads
-help topic, you can specify the fully qualified member name with an "<codeInline>O:</codeInline>" prefix.  See
-the <link xlink:href="#Examples">Method Overload Examples</link> below for details.</para>
+help topic, you can specify the <codeInline>autoUpgrade</codeInline> attribute.  If set to false or omitted, the
+link will take you directly to the referenced member.  If set to true and the method has overloads, the link will
+take you to the method overloads page instead.  If the method has no overloads, it works the same as	if set to
+false and it takes you to the method page.  This is equivalent to the same attribute on the MAML
+<codeInline>codeEntityReference</codeInline> element.  Another alternative is to use the fully qualified member
+name with an "<codeInline>O:</codeInline>" prefix.  See the <link xlink:href="#Examples">Method Overload Examples</link>
+below for details.</para>
 					</content>
 				</section>
 

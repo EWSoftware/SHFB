@@ -1046,12 +1046,25 @@
 		<xsl:choose>
 			<xsl:when test="starts-with(@cref,'O:')">
 				<referenceLink target="{concat('Overload:',substring(@cref,3))}" display-target="format"
-						show-parameters="false">
+					show-parameters="false">
+					<xsl:if test="@autoUpgrade">
+						<xsl:attribute name="prefer-overload">
+							<xsl:value-of select="@autoUpgrade"/>
+						</xsl:attribute>
+					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="normalize-space(.)">
 							<xsl:value-of select="." />
 						</xsl:when>
 						<xsl:otherwise>
+							<xsl:if test="@qualifyHint">
+								<xsl:attribute name="show-container">
+									<xsl:value-of select="@qualifyHint"/>
+								</xsl:attribute>
+								<xsl:attribute name="show-parameters">
+									<xsl:value-of select="@qualifyHint"/>
+								</xsl:attribute>
+							</xsl:if>
 							<include item="boilerplate_seeAlsoOverloadLink">
 								<parameter>{0}</parameter>
 							</include>
@@ -1061,11 +1074,30 @@
 			</xsl:when>
 			<xsl:when test="normalize-space(.)">
 				<referenceLink target="{@cref}">
+					<xsl:if test="@autoUpgrade">
+						<xsl:attribute name="prefer-overload">
+							<xsl:value-of select="@autoUpgrade"/>
+						</xsl:attribute>
+					</xsl:if>
 					<xsl:apply-templates/>
 				</referenceLink>
 			</xsl:when>
 			<xsl:otherwise>
-				<referenceLink target="{@cref}" />
+				<referenceLink target="{@cref}">
+					<xsl:if test="@autoUpgrade">
+						<xsl:attribute name="prefer-overload">
+							<xsl:value-of select="@autoUpgrade"/>
+						</xsl:attribute>
+					</xsl:if>
+					<xsl:if test="@qualifyHint">
+						<xsl:attribute name="show-container">
+							<xsl:value-of select="@qualifyHint"/>
+						</xsl:attribute>
+						<xsl:attribute name="show-parameters">
+							<xsl:value-of select="@qualifyHint"/>
+						</xsl:attribute>
+					</xsl:if>
+				</referenceLink>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -1135,7 +1167,7 @@
 			<xsl:choose>
 				<xsl:when test="starts-with(@cref,'O:')">
 					<referenceLink target="{concat('Overload:',substring(@cref,3))}" display-target="format"
-							show-parameters="false">
+						show-parameters="false">
 						<xsl:choose>
 							<xsl:when test="normalize-space(.)">
 								<xsl:apply-templates />
@@ -1150,11 +1182,22 @@
 				</xsl:when>
 				<xsl:when test="normalize-space(.)">
 					<referenceLink target="{@cref}" qualified="true">
+						<xsl:if test="@autoUpgrade">
+							<xsl:attribute name="prefer-overload">
+								<xsl:value-of select="@autoUpgrade"/>
+							</xsl:attribute>
+						</xsl:if>
 						<xsl:apply-templates />
 					</referenceLink>
 				</xsl:when>
 				<xsl:otherwise>
-					<referenceLink target="{@cref}" qualified="true"/>
+					<referenceLink target="{@cref}" qualified="true">
+						<xsl:if test="@autoUpgrade">
+							<xsl:attribute name="prefer-overload">
+								<xsl:value-of select="@autoUpgrade"/>
+							</xsl:attribute>
+						</xsl:if>
+					</referenceLink>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>

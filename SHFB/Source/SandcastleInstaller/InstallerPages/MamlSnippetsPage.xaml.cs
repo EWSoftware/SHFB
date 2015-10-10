@@ -2,19 +2,19 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlSnippetsPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/16/2013
+// Updated : 10/08/2015
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML snippet files for use with Visual
 // Studio.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.1.0.2  11/25/2012  EFW  Created the code
+// 11/25/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -36,7 +36,9 @@ namespace Sandcastle.Installer.InstallerPages
         #region Private data members
         //=====================================================================
 
-        private string sandcastleSnippetsFolder;
+        private XElement configuration;
+        private string sandcastleSnippetsFolder, baseSnippetsFolder;
+
         #endregion
 
         #region Properties
@@ -58,6 +60,8 @@ namespace Sandcastle.Installer.InstallerPages
         public MamlSnippetsPage()
         {
             InitializeComponent();
+
+            baseSnippetsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         }
         #endregion
 
@@ -141,15 +145,25 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
+            this.configuration = configuration;
+
+            base.Initialize(configuration);
+        }
+
+        /// <inheritdoc />
+        public override void ShowPage()
+        {
             CheckBox cb;
             string versionName, location;
+
+            pnlVersions.Children.Clear();
+            secResults.Blocks.Clear();
 
             // Load the possible versions and see if we can safely install them
             foreach(var vs in configuration.Elements("visualStudio"))
             {
                 versionName = vs.Attribute("version").Value;
-                location = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    vs.Attribute("location").Value);
+                location = Path.Combine(baseSnippetsFolder, vs.Attribute("location").Value);
 
                 cb = new CheckBox { Margin = new Thickness(20, 5, 0, 0) };
                 cb.Content = versionName;
@@ -161,14 +175,9 @@ namespace Sandcastle.Installer.InstallerPages
             }
 
             if(pnlVersions.Children.Count == 0)
-                throw new InvalidOperationException("At least one visualStudio element must be defined");
+                throw new InvalidOperationException("At least one visualStudio element must be defined in the " +
+                    "configuration");
 
-            base.Initialize(configuration);
-        }
-
-        /// <inheritdoc />
-        public override void ShowPage()
-        {
             // SHFBROOT will exist as a system environment variable if it is installed correctly
             sandcastleSnippetsFolder = Environment.GetEnvironmentVariable("SHFBROOT", EnvironmentVariableTarget.Machine);
 
@@ -230,6 +239,27 @@ namespace Sandcastle.Installer.InstallerPages
 
             MessageBox.Show("The Sandcastle MAML snippets have been installed successfully.", this.PageTitle,
                 MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        /// <summary>
+        /// Change the location of the base folder for the snippet caches
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void btnChangeFolder_Click(object sender, RoutedEventArgs e)
+        {
+            using(System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                dlg.Description = "Select your My Documents folder";
+                dlg.SelectedPath = baseSnippetsFolder;
+
+                // If selected, set the new folder
+                if(dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    baseSnippetsFolder = dlg.SelectedPath;
+                    this.ShowPage();
+                }
+            }
         }
         #endregion
     }

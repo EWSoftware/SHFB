@@ -99,6 +99,7 @@
       <NamespaceSummaryItem name="Sandcastle.Core.Reflection" isDocumented="True">This namespace contains types used to manage reflection data sets.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="Sandcastle.Core.UI" isDocumented="True">This namespace contains user interface related types.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder (Group)" isGroup="True" isDocumented="True">This namespace contains the help file builder related namespaces.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Theme" isDocumented="True">This namespace contains resources and classes used to theme the WPF user controls.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
@@ -355,6 +356,7 @@
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.1.12.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.5.2.0.aml" />
     <None Include="Content\VersionHistory\v2015.7.25.0.aml" />
+    <None Include="Content\VersionHistory\v2015.10.10.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

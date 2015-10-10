@@ -297,13 +297,8 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("\t");
         }
 
-        /// <summary>
-        /// Write out a normal type reference
-        /// </summary>
-        /// <param name="api">The API name</param>
-        /// <param name="writer">The syntax writer to which it is written</param>
-        private static void WriteNormalTypeReference(string api,
-          SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteNormalTypeReference(string api, SyntaxWriter writer)
         {
             switch(api)
             {
@@ -362,6 +357,7 @@ namespace Microsoft.Ddue.Tools
                 default:
                 {
                     string text = api.Substring(2);
+
                     if(text.StartsWith("System.", StringComparison.Ordinal))
                     {
                         int num = text.LastIndexOf('.');
@@ -462,13 +458,8 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("();");
         }
 
-        /// <summary>
-        /// Write out the type reference
-        /// </summary>
-        /// <param name="reference">The reference information</param>
-        /// <param name="writer">The syntax writer to which it is written</param>
-        private void WriteTypeReference(XPathNavigator reference,
-          SyntaxWriter writer)
+        /// <inheritdoc />
+        protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
             switch(reference.LocalName)
             {

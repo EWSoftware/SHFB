@@ -43,7 +43,7 @@
         <HelpKeyword index="K" term="namespace comments, external comments files" />
       </HelpKeywords>
     </Topic>
-    <Topic id="41B2D835-DB0D-4828-8D9E-0E423EDA4590" visible="True" isSelected="true" title="Using NamespaceDoc and NamespaceGroupDoc Classes">
+    <Topic id="41B2D835-DB0D-4828-8D9E-0E423EDA4590" visible="True" title="Using NamespaceDoc and NamespaceGroupDoc Classes">
       <HelpKeywords>
         <HelpKeyword index="K" term="namespace comments, NamespaceDoc class" />
         <HelpKeyword index="K" term="namespace comments, NamespaceGroupDoc class" />
@@ -256,6 +256,11 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
+    <Topic id="380415aa-8aca-4abf-a1ae-bf8566c229f1" visible="True" isSelected="true" title="Version 2015.10.10.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="version, 2015.10.10.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="bd1918e3-1af8-49e7-b26b-bfedb0574a19" visible="True" title="Version 2014.11.22.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2014.11.22.0" />

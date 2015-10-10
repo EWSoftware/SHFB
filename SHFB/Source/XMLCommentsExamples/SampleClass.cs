@@ -2,20 +2,20 @@
 // System  : Sandcastle Tools - XML Comments Example
 // File    : SampleClass.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/16/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 10/06/2015
+// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This class is used to demonstrate the various XML comments elements.  It serves no useful purpose.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  12/05/2012  EFW  Created the code
+// 12/05/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -647,13 +647,16 @@ namespace XMLCommentsExamples
         /// <summary>
         /// This event is raised when something interesting happens.
         /// </summary>
-        /// <remarks>The <see cref="OnSomethingHappened"/> method is used to
+        /// <remarks><para>The <see cref="OnSomethingHappened"/> method is used to
         /// raise this event.  This event uses the general <see cref="EventHandler"/>
         /// delegate that passes <see cref="EventArgs.Empty">EventArgs.Empty</see>
-        /// to the handlers.
+        /// to the handlers.</para>
+        /// 
+        /// <para>Alternate <c>see</c> syntax: <see cref="EventArgs.Empty" qualifyHint="true"/></para>
         /// </remarks>
         /// <seealso cref="EventArgs"/>
         /// <seealso cref="EventArgs.Empty"/>
+        /// <seealso cref="EventArgs.Empty" qualifyHint="true"/>
         /// <seealso cref="EventHandler"/>
         /// <seealso cref="OnSomethingHappened">XMLCommentsExamples.SampleClass.OnSomethingHappened</seealso>
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
@@ -681,10 +684,11 @@ namespace XMLCommentsExamples
         /// <summary>
         /// This version of the method takes no parameters.
         /// </summary>
-        /// <remarks>To see all overloads, refer to the
-        /// <see cref="O:XMLCommentsExamples.SampleClass.DoSomething">DoSomething
-        /// Overloads</see> topic.
+        /// <remarks><para>To see all overloads, refer to the
+        /// <see cref="DoSomething()" autoUpgrade="true" /> topic.</para>
+        /// 
         /// <para>Other overloads:</para>
+        /// 
         /// <list type="bullet">
         ///   <item>
         ///     <description><see cref="DoSomething(int)"/></description>
@@ -696,6 +700,10 @@ namespace XMLCommentsExamples
         ///     <description><see cref="DoSomething(int, string)"/></description>
         ///   </item>
         /// </list>
+        /// 
+        /// <para>Alternate syntax to link to the overloads topic:
+        /// <see cref="O:XMLCommentsExamples.SampleClass.DoSomething">DoSomething
+        /// Overloads</see></para>
         /// </remarks>
         /// <overloads>This method has four overloads</overloads>
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
@@ -708,9 +716,10 @@ namespace XMLCommentsExamples
         /// This version of the method takes an integer parameter.
         /// </summary>
         /// <param name="number">A number to use</param>
-        /// <seealso cref="DoSomething()"/>
-        /// <seealso cref="DoSomething(string)"/>
-        /// <seealso cref="DoSomething(int, string)"/>
+        /// <seealso cref="DoSomething()" autoUpgrade="true" />
+        /// <seealso cref="DoSomething()" />
+        /// <seealso cref="DoSomething(string)" />
+        /// <seealso cref="DoSomething(int, string)" />
         /// <conceptualLink target="983fed56-321c-4daf-af16-e3169b28ffcd" />
         /// <conceptualLink target="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
         public void DoSomething(int number)
