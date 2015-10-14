@@ -6,46 +6,46 @@
 	
 	<!-- Topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
-	<item id="header"></item>
+	<item id="header"><span class="introStyle"></span></item>
 
 	<!-- Alert titles -->
-	<item id="alert_title_tip">Tip</item>
-	<item id="alert_title_caution">Caution</item>
-	<item id="alert_title_security">Security Note</item>
-	<item id="alert_title_note">Note</item>
-	<item id="alert_title_important">Important</item>
-	<item id="alert_title_visualBasic">Visual Basic Note</item>
-	<item id="alert_title_visualC#">C# Note</item>
-	<item id="alert_title_visualC++">C++ Note</item>
-	<item id="alert_title_visualJ#">J# Note</item>
+	<item id="alert_title_tip">ヒント</item>
+	<item id="alert_title_caution">注意</item>
+	<item id="alert_title_security">セキュリティ メモ</item>
+	<item id="alert_title_note">メモ</item>
+	<item id="alert_title_important">重要</item>
+	<item id="alert_title_visualBasic">Visual Basic メモ</item>
+	<item id="alert_title_visualC#">C# メモ</item>
+	<item id="alert_title_visualC++">C++ メモ</item>
+	<item id="alert_title_visualJ#">J# メモ</item>
 
 	<!-- Alert alt text -->
-	<item id="alert_altText_tip">Tip</item>
-	<item id="alert_altText_caution">Caution note</item>
-	<item id="alert_altText_security">Security note</item>
-	<item id="alert_altText_note">Note</item>
-	<item id="alert_altText_important">Important note</item>
-	<item id="alert_altText_visualBasic">Visual Basic note</item>
-	<item id="alert_altText_visualC#">C# note</item>
-	<item id="alert_altText_visualC++">C++ note</item>
-	<item id="alert_altText_visualJ#">J# note</item>
+	<item id="alert_altText_tip">ヒント</item>
+	<item id="alert_altText_caution">注意 メモ</item>
+	<item id="alert_altText_security">セキュリティ メモ</item>
+	<item id="alert_altText_note">メモ</item>
+	<item id="alert_altText_important">重要 メモ</item>
+	<item id="alert_altText_visualBasic">Visual Basic メモ</item>
+	<item id="alert_altText_visualC#">C# メモ</item>
+	<item id="alert_altText_visualC++">C++ メモ</item>
+	<item id="alert_altText_visualJ#">J# メモ</item>
 
 	<!-- Section titles -->
-	<item id="title_remarks">Remarks</item>
-	<item id="title_changeHistory">Change History</item>
-	<item id="title_events">Events</item>
-	<item id="title_exceptions">Exceptions</item>
-	<item id="title_contracts">Contracts</item>
+	<item id="title_remarks">解説</item>
+	<item id="title_changeHistory">変更履歴</item>
+	<item id="title_events">イベント</item>
+	<item id="title_exceptions">例外</item>
+	<item id="title_contracts">契約</item>
 	<item id="title_setter">Set</item>
 	<item id="title_getter">Get</item>
-	<item id="title_seeAlso_tasks">Tasks</item>
-	<item id="title_seeAlso_reference">Reference</item>
-	<item id="title_seeAlso_concepts">Concepts</item>
-	<item id="title_seeAlso_otherResources">Other Resources</item>
+	<item id="title_seeAlso_tasks">タスク</item>
+	<item id="title_seeAlso_reference">参照</item>
+	<item id="title_seeAlso_concepts">コンセプト</item>
+	<item id="title_seeAlso_otherResources">その他のリソース</item>
 
-	<item id="inline_dynamicLink_prefixText">For more information, see </item>
-	<item id="inline_dynamicLink_postfixText">.</item>
-	<item id="inline_dynamicLink_separatorText"> and </item>
+	<item id="inline_dynamicLink_prefixText">より詳しくは、</item>
+	<item id="inline_dynamicLink_postfixText">を参照してください。</item>
+	<item id="inline_dynamicLink_separatorText">と</item>
 
 	<!-- Development language and code snippet titles for languages without a syntax generator -->
 	<item id="devlang_HTML">HTML</item>
@@ -53,22 +53,22 @@
 	<item id="devlang_Python">Python</item>
 	<item id="devlang_SQL">SQL</item>
 	<item id="devlang_VBScript">Visual Basic Script</item>
-	<item id="devlang_VisualBasicAndCSharp">Visual Basic and C#</item>
+	<item id="devlang_VisualBasicAndCSharp">Visual Basic と C#</item>
 	<item id="devlang_XML">XML</item>
 
 	<!-- Language keywords -->
-	<item id="devlang_nullKeyword">a null reference (`Nothing` in Visual Basic)</item>
-	<item id="devlang_staticKeyword">`static` (`Shared` in Visual Basic)</item>
-	<item id="devlang_virtualKeyword">`virtual` (`Overridable` in Visual Basic)</item>
-	<item id="devlang_trueKeyword">`true` (`True` in Visual Basic)</item>
-	<item id="devlang_falseKeyword">`false` (`False` in Visual Basic)</item>
-	<item id="devlang_abstractKeyword">`abstract` (`MustInherit` in Visual Basic)</item>
-	<item id="devlang_sealedKeyword">`sealed` (`NotInheritable` in Visual Basic)</item>
-	<item id="devlang_asyncKeyword">`async` (`Async` in Visual Basic)</item>
-	<item id="devlang_awaitKeyword">`await` (`Await` in Visual Basic)</item>
-	<item id="devlang_asyncAwaitKeyword">`async`/`await` (`Async`/`Await` in Visual Basic)</item>
+	<item id="devlang_nullKeyword">null参照(Visual Basicでは<span class="keyword">Nothing</span>)</item>
+	<item id="devlang_staticKeyword"><span class="keyword">static</span> (Visual Basicでは<span class="keyword">Shared</span>)</item>
+	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (Visual Basicでは<span class="keyword">Overridable</span>)</item>
+	<item id="devlang_trueKeyword"><span class="keyword">true</span> (Visual Basicでは<span class="keyword">True</span>)</item>
+	<item id="devlang_falseKeyword"><span class="keyword">false</span> (Visual Basicでは<span class="keyword">False</span>)</item>
+	<item id="devlang_abstractKeyword"><span class="keyword">abstract</span> (Visual Basicでは<span class="keyword">MustInherit</span>)</item>
+	<item id="devlang_sealedKeyword"><span class="keyword">sealed</span> (Visual Basicでは<span class="keyword">NotInheritable</span>)</item>
+	<item id="devlang_asyncKeyword"><span class="keyword">async</span> (Visual Basicでは<span class="keyword">Async</span>)</item>
+	<item id="devlang_awaitKeyword"><span class="keyword">await</span> (Visual Basicでは<span class="keyword">Await</span>)</item>
+	<item id="devlang_asyncAwaitKeyword"><span class="keyword">async</span>/<span class="keyword">await</span> (Visual Basicでは<span class="keyword">Async</span>/<span class="keyword">Await</span>)</item>
 
 	<!-- Back to Top link text -->
-	<item id="top">Back to Top</item>
+	<item id="top">トップ</item>
 
 </content>
