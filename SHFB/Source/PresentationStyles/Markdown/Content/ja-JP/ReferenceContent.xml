@@ -210,8 +210,8 @@
   <item id="typeLinkToTypeParameter">{1}の型パラメーター<strong>{0}</strong></item>
   
 	<!-- Internal only boilerplate text -->
-  <item id="internalOnly">This API supports the .NET Framework infrastructure and is not intended to be used directly from your code.</item>
-  <item id="infraStructure">Infrastructure. </item>
+  <item id="internalOnly">このAPIは.NET Frameworkインフラストラクチャをサポートしており、ユーザーコードから直接使われることを意図していません。</item>
+  <item id="infraStructure">インフラストラクチャ</item>
 
 	<!-- Obsolete boilerplate text -->
   <item id="boilerplate_obsoleteShort"><strong>廃止予定。</strong></item>
@@ -470,11 +470,11 @@
   <item id="boilerplate_flagsSummary">この列挙体には、メンバーの値のビットごとの組み合わせを可能にする{0}属性があります。</item>
 	
 	<!-- Contracts -->
-	<item id="contracts_PureMethod">This method is pure.</item>
-	<item id="contracts_LearnMore">Learn more about contracts</item>
-	<item id="contracts_Description">Description: </item>
-	<item id="contracts_InheritedFrom">Inherited From: </item>
-	<item id="contracts_Exception">Exception: </item>
+	<item id="contracts_PureMethod">このメソッドは純粋です</item>
+	<item id="contracts_LearnMore">契約についてもっと学ぶ</item>
+	<item id="contracts_Description">説明: </item>
+	<item id="contracts_InheritedFrom">継承: </item>
+	<item id="contracts_Exception">例外: </item>
 
   <!-- Show Missing Component messages -->
   <item id="SMCAutoDocConstructor"><referenceLink target="T:{0}" />クラスの新しいインスタンスを初期化します</item>
