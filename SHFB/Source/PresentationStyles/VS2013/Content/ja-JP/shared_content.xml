@@ -128,5 +128,5 @@
 	<item id="copyCode">コピー</item>
 
 	<!-- Lightweight TOC resize tool tip -->
-	<item id="resizeToolTip">Click or drag to resize</item>
+	<item id="resizeToolTip">リサイズはクリックかドラッグ</item>
 </content>
