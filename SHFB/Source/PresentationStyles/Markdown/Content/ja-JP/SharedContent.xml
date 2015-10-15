@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+
+	<!-- Media file path -->
+	<item id="mediaPath">media/{0}</item>
+	
+	<!-- Topic title -->
+	<item id="boilerplate_pageTitle">{0}</item>
+	<item id="header"><span class="introStyle"></span></item>
+
+	<!-- Alert titles -->
+	<item id="alert_title_tip">ヒント</item>
+	<item id="alert_title_caution">注意</item>
+	<item id="alert_title_security">セキュリティ メモ</item>
+	<item id="alert_title_note">メモ</item>
+	<item id="alert_title_important">重要</item>
+	<item id="alert_title_visualBasic">Visual Basic メモ</item>
+	<item id="alert_title_visualC#">C# メモ</item>
+	<item id="alert_title_visualC++">C++ メモ</item>
+	<item id="alert_title_visualJ#">J# メモ</item>
+
+	<!-- Alert alt text -->
+	<item id="alert_altText_tip">ヒント</item>
+	<item id="alert_altText_caution">注意 メモ</item>
+	<item id="alert_altText_security">セキュリティ メモ</item>
+	<item id="alert_altText_note">メモ</item>
+	<item id="alert_altText_important">重要 メモ</item>
+	<item id="alert_altText_visualBasic">Visual Basic メモ</item>
+	<item id="alert_altText_visualC#">C# メモ</item>
+	<item id="alert_altText_visualC++">C++ メモ</item>
+	<item id="alert_altText_visualJ#">J# メモ</item>
+
+	<!-- Section titles -->
+	<item id="title_remarks">解説</item>
+	<item id="title_changeHistory">変更履歴</item>
+	<item id="title_events">イベント</item>
+	<item id="title_exceptions">例外</item>
+	<item id="title_contracts">契約</item>
+	<item id="title_setter">Set</item>
+	<item id="title_getter">Get</item>
+	<item id="title_seeAlso_tasks">タスク</item>
+	<item id="title_seeAlso_reference">参照</item>
+	<item id="title_seeAlso_concepts">コンセプト</item>
+	<item id="title_seeAlso_otherResources">その他のリソース</item>
+
+	<item id="inline_dynamicLink_prefixText">より詳しくは、</item>
+	<item id="inline_dynamicLink_postfixText">を参照してください。</item>
+	<item id="inline_dynamicLink_separatorText">と</item>
+
+	<!-- Development language and code snippet titles for languages without a syntax generator -->
+	<item id="devlang_HTML">HTML</item>
+	<item id="devlang_PShell">PowerShell</item>
+	<item id="devlang_Python">Python</item>
+	<item id="devlang_SQL">SQL</item>
+	<item id="devlang_VBScript">Visual Basic Script</item>
+	<item id="devlang_VisualBasicAndCSharp">Visual Basic と C#</item>
+	<item id="devlang_XML">XML</item>
+
+	<!-- Language keywords -->
+	<item id="devlang_nullKeyword">null参照(Visual Basicでは<span class="keyword">Nothing</span>)</item>
+	<item id="devlang_staticKeyword"><span class="keyword">static</span> (Visual Basicでは<span class="keyword">Shared</span>)</item>
+	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (Visual Basicでは<span class="keyword">Overridable</span>)</item>
+	<item id="devlang_trueKeyword"><span class="keyword">true</span> (Visual Basicでは<span class="keyword">True</span>)</item>
+	<item id="devlang_falseKeyword"><span class="keyword">false</span> (Visual Basicでは<span class="keyword">False</span>)</item>
+	<item id="devlang_abstractKeyword"><span class="keyword">abstract</span> (Visual Basicでは<span class="keyword">MustInherit</span>)</item>
+	<item id="devlang_sealedKeyword"><span class="keyword">sealed</span> (Visual Basicでは<span class="keyword">NotInheritable</span>)</item>
+	<item id="devlang_asyncKeyword"><span class="keyword">async</span> (Visual Basicでは<span class="keyword">Async</span>)</item>
+	<item id="devlang_awaitKeyword"><span class="keyword">await</span> (Visual Basicでは<span class="keyword">Await</span>)</item>
+	<item id="devlang_asyncAwaitKeyword"><span class="keyword">async</span>/<span class="keyword">await</span> (Visual Basicでは<span class="keyword">Async</span>/<span class="keyword">Await</span>)</item>
+
+	<!-- Back to Top link text -->
+	<item id="top">トップ</item>
+
+</content>

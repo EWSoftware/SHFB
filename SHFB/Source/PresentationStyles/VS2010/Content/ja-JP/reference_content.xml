@@ -1,0 +1,554 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+
+  <!-- note text -->
+  <item id="notDocumented">このAPIはドキュメント化されていません。</item>
+  <item id="preliminaryText">このAPIは暫定的なものであり、変更される可能性があります。</item>
+	
+	<!-- main window stuff -->
+	<item id="productTitle">.NET Framework クラスライブラリ</item>
+
+	<!-- inserted boilerplate -->
+	<item id="runningHeaderText">.NET Framework クラスライブラリ</item>
+	<item id="rootLink"><referenceLink target="R:Project">名前空間</referenceLink></item>
+  <item id="definedBy">({0}により定義)</item>
+	<item id="inheritedFrom">({0}から継承)</item>
+	<item id="overridesMember">({0}をオーバーライド)</item>
+	<item id="locationInformation">アセンブリ: {0} (モジュール: {1})</item>
+ 
+  <item id="derivedClasses">派生クラス</item>
+  <item id="explicitInterfaceImplementation">明示的なインターフェイスの実装</item>
+  <item id="returnValue">戻り値</item>
+  <item id="propertyValue">プロパティ値</item>
+  <item id="fieldValue">フィールド値</item>
+  <item id="example">例</item>
+
+  <!-- topic titles -->
+  <item id="meta_mshelp_tocTitle">{0}</item>
+  <item id="meta_mshelp_rlTitle">{0} ({1})</item>
+  <item id="topicTitle_root">名前空間</item>
+	<item id="topicTitle_namespace">{0} 名前空間</item>
+	<item id="topicTitle_namespaceGroup">{0} 名前空間</item>
+	<item id="topicTitle_class">{0} クラス</item>
+	<item id="topicTitle_structure">{0} 構造体</item>
+	<item id="topicTitle_interface">{0} インターフェイス</item>
+	<item id="topicTitle_derivedTypeList">{0} 派生クラス</item>
+  
+	<item id="topicTitle_delegate">{0} デリゲート</item>
+	<item id="topicTitle_enumeration">{0} 列挙体</item>
+	<item id="topicTitle_field">{0} フィールド</item>
+	<item id="topicTitle_method">{0} メソッド {1}</item>
+	<item id="topicTitle_constructor">{0} コンストラクター {1}</item>
+	<item id="topicTitle_property">{0} プロパティ {1}</item>
+	<item id="topicTitle_event">{0} イベント</item>
+  
+  <!-- title for operator members -->
+	<item id="topicTitle_operator">{0} 演算子 {1}</item>
+
+  <!-- title for op_explicit and op_implicit members -->
+  <item id="topicTitle_typeConversion">{0} 変換 {1}</item>
+  <!-- title for overload op_explicit and op_implicit topics -->
+  <item id="topicTitle_conversionOperator">{0} 変換演算子</item>
+      
+	<item id="topicTitle_attachedProperty">{0} 添付プロパティ</item>
+	<item id="topicTitle_attachedEvent">{0} 添付イベント</item>
+
+  <item id="generic"> generic</item>
+  <item id="topicTitle_generic_class">{0} ジェネリッククラス</item>
+  <item id="topicTitle_generic_structure">{0} ジェネリック構造体</item>
+  <item id="topicTitle_generic_interface">{0} ジェネリックインターフェイス</item>
+  <item id="topicTitle_generic_delegate">{0} ジェネリックデリゲート</item>
+  <item id="topicTitle_generic_method">{0} ジェネリックメソッド {1}</item>
+  
+	<!-- list topic titles -->
+	<item id="topicTitle_fields">{0} フィールド</item>
+	<item id="topicTitle_methods">{0} メソッド</item>
+	<item id="topicTitle_enumMembers">メンバー</item>
+  
+  <!-- title for operator list topic that has [operators + no type conversions] -->
+  <item id="topicTitle_operators">{0} 演算子</item>
+  <!-- title for operator list topic that has [operators + type conversions] -->
+  <item id="topicTitle_operatorsAndTypeConversions">{0} 演算子と型変換</item>
+  <!-- title for operator list topic that has [no operators + type conversions] -->
+  <item id="topicTitle_typeConversions">{0} 型変換</item>
+  
+	<item id="topicTitle_constructors">{0} コンストラクター</item>
+	<item id="topicTitle_properties">{0} プロパティ</item>
+	<item id="topicTitle_events">{0} イベント</item>
+	<item id="topicTitle_attachedProperties">{0} 添付プロパティ</item>
+ 	<item id="topicTitle_attachedEvents">{0} 添付イベント</item>
+	<item id="topicTitle_members">{0} メンバー</item>
+
+	<!-- index entries -->
+	<item id="indexEntry_root">名前空間</item>
+  <item id="indexEntry_namespace">{0} 名前空間</item>
+  <item id="indexEntry_class">{0} クラス</item>
+	<item id="indexEntry_structure">{0} 構造体</item>
+	<item id="indexEntry_interface">{0} インターフェイス</item>
+	<item id="indexEntry_delegate">{0} デリゲート</item>
+	<item id="indexEntry_enumeration">{0} 列挙体</item>
+  <item id="indexEntry_enumerationMember">{0} 列挙体メンバー</item>
+  <item id="indexEntry_aboutType">{0}、{0}について</item>
+  <item id="indexEntry_derivedTypes">{0}、派生型</item>
+  <item id="indexEntry_members">{0}、すべてのメンバー</item>
+  <item id="indexEntry_methods">{0}、メソッド</item>
+  <!-- index entry for operator list topic that has [operators + no type conversions] -->
+  <item id="indexEntry_operators">{0}、演算子</item>
+  <!-- index entry for operator list topic that has [operators + type conversions] -->
+  <item id="indexEntry_operatorsAndTypeConversions">{0}、演算子と型変換</item>
+  <!-- index entry for operator list topic that has [no operators + type conversions] -->
+  <item id="indexEntry_typeConversions">{0}、型変換</item>
+  <!-- index entries for op_explicit and op_implicit members -->
+  <item id="indexEntry_conversionOperator">{0} 変換</item>
+  <item id="indexEntry_properties">{0}、プロパティ</item>
+  <item id="indexEntry_fields">{0}、フィールド</item>
+  <item id="indexEntry_events">{0}、イベント</item>
+  <item id="indexEntry_attachedProperties">{0}、添付プロパティ</item>
+  <item id="indexEntry_attachedEvents">{0}、添付イベント</item>
+	<item id="indexEntry_constructors">{0}、コンストラクター</item>
+	<item id="indexEntry_constructor">{0}、コンストラクター</item>
+	<item id="indexEntry_constructorType">{0} コンストラクター</item>
+  <item id="indexEntry_method">{0} メソッド</item>
+	<item id="indexEntry_property">{0} プロパティ</item>
+	<item id="indexEntry_event">{0} イベント</item>
+	<item id="indexEntry_field">{0} フィールド</item>
+	<item id="indexEntry_operator">{0} 演算子</item>
+	<item id="indexEntry_attachedProperty">{0} 添付プロパティ</item>
+	<item id="indexEntry_attachedEvent">{0} 添付イベント</item>
+	<item id="indexEntry_methodExplicit">{0} 明示的に実装されたメソッド</item>
+	<item id="indexEntry_propertyExplicit">{0} 明示的に実装されたプロパティ</item>
+	<item id="indexEntry_eventExplicit">{0} 明示的に実装されたイベント</item>
+	<item id="indexEntry_fieldExplicit">{0} 明示的に実装されたフィールド</item>
+
+	<!-- section titles -->
+	<item id="title_syntax">構文</item>
+	<item id="title_templates">型パラメーター</item>
+	<item id="title_parameters">パラメーター</item>
+	<item id="title_value">値</item>
+	<item id="title_delegateValue">戻り値</item>
+	<item id="title_methodValue">戻り値</item>
+	<item id="title_propertyValue">プロパティ値</item>
+	<item id="title_fieldValue">フィールド値</item>
+	<item id="title_implements">実装</item>
+	<item id="title_examples">例</item>
+	<item id="title_threadSafety">スレッドセーフ</item>
+	<item id="title_permissions">.NET Framework セキュリティ</item>
+	<item id="title_namespaces">名前空間</item>
+	<item id="title_types">型</item>
+	<item id="title_family">継承階層</item>
+	<item id="title_versions">バージョン情報</item>
+	<item id="title_platforms">プラットフォーム</item>
+	<item id="title_relatedTopics">関連項目</item>
+	<item id="title_extensionUsage">使用上の注意</item>
+  <item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/bb384936.aspx" target="_blank">拡張メソッド(Visual Basic)</a>または<a href="http://msdn.microsoft.com/ja-jp/library/bb383977.aspx" target="_blank">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
+	<item id="text_moreInheritance">More...</item>
+
+	<!-- table headers -->
+	<item id="header_namespaceName">名前空間</item>
+	<item id="header_namespaceDescription">説明</item>
+	<item id="header_typeIcon">アイコン</item>
+  <item id="header_className">クラス</item>
+  <item id="header_structureName">構造体</item>
+  <item id="header_interfaceName">インターフェイス</item>
+  <item id="header_delegateName">デリゲート</item>
+  <item id="header_enumerationName">列挙体</item>
+  
+	<item id="header_typeName">名前</item>
+	<item id="header_typeDescription">説明</item>
+	<item id="header_memberIcon">アイコン</item>
+	<item id="header_memberName">メンバー</item>
+	<item id="header_memberValue">値</item>
+	<item id="header_memberDescription">説明</item>
+	<item id="header_eventType">イベント型</item>
+	<item id="header_eventReason">原因</item>
+	<item id="header_exceptionName">例外</item>
+	<item id="header_exceptionCondition">条件</item>
+	<item id="header_permissionName">パーミッション</item>
+	<item id="header_permissionDescription">説明</item>
+  <item id="header_requiresName">事前条件</item>
+  <item id="header_ensuresName">事後条件</item>
+  <item id="header_ensuresOnThrowName">例外発生時の事後条件</item>
+  <item id="header_invariantsName">不変条件</item>
+
+	<item id="header_revHistoryDate">日付</item>
+	<item id="header_revHistoryVersion">バージョン</item>
+	<item id="header_revHistoryDescription">説明</item>
+
+  <!-- member list table titles -->
+  <item id="tableTitle_namespace">名前空間</item>
+	<item id="tableTitle_class">クラス</item>
+	<item id="tableTitle_structure">構造体</item>
+	<item id="tableTitle_interface">インターフェイス</item>
+	<item id="tableTitle_delegate">デリゲート</item>
+	<item id="tableTitle_enumeration">列挙体</item>
+  <item id="tableTitle_constructor">コンストラクター</item>
+  <item id="tableTitle_method">メソッド</item>
+  <item id="tableTitle_operator">演算子</item>
+  <item id="tableTitle_field">フィールド</item>
+  <item id="tableTitle_property">プロパティ</item>
+  <item id="tableTitle_event">イベント</item>
+  <item id="tableTitle_attachedEvent">添付イベント</item>
+  <item id="tableTitle_attachedProperty">添付プロパティ</item>
+  <item id="tableTitle_explicitInterfaceImplementation">明示的なインターフェイスの実装</item>
+	<item id="tableTitle_overloadMembers">オーバーロードの一覧</item>
+  <item id="tableTitle_extensionMethod">拡張メソッド</item>
+
+  <!-- Thread Safety -->
+  <item id="text_threadSafety">スレッドセーフ</item>
+  <item id="boilerplate_threadSafety">この型の公開<include item="devlang_staticKeyword"/>メンバーはすべてスレッドセーフです。インスタンスメンバーはスレッドセーフである保証はありません。</item>
+
+  <item id="text_staticThreadSafe">この型のstaticメンバーはスレッドセーフです。</item>
+  <item id="text_staticNotThreadSafe">この型のstaticメンバーはスレッドセーフではありません。</item>
+  <item id="text_instanceThreadSafe">この型のインスタンスメンバーはスレッドセーフです。</item>
+  <item id="text_instanceNotThreadSafe">この型のインスタンスメンバーはスレッドセーフではありません。</item>
+  
+  <item id="text_NotesForImplementers">実装時の注意</item>
+  <item id="text_NotesForCallers">利用時の注意</item>
+  <item id="text_NotesForInheritors">継承する場合の注意</item>
+  
+  <!-- boilerplate intro to member list tables -->
+  <item id="genericExposedMembersTableText">{0} ジェネリック型は下記のメンバーを公開します。</item>
+  <item id="exposedMembersTableText">{0} 型は下記のメンバーを公開します。</item>	
+
+  <item id="dependencyPropertyInfoHeading">依存関係プロパティの情報</item>
+  <item id="routedEventInfoHeading">ルーティングイベントの情報</item>
+  <item id="mrefTaskMoreCodeHeading">More Code</item>
+
+  <item id="Overloaded">オーバーロード。</item>	
+  <item id="defaultNamespace">(既定の名前空間)</item>
+  
+  <item id="typeLink">型: {0}</item>
+  <!-- First line of a param or retval description is a link to the type of the param or retval.
+       This boilerplate is used if the type is a type parameter of the member's type. -->
+  <item id="typeLinkToTypeParameter">{1}の型パラメーター<strong>{0}</strong></item>
+  
+	<!-- Host protection boilerplate text -->
+  <item id="text_hostProtectionAttribute">ホスト保護属性。</item>
+	<item id="boilerplate_hostProtectionAttribute">この型またはメンバーに適用される<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 preferprefer-overload="true" />属性が持つ<referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
+									 prefer-overload="true" />プロパティの値は{1}です。この<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" />は(アイコンのダブルクリック、コマンドの入力、またはブラウザーへのURLの入力により起動するような)デスクトップアプリケーションに影響を与えません。
+                 より詳しくは、<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" />クラスまたは<a href="http://msdn.microsoft.com/ja-jp/library/ms172338.aspx" target="_blank">SQL Server プログラミングとホスト保護属性</a>を参照してください。</item>
+
+	<!-- Obsolete boilerplate text -->
+  <item id="boilerplate_obsoleteShort"><strong>廃止予定。</strong></item>
+  <item id="boilerplate_obsoleteLong"><strong>注意: このAPIは廃止予定です。</strong></item>
+
+	<!-- Group and SubGroup text -->
+	<item id="text_classLower">クラス</item>
+  <item id="text_delegateLower">デリゲート</item>
+  <item id="text_structureLower">構造体</item>
+  <item id="text_interfaceLower">インターフェイス</item>
+  <item id="text_enumerationLower">列挙体</item>
+
+  <item id="text_classUpper">クラス</item>
+  <item id="text_structureUpper">構造体</item>
+  <item id="text_interfaceUpper">インターフェイス</item>
+  <item id="text_delegateUpper">デリゲート</item>
+  <item id="text_enumerationUpper">列挙体</item>
+
+	<item id="text_classTypesLower">クラス</item>
+	<item id="text_structureTypesLower">構造体</item>
+	<item id="text_interfaceTypesLower">インターフェイス</item>
+	<item id="text_delegateTypesLower">デリゲート</item>
+	<item id="text_enumerationTypesLower">列挙体</item>
+  
+	<item id="text_classTypesUpper">クラス</item>
+	<item id="text_structureTypesUpper">構造体</item>
+	<item id="text_interfaceTypesUpper">インターフェイス</item>
+	<item id="text_delegateTypesUpper">デリゲート</item>
+	<item id="text_enumerationTypesUpper">列挙体</item>
+
+  <item id="text_membersLower">メンバー</item>
+  <item id="text_methodsLower">メソッド</item>
+  <item id="text_propertiesLower">プロパティ</item>
+  <item id="text_eventsLower">イベント</item>
+  <item id="text_fieldsLower">フィールド</item>
+  <item id="text_operatorsLower">演算子</item>
+  <item id="text_attachedPropertiesLower">添付プロパティ</item>
+  <item id="text_attachedEventsLower">添付イベント</item>
+
+  <item id="text_membersUpper">メンバー</item>
+  <item id="text_methodsUpper">メソッド</item>
+  <item id="text_propertiesUpper">プロパティ</item>
+  <item id="text_eventsUpper">イベント</item>
+  <item id="text_fieldsUpper">フィールド</item>
+  <item id="text_operatorsUpper">演算子</item>
+  <item id="text_attachedPropertiesUpper">添付プロパティ</item>
+  <item id="text_attachedEventsUpper">添付イベント</item>
+
+	<!-- alt text for images -->
+	<item id="altText_pubClass">Public クラス</item>
+	<item id="altText_pubStructure">Public 構造体</item>
+	<item id="altText_pubInterface">Public インターフェイス</item>
+	<item id="altText_pubDelegate">Public デリゲート</item>
+	<item id="altText_pubEnumeration">Public 列挙体</item>
+	<item id="altText_protClass">Protected クラス</item>
+	<item id="altText_protStructure">Protected 構造体</item>
+	<item id="altText_protInterface">Protected インターフェイス</item>
+	<item id="altText_protDelegate">Protected デリゲート</item>
+	<item id="altText_protEnumeration">Protected 列挙体</item>
+	<item id="altText_privClass">Private クラス</item>
+	<item id="altText_privStructure">Private 構造体</item>
+	<item id="altText_privInterface">Private インターフェイス</item>
+	<item id="altText_privDelegate">Private デリゲート</item>
+	<item id="altText_privEnumeration">Private 列挙体</item>
+
+	<item id="altText_pubConstructor">Public コンストラクター</item>
+	<item id="altText_pubMethod">Public メソッド</item>
+	<item id="altText_pubField">Public フィールド</item>
+	<item id="altText_pubProperty">Public プロパティ</item>
+	<item id="altText_pubEvent">Public イベント</item>
+	<item id="altText_pubOperator">Public 演算子</item>
+	<item id="altText_pubAttachedProperty">Public 添付プロパティ</item>
+	<item id="altText_pubAttachedEvent">Public 添付イベント</item>
+	<item id="altText_protConstructor">Protected コンストラクター</item>
+	<item id="altText_protMethod">Protected メソッド</item>
+	<item id="altText_protField">Protected フィールド</item>
+	<item id="altText_protProperty">Protected プロパティ</item>
+	<item id="altText_protEvent">Protected イベント</item>
+	<item id="altText_protOperator">Protected 演算子</item>
+	<item id="altText_protAttachedProperty">Protected 添付プロパティ</item>
+	<item id="altText_protAttachedEvent">Protected 添付イベント</item>
+	<item id="altText_privConstructor">Private コンストラクター</item>
+	<item id="altText_privMethod">Private メソッド</item>
+	<item id="altText_privField">Private フィールド</item>
+	<item id="altText_privProperty">Private プロパティ</item>
+	<item id="altText_privEvent">Private イベント</item>
+	<item id="altText_privOperator">Private 演算子</item>
+	<item id="altText_privtAttachedProperty">Private 添付プロパティ</item>
+	<item id="altText_privAttachedEvent">Private 添付イベント</item>
+	<item id="altText_static">静的メンバー</item>
+	<item id="altText_pubextension">Public 拡張メソッド</item>
+	<item id="altText_protextension">Protected 拡張メソッド</item>
+	<item id="altText_privextension">Private 拡張メソッド</item>
+
+  <item id="altText_CompactFramework">.NET Compact Frameworkによってサポートされています。</item>
+  <item id="altText_XNAFramework">XNA Frameworkによってサポートされています。</item>
+  <item id="altText_SilverlightMobile"><include item="silverlight_mobile"/>によってサポートされています。</item>
+  <item id="altText_ExplicitInterface">明示的なインターフェイスの実装</item>
+  <item id="altText_CodeExample">Code example</item>
+
+  <item id="boilerplate_seeAlsoNamespaceLink">{0} 名前空間</item>
+  <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/></item>
+  <item id="boilerplate_seeAlsoMembersLink">{0} メンバー</item>
+  <item id="boilerplate_seeAlsoOverloadLink">{0} オーバーロード</item>
+
+  <item id="boilerplate_requirementsNamespace">
+    <strong>名前空間:</strong> 
+  </item>
+
+  <item id="boilerplate_requirementsPlatforms">
+    <strong>プラットフォーム:</strong> {0}
+  </item>
+
+  <item id="boilerplate_requirementsAssemblies">
+    <strong>アセンブリ:</strong>
+  </item>
+
+  <item id="boilerplate_requirementsAssemblyLabel">
+    <strong>アセンブリ:</strong>
+  </item>
+
+	<item id="assemblyNameAndModule">{0} (in {1}.{2}) バージョン: {3}</item>
+
+  <item id="boilerplate_requirementsAssembly">
+    <strong>アセンブリ:</strong> {0} (in {1}.dll)
+  </item>
+
+  <!-- Used for Version Information Section -->
+  <item id="supportedIn_1">サポートされるバージョン: {0}</item>
+  <item id="supportedIn_2">サポートされるバージョン: {0}, {1}</item>
+  <item id="supportedIn_3">サポートされるバージョン: {0}, {1}, {2}</item>
+  <item id="supportedIn_4">サポートされるバージョン: {0}, {1}, {2}, {3}</item>
+  <item id="supportedIn_5">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}</item>
+  <item id="supportedIn_6">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}</item>
+  <item id="supportedIn_7">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}</item>
+  <item id="supportedIn_8">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}</item>
+  <item id="supportedIn_9">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}</item>
+  <item id="supportedIn_10">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}</item>
+  <item id="supportedIn_11">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}</item>
+  <item id="supportedIn_12">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}</item>
+  <item id="supportedIn_13">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}</item>
+  <item id="supportedIn_14">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}</item>
+  <item id="supportedIn_15">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}</item>
+  <item id="supportedIn_16">サポートされるバージョン: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}</item>
+  <item id="obsoleteWarning">廃止予定になった (コンパイル時警告) バージョン: {0}</item>
+  <item id="obsoleteError">廃止された (コンパイル不可) バージョン: {0}</item>
+  	
+	<!-- APTCA Boilerplate text -->
+	<item id="boilerplate_aptca">直前の呼び出し元に対する完全な信頼。このメンバーは、部分信頼コードからは使えません。詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/8skskf63.aspx" target="_blank">部分信頼コードからのライブラリの使用</a>を参照してください。</item>
+
+  <!-- Variance boilerplate text -->
+  <item id="text_covariant">この型パラメーターは共変です。つまり、指定した型か、その型から派生した任意の型が使えます。</item>
+  <item id="text_contravariant">この型パラメーターは反変です。つまり、指定した型か、その型が継承する任意の型が使えます。</item>
+  <item id="text_variance">共変と反変についての詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/ee207183.aspx" target="_blank">共変性と反変性 (C# および Visual Basic)</a>を参照してください。</item>
+
+  <!-- Non-CLS Compliant boilerplate text-->
+  <item id="boilerplate_NotClsCompliant">このAPIはCLS準拠ではありません。</item>
+  <item id="boilerplate_AltClsCompliant">CLS準拠の代替は{0}です。</item>
+  
+  <!-- Security Critical Boilerplate text-->
+  <item id="boilerplate_typeSecurityCritical">この型は SecurityCriticalAttribute 属性を持っているため、.NET Framework for Silverlight クラスライブラリ内のみでしか使えないように制限されています。アプリケーションコードでこの型のメンバーを使うと、MethodAccessExceptionが投げられます。</item>
+  <item id="boilerplate_memberSecurityCritical">このメンバーは SecurityCriticalAttribute 属性を持っているため、.NET Framework for Silverlight クラスライブラリ内のみでしか使えないように制限されています。アプリケーションコードでこのメンバーを使うと、MethodAccessExceptionが投げられます。</item>
+  <item id="text_securityCritical">[セキュリティ上の重要事項] </item>
+  
+  <!-- Overload page boilerplate -->
+  <item id="boilerplate_overloadSummary">このメンバーはオーバーロードされています。構文、使用法、例を含むこのメンバーについての完全な情報は、オーバーロード一覧の名前をクリックしてください。</item>
+
+  <!-- Platforms Information and Platform Notes --> 
+  <item id="boilerplate_PlatformNote">
+	  <strong>{0} プラットフォームに関するメモ:</strong> {1}
+  </item>
+  <item id="boilerplate_systemRequirementsLink">
+	  <p><include item="netfw"/>と<include item="netcfw"/>では、各プラットフォームのすべてのバージョンはサポートしていません。サポートしているバージョンについては、<a href="http://msdn.microsoft.com/ja-jp/library/8z6watww.aspx" target="_blank">.NET Framework システム要件</a>を参照してください。</p>
+  </item>
+  
+  <!-- Platforms boilerplate for Silverlight mref builds --> 
+  <item id="boilerplate_silverlightPlatforms">
+    <include item="silverlight"/>によってサポートされているOSとブラウザーの詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/dd229102.aspx" target="_blank">サポートされているオペレーティング システムとブラウザー</a>を参照してください。
+  </item>
+
+ 	<item id="Win95">Windows 95</item>
+	<item id="Win98Se">Windows 98 Second Edition</item>
+	
+	<item id="WinNT4">Windows NT 4.0</item>
+	<item id="WinNT4Svr">Windows NT Server 4.0</item>
+	<item id="WinNT4Wks">Windows NT Workstation 4.0</item>
+	
+	<item id="Win2kFamily">Windows 2000</item>
+	<item id="Win2kProfessional">Windows 2000 Professional</item>
+	<item id="Win2kServer">Windows 2000 Server</item>
+	<item id="Win2kDatacenter">Windows 2000 Advanced Server</item>
+	
+	<item id="WinXPPersonal">Windows XP Home Edition</item>
+	<item id="WinXPPro">Windows XP Professional x64 Edition</item>
+	<item id="WinXPSvr"><include item="WinSvr2003"/></item>
+	<item id="WinXpTablet">Windows XP Tablet PC Edition</item>
+	<item id="WinXpEmbedded">Windows XP Embedded</item>
+	
+	<item id="ECMACLI">共通言語基盤(CLI)標準</item>
+	
+	<item id="MSTV">Microsoft TV</item>
+		
+	<item id="Win9xFamily"><include item="Win95"/>, <include item="Win98"/>, <include item="Win98Se"/>, <include item="WinME"/></item>
+	<item id="WinNt4Family"><include item="WinNT4"/></item>
+	<item id="WinXpFamily"><include item="WinXPPersonal"/>, <include item="WinXPPro"/>, <include item="WinXPSvr"/></item>
+	<item id="WinCE"><include item="WindowsCE"/></item>
+	<item id="Win2K"><include item="WinSvr2000"/></item>
+	<item id="Win2KSvr"><include item="Win2kServer"/></item>
+	<item id="Win2KADC"><include item="Win2kDatacenter"/></item>
+	
+	<item id="WinNt4Server"><include item="WinNT4Svr"/></item>
+	<item id="WinNt4Workstation"><include item="WinNT4Wks"/></item>
+	<item id="Win2kAdvanced"><include item="Win2kDatacenter"/></item>
+	<item id="Win2kServerApplianceKit"></item>
+	<item id="WinXpHome"><include item="WinXPPersonal"/></item>
+	<item id="WinXpProfessional"><include item="WinXPPro"/></item>
+	<item id="Win2003Server"><include item="WinXPSvr"/></item>
+	<item id="NETCF"><include item="PocketPC"/>, <include item="SmartPhone"/>, <include item="WindowsCE"/></item>
+  
+  <item id="XNA"><include item="Xbox360"/>, <include item="Zune" /></item>
+       
+  <!-- platform names that appear in the Platforms section on mref type and member pages 
+       The id values must be in sync with the platform/@name values used in the manifold  platformFilters.xml filter files.
+       These values are also used in <platformNotes>
+  -->
+  <item id="Win98">Windows 98</item>
+  <item id="WinME">Windows Millennium Edition</item>
+  <item id="WinSvr2000">Windows Server 2000 SP4</item>
+  <item id="WinXPPro64">Windows XP Professional x64 Edition</item>
+  <item id="WinXP">Windows XP SP3</item>
+  <item id="WindowsCE">Windows CE</item>
+  <item id="PocketPC">Windows Mobile for Pocket PC</item>
+  <item id="SmartPhone">Windows Mobile for Smartphone</item>
+  <item id="WinSvr2003">Windows Server 2003</item>
+  <item id="WinSvr2008">Windows Server 2008</item>
+  <item id="WinSvr2008R2">Windows Server 2008 R2</item>
+  <item id="WinXpMediaCenter">Windows XP Media Center Edition</item>
+  <item id="WinXPSE">Windows XP Starter Edition</item>
+  <item id="WinVista">Windows Vista</item>
+  <item id="Win7">Windows 7</item>
+  <item id="Xbox360">Xbox 360</item>
+  <item id="Zune">Zune</item>
+
+  <!-- framework ids:  
+       These shared content item strings are used for the headings in the Version Information section 
+       These ids must be in sync with the ids used in the config file for VersionBuilder.
+  -->
+  <item id="netfw">.NET Framework</item>
+  <item id="netcfw">.NET Compact Framework</item>
+  <item id="xnafw">XNA Framework</item>
+  <item id="silverlight">Silverlight</item>
+  <item id="silverlight_mobile">Silverlight for Windows Phone</item>
+  
+  <!-- framework version ids
+       These shared content item strings are used in the Version Information section.
+       These ids must be in sync with the ids used in the config file for VersionBuilder.
+       The ids are also used in the platformFilters.xml filter files to indicate the framework version supported by each platform
+  -->
+  <item id="netfw40">4.0</item>
+  <item id="netfw35_1">3.5 SP1</item>
+  <item id="netfw35">3.5</item>
+  <item id="netfw30_1">3.0 SP1</item>
+  <item id="netfw30">3.0</item>
+  <item id="netfw20_1">2.0 SP1</item>
+  <item id="netfw20">2.0</item>
+  <item id="netfw11">1.1</item>
+  <item id="netfw10">1.0</item>
+
+  <item id="netcfw37">3.7</item>
+  <item id="netcfw35">3.5</item>
+  <item id="netcfw20">2.0</item>
+  <item id="netcfw10">1.0</item>
+
+  <item id="xnafw10">1.0</item>
+
+  <!-- silverlight version ids used in Version Information section. -->
+  <item id="silverlight10">1.0</item>
+  <item id="silverlight20">2.0</item>
+  <item id="silverlight_v3">3.0</item>
+  <item id="silverlight_v4">4.0</item>
+  <item id="silverlight_mobile_v1">Windows Phone OS 7.0</item>
+
+  <!-- Used in the Requirements section to display an xmlns URI for apis that can be used in XAML -->
+  <item id="boilerplate_xamlXmlnsRequirements"><strong>XAML用XMLNS:</strong> {0}</item>
+  <item id="boilerplate_unmappedXamlXmlns">xmlnsにマップされていません。</item>
+
+  <item id="boilerplate_secondaryFrameworkOverride"><br/><br/>In <include item="{0}"/>, このメンバーは{1}でオーバーライドされています。</item>
+  <item id="boilerplate_secondaryFrameworkInherited"><br/><br/>In <include item="{0}"/>&#160;<include item="{1}"/>, このメンバーは、{2}{3}{4}から継承されます。</item>
+  <item id="boilerplate_secondaryFrameworkMember"><br/><br/>In <include item="{0}"/>&#160;<include item="{1}"/>, このメンバーは、{2}です。</item>
+  
+  <item id="boilerplate_useBaseSummary">このメンバーは{0}をオーバーライドしています。</item>
+  <item id="boilerplate_useBaseSee">{0}を参照してください。</item>
+  <item id="boilerplate_useBase">このメンバーは{0}をオーバーライドします。より完全なドキュメントはそのトピックで有効です。</item>
+
+  <item id="boilerplate_flagsSummary">この列挙体には、メンバーの値のビットごとの組み合わせを可能にする{0}属性があります。</item>
+
+	<!-- Legacy content -->
+	<item id="familyTitle"><include item="title_family"/></item>
+  <item id="allMembersTitle">メンバー</item>
+	<item id="membersTitle">オーバーロードの一覧</item>
+  <item id="hostProtectionAttributeShort"><include item="text_hostProtectionAttribute"/></item>
+	<item id="classLower"><include item="text_classLower"/></item>
+  <item id="delegateLower"><include item="text_delegateLower"/></item>
+  <item id="structureLower"><include item="text_structureLower"/></item>
+  <item id="interfaceLower"><include item="text_interfaceLower"/></item>
+  <item id="enumerationLower"><include item="text_enumerationLower"/></item>
+  <item id="SeeAlsoNamespaceLinkText"><include item="boilerplate_seeAlsoNamespaceLink"><parameter>{0}</parameter></include></item>
+  <item id="SeeAlsoTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
+  <item id="SeeAlsoMembersLinkText"><include item="boilerplate_seeAlsoMembersLink"><parameter>{0}</parameter></include></item>
+  <item id="SeeAlsoOverloadLinkText"><include item="boilerplate_seeAlsoOverloadLink"><parameter>{0}</parameter></include></item>
+  <item id="nonScrollingTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
+
+  <!-- Show Missing Component messages -->
+  <item id="SMCAutoDocConstructor"><referenceLink target="T:{0}" />クラスの新しいインスタンスを初期化します</item>
+  <item id="SMCAutoDocStaticConstructor"><referenceLink target="T:{0}" />クラスの静的フィールドを初期化します</item>
+  <item id="SMCAutoDocDispose"><referenceLink target="T:{0}" />によって使われているすべてのリソースを解放します</item>
+  <item id="SMCAutoDocDisposeBool"><referenceLink target="T:{0}" />によって使われているアンマネージリソースを解放し、オプションでマネージリソースも解放します。</item>
+  <item id="SMCAutoDocDisposeParam">マネージリソースとアンマネージリソースの両方を解放する場合はtrue、アンマネージリソースのみを解放する場合はfalse</item>
+  <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{1}"に対する&lt;{0}&gt;がありません]</p></item>
+  <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{2}"に対する&lt;{0} name="{1}"/&gt;がありません</p></item>
+  <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">['{0}'で使われている&lt;include&gt;ターゲットドキュメントがありません。File: '{1}' Path: '{2}']</p></item>
+</content>

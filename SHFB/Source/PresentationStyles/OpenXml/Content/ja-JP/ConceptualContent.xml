@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+
+	<!-- Section titles -->
+	<item id="title_inThisSection">セクションの内容</item>
+	<item id="title_buildInstructions">コードのコンパイル</item>
+	<item id="title_nextSteps">次の手順</item>
+	<item id="title_requirements">必須</item>
+	<item id="title_relatedSections">関連するセクション</item>
+	<item id="title_relatedTopics">参照</item>
+	<item id="title_syntax">構文</item>
+	<item id="title_parameters">パラメーター</item>
+	<item id="title_returnValue">戻り値</item>
+	<item id="title_attributesAndElements">属性と要素</item>
+	<item id="title_attributes">属性</item>
+	<item id="title_childElement">子要素</item>
+	<item id="title_parentElement">親要素</item>
+	<item id="title_elementInformation">要素情報</item>
+	<item id="title_textValue">テキスト値</item>
+	<item id="title_dotNetFrameworkEquivalent">.NET Framework と等価</item>
+	<item id="title_prerequisites">前提条件</item>
+	<item id="title_robustProgramming">ロバストなプログラミング</item>
+	<item id="title_securitySection">セキュリティ</item>
+	<item id="title_externalResources">外部リソース</item>
+	<item id="title_demonstrates">デモ</item>
+	<item id="title_appliesTo">適用対象</item>
+	<item id="title_conclusion">結論</item>
+	<item id="title_background">背景</item>
+	<item id="title_whatsNew">新着情報</item>
+	<item id="title_reference">参照</item>
+	<item id="title_errorMessage">エラーメッセージ</item>
+	<item id="title_example">例</item>
+
+	<!-- AutoOutline boilerplate -->
+	<item id="boilerplate_autoOutlineTopLevelIntro">このトピックは下記のセクションを含みます:</item>
+	<item id="boilerplate_autoOutlineSubsectionIntro">このトピックは下記のサブセクションを含みます:</item>
+
+	<!-- Resolve the autoOutline token -->
+	<item id="autoOutline">
+    <autoOutline />
+  </item>
+
+	<!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
+	<item id="boilerplate_copyrightNotice"><p>{0} ©{1}{2}. All rights reserved.</p></item>
+
+	<!-- Glossary related entries -->
+	<item id="text_relatedEntries">参照:</item>
+
+</content>

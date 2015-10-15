@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+
+	<!-- main window stuff -->
+	<item id="productTitle">.NET Framework 開発者ガイド</item>
+
+	<!-- body -->
+
+	<!-- section titles -->
+	<item id="title_inThisSection">セクションの内容</item>
+	<item id="title_buildInstructions">コードのコンパイル</item>
+	<item id="title_nextSteps">次の手順</item>
+	<item id="title_requirements">必須</item>
+	<item id="title_relatedSections">関連するセクション</item>
+	<item id="title_relatedTopics">参照</item>
+	<item id="title_syntax">構文</item>
+	<item id="title_parameters">パラメーター</item>
+	<item id="title_returnValue">戻り値</item>
+  <item id="title_attributesAndElements">属性と要素</item>
+	<item id="title_attributes">属性</item>
+	<item id="title_childElement">子要素</item>
+	<item id="title_parentElement">親要素</item>
+	<item id="title_elementInformation">要素情報</item>
+  <item id="title_textValue">テキスト値</item>
+  <item id="title_dotNetFrameworkEquivalent">.NET Framework と等価</item>
+  <item id="title_prerequisites">前提条件</item>
+  <item id="title_robustProgramming">ロバストなプログラミング</item>
+	<item id="title_securitySection">セキュリティ</item>
+	<item id="title_externalResources">外部リソース</item>
+	<item id="title_demonstrates">デモ</item>
+  <item id="title_appliesTo">適用対象</item>
+	<item id="title_conclusion">結論</item>
+  <item id="title_background">背景</item>
+	<item id="title_whatsNew">新着情報</item>
+  <item id="title_reference">参照</item>
+  <item id="title_errorMessage">エラーメッセージ</item>
+  <item id="title_example">例</item>
+
+  <!-- autoOutline boilerplate -->
+  <item id="boilerplate_autoOutlineTopLevelIntro">このトピックは下記のセクションを含みます:</item>
+	<item id="boilerplate_autoOutlineSubsectionIntro">このトピックは下記のサブセクションを含みます:</item>
+
+  <!-- resolve the autoOutline token -->
+  <item id="autoOutline">
+    <autoOutline/>
+  </item>
+
+  <!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
+  <item id="boilerplate_copyrightNotice"><p>{0} &#169;{1}{2}. All rights reserved.</p></item>
+
+  <!-- Glossary related entries -->
+  <item id="text_relatedEntries">参照:</item>
+
+	<!-- Legacy content -->
+
+	<!-- values for MSHelp:Attr Name="TopicType" -->
+  <item id="meta_mshelp_topicType_developerConceptualDocument">kbArticle</item>
+  <item id="meta_mshelp_topicType_developerErrorMessageDocument">kbRef</item>
+  <item id="meta_mshelp_topicType_developerGlossaryDocument">kbRef</item>
+  <item id="meta_mshelp_topicType_developerHowToDocument">kbHowTo</item>
+  <item id="meta_mshelp_topicType_developerOrientationDocument">kbOrient</item>
+  <item id="meta_mshelp_topicType_developerReferenceWithSyntaxDocument">kbSyntax</item>
+  <item id="meta_mshelp_topicType_developerReferenceWithoutSyntaxDocument">kbRef</item>
+  <item id="meta_mshelp_topicType_developerSampleDocument">kbSampleProd</item>
+  <item id="meta_mshelp_topicType_developerSDKTechnologyOverviewArchitectureDocument">kbArticle</item>
+  <item id="meta_mshelp_topicType_developerSDKTechnologyOverviewCodeDirectoryDocument">kbOrient</item>
+  <item id="meta_mshelp_topicType_developerSDKTechnologyOverviewOrientationDocument">kbOrient</item>
+  <item id="meta_mshelp_topicType_developerSDKTechnologyOverviewScenariosDocument">kbHowTo</item>
+  <item id="meta_mshelp_topicType_developerSDKTechnologyOverviewTechnologySummaryDocument">kbRef</item>
+  <item id="meta_mshelp_topicType_developerTroubleshootingDocument">kbHowTo</item>
+  <item id="meta_mshelp_topicType_developerUIReferenceDocument">kbRef</item>
+  <item id="meta_mshelp_topicType_developerWalkthroughDocument">kbHowTo</item>
+  <item id="meta_mshelp_topicType_developerWhitePaperDocument">kbArticle</item>
+  <item id="meta_mshelp_topicType_developerXmlReference">kbSyntax</item>
+  <item id="meta_mshelp_topicType_ManagedReference">apiref</item>
+
+</content>

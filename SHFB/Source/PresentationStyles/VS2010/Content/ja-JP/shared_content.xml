@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+
+	<!-- paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
+
+	<!-- locale -->
+	<item id="locale">en-US</item>
+	<item id="brandingLocaleCss">branding-en-US.css</item>
+
+	<item id="meta_help20_desktopTechnologyAttribute">kbNetFramewk</item>
+	<item id="meta_help20_netcfTechnologyAttribute">kbNetCompactFramewk</item>
+	<item id="meta_help20_netcfDocSetAttribute">NetCompactFramework</item>
+	<item id="meta_help20_xnaTechnologyAttribute">kbXNA</item>
+	<item id="meta_help20_xnaDocSetAttribute">XNA</item>
+
+	<!-- header and footer -->
+	<item id="header"><span class="introStyle"></span></item>
+	<item id="footer_text"></item>
+  
+	<!-- freshness date -->
+	<item id="boilerplate_UpdateTitle"><span class="introStyle">Updated: {0}</span></item>
+	<!-- if the TransformComponent of the BuildAssembler config file has the argument: 
+			 argument key="changeHistoryOptions" value="showDefaultFreshnessDate"
+			 the "text_defaultFreshnessDate" item is used as the default freshness date for topics that don't have a Change History table. -->
+	<item id="text_defaultFreshnessDate"/>
+  
+	<!-- topic title -->
+	<item id="boilerplate_pageTitle">{0}</item>
+
+	<!-- alert titles -->
+	<item id="alert_title_tip">ヒント</item>
+	<item id="alert_title_caution">注意</item>
+	<item id="alert_title_security">セキュリティ メモ</item>
+	<item id="alert_title_note">メモ</item>
+	<item id="alert_title_important">重要</item>
+	<item id="alert_title_visualBasic">Visual Basic メモ</item>
+	<item id="alert_title_visualC#">C# メモ</item>
+	<item id="alert_title_visualC++">C++ メモ</item>
+	<item id="alert_title_visualJ#">J# メモ</item>
+
+	<!-- alert alt text -->
+	<item id="alert_altText_tip">ヒント</item>
+	<item id="alert_altText_caution">注意 メモ</item>
+	<item id="alert_altText_security">セキュリティ メモ</item>
+	<item id="alert_altText_note">メモ</item>
+	<item id="alert_altText_important">重要 メモ</item>
+	<item id="alert_altText_visualBasic">Visual Basic メモ</item>
+	<item id="alert_altText_visualC#">C# メモ</item>
+	<item id="alert_altText_visualC++">C++ メモ</item>
+	<item id="alert_altText_visualJ#">J# メモ</item>	
+
+	<!-- section titles -->
+	<item id="title_remarks">解説</item>
+	<item id="title_changeHistory">変更履歴</item>
+	<item id="title_events">イベント</item>
+	<item id="title_exceptions">例外</item>
+	<item id="title_contracts">契約</item>
+	<item id="title_setter">Set</item>
+	<item id="title_getter">Get</item>
+	<item id="title_seeAlso_tasks">タスク</item>
+	<item id="title_seeAlso_reference">参照</item>
+	<item id="title_seeAlso_concepts">コンセプト</item>
+	<item id="title_seeAlso_otherResources">その他のリソース</item>
+	<item id="title_revisionHistory">バージョン履歴</item>
+
+	<!-- dynamic Link Information -->
+	<item id="meta_mshelp_KTable"><MSHelp:ktable keywords='{0}' locHeader='Location' topicHeader = 'Topic'
+		disambiguator='table' indexMoniker='!DefaultDynamicLinkIndex' /></item>
+
+	<item id="inline_dynamicLink_prefixText">より詳しくは、</item>
+	<item id="inline_dynamicLink_postfixText">を参照してください。</item>
+	<item id="inline_dynamicLink_separatorText">と</item>
+  
+	<!-- Development language and code snippet titles for languages without a syntax generator -->
+	<item id="devlang_HTML">HTML</item>
+	<item id="devlang_PShell">PowerShell</item>
+	<item id="devlang_Python">Python</item>
+	<item id="devlang_SQL">SQL</item>
+	<item id="devlang_VBScript">Visual Basic Script</item>
+	<item id="devlang_VisualBasicAndCSharp">Visual Basic と C#</item>
+	<item id="devlang_XML">XML</item>
+
+	<item id="noCodeExample"><p>現在有効なコード例がないか、この言語ではサポートされていません。</p></item>
+
+	<!-- Development language metadata values for languages without a syntax generator -->
+	<item id="metaLang_HTML">HTML</item>
+	<item id="metaLang_PShell">PowerShell</item>
+	<item id="metaLang_Python">Python</item>
+	<item id="metaLang_SQL">SQL</item>
+	<item id="metaLang_VBScript">VBScript</item>
+	<item id="metaLang_VisualBasicAndCSharp">VB と C#</item>
+	<item id="metaLang_XML">XML</item>
+
+	<!-- language keywords -->
+	<item id="devlang_nullKeyword">null参照(Visual Basicでは<span class="keyword">Nothing</span>)</item>
+	<item id="devlang_staticKeyword"><span class="keyword">static</span> (Visual Basicでは<span class="keyword">Shared</span>)</item>
+	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (Visual Basicでは<span class="keyword">Overridable</span>)</item>
+	<item id="devlang_trueKeyword"><span class="keyword">true</span> (Visual Basicでは<span class="keyword">True</span>)</item>
+	<item id="devlang_falseKeyword"><span class="keyword">false</span> (Visual Basicでは<span class="keyword">False</span>)</item>
+	<item id="devlang_abstractKeyword"><span class="keyword">abstract</span> (Visual Basicでは<span class="keyword">MustInherit</span>)</item>
+	<item id="devlang_sealedKeyword"><span class="keyword">sealed</span> (Visual Basicでは<span class="keyword">NotInheritable</span>)</item>
+	<item id="devlang_asyncKeyword"><span class="keyword">async</span> (Visual Basicでは<span class="keyword">Async</span>)</item>
+	<item id="devlang_awaitKeyword"><span class="keyword">await</span> (Visual Basicでは<span class="keyword">Await</span>)</item>
+	<item id="devlang_asyncAwaitKeyword"><span class="keyword">async</span>/<span class="keyword">await</span> (Visual Basicでは<span class="keyword">Async</span>/<span class="keyword">Await</span>)</item>
+
+	<!-- transforms insert K Index Technology qualifiers based on a conceptual topic's //metadata/attribute[@name='DocSet'] value />-->
+	<!-- If you add new docset values, the item/@id must = "meta_kIndexTechTag_" + the lower-case DocSet name. -->
+	<item id="meta_kIndexTermWithTechQualifier">{0}<include item="meta_kIndexTechTag_{1}" />{2}</item>
+	<item id="meta_kIndexTechTag_avalon"> [WPF]</item>
+	<item id="meta_kIndexTechTag_wpf"> [WPF]</item>
+	<item id="meta_kIndexTechTag_wcf"> [Windows Communication Foundation]</item>
+	<item id="meta_kIndexTechTag_windowsforms"> [Windows Forms]</item>
+
+	<item id="top">トップ</item>
+
+	<!-- Copyright -->
+	<item id="copyright_info"><include item="copyright_text"/></item>
+	<item id="copyright_link"></item>
+	<item id="copyright_text">&#169; 2005 Microsoft Corporation. All rights reserved.</item>
+
+	<!-- Bibliography -->
+	<item id="bibliographyTitle">参考文献</item>
+
+	<!-- Legacy shared content -->
+	<item id="copyrightText"><include item="copyright_text"/></item>
+	<item id="copyCode">コピー</item>
+
+</content>
