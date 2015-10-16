@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/01/2015
+// Updated : 10/13/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -662,6 +662,9 @@ namespace SandcastleBuilder.WPF.UserControls
             spIndexingPanel.Visibility = Visibility.Collapsed;
 
             codeEntities = new List<string>(cache.AllKeys);
+
+            // Add an entry for the root namespace container
+            codeEntities.Add("R:Project_" + currentProject.HtmlHelpName.Replace(" ", "_"));
 
             if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
             {

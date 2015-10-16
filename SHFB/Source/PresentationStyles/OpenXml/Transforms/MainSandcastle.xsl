@@ -1044,6 +1044,18 @@
 
 	<xsl:template match="see[@cref]" name="t_seeCRef">
 		<xsl:choose>
+			<xsl:when test="starts-with(@cref,'R:')">
+				<referenceLink target="{@cref}">
+					<xsl:choose>
+						<xsl:when test="normalize-space(.)">
+							<xsl:value-of select="." />
+						</xsl:when>
+						<xsl:otherwise>
+							<include item="topicTitle_root" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</referenceLink>
+			</xsl:when>
 			<xsl:when test="starts-with(@cref,'O:')">
 				<referenceLink target="{concat('Overload:',substring(@cref,3))}" display-target="format"
 					show-parameters="false">
@@ -1165,6 +1177,18 @@
 		<xsl:param name="displaySeeAlso" select="false()"/>
 		<xsl:if test="$displaySeeAlso">
 			<xsl:choose>
+				<xsl:when test="starts-with(@cref,'R:')">
+					<referenceLink target="{@cref}">
+						<xsl:choose>
+							<xsl:when test="normalize-space(.)">
+								<xsl:value-of select="." />
+							</xsl:when>
+							<xsl:otherwise>
+								<include item="topicTitle_root" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</referenceLink>
+				</xsl:when>
 				<xsl:when test="starts-with(@cref,'O:')">
 					<referenceLink target="{concat('Overload:',substring(@cref,3))}" display-target="format"
 						show-parameters="false">

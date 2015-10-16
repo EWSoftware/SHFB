@@ -1245,9 +1245,15 @@
 					<xsl:value-of select="@autoUpgrade"/>
 				</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="normalize-space(@linkText)">
-				<xsl:value-of select="normalize-space(@linkText)"/>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="normalize-space(@linkText)">
+					<xsl:value-of select="normalize-space(@linkText)"/>
+				</xsl:when>
+				<xsl:when test="starts-with(normalize-space(.), 'R:')">
+					<include item="topicTitle_root" />
+				</xsl:when>
+				<xsl:otherwise />
+			</xsl:choose>
 		</referenceLink>
 	</xsl:template>
 

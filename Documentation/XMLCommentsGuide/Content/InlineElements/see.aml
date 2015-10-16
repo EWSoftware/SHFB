@@ -56,6 +56,13 @@ false and it takes you to the method page.  This is equivalent to the same attri
 <codeInline>codeEntityReference</codeInline> element.  Another alternative is to use the fully qualified member
 name with an "<codeInline>O:</codeInline>" prefix.  See the <link xlink:href="#Examples">Method Overload Examples</link>
 below for details.</para>
+
+						<alert class="tip">
+							<para>To link to the root namespace container page, use the ID <codeInline>R:Project_[HtmlHelpName]</codeInline>
+where "<codeInline>[HtmlHelpName]</codeInline>" is the value of your project's HTML Help Name property with
+spaces replaced by underscores. Use the <ui>Entity References</ui> tool window to search for the ID if in doubt
+about its value.</para>
+						</alert>
 					</content>
 				</section>
 

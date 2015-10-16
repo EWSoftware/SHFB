@@ -75,6 +75,13 @@ the member type:</para>
 					</row>
 				</table>
 
+				<alert class="tip">
+					<para>To link to the root namespace container page, use the ID <codeInline>R:Project_[HtmlHelpName]</codeInline>
+where "<codeInline>[HtmlHelpName]</codeInline>" is the value of your project's HTML Help Name property with
+spaces replaced by underscores. Use the <ui>Entity References</ui> tool window to search for the ID if in doubt
+about its value.</para>
+				</alert>
+				
 				<para>There are three optional attributes.</para>
 
 				<table>
@@ -172,6 +179,7 @@ own link text.</para>
 						M:System.IO.FileStream.Flush
 					</codeEntityReference>
 				</para>
+
 			</content>
 		</section>
 		<relatedTopics>
