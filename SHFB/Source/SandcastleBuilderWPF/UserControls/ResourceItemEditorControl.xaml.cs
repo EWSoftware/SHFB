@@ -2,23 +2,23 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/06/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 10/26/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to edit resource item files
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/21/2011  EFW  Created the code
-// 1.9.6.0  10/27/2012  EFW  Updated to use the presentation style configuration file
-// -------  01/07/2014  EFW  Updated to use MEF to load presentation style information
-//          08/06/2014  EFW  Added support for syntax generator resource item files
+// 12/21/2011  EFW  Created the code
+// 10/27/2012  EFW  Updated to use the presentation style configuration file
+// 01/07/2014  EFW  Updated to use MEF to load presentation style information
+// 08/06/2014  EFW  Added support for syntax generator resource item files
 //===============================================================================================================
 
 using System;
@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,7 +34,6 @@ using System.Xml;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
-
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 
@@ -112,7 +112,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 resourceItemFilename = resourceItemsFile;
 
                 using(var container = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
-                  Path.GetDirectoryName(project.Filename) }))
+                  Path.GetDirectoryName(project.Filename) }, CancellationToken.None))
                 {
                     var presentationStyles = container.GetExports<PresentationStyleSettings, IPresentationStyleMetadata>();
                     var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(

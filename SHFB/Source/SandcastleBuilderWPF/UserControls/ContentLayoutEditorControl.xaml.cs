@@ -122,9 +122,6 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public ContentLayoutEditorControl()
         {
-            // Merge the shared resources
-// TODO: Remove?            this.Resources.MergedDictionaries.Add(SharedResources.SplitButtonStyleResources);
-
             InitializeComponent();
 
             cboApiParentMode.ItemsSource = (new Dictionary<ApiParentMode, string>

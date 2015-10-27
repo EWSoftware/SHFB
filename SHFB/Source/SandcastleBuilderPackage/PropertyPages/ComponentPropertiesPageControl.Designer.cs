@@ -15,8 +15,12 @@
         {
             if(disposing)
             {
-                if(componentContainer != null)
-                    componentContainer.Dispose();
+                if(componentCache != null)
+                {
+                    componentCache.ComponentContainerLoaded -= componentCache_ComponentContainerLoaded;
+                    componentCache.ComponentContainerLoadFailed -= componentCache_ComponentContainerLoadFailed;
+                    componentCache.ComponentContainerReset -= componentCache_ComponentContainerReset;
+                }
 
                 if(components != null)
                     components.Dispose();

@@ -202,6 +202,7 @@
     <Compile Include="PropertyPages\BuildEventPropertiesPageControl.Designer.cs">
       <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="PropertyPages\ComponentCache.cs" />
     <Compile Include="PropertyPages\TransformArgumentsPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildReflectionDataDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/29/2015
+// Updated : 10/16/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -131,11 +131,11 @@ namespace ReflectionDataManager
                 btnBuild.IsEnabled = true;
                 pbProgress.Visibility = System.Windows.Visibility.Hidden;
 
-                if(cancellationTokenSource.IsCancellationRequested)
-                    this.Close();
-
                 if(cancellationTokenSource != null)
                 {
+                    if(cancellationTokenSource.IsCancellationRequested)
+                        this.Close();
+
                     cancellationTokenSource.Dispose();
                     cancellationTokenSource = null;
                 }

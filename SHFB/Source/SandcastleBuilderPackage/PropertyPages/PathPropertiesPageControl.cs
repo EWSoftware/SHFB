@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/03/2015
+// Updated : 10/26/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 //===============================================================================================================
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 #if !STANDALONEGUI
@@ -63,12 +64,34 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             get
             {
+                SandcastleProject currentProject = null;
+                string[] searchFolders;
+
                 txtOutputPath.Text = txtOutputPath.Text.Trim();
 
                 if(txtOutputPath.Text.Length == 0)
                     txtOutputPath.Text = @".\Help\";
                 else
                     txtOutputPath.Text = FolderPath.TerminatePath(txtOutputPath.Text);
+
+#if !STANDALONEGUI
+                if(this.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject;
+#else
+                currentProject = this.CurrentProject;
+#endif
+                // If necessary, force a reset of the shared component cache to reflect changes made to the
+                // component path project property.
+                if(currentProject != null)
+                {
+                    FolderPath componentPath = new FolderPath(txtComponentPath.PersistablePath, currentProject);
+
+                    searchFolders = new[] { componentPath.ToString(), Path.GetDirectoryName(currentProject.Filename) };
+
+                    var componentCache = ComponentCache.CreateComponentCache(currentProject.Filename);
+
+                    componentCache.LoadComponentContainer(searchFolders);
+                }
 
                 return true;
             }

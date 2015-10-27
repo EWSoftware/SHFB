@@ -165,9 +165,6 @@ namespace SandcastleBuilder.WPF.UserControls
             browserHistory = new List<Uri>();
             historyLocation = -1;
 
-            // Merge the shared resources
-// TODO: Remove?           this.Resources.MergedDictionaries.Add(SharedResources.SplitButtonStyleResources);
-
             InitializeComponent();
         }
         #endregion

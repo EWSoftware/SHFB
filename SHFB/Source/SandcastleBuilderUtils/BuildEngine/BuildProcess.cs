@@ -763,7 +763,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
-                    Path.GetDirectoryName(project.Filename) });
+                    Path.GetDirectoryName(project.Filename) }, this.CancellationToken);
 
                 syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();

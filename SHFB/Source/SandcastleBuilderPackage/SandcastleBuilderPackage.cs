@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
+// Updated : 10/26/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -127,6 +127,8 @@ namespace SandcastleBuilder.Package
         //=====================================================================
 
         private BuildCompletedEventListener buildCompletedListener;
+        private SolutionEvents solutionEvents;
+
         #endregion
 
         #region Properties
@@ -338,6 +340,25 @@ namespace SandcastleBuilder.Package
 
             // Create the update solution event listener for build completed events
             buildCompletedListener = new BuildCompletedEventListener(this);
+
+            // Register for solution events so that we can clear the component cache when necessary
+            var dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
+
+            if(dte != null && dte.Events != null)
+            {
+                solutionEvents = dte.Events.SolutionEvents;
+
+                if(solutionEvents != null)
+                    solutionEvents.AfterClosing += solutionEvents_AfterClosing;
+            }
+        }
+
+        /// <summary>
+        /// This is used to clear the component cache whenever a solution is closed
+        /// </summary>
+        private void solutionEvents_AfterClosing()
+        {
+            ComponentCache.Clear();
         }
         #endregion
 

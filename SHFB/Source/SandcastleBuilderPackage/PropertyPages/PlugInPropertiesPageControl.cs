@@ -2,27 +2,26 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/16/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 10/26/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Plug-Ins category properties
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
-// -------  12/18/2013  EFW  Updated to use MEF for the plug-ins
+// 03/27/2011  EFW  Created the code
+// 10/28/2012  EFW  Updated for use in the standalone GUI
+// 12/18/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -31,12 +30,12 @@ using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
-#if !STANDALONEGUI
+#if STANDALONEGUI
+using Sandcastle.Core;
+#else
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
 #endif
-
-using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -52,10 +51,12 @@ namespace SandcastleBuilder.Package.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private CompositionContainer componentContainer;
         private List<Lazy<IPlugIn, IPlugInMetadata>> availablePlugIns;
         private PlugInConfigurationDictionary currentConfigs;
-        private string messageBoxTitle, lastProjectName;
+        private ComponentCache componentCache;
+
+        private string messageBoxTitle;
+
         #endregion
 
         #region Constructor
@@ -78,132 +79,43 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
         #endregion
 
-        #region Helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// Try to load information about all available plug-ins so that they can be added to the project
-        /// </summary>
-        private void LoadAvailablePlugInMetadata()
-        {
-            SandcastleProject currentProject = null;
-            HashSet<string> plugInIds = new HashSet<string>();
-
-            try
-            {
-                Cursor.Current = Cursors.WaitCursor;
-
-                if(componentContainer != null)
-                {
-                    componentContainer.Dispose();
-                    componentContainer = null;
-                    availablePlugIns = null;
-                }
-
-#if !STANDALONEGUI
-                if(base.ProjectMgr != null)
-                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-#else
-                currentProject = base.CurrentProject;
-#endif
-                lastProjectName = currentProject == null ? null : currentProject.Filename;
-
-                if(currentProject != null)
-                    componentContainer = ComponentUtilities.CreateComponentContainer(new[] {
-                        currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
-                else
-                    componentContainer = ComponentUtilities.CreateComponentContainer(new string[] { });
-
-                lbProjectPlugIns.Items.Clear();
-
-                availablePlugIns = componentContainer.GetExports<IPlugIn, IPlugInMetadata>().ToList();
-
-                // There may be duplicate component IDs across the assemblies found.  See
-                // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
-                // component for a unique ID will be used.  We also ignore hidden plug-ins.
-                foreach(var plugIn in availablePlugIns)
-                    if(!plugIn.Metadata.IsHidden && !plugInIds.Contains(plugIn.Metadata.Id))
-                    {
-                        lbAvailablePlugIns.Items.Add(plugIn.Metadata.Id);
-                        plugInIds.Add(plugIn.Metadata.Id);
-                    }
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-                MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, messageBoxTitle,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-            }
-
-            if(lbAvailablePlugIns.Items.Count != 0)
-            {
-                lbAvailablePlugIns.SelectedIndex = 0;
-                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = true;
-            }
-            else
-            {
-                MessageBox.Show("No valid plug-ins found", messageBoxTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = false;
-            }
-        }
-        #endregion
-
         #region Method overrides
         //=====================================================================
 
         /// <inheritdoc />
         protected override bool BindControlValue(Control control)
         {
-            ProjectProperty projProp;
-            int idx;
-
-            lbProjectPlugIns.Items.Clear();
-            btnConfigure.Enabled = btnDelete.Enabled = false;
+            SandcastleProject currentProject = null;
+            string[] searchFolders;
 
 #if !STANDALONEGUI
-            SandcastleProject currentProject = null;
-
-            if(base.ProjectMgr != null)
-                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-
-            if(componentContainer == null || currentProject == null || currentProject.Filename != lastProjectName)
-                this.LoadAvailablePlugInMetadata();
-
-            if(this.ProjectMgr == null || currentProject == null)
-                return false;
-
-            projProp = this.ProjectMgr.BuildProject.GetProperty("PlugInConfigurations");
+            if(this.ProjectMgr != null)
+                currentProject = ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject;
 #else
-            if(componentContainer == null || base.CurrentProject == null ||
-              base.CurrentProject.Filename != lastProjectName)
-                this.LoadAvailablePlugInMetadata();
-
-            if(base.CurrentProject == null)
-                return false;
-
-            projProp = base.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
+            currentProject = this.CurrentProject;
 #endif
-            currentConfigs = new PlugInConfigurationDictionary();
-
-            if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
-                currentConfigs.FromXml(projProp.UnevaluatedValue);
-
-            foreach(string key in currentConfigs.Keys)
+            if(currentProject == null)
             {
-                idx = lbProjectPlugIns.Items.Add(key);
-                lbProjectPlugIns.SetItemChecked(idx, currentConfigs[key].Enabled);
+                lbProjectPlugIns.Items.Clear();
+                gbProjectAddIns.Enabled = false;
             }
-
-            if(lbProjectPlugIns.Items.Count != 0)
+            else
             {
-                lbProjectPlugIns.SelectedIndex = 0;
-                btnConfigure.Enabled = btnDelete.Enabled = true;
+                searchFolders = new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) };
+
+                if(componentCache == null)
+                {
+                    componentCache = ComponentCache.CreateComponentCache(currentProject.Filename);
+
+                    componentCache.ComponentContainerLoaded += componentCache_ComponentContainerLoaded;
+                    componentCache.ComponentContainerLoadFailed += componentCache_ComponentContainerLoadFailed;
+                    componentCache.ComponentContainerReset += componentCache_ComponentContainerReset;
+                }
+
+                if(componentCache.LoadComponentContainer(searchFolders))
+                    this.componentCache_ComponentContainerLoaded(this, EventArgs.Empty);
+                else
+                    this.componentCache_ComponentContainerReset(this, EventArgs.Empty);
             }
 
             return true;
@@ -218,10 +130,10 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             this.ProjectMgr.SetProjectProperty("PlugInConfigurations", currentConfigs.ToXml());
 #else
-            if(base.CurrentProject == null)
+            if(this.CurrentProject == null)
                 return false;
 
-            base.CurrentProject.MSBuildProject.SetProperty("PlugInConfigurations", currentConfigs.ToXml());
+            this.CurrentProject.MSBuildProject.SetProperty("PlugInConfigurations", currentConfigs.ToXml());
 #endif
             return true;
         }
@@ -325,11 +237,11 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             SandcastleProject currentProject = null;
 
-            if(base.ProjectMgr != null)
-                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+            if(this.ProjectMgr != null)
+                currentProject = ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject;
 
 #else
-            SandcastleProject currentProject = base.CurrentProject;
+            SandcastleProject currentProject = this.CurrentProject;
 #endif
             if(currentProject == null)
                 return;
@@ -403,6 +315,142 @@ namespace SandcastleBuilder.Package.PropertyPages
                         lbProjectPlugIns.SelectedIndex = idx;
                     else
                         lbProjectPlugIns.SelectedIndex = idx - 1;
+            }
+        }
+
+        /// <summary>
+        /// This is called when the component cache is reset prior to loading it
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void componentCache_ComponentContainerReset(object sender, EventArgs e)
+        {
+            if(!this.IsDisposed)
+            {
+                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = false;
+                lbAvailablePlugIns.Items.Clear();
+                lbProjectPlugIns.Items.Clear();
+                lbAvailablePlugIns.Items.Add("Loading...");
+            }
+        }
+
+        /// <summary>
+        /// This is called when the component cache load operation fails
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void componentCache_ComponentContainerLoadFailed(object sender, EventArgs e)
+        {
+            if(!this.IsDisposed)
+            {
+                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = false;
+                lbAvailablePlugIns.Items.Clear();
+                lbProjectPlugIns.Items.Clear();
+                lbAvailablePlugIns.Items.Add("Unable to load transform component arguments");
+                txtPlugInDescription.Text = componentCache.LastError.ToString();
+            }
+        }
+
+        /// <summary>
+        /// This is called when the component cache has finished being loaded and is available for use
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void componentCache_ComponentContainerLoaded(object sender, EventArgs e)
+        {
+            ProjectProperty projProp;
+            int idx;
+
+            if(this.IsDisposed)
+                return;
+
+            lbAvailablePlugIns.Items.Clear();
+
+            HashSet<string> plugInIds = new HashSet<string>();
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                lbProjectPlugIns.Items.Clear();
+
+                availablePlugIns = componentCache.ComponentContainer.GetExports<IPlugIn, IPlugInMetadata>().ToList();
+
+                // There may be duplicate component IDs across the assemblies found.  See
+                // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
+                // component for a unique ID will be used.  We also ignore hidden plug-ins.
+                foreach(var plugIn in availablePlugIns)
+                    if(!plugIn.Metadata.IsHidden && !plugInIds.Contains(plugIn.Metadata.Id))
+                    {
+                        lbAvailablePlugIns.Items.Add(plugIn.Metadata.Id);
+                        plugInIds.Add(plugIn.Metadata.Id);
+                    }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Unexpected error loading build components: " + ex.Message, messageBoxTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+
+            if(lbAvailablePlugIns.Items.Count != 0)
+            {
+                lbAvailablePlugIns.SelectedIndex = 0;
+                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No valid build components found", messageBoxTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = false;
+                return;
+            }
+
+#if !STANDALONEGUI
+            if(this.ProjectMgr == null)
+                return;
+
+            projProp = this.ProjectMgr.BuildProject.GetProperty("PlugInConfigurations");
+#else
+            if(this.CurrentProject == null)
+                return;
+
+            projProp = this.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
+#endif
+            currentConfigs = new PlugInConfigurationDictionary();
+
+            if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
+                currentConfigs.FromXml(projProp.UnevaluatedValue);
+
+            // May already be binding so preserve the original state
+            bool isBinding = this.IsBinding;
+
+            try
+            {
+                this.IsBinding = true;
+
+                foreach(string key in currentConfigs.Keys)
+                {
+                    idx = lbProjectPlugIns.Items.Add(key);
+                    lbProjectPlugIns.SetItemChecked(idx, currentConfigs[key].Enabled);
+                }
+
+                if(lbProjectPlugIns.Items.Count != 0)
+                {
+                    lbProjectPlugIns.SelectedIndex = 0;
+                    btnConfigure.Enabled = btnDelete.Enabled = true;
+                }
+                else
+                    btnConfigure.Enabled = btnDelete.Enabled = false;
+            }
+            finally
+            {
+                this.IsBinding = isBinding;
             }
         }
         #endregion

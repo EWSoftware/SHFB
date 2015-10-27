@@ -119,6 +119,9 @@
       <Link>PropertyPages\BuildPropertiesPageControl.designer.cs</Link>
       <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentCache.cs">
+      <Link>PropertyPages\ComponentCache.cs</Link>
+    </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.cs">
       <Link>PropertyPages\ComponentPropertiesPageControl.cs</Link>
       <SubType>UserControl</SubType>

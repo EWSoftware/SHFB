@@ -51,7 +51,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         // This is used to define custom controls and their value property
         private static Dictionary<string, string> customControls = new Dictionary<string, string>();
 
-        private bool isDirty, isBinding;
+        private bool isDirty;
         #endregion
 
         #region Properties
@@ -78,12 +78,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         protected string HelpKeyword { get; set; }
 
         /// <summary>
-        /// This read-only property returns true if binding is occurring or false if not
+        /// This is used to indicate whether or not binding is occurring
         /// </summary>
-        protected bool IsBinding
-        {
-            get { return isBinding; }
-        }
+        /// <value>If true, binding is occurring and property changed events will not be raised</value>
+        protected bool IsBinding { get; set; }
 
         /// <summary>
         /// This is used to get or set the dirty state of the property page
@@ -93,7 +91,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             get { return isDirty; }
             set
             {
-                if(isDirty != value && !isBinding)
+                if(isDirty != value && !this.IsBinding)
                 {
                     isDirty = value;
 
@@ -211,7 +209,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         protected void OnPropertyChanged(object sender, EventArgs e)
         {
-            if(!isBinding)
+            if(!this.IsBinding)
             {
                 this.IsDirty = true;
                 this.RefreshControlState(sender, e);
@@ -292,7 +290,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             try
             {
-                isBinding = true;
+                this.IsBinding = true;
 
                 foreach(Control c in controls)
                 {
@@ -419,7 +417,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             }
             finally
             {
-                isBinding = false;
+                this.IsBinding = false;
             }
         }
 

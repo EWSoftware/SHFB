@@ -518,7 +518,10 @@ namespace SandcastleBuilder.Gui
                 }
 
                 if(project != null)
+                {
+                    SandcastleBuilder.Package.PropertyPages.ComponentCache.RemoveComponentCache(project.Filename);
                     project.Dispose();
+                }
 
                 project = projectExplorer.CurrentProject = projectProperties.CurrentProject = null;
                 this.UpdateFilenameInfo();

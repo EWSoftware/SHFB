@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 05/03/2015
+// Updated : 10/26/2015
 // Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,13 +13,13 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.6.0  10/27/2012  EFW  Added support for the new presentation style definition file
-// -------  12/13/2013  EFW  Added support for namespace grouping
-//          12/21/2013  EFW  Updated to use MEF for loading the syntax generators
-//          01/05/2014  EFW  Updated to use MEF for loading the presentation styles
+// 03/27/2011  EFW  Created the code
+// 10/27/2012  EFW  Added support for the new presentation style definition file
+// 12/13/2013  EFW  Added support for namespace grouping
+// 12/21/2013  EFW  Updated to use MEF for loading the syntax generators
+// 01/05/2014  EFW  Updated to use MEF for loading the presentation styles
 //===============================================================================================================
 
 using System;
@@ -57,7 +57,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
         private List<ISyntaxGeneratorMetadata> syntaxGenerators;
         private List<IPresentationStyleMetadata> presentationStyles;
-        private string messageBoxTitle, lastProjectName;
+        private ComponentCache componentCache;
+        private string messageBoxTitle;
+
         #endregion
 
         #region Constructor
@@ -93,10 +95,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 { NamingMethod.MemberName.ToString(), "Member name" },
                 { NamingMethod.HashedMemberName.ToString(), "Hashed member name" } }).ToList();
 
-            // The presentation style data source is loaded when needed
-            cboPresentationStyle.DisplayMember = "Title";
-            cboPresentationStyle.ValueMember = "Id";
-
             cboSdkLinkTarget.Items.AddRange(Enum.GetNames(typeof(SdkLinkTarget)).OfType<Object>().ToArray());
             cboSdkLinkTarget.SelectedItem = SdkLinkTarget.Blank.ToString();
 
@@ -109,109 +107,6 @@ namespace SandcastleBuilder.Package.PropertyPages
 
         #region Helper methods
         //=====================================================================
-
-        /// <summary>
-        /// Try to load information about all available syntax generators so that they can be selected for use
-        /// in the project.
-        /// </summary>
-        /// <returns>True on success, false on failure or if no project is loaded</returns>
-        private void LoadAvailableSyntaxGeneratorsAndPresentationStyles()
-        {
-            SandcastleProject currentProject = null;
-            HashSet<string> generatorIds = new HashSet<string>(), presentationStyleIds = new HashSet<string>();
-            string[] searchFolders;
-
-            try
-            {
-                Cursor.Current = Cursors.WaitCursor;
-
-                syntaxGenerators = new List<ISyntaxGeneratorMetadata>();
-                presentationStyles = new List<IPresentationStyleMetadata>();
-
-#if !STANDALONEGUI
-                if(base.ProjectMgr != null)
-                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-#else
-                currentProject = base.CurrentProject;
-#endif
-                lastProjectName = currentProject == null ? null : currentProject.Filename;
-
-                if(currentProject != null)
-                    searchFolders = new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) };
-                else
-                    searchFolders = new string[] { };
-
-                using(var componentContainer = ComponentUtilities.CreateComponentContainer(searchFolders))
-                {
-                    cblSyntaxFilters.Items.Clear();
-
-                    var generators = componentContainer.GetExports<ISyntaxGeneratorFactory,
-                        ISyntaxGeneratorMetadata>().Select(g => g.Metadata).ToList();
-
-                    // There may be duplicate generator IDs across the assemblies found.  See
-                    // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the
-                    // first component for a unique ID will be used.
-                    foreach(var generator in generators)
-                        if(!generatorIds.Contains(generator.Id))
-                        {
-                            syntaxGenerators.Add(generator);
-                            generatorIds.Add(generator.Id);
-                        }
-
-                    cboPresentationStyle.DataSource = null;
-
-                    var styles = componentContainer.GetExports<PresentationStyleSettings,
-                        IPresentationStyleMetadata>().Select(g => g.Metadata).ToList();
-
-                    // As above for duplicates
-                    foreach(var style in styles)
-                        if(!presentationStyleIds.Contains(style.Id))
-                        {
-                            presentationStyles.Add(style);
-                            presentationStyleIds.Add(style.Id);
-                        }
-                }
-
-                cblSyntaxFilters.Items.AddRange(syntaxGenerators.Select(f => f.Id).OrderBy(f => f).ToArray());
-                cboPresentationStyle.DataSource = presentationStyles.OrderBy(s => s.IsDeprecated ? 1 : 0).ThenBy(
-                    s => s.Id).ToList();
-                cboPresentationStyle.SelectedValue = Constants.DefaultPresentationStyle;
-
-                // Resize the syntax filter columns to the widest entry
-                int width, maxWidth = 0;
-
-                foreach(string s in cblSyntaxFilters.Items)
-                {
-                    width = TextRenderer.MeasureText(s, this.Font).Width;
-
-                    if(width > maxWidth)
-                        maxWidth = width;
-                }
-
-                cblSyntaxFilters.ColumnWidth = maxWidth + 20;
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-                MessageBox.Show("Unexpected error loading syntax generators and presentation styles: " +
-                    ex.Message, messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-            }
-
-            if(cblSyntaxFilters.Items.Count != 0)
-                cblSyntaxFilters.SelectedIndex = 0;
-            else
-                MessageBox.Show("No valid syntax generators found", messageBoxTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-            if(cboPresentationStyle.Items.Count == 0)
-                MessageBox.Show("No valid presentation styles found", messageBoxTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-        }
 
         /// <summary>
         /// This adds a language to the language combo box if possible
@@ -311,9 +206,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool BindControlValue(Control control)
         {
+            SandcastleProject currentProject = null;
             ProjectProperty projProp = null;
-            List<string> allFilters;
-            int idx;
+            string[] searchFolders;
 
 #if !STANDALONEGUI
             if(this.ProjectMgr == null)
@@ -339,52 +234,35 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return true;
             }
 
-            // Set the selected syntax filters
+            // Load the presentation styles and syntax filters
             if(control.Name == "cblSyntaxFilters")
             {
-                for(idx = 0; idx < cblSyntaxFilters.Items.Count; idx++)
-                    cblSyntaxFilters.SetItemChecked(idx, false);
-
 #if !STANDALONEGUI
-                SandcastleProject currentProject = null;
-
-                if(base.ProjectMgr != null)
-                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-
-                if(syntaxGenerators == null || presentationStyles == null || currentProject == null ||
-                  currentProject.Filename != lastProjectName)
-                    this.LoadAvailableSyntaxGeneratorsAndPresentationStyles();
-
-                if(base.ProjectMgr != null)
-                    projProp = base.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
+                currentProject = ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject;
 #else
-                if(syntaxGenerators == null || presentationStyles == null || base.CurrentProject == null ||
-                  base.CurrentProject.Filename != lastProjectName)
-                    this.LoadAvailableSyntaxGeneratorsAndPresentationStyles();
-
-                if(base.CurrentProject != null)
-                    projProp = base.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
+                currentProject = this.CurrentProject;
 #endif
+                searchFolders = new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) };
 
-                if(projProp != null)
+                if(componentCache == null)
                 {
-                    allFilters = ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators,
-                        projProp.UnevaluatedValue).Select(f => f.Id).ToList();
+                    componentCache = ComponentCache.CreateComponentCache(currentProject.Filename);
+
+                    componentCache.ComponentContainerLoaded += componentCache_ComponentContainerLoaded;
+                    componentCache.ComponentContainerLoadFailed += componentCache_ComponentContainerLoadFailed;
+                    componentCache.ComponentContainerReset += componentCache_ComponentContainerReset;
                 }
+
+                if(componentCache.LoadComponentContainer(searchFolders))
+                    this.componentCache_ComponentContainerLoaded(this, EventArgs.Empty);
                 else
-                    allFilters = ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, "Standard").Select(
-                        f => f.Id).ToList();
-
-                foreach(string s in allFilters)
-                {
-                    idx = cblSyntaxFilters.FindStringExact(s);
-
-                    if(idx != -1)
-                        cblSyntaxFilters.SetItemChecked(idx, true);
-                }
+                    this.componentCache_ComponentContainerReset(this, EventArgs.Empty);
 
                 return true;
             }
+
+            if(control.Name == "cboPresentationStyle")
+                return true;
 
             return false;
         }
@@ -444,13 +322,16 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             IPresentationStyleMetadata pss;
 
+            if(presentationStyles == null)
+                return;
+
             // If the presentation style wasn't recognized, it may not have matched by case
             if(cboPresentationStyle.SelectedIndex == -1)
             {
 #if !STANDALONEGUI
-                string prop = base.ProjectMgr.GetProjectProperty("PresentationStyle");
+                string prop = this.ProjectMgr.GetProjectProperty("PresentationStyle");
 #else
-                string prop = base.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
+                string prop = this.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
 #endif
                 // Try to get it based on the current setting.  If still not found, use the default.
                 pss = presentationStyles.FirstOrDefault(s => s.Id.Equals(prop, StringComparison.OrdinalIgnoreCase));
@@ -484,7 +365,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         private void cblSyntaxFilters_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cblSyntaxFilters.SelectedIndex != -1)
+            if(syntaxGenerators != null && cblSyntaxFilters.SelectedIndex != -1)
             {
                 var generator = syntaxGenerators.FirstOrDefault(sf => sf.Id.Equals(cblSyntaxFilters.SelectedItem));
 
@@ -494,6 +375,224 @@ namespace SandcastleBuilder.Package.PropertyPages
                     epNotes.SetError(cblSyntaxFilters, String.Format(CultureInfo.InvariantCulture,
                         "{0}\r\n\r\nVersion {1}\r\n{2}", generator.Description, generator.Version,
                         generator.Copyright));
+            }
+        }
+
+        /// <summary>
+        /// This is called when the component cache is reset prior to loading it
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void componentCache_ComponentContainerReset(object sender, EventArgs e)
+        {
+            if(this.IsDisposed)
+                return;
+
+            // May already be binding so preserve the original state
+            bool isBinding = this.IsBinding;
+
+            try
+            {
+                this.IsBinding = true;
+
+                syntaxGenerators = null;
+                presentationStyles = null;
+
+                cboPresentationStyle.Enabled = cblSyntaxFilters.Enabled = false;
+
+                cblSyntaxFilters.Items.Clear();
+                cblSyntaxFilters.Items.Add("Loading...");
+
+                cboPresentationStyle.DataSource = null;
+                cboPresentationStyle.Items.Clear();
+                cboPresentationStyle.Items.Add("Loading...");
+                cboPresentationStyle.SelectedIndex = 0;
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                this.IsBinding = isBinding;
+            }
+        }
+
+        /// <summary>
+        /// This is called when the component cache load operation fails
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void componentCache_ComponentContainerLoadFailed(object sender, EventArgs e)
+        {
+            if(this.IsDisposed)
+                return;
+
+            // May already be binding so preserve the original state
+            bool isBinding = this.IsBinding;
+
+            try
+            {
+                this.IsBinding = true;
+
+                cblSyntaxFilters.Enabled = false;
+
+                cblSyntaxFilters.Items.Clear();
+                cblSyntaxFilters.Items.Add("Unable to load syntax filters");
+                epNotes.SetError(cblSyntaxFilters, componentCache.LastError.ToString());
+
+                cboPresentationStyle.Items.Clear();
+                cboPresentationStyle.Items.Add("Unable to load presentation styles");
+                cboPresentationStyle.SelectedIndex = 0;
+                epNotes.SetError(cboPresentationStyle, componentCache.LastError.ToString());
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                this.IsBinding = isBinding;
+            }
+        }
+
+        /// <summary>
+        /// This is called when the component cache has finished being loaded and is available for use
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void componentCache_ComponentContainerLoaded(object sender, EventArgs e)
+        {
+            ProjectProperty syntaxFilterProp = null, presentationStyleProp = null;
+            List<string> allFilters;
+            int idx;
+
+            if(this.IsDisposed)
+                return;
+
+            // May already be binding so preserve the original state
+            bool isBinding = this.IsBinding;
+
+            HashSet<string> generatorIds = new HashSet<string>(), presentationStyleIds = new HashSet<string>();
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                this.IsBinding = true;
+
+                cboPresentationStyle.Enabled = cblSyntaxFilters.Enabled = true;
+                cboPresentationStyle.DataSource = null;
+
+                cblSyntaxFilters.Items.Clear();
+                cboPresentationStyle.Items.Clear();
+
+                syntaxGenerators = new List<ISyntaxGeneratorMetadata>();
+                presentationStyles = new List<IPresentationStyleMetadata>();
+
+                var generators = componentCache.ComponentContainer.GetExports<ISyntaxGeneratorFactory,
+                    ISyntaxGeneratorMetadata>().Select(g => g.Metadata).ToList();
+
+                // There may be duplicate generator IDs across the assemblies found.  See
+                // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the
+                // first component for a unique ID will be used.
+                foreach(var generator in generators)
+                    if(!generatorIds.Contains(generator.Id))
+                    {
+                        syntaxGenerators.Add(generator);
+                        generatorIds.Add(generator.Id);
+                    }
+
+                var styles = componentCache.ComponentContainer.GetExports<PresentationStyleSettings,
+                    IPresentationStyleMetadata>().Select(g => g.Metadata).ToList();
+
+                // As above for duplicates
+                foreach(var style in styles)
+                    if(!presentationStyleIds.Contains(style.Id))
+                    {
+                        presentationStyles.Add(style);
+                        presentationStyleIds.Add(style.Id);
+                    }
+
+                cblSyntaxFilters.Items.AddRange(syntaxGenerators.Select(f => f.Id).OrderBy(f => f).ToArray());
+
+                cboPresentationStyle.DisplayMember = "Title";
+                cboPresentationStyle.ValueMember = "Id";
+                cboPresentationStyle.DataSource = presentationStyles.OrderBy(s => s.IsDeprecated ? 1 : 0).ThenBy(
+                    s => s.Id).ToList();
+                cboPresentationStyle.SelectedValue = Constants.DefaultPresentationStyle;
+
+                // Resize the syntax filter columns to the widest entry
+                int width, maxWidth = 0;
+
+                foreach(string s in cblSyntaxFilters.Items)
+                {
+                    width = TextRenderer.MeasureText(s, this.Font).Width;
+
+                    if(width > maxWidth)
+                        maxWidth = width;
+                }
+
+                cblSyntaxFilters.ColumnWidth = maxWidth + 20;
+
+                if(cblSyntaxFilters.Items.Count != 0)
+                    cblSyntaxFilters.SelectedIndex = 0;
+                else
+                    MessageBox.Show("No valid syntax generators found", messageBoxTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                if(cboPresentationStyle.Items.Count == 0)
+                    MessageBox.Show("No valid presentation styles found", messageBoxTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+#if !STANDALONEGUI
+                if(this.ProjectMgr != null)
+                {
+                    presentationStyleProp = this.ProjectMgr.BuildProject.GetProperty("PresentationStyle");
+                    syntaxFilterProp = this.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
+                }
+#else
+                if(this.CurrentProject != null)
+                {
+                    presentationStyleProp = this.CurrentProject.MSBuildProject.GetProperty("PresentationStyle");
+                    syntaxFilterProp = this.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
+                }
+#endif
+                if(presentationStyleProp != null)
+                {
+                    idx = cboPresentationStyle.FindString(presentationStyleProp.UnevaluatedValue);
+
+                    if(idx != -1)
+                        cboPresentationStyle.SelectedIndex = idx;
+                }
+
+                if(syntaxFilterProp != null)
+                {
+                    allFilters = ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators,
+                        syntaxFilterProp.UnevaluatedValue).Select(f => f.Id).ToList();
+                }
+                else
+                    allFilters = ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, "Standard").Select(
+                        f => f.Id).ToList();
+
+                foreach(string s in allFilters)
+                {
+                    idx = cblSyntaxFilters.FindStringExact(s);
+
+                    if(idx != -1)
+                        cblSyntaxFilters.SetItemChecked(idx, true);
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Unexpected error loading syntax generators and presentation styles: " +
+                    ex.Message, messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.IsBinding = isBinding;
+                Cursor.Current = Cursors.Default;
             }
         }
         #endregion

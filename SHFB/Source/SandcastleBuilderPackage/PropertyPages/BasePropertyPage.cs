@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 10/26/2015
+// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used as the base class for package property pages
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
+// 03/27/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -62,7 +62,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         // This is used to track active property pages
         private static List<BasePropertyPage> propertyPages = new List<BasePropertyPage>();
 
-        private bool isDirty, isBinding;
+        private bool isDirty;
         #endregion
 
         #region Properties
@@ -102,12 +102,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         protected string HelpKeyword { get; set; }
 
         /// <summary>
-        /// This read-only property returns true if binding is occurring or false if not
+        /// This is used to indicate whether or not binding is occurring
         /// </summary>
-        protected bool IsBinding
-        {
-            get { return isBinding; }
-        }
+        /// <value>If true, binding is occurring and property changed events will not be raised</value>
+        protected bool IsBinding { get; set; }
 
         /// <summary>
         /// This is used to get or set the dirty state of the property page
@@ -117,7 +115,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             get { return isDirty; }
             set
             {
-                if(isDirty != value && !isBinding)
+                if(isDirty != value && !this.IsBinding)
                 {
                     isDirty = value;
 
@@ -267,7 +265,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         protected void OnPropertyChanged(object sender, EventArgs e)
         {
-            if(!isBinding)
+            if(!this.IsBinding)
             {
                 this.IsDirty = true;
                 this.RefreshControlState(sender, e);
@@ -350,7 +348,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             try
             {
-                isBinding = true;
+                this.IsBinding = true;
 
                 foreach(Control c in controls)
                 {
@@ -477,7 +475,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             }
             finally
             {
-                isBinding = false;
+                this.IsBinding = false;
             }
         }
 
@@ -724,10 +722,13 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         void IPropertyPage.Deactivate()
         {
-            // Remove the property page from the tracking list
-            propertyPages.Remove(this);
+            if(!this.IsDisposed)
+            {
+                // Remove the property page from the tracking list
+                propertyPages.Remove(this);
 
-            this.Dispose();
+                this.Dispose();
+            }
         }
 
         /// <summary>
