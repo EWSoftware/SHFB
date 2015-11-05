@@ -73,8 +73,9 @@ fix issues with component paths that contain certain foreign language characters
 			<content>
 				<list class="bullet">
 					<listItem>
-						<para>Merged changes from Rob Siklos to add support for the <codeInline>virtual</codeInline> and
-<codeInline>abstract</codeInline> language keywords on the <codeInline>see</codeInline> XML comments element.</para>
+						<para>Merged changes from Rob Siklos to add support for the <codeInline>sealed</codeInline>
+and <codeInline>NotInheritable</codeInline> language keywords on the <codeInline>see</codeInline> XML comments
+element.</para>
 					</listItem>
 
 					<listItem>

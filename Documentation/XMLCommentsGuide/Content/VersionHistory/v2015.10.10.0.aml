@@ -11,8 +11,8 @@
 
 				<list class="bullet">
 					<listItem>
-						<para>Merged changes from Rob Siklos about support for the <codeInline>virtual</codeInline> and
-<codeInline>abstract</codeInline> language keywords on the
+						<para>Merged changes from Rob Siklos about support for the <codeInline>sealed</codeInline>
+and <codeInline>NotInheritable</codeInline> language keywords on the
 <link xlink:href="983fed56-321c-4daf-af16-e3169b28ffcd" /> XML comments element.</para>
 					</listItem>
 					<listItem>
