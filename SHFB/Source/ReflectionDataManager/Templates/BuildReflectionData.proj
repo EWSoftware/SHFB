@@ -26,7 +26,7 @@
 		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
 			Transformations="~\ProductionTransforms\MergeDuplicates.xsl;~\ProductionTransforms\AddXamlSyntaxData.xsl;~\ProductionTransforms\ApplyVSDocModel.xsl;~\ProductionTransforms\AddFilenames.xsl"
-			Arguments="IncludeAllMembersTopic=true;IncludeInheritedOverloadTopics=false"
+			Arguments="IncludeAllMembersTopic=false"
 			InputFile="reflection.org"
 			OutputFile="reflection.xml" />
 

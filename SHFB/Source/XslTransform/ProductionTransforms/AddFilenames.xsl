@@ -92,23 +92,17 @@
 
 	<xsl:template match="/">
 		<reflection>
-			<xsl:apply-templates select="/reflection/assemblies" />
-			<xsl:apply-templates select="/reflection/apis" />
+			<xsl:copy-of select="/reflection/@*"/>
+			<xsl:copy-of select="/reflection/assemblies" />
+			<apis>
+				<xsl:apply-templates select="/reflection/apis/api" />
+			</apis>
 		</reflection>
 	</xsl:template>
 
-	<xsl:template match="assemblies">
-		<xsl:copy-of select="." />
-	</xsl:template>
-
-	<xsl:template match="apis">
-		<apis>
-			<xsl:apply-templates select="api" />
-		</apis>
-	</xsl:template>
-
 	<xsl:template match="api">
-		<api id="{@id}">
+		<api>
+			<xsl:copy-of select="@*" />
 			<xsl:copy-of select="*" />
 			<file name="{ddue:GetFileName(@id, $namingMethod)}" />
 		</api>

@@ -479,8 +479,8 @@ namespace Microsoft.Ddue.Tools
                     ConsoleApplication.WriteMessage(LogLevel.Error, "MRefBuilder task canceled");
                 else
                     ConsoleApplication.WriteMessage(LogLevel.Info, "Wrote information on {0} namespaces, " +
-                        "{1} types, and {2} members", ApiVisitor.Namespaces.Count(), ApiVisitor.Types.Count(),
-                        ApiVisitor.Members.Count());
+                        "{1} types, and {2} members", ApiVisitor.NamespaceCount, ApiVisitor.TypeCount,
+                        ApiVisitor.MemberCount);
             }
             finally
             {

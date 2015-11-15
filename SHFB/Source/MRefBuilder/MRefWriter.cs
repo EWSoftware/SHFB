@@ -41,11 +41,9 @@ namespace Microsoft.Ddue.Tools
         private Dictionary<TypeNode, List<TypeNode>> descendantIndex;
         private Dictionary<Interface, List<TypeNode>> implementorIndex;
 
-        private List<Namespace> parsedNamespaces;
-        private List<TypeNode> parsedTypes;
-        private List<Member> parsedMembers;
-
         private Dictionary<string, List<MRefBuilderCallback>> startTagCallbacks, endTagCallbacks;
+
+        private int namespaceCount, typeCount, memberCount;
 
         #endregion
 
@@ -61,27 +59,27 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// This read-only property returns an enumerable list of namespaces found
+        /// This read-only property returns a count of the namespaces found
         /// </summary>
-        public IEnumerable<Namespace> Namespaces
+        public int NamespaceCount
         {
-            get { return parsedNamespaces; }
+            get { return namespaceCount; }
         }
 
         /// <summary>
-        /// This read-only property returns an enumerable list of the types found
+        /// This read-only property returns a count of the types found
         /// </summary>
-        public IEnumerable<TypeNode> Types
+        public int TypeCount
         {
-            get { return parsedTypes; }
+            get { return typeCount; }
         }
 
         /// <summary>
-        /// This read-only property returns an enumerable list of the members found
+        /// This read-only property returns a count of the members found
         /// </summary>
-        public IEnumerable<Member> Members
+        public int MemberCount
         {
-            get { return parsedMembers; }
+            get { return memberCount; }
         }
         #endregion
 
@@ -101,10 +99,6 @@ namespace Microsoft.Ddue.Tools
             assemblyNames = new HashSet<string>();
             descendantIndex = new Dictionary<TypeNode, List<TypeNode>>();
             implementorIndex = new Dictionary<Interface, List<TypeNode>>();
-
-            parsedNamespaces = new List<Namespace>();
-            parsedTypes = new List<TypeNode>();
-            parsedMembers = new List<Member>();
 
             startTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
             endTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
@@ -181,7 +175,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void VisitNamespace(Namespace space)
         {
-            parsedNamespaces.Add(space);
+            namespaceCount++;
 
             this.WriteNamespace(space);
             base.VisitNamespace(space);
@@ -190,7 +184,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void VisitType(TypeNode type)
         {
-            parsedTypes.Add(type);
+            typeCount++;
 
             this.WriteType(type);
             base.VisitType(type);
@@ -199,7 +193,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void VisitMember(Member member)
         {
-            parsedMembers.Add(member);
+            memberCount++;
 
             writer.WriteStartElement("api");
 

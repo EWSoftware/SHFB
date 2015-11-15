@@ -67,7 +67,6 @@ Namespace safeprojectname
                 "%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", New Dictionary(Of String, String) From
                 {
                     { "IncludeAllMembersTopic", "false" },
-                    { "IncludeInheritedOverloadTopics", "false" },
                     { "project", "{@ProjectNodeIDOptional}" }
                 })
 

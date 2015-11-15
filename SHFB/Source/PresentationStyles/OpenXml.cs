@@ -61,7 +61,6 @@ namespace Sandcastle.PresentationStyles
                 @"%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", new Dictionary<string, string>
                 {
                     { "IncludeAllMembersTopic", "false" },
-                    { "IncludeInheritedOverloadTopics", "false" },
                     { "project", "{@ProjectNodeIDOptional}" }
                 });
 

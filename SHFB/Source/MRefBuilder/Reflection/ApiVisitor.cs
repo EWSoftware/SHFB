@@ -330,9 +330,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         protected virtual void VisitNamespaces(NamespaceList spaces)
         {
             // Visit the namespaces in sorted order
-            var sortedNamespaces = spaces.OrderBy(s => s.FullName).ToList();
-
-            foreach(Namespace space in sortedNamespaces)
+            foreach(Namespace space in spaces.OrderBy(s => s.FullName))
             {
                 if(filter.IsExposedNamespace(space))
                     this.VisitNamespace(space);
