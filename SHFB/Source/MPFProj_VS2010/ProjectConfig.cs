@@ -46,6 +46,17 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
+//===============================================================================================================
+// File    : ProjectConfig.cs
+// Updated : 11/16/2015
+// Modifier: Eric Woodruff  (Eric@EWoodruff.us)
+//
+// Search for "!EFW" to find the changes.
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 11/16/2016  EFW  Fixed a bug in the constructor
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -158,7 +169,14 @@ namespace Microsoft.VisualStudio.Project
         public ProjectConfig(ProjectNode project, string configuration)
         {
             this.project = project;
-            this.configName = configuration;
+
+            // !EFW - Bug in VS2015 or an incompatibility with the older MPF project system.  This can get
+            // passed an invalid configuration value such as "Debug|Any CPU".  As a workaround, trim off the
+            // invalid part.
+            if(!String.IsNullOrWhiteSpace(configuration) && configuration.IndexOf('|') != -1)
+                this.configName = configuration.Substring(0, configuration.IndexOf('|'));
+            else
+                this.configName = configuration;
 
             // Because the project can be aggregated by a flavor, we need to make sure
             // we get the outer most implementation of that interface (hence: project --> IUnknown --> Interface)
