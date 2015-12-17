@@ -268,7 +268,7 @@ namespace SandcastleBuilder.PlugIns
                         tocNav,
                         resizableBar,
                         resizeUi);
-                
+
                 string path = Path.Combine(builder.WorkingFolder, @"Output\Website", current.Attribute("Url").Value);
                 string outputFile = File.ReadAllText(path, Encoding.UTF8);
 
