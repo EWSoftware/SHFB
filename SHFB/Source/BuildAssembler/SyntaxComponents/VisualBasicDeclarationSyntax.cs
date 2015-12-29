@@ -14,10 +14,12 @@
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
+// 12/04/2015 - EFW - Fixed WriteOperatorSyntax() so that it handles assignment operators properly
 
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.XPath;
 
@@ -312,7 +314,26 @@ namespace Microsoft.Ddue.Tools
             string name = (string)reflection.Evaluate(apiNameExpression);
             XPathNavigator type = reflection.SelectSingleNode(apiReturnTypeExpression);
 
+            if(type == null)
+            {
+                // For assignment operators, get the type from the first parameter
+                XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
+
+                if(parameters.Count != 0)
+                {
+                    parameters.MoveNext();
+                    type = parameters.Current.SelectSingleNode(parameterTypeExpression);
+                }
+
+                if(type == null)
+                {
+                    writer.WriteMessage("UnsupportedOperator_" + Language);
+                    return;
+                }
+            }
+
             string identifier = null;
+
             if(!(bool)reflection.Evaluate(apiIsUdtReturnExpression))
             {
                 switch(name)
@@ -419,6 +440,7 @@ namespace Microsoft.Ddue.Tools
                         break;
                 }
             }
+
             if(identifier == null)
             {
                 writer.WriteMessage("UnsupportedOperator_" + Language);

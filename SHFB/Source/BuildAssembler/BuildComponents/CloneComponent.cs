@@ -8,6 +8,7 @@
 // 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -61,6 +62,28 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <inheritdoc />
+        /// <remarks>This sets a unique group ID for each branch</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                int branchId = 1;
+
+                foreach(var branch in branches)
+                {
+                    string branchGroupId = value + "/" + branchId.ToString(CultureInfo.InvariantCulture);
+                    branchId++;
+
+                    foreach(var component in branch)
+                        component.GroupId = branchGroupId;
+                }
+            }
+        }
+
+        /// <inheritdoc />
         /// <remarks>Multiple <c>branch</c> elements are specified as the configuration.  Each <c>branch</c>
         /// element can contain one or more <c>component</c> definitions that will be created and executed when
         /// this component is applied.  Each branch receives a clone of the document.  This may be useful for
@@ -71,6 +94,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
             foreach(XPathNavigator branchNode in branchNodes)
                 branches.Add(this.BuildAssembler.LoadComponents(branchNode));
+
+            // Set a default group ID
+            this.GroupId = null;
         }
 
         /// <inheritdoc />

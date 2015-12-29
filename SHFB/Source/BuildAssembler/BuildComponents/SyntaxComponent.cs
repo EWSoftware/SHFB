@@ -339,10 +339,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             string namespaceUri;
             int order;
 
-            // Don't bother if not a transforming event
+            // Don't bother if not a transforming event or not in our group
             TransformingTopicEventArgs tt = e as TransformingTopicEventArgs;
 
-            if(tt == null)
+            if(tt == null || ((BuildComponentCore)sender).GroupId != this.GroupId)
                 return;
 
             XmlDocument document = tt.Document;
@@ -399,7 +399,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 {
                     // A div indicates a syntax section so we must reuse the parent element rather than replace
                     // it as they are already grouped.
-                    snippetGroup = new CodeSnippetGroup((XmlElement)code.ParentNode);
+                    snippetGroup = new CodeSnippetGroup((XmlElement)code.ParentNode) { IsSyntaxSection = true };
                     allGroups.Add(snippetGroup);
                 }
 
@@ -501,6 +501,20 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     foreach(var langSet in group.CodeSnippets.GroupBy(c => c.KeywordStyleParameter).Where(
                       g => g.Count() != 1).ToList())
                     {
+                        // For syntax sections, merge common language snippets into a single section
+                        if(group.IsSyntaxSection)
+                        {
+                            var firstSnippet = langSet.First();
+
+                            foreach(var snippet in langSet.Skip(1))
+                            {
+                                firstSnippet.CodeElement.InnerXml += "\r\n\r\n" + snippet.CodeElement.InnerXml;
+                                group.CodeSnippets.Remove(snippet);
+                            }
+
+                            continue;
+                        }
+
                         // For each duplicate, find a group that doesn't contain the language or create
                         // a new group and put it in that one.
                         foreach(var snippet in langSet.Skip(1))

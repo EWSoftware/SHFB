@@ -84,6 +84,7 @@
     <Compile Include="BuildAssembler\BuildContext.cs" />
     <Compile Include="BuildAssembler\CustomContext.cs" />
     <Compile Include="BuildAssembler\CustomVariable.cs" />
+    <Compile Include="BuildAssembler\ManifestTopic.cs" />
     <Compile Include="BuildAssembler\MessageLevel.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\ISyntaxGeneratorFactory.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\ISyntaxGeneratorMetadata.cs" />

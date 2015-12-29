@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2015
+// Updated : 12/22/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -206,17 +206,11 @@ namespace SandcastleBuilder.PlugIns
                 return;
             }
 
-            // Merge the reflection file info into conceptual.config
-            configFilename = builder.WorkingFolder + "conceptual.config";
-
-            if(File.Exists(configFilename))
-                this.MergeReflectionInfo(configFilename, true);
-
             // Merge the reflection file info into sancastle.config
             configFilename = builder.WorkingFolder + "sandcastle.config";
 
             if(File.Exists(configFilename))
-                this.MergeReflectionInfo(configFilename, false);
+                this.MergeReflectionInfo(configFilename);
         }
 
         /// <summary>
@@ -256,9 +250,7 @@ namespace SandcastleBuilder.PlugIns
         /// This is used to merge the reflection file info into the named configuration file.
         /// </summary>
         /// <param name="configFilename">The configuration filename</param>
-        /// <param name="isConceptual">True if it is the conceptual configuration file or false if it is the
-        /// reference configuration file.</param>
-        private void MergeReflectionInfo(string configFilename, bool isConceptual)
+        private void MergeReflectionInfo(string configFilename)
         {
             XmlDocument configFile;
             XmlAttribute attr;
@@ -270,40 +262,37 @@ namespace SandcastleBuilder.PlugIns
             configFile = new XmlDocument();
             configFile.Load(configFilename);
 
-            if(!isConceptual)
-            {
-                // Add them to the Reflection Index Data component.  There are multiple copies of this component
-                // type but we only need the first one.  This only appears in the reference build's configuration
-                // file.
-                component = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
-                    "@id='Copy From Index Component']/index");
+            // Add them to the Reflection Index Data component.  There are multiple copies of this component
+            // type but we only need the first one.  This only appears in the reference build's configuration
+            // file.
+            component = configFile.SelectSingleNode("//component[@id='Copy From Index Component']/" +
+                "index[@name='reflection']");
 
-                // If not found, try for the cached version
-                if(component == null)
-                    component = configFile.SelectSingleNode("configuration/dduetools/builder/components/" +
-                        "component[starts-with(@id, 'Reflection Index Data')]/index");
+            // If not found, try for the cached version
+            if(component == null)
+                component = configFile.SelectSingleNode("//component[starts-with(@id, " +
+                    "'Reflection Index Data')]/index[@name='reflection']");
 
-                if(component == null)
-                    throw new BuilderException("ARL0004", "Unable to locate Reflection Index Data component in " +
-                        configFilename);
+            if(component == null)
+                throw new BuilderException("ARL0004", "Unable to locate Reflection Index Data component in " +
+                    configFilename);
 
-                foreach(ReferenceLinkSettings vs in otherLinks)
-                    if(!String.IsNullOrEmpty(vs.ReflectionFilename))
-                    {
-                        target = configFile.CreateElement("data");
+            foreach(ReferenceLinkSettings vs in otherLinks)
+                if(!String.IsNullOrEmpty(vs.ReflectionFilename))
+                {
+                    target = configFile.CreateElement("data");
 
-                        attr = configFile.CreateAttribute("files");
-                        attr.Value = vs.ReflectionFilename;
-                        target.Attributes.Append(attr);
+                    attr = configFile.CreateAttribute("files");
+                    attr.Value = vs.ReflectionFilename;
+                    target.Attributes.Append(attr);
 
-                        attr = configFile.CreateAttribute("groupId");
-                        attr.Value = builder.SubstitutionTags.TransformText("Project_Ref_{@UniqueID}");
-                        target.Attributes.Append(attr);
+                    attr = configFile.CreateAttribute("groupId");
+                    attr.Value = builder.SubstitutionTags.TransformText("Project_Ref_{@UniqueID}");
+                    target.Attributes.Append(attr);
 
-                        // Keep the current project's stuff listed last so that it takes precedence
-                        component.InsertAfter(target, component.ChildNodes[0]);
-                    }
-            }
+                    // Keep the current project's stuff listed last so that it takes precedence
+                    component.InsertAfter(target, component.ChildNodes[0]);
+                }
 
             // Add them to the Resolve Reference Links component
             matchingComponents = configFile.SelectNodes("//component[starts-with(@id, 'Resolve Reference Links')]");

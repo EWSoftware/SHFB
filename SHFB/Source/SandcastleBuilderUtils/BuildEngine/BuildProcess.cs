@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2015
+// Updated : 12/21/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -66,6 +66,7 @@
 //          12/14/2014  EFW  Updated to use framework-specific reflection data folders
 //          03/30/2015  EFW  Added support for the Markdown output format
 //          05/03/2015  EFW  Removed support for the MS Help 2 file format
+//          12/21/2015  EFW  Merged conceptual and reference topic build steps
 //===============================================================================================================
 
 using System;
@@ -1250,26 +1251,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportProgress("    sandcastle.config");
 
                     // The configuration varies based on the style.  We'll use a common name (sandcastle.config).
-                    resolvedPath = presentationStyle.ResolvePath(presentationStyle.ReferenceBuildConfiguration);
+                    resolvedPath = presentationStyle.ResolvePath(presentationStyle.BuildAssemblerConfiguration);
                     substitutionTags.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
                         workingFolder);
 
                     if(!Path.GetFileName(resolvedPath).Equals("sandcastle.config", StringComparison.OrdinalIgnoreCase))
                         File.Move(workingFolder + Path.GetFileName(resolvedPath), workingFolder + "sandcastle.config");
-
-                    // The conceptual content configuration file is only created if needed.
-                    if(this.ConceptualContent.ContentLayoutFiles.Count != 0)
-                    {
-                        this.ReportProgress("    conceptual.config");
-
-                        resolvedPath = presentationStyle.ResolvePath(presentationStyle.ConceptualBuildConfiguration);
-
-                        substitutionTags.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
-                            workingFolder);
-
-                        if(!Path.GetFileName(resolvedPath).Equals("conceptual.config", StringComparison.OrdinalIgnoreCase))
-                            File.Move(workingFolder + Path.GetFileName(resolvedPath), workingFolder + "conceptual.config");
-                    }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
@@ -1279,35 +1266,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 commentsFiles = null;
 
-                // Build the conceptual help topics
-                if(this.ConceptualContent.ContentLayoutFiles.Count != 0)
-                {
-                    this.ReportProgress(BuildStep.BuildConceptualTopics, "Building conceptual help topics...");
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        scriptFile = substitutionTags.TransformTemplate("BuildConceptualTopics.proj", templateFolder,
-                            workingFolder);
-
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-                        taskRunner.RunProject("BuildConceptualTopics.proj", false);
-                        
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-                }
-
-                // Build the reference help topics
-                this.ReportProgress(BuildStep.BuildReferenceTopics, "Building reference help topics...");
+                // Build the help topics
+                this.ReportProgress(BuildStep.BuildTopics, "Building help topics...");
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    scriptFile = substitutionTags.TransformTemplate("BuildReferenceTopics.proj", templateFolder,
+                    scriptFile = substitutionTags.TransformTemplate("BuildTopics.proj", templateFolder,
                         workingFolder);
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
                                         
-                    taskRunner.RunProject("BuildReferenceTopics.proj", false);
+                    taskRunner.RunProject("BuildTopics.proj", false);
                     
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }

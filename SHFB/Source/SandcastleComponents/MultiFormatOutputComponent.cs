@@ -42,7 +42,7 @@ namespace SandcastleBuilder.Components
     /// formats.  Only the components related to the requested set of format types will be executed.</remarks>
     /// <example>
     /// <code lang="xml" title="Example Configuration"
-    ///     source="..\..\SHFB\Source\PresentationStyles\VS2013\Configuration\SHFBReference.config"
+    ///     source="..\..\SHFB\Source\PresentationStyles\VS2013\Configuration\BuildAssembler.config"
     ///     region="Multi-format output component" />
     /// </example>
     public class MultiFormatOutputComponent : BuildComponentCore
@@ -84,6 +84,25 @@ namespace SandcastleBuilder.Components
 
         #region Method overrides
         //=====================================================================
+
+        /// <inheritdoc />
+        /// <remarks>This sets a unique group ID for each format</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                foreach(var keyValue in formatComponents)
+                {
+                    string formatGroupId = value + "/" + keyValue.Key;
+
+                    foreach(var component in keyValue.Value)
+                        component.GroupId = formatGroupId;
+                }
+            }
+        }
 
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
@@ -131,6 +150,9 @@ namespace SandcastleBuilder.Components
                     formatComponents.Add(format, base.BuildAssembler.LoadComponents(set));
                 }
             }
+
+            // Set a default group ID
+            this.GroupId = null;
         }
 
         /// <summary>

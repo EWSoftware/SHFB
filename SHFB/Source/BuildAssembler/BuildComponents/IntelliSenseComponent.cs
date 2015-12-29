@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 12/22/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
@@ -11,18 +11,18 @@
 // members.  This is based on the Microsoft IntelliSense build component.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.1  10/09/2007  EFW  Created the code
-// 1.6.0.7  03/24/2008  EFW  Updated it to handle multiple assembly references
-// 1.8.0.3  07/04/2009  EFW  Add parameter to Dispose() to match base class
-// 2.7.3.0  12/21/2012  EFW  Replaced the Microsoft IntelliSense build component with my version
-// 2.7.5.0  11/12/2013  EFW  Added support for exporting code contracts XML comments elements
-// -------  12/23/2013  EFW  Updated the build component to be discoverable via MEF
+// 10/09/2007  EFW  Created the code
+// 03/24/2008  EFW  Updated it to handle multiple assembly references
+// 07/04/2009  EFW  Add parameter to Dispose() to match base class
+// 12/21/2012  EFW  Replaced the Microsoft IntelliSense build component with my version
+// 11/12/2013  EFW  Added support for exporting code contracts XML comments elements
+// 12/23/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -227,14 +227,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XPathNavigator navComments;
 
             // Don't bother if there is nothing to add
-            if(key[1] != ':' || ((key[0] == 'R' || key[0] == 'N') && !includeNamespaces))
+            if(key[1] != ':' || ((key[0] == 'G' || key[0] == 'N' || key[0] == 'R') && !includeNamespaces))
                 return;
 
             navComments = document.CreateNavigator().SelectSingleNode("/document/comments");
 
             // Project and namespace comments go in a separate file.  A member may appear in multiple assemblies
             // so write its comments out to each one.
-            if(key[0] == 'R' || key[0] == 'N')
+            if(key[0] == 'G' || key[0] == 'N' || key[0] == 'R')
                 this.WriteComments(key, namespacesFilename, navComments);
             else
                 foreach(XPathNavigator asmName in navComments.Select(assemblyExpression))

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.ConfigFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
+// Updated : 12/01/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 08/07/2006  EFW  Created the code
 // 05/23/2015  EFW  Refactored the code and moved all substitution tag handling into a separate class
+// 12/01/2015  EFW  Merged conceptual and reference topic build steps
 //===============================================================================================================
 
 using System;
@@ -236,13 +237,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This is used to merge the component configurations from the project with the <strong>sandcastle.config</strong>
-        /// file.
+        /// This is used to merge the component configurations from the project with the
+        /// <strong>sandcastle.config</strong> file.
         /// </summary>
         private void MergeComponentConfigurations()
         {
             XmlDocument config;
-            XmlNode configNode;
             string configName;
 
             this.ReportProgress(BuildStep.MergeCustomConfigs, "Merging custom build component configurations");
@@ -265,18 +265,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
             config = new XmlDocument();
             config.Load(configName);
 
+            this.ReportProgress("    Reference topic configuration:");
             this.MergeConfigurations(config, false);
-            config.Save(configName);
 
-            // Do the same for conceptual.config if necessary
+            // Do the same for conceptual configuration if necessary
             if(this.ConceptualContent.ContentLayoutFiles.Count != 0)
             {
-                configName = workingFolder + "conceptual.config";
-                this.ReportProgress(configName);
-
-                config = new XmlDocument();
-                config.Load(configName);
-
+                this.ReportProgress("    Conceptual topic configuration:");
                 this.MergeConfigurations(config, true);
 
                 // Remove the example component if there are no snippets file
@@ -284,15 +279,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     this.ReportProgress("    Removing unused ExampleComponent.");
 
-                    var rootNode = config.SelectSingleNode("configuration/dduetools/builder/components");
-                    configNode = rootNode.SelectSingleNode("component[@id='Example Component']");
+                    var exampleComponent = config.SelectSingleNode("configuration/dduetools/builder/components/" +
+                        "component[@id='Switch Component']/case[@value='MAML']/component[@id='Example Component']");
 
-                    if(configNode != null)
-                        configNode.ParentNode.RemoveChild(configNode);
+                    if(exampleComponent != null)
+                        exampleComponent.ParentNode.RemoveChild(exampleComponent);
                 }
-
-                config.Save(configName);
             }
+
+            config.Save(configName);
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }
@@ -313,7 +308,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             PlacementAction placement;
             string configType;
 
-            rootNode = config.SelectSingleNode("configuration/dduetools/builder/components");
+            rootNode = config.SelectSingleNode("configuration/dduetools/builder/components/" +
+                "component[@id='Switch Component']/case[@value='" + (isConceptualConfig ? "MAML" : "API") + "']");
 
             foreach(string id in project.ComponentConfigurations.Keys)
             {
@@ -491,8 +487,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return;
             }
 
-            // See if the configuration already exists.  If so, replace it.
-            // We'll assume it's already in the correct location.
+            // See if the configuration already exists.  If so, replace it.  We'll assume it's already in the
+            // correct location.
             node = rootNode.SelectSingleNode("component[@id='" + id + "']");
 
             if(node != null)
@@ -541,7 +537,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
             }
         }
-
         #endregion
     }
 }

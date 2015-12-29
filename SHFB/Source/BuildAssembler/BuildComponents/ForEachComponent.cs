@@ -70,6 +70,20 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <inheritdoc />
+        /// <remarks>This sets the group ID for each subcomponent</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                foreach(var component in components)
+                    component.GroupId = value;
+            }
+        }
+
+        /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
             // set up the context

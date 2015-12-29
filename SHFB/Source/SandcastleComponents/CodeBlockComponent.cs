@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
+// Updated : 12/08/2015
 // Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -884,8 +884,8 @@ namespace SandcastleBuilder.Components
             XmlAttribute attr;
             string destStylesheet, destScriptFile;
 
-            // Don't bother if not a transform event or if the topic contained no code blocks
-            if(tt == null || colorizedCodeBlocks.Count == 0)
+            // Don't bother if not a transform event, not in our group, or if the topic contained no code blocks
+            if(tt == null || ((BuildComponentCore)sender).GroupId != this.GroupId || colorizedCodeBlocks.Count == 0)
                 return;
 
             // Only copy the files if needed

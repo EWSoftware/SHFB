@@ -2,24 +2,24 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/14/2014
-// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
+// Updated : 12/21/2015
+// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.6.0  10/24/2012  EFW  Created the code
-// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
-// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
-// -------  01/04/2014  EFW  Moved the code into Sandcastle.Core and made it an abstract base class
-//          05/14/2014  EFW  Added support for defining dependent plug-ins
+// 10/24/2012  EFW  Created the code
+// 06/21/2013  EFW  Added support for format-specific help content files
+// 11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
+// 01/04/2014  EFW  Moved the code into Sandcastle.Core and made it an abstract base class
+// 05/14/2014  EFW  Added support for defining dependent plug-ins
 //===============================================================================================================
 
 using System;
@@ -112,14 +112,9 @@ namespace Sandcastle.Core.PresentationStyle
         public TransformationFile IntermediateTocTransformation { get; protected set; }
 
         /// <summary>
-        /// This is used to get or set the BuildAssembler configuration filename for conceptual builds
+        /// This is used to get or set the BuildAssembler configuration filename
         /// </summary>
-        public string ConceptualBuildConfiguration { get; protected set; }
-
-        /// <summary>
-        /// This is used to get or set the BuildAssembler configuration filename for reference builds
-        /// </summary>
-        public string ReferenceBuildConfiguration { get; protected set; }
+        public string BuildAssemblerConfiguration { get; protected set; }
 
         /// <summary>
         /// This read-only property returns the transform component arguments if any
@@ -183,11 +178,8 @@ namespace Sandcastle.Core.PresentationStyle
               this.IntermediateTocTransformation.TransformationFilename))
                 errors.Add("IntermediateTocTransformation or its filename has not been specified");
 
-            if(String.IsNullOrWhiteSpace(this.ConceptualBuildConfiguration))
-                errors.Add("ConceptualBuildConfiguration has not been specified");
-
-            if(String.IsNullOrWhiteSpace(this.ReferenceBuildConfiguration))
-                errors.Add("ReferenceBuildConfiguration has not been specified");
+            if(String.IsNullOrWhiteSpace(this.BuildAssemblerConfiguration))
+                errors.Add("BuildAssemblerConfiguration has not been specified");
 
             return errors;
         }

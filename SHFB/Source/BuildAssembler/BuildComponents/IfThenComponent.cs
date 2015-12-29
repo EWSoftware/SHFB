@@ -64,6 +64,27 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <inheritdoc />
+        /// <remarks>This sets a unique group ID for each branch</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                string groupId = value + "/True";
+
+                foreach(var component in true_branch)
+                    component.GroupId = groupId;
+
+                groupId = value + "/False";
+
+                foreach(var component in false_branch)
+                    component.GroupId = groupId;
+            }
+        }
+
+        /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
             // Get the condition
@@ -93,6 +114,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
             // Keep a pointer to the context for future use
             context = this.BuildAssembler.Context;
+
+            // Set a default group ID
+            this.GroupId = null;
         }
 
         /// <inheritdoc />

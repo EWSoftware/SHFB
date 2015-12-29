@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 12/22/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to build a help file consisting of nothing but additional
@@ -11,17 +11,17 @@
 // API topics.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.2.0  09/13/2007  EFW  Created the code
-// 1.6.0.7  05/27/2008  EFW  Modified to support use in conceptual preview
-// 1.8.0.0  08/05/2008  EFW  Modified to support the new project format
-// 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 09/13/2007  EFW  Created the code
+// 05/27/2008  EFW  Modified to support use in conceptual preview
+// 08/05/2008  EFW  Modified to support the new project format
+// 06/07/2010  EFW  Added support for multi-format build output
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
@@ -77,8 +77,7 @@ namespace SandcastleBuilder.PlugIns
                         new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.BuildReferenceTopics, ExecutionBehaviors.InsteadOf)
+                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
                     };
 
                 return executionPoints;
@@ -160,9 +159,9 @@ namespace SandcastleBuilder.PlugIns
                 if(context.BuildStep == BuildStep.MergeCustomConfigs &&
                   builder.CurrentProject.HasItems(BuildAction.ContentLayout))
                 {
-                    // Remove the reflection.xml file from the conceptual configuration file since it isn't valid
+                    // Remove the reflection.xml file from the conceptual configuration since it isn't valid
                     config = new XmlDocument();
-                    config.Load(builder.WorkingFolder + "conceptual.config");
+                    config.Load(builder.WorkingFolder + "sandcastle.config");
                     navConfig = config.CreateNavigator();
 
                     XPathNodeIterator allTargets = navConfig.Select("//targets[@files='reflection.xml']");
@@ -173,7 +172,7 @@ namespace SandcastleBuilder.PlugIns
                     foreach(var t in deleteTargets)
                         t.DeleteSelf();
 
-                    config.Save(builder.WorkingFolder + "conceptual.config");
+                    config.Save(builder.WorkingFolder + "sandcastle.config");
                 }
 
             // Ignore all other the steps

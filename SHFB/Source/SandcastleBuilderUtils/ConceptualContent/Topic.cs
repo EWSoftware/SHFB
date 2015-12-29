@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
+// Updated : 11/20/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -754,6 +754,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 writer.WriteStartElement("topic");
                 writer.WriteAttributeString("id", this.Id);
+                writer.WriteAttributeString("type", "MAML");
                 writer.WriteEndElement();
             }
 

@@ -3548,7 +3548,10 @@
           <Component Id="cmp2D8B8E6454D91A462543926192193131" Guid="{30175CF7-59A1-46DF-B364-C7FD4DD3B238}">
             <File Id="fil4BFF6C27F87B69D99E293FFE781E7A1A" KeyPath="yes" Source="$(var.RootFolder)\Data\UniversalWindows\.NETCore_5.0.reflection" />
           </Component>
-          <Component Id="cmp047EABB9471B875A6A119D3BA53D7FF1" Guid="{E7A3F724-4B7F-4549-B11E-11B70F9007FB}">
+          <Component Id="cmpC5A6C87B48427AE02BB8D3F203D71752" Guid="{BAE62C58-49E6-49A5-8652-123C80620CAA}">
+            <File Id="fil530D7E8ED70636E5B97DA04C2A1A62E0" KeyPath="yes" Source="$(var.RootFolder)\Data\UniversalWindows\.NETPortable_5.0.reflection" />
+          </Component>
+          <Component Id="cmp047EABB9471B875A6A119D3BA53D7FF1" Guid="{E153C092-9CCE-469D-976A-3F2F8469C70C}">
             <File Id="fil4606374D71A4C7070BDD2B70EE1D0A96" KeyPath="yes" Source="$(var.RootFolder)\Data\UniversalWindows\Microsoft.CSharp.RuntimeBinder.xml" />
           </Component>
           <Component Id="cmp470501733D6E36DC9EC85F6F1F6DBCD7" Guid="{D11551C2-F6BF-41C2-A39B-4B0BC0009008}">
@@ -6146,11 +6149,8 @@
         </Directory>
         <Directory Id="dirE19A8ABC0845D52041F40D8A10E0A90D" Name="Markdown">
           <Directory Id="dir76833C41B27232762C8293F2C22CC5E4" Name="Configuration">
-            <Component Id="cmpF1975FB4AC7FBB62B0D37F75A936F217" Guid="{F398F7DF-8BF9-41B6-A147-33D3B24C889D}">
-              <File Id="fil10BA16C0EC67590093E9A492461F1E57" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Configuration\SHFBConceptual.config" />
-            </Component>
-            <Component Id="cmp881AA4CFF8A94F0CBDDC041D96302284" Guid="{FCA21775-2B70-450E-8C17-2D01E3943366}">
-              <File Id="fil9E083A1F3532D22BAE914CA8BD37AAC3" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Configuration\SHFBReference.config" />
+            <Component Id="cmp8DD42DE935CE1B4A8ACDFB48CEEFA8DF" Guid="{C1E62302-D3D6-4D54-A019-68AD95497851}">
+              <File Id="filC0039BAB1C617EB267A602BE5DE101B3" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\Markdown\Configuration\BuildAssembler.config" />
             </Component>
           </Directory>
           <Directory Id="dir98743B8D3DBB9DC1C306A2626A7040B0" Name="Content">
@@ -6353,11 +6353,8 @@
         </Directory>
         <Directory Id="dir67A6AD6029ACC0B0DC4B16E331BCDE0A" Name="OpenXml">
           <Directory Id="dir1E325ACCCD83643C243D8379CBB65341" Name="Configuration">
-            <Component Id="cmp9351A48C808692941A6AAA1D19325FAF" Guid="{2B729B5A-8527-4E52-9F39-5B808FFC88B2}">
-              <File Id="fil5BADC32A588A24D0E99219F9064FAE37" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Configuration\SHFBConceptual.config" />
-            </Component>
-            <Component Id="cmpE42D44D752EB5972F188CA601E965B07" Guid="{1F122E21-0130-4D85-8437-AA7F2D6DCEC0}">
-              <File Id="fil8C5161EED04D4F61E66120CEC662E825" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Configuration\SHFBReference.config" />
+            <Component Id="cmp79FAB7357D53DAD3F59222BBDA858D3C" Guid="{AC86F804-09F8-4928-B744-231D9F63E3CF}">
+              <File Id="filCEC0EE3100A9F6E38910F6E79B03A727" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\Configuration\BuildAssembler.config" />
             </Component>
           </Directory>
           <Directory Id="dirC6BFAEEE7DE3143F4E402D7AC26183E5" Name="Content">
@@ -6649,11 +6646,8 @@
         </Directory>
         <Directory Id="dir10D7A3FAC205D766411CB5F71AB66847" Name="VS2010">
           <Directory Id="dirC16A028AE83891EBD2D2265DBAAE6E91" Name="Configuration">
-            <Component Id="cmp7A1541417051508EA5FBA8066F99787B" Guid="{1E9E848B-F804-448A-B938-45380BE3987D}">
-              <File Id="fil4F5C706BA4EC8E8ACFE88F2B51461566" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\SHFBConceptual.config" />
-            </Component>
-            <Component Id="cmp7FFE4449E1AE5288A9430990559F4498" Guid="{11670749-452D-498C-8537-BE962EC9C59C}">
-              <File Id="fil7A4D49C39A8ECBBE56C0B3CED33D584B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\SHFBReference.config" />
+            <Component Id="cmp0F793262A82D918968446AEC31E1A9B7" Guid="{CC30448C-267A-414A-B052-BEBA4369321B}">
+              <File Id="fil35DEA529DD2AF4B70A840D28F433CAA9" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\Configuration\BuildAssembler.config" />
             </Component>
           </Directory>
           <Directory Id="dirD61ADEF59A86158EBD784AAEE481FA16" Name="Content">
@@ -6986,11 +6980,8 @@
         </Directory>
         <Directory Id="dir519C9C610FA57369AC0260DD55241058" Name="VS2013">
           <Directory Id="dir36BF1DC8C6891EF285F63B4E0A9EAB06" Name="Configuration">
-            <Component Id="cmp978186560D69E5B71D9C2559AF2582BD" Guid="{D3282A1D-D70F-40E4-8CBF-279B5DC20993}">
-              <File Id="fil4223414782E02A7F4715FC4155549D28" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\SHFBConceptual.config" />
-            </Component>
-            <Component Id="cmp6BF09057646772DD382BF57EEF8E1C8F" Guid="{843EC2E5-8AEB-4424-961B-F5676B9A7AFD}">
-              <File Id="fil35728BA24BEFD308021C50BE8C13B8D3" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\SHFBReference.config" />
+            <Component Id="cmp5E0BFFAC4504E7E522733C8AFD12DB5D" Guid="{95C83071-58ED-4271-9A7E-70D1E68DD17D}">
+              <File Id="filD531F4ED325B99C6A38C55C558FF590B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Configuration\BuildAssembler.config" />
             </Component>
           </Directory>
           <Directory Id="dir3736EE2EF96FECCAAD5E5CDBD5DBA1A9" Name="Content">
@@ -7625,25 +7616,22 @@
         <Component Id="cmp38A47323D0FADF71B0B6B1EC69CB2AA3" Guid="{86DF621A-6252-4628-A631-16E10E0D0EDC}">
           <File Id="fil7828382B366AF90FD7C305B358ADBDE7" KeyPath="yes" Source="$(var.RootFolder)\Templates\Build1xHelpFile.proj" />
         </Component>
-        <Component Id="cmpEC3EC031BFE7A99EA5ECD1671FF8B645" Guid="{5A436EC8-13E7-4F52-849C-DE85D19215E8}">
-          <File Id="fil58E894FCB2D863839D3DA640ABB5B8DE" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildConceptualTopics.proj" />
-        </Component>
-        <Component Id="cmpA082207B191D8A043F6FEDDEA78E8C2E" Guid="{71D47DB7-8F46-4557-9D8C-18D613FF386B}">
+        <Component Id="cmpA082207B191D8A043F6FEDDEA78E8C2E" Guid="{BD3CB0B5-2DCF-4236-80BB-5CF2D6235EDC}">
           <File Id="fil54E50987A8B8673A4AEABCC3BE48B95B" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildHelpViewerFile.proj" />
         </Component>
         <Component Id="cmpBFC598949DCBA2EB54124CB1AF3045AB" Guid="{A50C9EFC-1E76-4D2A-B591-00E68F4D66BB}">
           <File Id="filCBCD3A6C28FCFB57BA72AFE41E96C698" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildOpenXmlFile.proj" />
         </Component>
-        <Component Id="cmpA19DDCC5B384F03FC4213971723FF9F8" Guid="{1A9883E8-3299-4ADB-90D9-60D890BB9422}">
-          <File Id="fil0CC7109450A574F4382BBF9F705F7244" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildReferenceTopics.proj" />
-        </Component>
-        <Component Id="cmpA559759D51D0C252275E687880BF01D8" Guid="{16F4832C-5035-4E92-84EE-D8A23E5324D2}">
+        <Component Id="cmpA559759D51D0C252275E687880BF01D8" Guid="{36430E7A-53A4-41E3-9810-D2CE8460DB88}">
           <File Id="fil3DD5A7837A710A60692BB72CC33BE42B" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildReflectionData.config" />
         </Component>
         <Component Id="cmpC265D5C32A41827F7DE7F47AC2063839" Guid="{325471C5-253D-4602-97EC-5512BC504CF2}">
           <File Id="filD8175FCA762B3013A530127F44156A00" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildReflectionData.proj" />
         </Component>
-        <Component Id="cmp9E3E7B5A7E4705DC13D5CA59C345BF1A" Guid="{62BE512B-99F5-4579-9F38-8B5268CC1D12}">
+        <Component Id="cmp66FE375EC57693E77655CE3F7FDEDD7D" Guid="{2D4E1C43-64BE-48FA-8B51-6DC9BF6179C9}">
+          <File Id="filBDAC05EA8C49D181D074C070CD85F7EC" KeyPath="yes" Source="$(var.RootFolder)\Templates\BuildTopics.proj" />
+        </Component>
+        <Component Id="cmp9E3E7B5A7E4705DC13D5CA59C345BF1A" Guid="{C5013116-09CB-48C1-AFB4-3F0ED1CBA270}">
           <File Id="filAD6A238C5BE9E78D5F0868D9CA371B2F" KeyPath="yes" Source="$(var.RootFolder)\Templates\ExtractHtmlInfo.proj" />
         </Component>
         <Component Id="cmpB008DFF82923DF6D1214490A59FEFAA3" Guid="{C24989E9-F76A-4A67-915B-C6223EA3507F}">
@@ -8862,6 +8850,7 @@
       <ComponentRef Id="cmp7DD129E6DF47A722879A111598B5AAEE" />
       <ComponentRef Id="cmpF79F9ADD523E9AB6D64F7AAA675E4D78" />
       <ComponentRef Id="cmp2D8B8E6454D91A462543926192193131" />
+      <ComponentRef Id="cmpC5A6C87B48427AE02BB8D3F203D71752" />
       <ComponentRef Id="cmp047EABB9471B875A6A119D3BA53D7FF1" />
       <ComponentRef Id="cmp470501733D6E36DC9EC85F6F1F6DBCD7" />
       <ComponentRef Id="cmp7A2C3B1ED471FD6B2FDBADED34E2FE34" />
@@ -9710,8 +9699,7 @@
       <ComponentRef Id="cmpBC3473637F9B2F5B954B03C8A8AB2C1C" />
       <ComponentRef Id="cmp277DD37F7612FC7F6E1A73776198F8C7" />
       <ComponentRef Id="cmpD34C1E8E9A4572114ED5425D05B485DC" />
-      <ComponentRef Id="cmpF1975FB4AC7FBB62B0D37F75A936F217" />
-      <ComponentRef Id="cmp881AA4CFF8A94F0CBDDC041D96302284" />
+      <ComponentRef Id="cmp8DD42DE935CE1B4A8ACDFB48CEEFA8DF" />
       <ComponentRef Id="cmpBC88B88212A17C016F2C12D8C878120F" />
       <ComponentRef Id="cmpFFC8CFA43007A1903667C640BF157E6A" />
       <ComponentRef Id="cmpB0F9E472A6FE98CB662E716DB1EA2998" />
@@ -9773,8 +9761,7 @@
       <ComponentRef Id="cmp583A473D3FFFF52D39B0C71AF8675417" />
       <ComponentRef Id="cmpE5F4635E618FCCB3D60172565F673875" />
       <ComponentRef Id="cmp1C1BA3B5BBA12C2236090B479F18957A" />
-      <ComponentRef Id="cmp9351A48C808692941A6AAA1D19325FAF" />
-      <ComponentRef Id="cmpE42D44D752EB5972F188CA601E965B07" />
+      <ComponentRef Id="cmp79FAB7357D53DAD3F59222BBDA858D3C" />
       <ComponentRef Id="cmp7BFB2B96184C2517B56DD00D05256157" />
       <ComponentRef Id="cmp6B3105C9FFCDC8F930B2E3EEBFB77087" />
       <ComponentRef Id="cmp26F595E4720D0A0207887F2E6544F1FE" />
@@ -9861,8 +9848,7 @@
       <ComponentRef Id="cmp7A02571EA12ED54AF6779BB284E64712" />
       <ComponentRef Id="cmp4DCA4C96764A90E438E8198C5D5DB54F" />
       <ComponentRef Id="cmpFF29D23988C0C68952D51F4843ABB5D4" />
-      <ComponentRef Id="cmp7A1541417051508EA5FBA8066F99787B" />
-      <ComponentRef Id="cmp7FFE4449E1AE5288A9430990559F4498" />
+      <ComponentRef Id="cmp0F793262A82D918968446AEC31E1A9B7" />
       <ComponentRef Id="cmp1155E56D3C732302DD00EE8D2A1A23EB" />
       <ComponentRef Id="cmpE9BDF1B425BBF6E0A49B3A448374A16C" />
       <ComponentRef Id="cmpA3A4726F36847591C8372036CF9CB2E4" />
@@ -9966,8 +9952,7 @@
       <ComponentRef Id="cmpAD13B4E7B253CAD8312626EE4DE1677C" />
       <ComponentRef Id="cmpB8042AF8962E09C7196453804DB3706A" />
       <ComponentRef Id="cmp29B107AC4FD574EE08E70783AFD192E1" />
-      <ComponentRef Id="cmp978186560D69E5B71D9C2559AF2582BD" />
-      <ComponentRef Id="cmp6BF09057646772DD382BF57EEF8E1C8F" />
+      <ComponentRef Id="cmp5E0BFFAC4504E7E522733C8AFD12DB5D" />
       <ComponentRef Id="cmpECA5F50969DDD583320F58EE8F1E8290" />
       <ComponentRef Id="cmp691D85BD7EE0BCBB41E525F3012BDF4E" />
       <ComponentRef Id="cmp387FA3D3781A9637DCFF68E446AF4EB6" />
@@ -10161,12 +10146,11 @@
       <ComponentRef Id="cmpB51E855D82F98E4EC31F8F9269FF32C8" />
       <ComponentRef Id="cmp3FB34DB4F07907F015CC8F7CD4AF3B73" />
       <ComponentRef Id="cmp38A47323D0FADF71B0B6B1EC69CB2AA3" />
-      <ComponentRef Id="cmpEC3EC031BFE7A99EA5ECD1671FF8B645" />
       <ComponentRef Id="cmpA082207B191D8A043F6FEDDEA78E8C2E" />
       <ComponentRef Id="cmpBFC598949DCBA2EB54124CB1AF3045AB" />
-      <ComponentRef Id="cmpA19DDCC5B384F03FC4213971723FF9F8" />
       <ComponentRef Id="cmpA559759D51D0C252275E687880BF01D8" />
       <ComponentRef Id="cmpC265D5C32A41827F7DE7F47AC2063839" />
+      <ComponentRef Id="cmp66FE375EC57693E77655CE3F7FDEDD7D" />
       <ComponentRef Id="cmp9E3E7B5A7E4705DC13D5CA59C345BF1A" />
       <ComponentRef Id="cmpB008DFF82923DF6D1214490A59FEFAA3" />
       <ComponentRef Id="cmp1A97D15EBCE367E305131ED96A15D474" />

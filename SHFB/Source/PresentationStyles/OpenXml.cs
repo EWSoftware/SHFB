@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2015
+// Updated : 12/21/2015
 // Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -67,8 +67,7 @@ namespace Sandcastle.PresentationStyles
             this.IntermediateTocTransformation = new TransformationFile(
                 @"%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl");
 
-            this.ConceptualBuildConfiguration = @"Configuration\SHFBConceptual.config";
-            this.ReferenceBuildConfiguration = @"Configuration\SHFBReference.config";
+            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, null, @"DocumentParts\*.*",
                 String.Empty, new[] { ".xml" } ));
