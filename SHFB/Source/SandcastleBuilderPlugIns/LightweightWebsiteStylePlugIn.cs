@@ -183,7 +183,7 @@ namespace SandcastleBuilder.PlugIns
                     }
                 }
 
-                if(copy.Attribute("Url") == null)
+                if(string.IsNullOrEmpty((string)copy.Attribute("Url")))
                     continue;
 
                 // Generate the lightweight TOC pane
