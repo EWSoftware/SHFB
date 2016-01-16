@@ -40,7 +40,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new TransformComponent(base.BuildAssembler);
+                return new TransformComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -49,15 +49,17 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private List<Transform> transforms = new List<Transform>();
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the list of XSL transformations that will be applied to the topics
+        /// This read-only property returns an enumerable list of XSL transformations that will be applied to
+        /// the topics.
         /// </summary>
-        public List<Transform> Transformations
+        protected IEnumerable<Transform> Transformations
         {
             get { return transforms; }
         }
@@ -81,16 +83,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            // load the transforms
-            XPathNodeIterator transform_nodes = configuration.Select("transform");
+            // Load the transforms
+            XPathNodeIterator transformNodes = configuration.Select("transform");
 
-            foreach(XPathNavigator transform_node in transform_nodes)
+            foreach(XPathNavigator transformNode in transformNodes)
             {
-                // load the transform
-                string file = transform_node.GetAttribute("file", String.Empty);
+                // Load the transform
+                string file = transformNode.GetAttribute("file", String.Empty);
 
                 if(String.IsNullOrEmpty(file))
-                    base.WriteMessage(MessageLevel.Error, "Each transform element must specify a file attribute.");
+                    this.WriteMessage(MessageLevel.Error, "Each transform element must specify a file attribute.");
 
                 file = Environment.ExpandEnvironmentVariables(file);
 
@@ -102,44 +104,50 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
                 catch(IOException e)
                 {
-                    base.WriteMessage(MessageLevel.Error, "The transform file '{0}' could not be loaded. The " +
+                    this.WriteMessage(MessageLevel.Error, "The transform file '{0}' could not be loaded. The " +
                         "error message is: {1}", file, e.GetExceptionMessage());
                 }
                 catch(XmlException e)
                 {
-                    base.WriteMessage(MessageLevel.Error, "The transform file '{0}' is not a valid XML file. " +
+                    this.WriteMessage(MessageLevel.Error, "The transform file '{0}' is not a valid XML file. " +
                         "The error message is: {1}", file, e.GetExceptionMessage());
                 }
                 catch(XsltException e)
                 {
-                    base.WriteMessage(MessageLevel.Error, "The XSL transform '{0}' contains an error. The " +
+                    this.WriteMessage(MessageLevel.Error, "The XSL transform '{0}' contains an error. The " +
                         "error message is: {1}", file, e.GetExceptionMessage());
                 }
 
                 transforms.Add(transform);
 
-                // load any arguments
-                XPathNodeIterator argument_nodes = transform_node.Select("argument");
+                // Load any arguments
+                XPathNodeIterator argumentNodes = transformNode.Select("argument");
 
-                foreach(XPathNavigator argument_node in argument_nodes)
+                foreach(XPathNavigator argumentNode in argumentNodes)
                 {
-                    string key = argument_node.GetAttribute("key", String.Empty);
+                    string key = argumentNode.GetAttribute("key", String.Empty);
 
-                    if((key == null) || (key.Length == 0))
-                        base.WriteMessage(MessageLevel.Error, "When creating a transform argument, you must " +
+                    if(String.IsNullOrWhiteSpace(key))
+                        this.WriteMessage(MessageLevel.Error, "When creating a transform argument, you must " +
                             "specify a key using the key attribute");
 
-                    // set "expand-value" attribute to true to expand environment variables embedded in "value".
-                    string expand_attr = argument_node.GetAttribute("expand-value", String.Empty);
-                    bool expand_value = String.IsNullOrEmpty(expand_attr) ? false :
-                        Convert.ToBoolean(expand_attr, CultureInfo.InvariantCulture);
+                    // Don't allow "key" as a key name.  That's reserved for the build process.
+                    if(key == "key")
+                        this.WriteMessage(MessageLevel.Error, "The key name 'key' is reserved for use by " +
+                            "the build process.  Choose another key name.");
 
-                    string value = argument_node.GetAttribute("value", String.Empty);
+                    // Set "expand-value" attribute to true to expand environment variables embedded in "value".
+                    string expandAttr = argumentNode.GetAttribute("expand-value", String.Empty);
+                    bool expandValue = String.IsNullOrEmpty(expandAttr) ? false :
+                        Convert.ToBoolean(expandAttr, CultureInfo.InvariantCulture);
 
-                    if((value != null) && (value.Length > 0))
-                        transform.Arguments.AddParam(key, String.Empty, expand_value ? Environment.ExpandEnvironmentVariables(value) : value);
+                    // If a value attribute is supplied, use that.  If not, use the argument node itself
+                    string value = argumentNode.GetAttribute("value", String.Empty);
+
+                    if(!String.IsNullOrEmpty(value))
+                        transform.Arguments[key] =  expandValue ? Environment.ExpandEnvironmentVariables(value) : value;
                     else
-                        transform.Arguments.AddParam(key, String.Empty, argument_node.Clone());
+                        transform.Arguments[key] = argumentNode.Clone();
                 }
             }
         }
@@ -154,13 +162,17 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         public override void Apply(XmlDocument document, string key)
         {
             // Raise a component event to signal that the topic is about to be transformed
-            base.OnComponentEvent(new TransformingTopicEventArgs(key, document));
+            this.OnComponentEvent(new TransformingTopicEventArgs(key, document));
 
             foreach(Transform transform in transforms)
             {
-                // Add the key as a parameter to the arguments
-                transform.Arguments.RemoveParam("key", String.Empty);
-                transform.Arguments.AddParam("key", String.Empty, key);
+                // Create the argument list and add the key as a parameter
+                var transformArgs = new XsltArgumentList();
+
+                foreach(var kv in transform.Arguments)
+                    transformArgs.AddParam(kv.Key, String.Empty, kv.Value);
+
+                transformArgs.AddParam("key", String.Empty, key);
 
                 // Create a buffer into which output can be written
                 using(MemoryStream buffer = new MemoryStream())
@@ -171,18 +183,18 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     try
                     {
-                        transform.Xslt.Transform(document, transform.Arguments, writer);
+                        transform.Xslt.Transform(document, transformArgs, writer);
                     }
                     catch(XsltException e)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
+                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
                             "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
                             e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
                             e.InnerException.Message);
                     }
                     catch(XmlException e)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
+                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
                             "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
                             e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
                             e.InnerException.Message);
@@ -212,7 +224,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     }
                     catch(XmlException e)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
+                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
                             "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
                             e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
                             e.InnerException.Message);
@@ -225,7 +237,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             }
 
             // Raise a component event to signal that the topic has been transformed
-            base.OnComponentEvent(new TransformedTopicEventArgs(key, document));
+            this.OnComponentEvent(new TransformedTopicEventArgs(key, document));
         }
         #endregion
     }

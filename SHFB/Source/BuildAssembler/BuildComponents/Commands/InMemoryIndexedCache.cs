@@ -93,8 +93,8 @@ namespace Microsoft.Ddue.Tools.Commands
         // This is better, but a document that is often accessed gets no "points" so it will eventually be
         // thrown out even if it is used regularly.
         private int cacheSize;
-        private Queue<string> queue;
-        private Dictionary<string, IndexedDocument> cache;
+        private ConcurrentQueue<string> queue;
+        private ConcurrentDictionary<string, IndexedDocument> cache;
         #endregion
 
         #region Properties
@@ -125,10 +125,16 @@ namespace Microsoft.Ddue.Tools.Commands
 
                         // If the cache is full, remove a document
                         if(cache.Count >= cacheSize)
-                            cache.Remove(queue.Dequeue());
+                        {
+                            IndexedDocument cacheDoc;
+                            string cacheFile;
+
+                            if(queue.TryDequeue(out cacheFile))
+                                cache.TryRemove(cacheFile, out cacheDoc);
+                        }
 
                         // Add the new document to the cache
-                        cache.Add(file, document);
+                        cache.TryAdd(file, document);
                         queue.Enqueue(file);
                     }
 
@@ -160,9 +166,9 @@ namespace Microsoft.Ddue.Tools.Commands
 
             this.cacheSize = size;
 
-            // set up the cache
-            queue = new Queue<string>(size);
-            cache = new Dictionary<string, IndexedDocument>(size);
+            // Set up the cache
+            queue = new ConcurrentQueue<string>();
+            cache = new ConcurrentDictionary<string, IndexedDocument>(4 * Environment.ProcessorCount, size);
         }
         #endregion
 
@@ -185,7 +191,7 @@ namespace Microsoft.Ddue.Tools.Commands
             wildcardPath = configuration.GetAttribute("files", String.Empty);
 
             if(String.IsNullOrWhiteSpace(wildcardPath))
-                base.Component.WriteMessage(MessageLevel.Error, "Each data element must have a files attribute " +
+                this.Component.WriteMessage(MessageLevel.Error, "Each data element must have a files attribute " +
                     "specifying which files to index.");
 
             wildcardPath = Environment.ExpandEnvironmentVariables(wildcardPath);
@@ -222,7 +228,7 @@ namespace Microsoft.Ddue.Tools.Commands
             foreach(XPathNavigator filter in configuration.Select("namespace/@file"))
                 namespaceFileFilter.Add(filter.Value);
 
-            base.Component.WriteMessage(MessageLevel.Info, "Searching for files that match '{0}' in '{1}'",
+            this.Component.WriteMessage(MessageLevel.Info, "Searching for files that match '{0}' in '{1}'",
                 filePart, directoryPart);
 
             Parallel.ForEach(Directory.EnumerateFiles(directoryPart, filePart,
@@ -251,7 +257,7 @@ namespace Microsoft.Ddue.Tools.Commands
         public override void ReportCacheStatistics()
         {
             this.Component.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" in-memory cache entries used: " +
-                "{1} of {2}.", base.Name, cache.Count, cacheSize);
+                "{1} of {2}.", this.Name, cache.Count, cacheSize);
         }
         #endregion
     }

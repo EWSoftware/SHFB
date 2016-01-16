@@ -163,7 +163,7 @@ namespace SandcastleBuilder.PlugIns
                 if(item != null)
                     item.DeleteSelf();
 
-                // The IntalliSense build component must be there
+                // The IntelliSense build component must be there
                 item = navConfig.SelectSingleNode("//component[@id='IntelliSense Component']");
 
                 if(item == null)

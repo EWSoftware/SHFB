@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
+// Updated : 01/14/2016
+// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to build a help file consisting of nothing but additional
@@ -159,11 +159,17 @@ namespace SandcastleBuilder.PlugIns
                 if(context.BuildStep == BuildStep.MergeCustomConfigs &&
                   builder.CurrentProject.HasItems(BuildAction.ContentLayout))
                 {
-                    // Remove the reflection.xml file from the conceptual configuration since it isn't valid
                     config = new XmlDocument();
                     config.Load(builder.WorkingFolder + "sandcastle.config");
                     navConfig = config.CreateNavigator();
 
+                    // Delete the reference configuration component set if present
+                    var item = navConfig.SelectSingleNode("//component[@id='Switch Component']/case[@value='API']");
+
+                    if(item != null)
+                        item.DeleteSelf();
+
+                    // Remove the reflection.xml file from the configuration since it isn't valid
                     XPathNodeIterator allTargets = navConfig.Select("//targets[@files='reflection.xml']");
 
                     foreach(XPathNavigator target in allTargets)

@@ -43,13 +43,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        // The format string for the variable expression
-        private XPathExpression xpath;
+        private XPathExpression xPath;
 
-        // The XPath context
-        private CustomContext context = new CustomContext();
-
-        // The subcomponents
+        private Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
         private IEnumerable<BuildComponentCore> components;
 
         #endregion
@@ -86,40 +82,37 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            // set up the context
-            XPathNodeIterator context_nodes = configuration.Select("context");
+            // Get the context namespaces
+            XPathNodeIterator contextNodes = configuration.Select("context");
 
-            foreach(XPathNavigator context_node in context_nodes)
-            {
-                string prefix = context_node.GetAttribute("prefix", String.Empty);
-                string name = context_node.GetAttribute("name", String.Empty);
-                context.AddNamespace(prefix, name);
-            }
+            foreach(XPathNavigator contextNode in contextNodes)
+                contextNamespaces[contextNode.GetAttribute("prefix", String.Empty)] =
+                    contextNode.GetAttribute("name", String.Empty);
 
-            // load the expression format
-            XPathNavigator variable_node = configuration.SelectSingleNode("variable");
+            // Load the expression format
+            XPathNavigator variableNode = configuration.SelectSingleNode("variable");
 
-            if(variable_node == null)
+            if(variableNode == null)
                 throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
                     "specify a variable using the <variable> element.");
 
-            string xpath_format = variable_node.GetAttribute("expression", String.Empty);
+            string xpathFormat = variableNode.GetAttribute("expression", String.Empty);
 
-            if((xpath_format == null) || (xpath_format.Length == 0))
+            if(String.IsNullOrWhiteSpace(xpathFormat))
                 throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
                     "specify a variable expression using the expression attribute");
 
-            xpath = XPathExpression.Compile(xpath_format);
+            xPath = XPathExpression.Compile(xpathFormat);
 
-            // load the subcomponents
+            // Load the subcomponents
             WriteMessage(MessageLevel.Info, "Loading subcomponents.");
-            XPathNavigator components_node = configuration.SelectSingleNode("components");
+            XPathNavigator componentsNode = configuration.SelectSingleNode("components");
 
-            if(components_node == null)
+            if(componentsNode == null)
                 throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
                     "specify subcomponents using the <components> element.");
 
-            components = BuildAssembler.LoadComponents(components_node);
+            components = BuildAssembler.LoadComponents(componentsNode);
 
             WriteMessage(MessageLevel.Info, "Loaded {0} subcomponents.", components.Count());
         }
@@ -127,27 +120,28 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            // adjust the context
+            // Set the context
+            CustomContext context = new CustomContext(contextNamespaces);
             context["key"] = key;
 
-            // evaluate the condition
-            XPathExpression xpath_local = xpath.Clone();
-            xpath_local.SetContext(context);
+            // Evaluate the condition
+            XPathExpression xPathLocal = xPath.Clone();
+            xPathLocal.SetContext(context);
 
-            Object result = document.CreateNavigator().Evaluate(xpath_local);
+            object result = document.CreateNavigator().Evaluate(xPathLocal);
 
-            // try to interpret the result as a node set
-            XPathNodeIterator result_node_iterator = result as XPathNodeIterator;
+            // Try to interpret the result as a node set
+            XPathNodeIterator resultNodeIterator = result as XPathNodeIterator;
 
-            if(result_node_iterator != null)
+            if(resultNodeIterator != null)
             {
-                // if it is, apply the child components to each node value
-                foreach(XPathNavigator result_node in result_node_iterator.ToArray())
-                    ApplyComponents(document, result_node.Value);
+                // If it is, apply the child components to each node value
+                foreach(XPathNavigator resultNode in resultNodeIterator.ToArray())
+                    ApplyComponents(document, resultNode.Value);
             }
             else
             {
-                // if it isn't, apply the child components to the string value of the result
+                // If it isn't, apply the child components to the string value of the result
                 ApplyComponents(document, result.ToString());
             }
         }

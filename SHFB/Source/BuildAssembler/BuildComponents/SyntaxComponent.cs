@@ -63,17 +63,17 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             public Factory()
             {
                 // Replace the existing instance for reference builds
-                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Replace, "Syntax Component");
+                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Replace, "Syntax Component");
 
                 // Place it before the transform component in conceptual builds if not there already
-                base.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                this.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
                     "XSL Transform Component");
             }
 
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SyntaxComponent(base.BuildAssembler, this.SyntaxGenerators);
+                return new SyntaxComponent(this.BuildAssembler, this.SyntaxGenerators);
             }
 
             /// <inheritdoc />
@@ -115,7 +115,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private List<SyntaxGeneratorCore> generators = new List<SyntaxGeneratorCore>();
 
         // Code snippet grouping and sorting members
-        private XmlNamespaceManager context;
         private XPathExpression referenceRoot, referenceCode, conceptualRoot, conceptualCode;
         private string containerElementName;
         private Dictionary<string, ISyntaxGeneratorMetadata> codeSnippetLanguages;
@@ -206,12 +205,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string id = generatorNode.GetAttribute("id", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(id))
-                    base.WriteMessage(MessageLevel.Error, "Each generator element must have an id attribute");
+                    this.WriteMessage(MessageLevel.Error, "Each generator element must have an id attribute");
 
                 var generatorFactory = generatorFactories.FirstOrDefault(g => g.Metadata.Id == id);
 
                 if(generatorFactory == null)
-                    base.WriteMessage(MessageLevel.Error, "A syntax generator with the ID '{0}' could not be found", id);
+                    this.WriteMessage(MessageLevel.Error, "A syntax generator with the ID '{0}' could not be found", id);
 
                 // Track the languages for grouping
                 generatorLanguages.Add(generatorFactory.Metadata.Id);
@@ -249,13 +248,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
                 catch(Exception ex)
                 {
-                    base.WriteMessage(MessageLevel.Error, "An error occurred while attempting to instantiate " +
+                    this.WriteMessage(MessageLevel.Error, "An error occurred while attempting to instantiate " +
                         "the '{0}' syntax generator. The error message is: {1}{2}", id, ex.Message,
                         ex.InnerException != null ? "\r\n" + ex.InnerException.Message : String.Empty);
                 }
             }
 
-            base.WriteMessage(MessageLevel.Info, "Loaded {0} syntax generators.", generators.Count);
+            this.WriteMessage(MessageLevel.Info, "Loaded {0} syntax generators.", generators.Count);
 
             // If this is not found or set, we'll assume the presentation style does not support grouping
             var containerElement = configuration.SelectSingleNode("containerElement");
@@ -287,16 +286,19 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     includeOnSingleSnippets = false;
 
                 // Create the XPath queries used for code snippet grouping and sorting
-                context = new CustomContext();
+                var context = new CustomContext();
+
                 context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
+
                 referenceRoot = XPathExpression.Compile("document/comments|document/syntax");
                 referenceCode = XPathExpression.Compile("//code|//div[@codeLanguage]");
+
                 conceptualRoot = XPathExpression.Compile("document/topic");
                 conceptualCode = XPathExpression.Compile("//ddue:code|//ddue:snippet");
                 conceptualCode.SetContext(context);
 
                 // Hook up the event handler to group and sort code snippets just prior to XSL transformation
-                base.BuildAssembler.ComponentEvent += TransformComponent_TopicTransforming;
+                this.BuildAssembler.ComponentEvent += TransformComponent_TopicTransforming;
             }
         }
 
@@ -365,7 +367,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                 if(root == null)
                 {
-                    base.WriteMessage(tt.Key, MessageLevel.Warn, "Root content node not found.  Cannot group " +
+                    this.WriteMessage(tt.Key, MessageLevel.Warn, "Root content node not found.  Cannot group " +
                         "and sort code snippets.");
                     return;
                 }

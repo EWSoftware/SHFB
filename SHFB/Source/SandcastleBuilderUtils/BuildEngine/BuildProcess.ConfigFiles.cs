@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.ConfigFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/01/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 01/14/2016
+// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to transform and modify configuration files for the build
@@ -265,13 +265,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
             config = new XmlDocument();
             config.Load(configName);
 
-            this.ReportProgress("    Reference topic configuration:");
+            this.ReportProgress("  Updating reference topic configurations.");
             this.MergeConfigurations(config, false);
 
             // Do the same for conceptual configuration if necessary
             if(this.ConceptualContent.ContentLayoutFiles.Count != 0)
             {
-                this.ReportProgress("    Conceptual topic configuration:");
+                this.ReportProgress("  Updating conceptual topic configurations.");
                 this.MergeConfigurations(config, true);
 
                 // Remove the example component if there are no snippets file
@@ -284,6 +284,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(exampleComponent != null)
                         exampleComponent.ParentNode.RemoveChild(exampleComponent);
+                }
+            }
+            else
+            {
+                // Remove the conceptual content components since they aren't needed
+                var rootNode = config.SelectSingleNode("configuration/dduetools/builder/components/" +
+                    "component[@id='Switch Component']/case[@value='MAML']");
+
+                if(rootNode != null)
+                {
+                    this.ReportProgress("  No conceptual content.  Removing conceptual content components.");
+                    rootNode.ParentNode.RemoveChild(rootNode);
                 }
             }
 

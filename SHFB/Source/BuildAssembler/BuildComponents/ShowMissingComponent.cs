@@ -2,28 +2,28 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 12/23/2015
+// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
 // returns, value, and remarks tags.  It can also add default summary documentation for constructors.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.4.0.0  02/16/2007  EFW  Created the code
-// 1.6.0.5  02/25/2008  EFW  Fixed the auto-doc constructor class link
-// 1.6.0.6  03/20/2008  EFW  Added auto-doc of constructors on list pages
-// 1.6.0.7  03/23/2008  EFW  Added support for ShowMissingTypeParams and localized the messages
-// 1.8.0.1  01/16/2009  EFW  Added support for missing <include> target docs
-// 1.8.0.3  11/19/2009  EFW  Added support for auto-documenting Dispose methods
-// 2.7.3.0  12/22/2012  EFW  Moved this component into the Sandcastle BuildComponents project
-// -------  12/24/2013  EFW  Updated the build component to be discoverable via MEF
+// 02/16/2007  EFW  Created the code
+// 02/25/2008  EFW  Fixed the auto-doc constructor class link
+// 03/20/2008  EFW  Added auto-doc of constructors on list pages
+// 03/23/2008  EFW  Added support for ShowMissingTypeParams and localized the messages
+// 01/16/2009  EFW  Added support for missing <include> target docs
+// 11/19/2009  EFW  Added support for auto-documenting Dispose methods
+// 12/22/2012  EFW  Moved this component into the Sandcastle BuildComponents project
+// 12/24/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;

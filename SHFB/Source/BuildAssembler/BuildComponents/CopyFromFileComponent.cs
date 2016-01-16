@@ -37,7 +37,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new CopyFromFileComponent(base.BuildAssembler);
+                return new CopyFromFileComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -46,7 +46,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private List<CopyFromFileCommand> copyCommands = new List<CopyFromFileCommand>();
-        private CustomContext context = new CustomContext();
+
         #endregion
 
         #region Constructor
@@ -81,7 +81,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string dataFile = dataNode.GetAttribute("file", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(dataFile))
-                    base.WriteMessage(MessageLevel.Error, "Data elements must have a file attribute specifying " +
+                    this.WriteMessage(MessageLevel.Error, "Data elements must have a file attribute specifying " +
                         "a file from which to load data");
 
                 dataFile = Environment.ExpandEnvironmentVariables(dataFile);
@@ -100,7 +100,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     settings.Schemas.Add(null, schemaFile);
 
                 // Load the document
-                base.WriteMessage(MessageLevel.Info, "Loading data file '{0}'.", dataFile);
+                this.WriteMessage(MessageLevel.Info, "Loading data file '{0}'.", dataFile);
 
                 using(XmlReader reader = XmlReader.Create(dataFile, settings))
                 {
@@ -109,7 +109,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             }
 
             if(dataFiles.Count == 0)
-                base.WriteMessage(MessageLevel.Error, "At least one data element is required to specify the " +
+                this.WriteMessage(MessageLevel.Error, "At least one data element is required to specify the " +
                     "file from which to load data");
 
             // Get the source and target expressions for each copy command
@@ -126,25 +126,26 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string sourceXPath = copyNode.GetAttribute("source", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(sourceXPath))
-                    base.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFileComponent, you " +
+                    this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFileComponent, you " +
                         "must specify a source XPath format using the source attribute");
 
                 string targetXPath = copyNode.GetAttribute("target", String.Empty);
 
                 if(String.IsNullOrEmpty(targetXPath))
-                    base.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFileComponent, you " +
+                    this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFileComponent, you " +
                         "must specify a target XPath format using the target attribute");
 
                 copyCommands.Add(new CopyFromFileCommand(this, dataFiles[sourceName], sourceXPath, targetXPath));
             }
 
-            base.WriteMessage(MessageLevel.Info, "Loaded {0} copy commands", copyCommands.Count);
+            this.WriteMessage(MessageLevel.Info, "Loaded {0} copy commands", copyCommands.Count);
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             // Set the key in the XPath context
+            var context = new CustomContext();
             context["key"] = key;
 
             // Perform each copy command

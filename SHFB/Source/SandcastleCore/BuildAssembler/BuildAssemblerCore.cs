@@ -47,7 +47,6 @@ namespace Sandcastle.Core.BuildAssembler
         //=====================================================================
 
         private CancellationTokenSource tokenSource;
-        private BuildContext context = new BuildContext();
 
         private List<BuildComponentCore> components = new List<BuildComponentCore>();
 
@@ -66,14 +65,6 @@ namespace Sandcastle.Core.BuildAssembler
 
         #region Properties
         //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the current build context
-        /// </summary>
-        public BuildContext Context
-        {
-            get { return context; }
-        }
 
         /// <summary>
         /// This read-only property returns the current list of build components
@@ -232,13 +223,6 @@ namespace Sandcastle.Core.BuildAssembler
 
                     if(level > MessageLevel.Info)
                         messageLog.Add(LogMessage(LogLevel.Info, "Loading configuration..."));
-
-                    // Load the context
-                    XPathNavigator contextNode = configNav.SelectSingleNode(
-                        "/configuration/dduetools/builder/context");
-
-                    if(contextNode != null)
-                        this.Context.Load(contextNode);
 
                     // Find all available build components
                     this.CreateComponentContainer(configNav.SelectSingleNode(

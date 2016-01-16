@@ -37,7 +37,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new CopyFromFilesComponent(base.BuildAssembler);
+                return new CopyFromFilesComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -46,7 +46,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private List<CopyFromFilesCommand> copyCommands = new List<CopyFromFilesCommand>();
-        private CustomContext context = new CustomContext();
+
         #endregion
 
         #region Constructor
@@ -79,36 +79,37 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 basePath = Environment.ExpandEnvironmentVariables(basePath);
 
                 if(!Directory.Exists(basePath))
-                    base.WriteMessage(MessageLevel.Error, "The base directory '{0}' does not exist", basePath);
+                    this.WriteMessage(MessageLevel.Error, "The base directory '{0}' does not exist", basePath);
 
                 string fileXPath = copyNode.GetAttribute("file", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(fileXPath))
-                    base.WriteMessage(MessageLevel.Error, "Each copy element must have a file attribute " +
+                    this.WriteMessage(MessageLevel.Error, "Each copy element must have a file attribute " +
                         "specifying the file XPath used to get the file from which to copy elements");
 
                 string sourceXPath = copyNode.GetAttribute("source", String.Empty);
 
                 if(String.IsNullOrWhiteSpace(sourceXPath))
-                    base.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFilesComponent, you " +
+                    this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFilesComponent, you " +
                         "must specify a source XPath format using the source attribute");
 
                 string targetXPath = copyNode.GetAttribute("target", String.Empty);
 
                 if(String.IsNullOrEmpty(targetXPath))
-                    base.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFilesComponent, you " +
+                    this.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromFilesComponent, you " +
                         "must specify a target XPath format using the target attribute");
 
                 copyCommands.Add(new CopyFromFilesCommand(this, basePath, fileXPath, sourceXPath, targetXPath));
             }
 
-            base.WriteMessage(MessageLevel.Info, "Loaded {0} copy commands", copyCommands.Count);
+            this.WriteMessage(MessageLevel.Info, "Loaded {0} copy commands", copyCommands.Count);
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             // Set the key in the XPath context
+            var context = new CustomContext();
             context["key"] = key;
 
             // Perform each copy command

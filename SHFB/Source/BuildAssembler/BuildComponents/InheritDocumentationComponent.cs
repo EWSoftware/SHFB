@@ -30,8 +30,10 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 namespace Microsoft.Ddue.Tools.BuildComponent
 {
     /// <summary>
-    /// InheritDocumentationComponent class.
+    /// Inherit documentation copy component
     /// </summary>
+    /// <remarks>This has been superseded by the Generate Inherited Documentation tool but remains here as an
+    /// example of a copy component.</remarks>
     public class InheritDocumentationComponent : CopyComponentCore
     {
         #region Copy component factory for MEF

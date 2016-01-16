@@ -45,7 +45,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// This read-only property returns a static dictionary that can be used to store information shared
         /// between build components.
         /// </summary>
-        protected static Dictionary<string, object> Data
+        protected static IDictionary<string, object> Data
         {
             get { return data; }
         }
@@ -53,17 +53,9 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// This is used to set an optional group ID for use with component events
         /// </summary>
-        /// <remarks>If not overridden, the default group ID is null (no group)</remarks>
+        /// <value>If not overridden, the default group ID is null (no group)</value>
         public virtual string GroupId { get; set; }
 
-        /// <summary>
-        /// Reserved for future use
-        /// </summary>
-        /// <value>This property is not currently used.  It is reserved for future use.</value>
-        public virtual bool IsThreadSafe
-        {
-            get { return false; }
-        }
         #endregion
 
         #region Constructor

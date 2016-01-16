@@ -42,7 +42,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SharedContentComponent(base.BuildAssembler);
+                return new SharedContentComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -63,14 +63,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// </summary>
             public ApiTokenResolutionComponentFactory()
             {
-                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
                     "Show Missing Documentation Component");
             }
 
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SharedContentComponent(base.BuildAssembler);
+                return new SharedContentComponent(this.BuildAssembler);
             }
 
             /// <inheritdoc />
@@ -99,9 +99,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private CustomContext context;
         private Dictionary<string, string> content;
         private List<SharedContentElement> elements;
+
         #endregion
 
         #region Constructor
@@ -123,7 +123,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         public override void Initialize(XPathNavigator configuration)
         {
             // Get the context.  This will contain namespaces that prefix the elements to find.
-            context = new CustomContext();
+            var context = new CustomContext();
 
             XPathNodeIterator contextNodes = configuration.Select("context");
 
@@ -154,7 +154,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
                 catch(XPathException)
                 {
-                    base.WriteMessage(MessageLevel.Error, "The elements expression '{0}' is not a valid XPath",
+                    this.WriteMessage(MessageLevel.Error, "The elements expression '{0}' is not a valid XPath",
                         path);
                 }
 
@@ -169,7 +169,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
                 catch(XPathException)
                 {
-                    base.WriteMessage(MessageLevel.Error, "The item expression '{0}' is not a valid XPath", item);
+                    this.WriteMessage(MessageLevel.Error, "The item expression '{0}' is not a valid XPath", item);
                 }
 
                 // Get the XPath expression used to find parameter elements
@@ -200,12 +200,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string sharedContentFiles = content_node.GetAttribute("file", String.Empty);
 
                 if(String.IsNullOrEmpty(sharedContentFiles))
-                    base.WriteMessage(MessageLevel.Error, "The content/@file attribute must specify a path.");
+                    this.WriteMessage(MessageLevel.Error, "The content/@file attribute must specify a path.");
 
                 this.ParseDocuments(sharedContentFiles);
             }
 
-            base.WriteMessage(MessageLevel.Info, "Loaded {0} shared content items.", content.Count);
+            this.WriteMessage(MessageLevel.Info, "Loaded {0} shared content items.", content.Count);
         }
 
         /// <summary>
@@ -232,9 +232,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             string sharedContentFiles = Environment.ExpandEnvironmentVariables(wildcardPath);
 
             if(String.IsNullOrWhiteSpace(sharedContentFiles))
-                base.WriteMessage(MessageLevel.Error, "The content/@file attribute specifies an empty string.");
+                this.WriteMessage(MessageLevel.Error, "The content/@file attribute specifies an empty string.");
 
-            base.WriteMessage(MessageLevel.Info, "Searching for files that match '{0}'.", sharedContentFiles);
+            this.WriteMessage(MessageLevel.Info, "Searching for files that match '{0}'.", sharedContentFiles);
 
             string directoryPart = Path.GetDirectoryName(sharedContentFiles);
 
@@ -249,7 +249,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             foreach(string file in files)
                 this.LoadContent(file);
 
-            base.WriteMessage(MessageLevel.Info, "Found {0} files in {1}.", files.Length, sharedContentFiles);
+            this.WriteMessage(MessageLevel.Info, "Found {0} files in {1}.", files.Length, sharedContentFiles);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <param name="file">The shared content file to load</param>
         private void LoadContent(string file)
         {
-            base.WriteMessage(MessageLevel.Info, "Loading shared content file '{0}'.", file);
+            this.WriteMessage(MessageLevel.Info, "Loading shared content file '{0}'.", file);
 
             try
             {
@@ -273,7 +273,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             string value = reader.ReadInnerXml();
 
                             if(content.ContainsKey(key))
-                                base.WriteMessage(MessageLevel.Info, "Overriding shared content item '{0}' " +
+                                this.WriteMessage(MessageLevel.Info, "Overriding shared content item '{0}' " +
                                     "with value in file '{1}'.", key, file);
 
                             content[key] = value;
@@ -284,17 +284,17 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             }
             catch(IOException e)
             {
-                base.WriteMessage(MessageLevel.Error, "The shared content file '{0}' could not be opened. The " +
+                this.WriteMessage(MessageLevel.Error, "The shared content file '{0}' could not be opened. The " +
                     "error message is: {1}", file, e.GetExceptionMessage());
             }
             catch(XmlException e)
             {
-                base.WriteMessage(MessageLevel.Error, "The shared content file '{0}' is not well-formed. The " +
+                this.WriteMessage(MessageLevel.Error, "The shared content file '{0}' is not well-formed. The " +
                     "error message is: {1}", file, e.GetExceptionMessage());
             }
             catch(XmlSchemaException e)
             {
-                base.WriteMessage(MessageLevel.Error, "The shared content file '{0}' is not valid. The error " +
+                this.WriteMessage(MessageLevel.Error, "The shared content file '{0}' is not valid. The error " +
                     "message is: {1}", file, e.GetExceptionMessage());
             }
         }
@@ -323,7 +323,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     // Check for a missing item key
                     if(String.IsNullOrEmpty(item))
-                        base.WriteMessage(key, MessageLevel.Warn, "A shared content element did not specify an item");
+                        this.WriteMessage(key, MessageLevel.Warn, "A shared content element did not specify an item");
                     else
                     {
                         // Extract any parameters
@@ -346,7 +346,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             }
                             catch(FormatException)
                             {
-                                base.WriteMessage(key, MessageLevel.Error, "The shared content item '{0}' " +
+                                this.WriteMessage(key, MessageLevel.Error, "The shared content item '{0}' " +
                                     "could not be formatted with {1} parameters.", item, parameters.Count);
                             }
                         }
@@ -354,7 +354,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         // Check for missing content
                         if(contentValue == null)
                         {
-                            base.WriteMessage(key, MessageLevel.Warn, "Missing shared content item. Tag: " +
+                            this.WriteMessage(key, MessageLevel.Warn, "Missing shared content item. Tag: " +
                                 "'{0}'; Id:'{1}'.", node.LocalName, item);
                         }
                         else
@@ -425,7 +425,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             // form "<title />" which is not allowed in HTML.  Since this usually means there is
                             // a problem with the shared content or the transforms leading up to this, we will
                             // just report the error here.
-                            base.WriteMessage(key, MessageLevel.Error, "Error replacing item.  Root document " +
+                            this.WriteMessage(key, MessageLevel.Error, "Error replacing item.  Root document " +
                                 "element encountered.");
                         }
                     }

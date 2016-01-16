@@ -86,7 +86,7 @@ namespace ColorizerLibrary.Controls
                 else
                 {
 		    	    writer.Write(colorizer.ProcessAndHighlightText(text));
-#if DEBUG
+#if DEBUG && BENCHMARK
         			System.Diagnostics.Debug.WriteLine( "Performance: " +
                         colorizer.BenchmarkSec + " s, " +
                         colorizer.BenchmarkSecPerChar + " s/char, " +

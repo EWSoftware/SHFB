@@ -44,6 +44,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private List<IEnumerable<BuildComponentCore>> branches = new List<IEnumerable<BuildComponentCore>>();
+
         #endregion
 
         #region Constructor
@@ -102,11 +103,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            foreach(IEnumerable<BuildComponentCore> branch in branches)
+            foreach(var branch in branches)
             {
-                XmlDocument subdocument = document.Clone() as XmlDocument;
+                XmlDocument subdocument = (XmlDocument)document.Clone();
 
-                foreach(BuildComponentCore component in branch)
+                foreach(var component in branch)
                     component.Apply(subdocument, key);
             }
         }

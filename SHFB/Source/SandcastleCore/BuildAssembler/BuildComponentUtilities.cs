@@ -100,17 +100,6 @@ namespace Sandcastle.Core.BuildAssembler
         }
 
         /// <summary>
-        /// This method is obsolete and has been replaced by <see cref="ToArray"/>
-        /// </summary>
-        /// <param name="iterator">The XPath iterator to convert to an array</param>
-        /// <returns>An array with the cloned nodes from the iterator</returns>
-        [Obsolete("Use the BuildComponentUtilities.ToArray() extension method instead.")]
-        public static XPathNavigator[] ConvertNodeIteratorToArray(this XPathNodeIterator iterator)
-        {
-            return iterator.ToArray();
-        }
-
-        /// <summary>
         /// Convert an XPath node iterator to an array
         /// </summary>
         /// <param name="iterator">The XPath iterator to convert to an array</param>

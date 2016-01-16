@@ -112,12 +112,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AvgTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BasicTimer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CodeColorizer.cs">
       <SubType>Code</SubType>
     </Compile>

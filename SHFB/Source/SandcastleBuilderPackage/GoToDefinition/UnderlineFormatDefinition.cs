@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UnderlineFormatDefinition.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 01/06/2016
+// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to define the color for MAML and XML comments link underlines
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -43,7 +43,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             this.DisplayName = "MAML/XML Comment Link Underline";
             this.TextDecorations = System.Windows.TextDecorations.Underline;
-            this.ForegroundColor = Colors.Blue;
+            this.ForegroundColor = Color.FromRgb(84, 156, 214);
         }
     }
 

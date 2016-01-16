@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : MSHCComponent.cs
-// Note    : Copyright 2010-2013 Microsoft Corporation
+// Note    : Copyright 2010-2015 Microsoft Corporation
 //
 // This file contains a modified version of the original MSHCComponent that allows the inclusion of a sortOrder
 // attribute on the table of contents file elements.  This allows the sort order of the elements to be defined
@@ -9,7 +9,7 @@
 // parent the API content within a conceptual content folder.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -18,6 +18,7 @@
 //                    Removed the ContentType metadata as it's output by the XSL transformations.
 //                    Removed header bottom fix up code as it is handled in the XSL transformations and script.
 // 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
+// 12/24/2015 - EFW - Updated to be thread safe
 //===============================================================================================================
 
 using System;
@@ -232,16 +233,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private XmlDocument _document;
-        private XmlNode _head;
-        private XmlNode _xml;
-
         private string _locale = String.Empty;
         private bool _selfBranded = MHSDefault.SelfBranded;
         private string _topicVersion = MHSDefault.TopicVersion;
         private string _tocParent = MHSDefault.TocParent;
         private string _tocParentVersion = MHSDefault.TocParentVersion;
         private Dictionary<string, TocInfo> _toc = new Dictionary<string, TocInfo>();
+
         #endregion
 
         #region Constructor
@@ -298,130 +296,114 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     tocFile = value;
             }
 
-            LoadToc(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)));
+            XPathDocument document = new XPathDocument(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)));
+            XPathNavigator navigator = document.CreateNavigator();
+            LoadToc(navigator.SelectSingleNode(TocXPath.Topics), _tocParent, _tocParentVersion);
         }
 
-        /// <summary>
-        /// Applies Microsoft Help System transformation to the output document.
-        /// </summary>
-        /// <param name="document">The <see cref="XmlDocument"/> to apply transformation to.</param>
-        /// <param name="key">Topic key of the output document.</param>
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            _document = document;
+            XmlElement html = document.DocumentElement;
+            XmlNode head = html.SelectSingleNode(Help2XPath.Head);
 
-            XmlElement html = _document.DocumentElement;
-            _head = html.SelectSingleNode(Help2XPath.Head);
-
-            if(_head == null)
+            if(head == null)
             {
-                _head = document.CreateElement(Help2XPath.Head);
+                head = document.CreateElement(Help2XPath.Head);
 
                 if(!html.HasChildNodes)
-                    html.AppendChild(_head);
+                    html.AppendChild(head);
                 else
-                    html.InsertBefore(_head, html.FirstChild);
+                    html.InsertBefore(head, html.FirstChild);
             }
             else
             {
                 // !EFW - Remove the unnecessary Help 2 CSS link element from the header
-                XmlNode hxLink = _head.SelectSingleNode(Help2XPath.HxLink);
+                XmlNode hxLink = head.SelectSingleNode(Help2XPath.HxLink);
 
                 if(hxLink != null)
-                    _head.RemoveChild(hxLink);
+                    head.RemoveChild(hxLink);
             }
 
             // Apply some fix-ups if not branding aware
-            if(_head.SelectSingleNode("meta[@name='BrandingAware']") == null)
+            if(head.SelectSingleNode("meta[@name='BrandingAware']") == null)
             {
-                ModifyAttribute("id", "mainSection");
-                ModifyAttribute("class", "members");
+                ModifyAttribute(document, "id", "mainSection");
+                ModifyAttribute(document, "class", "members");
             }
 
-            AddMHSMeta(MHSMetaName.SelfBranded, _selfBranded.ToString().ToLowerInvariant());
-            AddMHSMeta(MHSMetaName.TopicVersion, _topicVersion);
+            AddMHSMeta(head, MHSMetaName.SelfBranded, _selfBranded.ToString().ToLowerInvariant());
+            AddMHSMeta(head, MHSMetaName.TopicVersion, _topicVersion);
 
             string locale = _locale;
             string id = Guid.NewGuid().ToString();
-            _xml = _head.SelectSingleNode(Help2XPath.Xml);
+            XmlNode xml = head.SelectSingleNode(Help2XPath.Xml);
 
-            if(_xml != null)
+            if(xml != null)
             {
-                XmlNamespaceManager nsmgr = new XmlNamespaceManager(_document.NameTable);
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(document.NameTable);
 
                 if(!nsmgr.HasNamespace(Help2Namespace.Prefix))
                     nsmgr.AddNamespace(Help2Namespace.Prefix, Help2Namespace.Uri);
 
-                XmlElement elem = _xml.SelectSingleNode(Help2XPath.TocTitle, nsmgr) as XmlElement;
+                XmlElement elem = xml.SelectSingleNode(Help2XPath.TocTitle, nsmgr) as XmlElement;
 
                 if(elem != null)
-                    AddMHSMeta(MHSMetaName.Title, elem.GetAttribute(Help2Attr.Title));
+                    AddMHSMeta(head, MHSMetaName.Title, elem.GetAttribute(Help2Attr.Title));
 
-                foreach(XmlElement keyword in _xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Keyword, Help2Value.K), nsmgr))
-                    AddMHSMeta(MHSMetaName.Keywords, keyword.GetAttribute(Help2Attr.Term), true);
+                foreach(XmlElement keyword in xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Keyword, Help2Value.K), nsmgr))
+                    AddMHSMeta(head, MHSMetaName.Keywords, keyword.GetAttribute(Help2Attr.Term), true);
 
-                foreach(XmlElement keyword in _xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Keyword, Help2Value.F), nsmgr))
-                    AddMHSMeta(MHSMetaName.F1, keyword.GetAttribute(Help2Attr.Term), true);
+                foreach(XmlElement keyword in xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Keyword, Help2Value.F), nsmgr))
+                    AddMHSMeta(head, MHSMetaName.F1, keyword.GetAttribute(Help2Attr.Term), true);
 
-                foreach(XmlElement lang in _xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.DevLang), nsmgr))
-                    AddMHSMeta(MHSMetaName.Category, Help2Value.DevLang + ":" + lang.GetAttribute(Help2Attr.Value), true);
+                foreach(XmlElement lang in xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.DevLang), nsmgr))
+                    AddMHSMeta(head, MHSMetaName.Category, Help2Value.DevLang + ":" + lang.GetAttribute(Help2Attr.Value), true);
 
-                elem = _xml.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.Abstract), nsmgr) as XmlElement;
+                elem = xml.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.Abstract), nsmgr) as XmlElement;
 
                 if(elem != null)
-                    AddMHSMeta(MHSMetaName.Description, elem.GetAttribute(Help2Attr.Value));
+                    AddMHSMeta(head, MHSMetaName.Description, elem.GetAttribute(Help2Attr.Value));
 
-                elem = _xml.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.AssetID), nsmgr) as XmlElement;
+                elem = xml.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.AssetID), nsmgr) as XmlElement;
 
                 if(elem != null)
                     id = elem.GetAttribute(Help2Attr.Value);
 
                 if(String.IsNullOrEmpty(locale))
                 {
-                    elem = _xml.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.Locale), nsmgr) as XmlElement;
+                    elem = xml.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, Help2XPath.Attr, Help2Value.Locale), nsmgr) as XmlElement;
                     if(elem != null)
                         locale = elem.GetAttribute(Help2Attr.Value);
                 }
 
                 // !EFW - Remove the XML data island as it serves no purpose
-                _head.RemoveChild(_xml);
+                head.RemoveChild(xml);
             }
 
             if(String.IsNullOrEmpty(locale))
                 locale = MHSDefault.Locale;
 
-            AddMHSMeta(MHSMetaName.Locale, locale);
-            AddMHSMeta(MHSMetaName.TopicLocale, locale);
-            AddMHSMeta(MHSMetaName.Id, id);
+            AddMHSMeta(head, MHSMetaName.Locale, locale);
+            AddMHSMeta(head, MHSMetaName.TopicLocale, locale);
+            AddMHSMeta(head, MHSMetaName.Id, id);
 
-            if(_toc.ContainsKey(id))
+            TocInfo tocInfo;
+
+            if(_toc.TryGetValue(id, out tocInfo))
             {
-                TocInfo tocInfo = _toc[id];
-                AddMHSMeta(MHSMetaName.TocParent, tocInfo.Parent);
+                AddMHSMeta(head, MHSMetaName.TocParent, tocInfo.Parent);
 
                 if(tocInfo.Parent != MHSDefault.TocParent)
-                    AddMHSMeta(MHSMetaName.TocParentVersion, tocInfo.ParentVersion);
+                    AddMHSMeta(head, MHSMetaName.TocParentVersion, tocInfo.ParentVersion);
 
-                AddMHSMeta(MHSMetaName.TocOrder, tocInfo.Order.ToString(CultureInfo.InvariantCulture));
+                AddMHSMeta(head, MHSMetaName.TocOrder, tocInfo.Order.ToString(CultureInfo.InvariantCulture));
             }
         }
         #endregion
 
         #region Private helper methods
         //=====================================================================
-
-        // Loads TOC structure from a file
-        private void LoadToc(string path)
-        {
-            _toc.Clear();
-
-            using(Stream stream = File.OpenRead(path))
-            {
-                XPathDocument document = new XPathDocument(stream);
-                XPathNavigator navigator = document.CreateNavigator();
-                LoadToc(navigator.SelectSingleNode(TocXPath.Topics), _tocParent, _tocParentVersion);
-            }
-        }
 
         // Loads TOC structure from an XPathNavigator
         private void LoadToc(XPathNavigator navigator, string parent, string parentVersion)
@@ -456,39 +438,37 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         }
 
         // Adds Microsoft Help System meta data to the output document
-        private XmlElement AddMHSMeta(string name, string content)
+        private void AddMHSMeta(XmlNode headElement, string name, string content)
         {
-            return AddMHSMeta(name, content, false);
+            this.AddMHSMeta(headElement, name, content, false);
         }
 
         // Adds Microsoft Help System meta data to the output document
-        private XmlElement AddMHSMeta(string name, string content, bool multiple)
+        private void AddMHSMeta(XmlNode headElement, string name, string content, bool multiple)
         {
-            if(String.IsNullOrEmpty(content))
-                return null;
-
-            XmlElement elem = null;
-
-            // !EFW - Bug fix.  Fixed attribute name to find them properly (reported by Don Fehr).
-            if(!multiple)
-                elem = _document.SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
-                    "//meta[@name='{0}']", name)) as XmlElement;
-
-            if(elem == null)
+            if(!String.IsNullOrEmpty(content))
             {
-                elem = _document.CreateElement(MHSTag.Meta);
-                elem.SetAttribute(MHSMetaAttr.Name, name);
-                elem.SetAttribute(MHSMetaAttr.Content, content);
-                _head.AppendChild(elem);
-            }
+                XmlElement elem = null;
 
-            return elem;
+                // !EFW - Bug fix.  Fixed attribute name to find them properly (reported by Don Fehr).
+                if(!multiple)
+                    elem = headElement.OwnerDocument.SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
+                        "//meta[@name='{0}']", name)) as XmlElement;
+
+                if(elem == null)
+                {
+                    elem = headElement.OwnerDocument.CreateElement(MHSTag.Meta);
+                    elem.SetAttribute(MHSMetaAttr.Name, name);
+                    elem.SetAttribute(MHSMetaAttr.Content, content);
+                    headElement.AppendChild(elem);
+                }
+            }
         }
 
         // Modifies an attribute value to prevent conflicts with Microsoft Help System branding
-        private void ModifyAttribute(string name, string value)
+        private void ModifyAttribute(XmlDocument document, string name, string value)
         {
-            XmlNodeList list = _document.SelectNodes(String.Format(CultureInfo.InvariantCulture,
+            XmlNodeList list = document.SelectNodes(String.Format(CultureInfo.InvariantCulture,
                 @"//*[@{0}='{1}']", name, value));
 
             foreach(XmlElement elem in list)

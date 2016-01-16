@@ -59,7 +59,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorizerLibrary, Version=2.1.0.16, Culture=neutral, PublicKeyToken=5929c739f35cf5aa, processorArchitecture=MSIL">
+    <Reference Include="ColorizerLibrary">
       <HintPath>..\SHFB\Deploy\ColorizerLibrary.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />

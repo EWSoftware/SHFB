@@ -58,7 +58,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             new Dictionary<SnippetIdentifier, List<StoredSnippet>>();
 
         private XPathExpression selector;
-        private XmlNamespaceManager context = new CustomContext();
 
         private static Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
 
@@ -233,7 +232,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
             }
 
-            return (regions);
+            return regions;
         }
 
         /// <summary>
@@ -372,6 +371,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 WriteMessage(MessageLevel.Info, "Loaded {0} colorization rules for the language '{1}'.", rules.Count, language);
             }
 
+            CustomContext context = new CustomContext();
             context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
 
             selector = XPathExpression.Compile("//ddue:codeReference");
