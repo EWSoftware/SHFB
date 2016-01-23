@@ -28,6 +28,11 @@ namespace Microsoft.Ddue.Tools
         private Dictionary<Object, Field> attachedMembers;
         private ManagedReflectionWriter mrw;
 
+        private string dependencyPropertyTypeName;
+        private string dependencyPropertySuffix;
+        private string routedEventTypeName;
+        private string routedEventSuffix;
+
         #endregion
 
         #region Constructor
@@ -50,6 +55,23 @@ namespace Microsoft.Ddue.Tools
             writer.RegisterStartTagCallback("apis", AddAttachedMembers);
             writer.RegisterStartTagCallback("apidata", WriteAttachedMember);
             writer.RegisterEndTagCallback("api", WriteAttachmentData);
+
+            // Determine the type names and suffixes of our relevant fields
+            dependencyPropertyTypeName = 
+                GetConfigurationValue(configuration, "dependencyPropertyTypeName") ?? 
+                "System.Windows.DependencyProperty";
+
+            dependencyPropertySuffix =
+                GetConfigurationValue(configuration, "dependencyPropertySuffix") ??
+                "Property";
+
+            routedEventTypeName =
+                GetConfigurationValue(configuration, "routedEventTypeName") ??
+                "System.Windows.RoutedEvent";
+
+            routedEventSuffix =
+                GetConfigurationValue(configuration, "routedEventSuffix") ??
+                "Event";
         }
         #endregion
 
@@ -84,13 +106,13 @@ namespace Microsoft.Ddue.Tools
                         Field field = (Field)member;
 
                         // ... of type dependency property ...
-                        if(field.Type.FullName != "System.Windows.DependencyProperty")
+                        if(field.Type.FullName != dependencyPropertyTypeName)
                             continue;
 
                         // ... with a name ending in "Property".
                         string name = field.Name.Name;
 
-                        if(!name.EndsWith("Property", StringComparison.Ordinal))
+                        if(!name.EndsWith(dependencyPropertySuffix, StringComparison.Ordinal))
                             continue;
 
                         name = name.Substring(0, name.Length - 8);
@@ -147,12 +169,12 @@ namespace Microsoft.Ddue.Tools
 
                         Field field = (Field)member;
 
-                        if(field.Type.FullName != "System.Windows.RoutedEvent")
+                        if(field.Type.FullName != routedEventTypeName)
                             continue;
 
                         string name = field.Name.Name;
 
-                        if(!name.EndsWith("Event", StringComparison.Ordinal))
+                        if(!name.EndsWith(routedEventSuffix, StringComparison.Ordinal))
                             continue;
 
                         name = name.Substring(0, name.Length - 5);
@@ -287,6 +309,19 @@ namespace Microsoft.Ddue.Tools
                         writer.WriteEndElement();
                     }
             }
+        }
+        #endregion
+
+        #region Helper methods
+        private string GetConfigurationValue(XPathNavigator configuration, string name)
+        {
+            var node = configuration.SelectSingleNode(name);
+            if (node == null)
+            {
+                return null;
+            }
+
+            return String.IsNullOrWhiteSpace(node.Value) ? null : node.Value;
         }
         #endregion
     }
