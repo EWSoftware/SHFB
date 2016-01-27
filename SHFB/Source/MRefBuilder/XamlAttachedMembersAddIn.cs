@@ -115,7 +115,7 @@ namespace Microsoft.Ddue.Tools
                         if(!name.EndsWith(dependencyPropertySuffix, StringComparison.Ordinal))
                             continue;
 
-                        name = name.Substring(0, name.Length - 8);
+                        name = name.Substring(0, name.Length - dependencyPropertySuffix.Length);
 
                         // Look for a getter and/or a setter
                         Method getter = null;
@@ -177,7 +177,7 @@ namespace Microsoft.Ddue.Tools
                         if(!name.EndsWith(routedEventSuffix, StringComparison.Ordinal))
                             continue;
 
-                        name = name.Substring(0, name.Length - 5);
+                        name = name.Substring(0, name.Length - routedEventSuffix.Length);
 
                         Method adder = null;
 
