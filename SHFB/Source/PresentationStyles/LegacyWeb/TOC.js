@@ -96,7 +96,7 @@ function Initialize(extension)
             if(options[idx] == "topic" && idx + 1 < options.length)
             {
                 // Don't allow javascript, or references outside the current site
-                if(options[idx + 1].match(/^\w[\w\/.]*$/))
+                if(options[idx + 1].match(/^\w[\w\/.-]*$/))
                     topicContent.src = options[idx + 1];
                 break;
             }
