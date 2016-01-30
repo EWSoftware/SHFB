@@ -2,24 +2,25 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/22/2016
+// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the IntelliSense build component
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.2  11/07/2007  EFW  Created the code
-// 2.7.3.0  12/21/2012  EFW  Moved the configuration dialog into the Sandcastle build components assembly
+// 11/07/2007  EFW  Created the code
+// 12/21/2012  EFW  Moved the configuration dialog into the Sandcastle build components assembly
 //===============================================================================================================
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
@@ -29,8 +30,7 @@ using Microsoft.Ddue.Tools.BuildComponent;
 namespace Microsoft.Ddue.Tools.UI
 {
     /// <summary>
-    /// This form is used to configure the settings for the
-    /// <see cref="IntelliSenseComponent"/>.
+    /// This form is used to configure the settings for the <see cref="IntelliSenseComponent"/>
     /// </summary>
     internal partial class IntelliSenseConfigDlg : Form
     {
@@ -38,6 +38,7 @@ namespace Microsoft.Ddue.Tools.UI
         //=====================================================================
 
         private XmlDocument config;     // The configuration
+
         #endregion
 
         #region Properties
@@ -64,6 +65,7 @@ namespace Microsoft.Ddue.Tools.UI
             XmlNode component, node;
             XmlAttribute attr;
             bool itemChecked;
+            int boundedCapacity;
 
             InitializeComponent();
 
@@ -92,6 +94,16 @@ namespace Microsoft.Ddue.Tools.UI
 
                 if(attr != null)
                     txtFolder.Text = attr.Value;
+
+                attr = node.Attributes["boundedCapacity"];
+
+                if(attr != null && Int32.TryParse(attr.Value, out boundedCapacity))
+                {
+                    if(boundedCapacity < 0 || boundedCapacity > 9999)
+                        boundedCapacity = 100;
+
+                    udcBoundedCapacity.Value = boundedCapacity;
+                }
             }
         }
         #endregion
@@ -123,8 +135,8 @@ namespace Microsoft.Ddue.Tools.UI
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message,
-                    "IntelliSense Component", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, "IntelliSense Component",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -179,6 +191,16 @@ namespace Microsoft.Ddue.Tools.UI
             }
 
             attr.Value = txtFolder.Text;
+
+            attr = node.Attributes["boundedCapacity"];
+
+            if(attr == null)
+            {
+                attr = config.CreateAttribute("boundedCapacity");
+                node.Attributes.Append(attr);
+            }
+
+            attr.Value = udcBoundedCapacity.Value.ToString(CultureInfo.InvariantCulture);
 
             this.DialogResult = DialogResult.OK;
             this.Close();

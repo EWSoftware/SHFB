@@ -56,7 +56,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private XmlWriterSettings settings = new XmlWriterSettings();
         private XPathExpression pathExpression, selectExpression;
 
-        private string basePath;
+        private string basePath, groupId;
         private bool writeXhtmlNamespace;
 
         private BlockingCollection<KeyValuePair<string, XmlDocument>> documentList;
@@ -73,6 +73,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <param name="buildAssembler">A reference to the build assembler</param>
         protected SaveComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
+            // No bounded capacity by default
             documentList = new BlockingCollection<KeyValuePair<string, XmlDocument>>();
         }
         #endregion
@@ -83,6 +84,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            int boundedCapacity;
+
             settings.Encoding = Encoding.UTF8;
             settings.CloseOutput = true;
 
@@ -155,6 +158,21 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 propertyInfo.SetValue(settings, method, null);
             }
 
+            // Get an optional group ID for reporting documents remaining when disposed
+            groupId = saveNode.GetAttribute("groupId", String.Empty);
+
+            if(!String.IsNullOrWhiteSpace(groupId))
+                groupId += " ";
+            else
+                groupId = String.Empty;
+
+            // Allow limiting the writer task collection to conserve memory
+            string capacity = saveNode.GetAttribute("boundedCapacity", String.Empty);
+
+            if(!String.IsNullOrWhiteSpace(capacity) && Int32.TryParse(capacity, out boundedCapacity) &&
+              boundedCapacity > 0)
+                documentList = new BlockingCollection<KeyValuePair<string, XmlDocument>>(boundedCapacity);
+
             // Use a pipeline task to allow the actual saving to occur while other topics are being generated
             documentWriter = Task.Run(() => WriteDocuments());
         }
@@ -182,10 +200,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     if(count != 0)
                         this.WriteMessage(MessageLevel.Diagnostic, "Waiting for the document writer task to " +
-                            "finish ({0} files remaining)...", count);
+                            "finish ({0} {1}file(s) remaining)...", count, groupId);
 
                     documentWriter.Wait();
                 }
+
+                documentList.Dispose();
             }
 
             base.Dispose(disposing);

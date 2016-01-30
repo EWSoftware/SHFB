@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2016
+// Updated : 01/22/2016
 // Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,6 +23,7 @@
 // 12/21/2012  EFW  Replaced the Microsoft IntelliSense build component with my version
 // 11/12/2013  EFW  Added support for exporting code contracts XML comments elements
 // 12/23/2013  EFW  Updated the build component to be discoverable via MEF
+// 01/07/2016  EFW  Updated to use a pipeline task for writing out the member comments for better performance
 //===============================================================================================================
 
 using System;
@@ -252,6 +253,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <param name="buildAssembler">A reference to the build assembler</param>
         protected IntelliSenseComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
+            // No bounded capacity by default
             commentsList = new BlockingCollection<CommentsInfo>();
         }
         #endregion
@@ -264,6 +266,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         {
             XPathNavigator nav;
             string attrValue;
+            int boundedCapacity;
 
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
@@ -311,9 +314,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                 if(!String.IsNullOrEmpty(attrValue))
                     namespacesFilename = attrValue;
+
+                // Allow limiting the writer task collection to conserve memory
+                attrValue = nav.GetAttribute("boundedCapacity", String.Empty);
+
+                if(!String.IsNullOrWhiteSpace(attrValue) && Int32.TryParse(attrValue, out boundedCapacity) &&
+                  boundedCapacity > 0)
+                    commentsList = new BlockingCollection<CommentsInfo>(boundedCapacity);
             }
 
-            // This task acts as a pipeline using the blocking collection thus making the component thread safe
+            // Use a pipeline task to allow the actual saving to occur while other topics are being generated
             commentsWriter = Task.Run(() => WriteComments());
         }
 
@@ -354,10 +364,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     if(count != 0)
                         this.WriteMessage(MessageLevel.Diagnostic, "Waiting for the IntelliSense comments " +
-                            "writer task to finish ({0} members remaining)...", count);
+                            "writer task to finish ({0} member(s) remaining)...", count);
 
                     commentsWriter.Wait();
                 }
+
+                commentsList.Dispose();
             }
 
             base.Dispose(disposing);

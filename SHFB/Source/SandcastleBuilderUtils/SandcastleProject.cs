@@ -68,6 +68,7 @@
 // -------  12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //          12/20/2013  EFW  Added support for the ComponentPath project property
 //          05/03/2015  EFW  Removed support for the MS Help 2 file format
+//          01/22/2016  EFW  Added SaveComponentCacheCapacity property
 //===============================================================================================================
 
 using System;
@@ -653,6 +654,15 @@ namespace SandcastleBuilder.Utils
         /// <value>This is mainly a debugging aid.  Leave it set to false, the default, to produce more compact
         /// HTML.</value>
         public bool IndentHtml { get; private set; }
+
+        /// <summary>
+        /// This read-only property is used to get the build assembler Save Component writer task cache capacity
+        /// </summary>
+        /// <value>The default is 100 to limit the cache to 100 entries</value>
+        /// <remarks>Decrease the value to conserve memory, increase it to help with build speed at the expense
+        /// of memory used.  Set it to zero to allow an unbounded cache for the writer task (best speed at the
+        /// expense of memory used).</remarks>
+        public int SaveComponentCacheCapacity { get; private set; }
 
         /// <summary>
         /// This read-only property is used to get a dictionary of build component configurations
@@ -1531,6 +1541,7 @@ namespace SandcastleBuilder.Utils
                 VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected;
 
             this.BuildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
+            this.SaveComponentCacheCapacity = 100;
             this.HelpFileFormat = HelpFileFormats.HtmlHelp1;
             this.HtmlSdkLinkType = this.WebsiteSdkLinkType = HtmlSdkLinkType.Msdn;
             this.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
