@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <content xml:space="preserve">
 	<!-- NOTE: This file must appear LAST in the list of content files so that these items override the matching
 			 items in the stock content files! -->
@@ -23,7 +24,7 @@
 	<item id="locale">{@Locale}</item>
 	<item id="brandingLocaleCss">branding-{@LocaleMixedCase}.css</item>
 
-	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Diese Seite ist eine Vorabausgabe der Dokumentation und kann in zukünftigen Ausgaben geändert werden. Leere Seiten sind als Platzhalter eingefügt.]</p></item>
+	<item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Diese Seite ist eine Vorabausgabe der Dokumentation und kann in zukÃ¼nftigen Ausgaben geÃ¤ndert werden. Leere Seiten sind als Platzhalter eingefÃ¼gt.]</p></item>
 
 	<item id="comments"><div class="OH_feedbacklink">Senden Sie Kommentare zu diesem Feature an
         <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a></div>
