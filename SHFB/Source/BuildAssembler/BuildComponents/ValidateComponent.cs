@@ -44,6 +44,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private XmlSchemaSet schemas = new XmlSchemaSet();
+
         #endregion
 
         #region Constructor
@@ -66,21 +67,15 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// attribute that specifies the XSD schema file to use.</remarks>
         public override void Initialize(XPathNavigator configuration)
         {
-            foreach(XPathNavigator schema_node in configuration.Select("schema"))
-                schemas.Add(null, schema_node.GetAttribute("file", String.Empty));
+            foreach(XPathNavigator schemaNode in configuration.Select("schema"))
+                schemas.Add(null, schemaNode.GetAttribute("file", String.Empty));
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            // Set the validation schemas
             document.Schemas = schemas;
-
-            // Validate the document
-            document.Validate((sender, e) =>
-            {
-                this.WriteMessage(key, MessageLevel.Warn, e.Message);
-            });
+            document.Validate((sender, e) => this.WriteMessage(key, MessageLevel.Warn, e.Message));
         }
         #endregion
     }

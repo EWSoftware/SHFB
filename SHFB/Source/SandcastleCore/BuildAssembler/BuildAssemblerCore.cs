@@ -17,6 +17,7 @@
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
 // 12/26/2013 - EFW - Updated to load build components via MEF
 // 12/28/2013 - EFW - Added MSBuild task support
+// 11/20/2015 - EFW - Reworked to support a document type attribute on the created topic
 
 using System;
 using System.Collections.Concurrent;
@@ -46,7 +47,6 @@ namespace Sandcastle.Core.BuildAssembler
         //=====================================================================
 
         private CancellationTokenSource tokenSource;
-        private BuildContext context = new BuildContext();
 
         private List<BuildComponentCore> components = new List<BuildComponentCore>();
 
@@ -65,14 +65,6 @@ namespace Sandcastle.Core.BuildAssembler
 
         #region Properties
         //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the current build context
-        /// </summary>
-        public BuildContext Context
-        {
-            get { return context; }
-        }
 
         /// <summary>
         /// This read-only property returns the current list of build components
@@ -232,13 +224,6 @@ namespace Sandcastle.Core.BuildAssembler
                     if(level > MessageLevel.Info)
                         messageLog.Add(LogMessage(LogLevel.Info, "Loading configuration..."));
 
-                    // Load the context
-                    XPathNavigator contextNode = configNav.SelectSingleNode(
-                        "/configuration/dduetools/builder/context");
-
-                    if(contextNode != null)
-                        this.Context.Load(contextNode);
-
                     // Find all available build components
                     this.CreateComponentContainer(configNav.SelectSingleNode(
                         "/configuration/dduetools/builder/componentLocations"));
@@ -283,9 +268,9 @@ namespace Sandcastle.Core.BuildAssembler
         /// </summary>
         /// <param name="manifest">The manifest file to read</param>
         /// <returns>An enumerable list of topic IDs</returns>
-        private IEnumerable<string> ReadManifest(string manifest)
+        private IEnumerable<ManifestTopic> ReadManifest(string manifest)
         {
-            string id;
+            string id, type;
 
             using(var reader = XmlReader.Create(manifest))
             {
@@ -295,12 +280,17 @@ namespace Sandcastle.Core.BuildAssembler
                     if(reader.NodeType == XmlNodeType.Element && reader.LocalName == "topic")
                     {
                         id = reader.GetAttribute("id");
+                        type = reader.GetAttribute("type");
 
                         if(String.IsNullOrEmpty(id))
                             throw new InvalidOperationException("A manifest topic is missing the required " +
-                                " id attribute");
+                                "id attribute");
 
-                        yield return id;
+                        if(String.IsNullOrEmpty(type))
+                            throw new InvalidOperationException("A manifest topic is missing the required " +
+                                "type attribute");
+
+                        yield return new ManifestTopic(id, type);
                     }
             }
         }
@@ -321,22 +311,31 @@ namespace Sandcastle.Core.BuildAssembler
         /// </summary>
         /// <param name="topics">The enumerable list of topic IDs</param>
         /// <returns>A count of the number of topics processed</returns>
-        protected int Apply(IEnumerable<string> topics)
+        protected int Apply(IEnumerable<ManifestTopic> topics)
         {
             int count = 0;
 
-            foreach(string topic in topics)
+            foreach(var topic in topics)
             {
-                // Create the document
+                this.WriteMessage(MessageLevel.Info, "Building topic {0}", topic.Id);
+
+                // Create the document.  The root node is always called "document" and the topic type is added
+                // using the "type" attribute.  This can be used to run a different set of components based on
+                // the document type.
                 XmlDocument document = new XmlDocument();
                 document.PreserveWhitespace = true;
 
-                this.WriteMessage(MessageLevel.Info, "Building topic {0}", topic);
+                var element = document.CreateElement("document");
+                var attr = document.CreateAttribute("type");
+                attr.Value = topic.TopicType;
+
+                element.Attributes.Append(attr);
+                document.AppendChild(element);
 
                 // Apply the component stack
                 foreach(BuildComponentCore component in components)
                 {
-                    component.Apply(document, topic);
+                    component.Apply(document, topic.Id);
                     tokenSource.Token.ThrowIfCancellationRequested();
                 }
 
@@ -404,7 +403,7 @@ namespace Sandcastle.Core.BuildAssembler
         /// <summary>
         /// This is used to load a set of components in a configuration and return them as an enumerable list
         /// </summary>
-        /// <param name="configuration">The con</param>
+        /// <param name="configuration">The configuration node from which to get the components</param>
         /// <returns>An enumerable list of components created based on the configuration information</returns>
         public IEnumerable<BuildComponentCore> LoadComponents(XPathNavigator configuration)
         {

@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Components
 // File    : LanguageSpecificTextComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/30/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 12/23/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to convert span style language-specific text elements to
 // the script style elements used in the VS2010 and later styles.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -60,6 +60,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private string scriptFunctionName;
+
         #endregion
 
         #region Constructor
@@ -109,7 +110,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 if(langList.Count > 0 && langList.Count == lstNode.ChildNodes.Count)
                 {
                     uniqueId = idRoot + sequence.ToString(CultureInfo.InvariantCulture);
-                    langParam = String.Join("|", langList.OfType<XmlNode>().Select(
+                    langParam = String.Join("|", langList.Cast<XmlNode>().Select(
                         n => String.Concat(n.Attributes["class"].Value, "=", n.InnerText)));
 
                     spanElement = document.CreateElement("span");

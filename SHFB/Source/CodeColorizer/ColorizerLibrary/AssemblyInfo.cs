@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : AssemblyInfo.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 01/10/2013
+// Updated : 01/14/2016
 // Compiler: Microsoft Visual C#
 //
 // Code colorizer attributes.  The original Code Project article by Jonathan can be found at:
@@ -31,22 +31,19 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("This is used to colorize blocks of code for output as HTML.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jonathan de Halleux")]
-[assembly: AssemblyCopyright("Copyright \xA9 2003-2013, Jonathan de Halleux, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2003-2016, Jonathan de Halleux, All Rights Reserved")]
 [assembly: AssemblyTrademark("Jonathan de Halleux, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 
+// Version information for an assembly consists of the following four values based on the current date:
 //
-// Version information for an assembly consists of the following four values:
+//      Year of release     4 digit year
+//      Month of release    1 or 2 digit month
+//      Day of release      1 or 2 digit day
+//      Revision            Typically zero unless multiple releases are made on the same day.  In such cases,
+//                          increment the revision by one with each same day release.
 //
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("2.1.0.16")]
-[assembly: AssemblyFileVersion("2.1.0.16")]
+[assembly: AssemblyVersion("2016.1.14.0")]
+[assembly: AssemblyFileVersion("2016.1.14.0")]

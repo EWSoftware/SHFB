@@ -2,14 +2,14 @@
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 01/10/2013
+// Updated : 01/15/2016
 // Compiler: Microsoft Visual C#
 //
 // This is used to colorize blocks of code for output as HTML.  The original Code Project article by Jonathan
 // can be found at: http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con.
 //
 #region Modifications by Eric Woodruff
-// Modifications by Eric Woodruff (Eric@EWoodruff.us) 11/2006-12/2012:
+// Modifications by Eric Woodruff (Eric@EWoodruff.us) 11/2006-01/2016:
 //
 // Overall:
 //      Updated for use with .NET 4.0 and rewrote various parts to streamline the code and improve performance.
@@ -58,6 +58,8 @@
 //
 //      Added the ability to disable all options except leading whitespace normalization.
 //
+//      Made various updates to make the code colorizer thread safe.
+//
 //  Changes to highlight.css/.xml/.xsl:
 //      Reworked the keyword lists to share common keywords amongst similar languages.
 //
@@ -92,6 +94,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -107,6 +110,9 @@ namespace ColorizerLibrary
     /// <p/>Modified by Eric Woodruff (Eric@EWoodruff.us) 11/2006. The original Code Project article and code by
     /// Jonathan can be found at:
     /// <see href="http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con"/>.</remarks>
+    /// <threadsafety>The <see cref="ProcessAndHighlightText"/> and <see cref="ColorizePlainText"/> methods are
+    /// thread safe.  All other public instance properties and methods are not guaranteed to be thread safe
+    /// and are intended for setting the defaults prior to colorizing code.</threadsafety>
     public class CodeColorizer
     {
         #region Collapsible region tracking class
@@ -270,15 +276,9 @@ namespace ColorizerLibrary
         // The marker is HTML encoded after colorization
         private static Regex reReplaceMarker = new Regex("&#255;");
 
-        private List<string> seeTags;
-        private int seeTagIndex;
-        private MatchEvaluator onSeeTagFound, onMarkerFound;
-
         // This is used to find the collapsible region boundaries
         private static Regex reCollapseMarkers = new Regex(
             @"^\s*(#region\s(.*)|#if\s(.*)|#else|#end\s?if|#end\s?region)", RegexOptions.IgnoreCase);
-
-        private List<CollapsibleRegion> regions;
 
         // Syntax description file, friendly name dictionary, and alternate IDs dictionary
         private XmlDocument languageSyntax;
@@ -291,8 +291,7 @@ namespace ColorizerLibrary
         // Delegate for Regex.Replace
         private MatchEvaluator replaceByCodeDelegate;
 
-        private bool inBox,             // Boxed, non-boxed code flag
-                     numberLines,       // Line numbering flag
+        private bool numberLines,       // Line numbering flag
                      outlining,         // Outlining flag
                      useDefaultTitle,   // Use default title
                      keepSeeTags;       // Keep <see> tags in the code
@@ -308,12 +307,6 @@ namespace ColorizerLibrary
         // Language syntax filename and style filename
         private string languageSyntaxFileName, languageStyleFileName;
 
-#if DEBUG
-        /// <summary>
-        /// A timer
-        /// </summary>
-        private AvgTimer timer;
-#endif
         #endregion
 
         #region Properties
@@ -442,49 +435,52 @@ namespace ColorizerLibrary
         }
 
         /// <summary>
-        /// This is used to return a dictionary that maps the language IDs to friendly names.
+        /// This is used to return a read-only dictionary that maps the language IDs to friendly names.
         /// </summary>
-        public Dictionary<string, string> FriendlyNames
+        public IReadOnlyDictionary<string, string> FriendlyNames
         {
             get { return friendlyNames; }
         }
 
         /// <summary>
-        /// This is used to return a dictionary that maps the alternate IDs to actual IDs present in the syntax
-        /// file.
+        /// This is used to return a read-only dictionary that maps the alternate IDs to actual IDs present in
+        /// the syntax file.
         /// </summary>
-        public Dictionary<string, string> AlternateIds
+        public IReadOnlyDictionary<string, string> AlternateIds
         {
             get { return alternateIds; }
         }
         #endregion
 
-#if DEBUG
+#if DEBUG && BENCHMARK
         #region Benchmarking properties
         //=====================================================================
+
+        private long lastRun, totalTime, totalBytes;
+        private int runCount;
 
         /// <summary>
         /// Returns the computation time of the last call
         /// </summary>
         public double BenchmarkSec
         {
-            get { return timer.Duration; }
+            get { return new TimeSpan(lastRun).TotalSeconds; }
         }
 
         /// <summary>
-        /// Returns the computation time per character of the last call
+        /// Returns the computation time per character overall
         /// </summary>
         public double BenchmarkSecPerChar
         {
-            get { return timer.DurationPerQuantity; }
+            get { return (new TimeSpan(totalTime)).TotalSeconds / totalBytes; }
         }
 
         /// <summary>
-        /// Returns the average computation time
+        /// Returns the average computation time overall
         /// </summary>
         public double BenchmarkAvgSec
         {
-            get { return timer.DurationPerRun; }
+            get { return (new TimeSpan(totalTime)).TotalSeconds / runCount; }
         }
         #endregion
 #endif
@@ -500,19 +496,8 @@ namespace ColorizerLibrary
         /// <overloads>There are two overloads for the constructor.</overloads>
         public CodeColorizer()
         {
-#if DEBUG
-            timer = new AvgTimer();
-#endif
             // Replace function delegate
             replaceByCodeDelegate = new MatchEvaluator(ReplaceByCode);
-
-            // Collapsible region tracking list
-            regions = new List<CollapsibleRegion>();
-
-            // See tag preservation
-            seeTags = new List<string>();
-            onSeeTagFound = new MatchEvaluator(OnSeeTagFound);
-            onMarkerFound = new MatchEvaluator(OnMarkerFound);
 
             // Friendly name dictionary
             friendlyNames = new Dictionary<string, string>();
@@ -558,6 +543,14 @@ namespace ColorizerLibrary
         /// state.</remarks>
         public void Init()
         {
+            if(languageSyntaxFileName == null)
+            {
+                this.LoadDefaultConfigFiles();
+
+                // This gets called again when loading the default configuration files so we can just return here
+                return;
+            }
+
             numberLines = outlining = false;
             useDefaultTitle = true;
             defaultTabSize = 8;
@@ -582,25 +575,30 @@ namespace ColorizerLibrary
         /// <c>&lt;pre&gt;...&lt;/pre&gt;</c> tags.
         /// </summary>
         /// <param name="htmlText">The HTML text to colorize</param>
-        /// <returns>HTML with colorized code blocks</returns>
+        /// <returns>The HTML with colorized code blocks</returns>
         /// <remarks>See highlight.xml for a list of available languages.</remarks>
         public string ProcessAndHighlightText(string htmlText)
         {
             if(String.IsNullOrEmpty(htmlText))
                 return htmlText;
 
-            // Load the configuration files if not done already
             if(languageSyntax == null)
-                this.LoadDefaultConfigFiles();
+                throw new InvalidOperationException("Call Init() to load the defaults before attempting " +
+                    "to colorize code");
 
-#if DEBUG
-            timer.Start(htmlText.Length);
+#if DEBUG && BENCHMARK
+            var timer = System.Diagnostics.Stopwatch.StartNew();
 #endif
             // Colorize the text
             string result = reColorize.Replace(htmlText, replaceByCodeDelegate);
 
-#if DEBUG
+#if DEBUG && BENCHMARK
             timer.Stop();
+
+            System.Threading.Interlocked.Add(ref totalBytes, htmlText.Length);
+            System.Threading.Interlocked.Increment(ref runCount);
+            System.Threading.Interlocked.Exchange(ref lastRun, timer.Elapsed.Ticks);
+            System.Threading.Interlocked.Add(ref totalTime, timer.Elapsed.Ticks);
 #endif
             return result;
         }
@@ -614,16 +612,20 @@ namespace ColorizerLibrary
         /// with no colorization</param>
         /// <param name="tabSize">Null for the default tab size or a positive non-zero value to specify a
         /// different tab size.  This will override the language's default tab size if there is one.</param>
-        public String ColorizePlainText(string plainText, string language, bool onlyNormalizeWhiteSpace = false,
+        /// <returns>The text with colorized code blocks</returns>
+        public string ColorizePlainText(string plainText, string language, bool onlyNormalizeWhiteSpace = false,
           int? tabSize = null)
         {
+            List<string> seeTags = null;
+            IList<CollapsibleRegion> regions;
             XmlNode languageNode;
             bool tabSizeOverridden = false;
             string altLanguage;
+            int seeTagIndex;
 
-            // Load the configuration files if not done already
             if(languageSyntax == null)
-                this.LoadDefaultConfigFiles();
+                throw new InvalidOperationException("Call Init() to load the defaults before attempting " +
+                    "to colorize code");
 
             if(tabSize == null || tabSize < 1)
                 tabSize = defaultTabSize;
@@ -661,7 +663,8 @@ namespace ColorizerLibrary
                         CultureInfo.InvariantCulture);
 
                 // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
-                plainText = WebUtility.HtmlEncode(this.StripLeadingWhitespace(plainText, tabSize.Value));
+                plainText = WebUtility.HtmlEncode(StripLeadingWhitespace(plainText, tabSize.Value, outlining,
+                    out regions));
             }
             else
             {
@@ -672,18 +675,27 @@ namespace ColorizerLibrary
                         CultureInfo.InvariantCulture);
 
                 // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
-                plainText = this.StripLeadingWhitespace(plainText, tabSize.Value);
+                plainText = StripLeadingWhitespace(plainText, tabSize.Value, outlining, out regions);
 
                 // If keeping see tags and it is supported, replace them with a marker character so that they
                 // aren't colorized.
                 if(keepSeeTags && this.OutputFormat == OutputFormat.Html)
                 {
-                    seeTags.Clear();
-                    plainText = reExtractSeeTags.Replace(plainText, onSeeTagFound);
+                    seeTags = new List<string>();
+
+                    // Typically, this would be done with a match evaluator but we need it to be thread safe so
+                    // we'll manage the matches locally.  Process the list in reverse to preserve the text
+                    // indices.  While the matches do appear to come back in order, we'll play it safe and sort
+                    // in descending order rather than just reversing the results.
+                    foreach(Match m in reExtractSeeTags.Matches(plainText).Cast<Match>().OrderByDescending(m => m.Index))
+                    {
+                        seeTags.Add(m.Value);
+                        plainText = plainText.Substring(0, m.Index) + "\xFF" + plainText.Substring(m.Index + m.Length);
+                    }
                 }
 
                 // Apply syntax matching to text with the corresponding language
-                XmlDocument xmlResult = this.BuildHighlightTree(languageNode, language, plainText);
+                XmlDocument xmlResult = this.BuildHighlightTree(languageNode, language, false, plainText);
 
                 // Transform the XML to the output format and return the results
                 using(StringWriter sw = new StringWriter(CultureInfo.CurrentCulture))
@@ -697,13 +709,20 @@ namespace ColorizerLibrary
                 if(keepSeeTags && seeTags.Count != 0)
                 {
                     seeTagIndex = 0;
-                    plainText = reReplaceMarker.Replace(plainText, onMarkerFound);
+
+                    // As above
+                    foreach(Match m in reReplaceMarker.Matches(plainText).Cast<Match>().OrderByDescending(m => m.Index))
+                    {
+                        plainText = plainText.Substring(0, m.Index) + seeTags[seeTagIndex] +
+                            plainText.Substring(m.Index + m.Length);
+                        seeTagIndex++;
+                    }
                 }
             }
 
             // If supported and wanted, add line numbering and/or outlining
             if((numberLines || outlining) && this.OutputFormat == OutputFormat.Html)
-                plainText = this.NumberAndOutlineHtml(plainText);
+                plainText = NumberAndOutlineHtml(plainText, numberLines, outlining, regions);
             else
                 if(numberLines && this.OutputFormat == OutputFormat.FlowDocument)
                     plainText = NumberFlowDocument(plainText);
@@ -762,12 +781,18 @@ namespace ColorizerLibrary
         /// </summary>
         /// <param name="text">The text containing the lines to clean up.</param>
         /// <param name="tabSize">The number of spaces to which tab characters are converted.</param>
-        private string StripLeadingWhitespace(string text, int tabSize)
+        /// <param name="willAddOutlining">True if outlining will be added, false if not</param>
+        /// <param name="regions">On return, if outlining is to be added, this will contain an enumerable list
+        /// of collapsible regions.</param>
+        private static string StripLeadingWhitespace(string text, int tabSize, bool willAddOutlining,
+          out IList<CollapsibleRegion> regions)
         {
             Match m;
             string[] lines;
             string currentLine, tabsToSpaces = new String(' ', tabSize);
             int minSpaces, spaceCount, line, nestingLevel = 0;
+
+            regions = new List<CollapsibleRegion>();
 
             if(String.IsNullOrEmpty(text))
                 return text;
@@ -780,7 +805,6 @@ namespace ColorizerLibrary
                 return lines[0].Trim().Replace("\t", tabsToSpaces);
 
             minSpaces = Int32.MaxValue;
-            regions.Clear();
 
             // The first pass is used to determine the minimum number of spaces and to truncate blank lines
             for(line = 0; line < lines.Length; line++)
@@ -790,7 +814,7 @@ namespace ColorizerLibrary
                 if(currentLine.Length != 0)
                 {
                     // Add a region boundary?
-                    if(outlining)
+                    if(willAddOutlining)
                     {
                         m = reCollapseMarkers.Match(currentLine);
 
@@ -853,7 +877,12 @@ namespace ColorizerLibrary
         /// based on the current settings for HTML.
         /// </summary>
         /// <param name="text">The text containing the lines to modify.</param>
-        private string NumberAndOutlineHtml(string text)
+        /// <param name="addLineNumbers">True to add line numbers, false if not</param>
+        /// <param name="addOutlining">True to add outlining, false if not</param>
+        /// <param name="regions">If adding outlining, this will contain an enumerable list of the collapsible
+        /// regions.</param>
+        private static string NumberAndOutlineHtml(string text, bool addLineNumbers, bool addOutlining,
+          IList<CollapsibleRegion> regions)
         {
             string[] lines;
             string numPad, spacer, lineInfo, regionType, linePrefix;
@@ -866,7 +895,7 @@ namespace ColorizerLibrary
             lines = text.Replace("\r\n", "\n").Split(new char[] { '\n' });
 
             // Figure out the starting padding for the line numbers
-            if(!numberLines || lines.Length < 10)
+            if(!addLineNumbers || lines.Length < 10)
                 numPad = String.Empty;
             else
                 if(lines.Length < 100)
@@ -880,7 +909,7 @@ namespace ColorizerLibrary
                         else
                             numPad = "&nbsp;&nbsp;&nbsp;&nbsp;";
 
-            if(outlining && regions.Count != 0)
+            if(addOutlining && regions.Count != 0)
                 spacer = "<span class=\"highlight-spacer\"></span>";
             else
                 spacer = "<span class=\"highlight-spacerShort\"></span>";
@@ -906,7 +935,7 @@ namespace ColorizerLibrary
                         case "#else":
                             nestingLevel++;
 
-                            if(!numberLines)
+                            if(!addLineNumbers)
                                 lineInfo = String.Empty;
                             else
                                 lineInfo = String.Format(CultureInfo.InvariantCulture,
@@ -961,7 +990,7 @@ namespace ColorizerLibrary
                             {
                                 regionIdx++;
 
-                                if(numberLines)
+                                if(addLineNumbers)
                                     lines[line] = String.Format(CultureInfo.InvariantCulture,
                                         "<span class=\"highlight-lineno\">{0}{1}</span><span " +
                                         "class=\"highlight-lnborder\"></span>{2}{3}", numPad, line + 1,
@@ -973,7 +1002,7 @@ namespace ColorizerLibrary
 
                             nestingLevel--;
 
-                            if(!numberLines)
+                            if(!addLineNumbers)
                                 lineInfo = "<span class=\"highlight-endblock\">&nbsp;</span>";
                             else
                                 lineInfo = String.Format(CultureInfo.InvariantCulture,
@@ -997,7 +1026,7 @@ namespace ColorizerLibrary
                     }
                 }
                 else
-                    if(numberLines)     // Format the line number part
+                    if(addLineNumbers)     // Format the line number part
                         lines[line] = String.Format(CultureInfo.InvariantCulture,
                             "<span class=\"highlight-lineno\">{0}{1}</span>" +
                             "<span class=\"highlight-lnborder\"></span>{2}{3}", numPad, line + 1,
@@ -1434,7 +1463,9 @@ namespace ColorizerLibrary
         /// Create and populate an xml document with the corresponding parsed language tree for highlighting.
         /// </summary>
         /// <param name="languageNode">The language node to use for parsing the code.</param> 
-        /// <param name="rootTag">Root tag (under parsed code) for the generated xml tree.</param> 
+        /// <param name="rootTag">Root tag (under parsed code) for the generated xml tree.</param>
+        /// <param name="inBox">True if the code should be rendered in a box (<c>pre</c> element) or inline
+        /// (a <c>span</c> element).</param>
         /// <param name="code">The code to parse</param>
         /// <returns>Returns an <seealso cref="XmlDocument"/> document containing the parsed nodes.</returns>
         /// <remarks>This method builds an XML tree containing context node.  Use an XSL file to render it.</remarks>
@@ -1442,7 +1473,7 @@ namespace ColorizerLibrary
         /// contexts or if there is no default context node.</exception>
         /// <exception cref="InvalidOperationException">This is thrown if the main node of the parsed code XML
         /// document cannot be created.</exception>
-        private XmlDocument BuildHighlightTree(XmlNode languageNode, string rootTag, string code)
+        private XmlDocument BuildHighlightTree(XmlNode languageNode, string rootTag, bool inBox, string code)
         {
             XmlDocument xmlResult;
             XmlNode contextNode, resultMainNode;
@@ -1475,7 +1506,7 @@ namespace ColorizerLibrary
 
             // Add the language and in-box attributes to it
             resultMainNode.XmlSetAttribute("lang", rootTag);
-            resultMainNode.XmlSetAttribute("in-box", (inBox) ? "1" : "0");
+            resultMainNode.XmlSetAttribute("in-box", inBox ? "1" : "0");
 
             // Parse the code and populate the XML document
             this.ApplyRules(languageNode, contextNode, code, resultMainNode);
@@ -1489,188 +1520,178 @@ namespace ColorizerLibrary
         /// <param name="match">Full match</param>
         private String ReplaceByCode(Match match)
         {
+            List<string> seeTags = null;
             string tag = match.Groups[1].Value, language = match.Groups[5].Value,
                    matchText = WebUtility.HtmlDecode(match.Groups[8].Value);
 
             XmlNode languageNode;
             MatchCollection otherOpts;
+            IList<CollapsibleRegion> regions;
 
-            int tabSize = defaultTabSize;
-            bool preserveNumbering = numberLines, preserveOutlining = outlining, tabSizeOverridden = false,
-                preserveKeepSeeTags = keepSeeTags, isDisabled = false;
+            int seeTagIndex, tabSize = defaultTabSize;
+            bool numberLinesLocal = numberLines, outliningLocal = outlining, tabSizeOverridden = false,
+                keepSeeTagsLocal = keepSeeTags, isDisabled = false, inBox = false;
             string altLanguage, title = null;
 
-            try
+            // See if the other options have been specified
+            otherOpts = reOptOverrides.Matches(match.Groups[2].Value + " " + match.Groups[7].Value);
+
+            foreach(Match m in otherOpts)
             {
-                // See if the other options have been specified
-                otherOpts = reOptOverrides.Matches(match.Groups[2].Value + " " + match.Groups[7].Value);
+                if(m.Groups[1].Value.Length != 0)
+                    numberLinesLocal = Convert.ToBoolean(m.Groups[4].Value, CultureInfo.InvariantCulture);
 
-                foreach(Match m in otherOpts)
+                if(m.Groups[6].Value.Length != 0)
+                    outliningLocal = Convert.ToBoolean(m.Groups[9].Value, CultureInfo.InvariantCulture);
+
+                if(m.Groups[11].Value.Length != 0)
                 {
-                    if(m.Groups[1].Value.Length != 0)
-                        numberLines = Convert.ToBoolean(m.Groups[4].Value, CultureInfo.InvariantCulture);
+                    tabSize = Convert.ToInt32(m.Groups[14].Value, CultureInfo.InvariantCulture);
 
-                    if(m.Groups[6].Value.Length != 0)
-                        outlining = Convert.ToBoolean(m.Groups[9].Value, CultureInfo.InvariantCulture);
-
-                    if(m.Groups[11].Value.Length != 0)
-                    {
-                        tabSize = Convert.ToInt32(m.Groups[14].Value, CultureInfo.InvariantCulture);
-
-                        if(tabSize < 1)
-                            tabSize = defaultTabSize;
-                        else
-                            tabSizeOverridden = true;
-                    }
-
-                    if(m.Groups[16].Value.Length != 0)
-                    {
-                        title = m.Groups[19].Value.Trim();
-
-                        if(title.Length == 0)
-                            title = "&#xa0;";
-                    }
-
-                    if(m.Groups[21].Value.Length != 0)
-                        keepSeeTags = Convert.ToBoolean(m.Groups[24].Value, CultureInfo.InvariantCulture);
-
-                    if(m.Groups[26].Value.Length != 0)
-                        isDisabled = Convert.ToBoolean(m.Groups[29].Value, CultureInfo.InvariantCulture);
+                    if(tabSize < 1)
+                        tabSize = defaultTabSize;
+                    else
+                        tabSizeOverridden = true;
                 }
 
-                // Find the language in the language file by ID or by name
+                if(m.Groups[16].Value.Length != 0)
+                {
+                    title = m.Groups[19].Value.Trim();
+
+                    if(title.Length == 0)
+                        title = "&#xa0;";
+                }
+
+                if(m.Groups[21].Value.Length != 0)
+                    keepSeeTagsLocal = Convert.ToBoolean(m.Groups[24].Value, CultureInfo.InvariantCulture);
+
+                if(m.Groups[26].Value.Length != 0)
+                    isDisabled = Convert.ToBoolean(m.Groups[29].Value, CultureInfo.InvariantCulture);
+            }
+
+            // Find the language in the language file by ID or by name
+            languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\" or @name=\"" +
+                language + "\"]");
+
+            // If not found, try matching a variation
+            if(languageNode == null)
+            {
+                // Try lower case first
+                language = language.ToLowerInvariant();
+
                 languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\" or @name=\"" +
                     language + "\"]");
 
-                // If not found, try matching a variation
-                if(languageNode == null)
+                // Try to map it to an ID if not found
+                if(languageNode == null && alternateIds.TryGetValue(language, out altLanguage))
                 {
-                    // Try lower case first
-                    language = language.ToLowerInvariant();
-
-                    languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\" or @name=\"" +
-                        language + "\"]");
-
-                    // Try to map it to an ID if not found
-                    if(languageNode == null && alternateIds.TryGetValue(language, out altLanguage))
-                    {
-                        language = altLanguage;
-                        languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\"]");
-                    }
-                }
-
-                // If not found, we'll just format it neatly and optionally number it and add collapsible regions
-                if(languageNode == null || isDisabled)
-                {
-                    // Replace tabs with the specified number of spaces to ensure consistency of layout.  Default
-                    // to eight if not specified.
-                    if(languageNode != null && languageNode.Attributes["tabSize"] != null && !tabSizeOverridden)
-                        tabSize = Convert.ToInt32(languageNode.Attributes["tabSize"].Value,
-                            CultureInfo.InvariantCulture);
-
-                    // This is used to determine whether to render the colorized code in a <span> or a <pre> tag
-                    inBox = (String.Compare(tag, "pre", StringComparison.OrdinalIgnoreCase) == 0);
-
-                    // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
-                    matchText = this.StripLeadingWhitespace(match.Groups[8].Value, tabSize);
-                }
-                else
-                {
-                    // Replace tabs with the specified number of spaces to ensure consistency of layout.  Default
-                    // to eight if not specified.
-                    if(languageNode.Attributes["tabSize"] != null && !tabSizeOverridden)
-                        tabSize = Convert.ToInt32(languageNode.Attributes["tabSize"].Value,
-                            CultureInfo.InvariantCulture);
-
-                    // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
-                    matchText = this.StripLeadingWhitespace(matchText, tabSize);
-
-                    // This is used to determine whether to render the colorized code in a <span> or a <pre> tag
-                    inBox = (String.Compare(tag, "pre", StringComparison.OrdinalIgnoreCase) == 0);
-
-                    // If keeping see tags, replace them with a marker character so that they aren't colorized
-                    if(keepSeeTags)
-                    {
-                        seeTags.Clear();
-                        matchText = reExtractSeeTags.Replace(matchText, onSeeTagFound);
-                    }
-
-                    // Apply syntax matching to text with the corresponding language
-                    XmlDocument xmlResult = this.BuildHighlightTree(languageNode, language, matchText);
-
-                    // Transform the XML to HTML and return the results
-                    using(StringWriter sw = new StringWriter(CultureInfo.CurrentCulture))
-                    {
-                        languageStyle.Transform(xmlResult, null, sw);
-
-                        matchText = sw.ToString();
-                    }
-
-                    // Replace the markers with the see tags if they were kept
-                    if(keepSeeTags && seeTags.Count != 0)
-                    {
-                        seeTagIndex = 0;
-                        matchText = reReplaceMarker.Replace(matchText, onMarkerFound);
-                    }
-                }
-
-                // Add line numbers and/or outlining if needed
-                if(inBox)
-                {
-                    if(numberLines || outlining)
-                        matchText = this.NumberAndOutlineHtml(matchText);
-
-                    // Add the <pre> tag to it
-                    matchText = "<pre class=\"highlight-pre\">" + matchText + "</pre>";
-
-                    // Use a default title if necessary
-                    if(String.IsNullOrEmpty(title))
-                    {
-                        if(useDefaultTitle && !friendlyNames.TryGetValue(language, out title) &&
-                          languageNode != null)
-                            title = languageNode.Attributes["name"].Value;
-
-                        if(String.IsNullOrEmpty(title))
-                            title = "&#xa0;";
-                    }
-
-                    // Add the title div with the title text and Copy span
-                    matchText = String.Format(CultureInfo.InvariantCulture,
-                        "<div class=\"highlight-title\"><span class=\"highlight-copycode\" " +
-                        "onkeypress=\"javascript:CopyColorizedCodeCheckKey(this.parentNode, event);\" " +
-                        "onmouseover=\"CopyCodeChangeIcon(this)\" " +
-                        "onmouseout=\"CopyCodeChangeIcon(this)\" " +
-                        "onclick=\"javascript:CopyColorizedCode(this.parentNode);\"><img src=\"{0}\" " +
-                        "style=\"margin-right: 5px;\" />{1}</span>{2}</div>{3}", copyImageUrl, copyText, title,
-                        matchText);
+                    language = altLanguage;
+                    languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\"]");
                 }
             }
-            finally
+
+            // If not found, we'll just format it neatly and optionally number it and add collapsible regions
+            if(languageNode == null || isDisabled)
             {
-                // Restore the defaults
-                numberLines = preserveNumbering;
-                outlining = preserveOutlining;
-                keepSeeTags = preserveKeepSeeTags;
+                // Replace tabs with the specified number of spaces to ensure consistency of layout.  Default
+                // to eight if not specified.
+                if(languageNode != null && languageNode.Attributes["tabSize"] != null && !tabSizeOverridden)
+                    tabSize = Convert.ToInt32(languageNode.Attributes["tabSize"].Value,
+                        CultureInfo.InvariantCulture);
+
+                // This is used to determine whether to render the colorized code in a <span> or a <pre> tag
+                inBox = (String.Compare(tag, "pre", StringComparison.OrdinalIgnoreCase) == 0);
+
+                // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
+                matchText = StripLeadingWhitespace(match.Groups[8].Value, tabSize, outliningLocal, out regions);
+            }
+            else
+            {
+                // Replace tabs with the specified number of spaces to ensure consistency of layout.  Default
+                // to eight if not specified.
+                if(languageNode.Attributes["tabSize"] != null && !tabSizeOverridden)
+                    tabSize = Convert.ToInt32(languageNode.Attributes["tabSize"].Value,
+                        CultureInfo.InvariantCulture);
+
+                // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
+                matchText = StripLeadingWhitespace(matchText, tabSize, outliningLocal, out regions);
+
+                // This is used to determine whether to render the colorized code in a <span> or a <pre> tag
+                inBox = (String.Compare(tag, "pre", StringComparison.OrdinalIgnoreCase) == 0);
+
+                // If keeping see tags, replace them with a marker character so that they aren't colorized
+                if(keepSeeTagsLocal)
+                {
+                    seeTags = new List<string>();
+
+                    // Typically, this would be done with a match evaluator but we need it to be thread safe so
+                    // we'll manage the matches locally.  Process the list in reverse to preserve the text
+                    // indices.  While the matches do appear to come back in order, we'll play it safe and sort
+                    // in descending order rather than just reversing the results.
+                    foreach(Match m in reExtractSeeTags.Matches(matchText).Cast<Match>().OrderByDescending(m => m.Index))
+                    {
+                        seeTags.Add(m.Value);
+                        matchText = matchText.Substring(0, m.Index) + "\xFF" + matchText.Substring(m.Index + m.Length);
+                    }
+                }
+
+                // Apply syntax matching to text with the corresponding language
+                XmlDocument xmlResult = this.BuildHighlightTree(languageNode, language, inBox, matchText);
+
+                // Transform the XML to HTML and return the results
+                using(StringWriter sw = new StringWriter(CultureInfo.CurrentCulture))
+                {
+                    languageStyle.Transform(xmlResult, null, sw);
+
+                    matchText = sw.ToString();
+                }
+
+                // Replace the markers with the see tags if they were kept
+                if(keepSeeTagsLocal && seeTags.Count != 0)
+                {
+                    seeTagIndex = 0;
+
+                    // As above
+                    foreach(Match m in reReplaceMarker.Matches(matchText).Cast<Match>().OrderByDescending(m => m.Index))
+                    {
+                        matchText = matchText.Substring(0, m.Index) + seeTags[seeTagIndex] +
+                            matchText.Substring(m.Index + m.Length);
+                        seeTagIndex++;
+                    }
+                }
+            }
+
+            // Add line numbers and/or outlining if needed
+            if(inBox)
+            {
+                if(numberLinesLocal || outliningLocal)
+                    matchText = NumberAndOutlineHtml(matchText, numberLinesLocal, outliningLocal, regions);
+
+                // Add the <pre> tag to it
+                matchText = "<pre class=\"highlight-pre\">" + matchText + "</pre>";
+
+                // Use a default title if necessary
+                if(String.IsNullOrEmpty(title))
+                {
+                    if(useDefaultTitle && !friendlyNames.TryGetValue(language, out title) && languageNode != null)
+                        title = languageNode.Attributes["name"].Value;
+
+                    if(String.IsNullOrEmpty(title))
+                        title = "&#xa0;";
+                }
+
+                // Add the title div with the title text and Copy span
+                matchText = String.Format(CultureInfo.InvariantCulture,
+                    "<div class=\"highlight-title\"><span class=\"highlight-copycode\" " +
+                    "onkeypress=\"javascript:CopyColorizedCodeCheckKey(this.parentNode, event);\" " +
+                    "onmouseover=\"CopyCodeChangeIcon(this)\" " +
+                    "onmouseout=\"CopyCodeChangeIcon(this)\" " +
+                    "onclick=\"javascript:CopyColorizedCode(this.parentNode);\"><img src=\"{0}\" " +
+                    "style=\"margin-right: 5px;\" />{1}</span>{2}</div>{3}", copyImageUrl, copyText, title,
+                    matchText);
             }
 
             return matchText;
-        }
-
-        /// <summary>
-        /// Replace a see tag with a marker and store it in the list
-        /// </summary>
-        private string OnSeeTagFound(Match match)
-        {
-            seeTags.Add(match.Value);
-            return "\xFF";
-        }
-
-        /// <summary>
-        /// Replace a see tag marker with the next entry from the saved list of tags
-        /// </summary>
-        private string OnMarkerFound(Match match)
-        {
-            return seeTags[seeTagIndex++];
         }
         #endregion
     }

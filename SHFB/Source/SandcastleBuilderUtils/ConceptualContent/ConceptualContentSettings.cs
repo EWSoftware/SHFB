@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
+// Updated : 12/22/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,17 +18,16 @@
 // 04/24/2008  EFW  Created the code
 // 06/06/2010  EFW  Added support for multi-format build output
 // 04/03/2013  EFW  Added support for merging content from another project (plug-in support)
+// 12/01/2015  EFW  Merged conceptual and reference topic build steps
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Xml;
 
-using Microsoft.Build.Evaluation;
-
+using Sandcastle.Core;
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
@@ -117,12 +116,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="builder">The build process</param>
         /// <remarks>This will copy the code snippet file if specified, save token information to a shared
-        /// content file called <b>_Tokens_.xml</b> in the build process's working folder, copy the image files
-        /// to the <b>.\media</b> folder in the build process's working folder, save the media map to a file
-        /// called <b>_MediaContent_.xml</b> in the build process's working folder, and save the topic files to
-        /// the <b>.\ddueXml</b> folder in the build process's working folder.  The topic files will have their
-        /// content wrapped in a <c>&lt;topic&gt;</c> tag if needed and will be named using their
-        /// <see cref="Topic.Id" /> value.</remarks>
+        /// content file called <strong>_Tokens_.xml</strong> in the build process's working folder, copy the
+        /// image files to the <strong>.\media</strong> folder in the build process's working folder, save the
+        /// media map to a file called <strong>_MediaContent_.xml</strong> in the build process's working folder,
+        /// and save the topic files to the <strong>.\ddueXml</strong> folder in the build process's working
+        /// folder.  The topic files will have their content wrapped in a <c>&lt;topic&gt;</c> tag if needed and
+        /// will be named using their <see cref="Topic.Id" /> value.</remarks>
         public void CopyContentFiles(BuildProcess builder)
         {
             string folder;
@@ -287,12 +286,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="builder">The build process</param>
         /// <remarks>This will create the companion files used to resolve conceptual links and the
-        /// <b>_ContentMetadata_.xml</b> and <b>ConceptualManifest.xml</b> configuration files.</remarks>
+        /// <strong>_ContentMetadata_.xml</strong> configuration file.  It will also merge the conceptual topics
+        /// into the BuildAssembler manifest file.</remarks>
         public void CreateConfigurationFiles(BuildProcess builder)
         {
             this.CreateCompanionFiles(builder);
             this.CreateContentMetadata(builder);
-            this.CreateConceptualManifest(builder);
+            this.MergeConceptualManifest(builder);
         }
 
         /// <summary>
@@ -360,25 +360,23 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// Create the content metadata file
+        /// Merge the conceptual topic IDs into the BuildAssembler manifest file.
         /// </summary>
         /// <param name="builder">The build process</param>
-        /// <remarks>The content metadata file contains metadata information for each topic such as its title,
-        /// table of contents title, help attributes, and index keywords.  Help attributes are a combination of
-        /// the project-level help attributes and any parsed from the topic file.  Any replacement tags in the
-        /// token values will be replaced with the appropriate project values.</remarks>
-        private void CreateConceptualManifest(BuildProcess builder)
+        private void MergeConceptualManifest(BuildProcess builder)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             XmlWriter writer = null;
+            string conceptualManifest = builder.WorkingFolder + "ConceptualManifest.xml",
+                referenceManifest = builder.WorkingFolder + "manifest.xml";
 
-            builder.ReportProgress("    ConceptualManifest.xml");
+            builder.ReportProgress("    Merging topic IDs into manifest.xml");
 
             try
             {
                 settings.Indent = true;
                 settings.CloseOutput = true;
-                writer = XmlWriter.Create(builder.WorkingFolder + "ConceptualManifest.xml", settings);
+                writer = XmlWriter.Create(conceptualManifest, settings);
 
                 writer.WriteStartDocument();
                 writer.WriteStartElement("topics");
@@ -387,6 +385,17 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     foreach(Topic t in tc)
                         t.WriteManifest(writer, builder);
 
+                if(File.Exists(referenceManifest))
+                    foreach(var topic in ComponentUtilities.XmlStreamAxis(referenceManifest, "topic"))
+                    {
+                        writer.WriteStartElement("topic");
+
+                        foreach(var attr in topic.Attributes())
+                            writer.WriteAttributeString(attr.Name.LocalName, attr.Value);
+
+                        writer.WriteEndElement();
+                    }
+
                 writer.WriteEndElement();   // </topics>
                 writer.WriteEndDocument();
             }
@@ -394,6 +403,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 if(writer != null)
                     writer.Close();
+
+                if(File.Exists(referenceManifest))
+                    File.Copy(referenceManifest, Path.ChangeExtension(referenceManifest, "old"), true);
+
+                File.Copy(conceptualManifest, referenceManifest, true);
+                File.Delete(conceptualManifest);
             }
         }
         #endregion

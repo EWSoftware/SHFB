@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Components
 // File    : AdditionalHeaderResourcesComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 12/23/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add additional metadata, style sheet, and script file
 // resources to the header of the transformed topics.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -20,8 +20,6 @@
 //===============================================================================================================
 
 using System;
-using System.Globalization;
-using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -61,6 +59,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private XPathNodeIterator headerResources;
+
         #endregion
 
         #region Constructor

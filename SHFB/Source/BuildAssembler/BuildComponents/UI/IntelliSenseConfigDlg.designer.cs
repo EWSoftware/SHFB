@@ -39,15 +39,19 @@ namespace Microsoft.Ddue.Tools.UI
             this.txtFolder = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.chkIncludeNamespaces = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.udcBoundedCapacity = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.udcBoundedCapacity)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(608, 106);
+            this.btnCancel.Location = new System.Drawing.Point(608, 162);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 8;
+            this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -55,10 +59,10 @@ namespace Microsoft.Ddue.Tools.UI
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 106);
+            this.btnOK.Location = new System.Drawing.Point(12, 162);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
-            this.btnOK.TabIndex = 6;
+            this.btnOK.TabIndex = 8;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
             this.btnOK.UseVisualStyleBackColor = true;
@@ -66,10 +70,10 @@ namespace Microsoft.Ddue.Tools.UI
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(245, 111);
+            this.lnkProjectSite.Location = new System.Drawing.Point(245, 167);
             this.lnkProjectSite.Name = "lnkProjectSite";
             this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
-            this.lnkProjectSite.TabIndex = 7;
+            this.lnkProjectSite.TabIndex = 9;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
             this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -127,15 +131,59 @@ namespace Microsoft.Ddue.Tools.UI
             this.chkIncludeNamespaces.Name = "chkIncludeNamespaces";
             this.chkIncludeNamespaces.Size = new System.Drawing.Size(280, 21);
             this.chkIncludeNamespaces.TabIndex = 0;
-            this.chkIncludeNamespaces.Text = "Export project/namespace comments to";
+            this.chkIncludeNamespaces.Text = "&Export project/namespace comments to";
             this.chkIncludeNamespaces.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(12, 108);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(239, 23);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "&Maximum writer task cache capacity";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(323, 108);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(103, 23);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "(0 for no limit)";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // udcBoundedCapacity
+            // 
+            this.udcBoundedCapacity.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.udcBoundedCapacity.Location = new System.Drawing.Point(257, 109);
+            this.udcBoundedCapacity.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.udcBoundedCapacity.Name = "udcBoundedCapacity";
+            this.udcBoundedCapacity.Size = new System.Drawing.Size(60, 22);
+            this.udcBoundedCapacity.TabIndex = 6;
+            this.udcBoundedCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.udcBoundedCapacity.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // IntelliSenseConfigDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(708, 150);
+            this.ClientSize = new System.Drawing.Size(708, 206);
+            this.Controls.Add(this.udcBoundedCapacity);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSelectFolder);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.chkIncludeNamespaces);
@@ -152,6 +200,7 @@ namespace Microsoft.Ddue.Tools.UI
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configure IntelliSense Component";
+            ((System.ComponentModel.ISupportInitialize)(this.udcBoundedCapacity)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,5 +218,8 @@ namespace Microsoft.Ddue.Tools.UI
         private System.Windows.Forms.LinkLabel lnkProjectSite;
         private System.Windows.Forms.CheckBox chkIncludeNamespaces;
         private System.Windows.Forms.Button btnSelectFolder;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown udcBoundedCapacity;
     }
 }

@@ -25,14 +25,27 @@ namespace Sandcastle.Core.BuildAssembler
 
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <overloads>There are two overloads for the constructor</overloads>
         public CustomContext() : base()
         {
+        }
+
+        /// <summary>
+        /// This constructor takes a dictionary containing the namespaces (the key is the prefix, the value is
+        /// the namespace URI).
+        /// </summary>
+        /// <param name="namespaces">A dictionary containing the namespaces to add to the context</param>
+        public CustomContext(IDictionary<string, string> namespaces) : this()
+        {
+            if(namespaces != null)
+                foreach(var kv in namespaces)
+                    this.AddNamespace(kv.Key, kv.Value);
         }
         #endregion
 

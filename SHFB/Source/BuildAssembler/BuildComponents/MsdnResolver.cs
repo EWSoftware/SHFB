@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using System.Text.RegularExpressions;
 using System.Web.Services.Protocols;
 
@@ -40,6 +41,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private ContentService msdnService;
         private IDictionary<string, string> cachedMsdnIds;
         private bool isCacheShared;
+
+        // These are static as multiple instances of this component may exist and we need to know if any of them
+        // add values to the shared cache.
+        private static int cacheItemsAdded, lookupErrors;
 
         // These are used to match and try broken EII member IDs
         private static Regex reDictionaryEII = new Regex(@"#I(\w*Dictionary){.*?}#");
@@ -84,11 +89,18 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         }
 
         /// <summary>
-        /// This read-only property is used to determine if items were added to the cache during the latest run
+        /// This read-only property is used to return the number of items added to the cache during the latest
+        /// run.
         /// </summary>
-        /// <value>Returns true if items were added, false if not.  This can be used to determine if the cache
-        /// should be persisted in some fashion.</value>
-        public bool CacheItemsAdded { get; private set; }
+        /// <value>Returns a non-zero number if items were added or zero if no new items were added or errors
+        /// occurred that invalidate the updates made.  This can be used to determine if the cache should be
+        /// persisted in some fashion.</value>
+        /// <remarks>This is static as multiple instances of this component may exist and we need to know if any
+        /// of them add values to the shared cache.</remarks>
+        public static int CacheItemsAdded
+        {
+            get { return (lookupErrors == 0) ? cacheItemsAdded : 0; }
+        }
         #endregion
 
         #region Constructors
@@ -111,7 +123,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         }
 
         /// <summary>
-        /// This constructor is used to create the MSDN resolver using given existing cache
+        /// This constructor is used to create the MSDN resolver using an existing cache
         /// </summary>
         /// <param name="msdnIdCache">A cache of existing MSDN content IDs</param>
         /// <param name="isShared">True if the cache is shared, false if not.  If not shared, the cache will
@@ -166,7 +178,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     }
 
                     // Don't save changes to the cache
-                    this.CacheItemsAdded = false;
+                    Interlocked.Increment(ref lookupErrors);
                 }
                 catch(SoapException ex)
                 {
@@ -212,7 +224,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         }
 
                         // Don't save changes to the cache
-                        this.CacheItemsAdded = false;
+                        Interlocked.Increment(ref lookupErrors);
                     }
                 }
 
@@ -221,7 +233,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 cachedMsdnIds[id] = endPoint;
 
                 if(success)
-                    this.CacheItemsAdded = true;
+                    Interlocked.Increment(ref cacheItemsAdded);
             }
 
             if(String.IsNullOrEmpty(endPoint))

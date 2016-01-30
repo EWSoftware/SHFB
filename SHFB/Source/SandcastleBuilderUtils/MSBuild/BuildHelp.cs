@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2015
+// Updated : 12/01/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -421,6 +421,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             PropertyInfo propInfo;
             IEnumerable configCache;
             ProjectInstance project, lastMatchingProject = null;
+            string projectInstanceFieldName = "projectInstance", configCacheFieldName = "configCache";
 
             // See if we can get the project instance from the build engine for this task.  This is preferred
             // as it will work when building projects synchronously or in parallel.
@@ -433,6 +434,19 @@ namespace SandcastleBuilder.Utils.MSBuild
                 fieldInfo = taskHostType.GetField("targetBuilderCallback", BindingFlags.NonPublic |
                     BindingFlags.Instance);
 
+                if(fieldInfo == null)
+                {
+                    // MSBuild 14.0 adds an underscore to the field names
+                    fieldInfo = taskHostType.GetField("_targetBuilderCallback", BindingFlags.NonPublic |
+                        BindingFlags.Instance);
+
+                    if(fieldInfo != null)
+                    {
+                        projectInstanceFieldName = "_" + projectInstanceFieldName;
+                        configCacheFieldName = "_" + configCacheFieldName;
+                    }
+                }
+
                 if(fieldInfo != null)
                 {
                     // ... get the target builder ...
@@ -440,7 +454,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     if(targetBuilder != null)
                     {
-                        fieldInfo = targetBuilderType.GetField("projectInstance", BindingFlags.NonPublic |
+                        fieldInfo = targetBuilderType.GetField(projectInstanceFieldName, BindingFlags.NonPublic |
                             BindingFlags.Instance);
 
                         if(fieldInfo != null)
@@ -456,7 +470,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             }
 
             // If not, from the BuildManager ...
-            fieldInfo = typeof(BuildManager).GetField("configCache", BindingFlags.NonPublic | BindingFlags.Instance);
+            fieldInfo = typeof(BuildManager).GetField(configCacheFieldName, BindingFlags.NonPublic | BindingFlags.Instance);
 
             if(fieldInfo == null)
                 return null;

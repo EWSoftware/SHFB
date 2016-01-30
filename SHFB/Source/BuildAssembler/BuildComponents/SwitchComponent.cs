@@ -64,44 +64,66 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <inheritdoc />
+        /// <remarks>This sets a unique group ID for each branch</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                foreach(var keyValue in cases)
+                {
+                    string caseGroupId = value + "/" + keyValue.Key;
+
+                    foreach(var component in keyValue.Value)
+                        component.GroupId = caseGroupId;
+                }
+            }
+        }
+
+        /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            // get the condition
-            XPathNavigator condition_element = configuration.SelectSingleNode("switch");
+            // Get the condition
+            XPathNavigator conditionElement = configuration.SelectSingleNode("switch");
 
-            if(condition_element == null)
+            if(conditionElement == null)
                 throw new ConfigurationErrorsException("You must specify a condition using the <switch> statement with a 'value' attribute.");
 
-            string condition_value = condition_element.GetAttribute("value", String.Empty);
+            string conditionValue = conditionElement.GetAttribute("value", String.Empty);
 
-            if(String.IsNullOrEmpty(condition_value))
+            if(String.IsNullOrEmpty(conditionValue))
                 throw new ConfigurationErrorsException("The switch statement must have a 'value' attribute, which is an xpath expression.");
 
-            condition = XPathExpression.Compile(condition_value);
+            condition = XPathExpression.Compile(conditionValue);
 
-            // load the component stacks for each case
-            XPathNodeIterator case_elements = configuration.Select("case");
+            // Load the component stacks for each case
+            XPathNodeIterator caseElements = configuration.Select("case");
 
-            foreach(XPathNavigator case_element in case_elements)
+            foreach(XPathNavigator caseElement in caseElements)
             {
-                string case_value = case_element.GetAttribute("value", String.Empty);
+                string caseValue = caseElement.GetAttribute("value", String.Empty);
 
-                cases.Add(case_value, BuildAssembler.LoadComponents(case_element));
+                cases.Add(caseValue, BuildAssembler.LoadComponents(caseElement));
             }
+
+            // Set a default group ID
+            this.GroupId = null;
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            // evaluate the condition
+            // Evaluate the condition
             string result = document.CreateNavigator().Evaluate(condition).ToString();
 
-            // get the corresponding component stack
+            // Get the corresponding component stack
             IEnumerable<BuildComponentCore> components;
 
             if(cases.TryGetValue(result, out components))
             {
-                // apply it
+                // Apply it
                 foreach(BuildComponentCore component in components)
                     component.Apply(document, key);
             }

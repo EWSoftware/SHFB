@@ -1,7 +1,7 @@
 //===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ResolveConceptualLinksComponent.cs
-// Note    : Copyright 2010-2015 Microsoft Corporation
+// Note    : Copyright 2010-2016 Microsoft Corporation
 //
 // This file contains a modified version of the original ResolveConceptualLinksComponent that allows the use of
 // inner text from the <link> tag and also allows the use of anchor references (#anchorName) in the link target.
@@ -88,7 +88,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new ResolveConceptualLinksComponent(base.BuildAssembler);
+                return new ResolveConceptualLinksComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -97,12 +97,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private Dictionary<string, TargetInfo> cache;
+
         private TargetDirectoryCollection targetDirectories;
         private bool showBrokenLinkText;
 
         private static XPathExpression conceptualLinks = XPathExpression.Compile("//conceptualLink");
 
         private const int CacheSize = 1000;
+
         #endregion
 
         #region Constructor
@@ -143,13 +145,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 basePath = navigator.GetAttribute("base", String.Empty);
 
                 if(String.IsNullOrEmpty(basePath))
-                    base.WriteMessage(MessageLevel.Error, "Every targets element must have a base attribute " +
+                    this.WriteMessage(MessageLevel.Error, "Every targets element must have a base attribute " +
                         "that specifies the path to a directory of target metadata files.");
 
                 basePath = Environment.ExpandEnvironmentVariables(basePath);
 
                 if(!Directory.Exists(basePath))
-                    base.WriteMessage(MessageLevel.Error, "The specified target metadata directory '{0}' " +
+                    this.WriteMessage(MessageLevel.Error, "The specified target metadata directory '{0}' " +
                         "does not exist.", basePath);
 
                 attribute = navigator.GetAttribute("url", String.Empty);
@@ -177,17 +179,17 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 attribute = navigator.GetAttribute("type", String.Empty);
 
                 if(String.IsNullOrEmpty(attribute))
-                    base.WriteMessage(MessageLevel.Error, "Every targets element must have a type attribute " +
+                    this.WriteMessage(MessageLevel.Error, "Every targets element must have a type attribute " +
                         "that specifies what kind of link to create to targets found in that directory.");
 
                 if(!Enum.TryParse<ConceptualLinkType>(attribute, true, out linkType))
-                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a valid link type.", attribute);
+                    this.WriteMessage(MessageLevel.Error, "'{0}' is not a valid link type.", attribute);
 
                 targetDirectory = new TargetDirectory(basePath, urlExp, textExp, linkTextExp, linkType);
                 targetDirectories.Add(targetDirectory);
             }
 
-            base.WriteMessage(MessageLevel.Info, "Collected {0} targets directories.", targetDirectories.Count);
+            this.WriteMessage(MessageLevel.Info, "Collected {0} targets directories.", targetDirectories.Count);
         }
 
         /// <summary>
@@ -214,7 +216,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 {
                     // EFW - Removed linkType = Index, broken links should use the None style.
                     text = this.BrokenLinkDisplayText(info.Target, info.Text);
-                    base.WriteMessage(key, MessageLevel.Warn, "Unknown conceptual link target '{0}'.", info.Target);
+                    this.WriteMessage(key, MessageLevel.Warn, "Unknown conceptual link target '{0}'.", info.Target);
                 }
                 else
                 {
@@ -295,12 +297,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             }
             catch(ArgumentException argEx)
             {
-                base.WriteMessage(MessageLevel.Error, "'{0}' is not a valid XPath expression. The error " +
+                this.WriteMessage(MessageLevel.Error, "'{0}' is not a valid XPath expression. The error " +
                     "message is: {1}", xpath, argEx.Message);
             }
             catch(XPathException xpathEx)
             {
-                base.WriteMessage(MessageLevel.Error, "'{0}' is not a valid XPath expression. The error " +
+                this.WriteMessage(MessageLevel.Error, "'{0}' is not a valid XPath expression. The error " +
                     "message is: {1}", xpath, xpathEx.Message);
             }
 

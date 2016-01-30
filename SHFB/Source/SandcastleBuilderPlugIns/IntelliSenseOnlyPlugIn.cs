@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : IntelliSenseOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 12/22/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to build an IntelliSense XML comments file without a related
 // help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
 //    Date     Who  Comments
-// =====================================================================================================
+// ==============================================================================================================
 // 11/17/2014  EFW  Created the code
 //===============================================================================================================
 
@@ -66,7 +66,6 @@ namespace SandcastleBuilder.PlugIns
                         // This one has a lower priority since we want to update the manifest and reference
                         // build configuration file last.
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After, 100),
-                        new ExecutionPoint(BuildStep.BuildConceptualTopics, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.CombiningIntermediateTocFiles, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.CopyStandardHelpContent, ExecutionBehaviors.InsteadOf),
@@ -123,7 +122,7 @@ namespace SandcastleBuilder.PlugIns
             XmlDocument config;
             XPathNavigator navConfig, item, deleteItem;
             bool moreItems = true;
-            string id;
+            string id, topicType;
 
             if(context.BuildStep == BuildStep.MergeCustomConfigs)
             {
@@ -138,8 +137,10 @@ namespace SandcastleBuilder.PlugIns
                 while(item != null && moreItems)
                 {
                     id = item.GetAttribute("id", String.Empty);
+                    topicType = item.GetAttribute("type", String.Empty);
 
-                    if(id.Length < 2 || id[1] != ':' || id[0] == 'R' || id[0] == 'G')
+                    if(topicType != "API" || id.Length < 2 || id[1] != ':' || id[0] == 'G' || id[0] == 'N' ||
+                      id[0] == 'R')
                     {
                         deleteItem = item.Clone();
                         moreItems = item.MoveToNext();
@@ -156,20 +157,26 @@ namespace SandcastleBuilder.PlugIns
                 config.Load(builder.WorkingFolder + "sandcastle.config");
                 navConfig = config.CreateNavigator();
 
-                // The IntalliSense build component must be there
+                // Delete the MAML configuration component set if present
+                item = navConfig.SelectSingleNode("//component[@id='Switch Component']/case[@value='MAML']");
+
+                if(item != null)
+                    item.DeleteSelf();
+
+                // The IntelliSense build component must be there
                 item = navConfig.SelectSingleNode("//component[@id='IntelliSense Component']");
 
                 if(item == null)
                     throw new BuilderException("ISO0001", "The IntelliSense Only plug-in requires that the " +
                         "IntelliSense Component be added to the project and configured.");
 
-                // Remove Syntax Component
+                // Remove the Syntax Component
                 item = navConfig.SelectSingleNode("//component[@id='Syntax Component']");
 
                 if(item != null)
                     item.DeleteSelf();
 
-                // Remove Code Block Component
+                // Remove the Code Block Component
                 item = navConfig.SelectSingleNode("//component[@id='Code Block Component']");
 
                 if(item != null)

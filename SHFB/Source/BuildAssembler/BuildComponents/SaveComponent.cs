@@ -9,13 +9,17 @@
 // additional file locations rather than relying on this component to tell them.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 // 03/18/2014 - EFW - Added support for the outputMethod attribute although the default output will remain XML
+// 01/06/2016 - EFW - Updated to use a pipeline task for writing out the files for better performance
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -41,7 +45,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SaveComponent(base.BuildAssembler);
+                return new SaveComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -49,12 +53,15 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private CustomContext context = new CustomContext();
         private XmlWriterSettings settings = new XmlWriterSettings();
         private XPathExpression pathExpression, selectExpression;
 
-        private string basePath;
+        private string basePath, groupId;
         private bool writeXhtmlNamespace;
+
+        private BlockingCollection<KeyValuePair<string, XmlDocument>> documentList;
+        private Task documentWriter;
+
         #endregion
 
         #region Constructor
@@ -66,6 +73,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <param name="buildAssembler">A reference to the build assembler</param>
         protected SaveComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
+            // No bounded capacity by default
+            documentList = new BlockingCollection<KeyValuePair<string, XmlDocument>>();
         }
         #endregion
 
@@ -75,6 +84,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            int boundedCapacity;
+
             settings.Encoding = Encoding.UTF8;
             settings.CloseOutput = true;
 
@@ -93,7 +104,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             string pathValue = saveNode.GetAttribute("path", String.Empty);
 
             if(String.IsNullOrWhiteSpace(pathValue))
-                base.WriteMessage(MessageLevel.Error, "Each save element must have a path attribute specifying " +
+                this.WriteMessage(MessageLevel.Error, "Each save element must have a path attribute specifying " +
                     "an XPath expression that evaluates to the location to save the file.");
 
             pathExpression = XPathExpression.Compile(pathValue);
@@ -146,90 +157,153 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     BindingFlags.Public | BindingFlags.NonPublic);
                 propertyInfo.SetValue(settings, method, null);
             }
+
+            // Get an optional group ID for reporting documents remaining when disposed
+            groupId = saveNode.GetAttribute("groupId", String.Empty);
+
+            if(!String.IsNullOrWhiteSpace(groupId))
+                groupId += " ";
+            else
+                groupId = String.Empty;
+
+            // Allow limiting the writer task collection to conserve memory
+            string capacity = saveNode.GetAttribute("boundedCapacity", String.Empty);
+
+            if(!String.IsNullOrWhiteSpace(capacity) && Int32.TryParse(capacity, out boundedCapacity) &&
+              boundedCapacity > 0)
+                documentList = new BlockingCollection<KeyValuePair<string, XmlDocument>>(boundedCapacity);
+
+            // Use a pipeline task to allow the actual saving to occur while other topics are being generated
+            documentWriter = Task.Run(() => WriteDocuments());
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            // Set the evaluation context
-            context["key"] = key;
+            this.documentList.Add(new KeyValuePair<string, XmlDocument>(key, document));
+        }
 
-            XPathExpression xpath = pathExpression.Clone();
-            xpath.SetContext(context);
-
-            // Evaluate the path
-            string path = document.CreateNavigator().Evaluate(xpath).ToString();
-
-            if(basePath != null)
-                path = Path.Combine(basePath, path);
-
-            string targetDirectory = Path.GetDirectoryName(path);
-
-            if(!Directory.Exists(targetDirectory))
-                Directory.CreateDirectory(targetDirectory);
-
-            if(writeXhtmlNamespace)
+        /// <summary>
+        /// Wait for the document writer task to complete when disposed
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
             {
-                document.DocumentElement.SetAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-                document.LoadXml(document.OuterXml);
+                documentList.CompleteAdding();
+
+                if(documentWriter != null)
+                {
+                    int count = documentList.Count;
+
+                    if(count != 0)
+                        this.WriteMessage(MessageLevel.Diagnostic, "Waiting for the document writer task to " +
+                            "finish ({0} {1}file(s) remaining)...", count, groupId);
+
+                    documentWriter.Wait();
+                }
+
+                documentList.Dispose();
             }
 
-            // Save the document.
+            base.Dispose(disposing);
+        }
+        #endregion
 
-            // selectExpression determines which nodes get saved. If there is no selectExpression we simply
-            // save the root node as before. If there is a selectExpression, we evaluate the XPath expression
-            // and save the resulting node set. The select expression also enables the "literal-text" processing
-            // instruction, which outputs its content as unescaped text.
-            if(selectExpression == null)
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to write the document to its destination file
+        /// </summary>
+        private void WriteDocuments()
+        {
+            foreach(var kv in documentList.GetConsumingEnumerable())
             {
+                var document = kv.Value;
+
+                // Set the evaluation context
+                CustomContext context = new CustomContext();
+                context["key"] = kv.Key;
+
+                XPathExpression xpath = pathExpression.Clone();
+                xpath.SetContext(context);
+
+                // Evaluate the path
+                string path = document.CreateNavigator().Evaluate(xpath).ToString();
+
+                if(basePath != null)
+                    path = Path.Combine(basePath, path);
+
+                string targetDirectory = Path.GetDirectoryName(path);
+
+                if(!Directory.Exists(targetDirectory))
+                    Directory.CreateDirectory(targetDirectory);
+
+                if(writeXhtmlNamespace)
+                {
+                    document.DocumentElement.SetAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+                    document.LoadXml(document.OuterXml);
+                }
+
+                // Save the document
                 try
                 {
-                    using(XmlWriter writer = XmlWriter.Create(path, settings))
+                    // selectExpression determines which nodes get saved. If there is no selectExpression we simply
+                    // save the root node as before. If there is a selectExpression, we evaluate the XPath expression
+                    // and save the resulting node set. The select expression also enables the "literal-text" processing
+                    // instruction, which outputs its content as unescaped text.
+                    if(selectExpression == null)
                     {
-                        document.Save(writer);
+                        using(XmlWriter writer = XmlWriter.Create(path, settings))
+                        {
+                            document.Save(writer);
+                        }
                     }
+                    else
+                    {
+                        // IMPLEMENTATION NOTE: The separate StreamWriter is used to maintain XML indenting.  Without it
+                        // the XmlWriter won't honor our indent settings after plain text nodes have been written.
+                        using(StreamWriter output = File.CreateText(path))
+                        {
+                            using(XmlWriter writer = XmlWriter.Create(output, settings))
+                            {
+                                XPathExpression selectXPath = selectExpression.Clone();
+                                selectXPath.SetContext(context);
+
+                                XPathNodeIterator ni = document.CreateNavigator().Select(selectExpression);
+
+                                while(ni.MoveNext())
+                                {
+                                    if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
+                                      ni.Current.Name.Equals("literal-text"))
+                                    {
+                                        writer.Flush();
+                                        output.Write(ni.Current.Value);
+                                    }
+                                    else
+                                        ni.Current.WriteSubtree(writer);
+                                }
+                            }
+                        }
+                    }
+
+                    // Raise an event to indicate that a file was created
+                    this.OnComponentEvent(new FileCreatedEventArgs(path, true));
                 }
                 catch(IOException e)
                 {
-                    base.WriteMessage(key, MessageLevel.Error, "An access error occurred while attempting to " +
-                        "save to the file '{0}'. The error message is: {1}", path, e.GetExceptionMessage());
+                    this.WriteMessage(kv.Key, MessageLevel.Error, "An access error occurred while attempting to " +
+                        "save to the file '{0}'. The error message is '{1}'", path, e.GetExceptionMessage());
                 }
                 catch(XmlException e)
                 {
-                    base.WriteMessage(key, MessageLevel.Error, "Invalid XML was written to the output " +
-                        "file '{0}'. The error message is: '{1}'", path, e.GetExceptionMessage());
+                    this.WriteMessage(kv.Key, MessageLevel.Error, "Invalid XML was written to the output " +
+                        "file '{0}'. The error message is '{1}'", path, e.GetExceptionMessage());
                 }
             }
-            else
-            {
-                // IMPLEMENTATION NOTE: The separate StreamWriter is used to maintain XML indenting.  Without it
-                // the XmlWriter won't honor our indent settings after plain text nodes have been written.
-                using(StreamWriter output = File.CreateText(path))
-                {
-                    using(XmlWriter writer = XmlWriter.Create(output, settings))
-                    {
-                        XPathExpression select_xpath = selectExpression.Clone();
-                        select_xpath.SetContext(context);
-
-                        XPathNodeIterator ni = document.CreateNavigator().Select(selectExpression);
-
-                        while(ni.MoveNext())
-                        {
-                            if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
-                              ni.Current.Name.Equals("literal-text"))
-                            {
-                                writer.Flush();
-                                output.Write(ni.Current.Value);
-                            }
-                            else
-                                ni.Current.WriteSubtree(writer);
-                        }
-                    }
-                }
-            }
-
-            // Raise an event to indicate that a file was created
-            this.OnComponentEvent(new FileCreatedEventArgs(path, true));
         }
         #endregion
     }

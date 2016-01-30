@@ -39,12 +39,15 @@
             this.epNotes = new System.Windows.Forms.ErrorProvider(this.components);
             this.chkIndentHtml = new System.Windows.Forms.CheckBox();
             this.txtBuildLogFile = new SandcastleBuilder.Utils.Controls.FilePathUserControl();
+            this.udcBoundedCapacity = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.cblHelpFileFormat = new System.Windows.Forms.CheckedListBox();
             this.cboBuildAssemblerVerbosity = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.epWarning = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udcBoundedCapacity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.epWarning)).BeginInit();
             this.SuspendLayout();
             // 
@@ -151,6 +154,33 @@
             this.txtBuildLogFile.Title = "Select the log file location";
             this.txtBuildLogFile.UseFileOpenDialog = false;
             // 
+            // udcBoundedCapacity
+            // 
+            this.epNotes.SetError(this.udcBoundedCapacity, "Decrease to conserve memory, increase for better build speed.\nSet to 0 for an unb" +
+        "ounded cache size, best speed at the\nexpense of memory.");
+            this.epNotes.SetIconPadding(this.udcBoundedCapacity, 5);
+            this.udcBoundedCapacity.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.udcBoundedCapacity.Location = new System.Drawing.Point(431, 296);
+            this.udcBoundedCapacity.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.udcBoundedCapacity.Name = "udcBoundedCapacity";
+            this.udcBoundedCapacity.Size = new System.Drawing.Size(60, 27);
+            this.udcBoundedCapacity.TabIndex = 13;
+            this.udcBoundedCapacity.Tag = "SaveComponentCacheCapacity";
+            this.udcBoundedCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.udcBoundedCapacity.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
             // label3
             // 
             this.label3.Location = new System.Drawing.Point(3, 14);
@@ -195,9 +225,20 @@
             this.epWarning.ContainerControl = this;
             this.epWarning.Icon = ((System.Drawing.Icon)(resources.GetObject("epWarning.Icon")));
             // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(44, 297);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(381, 23);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "&Maximum Save Component writer task cache capacity";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // BuildPropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.udcBoundedCapacity);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.cboBuildAssemblerVerbosity);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtBuildLogFile);
@@ -212,8 +253,9 @@
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(770, 300);
             this.Name = "BuildPropertiesPageControl";
-            this.Size = new System.Drawing.Size(795, 300);
+            this.Size = new System.Drawing.Size(795, 339);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udcBoundedCapacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.epWarning)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -236,5 +278,7 @@
         private System.Windows.Forms.ComboBox cboBuildAssemblerVerbosity;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ErrorProvider epWarning;
+        private System.Windows.Forms.NumericUpDown udcBoundedCapacity;
+        private System.Windows.Forms.Label label5;
     }
 }

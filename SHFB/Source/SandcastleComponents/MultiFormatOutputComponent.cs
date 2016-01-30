@@ -2,22 +2,22 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MultiFormatOutputComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2014
-// Note    : Copyright 2010-2014, Eric Woodruff, All rights reserved
+// Updated : 12/23/2015
+// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to execute one or more sets of build components each based
 // on a specific help file output format.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.0.0  06/06/2010  EFW  Created the code
-// -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
+// 06/06/2010  EFW  Created the code
+// 12/26/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.Components
     /// formats.  Only the components related to the requested set of format types will be executed.</remarks>
     /// <example>
     /// <code lang="xml" title="Example Configuration"
-    ///     source="..\..\SHFB\Source\PresentationStyles\VS2013\Configuration\SHFBReference.config"
+    ///     source="..\..\SHFB\Source\PresentationStyles\VS2013\Configuration\BuildAssembler.config"
     ///     region="Multi-format output component" />
     /// </example>
     public class MultiFormatOutputComponent : BuildComponentCore
@@ -68,6 +68,7 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         private Dictionary<string, IEnumerable<BuildComponentCore>> formatComponents;
+
         #endregion
 
         #region Constructor
@@ -84,6 +85,25 @@ namespace SandcastleBuilder.Components
 
         #region Method overrides
         //=====================================================================
+
+        /// <inheritdoc />
+        /// <remarks>This sets a unique group ID for each format</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                foreach(var keyValue in formatComponents)
+                {
+                    string formatGroupId = value + "/" + keyValue.Key;
+
+                    foreach(var component in keyValue.Value)
+                        component.GroupId = formatGroupId;
+                }
+            }
+        }
 
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
@@ -131,6 +151,9 @@ namespace SandcastleBuilder.Components
                     formatComponents.Add(format, base.BuildAssembler.LoadComponents(set));
                 }
             }
+
+            // Set a default group ID
+            this.GroupId = null;
         }
 
         /// <summary>

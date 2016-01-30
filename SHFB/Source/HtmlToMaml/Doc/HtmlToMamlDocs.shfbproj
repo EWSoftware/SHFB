@@ -81,7 +81,7 @@
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <WorkingPath />
-    <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
@@ -96,6 +96,7 @@
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
+    <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

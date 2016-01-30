@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 01/15/2016
+// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -14,31 +14,30 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.3.3.0  11/21/2006  EFW  Created the code
-// 1.3.4.0  01/03/2007  EFW  Added support for VB.NET style #region blocks
-// 1.4.0.0  02/02/2007  EFW  Made changes to support custom presentation styles and new colorizer options
-// 1.4.0.2  06/12/2007  EFW  Added support for nested code blocks
-// 1.5.0.0  06/19/2007  EFW  Various additions and updates for the June CTP
-// 1.6.0.3  06/20/2007  EFW  Fixed bug that caused code blocks with an unknown or unspecified language to always
-//                           be hidden.
-// 1.6.0.5  03/05/2008  EFW  Added support for the keepSeeTags attribute
-// 1.6.0.7  04/05/2008  EFW  Modified to not add language filter elements if the matching language filter is not
-//                           present.  Updated to support use in conceptual builds.
-// 1.8.0.0  07/22/2008  EFW  Fixed bug related to nested code blocks in conceptual content.  Added option to
-//                           generate warnings instead of errors on missing source code.
-// 1.8.0.1  12/02/2008  EFW  Fixed bug that caused <see> tags to go unprocessed due to change in code block
-//                           handling.  Added support for removeRegionMarkers.
-// 1.9.0.1  06/19/2010  EFW  Added support for MS Help Viewer
-// 1.9.3.3  12/30/2011  EFW  Added support for overriding allowMissingSource option on a case by case basis
-// 1.9.5.0  09/21/2012  EFW  Added support disabling all features except leading whitespace normalization
-// 1.9.6.0  10/17/2012  EFW  Moved the code block insertion code from PostTransformComponent into the new
-//                           component event handler in this class.  Moved the title support into the
-//                           presentation style XSL transformations.
-// -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
-//          02/27/2014  EFW  Added support for the Open XML help file format
-//          04/24/2015  EFW  Added support for the Markdown help file format
+// 11/21/2006  EFW  Created the code
+// 01/03/2007  EFW  Added support for VB.NET style #region blocks
+// 02/02/2007  EFW  Made changes to support custom presentation styles and new colorizer options
+// 06/12/2007  EFW  Added support for nested code blocks
+// 06/19/2007  EFW  Various additions and updates for the June CTP
+// 06/20/2007  EFW  Fixed bug that caused code blocks with an unknown or unspecified language to always be hidden
+// 03/05/2008  EFW  Added support for the keepSeeTags attribute
+// 04/05/2008  EFW  Modified to not add language filter elements if the matching language filter is not present.
+//                  Updated to support use in conceptual builds.
+// 07/22/2008  EFW  Fixed bug related to nested code blocks in conceptual content.  Added option to generate
+//                  warnings instead of errors on missing source code.
+// 12/02/2008  EFW  Fixed bug that caused <see> tags to go unprocessed due to change in code block handling.
+//                  Added support for removeRegionMarkers.
+// 06/19/2010  EFW  Added support for MS Help Viewer
+// 12/30/2011  EFW  Added support for overriding allowMissingSource option on a case by case basis
+// 09/21/2012  EFW  Added support disabling all features except leading whitespace normalization
+// 10/17/2012  EFW  Moved the code block insertion code from PostTransformComponent into the new component event
+//                  handler in this class.  Moved the title support into the presentation style XSL
+//                  transformations.
+// 12/26/2013  EFW  Updated the build component to be discoverable via MEF
+// 02/27/2014  EFW  Added support for the Open XML help file format
+// 04/24/2015  EFW  Added support for the Markdown help file format
 //===============================================================================================================
 
 using System;
@@ -249,7 +248,9 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         // Colorized code dictionary used by the OnComponent event handler
-        private Dictionary<string, XmlNode> colorizedCodeBlocks;
+        private Dictionary<string, Dictionary<string, XmlNode>> topicCodeBlocks;
+
+        private bool hasColorizedCodeBlocks;
 
         // Output folder paths
         private List<string> outputPaths;
@@ -262,16 +263,13 @@ namespace SandcastleBuilder.Components
         // Line numbering, outlining, keep see tags, remove region markers, disabled, files copied, Open XML,
         // and Markdown flags.
         private bool numberLines, outliningEnabled, keepSeeTags, removeRegionMarkers, isDisabled,
-            colorizerFilesCopied, isOpenXml, isMarkdown;
+            isOpenXml, isMarkdown;
 
-        // The base path to use for file references with relative paths, the syntax and style filenames, and the
-        // default language.
-        private string basePath, syntaxFile, styleFile, defaultLanguage;
+        // The base path to use for file references with relative paths and the default language
+        private string basePath, defaultLanguage;
 
         // The message level for missing source errors
         private MessageLevel messageLevel;
-
-        private int defaultTabSize;     // Default tab size
 
         // Uh, yeah.  Don't ask me to explain this.  Just accept that it works (I hope :)).  It uses balancing
         // groups to extract #region to #endregion accounting for any nested regions within it.  If you want to
@@ -286,7 +284,6 @@ namespace SandcastleBuilder.Components
             RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         // XPath queries
-        private XmlNamespaceManager context;
         private XPathExpression referenceRoot, referenceCode, conceptualRoot, conceptualCode, nestedRefCode,
             nestedConceptCode;
         #endregion
@@ -314,11 +311,12 @@ namespace SandcastleBuilder.Components
         public override void Initialize(XPathNavigator configuration)
         {
             XPathNavigator nav;
-            string value = null;
+            string value = null, syntaxFile, styleFile;
             bool allowMissingSource = false, useDefaultTitle = false;
+            int defaultTabSize = 8;
 
             outputPaths = new List<string>();
-            colorizedCodeBlocks = new Dictionary<string, XmlNode>();
+            topicCodeBlocks = new Dictionary<string, Dictionary<string, XmlNode>>();
 
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
@@ -523,8 +521,10 @@ namespace SandcastleBuilder.Components
             colorizer.TabSize = defaultTabSize;
 
             // Create the XPath queries
-            context = new CustomContext();
+            var context = new CustomContext();
+
             context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
+
             referenceRoot = XPathExpression.Compile("document/comments");
             referenceCode = XPathExpression.Compile("//code");
             nestedRefCode = XPathExpression.Compile("code");
@@ -556,9 +556,6 @@ namespace SandcastleBuilder.Components
             int tabSize, start, end, id = 1;
             MessageLevel msgLevel;
 
-            // Clear the dictionary
-            colorizedCodeBlocks.Clear();
-
             // Select all code nodes.  The location depends on the build type.
             root = navDoc.SelectSingleNode(referenceRoot);
 
@@ -581,6 +578,8 @@ namespace SandcastleBuilder.Components
 
                 codeList = root.Select(conceptualCode).ToArray();
             }
+
+            var colorizedCodeBlocks = new Dictionary<string, XmlNode>();
 
             foreach(XPathNavigator navCode in codeList)
             {
@@ -718,6 +717,57 @@ namespace SandcastleBuilder.Components
                 colorizedCodeBlocks.Add(code.InnerXml, preNode);
                 id++;
             }
+
+            if(colorizedCodeBlocks.Count != 0)
+                topicCodeBlocks.Add(key, colorizedCodeBlocks);
+        }
+
+        /// <summary>
+        /// At disposal, copy the script and style files if any topics with code blocks were encountered
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            string destStylesheet, destScriptFile;
+
+            if(disposing && hasColorizedCodeBlocks)
+            {
+                foreach(string outputPath in outputPaths)
+                {
+                    destStylesheet = outputPath + @"styles\" + Path.GetFileName(stylesheet);
+                    destScriptFile = outputPath + @"scripts\" + Path.GetFileName(scriptFile);
+
+                    if(!Directory.Exists(outputPath + @"styles"))
+                        Directory.CreateDirectory(outputPath + @"styles");
+
+                    if(!Directory.Exists(outputPath + @"scripts"))
+                        Directory.CreateDirectory(outputPath + @"scripts");
+
+                    // Don't copy if already there (i.e. overridden by a copy in the project or copied by another
+                    // instance).
+                    if(!File.Exists(destStylesheet))
+                    {
+                        File.Copy(stylesheet, destStylesheet);
+
+                        // All attributes are turned off so that we can delete it later
+                        File.SetAttributes(destStylesheet, FileAttributes.Normal);
+                    }
+
+                    // Raise an event to indicate that a file was created
+                    OnComponentEvent(new FileCreatedEventArgs(destStylesheet, true));
+
+                    if(!File.Exists(destScriptFile))
+                    {
+                        File.Copy(scriptFile, destScriptFile);
+                        File.SetAttributes(destScriptFile, FileAttributes.Normal);
+                    }
+
+                    OnComponentEvent(new FileCreatedEventArgs(destScriptFile, true));
+                }
+            }
+
+            base.Dispose(disposing);
         }
         #endregion
 
@@ -879,48 +929,25 @@ namespace SandcastleBuilder.Components
         /// the conceptual content XSL transformations.</remarks>
         private void TransformComponent_TopicTransformed(object sender, EventArgs e)
         {
+            Dictionary<string, XmlNode> colorizedCodeBlocks;
             TransformedTopicEventArgs tt = e as TransformedTopicEventArgs;
             XmlNode head, node, codeBlock;
             XmlAttribute attr;
-            string destStylesheet, destScriptFile;
 
-            // Don't bother if not a transform event or if the topic contained no code blocks
-            if(tt == null || colorizedCodeBlocks.Count == 0)
-                return;
-
-            // Only copy the files if needed
-            if(!colorizerFilesCopied && !isOpenXml && !isMarkdown)
+            // Don't bother if not a transform event, not in our group, or if the topic contained no code blocks
+            if(tt == null || ((BuildComponentCore)sender).GroupId != this.GroupId ||
+              !topicCodeBlocks.TryGetValue(tt.Key, out colorizedCodeBlocks))
             {
-                foreach(string outputPath in outputPaths)
-                {
-                    destStylesheet = outputPath + @"styles\" + Path.GetFileName(stylesheet);
-                    destScriptFile = outputPath + @"scripts\" + Path.GetFileName(scriptFile);
-
-                    if(!Directory.Exists(outputPath + @"styles"))
-                        Directory.CreateDirectory(outputPath + @"styles");
-
-                    if(!Directory.Exists(outputPath + @"scripts"))
-                        Directory.CreateDirectory(outputPath + @"scripts");
-
-                    // All attributes are turned off so that we can delete it later
-                    if(!File.Exists(destStylesheet))
-                    {
-                        File.Copy(stylesheet, destStylesheet);
-                        File.SetAttributes(destStylesheet, FileAttributes.Normal);
-                    }
-
-                    if(!File.Exists(destScriptFile))
-                    {
-                        File.Copy(scriptFile, destScriptFile);
-                        File.SetAttributes(destScriptFile, FileAttributes.Normal);
-                    }
-                }
-
-                colorizerFilesCopied = true;
+                return;
             }
+
+            topicCodeBlocks.Remove(tt.Key);
 
             if(!isOpenXml && !isMarkdown)
             {
+                // Note topics with colorized code blocks so that we can copy the supporting files when disposed
+                hasColorizedCodeBlocks = true;
+
                 // Find the <head> section
                 head = tt.Document.SelectSingleNode("html/head");
 

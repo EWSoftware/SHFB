@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : Markdown.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2015
+// Updated : 12/21/2015
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -65,8 +65,7 @@ namespace Sandcastle.PresentationStyles
             this.IntermediateTocTransformation = new TransformationFile(
                 @"%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl");
 
-            this.ConceptualBuildConfiguration = @"Configuration\SHFBConceptual.config";
-            this.ReferenceBuildConfiguration = @"Configuration\SHFBReference.config";
+            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file

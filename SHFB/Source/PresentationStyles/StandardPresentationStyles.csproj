@@ -1284,18 +1284,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="VS2010\Configuration\SHFBConceptual.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2010\Configuration\SHFBReference.config">
+    <Content Include="VS2010\Configuration\BuildAssembler.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenXml\Configuration\SHFBConceptual.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="OpenXml\Configuration\SHFBReference.config">
+    <Content Include="OpenXml\Configuration\BuildAssembler.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
@@ -1307,10 +1301,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="VS2013\Configuration\SHFBConceptual.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="VS2013\Configuration\SHFBReference.config">
+    <Content Include="VS2013\Configuration\BuildAssembler.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -1346,10 +1337,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Markdown\Configuration\SHFBConceptual.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Markdown\Configuration\SHFBReference.config">
+    <Content Include="Markdown\Configuration\BuildAssembler.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Markdown\MarkdownContent\_Footer.md">

@@ -44,6 +44,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private string xpathFormat = "/";
+
         #endregion
 
         #region Constructor

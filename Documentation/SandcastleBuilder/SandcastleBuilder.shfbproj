@@ -210,6 +210,7 @@
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
     <RootNamespaceTitle>Sandcastle Help File Builder Namespaces</RootNamespaceTitle>
+    <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

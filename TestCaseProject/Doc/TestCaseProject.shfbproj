@@ -60,7 +60,7 @@
     Include namespaces (false by default)
     Namespaces comments filename ("Namespaces" if not specified or empty)
     Output folder (current folder if not specified or empty) -->
-          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" boundedCapacity="0" />
         </component>
       </ComponentConfig>
     </ComponentConfigurations>
@@ -193,6 +193,7 @@
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
     <IncludeFavorites>False</IncludeFavorites>
     <BinaryTOC>True</BinaryTOC>
+    <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

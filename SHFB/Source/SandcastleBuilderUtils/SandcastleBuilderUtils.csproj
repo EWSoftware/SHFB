@@ -249,16 +249,13 @@
     <Content Include="Templates\Build1xHelpFile.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\BuildConceptualTopics.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Templates\BuildHelpViewerFile.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\BuildOpenXmlFile.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Templates\BuildReferenceTopics.proj">
+    <Content Include="Templates\BuildTopics.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Templates\ExtractHtmlInfo.proj">

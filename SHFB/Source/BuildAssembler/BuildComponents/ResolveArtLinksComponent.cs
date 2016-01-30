@@ -40,7 +40,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new ResolveArtLinksComponent(base.BuildAssembler);
+                return new ResolveArtLinksComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -52,6 +52,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
         // IDs are compared case insensitively
         private Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>(
+            StringComparer.OrdinalIgnoreCase);
+
+        private Dictionary<string, ArtTarget> filesUsed = new Dictionary<string, ArtTarget>(
             StringComparer.OrdinalIgnoreCase);
 
         #endregion
@@ -86,13 +89,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string inputPath = targetsNode.GetAttribute("input", String.Empty);
 
                 if(String.IsNullOrEmpty(inputPath))
-                    base.WriteMessage(MessageLevel.Error, "Each targets element must have an input attribute " +
+                    this.WriteMessage(MessageLevel.Error, "Each targets element must have an input attribute " +
                         "specifying a directory containing art files.");
 
                 inputPath = Environment.ExpandEnvironmentVariables(inputPath);
 
                 if(!Directory.Exists(inputPath))
-                    base.WriteMessage(MessageLevel.Error, "The art input directory '{0}' does not exist.",
+                    this.WriteMessage(MessageLevel.Error, "The art input directory '{0}' does not exist.",
                         inputPath);
 
                 string baseOutputPath = targetsNode.GetAttribute("baseOutput", String.Empty);
@@ -103,7 +106,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string outputPathValue = targetsNode.GetAttribute("outputPath", string.Empty);
 
                 if(string.IsNullOrEmpty(outputPathValue))
-                    base.WriteMessage(MessageLevel.Error, "Each targets element must have an output attribute " +
+                    this.WriteMessage(MessageLevel.Error, "Each targets element must have an output attribute " +
                         "specifying a directory in which to place referenced art files.");
 
                 XPathExpression outputXPath = XPathExpression.Compile(outputPathValue);
@@ -116,13 +119,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 string map = targetsNode.GetAttribute("map", String.Empty);
 
                 if(String.IsNullOrEmpty(map))
-                    base.WriteMessage(MessageLevel.Error, "Each targets element must have a map attribute " +
+                    this.WriteMessage(MessageLevel.Error, "Each targets element must have a map attribute " +
                         "specifying a file that maps art IDs to files in the input directory.");
 
                 map = Environment.ExpandEnvironmentVariables(map);
 
                 if(!File.Exists(map))
-                    base.WriteMessage(MessageLevel.Error, "The art map file '{0}' does not exist.", map);
+                    this.WriteMessage(MessageLevel.Error, "The art map file '{0}' does not exist.", map);
 
                 string format = targetsNode.GetAttribute("format", String.Empty);
 
@@ -147,6 +150,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     targets[id] = new ArtTarget
                     {
+                        Id = id,
                         InputPath = Path.Combine(inputPath, file),
                         BaseOutputPath = baseOutputPath,
                         OutputXPath = outputXPath,
@@ -159,7 +163,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
             }
 
-            base.WriteMessage(MessageLevel.Info, "Indexed {0} art targets.", targets.Count);
+            this.WriteMessage(MessageLevel.Info, "Indexed {0} art targets.", targets.Count);
         }
 
         /// <inheritdoc />
@@ -181,25 +185,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     string outputPath = Path.Combine(path, target.Name);
 
-                    string targetDirectory = Path.GetDirectoryName(outputPath);
-
-                    if(!Directory.Exists(targetDirectory))
-                        Directory.CreateDirectory(targetDirectory);
-
-                    if(File.Exists(target.InputPath))
-                    {
-                        if(!File.Exists(outputPath))
-                        {
-                            File.Copy(target.InputPath, outputPath, true);
-                            File.SetAttributes(outputPath, FileAttributes.Normal);
-                        }
-                    }
-                    else
-                        base.WriteMessage(key, MessageLevel.Warn, "The file '{0}' for the art target '{1}' " +
-                            "was not found.", target.InputPath, name);
-
-                    // Raise an event to indicate that a file was created
-                    OnComponentEvent(new FileCreatedEventArgs(outputPath, true));
+                    filesUsed[outputPath] = target;
 
                     XmlWriter writer = artLink.InsertAfter();
 
@@ -231,8 +217,43 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     artLink.DeleteSelf();
                 }
                 else
-                    base.WriteMessage(key, MessageLevel.Warn, "Unknown art target '{0}'", name);
+                    this.WriteMessage(key, MessageLevel.Warn, "Unknown art target '{0}'", name);
             }
+        }
+
+        /// <summary>
+        /// At disposal, copy the media files that were encountered
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                this.WriteMessage(MessageLevel.Diagnostic, "Copying media files...");
+
+                foreach(var kv in filesUsed)
+                {
+                    string targetDirectory = Path.GetDirectoryName(kv.Key);
+
+                    if(!Directory.Exists(targetDirectory))
+                        Directory.CreateDirectory(targetDirectory);
+
+                    if(File.Exists(kv.Value.InputPath))
+                    {
+                        File.Copy(kv.Value.InputPath, kv.Key, true);
+                        File.SetAttributes(kv.Key, FileAttributes.Normal);
+
+                        // Raise an event to indicate that a file was created
+                        OnComponentEvent(new FileCreatedEventArgs(kv.Key, true));
+                    }
+                    else
+                        this.WriteMessage(MessageLevel.Warn, "The file '{0}' for the art target '{1}' " +
+                            "was not found.", kv.Value.InputPath, kv.Value.Id);
+                }
+            }
+
+            base.Dispose(disposing);
         }
         #endregion
     }

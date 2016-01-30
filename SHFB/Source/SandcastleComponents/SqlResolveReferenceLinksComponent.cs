@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/01/2015
+// Updated : 01/26/2016
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
@@ -67,16 +67,16 @@ namespace SandcastleBuilder.Components
             /// </summary>
             public SqlResolveReferenceLinksComponentFactory()
             {
-                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Replace,
+                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Replace,
                     "Resolve Reference Links Component");
-                base.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Replace,
+                this.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Replace,
                     "Resolve Reference Links Component");
             }
 
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SqlResolveReferenceLinksComponent(base.BuildAssembler);
+                return new SqlResolveReferenceLinksComponent(this.BuildAssembler);
             }
 
             /// <inheritdoc />
@@ -180,7 +180,7 @@ namespace SandcastleBuilder.Components
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+            this.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
                 "[{0}, version {1}]\r\n    SQL Resolve Reference Links Component.  {2}\r\n" +
                 "    https://GitHub.com/EWSoftware/SHFB", fvi.ProductName, fvi.ProductVersion,
                 fvi.LegalCopyright));
@@ -237,12 +237,12 @@ namespace SandcastleBuilder.Components
                     if(cacheCount == 0)
                     {
                         // Log a diagnostic message since looking up all IDs can significantly slow the build
-                        base.WriteMessage(MessageLevel.Diagnostic, "The SQL MSDN content ID cache in '" +
+                        this.WriteMessage(MessageLevel.Diagnostic, "The SQL MSDN content ID cache in '" +
                             connectionString + "' does not exist yet.  All IDs will be looked up in this " +
                             "build which will slow it down.");
                     }
                     else
-                        base.WriteMessage(MessageLevel.Info, "{0} cached MSDN content ID entries exist", cacheCount);
+                        this.WriteMessage(MessageLevel.Info, "{0} cached MSDN content ID entries exist", cacheCount);
 
                     BuildComponentCore.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
                 }
@@ -296,7 +296,7 @@ namespace SandcastleBuilder.Components
                 }
                 catch(Exception ex)
                 {
-                    base.WriteMessage(MessageLevel.Error, BuildComponentUtilities.GetExceptionMessage(ex));
+                    this.WriteMessage(MessageLevel.Error, BuildComponentUtilities.GetExceptionMessage(ex));
                 }
             }
 
@@ -308,18 +308,18 @@ namespace SandcastleBuilder.Components
         /// </summary>
         public override void UpdateMsdnContentIdCache()
         {
-            if(base.MsdnResolver != null)
+            if(this.MsdnResolver != null)
             {
-                var cache = base.MsdnResolver.MsdnContentIdCache as SqlDictionary<string>;
+                var cache = this.MsdnResolver.MsdnContentIdCache as SqlDictionary<string>;
 
                 // Only report if we own the cache (it won't have been disposed off yet)
                 if(cache != null && !cache.IsDisposed)
                 {
-                    if(base.MsdnResolver.CacheItemsAdded)
-                        base.WriteMessage(MessageLevel.Diagnostic, "New MSDN content ID cache size: {0} entries",
-                            cache.Count);
+                    if(MsdnResolver.CacheItemsAdded != 0)
+                        this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the MSDN content ID " +
+                            "cache.  New cache size: {1} entries", MsdnResolver.CacheItemsAdded, cache.Count);
 
-                    base.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID SQL local cache flushed {0} " +
+                    this.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID SQL local cache flushed {0} " +
                         "time(s).  Current SQL local cache usage: {1} of {2}.", cache.LocalCacheFlushCount,
                         cache.CurrentLocalCacheCount, cache.LocalCacheSize);
                 }

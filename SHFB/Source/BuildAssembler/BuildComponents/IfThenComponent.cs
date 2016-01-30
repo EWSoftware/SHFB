@@ -43,9 +43,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private XPathExpression condition;
-        private IEnumerable<BuildComponentCore> true_branch = new List<BuildComponentCore>();
-        private IEnumerable<BuildComponentCore> false_branch = new List<BuildComponentCore>();
-        private BuildContext context;
+
+        private Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
+        private IEnumerable<BuildComponentCore> trueBranch = new List<BuildComponentCore>();
+        private IEnumerable<BuildComponentCore> falseBranch = new List<BuildComponentCore>();
+
         #endregion
 
         #region Constructor
@@ -64,44 +66,74 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <inheritdoc />
+        /// <remarks>This sets a unique group ID for each branch</remarks>
+        public override string GroupId
+        {
+            get { return base.GroupId; }
+            set
+            {
+                base.GroupId = value;
+
+                string groupId = value + "/True";
+
+                foreach(var component in trueBranch)
+                    component.GroupId = groupId;
+
+                groupId = value + "/False";
+
+                foreach(var component in falseBranch)
+                    component.GroupId = groupId;
+            }
+        }
+
+        /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            // Get the condition
-            XPathNavigator if_node = configuration.SelectSingleNode("if");
+            // Get the context namespaces
+            XPathNodeIterator contextNodes = configuration.Select("context");
 
-            if(if_node == null)
+            foreach(XPathNavigator contextNode in contextNodes)
+                contextNamespaces[contextNode.GetAttribute("prefix", String.Empty)] =
+                    contextNode.GetAttribute("name", String.Empty);
+
+            // Get the condition
+            XPathNavigator ifNode = configuration.SelectSingleNode("if");
+
+            if(ifNode == null)
                 throw new ConfigurationErrorsException("You must specify a condition using the <if> element.");
 
-            string condition_xpath = if_node.GetAttribute("condition", String.Empty);
+            string conditionXPath = ifNode.GetAttribute("condition", String.Empty);
 
-            if(String.IsNullOrEmpty(condition_xpath))
+            if(String.IsNullOrEmpty(conditionXPath))
                 throw new ConfigurationErrorsException("You must define a condition attribute on the <if> element");
 
-            condition = XPathExpression.Compile(condition_xpath);
+            condition = XPathExpression.Compile(conditionXPath);
 
             // Construct the true branch
-            XPathNavigator then_node = configuration.SelectSingleNode("then");
+            XPathNavigator thenNode = configuration.SelectSingleNode("then");
 
-            if(then_node != null)
-                true_branch = BuildAssembler.LoadComponents(then_node);
+            if(thenNode != null)
+                trueBranch = BuildAssembler.LoadComponents(thenNode);
 
             // Construct the false branch
-            XPathNavigator else_node = configuration.SelectSingleNode("else");
+            XPathNavigator elseNode = configuration.SelectSingleNode("else");
 
-            if(else_node != null)
-                false_branch = BuildAssembler.LoadComponents(else_node);
+            if(elseNode != null)
+                falseBranch = BuildAssembler.LoadComponents(elseNode);
 
-            // Keep a pointer to the context for future use
-            context = this.BuildAssembler.Context;
+            // Set a default group ID
+            this.GroupId = null;
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             // Set up the test
+            CustomContext context = new CustomContext(contextNamespaces);
             context["key"] = key;
+
             XPathExpression test = condition.Clone();
-            test.SetContext(context.XsltContext);
+            test.SetContext(context);
 
             // Evaluate the condition
             bool result = (bool)document.CreateNavigator().Evaluate(test);
@@ -109,12 +141,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             // On the basis of the condition, execute either the true or the false branch
             if(result)
             {
-                foreach(BuildComponentCore component in true_branch)
+                foreach(BuildComponentCore component in trueBranch)
                     component.Apply(document, key);
             }
             else
             {
-                foreach(BuildComponentCore component in false_branch)
+                foreach(BuildComponentCore component in falseBranch)
                     component.Apply(document, key);
             }
         }
@@ -124,10 +156,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         {
             if(disposing)
             {
-                foreach(BuildComponentCore component in true_branch)
+                foreach(BuildComponentCore component in trueBranch)
                     component.Dispose();
 
-                foreach(BuildComponentCore component in false_branch)
+                foreach(BuildComponentCore component in falseBranch)
                     component.Dispose();
             }
 

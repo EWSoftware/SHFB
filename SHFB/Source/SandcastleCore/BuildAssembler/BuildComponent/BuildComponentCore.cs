@@ -11,6 +11,7 @@
 // component can log messages easily.
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
 // 12/23/2013 - EFW - Updated the build components to be discoverable via MEF
+// 12/08/2015 - EFW - Added support for component group ID
 
 using System;
 using System.Collections.Generic;
@@ -44,19 +45,17 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// This read-only property returns a static dictionary that can be used to store information shared
         /// between build components.
         /// </summary>
-        protected static Dictionary<string, object> Data
+        protected static IDictionary<string, object> Data
         {
             get { return data; }
         }
 
         /// <summary>
-        /// Reserved for future use
+        /// This is used to set an optional group ID for use with component events
         /// </summary>
-        /// <value>This property is not currently used.  It is reserved for future use.</value>
-        public virtual bool IsThreadSafe
-        {
-            get { return false; }
-        }
+        /// <value>If not overridden, the default group ID is null (no group)</value>
+        public virtual string GroupId { get; set; }
+
         #endregion
 
         #region Constructor
@@ -135,7 +134,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         protected void OnComponentEvent(EventArgs e)
         {
             if(this.BuildAssembler != null)
-                this.BuildAssembler.OnComponentEvent(this.GetType(), e);
+                this.BuildAssembler.OnComponentEvent(this, e);
         }
 
         /// <summary>

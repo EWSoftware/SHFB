@@ -72,8 +72,7 @@ namespace $safeprojectname$
             this.IntermediateTocTransformation = new TransformationFile(
                 @"%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl");
 
-            this.ConceptualBuildConfiguration = @"Configuration\SHFBConceptual.config";
-            this.ReferenceBuildConfiguration = @"Configuration\SHFBReference.config";
+            this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 
             // Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so
             // match the case of the folder and filenames in the literals to their actual casing on the file

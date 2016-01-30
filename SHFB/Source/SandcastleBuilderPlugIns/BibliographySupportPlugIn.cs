@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
+// Updated : 12/22/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -145,61 +145,40 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            string configFilename;
-
-            // Merge the reflection file info into conceptual.config
-            configFilename = builder.WorkingFolder + "conceptual.config";
-
-            if(File.Exists(configFilename))
-                this.AddBibliographyParameter(configFilename);
-
-            // Merge the reflection file info into sancastle.config
-            configFilename = builder.WorkingFolder + "sandcastle.config";
-
-            if(File.Exists(configFilename))
-                this.AddBibliographyParameter(configFilename);
-        }
-        #endregion
-
-        #region Private helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// Add the bibliography file parameter to the TransformComponent configuration
-        /// </summary>
-        /// <param name="configFilename">The BuildAssembler configuration file to modify</param>
-        private void AddBibliographyParameter(string configFilename)
-        {
             XmlDocument configFile;
             XmlAttribute attr;
-            XmlNode transform, argument;
+            XmlNode argument;
+            string configFilename = builder.WorkingFolder + "sandcastle.config";
+
+            if(!File.Exists(configFilename))
+                return;
 
             builder.ReportProgress("\r\nAdding bibliography parameter to {0}...", configFilename);
             configFile = new XmlDocument();
             configFile.Load(configFilename);
 
+            // Find the XSL Transform Components in the configuration file and add a new argument to them:
+            // <argument key="bibliographyData" value="C:\Path\To\bibliography.xml" />
+            XmlNodeList components = configFile.SelectNodes("//component[@id='XSL Transform Component']/transform");
 
-            // To configure Sandcastle, find the main XSL Transform Component in the configuration file and add
-            // a new argument to it: <argument key='bibliographyData' value='../Data/bibliography.xml' />
-            // Update sandcastle.config and conceptual.config if it exists.
-            transform = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
-                "@id='XSL Transform Component']/transform");
-
-            if(transform == null)
+            if(components.Count == 0)
                 throw new BuilderException("BIP0004", "Unable to locate XSL Transform Component configuration in " +
                     configFilename);
 
-            argument = configFile.CreateElement("argument");
+            foreach(XmlNode transform in components)
+            {
+                argument = configFile.CreateElement("argument");
 
-            attr = configFile.CreateAttribute("key");
-            attr.Value = "bibliographyData";
-            argument.Attributes.Append(attr);
+                attr = configFile.CreateAttribute("key");
+                attr.Value = "bibliographyData";
+                argument.Attributes.Append(attr);
 
-            attr = configFile.CreateAttribute("value");
-            attr.Value = bibliographyFile;
-            argument.Attributes.Append(attr);
+                attr = configFile.CreateAttribute("value");
+                attr.Value = bibliographyFile;
+                argument.Attributes.Append(attr);
 
-            transform.AppendChild(argument);
+                transform.AppendChild(argument);
+            }
 
             configFile.Save(configFilename);
         }

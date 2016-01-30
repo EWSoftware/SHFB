@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeSnippetGroup.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 12/05/2015
+// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to track a group of related code snippets in the SyntaxComponent
@@ -49,6 +49,11 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// This is used to get or set whether or not the group is a single, standalone snippet
         /// </summary>
         public bool IsStandalone { get; set; }
+
+        /// <summary>
+        /// This is used to get or set whether or not the group is a syntax section
+        /// </summary>
+        public bool IsSyntaxSection { get; set; }
 
         #endregion
 

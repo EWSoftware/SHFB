@@ -144,7 +144,7 @@ namespace Microsoft.Ddue.Tools.Commands
             // Notify if no entry
             if(data == null)
             {
-                base.ParentComponent.WriteMessage(this.MissingEntry, "No index entry found for key '{0}'.",
+                this.ParentComponent.WriteMessage(this.MissingEntry, "No index entry found for key '{0}'.",
                     keyValue);
                 return;
             }
@@ -157,7 +157,7 @@ namespace Microsoft.Ddue.Tools.Commands
             // notify if no target found
             if(target == null)
             {
-                base.ParentComponent.WriteMessage(this.MissingTarget, "Target node '{0}' not found.",
+                this.ParentComponent.WriteMessage(this.MissingTarget, "Target node '{0}' not found.",
                     targetExpr.Expression);
                 return;
             }
@@ -198,7 +198,7 @@ namespace Microsoft.Ddue.Tools.Commands
 
             // Notify if no source found
             if(sources.Count == 0)
-                base.ParentComponent.WriteMessage(this.MissingSource, "Source node '{0}' not found.",
+                this.ParentComponent.WriteMessage(this.MissingSource, "Source node '{0}' not found.",
                     sourceExpr.Expression);
         }
         #endregion
