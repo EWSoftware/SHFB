@@ -976,6 +976,60 @@ namespace SandcastleBuilder.Package.Nodes
 
             return (dropDataType != DropDataType.Shell) ? VSConstants.E_FAIL : VSConstants.S_OK;
         }
+
+        /// <summary>
+        /// This is overridden to ignore subfolders beneath the help output folder and the working folder when
+        /// performing the Show All Files action.
+        /// </summary>
+        protected override IEnumerable<string> FoldersToIgnore()
+        {
+            List<string> folders = new List<string>();
+            string value;
+
+            try
+            {
+                var prop = this.ProjectMgr.BuildProject.GetProperty("WorkingFolder");
+            
+                if(prop != null)
+                {
+                    value = prop.EvaluatedValue;
+
+                    if(value.Length != 0 && value[value.Length - 1] == '\\')
+                        value = value.Substring(0, value.Length - 1);
+
+                    if(!String.IsNullOrWhiteSpace(value))
+                        if(!Path.IsPathRooted(value))
+                            folders.Add(Path.Combine(Path.GetFileName(this.ProjectMgr.BuildProject.FullPath), value));
+                        else
+                            folders.Add(value);
+                }
+
+                prop = this.ProjectMgr.BuildProject.GetProperty("OutputPath");
+
+                if(prop != null)
+                {
+                    value = prop.EvaluatedValue;
+
+                    if(!String.IsNullOrWhiteSpace(value))
+                    {
+                        if(!Path.IsPathRooted(value))
+                            value = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), value);
+
+                        // Allow for content in the output folder but ignore subfolders (i.e. from web output)
+                        if(Directory.Exists(value))
+                            foreach(string subfolder in Directory.EnumerateDirectories(value))
+                                folders.Add(subfolder);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                // Ignore errors and just return what we could get
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
+            return folders;
+        }
         #endregion
     }
 }

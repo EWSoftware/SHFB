@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 05/23/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved.
-//           Portions Copyright 2014-2015, Sam Harwell, All rights reserved.
+// Updated : 02/05/2016
+// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved.
+//           Portions Copyright 2014-2016, Sam Harwell, All rights reserved.
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add elements for the lightweight website style such as a search
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -141,9 +142,10 @@ namespace SandcastleBuilder.PlugIns
             // or they are listed after the namespaces.  In such cases, expand the root node so that all
             // namespaces are listed on the default page.  This avoids confusion caused by only seeing one
             // namespace when the root node is collapsed by default.
-            bool expandRootNode = webtoc.Root.Elements().First().HasElements;
+            var firstElement = webtoc.Root.Elements().First();
 
-            foreach(XElement element in elements)
+            Parallel.ForEach(elements,
+              new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 20 }, element =>
             {
                 XDocument pageChildren = new XDocument(new XDeclaration("1.0", "utf-8", null));
                 XElement copy = new XElement(element);
@@ -184,7 +186,7 @@ namespace SandcastleBuilder.PlugIns
                 }
 
                 if(string.IsNullOrEmpty((string)copy.Attribute("Url")))
-                    continue;
+                    return;
 
                 // Generate the lightweight TOC pane
                 XElement current = element;
@@ -239,8 +241,8 @@ namespace SandcastleBuilder.PlugIns
                     new XElement("div",
                         new XAttribute("id", "tocResizableEW"),
                         new XAttribute("onmousedown", "OnMouseDown(event);"),
-                        // Add empty text to force full start/end element.  This allows for proper display in the
-                        // browser while still allowing XHTML output that's valid for post-processing.
+                    // Add empty text to force full start/end element.  This allows for proper display in the
+                    // browser while still allowing XHTML output that's valid for post-processing.
                         new XText(String.Empty));
 
                 XElement resizeUi =
@@ -293,10 +295,8 @@ namespace SandcastleBuilder.PlugIns
                 if(pos != -1)
                     outputFile = outputFile.Insert(pos, leftNav.ToString(SaveOptions.DisableFormatting));
 
-                if(expandRootNode)
+                if(element == firstElement && firstElement.HasElements)
                 {
-                    expandRootNode = false;
-
                     outputFile = outputFile.Replace("</html>", @"<script type=""text/javascript"">
 <!--
     var tocNav = document.getElementById(""tocNav"");
@@ -309,7 +309,7 @@ namespace SandcastleBuilder.PlugIns
                 }
 
                 File.WriteAllText(path, outputFile, Encoding.UTF8);
-            }
+            });
         }
         #endregion
 

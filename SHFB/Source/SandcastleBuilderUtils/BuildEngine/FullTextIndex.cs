@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2014
-// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
+// Updated : 02/05/2016
+// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
@@ -16,21 +16,24 @@
 //    containing those types with the search pages.  Doing it this way keeps deployment as simple as possible.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.5.0.0  06/24/2007  EFW  Created the code
-// 1.9.4.0  02/17/2012  EFW  Switched to JSON serialization to support websites that use something other than
-//                           ASP.NET such as PHP.
+// 06/24/2007  EFW  Created the code
+// 02/17/2012  EFW  Switched to JSON serialization to support websites that use something other than
+//                  ASP.NET such as PHP.
 //===============================================================================================================
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -71,8 +74,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private CultureInfo lang;
 
         // Index information
-        private List<string> fileList;
-        private Dictionary<string, List<long>> wordDictionary;
+        private ConcurrentQueue<string> fileList;
+        private ConcurrentDictionary<string, ConcurrentQueue<long>> wordDictionary;
+        private int fileListCount;
+
         #endregion
 
         #region Constructor
@@ -104,8 +109,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(word.Length > 2)
                     exclusionWords.Add(word);
 
-            fileList = new List<string>();
-            wordDictionary = new Dictionary<string, List<long>>();
+            fileList = new ConcurrentQueue<string>();
+            wordDictionary = new ConcurrentDictionary<string, ConcurrentQueue<long>>();
         }
         #endregion
 
@@ -120,13 +125,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// starting with a digit will not appear in the index.</remarks>
         public void CreateFullTextIndex(string filePath)
         {
-            Dictionary<string, int> wordCounts = new Dictionary<string, int>();
-
-            Encoding enc = Encoding.Default;
-            Match m;
-
-            string content, fileInfo, title;
-            string[] words;
             int rootPathLength;
 
             if(filePath[filePath.Length - 1] == '\\')
@@ -134,12 +132,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
             else
                 rootPathLength = filePath.Length + 1;
 
-            foreach(string name in Directory.EnumerateFiles(filePath, "*.htm?", SearchOption.AllDirectories))
+            Parallel.ForEach(Directory.EnumerateFiles(filePath, "*.htm?", SearchOption.AllDirectories),
+              new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 20 }, name =>
             {
-                content = Utility.ReadWithEncoding(name, ref enc);
+                string fileInfo, title;
+                string[] words;
+
+                Encoding enc = Encoding.Default;
+                string content = Utility.ReadWithEncoding(name, ref enc);
 
                 // Extract the page title
-                m = rePageTitle.Match(content);
+                Match m = rePageTitle.Match(content);
 
                 if(!m.Success)
                     title = Path.GetFileNameWithoutExtension(name);
@@ -176,7 +179,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     name.Substring(rootPathLength).Replace('\\', '/'),
                     words.Length.ToString(CultureInfo.InvariantCulture) });
 
-                wordCounts.Clear();
+                var wordCounts = new Dictionary<string, int>();
 
                 // Get a list of all unique words and the number of time that they appear in this file.
                 // Exclude words that are less than three characters in length, start with a digit, or
@@ -196,7 +199,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Shouldn't happen but just in case, ignore files with no usable words
                 if(wordCounts.Keys.Count != 0)
                 {
-                    fileList.Add(fileInfo);
+                    fileList.Enqueue(fileInfo);
+                    int count = Interlocked.Increment(ref fileListCount);
 
                     // Add the index information to the word dictionary
                     foreach(string word in wordCounts.Keys)
@@ -204,16 +208,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // For each unique word, we'll track the files in which it occurs and the number
                         // of times it occurs in each file.
                         if(!wordDictionary.ContainsKey(word))
-                            wordDictionary.Add(word, new List<long>());
+                            wordDictionary.TryAdd(word, new ConcurrentQueue<long>());
 
                         // Store the file index in the upper part of a 64-bit integer and the word count
                         // in the lower 16-bits.  More room is given to the file count as some builds
                         // contain a large number of topics.
-                        wordDictionary[word].Add(((long)(fileList.Count - 1) << 16) +
-                            (long)(wordCounts[word] & 0xFFFF));
+                        wordDictionary[word].Enqueue(((long)(count - 1) << 16) + (long)(wordCounts[word] & 0xFFFF));
                     }
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -235,7 +238,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // First, the easy part.  Save the filename index
             using(StreamWriter sw = new StreamWriter(indexPath + "FTI_Files.json"))
             {
-                sw.Write(jss.Serialize(fileList));
+                sw.Write(jss.Serialize(new List<string>(fileList)));
             }
 
             // Now split the word dictionary up into pieces by first letter.  This will help the search
@@ -248,7 +251,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(!letters.ContainsKey(firstLetter))
                     letters.Add(firstLetter, new Dictionary<string, List<long>>());
 
-                letters[firstLetter].Add(word, wordDictionary[word]);
+                letters[firstLetter].Add(word, new List<long>(wordDictionary[word]));
             }
 
             // Save each part.  The letter is specified as an integer to allow for Unicode characters

@@ -6813,18 +6813,34 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
+        /// This is used to get an enumerable list of folders to ignore when showing all files
+        /// </summary>
+        /// <returns>An enumerable list of folders to ignore.  This can cut down on the number of files to
+        /// consider when checking the project to see if they are already in it.  By default, this returns
+        /// an empty list.  Override this in derived project types to supply a list of folders.</returns>
+        protected virtual IEnumerable<string> FoldersToIgnore()
+        {
+            return Enumerable.Empty<string>();
+        }
+
+        /// <summary>
         /// Add non-member items to the hierarchy
         /// </summary>
         private void AddNonMemberItems()
         {
             string path;
 
-            // Get a list of the folders and files in the project folder excluding those that
-            // are hidden.  Hash sets are used so that we can do case-insensitive comparisons
-            // when excluding existing project items from the lists.
+            var ignoredFolders = this.FoldersToIgnore();
+
+            // Get a list of the folders and files in the project folder excluding those that are hidden or not
+            // wanted.  Hash sets are used so that we can do case-insensitive comparisons when excluding existing
+            // project items from the lists.
             HashSet<string> folders = new HashSet<string>(Directory.EnumerateDirectories(
                 this.ProjectFolder, "*", SearchOption.AllDirectories).Where(p =>
                 {
+                    if(ignoredFolders.Any(folder => p.StartsWith(folder, StringComparison.OrdinalIgnoreCase)))
+                        return false;
+
                     DirectoryInfo di = new DirectoryInfo(p);
 
                     return !((di.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden);
@@ -6834,6 +6850,9 @@ namespace Microsoft.VisualStudio.Project
             HashSet<string> files = new HashSet<string>(Directory.EnumerateFiles(
                 this.ProjectFolder, "*", SearchOption.AllDirectories).Where(f =>
                 {
+                    if(ignoredFolders.Any(folder => f.StartsWith(folder, StringComparison.OrdinalIgnoreCase)))
+                        return false;
+
                     FileInfo fi = new FileInfo(f);
 
                     return !((fi.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden);
