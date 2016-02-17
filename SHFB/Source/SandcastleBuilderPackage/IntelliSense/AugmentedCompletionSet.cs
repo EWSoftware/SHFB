@@ -47,6 +47,9 @@ namespace SandcastleBuilder.Package.IntelliSense
         private readonly BulkObservableCollection<Completion> _completions = new BulkObservableCollection<Completion>();
         private readonly BulkObservableCollection<Completion> _completionBuilders = new BulkObservableCollection<Completion>();
 
+        // Recursion guard: this is set to true while the selection status is being updated.
+        private bool _updatingBestMatch = false;
+
         // This is set to true the first time the best match is calculated for this completion set.
         private bool _calculatedBestMatch = false;
 
@@ -76,7 +79,32 @@ namespace SandcastleBuilder.Package.IntelliSense
             _source = source;
             _secondSource = secondSource;
             UpdateCompletionLists();
+            _source.SelectionStatusChanged += HandleUnderlyingSelectionStatusChanged;
+            _secondSource.SelectionStatusChanged += HandleUnderlyingSelectionStatusChanged;
             SelectionStatusChanged += HandleSelectionStatusChanged;
+        }
+
+        /// <summary>
+        /// This makes sure the selection for the augmented completion set is correct in cases where either of the
+        /// underlying completion sets is updated outside of a call to <see cref="SelectBestMatch()"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void HandleUnderlyingSelectionStatusChanged(object sender, ValueChangedEventArgs<CompletionSelectionStatus> e)
+        {
+            // Recursion guard
+            if (_updatingBestMatch)
+                return;
+
+            try
+            {
+                _updatingBestMatch = true;
+                SelectBestMatch(false);
+            }
+            finally
+            {
+                _updatingBestMatch = false;
+            }
         }
 
         /// <summary>
@@ -164,10 +192,35 @@ namespace SandcastleBuilder.Package.IntelliSense
             UpdateCompletionLists();
         }
 
-        /// <inheritdoc />
-        /// <remarks>This method first checks the <see cref="CompletionSet.SelectionStatus"/> property to
-        /// determine if a <see cref="Completion"/> has been manually selected.  This condition is identified by
-        /// <em>all</em> of the following conditions being true.
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This method calls <see cref="SelectBestMatch(bool)"/> with <c>recalculateUnderlyingSets</c> set to
+        /// <see langword="true"/>.
+        /// </remarks>
+        public override void SelectBestMatch()
+        {
+            // Recursion guard
+            if (_updatingBestMatch)
+                return;
+
+            try
+            {
+                _updatingBestMatch = true;
+                SelectBestMatch(true);
+            }
+            finally
+            {
+                _updatingBestMatch = false;
+            }
+        }
+
+        /// <inheritdoc cref="SelectBestMatch()"/>
+        /// <remarks>This method supports updating the selected completion item for both "full recalculation"
+        /// cases requested by the editor and synchronization of the selected completion following a change in the
+        /// selection reported by one of the underlying completion sets. During a full recalculation, this method
+        /// first checks the <see cref="CompletionSet.SelectionStatus"/> property to determine if a
+        /// <see cref="Completion"/> has been manually selected.  This condition is identified by <em>all</em> of
+        /// the following conditions being true.
         ///
         /// <list type="bullet">
         ///     <item><see cref="CompletionSelectionStatus.Completion"/> is not <see langword="null"/>.</item>
@@ -179,12 +232,12 @@ namespace SandcastleBuilder.Package.IntelliSense
         /// </list>
         ///
         /// <para>Next, this method ensures that the last typed character is actually a letter.  This test
-        /// prevents <see cref="SelectBestMatch"/> from changing the current selection when the user types a
+        /// prevents <see cref="SelectBestMatch()"/> from changing the current selection when the user types a
         /// non-letter character to commit the selection, such as <c>&lt;</c>, <c>/</c>, or <c>"</c>.  When a
         /// non-letter character is typed, the augmented set assumes that the correct selection was made during
-        /// a previous call to <see cref="SelectBestMatch"/>.</para>
+        /// a previous call to <see cref="SelectBestMatch()"/>.</para>
         ///
-        /// <para>This method calls <see cref="SelectBestMatch"/> on each of the underlying completion sets.  If
+        /// <para>This method calls <see cref="SelectBestMatch()"/> on each of the underlying completion sets.  If
         /// these calls result in a <em>single</em> unique selection, that selection is assigned to the
         /// <see cref="CompletionSet.SelectionStatus"/> property.  Otherwise, the base implementation is called
         /// to determine the best selection from the augmented completion set.</para>
@@ -193,14 +246,20 @@ namespace SandcastleBuilder.Package.IntelliSense
         /// best match across multiple source <see cref="CompletionSet"/> instances, but for now we must rely on
         /// the default algorithm operating on the merged collections.</note>
         /// </remarks>
-        public override void SelectBestMatch()
+        /// <param name="recalculateUnderlyingSets"><see langword="true"/> to also calculate the best match for
+        /// the underlying completion sets by calling <see cref="SelectBestMatch()"/> on each; otherwise,
+        /// <see langword="false"/>.</param>
+        private void SelectBestMatch(bool recalculateUnderlyingSets)
         {
-            // Don't overwrite manually selected results
-            if(SelectionStatus != null && SelectionStatus.Completion != null && SelectionStatus.IsSelected &&
-              SelectionStatus.IsUnique)
+            if (recalculateUnderlyingSets)
             {
-                if(SelectionStatus != _source.SelectionStatus && SelectionStatus != _secondSource.SelectionStatus)
-                    return;
+                // Don't overwrite manually selected results
+                if (SelectionStatus != null && SelectionStatus.Completion != null && SelectionStatus.IsSelected &&
+                    SelectionStatus.IsUnique)
+                {
+                    if (SelectionStatus != _source.SelectionStatus && SelectionStatus != _secondSource.SelectionStatus)
+                        return;
+                }
             }
 
             // If the typed character wasn't a letter, ignore this request (fixes handling of /, >, and other
@@ -210,8 +269,11 @@ namespace SandcastleBuilder.Package.IntelliSense
             if(completionText.Length > 0 && !char.IsLetter(completionText[completionText.Length - 1]))
                 return;
 
-            _source.SelectBestMatch();
-            _secondSource.SelectBestMatch();
+            if (recalculateUnderlyingSets)
+            {
+                _source.SelectBestMatch();
+                _secondSource.SelectBestMatch();
+            }
 
             bool firstUnique = _source.SelectionStatus != null && _source.SelectionStatus.IsUnique &&
                 !_secondSource.SelectionStatus.IsSelected;
