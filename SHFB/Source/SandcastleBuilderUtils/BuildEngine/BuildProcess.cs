@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 02/17/2016
+// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -2080,10 +2080,16 @@ AllDone:
             XPathDocument testComments;
             XPathNavigator navComments;
             int fileCount;
-            string workingPath, lastSolution = null;
+            string workingPath, lastSolution;
 
             this.ReportProgress(BuildStep.ValidatingDocumentationSources,
                 "Validating and copying documentation source information");
+
+            // If the current project is part of a solution, use it for the solution macros
+            lastSolution = project.MSBuildProject.GetPropertyValue("SolutionPath");
+
+            if(lastSolution != null && lastSolution.Equals("*Undefined*", StringComparison.OrdinalIgnoreCase))
+                lastSolution = null;
 
             assembliesList = new Collection<string>();
             referenceDictionary = new Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>>();
@@ -2192,7 +2198,7 @@ AllDone:
                                 project.MSBuildOutDir, usesProjectSpecificOutput);
 
                             // Add Visual Studio solution macros if necessary
-                            if(lastSolution != null)
+                            if(!String.IsNullOrWhiteSpace(lastSolution))
                                 projRef.SetSolutionMacros(lastSolution);
 
                             projectDictionary.Add(sourceProject.ProjectFileName, projRef);
