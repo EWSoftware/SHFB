@@ -414,7 +414,7 @@ for assembly binding redirection.  Added example configuration info for it to <l
 		</section>
 
 		<section address="BuildAssembler">
-			<title>BuildAssember Tools</title>
+			<title>BuildAssembler Tools</title>
 			<content>
 				<list class="bullet">
 					<listItem>

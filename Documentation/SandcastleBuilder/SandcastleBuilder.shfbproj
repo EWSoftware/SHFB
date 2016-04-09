@@ -29,11 +29,11 @@
     <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2015, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2016, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2015.10.10.0</HelpFileVersion>
+    <HelpFileVersion>2016.4.9.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -358,6 +358,7 @@
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.5.2.0.aml" />
     <None Include="Content\VersionHistory\v2015.7.25.0.aml" />
     <None Include="Content\VersionHistory\v2015.10.10.0.aml" />
+    <None Include="Content\VersionHistory\v2016.4.9.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

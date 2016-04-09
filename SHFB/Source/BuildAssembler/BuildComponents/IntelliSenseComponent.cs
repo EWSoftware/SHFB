@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/22/2016
+// Updated : 04/09/2016
 // Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -63,8 +63,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
     ///          Include Namespaces (false by default)
     ///          Namespaces filename ("Namespaces" if not specified or empty)
     ///          Directory (current folder if not specified or empty) --&gt;
+    ///          Bounded cache capacity (0 if not specified --&gt;
     ///  &lt;output includeNamespaces="false" namespacesFile="Namespaces"
-    ///      folder="C:\ProjectDocs\" /&gt;
+    ///      folder="C:\ProjectDocs\" boundedCapacity="100" /&gt;
     /// &lt;/component&gt;
     /// </code>
     /// </example>

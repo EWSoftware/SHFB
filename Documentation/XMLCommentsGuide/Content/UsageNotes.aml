@@ -59,6 +59,15 @@ public class CustomList&lt;T&gt; : List&lt;T&gt;
 use an alternate means to specify namespace comments.  See the <link xlink:href="BD91FAD4-188D-4697-A654-7C07FD47EF31" />
 topic for more information.</para>
 					</listItem>
+
+					<listItem>
+						<para>XML comments for enumerations are treated differently.  The common convention in presentation
+styles is to suppress topics for the individual enumeration members.  Instead, they are listed in a table in the
+containing enumerated type's topic.  Within that table, only the summary for each member is listed as the
+description.  Any additional comments elements such as <codeInline>seealso</codeInline> or <codeInline>remarks</codeInline>
+elements will be ignored.  As such, include any additional information that must appear in the help file in the
+enumerated type's XML comments or within the member's <codeInline>summary</codeInline> element.</para>
+					</listItem>
 				</list>
 			</content>
 		</section>

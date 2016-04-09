@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/22/2016
+// Updated : 03/25/2016
 // Note    : Copyright 2015-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -569,7 +569,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The full framework version
+        /// The full framework version (Major.Minor[.Build[.Revision]]
         /// </summary>
         /// <returns>The full framework version</returns>
         [SubstitutionTag]
@@ -579,13 +579,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The short framework version (Major.Minor)
+        /// The short framework version (Major.Minor[.Build])
         /// </summary>
-        /// <returns>The short framework version</returns>
+        /// <returns>Typically returns a two digit version number.  However, if the build number is between 1 and
+        /// 10, it will be included as well (i.e. v4.5.2, v4.6.1).</returns>
         [SubstitutionTag]
         private string FrameworkVersionShort()
         {
-            return currentBuild.FrameworkReflectionData.Version.ToString(2);
+            Version v = currentBuild.FrameworkReflectionData.Version;
+
+            if(v.Build > 0 && v.Build < 10)
+                return currentBuild.FrameworkReflectionData.Version.ToString(3);
+
+            return v.ToString(2);
         }
 
         /// <summary>

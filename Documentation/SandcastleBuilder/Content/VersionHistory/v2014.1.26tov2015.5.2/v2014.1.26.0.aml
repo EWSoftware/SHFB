@@ -58,7 +58,7 @@ components, this allows for the same dynamic discoverability at runtime and proj
 					<listItem>
 						<para>Changed the syntax generator IDs to their actual language names so that they are displayed
 using the language name in the help file builder.  This should be transparent to most projects but if you have
-<application>BuildAssember</application> configuration files you will need to update the syntax generator IDs in
+<application>BuildAssembler</application> configuration files you will need to update the syntax generator IDs in
 them.</para>
 					</listItem>
 

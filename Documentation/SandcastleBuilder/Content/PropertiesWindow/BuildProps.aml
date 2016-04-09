@@ -166,6 +166,19 @@ messages before the warning or error to help in diagnosing the issue.</para>
 			</content>
 		</section>
 
+		<section address="SaveComponentCache">
+			<title>Maximum Save Component writer task cache capacity</title>
+			<content>
+				<para>The BuildAssembler Save Component uses a pipeline to generate and save topic content in parallel to
+improve performance.  This property controls how many topics can accumulate in the writer task's cache before
+blocking any further topics from being built until the cache empties out.  The default is 100 topics.  Decrease
+this value to conserve memory or increase it to improve performance.  Set it to zero for an unbounded cache size
+which gives the best performance at the expense of memory.  The number of topics remaining to be written is
+reported at the end of the build.  You can use that value to determine whether to increase or decrease this
+property value for each project.</para>
+			</content>
+		</section>
+		
 		<relatedTopics>
 			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
 		</relatedTopics>

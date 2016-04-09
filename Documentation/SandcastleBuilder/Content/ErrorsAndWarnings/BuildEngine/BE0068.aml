@@ -11,7 +11,7 @@
         <para>An attempt was made to use a Visual Studio project as a documentation source that has an
 incompatible format.  C++ projects created with Visual Studio 2008 and earlier do not use an MSBuild-based format
 and cannot be parsed.  Future versions of Visual Studio may introduce new MSBuild elements and attributes
-not recognized by the MSBuid engine used by the help file builder to load project files.  If a project is
+not recognized by the MSBuild engine used by the help file builder to load project files.  If a project is
 encountered that uses these new elements, it may not be loadable.</para>
       </content>
     </section>

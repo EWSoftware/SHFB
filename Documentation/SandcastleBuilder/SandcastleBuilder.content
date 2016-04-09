@@ -1363,19 +1363,24 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="5a0130e2-a2ab-493c-a720-be43589e8b1c" visible="True" isSelected="true" title="Version 2015.10.10.0">
+    <Topic id="21e5cfbd-c579-4ba9-9564-12b573d679d0" visible="True" title="Version 2016.4.9.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="version, 2015.10.10.0" />
+        <HelpKeyword index="K" term="versions, 2016.4.9.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5a0130e2-a2ab-493c-a720-be43589e8b1c" visible="True" title="Version 2015.10.10.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2015.10.10.0" />
       </HelpKeywords>
     </Topic>
     <Topic id="90c2bedf-fe6e-4f99-8a33-84b441701269" visible="True" title="Version 2015.7.25.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="version, 2015.7.25.0" />
+        <HelpKeyword index="K" term="versions, 2015.7.25.0" />
       </HelpKeywords>
     </Topic>
     <Topic id="006F71C5-D279-4A4C-AF34-B5CC28D560C5" visible="True" title="Versions 2014.1.26.0 Beta through 2015.5.2.0">

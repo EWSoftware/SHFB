@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/17/2016
+// Updated : 03/25/2016
 // Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -749,7 +749,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "redirected version on this system.  See error number help topic for details.",
                         project.FrameworkVersion));
 
-                this.ReportProgress("Framework reflection data location: {0}", this.FrameworkReflectionDataFolder);
+                this.ReportProgress("Using framework reflection data for '{0}' located in '{1}'",
+                    this.FrameworkReflectionData.Title, this.FrameworkReflectionDataFolder);
 
                 if(!Directory.EnumerateFiles(this.FrameworkReflectionDataFolder, "*.xml").Any())
                     throw new BuilderException("BE0032", "Reflection data files for the selected framework " +

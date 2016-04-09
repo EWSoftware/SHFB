@@ -145,14 +145,6 @@ directive necessary to place the text in the page footers.</para>
 		</entry>
   </row>
 	<row>
-		<entry>
-			<para>{@CoreFrameworkPath}</para>
-		</entry>
-		<entry>
-			<para>This expands to the core assembly path for the selected framework version.</para>
-		</entry>
-	</row>
-	<row>
     <entry>
 			<para>{@DefaultTopic} and {@WebDefaultTopic}</para>
 		</entry>

@@ -134,7 +134,9 @@
       <AssemblyDetails Filename="Windows.ApplicationModel.Activation.ContactActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.ContactActivatedEventsContract.winmd" Name="Windows.ApplicationModel.Activation.ContactActivatedEventsContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract.winmd" Name="Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract\1.0.0.0\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract.winmd" Name="Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.ApplicationModel.Calls.Background.CallsBackgroundContract\1.0.0.0\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract.winmd" Name="Windows.ApplicationModel.Calls.Background.CallsBackgroundContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.ApplicationModel.Calls.CallsPhoneContract\1.0.0.0\Windows.ApplicationModel.Calls.CallsPhoneContract.winmd" Name="Windows.ApplicationModel.Calls.CallsPhoneContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.ApplicationModel.Calls.CallsPhoneContract\2.0.0.0\Windows.ApplicationModel.Calls.CallsPhoneContract.winmd" Name="Windows.ApplicationModel.Calls.CallsPhoneContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.ApplicationModel.Calls.CallsVoipContract\1.0.0.0\Windows.ApplicationModel.Calls.CallsVoipContract.winmd" Name="Windows.ApplicationModel.Calls.CallsVoipContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.ApplicationModel.Calls.LockScreenCallContract\1.0.0.0\Windows.ApplicationModel.Calls.LockScreenCallContract.winmd" Name="Windows.ApplicationModel.Calls.LockScreenCallContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract\1.0.0.0\Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract.winmd" Name="Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract" Version="1.0.0.0" />
@@ -145,22 +147,29 @@
       <AssemblyDetails Filename="Windows.ApplicationModel.Wallet.WalletContract\1.0.0.0\Windows.ApplicationModel.Wallet.WalletContract.winmd" Name="Windows.ApplicationModel.Wallet.WalletContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.Custom.CustomDeviceContract\1.0.0.0\Windows.Devices.Custom.CustomDeviceContract.winmd" Name="Windows.Devices.Custom.CustomDeviceContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.DevicesLowLevelContract\1.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd" Name="Windows.Devices.DevicesLowLevelContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Devices.DevicesLowLevelContract\2.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd" Name="Windows.Devices.DevicesLowLevelContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.Portable.PortableDeviceContract\1.0.0.0\Windows.Devices.Portable.PortableDeviceContract.winmd" Name="Windows.Devices.Portable.PortableDeviceContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.Printers.Extensions.ExtensionsContract\1.0.0.0\Windows.Devices.Printers.Extensions.ExtensionsContract.winmd" Name="Windows.Devices.Printers.Extensions.ExtensionsContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Devices.Printers.Extensions.ExtensionsContract\2.0.0.0\Windows.Devices.Printers.Extensions.ExtensionsContract.winmd" Name="Windows.Devices.Printers.Extensions.ExtensionsContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.Printers.PrintersContract\1.0.0.0\Windows.Devices.Printers.PrintersContract.winmd" Name="Windows.Devices.Printers.PrintersContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.Scanners.ScannerDeviceContract\1.0.0.0\Windows.Devices.Scanners.ScannerDeviceContract.winmd" Name="Windows.Devices.Scanners.ScannerDeviceContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract\1.0.0.0\Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract.winmd" Name="Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.SmartCards.SmartCardEmulatorContract\1.0.0.0\Windows.Devices.SmartCards.SmartCardEmulatorContract.winmd" Name="Windows.Devices.SmartCards.SmartCardEmulatorContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Devices.SmartCards.SmartCardEmulatorContract\2.0.0.0\Windows.Devices.SmartCards.SmartCardEmulatorContract.winmd" Name="Windows.Devices.SmartCards.SmartCardEmulatorContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Devices.Sms.LegacySmsApiContract\1.0.0.0\Windows.Devices.Sms.LegacySmsApiContract.winmd" Name="Windows.Devices.Sms.LegacySmsApiContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Embedded.DeviceLockdown.DeviceLockdownContract\1.0.0.0\Windows.Embedded.DeviceLockdown.DeviceLockdownContract.winmd" Name="Windows.Embedded.DeviceLockdown.DeviceLockdownContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Foundation.FoundationContract\1.0.0.0\Windows.Foundation.FoundationContract.winmd" Name="Windows.Foundation.FoundationContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Foundation.UniversalApiContract\1.0.0.0\Windows.Foundation.UniversalApiContract.winmd" Name="Windows.Foundation.UniversalApiContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Foundation.UniversalApiContract\2.0.0.0\Windows.Foundation.UniversalApiContract.winmd" Name="Windows.Foundation.UniversalApiContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Gaming.Preview.GamesEnumerationContract\1.0.0.0\Windows.Gaming.Preview.GamesEnumerationContract.winmd" Name="Windows.Gaming.Preview.GamesEnumerationContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract\1.0.0.0\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract.winmd" Name="Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Graphics.Printing3D.Printing3DContract\1.0.0.0\Windows.Graphics.Printing3D.Printing3DContract.winmd" Name="Windows.Graphics.Printing3D.Printing3DContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Graphics.Printing3D.Printing3DContract\2.0.0.0\Windows.Graphics.Printing3D.Printing3DContract.winmd" Name="Windows.Graphics.Printing3D.Printing3DContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Management.Deployment.Preview.DeploymentPreviewContract\1.0.0.0\Windows.Management.Deployment.Preview.DeploymentPreviewContract.winmd" Name="Windows.Management.Deployment.Preview.DeploymentPreviewContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Management.Orchestration.OrchestrationContract\1.0.0.0\Windows.Management.Orchestration.OrchestrationContract.winmd" Name="Windows.Management.Orchestration.OrchestrationContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Management.Workplace.WorkplaceSettingsContract\1.0.0.0\Windows.Management.Workplace.WorkplaceSettingsContract.winmd" Name="Windows.Management.Workplace.WorkplaceSettingsContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Media.Capture.AppCaptureContract\1.0.0.0\Windows.Media.Capture.AppCaptureContract.winmd" Name="Windows.Media.Capture.AppCaptureContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Media.Capture.AppCaptureContract\2.0.0.0\Windows.Media.Capture.AppCaptureContract.winmd" Name="Windows.Media.Capture.AppCaptureContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Media.Capture.CameraCaptureUIContract\1.0.0.0\Windows.Media.Capture.CameraCaptureUIContract.winmd" Name="Windows.Media.Capture.CameraCaptureUIContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Media.Devices.CallControlContract\1.0.0.0\Windows.Media.Devices.CallControlContract.winmd" Name="Windows.Media.Devices.CallControlContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Media.MediaControlContract\1.0.0.0\Windows.Media.MediaControlContract.winmd" Name="Windows.Media.MediaControlContract" Version="1.0.0.0" />
@@ -173,14 +182,18 @@
       <AssemblyDetails Filename="Windows.Phone.PhoneContract\1.0.0.0\Windows.Phone.PhoneContract.winmd" Name="Windows.Phone.PhoneContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Phone.StartScreen.DualSimTileContract\1.0.0.0\Windows.Phone.StartScreen.DualSimTileContract.winmd" Name="Windows.Phone.StartScreen.DualSimTileContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Security.EnterpriseData.EnterpriseDataContract\1.0.0.0\Windows.Security.EnterpriseData.EnterpriseDataContract.winmd" Name="Windows.Security.EnterpriseData.EnterpriseDataContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Security.EnterpriseData.EnterpriseDataContract\2.0.0.0\Windows.Security.EnterpriseData.EnterpriseDataContract.winmd" Name="Windows.Security.EnterpriseData.EnterpriseDataContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Security.ExchangeActiveSyncProvisioning.EasContract\1.0.0.0\Windows.Security.ExchangeActiveSyncProvisioning.EasContract.winmd" Name="Windows.Security.ExchangeActiveSyncProvisioning.EasContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.Services.Maps.GuidanceContract\1.0.0.0\Windows.Services.Maps.GuidanceContract.winmd" Name="Windows.Services.Maps.GuidanceContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Services.Maps.GuidanceContract\2.0.0.0\Windows.Services.Maps.GuidanceContract.winmd" Name="Windows.Services.Maps.GuidanceContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.Services.Maps.LocalSearchContract\1.0.0.0\Windows.Services.Maps.LocalSearchContract.winmd" Name="Windows.Services.Maps.LocalSearchContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.Services.Maps.LocalSearchContract\2.0.0.0\Windows.Services.Maps.LocalSearchContract.winmd" Name="Windows.Services.Maps.LocalSearchContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.System.Profile.ProfileHardwareTokenContract\1.0.0.0\Windows.System.Profile.ProfileHardwareTokenContract.winmd" Name="Windows.System.Profile.ProfileHardwareTokenContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.System.Profile.ProfileRetailInfoContract\1.0.0.0\Windows.System.Profile.ProfileRetailInfoContract.winmd" Name="Windows.System.Profile.ProfileRetailInfoContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.System.Profile.ProfileSharedModeContract\1.0.0.0\Windows.System.Profile.ProfileSharedModeContract.winmd" Name="Windows.System.Profile.ProfileSharedModeContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.System.Profile.SystemManufacturers.SystemManufacturersContract\1.0.0.0\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract.winmd" Name="Windows.System.Profile.SystemManufacturers.SystemManufacturersContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.System.SystemManagementContract\1.0.0.0\Windows.System.SystemManagementContract.winmd" Name="Windows.System.SystemManagementContract" Version="1.0.0.0" />
+      <AssemblyDetails Filename="Windows.System.SystemManagementContract\2.0.0.0\Windows.System.SystemManagementContract.winmd" Name="Windows.System.SystemManagementContract" Version="2.0.0.0" />
       <AssemblyDetails Filename="Windows.System.UserProfile.UserProfileContract\1.0.0.0\Windows.System.UserProfile.UserProfileContract.winmd" Name="Windows.System.UserProfile.UserProfileContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.System.UserProfile.UserProfileLockScreenContract\1.0.0.0\Windows.System.UserProfile.UserProfileLockScreenContract.winmd" Name="Windows.System.UserProfile.UserProfileLockScreenContract" Version="1.0.0.0" />
       <AssemblyDetails Filename="Windows.UI.ApplicationSettings.ApplicationsSettingsContract\1.0.0.0\Windows.UI.ApplicationSettings.ApplicationsSettingsContract.winmd" Name="Windows.UI.ApplicationSettings.ApplicationsSettingsContract" Version="1.0.0.0" />
@@ -199,5 +212,7 @@
     <Unresolved>windows.foundation</Unresolved>
     <Unresolved>Windows.Foundation</Unresolved>
   </IgnoredUnresolved>
-  <BindingRedirections />
+  <BindingRedirections>
+    <BindingRedirection Name="Windows.ApplicationModel.Calls.Background.CallsBackgroundContract" OldVersion="255.255.255.255" NewVersion="1.0.0.0" />
+  </BindingRedirections>
 </ReflectionDataSet>

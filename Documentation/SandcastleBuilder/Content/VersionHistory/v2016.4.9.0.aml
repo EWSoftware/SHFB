@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="21e5cfbd-c579-4ba9-9564-12b573d679d0" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2016.4.9.0." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<para>If you have created custom build components, syntax generators, plug-ins, or presentation styles,
+carefully read the following items as you may need to update your components based on these changes.  Most of
+these changes were made to facilitate a single BuildAssembler step that generates all conceptual and API topics
+rather than as two separate steps.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed <codeInline>BuildStep.BuildConceptualTopics</codeInline> and
+<codeInline>BuildStep.BuildReferenceTopics</codeInline> and replaced them with a common
+<codeInline>BuildStep.BuildTopics</codeInline> step that generates both the conceptual and API topics.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed all separate conceptual and API BuildAssembler configuration files and merged the
+settings into a common <localUri>BuildAssembler.config</localUri> configuration file in all presentation styles.
+The <codeInline>Switch Component</codeInline> is used to identify the MAML and API component groups.</para>
+					</listItem>
+
+					<listItem>
+						<para>Any components that modify the BuildAssembler manifest files need to be aware of the new
+<codeInline>type</codeInline> attribute that must appear on each <codeInline>topic</codeInline> element.  It
+defines whether the topic is a MAML topic or an API topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>BuildAssembler now creates the root <codeInline>document</codeInline> element of the skeleton
+document and adds a <codeInline>type</codeInline> attribute indicating the topic type as defined in the manifest
+(MAML or API).</para>
+					</listItem>
+					
+					<listItem>
+						<para>Updated the <codeInline>Clone Component</codeInline>, <codeInline>For Each Component</codeInline>,
+<codeInline>If-Then Component</codeInline>, <codeInline>Multi-Format Output Component</codeInline>,
+<codeInline>Switch Component</codeInline>, and <codeInline>Syntax Component</codeInline> so that they can
+differentiate between topics using a group ID.  This is necessary in the combined conceptual/reference topic
+builds since each group of components uses the common component event to handle pre-transform and post-transform
+tasks.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the presentation style component and all presentation styles by replacing the
+<codeInline>ConceptualBuildConfiguration</codeInline> and <codeInline>ReferenceBuildConfiguration</codeInline>
+properties with a single <codeInline>BuildAssemblerConfiguration</codeInline> property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all BuildAssembler configuration files to copy the content of the skeleton document's
+root element to the root element of the given topic rather than replacing it entirely.  This is necessary to
+preserve the topic type attribute added by BuildAssembler.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the VB syntax generator so that it correctly handles C++ assignment operators.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from tlgkccampbell into MRefBuilder to allow customization of dependency
+property and routed event type names.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made various changes to BuildAssembler and some of the build components to improve their
+performance and to support the combined API/MAML topic build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the .NET Framework 4.6.1, .NET Micro Framework 4.4, and .NET Portable 5.0
+frameworks.  Regenerated the affected reflection data and NuGet packages to include these updates.</para>
+					</listItem>
+
+					<listItem>
+						<para>Regenerated the Universal Windows (.NETCore 5.0/.NETPortable 5.0) reflection data to include
+updated assembly information.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Regenerated all other framework reflection data to remove the unnecessary
+<codeInline>AllMembersTopic</codeInline> entries.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the build task so that it works correctly with MSBuild 14.0.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug/incompatibility between Visual Studio 2015 and the MPF project system that only
+occurs when opening the project properties via the context menu.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the <codeInline>FrameworkVersionShort</codeInline> substitution tag so that it includes
+the build number when appropriate.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the build engine so that the help project being built attempts to retrieve the
+<codeInline>SolutionPath</codeInline> macro from the help project in order to use it as the default for the
+solution macros when extracting the targets from project documentation sources.  This allows documentation
+source projects that use solution macros in their output path to resolve properly as long as the help project is
+built as part of the containing solution.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged a fix from qmfrederik to fix the Lightweight Website Style Plug-in problem caused by
+empty URL values.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <ui>Entity References</ui> tool window so that the root namespace container topic
+ID is returned if you search for "R:".</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a component cache that loads the component information asynchronously and is shared
+amongst the property pages that need it to improve UI responsiveness in both Visual Studio and the standalone
+GUI.  Changing the component path property also triggers a refresh which should remove the need to unload and
+reload a project after changing it to see the components in the new location.</para>
+					</listItem>
+
+					<listItem>
+						<para>The Save Component now uses a pipeline to generate and write the topics in parallel.  A Save
+Component cache capacity project option was added to allow limiting the number of topics the Save Component will
+accumulate while waiting to write them out.</para>
+					</listItem>
+
+					<listItem>
+						<para>The IntelliSense Component also uses a pipeline to generate and save the XML comments elements
+to the various IntelliSense files.  A similar cache capacity option was added to the IntelliSense component to
+limit the number of members it accumulates while waiting to write them out.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the Lightweight website style plug-in to generate the TOC info files in parallel to
+improve performance.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the website full text index generation so that it processes the files in parallel to
+improve performance.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the MPF and SHFB project system to allow for excluding the content of the output path
+and working folders when doing <ui>Show All Files</ui>.  This is a quick hack to work around the very slow
+performance when using <ui>Show All Files</ui> due to the large number of files in the output and working folders
+when website output is produced.  The output folder itself is still included but subfolders are not.  This would
+prevent the inclusion of those subfolders in the project in cases where the project does not produce website
+output but chances are most people won't want to include these folders in the project anyway.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from Sam Harwell to fix issues in Visual Studio 2015 XML comments completion
+with certain elements.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the encoding on the German language content files in all presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged a fix from tylerohlsen into the legacy <localUri>TOC.js</localUri> file that added a
+dash (-) to the allowed set of characters on the query string to fix direct links with GUIDs.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the presentation styles to correctly show the proper title for the root namespace
+container link in <codeInline>see</codeInline>, <codeInline>seealso</codeInline>, and
+<codeInline>codeEntityReference</codeInline> link elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>IncludeInheritedOverloadTopics</codeInline> parameter from the
+<localUri>ApplyVSDocModel.xsl</localUri> transformation as it served no useful purpose.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added Japanese content file translations from bleis-tift to all presentation styles.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
