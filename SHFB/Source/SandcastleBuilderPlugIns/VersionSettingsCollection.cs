@@ -107,8 +107,15 @@ namespace SandcastleBuilder.PlugIns
                     false, CultureInfo.CurrentCulture);
 
                 if(result == 0)
-                    result = String.Compare(x.Version, y.Version,
-                        false, CultureInfo.CurrentCulture) * -1;
+                {
+                    Version versionX, versionY;
+
+                    if(Version.TryParse(x.Version, out versionX) && Version.TryParse(y.Version, out versionY))
+                        result = versionY.CompareTo(versionX);
+                    else
+                        result = String.Compare(x.Version, y.Version,
+                            false, CultureInfo.CurrentCulture)*-1;
+                }
 
                 return result;
             });
