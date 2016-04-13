@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 10/08/2015
+// Updated : 04/11/2016
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
@@ -305,8 +305,8 @@ namespace Sandcastle.Installer.InstallerPages
             bool launched = Utility.RunInstaller(vsixInstallerPath, "/q /u:" + packageGuid,
                 (uninstallExitCode) =>
                 {
-                    // An exit code of 0 (success) or 2003 (not found) is okay
-                    if(uninstallExitCode != 0 && uninstallExitCode != 2003)
+                    // An exit code of 0 (success), 1002 (not installed), or 2003 (not found) is okay
+                    if(uninstallExitCode != 0 && uninstallExitCode != 1002 && uninstallExitCode != 2003)
                     {
                         imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
                         MessageBox.Show("Unexpected exit code returned from VSIX installer trying to " +
