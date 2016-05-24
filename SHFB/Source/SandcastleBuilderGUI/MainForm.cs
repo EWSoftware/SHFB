@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 05/19/2016
+// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main form for the application.
@@ -617,7 +617,7 @@ namespace SandcastleBuilder.Gui
             catch(Exception ex)
             {
                 // Ignore errors trying to kill the web server
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
             }
             finally
             {
@@ -744,14 +744,14 @@ namespace SandcastleBuilder.Gui
                     }
                     catch(InvalidProjectFileException pex)
                     {
-                        System.Diagnostics.Debug.Write(pex);
+                        Debug.Write(pex);
 
                         MessageBox.Show("The project file format is invalid: " + pex.Message, Constants.AppName,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch(Exception ex)
                     {
-                        System.Diagnostics.Debug.Write(ex);
+                        Debug.Write(ex);
                         MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
             }
@@ -964,7 +964,7 @@ namespace SandcastleBuilder.Gui
                     }
                     catch(Exception ex)
                     {
-                        System.Diagnostics.Debug.Write(ex);
+                        Debug.Write(ex);
                         MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     finally
@@ -1000,14 +1000,14 @@ namespace SandcastleBuilder.Gui
                         }
                         catch(InvalidProjectFileException pex)
                         {
-                            System.Diagnostics.Debug.Write(pex);
+                            Debug.Write(pex);
 
                             MessageBox.Show("The project file format is invalid: " + pex.Message,
                                 Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         catch(Exception ex)
                         {
-                            System.Diagnostics.Debug.Write(ex);
+                            Debug.Write(ex);
                             MessageBox.Show(ex.Message, Constants.AppName,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
@@ -1080,14 +1080,14 @@ namespace SandcastleBuilder.Gui
                 }
                 catch(InvalidProjectFileException pex)
                 {
-                    System.Diagnostics.Debug.Write(pex);
+                    Debug.Write(pex);
 
                     MessageBox.Show("The project file format is invalid: " + pex.Message, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.Write(ex);
+                    Debug.Write(ex);
                     MessageBox.Show(ex.Message, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -1297,7 +1297,7 @@ namespace SandcastleBuilder.Gui
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine(ex.ToString());
+                    Debug.WriteLine(ex.ToString());
                     MessageBox.Show("Unable to clean output folder.  Reason: " + ex.Message, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -1426,11 +1426,11 @@ namespace SandcastleBuilder.Gui
 
             try
             {
-                System.Diagnostics.Process.Start(outputPath);
+                Process.Start(outputPath);
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Unable to open help file '{0}'\r\nReason: {1}",
                     outputPath, ex.Message), Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -1459,12 +1459,13 @@ namespace SandcastleBuilder.Gui
         {
             ProcessStartInfo psi;
             FilePath webServerPath = new FilePath(null);
-            string path, defaultPage = "Index.aspx";
+            string outputPath, path, vPath = null, defaultPage = "Index.aspx";
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
-            string outputPath = project.OutputPath;
+            outputPath = project.OutputPath;
+            vPath = String.Format(" /vpath:\"/SHFBOutput_{0}\"", this.Handle);
 
             if(String.IsNullOrEmpty(outputPath))
                 outputPath = Directory.GetCurrentDirectory();
@@ -1508,14 +1509,25 @@ namespace SandcastleBuilder.Gui
 
                         // Fall back to the .NET 2.0/3.5 version?
                         if(!File.Exists(webServerPath))
+                        {
                             webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
+
+                            if(!File.Exists(webServerPath))
+                            {
+                                // Try for IIS Express
+                                webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                                    @"IIS Express\IISExpress.exe");
+                                vPath = String.Empty;
+                            }
+                        }
                     }
 
                     if(!File.Exists(webServerPath))
                     {
-                        MessageBox.Show("Unable to locate ASP.NET Development Web Server.  View the HTML " +
-                            "website instead.", Constants.AppName, MessageBoxButtons.OK,
+                        MessageBox.Show("Unable to locate ASP.NET Development Web Server or IIS Express.  " +
+                            "View the HTML website instead.", Constants.AppName, MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
                         return;
                     }
@@ -1524,27 +1536,39 @@ namespace SandcastleBuilder.Gui
                     psi = webServer.StartInfo;
 
                     psi.FileName = webServerPath;
-                    psi.Arguments = String.Format(CultureInfo.InvariantCulture,
-                        "/port:{0} /path:\"{1}\" /vpath:\"/SHFBOutput_{2}\"",
-                        Settings.Default.ASPNETDevServerPort, outputPath, this.Handle);
+                    psi.Arguments = String.Format(CultureInfo.InvariantCulture, "/port:{0} /path:\"{1}\"{2}",
+                        Settings.Default.ASPNETDevServerPort, outputPath, vPath);
                     psi.WorkingDirectory = outputPath;
                     psi.UseShellExecute = false;
 
                     webServer.Start();
-                    webServer.WaitForInputIdle(30000);
+
+                    if(!String.IsNullOrWhiteSpace(vPath))
+                        webServer.WaitForInputIdle(30000);
+                    else
+                        Thread.Sleep(500);
                 }
+                else
+                    if(webServer.ProcessName.StartsWith("IISExpress", StringComparison.OrdinalIgnoreCase))
+                        vPath = String.Empty;
 
                 // This form's handle is used to keep the URL unique in case multiple copies of SHFB are running
-                // so that each can view website output.
-                outputPath = String.Format(CultureInfo.InvariantCulture,
-                    "http://localhost:{0}/SHFBOutput_{1}/{2}", Settings.Default.ASPNETDevServerPort,
-                    this.Handle, defaultPage);
+                // so that each can view website output (WebDevServer only).
+                if(!String.IsNullOrWhiteSpace(vPath))
+                {
+                    outputPath = String.Format(CultureInfo.InvariantCulture,
+                        "http://localhost:{0}/SHFBOutput_{1}/{2}", Settings.Default.ASPNETDevServerPort,
+                        this.Handle, defaultPage);
+                }
+                else
+                    outputPath = String.Format(CultureInfo.InvariantCulture, "http://localhost:{0}/{1}",
+                        Settings.Default.ASPNETDevServerPort, defaultPage);
 
-                System.Diagnostics.Process.Start(outputPath);
+                Process.Start(outputPath);
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
                     "Unable to open ASP.NET website '{0}'\r\nReason: {1}", outputPath, ex.Message),
                     Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -1946,7 +1970,7 @@ namespace SandcastleBuilder.Gui
                 }
                 catch(Exception ex)
                 {
-                    System.Diagnostics.Debug.Write(ex);
+                    Debug.Write(ex);
                     MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }

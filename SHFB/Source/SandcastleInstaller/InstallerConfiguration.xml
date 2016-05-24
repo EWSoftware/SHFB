@@ -4,7 +4,7 @@
 	<pathOffset location="..\..\..\..\Deployment" />
 
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2015.10.10.0" />
+	<sandcastle version="v2016.4.9.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -15,8 +15,8 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://EWSoftware.github.io/SHFB/html/5a0130e2-a2ab-493c-a720-be43589e8b1c.htm"
-				description="Sandcastle Help File Builder and Tools v2015.10.10.0 Release Notes" />
+			<whatsNew url="http://EWSoftware.github.io/SHFB/html/21e5cfbd-c579-4ba9-9564-12b573d679d0.htm"
+				description="Sandcastle Help File Builder and Tools v2016.4.9.0 Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -25,7 +25,7 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.5" shfbVersion="2015.10.10.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.5" shfbVersion="2016.4.9.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
 			installerName="SHFBVisualStudioPackage.vsix">
@@ -33,18 +33,21 @@
 					 be in version order from earliest to most recent. -->
 			<visualStudio version="12.0" name="Visual Studio 2013" location="%VS120COMNTOOLS%\..\IDE" />
 			<visualStudio version="14.0" name="Visual Studio 2015" location="%VS140COMNTOOLS%\..\IDE" />
+			<visualStudio version="15.0" name="Visual Studio 15 Preview" location="%VS150COMNTOOLS%\..\IDE" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
 			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 15 Preview" location="%VS150COMNTOOLS%\..\..\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are
 					 in the My Documents folder. -->
 			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2015" location="Visual Studio 2015\Code Snippets\Xml\My Xml Snippets" />
+			<visualStudio version="Visual Studio 15 Preview" location="Visual Studio 15\Code Snippets\Xml\My Xml Snippets" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />

@@ -941,18 +941,19 @@ nextModRef:     ;
         }
         internal AssemblyNode/*!*/ GetAssemblyFromReference(AssemblyReference/*!*/ assemblyReference)
         {
-            lock (this)
+            lock(this)
             {
-                if (SystemAssemblyLocation.ParsedAssembly != null && (assemblyReference.Name == "mscorlib" || assemblyReference.Name == "basetypes" || assemblyReference.Name == "ioconfig"
-                  || assemblyReference.Name == "singularity.v1"))
-                    return SystemAssemblyLocation.ParsedAssembly;
-                if (CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assemblyReference.Name) return CoreSystemTypes.SystemAssembly;
+                if(CoreSystemTypes.SystemAssembly != null && CoreSystemTypes.SystemAssembly.Name == assemblyReference.Name)
+                    return CoreSystemTypes.SystemAssembly;
+
                 string strongName = null;
                 object cachedValue = null;
+
                 if (assemblyReference.PublicKeyOrToken == null || assemblyReference.PublicKeyOrToken.Length == 0)
                 {
                     if (assemblyReference.Location != null)
                         cachedValue = this.localAssemblyCache[assemblyReference.Location];
+
                     if (cachedValue == null)
                     {
                         cachedValue = this.localAssemblyCache[assemblyReference.Name];

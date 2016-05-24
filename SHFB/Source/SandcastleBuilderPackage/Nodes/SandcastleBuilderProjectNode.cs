@@ -2,25 +2,25 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 05/19/2016
+// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
 // project.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/22/2011  EFW  Created the code
-// 1.9.3.3  11/19/2011  EFW  Added support for drag and drop from Explorer
-// 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
-// -------  01/10/2014  EFW  Added code to set SHFBROOT if defined locally in the project which allows it to
-//                           override the environment variable setting.
+// 03/22/2011  EFW  Created the code
+// 11/19/2011  EFW  Added support for drag and drop from Explorer
+// 10/22/2012  EFW  Updated to support .winmd documentation sources
+// 01/10/2014  EFW  Added code to set SHFBROOT if defined locally in the project which allows it to override the
+//                  environment variable setting.
 //===============================================================================================================
 
 using System;
@@ -249,7 +249,7 @@ namespace SandcastleBuilder.Package.Nodes
                     if(base.IsProjectFileDirty)
                         ErrorHandler.ThrowOnFailure(base.Save(base.FileName, 1, 0));
 
-                    System.Diagnostics.Process.Start(gui, "\"" + this.BuildProject.FullPath + "\"");
+                    Process.Start(gui, "\"" + this.BuildProject.FullPath + "\"");
                 }
                 else
                     Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO,
@@ -257,7 +257,7 @@ namespace SandcastleBuilder.Package.Nodes
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL,
                     "Unable to open project in standalone GUI.  Reason: {0}", ex.Message);
             }
@@ -271,7 +271,7 @@ namespace SandcastleBuilder.Package.Nodes
         {
             ProcessStartInfo psi;
             SandcastleBuilder.Utils.FilePath webServerPath = new SandcastleBuilder.Utils.FilePath(null);
-            string path, outputPath, defaultPage = "Index.aspx";
+            string path, vPath = null, outputPath, defaultPage = "Index.aspx";
             int serverPort = 12345, uniqueId;
 
             if(this.SandcastleProject == null)
@@ -284,6 +284,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             // Use the project filename's hash code as a unique ID for the website
             uniqueId = this.SandcastleProject.Filename.GetHashCode();
+            vPath = String.Format(" /vpath:\"/SHFBOutput_{0}\"", uniqueId);
 
             // Make sure we start out in the project's output folder
             // in case the output folder is relative to it.
@@ -335,14 +336,25 @@ namespace SandcastleBuilder.Package.Nodes
 
                         // Fall back to the .NET 2.0/3.5 version?
                         if(!File.Exists(webServerPath))
+                        {
                             webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
+
+                            if(!File.Exists(webServerPath))
+                            {
+                                // Try for IIS Express
+                                webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                                    @"IIS Express\IISExpress.exe");
+                                vPath = String.Empty;
+                            }
+                        }
                     }
 
                     if(!File.Exists(webServerPath))
                     {
                         Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "Unable to locate ASP.NET " +
-                            "Development Web Server.  View the HTML website instead.");
+                            "Development Web Server or IIS Express.  View the HTML website instead.");
                         return null;
                     }
 
@@ -350,25 +362,38 @@ namespace SandcastleBuilder.Package.Nodes
                     psi = webServerInstance.StartInfo;
 
                     psi.FileName = webServerPath;
-                    psi.Arguments = String.Format(CultureInfo.InvariantCulture,
-                        "/port:{0} /path:\"{1}\" /vpath:\"/SHFBOutput_{2}\"", serverPort, outputPath, uniqueId);
+                    psi.Arguments = String.Format(CultureInfo.InvariantCulture, "/port:{0} /path:\"{1}\"{2}",
+                        serverPort, outputPath, vPath);
                     psi.WorkingDirectory = outputPath;
                     psi.UseShellExecute = false;
 
                     webServerInstance.Start();
-                    webServerInstance.WaitForInputIdle(30000);
+
+                    if(!String.IsNullOrWhiteSpace(vPath))
+                        webServerInstance.WaitForInputIdle(30000);
+                    else
+                        System.Threading.Thread.Sleep(500);
                 }
+                else
+                    if(webServerInstance.ProcessName.StartsWith("IISExpress", StringComparison.OrdinalIgnoreCase))
+                        vPath = String.Empty;
 
                 // The project filename hash code is used to keep the URL unique in case multiple copies of SHFB
-                // are running so that each can view website output.
-                outputPath = String.Format(CultureInfo.InvariantCulture,
-                    "http://localhost:{0}/SHFBOutput_{1}/{2}", serverPort, uniqueId, defaultPage);
+                // are running so that each can view website output (WebDevServer only).
+                if(!String.IsNullOrWhiteSpace(vPath))
+                {
+                    outputPath = String.Format(CultureInfo.InvariantCulture,
+                        "http://localhost:{0}/SHFBOutput_{1}/{2}", serverPort, uniqueId, defaultPage);
+                }
+                else
+                    outputPath = String.Format(CultureInfo.InvariantCulture, "http://localhost:{0}/{1}",
+                        serverPort, defaultPage);
 
                 return outputPath;
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL,
                     "Unable to open ASP.NET website '{0}'\r\nReason: {1}", outputPath, ex.Message);
             }
@@ -562,7 +587,7 @@ namespace SandcastleBuilder.Package.Nodes
             catch(Exception ex)
             {
                 // Ignore errors trying to kill the web server
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
             }
             finally
             {
@@ -1025,7 +1050,7 @@ namespace SandcastleBuilder.Package.Nodes
             catch(Exception ex)
             {
                 // Ignore errors and just return what we could get
-                System.Diagnostics.Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
 
             return folders;

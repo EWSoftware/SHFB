@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/26/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 05/19/2016
+// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help File category properties.
@@ -559,10 +559,11 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
                 if(presentationStyleProp != null)
                 {
-                    idx = cboPresentationStyle.FindString(presentationStyleProp.UnevaluatedValue);
+                    var match = cboPresentationStyle.Items.Cast<IPresentationStyleMetadata>().FirstOrDefault(p =>
+                        p.Id == presentationStyleProp.UnevaluatedValue);
 
-                    if(idx != -1)
-                        cboPresentationStyle.SelectedIndex = idx;
+                    if(match != null)
+                        cboPresentationStyle.SelectedValue = presentationStyleProp.UnevaluatedValue;
                 }
 
                 if(syntaxFilterProp != null)

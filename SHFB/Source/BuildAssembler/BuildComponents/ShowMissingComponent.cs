@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
+// Updated : 05/19/2016
+// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
@@ -287,7 +287,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         {
             XmlNodeList items;
             XmlNode comments, returnsNode;
-            string apiKey;
+            string apiKey, paramValue;
 
             // Auto-document the constructor(s) on the type's list pages if necessary
             if(isEnabled && autoDocConstructors && (key[0] == 'T' ||
@@ -304,8 +304,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 else
                     apiKey = apiKey.Replace("..ctor", ".#ctor");
 
+                // On very rare occasions, there can be an apostrophe in a type ID.  If so, use double quotes
+                // around the expression's parameter value.  It could just hard code them below but I can't say
+                // for sure we'd never see a double quote in an ID either.  This plays it safe.
+                if(apiKey.IndexOf('\'') != -1)
+                    paramValue = "\"" + apiKey + "\"";
+                else
+                    paramValue = "\'" + apiKey + "\'";
+
                 foreach(XmlNode element in document.SelectNodes(
-                  "document/reference/elements//element[starts-with(@api, '" + apiKey + "')]"))
+                  "document/reference/elements//element[starts-with(@api, " + paramValue + ")]"))
                     this.CheckForMissingText(element, apiKey, "summary");
             }
 
@@ -320,16 +328,27 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 if(!key.EndsWith(".Dispose", StringComparison.Ordinal))
                     apiKey += ".Dispose";
 
+                // As above
+                if(apiKey.IndexOf('\'') != -1)
+                    paramValue = "\"" + apiKey + "\"";
+                else
+                    paramValue = "\'" + apiKey + "\'";
+
                 // Handle IDisposable.Dispose()
                 foreach(XmlNode element in document.SelectNodes(
-                  "document/reference/elements//element[@api = '" + apiKey + "']"))
+                  "document/reference/elements//element[@api = " + paramValue + "]"))
                     this.CheckForMissingText(element, apiKey, "summary");
 
                 // Handle the Boolean overload if present
                 apiKey += "(System.Boolean)";
 
+                if(apiKey.IndexOf('\'') != -1)
+                    paramValue = "\"" + apiKey + "\"";
+                else
+                    paramValue = "\'" + apiKey + "\'";
+
                 foreach(XmlNode element in document.SelectNodes(
-                  "document/reference/elements//element[@api = '" + apiKey + "']"))
+                  "document/reference/elements//element[@api = " + paramValue + "]"))
                     this.CheckForMissingText(element, apiKey, "summary");
             }
 

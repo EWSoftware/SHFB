@@ -11,6 +11,7 @@
 // 01/06/2014 - EFW - Added a TargetPlatform.Platform member to allow other classes to find out what platform
 // is being used for the core framework types.
 // 05/09/2015 - EFW - Removed obsolete core framework assembly definitions and related methods.
+// 05/09/2016 - EFW - Fixed SystemAssemblyLocation so that it is set when all system types are redirected.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,39 +22,16 @@ using System.Compiler.Metadata;
 
 namespace System.Compiler
 {
-    public static class SystemAssemblyLocation
-    {
-        static string location;
-
-        public static string Location
-        {
-            get
-            {
-                return location;
-            }
-            set
-            {
-                location = value;
-            }
-        }
-        public static AssemblyNode ParsedAssembly;
-    }
-
-    public static class SystemDataAssemblyLocation
-    {
-        public static string Location = null;
-    }
-
-    public static class SystemXmlAssemblyLocation
-    {
-        public static string Location = null;
-    }
-
     public static class TargetPlatform
     {
         public static bool DoNotLockFiles;
         public static bool GetDebugInfo;
         public static char GenericTypeNamesMangleChar = '_';
+
+        /// <summary>
+        /// This is used to get or set the system assembly location (mscorlib.dll or System.Runtime.dll)
+        /// </summary>
+        public static string SystemAssemblyLocation { get; set; }
 
         public static bool UseGenerics
         {
@@ -75,12 +53,11 @@ namespace System.Compiler
 
         public static void Clear()
         {
-            SystemAssemblyLocation.Location = null;
-            SystemDataAssemblyLocation.Location = null;
-            SystemXmlAssemblyLocation.Location = null;
-            TargetPlatform.DoNotLockFiles = false;
-            TargetPlatform.GetDebugInfo = false;
-            TargetPlatform.PlatformAssembliesLocation = "";
+            SystemAssemblyLocation = null;
+            DoNotLockFiles = false;
+            GetDebugInfo = false;
+            PlatformAssembliesLocation = String.Empty;
+
             SystemTypes.Clear();
         }
 
@@ -132,35 +109,35 @@ namespace System.Compiler
                 throw new InvalidOperationException(String.Format("A core framework location has not been " +
                     "defined for the framework '{0} {1}'", platformType, version));
 
-            TargetPlatform.Platform = dataSet.Platform;
-            TargetPlatform.TargetVersion = dataSet.Version;
-            TargetPlatform.TargetRuntimeVersion = "v" + dataSet.Version.ToString();
-            TargetPlatform.AllSystemTypesRedirected = dataSet.AllSystemTypesRedirected;
-            TargetPlatform.GenericTypeNamesMangleChar = '`';
-            TargetPlatform.PlatformAssembliesLocation = coreLocation.Path;
+            Platform = dataSet.Platform;
+            TargetVersion = dataSet.Version;
+            TargetRuntimeVersion = "v" + dataSet.Version.ToString();
+            AllSystemTypesRedirected = dataSet.AllSystemTypesRedirected;
+            GenericTypeNamesMangleChar = '`';
+            PlatformAssembliesLocation = coreLocation.Path;
 
-            // Set references to the common core framework assemblies
             var ad = dataSet.FindAssembly("mscorlib");
 
             if(ad != null)
-                SystemAssemblyLocation.Location = ad.Filename;
+                SystemAssemblyLocation = ad.Filename;
+            else
+            {
+                // Frameworks that redirect all system types typically redirect them to System.Runtime
+                ad = dataSet.FindAssembly("System.Runtime");
 
-            ad = dataSet.FindAssembly("System.Data");
+                if(ad == null)
+                    throw new InvalidOperationException(String.Format("The system types assembly could not be " +
+                        "found for the framework '{0} {1}'", platformType, version));
 
-            if(ad != null)
-                SystemDataAssemblyLocation.Location = ad.Filename;
-
-            ad = dataSet.FindAssembly("System.Xml");
-
-            if(ad != null)
-                SystemXmlAssemblyLocation.Location = ad.Filename;
+                SystemAssemblyLocation = ad.Filename;
+            }
 
             // Load references to all the other framework assemblies
             var allAssemblies = dataSet.IncludedAssemblies.ToList();
 
             TrivialHashtable assemblyReferenceFor = new TrivialHashtable(allAssemblies.Count);
 
-            // Loading mscorlib causes a reset of the reference cache and other info so we must ignore it.
+            // Loading mscorlib causes a reset of the reference cache and other info so we must ignore it
             foreach(var asm in allAssemblies)
                 if(!asm.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) && File.Exists(asm.Filename))
                 {
@@ -415,25 +392,20 @@ namespace System.Compiler
 
         private static AssemblyNode/*!*/ GetSystemAssembly(bool doNotLockFile, bool getDebugInfo)
         {
-            AssemblyNode result = SystemAssemblyLocation.ParsedAssembly;
-            if (result != null)
+            AssemblyNode result;
+
+            if(TargetPlatform.SystemAssemblyLocation == null || TargetPlatform.SystemAssemblyLocation.Length == 0)
+                TargetPlatform.SystemAssemblyLocation = typeof(object).Module.Assembly.Location;
+
+            result = (AssemblyNode)(new Reader(TargetPlatform.SystemAssemblyLocation, null, doNotLockFile, getDebugInfo, true, false)).ReadModule();
+
+            if(result == null && TargetPlatform.TargetVersion != null && TargetPlatform.TargetVersion == typeof(object).Module.Assembly.GetName().Version)
             {
-                result.TargetRuntimeVersion = TargetPlatform.TargetRuntimeVersion;
-                result.MetadataFormatMajorVersion = 1;
-                result.MetadataFormatMinorVersion = 1;
-                result.LinkerMajorVersion = 8;
-                result.LinkerMinorVersion = 0;
-                return result;
+                TargetPlatform.SystemAssemblyLocation = typeof(object).Module.Assembly.Location;
+                result = (AssemblyNode)(new Reader(TargetPlatform.SystemAssemblyLocation, null, doNotLockFile, getDebugInfo, true, false)).ReadModule();
             }
-            if (SystemAssemblyLocation.Location == null || SystemAssemblyLocation.Location.Length == 0)
-                SystemAssemblyLocation.Location = typeof(object).Module.Assembly.Location;
-            result = (AssemblyNode)(new Reader(SystemAssemblyLocation.Location, null, doNotLockFile, getDebugInfo, true, false)).ReadModule();
-            if (result == null && TargetPlatform.TargetVersion != null && TargetPlatform.TargetVersion == typeof(object).Module.Assembly.GetName().Version)
-            {
-                SystemAssemblyLocation.Location = typeof(object).Module.Assembly.Location;
-                result = (AssemblyNode)(new Reader(SystemAssemblyLocation.Location, null, doNotLockFile, getDebugInfo, true, false)).ReadModule();
-            }
-            if (result == null)
+
+            if(result == null)
             {
                 result = new AssemblyNode();
                 System.Reflection.AssemblyName aname = typeof(object).Module.Assembly.GetName();
@@ -441,6 +413,7 @@ namespace System.Compiler
                 result.Version = TargetPlatform.TargetVersion;
                 result.PublicKeyOrToken = aname.GetPublicKeyToken();
             }
+
             return result;
         }
         private static TypeNode/*!*/ GetTypeNodeFor(string/*!*/ nspace, string/*!*/ name, ElementType typeCode)
@@ -1027,44 +1000,6 @@ namespace System.Compiler
             SystemException = null;
             Thread = null;
             WindowsImpersonationContext = null;
-        }
-
-        private static AssemblyNode/*!*/ GetSystemDataAssembly(bool doNotLockFile, bool getDebugInfo)
-        {
-            System.Reflection.AssemblyName aName = typeof(System.Data.IDataReader).Module.Assembly.GetName();
-            Identifier SystemDataId = Identifier.For(aName.Name);
-            AssemblyReference aref = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[SystemDataId.UniqueIdKey];
-            if (aref == null)
-            {
-                aref = new AssemblyReference();
-                aref.Name = aName.Name;
-                aref.PublicKeyOrToken = aName.GetPublicKeyToken();
-                aref.Version = TargetPlatform.TargetVersion;
-                TargetPlatform.AssemblyReferenceFor[SystemDataId.UniqueIdKey] = aref;
-            }
-            if (SystemDataAssemblyLocation.Location == null || SystemDataAssemblyLocation.Location.Length == 0)
-                SystemDataAssemblyLocation.Location = typeof(System.Data.IDataReader).Module.Assembly.Location;
-            if (aref.assembly == null) aref.Location = SystemDataAssemblyLocation.Location;
-            return aref.assembly = AssemblyNode.GetAssembly(aref);
-        }
-
-        private static AssemblyNode/*!*/ GetSystemXmlAssembly(bool doNotLockFile, bool getDebugInfo)
-        {
-            System.Reflection.AssemblyName aName = typeof(System.Xml.XmlNode).Module.Assembly.GetName();
-            Identifier SystemXmlId = Identifier.For(aName.Name);
-            AssemblyReference aref = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[SystemXmlId.UniqueIdKey];
-            if (aref == null)
-            {
-                aref = new AssemblyReference();
-                aref.Name = aName.Name;
-                aref.PublicKeyOrToken = aName.GetPublicKeyToken();
-                aref.Version = TargetPlatform.TargetVersion;
-                TargetPlatform.AssemblyReferenceFor[SystemXmlId.UniqueIdKey] = aref;
-            }
-            if (SystemXmlAssemblyLocation.Location == null || SystemXmlAssemblyLocation.Location.Length == 0)
-                SystemXmlAssemblyLocation.Location = typeof(System.Xml.XmlNode).Module.Assembly.Location;
-            if (aref.assembly == null) aref.Location = SystemXmlAssemblyLocation.Location;
-            return aref.assembly = AssemblyNode.GetAssembly(aref);
         }
 
         private static TypeNode/*!*/ GetGenericRuntimeTypeNodeFor(string/*!*/ nspace, string/*!*/ name, int numParams, ElementType typeCode)
