@@ -122,5 +122,18 @@ namespace SandcastleBuilder.Gui.ContentEditors
             throw new NotImplementedException();
         }
         #endregion
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // BaseContentEditor
+            // 
+            this.ClientSize = new System.Drawing.Size(278, 244);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Name = "BaseContentEditor";
+            this.ResumeLayout(false);
+
+        }
     }
 }

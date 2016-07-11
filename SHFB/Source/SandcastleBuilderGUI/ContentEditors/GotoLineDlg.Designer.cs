@@ -37,16 +37,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(38, 23);
+            this.label1.Location = new System.Drawing.Point(22, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(102, 17);
+            this.label1.Size = new System.Drawing.Size(154, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "Line Number";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // udcLineNo
             // 
-            this.udcLineNo.Location = new System.Drawing.Point(146, 21);
+            this.udcLineNo.Location = new System.Drawing.Point(182, 29);
             this.udcLineNo.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -58,7 +58,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             0,
             0});
             this.udcLineNo.Name = "udcLineNo";
-            this.udcLineNo.Size = new System.Drawing.Size(87, 22);
+            this.udcLineNo.Size = new System.Drawing.Size(110, 31);
             this.udcLineNo.TabIndex = 1;
             this.udcLineNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcLineNo.Value = new decimal(new int[] {
@@ -70,9 +70,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(192, 62);
+            this.btnCancel.Location = new System.Drawing.Point(248, 88);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -80,9 +80,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(12, 62);
+            this.btnOK.Location = new System.Drawing.Point(12, 88);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -92,11 +92,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(292, 106);
+            this.ClientSize = new System.Drawing.Size(360, 135);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.udcLineNo);
             this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

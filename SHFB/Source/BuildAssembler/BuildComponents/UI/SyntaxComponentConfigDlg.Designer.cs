@@ -50,9 +50,9 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(689, 371);
+            this.btnCancel.Location = new System.Drawing.Point(754, 420);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -62,9 +62,9 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(595, 371);
+            this.btnOK.Location = new System.Drawing.Point(648, 420);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 10;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -74,10 +74,10 @@
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnReset.Location = new System.Drawing.Point(12, 371);
+            this.btnReset.Location = new System.Drawing.Point(244, 420);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(88, 32);
-            this.btnReset.TabIndex = 7;
+            this.btnReset.Size = new System.Drawing.Size(100, 35);
+            this.btnReset.TabIndex = 9;
             this.btnReset.Text = "R&eset";
             this.toolTip1.SetToolTip(this.btnReset, "Reset to default configuration");
             this.btnReset.UseVisualStyleBackColor = true;
@@ -86,10 +86,10 @@
             // btnMoveUp
             // 
             this.btnMoveUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnMoveUp.Location = new System.Drawing.Point(118, 371);
+            this.btnMoveUp.Location = new System.Drawing.Point(12, 420);
             this.btnMoveUp.Name = "btnMoveUp";
-            this.btnMoveUp.Size = new System.Drawing.Size(55, 32);
-            this.btnMoveUp.TabIndex = 8;
+            this.btnMoveUp.Size = new System.Drawing.Size(100, 35);
+            this.btnMoveUp.TabIndex = 7;
             this.btnMoveUp.Text = "&Up";
             this.toolTip1.SetToolTip(this.btnMoveUp, "Move the generator up in the order");
             this.btnMoveUp.UseVisualStyleBackColor = true;
@@ -98,10 +98,10 @@
             // btnMoveDown
             // 
             this.btnMoveDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnMoveDown.Location = new System.Drawing.Point(179, 371);
+            this.btnMoveDown.Location = new System.Drawing.Point(118, 420);
             this.btnMoveDown.Name = "btnMoveDown";
-            this.btnMoveDown.Size = new System.Drawing.Size(55, 32);
-            this.btnMoveDown.TabIndex = 9;
+            this.btnMoveDown.Size = new System.Drawing.Size(100, 35);
+            this.btnMoveDown.TabIndex = 8;
             this.btnMoveDown.Text = "&Down";
             this.toolTip1.SetToolTip(this.btnMoveDown, "Move the generator down in the order");
             this.btnMoveDown.UseVisualStyleBackColor = true;
@@ -112,25 +112,25 @@
             this.chkRenderReferenceLinks.AutoSize = true;
             this.chkRenderReferenceLinks.Location = new System.Drawing.Point(12, 12);
             this.chkRenderReferenceLinks.Name = "chkRenderReferenceLinks";
-            this.chkRenderReferenceLinks.Size = new System.Drawing.Size(507, 21);
+            this.chkRenderReferenceLinks.Size = new System.Drawing.Size(635, 29);
             this.chkRenderReferenceLinks.TabIndex = 0;
             this.chkRenderReferenceLinks.Text = "&Render reference links to online content (not supported by MS Help Viewer)";
             this.chkRenderReferenceLinks.UseVisualStyleBackColor = true;
             // 
             // lblConfiguration
             // 
-            this.lblConfiguration.Location = new System.Drawing.Point(240, 96);
+            this.lblConfiguration.Location = new System.Drawing.Point(239, 125);
             this.lblConfiguration.Name = "lblConfiguration";
-            this.lblConfiguration.Size = new System.Drawing.Size(132, 23);
+            this.lblConfiguration.Size = new System.Drawing.Size(250, 26);
             this.lblConfiguration.TabIndex = 5;
             this.lblConfiguration.Text = "Edit &Configuration";
             this.lblConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 96);
+            this.label1.Location = new System.Drawing.Point(12, 125);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(222, 23);
+            this.label1.Size = new System.Drawing.Size(221, 26);
             this.label1.TabIndex = 3;
             this.label1.Text = "&Syntax Generators";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -142,10 +142,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtConfiguration.Enabled = false;
-            this.txtConfiguration.Location = new System.Drawing.Point(240, 122);
+            this.txtConfiguration.Location = new System.Drawing.Point(244, 154);
             this.txtConfiguration.Multiline = true;
             this.txtConfiguration.Name = "txtConfiguration";
-            this.txtConfiguration.Size = new System.Drawing.Size(537, 243);
+            this.txtConfiguration.Size = new System.Drawing.Size(610, 260);
             this.txtConfiguration.TabIndex = 6;
             // 
             // tvGenerators
@@ -154,10 +154,10 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tvGenerators.FullRowSelect = true;
             this.tvGenerators.HideSelection = false;
-            this.tvGenerators.Location = new System.Drawing.Point(12, 122);
+            this.tvGenerators.Location = new System.Drawing.Point(12, 154);
             this.tvGenerators.Name = "tvGenerators";
             this.tvGenerators.ShowRootLines = false;
-            this.tvGenerators.Size = new System.Drawing.Size(222, 243);
+            this.tvGenerators.Size = new System.Drawing.Size(226, 260);
             this.tvGenerators.TabIndex = 4;
             this.tvGenerators.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvGenerators_BeforeSelect);
             this.tvGenerators.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvGenerators_AfterSelect);
@@ -171,9 +171,9 @@
             this.chkAddNoExampleTabs.AutoSize = true;
             this.chkAddNoExampleTabs.Checked = true;
             this.chkAddNoExampleTabs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAddNoExampleTabs.Location = new System.Drawing.Point(12, 39);
+            this.chkAddNoExampleTabs.Location = new System.Drawing.Point(12, 47);
             this.chkAddNoExampleTabs.Name = "chkAddNoExampleTabs";
-            this.chkAddNoExampleTabs.Size = new System.Drawing.Size(537, 21);
+            this.chkAddNoExampleTabs.Size = new System.Drawing.Size(688, 29);
             this.chkAddNoExampleTabs.TabIndex = 1;
             this.chkAddNoExampleTabs.Text = "&Add \"No example\" tabs in presentation styles that support code snippet grouping";
             this.chkAddNoExampleTabs.UseVisualStyleBackColor = true;
@@ -182,9 +182,9 @@
             // chkIncludeOnSingleSnippets
             // 
             this.chkIncludeOnSingleSnippets.AutoSize = true;
-            this.chkIncludeOnSingleSnippets.Location = new System.Drawing.Point(33, 66);
+            this.chkIncludeOnSingleSnippets.Location = new System.Drawing.Point(38, 82);
             this.chkIncludeOnSingleSnippets.Name = "chkIncludeOnSingleSnippets";
-            this.chkIncludeOnSingleSnippets.Size = new System.Drawing.Size(250, 21);
+            this.chkIncludeOnSingleSnippets.Size = new System.Drawing.Size(318, 29);
             this.chkIncludeOnSingleSnippets.TabIndex = 2;
             this.chkIncludeOnSingleSnippets.Text = "&Include on standalone snippets too";
             this.chkIncludeOnSingleSnippets.UseVisualStyleBackColor = true;
@@ -193,7 +193,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(789, 415);
+            this.ClientSize = new System.Drawing.Size(866, 467);
             this.Controls.Add(this.chkIncludeOnSingleSnippets);
             this.Controls.Add(this.chkAddNoExampleTabs);
             this.Controls.Add(this.btnMoveDown);
@@ -206,6 +206,7 @@
             this.Controls.Add(this.chkRenderReferenceLinks);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

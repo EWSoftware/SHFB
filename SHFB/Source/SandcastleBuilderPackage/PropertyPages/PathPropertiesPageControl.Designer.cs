@@ -53,7 +53,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dividerLabel1.Location = new System.Drawing.Point(3, 9);
             this.dividerLabel1.Name = "dividerLabel1";
-            this.dividerLabel1.Size = new System.Drawing.Size(654, 24);
+            this.dividerLabel1.Size = new System.Drawing.Size(779, 26);
             this.dividerLabel1.TabIndex = 0;
             this.dividerLabel1.Text = "Tool Paths";
             // 
@@ -63,7 +63,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dividerLabel2.Location = new System.Drawing.Point(3, 235);
             this.dividerLabel2.Name = "dividerLabel2";
-            this.dividerLabel2.Size = new System.Drawing.Size(654, 24);
+            this.dividerLabel2.Size = new System.Drawing.Size(779, 26);
             this.dividerLabel2.TabIndex = 8;
             this.dividerLabel2.Text = "Output Paths";
             // 
@@ -84,12 +84,12 @@
             this.epNotes.SetError(this.txtOutputPath, "The default is a .\\Help folder relative to the project folder");
             this.epNotes.SetIconPadding(this.txtOutputPath, 5);
             this.epWarning.SetIconPadding(this.txtOutputPath, 25);
-            this.txtOutputPath.Location = new System.Drawing.Point(246, 262);
+            this.txtOutputPath.Location = new System.Drawing.Point(341, 271);
             this.txtOutputPath.Name = "txtOutputPath";
             this.txtOutputPath.PersistablePath = "Help\\";
             this.txtOutputPath.ShowFixedPathOption = false;
             this.txtOutputPath.ShowNewFolderButton = true;
-            this.txtOutputPath.Size = new System.Drawing.Size(359, 31);
+            this.txtOutputPath.Size = new System.Drawing.Size(389, 35);
             this.txtOutputPath.TabIndex = 10;
             this.txtOutputPath.Tag = "OutputPath";
             this.txtOutputPath.Title = "Select the output location for the help file";
@@ -105,10 +105,10 @@
             this.epNotes.SetError(this.txtWorkingPath, "The default is a .\\Working folder under the Output Path folder");
             this.epNotes.SetIconPadding(this.txtWorkingPath, 5);
             this.epWarning.SetIconPadding(this.txtWorkingPath, 25);
-            this.txtWorkingPath.Location = new System.Drawing.Point(246, 299);
+            this.txtWorkingPath.Location = new System.Drawing.Point(341, 318);
             this.txtWorkingPath.Name = "txtWorkingPath";
             this.txtWorkingPath.ShowNewFolderButton = true;
-            this.txtWorkingPath.Size = new System.Drawing.Size(359, 59);
+            this.txtWorkingPath.Size = new System.Drawing.Size(389, 67);
             this.txtWorkingPath.TabIndex = 12;
             this.txtWorkingPath.Tag = "WorkingPath";
             this.txtWorkingPath.Title = "Select the working files location";
@@ -121,36 +121,36 @@
             this.epNotes.SetError(this.txtComponentPath, "Use this to find project-specific build components.\nIf blank, the project folder " +
         "is searched.");
             this.epNotes.SetIconPadding(this.txtComponentPath, 5);
-            this.txtComponentPath.Location = new System.Drawing.Point(246, 169);
+            this.txtComponentPath.Location = new System.Drawing.Point(341, 165);
             this.txtComponentPath.Name = "txtComponentPath";
-            this.txtComponentPath.Size = new System.Drawing.Size(359, 59);
+            this.txtComponentPath.Size = new System.Drawing.Size(389, 67);
             this.txtComponentPath.TabIndex = 7;
             this.txtComponentPath.Tag = "ComponentPath";
             this.txtComponentPath.Title = "Select the folder containing project-specific build components";
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(34, 78);
+            this.label1.Location = new System.Drawing.Point(41, 81);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(206, 23);
+            this.label1.Size = new System.Drawing.Size(294, 26);
             this.label1.TabIndex = 2;
             this.label1.Text = "HTML Help 1 compiler path";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(55, 262);
+            this.label3.Location = new System.Drawing.Point(8, 271);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(185, 23);
+            this.label3.Size = new System.Drawing.Size(327, 23);
             this.label3.TabIndex = 9;
             this.label3.Text = "H&elp content output path";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(95, 299);
+            this.label4.Location = new System.Drawing.Point(95, 318);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(145, 23);
+            this.label4.Size = new System.Drawing.Size(240, 26);
             this.label4.TabIndex = 11;
             this.label4.Text = "Working files path";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -159,7 +159,7 @@
             // 
             this.label5.Location = new System.Drawing.Point(8, 42);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(634, 23);
+            this.label5.Size = new System.Drawing.Size(771, 26);
             this.label5.TabIndex = 1;
             this.label5.Text = "If not specified, the help file builder will search for the tools in their well-k" +
     "nown locations.";
@@ -176,18 +176,18 @@
             this.txtHtmlHelp1xCompilerPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtHtmlHelp1xCompilerPath.DefaultFolder = System.Environment.SpecialFolder.ProgramFiles;
-            this.txtHtmlHelp1xCompilerPath.Location = new System.Drawing.Point(246, 78);
+            this.txtHtmlHelp1xCompilerPath.Location = new System.Drawing.Point(341, 81);
             this.txtHtmlHelp1xCompilerPath.Name = "txtHtmlHelp1xCompilerPath";
-            this.txtHtmlHelp1xCompilerPath.Size = new System.Drawing.Size(359, 59);
+            this.txtHtmlHelp1xCompilerPath.Size = new System.Drawing.Size(389, 67);
             this.txtHtmlHelp1xCompilerPath.TabIndex = 3;
             this.txtHtmlHelp1xCompilerPath.Tag = "HtmlHelp1xCompilerPath";
             this.txtHtmlHelp1xCompilerPath.Title = "Select the HTML Help 1 compiler installation location";
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(3, 169);
+            this.label6.Location = new System.Drawing.Point(13, 165);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(237, 23);
+            this.label6.Size = new System.Drawing.Size(322, 26);
             this.label6.TabIndex = 6;
             this.label6.Text = "Project-specific components path";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -206,9 +206,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dividerLabel2);
             this.Controls.Add(this.dividerLabel1);
-            this.MinimumSize = new System.Drawing.Size(660, 370);
+            this.MinimumSize = new System.Drawing.Size(785, 400);
             this.Name = "PathPropertiesPageControl";
-            this.Size = new System.Drawing.Size(660, 370);
+            this.Size = new System.Drawing.Size(785, 400);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.epWarning)).EndInit();
             this.ResumeLayout(false);

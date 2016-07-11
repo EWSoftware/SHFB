@@ -60,6 +60,9 @@
     <DocumentationFile>..\..\Deploy\SandcastleBuilderGUI.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
       <HintPath>..\packages\ICSharpCode.TextEditor.3.2.1.6466\lib\Net20\ICSharpCode.TextEditor.dll</HintPath>
@@ -215,6 +218,9 @@
     </Compile>
     <Compile Include="AboutDlg.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutDlg.Designer.cs">
+      <DependentUpon>AboutDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="BeforeBuildAction.cs" />
     <Compile Include="ContentEditors\BaseContentEditor.cs">
@@ -411,6 +417,9 @@
       <DependentUpon>AboutDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\BaseContentEditor.resx">
+      <DependentUpon>BaseContentEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ContentEditors\EntityReferenceWindow.resx">
       <DependentUpon>EntityReferenceWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -496,6 +505,7 @@
     <Content Include="Hunspellx86.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="app.manifest" />
     <None Include="Images\HtmlEncode.png" />
     <Content Include="Images\SpellCheck.ico" />
     <Content Include="ItemTemplates\XAML Syntax.xamlcfg">

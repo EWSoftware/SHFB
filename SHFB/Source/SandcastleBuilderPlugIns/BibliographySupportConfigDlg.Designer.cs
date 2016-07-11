@@ -43,10 +43,10 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(566, 82);
+            this.btnCancel.Location = new System.Drawing.Point(685, 95);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 4;
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -54,9 +54,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 82);
+            this.btnOK.Location = new System.Drawing.Point(12, 95);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -65,10 +65,10 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(224, 87);
+            this.lnkProjectSite.Location = new System.Drawing.Point(248, 99);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
-            this.lnkProjectSite.TabIndex = 5;
+            this.lnkProjectSite.Size = new System.Drawing.Size(301, 26);
+            this.lnkProjectSite.TabIndex = 4;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
             this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -77,9 +77,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnSelectLocation
             // 
-            this.btnSelectLocation.Location = new System.Drawing.Point(584, 30);
+            this.btnSelectLocation.Location = new System.Drawing.Point(704, 36);
             this.btnSelectLocation.Name = "btnSelectLocation";
-            this.btnSelectLocation.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectLocation.Size = new System.Drawing.Size(35, 35);
             this.btnSelectLocation.TabIndex = 2;
             this.btnSelectLocation.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectLocation, "Select the location of the bibliography file");
@@ -92,17 +92,17 @@ namespace SandcastleBuilder.PlugIns
             // 
             // txtBibliographyFile
             // 
-            this.txtBibliographyFile.Location = new System.Drawing.Point(266, 31);
+            this.txtBibliographyFile.Location = new System.Drawing.Point(331, 38);
             this.txtBibliographyFile.MaxLength = 256;
             this.txtBibliographyFile.Name = "txtBibliographyFile";
-            this.txtBibliographyFile.Size = new System.Drawing.Size(318, 22);
+            this.txtBibliographyFile.Size = new System.Drawing.Size(371, 31);
             this.txtBibliographyFile.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(36, 31);
+            this.label1.Location = new System.Drawing.Point(17, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(224, 23);
+            this.label1.Size = new System.Drawing.Size(308, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "Path to the bibliography XML file";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -112,13 +112,14 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(666, 126);
+            this.ClientSize = new System.Drawing.Size(797, 142);
             this.Controls.Add(this.btnSelectLocation);
             this.Controls.Add(this.txtBibliographyFile);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

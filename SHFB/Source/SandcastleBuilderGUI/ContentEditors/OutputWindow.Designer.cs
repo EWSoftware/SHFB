@@ -44,19 +44,20 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.tcbViewOutput,
             this.tslLogFile});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(473, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(473, 33);
             this.toolStrip1.TabIndex = 0;
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(129, 25);
+            this.toolStripLabel1.Size = new System.Drawing.Size(159, 30);
             this.toolStripLabel1.Text = "&Show output from";
             // 
             // tcbViewOutput
@@ -66,7 +67,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             "Build",
             "Log File"});
             this.tcbViewOutput.Name = "tcbViewOutput";
-            this.tcbViewOutput.Size = new System.Drawing.Size(121, 28);
+            this.tcbViewOutput.Size = new System.Drawing.Size(121, 33);
             this.statusBarTextProvider1.SetStatusBarText(this.tcbViewOutput, "Select the output to view");
             this.tcbViewOutput.SelectedIndexChanged += new System.EventHandler(this.tcbViewOutput_SelectedIndexChanged);
             // 
@@ -75,7 +76,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tslLogFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tslLogFile.Name = "tslLogFile";
             this.tslLogFile.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.tslLogFile.Size = new System.Drawing.Size(10, 25);
+            this.tslLogFile.Size = new System.Drawing.Size(10, 30);
             // 
             // txtBuildOutput
             // 
@@ -84,10 +85,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.txtBuildOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBuildOutput.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBuildOutput.HideSelection = false;
-            this.txtBuildOutput.Location = new System.Drawing.Point(0, 28);
+            this.txtBuildOutput.Location = new System.Drawing.Point(0, 33);
             this.txtBuildOutput.Name = "txtBuildOutput";
             this.txtBuildOutput.ReadOnly = true;
-            this.txtBuildOutput.Size = new System.Drawing.Size(473, 255);
+            this.txtBuildOutput.Size = new System.Drawing.Size(473, 250);
             this.statusBarTextProvider1.SetStatusBarText(this.txtBuildOutput, "Build output");
             this.txtBuildOutput.TabIndex = 1;
             this.txtBuildOutput.Text = "";
@@ -96,9 +97,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // ehLogViewer
             // 
             this.ehLogViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ehLogViewer.Location = new System.Drawing.Point(0, 28);
+            this.ehLogViewer.Location = new System.Drawing.Point(0, 33);
             this.ehLogViewer.Name = "ehLogViewer";
-            this.ehLogViewer.Size = new System.Drawing.Size(473, 255);
+            this.ehLogViewer.Size = new System.Drawing.Size(473, 250);
             this.statusBarTextProvider1.SetStatusBarText(this.ehLogViewer, "Build log content");
             this.ehLogViewer.TabIndex = 2;
             this.ehLogViewer.Visible = false;
@@ -111,6 +112,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.Controls.Add(this.ehLogViewer);
             this.Controls.Add(this.txtBuildOutput);
             this.Controls.Add(this.toolStrip1);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;

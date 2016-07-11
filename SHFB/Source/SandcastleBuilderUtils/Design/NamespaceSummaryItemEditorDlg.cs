@@ -496,6 +496,7 @@ namespace SandcastleBuilder.Utils.Design
             lbNamespaces.Items.Clear();
             string name;
 
+            epErrors.Clear();
             txtSearchText.Text = txtSearchText.Text.Trim();
 
             if(txtSearchText.Text.Length != 0)

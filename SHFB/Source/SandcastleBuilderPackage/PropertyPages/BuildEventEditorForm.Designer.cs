@@ -34,9 +34,9 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnInsertMacro = new System.Windows.Forms.Button();
             this.dgvMacros = new System.Windows.Forms.DataGridView();
-            this.scSplitter = new System.Windows.Forms.SplitContainer();
             this.tbcKey = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbcValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.scSplitter = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMacros)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scSplitter)).BeginInit();
             this.scSplitter.Panel1.SuspendLayout();
@@ -48,9 +48,9 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(588, 509);
+            this.btnOK.Location = new System.Drawing.Point(808, 547);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(88, 35);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -63,7 +63,7 @@
             this.txtBuildEvent.Multiline = true;
             this.txtBuildEvent.Name = "txtBuildEvent";
             this.txtBuildEvent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtBuildEvent.Size = new System.Drawing.Size(758, 295);
+            this.txtBuildEvent.Size = new System.Drawing.Size(978, 250);
             this.txtBuildEvent.TabIndex = 0;
             this.txtBuildEvent.WordWrap = false;
             this.txtBuildEvent.Enter += new System.EventHandler(this.txtBuildEvent_Enter);
@@ -72,9 +72,9 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(682, 509);
+            this.btnCancel.Location = new System.Drawing.Point(902, 547);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(88, 35);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -82,9 +82,9 @@
             // btnInsertMacro
             // 
             this.btnInsertMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnInsertMacro.Location = new System.Drawing.Point(12, 509);
+            this.btnInsertMacro.Location = new System.Drawing.Point(12, 547);
             this.btnInsertMacro.Name = "btnInsertMacro";
-            this.btnInsertMacro.Size = new System.Drawing.Size(88, 32);
+            this.btnInsertMacro.Size = new System.Drawing.Size(88, 35);
             this.btnInsertMacro.TabIndex = 1;
             this.btnInsertMacro.Text = "&Insert";
             this.btnInsertMacro.UseVisualStyleBackColor = true;
@@ -107,30 +107,9 @@
             this.dgvMacros.RowHeadersWidth = 25;
             this.dgvMacros.RowTemplate.Height = 24;
             this.dgvMacros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMacros.Size = new System.Drawing.Size(758, 186);
+            this.dgvMacros.Size = new System.Drawing.Size(978, 269);
             this.dgvMacros.TabIndex = 0;
             this.dgvMacros.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMacros_CellDoubleClick);
-            // 
-            // scSplitter
-            // 
-            this.scSplitter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scSplitter.Location = new System.Drawing.Point(12, 12);
-            this.scSplitter.Name = "scSplitter";
-            this.scSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // scSplitter.Panel1
-            // 
-            this.scSplitter.Panel1.Controls.Add(this.txtBuildEvent);
-            // 
-            // scSplitter.Panel2
-            // 
-            this.scSplitter.Panel2.Controls.Add(this.dgvMacros);
-            this.scSplitter.Size = new System.Drawing.Size(758, 491);
-            this.scSplitter.SplitterDistance = 295;
-            this.scSplitter.SplitterWidth = 10;
-            this.scSplitter.TabIndex = 0;
             // 
             // tbcKey
             // 
@@ -150,11 +129,32 @@
             this.tbcValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.tbcValue.Width = 500;
             // 
+            // scSplitter
+            // 
+            this.scSplitter.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scSplitter.Location = new System.Drawing.Point(12, 12);
+            this.scSplitter.Name = "scSplitter";
+            this.scSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // scSplitter.Panel1
+            // 
+            this.scSplitter.Panel1.Controls.Add(this.txtBuildEvent);
+            // 
+            // scSplitter.Panel2
+            // 
+            this.scSplitter.Panel2.Controls.Add(this.dgvMacros);
+            this.scSplitter.Size = new System.Drawing.Size(978, 529);
+            this.scSplitter.SplitterDistance = 250;
+            this.scSplitter.SplitterWidth = 10;
+            this.scSplitter.TabIndex = 0;
+            // 
             // BuildEventEditorForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(782, 553);
+            this.ClientSize = new System.Drawing.Size(1002, 594);
             this.Controls.Add(this.scSplitter);
             this.Controls.Add(this.btnInsertMacro);
             this.Controls.Add(this.btnCancel);

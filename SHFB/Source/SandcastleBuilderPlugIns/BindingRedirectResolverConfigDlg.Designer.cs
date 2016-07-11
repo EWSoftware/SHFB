@@ -66,9 +66,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.btnDelete.ImageIndex = 1;
             this.btnDelete.ImageList = this.ilButton;
-            this.btnDelete.Location = new System.Drawing.Point(662, 43);
+            this.btnDelete.Location = new System.Drawing.Point(790, 62);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(32, 32);
+            this.btnDelete.Size = new System.Drawing.Size(50, 50);
             this.btnDelete.TabIndex = 2;
             this.toolTip1.SetToolTip(this.btnDelete, "Delete the selected binding redirect");
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -78,9 +78,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.btnAddFile.ImageIndex = 0;
             this.btnAddFile.ImageList = this.ilButton;
-            this.btnAddFile.Location = new System.Drawing.Point(662, 5);
+            this.btnAddFile.Location = new System.Drawing.Point(790, 6);
             this.btnAddFile.Name = "btnAddFile";
-            this.btnAddFile.Size = new System.Drawing.Size(32, 32);
+            this.btnAddFile.Size = new System.Drawing.Size(50, 50);
             this.btnAddFile.TabIndex = 1;
             this.toolTip1.SetToolTip(this.btnAddFile, "Add a new binding redirect");
             this.btnAddFile.UseVisualStyleBackColor = true;
@@ -91,10 +91,10 @@ namespace SandcastleBuilder.PlugIns
             this.lbRedirects.FormattingEnabled = true;
             this.lbRedirects.HorizontalScrollbar = true;
             this.lbRedirects.IntegralHeight = false;
-            this.lbRedirects.ItemHeight = 16;
+            this.lbRedirects.ItemHeight = 25;
             this.lbRedirects.Location = new System.Drawing.Point(6, 6);
             this.lbRedirects.Name = "lbRedirects";
-            this.lbRedirects.Size = new System.Drawing.Size(650, 119);
+            this.lbRedirects.Size = new System.Drawing.Size(778, 119);
             this.lbRedirects.Sorted = true;
             this.lbRedirects.TabIndex = 0;
             this.lbRedirects.SelectedIndexChanged += new System.EventHandler(this.lbReferences_SelectedIndexChanged);
@@ -103,16 +103,16 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.pgProps.Location = new System.Drawing.Point(6, 131);
             this.pgProps.Name = "pgProps";
-            this.pgProps.PropertyNamePaneWidth = 150;
-            this.pgProps.Size = new System.Drawing.Size(688, 308);
+            this.pgProps.PropertyNamePaneWidth = 200;
+            this.pgProps.Size = new System.Drawing.Size(834, 329);
             this.pgProps.TabIndex = 3;
             this.pgProps.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgProps_PropertyValueChanged);
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(222, 524);
+            this.lnkProjectSite.Location = new System.Drawing.Point(289, 561);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(267, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(301, 26);
             this.lnkProjectSite.TabIndex = 3;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -123,9 +123,9 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(639, 519);
+            this.btnCancel.Location = new System.Drawing.Point(766, 557);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -134,9 +134,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 519);
+            this.btnOK.Location = new System.Drawing.Point(12, 557);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -145,9 +145,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnDeleteIgnoredName
             // 
-            this.btnDeleteIgnoredName.Location = new System.Drawing.Point(6, 407);
+            this.btnDeleteIgnoredName.Location = new System.Drawing.Point(3, 425);
             this.btnDeleteIgnoredName.Name = "btnDeleteIgnoredName";
-            this.btnDeleteIgnoredName.Size = new System.Drawing.Size(88, 32);
+            this.btnDeleteIgnoredName.Size = new System.Drawing.Size(100, 35);
             this.btnDeleteIgnoredName.TabIndex = 4;
             this.btnDeleteIgnoredName.Text = "&Delete";
             this.toolTip1.SetToolTip(this.btnDeleteIgnoredName, "Delete the selected assembly name");
@@ -156,9 +156,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnAddIgnoredName
             // 
-            this.btnAddIgnoredName.Location = new System.Drawing.Point(613, 21);
+            this.btnAddIgnoredName.Location = new System.Drawing.Point(680, 10);
             this.btnAddIgnoredName.Name = "btnAddIgnoredName";
-            this.btnAddIgnoredName.Size = new System.Drawing.Size(88, 32);
+            this.btnAddIgnoredName.Size = new System.Drawing.Size(100, 35);
             this.btnAddIgnoredName.TabIndex = 2;
             this.btnAddIgnoredName.Text = "&Add";
             this.toolTip1.SetToolTip(this.btnAddIgnoredName, "Add a new assembly name to be ignored if unresolved");
@@ -174,7 +174,7 @@ namespace SandcastleBuilder.PlugIns
             this.chkUseGAC.AutoSize = true;
             this.chkUseGAC.Location = new System.Drawing.Point(12, 12);
             this.chkUseGAC.Name = "chkUseGAC";
-            this.chkUseGAC.Size = new System.Drawing.Size(373, 21);
+            this.chkUseGAC.Size = new System.Drawing.Size(462, 29);
             this.chkUseGAC.TabIndex = 0;
             this.chkUseGAC.Text = "Use the GAC to resolve unknown assembly references";
             this.chkUseGAC.UseVisualStyleBackColor = true;
@@ -183,10 +183,11 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.tabControl1.Controls.Add(this.pgBindingRedirections);
             this.tabControl1.Controls.Add(this.pgIgnoreIfUnresolved);
-            this.tabControl1.Location = new System.Drawing.Point(12, 39);
+            this.tabControl1.Location = new System.Drawing.Point(12, 47);
             this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(20, 3);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(715, 474);
+            this.tabControl1.Size = new System.Drawing.Size(854, 504);
             this.tabControl1.TabIndex = 1;
             // 
             // pgBindingRedirections
@@ -195,10 +196,10 @@ namespace SandcastleBuilder.PlugIns
             this.pgBindingRedirections.Controls.Add(this.btnDelete);
             this.pgBindingRedirections.Controls.Add(this.btnAddFile);
             this.pgBindingRedirections.Controls.Add(this.pgProps);
-            this.pgBindingRedirections.Location = new System.Drawing.Point(4, 25);
+            this.pgBindingRedirections.Location = new System.Drawing.Point(4, 34);
             this.pgBindingRedirections.Name = "pgBindingRedirections";
             this.pgBindingRedirections.Padding = new System.Windows.Forms.Padding(3);
-            this.pgBindingRedirections.Size = new System.Drawing.Size(707, 445);
+            this.pgBindingRedirections.Size = new System.Drawing.Size(846, 466);
             this.pgBindingRedirections.TabIndex = 0;
             this.pgBindingRedirections.Text = "Binding Redirections";
             this.pgBindingRedirections.UseVisualStyleBackColor = true;
@@ -210,26 +211,26 @@ namespace SandcastleBuilder.PlugIns
             this.pgIgnoreIfUnresolved.Controls.Add(this.lbIgnoreIfUnresolved);
             this.pgIgnoreIfUnresolved.Controls.Add(this.btnDeleteIgnoredName);
             this.pgIgnoreIfUnresolved.Controls.Add(this.btnAddIgnoredName);
-            this.pgIgnoreIfUnresolved.Location = new System.Drawing.Point(4, 25);
+            this.pgIgnoreIfUnresolved.Location = new System.Drawing.Point(4, 34);
             this.pgIgnoreIfUnresolved.Name = "pgIgnoreIfUnresolved";
             this.pgIgnoreIfUnresolved.Padding = new System.Windows.Forms.Padding(3);
-            this.pgIgnoreIfUnresolved.Size = new System.Drawing.Size(707, 445);
+            this.pgIgnoreIfUnresolved.Size = new System.Drawing.Size(846, 466);
             this.pgIgnoreIfUnresolved.TabIndex = 1;
             this.pgIgnoreIfUnresolved.Text = "Ignore If Unresolved";
             this.pgIgnoreIfUnresolved.UseVisualStyleBackColor = true;
             // 
             // txtAssemblyName
             // 
-            this.txtAssemblyName.Location = new System.Drawing.Point(185, 26);
+            this.txtAssemblyName.Location = new System.Drawing.Point(252, 12);
             this.txtAssemblyName.Name = "txtAssemblyName";
-            this.txtAssemblyName.Size = new System.Drawing.Size(422, 22);
+            this.txtAssemblyName.Size = new System.Drawing.Size(422, 31);
             this.txtAssemblyName.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(6, 26);
+            this.label1.Location = new System.Drawing.Point(10, 14);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 23);
+            this.label1.Size = new System.Drawing.Size(236, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Assembly Name to Ignore";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -239,10 +240,10 @@ namespace SandcastleBuilder.PlugIns
             this.lbIgnoreIfUnresolved.FormattingEnabled = true;
             this.lbIgnoreIfUnresolved.HorizontalScrollbar = true;
             this.lbIgnoreIfUnresolved.IntegralHeight = false;
-            this.lbIgnoreIfUnresolved.ItemHeight = 16;
-            this.lbIgnoreIfUnresolved.Location = new System.Drawing.Point(6, 59);
+            this.lbIgnoreIfUnresolved.ItemHeight = 25;
+            this.lbIgnoreIfUnresolved.Location = new System.Drawing.Point(6, 51);
             this.lbIgnoreIfUnresolved.Name = "lbIgnoreIfUnresolved";
-            this.lbIgnoreIfUnresolved.Size = new System.Drawing.Size(695, 342);
+            this.lbIgnoreIfUnresolved.Size = new System.Drawing.Size(834, 368);
             this.lbIgnoreIfUnresolved.Sorted = true;
             this.lbIgnoreIfUnresolved.TabIndex = 3;
             // 
@@ -251,12 +252,13 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(739, 563);
+            this.ClientSize = new System.Drawing.Size(878, 604);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.chkUseGAC);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

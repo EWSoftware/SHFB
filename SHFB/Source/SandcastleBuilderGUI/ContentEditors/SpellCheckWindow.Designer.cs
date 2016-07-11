@@ -46,9 +46,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnIgnoreOnce
             // 
             this.btnIgnoreOnce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnIgnoreOnce.Location = new System.Drawing.Point(250, 139);
+            this.btnIgnoreOnce.Location = new System.Drawing.Point(308, 179);
             this.btnIgnoreOnce.Name = "btnIgnoreOnce";
-            this.btnIgnoreOnce.Size = new System.Drawing.Size(100, 32);
+            this.btnIgnoreOnce.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnIgnoreOnce, "Ignore: Ignore just this occurrence of the misspelled word");
             this.btnIgnoreOnce.TabIndex = 6;
             this.btnIgnoreOnce.Text = "&Ignore Once";
@@ -59,9 +59,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnReplace
             // 
             this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReplace.Location = new System.Drawing.Point(250, 52);
+            this.btnReplace.Location = new System.Drawing.Point(308, 81);
             this.btnReplace.Name = "btnReplace";
-            this.btnReplace.Size = new System.Drawing.Size(100, 32);
+            this.btnReplace.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnReplace, "Replace: Replace current misspelling with the selected word");
             this.btnReplace.TabIndex = 4;
             this.btnReplace.Text = "R&eplace";
@@ -72,9 +72,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnReplaceAll
             // 
             this.btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReplaceAll.Location = new System.Drawing.Point(250, 90);
+            this.btnReplaceAll.Location = new System.Drawing.Point(308, 122);
             this.btnReplaceAll.Name = "btnReplaceAll";
-            this.btnReplaceAll.Size = new System.Drawing.Size(100, 32);
+            this.btnReplaceAll.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnReplaceAll, "Replace All: Replace all occurrences of the misspelling with the selected word");
             this.btnReplaceAll.TabIndex = 5;
             this.btnReplaceAll.Text = "Replace &All";
@@ -85,9 +85,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnAddWord
             // 
             this.btnAddWord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddWord.Location = new System.Drawing.Point(250, 232);
+            this.btnAddWord.Location = new System.Drawing.Point(308, 282);
             this.btnAddWord.Name = "btnAddWord";
-            this.btnAddWord.Size = new System.Drawing.Size(100, 32);
+            this.btnAddWord.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnAddWord, "Add: Add the word to the user dictionary");
             this.btnAddWord.TabIndex = 8;
             this.btnAddWord.Text = "Add &Word";
@@ -101,10 +101,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbSuggestions.FormattingEnabled = true;
-            this.lbSuggestions.ItemHeight = 16;
-            this.lbSuggestions.Location = new System.Drawing.Point(12, 68);
+            this.lbSuggestions.ItemHeight = 25;
+            this.lbSuggestions.Location = new System.Drawing.Point(12, 81);
             this.lbSuggestions.Name = "lbSuggestions";
-            this.lbSuggestions.Size = new System.Drawing.Size(232, 196);
+            this.lbSuggestions.Size = new System.Drawing.Size(280, 304);
             this.statusBarTextProvider1.SetStatusBarText(this.lbSuggestions, "Replace With: Select the word to replace the misspelled word");
             this.lbSuggestions.TabIndex = 3;
             this.lbSuggestions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbSuggestions_MouseDoubleClick);
@@ -112,9 +112,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnIgnoreAll
             // 
             this.btnIgnoreAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnIgnoreAll.Location = new System.Drawing.Point(250, 177);
+            this.btnIgnoreAll.Location = new System.Drawing.Point(308, 220);
             this.btnIgnoreAll.Name = "btnIgnoreAll";
-            this.btnIgnoreAll.Size = new System.Drawing.Size(100, 32);
+            this.btnIgnoreAll.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnIgnoreAll, "Ignore All: Ignore all occurrences of this misspelled word");
             this.btnIgnoreAll.TabIndex = 7;
             this.btnIgnoreAll.Text = "Ig&nore All";
@@ -126,7 +126,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.lblIssue.Location = new System.Drawing.Point(12, 9);
             this.lblIssue.Name = "lblIssue";
-            this.lblIssue.Size = new System.Drawing.Size(119, 23);
+            this.lblIssue.Size = new System.Drawing.Size(167, 26);
             this.lblIssue.TabIndex = 0;
             this.lblIssue.Text = "Misspelled Word";
             this.lblIssue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -137,17 +137,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMisspelledWord.AutoEllipsis = true;
             this.lblMisspelledWord.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblMisspelledWord.Location = new System.Drawing.Point(137, 9);
+            this.lblMisspelledWord.Location = new System.Drawing.Point(185, 9);
             this.lblMisspelledWord.Name = "lblMisspelledWord";
-            this.lblMisspelledWord.Size = new System.Drawing.Size(213, 23);
+            this.lblMisspelledWord.Size = new System.Drawing.Size(223, 26);
             this.lblMisspelledWord.TabIndex = 1;
             this.lblMisspelledWord.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(12, 42);
+            this.label3.Location = new System.Drawing.Point(11, 52);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 23);
+            this.label3.Size = new System.Drawing.Size(148, 26);
             this.label3.TabIndex = 2;
             this.label3.Text = "&Suggestions";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -155,7 +155,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // SpellCheckWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(362, 286);
+            this.ClientSize = new System.Drawing.Size(420, 400);
             this.Controls.Add(this.btnIgnoreAll);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lbSuggestions);
@@ -169,7 +169,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;

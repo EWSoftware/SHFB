@@ -56,9 +56,9 @@ namespace SandcastleBuilder.PlugIns
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelete.ImageIndex = 1;
             this.btnDelete.ImageList = this.ilButton;
-            this.btnDelete.Location = new System.Drawing.Point(668, 73);
+            this.btnDelete.Location = new System.Drawing.Point(766, 94);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(32, 32);
+            this.btnDelete.Size = new System.Drawing.Size(50, 50);
             this.btnDelete.TabIndex = 3;
             this.toolTip1.SetToolTip(this.btnDelete, "Delete the selected reference path");
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -69,9 +69,9 @@ namespace SandcastleBuilder.PlugIns
             this.btnAddReferencePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddReferencePath.ImageIndex = 0;
             this.btnAddReferencePath.ImageList = this.ilButton;
-            this.btnAddReferencePath.Location = new System.Drawing.Point(668, 35);
+            this.btnAddReferencePath.Location = new System.Drawing.Point(766, 38);
             this.btnAddReferencePath.Name = "btnAddReferencePath";
-            this.btnAddReferencePath.Size = new System.Drawing.Size(32, 32);
+            this.btnAddReferencePath.Size = new System.Drawing.Size(50, 50);
             this.btnAddReferencePath.TabIndex = 2;
             this.toolTip1.SetToolTip(this.btnAddReferencePath, "Add a new wildcard reference path");
             this.btnAddReferencePath.UseVisualStyleBackColor = true;
@@ -79,37 +79,37 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lbReferences
             // 
-            this.lbReferences.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbReferences.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbReferences.FormattingEnabled = true;
             this.lbReferences.IntegralHeight = false;
-            this.lbReferences.ItemHeight = 16;
-            this.lbReferences.Location = new System.Drawing.Point(12, 35);
+            this.lbReferences.ItemHeight = 25;
+            this.lbReferences.Location = new System.Drawing.Point(12, 38);
             this.lbReferences.Name = "lbReferences";
-            this.lbReferences.Size = new System.Drawing.Size(650, 138);
+            this.lbReferences.Size = new System.Drawing.Size(748, 240);
             this.lbReferences.Sorted = true;
             this.lbReferences.TabIndex = 1;
             this.lbReferences.SelectedIndexChanged += new System.EventHandler(this.lbReferences_SelectedIndexChanged);
             // 
             // pgProps
             // 
-            this.pgProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pgProps.Location = new System.Drawing.Point(12, 179);
+            this.pgProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pgProps.Location = new System.Drawing.Point(12, 284);
             this.pgProps.Name = "pgProps";
-            this.pgProps.PropertyNamePaneWidth = 150;
-            this.pgProps.Size = new System.Drawing.Size(688, 257);
+            this.pgProps.PropertyNamePaneWidth = 200;
+            this.pgProps.Size = new System.Drawing.Size(804, 257);
             this.pgProps.TabIndex = 4;
             this.pgProps.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgProps_PropertyValueChanged);
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lnkProjectSite.Location = new System.Drawing.Point(222, 447);
+            this.lnkProjectSite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkProjectSite.Location = new System.Drawing.Point(265, 551);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(267, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(299, 26);
             this.lnkProjectSite.TabIndex = 6;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -121,9 +121,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(612, 442);
+            this.btnCancel.Location = new System.Drawing.Point(716, 547);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -133,9 +133,9 @@ namespace SandcastleBuilder.PlugIns
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 442);
+            this.btnOK.Location = new System.Drawing.Point(12, 547);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -150,7 +150,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(230, 23);
+            this.label1.Size = new System.Drawing.Size(267, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "Wildcard Reference Paths";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -160,7 +160,7 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(712, 491);
+            this.ClientSize = new System.Drawing.Size(828, 594);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
@@ -169,10 +169,11 @@ namespace SandcastleBuilder.PlugIns
             this.Controls.Add(this.lbReferences);
             this.Controls.Add(this.btnAddReferencePath);
             this.Controls.Add(this.btnDelete);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(675, 475);
+            this.MinimumSize = new System.Drawing.Size(785, 515);
             this.Name = "WildcardReferencesConfigDlg";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

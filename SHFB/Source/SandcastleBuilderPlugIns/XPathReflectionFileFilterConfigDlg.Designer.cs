@@ -48,9 +48,9 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(657, 391);
+            this.btnCancel.Location = new System.Drawing.Point(716, 497);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -60,9 +60,9 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 391);
+            this.btnOK.Location = new System.Drawing.Point(12, 497);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 6;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save configuration");
@@ -76,10 +76,10 @@
             this.tvExpressions.Font = new System.Drawing.Font("Courier New", 10F);
             this.tvExpressions.FullRowSelect = true;
             this.tvExpressions.HideSelection = false;
-            this.tvExpressions.Location = new System.Drawing.Point(12, 35);
+            this.tvExpressions.Location = new System.Drawing.Point(12, 38);
             this.tvExpressions.Name = "tvExpressions";
             this.tvExpressions.ShowRootLines = false;
-            this.tvExpressions.Size = new System.Drawing.Size(733, 188);
+            this.tvExpressions.Size = new System.Drawing.Size(804, 236);
             this.tvExpressions.TabIndex = 1;
             this.tvExpressions.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExpressions_BeforeSelect);
             this.tvExpressions.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvExpressions_AfterSelect);
@@ -91,18 +91,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtExpression.Enabled = false;
             this.txtExpression.Font = new System.Drawing.Font("Courier New", 10F);
-            this.txtExpression.Location = new System.Drawing.Point(12, 267);
+            this.txtExpression.Location = new System.Drawing.Point(12, 340);
             this.txtExpression.Multiline = true;
             this.txtExpression.Name = "txtExpression";
-            this.txtExpression.Size = new System.Drawing.Size(733, 118);
+            this.txtExpression.Size = new System.Drawing.Size(804, 151);
             this.txtExpression.TabIndex = 5;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(563, 229);
+            this.btnAdd.Location = new System.Drawing.Point(610, 280);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(88, 32);
+            this.btnAdd.Size = new System.Drawing.Size(100, 35);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "&Add";
             this.toolTip1.SetToolTip(this.btnAdd, "Add a new XPath query");
@@ -113,9 +113,9 @@
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(657, 229);
+            this.btnDelete.Location = new System.Drawing.Point(716, 280);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(88, 32);
+            this.btnDelete.Size = new System.Drawing.Size(100, 35);
             this.btnDelete.TabIndex = 3;
             this.btnDelete.Text = "&Delete";
             this.toolTip1.SetToolTip(this.btnDelete, "Delete the selected XPath query");
@@ -125,9 +125,9 @@
             // lnkProjectSite
             // 
             this.lnkProjectSite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lnkProjectSite.Location = new System.Drawing.Point(269, 396);
+            this.lnkProjectSite.Location = new System.Drawing.Point(251, 501);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(326, 26);
             this.lnkProjectSite.TabIndex = 8;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -139,16 +139,16 @@
             // 
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 23);
+            this.label1.Size = new System.Drawing.Size(300, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "&XPath Queries";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblExpression
             // 
-            this.lblExpression.Location = new System.Drawing.Point(12, 241);
+            this.lblExpression.Location = new System.Drawing.Point(12, 311);
             this.lblExpression.Name = "lblExpression";
-            this.lblExpression.Size = new System.Drawing.Size(158, 23);
+            this.lblExpression.Size = new System.Drawing.Size(286, 26);
             this.lblExpression.TabIndex = 4;
             this.lblExpression.Text = "&Edit Query Expression";
             this.lblExpression.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -161,7 +161,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(757, 435);
+            this.ClientSize = new System.Drawing.Size(828, 544);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.lblExpression);
             this.Controls.Add(this.label1);
@@ -171,8 +171,10 @@
             this.Controls.Add(this.tvExpressions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(750, 480);
             this.Name = "XPathReflectionFileFilterConfigDlg";
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;

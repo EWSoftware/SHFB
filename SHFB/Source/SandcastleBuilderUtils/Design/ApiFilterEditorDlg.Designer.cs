@@ -93,9 +93,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(842, 616);
+            this.btnClose.Location = new System.Drawing.Point(966, 697);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(88, 32);
+            this.btnClose.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnClose, "Close: Close this form");
             this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Close";
@@ -106,9 +106,9 @@ namespace SandcastleBuilder.Utils.Design
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReset.Location = new System.Drawing.Point(748, 616);
+            this.btnReset.Location = new System.Drawing.Point(860, 697);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(88, 32);
+            this.btnReset.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnReset, "Reset: Reset the API filter to its default state");
             this.btnReset.TabIndex = 3;
             this.btnReset.Text = "&Reset";
@@ -119,9 +119,9 @@ namespace SandcastleBuilder.Utils.Design
             // btnFind
             // 
             this.btnFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFind.Location = new System.Drawing.Point(494, 16);
+            this.btnFind.Location = new System.Drawing.Point(485, 31);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(88, 32);
+            this.btnFind.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnFind, "Find: Find all members matching the search expression");
             this.btnFind.TabIndex = 1;
             this.btnFind.Text = "&Find";
@@ -133,9 +133,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnGoto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnGoto.Enabled = false;
-            this.btnGoto.Location = new System.Drawing.Point(3, 563);
+            this.btnGoto.Location = new System.Drawing.Point(3, 641);
             this.btnGoto.Name = "btnGoto";
-            this.btnGoto.Size = new System.Drawing.Size(88, 32);
+            this.btnGoto.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnGoto, "Goto: Goto the selected member in the tree view");
             this.btnGoto.TabIndex = 3;
             this.btnGoto.Text = "&Goto";
@@ -147,9 +147,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnInclude.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnInclude.Enabled = false;
-            this.btnInclude.Location = new System.Drawing.Point(97, 563);
+            this.btnInclude.Location = new System.Drawing.Point(109, 641);
             this.btnInclude.Name = "btnInclude";
-            this.btnInclude.Size = new System.Drawing.Size(88, 32);
+            this.btnInclude.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnInclude, "Include: Include the selected members");
             this.btnInclude.TabIndex = 4;
             this.btnInclude.Text = "&Include";
@@ -161,9 +161,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnExclude.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExclude.Enabled = false;
-            this.btnExclude.Location = new System.Drawing.Point(191, 563);
+            this.btnExclude.Location = new System.Drawing.Point(215, 641);
             this.btnExclude.Name = "btnExclude";
-            this.btnExclude.Size = new System.Drawing.Size(88, 32);
+            this.btnExclude.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnExclude, "Exclude: Exclude the selected members");
             this.btnExclude.TabIndex = 5;
             this.btnExclude.Text = "&Exclude";
@@ -174,9 +174,9 @@ namespace SandcastleBuilder.Utils.Design
             // btnHelp
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHelp.Location = new System.Drawing.Point(654, 616);
+            this.btnHelp.Location = new System.Drawing.Point(754, 697);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(88, 32);
+            this.btnHelp.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnHelp, "Help: View help for this form");
             this.btnHelp.TabIndex = 2;
             this.btnHelp.Text = "&Help";
@@ -210,7 +210,7 @@ namespace SandcastleBuilder.Utils.Design
             treeNode2});
             this.tvApiList.SelectedImageIndex = 0;
             this.tvApiList.ShowNodeToolTips = true;
-            this.tvApiList.Size = new System.Drawing.Size(308, 598);
+            this.tvApiList.Size = new System.Drawing.Size(430, 679);
             this.statusBarTextProvider1.SetStatusBarText(this.tvApiList, "The API list to filter");
             this.tvApiList.TabIndex = 1;
             this.tvApiList.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvApiList_BeforeCheck);
@@ -295,8 +295,8 @@ namespace SandcastleBuilder.Utils.Design
             this.splitContainer.Panel2.Controls.Add(this.btnGoto);
             this.splitContainer.Panel2.Controls.Add(this.lvSearchResults);
             this.splitContainer.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer.Size = new System.Drawing.Size(918, 598);
-            this.splitContainer.SplitterDistance = 308;
+            this.splitContainer.Size = new System.Drawing.Size(1054, 679);
+            this.splitContainer.SplitterDistance = 430;
             this.splitContainer.SplitterWidth = 10;
             this.splitContainer.TabIndex = 0;
             // 
@@ -304,9 +304,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.lblLoading.AutoSize = true;
             this.lblLoading.BackColor = System.Drawing.SystemColors.Window;
-            this.lblLoading.Location = new System.Drawing.Point(50, 85);
+            this.lblLoading.Location = new System.Drawing.Point(50, 81);
             this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(155, 17);
+            this.lblLoading.Size = new System.Drawing.Size(190, 25);
             this.lblLoading.TabIndex = 0;
             this.lblLoading.Text = "Loading namespaces...";
             // 
@@ -332,9 +332,9 @@ namespace SandcastleBuilder.Utils.Design
             this.lvSearchResults.FullRowSelect = true;
             this.lvSearchResults.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvSearchResults.HideSelection = false;
-            this.lvSearchResults.Location = new System.Drawing.Point(3, 217);
+            this.lvSearchResults.Location = new System.Drawing.Point(3, 312);
             this.lvSearchResults.Name = "lvSearchResults";
-            this.lvSearchResults.Size = new System.Drawing.Size(588, 340);
+            this.lvSearchResults.Size = new System.Drawing.Size(596, 323);
             this.lvSearchResults.SmallImageList = this.ilTreeImages;
             this.lvSearchResults.TabIndex = 1;
             this.lvSearchResults.UseCompatibleStateImageBehavior = false;
@@ -344,12 +344,12 @@ namespace SandcastleBuilder.Utils.Design
             // colMember
             // 
             this.colMember.Text = "Members Found";
-            this.colMember.Width = 200;
+            this.colMember.Width = 250;
             // 
             // colFullName
             // 
             this.colFullName.Text = "Full Name";
-            this.colFullName.Width = 350;
+            this.colFullName.Width = 300;
             // 
             // groupBox1
             // 
@@ -360,7 +360,7 @@ namespace SandcastleBuilder.Utils.Design
             this.groupBox1.Controls.Add(this.txtSearchText);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(588, 208);
+            this.groupBox1.Size = new System.Drawing.Size(596, 303);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "&Search Options";
@@ -388,16 +388,16 @@ namespace SandcastleBuilder.Utils.Design
             this.pnlOptions.Controls.Add(this.chkProtected);
             this.pnlOptions.Controls.Add(this.chkInternal);
             this.pnlOptions.Controls.Add(this.chkPrivate);
-            this.pnlOptions.Location = new System.Drawing.Point(6, 49);
+            this.pnlOptions.Location = new System.Drawing.Point(6, 74);
             this.pnlOptions.Name = "pnlOptions";
-            this.pnlOptions.Size = new System.Drawing.Size(576, 151);
+            this.pnlOptions.Size = new System.Drawing.Size(579, 221);
             this.pnlOptions.TabIndex = 2;
             // 
             // chkCaseSensitive
             // 
             this.chkCaseSensitive.Location = new System.Drawing.Point(3, 3);
             this.chkCaseSensitive.Name = "chkCaseSensitive";
-            this.chkCaseSensitive.Size = new System.Drawing.Size(135, 24);
+            this.chkCaseSensitive.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkCaseSensitive, "Perform a case-sensitive search");
             this.chkCaseSensitive.TabIndex = 0;
             this.chkCaseSensitive.Text = "Case-sensitive";
@@ -407,9 +407,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.chkFullyQualified.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkFullyQualified.ImageIndex = 11;
-            this.chkFullyQualified.Location = new System.Drawing.Point(144, 3);
+            this.chkFullyQualified.Location = new System.Drawing.Point(179, 3);
             this.chkFullyQualified.Name = "chkFullyQualified";
-            this.chkFullyQualified.Size = new System.Drawing.Size(135, 24);
+            this.chkFullyQualified.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkFullyQualified, "Search the fully-qualified names rather than just the member names");
             this.chkFullyQualified.TabIndex = 1;
             this.chkFullyQualified.Text = "Fully-qualified";
@@ -422,9 +422,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkNamespaces.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkNamespaces.ImageIndex = 1;
             this.chkNamespaces.ImageList = this.ilTreeImages;
-            this.chkNamespaces.Location = new System.Drawing.Point(285, 3);
+            this.chkNamespaces.Location = new System.Drawing.Point(355, 3);
             this.chkNamespaces.Name = "chkNamespaces";
-            this.chkNamespaces.Size = new System.Drawing.Size(135, 24);
+            this.chkNamespaces.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkNamespaces, "Include namespaces in the results");
             this.chkNamespaces.TabIndex = 2;
             this.chkNamespaces.Text = "Namespaces";
@@ -438,9 +438,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkClasses.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkClasses.ImageIndex = 2;
             this.chkClasses.ImageList = this.ilTreeImages;
-            this.chkClasses.Location = new System.Drawing.Point(426, 3);
+            this.chkClasses.Location = new System.Drawing.Point(3, 39);
             this.chkClasses.Name = "chkClasses";
-            this.chkClasses.Size = new System.Drawing.Size(135, 24);
+            this.chkClasses.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkClasses, "Include classes in the results");
             this.chkClasses.TabIndex = 3;
             this.chkClasses.Text = "Classes";
@@ -454,9 +454,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkStructures.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkStructures.ImageIndex = 3;
             this.chkStructures.ImageList = this.ilTreeImages;
-            this.chkStructures.Location = new System.Drawing.Point(3, 33);
+            this.chkStructures.Location = new System.Drawing.Point(179, 39);
             this.chkStructures.Name = "chkStructures";
-            this.chkStructures.Size = new System.Drawing.Size(135, 24);
+            this.chkStructures.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkStructures, "Include structures in the results");
             this.chkStructures.TabIndex = 4;
             this.chkStructures.Text = "Structures";
@@ -470,9 +470,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkInterfaces.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkInterfaces.ImageIndex = 4;
             this.chkInterfaces.ImageList = this.ilTreeImages;
-            this.chkInterfaces.Location = new System.Drawing.Point(144, 33);
+            this.chkInterfaces.Location = new System.Drawing.Point(355, 39);
             this.chkInterfaces.Name = "chkInterfaces";
-            this.chkInterfaces.Size = new System.Drawing.Size(135, 24);
+            this.chkInterfaces.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkInterfaces, "Include interfaces in the results");
             this.chkInterfaces.TabIndex = 5;
             this.chkInterfaces.Text = "Interfaces";
@@ -486,9 +486,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkEnumerations.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkEnumerations.ImageIndex = 5;
             this.chkEnumerations.ImageList = this.ilTreeImages;
-            this.chkEnumerations.Location = new System.Drawing.Point(285, 33);
+            this.chkEnumerations.Location = new System.Drawing.Point(3, 75);
             this.chkEnumerations.Name = "chkEnumerations";
-            this.chkEnumerations.Size = new System.Drawing.Size(135, 24);
+            this.chkEnumerations.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkEnumerations, "Include enumerations in the results");
             this.chkEnumerations.TabIndex = 6;
             this.chkEnumerations.Text = "Enumerations";
@@ -502,9 +502,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkDelegates.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkDelegates.ImageIndex = 6;
             this.chkDelegates.ImageList = this.ilTreeImages;
-            this.chkDelegates.Location = new System.Drawing.Point(426, 33);
+            this.chkDelegates.Location = new System.Drawing.Point(179, 75);
             this.chkDelegates.Name = "chkDelegates";
-            this.chkDelegates.Size = new System.Drawing.Size(135, 24);
+            this.chkDelegates.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkDelegates, "Include delegates in the results");
             this.chkDelegates.TabIndex = 7;
             this.chkDelegates.Text = "Delegates";
@@ -518,9 +518,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkConstructors.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkConstructors.ImageIndex = 7;
             this.chkConstructors.ImageList = this.ilTreeImages;
-            this.chkConstructors.Location = new System.Drawing.Point(3, 63);
+            this.chkConstructors.Location = new System.Drawing.Point(355, 75);
             this.chkConstructors.Name = "chkConstructors";
-            this.chkConstructors.Size = new System.Drawing.Size(135, 24);
+            this.chkConstructors.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkConstructors, "Include constructors in the results");
             this.chkConstructors.TabIndex = 8;
             this.chkConstructors.Text = "Constructors";
@@ -534,9 +534,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkMethods.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkMethods.ImageIndex = 8;
             this.chkMethods.ImageList = this.ilTreeImages;
-            this.chkMethods.Location = new System.Drawing.Point(144, 63);
+            this.chkMethods.Location = new System.Drawing.Point(3, 111);
             this.chkMethods.Name = "chkMethods";
-            this.chkMethods.Size = new System.Drawing.Size(135, 24);
+            this.chkMethods.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkMethods, "Include methods in the results");
             this.chkMethods.TabIndex = 9;
             this.chkMethods.Text = "Methods";
@@ -550,9 +550,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkOperators.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkOperators.ImageIndex = 9;
             this.chkOperators.ImageList = this.ilTreeImages;
-            this.chkOperators.Location = new System.Drawing.Point(285, 63);
+            this.chkOperators.Location = new System.Drawing.Point(179, 111);
             this.chkOperators.Name = "chkOperators";
-            this.chkOperators.Size = new System.Drawing.Size(135, 24);
+            this.chkOperators.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkOperators, "Include operators in the results");
             this.chkOperators.TabIndex = 13;
             this.chkOperators.Text = "Operators";
@@ -566,9 +566,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkProperties.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkProperties.ImageIndex = 10;
             this.chkProperties.ImageList = this.ilTreeImages;
-            this.chkProperties.Location = new System.Drawing.Point(426, 63);
+            this.chkProperties.Location = new System.Drawing.Point(355, 111);
             this.chkProperties.Name = "chkProperties";
-            this.chkProperties.Size = new System.Drawing.Size(135, 24);
+            this.chkProperties.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkProperties, "Include properties in the results");
             this.chkProperties.TabIndex = 10;
             this.chkProperties.Text = "Properties";
@@ -582,9 +582,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkEvents.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkEvents.ImageIndex = 11;
             this.chkEvents.ImageList = this.ilTreeImages;
-            this.chkEvents.Location = new System.Drawing.Point(3, 93);
+            this.chkEvents.Location = new System.Drawing.Point(3, 147);
             this.chkEvents.Name = "chkEvents";
-            this.chkEvents.Size = new System.Drawing.Size(135, 24);
+            this.chkEvents.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkEvents, "Include events in the results");
             this.chkEvents.TabIndex = 11;
             this.chkEvents.Text = "Events";
@@ -598,9 +598,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkFields.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkFields.ImageIndex = 12;
             this.chkFields.ImageList = this.ilTreeImages;
-            this.chkFields.Location = new System.Drawing.Point(144, 93);
+            this.chkFields.Location = new System.Drawing.Point(179, 147);
             this.chkFields.Name = "chkFields";
-            this.chkFields.Size = new System.Drawing.Size(135, 24);
+            this.chkFields.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkFields, "Include fields in the results");
             this.chkFields.TabIndex = 12;
             this.chkFields.Text = "Fields";
@@ -613,9 +613,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkPublic.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPublic.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkPublic.ImageList = this.ilTreeImages;
-            this.chkPublic.Location = new System.Drawing.Point(285, 93);
+            this.chkPublic.Location = new System.Drawing.Point(355, 147);
             this.chkPublic.Name = "chkPublic";
-            this.chkPublic.Size = new System.Drawing.Size(135, 24);
+            this.chkPublic.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkPublic, "Include public members in the results");
             this.chkPublic.TabIndex = 14;
             this.chkPublic.Text = "Public";
@@ -629,9 +629,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkProtected.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkProtected.ImageIndex = 48;
             this.chkProtected.ImageList = this.ilTreeImages;
-            this.chkProtected.Location = new System.Drawing.Point(426, 93);
+            this.chkProtected.Location = new System.Drawing.Point(3, 183);
             this.chkProtected.Name = "chkProtected";
-            this.chkProtected.Size = new System.Drawing.Size(135, 24);
+            this.chkProtected.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkProtected, "Include protected members in the results");
             this.chkProtected.TabIndex = 15;
             this.chkProtected.Text = "Protected";
@@ -645,9 +645,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkInternal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkInternal.ImageIndex = 49;
             this.chkInternal.ImageList = this.ilTreeImages;
-            this.chkInternal.Location = new System.Drawing.Point(3, 123);
+            this.chkInternal.Location = new System.Drawing.Point(179, 183);
             this.chkInternal.Name = "chkInternal";
-            this.chkInternal.Size = new System.Drawing.Size(135, 24);
+            this.chkInternal.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkInternal, "Include internal members in the results");
             this.chkInternal.TabIndex = 16;
             this.chkInternal.Text = "Internal";
@@ -661,9 +661,9 @@ namespace SandcastleBuilder.Utils.Design
             this.chkPrivate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chkPrivate.ImageIndex = 50;
             this.chkPrivate.ImageList = this.ilTreeImages;
-            this.chkPrivate.Location = new System.Drawing.Point(144, 123);
+            this.chkPrivate.Location = new System.Drawing.Point(355, 183);
             this.chkPrivate.Name = "chkPrivate";
-            this.chkPrivate.Size = new System.Drawing.Size(135, 24);
+            this.chkPrivate.Size = new System.Drawing.Size(170, 30);
             this.statusBarTextProvider1.SetStatusBarText(this.chkPrivate, "Include private members in the results");
             this.chkPrivate.TabIndex = 17;
             this.chkPrivate.Text = "Private";
@@ -674,9 +674,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.txtSearchText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearchText.Location = new System.Drawing.Point(6, 21);
+            this.txtSearchText.Location = new System.Drawing.Point(6, 33);
             this.txtSearchText.Name = "txtSearchText";
-            this.txtSearchText.Size = new System.Drawing.Size(465, 22);
+            this.txtSearchText.Size = new System.Drawing.Size(456, 31);
             this.statusBarTextProvider1.SetStatusBarText(this.txtSearchText, "Search Text: Enter a string or regular expression for which to search");
             this.txtSearchText.TabIndex = 0;
             // 
@@ -685,10 +685,10 @@ namespace SandcastleBuilder.Utils.Design
             this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProgress.AutoEllipsis = true;
-            this.lblProgress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblProgress.Location = new System.Drawing.Point(12, 621);
+            this.lblProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblProgress.Location = new System.Drawing.Point(12, 697);
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(636, 23);
+            this.lblProgress.Size = new System.Drawing.Size(736, 35);
             this.lblProgress.TabIndex = 1;
             this.lblProgress.Text = "--";
             this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -702,15 +702,16 @@ namespace SandcastleBuilder.Utils.Design
             this.AcceptButton = this.btnFind;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(942, 660);
+            this.ClientSize = new System.Drawing.Size(1078, 744);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.btnClose);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(950, 600);
+            this.MinimumSize = new System.Drawing.Size(1100, 800);
             this.Name = "ApiFilterEditorDlg";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

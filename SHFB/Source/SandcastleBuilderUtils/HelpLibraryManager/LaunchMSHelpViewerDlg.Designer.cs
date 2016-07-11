@@ -59,7 +59,7 @@
             this.txtInfo.Name = "txtInfo";
             this.txtInfo.ReadOnly = true;
             this.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtInfo.Size = new System.Drawing.Size(662, 166);
+            this.txtInfo.Size = new System.Drawing.Size(835, 166);
             this.statusBarTextProvider1.SetStatusBarText(this.txtInfo, "Information about the help content\'s state");
             this.txtInfo.TabIndex = 5;
             // 
@@ -67,9 +67,9 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(586, 380);
+            this.btnCancel.Location = new System.Drawing.Point(747, 427);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnCancel, "Cancel: Close without opening the help file");
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
@@ -79,9 +79,9 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 380);
+            this.btnOK.Location = new System.Drawing.Point(12, 427);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnOK, "OK: Execute the selected action");
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
@@ -91,9 +91,9 @@
             // rbOpenCurrent
             // 
             this.rbOpenCurrent.AutoSize = true;
-            this.rbOpenCurrent.Location = new System.Drawing.Point(40, 29);
+            this.rbOpenCurrent.Location = new System.Drawing.Point(42, 39);
             this.rbOpenCurrent.Name = "rbOpenCurrent";
-            this.rbOpenCurrent.Size = new System.Drawing.Size(497, 21);
+            this.rbOpenCurrent.Size = new System.Drawing.Size(632, 29);
             this.statusBarTextProvider1.SetStatusBarText(this.rbOpenCurrent, "Open the currently installed help content even if it is out of date");
             this.rbOpenCurrent.TabIndex = 0;
             this.rbOpenCurrent.TabStop = true;
@@ -110,7 +110,7 @@
             this.grpOptions.Enabled = false;
             this.grpOptions.Location = new System.Drawing.Point(12, 227);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Size = new System.Drawing.Size(662, 147);
+            this.grpOptions.Size = new System.Drawing.Size(835, 194);
             this.grpOptions.TabIndex = 2;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
@@ -118,9 +118,9 @@
             // rbLaunchContentManager
             // 
             this.rbLaunchContentManager.AutoSize = true;
-            this.rbLaunchContentManager.Location = new System.Drawing.Point(40, 110);
+            this.rbLaunchContentManager.Location = new System.Drawing.Point(42, 144);
             this.rbLaunchContentManager.Name = "rbLaunchContentManager";
-            this.rbLaunchContentManager.Size = new System.Drawing.Size(262, 21);
+            this.rbLaunchContentManager.Size = new System.Drawing.Size(326, 29);
             this.rbLaunchContentManager.TabIndex = 3;
             this.rbLaunchContentManager.TabStop = true;
             this.rbLaunchContentManager.Text = "&Launch help viewer content manager";
@@ -129,9 +129,9 @@
             // rbRemove
             // 
             this.rbRemove.AutoSize = true;
-            this.rbRemove.Location = new System.Drawing.Point(40, 83);
+            this.rbRemove.Location = new System.Drawing.Point(42, 109);
             this.rbRemove.Name = "rbRemove";
-            this.rbRemove.Size = new System.Drawing.Size(212, 21);
+            this.rbRemove.Size = new System.Drawing.Size(266, 29);
             this.rbRemove.TabIndex = 2;
             this.rbRemove.TabStop = true;
             this.rbRemove.Text = "&Remove the installed content";
@@ -140,9 +140,9 @@
             // rbInstall
             // 
             this.rbInstall.AutoSize = true;
-            this.rbInstall.Location = new System.Drawing.Point(40, 56);
+            this.rbInstall.Location = new System.Drawing.Point(42, 74);
             this.rbInstall.Name = "rbInstall";
-            this.rbInstall.Size = new System.Drawing.Size(592, 21);
+            this.rbInstall.Size = new System.Drawing.Size(755, 29);
             this.rbInstall.TabIndex = 1;
             this.rbInstall.TabStop = true;
             this.rbInstall.Text = "&Install content from last build, replacing any existing installed copy, and open" +
@@ -153,9 +153,9 @@
             // 
             this.lblAction.AutoSize = true;
             this.lblAction.BackColor = System.Drawing.SystemColors.Window;
-            this.lblAction.Location = new System.Drawing.Point(292, 86);
+            this.lblAction.Location = new System.Drawing.Point(202, 83);
             this.lblAction.Name = "lblAction";
-            this.lblAction.Size = new System.Drawing.Size(105, 17);
+            this.lblAction.Size = new System.Drawing.Size(127, 25);
             this.lblAction.TabIndex = 6;
             this.lblAction.Text = "Taking action...";
             this.lblAction.Visible = false;
@@ -164,7 +164,7 @@
             // 
             this.pbWait.BackColor = System.Drawing.SystemColors.Window;
             this.pbWait.Image = ((System.Drawing.Image)(resources.GetObject("pbWait.Image")));
-            this.pbWait.Location = new System.Drawing.Point(254, 78);
+            this.pbWait.Location = new System.Drawing.Point(157, 78);
             this.pbWait.Name = "pbWait";
             this.pbWait.Size = new System.Drawing.Size(32, 32);
             this.pbWait.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -174,9 +174,9 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(225, 194);
+            this.label1.Location = new System.Drawing.Point(65, 191);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(171, 23);
+            this.label1.Size = new System.Drawing.Size(244, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Use Help Viewer Version";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -190,9 +190,9 @@
             "2.0",
             "2.1",
             "2.2"});
-            this.cboHelpViewerVersion.Location = new System.Drawing.Point(402, 194);
+            this.cboHelpViewerVersion.Location = new System.Drawing.Point(315, 189);
             this.cboHelpViewerVersion.Name = "cboHelpViewerVersion";
-            this.cboHelpViewerVersion.Size = new System.Drawing.Size(59, 24);
+            this.cboHelpViewerVersion.Size = new System.Drawing.Size(85, 33);
             this.cboHelpViewerVersion.TabIndex = 1;
             this.cboHelpViewerVersion.SelectedIndexChanged += new System.EventHandler(this.cboHelpViewerVersion_SelectedIndexChanged);
             // 
@@ -201,7 +201,7 @@
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(686, 424);
+            this.ClientSize = new System.Drawing.Size(859, 474);
             this.Controls.Add(this.cboHelpViewerVersion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblAction);
@@ -210,6 +210,7 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.grpOptions);
             this.Controls.Add(this.txtInfo);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

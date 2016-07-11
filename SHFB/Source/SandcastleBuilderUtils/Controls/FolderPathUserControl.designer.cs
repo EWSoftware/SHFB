@@ -41,17 +41,17 @@
             this.txtFolder.Location = new System.Drawing.Point(0, 1);
             this.txtFolder.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.txtFolder.Name = "txtFolder";
-            this.txtFolder.Size = new System.Drawing.Size(299, 22);
+            this.txtFolder.Size = new System.Drawing.Size(300, 26);
             this.txtFolder.TabIndex = 3;
             this.txtFolder.Leave += new System.EventHandler(this.txtFolder_Leave);
             // 
             // btnSelectFolder
             // 
             this.btnSelectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelectFolder.Location = new System.Drawing.Point(300, 0);
+            this.btnSelectFolder.Location = new System.Drawing.Point(304, 0);
             this.btnSelectFolder.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.btnSelectFolder.Name = "btnSelectFolder";
-            this.btnSelectFolder.Size = new System.Drawing.Size(32, 24);
+            this.btnSelectFolder.Size = new System.Drawing.Size(32, 28);
             this.btnSelectFolder.TabIndex = 4;
             this.btnSelectFolder.Text = "...";
             this.btnSelectFolder.UseVisualStyleBackColor = true;
@@ -60,9 +60,9 @@
             // chkFixedPath
             // 
             this.chkFixedPath.AutoSize = true;
-            this.chkFixedPath.Location = new System.Drawing.Point(3, 26);
+            this.chkFixedPath.Location = new System.Drawing.Point(0, 32);
             this.chkFixedPath.Name = "chkFixedPath";
-            this.chkFixedPath.Size = new System.Drawing.Size(95, 21);
+            this.chkFixedPath.Size = new System.Drawing.Size(109, 24);
             this.chkFixedPath.TabIndex = 5;
             this.chkFixedPath.Text = "Fixed path";
             this.chkFixedPath.UseVisualStyleBackColor = true;
@@ -74,9 +74,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblExpandedPath.AutoEllipsis = true;
             this.lblExpandedPath.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblExpandedPath.Location = new System.Drawing.Point(104, 26);
+            this.lblExpandedPath.Location = new System.Drawing.Point(118, 30);
             this.lblExpandedPath.Name = "lblExpandedPath";
-            this.lblExpandedPath.Size = new System.Drawing.Size(228, 23);
+            this.lblExpandedPath.Size = new System.Drawing.Size(222, 26);
             this.lblExpandedPath.TabIndex = 6;
             this.lblExpandedPath.Text = "(Not specified)";
             this.lblExpandedPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -89,7 +89,7 @@
             this.Controls.Add(this.txtFolder);
             this.Controls.Add(this.btnSelectFolder);
             this.Name = "FolderPathUserControl";
-            this.Size = new System.Drawing.Size(335, 50);
+            this.Size = new System.Drawing.Size(340, 60);
             this.ResumeLayout(false);
             this.PerformLayout();
 

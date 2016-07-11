@@ -1,4 +1,4 @@
-namespace SandcastleBuilder.Package.UI
+namespace SandcastleBuilder.Gui
 {
     partial class AboutDlg
     {
@@ -155,7 +155,7 @@ namespace SandcastleBuilder.Package.UI
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Tan;
-            this.pictureBox1.Image = global::SandcastleBuilder.Package.Properties.Resources.Sandcastle;
+            this.pictureBox1.Image = global::SandcastleBuilder.Gui.Properties.Resources.Sandcastle;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(312, 520);

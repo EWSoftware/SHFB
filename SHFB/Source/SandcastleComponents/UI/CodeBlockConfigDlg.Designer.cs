@@ -66,9 +66,9 @@ namespace SandcastleBuilder.Components.UI
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(668, 404);
+            this.btnCancel.Location = new System.Drawing.Point(870, 517);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 27;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -77,9 +77,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 404);
+            this.btnOK.Location = new System.Drawing.Point(12, 517);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 25;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -88,9 +88,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(275, 409);
+            this.lnkProjectSite.Location = new System.Drawing.Point(354, 521);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(274, 26);
             this.lnkProjectSite.TabIndex = 26;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -100,9 +100,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // btnSelectFolder
             // 
-            this.btnSelectFolder.Location = new System.Drawing.Point(724, 33);
+            this.btnSelectFolder.Location = new System.Drawing.Point(841, 36);
             this.btnSelectFolder.Name = "btnSelectFolder";
-            this.btnSelectFolder.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectFolder.Size = new System.Drawing.Size(35, 35);
             this.btnSelectFolder.TabIndex = 2;
             this.btnSelectFolder.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectFolder, "Select base source folder");
@@ -111,9 +111,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // btnSelectSyntax
             // 
-            this.btnSelectSyntax.Location = new System.Drawing.Point(724, 83);
+            this.btnSelectSyntax.Location = new System.Drawing.Point(841, 99);
             this.btnSelectSyntax.Name = "btnSelectSyntax";
-            this.btnSelectSyntax.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectSyntax.Size = new System.Drawing.Size(35, 35);
             this.btnSelectSyntax.TabIndex = 5;
             this.btnSelectSyntax.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectSyntax, "Select the language syntax filename");
@@ -122,9 +122,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // btnSelectXsltStylesheet
             // 
-            this.btnSelectXsltStylesheet.Location = new System.Drawing.Point(724, 135);
+            this.btnSelectXsltStylesheet.Location = new System.Drawing.Point(841, 162);
             this.btnSelectXsltStylesheet.Name = "btnSelectXsltStylesheet";
-            this.btnSelectXsltStylesheet.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectXsltStylesheet.Size = new System.Drawing.Size(35, 35);
             this.btnSelectXsltStylesheet.TabIndex = 8;
             this.btnSelectXsltStylesheet.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectXsltStylesheet, "Select the XSLT transformation file");
@@ -133,9 +133,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // btnSelectScript
             // 
-            this.btnSelectScript.Location = new System.Drawing.Point(724, 242);
+            this.btnSelectScript.Location = new System.Drawing.Point(841, 288);
             this.btnSelectScript.Name = "btnSelectScript";
-            this.btnSelectScript.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectScript.Size = new System.Drawing.Size(35, 35);
             this.btnSelectScript.TabIndex = 14;
             this.btnSelectScript.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectScript, "Select the colorizer JavaScript file");
@@ -143,9 +143,9 @@ namespace SandcastleBuilder.Components.UI
             // 
             // btnSelectCssStylesheet
             // 
-            this.btnSelectCssStylesheet.Location = new System.Drawing.Point(724, 186);
+            this.btnSelectCssStylesheet.Location = new System.Drawing.Point(841, 225);
             this.btnSelectCssStylesheet.Name = "btnSelectCssStylesheet";
-            this.btnSelectCssStylesheet.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectCssStylesheet.Size = new System.Drawing.Size(35, 35);
             this.btnSelectCssStylesheet.TabIndex = 11;
             this.btnSelectCssStylesheet.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectCssStylesheet, "Select the colorizer stylesheet filename");
@@ -158,79 +158,79 @@ namespace SandcastleBuilder.Components.UI
             // txtSyntaxFile
             // 
             this.epErrors.SetIconPadding(this.txtSyntaxFile, 35);
-            this.txtSyntaxFile.Location = new System.Drawing.Point(12, 86);
+            this.txtSyntaxFile.Location = new System.Drawing.Point(12, 101);
             this.txtSyntaxFile.MaxLength = 256;
             this.txtSyntaxFile.Name = "txtSyntaxFile";
-            this.txtSyntaxFile.Size = new System.Drawing.Size(711, 22);
+            this.txtSyntaxFile.Size = new System.Drawing.Size(823, 31);
             this.txtSyntaxFile.TabIndex = 4;
             // 
             // txtXsltStylesheetFile
             // 
             this.epErrors.SetIconPadding(this.txtXsltStylesheetFile, 35);
-            this.txtXsltStylesheetFile.Location = new System.Drawing.Point(12, 137);
+            this.txtXsltStylesheetFile.Location = new System.Drawing.Point(12, 164);
             this.txtXsltStylesheetFile.MaxLength = 256;
             this.txtXsltStylesheetFile.Name = "txtXsltStylesheetFile";
-            this.txtXsltStylesheetFile.Size = new System.Drawing.Size(711, 22);
+            this.txtXsltStylesheetFile.Size = new System.Drawing.Size(823, 31);
             this.txtXsltStylesheetFile.TabIndex = 7;
             // 
             // txtCssStylesheet
             // 
             this.epErrors.SetIconPadding(this.txtCssStylesheet, 35);
-            this.txtCssStylesheet.Location = new System.Drawing.Point(12, 188);
+            this.txtCssStylesheet.Location = new System.Drawing.Point(12, 227);
             this.txtCssStylesheet.MaxLength = 256;
             this.txtCssStylesheet.Name = "txtCssStylesheet";
-            this.txtCssStylesheet.Size = new System.Drawing.Size(711, 22);
+            this.txtCssStylesheet.Size = new System.Drawing.Size(823, 31);
             this.txtCssStylesheet.TabIndex = 10;
             // 
             // txtScriptFile
             // 
             this.epErrors.SetIconPadding(this.txtScriptFile, 35);
-            this.txtScriptFile.Location = new System.Drawing.Point(12, 244);
+            this.txtScriptFile.Location = new System.Drawing.Point(12, 290);
             this.txtScriptFile.MaxLength = 256;
             this.txtScriptFile.Name = "txtScriptFile";
-            this.txtScriptFile.Size = new System.Drawing.Size(711, 22);
+            this.txtScriptFile.Size = new System.Drawing.Size(823, 31);
             this.txtScriptFile.TabIndex = 13;
             // 
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(376, 23);
+            this.label1.Size = new System.Drawing.Size(823, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Base path for relative paths in <code> \'source\' attributes";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtBasePath
             // 
-            this.txtBasePath.Location = new System.Drawing.Point(12, 35);
+            this.txtBasePath.Location = new System.Drawing.Point(12, 38);
             this.txtBasePath.MaxLength = 256;
             this.txtBasePath.Name = "txtBasePath";
-            this.txtBasePath.Size = new System.Drawing.Size(711, 22);
+            this.txtBasePath.Size = new System.Drawing.Size(823, 31);
             this.txtBasePath.TabIndex = 1;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(12, 60);
+            this.label2.Location = new System.Drawing.Point(12, 72);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(244, 23);
+            this.label2.Size = new System.Drawing.Size(823, 26);
             this.label2.TabIndex = 3;
             this.label2.Text = "&Language syntax configuration file";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(12, 111);
+            this.label3.Location = new System.Drawing.Point(12, 135);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(222, 23);
+            this.label3.Size = new System.Drawing.Size(823, 26);
             this.label3.TabIndex = 6;
             this.label3.Text = "&XSLT style transformation file";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(6, 278);
+            this.label4.Location = new System.Drawing.Point(12, 342);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(131, 23);
+            this.label4.Size = new System.Drawing.Size(174, 26);
             this.label4.TabIndex = 15;
             this.label4.Text = "&Default Language";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -253,104 +253,110 @@ namespace SandcastleBuilder.Components.UI
             "XAML",
             "SQL",
             "PowerShell"});
-            this.cboLanguage.Location = new System.Drawing.Point(143, 278);
+            this.cboLanguage.Location = new System.Drawing.Point(192, 340);
             this.cboLanguage.MaxDropDownItems = 16;
             this.cboLanguage.Name = "cboLanguage";
-            this.cboLanguage.Size = new System.Drawing.Size(121, 24);
+            this.cboLanguage.Size = new System.Drawing.Size(162, 33);
             this.cboLanguage.TabIndex = 16;
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(270, 278);
+            this.label5.Location = new System.Drawing.Point(359, 342);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(134, 23);
+            this.label5.Size = new System.Drawing.Size(156, 26);
             this.label5.TabIndex = 17;
             this.label5.Text = "Default &Tab Size";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // udcTabSize
             // 
-            this.udcTabSize.Location = new System.Drawing.Point(410, 280);
+            this.udcTabSize.Location = new System.Drawing.Point(521, 341);
             this.udcTabSize.Maximum = new decimal(new int[] {
             25,
             0,
             0,
             0});
             this.udcTabSize.Name = "udcTabSize";
-            this.udcTabSize.Size = new System.Drawing.Size(56, 22);
+            this.udcTabSize.Size = new System.Drawing.Size(70, 31);
             this.udcTabSize.TabIndex = 18;
             this.udcTabSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // chkNumberLines
             // 
-            this.chkNumberLines.Location = new System.Drawing.Point(12, 315);
+            this.chkNumberLines.AutoSize = true;
+            this.chkNumberLines.Location = new System.Drawing.Point(12, 397);
             this.chkNumberLines.Name = "chkNumberLines";
-            this.chkNumberLines.Size = new System.Drawing.Size(192, 21);
+            this.chkNumberLines.Size = new System.Drawing.Size(214, 29);
             this.chkNumberLines.TabIndex = 19;
             this.chkNumberLines.Text = "Enable line &numbering";
             this.chkNumberLines.UseVisualStyleBackColor = true;
             // 
             // chkOutlining
             // 
-            this.chkOutlining.Location = new System.Drawing.Point(12, 342);
+            this.chkOutlining.AutoSize = true;
+            this.chkOutlining.Location = new System.Drawing.Point(12, 432);
             this.chkOutlining.Name = "chkOutlining";
-            this.chkOutlining.Size = new System.Drawing.Size(379, 21);
+            this.chkOutlining.Size = new System.Drawing.Size(468, 29);
             this.chkOutlining.TabIndex = 20;
             this.chkOutlining.Text = "Enable &collapsible #region and #if/#else/#endif blocks";
             this.chkOutlining.UseVisualStyleBackColor = true;
             // 
             // chkDefaultTitle
             // 
+            this.chkDefaultTitle.AutoSize = true;
             this.chkDefaultTitle.Checked = true;
             this.chkDefaultTitle.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDefaultTitle.Location = new System.Drawing.Point(413, 315);
+            this.chkDefaultTitle.Location = new System.Drawing.Point(521, 397);
             this.chkDefaultTitle.Name = "chkDefaultTitle";
-            this.chkDefaultTitle.Size = new System.Drawing.Size(343, 21);
+            this.chkDefaultTitle.Size = new System.Drawing.Size(424, 29);
             this.chkDefaultTitle.TabIndex = 22;
             this.chkDefaultTitle.Text = "&Use language name as title if one is not specified";
             this.chkDefaultTitle.UseVisualStyleBackColor = true;
             // 
             // chkKeepSeeTags
             // 
-            this.chkKeepSeeTags.Location = new System.Drawing.Point(12, 369);
+            this.chkKeepSeeTags.AutoSize = true;
+            this.chkKeepSeeTags.Location = new System.Drawing.Point(12, 467);
             this.chkKeepSeeTags.Name = "chkKeepSeeTags";
-            this.chkKeepSeeTags.Size = new System.Drawing.Size(394, 21);
+            this.chkKeepSeeTags.Size = new System.Drawing.Size(488, 29);
             this.chkKeepSeeTags.TabIndex = 21;
             this.chkKeepSeeTags.Text = "&Keep <see> XML comment tags that occur with the code";
             this.chkKeepSeeTags.UseVisualStyleBackColor = true;
             // 
             // chkAllowMissingSource
             // 
-            this.chkAllowMissingSource.Location = new System.Drawing.Point(413, 342);
+            this.chkAllowMissingSource.AutoSize = true;
+            this.chkAllowMissingSource.Location = new System.Drawing.Point(521, 432);
             this.chkAllowMissingSource.Name = "chkAllowMissingSource";
-            this.chkAllowMissingSource.Size = new System.Drawing.Size(283, 21);
+            this.chkAllowMissingSource.Size = new System.Drawing.Size(351, 29);
             this.chkAllowMissingSource.TabIndex = 23;
             this.chkAllowMissingSource.Text = "Allo&w missing source code files/regions";
             this.chkAllowMissingSource.UseVisualStyleBackColor = true;
             // 
             // chkRemoveRegionMarkers
             // 
-            this.chkRemoveRegionMarkers.Location = new System.Drawing.Point(413, 369);
+            this.chkRemoveRegionMarkers.AutoSize = true;
+            this.chkRemoveRegionMarkers.Location = new System.Drawing.Point(521, 467);
             this.chkRemoveRegionMarkers.Name = "chkRemoveRegionMarkers";
-            this.chkRemoveRegionMarkers.Size = new System.Drawing.Size(250, 21);
+            this.chkRemoveRegionMarkers.Size = new System.Drawing.Size(284, 29);
             this.chkRemoveRegionMarkers.TabIndex = 24;
             this.chkRemoveRegionMarkers.Text = "Remove nested region &markers";
             this.chkRemoveRegionMarkers.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(12, 162);
+            this.label6.Location = new System.Drawing.Point(12, 198);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(228, 23);
+            this.label6.Size = new System.Drawing.Size(823, 26);
             this.label6.TabIndex = 9;
             this.label6.Text = "Colorized code &style sheet file";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(12, 218);
+            this.label7.Location = new System.Drawing.Point(12, 261);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(210, 23);
+            this.label7.Size = new System.Drawing.Size(823, 26);
             this.label7.TabIndex = 12;
             this.label7.Text = "Colorized code &JavaScript file";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -360,7 +366,7 @@ namespace SandcastleBuilder.Components.UI
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(768, 448);
+            this.ClientSize = new System.Drawing.Size(982, 564);
             this.Controls.Add(this.txtCssStylesheet);
             this.Controls.Add(this.btnSelectScript);
             this.Controls.Add(this.btnSelectCssStylesheet);
@@ -389,6 +395,7 @@ namespace SandcastleBuilder.Components.UI
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -39,18 +39,18 @@
             // 
             this.lbFiles.FormattingEnabled = true;
             this.lbFiles.IntegralHeight = false;
-            this.lbFiles.ItemHeight = 16;
-            this.lbFiles.Location = new System.Drawing.Point(12, 35);
+            this.lbFiles.ItemHeight = 25;
+            this.lbFiles.Location = new System.Drawing.Point(12, 38);
             this.lbFiles.Name = "lbFiles";
-            this.lbFiles.Size = new System.Drawing.Size(351, 303);
+            this.lbFiles.Size = new System.Drawing.Size(404, 303);
             this.lbFiles.TabIndex = 1;
             // 
             // btnYes
             // 
             this.btnYes.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.btnYes.Location = new System.Drawing.Point(12, 344);
+            this.btnYes.Location = new System.Drawing.Point(12, 347);
             this.btnYes.Name = "btnYes";
-            this.btnYes.Size = new System.Drawing.Size(88, 32);
+            this.btnYes.Size = new System.Drawing.Size(100, 35);
             this.btnYes.TabIndex = 2;
             this.btnYes.Text = "Yes";
             this.btnYes.UseVisualStyleBackColor = true;
@@ -58,9 +58,9 @@
             // btnNo
             // 
             this.btnNo.DialogResult = System.Windows.Forms.DialogResult.No;
-            this.btnNo.Location = new System.Drawing.Point(143, 344);
+            this.btnNo.Location = new System.Drawing.Point(164, 347);
             this.btnNo.Name = "btnNo";
-            this.btnNo.Size = new System.Drawing.Size(88, 32);
+            this.btnNo.Size = new System.Drawing.Size(100, 35);
             this.btnNo.TabIndex = 3;
             this.btnNo.Text = "No";
             this.btnNo.UseVisualStyleBackColor = true;
@@ -68,9 +68,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(275, 344);
+            this.btnCancel.Location = new System.Drawing.Point(316, 347);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -79,7 +79,7 @@
             // 
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(351, 23);
+            this.label1.Size = new System.Drawing.Size(404, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "Save changes to the following files?";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -89,12 +89,13 @@
             this.AcceptButton = this.btnYes;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(375, 388);
+            this.ClientSize = new System.Drawing.Size(428, 394);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnNo);
             this.Controls.Add(this.btnYes);
             this.Controls.Add(this.lbFiles);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

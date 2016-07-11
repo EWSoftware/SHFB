@@ -2,23 +2,23 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/18/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 07/03/2016
+// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This application provides a way for the user to choose which application is used to load help file builder
 // project files (.shfbproj).
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-// ==============================================================================================================
-// 1.9.3.1  04/19/2011  EFW  Created the code
-// 1.9.3.3  11/19/2011  EFW  Fixed up parameter passed to Process.Start()
-// 1.9.5.0  09/22/2012  EFW  Updated to launch latest Visual Studio version with the VS Package installed
+//    Date     Who  Comments
+// =====================================================================================================
+// 04/19/2011  EFW  Created the code
+// 11/19/2011  EFW  Fixed up parameter passed to Process.Start()
+// 09/22/2012  EFW  Updated to launch latest Visual Studio version with the VS Package installed
 //===============================================================================================================
 
 using System;
@@ -74,13 +74,13 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             get
             {
-                string vsPath = FindVisualStudioPath("VS120COMNTOOLS", "12.0");
+                string vsPath = FindVisualStudioPath("VS150COMNTOOLS", "15.0");
 
                 if(vsPath == null)
-                    vsPath = FindVisualStudioPath("VS110COMNTOOLS", "11.0");
+                    vsPath = FindVisualStudioPath("VS140COMNTOOLS", "14.0");
 
                 if(vsPath == null)
-                    vsPath = FindVisualStudioPath("VS100COMNTOOLS", "10.0");
+                    vsPath = FindVisualStudioPath("VS120COMNTOOLS", "12.0");
 
                 return vsPath;
             }
@@ -235,10 +235,9 @@ namespace SandcastleBuilder.ProjectLauncher
                     vsPath = null;
                 else
                 {
-                    // Check for VSPackage too.  If not present, we can't load the project.
-                    string vsPackagePath = Path.Combine(Environment.GetFolderPath(
-                        Environment.SpecialFolder.LocalApplicationData),
-                        @"Microsoft\VisualStudio\" + version + @"\Extensions");
+                    // Check for VSPackage too.  If not present, we can't load the project.  It should exist
+                    // in the All Users location.
+                    string vsPackagePath = Path.Combine(Path.GetDirectoryName(vsPath), "Extensions");
 
                     if(!Directory.Exists(vsPackagePath) || !Directory.EnumerateFiles(vsPackagePath,
                       "SandcastleBuilder.Package.dll", SearchOption.AllDirectories).Any())

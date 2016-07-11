@@ -60,9 +60,9 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(538, 379);
+            this.btnCancel.Location = new System.Drawing.Point(680, 508);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -71,9 +71,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 379);
+            this.btnOK.Location = new System.Drawing.Point(12, 508);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -82,9 +82,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(210, 384);
+            this.lnkProjectSite.Location = new System.Drawing.Point(247, 512);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(298, 26);
             this.lnkProjectSite.TabIndex = 4;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -103,38 +103,39 @@ namespace SandcastleBuilder.PlugIns
             this.tabConfig.Controls.Add(this.pgWebsite);
             this.tabConfig.Controls.Add(this.pgOpenXml);
             this.tabConfig.Controls.Add(this.pgMarkdown);
-            this.tabConfig.Location = new System.Drawing.Point(12, 42);
+            this.tabConfig.Location = new System.Drawing.Point(12, 47);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.SelectedIndex = 0;
-            this.tabConfig.Size = new System.Drawing.Size(614, 331);
+            this.tabConfig.Size = new System.Drawing.Size(768, 455);
             this.tabConfig.TabIndex = 2;
             // 
             // pgHtmlHelp1
             // 
             this.pgHtmlHelp1.Controls.Add(this.ucHtmlHelp1);
-            this.pgHtmlHelp1.Location = new System.Drawing.Point(4, 25);
+            this.pgHtmlHelp1.Location = new System.Drawing.Point(4, 34);
             this.pgHtmlHelp1.Name = "pgHtmlHelp1";
             this.pgHtmlHelp1.Padding = new System.Windows.Forms.Padding(3);
-            this.pgHtmlHelp1.Size = new System.Drawing.Size(606, 302);
+            this.pgHtmlHelp1.Size = new System.Drawing.Size(760, 417);
             this.pgHtmlHelp1.TabIndex = 0;
             this.pgHtmlHelp1.Text = "HTML Help 1";
             this.pgHtmlHelp1.UseVisualStyleBackColor = true;
             // 
             // ucHtmlHelp1
             // 
-            this.ucHtmlHelp1.Location = new System.Drawing.Point(5, 12);
+            this.ucHtmlHelp1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucHtmlHelp1.Location = new System.Drawing.Point(18, 7);
             this.ucHtmlHelp1.Name = "ucHtmlHelp1";
-            this.ucHtmlHelp1.Size = new System.Drawing.Size(596, 257);
+            this.ucHtmlHelp1.Size = new System.Drawing.Size(725, 360);
             this.ucHtmlHelp1.TabIndex = 0;
             // 
             // pgMSHelpViewer
             // 
             this.pgMSHelpViewer.Controls.Add(this.chkRenameMSHA);
             this.pgMSHelpViewer.Controls.Add(this.ucMSHelpViewer);
-            this.pgMSHelpViewer.Location = new System.Drawing.Point(4, 25);
+            this.pgMSHelpViewer.Location = new System.Drawing.Point(4, 34);
             this.pgMSHelpViewer.Name = "pgMSHelpViewer";
             this.pgMSHelpViewer.Padding = new System.Windows.Forms.Padding(3);
-            this.pgMSHelpViewer.Size = new System.Drawing.Size(606, 302);
+            this.pgMSHelpViewer.Size = new System.Drawing.Size(760, 417);
             this.pgMSHelpViewer.TabIndex = 3;
             this.pgMSHelpViewer.Text = "MS Help Viewer";
             this.pgMSHelpViewer.UseVisualStyleBackColor = true;
@@ -142,88 +143,95 @@ namespace SandcastleBuilder.PlugIns
             // chkRenameMSHA
             // 
             this.chkRenameMSHA.AutoSize = true;
-            this.chkRenameMSHA.Location = new System.Drawing.Point(93, 275);
+            this.chkRenameMSHA.Location = new System.Drawing.Point(25, 373);
             this.chkRenameMSHA.Name = "chkRenameMSHA";
-            this.chkRenameMSHA.Size = new System.Drawing.Size(420, 21);
+            this.chkRenameMSHA.Size = new System.Drawing.Size(532, 29);
             this.chkRenameMSHA.TabIndex = 1;
             this.chkRenameMSHA.Text = "Rename MSHA file to HelpContentSetup.msha when deployed";
             this.chkRenameMSHA.UseVisualStyleBackColor = true;
             // 
             // ucMSHelpViewer
             // 
-            this.ucMSHelpViewer.Location = new System.Drawing.Point(5, 12);
+            this.ucMSHelpViewer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucMSHelpViewer.Location = new System.Drawing.Point(18, 7);
             this.ucMSHelpViewer.Name = "ucMSHelpViewer";
-            this.ucMSHelpViewer.Size = new System.Drawing.Size(596, 257);
+            this.ucMSHelpViewer.Size = new System.Drawing.Size(725, 360);
             this.ucMSHelpViewer.TabIndex = 0;
             // 
             // pgWebsite
             // 
             this.pgWebsite.Controls.Add(this.ucWebsite);
-            this.pgWebsite.Location = new System.Drawing.Point(4, 25);
+            this.pgWebsite.Location = new System.Drawing.Point(4, 34);
             this.pgWebsite.Name = "pgWebsite";
             this.pgWebsite.Padding = new System.Windows.Forms.Padding(3);
-            this.pgWebsite.Size = new System.Drawing.Size(606, 302);
+            this.pgWebsite.Size = new System.Drawing.Size(760, 417);
             this.pgWebsite.TabIndex = 2;
             this.pgWebsite.Text = "Website";
             this.pgWebsite.UseVisualStyleBackColor = true;
             // 
             // ucWebsite
             // 
-            this.ucWebsite.Location = new System.Drawing.Point(5, 12);
+            this.ucWebsite.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucWebsite.Location = new System.Drawing.Point(18, 7);
             this.ucWebsite.Name = "ucWebsite";
-            this.ucWebsite.Size = new System.Drawing.Size(596, 257);
+            this.ucWebsite.Size = new System.Drawing.Size(725, 360);
             this.ucWebsite.TabIndex = 0;
             // 
             // pgOpenXml
             // 
             this.pgOpenXml.Controls.Add(this.ucOpenXml);
-            this.pgOpenXml.Location = new System.Drawing.Point(4, 25);
+            this.pgOpenXml.Location = new System.Drawing.Point(4, 34);
             this.pgOpenXml.Name = "pgOpenXml";
             this.pgOpenXml.Padding = new System.Windows.Forms.Padding(3);
-            this.pgOpenXml.Size = new System.Drawing.Size(606, 302);
+            this.pgOpenXml.Size = new System.Drawing.Size(760, 417);
             this.pgOpenXml.TabIndex = 4;
             this.pgOpenXml.Text = "Open XML";
             this.pgOpenXml.UseVisualStyleBackColor = true;
             // 
             // ucOpenXml
             // 
-            this.ucOpenXml.Location = new System.Drawing.Point(5, 12);
+            this.ucOpenXml.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucOpenXml.Location = new System.Drawing.Point(18, 7);
             this.ucOpenXml.Name = "ucOpenXml";
-            this.ucOpenXml.Size = new System.Drawing.Size(596, 257);
+            this.ucOpenXml.Size = new System.Drawing.Size(725, 360);
             this.ucOpenXml.TabIndex = 0;
             // 
             // pgMarkdown
             // 
             this.pgMarkdown.Controls.Add(this.ucMarkdownContent);
-            this.pgMarkdown.Location = new System.Drawing.Point(4, 25);
+            this.pgMarkdown.Location = new System.Drawing.Point(4, 34);
             this.pgMarkdown.Name = "pgMarkdown";
             this.pgMarkdown.Padding = new System.Windows.Forms.Padding(3);
-            this.pgMarkdown.Size = new System.Drawing.Size(606, 302);
+            this.pgMarkdown.Size = new System.Drawing.Size(760, 417);
             this.pgMarkdown.TabIndex = 5;
             this.pgMarkdown.Text = "Markdown Content";
             this.pgMarkdown.UseVisualStyleBackColor = true;
             // 
             // ucMarkdownContent
             // 
-            this.ucMarkdownContent.Location = new System.Drawing.Point(5, 12);
+            this.ucMarkdownContent.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucMarkdownContent.Location = new System.Drawing.Point(18, 7);
+            this.ucMarkdownContent.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucMarkdownContent.Name = "ucMarkdownContent";
-            this.ucMarkdownContent.Size = new System.Drawing.Size(596, 257);
+            this.ucMarkdownContent.Size = new System.Drawing.Size(725, 360);
             this.ucMarkdownContent.TabIndex = 0;
             // 
             // chkDeleteAfterDeploy
             // 
+            this.chkDeleteAfterDeploy.AutoSize = true;
             this.chkDeleteAfterDeploy.Location = new System.Drawing.Point(12, 12);
             this.chkDeleteAfterDeploy.Name = "chkDeleteAfterDeploy";
-            this.chkDeleteAfterDeploy.Size = new System.Drawing.Size(291, 24);
+            this.chkDeleteAfterDeploy.Size = new System.Drawing.Size(353, 29);
             this.chkDeleteAfterDeploy.TabIndex = 0;
             this.chkDeleteAfterDeploy.Text = "Delete source files &after deploying them";
             this.chkDeleteAfterDeploy.UseVisualStyleBackColor = true;
             // 
             // chkVerboseLogging
             // 
-            this.chkVerboseLogging.Location = new System.Drawing.Point(309, 12);
+            this.chkVerboseLogging.AutoSize = true;
+            this.chkVerboseLogging.Location = new System.Drawing.Point(432, 12);
             this.chkVerboseLogging.Name = "chkVerboseLogging";
-            this.chkVerboseLogging.Size = new System.Drawing.Size(259, 24);
+            this.chkVerboseLogging.Size = new System.Drawing.Size(315, 29);
             this.chkVerboseLogging.TabIndex = 1;
             this.chkVerboseLogging.Text = "Log the names of all files deployed";
             this.chkVerboseLogging.UseVisualStyleBackColor = true;
@@ -233,13 +241,14 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(638, 423);
+            this.ClientSize = new System.Drawing.Size(792, 555);
             this.Controls.Add(this.chkVerboseLogging);
             this.Controls.Add(this.chkDeleteAfterDeploy);
             this.Controls.Add(this.tabConfig);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -256,6 +265,7 @@ namespace SandcastleBuilder.PlugIns
             this.pgOpenXml.ResumeLayout(false);
             this.pgMarkdown.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

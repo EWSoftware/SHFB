@@ -41,9 +41,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(12, 399);
+            this.btnOK.Location = new System.Drawing.Point(12, 397);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnOK, "OK: Accept the selections and add them as references");
             this.btnOK.TabIndex = 1;
             this.btnOK.Text = "&OK";
@@ -54,9 +54,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(646, 399);
+            this.btnCancel.Location = new System.Drawing.Point(666, 397);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnCancel, "Cancel: Close this form without making a selection");
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
@@ -65,16 +65,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // lbGACEntries
             // 
-            this.lbGACEntries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbGACEntries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbGACEntries.FormattingEnabled = true;
             this.lbGACEntries.HorizontalScrollbar = true;
-            this.lbGACEntries.ItemHeight = 16;
+            this.lbGACEntries.IntegralHeight = false;
+            this.lbGACEntries.ItemHeight = 25;
             this.lbGACEntries.Location = new System.Drawing.Point(12, 12);
             this.lbGACEntries.Name = "lbGACEntries";
             this.lbGACEntries.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbGACEntries.Size = new System.Drawing.Size(722, 372);
+            this.lbGACEntries.Size = new System.Drawing.Size(754, 379);
             this.lbGACEntries.Sorted = true;
             this.statusBarTextProvider1.SetStatusBarText(this.lbGACEntries, "GAC Entries: Select the entries to add as references");
             this.lbGACEntries.TabIndex = 0;
@@ -84,10 +85,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(746, 443);
+            this.ClientSize = new System.Drawing.Size(778, 444);
             this.Controls.Add(this.lbGACEntries);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -14,6 +14,8 @@
 // in derived generics types.
 // 08/07/2015 - EFW - Expanded upon the 03/27 fix in ParametersMatch() to handle arrays with generic array
 // element types.
+// 06/09/2016 - EFW - Added yet another condition to ParametersMatch() to try and match odd intrinsic/generic
+// element type pairings.
 
 using System;
 using System.Collections.Generic;
@@ -252,7 +254,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                         continue;
 
                     // Match exactly, failing if compared to a version with generic parameters
-                    if(ParametersMatch(parameters, candidate.GetParameters(), true))
+                    if(ParametersMatch(parameters, candidate.GetParameters(), true, false))
                         return candidate;
                 }
 
@@ -265,7 +267,25 @@ namespace Microsoft.Ddue.Tools.Reflection
                     continue;
 
                 // Allow matches to versions with generic parameters
-                if(ParametersMatch(parameters, candidate.GetParameters(), false))
+                if(ParametersMatch(parameters, candidate.GetParameters(), false, false))
+                    return candidate;
+            }
+
+            // !EFW - If we get here, it's probably some really complicated signature involving multiple
+            // generic types and/or mixes of intrinsic array types and generic template parameter array types.
+            // So, give it one final last ditch attempt allowing intrinsic array types to match template
+            // parameter array types.  If that fails, we will give up.  If there's a better way to do this, I'm
+            // not aware of it.  https://github.com/EWSoftware/SHFB/issues/302
+            for(int i = 0; i < candidates.Count; i++)
+            {
+                Member candidate = candidates[i];
+
+                // Candidate must be same kind of node
+                if(candidate.NodeType != member.NodeType)
+                    continue;
+
+                // Allow matches to versions with generic parameters
+                if(ParametersMatch(parameters, candidate.GetParameters(), false, true))
                     return candidate;
             }
 
@@ -365,13 +385,15 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="noMatchOnGenericVersions">True to fail the match if either parameter is
         /// generic, false to allow matching to generic parameters even if the other isn't.</param>
         /// <returns>True if they match, false if not</returns>
+        /// <param name="allowMismatchedArrayTypes">True to allow a match with mismatched array types or false to
+        /// not allow a match.  If true, we're getting pretty desperate for a match.</param>
         /// <remarks>When <paramref name="noMatchOnGenericVersions"/> is true, it prevents matching a
         /// non-generic overload of the method to a generic version of the method.  This allows the
         /// non-generic version to be matched correctly (i.e. Contains(T) and Contains(Guid)).  If not
         /// done, the generic version is matched to both methods and the reflection info contains a
         /// duplicate generic method and loses the non-generic overload.</remarks>
         private static bool ParametersMatch(ParameterList parameters1, ParameterList parameters2,
-          bool noMatchOnGenericVersions)
+          bool noMatchOnGenericVersions, bool allowMismatchedArrayTypes)
         {
             if(parameters1.Count != parameters2.Count)
                 return false;
@@ -462,7 +484,17 @@ namespace Microsoft.Ddue.Tools.Reflection
                               type1.Template.TemplateParameters.Count != type2.Template.TemplateParameters.Count ||
                               type1.Template.TemplateParameters.Select(t => t.Name.Name).Except(
                               type2.Template.TemplateParameters.Select(t => t.Name.Name)).Count() != 0)
-                                return false;
+                            {
+                                // If this is the last ditch attempt and were allowing mismatched array types,
+                                // we're pretty much screwed so carry on.  This can happen in some really
+                                // complex cases were we end up with an intrinsic type and a template parameter:
+                                // https://github.com/EWSoftware/SHFB/issues/302
+                                if(!allowMismatchedArrayTypes || type1.StructuralElementTypes == null ||
+                                  type2.StructuralElementTypes == null || type1.StructuralElementTypes.Count == 0 ||
+                                  type2.StructuralElementTypes.Count == 0 ||
+                                  type1.StructuralElementTypes[0].IsTemplateParameter == type2.StructuralElementTypes[0].IsTemplateParameter)
+                                    return false;
+                            }
                         }
                     }
                 }

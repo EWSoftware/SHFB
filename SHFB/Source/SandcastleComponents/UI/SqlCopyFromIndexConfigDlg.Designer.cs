@@ -52,9 +52,9 @@
             // 
             // btnSetConnectionString
             // 
-            this.btnSetConnectionString.Location = new System.Drawing.Point(12, 95);
+            this.btnSetConnectionString.Location = new System.Drawing.Point(6, 112);
             this.btnSetConnectionString.Name = "btnSetConnectionString";
-            this.btnSetConnectionString.Size = new System.Drawing.Size(88, 32);
+            this.btnSetConnectionString.Size = new System.Drawing.Size(100, 35);
             this.btnSetConnectionString.TabIndex = 1;
             this.btnSetConnectionString.Text = "&Setup";
             this.toolTip1.SetToolTip(this.btnSetConnectionString, "Set the connection string and configure the database");
@@ -63,19 +63,19 @@
             // 
             // txtConnectionString
             // 
-            this.txtConnectionString.Location = new System.Drawing.Point(12, 24);
+            this.txtConnectionString.Location = new System.Drawing.Point(6, 30);
             this.txtConnectionString.Multiline = true;
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.ReadOnly = true;
-            this.txtConnectionString.Size = new System.Drawing.Size(612, 65);
+            this.txtConnectionString.Size = new System.Drawing.Size(842, 76);
             this.txtConnectionString.TabIndex = 0;
             this.txtConnectionString.Enter += new System.EventHandler(this.txtConnectionString_Enter);
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(282, 269);
+            this.lnkProjectSite.Location = new System.Drawing.Point(302, 360);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(275, 26);
             this.lnkProjectSite.TabIndex = 9;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -86,9 +86,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(576, 264);
+            this.btnCancel.Location = new System.Drawing.Point(766, 356);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Cancel without saving changes");
@@ -97,9 +97,9 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 264);
+            this.btnOK.Location = new System.Drawing.Point(12, 356);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 7;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save settings");
@@ -112,9 +112,9 @@
             // 
             // btnPurge
             // 
-            this.btnPurge.Location = new System.Drawing.Point(106, 264);
+            this.btnPurge.Location = new System.Drawing.Point(118, 356);
             this.btnPurge.Name = "btnPurge";
-            this.btnPurge.Size = new System.Drawing.Size(88, 32);
+            this.btnPurge.Size = new System.Drawing.Size(100, 35);
             this.btnPurge.TabIndex = 8;
             this.btnPurge.Text = "Purge";
             this.toolTip1.SetToolTip(this.btnPurge, "Purge the content ID and target caches");
@@ -127,7 +127,7 @@
             this.groupBox4.Controls.Add(this.btnSetConnectionString);
             this.groupBox4.Location = new System.Drawing.Point(12, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(652, 138);
+            this.groupBox4.Size = new System.Drawing.Size(854, 153);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "&Connection String";
@@ -135,18 +135,18 @@
             // chkEnableLocalCache
             // 
             this.chkEnableLocalCache.AutoSize = true;
-            this.chkEnableLocalCache.Location = new System.Drawing.Point(187, 166);
+            this.chkEnableLocalCache.Location = new System.Drawing.Point(409, 185);
             this.chkEnableLocalCache.Name = "chkEnableLocalCache";
-            this.chkEnableLocalCache.Size = new System.Drawing.Size(308, 21);
+            this.chkEnableLocalCache.Size = new System.Drawing.Size(384, 29);
             this.chkEnableLocalCache.TabIndex = 1;
             this.chkEnableLocalCache.Text = "&Enable caching of current project index data";
             this.chkEnableLocalCache.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(495, 192);
+            this.label6.Location = new System.Drawing.Point(507, 221);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(170, 23);
+            this.label6.Size = new System.Drawing.Size(218, 26);
             this.label6.TabIndex = 4;
             this.label6.Text = "(0 to disable local cache)";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -158,14 +158,14 @@
             0,
             0,
             0});
-            this.udcLocalCacheSize.Location = new System.Drawing.Point(433, 193);
+            this.udcLocalCacheSize.Location = new System.Drawing.Point(409, 220);
             this.udcLocalCacheSize.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
             this.udcLocalCacheSize.Name = "udcLocalCacheSize";
-            this.udcLocalCacheSize.Size = new System.Drawing.Size(56, 22);
+            this.udcLocalCacheSize.Size = new System.Drawing.Size(92, 31);
             this.udcLocalCacheSize.TabIndex = 3;
             this.udcLocalCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcLocalCacheSize.Value = new decimal(new int[] {
@@ -176,23 +176,23 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(300, 192);
+            this.label3.Location = new System.Drawing.Point(194, 221);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(127, 23);
+            this.label3.Size = new System.Drawing.Size(209, 26);
             this.label3.TabIndex = 2;
             this.label3.Text = "Local Cache Size";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // udcInMemoryCacheSize
             // 
-            this.udcInMemoryCacheSize.Location = new System.Drawing.Point(433, 221);
+            this.udcInMemoryCacheSize.Location = new System.Drawing.Point(409, 257);
             this.udcInMemoryCacheSize.Minimum = new decimal(new int[] {
             5,
             0,
             0,
             0});
             this.udcInMemoryCacheSize.Name = "udcInMemoryCacheSize";
-            this.udcInMemoryCacheSize.Size = new System.Drawing.Size(42, 22);
+            this.udcInMemoryCacheSize.Size = new System.Drawing.Size(72, 31);
             this.udcInMemoryCacheSize.TabIndex = 6;
             this.udcInMemoryCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcInMemoryCacheSize.Value = new decimal(new int[] {
@@ -203,19 +203,19 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(11, 220);
+            this.label2.Location = new System.Drawing.Point(85, 257);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(416, 23);
+            this.label2.Size = new System.Drawing.Size(318, 77);
             this.label2.TabIndex = 5;
             this.label2.Text = "Maximum number of uncached files kept in memory during build";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // SqlCopyFromIndexConfigDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(676, 308);
+            this.ClientSize = new System.Drawing.Size(878, 403);
             this.Controls.Add(this.chkEnableLocalCache);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.udcLocalCacheSize);
@@ -227,6 +227,7 @@
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

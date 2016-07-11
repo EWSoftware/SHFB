@@ -42,10 +42,10 @@
       <Value Profile="(Default)">WindowText</Value>
     </Setting>
     <Setting Name="BuildOutputFont" Type="System.Drawing.Font" Scope="User">
-      <Value Profile="(Default)">Courier New, 7.8pt</Value>
+      <Value Profile="(Default)">Courier New, 9pt</Value>
     </Setting>
     <Setting Name="TextEditorFont" Type="System.Drawing.Font" Scope="User">
-      <Value Profile="(Default)">Courier New, 10.2pt</Value>
+      <Value Profile="(Default)">Courier New, 11pt</Value>
     </Setting>
     <Setting Name="BeforeBuild" Type="SandcastleBuilder.Gui.BeforeBuildAction" Scope="User">
       <Value Profile="(Default)">SaveOpenDocuments</Value>

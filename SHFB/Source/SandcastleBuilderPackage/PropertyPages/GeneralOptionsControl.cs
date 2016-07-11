@@ -26,8 +26,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
-using Microsoft.VisualStudio.Shell;
-
 using SandcastleBuilder.Package.UI;
 
 namespace SandcastleBuilder.Package.PropertyPages

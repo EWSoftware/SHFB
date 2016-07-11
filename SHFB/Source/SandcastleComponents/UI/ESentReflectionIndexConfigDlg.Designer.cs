@@ -58,9 +58,9 @@
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(282, 224);
+            this.lnkProjectSite.Location = new System.Drawing.Point(310, 284);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(290, 26);
             this.lnkProjectSite.TabIndex = 9;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -71,9 +71,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(595, 219);
+            this.btnCancel.Location = new System.Drawing.Point(798, 280);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Cancel without saving changes");
@@ -82,9 +82,9 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 219);
+            this.btnOK.Location = new System.Drawing.Point(12, 280);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 7;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save settings");
@@ -98,16 +98,16 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(671, 65);
+            this.groupBox2.Size = new System.Drawing.Size(886, 78);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "&Framework Reflection Index Cache";
             // 
             // btnSelectFrameworkIndexCacheFolder
             // 
-            this.btnSelectFrameworkIndexCacheFolder.Location = new System.Drawing.Point(620, 28);
+            this.btnSelectFrameworkIndexCacheFolder.Location = new System.Drawing.Point(705, 28);
             this.btnSelectFrameworkIndexCacheFolder.Name = "btnSelectFrameworkIndexCacheFolder";
-            this.btnSelectFrameworkIndexCacheFolder.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectFrameworkIndexCacheFolder.Size = new System.Drawing.Size(35, 35);
             this.btnSelectFrameworkIndexCacheFolder.TabIndex = 2;
             this.btnSelectFrameworkIndexCacheFolder.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectFrameworkIndexCacheFolder, "Select the folder in which to place the Framework targets cache");
@@ -116,27 +116,27 @@
             // 
             // txtFrameworkIndexCachePath
             // 
-            this.txtFrameworkIndexCachePath.Location = new System.Drawing.Point(151, 29);
+            this.txtFrameworkIndexCachePath.Location = new System.Drawing.Point(236, 30);
             this.txtFrameworkIndexCachePath.MaxLength = 256;
             this.txtFrameworkIndexCachePath.Name = "txtFrameworkIndexCachePath";
-            this.txtFrameworkIndexCachePath.Size = new System.Drawing.Size(467, 22);
+            this.txtFrameworkIndexCachePath.Size = new System.Drawing.Size(467, 31);
             this.txtFrameworkIndexCachePath.TabIndex = 1;
             this.txtFrameworkIndexCachePath.Text = "{@LocalDataFolder}Cache\\ReflectionIndexCache";
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(21, 29);
+            this.label4.Location = new System.Drawing.Point(59, 32);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 23);
+            this.label4.Size = new System.Drawing.Size(171, 26);
             this.label4.TabIndex = 0;
             this.label4.Text = "Cache Location";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(492, 153);
+            this.label6.Location = new System.Drawing.Point(663, 193);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(170, 23);
+            this.label6.Size = new System.Drawing.Size(235, 26);
             this.label6.TabIndex = 4;
             this.label6.Text = "(0 to disable local cache)";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -148,14 +148,14 @@
             0,
             0,
             0});
-            this.udcLocalCacheSize.Location = new System.Drawing.Point(430, 154);
+            this.udcLocalCacheSize.Location = new System.Drawing.Point(577, 192);
             this.udcLocalCacheSize.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
             this.udcLocalCacheSize.Name = "udcLocalCacheSize";
-            this.udcLocalCacheSize.Size = new System.Drawing.Size(56, 22);
+            this.udcLocalCacheSize.Size = new System.Drawing.Size(80, 31);
             this.udcLocalCacheSize.TabIndex = 3;
             this.udcLocalCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcLocalCacheSize.Value = new decimal(new int[] {
@@ -166,9 +166,9 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(297, 153);
+            this.label3.Location = new System.Drawing.Point(347, 193);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(127, 23);
+            this.label3.Size = new System.Drawing.Size(224, 26);
             this.label3.TabIndex = 2;
             this.label3.Text = "Local Cache Size";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -179,9 +179,9 @@
             this.groupBox3.Controls.Add(this.btnSelectProjectIndexCacheFolder);
             this.groupBox3.Controls.Add(this.txtProjectIndexCachePath);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(12, 83);
+            this.groupBox3.Location = new System.Drawing.Point(12, 97);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(671, 65);
+            this.groupBox3.Size = new System.Drawing.Size(886, 78);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             // 
@@ -190,7 +190,7 @@
             this.chkEnableLocalCache.AutoSize = true;
             this.chkEnableLocalCache.Location = new System.Drawing.Point(6, -1);
             this.chkEnableLocalCache.Name = "chkEnableLocalCache";
-            this.chkEnableLocalCache.Size = new System.Drawing.Size(370, 21);
+            this.chkEnableLocalCache.Size = new System.Drawing.Size(462, 29);
             this.chkEnableLocalCache.TabIndex = 0;
             this.chkEnableLocalCache.Text = "&Enable caching of current project reflection index data";
             this.chkEnableLocalCache.UseVisualStyleBackColor = true;
@@ -199,9 +199,9 @@
             // btnSelectProjectIndexCacheFolder
             // 
             this.btnSelectProjectIndexCacheFolder.Enabled = false;
-            this.btnSelectProjectIndexCacheFolder.Location = new System.Drawing.Point(620, 28);
+            this.btnSelectProjectIndexCacheFolder.Location = new System.Drawing.Point(705, 33);
             this.btnSelectProjectIndexCacheFolder.Name = "btnSelectProjectIndexCacheFolder";
-            this.btnSelectProjectIndexCacheFolder.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectProjectIndexCacheFolder.Size = new System.Drawing.Size(35, 35);
             this.btnSelectProjectIndexCacheFolder.TabIndex = 3;
             this.btnSelectProjectIndexCacheFolder.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectProjectIndexCacheFolder, "Select the folder in which to place the current project\'s targets cache");
@@ -211,17 +211,17 @@
             // txtProjectIndexCachePath
             // 
             this.txtProjectIndexCachePath.Enabled = false;
-            this.txtProjectIndexCachePath.Location = new System.Drawing.Point(151, 29);
+            this.txtProjectIndexCachePath.Location = new System.Drawing.Point(236, 35);
             this.txtProjectIndexCachePath.MaxLength = 256;
             this.txtProjectIndexCachePath.Name = "txtProjectIndexCachePath";
-            this.txtProjectIndexCachePath.Size = new System.Drawing.Size(467, 22);
+            this.txtProjectIndexCachePath.Size = new System.Drawing.Size(467, 31);
             this.txtProjectIndexCachePath.TabIndex = 2;
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(21, 29);
+            this.label9.Location = new System.Drawing.Point(59, 37);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(124, 23);
+            this.label9.Size = new System.Drawing.Size(171, 26);
             this.label9.TabIndex = 1;
             this.label9.Text = "Cache Location";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -232,9 +232,9 @@
             // 
             // btnPurge
             // 
-            this.btnPurge.Location = new System.Drawing.Point(106, 219);
+            this.btnPurge.Location = new System.Drawing.Point(118, 280);
             this.btnPurge.Name = "btnPurge";
-            this.btnPurge.Size = new System.Drawing.Size(88, 32);
+            this.btnPurge.Size = new System.Drawing.Size(100, 35);
             this.btnPurge.TabIndex = 8;
             this.btnPurge.Text = "Purge";
             this.toolTip1.SetToolTip(this.btnPurge, "Purge the reflection index caches");
@@ -243,14 +243,14 @@
             // 
             // udcInMemoryCacheSize
             // 
-            this.udcInMemoryCacheSize.Location = new System.Drawing.Point(430, 182);
+            this.udcInMemoryCacheSize.Location = new System.Drawing.Point(577, 229);
             this.udcInMemoryCacheSize.Minimum = new decimal(new int[] {
             5,
             0,
             0,
             0});
             this.udcInMemoryCacheSize.Name = "udcInMemoryCacheSize";
-            this.udcInMemoryCacheSize.Size = new System.Drawing.Size(42, 22);
+            this.udcInMemoryCacheSize.Size = new System.Drawing.Size(80, 31);
             this.udcInMemoryCacheSize.TabIndex = 6;
             this.udcInMemoryCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcInMemoryCacheSize.Value = new decimal(new int[] {
@@ -261,9 +261,9 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(8, 181);
+            this.label2.Location = new System.Drawing.Point(3, 230);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(416, 23);
+            this.label2.Size = new System.Drawing.Size(568, 26);
             this.label2.TabIndex = 5;
             this.label2.Text = "Maximum number of uncached files kept in memory during build";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -273,7 +273,7 @@
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(695, 263);
+            this.ClientSize = new System.Drawing.Size(910, 327);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnPurge);
             this.Controls.Add(this.udcLocalCacheSize);
@@ -285,6 +285,7 @@
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

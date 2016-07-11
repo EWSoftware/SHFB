@@ -53,10 +53,10 @@
             // 
             this.cboRunPostBuildEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboRunPostBuildEvent.FormattingEnabled = true;
-            this.cboRunPostBuildEvent.Location = new System.Drawing.Point(191, 341);
+            this.cboRunPostBuildEvent.Location = new System.Drawing.Point(236, 339);
             this.cboRunPostBuildEvent.MaxDropDownItems = 16;
             this.cboRunPostBuildEvent.Name = "cboRunPostBuildEvent";
-            this.cboRunPostBuildEvent.Size = new System.Drawing.Size(214, 28);
+            this.cboRunPostBuildEvent.Size = new System.Drawing.Size(215, 33);
             this.cboRunPostBuildEvent.TabIndex = 6;
             this.cboRunPostBuildEvent.Tag = "RunPostBuildEvent";
             // 
@@ -64,25 +64,25 @@
             // 
             this.label4.Location = new System.Drawing.Point(6, 343);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(179, 23);
+            this.label4.Size = new System.Drawing.Size(224, 26);
             this.label4.TabIndex = 5;
             this.label4.Text = "Ru&n the post-build event";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(3, 11);
+            this.label1.Location = new System.Drawing.Point(6, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(226, 23);
+            this.label1.Size = new System.Drawing.Size(304, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "P&re-build event command line:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(3, 193);
+            this.label2.Location = new System.Drawing.Point(6, 190);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(226, 23);
+            this.label2.Size = new System.Drawing.Size(304, 26);
             this.label2.TabIndex = 3;
             this.label2.Text = "P&ost-build event command line:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -120,9 +120,9 @@
             // btnEditPreBuildEvent
             // 
             this.btnEditPreBuildEvent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditPreBuildEvent.Location = new System.Drawing.Point(602, 156);
+            this.btnEditPreBuildEvent.Location = new System.Drawing.Point(554, 156);
             this.btnEditPreBuildEvent.Name = "btnEditPreBuildEvent";
-            this.btnEditPreBuildEvent.Size = new System.Drawing.Size(180, 32);
+            this.btnEditPreBuildEvent.Size = new System.Drawing.Size(228, 35);
             this.btnEditPreBuildEvent.TabIndex = 2;
             this.btnEditPreBuildEvent.Text = "Ed&it Pre-build Event";
             this.btnEditPreBuildEvent.UseVisualStyleBackColor = true;
@@ -131,9 +131,9 @@
             // btnEditPostBuildEvent
             // 
             this.btnEditPostBuildEvent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditPostBuildEvent.Location = new System.Drawing.Point(602, 338);
+            this.btnEditPostBuildEvent.Location = new System.Drawing.Point(554, 339);
             this.btnEditPostBuildEvent.Name = "btnEditPostBuildEvent";
-            this.btnEditPostBuildEvent.Size = new System.Drawing.Size(180, 32);
+            this.btnEditPostBuildEvent.Size = new System.Drawing.Size(228, 35);
             this.btnEditPostBuildEvent.TabIndex = 7;
             this.btnEditPostBuildEvent.Text = "Edit Post-b&uild Event";
             this.btnEditPostBuildEvent.UseVisualStyleBackColor = true;
@@ -147,9 +147,9 @@
             this.lblStandaloneGUI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblStandaloneGUI.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStandaloneGUI.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.lblStandaloneGUI.Location = new System.Drawing.Point(3, 377);
+            this.lblStandaloneGUI.Location = new System.Drawing.Point(3, 381);
             this.lblStandaloneGUI.Name = "lblStandaloneGUI";
-            this.lblStandaloneGUI.Size = new System.Drawing.Size(779, 49);
+            this.lblStandaloneGUI.Size = new System.Drawing.Size(779, 68);
             this.lblStandaloneGUI.TabIndex = 8;
             this.lblStandaloneGUI.Text = "Pre-build and post-build events will only be executed when the project is built w" +
     "ith MSBuild or Visual Studio.";
@@ -168,9 +168,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboRunPostBuildEvent);
             this.Controls.Add(this.label4);
-            this.MinimumSize = new System.Drawing.Size(745, 310);
+            this.MinimumSize = new System.Drawing.Size(785, 453);
             this.Name = "BuildEventPropertiesPageControl";
-            this.Size = new System.Drawing.Size(785, 434);
+            this.Size = new System.Drawing.Size(785, 453);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

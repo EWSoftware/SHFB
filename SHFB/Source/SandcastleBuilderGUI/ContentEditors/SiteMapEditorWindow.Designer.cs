@@ -46,6 +46,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.ClientSize = new System.Drawing.Size(882, 555);
             this.Controls.Add(this.ehSiteMapEditorHost);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SiteMapEditorWindow";
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;

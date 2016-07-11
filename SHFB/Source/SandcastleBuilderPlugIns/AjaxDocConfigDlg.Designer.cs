@@ -65,10 +65,10 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(511, 356);
+            this.btnCancel.Location = new System.Drawing.Point(659, 480);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 4;
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -76,9 +76,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 356);
+            this.btnOK.Location = new System.Drawing.Point(12, 480);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -87,10 +87,10 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkSHFBProjectSite
             // 
-            this.lnkSHFBProjectSite.Location = new System.Drawing.Point(140, 361);
+            this.lnkSHFBProjectSite.Location = new System.Drawing.Point(178, 484);
             this.lnkSHFBProjectSite.Name = "lnkSHFBProjectSite";
-            this.lnkSHFBProjectSite.Size = new System.Drawing.Size(218, 23);
-            this.lnkSHFBProjectSite.TabIndex = 5;
+            this.lnkSHFBProjectSite.Size = new System.Drawing.Size(276, 26);
+            this.lnkSHFBProjectSite.TabIndex = 4;
             this.lnkSHFBProjectSite.TabStop = true;
             this.lnkSHFBProjectSite.Text = "Sandcastle Help File Builder";
             this.lnkSHFBProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -99,10 +99,10 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkAjaxDocProjectSite
             // 
-            this.lnkAjaxDocProjectSite.Location = new System.Drawing.Point(366, 361);
+            this.lnkAjaxDocProjectSite.Location = new System.Drawing.Point(488, 484);
             this.lnkAjaxDocProjectSite.Name = "lnkAjaxDocProjectSite";
-            this.lnkAjaxDocProjectSite.Size = new System.Drawing.Size(105, 23);
-            this.lnkAjaxDocProjectSite.TabIndex = 6;
+            this.lnkAjaxDocProjectSite.Size = new System.Drawing.Size(105, 26);
+            this.lnkAjaxDocProjectSite.TabIndex = 5;
             this.lnkAjaxDocProjectSite.TabStop = true;
             this.lnkAjaxDocProjectSite.Text = "AjaxDoc";
             this.lnkAjaxDocProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -116,10 +116,10 @@ namespace SandcastleBuilder.PlugIns
             // txtProjectName
             // 
             this.epErrors.SetIconPadding(this.txtProjectName, 35);
-            this.txtProjectName.Location = new System.Drawing.Point(128, 52);
+            this.txtProjectName.Location = new System.Drawing.Point(170, 72);
             this.txtProjectName.MaxLength = 256;
             this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(412, 22);
+            this.txtProjectName.Size = new System.Drawing.Size(522, 31);
             this.txtProjectName.TabIndex = 3;
             this.txtProjectName.Text = "MicrosoftAjax";
             // 
@@ -127,29 +127,29 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.txtPassword.Enabled = false;
             this.epErrors.SetIconPadding(this.txtPassword, 35);
-            this.txtPassword.Location = new System.Drawing.Point(398, 44);
+            this.txtPassword.Location = new System.Drawing.Point(512, 69);
             this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(164, 22);
+            this.txtPassword.Size = new System.Drawing.Size(180, 31);
             this.txtPassword.TabIndex = 4;
             // 
             // txtUserName
             // 
             this.txtUserName.Enabled = false;
             this.epErrors.SetIconPadding(this.txtUserName, 35);
-            this.txtUserName.Location = new System.Drawing.Point(128, 44);
+            this.txtUserName.Location = new System.Drawing.Point(170, 69);
             this.txtUserName.MaxLength = 50;
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(164, 22);
+            this.txtUserName.Size = new System.Drawing.Size(212, 31);
             this.txtUserName.TabIndex = 2;
             // 
             // txtAjaxDocUrl
             // 
             this.epErrors.SetIconPadding(this.txtAjaxDocUrl, 35);
-            this.txtAjaxDocUrl.Location = new System.Drawing.Point(128, 24);
+            this.txtAjaxDocUrl.Location = new System.Drawing.Point(170, 35);
             this.txtAjaxDocUrl.MaxLength = 256;
             this.txtAjaxDocUrl.Name = "txtAjaxDocUrl";
-            this.txtAjaxDocUrl.Size = new System.Drawing.Size(412, 22);
+            this.txtAjaxDocUrl.Size = new System.Drawing.Size(522, 31);
             this.txtAjaxDocUrl.TabIndex = 1;
             this.txtAjaxDocUrl.Text = "http://localhost/AjaxDoc/";
             // 
@@ -157,57 +157,58 @@ namespace SandcastleBuilder.PlugIns
             // 
             this.txtProxyUserName.Enabled = false;
             this.epErrors.SetIconPadding(this.txtProxyUserName, 35);
-            this.txtProxyUserName.Location = new System.Drawing.Point(128, 100);
+            this.txtProxyUserName.Location = new System.Drawing.Point(170, 141);
             this.txtProxyUserName.MaxLength = 50;
             this.txtProxyUserName.Name = "txtProxyUserName";
-            this.txtProxyUserName.Size = new System.Drawing.Size(164, 22);
+            this.txtProxyUserName.Size = new System.Drawing.Size(212, 31);
             this.txtProxyUserName.TabIndex = 5;
             // 
             // txtProxyPassword
             // 
             this.txtProxyPassword.Enabled = false;
             this.epErrors.SetIconPadding(this.txtProxyPassword, 35);
-            this.txtProxyPassword.Location = new System.Drawing.Point(398, 100);
+            this.txtProxyPassword.Location = new System.Drawing.Point(512, 141);
             this.txtProxyPassword.MaxLength = 50;
             this.txtProxyPassword.Name = "txtProxyPassword";
-            this.txtProxyPassword.Size = new System.Drawing.Size(164, 22);
+            this.txtProxyPassword.Size = new System.Drawing.Size(180, 31);
             this.txtProxyPassword.TabIndex = 7;
             // 
             // txtProxyServer
             // 
             this.txtProxyServer.Enabled = false;
             this.epErrors.SetIconPadding(this.txtProxyServer, 35);
-            this.txtProxyServer.Location = new System.Drawing.Point(128, 48);
+            this.txtProxyServer.Location = new System.Drawing.Point(170, 69);
             this.txtProxyServer.MaxLength = 256;
             this.txtProxyServer.Name = "txtProxyServer";
-            this.txtProxyServer.Size = new System.Drawing.Size(412, 22);
+            this.txtProxyServer.Size = new System.Drawing.Size(412, 31);
             this.txtProxyServer.TabIndex = 2;
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(11, 24);
+            this.label7.Location = new System.Drawing.Point(9, 37);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(111, 23);
+            this.label7.Size = new System.Drawing.Size(155, 26);
             this.label7.TabIndex = 0;
             this.label7.Text = "&AjaxDoc URL";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(14, 52);
+            this.label6.Location = new System.Drawing.Point(9, 74);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(108, 23);
+            this.label6.Size = new System.Drawing.Size(155, 26);
             this.label6.TabIndex = 2;
             this.label6.Text = "&Project Name";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkUseDefaultCredentials
             // 
+            this.chkUseDefaultCredentials.AutoSize = true;
             this.chkUseDefaultCredentials.Checked = true;
             this.chkUseDefaultCredentials.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseDefaultCredentials.Location = new System.Drawing.Point(128, 20);
+            this.chkUseDefaultCredentials.Location = new System.Drawing.Point(170, 34);
             this.chkUseDefaultCredentials.Name = "chkUseDefaultCredentials";
-            this.chkUseDefaultCredentials.Size = new System.Drawing.Size(190, 21);
+            this.chkUseDefaultCredentials.Size = new System.Drawing.Size(221, 29);
             this.chkUseDefaultCredentials.TabIndex = 0;
             this.chkUseDefaultCredentials.Text = "Use &Default Credentials";
             this.chkUseDefaultCredentials.UseVisualStyleBackColor = true;
@@ -215,18 +216,18 @@ namespace SandcastleBuilder.PlugIns
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(311, 44);
+            this.label3.Location = new System.Drawing.Point(388, 69);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 23);
+            this.label3.Size = new System.Drawing.Size(118, 26);
             this.label3.TabIndex = 3;
             this.label3.Text = "Pass&word";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(34, 44);
+            this.label2.Location = new System.Drawing.Point(9, 71);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 23);
+            this.label2.Size = new System.Drawing.Size(155, 26);
             this.label2.TabIndex = 1;
             this.label2.Text = "&User Name";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -240,18 +241,19 @@ namespace SandcastleBuilder.PlugIns
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(587, 110);
+            this.groupBox1.Size = new System.Drawing.Size(747, 151);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "AjaxDoc Project";
             // 
             // chkRegenerateFiles
             // 
+            this.chkRegenerateFiles.AutoSize = true;
             this.chkRegenerateFiles.Checked = true;
             this.chkRegenerateFiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRegenerateFiles.Location = new System.Drawing.Point(128, 80);
+            this.chkRegenerateFiles.Location = new System.Drawing.Point(170, 109);
             this.chkRegenerateFiles.Name = "chkRegenerateFiles";
-            this.chkRegenerateFiles.Size = new System.Drawing.Size(384, 21);
+            this.chkRegenerateFiles.Size = new System.Drawing.Size(464, 29);
             this.chkRegenerateFiles.TabIndex = 4;
             this.chkRegenerateFiles.Text = "&Regenerate the output files before downloading them";
             this.chkRegenerateFiles.UseVisualStyleBackColor = true;
@@ -263,9 +265,9 @@ namespace SandcastleBuilder.PlugIns
             this.groupBox2.Controls.Add(this.txtPassword);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.chkUseDefaultCredentials);
-            this.groupBox2.Location = new System.Drawing.Point(12, 128);
+            this.groupBox2.Location = new System.Drawing.Point(12, 169);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(587, 78);
+            this.groupBox2.Size = new System.Drawing.Size(747, 116);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "User Credentials";
@@ -280,18 +282,19 @@ namespace SandcastleBuilder.PlugIns
             this.groupBox3.Controls.Add(this.txtProxyPassword);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.chkUseProxyDefCreds);
-            this.groupBox3.Location = new System.Drawing.Point(12, 212);
+            this.groupBox3.Location = new System.Drawing.Point(12, 291);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(587, 138);
+            this.groupBox3.Size = new System.Drawing.Size(747, 183);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Proxy Credentials";
             // 
             // chkUseProxyServer
             // 
-            this.chkUseProxyServer.Location = new System.Drawing.Point(128, 21);
+            this.chkUseProxyServer.AutoSize = true;
+            this.chkUseProxyServer.Location = new System.Drawing.Point(170, 34);
             this.chkUseProxyServer.Name = "chkUseProxyServer";
-            this.chkUseProxyServer.Size = new System.Drawing.Size(153, 21);
+            this.chkUseProxyServer.Size = new System.Drawing.Size(176, 29);
             this.chkUseProxyServer.TabIndex = 0;
             this.chkUseProxyServer.Text = "User Pr&oxy Server";
             this.chkUseProxyServer.UseVisualStyleBackColor = true;
@@ -299,39 +302,40 @@ namespace SandcastleBuilder.PlugIns
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(14, 48);
+            this.label5.Location = new System.Drawing.Point(9, 73);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(108, 23);
+            this.label5.Size = new System.Drawing.Size(155, 23);
             this.label5.TabIndex = 1;
             this.label5.Text = "Pro&xy Server";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(311, 100);
+            this.label1.Location = new System.Drawing.Point(388, 141);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 23);
+            this.label1.Size = new System.Drawing.Size(118, 23);
             this.label1.TabIndex = 6;
             this.label1.Text = "Pa&ssword";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(34, 100);
+            this.label4.Location = new System.Drawing.Point(9, 145);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 23);
+            this.label4.Size = new System.Drawing.Size(155, 23);
             this.label4.TabIndex = 4;
             this.label4.Text = "Us&er Name";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkUseProxyDefCreds
             // 
+            this.chkUseProxyDefCreds.AutoSize = true;
             this.chkUseProxyDefCreds.Checked = true;
             this.chkUseProxyDefCreds.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseProxyDefCreds.Enabled = false;
-            this.chkUseProxyDefCreds.Location = new System.Drawing.Point(128, 76);
+            this.chkUseProxyDefCreds.Location = new System.Drawing.Point(170, 106);
             this.chkUseProxyDefCreds.Name = "chkUseProxyDefCreds";
-            this.chkUseProxyDefCreds.Size = new System.Drawing.Size(190, 21);
+            this.chkUseProxyDefCreds.Size = new System.Drawing.Size(221, 29);
             this.chkUseProxyDefCreds.TabIndex = 3;
             this.chkUseProxyDefCreds.Text = "Use &Default &Credentials";
             this.chkUseProxyDefCreds.UseVisualStyleBackColor = true;
@@ -342,7 +346,7 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(611, 400);
+            this.ClientSize = new System.Drawing.Size(771, 527);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -350,6 +354,7 @@ namespace SandcastleBuilder.PlugIns
             this.Controls.Add(this.lnkSHFBProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

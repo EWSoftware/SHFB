@@ -53,9 +53,9 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(245, 48);
+            this.label1.Location = new System.Drawing.Point(267, 53);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(145, 23);
+            this.label1.Size = new System.Drawing.Size(164, 26);
             this.label1.TabIndex = 4;
             this.label1.Text = "B&uild log filename";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -65,9 +65,9 @@
             this.chkCleanIntermediates.AutoSize = true;
             this.chkCleanIntermediates.Checked = true;
             this.chkCleanIntermediates.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCleanIntermediates.Location = new System.Drawing.Point(303, 124);
+            this.chkCleanIntermediates.Location = new System.Drawing.Point(344, 131);
             this.chkCleanIntermediates.Name = "chkCleanIntermediates";
-            this.chkCleanIntermediates.Size = new System.Drawing.Size(342, 24);
+            this.chkCleanIntermediates.Size = new System.Drawing.Size(405, 29);
             this.chkCleanIntermediates.TabIndex = 6;
             this.chkCleanIntermediates.Tag = "CleanIntermediates";
             this.chkCleanIntermediates.Text = "&Clean intermediate files after a successful build";
@@ -77,9 +77,9 @@
             // 
             this.chkDisableCodeBlockComponent.AutoSize = true;
             this.epNotes.SetError(this.chkDisableCodeBlockComponent, "If checked, code colorization and the other related features will be disabled");
-            this.chkDisableCodeBlockComponent.Location = new System.Drawing.Point(303, 184);
+            this.chkDisableCodeBlockComponent.Location = new System.Drawing.Point(344, 201);
             this.chkDisableCodeBlockComponent.Name = "chkDisableCodeBlockComponent";
-            this.chkDisableCodeBlockComponent.Size = new System.Drawing.Size(315, 24);
+            this.chkDisableCodeBlockComponent.Size = new System.Drawing.Size(379, 29);
             this.chkDisableCodeBlockComponent.TabIndex = 8;
             this.chkDisableCodeBlockComponent.Tag = "DisableCodeBlockComponent";
             this.chkDisableCodeBlockComponent.Text = "Disable the custom code block component";
@@ -90,9 +90,9 @@
             this.chkKeepLogFile.AutoSize = true;
             this.chkKeepLogFile.Checked = true;
             this.chkKeepLogFile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkKeepLogFile.Location = new System.Drawing.Point(303, 154);
+            this.chkKeepLogFile.Location = new System.Drawing.Point(344, 166);
             this.chkKeepLogFile.Name = "chkKeepLogFile";
-            this.chkKeepLogFile.Size = new System.Drawing.Size(295, 24);
+            this.chkKeepLogFile.Size = new System.Drawing.Size(350, 29);
             this.chkKeepLogFile.TabIndex = 7;
             this.chkKeepLogFile.Tag = "KeepLogFile";
             this.chkKeepLogFile.Text = "Keep the log file after a successful build";
@@ -100,9 +100,9 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(245, 14);
+            this.label2.Location = new System.Drawing.Point(256, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(146, 23);
+            this.label2.Size = new System.Drawing.Size(175, 26);
             this.label2.TabIndex = 2;
             this.label2.Text = "F&ramework version";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -112,10 +112,10 @@
             this.cboFrameworkVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFrameworkVersion.FormattingEnabled = true;
             this.epWarning.SetIconPadding(this.cboFrameworkVersion, 5);
-            this.cboFrameworkVersion.Location = new System.Drawing.Point(397, 12);
+            this.cboFrameworkVersion.Location = new System.Drawing.Point(438, 12);
             this.cboFrameworkVersion.MaxDropDownItems = 16;
             this.cboFrameworkVersion.Name = "cboFrameworkVersion";
-            this.cboFrameworkVersion.Size = new System.Drawing.Size(371, 28);
+            this.cboFrameworkVersion.Size = new System.Drawing.Size(438, 33);
             this.cboFrameworkVersion.TabIndex = 3;
             this.cboFrameworkVersion.Tag = "FrameworkVersion";
             // 
@@ -130,9 +130,9 @@
             this.chkIndentHtml.AutoSize = true;
             this.epNotes.SetError(this.chkIndentHtml, "Build component debugging aid.  Leave this unchecked for normal builds\nto produce" +
         " more compact HTML");
-            this.chkIndentHtml.Location = new System.Drawing.Point(303, 214);
+            this.chkIndentHtml.Location = new System.Drawing.Point(344, 236);
             this.chkIndentHtml.Name = "chkIndentHtml";
-            this.chkIndentHtml.Size = new System.Drawing.Size(180, 24);
+            this.chkIndentHtml.Size = new System.Drawing.Size(216, 29);
             this.chkIndentHtml.TabIndex = 9;
             this.chkIndentHtml.Tag = "IndentHtml";
             this.chkIndentHtml.Text = "Indent rendered HTML";
@@ -146,9 +146,9 @@
         " by the Output Path property.");
             this.txtBuildLogFile.Filter = "Log files (*.log)|*.log|All Files (*.*)|*.*";
             this.epNotes.SetIconPadding(this.txtBuildLogFile, 5);
-            this.txtBuildLogFile.Location = new System.Drawing.Point(397, 46);
+            this.txtBuildLogFile.Location = new System.Drawing.Point(438, 51);
             this.txtBuildLogFile.Name = "txtBuildLogFile";
-            this.txtBuildLogFile.Size = new System.Drawing.Size(371, 59);
+            this.txtBuildLogFile.Size = new System.Drawing.Size(438, 67);
             this.txtBuildLogFile.TabIndex = 5;
             this.txtBuildLogFile.Tag = "BuildLogFile";
             this.txtBuildLogFile.Title = "Select the log file location";
@@ -164,14 +164,14 @@
             0,
             0,
             0});
-            this.udcBoundedCapacity.Location = new System.Drawing.Point(431, 296);
+            this.udcBoundedCapacity.Location = new System.Drawing.Point(713, 320);
             this.udcBoundedCapacity.Maximum = new decimal(new int[] {
             9999,
             0,
             0,
             0});
             this.udcBoundedCapacity.Name = "udcBoundedCapacity";
-            this.udcBoundedCapacity.Size = new System.Drawing.Size(60, 27);
+            this.udcBoundedCapacity.Size = new System.Drawing.Size(74, 31);
             this.udcBoundedCapacity.TabIndex = 13;
             this.udcBoundedCapacity.Tag = "SaveComponentCacheCapacity";
             this.udcBoundedCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -185,7 +185,7 @@
             // 
             this.label3.Location = new System.Drawing.Point(3, 14);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(204, 23);
+            this.label3.Size = new System.Drawing.Size(250, 26);
             this.label3.TabIndex = 0;
             this.label3.Text = "&Build these help file formats:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -193,9 +193,9 @@
             // cblHelpFileFormat
             // 
             this.cblHelpFileFormat.FormattingEnabled = true;
-            this.cblHelpFileFormat.Location = new System.Drawing.Point(7, 41);
+            this.cblHelpFileFormat.Location = new System.Drawing.Point(8, 51);
             this.cblHelpFileFormat.Name = "cblHelpFileFormat";
-            this.cblHelpFileFormat.Size = new System.Drawing.Size(228, 246);
+            this.cblHelpFileFormat.Size = new System.Drawing.Size(253, 264);
             this.cblHelpFileFormat.TabIndex = 1;
             this.cblHelpFileFormat.Tag = "HelpFileFormat";
             // 
@@ -203,18 +203,18 @@
             // 
             this.cboBuildAssemblerVerbosity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboBuildAssemblerVerbosity.FormattingEnabled = true;
-            this.cboBuildAssemblerVerbosity.Location = new System.Drawing.Point(431, 255);
+            this.cboBuildAssemblerVerbosity.Location = new System.Drawing.Point(535, 281);
             this.cboBuildAssemblerVerbosity.MaxDropDownItems = 16;
             this.cboBuildAssemblerVerbosity.Name = "cboBuildAssemblerVerbosity";
-            this.cboBuildAssemblerVerbosity.Size = new System.Drawing.Size(214, 28);
+            this.cboBuildAssemblerVerbosity.Size = new System.Drawing.Size(252, 33);
             this.cboBuildAssemblerVerbosity.TabIndex = 11;
             this.cboBuildAssemblerVerbosity.Tag = "BuildAssemblerVerbosity";
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(241, 257);
+            this.label4.Location = new System.Drawing.Point(306, 283);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(184, 23);
+            this.label4.Size = new System.Drawing.Size(223, 26);
             this.label4.TabIndex = 10;
             this.label4.Text = "BuildAssembler &Verbosity";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -227,9 +227,9 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(44, 297);
+            this.label5.Location = new System.Drawing.Point(248, 321);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(381, 23);
+            this.label5.Size = new System.Drawing.Size(459, 26);
             this.label5.TabIndex = 12;
             this.label5.Text = "&Maximum Save Component writer task cache capacity";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -251,9 +251,9 @@
             this.Controls.Add(this.chkDisableCodeBlockComponent);
             this.Controls.Add(this.chkCleanIntermediates);
             this.Controls.Add(this.label1);
-            this.MinimumSize = new System.Drawing.Size(770, 300);
+            this.MinimumSize = new System.Drawing.Size(900, 365);
             this.Name = "BuildPropertiesPageControl";
-            this.Size = new System.Drawing.Size(795, 339);
+            this.Size = new System.Drawing.Size(900, 365);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcBoundedCapacity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.epWarning)).EndInit();

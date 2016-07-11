@@ -89,11 +89,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.editor.IsReadOnly = false;
             this.editor.Location = new System.Drawing.Point(0, 25);
             this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(530, 231);
+            this.editor.Size = new System.Drawing.Size(713, 264);
             this.editor.TabIndex = 0;
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbLegacyBold,
             this.tsbLegacyItalic,
@@ -121,7 +122,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbSpellCheck});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(530, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(713, 32);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -131,7 +132,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbLegacyBold.Image = global::SandcastleBuilder.Gui.Properties.Resources.Bold;
             this.tsbLegacyBold.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLegacyBold.Name = "tsbLegacyBold";
-            this.tsbLegacyBold.Size = new System.Drawing.Size(23, 24);
+            this.tsbLegacyBold.Size = new System.Drawing.Size(28, 29);
             this.tsbLegacyBold.Text = "legacyBold";
             this.tsbLegacyBold.ToolTipText = "Insert <legacyBold> (Ctrl+B)";
             this.tsbLegacyBold.Click += new System.EventHandler(this.insertElement_Click);
@@ -142,7 +143,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbLegacyItalic.Image = global::SandcastleBuilder.Gui.Properties.Resources.Italic;
             this.tsbLegacyItalic.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLegacyItalic.Name = "tsbLegacyItalic";
-            this.tsbLegacyItalic.Size = new System.Drawing.Size(23, 24);
+            this.tsbLegacyItalic.Size = new System.Drawing.Size(28, 29);
             this.tsbLegacyItalic.Text = "legacyItalic";
             this.tsbLegacyItalic.ToolTipText = "Insert <legacyItalic> (Ctrl+I)";
             this.tsbLegacyItalic.Click += new System.EventHandler(this.insertElement_Click);
@@ -153,7 +154,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbLegacyUnderline.Image = ((System.Drawing.Image)(resources.GetObject("tsbLegacyUnderline.Image")));
             this.tsbLegacyUnderline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLegacyUnderline.Name = "tsbLegacyUnderline";
-            this.tsbLegacyUnderline.Size = new System.Drawing.Size(23, 24);
+            this.tsbLegacyUnderline.Size = new System.Drawing.Size(28, 29);
             this.tsbLegacyUnderline.Text = "legacyUnderline";
             this.tsbLegacyUnderline.ToolTipText = "Insert <legacyUnderline> (Ctrl+U)";
             this.tsbLegacyUnderline.Click += new System.EventHandler(this.insertElement_Click);
@@ -164,7 +165,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbCodeInline.Image = global::SandcastleBuilder.Gui.Properties.Resources.SnippetsFile;
             this.tsbCodeInline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCodeInline.Name = "tsbCodeInline";
-            this.tsbCodeInline.Size = new System.Drawing.Size(23, 24);
+            this.tsbCodeInline.Size = new System.Drawing.Size(28, 29);
             this.tsbCodeInline.Text = "codeInline";
             this.tsbCodeInline.ToolTipText = "Insert <codeInline> (Ctrl+K)";
             this.tsbCodeInline.Click += new System.EventHandler(this.insertElement_Click);
@@ -172,7 +173,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbListBullet
             // 
@@ -180,7 +181,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbListBullet.Image = global::SandcastleBuilder.Gui.Properties.Resources.List_Bullets;
             this.tsbListBullet.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbListBullet.Name = "tsbListBullet";
-            this.tsbListBullet.Size = new System.Drawing.Size(23, 24);
+            this.tsbListBullet.Size = new System.Drawing.Size(28, 29);
             this.tsbListBullet.ToolTipText = "Insert <list class=\"bullet\">";
             this.tsbListBullet.Click += new System.EventHandler(this.insertList_Click);
             // 
@@ -190,7 +191,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbListNumber.Image = global::SandcastleBuilder.Gui.Properties.Resources.List_Numbered;
             this.tsbListNumber.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbListNumber.Name = "tsbListNumber";
-            this.tsbListNumber.Size = new System.Drawing.Size(23, 24);
+            this.tsbListNumber.Size = new System.Drawing.Size(28, 29);
             this.tsbListNumber.ToolTipText = "Insert <list class=\"ordered\">";
             this.tsbListNumber.Click += new System.EventHandler(this.insertList_Click);
             // 
@@ -200,14 +201,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbTable.Image = global::SandcastleBuilder.Gui.Properties.Resources.Table;
             this.tsbTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTable.Name = "tsbTable";
-            this.tsbTable.Size = new System.Drawing.Size(23, 24);
+            this.tsbTable.Size = new System.Drawing.Size(28, 29);
             this.tsbTable.ToolTipText = "Insert <table>";
             this.tsbTable.Click += new System.EventHandler(this.tsbTable_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbLocalLink
             // 
@@ -215,7 +216,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbLocalLink.Image = global::SandcastleBuilder.Gui.Properties.Resources.LocalLink;
             this.tsbLocalLink.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLocalLink.Name = "tsbLocalLink";
-            this.tsbLocalLink.Size = new System.Drawing.Size(23, 24);
+            this.tsbLocalLink.Size = new System.Drawing.Size(28, 29);
             this.tsbLocalLink.ToolTipText = "Insert <link> for in-page address";
             this.tsbLocalLink.Click += new System.EventHandler(this.tsbLocalLink_Click);
             // 
@@ -225,14 +226,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbExternalLink.Image = global::SandcastleBuilder.Gui.Properties.Resources.ExternalLink;
             this.tsbExternalLink.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExternalLink.Name = "tsbExternalLink";
-            this.tsbExternalLink.Size = new System.Drawing.Size(23, 24);
+            this.tsbExternalLink.Size = new System.Drawing.Size(28, 29);
             this.tsbExternalLink.ToolTipText = "Insert <externalLink>";
             this.tsbExternalLink.Click += new System.EventHandler(this.tsbExternalLink_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbInsertElement
             // 
@@ -262,7 +263,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miUI,
             this.miUserInput});
             this.tsbInsertElement.Name = "tsbInsertElement";
-            this.tsbInsertElement.Size = new System.Drawing.Size(55, 24);
+            this.tsbInsertElement.Size = new System.Drawing.Size(67, 29);
             this.tsbInsertElement.Text = "alert";
             this.tsbInsertElement.ToolTipText = "Insert <alert>";
             this.tsbInsertElement.ButtonClick += new System.EventHandler(this.tsbInsertElement_ButtonClick);
@@ -270,7 +271,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miAlert
             // 
             this.miAlert.Name = "miAlert";
-            this.miAlert.Size = new System.Drawing.Size(216, 24);
+            this.miAlert.Size = new System.Drawing.Size(259, 30);
             this.miAlert.Text = "alert";
             this.miAlert.ToolTipText = "Insert <alert>";
             this.miAlert.Click += new System.EventHandler(this.miAlert_Click);
@@ -278,7 +279,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miCode
             // 
             this.miCode.Name = "miCode";
-            this.miCode.Size = new System.Drawing.Size(216, 24);
+            this.miCode.Size = new System.Drawing.Size(259, 30);
             this.miCode.Text = "code";
             this.miCode.ToolTipText = "Insert <code>";
             this.miCode.Click += new System.EventHandler(this.miCode_Click);
@@ -286,7 +287,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miDefinitionTable
             // 
             this.miDefinitionTable.Name = "miDefinitionTable";
-            this.miDefinitionTable.Size = new System.Drawing.Size(216, 24);
+            this.miDefinitionTable.Size = new System.Drawing.Size(259, 30);
             this.miDefinitionTable.Text = "definitionTable";
             this.miDefinitionTable.ToolTipText = "Insert <definitionTable>";
             this.miDefinitionTable.Click += new System.EventHandler(this.miDefinitionTable_Click);
@@ -294,7 +295,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miSection
             // 
             this.miSection.Name = "miSection";
-            this.miSection.Size = new System.Drawing.Size(216, 24);
+            this.miSection.Size = new System.Drawing.Size(259, 30);
             this.miSection.Text = "section";
             this.miSection.ToolTipText = "Insert <section>";
             this.miSection.Click += new System.EventHandler(this.miSection_Click);
@@ -302,7 +303,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miQuote
             // 
             this.miQuote.Name = "miQuote";
-            this.miQuote.Size = new System.Drawing.Size(216, 24);
+            this.miQuote.Size = new System.Drawing.Size(259, 30);
             this.miQuote.Text = "quote";
             this.miQuote.ToolTipText = "Insert <quote>";
             this.miQuote.Click += new System.EventHandler(this.insertElement_Click);
@@ -310,12 +311,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(213, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(256, 6);
             // 
             // miApplication
             // 
             this.miApplication.Name = "miApplication";
-            this.miApplication.Size = new System.Drawing.Size(216, 24);
+            this.miApplication.Size = new System.Drawing.Size(259, 30);
             this.miApplication.Text = "application";
             this.miApplication.ToolTipText = "Insert <application>";
             this.miApplication.Click += new System.EventHandler(this.insertElement_Click);
@@ -323,7 +324,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miCommand
             // 
             this.miCommand.Name = "miCommand";
-            this.miCommand.Size = new System.Drawing.Size(216, 24);
+            this.miCommand.Size = new System.Drawing.Size(259, 30);
             this.miCommand.Text = "command";
             this.miCommand.ToolTipText = "Insert <command>";
             this.miCommand.Click += new System.EventHandler(this.insertElement_Click);
@@ -331,7 +332,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miEnvironmentVariable
             // 
             this.miEnvironmentVariable.Name = "miEnvironmentVariable";
-            this.miEnvironmentVariable.Size = new System.Drawing.Size(216, 24);
+            this.miEnvironmentVariable.Size = new System.Drawing.Size(259, 30);
             this.miEnvironmentVariable.Text = "environmentVariable";
             this.miEnvironmentVariable.ToolTipText = "Insert <environmentVariable>";
             this.miEnvironmentVariable.Click += new System.EventHandler(this.insertElement_Click);
@@ -339,7 +340,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miHardware
             // 
             this.miHardware.Name = "miHardware";
-            this.miHardware.Size = new System.Drawing.Size(216, 24);
+            this.miHardware.Size = new System.Drawing.Size(259, 30);
             this.miHardware.Text = "hardware";
             this.miHardware.ToolTipText = "Insert <hardware>";
             this.miHardware.Click += new System.EventHandler(this.insertElement_Click);
@@ -347,7 +348,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miLiteral
             // 
             this.miLiteral.Name = "miLiteral";
-            this.miLiteral.Size = new System.Drawing.Size(216, 24);
+            this.miLiteral.Size = new System.Drawing.Size(259, 30);
             this.miLiteral.Text = "literal";
             this.miLiteral.ToolTipText = "Insert <literal>";
             this.miLiteral.Click += new System.EventHandler(this.insertElement_Click);
@@ -355,7 +356,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miLocalUri
             // 
             this.miLocalUri.Name = "miLocalUri";
-            this.miLocalUri.Size = new System.Drawing.Size(216, 24);
+            this.miLocalUri.Size = new System.Drawing.Size(259, 30);
             this.miLocalUri.Text = "localUri";
             this.miLocalUri.ToolTipText = "Insert <localUri>";
             this.miLocalUri.Click += new System.EventHandler(this.insertElement_Click);
@@ -363,7 +364,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miMath
             // 
             this.miMath.Name = "miMath";
-            this.miMath.Size = new System.Drawing.Size(216, 24);
+            this.miMath.Size = new System.Drawing.Size(259, 30);
             this.miMath.Text = "math";
             this.miMath.ToolTipText = "Insert <math>";
             this.miMath.Click += new System.EventHandler(this.insertElement_Click);
@@ -371,7 +372,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miNewTerm
             // 
             this.miNewTerm.Name = "miNewTerm";
-            this.miNewTerm.Size = new System.Drawing.Size(216, 24);
+            this.miNewTerm.Size = new System.Drawing.Size(259, 30);
             this.miNewTerm.Text = "newTerm";
             this.miNewTerm.ToolTipText = "Insert <newTerm>";
             this.miNewTerm.Click += new System.EventHandler(this.insertElement_Click);
@@ -379,7 +380,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miPara
             // 
             this.miPara.Name = "miPara";
-            this.miPara.Size = new System.Drawing.Size(216, 24);
+            this.miPara.Size = new System.Drawing.Size(259, 30);
             this.miPara.Text = "para";
             this.miPara.ToolTipText = "Insert <para>";
             this.miPara.Click += new System.EventHandler(this.insertElement_Click);
@@ -387,7 +388,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miPhrase
             // 
             this.miPhrase.Name = "miPhrase";
-            this.miPhrase.Size = new System.Drawing.Size(216, 24);
+            this.miPhrase.Size = new System.Drawing.Size(259, 30);
             this.miPhrase.Text = "phrase";
             this.miPhrase.ToolTipText = "Insert <phrase>";
             this.miPhrase.Click += new System.EventHandler(this.insertElement_Click);
@@ -395,7 +396,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miQuoteInline
             // 
             this.miQuoteInline.Name = "miQuoteInline";
-            this.miQuoteInline.Size = new System.Drawing.Size(216, 24);
+            this.miQuoteInline.Size = new System.Drawing.Size(259, 30);
             this.miQuoteInline.Text = "quoteInline";
             this.miQuoteInline.ToolTipText = "Insert <quoteInline>";
             this.miQuoteInline.Click += new System.EventHandler(this.insertElement_Click);
@@ -403,7 +404,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miReplaceable
             // 
             this.miReplaceable.Name = "miReplaceable";
-            this.miReplaceable.Size = new System.Drawing.Size(216, 24);
+            this.miReplaceable.Size = new System.Drawing.Size(259, 30);
             this.miReplaceable.Text = "replaceable";
             this.miReplaceable.ToolTipText = "Insert <replaceable>";
             this.miReplaceable.Click += new System.EventHandler(this.insertElement_Click);
@@ -411,7 +412,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miSubscript
             // 
             this.miSubscript.Name = "miSubscript";
-            this.miSubscript.Size = new System.Drawing.Size(216, 24);
+            this.miSubscript.Size = new System.Drawing.Size(259, 30);
             this.miSubscript.Text = "subscript";
             this.miSubscript.ToolTipText = "Insert <subscript>";
             this.miSubscript.Click += new System.EventHandler(this.insertElement_Click);
@@ -419,7 +420,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miSuperscript
             // 
             this.miSuperscript.Name = "miSuperscript";
-            this.miSuperscript.Size = new System.Drawing.Size(216, 24);
+            this.miSuperscript.Size = new System.Drawing.Size(259, 30);
             this.miSuperscript.Text = "superscript";
             this.miSuperscript.ToolTipText = "Insert <superscript>";
             this.miSuperscript.Click += new System.EventHandler(this.insertElement_Click);
@@ -427,7 +428,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miSystem
             // 
             this.miSystem.Name = "miSystem";
-            this.miSystem.Size = new System.Drawing.Size(216, 24);
+            this.miSystem.Size = new System.Drawing.Size(259, 30);
             this.miSystem.Text = "system";
             this.miSystem.ToolTipText = "Insert <system>";
             this.miSystem.Click += new System.EventHandler(this.insertElement_Click);
@@ -435,7 +436,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miUI
             // 
             this.miUI.Name = "miUI";
-            this.miUI.Size = new System.Drawing.Size(216, 24);
+            this.miUI.Size = new System.Drawing.Size(259, 30);
             this.miUI.Text = "ui";
             this.miUI.ToolTipText = "Insert <ui>";
             this.miUI.Click += new System.EventHandler(this.insertElement_Click);
@@ -443,7 +444,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miUserInput
             // 
             this.miUserInput.Name = "miUserInput";
-            this.miUserInput.Size = new System.Drawing.Size(216, 24);
+            this.miUserInput.Size = new System.Drawing.Size(259, 30);
             this.miUserInput.Text = "userInput";
             this.miUserInput.ToolTipText = "Insert <userInput>";
             this.miUserInput.Click += new System.EventHandler(this.insertElement_Click);
@@ -451,7 +452,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbHtmlEncode
             // 
@@ -459,14 +460,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbHtmlEncode.Image = global::SandcastleBuilder.Gui.Properties.Resources.HtmlEncode;
             this.tsbHtmlEncode.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHtmlEncode.Name = "tsbHtmlEncode";
-            this.tsbHtmlEncode.Size = new System.Drawing.Size(23, 24);
+            this.tsbHtmlEncode.Size = new System.Drawing.Size(28, 29);
             this.tsbHtmlEncode.ToolTipText = "HTML encode selected text";
             this.tsbHtmlEncode.Click += new System.EventHandler(this.tsbHtmlEncode_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbCutText
             // 
@@ -474,7 +475,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbCutText.Image = global::SandcastleBuilder.Gui.Properties.Resources.Cut;
             this.tsbCutText.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCutText.Name = "tsbCutText";
-            this.tsbCutText.Size = new System.Drawing.Size(23, 24);
+            this.tsbCutText.Size = new System.Drawing.Size(28, 29);
             this.tsbCutText.ToolTipText = "Cut text (Ctrl+X)";
             this.tsbCutText.Click += new System.EventHandler(this.tsbCutText_Click);
             // 
@@ -484,7 +485,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbCopyText.Image = global::SandcastleBuilder.Gui.Properties.Resources.Copy;
             this.tsbCopyText.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCopyText.Name = "tsbCopyText";
-            this.tsbCopyText.Size = new System.Drawing.Size(23, 24);
+            this.tsbCopyText.Size = new System.Drawing.Size(28, 29);
             this.tsbCopyText.ToolTipText = "Copy text (Ctrl+C)";
             this.tsbCopyText.Click += new System.EventHandler(this.tsbCopyText_Click);
             // 
@@ -494,14 +495,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbPasteText.Image = global::SandcastleBuilder.Gui.Properties.Resources.Paste;
             this.tsbPasteText.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPasteText.Name = "tsbPasteText";
-            this.tsbPasteText.Size = new System.Drawing.Size(23, 24);
+            this.tsbPasteText.Size = new System.Drawing.Size(28, 29);
             this.tsbPasteText.ToolTipText = "Paste text (Ctrl+V)";
             this.tsbPasteText.Click += new System.EventHandler(this.tsbPasteText_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbUndo
             // 
@@ -509,7 +510,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbUndo.Image = global::SandcastleBuilder.Gui.Properties.Resources.Undo;
             this.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbUndo.Name = "tsbUndo";
-            this.tsbUndo.Size = new System.Drawing.Size(23, 24);
+            this.tsbUndo.Size = new System.Drawing.Size(28, 29);
             this.tsbUndo.ToolTipText = "Undo (Ctrl+Z)";
             this.tsbUndo.Click += new System.EventHandler(this.tsbUndo_Click);
             // 
@@ -519,14 +520,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbRedo.Image = global::SandcastleBuilder.Gui.Properties.Resources.Redo;
             this.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRedo.Name = "tsbRedo";
-            this.tsbRedo.Size = new System.Drawing.Size(23, 24);
+            this.tsbRedo.Size = new System.Drawing.Size(28, 29);
             this.tsbRedo.ToolTipText = "Redo (Ctrl+Y)";
             this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 32);
             // 
             // tsbSpellCheck
             // 
@@ -534,16 +535,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbSpellCheck.Image = global::SandcastleBuilder.Gui.Properties.Resources.SpellCheck;
             this.tsbSpellCheck.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSpellCheck.Name = "tsbSpellCheck";
-            this.tsbSpellCheck.Size = new System.Drawing.Size(23, 24);
+            this.tsbSpellCheck.Size = new System.Drawing.Size(28, 29);
             this.tsbSpellCheck.ToolTipText = "Spell Check (Ctrl+Shift+K)";
             this.tsbSpellCheck.Click += new System.EventHandler(this.tsbSpellCheck_Click);
             // 
             // TopicEditorWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(530, 256);
+            this.ClientSize = new System.Drawing.Size(713, 289);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.editor);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TopicEditorWindow";
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;

@@ -56,16 +56,16 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(388, 20);
+            this.label1.Size = new System.Drawing.Size(465, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "Include the following API elements in the documentation:";
             // 
             // chkAttributes
             // 
             this.chkAttributes.AutoSize = true;
-            this.chkAttributes.Location = new System.Drawing.Point(44, 48);
+            this.chkAttributes.Location = new System.Drawing.Point(49, 51);
             this.chkAttributes.Name = "chkAttributes";
-            this.chkAttributes.Size = new System.Drawing.Size(285, 24);
+            this.chkAttributes.Size = new System.Drawing.Size(345, 29);
             this.chkAttributes.TabIndex = 1;
             this.chkAttributes.Tag = "VisibleItems";
             this.chkAttributes.Text = "Attr&ibutes on types and their members";
@@ -74,9 +74,9 @@
             // chkExplicitInterfaceImplementations
             // 
             this.chkExplicitInterfaceImplementations.AutoSize = true;
-            this.chkExplicitInterfaceImplementations.Location = new System.Drawing.Point(44, 78);
+            this.chkExplicitInterfaceImplementations.Location = new System.Drawing.Point(49, 86);
             this.chkExplicitInterfaceImplementations.Name = "chkExplicitInterfaceImplementations";
-            this.chkExplicitInterfaceImplementations.Size = new System.Drawing.Size(257, 24);
+            this.chkExplicitInterfaceImplementations.Size = new System.Drawing.Size(302, 29);
             this.chkExplicitInterfaceImplementations.TabIndex = 2;
             this.chkExplicitInterfaceImplementations.Text = "Explicit interface implementations";
             this.chkExplicitInterfaceImplementations.UseVisualStyleBackColor = true;
@@ -84,9 +84,9 @@
             // chkInheritedFrameworkInternalMembers
             // 
             this.chkInheritedFrameworkInternalMembers.AutoSize = true;
-            this.chkInheritedFrameworkInternalMembers.Location = new System.Drawing.Point(44, 168);
+            this.chkInheritedFrameworkInternalMembers.Location = new System.Drawing.Point(49, 191);
             this.chkInheritedFrameworkInternalMembers.Name = "chkInheritedFrameworkInternalMembers";
-            this.chkInheritedFrameworkInternalMembers.Size = new System.Drawing.Size(321, 24);
+            this.chkInheritedFrameworkInternalMembers.Size = new System.Drawing.Size(384, 29);
             this.chkInheritedFrameworkInternalMembers.TabIndex = 5;
             this.chkInheritedFrameworkInternalMembers.Text = "Inherited .NET Framework internal members";
             this.chkInheritedFrameworkInternalMembers.UseVisualStyleBackColor = true;
@@ -97,9 +97,9 @@
             this.chkInheritedFrameworkMembers.AutoSize = true;
             this.chkInheritedFrameworkMembers.Checked = true;
             this.chkInheritedFrameworkMembers.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInheritedFrameworkMembers.Location = new System.Drawing.Point(44, 138);
+            this.chkInheritedFrameworkMembers.Location = new System.Drawing.Point(49, 156);
             this.chkInheritedFrameworkMembers.Name = "chkInheritedFrameworkMembers";
-            this.chkInheritedFrameworkMembers.Size = new System.Drawing.Size(267, 24);
+            this.chkInheritedFrameworkMembers.Size = new System.Drawing.Size(321, 29);
             this.chkInheritedFrameworkMembers.TabIndex = 4;
             this.chkInheritedFrameworkMembers.Text = "Inherited .NET Framework members";
             this.chkInheritedFrameworkMembers.UseVisualStyleBackColor = true;
@@ -108,9 +108,9 @@
             // chkInheritedFrameworkPrivateMembers
             // 
             this.chkInheritedFrameworkPrivateMembers.AutoSize = true;
-            this.chkInheritedFrameworkPrivateMembers.Location = new System.Drawing.Point(44, 198);
+            this.chkInheritedFrameworkPrivateMembers.Location = new System.Drawing.Point(49, 226);
             this.chkInheritedFrameworkPrivateMembers.Name = "chkInheritedFrameworkPrivateMembers";
-            this.chkInheritedFrameworkPrivateMembers.Size = new System.Drawing.Size(317, 24);
+            this.chkInheritedFrameworkPrivateMembers.Size = new System.Drawing.Size(380, 29);
             this.chkInheritedFrameworkPrivateMembers.TabIndex = 6;
             this.chkInheritedFrameworkPrivateMembers.Text = "Inherited .NET Framework private members";
             this.chkInheritedFrameworkPrivateMembers.UseVisualStyleBackColor = true;
@@ -121,9 +121,9 @@
             this.chkInheritedMembers.AutoSize = true;
             this.chkInheritedMembers.Checked = true;
             this.chkInheritedMembers.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInheritedMembers.Location = new System.Drawing.Point(44, 108);
+            this.chkInheritedMembers.Location = new System.Drawing.Point(49, 121);
             this.chkInheritedMembers.Name = "chkInheritedMembers";
-            this.chkInheritedMembers.Size = new System.Drawing.Size(226, 24);
+            this.chkInheritedMembers.Size = new System.Drawing.Size(272, 29);
             this.chkInheritedMembers.TabIndex = 3;
             this.chkInheritedMembers.Text = "Inherited base class members";
             this.chkInheritedMembers.UseVisualStyleBackColor = true;
@@ -132,9 +132,9 @@
             // chkInternals
             // 
             this.chkInternals.AutoSize = true;
-            this.chkInternals.Location = new System.Drawing.Point(44, 228);
+            this.chkInternals.Location = new System.Drawing.Point(49, 261);
             this.chkInternals.Name = "chkInternals";
-            this.chkInternals.Size = new System.Drawing.Size(147, 24);
+            this.chkInternals.Size = new System.Drawing.Size(177, 29);
             this.chkInternals.TabIndex = 7;
             this.chkInternals.Text = "Internal members";
             this.chkInternals.UseVisualStyleBackColor = true;
@@ -143,9 +143,9 @@
             // chkPrivateFields
             // 
             this.chkPrivateFields.AutoSize = true;
-            this.chkPrivateFields.Location = new System.Drawing.Point(44, 258);
+            this.chkPrivateFields.Location = new System.Drawing.Point(49, 296);
             this.chkPrivateFields.Name = "chkPrivateFields";
-            this.chkPrivateFields.Size = new System.Drawing.Size(116, 24);
+            this.chkPrivateFields.Size = new System.Drawing.Size(138, 29);
             this.chkPrivateFields.TabIndex = 8;
             this.chkPrivateFields.Text = "Private fields";
             this.chkPrivateFields.UseVisualStyleBackColor = true;
@@ -154,9 +154,9 @@
             // chkPrivates
             // 
             this.chkPrivates.AutoSize = true;
-            this.chkPrivates.Location = new System.Drawing.Point(44, 288);
+            this.chkPrivates.Location = new System.Drawing.Point(49, 331);
             this.chkPrivates.Name = "chkPrivates";
-            this.chkPrivates.Size = new System.Drawing.Size(142, 24);
+            this.chkPrivates.Size = new System.Drawing.Size(171, 29);
             this.chkPrivates.TabIndex = 9;
             this.chkPrivates.Text = "Private members";
             this.chkPrivates.UseVisualStyleBackColor = true;
@@ -167,9 +167,9 @@
             this.chkProtected.AutoSize = true;
             this.chkProtected.Checked = true;
             this.chkProtected.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkProtected.Location = new System.Drawing.Point(44, 318);
+            this.chkProtected.Location = new System.Drawing.Point(49, 366);
             this.chkProtected.Name = "chkProtected";
-            this.chkProtected.Size = new System.Drawing.Size(161, 24);
+            this.chkProtected.Size = new System.Drawing.Size(194, 29);
             this.chkProtected.TabIndex = 10;
             this.chkProtected.Text = "Protected members";
             this.chkProtected.UseVisualStyleBackColor = true;
@@ -178,9 +178,9 @@
             // chkSealedProtected
             // 
             this.chkSealedProtected.AutoSize = true;
-            this.chkSealedProtected.Location = new System.Drawing.Point(44, 348);
+            this.chkSealedProtected.Location = new System.Drawing.Point(49, 401);
             this.chkSealedProtected.Name = "chkSealedProtected";
-            this.chkSealedProtected.Size = new System.Drawing.Size(275, 24);
+            this.chkSealedProtected.Size = new System.Drawing.Size(330, 29);
             this.chkSealedProtected.TabIndex = 11;
             this.chkSealedProtected.Text = "Protected members of sealed classes";
             this.chkSealedProtected.UseVisualStyleBackColor = true;
@@ -193,9 +193,9 @@
             this.chkProtectedInternalAsProtected.CheckState = System.Windows.Forms.CheckState.Checked;
             this.epNotes.SetError(this.chkProtectedInternalAsProtected, "This option is ignored if the Protected Members option is turned off");
             this.epNotes.SetIconPadding(this.chkProtectedInternalAsProtected, 5);
-            this.chkProtectedInternalAsProtected.Location = new System.Drawing.Point(13, 451);
+            this.chkProtectedInternalAsProtected.Location = new System.Drawing.Point(18, 518);
             this.chkProtectedInternalAsProtected.Name = "chkProtectedInternalAsProtected";
-            this.chkProtectedInternalAsProtected.Size = new System.Drawing.Size(452, 24);
+            this.chkProtectedInternalAsProtected.Size = new System.Drawing.Size(540, 29);
             this.chkProtectedInternalAsProtected.TabIndex = 14;
             this.chkProtectedInternalAsProtected.Text = "Doc&ument \"protected internal\" members as \"protected\" instead";
             this.chkProtectedInternalAsProtected.UseVisualStyleBackColor = true;
@@ -203,18 +203,18 @@
             // lblAPIFilterState
             // 
             this.lblAPIFilterState.AutoSize = true;
-            this.lblAPIFilterState.Location = new System.Drawing.Point(13, 497);
+            this.lblAPIFilterState.Location = new System.Drawing.Point(18, 564);
             this.lblAPIFilterState.Name = "lblAPIFilterState";
-            this.lblAPIFilterState.Size = new System.Drawing.Size(232, 20);
+            this.lblAPIFilterState.Size = new System.Drawing.Size(279, 25);
             this.lblAPIFilterState.TabIndex = 15;
             this.lblAPIFilterState.Tag = "ApiFilter";
             this.lblAPIFilterState.Text = "An API filter has not been defined";
             // 
             // btnEditAPIFilter
             // 
-            this.btnEditAPIFilter.Location = new System.Drawing.Point(262, 491);
+            this.btnEditAPIFilter.Location = new System.Drawing.Point(373, 559);
             this.btnEditAPIFilter.Name = "btnEditAPIFilter";
-            this.btnEditAPIFilter.Size = new System.Drawing.Size(135, 32);
+            this.btnEditAPIFilter.Size = new System.Drawing.Size(150, 35);
             this.btnEditAPIFilter.TabIndex = 16;
             this.btnEditAPIFilter.Text = "Edit API &Filter";
             this.btnEditAPIFilter.UseVisualStyleBackColor = true;
@@ -229,9 +229,9 @@
             // chkNoPIATypes
             // 
             this.chkNoPIATypes.AutoSize = true;
-            this.chkNoPIATypes.Location = new System.Drawing.Point(44, 378);
+            this.chkNoPIATypes.Location = new System.Drawing.Point(49, 436);
             this.chkNoPIATypes.Name = "chkNoPIATypes";
-            this.chkNoPIATypes.Size = new System.Drawing.Size(430, 24);
+            this.chkNoPIATypes.Size = new System.Drawing.Size(518, 29);
             this.chkNoPIATypes.TabIndex = 12;
             this.chkNoPIATypes.Text = "No-PIA (Primary Interop Assembly) embedded interop types";
             this.chkNoPIATypes.UseVisualStyleBackColor = true;
@@ -239,9 +239,9 @@
             // chkPublicCompilerGenerated
             // 
             this.chkPublicCompilerGenerated.AutoSize = true;
-            this.chkPublicCompilerGenerated.Location = new System.Drawing.Point(44, 408);
+            this.chkPublicCompilerGenerated.Location = new System.Drawing.Point(49, 471);
             this.chkPublicCompilerGenerated.Name = "chkPublicCompilerGenerated";
-            this.chkPublicCompilerGenerated.Size = new System.Drawing.Size(340, 24);
+            this.chkPublicCompilerGenerated.Size = new System.Drawing.Size(407, 29);
             this.chkPublicCompilerGenerated.TabIndex = 13;
             this.chkPublicCompilerGenerated.Text = "Public compiler generated types and members";
             this.chkPublicCompilerGenerated.UseVisualStyleBackColor = true;
@@ -266,9 +266,9 @@
             this.Controls.Add(this.chkExplicitInterfaceImplementations);
             this.Controls.Add(this.chkAttributes);
             this.Controls.Add(this.label1);
-            this.MinimumSize = new System.Drawing.Size(500, 495);
+            this.MinimumSize = new System.Drawing.Size(600, 605);
             this.Name = "VisibilityPropertiesPageControl";
-            this.Size = new System.Drawing.Size(500, 532);
+            this.Size = new System.Drawing.Size(600, 605);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

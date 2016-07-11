@@ -220,7 +220,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             var arg = (TransformComponentArgument)tvArguments.SelectedNode.Tag;
 
-            lblDescription.Text = arg.Description;
+            txtDescription.Text = arg.Description;
             chkIsForConceptualBuild.Checked = arg.IsForConceptualBuild;
             chkIsForReferenceBuild.Checked = arg.IsForReferenceBuild;
 
@@ -286,7 +286,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 tvArguments.Enabled = loadingInfo = false;
                 tvArguments.Nodes.Clear();
                 tvArguments.Nodes.Add(new TreeNode("Unable to load transform component arguments"));
-                lblDescription.Text = componentCache.LastError.ToString();
+                txtDescription.Text = componentCache.LastError.ToString();
             }
         }
 

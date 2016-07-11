@@ -48,17 +48,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.txtFindText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFindText.Location = new System.Drawing.Point(118, 9);
+            this.txtFindText.Location = new System.Drawing.Point(170, 9);
             this.txtFindText.Name = "txtFindText";
-            this.txtFindText.Size = new System.Drawing.Size(127, 22);
+            this.txtFindText.Size = new System.Drawing.Size(245, 31);
             this.statusBarTextProvider1.SetStatusBarText(this.txtFindText, "Find: Enter the text to find");
             this.txtFindText.TabIndex = 1;
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(12, 103);
+            this.btnFind.Location = new System.Drawing.Point(17, 133);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(100, 32);
+            this.btnFind.Size = new System.Drawing.Size(120, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnFind, "Find Next: Find the next occurrence");
             this.btnFind.TabIndex = 5;
             this.btnFind.Text = "&Find Next";
@@ -68,9 +68,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // chkCaseSensitive
             // 
-            this.chkCaseSensitive.Location = new System.Drawing.Point(44, 65);
+            this.chkCaseSensitive.AutoSize = true;
+            this.chkCaseSensitive.Location = new System.Drawing.Point(170, 83);
             this.chkCaseSensitive.Name = "chkCaseSensitive";
-            this.chkCaseSensitive.Size = new System.Drawing.Size(178, 24);
+            this.chkCaseSensitive.Size = new System.Drawing.Size(204, 29);
             this.statusBarTextProvider1.SetStatusBarText(this.chkCaseSensitive, "Case-sensitive: Check this box to make the search case sensitive");
             this.chkCaseSensitive.TabIndex = 4;
             this.chkCaseSensitive.Text = "&Case-sensitive search";
@@ -80,9 +81,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.txtReplaceWith.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtReplaceWith.Location = new System.Drawing.Point(118, 37);
+            this.txtReplaceWith.Location = new System.Drawing.Point(170, 46);
             this.txtReplaceWith.Name = "txtReplaceWith";
-            this.txtReplaceWith.Size = new System.Drawing.Size(127, 22);
+            this.txtReplaceWith.Size = new System.Drawing.Size(245, 31);
             this.statusBarTextProvider1.SetStatusBarText(this.txtReplaceWith, "Replace With: Enter the text to use as the replacement");
             this.txtReplaceWith.TabIndex = 3;
             this.txtReplaceWith.Visible = false;
@@ -90,9 +91,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnReplace
             // 
             this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReplace.Location = new System.Drawing.Point(155, 103);
+            this.btnReplace.Location = new System.Drawing.Point(305, 133);
             this.btnReplace.Name = "btnReplace";
-            this.btnReplace.Size = new System.Drawing.Size(100, 32);
+            this.btnReplace.Size = new System.Drawing.Size(120, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnReplace, "Replace: Replace the next occurrence of the search text");
             this.btnReplace.TabIndex = 6;
             this.btnReplace.Text = "&Replace";
@@ -104,9 +105,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // btnReplaceAll
             // 
             this.btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReplaceAll.Location = new System.Drawing.Point(155, 141);
+            this.btnReplaceAll.Location = new System.Drawing.Point(305, 174);
             this.btnReplaceAll.Name = "btnReplaceAll";
-            this.btnReplaceAll.Size = new System.Drawing.Size(100, 32);
+            this.btnReplaceAll.Size = new System.Drawing.Size(120, 35);
             this.statusBarTextProvider1.SetStatusBarText(this.btnReplaceAll, "Replace All: Replace all occurrences of the search text");
             this.btnReplaceAll.TabIndex = 7;
             this.btnReplaceAll.Text = "Replace &All";
@@ -117,9 +118,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(66, 9);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 23);
+            this.label1.Size = new System.Drawing.Size(152, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "Fi&nd";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -130,9 +131,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // lblReplaceWith
             // 
-            this.lblReplaceWith.Location = new System.Drawing.Point(12, 37);
+            this.lblReplaceWith.Location = new System.Drawing.Point(12, 48);
             this.lblReplaceWith.Name = "lblReplaceWith";
-            this.lblReplaceWith.Size = new System.Drawing.Size(100, 23);
+            this.lblReplaceWith.Size = new System.Drawing.Size(152, 26);
             this.lblReplaceWith.TabIndex = 2;
             this.lblReplaceWith.Text = "&Replace With";
             this.lblReplaceWith.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -142,7 +143,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.AcceptButton = this.btnFind;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(267, 185);
+            this.ClientSize = new System.Drawing.Size(437, 221);
             this.Controls.Add(this.btnReplaceAll);
             this.Controls.Add(this.btnReplace);
             this.Controls.Add(this.txtReplaceWith);
@@ -155,6 +156,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;

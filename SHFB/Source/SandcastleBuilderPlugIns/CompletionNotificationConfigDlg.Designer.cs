@@ -62,10 +62,10 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(566, 280);
+            this.btnCancel.Location = new System.Drawing.Point(704, 387);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
+            this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -73,9 +73,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 280);
+            this.btnOK.Location = new System.Drawing.Point(12, 387);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 1;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -84,10 +84,10 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(224, 285);
+            this.lnkProjectSite.Location = new System.Drawing.Point(256, 391);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
-            this.lnkProjectSite.TabIndex = 3;
+            this.lnkProjectSite.Size = new System.Drawing.Size(305, 26);
+            this.lnkProjectSite.TabIndex = 2;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
             this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -100,44 +100,44 @@ namespace SandcastleBuilder.PlugIns
             // 
             // txtFailureEMailAddress
             // 
-            this.txtFailureEMailAddress.Location = new System.Drawing.Point(180, 143);
+            this.txtFailureEMailAddress.Location = new System.Drawing.Point(247, 207);
             this.txtFailureEMailAddress.MaxLength = 256;
             this.txtFailureEMailAddress.Name = "txtFailureEMailAddress";
-            this.txtFailureEMailAddress.Size = new System.Drawing.Size(412, 22);
+            this.txtFailureEMailAddress.Size = new System.Drawing.Size(487, 31);
             this.txtFailureEMailAddress.TabIndex = 14;
             // 
             // txtSuccessEMailAddress
             // 
-            this.txtSuccessEMailAddress.Location = new System.Drawing.Point(180, 115);
+            this.txtSuccessEMailAddress.Location = new System.Drawing.Point(247, 170);
             this.txtSuccessEMailAddress.MaxLength = 256;
             this.txtSuccessEMailAddress.Name = "txtSuccessEMailAddress";
-            this.txtSuccessEMailAddress.Size = new System.Drawing.Size(412, 22);
+            this.txtSuccessEMailAddress.Size = new System.Drawing.Size(487, 31);
             this.txtSuccessEMailAddress.TabIndex = 12;
             // 
             // txtPassword
             // 
             this.txtPassword.Enabled = false;
-            this.txtPassword.Location = new System.Drawing.Point(450, 59);
+            this.txtPassword.Location = new System.Drawing.Point(570, 96);
             this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(164, 22);
+            this.txtPassword.Size = new System.Drawing.Size(164, 31);
             this.txtPassword.TabIndex = 8;
             // 
             // txtUserName
             // 
             this.txtUserName.Enabled = false;
-            this.txtUserName.Location = new System.Drawing.Point(180, 59);
+            this.txtUserName.Location = new System.Drawing.Point(247, 96);
             this.txtUserName.MaxLength = 50;
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(164, 22);
+            this.txtUserName.Size = new System.Drawing.Size(164, 31);
             this.txtUserName.TabIndex = 6;
             // 
             // txtFromEMail
             // 
-            this.txtFromEMail.Location = new System.Drawing.Point(180, 87);
+            this.txtFromEMail.Location = new System.Drawing.Point(247, 133);
             this.txtFromEMail.MaxLength = 256;
             this.txtFromEMail.Name = "txtFromEMail";
-            this.txtFromEMail.Size = new System.Drawing.Size(412, 22);
+            this.txtFromEMail.Size = new System.Drawing.Size(487, 31);
             this.txtFromEMail.TabIndex = 10;
             // 
             // pnlOptions
@@ -163,81 +163,84 @@ namespace SandcastleBuilder.PlugIns
             this.pnlOptions.Controls.Add(this.label1);
             this.pnlOptions.Location = new System.Drawing.Point(12, 12);
             this.pnlOptions.Name = "pnlOptions";
-            this.pnlOptions.Size = new System.Drawing.Size(642, 260);
+            this.pnlOptions.Size = new System.Drawing.Size(792, 369);
             this.pnlOptions.TabIndex = 0;
             // 
             // txtXSLTransform
             // 
-            this.txtXSLTransform.Location = new System.Drawing.Point(180, 225);
+            this.txtXSLTransform.Location = new System.Drawing.Point(247, 314);
             this.txtXSLTransform.MaxLength = 256;
             this.txtXSLTransform.Name = "txtXSLTransform";
-            this.txtXSLTransform.Size = new System.Drawing.Size(412, 22);
+            this.txtXSLTransform.Size = new System.Drawing.Size(487, 31);
             this.txtXSLTransform.TabIndex = 18;
             this.txtXSLTransform.Text = "{@SHFBFolder}Templates\\TransformBuildLog.xsl";
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(8, 225);
+            this.label8.Location = new System.Drawing.Point(16, 316);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(166, 23);
+            this.label8.Size = new System.Drawing.Size(225, 26);
             this.label8.TabIndex = 17;
             this.label8.Text = "&Optional XSL Transform";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(8, 87);
+            this.label7.Location = new System.Drawing.Point(16, 135);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(166, 23);
+            this.label7.Size = new System.Drawing.Size(225, 26);
             this.label7.TabIndex = 9;
             this.label7.Text = "&From E-Mail Address";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(8, 143);
+            this.label4.Location = new System.Drawing.Point(16, 209);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(166, 23);
+            this.label4.Size = new System.Drawing.Size(225, 26);
             this.label4.TabIndex = 13;
             this.label4.Text = "Failure E-Mail &Address";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(8, 115);
+            this.label6.Location = new System.Drawing.Point(16, 172);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(166, 23);
+            this.label6.Size = new System.Drawing.Size(225, 26);
             this.label6.TabIndex = 11;
             this.label6.Text = "Success &E-Mail Address";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkAttachLogFileOnFailure
             // 
+            this.chkAttachLogFileOnFailure.AutoSize = true;
             this.chkAttachLogFileOnFailure.Checked = true;
             this.chkAttachLogFileOnFailure.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAttachLogFileOnFailure.Location = new System.Drawing.Point(180, 198);
+            this.chkAttachLogFileOnFailure.Location = new System.Drawing.Point(247, 279);
             this.chkAttachLogFileOnFailure.Name = "chkAttachLogFileOnFailure";
-            this.chkAttachLogFileOnFailure.Size = new System.Drawing.Size(265, 21);
+            this.chkAttachLogFileOnFailure.Size = new System.Drawing.Size(284, 29);
             this.chkAttachLogFileOnFailure.TabIndex = 16;
             this.chkAttachLogFileOnFailure.Text = "A&ttach build log on failed build";
             this.chkAttachLogFileOnFailure.UseVisualStyleBackColor = true;
             // 
             // chkAttachLogFileOnSuccess
             // 
-            this.chkAttachLogFileOnSuccess.Location = new System.Drawing.Point(180, 171);
+            this.chkAttachLogFileOnSuccess.AutoSize = true;
+            this.chkAttachLogFileOnSuccess.Location = new System.Drawing.Point(247, 244);
             this.chkAttachLogFileOnSuccess.Name = "chkAttachLogFileOnSuccess";
-            this.chkAttachLogFileOnSuccess.Size = new System.Drawing.Size(265, 21);
+            this.chkAttachLogFileOnSuccess.Size = new System.Drawing.Size(320, 29);
             this.chkAttachLogFileOnSuccess.TabIndex = 15;
             this.chkAttachLogFileOnSuccess.Text = "Attach &build log on successful build";
             this.chkAttachLogFileOnSuccess.UseVisualStyleBackColor = true;
             // 
             // chkUseDefaultCredentials
             // 
+            this.chkUseDefaultCredentials.AutoSize = true;
             this.chkUseDefaultCredentials.Checked = true;
             this.chkUseDefaultCredentials.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseDefaultCredentials.Location = new System.Drawing.Point(180, 35);
+            this.chkUseDefaultCredentials.Location = new System.Drawing.Point(247, 61);
             this.chkUseDefaultCredentials.Name = "chkUseDefaultCredentials";
-            this.chkUseDefaultCredentials.Size = new System.Drawing.Size(190, 21);
+            this.chkUseDefaultCredentials.Size = new System.Drawing.Size(221, 29);
             this.chkUseDefaultCredentials.TabIndex = 4;
             this.chkUseDefaultCredentials.Text = "Use &Default Credentials";
             this.chkUseDefaultCredentials.UseVisualStyleBackColor = true;
@@ -245,7 +248,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // udcSmtpPort
             // 
-            this.udcSmtpPort.Location = new System.Drawing.Point(572, 8);
+            this.udcSmtpPort.Location = new System.Drawing.Point(666, 25);
             this.udcSmtpPort.Maximum = new decimal(new int[] {
             999,
             0,
@@ -257,7 +260,7 @@ namespace SandcastleBuilder.PlugIns
             0,
             0});
             this.udcSmtpPort.Name = "udcSmtpPort";
-            this.udcSmtpPort.Size = new System.Drawing.Size(56, 22);
+            this.udcSmtpPort.Size = new System.Drawing.Size(68, 31);
             this.udcSmtpPort.TabIndex = 3;
             this.udcSmtpPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcSmtpPort.Value = new decimal(new int[] {
@@ -268,44 +271,44 @@ namespace SandcastleBuilder.PlugIns
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(509, 7);
+            this.label5.Location = new System.Drawing.Point(588, 26);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 23);
+            this.label5.Size = new System.Drawing.Size(72, 26);
             this.label5.TabIndex = 2;
             this.label5.Text = "&Port #";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(363, 59);
+            this.label3.Location = new System.Drawing.Point(430, 98);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 23);
+            this.label3.Size = new System.Drawing.Size(134, 26);
             this.label3.TabIndex = 7;
             this.label3.Text = "Pass&word";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(86, 59);
+            this.label2.Location = new System.Drawing.Point(16, 98);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 23);
+            this.label2.Size = new System.Drawing.Size(225, 26);
             this.label2.TabIndex = 5;
             this.label2.Text = "&User Name";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtSmtpServer
             // 
-            this.txtSmtpServer.Location = new System.Drawing.Point(180, 7);
+            this.txtSmtpServer.Location = new System.Drawing.Point(247, 24);
             this.txtSmtpServer.MaxLength = 256;
             this.txtSmtpServer.Name = "txtSmtpServer";
-            this.txtSmtpServer.Size = new System.Drawing.Size(318, 22);
+            this.txtSmtpServer.Size = new System.Drawing.Size(335, 31);
             this.txtSmtpServer.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(67, 7);
+            this.label1.Location = new System.Drawing.Point(16, 26);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 23);
+            this.label1.Size = new System.Drawing.Size(225, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "SMTP &Server";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -315,11 +318,12 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(666, 324);
+            this.ClientSize = new System.Drawing.Size(816, 434);
             this.Controls.Add(this.pnlOptions);
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

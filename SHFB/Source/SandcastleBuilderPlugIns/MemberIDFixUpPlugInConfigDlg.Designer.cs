@@ -50,10 +50,10 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(657, 438);
+            this.btnCancel.Location = new System.Drawing.Point(672, 497);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 11;
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
+            this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -61,9 +61,9 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 438);
+            this.btnOK.Location = new System.Drawing.Point(12, 497);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 10;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save configuration");
@@ -75,10 +75,10 @@
             this.tvExpressions.Font = new System.Drawing.Font("Courier New", 10F);
             this.tvExpressions.FullRowSelect = true;
             this.tvExpressions.HideSelection = false;
-            this.tvExpressions.Location = new System.Drawing.Point(12, 35);
+            this.tvExpressions.Location = new System.Drawing.Point(12, 38);
             this.tvExpressions.Name = "tvExpressions";
             this.tvExpressions.ShowRootLines = false;
-            this.tvExpressions.Size = new System.Drawing.Size(733, 160);
+            this.tvExpressions.Size = new System.Drawing.Size(760, 157);
             this.tvExpressions.TabIndex = 1;
             this.tvExpressions.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExpressions_BeforeSelect);
             this.tvExpressions.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvExpressions_AfterSelect);
@@ -87,18 +87,18 @@
             // 
             this.txtMatchExpression.Enabled = false;
             this.txtMatchExpression.Font = new System.Drawing.Font("Courier New", 10F);
-            this.txtMatchExpression.Location = new System.Drawing.Point(12, 239);
+            this.txtMatchExpression.Location = new System.Drawing.Point(12, 257);
             this.txtMatchExpression.Multiline = true;
             this.txtMatchExpression.Name = "txtMatchExpression";
-            this.txtMatchExpression.Size = new System.Drawing.Size(733, 61);
+            this.txtMatchExpression.Size = new System.Drawing.Size(760, 75);
             this.txtMatchExpression.TabIndex = 6;
             this.txtMatchExpression.Enter += new System.EventHandler(this.Expression_Enter);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(469, 201);
+            this.btnAdd.Location = new System.Drawing.Point(400, 201);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(88, 32);
+            this.btnAdd.Size = new System.Drawing.Size(120, 35);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "&Add";
             this.toolTip1.SetToolTip(this.btnAdd, "Add a new match expression");
@@ -108,9 +108,9 @@
             // btnDelete
             // 
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(657, 201);
+            this.btnDelete.Location = new System.Drawing.Point(652, 201);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(88, 32);
+            this.btnDelete.Size = new System.Drawing.Size(120, 35);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "&Delete";
             this.toolTip1.SetToolTip(this.btnDelete, "Delete the selected match expression");
@@ -119,10 +119,10 @@
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(269, 443);
+            this.lnkProjectSite.Location = new System.Drawing.Point(237, 501);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
-            this.lnkProjectSite.TabIndex = 12;
+            this.lnkProjectSite.Size = new System.Drawing.Size(310, 26);
+            this.lnkProjectSite.TabIndex = 11;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
             this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -131,9 +131,9 @@
             // 
             // btnCPPFixes
             // 
-            this.btnCPPFixes.Location = new System.Drawing.Point(563, 201);
+            this.btnCPPFixes.Location = new System.Drawing.Point(526, 201);
             this.btnCPPFixes.Name = "btnCPPFixes";
-            this.btnCPPFixes.Size = new System.Drawing.Size(88, 32);
+            this.btnCPPFixes.Size = new System.Drawing.Size(120, 35);
             this.btnCPPFixes.TabIndex = 3;
             this.btnCPPFixes.Text = "&C++ Fixes";
             this.toolTip1.SetToolTip(this.btnCPPFixes, "Add the common C++ fix-up expressions");
@@ -144,16 +144,16 @@
             // 
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(140, 23);
+            this.label1.Size = new System.Drawing.Size(226, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Fix-Up Expressions";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblMatchExpression
             // 
-            this.lblMatchExpression.Location = new System.Drawing.Point(12, 213);
+            this.lblMatchExpression.Location = new System.Drawing.Point(12, 228);
             this.lblMatchExpression.Name = "lblMatchExpression";
-            this.lblMatchExpression.Size = new System.Drawing.Size(128, 23);
+            this.lblMatchExpression.Size = new System.Drawing.Size(188, 26);
             this.lblMatchExpression.TabIndex = 5;
             this.lblMatchExpression.Text = "&Match Expression";
             this.lblMatchExpression.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -166,18 +166,18 @@
             // 
             this.chkMatchAsRegEx.AutoSize = true;
             this.chkMatchAsRegEx.Enabled = false;
-            this.chkMatchAsRegEx.Location = new System.Drawing.Point(12, 396);
+            this.chkMatchAsRegEx.Location = new System.Drawing.Point(12, 445);
             this.chkMatchAsRegEx.Name = "chkMatchAsRegEx";
-            this.chkMatchAsRegEx.Size = new System.Drawing.Size(239, 21);
+            this.chkMatchAsRegEx.Size = new System.Drawing.Size(298, 29);
             this.chkMatchAsRegEx.TabIndex = 9;
             this.chkMatchAsRegEx.Text = "Ma&tch using a regular expression";
             this.chkMatchAsRegEx.UseVisualStyleBackColor = true;
             // 
             // lblReplacementValue
             // 
-            this.lblReplacementValue.Location = new System.Drawing.Point(12, 303);
+            this.lblReplacementValue.Location = new System.Drawing.Point(12, 335);
             this.lblReplacementValue.Name = "lblReplacementValue";
-            this.lblReplacementValue.Size = new System.Drawing.Size(99, 23);
+            this.lblReplacementValue.Size = new System.Drawing.Size(188, 26);
             this.lblReplacementValue.TabIndex = 7;
             this.lblReplacementValue.Text = "&Replace With";
             this.lblReplacementValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -186,10 +186,10 @@
             // 
             this.txtReplacementValue.Enabled = false;
             this.txtReplacementValue.Font = new System.Drawing.Font("Courier New", 10F);
-            this.txtReplacementValue.Location = new System.Drawing.Point(12, 329);
+            this.txtReplacementValue.Location = new System.Drawing.Point(12, 364);
             this.txtReplacementValue.Multiline = true;
             this.txtReplacementValue.Name = "txtReplacementValue";
-            this.txtReplacementValue.Size = new System.Drawing.Size(733, 61);
+            this.txtReplacementValue.Size = new System.Drawing.Size(760, 75);
             this.txtReplacementValue.TabIndex = 8;
             this.txtReplacementValue.Enter += new System.EventHandler(this.Expression_Enter);
             // 
@@ -197,7 +197,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(757, 482);
+            this.ClientSize = new System.Drawing.Size(784, 544);
             this.Controls.Add(this.btnCPPFixes);
             this.Controls.Add(this.lblReplacementValue);
             this.Controls.Add(this.txtReplacementValue);
@@ -211,6 +211,7 @@
             this.Controls.Add(this.tvExpressions);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -54,9 +54,9 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(16, 3);
+            this.label7.Location = new System.Drawing.Point(28, 10);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(111, 23);
+            this.label7.Size = new System.Drawing.Size(169, 26);
             this.label7.TabIndex = 0;
             this.label7.Text = "&Target Location";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -68,9 +68,9 @@
             this.groupBox2.Controls.Add(this.txtPassword);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.chkUseDefaultCredentials);
-            this.groupBox2.Location = new System.Drawing.Point(5, 31);
+            this.groupBox2.Location = new System.Drawing.Point(5, 45);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(587, 78);
+            this.groupBox2.Size = new System.Drawing.Size(705, 118);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "User Credentials";
@@ -78,17 +78,17 @@
             // txtUserName
             // 
             this.txtUserName.Enabled = false;
-            this.txtUserName.Location = new System.Drawing.Point(128, 44);
+            this.txtUserName.Location = new System.Drawing.Point(198, 65);
             this.txtUserName.MaxLength = 50;
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(164, 22);
+            this.txtUserName.Size = new System.Drawing.Size(164, 31);
             this.txtUserName.TabIndex = 2;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(311, 44);
+            this.label3.Location = new System.Drawing.Point(368, 67);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 23);
+            this.label3.Size = new System.Drawing.Size(130, 26);
             this.label3.TabIndex = 3;
             this.label3.Text = "Pass&word";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -96,28 +96,29 @@
             // txtPassword
             // 
             this.txtPassword.Enabled = false;
-            this.txtPassword.Location = new System.Drawing.Point(398, 44);
+            this.txtPassword.Location = new System.Drawing.Point(504, 65);
             this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(164, 22);
+            this.txtPassword.Size = new System.Drawing.Size(164, 31);
             this.txtPassword.TabIndex = 4;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(34, 44);
+            this.label2.Location = new System.Drawing.Point(23, 65);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 23);
+            this.label2.Size = new System.Drawing.Size(169, 26);
             this.label2.TabIndex = 1;
             this.label2.Text = "&User Name";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkUseDefaultCredentials
             // 
+            this.chkUseDefaultCredentials.AutoSize = true;
             this.chkUseDefaultCredentials.Checked = true;
             this.chkUseDefaultCredentials.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseDefaultCredentials.Location = new System.Drawing.Point(128, 20);
+            this.chkUseDefaultCredentials.Location = new System.Drawing.Point(198, 30);
             this.chkUseDefaultCredentials.Name = "chkUseDefaultCredentials";
-            this.chkUseDefaultCredentials.Size = new System.Drawing.Size(190, 21);
+            this.chkUseDefaultCredentials.Size = new System.Drawing.Size(221, 29);
             this.chkUseDefaultCredentials.TabIndex = 0;
             this.chkUseDefaultCredentials.Text = "Use &Default Credentials";
             this.chkUseDefaultCredentials.UseVisualStyleBackColor = true;
@@ -125,10 +126,10 @@
             // 
             // txtTargetLocation
             // 
-            this.txtTargetLocation.Location = new System.Drawing.Point(133, 3);
+            this.txtTargetLocation.Location = new System.Drawing.Point(203, 8);
             this.txtTargetLocation.MaxLength = 256;
             this.txtTargetLocation.Name = "txtTargetLocation";
-            this.txtTargetLocation.Size = new System.Drawing.Size(412, 22);
+            this.txtTargetLocation.Size = new System.Drawing.Size(412, 31);
             this.txtTargetLocation.TabIndex = 1;
             // 
             // groupBox3
@@ -141,18 +142,19 @@
             this.groupBox3.Controls.Add(this.txtProxyPassword);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.chkUseProxyDefCreds);
-            this.groupBox3.Location = new System.Drawing.Point(5, 115);
+            this.groupBox3.Location = new System.Drawing.Point(5, 169);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(587, 138);
+            this.groupBox3.Size = new System.Drawing.Size(705, 181);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Proxy Credentials";
             // 
             // chkUseProxyServer
             // 
-            this.chkUseProxyServer.Location = new System.Drawing.Point(128, 21);
+            this.chkUseProxyServer.AutoSize = true;
+            this.chkUseProxyServer.Location = new System.Drawing.Point(198, 30);
             this.chkUseProxyServer.Name = "chkUseProxyServer";
-            this.chkUseProxyServer.Size = new System.Drawing.Size(153, 21);
+            this.chkUseProxyServer.Size = new System.Drawing.Size(176, 29);
             this.chkUseProxyServer.TabIndex = 0;
             this.chkUseProxyServer.Text = "User Pr&oxy Server";
             this.chkUseProxyServer.UseVisualStyleBackColor = true;
@@ -160,9 +162,9 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(14, 48);
+            this.label5.Location = new System.Drawing.Point(23, 67);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(108, 23);
+            this.label5.Size = new System.Drawing.Size(169, 26);
             this.label5.TabIndex = 1;
             this.label5.Text = "Pro&xy Server";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -170,26 +172,26 @@
             // txtProxyUserName
             // 
             this.txtProxyUserName.Enabled = false;
-            this.txtProxyUserName.Location = new System.Drawing.Point(128, 100);
+            this.txtProxyUserName.Location = new System.Drawing.Point(198, 137);
             this.txtProxyUserName.MaxLength = 50;
             this.txtProxyUserName.Name = "txtProxyUserName";
-            this.txtProxyUserName.Size = new System.Drawing.Size(164, 22);
+            this.txtProxyUserName.Size = new System.Drawing.Size(164, 31);
             this.txtProxyUserName.TabIndex = 5;
             // 
             // txtProxyServer
             // 
             this.txtProxyServer.Enabled = false;
-            this.txtProxyServer.Location = new System.Drawing.Point(128, 48);
+            this.txtProxyServer.Location = new System.Drawing.Point(198, 65);
             this.txtProxyServer.MaxLength = 256;
             this.txtProxyServer.Name = "txtProxyServer";
-            this.txtProxyServer.Size = new System.Drawing.Size(412, 22);
+            this.txtProxyServer.Size = new System.Drawing.Size(412, 31);
             this.txtProxyServer.TabIndex = 2;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(311, 100);
+            this.label1.Location = new System.Drawing.Point(368, 139);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 23);
+            this.label1.Size = new System.Drawing.Size(130, 26);
             this.label1.TabIndex = 6;
             this.label1.Text = "Pa&ssword";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -197,29 +199,30 @@
             // txtProxyPassword
             // 
             this.txtProxyPassword.Enabled = false;
-            this.txtProxyPassword.Location = new System.Drawing.Point(398, 100);
+            this.txtProxyPassword.Location = new System.Drawing.Point(504, 137);
             this.txtProxyPassword.MaxLength = 50;
             this.txtProxyPassword.Name = "txtProxyPassword";
-            this.txtProxyPassword.Size = new System.Drawing.Size(164, 22);
+            this.txtProxyPassword.Size = new System.Drawing.Size(164, 31);
             this.txtProxyPassword.TabIndex = 7;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(34, 100);
+            this.label4.Location = new System.Drawing.Point(23, 139);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 23);
+            this.label4.Size = new System.Drawing.Size(169, 26);
             this.label4.TabIndex = 4;
             this.label4.Text = "Us&er Name";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkUseProxyDefCreds
             // 
+            this.chkUseProxyDefCreds.AutoSize = true;
             this.chkUseProxyDefCreds.Checked = true;
             this.chkUseProxyDefCreds.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseProxyDefCreds.Enabled = false;
-            this.chkUseProxyDefCreds.Location = new System.Drawing.Point(128, 76);
+            this.chkUseProxyDefCreds.Location = new System.Drawing.Point(198, 102);
             this.chkUseProxyDefCreds.Name = "chkUseProxyDefCreds";
-            this.chkUseProxyDefCreds.Size = new System.Drawing.Size(190, 21);
+            this.chkUseProxyDefCreds.Size = new System.Drawing.Size(221, 29);
             this.chkUseProxyDefCreds.TabIndex = 3;
             this.chkUseProxyDefCreds.Text = "Use &Default &Credentials";
             this.chkUseProxyDefCreds.UseVisualStyleBackColor = true;
@@ -231,14 +234,13 @@
             // 
             // DeploymentConfigUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.txtTargetLocation);
             this.Controls.Add(this.groupBox3);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "DeploymentConfigUserControl";
-            this.Size = new System.Drawing.Size(596, 257);
+            this.Size = new System.Drawing.Size(713, 355);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);

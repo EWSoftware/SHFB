@@ -42,9 +42,9 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(566, 92);
+            this.btnCancel.Location = new System.Drawing.Point(731, 167);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
@@ -53,9 +53,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 92);
+            this.btnOK.Location = new System.Drawing.Point(12, 167);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
@@ -64,9 +64,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(120, 97);
+            this.lnkProjectSite.Location = new System.Drawing.Point(118, 171);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
+            this.lnkProjectSite.Size = new System.Drawing.Size(280, 26);
             this.lnkProjectSite.TabIndex = 5;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
@@ -76,9 +76,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkSteelBytes
             // 
-            this.lnkSteelBytes.Location = new System.Drawing.Point(344, 97);
+            this.lnkSteelBytes.Location = new System.Drawing.Point(433, 171);
             this.lnkSteelBytes.Name = "lnkSteelBytes";
-            this.lnkSteelBytes.Size = new System.Drawing.Size(202, 23);
+            this.lnkSteelBytes.Size = new System.Drawing.Size(292, 26);
             this.lnkSteelBytes.TabIndex = 6;
             this.lnkSteelBytes.TabStop = true;
             this.lnkSteelBytes.Text = "Steel Bytes SBAppLocale";
@@ -88,9 +88,9 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnSelectLocation
             // 
-            this.btnSelectLocation.Location = new System.Drawing.Point(548, 56);
+            this.btnSelectLocation.Location = new System.Drawing.Point(671, 90);
             this.btnSelectLocation.Name = "btnSelectLocation";
-            this.btnSelectLocation.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectLocation.Size = new System.Drawing.Size(35, 35);
             this.btnSelectLocation.TabIndex = 2;
             this.btnSelectLocation.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectLocation, "Select the location of the Steel Bytes AppLocale tool");
@@ -99,17 +99,17 @@ namespace SandcastleBuilder.PlugIns
             // 
             // txtSBAppLocalePath
             // 
-            this.txtSBAppLocalePath.Location = new System.Drawing.Point(87, 57);
+            this.txtSBAppLocalePath.Location = new System.Drawing.Point(136, 92);
             this.txtSBAppLocalePath.MaxLength = 256;
             this.txtSBAppLocalePath.Name = "txtSBAppLocalePath";
-            this.txtSBAppLocalePath.Size = new System.Drawing.Size(461, 22);
+            this.txtSBAppLocalePath.Size = new System.Drawing.Size(535, 31);
             this.txtSBAppLocalePath.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(642, 42);
+            this.label1.Size = new System.Drawing.Size(819, 66);
             this.label1.TabIndex = 0;
             this.label1.Text = "Path to SBAppLocale executable.  Leave this blank if you do not want to use it.  " +
     "In that case, only encoding changes applied by the Sandcastle HTML Extract tool " +
@@ -121,7 +121,7 @@ namespace SandcastleBuilder.PlugIns
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(666, 136);
+            this.ClientSize = new System.Drawing.Size(843, 214);
             this.Controls.Add(this.btnSelectLocation);
             this.Controls.Add(this.lnkSteelBytes);
             this.Controls.Add(this.txtSBAppLocalePath);
@@ -129,6 +129,7 @@ namespace SandcastleBuilder.PlugIns
             this.Controls.Add(this.lnkProjectSite);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

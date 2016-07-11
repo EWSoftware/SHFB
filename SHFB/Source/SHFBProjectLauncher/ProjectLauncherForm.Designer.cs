@@ -46,7 +46,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SandcastleBuilder.ProjectLauncher.Properties.Resources.SandcastleLogo;
-            this.pictureBox1.Location = new System.Drawing.Point(42, 69);
+            this.pictureBox1.Location = new System.Drawing.Point(57, 69);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(36, 42);
@@ -58,7 +58,7 @@
             // 
             this.pictureBox2.Enabled = false;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(42, 141);
+            this.pictureBox2.Location = new System.Drawing.Point(57, 141);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(36, 42);
@@ -69,10 +69,10 @@
             // rbSHFB
             // 
             this.rbSHFB.AutoSize = true;
-            this.rbSHFB.Location = new System.Drawing.Point(99, 80);
+            this.rbSHFB.Location = new System.Drawing.Point(114, 80);
             this.rbSHFB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbSHFB.Name = "rbSHFB";
-            this.rbSHFB.Size = new System.Drawing.Size(234, 22);
+            this.rbSHFB.Size = new System.Drawing.Size(287, 29);
             this.rbSHFB.TabIndex = 1;
             this.rbSHFB.TabStop = true;
             this.rbSHFB.Text = "&Sandcastle Help File Builder GUI";
@@ -81,19 +81,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 20);
+            this.label1.Location = new System.Drawing.Point(12, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(426, 18);
+            this.label1.Size = new System.Drawing.Size(537, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "Use the following application to open help file builder project files:";
             // 
             // rbVisualStudio
             // 
             this.rbVisualStudio.AutoSize = true;
-            this.rbVisualStudio.Location = new System.Drawing.Point(99, 151);
+            this.rbVisualStudio.Location = new System.Drawing.Point(114, 151);
             this.rbVisualStudio.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbVisualStudio.Name = "rbVisualStudio";
-            this.rbVisualStudio.Size = new System.Drawing.Size(352, 22);
+            this.rbVisualStudio.Size = new System.Drawing.Size(428, 29);
             this.rbVisualStudio.TabIndex = 2;
             this.rbVisualStudio.TabStop = true;
             this.rbVisualStudio.Text = "Latest version of &Visual Studio with SHFB Package";
@@ -102,18 +102,18 @@
             // chkAlwaysUseSelection
             // 
             this.chkAlwaysUseSelection.AutoSize = true;
-            this.chkAlwaysUseSelection.Location = new System.Drawing.Point(42, 216);
+            this.chkAlwaysUseSelection.Location = new System.Drawing.Point(57, 232);
             this.chkAlwaysUseSelection.Name = "chkAlwaysUseSelection";
-            this.chkAlwaysUseSelection.Size = new System.Drawing.Size(387, 22);
+            this.chkAlwaysUseSelection.Size = new System.Drawing.Size(469, 29);
             this.chkAlwaysUseSelection.TabIndex = 4;
             this.chkAlwaysUseSelection.Text = "Do not ask again.  &Always use the selected application.";
             this.chkAlwaysUseSelection.UseVisualStyleBackColor = true;
             // 
             // btnLaunch
             // 
-            this.btnLaunch.Location = new System.Drawing.Point(12, 310);
+            this.btnLaunch.Location = new System.Drawing.Point(12, 347);
             this.btnLaunch.Name = "btnLaunch";
-            this.btnLaunch.Size = new System.Drawing.Size(88, 32);
+            this.btnLaunch.Size = new System.Drawing.Size(100, 35);
             this.btnLaunch.TabIndex = 6;
             this.btnLaunch.Text = "&Launch";
             this.btnLaunch.UseVisualStyleBackColor = true;
@@ -122,9 +122,9 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(383, 310);
+            this.btnCancel.Location = new System.Drawing.Point(516, 347);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "&Close";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -132,9 +132,9 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(60, 241);
+            this.label2.Location = new System.Drawing.Point(83, 264);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(396, 66);
+            this.label2.Size = new System.Drawing.Size(520, 66);
             this.label2.TabIndex = 5;
             this.label2.Text = "If checked, you can run this from the help file builder\'s Start menu folder to ch" +
     "ange the default.";
@@ -142,9 +142,9 @@
             // lblNotInstalled
             // 
             this.lblNotInstalled.AutoSize = true;
-            this.lblNotInstalled.Location = new System.Drawing.Point(118, 177);
+            this.lblNotInstalled.Location = new System.Drawing.Point(133, 180);
             this.lblNotInstalled.Name = "lblNotInstalled";
-            this.lblNotInstalled.Size = new System.Drawing.Size(222, 18);
+            this.lblNotInstalled.Size = new System.Drawing.Size(270, 25);
             this.lblNotInstalled.TabIndex = 3;
             this.lblNotInstalled.Text = "(Extension package not installed)";
             this.lblNotInstalled.Visible = false;
@@ -155,7 +155,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(483, 354);
+            this.ClientSize = new System.Drawing.Size(628, 394);
             this.Controls.Add(this.lblNotInstalled);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCancel);
@@ -166,7 +166,7 @@
             this.Controls.Add(this.rbSHFB);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
-            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.WindowText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

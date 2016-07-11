@@ -48,10 +48,10 @@ namespace Microsoft.Ddue.Tools.UI
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(608, 162);
+            this.btnCancel.Location = new System.Drawing.Point(662, 195);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 10;
+            this.btnCancel.Size = new System.Drawing.Size(100, 35);
+            this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -59,10 +59,10 @@ namespace Microsoft.Ddue.Tools.UI
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 162);
+            this.btnOK.Location = new System.Drawing.Point(12, 195);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 32);
-            this.btnOK.TabIndex = 8;
+            this.btnOK.Size = new System.Drawing.Size(100, 35);
+            this.btnOK.TabIndex = 9;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
             this.btnOK.UseVisualStyleBackColor = true;
@@ -70,10 +70,10 @@ namespace Microsoft.Ddue.Tools.UI
             // 
             // lnkProjectSite
             // 
-            this.lnkProjectSite.Location = new System.Drawing.Point(245, 167);
+            this.lnkProjectSite.Location = new System.Drawing.Point(230, 199);
             this.lnkProjectSite.Name = "lnkProjectSite";
-            this.lnkProjectSite.Size = new System.Drawing.Size(218, 23);
-            this.lnkProjectSite.TabIndex = 9;
+            this.lnkProjectSite.Size = new System.Drawing.Size(315, 26);
+            this.lnkProjectSite.TabIndex = 10;
             this.lnkProjectSite.TabStop = true;
             this.lnkProjectSite.Text = "Sandcastle Help File Builder";
             this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -82,9 +82,9 @@ namespace Microsoft.Ddue.Tools.UI
             // 
             // btnSelectFolder
             // 
-            this.btnSelectFolder.Location = new System.Drawing.Point(657, 73);
+            this.btnSelectFolder.Location = new System.Drawing.Point(649, 91);
             this.btnSelectFolder.Name = "btnSelectFolder";
-            this.btnSelectFolder.Size = new System.Drawing.Size(32, 25);
+            this.btnSelectFolder.Size = new System.Drawing.Size(35, 35);
             this.btnSelectFolder.TabIndex = 5;
             this.btnSelectFolder.Text = "...";
             this.toolTip1.SetToolTip(this.btnSelectFolder, "Select output folder");
@@ -93,62 +93,62 @@ namespace Microsoft.Ddue.Tools.UI
             // 
             // txtNamespacesFile
             // 
-            this.txtNamespacesFile.Location = new System.Drawing.Point(306, 12);
+            this.txtNamespacesFile.Location = new System.Drawing.Point(379, 12);
             this.txtNamespacesFile.MaxLength = 256;
             this.txtNamespacesFile.Name = "txtNamespacesFile";
-            this.txtNamespacesFile.Size = new System.Drawing.Size(178, 22);
+            this.txtNamespacesFile.Size = new System.Drawing.Size(178, 31);
             this.txtNamespacesFile.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(20, 49);
+            this.label1.Location = new System.Drawing.Point(12, 64);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(307, 23);
+            this.label1.Size = new System.Drawing.Size(605, 26);
             this.label1.TabIndex = 3;
             this.label1.Text = "&Folder in which to create the IntelliSense files";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtFolder
             // 
-            this.txtFolder.Location = new System.Drawing.Point(20, 74);
+            this.txtFolder.Location = new System.Drawing.Point(12, 93);
             this.txtFolder.MaxLength = 256;
             this.txtFolder.Name = "txtFolder";
-            this.txtFolder.Size = new System.Drawing.Size(636, 22);
+            this.txtFolder.Size = new System.Drawing.Size(636, 31);
             this.txtFolder.TabIndex = 4;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(490, 10);
+            this.label2.Location = new System.Drawing.Point(563, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(160, 23);
+            this.label2.Size = new System.Drawing.Size(199, 26);
             this.label2.TabIndex = 2;
             this.label2.Text = "(no path or extension)";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkIncludeNamespaces
             // 
-            this.chkIncludeNamespaces.Location = new System.Drawing.Point(20, 12);
+            this.chkIncludeNamespaces.Location = new System.Drawing.Point(12, 14);
             this.chkIncludeNamespaces.Name = "chkIncludeNamespaces";
-            this.chkIncludeNamespaces.Size = new System.Drawing.Size(280, 21);
+            this.chkIncludeNamespaces.Size = new System.Drawing.Size(361, 29);
             this.chkIncludeNamespaces.TabIndex = 0;
             this.chkIncludeNamespaces.Text = "&Export project/namespace comments to";
             this.chkIncludeNamespaces.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(12, 108);
+            this.label3.Location = new System.Drawing.Point(7, 140);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(239, 23);
-            this.label3.TabIndex = 5;
+            this.label3.Size = new System.Drawing.Size(319, 26);
+            this.label3.TabIndex = 6;
             this.label3.Text = "&Maximum writer task cache capacity";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(323, 108);
+            this.label4.Location = new System.Drawing.Point(414, 140);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(103, 23);
-            this.label4.TabIndex = 7;
+            this.label4.Size = new System.Drawing.Size(222, 26);
+            this.label4.TabIndex = 8;
             this.label4.Text = "(0 for no limit)";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -159,15 +159,15 @@ namespace Microsoft.Ddue.Tools.UI
             0,
             0,
             0});
-            this.udcBoundedCapacity.Location = new System.Drawing.Point(257, 109);
+            this.udcBoundedCapacity.Location = new System.Drawing.Point(332, 139);
             this.udcBoundedCapacity.Maximum = new decimal(new int[] {
             9999,
             0,
             0,
             0});
             this.udcBoundedCapacity.Name = "udcBoundedCapacity";
-            this.udcBoundedCapacity.Size = new System.Drawing.Size(60, 22);
-            this.udcBoundedCapacity.TabIndex = 6;
+            this.udcBoundedCapacity.Size = new System.Drawing.Size(76, 31);
+            this.udcBoundedCapacity.TabIndex = 7;
             this.udcBoundedCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcBoundedCapacity.Value = new decimal(new int[] {
             100,
@@ -180,7 +180,7 @@ namespace Microsoft.Ddue.Tools.UI
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(708, 206);
+            this.ClientSize = new System.Drawing.Size(774, 242);
             this.Controls.Add(this.udcBoundedCapacity);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -193,6 +193,7 @@ namespace Microsoft.Ddue.Tools.UI
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

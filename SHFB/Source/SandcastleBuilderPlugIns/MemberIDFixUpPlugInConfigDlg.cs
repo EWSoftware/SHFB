@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : MemberIdFixUpPlugInConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 07/10/2016
+// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the member ID fix-up plug-in configuration
@@ -219,6 +219,9 @@ namespace SandcastleBuilder.PlugIns
                 tvExpressions.SelectedNode = node;
                 node.EnsureVisible();
                 txtMatchExpression.Focus();
+
+                btnDelete.Enabled = txtMatchExpression.Enabled = txtReplacementValue.Enabled =
+                    chkMatchAsRegEx.Enabled = true;
             }
         }
 

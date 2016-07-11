@@ -41,11 +41,11 @@
             this.txtProjectSummary.AcceptsReturn = true;
             this.txtProjectSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProjectSummary.Location = new System.Drawing.Point(3, 88);
+            this.txtProjectSummary.Location = new System.Drawing.Point(34, 112);
             this.txtProjectSummary.Multiline = true;
             this.txtProjectSummary.Name = "txtProjectSummary";
             this.txtProjectSummary.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtProjectSummary.Size = new System.Drawing.Size(557, 169);
+            this.txtProjectSummary.Size = new System.Drawing.Size(743, 154);
             this.txtProjectSummary.TabIndex = 2;
             this.txtProjectSummary.Tag = "ProjectSummary";
             this.txtProjectSummary.Enter += new System.EventHandler(this.txtProjectSummary_Enter);
@@ -54,9 +54,9 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(3, 43);
+            this.label2.Location = new System.Drawing.Point(34, 48);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(557, 42);
+            this.label2.Size = new System.Drawing.Size(743, 61);
             this.label2.TabIndex = 1;
             this.label2.Text = "&These comments will appear in the root namespaces page.  HTML markup can be used" +
     " to provide formatting, links for e-mail or to other websites, etc.";
@@ -67,7 +67,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dividerLabel1.Location = new System.Drawing.Point(3, 11);
             this.dividerLabel1.Name = "dividerLabel1";
-            this.dividerLabel1.Size = new System.Drawing.Size(557, 23);
+            this.dividerLabel1.Size = new System.Drawing.Size(774, 26);
             this.dividerLabel1.TabIndex = 0;
             this.dividerLabel1.Text = "Project S&ummary";
             // 
@@ -77,25 +77,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dividerLabel2.Location = new System.Drawing.Point(3, 277);
             this.dividerLabel2.Name = "dividerLabel2";
-            this.dividerLabel2.Size = new System.Drawing.Size(557, 23);
+            this.dividerLabel2.Size = new System.Drawing.Size(774, 26);
             this.dividerLabel2.TabIndex = 3;
             this.dividerLabel2.Text = "Namespace Summaries";
             // 
             // lblNamespaceSummaryState
             // 
             this.lblNamespaceSummaryState.AutoSize = true;
-            this.lblNamespaceSummaryState.Location = new System.Drawing.Point(18, 313);
+            this.lblNamespaceSummaryState.Location = new System.Drawing.Point(29, 317);
             this.lblNamespaceSummaryState.Name = "lblNamespaceSummaryState";
-            this.lblNamespaceSummaryState.Size = new System.Drawing.Size(276, 20);
+            this.lblNamespaceSummaryState.Size = new System.Drawing.Size(330, 25);
             this.lblNamespaceSummaryState.TabIndex = 4;
             this.lblNamespaceSummaryState.Tag = "NamespaceSummaries";
             this.lblNamespaceSummaryState.Text = "No summaries are defined in the project";
             // 
             // btnEditNamespaces
             // 
-            this.btnEditNamespaces.Location = new System.Drawing.Point(343, 307);
+            this.btnEditNamespaces.Location = new System.Drawing.Point(466, 312);
             this.btnEditNamespaces.Name = "btnEditNamespaces";
-            this.btnEditNamespaces.Size = new System.Drawing.Size(217, 32);
+            this.btnEditNamespaces.Size = new System.Drawing.Size(300, 35);
             this.btnEditNamespaces.TabIndex = 5;
             this.btnEditNamespaces.Text = "Edit &Namespace Summaries";
             this.btnEditNamespaces.UseVisualStyleBackColor = true;
@@ -110,9 +110,9 @@
             this.Controls.Add(this.dividerLabel1);
             this.Controls.Add(this.txtProjectSummary);
             this.Controls.Add(this.label2);
-            this.MinimumSize = new System.Drawing.Size(580, 355);
+            this.MinimumSize = new System.Drawing.Size(780, 355);
             this.Name = "SummaryPropertiesPageControl";
-            this.Size = new System.Drawing.Size(580, 355);
+            this.Size = new System.Drawing.Size(780, 355);
             this.ResumeLayout(false);
             this.PerformLayout();
 
