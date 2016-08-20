@@ -116,11 +116,42 @@ will remove it from the project and permanently deletes it from the disk as well
 					<para>If a folder is deleted, all child items are deleted recursively as well.</para>
 				</alert>
 
-				<alert class="note">
-					<para>The project supports linked items as well (adding them is not supported from the standalone GUI).
-Linked items will have a <ui>Remove</ui> option rather than a <ui>Delete</ui> option.  This removes them from the
-project but leaves them on disk in their original location since they may belong to another project.</para>
-				</alert>
+			</content>
+		</section>
+
+		<section address="LinkedItems">
+			<title>Linked Items</title>
+			<content>
+					<para>Help file builder projects support linked items as well.  Linked items are files that appear in
+the current project's folder structure but are physically located in a location outside of the current project's
+folder structure.  An example would be sharing a token file between multiple projects.  If the file is edited in
+one project, those changes are reflected in the other projects in which it is a linked or actual item when those
+projects are built.</para>
+
+					<para>The standalone GUI supports them for use but cannot add them.  They can be added in Visual Studio
+in the usual manner.  Select the option to add an existing item and, in the file selection dialog box, rather than
+clicking the <ui>Add</ui> button, click the drop down arrow on it and select the <ui>Add as Link</ui> option.</para>
+
+					<para>If you do not have Visual Studio, the only way to create linked items is by manually editing the
+project in a text editor.  To do so, add a build item to an item group.  This is done by adding an element named
+after the build action (i.e. <codeInline>Tokens</codeInline> for a token file). The <codeInline>Include</codeInline>
+attribute points to the relative path of the file which is typically outside of the current project's folder
+structure.  Add a <codeInline>Link</codeInline> element nested within the build item and set its property value
+to the relative path of the item within the current help file builder project. For example:</para>
+				
+<code language="xml" title=" ">
+&lt;Tokens Include="..\SomeOtherProject\Tokens\SharedTokensFile.tokens"&gt;
+  &lt;Link&gt;Tokens\SharedTokens.tokens&lt;/Link&gt;
+&lt;/Tokens&gt;
+</code>
+
+				<para>The example above creates a linked tokens file.  Its physical location is one level up from the
+help file builder project folder in another project folder (<localUri>..\SomeOtherProject\Tokens</localUri>).
+Its virtual location within the current project will be in a folder called <localUri>.\Tokens</localUri>.</para>
+
+				<para>Linked items will have a <ui>Remove</ui> option rather than a <ui>Delete</ui> option.  This removes
+them from the project but leaves them on disk in their original location since they may belong to another
+project.</para>
 
 			</content>
 		</section>

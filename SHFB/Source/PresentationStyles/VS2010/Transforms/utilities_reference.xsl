@@ -249,6 +249,9 @@
 					<xsl:when test="$g_topicGroup='root'">
 						<xsl:value-of select="$g_topicGroup"/>
 					</xsl:when>
+					<xsl:when test="$g_topicGroup='rootGroup'">
+						<xsl:text>root</xsl:text>
+					</xsl:when>
 				</xsl:choose>
 			</xsl:attribute>
 			<parameter>
@@ -482,6 +485,9 @@
 					<!-- overload root titles  -->
 					<xsl:when test="$g_topicGroup='root'">
 						<xsl:value-of select="$g_topicGroup"/>
+					</xsl:when>
+					<xsl:when test="$g_topicGroup='rootGroup'">
+						<xsl:text>root</xsl:text>
 					</xsl:when>
 				</xsl:choose>
 

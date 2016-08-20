@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildOpenXmlFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 08/05/2016
+// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to finish up creation of the Open XML file parts and compress the
 // help content into an Open XML document (a ZIP file with a .docx extension).
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -71,6 +71,12 @@ namespace SandcastleBuilder.Utils.MSBuild
 
         private HashSet<string> archiveFiles;
         private long addCount, fileCount, compressedSize, uncompressedSize;
+
+        // This defines a set of parent elements that can contain text that does not need to be wrapped in
+        // a run.
+        private static HashSet<string> ignoredParents = new HashSet<string> {
+            "a", "align", "posOffset", "span", "t" };
+
         #endregion
 
         #region Task input properties
@@ -538,14 +544,14 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <param name="document">The document in which to wrap stray text nodes</param>
         /// <remarks>Stray text nodes can occur when resolving shared content items.  We need to ensure that
-        /// all text nodes are within a text element within a run.</remarks>
+        /// all text nodes are within a text element within a run to ensure that the document does not appear to
+        /// be corrupted.</remarks>
         private static void WrapStrayElementNodes(XDocument document)
         {
             XElement wrap;
 
             foreach(var text in document.DescendantNodes().OfType<XText>().Where(
-              t => t.Parent.Name.LocalName != "t" && t.Parent.Name.LocalName != "a" &&
-                   t.Parent.Name.LocalName != "span").ToList())
+              t => !ignoredParents.Contains(t.Parent.Name.LocalName)).ToList())
             {
 #if DEBUG
                 if(text.Parent.Name.LocalName != "body" && text.Parent.Name.LocalName != "p" && text.Parent.Name.LocalName != "tc")

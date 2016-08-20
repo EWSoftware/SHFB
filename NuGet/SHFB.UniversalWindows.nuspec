@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB.UniversalWindows</id>
-		<version>1.0</version>
+		<version>1.0.1</version>
 		<title>Sandcastle Help File Builder Universal Windows Reflection Data Set</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
@@ -11,7 +11,7 @@
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This package contains the .NET for Universal Windows reflection information data set for use with the EWSoftware.SHFB package.</description>
-		<copyright>Eric Woodruff (c) 2006-2015</copyright>
+		<copyright>Eric Woodruff (c) 2006-2016</copyright>
 		<tags>SHFB sandcastle reflection information data set</tags>
 		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one
 				 renders the package uninstallable because its "not compatible with any projects in the solution".

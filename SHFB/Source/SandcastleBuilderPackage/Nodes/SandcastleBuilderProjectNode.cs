@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/19/2016
+// Updated : 08/12/2016
 // Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -903,9 +903,9 @@ namespace SandcastleBuilder.Package.Nodes
         /// <inheritdoc />
         public override MSBuildResult Build(uint vsopts, string config, IVsOutputWindowPane output, string target)
         {
-            // TODO: Opening the Tools menu during a build fails because it executes a build for the AllProjectOutputs group.
-            // Don't know why yet.  Is this the best workaround?
-            if(base.BuildInProgress)
+            // Opening the Tools menu during a build may fail because it sometimes executes a build for the
+            // AllProjectOutputs group.  Don't know why, but this works around it.
+            if(this.BuildInProgress)
                 return MSBuildResult.Successful;
 
             return base.Build(vsopts, config, output, target);

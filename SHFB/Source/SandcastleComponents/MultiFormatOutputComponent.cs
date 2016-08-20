@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MultiFormatOutputComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2015
-// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
+// Updated : 08/03/2016
+// Note    : Copyright 2010-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to execute one or more sets of build components each based
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.XPath;
@@ -59,7 +60,7 @@ namespace SandcastleBuilder.Components
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new MultiFormatOutputComponent(base.BuildAssembler);
+                return new MultiFormatOutputComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -115,7 +116,7 @@ namespace SandcastleBuilder.Components
             XPathNodeIterator outputSets;
             string format;
 
-            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+            this.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
                 "[{0}, version {1}]\r\n    Multi-Format Output Component. {2}" +
                 "\r\n    https://GitHub.com/EWSoftware/SHFB", fvi.ProductName, fvi.ProductVersion,
                 fvi.LegalCopyright));
@@ -140,15 +141,15 @@ namespace SandcastleBuilder.Components
             {
                 format = set.GetAttribute("format", String.Empty);
 
-                if(String.IsNullOrEmpty(format))
-                    throw new ConfigurationErrorsException("You must specify a string value for the <output> " +
-                        "'format' attribute.");
+                if(String.IsNullOrWhiteSpace(format))
+                    throw new ConfigurationErrorsException("You must specify a string value for the " +
+                        "<helpOutput> 'format' attribute.");
 
                 // Only include formats that were requested
                 if(buildFormats.Contains(format))
                 {
-                    base.WriteMessage(MessageLevel.Info, "Loading components for " + format + " format");
-                    formatComponents.Add(format, base.BuildAssembler.LoadComponents(set));
+                    this.WriteMessage(MessageLevel.Info, "Loading components for " + format + " format");
+                    formatComponents.Add(format, this.BuildAssembler.LoadComponents(set));
                 }
             }
 
@@ -165,13 +166,25 @@ namespace SandcastleBuilder.Components
         {
             XmlDocument clone;
 
-            foreach(string format in formatComponents.Keys)
+            // No need to clone the document if there's only one format
+            if(formatComponents.Count == 1)
             {
-                clone = (XmlDocument)document.Clone();
-
-                foreach(var component in formatComponents[format])
-                    component.Apply(clone, key);
+                foreach(var component in formatComponents.Values.First())
+                    component.Apply(document, key);
             }
+            else
+                foreach(var componentSet in formatComponents.Values)
+                {
+                    // Do not use XmlNode.Clone() here!  For some reason, it can cause sporadic failures in the
+                    // Shared Content component due to supposed invalid/missing parent nodes on the replaced
+                    // items.  Creating a copy of the document from the XML works around this issue.
+                    clone = new XmlDocument();
+                    clone.PreserveWhitespace = document.PreserveWhitespace;
+                    clone.LoadXml(document.OuterXml);
+
+                    foreach(var component in componentSet)
+                        component.Apply(clone, key);
+                }
         }
 
         /// <inheritdoc />

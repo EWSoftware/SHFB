@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
+// Updated : 08/05/2016
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
@@ -142,8 +143,18 @@ namespace SandcastleBuilder.PlugIns
             XmlDocument config = new XmlDocument();
             XmlAttribute attr;
             XmlNode resolver, ddue, ignoreNode, assemblyNode;
+            string configFile = builder.WorkingFolder + "MRefBuilder.config";
 
-            config.Load(builder.WorkingFolder + "MRefBuilder.config");
+            // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
+            // has bypassed it so only issue a warning.
+            if(!File.Exists(configFile))
+            {
+                builder.ReportWarning("ABR0003", "The MRefBuilder configuration file '{0}' could not be " +
+                    "found.  The Assembly Binding Redirection plug-in did not run.", configFile);
+                return;
+            }
+
+            config.Load(configFile);
             resolver = config.SelectSingleNode("configuration/dduetools/resolver");
 
             if(resolver == null)
@@ -211,7 +222,7 @@ namespace SandcastleBuilder.PlugIns
                 }
             }
 
-            config.Save(builder.WorkingFolder + "MRefBuilder.config");
+            config.Save(configFile);
         }
         #endregion
 

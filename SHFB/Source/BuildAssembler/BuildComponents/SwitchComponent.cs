@@ -105,6 +105,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             {
                 string caseValue = caseElement.GetAttribute("value", String.Empty);
 
+                this.WriteMessage(MessageLevel.Info, "Loading components for " + caseValue + " case");
+
                 cases.Add(caseValue, BuildAssembler.LoadComponents(caseElement));
             }
 

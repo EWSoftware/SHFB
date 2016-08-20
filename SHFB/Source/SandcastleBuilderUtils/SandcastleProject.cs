@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/15/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 08/03/2016
+// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
@@ -117,7 +117,7 @@ namespace SandcastleBuilder.Utils
         public const string DefaultPlatform = "AnyCPU";
 
         // Restricted property names that cannot be used for user-defined property names
-        internal static List<string> restrictedProps = new List<string>() {
+        internal static HashSet<string> restrictedProps = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
             "AssemblyName", "Configuration", "CustomAfterSHFBTargets", "CustomBeforeSHFBTargets",
             "DumpLogOnFailure", "Name", "Platform", "PostBuildEvent", "PreBuildEvent", "ProjectGuid",
             "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName", "SccProvider",
@@ -178,10 +178,11 @@ namespace SandcastleBuilder.Utils
             get
             {
                 // There can be duplicate versions of the properties so pick the last one as it will contain
-                // the value to use.
+                // the value to use.  Property names are case-insensitive.
                 if(projectPropertyCache == null)
-                    projectPropertyCache = msBuildProject.AllEvaluatedProperties.GroupBy(p => p.Name).Select(
-                        g => g.Last()).ToDictionary(p => p.Name);
+                    projectPropertyCache = msBuildProject.AllEvaluatedProperties.GroupBy(
+                        p => p.Name.ToLowerInvariant()).Select(g => g.Last()).ToDictionary(
+                            p => p.Name, StringComparer.OrdinalIgnoreCase);
 
                 return projectPropertyCache;
             }
@@ -443,7 +444,7 @@ namespace SandcastleBuilder.Utils
                     {
                         if(!prop.IsEnvironmentProperty && !prop.IsGlobalProperty && !prop.IsImported &&
                           !prop.IsReservedProperty && !propertyCache.ContainsKey(prop.Name) &&
-                          restrictedProps.IndexOf(prop.Name) == -1)
+                          !restrictedProps.Contains(prop.Name))
                         {
                             yield return prop;
                         }
@@ -1770,19 +1771,19 @@ namespace SandcastleBuilder.Utils
                 // Note that many properties don't use the final value as they don't contain variables that
                 // need replacing.
                 foreach(ProjectProperty prop in this.ProjectPropertyCache.Values)
-                    switch(prop.Name)
+                    switch(prop.Name.ToLowerInvariant())
                     {
-                        case "ApiFilter":           // These collections are created as needed
-                        case "DocumentationSources":
-                        case "NamespaceSummaries":
-                        case "ComponentConfigurations":
-                        case "PlugInConfigurations":
-                        case "Configuration":       // These properties are ignored
-                        case "Platform":
-                        case "TransformComponentArguments":
+                        case "apifilter":           // These collections are created as needed
+                        case "documentationsources":
+                        case "namespacesummaries":
+                        case "componentconfigurations":
+                        case "pluginconfigurations":
+                        case "configuration":       // These properties are ignored
+                        case "platform":
+                        case "transformcomponentarguments":
                             break;
 
-                        case "HelpFileFormat":
+                        case "helpfileformat":
                             // The enum value names changed in v1.8.0.3
                             if(schemaVersion.Major == 1 && schemaVersion.Minor == 8 &&
                               schemaVersion.Build == 0 && schemaVersion.Revision < 3)
@@ -1792,7 +1793,7 @@ namespace SandcastleBuilder.Utils
                                 foreach(string key in translateFormat.Keys)
                                     helpFormats = helpFormats.Replace(key, translateFormat[key]);
 
-                                this.SetLocalProperty(prop.Name, helpFormats);
+                                this.SetLocalProperty(prop, helpFormats);
 
                                 msBuildProject.SetProperty("HelpFileFormat", this.HelpFileFormat.ToString());
                             }
@@ -1802,40 +1803,40 @@ namespace SandcastleBuilder.Utils
                                     // Help 2 was last supported in the 2015.5.2.0 release
                                     helpFormats = prop.UnevaluatedValue.Replace("MSHelp2", "HtmlHelp1");
 
-                                    this.SetLocalProperty(prop.Name, helpFormats);
+                                    this.SetLocalProperty(prop, helpFormats);
 
                                     msBuildProject.SetProperty("HelpFileFormat", this.HelpFileFormat.ToString());
                                 }
                                 else
-                                    this.SetLocalProperty(prop.Name, prop.UnevaluatedValue);
+                                    this.SetLocalProperty(prop, prop.UnevaluatedValue);
                             break;
 
-                        case "FrameworkVersion":
+                        case "frameworkversion":
                             // The values changed in v1.9.2.0 to include the framework type.  They changed in
                             // v1.9.5.0 to use the titles from the Sandcastle framework definition file.
                             if(schemaVersion.Major == 1 && (schemaVersion.Minor < 9 ||
                               (schemaVersion.Minor == 9 && schemaVersion.Build < 5)))
                             {
-                                this.SetLocalProperty(prop.Name, ConvertOldFrameworkVersion(prop.UnevaluatedValue));
+                                this.SetLocalProperty(prop, ConvertOldFrameworkVersion(prop.UnevaluatedValue));
                                 msBuildProject.SetProperty("FrameworkVersion", this.FrameworkVersion);
                             }
                             else
-                                this.SetLocalProperty(prop.Name, prop.UnevaluatedValue);
+                                this.SetLocalProperty(prop, prop.UnevaluatedValue);
                             break;
 
-                        case "PresentationStyle":
+                        case "presentationstyle":
                             // Convert removed presentation styles to the current default presentation style
                             switch(prop.UnevaluatedValue)
                             {
                                 case "Hana":
                                 case "Prototype":
                                 case "VS2005":
-                                    this.SetLocalProperty(prop.Name, Constants.DefaultPresentationStyle);
+                                    this.SetLocalProperty(prop, Constants.DefaultPresentationStyle);
                                     msBuildProject.SetProperty("PresentationStyle", Constants.DefaultPresentationStyle);
                                     break;
 
                                 default:
-                                    this.SetLocalProperty(prop.Name, prop.UnevaluatedValue);
+                                    this.SetLocalProperty(prop, prop.UnevaluatedValue);
                                     break;
                             }
                             break;
@@ -1843,7 +1844,7 @@ namespace SandcastleBuilder.Utils
                         default:
                             // These may or may not contain variable references so use the final value if
                             // requested.
-                            this.SetLocalProperty(prop.Name, this.UsingFinalValues ? prop.EvaluatedValue : prop.UnevaluatedValue);
+                            this.SetLocalProperty(prop, this.UsingFinalValues ? prop.EvaluatedValue : prop.UnevaluatedValue);
                             break;
                     }
 
@@ -1858,10 +1859,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to set the named property to the specified value using Reflection
+        /// This is used to set the local property to the specified value of the MSBuild project property using
+        /// Reflection.
         /// </summary>
-        /// <param name="name">The name of the property to set</param>
-        /// <param name="value">The value to which it is set</param>
+        /// <param name="msBuildProperty">The MSBuild project property to use</param>
+        /// <param name="value">The value to which the local property is set</param>
         /// <remarks>Property name matching is case insensitive as are the values.  This is used to allow setting
         /// of simple project properties (non-collection) from the MSBuild project file.  Unknown properties are
         /// ignored.</remarks>
@@ -1869,49 +1871,49 @@ namespace SandcastleBuilder.Utils
         /// string.</exception>
         /// <exception cref="BuilderException">This is thrown if an error occurs while trying to set the named
         /// property.</exception>
-        private void SetLocalProperty(string name, string value)
+        private void SetLocalProperty(ProjectProperty msBuildProperty, string value)
         {
             TypeConverter tc;
             EscapeValueAttribute escAttr;
-            PropertyInfo property;
+            PropertyInfo localProperty;
             FilePath filePath;
             object parsedValue;
 
-            if(String.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+            if(msBuildProperty == null)
+                throw new ArgumentNullException("msBuildProperty");
 
             // Ignore unknown properties
-            if(!propertyCache.TryGetValue(name, out property))
+            if(!propertyCache.TryGetValue(msBuildProperty.Name, out localProperty))
                 return;
 
-            if(!property.CanWrite || property.IsDefined(typeof(XmlIgnoreAttribute), true))
+            if(!localProperty.CanWrite || localProperty.IsDefined(typeof(XmlIgnoreAttribute), true))
                 throw new BuilderException("PRJ0004", String.Format(CultureInfo.CurrentCulture,
                     "An attempt was made to set a read-only or ignored property: {0}   Value: {1}",
-                    name, value));
-
-            // If escaped, unescape it
-            escAttr = pdcCache[name].Attributes[typeof(EscapeValueAttribute)] as EscapeValueAttribute;
-
-            if(escAttr != null)
-                value = EscapeValueAttribute.Unescape(value);
+                    msBuildProperty, value));
 
             try
             {
-                if(property.PropertyType.IsEnum)
-                    parsedValue = Enum.Parse(property.PropertyType, value, true);
+                // If escaped, unescape it
+                escAttr = pdcCache[localProperty.Name].Attributes[typeof(EscapeValueAttribute)] as EscapeValueAttribute;
+
+                if(escAttr != null)
+                    value = EscapeValueAttribute.Unescape(value);
+
+                if(localProperty.PropertyType.IsEnum)
+                    parsedValue = Enum.Parse(localProperty.PropertyType, value, true);
                 else
-                    if(property.PropertyType == typeof(Version))
+                    if(localProperty.PropertyType == typeof(Version))
                         parsedValue = new Version(value);
                     else
                     {
-                        if(property.PropertyType == typeof(FilePath))
+                        if(localProperty.PropertyType == typeof(FilePath))
                             parsedValue = new FilePath(value, this);
                         else
-                            if(property.PropertyType == typeof(FolderPath))
+                            if(localProperty.PropertyType == typeof(FolderPath))
                                 parsedValue = new FolderPath(value, this);
                             else
                             {
-                                tc = TypeDescriptor.GetConverter(property.PropertyType);
+                                tc = TypeDescriptor.GetConverter(localProperty.PropertyType);
                                 parsedValue = tc.ConvertFromString(value);
                             }
 
@@ -1925,17 +1927,18 @@ namespace SandcastleBuilder.Utils
             }
             catch(Exception ex)
             {
-                // Ignore exceptions for the Language property.  A few people have had an environment variable
-                // with that name that gets picked up as a default and the value isn't typically valid for a
-                // culture name.
-                if(!name.Equals("Language", StringComparison.OrdinalIgnoreCase))
+                // Ignore exceptions for environment variable properties.  A few people have had an environment
+                // variable with a SHFB project property name that gets picked up as a default and the value
+                // isn't typically valid for a SHFB project property (i.e. Language which expects a valid culture
+                // name).  Fail on any others though.
+                if(!msBuildProperty.IsEnvironmentProperty)
                     throw new BuilderException("PRJ0005", "Unable to parse value '" + value +
-                        "' for property '" + name + "'", ex);
+                        "' for property '" + msBuildProperty.Name + "'", ex);
 
                 parsedValue = null;
             }
 
-            property.SetValue(this, parsedValue, null);
+            localProperty.SetValue(this, parsedValue, null);
         }
 
         /// <summary>
@@ -2055,7 +2058,7 @@ namespace SandcastleBuilder.Utils
         {
             ProjectProperty prop;
 
-            if(msBuildProject == null || propertyCache.ContainsKey(name) || restrictedProps.IndexOf(name) != -1)
+            if(msBuildProject == null || propertyCache.ContainsKey(name) || restrictedProps.Contains(name))
                 return false;
 
             if(this.ProjectPropertyCache.TryGetValue(name, out prop))

@@ -63,18 +63,18 @@
 		<xsl:apply-templates select="/document/reference/family"/>
 
 		<!-- assembly information -->
-		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
+		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='rootGroup' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
 			<xsl:call-template name="t_putRequirementsInfo"/>
 		</xsl:if>
 
 		<!-- syntax -->
-		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
+		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='rootGroup' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
 			<xsl:apply-templates select="/document/syntax"/>
 		</xsl:if>
 
 		<!-- members -->
 		<xsl:choose>
-			<xsl:when test="$g_apiTopicGroup='root'">
+			<xsl:when test="$g_apiTopicGroup='rootGroup' or $g_apiTopicGroup='root'">
 				<xsl:apply-templates select="/document/reference/elements" mode="root"/>
 			</xsl:when>
 			<xsl:when test="$g_apiTopicGroup='namespace'">
@@ -116,7 +116,7 @@
 		<!-- contracts -->
 		<xsl:call-template name="t_contracts"/>
 		<!--versions-->
-		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
+		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='rootGroup' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
 			<xsl:apply-templates select="/document/reference/versions"/>
 		</xsl:if>
 		<!-- permissions -->

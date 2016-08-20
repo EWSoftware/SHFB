@@ -1,28 +1,27 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle MRefBuilder Tool
 // File    : AssemblyResolver.cs
-// Note    : Copyright 2006-2013 Microsoft Corporation
+// Note    : Copyright 2006-2016 Microsoft Corporation
 //
-// This file contains a modified version of the original AssemblyResolver that
-// supports assembly binding redirect elements in its configuration that let
-// you redirect an unknown assembly's strong name to another when resolving
-// an unknown reference.
+// This file contains a modified version of the original AssemblyResolver that supports assembly binding
+// redirect elements in its configuration that let you redirect an unknown assembly's strong name to another
+// when resolving an unknown reference.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
 // 03/02/2012 - EFW - Merged my changes into the code
 // 08/10/2012 - EFW - Added support for ignoreIfUnresolved config element
-//=============================================================================
+// 08/19/2016 - EFW - Added code to resolve a missing mscorlib v255 to System.Runtime
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Xml.XPath;
 
 using System.Compiler;
@@ -313,6 +312,29 @@ namespace Microsoft.Ddue.Tools.Reflection
                     cache.Add(name, assembly);
                     return assembly;
                 }
+
+            // For mscorlib v255.255.255.255, redirect to System.Runtime.  This is typically one like a .NETCore
+            // framework which redirects all of the system types there.
+            if(reference.Name == "mscorlib" && reference.Version.Major == 255)
+            {
+                // The system assembly should be set.  If so, it'll point to the one we need.
+                if(SystemTypes.SystemAssembly != null)
+                {
+                    assembly = SystemTypes.SystemAssembly;
+                    cache.Add(name, assembly);
+                    return assembly;
+                }
+
+                // If not, look for it in the cache
+                string key = cache.Keys.FirstOrDefault(k => k.StartsWith("System.Runtime,", StringComparison.Ordinal));
+
+                if(key != null)
+                {
+                    assembly = cache[key];
+                    cache.Add(name, assembly);
+                    return assembly;
+                }
+            }
 
             // Couldn't find it; return null
             return null;
