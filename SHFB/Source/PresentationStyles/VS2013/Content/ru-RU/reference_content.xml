@@ -550,4 +550,8 @@
   <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0}&gt; отсутствует в документации для "{1}"]</p></item>
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</p></item>
+
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
 </content>

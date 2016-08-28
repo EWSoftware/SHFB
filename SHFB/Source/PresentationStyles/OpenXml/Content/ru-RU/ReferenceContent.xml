@@ -480,4 +480,8 @@
   <item id="SMCMissingTag"><span class="MissingComment">[&lt;{0}&gt; отсутствует в документации для "{1}"]</span></item>
   <item id="SMCMissingParamTag"><span class="MissingComment">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</span></item>
   <item id="SMCMissingIncludeTarget"><span class="MissingComment">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</span></item>
+
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
 </content>

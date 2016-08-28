@@ -140,7 +140,7 @@
 	<item id="title_platforms">プラットフォーム</item>
 	<item id="title_relatedTopics">関連項目</item>
 	<item id="title_extensionUsage">使用上の注意</item>
-  <item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/bb384936.aspx" target="_blank">拡張メソッド(Visual Basic)</a>または<a href="http://msdn.microsoft.com/ja-jp/library/bb383977.aspx" target="_blank">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
+	<item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/bb384936.aspx" target="_blank">拡張メソッド(Visual Basic)</a>または<a href="http://msdn.microsoft.com/ja-jp/library/bb383977.aspx" target="_blank">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
 	<item id="text_moreInheritance">More...</item>
 
 	<!-- table headers -->
@@ -195,7 +195,7 @@
 
   <!-- Thread Safety -->
   <item id="text_threadSafety">スレッドセーフ</item>
-  <item id="boilerplate_threadSafety">この型の公開<include item="devlang_staticKeyword"/>メンバーはすべてスレッドセーフです。インスタンスメンバーはスレッドセーフである保証はありません。</item>
+  <item id="boilerplate_threadSafety">この型の公開<include item="devlang_staticKeyword" />メンバーはすべてスレッドセーフです。インスタンスメンバーはスレッドセーフである保証はありません。</item>
 
   <item id="text_staticThreadSafe">この型のstaticメンバーはスレッドセーフです。</item>
   <item id="text_staticNotThreadSafe">この型のstaticメンバーはスレッドセーフではありません。</item>
@@ -326,12 +326,12 @@
 
   <item id="altText_CompactFramework">.NET Compact Frameworkによってサポートされています。</item>
   <item id="altText_XNAFramework">XNA Frameworkによってサポートされています。</item>
-  <item id="altText_SilverlightMobile"><include item="silverlight_mobile"/>によってサポートされています。</item>
+  <item id="altText_SilverlightMobile"><include item="silverlight_mobile" />によってサポートされています。</item>
   <item id="altText_ExplicitInterface">明示的なインターフェイスの実装</item>
   <item id="altText_CodeExample">Code example</item>
 
   <item id="boilerplate_seeAlsoNamespaceLink">{0} 名前空間</item>
-  <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/></item>
+  <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper" /></item>
   <item id="boilerplate_seeAlsoMembersLink">{0} メンバー</item>
   <item id="boilerplate_seeAlsoOverloadLink">{0} オーバーロード</item>
 
@@ -551,4 +551,8 @@
   <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{1}"に対する&lt;{0}&gt;がありません]</p></item>
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{2}"に対する&lt;{0} name="{1}"/&gt;がありません</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">['{0}'で使われている&lt;include&gt;ターゲットドキュメントがありません。File: '{1}' Path: '{2}']</p></item>
+	
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
 </content>

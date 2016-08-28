@@ -15,7 +15,7 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>EWSoftware.CodeDom</HtmlHelpName>
     <ProjectSummary>Web Project Code Providers.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Web Code Providers&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttps://GitHub.com/EWSoftware/SHFB&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttps://GitHub.com/EWSoftware/SHFB&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
@@ -102,6 +102,21 @@
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" xmlns="" />
+      <Argument Key="logoHeight" Value="" xmlns="" />
+      <Argument Key="logoWidth" Value="" xmlns="" />
+      <Argument Key="logoAltText" Value="" xmlns="" />
+      <Argument Key="logoPlacement" Value="left" xmlns="" />
+      <Argument Key="logoAlignment" Value="left" xmlns="" />
+      <Argument Key="maxVersionParts" Value="" xmlns="" />
+      <Argument Key="defaultLanguage" Value="cs" xmlns="" />
+      <Argument Key="includeEnumValues" Value="true" xmlns="" />
+      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" xmlns="" />
+      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" xmlns="" />
+    </TransformComponentArguments>
+    <SourceCodeBasePath>..\..\</SourceCodeBasePath>
+    <WarnOnMissingSourceContext>True</WarnOnMissingSourceContext>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

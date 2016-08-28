@@ -57,7 +57,7 @@
             this.tvArguments.ShowLines = false;
             this.tvArguments.ShowPlusMinus = false;
             this.tvArguments.ShowRootLines = false;
-            this.tvArguments.Size = new System.Drawing.Size(260, 354);
+            this.tvArguments.Size = new System.Drawing.Size(260, 449);
             this.tvArguments.TabIndex = 0;
             this.tvArguments.Tag = "TransformComponentArguments";
             this.tvArguments.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvArguments_BeforeSelect);
@@ -72,7 +72,7 @@
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.ReadOnly = true;
             this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtDescription.Size = new System.Drawing.Size(528, 142);
+            this.txtDescription.Size = new System.Drawing.Size(528, 283);
             this.txtDescription.TabIndex = 1;
             this.txtDescription.TabStop = false;
             // 
@@ -80,7 +80,7 @@
             // 
             this.chkIsForConceptualBuild.AutoSize = true;
             this.chkIsForConceptualBuild.Enabled = false;
-            this.chkIsForConceptualBuild.Location = new System.Drawing.Point(275, 160);
+            this.chkIsForConceptualBuild.Location = new System.Drawing.Point(275, 292);
             this.chkIsForConceptualBuild.Name = "chkIsForConceptualBuild";
             this.chkIsForConceptualBuild.Size = new System.Drawing.Size(22, 21);
             this.chkIsForConceptualBuild.TabIndex = 2;
@@ -90,7 +90,7 @@
             // 
             this.chkIsForReferenceBuild.AutoSize = true;
             this.chkIsForReferenceBuild.Enabled = false;
-            this.chkIsForReferenceBuild.Location = new System.Drawing.Point(542, 160);
+            this.chkIsForReferenceBuild.Location = new System.Drawing.Point(542, 292);
             this.chkIsForReferenceBuild.Name = "chkIsForReferenceBuild";
             this.chkIsForReferenceBuild.Size = new System.Drawing.Size(22, 21);
             this.chkIsForReferenceBuild.TabIndex = 4;
@@ -99,7 +99,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(303, 157);
+            this.label1.Location = new System.Drawing.Point(303, 289);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(207, 25);
             this.label1.TabIndex = 3;
@@ -108,7 +108,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(570, 157);
+            this.label2.Location = new System.Drawing.Point(570, 289);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(193, 25);
             this.label2.TabIndex = 5;
@@ -117,7 +117,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(270, 198);
+            this.label3.Location = new System.Drawing.Point(270, 326);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 25);
             this.label3.TabIndex = 6;
@@ -128,10 +128,10 @@
             this.txtValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtValue.Location = new System.Drawing.Point(269, 226);
+            this.txtValue.Location = new System.Drawing.Point(269, 355);
             this.txtValue.Multiline = true;
             this.txtValue.Name = "txtValue";
-            this.txtValue.Size = new System.Drawing.Size(523, 131);
+            this.txtValue.Size = new System.Drawing.Size(523, 97);
             this.txtValue.TabIndex = 7;
             this.txtValue.Tag = "";
             this.txtValue.TextChanged += new System.EventHandler(this.txtValue_TextChanged);
@@ -147,9 +147,9 @@
             this.Controls.Add(this.chkIsForConceptualBuild);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.tvArguments);
-            this.MinimumSize = new System.Drawing.Size(800, 360);
+            this.MinimumSize = new System.Drawing.Size(800, 455);
             this.Name = "TransformArgumentsPageControl";
-            this.Size = new System.Drawing.Size(800, 360);
+            this.Size = new System.Drawing.Size(800, 455);
             this.ResumeLayout(false);
             this.PerformLayout();
 

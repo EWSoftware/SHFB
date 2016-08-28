@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/25/2016
+// Updated : 08/28/2016
 // Note    : Copyright 2015-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -363,6 +363,26 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string HtmlEncWorkingFolder()
         {
             return WebUtility.HtmlEncode(currentBuild.WorkingFolder);
+        }
+
+        /// <summary>
+        /// The current project's source code base path
+        /// </summary>
+        /// <returns>The current project's source code base path</returns>
+        [SubstitutionTag]
+        private string SourceCodeBasePath()
+        {
+            return currentBuild.CurrentProject.SourceCodeBasePath;
+        }
+
+        /// <summary>
+        /// The missing source context warning setting
+        /// </summary>
+        /// <returns>The current project's missing source context warning setting</returns>
+        [SubstitutionTag]
+        private string WarnOnMissingSourceContext()
+        {
+            return currentBuild.CurrentProject.WarnOnMissingSourceContext.ToString().ToLowerInvariant();
         }
 
         /// <summary>

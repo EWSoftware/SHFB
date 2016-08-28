@@ -550,4 +550,8 @@
   <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Manca la documentazione &lt;{0}&gt; per "{1}"]</p></item>
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Manca &lt;{0} nome="{1}"/&gt; documentazione per "{2}"]</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Manca la documentazione di &lt;include&gt; in '{0}'.  File: '{1}' Percorso: '{2}']</p></item>
+	
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
 </content>

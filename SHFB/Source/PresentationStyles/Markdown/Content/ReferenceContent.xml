@@ -473,4 +473,8 @@
   <item id="SMCMissingTag">\[Missing &lt;{0}&gt; documentation for "{1}"\]</item>
   <item id="SMCMissingParamTag">\[Missing &lt;{0} name="{1}"/&gt; documentation for "{2}"\]</item>
   <item id="SMCMissingIncludeTarget">\[Missing &lt;include&gt; target documentation in '{0}'.  File: '{1}' Path: '{2}'\]</item>
+	
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
 </content>

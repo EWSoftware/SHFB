@@ -6,6 +6,7 @@
 // Change history:
 // 11/21/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
 // 12/15/2013 - EFW - Fixed a bug found when parsing the .NET 4.5.1 Framework assemblies
+// 08/23/2016 - EFW - Added support for reading source code context from PDB files
 
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ using System.IO;
 using System.Linq;
 using Marshal = System.Runtime.InteropServices.Marshal;
 using System.Runtime.InteropServices;
+
+using Sandcastle.Core;
 
 namespace System.Compiler.Metadata
 {
@@ -184,6 +187,16 @@ namespace System.Compiler.Metadata
         private TypeNodeList currentMethodTypeParameters;
         internal bool preserveShortBranches;
 
+        /// <summary>
+        /// This read-only property indicates whether or not the PDB file exists
+        /// </summary>
+        internal bool PdbExists { get; set; }
+
+        /// <summary>
+        /// This read-only property indicates whether or not the PDB file is out of date
+        /// </summary>
+        internal bool PdbOutOfDate { get; set; }
+
         internal unsafe Reader(byte[]/*!*/ buffer, IDictionary localAssemblyCache, bool doNotLockFile, bool getDebugInfo, bool useStaticCache, bool preserveShortBranches)
         {
             Debug.Assert(buffer != null);
@@ -275,16 +288,21 @@ namespace System.Compiler.Metadata
             if(!Reader.ReadFile(inputStream.SafeFileHandle.DangerousGetHandle(), pb, n, &n, IntPtr.Zero))
                 throw new System.IO.FileLoadException();
         }
+
         internal void SetupDebugReader(string filename, string pdbSearchPath)
         {
-            if (filename == null) return;
+            if(filename == null)
+                return;
+
             CorSymBinder binderObj1 = null;
             CorSymBinder2 binderObj2 = null;
             getDebugSymbolsFailed = false;
             object importer = null;
+
             try
             {
                 int hresult = 0;
+
                 try
                 {
                     binderObj2 = new CorSymBinder2();
@@ -293,49 +311,59 @@ namespace System.Compiler.Metadata
                     importer = new EmptyImporter();
                     hresult = binder2.GetReaderForFile(importer, filename, pdbSearchPath, out this.debugReader);
                 }
-                catch (COMException e)
+                catch(COMException e)
                 {
-                    // could not instantiate ISymUnmanagedBinder2, fall back to ISymUnmanagedBinder
-                    if ((uint)e.ErrorCode == 0x80040111)
+                    // Could not instantiate ISymUnmanagedBinder2, fall back to ISymUnmanagedBinder
+                    if((uint)e.ErrorCode == 0x80040111)
                     {
                         binderObj1 = new CorSymBinder();
                         ISymUnmanagedBinder binder = (ISymUnmanagedBinder)binderObj1;
                         hresult = binder.GetReaderForFile(importer, filename, null, out this.debugReader);
                     }
                     else
-                    {
                         throw;
-                    }
                 }
-                switch ((uint)hresult)
+
+                switch((uint)hresult)
                 {
-                    case 0x0: break;
-                    case 0x806d0005:  // EC_NOT_FOUND
-                    case 0x806d0014: // EC_INVALID_EXE_TIMESTAMP
-                        // Sometimes GetReaderForFile erroneously reports missing pdb files as being "out of date", 
-                        // so we check if the file actually exists before reporting the error.
-                        // The mere absence of a pdb file is not an error. If not present, do not report.
-                        if (System.IO.File.Exists(System.IO.Path.ChangeExtension(filename, ".pdb")))
-                            throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture, ExceptionStrings.PdbAssociatedWithFileIsOutOfDate, filename));
+                    case 0x0:
+                        this.PdbExists = true;
                         break;
+
+                    case 0x806d0005:    // EC_NOT_FOUND
+                    case 0x806d0014:    // EC_INVALID_EXE_TIMESTAMP
+                        // Sometimes, GetReaderForFile erroneously reports missing PDB files as being out of date 
+                        // so we check if the file actually exists before reporting the error.  The mere absence
+                        // of a PDB file is not an error.
+                        if(File.Exists(Path.ChangeExtension(filename, ".pdb")))
+                            this.PdbOutOfDate = true;
+                        break;
+
                     default:
                         throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
                           ExceptionStrings.GetReaderForFileReturnedUnexpectedHResult, hresult.ToString("X")));
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 this.getDebugSymbols = false;
                 this.getDebugSymbolsFailed = true;
-                if (this.module.MetadataImportErrors == null) this.module.MetadataImportErrors = new ArrayList();
+
+                if(this.module.MetadataImportErrors == null)
+                    this.module.MetadataImportErrors = new ArrayList();
+
                 this.module.MetadataImportErrors.Add(e);
             }
             finally
             {
-                if (binderObj1 != null) Marshal.ReleaseComObject(binderObj1);
-                if (binderObj2 != null) Marshal.ReleaseComObject(binderObj2);
+                if(binderObj1 != null)
+                    Marshal.ReleaseComObject(binderObj1);
+
+                if(binderObj2 != null)
+                    Marshal.ReleaseComObject(binderObj2);
             }
         }
+
         private AssemblyNode ReadAssembly()
         {
             try
@@ -2383,28 +2411,30 @@ nextModRef:     ;
             }
         }
 
-        private void GetMethodDebugSymbols(Method/*!*/ method, uint methodToken)
-        //^ requires this.debugReader != null;
+        internal void GetMethodDebugSymbols(Method/*!*/ method, uint methodToken)
         {
             ISymUnmanagedMethod methodInfo = null;
             try
             {
-                try
-                {
-                    this.debugReader.GetMethod(methodToken, ref methodInfo);
-                    method.RecordSequencePoints(methodInfo);
-                }
-                catch (COMException)
-                {
-                }
-                catch (InvalidCastException)
-                {
-                }
-                catch (System.Runtime.InteropServices.InvalidComObjectException) { }
+                if(this.debugReader != null)
+                    try
+                    {
+                        this.debugReader.GetMethod(methodToken, ref methodInfo);
+                        method.RecordSequencePoints(methodInfo);
+                    }
+                    catch(COMException)
+                    {
+                    }
+                    catch(InvalidCastException)
+                    {
+                    }
+                    catch(InvalidComObjectException)
+                    {
+                    }
             }
             finally
             {
-                if (methodInfo != null)
+                if(methodInfo != null)
                     Marshal.ReleaseComObject(methodInfo);
             }
         }

@@ -14,6 +14,7 @@
 	<xsl:param name="key"/>
 	<xsl:param name="maxVersionParts" />
 	<xsl:param name="includeEnumValues" select="string('true')" />
+	<xsl:param name="baseSourceCodeUrl" />
 
 	<!-- ============================================================================================
 	Global Variables
@@ -2043,6 +2044,25 @@
 	<!-- ============================================================================================
 	Syntax
 	============================================================================================= -->
+
+	<xsl:template match="sourceContext" name="t_sourceContext">
+		<xsl:text>&#xa;</xsl:text>
+		<xsl:if test="$baseSourceCodeUrl">
+			<a>
+				<xsl:attribute name="href">
+					<xsl:value-of select="$baseSourceCodeUrl"/>
+					<xsl:value-of select="@file"/>
+					<xsl:if test="@startLine">
+						<xsl:text>#L</xsl:text>
+						<xsl:value-of select="@startLine"/>
+					</xsl:if>
+				</xsl:attribute>
+				<includeAttribute name="title" item="sourceCodeLinkTitle" />
+				<include item="sourceCodeLinkText" />
+			</a>
+		</xsl:if>
+		<br />
+	</xsl:template>
 
 	<xsl:template match="parameters" name="t_parameters">
 		<xsl:call-template name="t_putSubSection">

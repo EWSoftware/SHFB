@@ -334,6 +334,8 @@
 					<xsl:call-template name="t_putSyntaxSections">
 						<xsl:with-param name="p_nodes" select="./div[@codeLanguage]"/>
 					</xsl:call-template>
+					<!-- Source context -->
+					<xsl:apply-templates select="/document/reference/sourceContext" />
 					<!-- Parameters & return value -->
 					<xsl:apply-templates select="/document/reference/parameters"/>
 					<xsl:apply-templates select="/document/reference/templates"/>

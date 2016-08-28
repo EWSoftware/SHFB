@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="9d23a808-2231-44c2-ae45-61c697dda415" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning GID0009: Circular reference detected: '<legacyItalic>[member ID stack]</legacyItalic>'</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a set of member comments attempts to inherit documentation from itself or a
+set of parent member comments that have already been encountered thus creating a loop.  If this occurs, no
+further attempt will be made to process inherited comments which may result in incorrect documentation.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Typically, this is a problem but it may be legitimate if an element inherits comments from another
+element within the same member comments (i.e. inheriting a span or paragraph from the <codeInline>summary</codeInline>
+in the <codeInline>remarks</codeInline> element).  Review the member ID stack that resulted in the warning.  If
+the circular reference is valid, the warning can be ignored.  If the circular reference is not valid, correct the
+comments to remove the circular reference.</para>
+      </content>
+    </section>
+
+		<relatedTopics>
+			<link xlink:href="077ce20b-7998-4fec-8d79-16d990e1cf3b" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/08/2016
+// Updated : 08/23/2016
 // Note    : Copyright 2008-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -133,7 +133,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 success = false;
 
                 Console.WriteLine("SHFB: Error GID0001: Unexpected error while generating inherited " +
@@ -141,7 +141,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             }
 
 #if DEBUG
-            if(System.Diagnostics.Debugger.IsAttached)
+            if(Debugger.IsAttached)
             {
                 Console.WriteLine("Hit ENTER to exit...");
                 Console.ReadLine();
@@ -390,22 +390,26 @@ namespace SandcastleBuilder.InheritedDocumentation
             XmlAttribute cref, filter;
             string name, ctorName, baseMemberName;
             bool commentsFound;
+            int idx;
 
             name = member.SelectSingleNode("@name").Value;
 
-            // Check for a circular reference
+            // Check for a circular reference.  If found, issue a warning and return the comments as-is.
+            // Typically, this is a problem but it may be legitimate if someone inherits comments from another
+            // element within the same member comments (i.e. inheriting a span or paragraph from the summary
+            // in the remarks element).
             if(memberStack.Contains(name))
             {
-                StringBuilder sb = new StringBuilder("Circular reference detected.\r\n" +
-                    "Documentation inheritance stack:\r\n");
+                StringBuilder sb = new StringBuilder("Circular reference detected: ");
 
-                sb.AppendFormat("    {0}: {1}", memberStack.Count + 1, name);
-                sb.Append("\r\n");
+                idx = memberStack.Count;
+                sb.AppendFormat("{0}: {1}", idx + 1, name);
 
-                while(memberStack.Count != 0)
-                    sb.AppendFormat("    {0}: {1}\r\n", memberStack.Count, memberStack.Pop());
+                foreach(var m in memberStack.ToArray())
+                    sb.AppendFormat(" <-- {0}: {1}", idx--, m);
 
-                throw new InheritedDocsException(sb.ToString());
+                Console.WriteLine("SHFB: Warning GID0009: {0}", sb);
+                return;
             }
 
             memberStack.Push(name);

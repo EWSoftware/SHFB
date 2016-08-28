@@ -31,6 +31,83 @@ so that they don't have to be installed in the standard location (the common app
 			</content>
 		</section>
 
+		<section address="SourceCodeBasePath">
+			<title>Source Code Base Path (SourceCodeBasePath)</title>
+			<content>
+				<para>If specified and your source code is hosted online such as at a GitHub project site, links to it
+will be included via a <ui>View Source</ui> link in the Syntax section of topics in presentation styles that
+support it (specifically the <codeInline>baseSourceCodeUrl</codeInline> argument in the <ui>Transform Args</ui>
+property category).  Specify the local file system path to the root source code folder here, not a URL.</para>
+
+				<para>An up-to-date program database (PDB) file is required for each documented assembly in order to find
+source code locations for types and members.  Visual Studio will typically generate this automatically unless
+you have turned the option off in the assembly's project properties.  By default the debug info option is set
+to "pdb-only" which is sufficient.  The <application>MRefBuilder</application> tool will determine source code
+locations for the members by looking for sequence point information in the PDB file.  These sequence points
+define the starting locations of executable code that you write within the source files.  Since the first
+sequence point is always the first executable line of code within the member, the link will go there and not
+necessarily to the actual member declaration.</para>
+
+				<para>In addition, not all types and members have sequence points defined in PDB files and thus the
+actual source code location cannot be determined.  Such items include:</para>
+				
+				<list class="bullet">
+					<listItem>
+						<para>Empty types that contain no members.</para>
+					</listItem>
+
+					<listItem>
+						<para>Interfaces as they do not contain any concrete implementations for their members.</para>
+					</listItem>
+
+					<listItem>
+						<para>Events since their add/remove methods are compiler generated.</para>
+					</listItem>
+
+					<listItem>
+						<para>Auto-implemented properties as their get/set methods are compiler generated.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fields and constants.</para>
+					</listItem>
+
+					<listItem>
+						<para>Enumerations.</para>
+					</listItem>
+
+				</list>
+
+				<para>In order to enable links to such types and members as listed above, <application>MRefBuilder</application>
+will perform a search of the given source code folder to try and locate a source code file with a name that
+matches the given type name.  If it finds a match, it will use it as the link target.  If multiple matches are
+found, it tries to disambiguate them by adding containing folder names as namespace parts starting with the
+containing folder in order to find a match.  As such, if your code is structured in the common way such that
+folders represent namespaces and each source code file represents a type, it should be successful in finding a
+match.  For nested types, the link will be to the containing type's source code page.</para>
+
+			</content>
+		</section>
+
+		<section address="WarnOnMissingSourceContext">
+			<title>Report missing type source contexts as warnings (WarnOnMissingSourceContext)</title>
+			<content>
+				<para>Informational messages will be displayed in the <legacyBold>Generate Reflection Information</legacyBold>
+section of the build log indicating which PDB files were found.  Warnings will be issues if a PDB file could
+not be found or if it was out of date.</para>
+
+				<para>If the source location could not be found for any types, an informational message will also be
+written to the log file to identify them.  To report these issues as warnings instead so that MSBuild picks them
+up and reports them, turn this option on.  This is helpful if you want to ensure that all API topics in your
+help file generate links to the online source code as it will help you identify source code that may need
+adjustments in order to be located.  Common issues are multiple types stored in a single source file, source
+code folder names that don't match the namespaces, source code filenames that don't match the name of the type
+within them, and multiple source code files with the same name and folder structure such as copies of the same
+code shared between multiple projects.</para>
+
+			</content>
+		</section>
+
 		<section address="OutputPath">
 			<title>Help content output path (OutputPath)</title>
 			<content>

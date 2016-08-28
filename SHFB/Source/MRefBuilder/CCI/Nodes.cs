@@ -15,6 +15,7 @@
 // 11/21/2013 - EFW - Cleared out the conditional statements and unused code and updated based on changes to
 // ListTemplate.cs.
 // 03/14/2014 - EFW - Fixed bug in TypeNode.GetMatchingMethod() reported by SHarwell.
+// 08/23/2016 - EFW - Added support for reading source code context from PDB files
 
 using System.Collections;
 using System.Collections.Generic;
@@ -16358,12 +16359,19 @@ tryNext:
 
         internal TrivialHashtable contextForOffset;
 
+        /// <summary>
+        /// This is used to get or set the source context of the first line of code in the method
+        /// </summary>
+        internal SourceContext FirstLineContext { get; set; }
+
         internal void RecordSequencePoints(ISymUnmanagedMethod methodInfo)
         {
             if(methodInfo == null || this.contextForOffset != null)
                 return;
+
             this.contextForOffset = new TrivialHashtable();
             uint count = methodInfo.GetSequencePointCount();
+
             IntPtr[] docPtrs = new IntPtr[count];
             uint[] startLines = new uint[count];
             uint[] startCols = new uint[count];
@@ -16371,19 +16379,32 @@ tryNext:
             uint[] endCols = new uint[count];
             uint[] offsets = new uint[count];
             uint numPoints;
+            bool firstLineSet = false;
+
             methodInfo.GetSequencePoints(count, out numPoints, offsets, docPtrs, startLines, startCols, endLines, endCols);
             Debug.Assert(count == numPoints);
+
             for(int i = 0; i < count; i++)
             {
-                //The magic hex constant below works around weird data reported from GetSequencePoints.
-                //The constant comes from ILDASM's source code, which performs essentially the same test.
+                // The magic hex constant below works around weird data reported from GetSequencePoints.
+                // The constant comes from ILDASM's source code, which performs essentially the same test.
                 const uint Magic = 0xFEEFEE;
                 if(startLines[i] >= Magic || endLines[i] >= Magic)
                     continue;
                 UnmanagedDocument doc = new UnmanagedDocument(docPtrs[i]);
-                this.contextForOffset[(int)offsets[i] + 1] = new SourceContext(doc,
-                    doc.GetOffset(startLines[i], startCols[i]), doc.GetOffset(endLines[i], endCols[i]));
+
+                SourceContext context = new SourceContext(doc, doc.GetOffset(startLines[i], startCols[i]),
+                    doc.GetOffset(endLines[i], endCols[i]));
+
+                if(!firstLineSet)
+                {
+                    this.FirstLineContext = context;
+                    firstLineSet = true;
+                }
+
+                this.contextForOffset[(int)offsets[i] + 1] = context;
             }
+
             for(int i = 0; i < count; i++)
                 System.Runtime.InteropServices.Marshal.Release(docPtrs[i]);
         }

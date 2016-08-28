@@ -97,6 +97,21 @@
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" xmlns="" />
+      <Argument Key="logoHeight" Value="" xmlns="" />
+      <Argument Key="logoWidth" Value="" xmlns="" />
+      <Argument Key="logoAltText" Value="" xmlns="" />
+      <Argument Key="logoPlacement" Value="left" xmlns="" />
+      <Argument Key="logoAlignment" Value="left" xmlns="" />
+      <Argument Key="maxVersionParts" Value="" xmlns="" />
+      <Argument Key="defaultLanguage" Value="cs" xmlns="" />
+      <Argument Key="includeEnumValues" Value="true" xmlns="" />
+      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" xmlns="" />
+      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" xmlns="" />
+    </TransformComponentArguments>
+    <SourceCodeBasePath>..\..\</SourceCodeBasePath>
+    <WarnOnMissingSourceContext>True</WarnOnMissingSourceContext>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

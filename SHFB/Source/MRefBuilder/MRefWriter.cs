@@ -12,17 +12,21 @@
 // to property getters and setters.  Added code to write out type data for the interop attributes that are
 // converted to type metadata.
 // 08/06/2014 - EFW - Added code to write out values for literal (constant) fields.
+// 08/23/2016 - EFW - Added support for writing out source code context
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Xml;
 
 using System.Compiler;
 
 using Microsoft.Ddue.Tools.Reflection;
+
+using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -92,9 +96,14 @@ namespace Microsoft.Ddue.Tools
         /// <param name="output">The text writer to which the output is written</param>
         /// <param name="namer">The API namer to use</param>
         /// <param name="resolver">The assembly resolver to use</param>
+        /// <param name="sourceCodeBasePath">An optional base path to the source code.  If set, source code
+        /// context information will be included in the reflection data when possible.</param>
+        /// <param name="warnOnMissingContext">True to report missing type source contexts as warnings rather
+        /// than as informational messages.</param>
         /// <param name="filter">The API filter to use</param>
         public ManagedReflectionWriter(TextWriter output, ApiNamer namer, AssemblyResolver resolver,
-          ApiFilter filter) : base(resolver, filter)
+          string sourceCodeBasePath, bool warnOnMissingContext, ApiFilter filter) :
+          base(sourceCodeBasePath, warnOnMissingContext, resolver, filter)
         {
             assemblyNames = new HashSet<string>();
             descendantIndex = new Dictionary<TypeNode, List<TypeNode>>();
@@ -184,10 +193,180 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void VisitType(TypeNode type)
         {
+            SourceContext typeSourceContext = new SourceContext(new Document(), -1, -1);
+            bool typeSourceContextSet = false;
+
             typeCount++;
+
+            // Load source context information for each member.  Since there's no way to get the source file
+            // for a type from a PDB, we'll rely on one of the members to provide that information if possible.
+            if(this.SourceCodeBasePath != null && this.ApiFilter.IsExposedType(type))
+            {
+                foreach(Member member in type.Members.Where(m => this.ApiFilter.IsExposedMember(m)))
+                {
+                    Method method = null;
+
+                    switch(member.NodeType)
+                    {
+                        case NodeType.InstanceInitializer:
+                        case NodeType.StaticInitializer:
+                        case NodeType.Method:
+                            method = (Method)member;
+                            this.SetSourceContext(method);
+                            break;
+
+                        case NodeType.Property:
+                            Property p = (Property)member;
+
+                            if(p.Getter != null)
+                            {
+                                method = p.Getter;
+                                this.SetSourceContext(method);
+                            }
+                            else
+                                if(p.Setter != null)
+                                {
+                                    method = p.Setter;
+                                    this.SetSourceContext(method);
+                                }
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    if(!typeSourceContextSet && method != null && method.FirstLineContext.Document != null &&
+                      !String.IsNullOrWhiteSpace(method.FirstLineContext.Document.Name))
+                    {
+                        typeSourceContext.Document.Name = method.FirstLineContext.Document.Name;
+                        typeSourceContextSet = true;
+                    }
+                }
+
+                if(!typeSourceContextSet)
+                {
+                    typeSourceContext.Document.Name = this.FindSourceFileForType(type.FullName);
+
+                    if(typeSourceContext.Document.Name == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Source code location not found for " + type.FullName);
+                        ConsoleApplication.WriteMessage(this.WarnOnMissingContext ? LogLevel.Warn : LogLevel.Info,
+                            "Source code location not found for {0}", type.FullName);
+                    }
+                }
+
+                type.SourceContext = typeSourceContext;
+            }
 
             this.WriteType(type);
             base.VisitType(type);
+        }
+
+        /// <summary>
+        /// This loads the source code context for the given method
+        /// </summary>
+        /// <param name="method">The method for which to load source context info</param>
+        private void SetSourceContext(Method method)
+        {
+            if(method.DeclaringType.DeclaringModule.reader.PdbExists && method.ProviderHandle is int &&
+              method.FirstLineContext.Document == null)
+            {
+                uint token = (uint)(int)method.ProviderHandle | 0x06000000;
+                method.DeclaringType.DeclaringModule.reader.GetMethodDebugSymbols(method, token);
+
+                if(method.FirstLineContext.Document != null)
+                {
+                    string sourceFile = method.FirstLineContext.Document.Name;
+
+                    if(sourceFile.StartsWith(this.SourceCodeBasePath, StringComparison.OrdinalIgnoreCase))
+                        method.FirstLineContext.Document.Name = sourceFile.Substring(this.SourceCodeBasePath.Length);
+                    else
+                        method.FirstLineContext.Document.Name = String.Empty;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to try and find the source code file for the given type name by searching the source
+        /// path for a like-named file.
+        /// </summary>
+        /// <param name="fullTypeName">The full type name for which to try and locate a source code file</param>
+        /// <returns>The filename if successful or null if not</returns>
+        /// <remarks>This is typically needed for empty classes, interfaces, and enumerations which don't have
+        /// sequence points in the PDB file.  This makes the assumption that the source code is structured in
+        /// folders named after the namespaces with each file named after the class it represents.</remarks>
+        private string FindSourceFileForType(string fullTypeName)
+        {
+            Stack<string> typeNameParts = new Stack<string>(fullTypeName.Split('.'));
+            string sourceFile = null, searchPattern = typeNameParts.Pop();
+            int pos;
+
+            // For nested types, look for the parent type
+            pos = searchPattern.IndexOf('+');
+
+            if(pos != -1)
+                searchPattern = searchPattern.Substring(0, pos);
+
+            try
+            {
+                var matches = Directory.EnumerateFiles(this.SourceCodeBasePath, searchPattern + "*",
+                    SearchOption.AllDirectories).ToList();
+
+                // If we didn't get a match and the name contains a template parameter count, remove it and
+                // try again.
+                if(matches.Count == 0 && searchPattern.IndexOf('`') != -1)
+                {
+                    searchPattern = searchPattern.Substring(0, searchPattern.IndexOf('`'));
+
+                    matches = Directory.EnumerateFiles(this.SourceCodeBasePath, searchPattern + "*",
+                        SearchOption.AllDirectories).ToList();
+                }
+
+                if(matches.Count > 1)
+                {
+                    // Look for an exact match by type name
+                    matches = matches.Where(m => Path.GetFileNameWithoutExtension(m).EndsWith(searchPattern,
+                        StringComparison.Ordinal)).ToList();
+
+                    if(matches.Count != 1)
+                    {
+                        // If more than one match was found, add namespace parts to further qualify the name
+                        // to see if we can find a single best match.
+                        while(typeNameParts.Count != 0)
+                        {
+                            searchPattern = typeNameParts.Pop() + "\\" + searchPattern;
+
+                            var namespaceMatches = matches.Where(m => Path.Combine(
+                                Path.GetDirectoryName(m), Path.GetFileNameWithoutExtension(m)).EndsWith(
+                                searchPattern, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                            if(namespaceMatches.Count == 1)
+                            {
+                                sourceFile = namespaceMatches[0];
+                                break;
+                            }
+
+                            if(namespaceMatches.Count == 0)
+                                break;
+                        }
+                    }
+                    else
+                        sourceFile = matches[0];
+                }
+                else
+                    if(matches.Count == 1)
+                        sourceFile = matches[0];
+
+                if(sourceFile != null && sourceFile.StartsWith(this.SourceCodeBasePath, StringComparison.OrdinalIgnoreCase))
+                    sourceFile = sourceFile.Substring(this.SourceCodeBasePath.Length);
+            }
+            catch(Exception ex)
+            {
+                // Ignore any exceptions
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
+            return sourceFile;
         }
 
         /// <inheritdoc />
@@ -202,7 +381,7 @@ namespace Microsoft.Ddue.Tools
 
             this.StartElementCallbacks("api", member);
 
-            this.WriteMember(member);
+            this.WriteMember(member, true);
 
             this.EndElementCallbacks("api", member);
 
@@ -574,6 +753,7 @@ namespace Microsoft.Ddue.Tools
             this.StartElementCallbacks("api", type);
 
             this.WriteApiData(type);
+            this.WriteSourceContext(type.SourceContext, type.SourceContext);
             this.WriteTypeData(type);
 
             switch(type.NodeType)
@@ -732,7 +912,7 @@ namespace Microsoft.Ddue.Tools
                         write = true;
 
                     if(write)
-                        this.WriteMember(member);
+                        this.WriteMember(member, false);
 
                     writer.WriteEndElement();
                 }
@@ -823,18 +1003,22 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Write out information for a member
         /// </summary>
-        /// <param name="member">The member to write out</param>
-        public void WriteMember(Member member)
+        /// <param name="member">The member to write out.</param>
+        /// <param name="includeSourceContext">True to the include source code context when possible, false to
+        /// omit it.</param>
+        public void WriteMember(Member member, bool includeSourceContext)
         {
-            this.WriteMember(member, member.DeclaringType);
+            this.WriteMember(member, member.DeclaringType, includeSourceContext);
         }
 
         /// <summary>
         /// Write out information for a member
         /// </summary>
-        /// <param name="member">The member to write out</param>
-        /// <param name="type">The declaring type of the member</param>
-        private void WriteMember(Member member, TypeNode type)
+        /// <param name="member">The member to write out.</param>
+        /// <param name="type">The declaring type of the member.</param>
+        /// <param name="includeSourceContext">True to the include source code context when possible, false to
+        /// omit it.</param>
+        private void WriteMember(Member member, TypeNode type, bool includeSourceCodeContext)
         {
             this.WriteApiData(member);
             this.WriteMemberData(member);
@@ -845,6 +1029,10 @@ namespace Microsoft.Ddue.Tools
             {
                 case NodeType.Field:
                     Field field = (Field)member;
+
+                    // Fields never have sequence points in the PDB so use the type's source context
+                    if(includeSourceCodeContext)
+                        this.WriteSourceContext(member.DeclaringType.SourceContext, member.DeclaringType.SourceContext);
 
                     this.WriteFieldData(field);
                     this.WriteReturnValue(field.Type);
@@ -862,6 +1050,9 @@ namespace Microsoft.Ddue.Tools
 
                 case NodeType.Method:
                     Method method = (Method)member;
+
+                    if(includeSourceCodeContext)
+                        this.WriteSourceContext(method.FirstLineContext, member.DeclaringType.SourceContext);
 
                     this.WriteProcedureData(method, method.OverriddenMember);
 
@@ -883,6 +1074,13 @@ namespace Microsoft.Ddue.Tools
                 case NodeType.Property:
                     Property property = (Property)member;
 
+                    if(includeSourceCodeContext)
+                        if(property.Getter != null)
+                            this.WriteSourceContext(property.Getter.FirstLineContext, member.DeclaringType.SourceContext);
+                        else
+                            if(property.Setter != null)
+                                this.WriteSourceContext(property.Setter.FirstLineContext, member.DeclaringType.SourceContext);
+
                     this.WritePropertyData(property);
                     this.WriteParameters(property.Parameters);
                     this.WriteReturnValue(property.Type);
@@ -892,6 +1090,10 @@ namespace Microsoft.Ddue.Tools
                 case NodeType.Event:
                     Event trigger = (Event)member;
 
+                    // Events never have sequence points in the PDB so use the type's source context
+                    if(includeSourceCodeContext)
+                        this.WriteSourceContext(member.DeclaringType.SourceContext, member.DeclaringType.SourceContext);
+
                     this.WriteEventData(trigger);
                     this.WriteImplementedMembers(trigger.GetImplementedEvents());
                     break;
@@ -900,12 +1102,45 @@ namespace Microsoft.Ddue.Tools
                 case NodeType.StaticInitializer:
                     Method constructor = (Method)member;
 
+                    if(includeSourceCodeContext)
+                        this.WriteSourceContext(constructor.FirstLineContext, member.DeclaringType.SourceContext);
+
                     this.WriteParameters(constructor.Parameters);
                     break;
             }
 
             this.WriteMemberContainers(type);
             this.WriteAttributes(member.Attributes, securityAttributes);
+        }
+
+        /// <summary>
+        /// Write out the source code context (filename and starting line number)
+        /// </summary>
+        /// <param name="sourceContext">The source context information</param>
+        /// <param name="parentContext">The parent type's source context information.  This will be used if the
+        /// member doesn't have a source document.  This happens for interface members.</param>
+        private void WriteSourceContext(SourceContext sourceContext, SourceContext parentContext)
+        {
+            if(sourceContext.Document == null && parentContext.Document != null)
+                sourceContext = parentContext;
+
+            if(sourceContext.Document != null)
+            {
+                string sourceFile = sourceContext.Document.Name;
+
+                if(!String.IsNullOrWhiteSpace(sourceFile))
+                {
+                    sourceFile = WebUtility.UrlEncode(sourceFile).Replace("%5C", "/");
+
+                    writer.WriteStartElement("sourceContext");
+                    this.WriteStringAttribute("file", sourceFile);
+
+                    if(sourceContext.StartPos != -1)
+                        writer.WriteAttributeString("startLine", sourceContext.StartLine.ToString());
+
+                    writer.WriteEndElement();
+                }
+            }
         }
 
         /// <summary>

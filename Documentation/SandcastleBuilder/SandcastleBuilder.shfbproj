@@ -15,7 +15,7 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>SandcastleBuilder</HtmlHelpName>
     <ProjectSummary>Sandcastle Help File Builder.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Sandcastle Help File Builder&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttps://GitHub.com/EWSoftware/SHFB&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttps://GitHub.com/EWSoftware/SHFB&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
@@ -201,6 +201,11 @@
       <Argument Key="logoAltText" Value="Sandcastle Help File Builder" />
       <Argument Key="logoPlacement" Value="left" />
       <Argument Key="logoAlignment" Value="left" />
+      <Argument Key="maxVersionParts" Value="" />
+      <Argument Key="defaultLanguage" Value="cs" />
+      <Argument Key="includeEnumValues" Value="true" />
+      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/SHFB/Source/" />
+      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>
     <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
     <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
@@ -211,6 +216,8 @@
     <NamespaceGrouping>True</NamespaceGrouping>
     <RootNamespaceTitle>Sandcastle Help File Builder Namespaces</RootNamespaceTitle>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
+    <SourceCodeBasePath>..\..\SHFB\Source\</SourceCodeBasePath>
+    <WarnOnMissingSourceContext>True</WarnOnMissingSourceContext>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -278,6 +285,7 @@
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0075.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BuildEngine.aml" />
     <None Include="Content\ErrorsAndWarnings\HtmlExtract\HtmlExtract.aml" />
+    <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0009.aml" />
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\InheritedDocs.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\MSBuildTasks.aml" />
     <None Include="Content\ErrorsAndWarnings\PlugIns\PlugIns.aml" />

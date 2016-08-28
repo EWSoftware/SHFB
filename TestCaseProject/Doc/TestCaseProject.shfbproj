@@ -182,6 +182,8 @@
       <Argument Key="maxVersionParts" Value="" />
       <Argument Key="defaultLanguage" Value="cs" />
       <Argument Key="includeEnumValues" Value="true" />
+      <Argument Key="baseSourceCodeUrl" Value="https://github.com/EWSoftware/SHFB/blob/master/TestCaseProject/" />
+      <Argument Key="requestExampleUrl" Value="https://github.com/EWSoftware/SHFB/issues/new" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
@@ -194,6 +196,8 @@
     <IncludeFavorites>False</IncludeFavorites>
     <BinaryTOC>True</BinaryTOC>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
+    <SourceCodeBasePath>..\</SourceCodeBasePath>
+    <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

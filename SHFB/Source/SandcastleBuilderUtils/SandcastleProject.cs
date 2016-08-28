@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/03/2016
+// Updated : 08/28/2016
 // Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -69,6 +69,7 @@
 //          12/20/2013  EFW  Added support for the ComponentPath project property
 //          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //          01/22/2016  EFW  Added SaveComponentCacheCapacity property
+//          08/25/2016  EFW  Added support for the SourceCodeBasePath property
 //===============================================================================================================
 
 using System;
@@ -145,7 +146,7 @@ namespace SandcastleBuilder.Utils
         private static PropertyDescriptorCollection pdcCache;
 
         // Path and build-related properties
-        private FolderPath hhcPath, workingPath, componentPath;
+        private FolderPath hhcPath, workingPath, componentPath, sourceCodeBasePath;
         private FilePath buildLogFile;
         private string outputPath, frameworkVersion;
         private int maximumGroupParts;
@@ -508,6 +509,31 @@ namespace SandcastleBuilder.Utils
                 componentPath = value;
             }
         }
+
+        /// <summary>
+        /// This property is used to get or set the base path used to locate source code for the documented
+        /// assemblies.
+        /// </summary>
+        /// <value>If left blank, source context information will be omitted from the reflection data</value>
+        public FolderPath SourceCodeBasePath
+        {
+            get { return sourceCodeBasePath; }
+            set
+            {
+                if(value == null)
+                    value = new FolderPath(this);
+
+                sourceCodeBasePath = value;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not to issue a warning if a source code context could not be
+        /// determined for a type.
+        /// </summary>
+        /// <value>This is false by default and missing source context issues will be reported as informational
+        /// messages.  If set to true, they are reported as warnings that MSBuild will also report.</value>
+        public bool WarnOnMissingSourceContext { get; set; }
 
         /// <summary>
         /// This property is used to get or set the path to the HTML Help 1 compiler (HHC.EXE)
@@ -1554,7 +1580,7 @@ namespace SandcastleBuilder.Utils
             maximumGroupParts = 2;
 
             this.OutputPath = null;
-            this.HtmlHelp1xCompilerPath = this.WorkingPath = this.ComponentPath = null;
+            this.HtmlHelp1xCompilerPath = this.WorkingPath = this.ComponentPath = this.SourceCodeBasePath = null;
 
             this.HelpTitle = this.HtmlHelpName = this.CopyrightHref = this.CopyrightText =
                 this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText = this.FooterText =

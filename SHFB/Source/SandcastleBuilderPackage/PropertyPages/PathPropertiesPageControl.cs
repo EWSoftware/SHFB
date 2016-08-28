@@ -112,6 +112,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
                 txtHtmlHelp1xCompilerPath.Folder = new FolderPath(project);
                 txtComponentPath.Folder = new FolderPath(project);
+                txtSourceCodeBasePath.Folder = new FolderPath(project);
                 txtOutputPath.Folder = new FolderPath(project);
                 txtWorkingPath.Folder = new FolderPath(project);
             }

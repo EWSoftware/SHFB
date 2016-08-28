@@ -305,7 +305,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteAttributeString("source", "extension");
 
             isExtensionMethod = true;
-            mrw.WriteMember(extensionMethod);
+            mrw.WriteMember(extensionMethod, false);
             isExtensionMethod = false;
 
             writer.WriteEndElement();

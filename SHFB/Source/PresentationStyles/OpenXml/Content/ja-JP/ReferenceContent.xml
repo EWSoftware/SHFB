@@ -485,4 +485,8 @@
   <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{1}"に対する&lt;{0}&gt;がありません]</p></item>
   <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">["{2}"に対する&lt;{0} name="{1}"/&gt;がありません</p></item>
   <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">['{0}'で使われている&lt;include&gt;ターゲットドキュメントがありません。File: '{1}' Path: '{2}']</p></item>
+
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">View Source</item>
+	<item id="sourceCodeLinkTitle">View the source code</item>
 </content>

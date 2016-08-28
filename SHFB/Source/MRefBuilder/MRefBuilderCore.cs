@@ -13,6 +13,7 @@
 // 12/10/2013 - EFW - Added MSBuild task support.
 // 10/16/2014 - EFW - Added support for WindowsStoreAndPhoneNamer.
 // 05/09/2015 - EFW - Removed the deprecated /internal command line option and platform configuration options
+// 08/23/2016 - EFW - Added support for writing out source code context
 
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,7 @@ namespace Microsoft.Ddue.Tools
 
             // Load the configuration file
             XPathDocument config;
+            XPathNavigator configNav;
             string configDirectory = ComponentUtilities.ToolsFolder,
                 configFile = Path.Combine(ComponentUtilities.ToolsFolder, "MRefBuilder.config");
 
@@ -111,6 +113,7 @@ namespace Microsoft.Ddue.Tools
             try
             {
                 config = new XPathDocument(configFile);
+                configNav = config.CreateNavigator();
             }
             catch(IOException e)
             {
@@ -132,7 +135,7 @@ namespace Microsoft.Ddue.Tools
             }
 
             // Adjust the target platform
-            var platformNode = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/platform");
+            var platformNode = configNav.SelectSingleNode("/configuration/dduetools/platform");
 
             if(platformNode == null)
             {
@@ -147,7 +150,7 @@ namespace Microsoft.Ddue.Tools
 
             // Get component locations used to find additional reflection data definition files
             List<string> componentFolders = new List<string>();
-            var locations = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/componentLocations");
+            var locations = configNav.SelectSingleNode("/configuration/dduetools/componentLocations");
 
             if(locations != null)
                 foreach(XPathNavigator folder in locations.Select("location/@folder"))
@@ -175,7 +178,7 @@ namespace Microsoft.Ddue.Tools
             else
                 namer = new OrcasNamer();
 
-            XPathNavigator namerNode = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/namer");
+            XPathNavigator namerNode = configNav.SelectSingleNode("/configuration/dduetools/namer");
 
             if(namerNode != null)
             {
@@ -248,7 +251,7 @@ namespace Microsoft.Ddue.Tools
 
             // Create a resolver
             AssemblyResolver resolver = new AssemblyResolver();
-            XPathNavigator resolverNode = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/resolver");
+            XPathNavigator resolverNode = configNav.SelectSingleNode("/configuration/dduetools/resolver");
 
             if(resolverNode != null)
             {
@@ -354,12 +357,25 @@ namespace Microsoft.Ddue.Tools
 
             try
             {
-                // Create a builder
-                ApiVisitor = new ManagedReflectionWriter(output, namer, resolver,
-                    new ApiFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools")));
+                // Create a writer
+                string sourceCodeBasePath = (string)configNav.Evaluate(
+                    "string(/configuration/dduetools/sourceContext/@basePath)");
+                bool warnOnMissingContext = false;
+
+                if(!String.IsNullOrWhiteSpace(sourceCodeBasePath))
+                {
+                    warnOnMissingContext = (bool)configNav.Evaluate(
+                        "boolean(/configuration/dduetools/sourceContext[@warnOnMissingSourceContext='true'])");
+                }
+                else
+                    ConsoleApplication.WriteMessage(LogLevel.Info, "No source code context base path " +
+                        "specified.  Source context information is unavailable.");
+
+                ApiVisitor = new ManagedReflectionWriter(output, namer, resolver, sourceCodeBasePath,
+                    warnOnMissingContext, new ApiFilter(configNav.SelectSingleNode("/configuration/dduetools")));
 
                 // Register add-ins to the builder
-                XPathNodeIterator addinNodes = config.CreateNavigator().Select("/configuration/dduetools/addins/addin");
+                XPathNodeIterator addinNodes = configNav.Select("/configuration/dduetools/addins/addin");
 
                 foreach(XPathNavigator addinNode in addinNodes)
                 {

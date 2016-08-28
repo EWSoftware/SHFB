@@ -6,6 +6,7 @@
 // 12/10/2013 - EFW - Made the API visitor cancelable
 // 01/06/2014 - EFW - Removed resetting of mscorlib for frameworks that forward all their types to other
 // assemblies.  This prevents a stack overflow.
+// 08/23/2016 - EFW - Added support for writing out source code context
 
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Linq;
 
 using System.Compiler;
+using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.Reflection
 {
@@ -25,6 +27,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         private Dictionary<string, Namespace> catalog;
         private ApiFilter filter;
         private AssemblyResolver resolver;
+
         #endregion
 
         #region Properties
@@ -63,6 +66,19 @@ namespace Microsoft.Ddue.Tools.Reflection
         }
 
         /// <summary>
+        /// This read-only property returns the base path for source code related to the assemblies
+        /// </summary>
+        /// <value>If set, source code context information will be included in the reflection data when possible</value>
+        public string SourceCodeBasePath { get; private set; }
+
+        /// <summary>
+        /// This read-only property returns whether or not to report missing type source context issues as
+        /// warnings.
+        /// </summary>
+        /// <value>If set to false, such issues are only reported as informational messages</value>
+        public bool WarnOnMissingContext { get; private set; }
+
+        /// <summary>
         /// This is used to get or set the canceled state of the build
         /// </summary>
         /// <value>If set to true, the reflection process stops once the current type has been visited</value>
@@ -76,13 +92,27 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="sourceCodeBasePath">An optional base path to the source code.  If set, source code
+        /// context information will be included in the reflection data when possible.</param>
+        /// <param name="warnOnMissingContext">True to report missing type source contexts as warnings rather
+        /// than as informational messages.</param>
         /// <param name="resolver">The assembly resolver to use</param>
         /// <param name="filter">The API filter to use</param>
-        protected ApiVisitor(AssemblyResolver resolver, ApiFilter filter)
+        protected ApiVisitor(string sourceCodeBasePath, bool warnOnMissingContext, AssemblyResolver resolver,
+          ApiFilter filter)
         {
             accessoryAssemblies = new List<AssemblyNode>();
             assemblies = new List<AssemblyNode>();
             catalog = new Dictionary<string, Namespace>();
+
+            if(!String.IsNullOrWhiteSpace(sourceCodeBasePath))
+            {
+                if(sourceCodeBasePath[sourceCodeBasePath.Length - 1] != '\\')
+                    sourceCodeBasePath += "\\";
+
+                this.SourceCodeBasePath = sourceCodeBasePath;
+                this.WarnOnMissingContext = warnOnMissingContext;
+            }
 
             this.resolver = resolver;
             this.filter = filter;
@@ -194,7 +224,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         public void LoadAssembly(string filePath)
         {
             // This causes non-classes to register as classes
-            AssemblyNode assembly = AssemblyNode.GetAssembly(filePath, null, false, false, false, false);
+            AssemblyNode assembly = AssemblyNode.GetAssembly(filePath, null, false,
+                (this.SourceCodeBasePath != null), false, false);
 
             if(assembly != null)
             {
@@ -205,6 +236,26 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 resolver.Add(assembly);
                 assemblies.Add(assembly);
+
+                if(this.SourceCodeBasePath != null)
+                {
+                    if(assembly.reader.PdbOutOfDate)
+                    {
+                        ConsoleApplication.WriteMessage(LogLevel.Warn, "The program database (PDB) file " +
+                            "associated with '{0}' is out of date.  Source context information is unavailable.",
+                            filePath);
+                    }
+                    else
+                        if(!assembly.reader.PdbExists)
+                        {
+                            ConsoleApplication.WriteMessage(LogLevel.Warn, "The program database (PDB) file " +
+                                "associated with '{0}' does not exist or could not be loaded.  Source context " +
+                                "information is unavailable.", filePath);
+                        }
+                        else
+                            ConsoleApplication.WriteMessage(LogLevel.Info, "Found a current program database " +
+                                "(PDB) file for '{0}'.", filePath);
+                }
             }
         }
 

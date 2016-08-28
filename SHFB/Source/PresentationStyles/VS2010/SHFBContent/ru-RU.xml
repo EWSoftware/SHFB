@@ -38,4 +38,22 @@
 	<!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
 			 @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
 	<item id="copyright">{@HtmlEncCopyrightInfo}</item>
+
+	<!-- Request Example link -->
+	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" class="button"
+		title="Request an example for this topic">Request Example</a>
+		<script type="text/javascript">
+		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
+		var HT_requestExampleLinkText = HT_requestExampleLink.innerHTML;
+				
+		if(HT_requestExampleLink.href.substring(0, 4).toLowerCase() == "http")
+			HT_requestExampleLink.href += "?title=";
+		else
+			HT_requestExampleLink.href += "?subject={@UrlEncHelpTitle}: ";
+
+		HT_requestExampleLink.href += "Add an Example for " + encodeURIComponent(document.title) + "&amp;body=" +
+			encodeURIComponent("Please add an example for " + document.title + ".%0D%0DTODO (optional): Describe a specific " +
+			"scenario you would like to see addressed.%0D%0DHelp Topic: " + window.location.href).replace(/%250D/g, "%0D");
+		HT_requestExampleLink.innerHTML = HT_requestExampleLinkText;
+		</script></item>
 </content>

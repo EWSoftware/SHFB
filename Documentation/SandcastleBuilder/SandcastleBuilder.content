@@ -182,7 +182,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" isExpanded="true" title="Project Properties Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="property categories, Overview" />
     </HelpKeywords>
@@ -234,7 +234,7 @@
         <HelpKeyword index="K" term="property categories, Website" />
       </HelpKeywords>
     </Topic>
-    <Topic id="5f743a6e-3239-409a-a8c1-0bff4b5375f4" visible="True" isExpanded="true" title="MS Help Viewer Category Properties">
+    <Topic id="5f743a6e-3239-409a-a8c1-0bff4b5375f4" visible="True" title="MS Help Viewer Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, MSHelpViewerSdkLinkType" />
         <HelpKeyword index="K" term="properties, ProductTitle" />
@@ -323,13 +323,14 @@
         <HelpKeyword index="K" term="property categories, Missing Tags" />
       </HelpKeywords>
     </Topic>
-    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" title="Paths Category Properties">
+    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" isSelected="true" title="Paths Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="property categories, Paths" />
         <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
         <HelpKeyword index="K" term="properties, OutputPath" />
         <HelpKeyword index="K" term="properties, ComponentPath" />
         <HelpKeyword index="K" term="properties, WorkingPath" />
+        <HelpKeyword index="K" term="properties, SourceCodeBasePath" />
       </HelpKeywords>
     </Topic>
     <Topic id="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" visible="True" title="Build Component Configurations">
@@ -989,12 +990,17 @@
       </Topic>
       <Topic id="6038c08c-de58-4579-a018-bdbbce3134f5" visible="True" title="GID0007: Ignoring non-XML comments file">
         <HelpKeywords>
-          <HelpKeyword index="K" term="warnings, GID0100" />
+          <HelpKeyword index="K" term="warnings, GID0007" />
         </HelpKeywords>
       </Topic>
       <Topic id="efa6ca2b-c052-4555-90d8-a9cc9093f793" visible="True" title="GID0008: Entries for the key '[id]' occur in both '[file1]' and '[file2]'">
         <HelpKeywords>
-          <HelpKeyword index="K" term="warnings, GID0101" />
+          <HelpKeyword index="K" term="warnings, GID0008" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="9d23a808-2231-44c2-ae45-61c697dda415" visible="True" title="GID0009: Circular reference detected: [member ID stack]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0009" />
         </HelpKeywords>
       </Topic>
     </Topic>
@@ -1368,7 +1374,7 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="7603a301-1567-4f97-84ea-165d209dab7d" visible="True" isSelected="true" title="Version 2016.5.28.0">
+    <Topic id="7603a301-1567-4f97-84ea-165d209dab7d" visible="True" title="Version 2016.5.28.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2016.5.28.0" />
       </HelpKeywords>

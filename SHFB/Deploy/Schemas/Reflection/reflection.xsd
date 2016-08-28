@@ -73,6 +73,8 @@
 					</xsd:sequence>
 					<!-- type -->
 					<xsd:sequence>
+						<!-- EFW - Added to support source code context -->
+						<xsd:element ref="sourceContext" minOccurs="0" />
 						<xsd:element ref="typedata" minOccurs="1" />
 						<xsd:element ref="enumerationbase" minOccurs="0" />
 						<xsd:element ref="family" minOccurs="0" />
@@ -87,6 +89,8 @@
 					<!-- member -->
 					<xsd:sequence>
 						<xsd:element ref="memberdata" minOccurs="1" />
+						<!-- EFW - Added to support source code context -->
+						<xsd:element ref="sourceContext" minOccurs="0" />
 						<xsd:choice>
 							<!-- field -->
 							<xsd:sequence>
@@ -239,6 +243,14 @@
 			<xsd:attribute name="static" type="xsd:boolean" use="optional" />
 			<xsd:attribute name="special" type="xsd:boolean" use="optional" />
 			<xsd:attribute name="default" type="xsd:boolean" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- EFW - Added to support source code context -->
+	<xsd:element name="sourceContext">
+		<xsd:complexType>
+			<xsd:attribute name="file" type="xsd:string" />
+			<xsd:attribute name="startLine" type="xsd:integer" use="optional" />
 		</xsd:complexType>
 	</xsd:element>
 

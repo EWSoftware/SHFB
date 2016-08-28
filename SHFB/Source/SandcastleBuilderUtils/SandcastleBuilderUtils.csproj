@@ -104,6 +104,7 @@
     <Compile Include="BuildItemMetadata.cs" />
     <Compile Include="ConceptualContent\ContentFile.cs" />
     <Compile Include="ConceptualContent\IContentFileProvider.cs" />
+    <Compile Include="Design\FileDialogType.cs" />
     <Compile Include="Design\SubstitutionTagAttribute.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
