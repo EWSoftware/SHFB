@@ -126,6 +126,7 @@
     <Compile Include="DeploymentConfigUserControl.Designer.cs">
       <DependentUpon>DeploymentConfigUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DocumentedEntitiesOnlyPlugIn.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IntelliSenseOnlyPlugIn.cs" />
     <Compile Include="LightweightWebsiteStylePlugIn.cs" />

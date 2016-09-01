@@ -308,6 +308,7 @@
     <None Include="Content\GettingStarted\XCopyDeployment.aml" />
     <None Include="Content\MarkdownContent.aml" />
     <None Include="Content\OpenXmlFormat.aml" />
+    <None Include="Content\PlugIns\DocumentedEntitiesOnlyPlugIn.aml" />
     <None Include="Content\PlugIns\IntelliSenseOnlyPlugIn.aml" />
     <None Include="Content\PlugIns\LightweightWebsiteStylePlugIn.aml" />
     <None Include="Content\PlugIns\ManualVisibilityApiFilterPlugIn.aml" />

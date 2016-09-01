@@ -182,7 +182,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" isExpanded="true" title="Project Properties Window">
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="property categories, Overview" />
     </HelpKeywords>
@@ -323,7 +323,7 @@
         <HelpKeyword index="K" term="property categories, Missing Tags" />
       </HelpKeywords>
     </Topic>
-    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" isSelected="true" title="Paths Category Properties">
+    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" title="Paths Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="property categories, Paths" />
         <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
@@ -428,7 +428,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
+  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" isSelected="true" title="Build Process Plug-Ins">
     <HelpKeywords>
       <HelpKeyword index="K" term="plug-ins, configuring" />
       <HelpKeyword index="K" term="plug-ins, overview" />
@@ -473,6 +473,12 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, DBCS fix for CHM builds plug-in" />
         <HelpKeyword index="K" term="DbcsFixPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1c05f8f0-71f3-420a-b546-a438c435b759" visible="True" title="Documented Entities Only Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, Documented Entities Only plug-in" />
+        <HelpKeyword index="K" term="DocumentedEntitiesOnlyPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="1fcdf9d3-06fb-4a7b-a584-f55b6ea5baae" visible="True" title="IntelliSense Only Plug-In">

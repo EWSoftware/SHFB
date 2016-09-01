@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="1c05f8f0-71f3-420a-b546-a438c435b759" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This plug-in is used to automatically generate an API filter based on the XML comments member IDs to
+limit the help file content to only the documented entities.  This is useful if you have a frequently changing
+API and managing the API filter is cumbersome.</para>
+		</introduction>
+	
+		<section>
+			<content>
+				<para>This plug-in is unique in that it runs both before and after the <codeInline>GenerateReflectionInfo</codeInline>
+build step.  This is necessary as it must remove any project-based API filter and generate a full set of API
+information in order to compare it to the XML comments member IDs.  Once it has done that, it can generate an API
+filter and apply it by building the reflection information again.</para>
+			
+				<para>Note that it is still constrained by the rules of the API filter.  Specifically, if you exclude
+one member of an overloaded method set, all of them will be excluded.  There is no getting around that rule.
+In addition, since inherited documentation is generated after reflection data is generated, undocumented members
+of explicitly implemented interfaces will not be included.  If you want them included, you must explicitly add an
+<codeInline>inheritdoc</codeInline> tag on those members.</para>
+
+				<para>If a type has no XML comments, it will be included if any of its members have XML comments.
+Likewise, a namespace without XML comments will be included if any documented types that it contains are
+included.</para>
+
+				<para>To explicitly exclude a documented member, add the <codeInline>exclude</codeInline> XML comment tag
+to its comments.  If placed on a type, it will exclude the entire type regardless of whether or not it has
+documented members.  If placed on a <codeInline>NamespaceDoc</codeInline> class, it will exclude all types within
+the namespace regardless of whether or not they are documented.  Note that namespace exclusions defined in the
+project namespace summaries will have no effect.  You must either add a <codeInline>NamespaceDoc</codeInline>
+class for the excluded namespace or exclude all of its types.  This typically affects any types that appear in
+the global namespace which are usually automatically excluded by the namespace summaries settings.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

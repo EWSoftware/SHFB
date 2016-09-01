@@ -111,6 +111,25 @@ namespace $safeprojectname$
                 "cs", "The default language to use for syntax sections, code snippets, and a language-specific " +
                 "text.  This should be set to cs, vb, cpp, fs, or the keyword style parameter value of a " +
                 "third-party syntax generator if you want to use a non-standard language as the default."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("includeEnumValues", false, true,
+                "true", "Set this to 'true' to include the column for the numeric value of each field in " +
+                "enumerated type topics.  Set it to 'false' to omit the numeric values column."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("baseSourceCodeUrl", false, true,
+                null, "If you set the Source Code Base Path property in the Paths category, specify the URL to " +
+                "the base source code folder on your project's website here.  Some examples for GitHub are " +
+                "shown below.\r\n\r\n" +
+                "Important: Be sure to set the Source Code Base Path property and terminate the URL below with " +
+                "a slash if necessary.\r\n\r\n" +
+                "Format: https://github.com/YourUserID/YourProject/blob/BranchNameOrCommitHash/BaseSourcePath/ \r\n\r\n" +
+                "Master branch: https://github.com/JohnDoe/WidgestProject/blob/master/src/ \r\n" +
+                "A different branch: https://github.com/JohnDoe/WidgestProject/blob/dev-branch/src/ \r\n" +
+                "A specific commit: https://github.com/JohnDoe/WidgestProject/blob/c6e41c4fc2a4a335352d2ae8e7e85a1859751662/src/"));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("requestExampleUrl", false, true,
+                null, "To include a link that allows users to request an example for an API topic, set the URL " +
+                "to which the request will be sent.  This can be a web page URL or an e-mail URL.  Only include " +
+                "the URL as the parameters will be added automatically by the topic.  For example:\r\n\r\n" +
+                "Create a new issue on GitHub: https://github.com/YourUserID/YourProject/issues/new \r\n" +
+                "Send via e-mail: mailto:YourEmailAddress@Domain.com"));
 
             // Add plug-in dependencies if any
             //this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));

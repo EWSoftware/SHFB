@@ -121,8 +121,8 @@ namespace Sandcastle.PresentationStyles
                 "A different branch: https://github.com/JohnDoe/WidgestProject/blob/dev-branch/src/ \r\n" +
                 "A specific commit: https://github.com/JohnDoe/WidgestProject/blob/c6e41c4fc2a4a335352d2ae8e7e85a1859751662/src/"));
             this.TransformComponentArguments.Add(new TransformComponentArgument("requestExampleUrl", false, true,
-                null, "To include a link that allows users to request an example for an API topic, set the URL" +
-                "to which the request will be sent.  This can be a web page URL or an e-mail URL.  Only include" +
+                null, "To include a link that allows users to request an example for an API topic, set the URL " +
+                "to which the request will be sent.  This can be a web page URL or an e-mail URL.  Only include " +
                 "the URL as the parameters will be added automatically by the topic.  For example:\r\n\r\n" +
                 "Create a new issue on GitHub: https://github.com/YourUserID/YourProject/issues/new \r\n" +
                 "Send via e-mail: mailto:YourEmailAddress@Domain.com"));

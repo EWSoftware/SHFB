@@ -189,7 +189,8 @@
             "1.0",
             "2.0",
             "2.1",
-            "2.2"});
+            "2.2",
+            "2.3"});
             this.cboHelpViewerVersion.Location = new System.Drawing.Point(315, 189);
             this.cboHelpViewerVersion.Name = "cboHelpViewerVersion";
             this.cboHelpViewerVersion.Size = new System.Drawing.Size(85, 33);

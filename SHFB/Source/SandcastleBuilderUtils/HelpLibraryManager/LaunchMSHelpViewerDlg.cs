@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/26/2015
-// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
+// Updated : 08/29/2016
+// Note    : Copyright 2010-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to determine the state of the current MS Help Viewer content and offer options to install,
@@ -22,6 +22,7 @@
 // 10/05/2012  EFW  Added support for Help Viewer 2.0
 // 12/14/2013  EFW  Added support for Help Viewer 2.1
 // 03/24/2015  EFW  Added support for Help Viewer 2.2 and added Open Content Manager option
+// 08/29/2016  EFW  Added support for Help Viewer 2.3
 //===============================================================================================================
 
 using System;
@@ -92,7 +93,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         private Thread runningThread;
         private Version viewerVersion;
 
-        private static int lastVersionSelected = 2;
+        private static int lastVersionSelected = 3;
         #endregion
 
         #region Constructor
@@ -376,7 +377,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             {
                 try
                 {
-                    var bp = new SandcastleBuilder.Utils.BuildEngine.BuildProcess(project);
+                    var bp = new BuildProcess(project);
                     helpFilePath = bp.SubstitutionTags.TransformText(helpFilePath);
                     setupFile = Path.ChangeExtension(helpFilePath, ".msha");
                 }

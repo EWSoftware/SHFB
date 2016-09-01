@@ -2,8 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
-// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
+// Updated : 08/29/2016
+// Note    : Copyright 2010-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to interact with the Help Library Manager.
@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -145,6 +146,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
                 case 2:     // Visual Studio 2015
                     return "VisualStudio14";
+
+                case 3:     // Visual Studio 2016
+                    return "VisualStudio15";
 
                 default:
                     return null;
