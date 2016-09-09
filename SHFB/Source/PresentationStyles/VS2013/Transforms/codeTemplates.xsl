@@ -129,7 +129,7 @@
 			<div class="codeSnippetContainerCodeContainer">
 				<div class="codeSnippetToolBar">
 					<div class="codeSnippetToolBarText">
-						<a id="{$v_id}_copyCode" href="#" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
+						<a id="{$v_id}_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
 							<includeAttribute name="title" item="copyCode" />
 							<include item="copyCode" />
 						</a>
@@ -227,7 +227,7 @@
 			<div class="codeSnippetContainerCodeContainer">
 				<div class="codeSnippetToolBar">
 					<div class="codeSnippetToolBarText">
-						<a id="{$v_id}_copyCode" href="#" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
+						<a id="{$v_id}_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
 							<includeAttribute name="title" item="copyCode" />
 							<include item="copyCode" />
 						</a>

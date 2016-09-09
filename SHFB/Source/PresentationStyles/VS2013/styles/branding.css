@@ -439,6 +439,9 @@ div.caption {
 	font-weight: normal;
 }
 
+.copyCodeSnippet {
+}
+
 /* Keyword and phrase styles */
 span.code, span.command {
 	font-family: Consolas, Courier, monospace;

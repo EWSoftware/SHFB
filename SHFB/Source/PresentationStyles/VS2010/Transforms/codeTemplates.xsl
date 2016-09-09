@@ -150,7 +150,7 @@
 			<div class="OH_CodeSnippetContainerCodeCollection">
 				<div class="OH_CodeSnippetToolBar">
 					<div class="OH_CodeSnippetToolBarText">
-						<a id="{$v_id}_copyCode" href="#" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
+						<a id="{$v_id}_copyCode" href="#" class="OH_copyCodeSnippet" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
 							<includeAttribute name="title" item="copyCode" />
 							<include item="copyCode" />
 						</a>
@@ -280,7 +280,7 @@
 			<div class="OH_CodeSnippetContainerCodeCollection">
 				<div class="OH_CodeSnippetToolBar">
 					<div class="OH_CodeSnippetToolBarText">
-						<a id="{$v_id}_copyCode" href="#" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
+						<a id="{$v_id}_copyCode" href="#" class="OH_copyCodeSnippet" onclick="javascript:CopyToClipboard('{$v_id}');return false;">
 							<includeAttribute name="title" item="copyCode" />
 							<include item="copyCode" />
 						</a>

@@ -164,13 +164,7 @@ function OnLoad(defaultLanguage)
             tabCount--;
 
             // If not grouped, skip it
-            if(tabCount < 2)
-            {
-                // Disable the Copy Code link if in Chrome
-                if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1)
-                    document.getElementById(allTabSetIds[i] + "_copyCode").style.display = "none";
-            }
-            else
+            if(tabCount > 1)
                 SetCurrentLanguage(allTabSetIds[i], language, tabCount);
 
             i++;
@@ -329,10 +323,48 @@ function AddLanguageSpecificTextSet(lstId)
     allLSTSetIds[keyValue[0]] = keyValue[1];
 }
 
+var clipboardHandler;
+
 // Add a language tab set ID
 function AddLanguageTabSet(tabSetId)
 {
     allTabSetIds.push(tabSetId);
+
+    // Create the clipboard handler on first use
+    if(clipboardHandler == null && typeof (Clipboard) == "function")
+    {
+        clipboardHandler = new Clipboard('.OH_copyCodeSnippet',
+        {
+            text: function (trigger)
+            {
+                // Get the code to copy to the clipboard from the active tab of the given tab set
+                var i = 1, tabSetId = trigger.id;
+                var pos = tabSetId.indexOf('_');
+
+                if(pos == -1)
+                    return "";
+
+                tabSetId = tabSetId.substring(0, pos);
+
+                do
+                {
+                    contentId = tabSetId + "_code_Div" + i;
+                    tabTemp = document.getElementById(contentId);
+
+                    if(tabTemp != null && tabTemp.style.display != "none")
+                        break;
+
+                    i++;
+
+                } while(tabTemp != null);
+
+                if(tabTemp == null)
+                    return "";
+
+                return document.getElementById(contentId).innerText;
+            }
+        });
+    }
 }
 
 // Switch the active tab for all of other code snippets
@@ -475,12 +507,6 @@ function SetActiveTab(tabSetId, tabIndex, tabCount)
     else
         if(document.getElementById(tabSetId + "_tabimgright").className != "OH_CodeSnippetContainerTabRightDisabled")
             document.getElementById(tabSetId + "_tabimgright").className = "OH_CodeSnippetContainerTabRight";
-
-    // Show copy code button if not in Chrome
-    if(navigator.userAgent.toLowerCase().indexOf("chrome") == -1)
-        document.getElementById(tabSetId + "_copyCode").style.display = "inline";
-    else
-        document.getElementById(tabSetId + "_copyCode").style.display = "none";
 }
 
 // Copy the code from the active tab of the given tab set to the clipboard
@@ -488,6 +514,9 @@ function CopyToClipboard(tabSetId)
 {
     var tabTemp, contentId;
     var i = 1;
+
+    if(typeof (Clipboard) == "function")
+        return;
 
     do
     {
