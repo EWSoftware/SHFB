@@ -183,6 +183,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                         {
                             // Number of parameters
                             TypeNodeList parameters = type.TemplateParameters;
+
                             if(parameters != null)
                             {
                                 sb.Append('`');
@@ -191,14 +192,9 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                             // Arguments
                             TypeNodeList arguments = type.TemplateArguments;
+
                             if(arguments != null && arguments.Count > 0)
                             {
-                                if (parameters == null)
-                                {
-                                    sb.Append('`');
-                                    sb.Append(arguments.Count);
-                                }
-
                                 sb.Append("{");
 
                                 for(int i = 0; i < arguments.Count; i++)
