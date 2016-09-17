@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DocumentedEntitiesOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/29/2016
+// Updated : 09/16/2016
 // Note    : Copyright 2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,7 +31,7 @@ using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
 
-namespace DocumentedEntitiesOnly
+namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
     /// This plug-in is used to automatically generate an API filter based on the XML comments member IDs to

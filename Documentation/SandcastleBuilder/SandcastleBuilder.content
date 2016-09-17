@@ -428,7 +428,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" isSelected="true" title="Build Process Plug-Ins">
+  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
     <HelpKeywords>
       <HelpKeyword index="K" term="plug-ins, configuring" />
       <HelpKeyword index="K" term="plug-ins, overview" />
@@ -1380,6 +1380,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="4a295201-9516-4914-b9d1-7db80631b42d" visible="True" isSelected="true" title="Version 2016.9.17.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="version, 2016.9.17.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="7603a301-1567-4f97-84ea-165d209dab7d" visible="True" title="Version 2016.5.28.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2016.5.28.0" />

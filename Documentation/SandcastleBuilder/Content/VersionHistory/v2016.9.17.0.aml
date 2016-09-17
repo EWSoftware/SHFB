@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4a295201-9516-4914-b9d1-7db80631b42d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2016.9.17.0." />
+		</introduction>
+
+		<section address="BreakingChange">
+			<title>Potential Breaking Change</title>
+			<content>
+				<para>The <localUri>InstallMSHC.bat</localUri> and <localUri>RemoveMSHC.bat</localUri> example scripts
+used to install and remove MS Help Viewer content have been modified to make them more generic with regard to
+the version parameter.  It is now a simple version number (1.0, 2.0, 2.1, etc.).  If you have been using the
+generated files as-is, you may need to update any installers that use them to handle the new version parameter
+format.</para>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed <application>MRefBuilder</application> so that it resolves a missing <localUri>mscorlib</localUri>
+with a major version number of 255 to <codeInline>System.Runtime</codeInline> which is common for frameworks like
+.NETCore that redirect all of their system types there.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added another condition to <application>MRefBuilder</application>'s
+<codeInline>ParameterMatch</codeInline> method to try and match odd intrinsic/generic element type pairings.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to <application>MRefBuilder</application> for generating source code context
+information in the reflection information files.  If enabled by specifying a base path to the source code in the
+new <codeInline>sourceContext</codeInline> element in the <localUri>MRefBuilder.config</localUri> configuration
+file, <application>MRefBuilder</application> will query the program database (PDB) file related to each
+documented assembly to obtain source code file and starting line number information for the API types and
+members.  If available, the source code file and starting line number will be written out in a new
+<codeInline>sourceContext</codeInline> element.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Fixed the <application>GenerateInheritedDocs</application> tool so that it handles
+<codeInline>inheritdoc</codeInline> tags correctly that are nested within elements with a
+<codeInline>name</codeInline> or <codeInline>cref</codeInline> attribute such as a <codeInline>param</codeInline>
+element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Demoted the circular reference error in the <application>GenerateInheritedDocs</application>
+tool to a warning (<link xlink:href="9d23a808-2231-44c2-ae45-61c697dda415">GID0009</link>).  This allows for
+inheriting comments from another element within the same member comments (i.e. a <codeInline>para</codeInline> or
+<codeInline>span</codeInline> from the <codeInline>summary</codeInline> in the <codeInline>remarks</codeInline>
+element).</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Reflection Data Manager tool to use the latest version of MSBuild to build the
+reflection data rather than specifically looking for version 12.0 which may not be installed.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed up property name case sensitivity issues and issues with environment variables that match
+property names when loading project properties.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Multi-Format Output Component so that it recreates the document for each format from
+the XML rather than cloning it to workaround an occasional issue with the clone that results in an "invalid
+parent" error.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the .NETCore and .NETPortable Frameworks distributed as NuGet packages
+effective with Visual Studio 2015 Update 3.  These are denoted with a "(NuGet)" suffix in their title.  Use one
+of these frameworks if the framework assembly references are added via a NuGet package in your documented
+assembly's project.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the .NET Framework 4.6.2.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added code to bypass the assembly binding redirection plug-in execution and issue a warning if
+the <localUri>MRefBuilder.config</localUri> file is not found (i.e. the Additional Content Only plug-in is
+enabled as well).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an application manifest with DPI awareness settings to <application>SandcastleBuilderGUI</application>
+and <application>SHFBProjectLauncher</application> to prevent scaling issues and blurry fonts on Windows 10.</para>
+					</listItem>
+
+					<listItem>
+						<para>Adjusted all forms and controls so that they look decent with scaling up to 150% at a
+resolution of 3840x2160 in both the standalone GUI and the Visual Studio package.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068#SourceCodeBasePath">Source
+Code Base Path</link> and <link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068#WarnOnMissingSourceContext">Warn
+On Missing Source Context</link> project properties to support generation of source code context information in
+the reflection information files.  These are used in conjunction with presentation styles that support links to
+online source code.  See the property help for known limitations and possible issues.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for installing MS Help Viewer output in Help Viewer 2.3.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <link xlink:href="1c05f8f0-71f3-420a-b546-a438c435b759" />.  This can be used as a
+way of generating a help file using only the types and members with XML comments without having to manually
+manage an API filter within the help file builder project.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed all presentation styles so that they generate the root group topic correctly when
+namespace grouping is used without a root namespace container.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all presentation styles to support the <codeInline>baseSoureCodeUrl</codeInline>
+transformation argument property and the VS2010 and VS2013 presentation styles to support the
+<codeInline>requestExampleUrl</codeInline> transformation argument property.  These enable generation of
+links to the online source code and requesting an example for an API member respectively.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added up-to-date, cross-browser compatible clipboard script for website builds of the VS2010
+and VS2013 presentation styles.  The <ui>Copy</ui> link on syntax sections and code examples is now visible and
+enabled for all browsers.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Open XML build task so that it includes the <codeInline>align</codeInline> and
+<codeInline>posOffset</codeInline> elements as parent elements that can contain text that does not need to be
+wrapped in a run element.</para>
+					</listItem>
+
+
+					<listItem>
+						<para>Renamed the <localUri>[Content_Types].xml</localUri> and <localUri>rels\.rels</localUri>
+document part files in the Open XML presentation style to work around issues with Open Packaging Conventions
+filename conflicts in the NuGet distribution.  The Open XML build task has been updated to fix the names of those
+two document part files so that they are correct when the Open XML document is generated.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the VS2010 and V2013 presentation styles so that member list tables each get a unique ID.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Sue Maurizio for supplying Italian translations for the VS 2013 presentation style
+content item files.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

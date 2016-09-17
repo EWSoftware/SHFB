@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildOpenXmlFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/05/2016
+// Updated : 09/12/2016
 // Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1278,7 +1278,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         private void GenerateFileList()
         {
-            string contentTypesFile = Path.Combine(this.WorkingFolder, "[Content_Types].xml"),
+            string altName, contentTypesFile = Path.Combine(this.WorkingFolder, "[Content_Types].xml"),
                 relsFile = Path.Combine(this.WorkingFolder, @"_rels\.rels"),
                 documentParts = Path.Combine(this.WorkingFolder, @"word\_rels\document.xml.rels"), filename,
                 mimeType;
@@ -1286,6 +1286,26 @@ namespace SandcastleBuilder.Utils.MSBuild
             archiveFiles.Add(contentTypesFile);
             archiveFiles.Add(relsFile);
             archiveFiles.Add(documentParts);
+
+            // If the content types file does not exist, see if it's there under the alternate name used to
+            // support the NuGet deployment.  Certain filenames reserved as part of the Open Packaging
+            // Conventions are ignore by NuGet when extracting package files.  This works around the issue.
+            if(!File.Exists(contentTypesFile))
+            {
+                altName = Path.Combine(this.WorkingFolder, "Content_Types.xml");
+
+                if(File.Exists(altName))
+                    File.Move(altName, contentTypesFile);
+            }
+
+            // Do the same for the relationships file
+            if(!File.Exists(relsFile))
+            {
+                altName = Path.Combine(this.WorkingFolder, @"_rels\rels.xml.rels");
+
+                if(File.Exists(altName))
+                    File.Move(altName, relsFile);
+            }
 
             XDocument contentTypes = XDocument.Load(contentTypesFile);
 

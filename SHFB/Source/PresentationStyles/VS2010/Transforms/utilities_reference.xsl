@@ -702,7 +702,7 @@
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'title_namespaces'"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList" class="members">
+					<table id="namespaceList" class="members">
 						<tr>
 							<th>
 								<include item="header_namespaceName"/>
@@ -760,7 +760,7 @@
 				<xsl:call-template name="t_putSectionInclude">
 					<xsl:with-param name="p_titleInclude" select="'tableTitle_namespace'"/>
 					<xsl:with-param name="p_content">
-						<table id="typeList" class="members">
+						<table id="namespaceList" class="members">
 							<tr>
 								<th>
 									<include item="header_namespaceName"/>
@@ -796,7 +796,7 @@
 				<xsl:call-template name="t_putSectionInclude">
 					<xsl:with-param name="p_titleInclude" select="'topicTitle_enumMembers'"/>
 					<xsl:with-param name="p_content">
-						<table id="memberList" class="members">
+						<table id="enumMemberList" class="members">
 							<tr>
 								<th class="ps_iconColumn">
 									&#160;
@@ -900,7 +900,7 @@
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'derivedClasses'"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList" class="members">
+					<table id="derivedTypeList" class="members">
 						<tr>
 							<th>
 								<include item="header_memberName"/>
@@ -959,7 +959,10 @@
 	<xsl:template name="t_putNamespaceList">
 		<xsl:param name="p_listSubgroup"/>
 
-		<table id="typeList" class="members">
+		<table class="members">
+			<xsl:attribute name="id">
+				<xsl:value-of select="concat($p_listSubgroup, 'List')"/>
+			</xsl:attribute>
 			<tr>
 				<th class="ps_iconColumn">
 					&#160;
@@ -1015,7 +1018,10 @@
 				<xsl:with-param name="p_titleInclude" select="$v_header"/>
 				<xsl:with-param name="p_toplink" select="true()"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList" class="members">
+					<table class="members">
+						<xsl:attribute name="id">
+							<xsl:value-of select="concat($p_headerGroup, 'List')"/>
+						</xsl:attribute>
 						<tr>
 							<th class="ps_iconColumn">
 								&#160;
