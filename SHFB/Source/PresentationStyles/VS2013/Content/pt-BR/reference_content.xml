@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+
+  <!-- note text -->
+  <item id="notDocumented">Esta API não está documentada.</item>
+  <item id="preliminaryText">Esta API é preliminar e sujeita a mudança.</item>
+	
+	<!-- main window stuff -->
+	<item id="productTitle">Biblioteca de Classes do .NET Framework</item>
+
+	<!-- inserted boilerplate -->
+	<item id="runningHeaderText">Biblioteca de Classes do .NET Framework</item>
+	<item id="rootLink"><referenceLink target="R:Project">Namespaces</referenceLink></item>
+  <item id="definedBy">(Definido por {0}.)</item>
+	<item id="inheritedFrom">(Herdado de {0}.)</item>
+	<item id="overridesMember">(Sobrescreve {0}.)</item>
+	<item id="locationInformation">Assembly: {0} (Module: {1})</item>
+ 
+  <item id="derivedClasses">Classe Derivada</item>
+  <item id="explicitInterfaceImplementation">Implementações Explícitas da Interface</item>
+  <item id="returnValue">Valor de Retorno</item>
+  <item id="propertyValue">Valor da Propriedade</item>
+  <item id="fieldValue">Valor do Campo</item>
+  <item id="example">Exemplo</item>
+
+  <!-- topic titles -->
+  <item id="meta_mshelp_tocTitle">{0}</item>
+  <item id="meta_mshelp_rlTitle">{0} ({1})</item>
+  <item id="topicTitle_root">Namespaces</item>
+	<item id="topicTitle_namespace">{0} Namespace</item>
+	<item id="topicTitle_namespaceGroup">{0} Namespaces</item>
+	<item id="topicTitle_class">Classe {0}</item>
+	<item id="topicTitle_structure">{0} Estrutura</item>
+	<item id="topicTitle_interface">{0} Interface</item>
+	<item id="topicTitle_derivedTypeList">{0} Classes Derivadas</item>
+  
+	<item id="topicTitle_delegate">{0} Delegados</item>
+	<item id="topicTitle_enumeration">{0} Enumeração</item>
+	<item id="topicTitle_field">Campos {0}</item>
+	<item id="topicTitle_method">{0} Métodos {1}</item>
+	<item id="topicTitle_constructor">{0} Construtores {1}</item>
+	<item id="topicTitle_property">{0} Propriedades {1}</item>
+	<item id="topicTitle_event">{0} Eventos</item>
+  
+  <!-- title for operator members -->
+	<item id="topicTitle_operator">{0} Operadores {1}</item>
+
+  <!-- title for op_explicit and op_implicit members -->
+  <item id="topicTitle_typeConversion">{0} Conversão {1}</item>
+  <!-- title for overload op_explicit and op_implicit topics -->
+  <item id="topicTitle_conversionOperator">{0}  Operadores de Conversão</item>
+      
+	<item id="topicTitle_attachedProperty">{0} Propriedades anexadas</item>
+	<item id="topicTitle_attachedEvent">{0} Eventos anexados</item>
+
+  <item id="generic"> generic</item>
+  <item id="topicTitle_generic_class">Classe Genérica {0}</item>
+  <item id="topicTitle_generic_structure">Estrutura Genérica {0}</item>
+  <item id="topicTitle_generic_interface">Interface Genérica {0} </item>
+  <item id="topicTitle_generic_delegate">Delegação Genérica {0}</item>
+  <item id="topicTitle_generic_method">{0} Método Genérico {1}</item>
+  
+	<!-- list topic titles -->
+	<item id="topicTitle_fields">{0} Campos</item>
+	<item id="topicTitle_methods">{0} Métodos</item>
+	<item id="topicTitle_enumMembers">Membros</item>
+  
+  <!-- title for operator list topic that has [operators + no type conversions] -->
+  <item id="topicTitle_operators">{0} Operadores</item>
+  <!-- title for operator list topic that has [operators + type conversions] -->
+  <item id="topicTitle_operatorsAndTypeConversions">{0} Operadores e Conversores de Tipo</item>
+  <!-- title for operator list topic that has [no operators + type conversions] -->
+  <item id="topicTitle_typeConversions">{0} Conversores de Tipo</item>
+  
+	<item id="topicTitle_constructors">Construtores {0} </item>
+	<item id="topicTitle_properties">Propriedades {0} </item>
+	<item id="topicTitle_events">Eventos {0} </item>
+	<item id="topicTitle_attachedProperties">{0} Propriedades Anexadas</item>
+ 	<item id="topicTitle_attachedEvents">{0} Eventos Anexados</item>
+	<item id="topicTitle_members">{0} Membros</item>
+
+	<!-- index entries -->
+	<item id="indexEntry_root">namespaces</item>
+  <item id="indexEntry_namespace">{0} namespace</item>
+  <item id="indexEntry_class">classe {0} </item>
+	<item id="indexEntry_structure">estrutura {0}</item>
+	<item id="indexEntry_interface">interface {0}</item>
+	<item id="indexEntry_delegate">delegação {0}</item>
+	<item id="indexEntry_enumeration">eumeração {0}</item>
+  <item id="indexEntry_enumerationMember">membro da enumeração {0}</item>
+  <item id="indexEntry_aboutType">{0}, sobre {0}</item>
+  <item id="indexEntry_derivedTypes">{0}, tipos derivados</item>
+  <item id="indexEntry_members">{0}, todos os membros</item>
+  <item id="indexEntry_methods">{0}, métodos</item>
+  <!-- index entry for operator list topic that has [operators + no type conversions] -->
+  <item id="indexEntry_operators">{0}, operadores</item>
+  <!-- index entry for operator list topic that has [operators + type conversions] -->
+  <item id="indexEntry_operatorsAndTypeConversions">{0}, operadores e conversores de tipo</item>
+  <!-- index entry for operator list topic that has [no operators + type conversions] -->
+  <item id="indexEntry_typeConversions">{0}, conversores de tipo</item>
+  <!-- index entries for op_explicit and op_implicit members -->
+  <item id="indexEntry_conversionOperator">{0} conversão</item>
+  <item id="indexEntry_properties">{0}, propriedades</item>
+  <item id="indexEntry_fields">{0}, campos</item>
+  <item id="indexEntry_events">{0}, eventos</item>
+  <item id="indexEntry_attachedProperties">{0}, propriedades anexadas</item>
+  <item id="indexEntry_attachedEvents">{0}, eventos anexados</item>
+	<item id="indexEntry_constructors">{0}, construtores</item>
+	<item id="indexEntry_constructor">{0}, construtores</item>
+	<item id="indexEntry_constructorType">{0} construtores</item>
+  <item id="indexEntry_method">{0} métodos</item>
+	<item id="indexEntry_property">{0} propriedade</item>
+	<item id="indexEntry_event">{0} evento</item>
+	<item id="indexEntry_field">{0} campo</item>
+	<item id="indexEntry_operator">{0} operador</item>
+	<item id="indexEntry_attachedProperty">{0} propriedades anexadas</item>
+	<item id="indexEntry_attachedEvent">{0} eventos anexados</item>
+	<item id="indexEntry_methodExplicit">{0} método implementado explicitamente</item>
+	<item id="indexEntry_propertyExplicit">{0} propriedade implementada explicitamente</item>
+	<item id="indexEntry_eventExplicit">{0} evento implementado explicitamente</item>
+	<item id="indexEntry_fieldExplicit">{0} campo implementado explicitamente</item>
+
+	<!-- section titles -->
+	<item id="title_syntax">Sintaxe</item>
+	<item id="title_templates">Parâmetros de Tipo</item>
+	<item id="title_parameters">Parâmetros</item>
+	<item id="title_value">Valor</item>
+	<item id="title_delegateValue">Valor de Retorno</item>
+	<item id="title_methodValue">Valor de Retorno</item>
+	<item id="title_propertyValue">Valor da Propriedade</item>
+	<item id="title_fieldValue">Valor do Campo</item>
+	<item id="title_implements">Implementa</item>
+	<item id="title_examples">Exemplos</item>
+	<item id="title_threadSafety">Thread Segurança</item>
+	<item id="title_permissions">Segurança do .NET Framework</item>
+	<item id="title_namespaces">Namespaces</item>
+	<item id="title_types">Tipos</item>
+	<item id="title_family">Hierarquia de Herança</item>
+	<item id="title_versions">Infromação de Versão</item>
+	<item id="title_platforms">Platformas</item>
+	<item id="title_relatedTopics">Veja Também</item>
+	<item id="title_extensionUsage">Nota de Uso</item>
+	<item id="text_extensionUsage">No Visual Basic e C#, você pode chamar este método como uma instância do método de qualquer objeto do tipo {0}. Quando você usar a Sintaxe de chamada do método de instância, omita o primeiro parâmetro. Para mais informação, veja <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx" target="_blank">Extensão de Métodos (Visual Basic)</a> ou <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx" target="_blank">Extensão nos Métodos (C# Programming Guide)</a>.</item>
+	<item id="text_moreInheritance">Mais...</item>
+
+	<!-- table headers -->
+	<item id="header_namespaceName">Namespace</item>
+	<item id="header_namespaceDescription">Descrição</item>
+	<item id="header_typeIcon">Icones</item>
+  <item id="header_className">Classe</item>
+  <item id="header_structureName">Estrutura</item>
+  <item id="header_interfaceName">Interface</item>
+  <item id="header_delegateName">Delegação</item>
+  <item id="header_enumerationName">Enumeração</item>
+  
+	<item id="header_typeName">Nome</item>
+	<item id="header_typeDescription">Descrição</item>
+	<item id="header_memberIcon">Icone</item>
+	<item id="header_memberName">Nome do Membro</item>
+	<item id="header_memberValue">Valor</item>
+	<item id="header_memberDescription">Descrição</item>
+	<item id="header_eventType">Tipo de Evento</item>
+	<item id="header_eventReason">Razão</item>
+	<item id="header_exceptionName">Exceção</item>
+	<item id="header_exceptionCondition">Condição</item>
+	<item id="header_permissionName">Permissão</item>
+	<item id="header_permissionDescription">Descrição</item>
+  <item id="header_requiresName">Requer</item>
+  <item id="header_ensuresName">Garante</item>
+  <item id="header_ensuresOnThrowName">EnsuresOnThrow</item>
+  <item id="header_invariantsName">Invariantes</item>
+
+	<item id="header_revHistoryDate">Data</item>
+	<item id="header_revHistoryVersion">Versão</item>
+	<item id="header_revHistoryDescription">Descrição</item>
+
+  <!-- member list table titles -->
+  <item id="tableTitle_namespace">Namespaces</item>
+	<item id="tableTitle_class">Classes</item>
+	<item id="tableTitle_structure">Estruturas</item>
+	<item id="tableTitle_interface">Interfaces</item>
+	<item id="tableTitle_delegate">Delegações</item>
+	<item id="tableTitle_enumeration">Enumerações</item>
+  <item id="tableTitle_constructor">Construtores</item>
+  <item id="tableTitle_method">Métodos</item>
+  <item id="tableTitle_operator">Operatores</item>
+  <item id="tableTitle_field">Campos</item>
+  <item id="tableTitle_property">Propriedades</item>
+  <item id="tableTitle_event">Eventos</item>
+  <item id="tableTitle_attachedEvent">Eventos anexados</item>
+  <item id="tableTitle_attachedProperty">Propriedades anexadas</item>
+  <item id="tableTitle_explicitInterfaceImplementation">Explicita&#160;Interface&#160;Implementação</item>
+	<item id="tableTitle_overloadMembers">Overload&#160;List</item>
+  <item id="tableTitle_extensionMethod">Extensão&#160;Métodos</item>
+
+  <!-- Thread Safety -->
+  <item id="text_threadSafety">Segurança de Thread</item>
+  <item id="boilerplate_threadSafety">Qualquer membro público <include item="devlang_staticKeyword"/>  deste tipo está seguro na thread. Qualquer instância de membro não está garantido em thread.</item>
+
+  <item id="text_staticThreadSafe">Membros estáticos deste tipo são seguros para operações multi-threaded. </item>
+  <item id="text_staticNotThreadSafe">Membros estáticos deste tipo não são seguros para operações multi-threaded. </item>
+  <item id="text_instanceThreadSafe">Instância de membros deste tipo são seguros para operações multi-threaded. </item>
+  <item id="text_instanceNotThreadSafe">Instância de membros deste tipo não são seguros para operações multi-threaded. </item>
+  
+  <item id="text_NotesForImplementers">Notas para Implementadores</item>
+  <item id="text_NotesForCallers">Notas para Usuários</item>
+  <item id="text_NotesForInheritors">Notas para Herdeiros</item>
+  
+  <!-- boilerplate intro to member list tables -->
+  <item id="genericExposedMembersTableText">O tipo genérico {0} expõe os seguintes membros.</item>
+  <item id="exposedMembersTableText">O tipo {0} expõe os seguintes membros.</item>	
+
+  <item id="dependencyPropertyInfoHeading">Informação de Propriedade de Dependência</item>
+  <item id="routedEventInfoHeading">Informação de Roteamento de Evento</item>
+  <item id="mrefTaskMoreCodeHeading">Mais código</item>
+
+  <item id="Overloaded">Overloaded. </item>	
+  <item id="defaultNamespace">(Namespace padrão)</item>
+  
+  <item id="typeLink">Tipo:&#160;{0}</item>
+  <!-- First line of a param or retval description is a link to the type of the param or retval.
+       This boilerplate is used if the type is a type parameter of the member's type. -->
+  <item id="typeLinkToTypeParameter"><strong>{0}</strong> parâmetro de tipo de {1}.</item>
+  
+	<!-- Host protection boilerplate text -->
+  <item id="text_hostProtectionAttribute">HostProtectionAttribute. </item>
+	<item id="boilerplate_hostProtectionAttribute">O atributo <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" /> aplicado neste tipo ou membro tem os seguintes valores de propriedades <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
+									 prefer-overload="true" /> : {1}. O <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" /> não afeta as aplicações desktop (que são tipicamente inicializadas pelo duplo-clique de um ícone, teclar um comando, ou com um URL no navegador). Para mais informação, veja a classe <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" /> ou <a href="http://msdn.microsoft.com/en-us/library/ms172338.aspx" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
+	<!-- Obsolete boilerplate text -->
+  <item id="boilerplate_obsoleteShort"><strong>Obsoleto. </strong></item>
+  <item id="boilerplate_obsoleteLong"><strong>Nota: Esta API está obsoleta.</strong></item>
+
+	<!-- Group and SubGroup text -->
+	<item id="text_classLower">classe</item>
+  <item id="text_delegateLower">delegação</item>
+  <item id="text_structureLower">estrutura</item>
+  <item id="text_interfaceLower">interface</item>
+  <item id="text_enumerationLower">enumeração</item>
+
+  <item id="text_classUpper">Classe</item>
+  <item id="text_structureUpper">Estrutura</item>
+  <item id="text_interfaceUpper">Interface</item>
+  <item id="text_delegateUpper">Delegação</item>
+  <item id="text_enumerationUpper">Enumeração</item>
+
+	<item id="text_classTypesLower">classes</item>
+	<item id="text_structureTypesLower">estruturas</item>
+	<item id="text_interfaceTypesLower">interfaces</item>
+	<item id="text_delegateTypesLower">delegações</item>
+	<item id="text_enumerationTypesLower">enumerações</item>
+  
+	<item id="text_classTypesUpper">Classes</item>
+	<item id="text_structureTypesUpper">Estruturas</item>
+	<item id="text_interfaceTypesUpper">Interfaces</item>
+	<item id="text_delegateTypesUpper">Delegações</item>
+	<item id="text_enumerationTypesUpper">Enumerações</item>
+
+  <item id="text_membersLower">membros</item>
+  <item id="text_methodsLower">métodos</item>
+  <item id="text_propertiesLower">propriedades</item>
+  <item id="text_eventsLower">eventos</item>
+  <item id="text_fieldsLower">campos</item>
+  <item id="text_operatorsLower">operadores</item>
+  <item id="text_attachedPropertiesLower">propriedades anexas</item>
+  <item id="text_attachedEventsLower">eventos anexos</item>
+
+  <item id="text_membersUpper">Membros</item>
+  <item id="text_methodsUpper">Métodos</item>
+  <item id="text_propertiesUpper">Propriedades</item>
+  <item id="text_eventsUpper">Eventos</item>
+  <item id="text_fieldsUpper">Campos</item>
+  <item id="text_operatorsUpper">Operadores</item>
+  <item id="text_attachedPropertiesUpper">Propriedades Anexas</item>
+  <item id="text_attachedEventsUpper">Eventos Anexos</item>
+
+	<!-- alt text for images -->
+	<item id="altText_pubClass">Classes públicas</item>
+	<item id="altText_pubStructure">Estruturas públicas</item>
+	<item id="altText_pubInterface">Interfaces públicas</item>
+	<item id="altText_pubDelegate">Delegações públicas</item>
+	<item id="altText_pubEnumeration">Enumerações públicas</item>
+	<item id="altText_protClass">Classes protegidas</item>
+	<item id="altText_protStructure">Estruturas protegidas</item>
+	<item id="altText_protInterface">Interfaces protegidas</item>
+	<item id="altText_protDelegate">Delegações protegidas</item>
+	<item id="altText_protEnumeration">Enumerações protegidas</item>
+	<item id="altText_privClass">Classes privadas</item>
+	<item id="altText_privStructure">Estruturas privadas</item>
+	<item id="altText_privInterface">Interfaces privadas</item>
+	<item id="altText_privDelegate">Delegações privadas</item>
+	<item id="altText_privEnumeration">Enumerações privadas</item>
+
+	<item id="altText_pubConstructor">Construtoras públicos</item>
+	<item id="altText_pubMethod">Métodos públicos</item>
+	<item id="altText_pubField">Campos públicos</item>
+	<item id="altText_pubProperty">Propriedades públicas</item>
+	<item id="altText_pubEvent">Eventos públicos</item>
+	<item id="altText_pubOperator">Operadores públicos</item>
+	<item id="altText_pubAttachedProperty">Propriedades anexas públicas</item>
+	<item id="altText_pubAttachedEvent">Eventos anexos públicos</item>
+	<item id="altText_protConstructor">Construtores protegidos</item>
+	<item id="altText_protMethod">Métodos protegidos</item>
+	<item id="altText_protField">Campos protegidos</item>
+	<item id="altText_protProperty">Propriedades protegidas</item>
+	<item id="altText_protEvent">Eventos protegidos</item>
+	<item id="altText_protOperator">Operadores protegidos</item>
+	<item id="altText_protAttachedProperty">Propriedades anexas protegidas</item>
+	<item id="altText_protAttachedEvent">Evento anexo protegido</item>
+	<item id="altText_privConstructor">Construtor privado</item>
+	<item id="altText_privMethod">Método privado</item>
+	<item id="altText_privField">Campo privado</item>
+	<item id="altText_privProperty">Propriedade privada</item>
+	<item id="altText_privEvent">Evento privado</item>
+	<item id="altText_privOperator">Operador privado</item>
+	<item id="altText_privtAttachedProperty">Propriedade anexa privada</item>
+	<item id="altText_privAttachedEvent">Evento anexo privado</item>
+	<item id="altText_static">Membro estático</item>
+	<item id="altText_pubextension">Método extensão público</item>
+	<item id="altText_protextension">Método extensão protegido</item>
+	<item id="altText_privextension">Método extensão privado</item>
+
+  <item id="altText_CompactFramework">Suportado pelo Framework .NET Compacto</item>
+  <item id="altText_XNAFramework">Suporetado pelo XNA Framework</item>
+  <item id="altText_SilverlightMobile">Suportado pelo <include item="silverlight_mobile"/></item>
+  <item id="altText_ExplicitInterface">Implementação explícita de interface</item>
+  <item id="altText_CodeExample">Exemplo de código</item>
+
+  <item id="boilerplate_seeAlsoNamespaceLink">{0} Namespace</item>
+  <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/></item>
+  <item id="boilerplate_seeAlsoMembersLink">{0} Membros</item>
+  <item id="boilerplate_seeAlsoOverloadLink">{0} Overload</item>
+
+  <item id="boilerplate_requirementsNamespace">
+    <strong>Namespace:</strong> 
+  </item>
+
+  <item id="boilerplate_requirementsPlatforms">
+    <strong>Plataformas:</strong> {0}
+  </item>
+
+  <item id="boilerplate_requirementsAssemblies">
+    <strong>Assemblies:</strong>
+  </item>
+
+  <item id="boilerplate_requirementsAssemblyLabel">
+    <strong>Assembly:</strong>
+  </item>
+
+	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Versão: {3}</item>
+
+  <item id="boilerplate_requirementsAssembly">
+    <strong>Assembly:</strong> {0} (em {1}.dll)
+  </item>
+
+  <!-- Used for Version Information Section -->
+  <item id="supportedIn_1">Suportado em: {0}</item>
+  <item id="supportedIn_2">Suportado em: {0}, {1}</item>
+  <item id="supportedIn_3">Suportado em: {0}, {1}, {2}</item>
+  <item id="supportedIn_4">Suportado em: {0}, {1}, {2}, {3}</item>
+  <item id="supportedIn_5">Suportado em: {0}, {1}, {2}, {3}, {4}</item>
+  <item id="supportedIn_6">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}</item>
+  <item id="supportedIn_7">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}</item>
+  <item id="supportedIn_8">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}</item>
+  <item id="supportedIn_9">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}</item>
+  <item id="supportedIn_10">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}</item>
+  <item id="supportedIn_11">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}</item>
+  <item id="supportedIn_12">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}</item>
+  <item id="supportedIn_13">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}</item>
+  <item id="supportedIn_14">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}</item>
+  <item id="supportedIn_15">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}</item>
+  <item id="supportedIn_16">Suportado em: {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}</item>
+  <item id="obsoleteWarning">Obsoleto (alerta do compilador) em {0}</item>
+  <item id="obsoleteError">Obsoleto (não compila) em {0} e depois</item>
+  	
+	<!-- APTCA Boilerplate text -->
+	<item id="boilerplate_aptca">Confiança completa para o chamador imediato. Este membro não pode ser usado por código parcialmente confiável. Para mais informação, veja <a href="http://msdn.microsoft.com/en-us/library/8skskf63.aspx" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
+
+  <!-- Variance boilerplate text -->
+  <item id="text_covariant">Este tipo de parâmetro é covariante. Isto é, você tanto pode usar o tipo que você especificou ou qualquer tipo mais derivado.</item>
+  <item id="text_contravariant">Este tipo de parâmetro é contravariante. Isto é, você tanto pode usar o tipo que você especificou ou qualquer tipo menos derivado. </item>
+  <item id="text_variance">Para mais informação sobre covariância e contravariância, veja <a href="http://msdn.microsoft.com/en-us/library/ee207183.aspx" target="_blank">Covariance and Contravariance (C# and Visual Basic).</a>.</item>
+
+  <!-- Non-CLS Compliant boilerplate text-->
+  <item id="boilerplate_NotClsCompliant">Esta API não é compatível com CLS.</item>
+  <item id="boilerplate_AltClsCompliant">A alternativa compatível com CLS é {0}.</item>
+  
+  <!-- Security Critical Boilerplate text-->
+  <item id="boilerplate_typeSecurityCritical">Este tipo tem o atributo SecurityCriticalAttribute, que restinge para uso interno pelo .NET Framework para a biblioteca de classes do Silverlight. O Código da aplicação que usa qualquer membro deste tipo dispara uma MethodAccessException.</item>
+  <item id="boilerplate_memberSecurityCritical">Este membro tem o atributo SecurityCriticalAttribute, que restinge para uso interno pelo .NET Framework para a biblioteca de classes do Silverlight. O Código da aplicação que usa qualquer membro deste tipo dispara uma MethodAccessException.</item>
+  <item id="text_securityCritical">[CRITICO PARA SEGURANÇA] </item>
+  
+  <!-- Overload page boilerplate -->
+  <item id="boilerplate_overloadSummary">Este membro está overloaded. Para informação completa sobre este membro, incluindo sintaxe, uso e exemplo, clique o nome na lista de overload.</item>
+
+  <!-- Platforms Information and Platform Notes --> 
+  <item id="boilerplate_PlatformNote">
+	  <strong>{0} Nota de Platforma:</strong> {1}
+  </item>
+  <item id="boilerplate_systemRequirementsLink">
+	  <p>O <include item="netfw"/> e o <include item="netcfw"/> não suportam todas as versões de qualquer plataforma. Para uma lista das versões suportadas, veja <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx" target="_blank">.NET Framework System Requirements</a>.</p>
+  </item>
+  
+  <!-- Platforms boilerplate for Silverlight mref builds --> 
+  <item id="boilerplate_silverlightPlatforms">
+    Para informação sobre o sistema operacional e navegadores suportados por <include item="silverlight"/>, veja <a href="http://msdn.microsoft.com/en-us/library/dd229102.aspx" target="_blank">Supported Operating Systems and Browsers</a>.
+  </item>
+
+ 	<item id="Win95">Windows 95</item>
+	<item id="Win98Se">Windows 98 Second Edition</item>
+	
+	<item id="WinNT4">Windows NT 4.0</item>
+	<item id="WinNT4Svr">Windows NT Server 4.0</item>
+	<item id="WinNT4Wks">Windows NT Workstation 4.0</item>
+	
+	<item id="Win2kFamily">Windows 2000</item>
+	<item id="Win2kProfessional">Windows 2000 Professional</item>
+	<item id="Win2kServer">Windows 2000 Server</item>
+	<item id="Win2kDatacenter">Windows 2000 Advanced Server</item>
+	
+	<item id="WinXPPersonal">Windows XP Home Edition</item>
+	<item id="WinXPPro">Windows XP Professional x64 Edition</item>
+	<item id="WinXPSvr"><include item="WinSvr2003"/></item>
+	<item id="WinXpTablet">Windows XP Tablet PC Edition</item>
+	<item id="WinXpEmbedded">Windows XP Embedded</item>
+	
+	<item id="ECMACLI">Common Language Infrastructure (CLI) Standard</item>
+	
+	<item id="MSTV">Microsoft TV</item>
+		
+	<item id="Win9xFamily"><include item="Win95"/>, <include item="Win98"/>, <include item="Win98Se"/>, <include item="WinME"/></item>
+	<item id="WinNt4Family"><include item="WinNT4"/></item>
+	<item id="WinXpFamily"><include item="WinXPPersonal"/>, <include item="WinXPPro"/>, <include item="WinXPSvr"/></item>
+	<item id="WinCE"><include item="WindowsCE"/></item>
+	<item id="Win2K"><include item="WinSvr2000"/></item>
+	<item id="Win2KSvr"><include item="Win2kServer"/></item>
+	<item id="Win2KADC"><include item="Win2kDatacenter"/></item>
+	
+	<item id="WinNt4Server"><include item="WinNT4Svr"/></item>
+	<item id="WinNt4Workstation"><include item="WinNT4Wks"/></item>
+	<item id="Win2kAdvanced"><include item="Win2kDatacenter"/></item>
+	<item id="Win2kServerApplianceKit"></item>
+	<item id="WinXpHome"><include item="WinXPPersonal"/></item>
+	<item id="WinXpProfessional"><include item="WinXPPro"/></item>
+	<item id="Win2003Server"><include item="WinXPSvr"/></item>
+	<item id="NETCF"><include item="PocketPC"/>, <include item="SmartPhone"/>, <include item="WindowsCE"/></item>
+  
+  <item id="XNA"><include item="Xbox360"/>, <include item="Zune" /></item>
+       
+  <!-- platform names that appear in the Platforms section on mref type and member pages 
+       The id values must be in sync with the platform/@name values used in the manifold  platformFilters.xml filter files.
+       These values are also used in <platformNotes>
+  -->
+  <item id="Win98">Windows 98</item>
+  <item id="WinME">Windows Millennium Edition</item>
+  <item id="WinSvr2000">Windows Server 2000 SP4</item>
+  <item id="WinXPPro64">Windows XP Professional x64 Edition</item>
+  <item id="WinXP">Windows XP SP3</item>
+  <item id="WindowsCE">Windows CE</item>
+  <item id="PocketPC">Windows Mobile for Pocket PC</item>
+  <item id="SmartPhone">Windows Mobile for Smartphone</item>
+  <item id="WinSvr2003">Windows Server 2003</item>
+  <item id="WinSvr2008">Windows Server 2008</item>
+  <item id="WinSvr2008R2">Windows Server 2008 R2</item>
+  <item id="WinXpMediaCenter">Windows XP Media Center Edition</item>
+  <item id="WinXPSE">Windows XP Starter Edition</item>
+  <item id="WinVista">Windows Vista</item>
+  <item id="Win7">Windows 7</item>
+  <item id="Xbox360">Xbox 360</item>
+  <item id="Zune">Zune</item>
+
+  <!-- framework ids:  
+       These shared content item strings are used for the headings in the Version Information section 
+       These ids must be in sync with the ids used in the config file for VersionBuilder.
+  -->
+  <item id="netfw">.NET Framework</item>
+  <item id="netcfw">.NET Compact Framework</item>
+  <item id="xnafw">XNA Framework</item>
+  <item id="silverlight">Silverlight</item>
+  <item id="silverlight_mobile">Silverlight for Windows Phone</item>
+  
+  <!-- framework version ids
+       These shared content item strings are used in the Version Information section.
+       These ids must be in sync with the ids used in the config file for VersionBuilder.
+       The ids are also used in the platformFilters.xml filter files to indicate the framework version supported by each platform
+  -->
+  <item id="netfw40">4.0</item>
+  <item id="netfw35_1">3.5 SP1</item>
+  <item id="netfw35">3.5</item>
+  <item id="netfw30_1">3.0 SP1</item>
+  <item id="netfw30">3.0</item>
+  <item id="netfw20_1">2.0 SP1</item>
+  <item id="netfw20">2.0</item>
+  <item id="netfw11">1.1</item>
+  <item id="netfw10">1.0</item>
+
+  <item id="netcfw37">3.7</item>
+  <item id="netcfw35">3.5</item>
+  <item id="netcfw20">2.0</item>
+  <item id="netcfw10">1.0</item>
+
+  <item id="xnafw10">1.0</item>
+
+  <!-- silverlight version ids used in Version Information section. -->
+  <item id="silverlight10">1.0</item>
+  <item id="silverlight20">2.0</item>
+  <item id="silverlight_v3">3.0</item>
+  <item id="silverlight_v4">4.0</item>
+  <item id="silverlight_mobile_v1">Windows Phone OS 7.0</item>
+
+  <!-- Used in the Requirements section to display an xmlns URI for apis that can be used in XAML -->
+  <item id="boilerplate_xamlXmlnsRequirements"><strong>XMLNS para XAML:</strong> {0}</item>
+  <item id="boilerplate_unmappedXamlXmlns">Não mapeado para um xmlns.</item>
+
+  <item id="boilerplate_secondaryFrameworkOverride"><br/><br/>Em <include item="{0}"/>, este membro é sobrescrito por {1}.</item>
+  <item id="boilerplate_secondaryFrameworkInherited"><br/><br/>Em <include item="{0}"/>&#160;<include item="{1}"/>, este membro é herdado por {2}{3}{4}.</item>
+  <item id="boilerplate_secondaryFrameworkMember"><br/><br/>Em <include item="{0}"/>&#160;<include item="{1}"/>, este membro é {2}.</item>
+  
+  <item id="boilerplate_useBaseSummary">Este membro sobrescreve {0}.</item>
+  <item id="boilerplate_useBaseSee">Veja {0}.</item>
+  <item id="boilerplate_useBase">Este membro sobrescreve {0}, e uma documentação mais completa pode estar disponível naquele tópico.</item>
+
+  <item id="boilerplate_flagsSummary">Esta enumeração tem {0} atributos que permitem uma combinação dos bits dos valores dos membros.</item>
+
+	<!-- Legacy content -->
+	<item id="familyTitle"><include item="title_family"/></item>
+  <item id="allMembersTitle">Membros</item>
+	<item id="membersTitle">Lista de Overload</item>
+  <item id="hostProtectionAttributeShort"><include item="text_hostProtectionAttribute"/></item>
+	<item id="classLower"><include item="text_classLower"/></item>
+  <item id="delegateLower"><include item="text_delegateLower"/></item>
+  <item id="structureLower"><include item="text_structureLower"/></item>
+  <item id="interfaceLower"><include item="text_interfaceLower"/></item>
+  <item id="enumerationLower"><include item="text_enumerationLower"/></item>
+  <item id="SeeAlsoNamespaceLinkText"><include item="boilerplate_seeAlsoNamespaceLink"><parameter>{0}</parameter></include></item>
+  <item id="SeeAlsoTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
+  <item id="SeeAlsoMembersLinkText"><include item="boilerplate_seeAlsoMembersLink"><parameter>{0}</parameter></include></item>
+  <item id="SeeAlsoOverloadLinkText"><include item="boilerplate_seeAlsoOverloadLink"><parameter>{0}</parameter></include></item>
+  <item id="nonScrollingTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
+
+  <!-- Show Missing Component messages -->
+  <item id="SMCAutoDocConstructor">Inicializa uma nova instância da classe <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocStaticConstructor">Inicializa os campos estáticos da classe <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocDispose">Libera todos os recursos usados por <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocDisposeBool">Libera os recursos não gerenciados por <referenceLink target="T:{0}" /> e opcionalmente libera os recursos gerenciados</item>
+  <item id="SMCAutoDocDisposeParam">Verdadeiro para liberar tanto os recursos gerenciados e não gerenciados; falso para liberar somente os não gerenciados</item>
+  <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Falta &lt;{0}&gt; documentação para "{1}"]</p></item>
+  <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Falta  &lt;{0} name="{1}"/&gt; documentação para "{2}"]</p></item>
+  <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Falta  &lt;include&gt; documentação de destino em '{0}'.  Arquivo: '{1}' Path: '{2}']</p></item>
+	
+	<!-- View Source link text -->
+	<item id="sourceCodeLinkText">Veja a fonte</item>
+	<item id="sourceCodeLinkTitle">Veja o código fonte</item>
+</content>
