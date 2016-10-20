@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+
+	<!-- paths -->
+	<item id="iconPath">../icons/{0}</item>
+	<item id="stylePath">../styles/{0}</item>
+	<item id="scriptPath">../scripts/{0}</item>
+
+	<!-- locale -->
+	<item id="locale">en-US</item>
+	<item id="brandingLocaleCss">branding-zh-CN.css</item>
+
+	<item id="meta_help20_desktopTechnologyAttribute">kbNetFramewk</item>
+	<item id="meta_help20_netcfTechnologyAttribute">kbNetCompactFramewk</item>
+	<item id="meta_help20_netcfDocSetAttribute">NetCompactFramework</item>
+	<item id="meta_help20_xnaTechnologyAttribute">kbXNA</item>
+	<item id="meta_help20_xnaDocSetAttribute">XNA</item>
+
+	<!-- header and footer -->
+	<item id="header"><span class="introStyle"></span></item>
+	<item id="footer_text"></item>
+  
+	<!-- freshness date -->
+	<item id="boilerplate_UpdateTitle"><span class="introStyle">Updated: {0}</span></item>
+	<!-- if the TransformComponent of the BuildAssembler config file has the argument: 
+			 argument key="changeHistoryOptions" value="showDefaultFreshnessDate"
+			 the "text_defaultFreshnessDate" item is used as the default freshness date for topics that don't have a Change History table. -->
+	<item id="text_defaultFreshnessDate"/>
+  
+	<!-- topic title -->
+	<item id="boilerplate_pageTitle">{0}</item>
+
+	<!-- alert titles -->
+	<item id="alert_title_tip"><b>提示：</b></item>
+	<item id="alert_title_caution"><b>警告：</b></item>
+	<item id="alert_title_security"><b>安全性事项：</b></item>
+	<item id="alert_title_note"><b>备注：</b></item>
+	<item id="alert_title_important"><b>重要事项</b></item>
+	<item id="alert_title_visualBasic"><b>Visual Basic备注：</b></item>
+	<item id="alert_title_visualC#"><b>C# 备注：</b></item>
+	<item id="alert_title_visualC++"><b>C++ 备注：</b></item>
+	<item id="alert_title_visualJ#"><b>J# 备注：</b></item>
+
+	<!-- alert alt text -->
+	<item id="alert_altText_tip">提示</item>
+	<item id="alert_altText_caution">警告</item>
+	<item id="alert_altText_security">安全性事项</item>
+	<item id="alert_altText_note">备注</item>
+	<item id="alert_altText_important">重要事项</item>
+	<item id="alert_altText_visualBasic">Visual Basic备注</item>
+	<item id="alert_altText_visualC#">C#备注</item>
+	<item id="alert_altText_visualC++">C++备注</item>
+	<item id="alert_altText_visualJ#">J#备注</item>	
+
+	<!-- section titles -->
+	<item id="title_remarks">备注</item>
+	<item id="title_changeHistory">修订历史</item>
+	<item id="title_events">事件</item>
+	<item id="title_exceptions">一场</item>
+	<item id="title_contracts">约定</item>
+	<item id="title_setter">Set</item>
+	<item id="title_getter">Get</item>
+	<item id="title_seeAlso_tasks">任务</item>
+	<item id="title_seeAlso_reference">引用</item>
+	<item id="title_seeAlso_concepts">概念</item>
+	<item id="title_seeAlso_otherResources">其他资源</item>
+	<item id="title_revisionHistory">版本历史</item>
+
+	<!-- dynamic Link Information -->
+	<item id="meta_mshelp_KTable"><MSHelp:ktable keywords='{0}' locHeader='Location' topicHeader = 'Topic'
+		disambiguator='table' indexMoniker='!DefaultDynamicLinkIndex' /></item>
+
+	<item id="inline_dynamicLink_prefixText">要获取更多信息，请参考 </item>
+	<item id="inline_dynamicLink_postfixText">.</item>
+	<item id="inline_dynamicLink_separatorText"> 和 </item>
+  
+	<!-- Development language and code snippet titles for languages without a syntax generator -->
+	<item id="devlang_HTML">HTML</item>
+	<item id="devlang_PShell">PowerShell</item>
+	<item id="devlang_Python">Python</item>
+	<item id="devlang_SQL">SQL</item>
+	<item id="devlang_VBScript">Visual Basic Script</item>
+	<item id="devlang_VisualBasicAndCSharp">Visual Basic 和 C#</item>
+	<item id="devlang_XML">XML</item>
+
+	<item id="noCodeExample"><p>当前没有可用的代码示例，或者可能不支持该语言。</p></item>
+
+	<!-- Development language metadata values for languages without a syntax generator -->
+	<item id="metaLang_HTML">HTML</item>
+	<item id="metaLang_PShell">PowerShell</item>
+	<item id="metaLang_Python">Python</item>
+	<item id="metaLang_SQL">SQL</item>
+	<item id="metaLang_VBScript">VBScript</item>
+	<item id="metaLang_VisualBasicAndCSharp">VB 和 C#</item>
+	<item id="metaLang_XML">XML</item>
+
+	<!-- language keywords -->
+	<item id="devlang_nullKeyword">空引用 (在 Visual Basic 中为 <span class="keyword">Nothing</span>)</item>
+	<item id="devlang_staticKeyword"><span class="keyword">static</span> (在 Visual Basic 中为 <span class="keyword">Shared</span>)</item>
+	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (在 Visual Basic 中为 <span class="keyword">Overridable</span>)</item>
+	<item id="devlang_trueKeyword"><span class="keyword">true</span> (在 Visual Basic 中为 <span class="keyword">True</span>)</item>
+	<item id="devlang_falseKeyword"><span class="keyword">false</span> (在 Visual Basic 中为 <span class="keyword">False</span>)</item>
+	<item id="devlang_abstractKeyword"><span class="keyword">abstract</span> (在 Visual Basic 中为 <span class="keyword">MustInherit</span>)</item>
+	<item id="devlang_sealedKeyword"><span class="keyword">sealed</span> (在 Visual Basic 中为 <span class="keyword">NotInheritable</span>)</item>
+	<item id="devlang_asyncKeyword"><span class="keyword">async</span> (在 Visual Basic 中为 <span class="keyword">Async</span>)</item>
+	<item id="devlang_awaitKeyword"><span class="keyword">await</span> (在 Visual Basic 中为 <span class="keyword">Await</span>)</item>
+	<item id="devlang_asyncAwaitKeyword"><span class="keyword">async</span>/<span class="keyword">await</span> (在 Visual Basic 中为 <span class="keyword">Async</span>/<span class="keyword">Await</span>)</item>
+
+	<!-- transforms insert K Index Technology qualifiers based on a conceptual topic's //metadata/attribute[@name='DocSet'] value />-->
+	<!-- If you add new docset values, the item/@id must = "meta_kIndexTechTag_" + the lower-case DocSet name. -->
+	<item id="meta_kIndexTermWithTechQualifier">{0}<include item="meta_kIndexTechTag_{1}" />{2}</item>
+	<item id="meta_kIndexTechTag_avalon"> [WPF]</item>
+	<item id="meta_kIndexTechTag_wpf"> [WPF]</item>
+	<item id="meta_kIndexTechTag_wcf"> [Windows Communication Foundation]</item>
+	<item id="meta_kIndexTechTag_windowsforms"> [Windows Forms]</item>
+
+	<item id="top">Top</item>
+
+	<!-- Copyright -->
+	<item id="copyright_info"><include item="copyright_text"/></item>
+	<item id="copyright_link"></item>
+	<item id="copyright_text">&#169; 2005 Microsoft Corporation. All rights reserved.</item>
+
+	<!-- Bibliography -->
+	<item id="bibliographyTitle">参考书目</item>
+
+	<!-- Legacy shared content -->
+	<item id="copyrightText"><include item="copyright_text"/></item>
+	<item id="copyCode">复制</item>
+
+	<!-- Lightweight TOC resize tool tip -->
+	<item id="resizeToolTip">点击或拖拽改变大小</item>
+</content>

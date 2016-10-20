@@ -1,0 +1,645 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+
+    <!-- note text -->
+    <item id="notDocumented">此API没有对应的文档。</item>
+    <item id="preliminaryText">此API尚未最终确定，随时可能调整。</item>
+
+    <!-- main window stuff -->
+    <item id="productTitle">.NET 框架类库</item>
+
+    <!-- inserted boilerplate -->
+    <item id="runningHeaderText">.NET 框架类库</item>
+    <item id="rootLink"><referenceLink target="R:Project">命名空间</referenceLink></item>
+    <item id="definedBy">(由 {0} 定义。)</item>
+    <item id="inheritedFrom">(继承自 {0}。)</item>
+    <item id="overridesMember">(覆写 {0}.)</item>
+    <item id="locationInformation">程序集：{0} (模块：{1})</item>
+
+    <item id="derivedClasses">派生类</item>
+    <item id="explicitInterfaceImplementation">显式的接口实现</item>
+    <item id="returnValue">返回值</item>
+    <item id="propertyValue">属性值</item>
+    <item id="fieldValue">字段值</item>
+    <item id="example">示例</item>
+
+    <!-- topic titles -->
+    <item id="meta_mshelp_tocTitle">{0}</item>
+    <item id="meta_mshelp_rlTitle">{0} ({1})</item>
+    <item id="topicTitle_root">命名空间</item>
+    <item id="topicTitle_namespace">{0} 命名空间</item>
+    <item id="topicTitle_namespaceGroup">{0} 命名空间</item>
+    <item id="topicTitle_class">{0} 类</item>
+    <item id="topicTitle_structure">{0} 结构</item>
+    <item id="topicTitle_interface">{0} 接口</item>
+    <item id="topicTitle_derivedTypeList">{0} 派生类</item>
+
+    <item id="topicTitle_delegate">{0} 委托</item>
+    <item id="topicTitle_enumeration">{0} 枚举</item>
+    <item id="topicTitle_field">{0} 字段</item>
+    <item id="topicTitle_method">{0} 方法 {1}</item>
+    <item id="topicTitle_constructor">{0} 构造函数 {1}</item>
+    <item id="topicTitle_property">{0} 属性 {1}</item>
+    <item id="topicTitle_event">{0} 事件</item>
+
+    <!-- title for operator members -->
+    <item id="topicTitle_operator">{0} 操作符 {1}</item>
+
+    <!-- title for op_explicit and op_implicit members -->
+    <item id="topicTitle_typeConversion">{0} 转换 {1}</item>
+    <!-- title for overload op_explicit and op_implicit topics -->
+    <item id="topicTitle_conversionOperator">{0} 转换操作符</item>
+
+    <item id="topicTitle_attachedProperty">{0} 挂接的属性</item>
+    <item id="topicTitle_attachedEvent">{0} 挂接的事件</item>
+
+    <item id="generic"> 泛型</item>
+    <item id="topicTitle_generic_class">{0} 泛型类</item>
+    <item id="topicTitle_generic_structure">{0} 泛型结构</item>
+    <item id="topicTitle_generic_interface">{0} 泛型接口</item>
+    <item id="topicTitle_generic_delegate">{0} 泛型委托</item>
+    <item id="topicTitle_generic_method">{0} 泛型方法 {1}</item>
+
+    <!-- list topic titles -->
+    <item id="topicTitle_fields">{0} 字段</item>
+    <item id="topicTitle_methods">{0} 方法</item>
+    <item id="topicTitle_enumMembers">成员</item>
+
+    <!-- title for operator list topic that has [operators + no type conversions] -->
+    <item id="topicTitle_operators">{0} 操作符</item>
+    <!-- title for operator list topic that has [operators + type conversions] -->
+    <item id="topicTitle_operatorsAndTypeConversions">{0} 操作符与类型转换</item>
+    <!-- title for operator list topic that has [no operators + type conversions] -->
+    <item id="topicTitle_typeConversions">{0} 类型转换</item>
+
+    <item id="topicTitle_constructors">{0} 构造函数</item>
+    <item id="topicTitle_properties">{0} 属性</item>
+    <item id="topicTitle_events">{0} 事件</item>
+    <item id="topicTitle_attachedProperties">{0} 挂接的属性</item>
+    <item id="topicTitle_attachedEvents">{0} 挂接的事件</item>
+    <item id="topicTitle_members">{0} 成员</item>
+
+    <!-- index entries -->
+    <item id="indexEntry_root">命名空间</item>
+    <item id="indexEntry_namespace">{0} 命名空间</item>
+    <item id="indexEntry_class">{0} 类</item>
+    <item id="indexEntry_structure">{0} 结构</item>
+    <item id="indexEntry_interface">{0} 接口</item>
+    <item id="indexEntry_delegate">{0} 委托</item>
+    <item id="indexEntry_enumeration">{0} 枚举</item>
+    <item id="indexEntry_enumerationMember">{0} 枚举成员</item>
+    <item id="indexEntry_aboutType">{0}, 关于 {0}</item>
+    <item id="indexEntry_derivedTypes">{0}, 派生类型</item>
+    <item id="indexEntry_members">{0}, 所有成员</item>
+    <item id="indexEntry_methods">{0}, 方法</item>
+    <!-- index entry for operator list topic that has [operators + no type conversions] -->
+    <item id="indexEntry_operators">{0}, 操作符</item>
+    <!-- index entry for operator list topic that has [operators + type conversions] -->
+    <item id="indexEntry_operatorsAndTypeConversions">{0}，操作符与类型转换</item>
+    <!-- index entry for operator list topic that has [no operators + type conversions] -->
+    <item id="indexEntry_typeConversions">{0}，类型转换</item>
+    <!-- index entries for op_explicit and op_implicit members -->
+    <item id="indexEntry_conversionOperator">{0} 转换</item>
+    <item id="indexEntry_properties">{0}, 属性</item>
+    <item id="indexEntry_fields">{0}, 字段</item>
+    <item id="indexEntry_events">{0}, 事件</item>
+    <item id="indexEntry_attachedProperties">{0}, 挂接的属性</item>
+    <item id="indexEntry_attachedEvents">{0}, 挂接的事件</item>
+    <item id="indexEntry_constructors">{0}, 构造函数</item>
+    <item id="indexEntry_constructor">{0}, 构造函数</item>
+    <item id="indexEntry_constructorType">{0} 构造函数</item>
+    <item id="indexEntry_method">{0} 方法</item>
+    <item id="indexEntry_property">{0} 属性</item>
+    <item id="indexEntry_event">{0} 事件</item>
+    <item id="indexEntry_field">{0} 字段</item>
+    <item id="indexEntry_operator">{0} 操作符</item>
+    <item id="indexEntry_attachedProperty">{0} 挂接的属性</item>
+    <item id="indexEntry_attachedEvent">{0} 挂接的事件</item>
+    <item id="indexEntry_methodExplicit">{0} 显式实现的方法</item>
+    <item id="indexEntry_propertyExplicit">{0} 显式实现的属性</item>
+    <item id="indexEntry_eventExplicit">{0} 显式实现的事件</item>
+    <item id="indexEntry_fieldExplicit">{0} 显式实现的字段</item>
+
+    <!-- section titles -->
+    <item id="title_syntax">语法</item>
+    <item id="title_templates">类型参数</item>
+    <item id="title_parameters">参数</item>
+    <item id="title_value">值</item>
+    <item id="title_delegateValue">返回值</item>
+    <item id="title_methodValue">返回值</item>
+    <item id="title_propertyValue">属性值</item>
+    <item id="title_fieldValue">字段值</item>
+    <item id="title_implements">实现</item>
+    <item id="title_examples">示例</item>
+    <item id="title_threadSafety">线程安全性</item>
+    <item id="title_permissions">权限</item>
+    <item id="title_namespaces">命名空间</item>
+    <item id="title_types">类型</item>
+    <item id="title_family">继承层次</item>
+    <item id="title_versions">版本信息</item>
+    <item id="title_platforms">平台</item>
+    <item id="title_relatedTopics">参见</item>
+    <item id="title_extensionUsage">备注</item>
+    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型{0}的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx" target="_blank">扩展方法 (Visual Basic)</a> 或 <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx" target="_blank">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
+    <item id="text_moreInheritance">更多...</item>
+
+    <!-- table headers -->
+    <item id="header_namespaceName">命名空间</item>
+    <item id="header_namespaceDescription">说明</item>
+    <item id="header_typeIcon">图标</item>
+    <item id="header_className">类</item>
+    <item id="header_structureName">结构</item>
+    <item id="header_interfaceName">接口</item>
+    <item id="header_delegateName">委托</item>
+    <item id="header_enumerationName">枚举</item>
+
+    <item id="header_typeName">名称</item>
+    <item id="header_typeDescription">说明</item>
+    <item id="header_memberIcon">图标</item>
+    <item id="header_memberName">成员名称</item>
+    <item id="header_memberValue">值</item>
+    <item id="header_memberDescription">说明</item>
+    <item id="header_eventType">事件类型</item>
+    <item id="header_eventReason">原因</item>
+    <item id="header_exceptionName">异常</item>
+    <item id="header_exceptionCondition">条件</item>
+    <item id="header_permissionName">权限</item>
+    <item id="header_permissionDescription">说明</item>
+    <item id="header_requiresName">Requires</item>
+    <item id="header_ensuresName">Ensures</item>
+    <item id="header_ensuresOnThrowName">EnsuresOnThrow</item>
+    <item id="header_invariantsName">Invariants</item>
+
+    <item id="header_revHistoryDate">日期</item>
+    <item id="header_revHistoryVersion">版本</item>
+    <item id="header_revHistoryDescription">说明</item>
+
+    <!-- member list table titles -->
+    <item id="tableTitle_namespace">命名空间</item>
+    <item id="tableTitle_classTypesFilter">类</item>
+    <item id="tableTitle_structureTypesFilter">结构</item>
+    <item id="tableTitle_interfaceTypesFilter">接口</item>
+    <item id="tableTitle_delegateTypesFilter">委托</item>
+    <item id="tableTitle_enumerationTypesFilter">枚举</item>
+    <item id="tableTitle_constructor">构造函数</item>
+    <item id="tableTitle_method">方法</item>
+    <item id="tableTitle_operator">操作符</item>
+    <item id="tableTitle_field">字段</item>
+    <item id="tableTitle_property">属性</item>
+    <item id="tableTitle_event">事件</item>
+    <item id="tableTitle_attachedEvent">挂接的事件</item>
+    <item id="tableTitle_attachedProperty">挂接的属性</item>
+    <item id="tableTitle_explicitInterfaceImplementation">显示&#160;接口&#160;实现</item>
+    <item id="tableTitle_overloadMembers">覆写&#160;列表</item>
+    <item id="tableTitle_extensionMethod">扩展&#160;方法</item>
+
+    <!-- Thread Safety -->
+    <item id="text_threadSafety">线程安全</item>
+    <item id="boilerplate_threadSafety">Any public <include item="devlang_staticKeyword"/> members of this type are thread safe. Any instance members are not guaranteed to be thread safe.</item>
+
+    <item id="text_staticThreadSafe">Static members of this type are safe for multi-threaded operations. </item>
+    <item id="text_staticNotThreadSafe">Static members of this type are not safe for multi-threaded operations. </item>
+    <item id="text_instanceThreadSafe">Instance members of this type are safe for multi-threaded operations. </item>
+    <item id="text_instanceNotThreadSafe">Instance members of this type are not safe for multi-threaded operations. </item>
+
+    <item id="text_NotesForImplementers">Notes to Implementers</item>
+    <item id="text_NotesForCallers">Notes to Callers</item>
+    <item id="text_NotesForInheritors">Notes to Inheritors</item>
+
+    <!-- boilerplate intro to member list tables -->
+    <item id="genericExposedMembersTableText">The {0} generic type exposes the following members.</item>
+    <item id="exposedMembersTableText">The {0} type exposes the following members.</item>	
+
+    <item id="dependencyPropertyInfoHeading">Dependency Property Information</item>
+    <item id="routedEventInfoHeading">Routed Event Information</item>
+    <item id="mrefTaskMoreCodeHeading">更多代码</item>
+
+    <item id="Overloaded">已重载。</item>	
+    <item id="defaultNamespace">( 默认命名空间 )</item>
+
+    <item id="typeLink">类型：&#160;{0}</item>
+    <!-- First line of a param or retval description is a link to the type of the param or retval.
+       This boilerplate is used if the type is a type parameter of the member's type. -->
+    <item id="typeLinkToTypeParameter">
+        <strong>{0}</strong> {1} 的类型参数。</item>
+
+    <!-- Host protection boilerplate text -->
+    <item id="text_hostProtectionAttribute">HostProtectionAttribute. </item>
+    <item id="boilerplate_hostProtectionAttribute">The <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" /> attribute applied to this type or member has the following <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
+									 prefer-overload="true" /> property value: {1}. The <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" /> does not affect desktop applications (which are typically started by double-clicking an icon, typing a command, or entering a URL in a browser). For more information, see the <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
+									 prefer-overload="true" /> class or <a href="http://msdn.microsoft.com/en-us/library/ms172338.aspx" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
+
+    <!-- Obsolete boilerplate text -->
+    <item id="boilerplate_obsoleteShort">
+        <span><strong>已过时。</strong></span>
+    </item>
+    <item id="boilerplate_obsoleteLong">
+        <span><strong>注意：此 API 现在已过时。</strong></span>
+    </item>
+
+    <!-- Group and SubGroup text -->
+    <item id="text_classLower">类</item>
+    <item id="text_delegateLower">委托</item>
+    <item id="text_structureLower">结构</item>
+    <item id="text_interfaceLower">接口</item>
+    <item id="text_enumerationLower">枚举</item>
+
+    <item id="text_classUpper">类</item>
+    <item id="text_structureUpper">结构</item>
+    <item id="text_interfaceUpper">接口</item>
+    <item id="text_delegateUpper">委托</item>
+    <item id="text_enumerationUpper">枚举</item>
+
+    <item id="text_classTypesLower">类</item>
+    <item id="text_structureTypesLower">结构</item>
+    <item id="text_interfaceTypesLower">接口</item>
+    <item id="text_delegateTypesLower">委托</item>
+    <item id="text_enumerationTypesLower">枚举</item>
+
+    <item id="text_classTypesUpper">类</item>
+    <item id="text_structureTypesUpper">结构</item>
+    <item id="text_interfaceTypesUpper">接口</item>
+    <item id="text_delegateTypesUpper">委托</item>
+    <item id="text_enumerationTypesUpper">枚举</item>
+
+    <item id="text_membersLower">成员</item>
+    <item id="text_methodsLower">方法</item>
+    <item id="text_propertiesLower">属性</item>
+    <item id="text_eventsLower">事件</item>
+    <item id="text_fieldsLower">字段</item>
+    <item id="text_operatorsLower">操作符</item>
+    <item id="text_attachedPropertiesLower">挂接属性</item>
+    <item id="text_attachedEventsLower">挂接事件</item>
+
+    <item id="text_membersUpper">成员</item>
+    <item id="text_methodsUpper">方法</item>
+    <item id="text_propertiesUpper">属性</item>
+    <item id="text_eventsUpper">事件</item>
+    <item id="text_fieldsUpper">字段</item>
+    <item id="text_operatorsUpper">操作符</item>
+    <item id="text_attachedPropertiesUpper">挂接属性</item>
+    <item id="text_attachedEventsUpper">挂接事件</item>
+
+    <!-- alt text for images -->
+    <item id="altText_pubClass">公共类</item>
+    <item id="altText_pubStructure">公共结构</item>
+    <item id="altText_pubInterface">公共接口</item>
+    <item id="altText_pubDelegate">公共委托</item>
+    <item id="altText_pubEnumeration">公共枚举</item>
+    <item id="altText_protClass">受保护的类</item>
+    <item id="altText_protStructure">受保护的结构</item>
+    <item id="altText_protInterface">受保护的接口</item>
+    <item id="altText_protDelegate">受保护的委托</item>
+    <item id="altText_protEnumeration">受保护的枚举</item>
+    <item id="altText_privClass">私有类</item>
+    <item id="altText_privStructure">私有结构</item>
+    <item id="altText_privInterface">私有接口</item>
+    <item id="altText_privDelegate">私有委托</item>
+    <item id="altText_privEnumeration">私有枚举</item>
+
+    <item id="altText_pubConstructor">公共构造函数</item>
+    <item id="altText_pubMethod">公共方法</item>
+    <item id="altText_pubField">公共字段</item>
+    <item id="altText_pubProperty">公共属性</item>
+    <item id="altText_pubEvent">公共事件</item>
+    <item id="altText_pubOperator">公共操作符</item>
+    <item id="altText_pubAttachedProperty">公共的挂接属性</item>
+    <item id="altText_pubAttachedEvent">公共的挂接事件</item>
+    <item id="altText_protConstructor">受保护的构造函数</item>
+    <item id="altText_protMethod">受保护的方法</item>
+    <item id="altText_protField">受保护的字段</item>
+    <item id="altText_protProperty">受保护的属性</item>
+    <item id="altText_protEvent">受保护的事件</item>
+    <item id="altText_protOperator">受保护的操作符</item>
+    <item id="altText_protAttachedProperty">受保护的挂接属性</item>
+    <item id="altText_protAttachedEvent">受保护的挂接事件</item>
+    <item id="altText_privConstructor">私有构造函数</item>
+    <item id="altText_privMethod">私有方法</item>
+    <item id="altText_privField">私有字段</item>
+    <item id="altText_privProperty">私有属性</item>
+    <item id="altText_privEvent">私有事件</item>
+    <item id="altText_privOperator">私有操作符</item>
+    <item id="altText_privtAttachedProperty">私有挂接属性</item>
+    <item id="altText_privAttachedEvent">私有挂接事件</item>
+    <item id="altText_static">静态成员</item>
+    <item id="altText_pubextension">公共扩展器方法</item>
+    <item id="altText_protextension">受保护的扩展器方法</item>
+    <item id="altText_privextension">私有扩展器方法</item>
+
+    <item id="altText_CompactFramework">支持 .NET Compact Framework</item>
+    <item id="altText_XNAFramework">支持 XNA Framework</item>
+    <item id="altText_SilverlightMobile">支持 <include item="silverlight_mobile"/>
+    </item>
+    <item id="altText_ExplicitInterface">显式接口实现</item>
+    <item id="altText_CodeExample">代码示例</item>
+
+    <item id="boilerplate_seeAlsoNamespaceLink">{0} 命名空间</item>
+    <item id="boilerplate_seeAlsoTypeLink">{0} <include item="text_{1}Upper"/>
+    </item>
+    <item id="boilerplate_seeAlsoMembersLink">{0} 成员</item>
+    <item id="boilerplate_seeAlsoOverloadLink">{0} 重载</item>
+
+    <item id="boilerplate_requirementsNamespace">
+        <strong>命名空间：</strong> 
+    </item>
+
+    <item id="boilerplate_requirementsPlatforms">
+        <strong>平台：</strong>{0}
+    </item>
+
+    <item id="boilerplate_requirementsAssemblies">
+        <strong>程序集：</strong>
+    </item>
+
+    <item id="boilerplate_requirementsAssemblyLabel">
+        <strong>程序集：</strong>
+    </item>
+
+    <item id="assemblyNameAndModule">{0} (在 {1}.{2} 中) 版本：{3}</item>
+
+    <item id="boilerplate_requirementsAssembly">
+        <strong>程序集：</strong> {0} (在 {1}.dll 中)
+    </item>
+
+    <!-- Used for Version Information Section -->
+    <item id="supportedIn_1">支持版本：{0}</item>
+    <item id="supportedIn_2">支持版本：{0}, {1}</item>
+    <item id="supportedIn_3">支持版本：{0}, {1}, {2}</item>
+    <item id="supportedIn_4">支持版本：{0}, {1}, {2}, {3}</item>
+    <item id="supportedIn_5">支持版本：{0}, {1}, {2}, {3}, {4}</item>
+    <item id="supportedIn_6">支持版本：{0}, {1}, {2}, {3}, {4}, {5}</item>
+    <item id="supportedIn_7">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}</item>
+    <item id="supportedIn_8">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}</item>
+    <item id="supportedIn_9">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}</item>
+    <item id="supportedIn_10">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}</item>
+    <item id="supportedIn_11">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}</item>
+    <item id="supportedIn_12">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}</item>
+    <item id="supportedIn_13">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}</item>
+    <item id="supportedIn_14">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}</item>
+    <item id="supportedIn_15">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}</item>
+    <item id="supportedIn_16">支持版本：{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}</item>
+    <item id="obsoleteWarning">已在 {0} 中已过时 (编译器警告)</item>
+    <item id="obsoleteError">已在 {0} 及后续版本中过时 (无法编译)</item>
+
+    <!-- APTCA Boilerplate text -->
+    <item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="http://msdn.microsoft.com/en-us/library/8skskf63.aspx" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
+
+    <!-- Variance boilerplate text -->
+    <item id="text_covariant">This type parameter is covariant. That is, you can use either the type you specified or any type that is more derived. </item>
+    <item id="text_contravariant">This type parameter is contravariant. That is, you can use either the type you specified or any type that is less derived. </item>
+    <item id="text_variance">For more information about covariance and contravariance, see <a href="http://msdn.microsoft.com/en-us/library/ee207183.aspx" target="_blank">Covariance and Contravariance (C# and Visual Basic).</a>.</item>
+
+    <!-- Non-CLS Compliant boilerplate text-->
+    <item id="boilerplate_NotClsCompliant">This API is not CLS-compliant.</item>
+    <item id="boilerplate_AltClsCompliant">The CLS-compliant alternative is {0}.</item>
+
+    <!-- Security Critical Boilerplate text-->
+    <item id="boilerplate_typeSecurityCritical">This type has a SecurityCriticalAttribute attribute, which restricts it to internal use by the .NET Framework for Silverlight class library. Application code that uses any member of this type throws a MethodAccessException.</item>
+    <item id="boilerplate_memberSecurityCritical">This member has a SecurityCriticalAttribute attribute, which restricts it to internal use by the .NET Framework for Silverlight class library. Application code that uses this member throws a MethodAccessException.</item>
+    <item id="text_securityCritical">[SECURITY CRITICAL] </item>
+
+    <!-- Overload page boilerplate -->
+    <item id="boilerplate_overloadSummary">此方法已被重载。请点击重载列表中的名称以获取该成员的完整信息，包括语法、使用方法以及示例。</item>
+
+    <!-- Platforms Information and Platform Notes --> 
+    <item id="boilerplate_PlatformNote">
+        <strong>{0} 平台备注：</strong> {1}
+    </item>
+    <item id="boilerplate_systemRequirementsLink">
+        <p>“<include item="netfw"/> and <include item="netcfw"/>”不被所有的平台和版本支持。请参阅 <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx" target="_blank">.NET 框架系统需求</a> 以了解所有支持的平台和版本。</p>
+    </item>
+
+    <!-- Platforms boilerplate for Silverlight mref builds --> 
+    <item id="boilerplate_silverlightPlatforms">
+    要获取 <include item="silverlight"/> 所支持的操作系统和浏览器，请参见<a href="http://msdn.microsoft.com/zh-cn/library/dd229102.aspx" target="_blank">支持的操作系统和浏览器</a>。
+    </item>
+
+    <item id="Win95">Windows 95</item>
+    <item id="Win98Se">Windows 98 Second Edition</item>
+
+    <item id="WinNT4">Windows NT 4.0</item>
+    <item id="WinNT4Svr">Windows NT Server 4.0</item>
+    <item id="WinNT4Wks">Windows NT Workstation 4.0</item>
+
+    <item id="Win2kFamily">Windows 2000</item>
+    <item id="Win2kProfessional">Windows 2000 Professional</item>
+    <item id="Win2kServer">Windows 2000 Server</item>
+    <item id="Win2kDatacenter">Windows 2000 Advanced Server</item>
+
+    <item id="WinXPPersonal">Windows XP Home Edition</item>
+    <item id="WinXPPro">Windows XP Professional x64 Edition</item>
+    <item id="WinXPSvr">
+        <include item="WinSvr2003"/>
+    </item>
+    <item id="WinXpTablet">Windows XP Tablet PC Edition</item>
+    <item id="WinXpEmbedded">Windows XP Embedded</item>
+
+    <item id="ECMACLI">通用语言架构 (CLI) 标准</item>
+
+    <item id="MSTV">Microsoft TV</item>
+
+    <item id="Win9xFamily">
+        <include item="Win95"/>, <include item="Win98"/>, <include item="Win98Se"/>, <include item="WinME"/>
+    </item>
+    <item id="WinNt4Family">
+        <include item="WinNT4"/>
+    </item>
+    <item id="WinXpFamily">
+        <include item="WinXPPersonal"/>, <include item="WinXPPro"/>, <include item="WinXPSvr"/>
+    </item>
+    <item id="WinCE">
+        <include item="WindowsCE"/>
+    </item>
+    <item id="Win2K">
+        <include item="WinSvr2000"/>
+    </item>
+    <item id="Win2KSvr">
+        <include item="Win2kServer"/>
+    </item>
+    <item id="Win2KADC">
+        <include item="Win2kDatacenter"/>
+    </item>
+
+    <item id="WinNt4Server">
+        <include item="WinNT4Svr"/>
+    </item>
+    <item id="WinNt4Workstation">
+        <include item="WinNT4Wks"/>
+    </item>
+    <item id="Win2kAdvanced">
+        <include item="Win2kDatacenter"/>
+    </item>
+    <item id="Win2kServerApplianceKit"/>
+    <item id="WinXpHome">
+        <include item="WinXPPersonal"/>
+    </item>
+    <item id="WinXpProfessional">
+        <include item="WinXPPro"/>
+    </item>
+    <item id="Win2003Server">
+        <include item="WinXPSvr"/>
+    </item>
+    <item id="NETCF">
+        <include item="PocketPC"/>, <include item="SmartPhone"/>, <include item="WindowsCE"/>
+    </item>
+
+    <item id="XNA">
+        <include item="Xbox360"/>, <include item="Zune" />
+    </item>
+
+    <!-- platform names that appear in the Platforms section on mref type and member pages 
+       The id values must be in sync with the platform/@name values used in the manifold  platformFilters.xml filter files.
+       These values are also used in <platformNotes>
+  -->
+    <item id="Win98">Windows 98</item>
+    <item id="WinME">Windows Millennium Edition</item>
+    <item id="WinSvr2000">Windows Server 2000 SP4</item>
+    <item id="WinXPPro64">Windows XP Professional x64 Edition</item>
+    <item id="WinXP">Windows XP SP3</item>
+    <item id="WindowsCE">Windows CE</item>
+    <item id="PocketPC">Windows Mobile for Pocket PC</item>
+    <item id="SmartPhone">Windows Mobile for Smartphone</item>
+    <item id="WinSvr2003">Windows Server 2003</item>
+    <item id="WinSvr2008">Windows Server 2008</item>
+    <item id="WinSvr2008R2">Windows Server 2008 R2</item>
+    <item id="WinXpMediaCenter">Windows XP Media Center Edition</item>
+    <item id="WinXPSE">Windows XP Starter Edition</item>
+    <item id="WinVista">Windows Vista</item>
+    <item id="Win7">Windows 7</item>
+    <item id="Xbox360">Xbox 360</item>
+    <item id="Zune">Zune</item>
+
+    <!-- framework ids:  
+       These shared content item strings are used for the headings in the Version Information section 
+       These ids must be in sync with the ids used in the config file for VersionBuilder.
+  -->
+    <item id="netfw">.NET Framework</item>
+    <item id="netcfw">.NET Compact Framework</item>
+    <item id="xnafw">XNA Framework</item>
+    <item id="silverlight">Silverlight</item>
+    <item id="silverlight_mobile">Silverlight for Windows Phone</item>
+
+    <!-- framework version ids
+       These shared content item strings are used in the Version Information section.
+       These ids must be in sync with the ids used in the config file for VersionBuilder.
+       The ids are also used in the platformFilters.xml filter files to indicate the framework version supported by each platform
+  -->
+    <item id="netfw40">4.0</item>
+    <item id="netfw35_1">3.5 SP1</item>
+    <item id="netfw35">3.5</item>
+    <item id="netfw30_1">3.0 SP1</item>
+    <item id="netfw30">3.0</item>
+    <item id="netfw20_1">2.0 SP1</item>
+    <item id="netfw20">2.0</item>
+    <item id="netfw11">1.1</item>
+    <item id="netfw10">1.0</item>
+
+    <item id="netcfw37">3.7</item>
+    <item id="netcfw35">3.5</item>
+    <item id="netcfw20">2.0</item>
+    <item id="netcfw10">1.0</item>
+
+    <item id="xnafw10">1.0</item>
+
+    <!-- silverlight version ids used in Version Information section. -->
+    <item id="silverlight10">1.0</item>
+    <item id="silverlight20">2.0</item>
+    <item id="silverlight_v3">3.0</item>
+    <item id="silverlight_v4">4.0</item>
+    <item id="silverlight_mobile_v1">Windows Phone OS 7.0</item>
+
+    <!-- Used in the Requirements section to display an xmlns URI for apis that can be used in XAML -->
+    <item id="boilerplate_xamlXmlnsRequirements">
+        <strong>XMLNS for XAML:</strong> {0}</item>
+    <item id="boilerplate_unmappedXamlXmlns">未映射到一个 xmlns.</item>
+
+    <item id="boilerplate_secondaryFrameworkOverride">
+        <br/>
+        <br/>在 <include item="{0}"/> 中，此成员被 {1} 覆写。</item>
+    <item id="boilerplate_secondaryFrameworkInherited">
+        <br/>
+        <br/>在 <include item="{0}"/>&#160;<include item="{1}"/>，此成员继承自 {2}{3}{4}。</item>
+    <item id="boilerplate_secondaryFrameworkMember">
+        <br/>
+        <br/>在 <include item="{0}"/>&#160;<include item="{1}"/>，此成员为 {2}.</item>
+
+    <item id="boilerplate_useBaseSummary">此成员覆写了 {0}。</item>
+    <item id="boilerplate_useBaseSee">参见 {0}.</item>
+    <item id="boilerplate_useBase">此成员覆写了 {0}，在此主题下应该可以找到更完毕的文档。</item>
+
+    <item id="boilerplate_flagsSummary">此枚举以 {0} 特性标记，表示该枚举可以对其成员值按位绑定。</item>
+
+    <!-- Legacy content -->
+    <item id="familyTitle">
+        <include item="title_family"/>
+    </item>
+    <item id="allMembersTitle">成员</item>
+    <item id="membersTitle">重载列表</item>
+    <item id="hostProtectionAttributeShort">
+        <include item="text_hostProtectionAttribute"/>
+    </item>
+    <item id="classLower">
+        <include item="text_classLower"/>
+    </item>
+    <item id="delegateLower">
+        <include item="text_delegateLower"/>
+    </item>
+    <item id="structureLower">
+        <include item="text_structureLower"/>
+    </item>
+    <item id="interfaceLower">
+        <include item="text_interfaceLower"/>
+    </item>
+    <item id="enumerationLower">
+        <include item="text_enumerationLower"/>
+    </item>
+    <item id="SeeAlsoNamespaceLinkText">
+        <include item="boilerplate_seeAlsoNamespaceLink">
+            <parameter>{0}</parameter>
+        </include>
+    </item>
+    <item id="SeeAlsoTypeLinkText">
+        <include item="boilerplate_seeAlsoTypeLink">
+            <parameter>{0}</parameter>
+            <parameter>{1}</parameter>
+        </include>
+    </item>
+    <item id="SeeAlsoMembersLinkText">
+        <include item="boilerplate_seeAlsoMembersLink">
+            <parameter>{0}</parameter>
+        </include>
+    </item>
+    <item id="SeeAlsoOverloadLinkText">
+        <include item="boilerplate_seeAlsoOverloadLink">
+            <parameter>{0}</parameter>
+        </include>
+    </item>
+    <item id="nonScrollingTypeLinkText">
+        <include item="boilerplate_seeAlsoTypeLink">
+            <parameter>{0}</parameter>
+            <parameter>{1}</parameter>
+        </include>
+    </item>
+
+    <!-- Show Missing Component messages -->
+    <item id="SMCAutoDocConstructor">初始化 <referenceLink target="T:{0}" /> 类的一个新实例</item>
+    <item id="SMCAutoDocStaticConstructor">初始化 <referenceLink target="T:{0}" /> 类的静态字段</item>
+    <item id="SMCAutoDocDispose">释放被 <referenceLink target="T:{0}" /> 使用的所有资源</item>
+    <item id="SMCAutoDocDisposeBool">释放被 <referenceLink target="T:{0}" /> 使用的非托管资源，并且是否托管资源（可选）</item>
+    <item id="SMCAutoDocDisposeParam">为 true 则同时释放托管资源和非托管资源；为 false 则只释放非托管资源</item>
+    <item id="SMCMissingTag">
+        <p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{1}" 的 &lt;{0}&gt; 文档]</p>
+    </item>
+    <item id="SMCMissingParamTag">
+        <p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{2}" 的 &lt;{0} name="{1}"/&gt; 文档]</p>
+    </item>
+    <item id="SMCMissingIncludeTarget">
+        <p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[在 “{0}” 中缺少 &lt;include&gt; 目标文档。文件：“{1}” 路径：“{2}”]</p>
+    </item>
+
+    <!-- View Source link text -->
+    <item id="sourceCodeLinkText">查看代码</item>
+    <item id="sourceCodeLinkTitle">查看源代码</item>
+</content>
