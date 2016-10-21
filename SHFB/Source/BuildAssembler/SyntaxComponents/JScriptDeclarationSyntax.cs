@@ -218,8 +218,17 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteKeyword("function get");
                 writer.WriteString(" ");
                 writer.WriteIdentifier(name);
-                writer.WriteString(" () : ");
-                WriteTypeReference(type, writer);
+
+                // Some F# properties don't generate return type info for some reason.  It's probably unsupported
+                // but just ignore them for now and write out what we do have.
+                if(type != null)
+                {
+                    writer.WriteString(" () : ");
+                    WriteTypeReference(type, writer);
+                }
+                else
+                    writer.WriteString(" ()");
+
                 writer.WriteLine();
             }
 
@@ -239,8 +248,15 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteIdentifier(name);
                 writer.WriteString(" (");
                 writer.WriteParameter("value");
-                writer.WriteString(" : ");
-                WriteTypeReference(type, writer);
+
+                // Some F# properties don't generate return type info for some reason.  It's probably unsupported
+                // but just ignore them for now and write out what we do have.
+                if(type != null)
+                {
+                    writer.WriteString(" : ");
+                    WriteTypeReference(type, writer);
+                }
+
                 writer.WriteString(")");
             }
 

@@ -21,7 +21,7 @@
 			// faster at lookups than List<T>.
 			private static HashSet<string> filenames = new HashSet<string>();
 
-			private static Regex reInvalidChars = new Regex("[ :.`#<>*?]");
+			private static Regex reInvalidChars = new Regex("[ :.`#<>*?|]");
 
 			// Convert a member ID to a filename based on the given naming method
 			public static string GetFileName(string id, string namingMethod)

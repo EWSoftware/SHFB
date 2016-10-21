@@ -709,7 +709,11 @@ namespace Microsoft.Ddue.Tools
             if(!(isStatic || isFamily))
                 ParameterDeclaration("instance", declaringType, writer);
             WriteParameterDeclarations(reflection, writer);
-            ParameterDeclaration("value", propertyType, writer);
+
+            // Some F# properties don't generate return type info for some reason.  It's probably unsupported
+            // but just ignore them for now and write out what we do have.
+            if(propertyType != null)
+                ParameterDeclaration("value", propertyType, writer);
 
             // get value
             if(getter)

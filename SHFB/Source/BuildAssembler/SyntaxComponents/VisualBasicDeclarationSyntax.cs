@@ -513,10 +513,16 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(" ");
             writer.WriteIdentifier(name);
             WriteParameters(reflection, writer);
-            writer.WriteString(" ");
-            writer.WriteKeyword("As");
-            writer.WriteString(" ");
-            WriteTypeReference(type, writer);
+
+            // Some F# properties don't generate return type info for some reason.  It's probably unsupported
+            // but just ignore them for now and write out what we do have.
+            if(type != null)
+            {
+                writer.WriteString(" ");
+                writer.WriteKeyword("As");
+                writer.WriteString(" ");
+                WriteTypeReference(type, writer);
+            }
 
             if(isExplicit)
             {
