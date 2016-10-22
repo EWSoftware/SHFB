@@ -62,6 +62,9 @@
   <item id="devlang_falseKeyword">`false` (`False` в Visual Basic)</item>
   <item id="devlang_abstractKeyword">`abstract` (`MustInherit` в Visual Basic)</item>
   <item id="devlang_sealedKeyword">`sealed` (`NotInheritable` в Visual Basic)</item>
+	<item id="devlang_asyncKeyword">`async` (`Async` в Visual Basic)</item>
+	<item id="devlang_awaitKeyword">`await` (`Await` в Visual Basic)</item>
+	<item id="devlang_asyncAwaitKeyword">`async`/`await` (`Async`/`Await` в Visual Basic)</item>
 
   <!-- Back to Top link text -->
   <item id="top">В начало страницы</item>

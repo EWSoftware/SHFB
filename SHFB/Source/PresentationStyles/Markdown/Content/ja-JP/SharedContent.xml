@@ -6,7 +6,7 @@
 	
 	<!-- Topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
-	<item id="header"><span class="introStyle"></span></item>
+	<item id="header"></item>
 
 	<!-- Alert titles -->
 	<item id="alert_title_tip">ヒント</item>
@@ -57,16 +57,16 @@
 	<item id="devlang_XML">XML</item>
 
 	<!-- Language keywords -->
-	<item id="devlang_nullKeyword">null参照(Visual Basicでは<span class="keyword">Nothing</span>)</item>
-	<item id="devlang_staticKeyword"><span class="keyword">static</span> (Visual Basicでは<span class="keyword">Shared</span>)</item>
-	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (Visual Basicでは<span class="keyword">Overridable</span>)</item>
-	<item id="devlang_trueKeyword"><span class="keyword">true</span> (Visual Basicでは<span class="keyword">True</span>)</item>
-	<item id="devlang_falseKeyword"><span class="keyword">false</span> (Visual Basicでは<span class="keyword">False</span>)</item>
-	<item id="devlang_abstractKeyword"><span class="keyword">abstract</span> (Visual Basicでは<span class="keyword">MustInherit</span>)</item>
-	<item id="devlang_sealedKeyword"><span class="keyword">sealed</span> (Visual Basicでは<span class="keyword">NotInheritable</span>)</item>
-	<item id="devlang_asyncKeyword"><span class="keyword">async</span> (Visual Basicでは<span class="keyword">Async</span>)</item>
-	<item id="devlang_awaitKeyword"><span class="keyword">await</span> (Visual Basicでは<span class="keyword">Await</span>)</item>
-	<item id="devlang_asyncAwaitKeyword"><span class="keyword">async</span>/<span class="keyword">await</span> (Visual Basicでは<span class="keyword">Async</span>/<span class="keyword">Await</span>)</item>
+	<item id="devlang_nullKeyword">null 参照(Visual Basicでは`Nothing`)</item>
+	<item id="devlang_staticKeyword">`static` (Visual Basicでは`Shared`)</item>
+	<item id="devlang_virtualKeyword">`virtual` (Visual Basicでは`Overridable`)</item>
+	<item id="devlang_trueKeyword">`true` (Visual Basicでは`True`)</item>
+	<item id="devlang_falseKeyword">`false` (Visual Basicでは`False`)</item>
+	<item id="devlang_abstractKeyword">`abstract` (Visual Basicでは`MustInherit`)</item>
+	<item id="devlang_sealedKeyword">`sealed` (Visual Basicでは`NotInheritable`)</item>
+	<item id="devlang_asyncKeyword">`async` (Visual Basicでは`Async`)</item>
+	<item id="devlang_awaitKeyword">`await` (Visual Basicでは`Await`)</item>
+	<item id="devlang_asyncAwaitKeyword">`async`/`await` (Visual Basicでは`Async`/`Await`)</item>
 
 	<!-- Back to Top link text -->
 	<item id="top">トップ</item>

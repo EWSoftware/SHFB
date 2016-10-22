@@ -56,13 +56,16 @@
 	<item id="devlang_XML">XML</item>
 
 	<!-- Language keywords -->
-	<item id="devlang_nullKeyword">null参照(Visual Basicでは<span class="keyword">Nothing</span>)</item>
-	<item id="devlang_staticKeyword"><span class="keyword">static</span> (Visual Basicでは<span class="keyword">Shared</span>)</item>
-	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (Visual Basicでは<span class="keyword">Overridable</span>)</item>
-	<item id="devlang_trueKeyword"><span class="keyword">true</span> (Visual Basicでは<span class="keyword">True</span>)</item>
-	<item id="devlang_falseKeyword"><span class="keyword">false</span> (Visual Basicでは<span class="keyword">False</span>)</item>
-	<item id="devlang_abstractKeyword"><span class="keyword">abstract</span> (Visual Basicでは<span class="keyword">MustInherit</span>)</item>
-	<item id="devlang_sealedKeyword"><span class="keyword">sealed</span> (Visual Basicでは<span class="keyword">NotInheritable</span>)</item>
+	<item id="devlang_nullKeyword">null参照(Visual Basicでは<span class="CodeInline">Nothing</span>)</item>
+	<item id="devlang_staticKeyword"><span class="CodeInline">static</span> (Visual Basicでは<span class="CodeInline">Shared</span>)</item>
+	<item id="devlang_virtualKeyword"><span class="CodeInline">virtual</span> (Visual Basicでは<span class="CodeInline">Overridable</span>)</item>
+	<item id="devlang_trueKeyword"><span class="CodeInline">true</span> (Visual Basicでは<span class="CodeInline">True</span>)</item>
+	<item id="devlang_falseKeyword"><span class="CodeInline">false</span> (Visual Basicでは<span class="CodeInline">False</span>)</item>
+	<item id="devlang_abstractKeyword"><span class="CodeInline">abstract</span> (Visual Basicでは<span class="CodeInline">MustInherit</span>)</item>
+	<item id="devlang_sealedKeyword"><span class="CodeInline">sealed</span> (Visual Basicでは<span class="CodeInline">NotInheritable</span>)</item>
+	<item id="devlang_asyncKeyword"><span class="CodeInline">async</span> (<span class="CodeInline">Async</span> in Visual Basic)</item>
+	<item id="devlang_awaitKeyword"><span class="CodeInline">await</span> (<span class="CodeInline">Await</span> in Visual Basic)</item>
+	<item id="devlang_asyncAwaitKeyword"><span class="CodeInline">async</span>/<span class="CodeInline">await</span> (<span class="CodeInline">Async</span>/<span class="CodeInline">Await</span> in Visual Basic)</item>
 
 	<!-- Back to Top link text -->
 	<item id="top">トップ</item>
