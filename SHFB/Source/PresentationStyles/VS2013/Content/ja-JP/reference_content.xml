@@ -224,7 +224,7 @@
   
 	<!-- Host protection boilerplate text -->
   <item id="text_hostProtectionAttribute">ホスト保護属性。</item>
-	<item id="boilerplate_hostProtectionAttribute">この型またはメンバーに適用される<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" preferprefer-overload="true" />属性が持つ<referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" />プロパティの値は{1}です。この<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />は(アイコンのダブルクリック、コマンドの入力、またはブラウザーへのURLの入力により起動するような)デスクトップアプリケーションに影響を与えません。
+	<item id="boilerplate_hostProtectionAttribute">この型またはメンバーに適用される<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />属性が持つ<referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" />プロパティの値は{1}です。この<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />は(アイコンのダブルクリック、コマンドの入力、またはブラウザーへのURLの入力により起動するような)デスクトップアプリケーションに影響を与えません。
                  より詳しくは、<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />クラスまたは<a href="http://msdn.microsoft.com/ja-jp/library/ms172338.aspx" target="_blank">SQL Server プログラミングとホスト保護属性</a>を参照してください。</item>
 
 	<!-- Obsolete boilerplate text -->
