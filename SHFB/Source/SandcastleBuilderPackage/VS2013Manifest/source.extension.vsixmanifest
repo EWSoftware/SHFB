@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+	<Metadata>
+		<Identity Id="c997d569-ee8e-4947-a46f-9a0717ce39a0" Version="2016.9.17.0" Language="en-US" Publisher="EWSoftware" />
+		<DisplayName>SHFB</DisplayName>
+		<Description xml:space="preserve">Visual Studio integration for the Sandcastle Help File Builder.</Description>
+		<MoreInfo>https://github.com/EWSoftware/SHFB</MoreInfo>
+		<License>License.rtf</License>
+		<GettingStartedGuide>http://ewsoftware.github.io/SHFB/html/b772e00e-1705-4062-adb6-774826ce6700.htm</GettingStartedGuide>
+		<ReleaseNotes>http://ewsoftware.github.io/SHFB/html/078cc1c7-7995-431e-bf9c-8813becbe8df.htm</ReleaseNotes>
+		<Icon>VSIXPackage.jpg</Icon>
+		<PreviewImage>VSIXPreview.png</PreviewImage>
+		<Tags>shfb;sandcastle;help file builder</Tags>
+	</Metadata>
+	<Installation InstalledByMsi="false" AllUsers="true">
+		<InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0]" />
+	</Installation>
+	<Dependencies>
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+		<Dependency Id="Microsoft.VisualStudio.MPF.12.0" DisplayName="Visual Studio MPF 12.0" d:Source="Installed" Version="[12.0,)" />
+	</Dependencies>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+		<Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="%CurrentProject%" d:TargetPath="|%CurrentProject%;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+		<Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="%CurrentProject%" d:TargetPath="|%CurrentProject%;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+	</Assets>
+</PackageManifest>

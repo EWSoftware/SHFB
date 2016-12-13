@@ -13,7 +13,7 @@
 		<Tags>shfb;sandcastle;help file builder</Tags>
 	</Metadata>
 	<Installation InstalledByMsi="false" AllUsers="true">
-		<InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0, 15.0]" />
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0, 15.0]" />
 	</Installation>
 	<Dependencies>
 		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
@@ -25,4 +25,8 @@
 		<Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="%CurrentProject%" d:TargetPath="|%CurrentProject%;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
 		<Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="%CurrentProject%" d:TargetPath="|%CurrentProject%;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
 	</Assets>
+	<Prerequisites>
+		<Prerequisite Id="Microsoft.Component.MSBuild" Version="[15.0.25904.2,16.0)" DisplayName="MSBuild" />
+		<Prerequisite Id="Microsoft.VisualStudio.Component.ManagedDesktop.Prerequisites" Version="[15.0.25904.2,16.0)" DisplayName=".NET desktop development tools" />
+	</Prerequisites>
 </PackageManifest>

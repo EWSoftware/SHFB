@@ -30,21 +30,21 @@
 					 be in version order from earliest to most recent. -->
 			<visualStudio version="12.0" name="Visual Studio 2013" location="%VS120COMNTOOLS%\..\IDE" />
 			<visualStudio version="14.0" name="Visual Studio 2015" location="%VS140COMNTOOLS%\..\IDE" />
-			<visualStudio version="15.0" name="Visual Studio 15 Preview" location="%VS150COMNTOOLS%\..\IDE" />
+			<visualStudio version="15.0" name="Visual Studio 2017" location="%VS150COMNTOOLS%\..\IDE" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
 			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
-			<visualStudio version="Visual Studio 15 Preview" location="%VS150COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2017" location="%VS150COMNTOOLS%\..\..\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are
 					 in the My Documents folder. -->
 			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2015" location="Visual Studio 2015\Code Snippets\Xml\My Xml Snippets" />
-			<visualStudio version="Visual Studio 15 Preview" location="Visual Studio 15\Code Snippets\Xml\My Xml Snippets" />
+			<visualStudio version="Visual Studio 2017" location="Visual Studio 2017\Code Snippets\Xml\My Xml Snippets" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />
