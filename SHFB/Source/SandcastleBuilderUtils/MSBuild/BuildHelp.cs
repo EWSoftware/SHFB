@@ -131,7 +131,21 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// In such cases, command line property overrides are ignored.</value>
         public bool AlwaysLoadProject { get; set; }
 
-        #endregion
+    /// <summary>
+    /// <para>Optional String parameter.</para>
+    /// <para>A semicolon-delimited list of property name/value pairs that override properties read from the <see cref="ProjectFile" />.</para>
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     Use this to provide dynamic properties, that are created during build. When building inside Visual Studio,
+    ///     only static properties are available.</para>
+    ///   <para>
+    ///     This could for example be used if there are custom msbuild targets that initialize properties with version information.</para>
+    /// </remarks>
+    /// <example>Properties="Version=$(SemVersion);Optimize=$(Optimize)"</example>
+    public string Properties { get; set; }
+
+      #endregion
 
         #region Task output properties
         //=====================================================================
@@ -344,7 +358,29 @@ namespace SandcastleBuilder.Utils.MSBuild
                     msBuildProject.ReevaluateIfNecessary();
                 }
 
-                cts = new CancellationTokenSource();
+              // initialize properties that where provided in Properties
+              if (!string.IsNullOrWhiteSpace(Properties))
+              {
+                foreach (string propertyKeyValue in this.Properties.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                  int length = propertyKeyValue.IndexOf('=');
+                  if (length != -1)
+                  {
+                    string propertyKey = propertyKeyValue.Substring(0, length).Trim();
+                    string propertyValue = propertyKeyValue.Substring(length + 1).Trim();
+
+                    if (!string.IsNullOrWhiteSpace(propertyKey))
+                    {
+                      Log.LogMessage(MessageImportance.Low, "Setting property {0}={1}", propertyKey, propertyValue);
+                      msBuildProject.SetGlobalProperty(propertyKey, propertyValue);
+                    }
+                  }
+                }
+
+                msBuildProject.ReevaluateIfNecessary();
+              }
+
+              cts = new CancellationTokenSource();
 
                 // Associate the MSBuild project with a SHFB project instance and build it
                 using(sandcastleProject = new SandcastleProject(msBuildProject))
