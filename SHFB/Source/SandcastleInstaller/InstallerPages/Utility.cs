@@ -2,21 +2,22 @@
 // System  : Sandcastle Guided Installation
 // File    : Utility.cs
 // Author  : Eric Woodruff
-// Updated : 05/10/2013
+// Updated : 12/26/2016
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class with utility and extension methods.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  02/06/2011  EFW  Created the code
-// 1.0.0.1  04/23/2011  EFW  Updated Utility.RunInstaller() to accept an arguments parameter and have the
-//                           afterInstall action take an integer parameter representing the process exit code.
-// 1.1.0.0  03/05/2012  EFW  Converted to use WPF
+// 02/06/2011  EFW  Created the code
+// 04/23/2011  EFW  Updated Utility.RunInstaller() to accept an arguments parameter and have the afterInstall 
+//                  action take an integer parameter representing the process exit code.
+// 03/05/2012  EFW  Converted to use WPF
+// 12/23/2016  EFW  Reworked Utility.RunInstaller() so that it can be used with the async/await pattern
 //===============================================================================================================
 
 using System;
@@ -26,8 +27,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -39,18 +38,6 @@ namespace Sandcastle.Installer.InstallerPages
     /// </summary>
     public static class Utility
     {
-        #region Private data members
-        //=====================================================================
-
-        private static Task<int> installTask;
-
-        // The action to perform after running an installer
-        private static Action<int> afterInstall;
-
-        // The action to perform if the installer fails
-        private static Action<Exception> installFailed;
-        #endregion
-
         #region Properties
         //=====================================================================
 
@@ -158,48 +145,19 @@ namespace Sandcastle.Installer.InstallerPages
         /// </summary>
         /// <param name="installer">The installer to run</param>
         /// <param name="arguments">An optional list of arguments or null if there are none</param>
-        /// <param name="afterInstallFinishes">The action to perform after the install finishes</param>
-        /// <param name="installerFailed">The action to perform if running the installer fails with an exception</param>
-        /// <returns>True if the installer was launched, false if not</returns>
-        public static bool RunInstaller(string installer, string arguments, Action<int> afterInstallFinishes,
-          Action<Exception> installerFailed)
+        /// <returns>The result of executing the installer process</returns>
+        public static int RunInstaller(string installer, string arguments)
         {
+            installer = Path.GetFullPath(installer);
+
             if(!File.Exists(installer))
-            {
-                MessageBox.Show("Unable to locate installer: " + installer, "Install",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+                throw new InvalidOperationException("Unable to locate installer: " + installer);
 
             ProcessStartInfo psi = new ProcessStartInfo(installer, arguments)
             {
                 WorkingDirectory = Utility.BasePath
             };
 
-            afterInstall = afterInstallFinishes;
-            installFailed = installerFailed;
-
-            var ui = TaskScheduler.FromCurrentSynchronizationContext();
-
-            installTask = Task.Factory.StartNew<int>(() => RunInstallTask(psi));
-
-            installTask.ContinueWith(t => InstallTaskCompleted(t.Result),
-                CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, ui);
-
-            installTask.ContinueWith(t => InstallTaskFailed(t.Exception),
-                CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, ui);
-
-            return true;
-        }
-
-        /// <summary>
-        /// This is used to run the installer task
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        /// <returns>The result of executing the installer process</returns>
-        private static int RunInstallTask(ProcessStartInfo psi)
-        {
             using(Process p = Process.Start(psi))
             {
                 if(p != null)
@@ -210,35 +168,6 @@ namespace Sandcastle.Installer.InstallerPages
             }
 
             throw new InvalidOperationException("Failed to create installation process");
-        }
-
-        /// <summary>
-        /// This is called when the installer task completes successfully
-        /// </summary>
-        /// <param name="exitCode">The exit code returned by the installer task</param>
-        private static void InstallTaskCompleted(int exitCode)
-        {
-            installTask.Dispose();
-            installTask = null;
-
-            if(afterInstall != null)
-                afterInstall(exitCode);
-        }
-
-        /// <summary>
-        /// This is called when the installer task fails with an exception
-        /// </summary>
-        /// <param name="exception">The exception thrown by the installer task</param>
-        private static void InstallTaskFailed(AggregateException exception)
-        {
-            installTask.Dispose();
-            installTask = null;
-
-            if(exception != null)
-                if(installFailed != null)
-                    installFailed(exception);
-                else
-                    throw exception;
         }
         #endregion
 
