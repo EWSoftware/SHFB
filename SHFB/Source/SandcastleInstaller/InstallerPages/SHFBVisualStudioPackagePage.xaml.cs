@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 04/11/2016
+// Updated : 12/26/2016
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -37,16 +38,53 @@ namespace Sandcastle.Installer.InstallerPages
     /// </summary>
     public partial class SHFBVisualStudioPackagePage : BasePage
     {
+        #region Visual Studio Installer package options
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to define VSIX package options
+        /// </summary>
+        private class VisualStudioInstallerPackage
+        {
+            private HashSet<string> installedLocations = new HashSet<string>();
+
+            /// <summary>
+            /// The VSIX package name
+            /// </summary>
+            public string PackageName { get; set; }
+
+            /// <summary>
+            /// The package description
+            /// </summary>
+            public string Description { get; set; }
+
+            /// <summary>
+            /// This is used to define the path to the VSIX installer executable
+            /// </summary>
+            /// <remarks>If null, an installer for this version of the package could not be found</remarks>
+            public string VsixInstallerPath { get; set; }
+
+            /// <summary>
+            /// This returns a unique set of locations in which this package is installed
+            /// </summary>
+            public ICollection<string> InstalledLocations
+            {
+                get { return installedLocations; }
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
-        private SortedDictionary<string, string> vsixInstallerLocations;
-        private List<string> packagePaths;
+        private XElement pageConfiguration;
+        private Task initializationTask;
+        private List<VisualStudioInstallerPackage> vsixPackages;
 
-        private string installerName, vsixInstallerPath;
-        private bool searchPerformed, packageInstalled, installerExecuted;
+        private bool searchPerformed, installerExecuted;
         private Version frameworkVersion;
         private Guid packageGuid;
+
         #endregion
 
         #region Properties
@@ -73,10 +111,7 @@ namespace Sandcastle.Installer.InstallerPages
         {
             get
             {
-                // Note that the package may have been detected if Visual Studio was not executed after manually
-                // removing the package to let it clean up and remove the files.  In that case, the user will
-                // not get prompted here.
-                if(!String.IsNullOrEmpty(vsixInstallerPath) && !packageInstalled &&
+                if(!vsixPackages.Any(p => p.InstalledLocations.Count != 0) &&
                   MessageBox.Show("The SHFB Visual Studio package does not appear to be installed.  Projects " +
                     "cannot be loaded in Visual Studio without it.  If you will not be using Visual Studio " +
                     "with the help file builder, you can safely skip this step.  If you will, you should " +
@@ -103,8 +138,7 @@ namespace Sandcastle.Installer.InstallerPages
 
             imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
 
-            vsixInstallerLocations = new SortedDictionary<string, string>();
-            packagePaths = new List<string>();
+            vsixPackages = new List<VisualStudioInstallerPackage>();
         }
         #endregion
 
@@ -114,28 +148,124 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
+            pageConfiguration = configuration;
+            initializationTask = Task.Run(() => this.InitializeInternal(pageConfiguration));
+        }
+
+        public void InitializeInternal(XElement configuration)
+        {
             if(configuration.Attribute("frameworkVersion") == null)
                 throw new InvalidOperationException("A frameworkVersion attribute value is required");
 
             if(configuration.Attribute("packageGuid") == null)
                 throw new InvalidOperationException("A packageGuid attribute value is required");
 
-            if(configuration.Attribute("installerName") == null)
-                throw new InvalidOperationException("An installer attribute value is required");
-
             frameworkVersion = new Version(configuration.Attribute("frameworkVersion").Value);
             packageGuid = new Guid(configuration.Attribute("packageGuid").Value);
-            installerName = configuration.Attribute("installerName").Value;
 
-            // Load the supported versions
-            foreach(var vs in configuration.Elements("visualStudio"))
+            // Load the Visual Studio package versions
+            foreach(var package in configuration.Elements("package"))
             {
-                lstVersions.ListItems.Add(new ListItem(new Paragraph(new Run(vs.Attribute("name").Value))));
-                vsixInstallerLocations.Add(vs.Attribute("version").Value, vs.Attribute("location").Value);
+                var vsix = new VisualStudioInstallerPackage
+                {
+                    PackageName = package.Attribute("name").Value,
+                    Description = package.Attribute("description").Value
+                };
+
+                vsixPackages.Add(vsix);
+
+                foreach(var vs in package.Elements("visualStudio"))
+                {
+                    string versionNumber = vs.Attribute("version").Value, basePath = vs.Attribute("basePath").Value,
+                        editionPaths = (string)vs.Attribute("editionPaths");
+                    
+                    // VS2015 and earlier don't install side-by-side
+                    if(editionPaths == null)
+                    {
+                        string vsixPath = Path.Combine(Environment.ExpandEnvironmentVariables(basePath),
+                            "VSIXInstaller.exe");
+
+                        // Use the latest one found
+                        if(File.Exists(vsixPath))
+                            vsix.VsixInstallerPath = vsixPath;
+
+                        // Version 2015.7.25.0 and earlier were installed for the current user only
+                        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            packagePath = Path.Combine(appDataPath, @"Microsoft\VisualStudio\" + versionNumber + @"\Extensions");
+
+                        if(Directory.Exists(packagePath))
+                        {
+                            // This is used to suppress prompting if the package appears to be installed and the
+                            // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
+                            // a randomly named folder so we'll have to search for it.
+                            packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                                SearchOption.AllDirectories).FirstOrDefault();
+
+                            if(packagePath != null)
+                                vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
+                        }
+
+                        // Versions after 2015.7.25.0 are installed for all users
+                        appDataPath = Environment.GetFolderPath(Environment.Is64BitProcess ?
+                            Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
+                        packagePath = Path.Combine(appDataPath, "Microsoft Visual Studio " + versionNumber,
+                            @"Common7\IDE\Extensions");
+
+                        if(Directory.Exists(packagePath))
+                        {
+                            packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                                SearchOption.AllDirectories).FirstOrDefault();
+
+                            if(packagePath != null)
+                                vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
+                        }
+                    }
+                    else
+                        foreach(string edition in editionPaths.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            // VS2017 and later can be installed side-by-side so find the first one available
+                            string vsixPath = String.Format(CultureInfo.InvariantCulture,
+                                Path.Combine(Environment.ExpandEnvironmentVariables(basePath),
+                                "VSIXInstaller.exe"), edition);
+
+                            // Use the latest one found.  Within an edition it doesn't matter but we still need
+                            // to know about each installed edition.
+                            if(File.Exists(vsixPath))
+                                vsix.VsixInstallerPath = vsixPath;
+
+                            // Version 2015.7.25.0 and earlier were installed for the current user only
+                            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                packagePath = Path.Combine(appDataPath, @"Microsoft\VisualStudio\" + versionNumber + @"\Extensions");
+
+                            if(Directory.Exists(packagePath))
+                            {
+                                // This is used to suppress prompting if the package appears to be installed and the
+                                // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
+                                // a randomly named folder so we'll have to search for it.
+                                packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                                    SearchOption.AllDirectories).FirstOrDefault();
+
+                                if(packagePath != null)
+                                    vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
+                            }
+
+                            // Versions after 2015.7.25.0 are installed for all users
+                            packagePath = Path.Combine(Path.GetDirectoryName(vsixPath), "Extensions");
+
+                            if(Directory.Exists(packagePath))
+                            {
+                                packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                                    SearchOption.AllDirectories).FirstOrDefault();
+
+                                if(packagePath != null)
+                                    vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
+                            }
+                        }
+                }
             }
 
-            if(lstVersions.ListItems.Count == 0)
-                throw new InvalidOperationException("At least on visualStudio element must be defined");
+            if(vsixPackages.Count == 0)
+                throw new InvalidOperationException("At least one package element must be defined");
 
             base.Initialize(configuration);
         }
@@ -146,39 +276,29 @@ namespace Sandcastle.Installer.InstallerPages
         public override void ShowPage()
         {
             Paragraph para;
-            string basePath, packagePath, installerPath;
 
             if(searchPerformed)
                 return;
 
             btnInstallPackage.Visibility = Visibility.Collapsed;
-            packageInstalled = false;
             secResults.Blocks.Clear();
-            vsixInstallerPath = null;
+            lstVersions.ListItems.Clear();
 
             try
             {
                 Mouse.OverrideCursor = Cursors.Wait;
+                initializationTask.Wait();
 
-                // Get the path to the VSIX installer.  It will be in one of the Visual Studio folders and we
-                // need to find latest one as it will install the package in the latest version as well as any
-                // earlier versions (true so far through VS2015 anyway).  The configuration elements should be
-                // in version order from earliest to most recent.
-                foreach(var kvp in vsixInstallerLocations)
-                {
-                    installerPath = Path.GetFullPath(Path.Combine(
-                        Environment.ExpandEnvironmentVariables(kvp.Value), "VSIXInstaller.exe"));
+                foreach(var vsix in vsixPackages)
+                    foreach(string v in vsix.Description.Split(';'))
+                        lstVersions.ListItems.Add(new ListItem(new Paragraph(new Run(v))));
 
-                    if(File.Exists(installerPath))
-                        vsixInstallerPath = installerPath;
-                }
-
-                if(vsixInstallerPath == null)
+                if(!vsixPackages.Any(p => !String.IsNullOrWhiteSpace(p.VsixInstallerPath)))
                 {
                     pnlControls.Visibility = Visibility.Collapsed;
 
-                    secResults.Blocks.Add(new Paragraph(new Bold(
-                        new Run("Unable to locate the VSIX package installer.")) { FontSize = 13 }));
+                    secResults.Blocks.Add(new Paragraph(new Bold(new Run(
+                        "Unable to locate the VSIX package installer.")) { FontSize = 13 }));
 
                     para = new Paragraph();
                     para.Inlines.Add(new Run("This could be because a supported version Visual Studio is not " +
@@ -188,62 +308,18 @@ namespace Sandcastle.Installer.InstallerPages
 
                     return;
                 }
-
-                // Version 2015.7.25.0 and earlier were installed for the current user only
-                basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-                foreach(var kvp in vsixInstallerLocations)
-                {
-                    packagePath = Path.Combine(basePath, @"Microsoft\VisualStudio\" + kvp.Key + @"\Extensions");
-
-                    if(Directory.Exists(packagePath))
-                    {
-                        // This is used to suppress prompting if the package appears to be installed and the
-                        // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
-                        // a randomly named folder so we'll have to search for it.
-                        packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
-                            SearchOption.AllDirectories).FirstOrDefault();
-
-                        if(packagePath != null)
-                        {
-                            packagePaths.Add(Path.GetDirectoryName(packagePath));
-                            packageInstalled = true;
-                        }
-                    }
-                }
-
-                // Versions after 2015.7.25.0 are installed for all users
-                basePath = Environment.GetFolderPath(Environment.Is64BitProcess ?
-                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
-
-                foreach(var kvp in vsixInstallerLocations)
-                {
-                    packagePath = Path.Combine(basePath, "Microsoft Visual Studio " + kvp.Key,
-                        @"Common7\IDE\Extensions");
-
-                    if(Directory.Exists(packagePath))
-                    {
-                        packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
-                            SearchOption.AllDirectories).FirstOrDefault();
-
-                        if(packagePath != null)
-                        {
-                            packagePaths.Add(Path.GetDirectoryName(packagePath));
-                            packageInstalled = true;
-                        }
-                    }
-                }
             }
-            catch(Exception ex)
+            catch
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                System.Diagnostics.Debug.WriteLine(initializationTask.Exception);
 
                 imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
 
                 para = new Paragraph(new Bold(new Run("An error occurred while searching for Visual Studio:")));
 
                 para.Foreground = new SolidColorBrush(Colors.Red);
-                para.Inlines.AddRange(new Inline[] { new LineBreak(), new LineBreak(), new Run(ex.Message) });
+                para.Inlines.AddRange(new Inline[] { new LineBreak(), new LineBreak(), new Run(
+                    initializationTask.Exception.InnerException.Message) });
 
                 secResults.Blocks.Add(para);
                 return;
@@ -257,7 +333,7 @@ namespace Sandcastle.Installer.InstallerPages
             // If the package looks like it is installed and we ran the installer, signal success.  If not,
             // let the installer run again.  After removal, the actual package files will not go away until
             // Visual Studio runs again and cleans out the removed packages.
-            if(packageInstalled && installerExecuted)
+            if(vsixPackages.Any(p => p.InstalledLocations.Count != 0) && installerExecuted)
             {
                 pnlControls.Visibility = Visibility.Collapsed;
 
@@ -296,81 +372,100 @@ namespace Sandcastle.Installer.InstallerPages
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void btnInstallPackage_Click(object sender, EventArgs e)
+        private async void btnInstallPackage_Click(object sender, EventArgs e)
         {
+            bool success = false;
+            int exitCode;
+
             searchPerformed = installerExecuted = false;
             btnInstallPackage.IsEnabled = false;
+            imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Visible;
 
-            // Try uninstalling any prior version before installing the latest release.
-            bool launched = Utility.RunInstaller(vsixInstallerPath, "/q /u:" + packageGuid,
-                (uninstallExitCode) =>
+            try
+            {
+                await Task.Run(() =>
                 {
-                    // An exit code of 0 (success), 1002 (not installed), or 2003 (not found) is okay
-                    if(uninstallExitCode != 0 && uninstallExitCode != 1002 && uninstallExitCode != 2003)
+                    foreach(var package in vsixPackages.Where(p => !String.IsNullOrEmpty(p.VsixInstallerPath)))
                     {
-                        imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
-                        MessageBox.Show("Unexpected exit code returned from VSIX installer trying to " +
-                            "uninstall any prior version of the package: " +
-                            uninstallExitCode.ToString(CultureInfo.InvariantCulture), this.PageTitle,
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
+                        if(package.InstalledLocations.Count != 0)
+                        {
+                            // Try uninstalling any prior version before installing the latest release.
+                            exitCode = Utility.RunInstaller(package.VsixInstallerPath, "/u:" + packageGuid);
+
+                            // The VSIX installer that comes with VS2017 and later requires that all instances
+                            // of Visual Studio and its subtasks be shut down before removal or installation.
+                            if(exitCode == 2004)
+                                throw new InvalidOperationException("Visual Studio or one of its subtasks is " +
+                                    "still running.  Please shut down all instances of Visual Studio and, if " +
+                                    "necessary, kill off any subtasks and try again.  You can run the VSIX " +
+                                    "installer manually if necessary to find out which tasks are still running.");
+
+                            // An exit code of 0 (success), 1002 (not installed), or 2003 (not found) is okay
+                            if(exitCode != 0 && exitCode != 1002 && exitCode != 2003)
+                                throw new InvalidOperationException("Unexpected exit code returned from VSIX " +
+                                    "installer trying to uninstall any prior version of the package: " +
+                                    exitCode.ToString(CultureInfo.InvariantCulture));
+
+                            // If it was uninstalled and it was the current version, purge the folder.  The files
+                            // are not physically removed until Visual Studio runs again.  Normally, that isn't a
+                            // problem but when reinstalling the same version, the VSIX installer tends to do odd
+                            // things like marking just one of the dependency assemblies for removal.  As such,
+                            // we play it safe and remove the files so that the VSIX installer doesn't get
+                            // confused.
+                            foreach(string packagePath in package.InstalledLocations)
+                                if(Directory.Exists(packagePath))
+                                    Directory.Delete(packagePath, true);
+                        }
+
+                        // Now install the latest release
+                        exitCode = Utility.RunInstaller(package.VsixInstallerPath, "\"" + Path.Combine(
+                            Utility.InstallResourcesPath, package.PackageName) + "\"");
+
+                        if(exitCode == 2004)
+                            throw new InvalidOperationException("Visual Studio or one of its subtasks is " +
+                                "still running.  Please shut down all instances of Visual Studio and, if " +
+                                "necessary, kill off any subtasks and try again.  You can run the VSIX " +
+                                "installer manually if necessary to find out which tasks are still running.");
+
+                        // If we get a zero exit code, assume it was successfully installed
+                        if(exitCode == 0)
+                            installerExecuted = true;
+                        else
+                            throw new InvalidOperationException("Unexpected exit code returned from VSIX " +
+                                "installer trying to install the package: " +
+                                exitCode.ToString(CultureInfo.InvariantCulture));
                     }
-
-                    // If it was uninstalled and it was the current version, purge the folder.  The files are not
-                    // physically removed until Visual Studio runs again.  Normally, that isn't a problem but
-                    // when reinstalling the same version, the VSIX installer tends to do odd things like marking
-                    // just one of the dependency assemblies for removal.  As such, we play it safe and remove
-                    // the files so that the VSIX installer doesn't get confused.
-                    if(uninstallExitCode == 0 && packagePaths.Count != 0)
-                        foreach(string packagePath in packagePaths)
-                            foreach(string f in Directory.GetFiles(packagePath, "*.*", SearchOption.AllDirectories))
-                            {
-                                try
-                                {
-                                    File.Delete(f);
-                                }
-                                catch(UnauthorizedAccessException)
-                                {
-                                    MessageBox.Show("Unable to remove prior version.  Is Visual Studio running?",
-                                        this.PageTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-
-                                    imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
-                                    return;
-                                }
-                            }
-
-                    // Now install the latest release
-                    launched = Utility.RunInstaller(vsixInstallerPath, "/q \"" + Path.Combine(
-                      Utility.InstallResourcesPath, installerName) + "\"",
-                        (installExitCode) =>
-                        {
-                            // If we get a zero exit code, it was successfully installed
-                            if(installExitCode == 0)
-                                installerExecuted = true;
-                            else
-                                MessageBox.Show("Unexpected exit code returned from VSIX installer trying to " +
-                                    "install the package: " + installExitCode.ToString(CultureInfo.InvariantCulture),
-                                    this.PageTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-
-                            imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
-                            this.ShowPage();
-                        },
-                        (ex) =>
-                        {
-                            imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
-                            MessageBox.Show("Unable to execute installer: " + ex.Message, this.PageTitle,
-                                MessageBoxButton.OK, MessageBoxImage.Error);
-                        });
-                },
-                (ex) =>
-                {
-                    imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
-                    MessageBox.Show("Unable to execute installer: " + ex.Message, this.PageTitle,
-                        MessageBoxButton.OK, MessageBoxImage.Error);
                 });
 
-            if(launched)
-                imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Visible;
+                success = true;
+            }
+            catch(UnauthorizedAccessException)
+            {
+                MessageBox.Show("Unable to remove prior version.  Is Visual Studio running?",
+                    this.PageTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch(InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, this.PageTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Unable to execute installer: " + ex.Message, this.PageTitle,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
+
+                if(success)
+                {
+                    vsixPackages.Clear();
+                    initializationTask = Task.Run(() => this.InitializeInternal(pageConfiguration));
+                    this.ShowPage();
+                }
+                else
+                    btnInstallPackage.IsEnabled = true;
+            }
         }
         #endregion
     }

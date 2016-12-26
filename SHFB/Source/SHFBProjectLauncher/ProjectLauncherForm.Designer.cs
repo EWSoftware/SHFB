@@ -57,7 +57,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Enabled = false;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Image = global::SandcastleBuilder.ProjectLauncher.Properties.Resources.VisualStudio;
             this.pictureBox2.Location = new System.Drawing.Point(57, 141);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox2.Name = "pictureBox2";
@@ -72,7 +72,7 @@
             this.rbSHFB.Location = new System.Drawing.Point(114, 80);
             this.rbSHFB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbSHFB.Name = "rbSHFB";
-            this.rbSHFB.Size = new System.Drawing.Size(287, 29);
+            this.rbSHFB.Size = new System.Drawing.Size(243, 24);
             this.rbSHFB.TabIndex = 1;
             this.rbSHFB.TabStop = true;
             this.rbSHFB.Text = "&Sandcastle Help File Builder GUI";
@@ -83,7 +83,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(537, 25);
+            this.label1.Size = new System.Drawing.Size(454, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Use the following application to open help file builder project files:";
             // 
@@ -93,7 +93,7 @@
             this.rbVisualStudio.Location = new System.Drawing.Point(114, 151);
             this.rbVisualStudio.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbVisualStudio.Name = "rbVisualStudio";
-            this.rbVisualStudio.Size = new System.Drawing.Size(428, 29);
+            this.rbVisualStudio.Size = new System.Drawing.Size(357, 24);
             this.rbVisualStudio.TabIndex = 2;
             this.rbVisualStudio.TabStop = true;
             this.rbVisualStudio.Text = "Latest version of &Visual Studio with SHFB Package";
@@ -104,7 +104,7 @@
             this.chkAlwaysUseSelection.AutoSize = true;
             this.chkAlwaysUseSelection.Location = new System.Drawing.Point(57, 232);
             this.chkAlwaysUseSelection.Name = "chkAlwaysUseSelection";
-            this.chkAlwaysUseSelection.Size = new System.Drawing.Size(469, 29);
+            this.chkAlwaysUseSelection.Size = new System.Drawing.Size(392, 24);
             this.chkAlwaysUseSelection.TabIndex = 4;
             this.chkAlwaysUseSelection.Text = "Do not ask again.  &Always use the selected application.";
             this.chkAlwaysUseSelection.UseVisualStyleBackColor = true;
@@ -144,7 +144,7 @@
             this.lblNotInstalled.AutoSize = true;
             this.lblNotInstalled.Location = new System.Drawing.Point(133, 180);
             this.lblNotInstalled.Name = "lblNotInstalled";
-            this.lblNotInstalled.Size = new System.Drawing.Size(270, 25);
+            this.lblNotInstalled.Size = new System.Drawing.Size(228, 20);
             this.lblNotInstalled.TabIndex = 3;
             this.lblNotInstalled.Text = "(Extension package not installed)";
             this.lblNotInstalled.Visible = false;

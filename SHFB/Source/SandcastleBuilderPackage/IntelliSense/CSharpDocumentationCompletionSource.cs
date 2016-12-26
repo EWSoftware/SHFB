@@ -125,9 +125,9 @@ namespace SandcastleBuilder.Package.IntelliSense
                 new SandcastleCompletion("inheritdoc", prefix + "inheritdoc/>", "This element can help minimize the " +
                     "effort required to document complex APIs by allowing common documentation to be " +
                     "inherited from base types/members.", iconSource, ""),
-                new CustomCompletion(session, "inheritdoc cref", prefix + "inheritdoc cref=\"\xFF\"/>",
+                new CustomCompletion(session, "inheritdocCref", prefix + "inheritdoc cref=\"\xFF\"/>",
                     "Inherit documentation from a specific member.", iconSource, ""),
-                new CustomCompletion(session, "inheritdoc cref/select", prefix + "inheritdoc cref=\"\xFF\" " +
+                new CustomCompletion(session, "inheritdocCrefSelect", prefix + "inheritdoc cref=\"\xFF\" " +
                     "select=\"summary|remarks\"/>", "Inherit documentation from a specific member and comments.",
                     iconSource, ""),
                 new SandcastleCompletion("token", prefix + "token", "This element represents a replaceable tag within " +
@@ -191,7 +191,7 @@ namespace SandcastleBuilder.Package.IntelliSense
                         "language-specific keyword 'async'.", macroIconSource, ""),
                     new SandcastleCompletion("await", prefix + "see langword=\"await\"/>", "Inserts the " +
                         "language-specific keyword 'await'.", macroIconSource, ""),
-                    new SandcastleCompletion("async/await", prefix + "see langword=\"async/await\"/>", "Inserts the " +
+                    new SandcastleCompletion("asyncAwait", prefix + "see langword=\"async/await\"/>", "Inserts the " +
                         "language-specific keyword 'async/await'.", macroIconSource, "")
                 });
             }
@@ -200,11 +200,11 @@ namespace SandcastleBuilder.Package.IntelliSense
             if(allTags.Contains("code"))
                 completions.AddRange(new[]
                 {
-                    new CustomCompletion(session, "code import", prefix + "code language=\"\xFF\" title=\" \" " +
+                    new CustomCompletion(session, "codeImport", prefix + "code language=\"\xFF\" title=\" \" " +
                         "source=\"..\\Path\\SourceFile.cs\" region=\"Region Name\"/>", "This element is used " +
                         "to indicate that a multi-line section of text should be imported from the named " +
                         "region of the named file and formatted as a code block.", iconSource, ""),
-                    new CustomCompletion(session, "code language", prefix + "code language=\"\xFF\" " +
+                    new CustomCompletion(session, "codeLanguage", prefix + "code language=\"\xFF\" " +
                         "title=\" \"></code>", "This element is used to indicate that a multi-line section of " +
                         "text should be formatted as a code block.", iconSource, ""),
                 });

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- For testing, a relative path offset for the install resources -->
-	<pathOffset location="..\..\..\..\Deployment" />
+	<pathOffset location="..\..\..\..\..\Deployment" />
 
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
 	<sandcastle version="v2016.9.17.0" />
@@ -27,20 +27,26 @@
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
 			frameworkVersion="4.5" shfbVersion="2016.9.17.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
-			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
-			installerName="SHFBVisualStudioPackage.vsix">
+			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
 					 be in version order from earliest to most recent. -->
-			<visualStudio version="12.0" name="Visual Studio 2013" location="%VS120COMNTOOLS%\..\IDE" />
-			<visualStudio version="14.0" name="Visual Studio 2015" location="%VS140COMNTOOLS%\..\IDE" />
-			<visualStudio version="15.0" name="Visual Studio 2017" location="%VS150COMNTOOLS%\..\IDE" />
+			<package name="SHFBVisualStudioPackage_VS2013.vsix" description="Visual Studio 2013">
+				<visualStudio version="12.0" basePath="%VS120COMNTOOLS%\..\IDE" />
+			</package>
+			<package name="SHFBVisualStudioPackage_VS2015AndLater.vsix" description="Visual Studio 2015;Visual Studio 2017">
+				<visualStudio version="14.0" basePath="%VS120COMNTOOLS%\..\IDE" />
+				<visualStudio version="15.0" basePath="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\{0}\Common7\IDE"
+					editionPaths="Community, Developer, Enterprise" />
+			</package>
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
 			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
-			<visualStudio version="Visual Studio 2017" location="%VS150COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2017 Community" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2017 Developer" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Developer\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2017 Enterprise" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are

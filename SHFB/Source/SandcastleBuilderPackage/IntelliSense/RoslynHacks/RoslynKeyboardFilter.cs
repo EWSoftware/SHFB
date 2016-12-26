@@ -66,7 +66,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
                     return HandleTypeChar(typedChar);
 
                 default:
-                    break;
+                  break;
                 }
             }
 
@@ -90,7 +90,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             case '/':
             case '>':
             case ' ':
-                return HandleCompletion(typedChar);
+                 return HandleCompletion(typedChar);
 
             default:
                 return false;
@@ -111,6 +111,11 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             CompletionSelectionStatus selectionStatus = completionSet.SelectionStatus;
             if (!(selectionStatus.Completion is SandcastleCompletion))
             {
+                // Workaround some odd behavior in the completion when trying to enter "</".  This prevents it
+                // from converting it to an XML comment ("<!--/-->").
+                if(commitCharacter == '/' && selectionStatus.Completion.InsertionText == "!--")
+                    completionSession.Dismiss();
+
                 // let other providers handle their own completions
                 return false;
             }
