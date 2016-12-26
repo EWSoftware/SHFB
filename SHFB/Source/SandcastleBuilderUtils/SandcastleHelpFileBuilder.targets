@@ -38,9 +38,10 @@
 	<!-- The Core Build Help target -->
 	<Target Name="CoreBuildHelp">
 		<SandcastleBuilder.Utils.MSBuild.BuildHelp
-				ProjectFile="$(MSBuildProjectFullPath)"
+        ProjectFile="$(MSBuildProjectFullPath)"
 				Configuration="$(Configuration)"
 				Platform="$(Platform)"
+        Properties="$(SubstitutionTags)"
 				OutDir="$(OutDir)"
 				Verbose="$(Verbose)"
 				DumpLogOnFailure="$(DumpLogOnFailure)"
