@@ -782,7 +782,7 @@ commas, or other special characters.
                 using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, projectName + ".hhc"), false,
                   Encoding.GetEncoding(codePage)))
                 {
-                    writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">\r\n");
+                    writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML//EN\">\r\n");
                     writer.WriteLine("<HTML>");
                     writer.WriteLine("  <BODY>");
 
