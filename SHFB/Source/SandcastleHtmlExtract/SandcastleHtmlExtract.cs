@@ -824,7 +824,7 @@ commas, or other special characters.
                                         WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
                                             "    <param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(htmlFile)));
 
-                                    WriteContentLine(writer, indentCount, "  </OBJECT></LI>");
+                                    WriteContentLine(writer, indentCount, "  </OBJECT>");
 
                                     if(reader.IsEmptyElement)
                                         WriteContentLine(writer, indentCount, "</UL>");
@@ -951,7 +951,7 @@ commas, or other special characters.
                 WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
                     "<param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(file)));
 
-            WriteContentLine(writer, indent, "</OBJECT></LI>");
+            WriteContentLine(writer, indent, "</OBJECT>");
         }
         #endregion
 
