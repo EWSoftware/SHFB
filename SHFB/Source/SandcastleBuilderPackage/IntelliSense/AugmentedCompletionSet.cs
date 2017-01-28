@@ -122,20 +122,33 @@ namespace SandcastleBuilder.Package.IntelliSense
         /// <param name="e">The event arguments.</param>
         private void HandleSelectionStatusChanged(object sender, ValueChangedEventArgs<CompletionSelectionStatus> e)
         {
+            bool previousUpdatingBestMatch = _updatingBestMatch;
             try
             {
-                _source.SelectionStatus = e.NewValue;
-            }
-            catch (ArgumentException)
-            {
-            }
+                // This method handles cases where the user manually selected an item using the keyboard or mouse.
+                // Use the recursion guard to prevent calling SelectBestMatch in response to setting the SelectionStatus
+                // of an underlying source, since that would prevent the manual selection from taking effect.
+                _updatingBestMatch = true;
 
-            try
-            {
-                _secondSource.SelectionStatus = e.NewValue;
+                try
+                {
+                    _source.SelectionStatus = e.NewValue;
+                }
+                catch (ArgumentException)
+                {
+                }
+
+                try
+                {
+                    _secondSource.SelectionStatus = e.NewValue;
+                }
+                catch (ArgumentException)
+                {
+                }
             }
-            catch (ArgumentException)
+            finally
             {
+                _updatingBestMatch = previousUpdatingBestMatch;
             }
         }
 
