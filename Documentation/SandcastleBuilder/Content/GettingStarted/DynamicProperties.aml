@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="76eb8f39-b225-4881-afa2-13cb7829b944" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>It is possible to implement custom targets in a help file builder project that create or set
+properties and make them available for tag substitution during the build.  Normally such new or updated property
+values are not available to the help file builder task.  However, by adding their values to the
+<codeInline>SubstitutionTags</codeInline> property in the project, the dynamic properties can be passed to the
+help file builder task and the new or updated values will be used.  This method works whether the project is
+built using MSBuild from the command line or on a build server or from within Visual Studio.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>This example runs a custom third-party task during the build to update the help file version and
+add various other properties related to a specific Git commit.  These elements are added to the end of the help
+file builder project file.</para>
+
+				<para>The dynamic properties are set as the value of the <codeInline>SubstitutionTags</codeInline>
+property.  The property names within it can then be used in the values of other help file builder project
+properties.  When built, those properties will be replaced with their values at the time of the build.  For
+example, you could enter the value "Version {@HelpFileVersion}, Git Commit ID: {@GitCommitId}" in the
+<legacyBold>Additional footer text</legacyBold> property to show the version number and Git commit ID in the
+footer of each page.</para>
+			</content>
+		
+<code language="xml" title=" ">
+	&lt;PropertyGroup&gt;
+		&lt;!-- Add the custom target so that it runs before the help file is built--&gt;
+		&lt;BuildDependsOn&gt;
+			GetBuildGitVersion;
+			$(BuildDependsOn)
+		&lt;/BuildDependsOn&gt;
+	&lt;/PropertyGroup&gt;
+
+	&lt;!-- Define the target and its properties --&gt;
+	&lt;Target Name="GetBuildGitVersion" Returns="$(BuildVersion)"&gt;
+		&lt;Nerdbank.GitVersioning.Tasks.GetBuildVersion
+			BuildingRef="$(_NBGV_BuildingRef)"
+			BuildMetadata="@(BuildMetadata)"
+			DefaultPublicRelease="$(PublicRelease)"
+			GitRepoRoot="$(GitRepoRoot)"&gt;
+
+			&lt;Output TaskParameter="Version" PropertyName="BuildVersion" /&gt;
+			&lt;Output TaskParameter="AssemblyInformationalVersion" PropertyName="HelpInformationalVersion" /&gt;
+			&lt;Output TaskParameter="AssemblyFileVersion" PropertyName="HelpFileVersion" /&gt;
+			&lt;Output TaskParameter="SimpleVersion" PropertyName="BuildVersionSimple" /&gt;
+			&lt;Output TaskParameter="PrereleaseVersion" PropertyName="PrereleaseVersion" /&gt;
+			&lt;Output TaskParameter="MajorMinorVersion" PropertyName="MajorMinorVersion" /&gt;
+			&lt;Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" /&gt;
+			&lt;Output TaskParameter="GitCommitId" PropertyName="GitCommitId" /&gt;
+			&lt;Output TaskParameter="GitCommitIdShort" PropertyName="GitCommitIdShort" /&gt;
+			&lt;Output TaskParameter="GitVersionHeight" PropertyName="GitVersionHeight" /&gt;
+			&lt;Output TaskParameter="BuildNumber" PropertyName="BuildNumber" /&gt;
+			&lt;Output TaskParameter="BuildNumber" PropertyName="BuildVersionNumberComponent" /&gt;
+			&lt;Output TaskParameter="PublicRelease" PropertyName="PublicRelease" /&gt;
+			&lt;Output TaskParameter="CloudBuildNumber" PropertyName="CloudBuildNumber" Condition="
+				'$(CloudBuildNumber)' == '' "/&gt;
+			&lt;Output TaskParameter="BuildMetadataFragment" PropertyName="SemVerBuildSuffix" /&gt;
+			&lt;Output TaskParameter="NuGetPackageVersion" PropertyName="NuGetPackageVersion" /&gt;
+			&lt;Output TaskParameter="NPMPackageVersion" PropertyName="NPMPackageVersion" /&gt;
+			&lt;Output TaskParameter="CloudBuildVersionVars" ItemName="CloudBuildVersionVars" /&gt;
+		&lt;/Nerdbank.GitVersioning.Tasks.GetBuildVersion&gt;
+
+		&lt;PropertyGroup&gt;
+			&lt;!-- Add the dynamic properties as the value of the SubstitutionTags property --&gt;
+			&lt;SubstitutionTags&gt;$(SubstitutionTags);HelpInformationalVersion=$(HelpInformationalVersion);
+				HelpFileVersion=$(HelpFileVersion);Version=$(BuildVersion);GitCommitId=$(GitCommitId);
+			&lt;/SubstitutionTags&gt;
+		&lt;/PropertyGroup&gt;
+	&lt;/Target&gt;
+</code>		
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+			<link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />		
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -53,6 +53,7 @@
 <xsl:template match="xml-value"><xsl:value-of select="text()" disable-output-escaping="yes" /></xsl:template>
 <xsl:template match="xml-tag"><span class="highlight-xml-tag"><xsl:value-of select="text()" disable-output-escaping="yes" /></span></xsl:template>
 <xsl:template match="xml-bracket"><span class="highlight-xml-bracket"><xsl:value-of select="text()" disable-output-escaping="yes" /></span></xsl:template>
+<xsl:template match="xml-bracket-inline"><span class="highlight-xml-bracket-inline"><xsl:value-of select="text()" disable-output-escaping="yes" /></span></xsl:template>
 <xsl:template match="xml-comment"><span class="highlight-xml-comment"><xsl:value-of select="text()" disable-output-escaping="yes"/></span></xsl:template>
 <xsl:template match="xml-cdata">
 	<span class="highlight-xml-bracket"><xsl:text>&lt;![CDATA[</xsl:text></span>

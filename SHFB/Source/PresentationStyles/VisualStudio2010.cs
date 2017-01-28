@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/27/2016
-// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
+// Updated : 01/27/2017
+// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the presentation style definition for the Visual Studio 2010 presentation style.
@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -83,10 +82,12 @@ namespace Sandcastle.PresentationStyles
             // Define the transform component arguments
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoFile", true, true, null,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +
-                "the path.  Place the file in your project in an icons\\ folder and set the Build Action to " +
-                "Content.  If blank, no logo will appear in the topic headers.  If building website output " +
-                "and your web server is case-sensitive, be sure to match the case of the folder name in your " +
-                "project with that of the presentation style.  The same applies to the logo filename itself."));
+                "the path.\r\n\r\nImportant: Add a folder called \"icons\\\" to the root of your help file " +
+                "builder project and place the logo file in the icons\\ folder.  Set the Build Action property " +
+                "to Content on the logo file's properties.\r\n\r\nIf blank, no logo will appear in the topic " +
+                "headers.  If building website output and your web server is case-sensitive, be sure to match " +
+                "the case of the folder name in your project with that of the presentation style.  The same " +
+                "applies to the logo filename itself."));
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoHeight", true, true, null,
                 "An optional logo height.  If left blank, the actual logo image height is used."));
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoWidth", true, true, null,

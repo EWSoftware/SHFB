@@ -7,6 +7,75 @@
 			<autoOutline lead="none" excludeRelatedTopics="true" />
 		</introduction>
 
+		<section address="AddLogo">
+			<title>How do I add a logo to the header in my help file topics?</title>
+			<content>
+				<para>To add a logo to the topic headers, do the following:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>In the Solution Explorer tool window (Project Explorer in the standalone GUI), right click on
+the help file builder project node and select the option to add a new folder to the root of the project.  Name
+the folder "icons".  The name must be in lowercase.</para>
+					</listItem>
+
+					<listItem>
+						<para>Right click on the new <localUri>icons\</localUri> folder and select the option to add a new
+image file or select the option to add an existing file and select the image you want to use.</para>
+					</listItem>
+
+					<listItem>
+						<para>Right click on the image file that you added to the project and select the Properties option to
+view the file properties.  In the file properties tool window, change the <codeInline>Build Action</codeInline>
+property to "Content".  This ensures that the logo file is included in the help content and it will be placed in
+the <localUri>icons\</localUri> folder in the help content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Right click on the project node again and select Properties to open the help file builder
+project properties.  Select the <ui>Transform Args</ui> category.</para>
+					</listItem>
+
+					<listItem>
+						<para>Locate the <codeInline>logoFile</codeInline> transform argument property in the list.  If one
+does not appear, your selected presentation style or the help file format does not support it.  If it does and
+the property appears, enter the filename as the property value.  Enter the filename alone omitting all path
+information (i.e. <localUri>HelpLogo.jpg</localUri> rather than <localUri>icons\HelpLogo.jpg</localUri>).</para>
+					</listItem>
+
+					<listItem>
+						<para>If building website output and your web server is case-sensitive, be sure to match the case of
+the folder name in your project with that of the presentation style.  The same applies to the logo filename
+itself.</para>
+					</listItem>
+
+					<listItem>
+						<para>Set the other logo transform arguments such as the placement, alignment, and dimensions as
+needed.</para>
+					</listItem>
+				</list>
+
+				<para>After performing the steps above, you should see the logo in the topics after rebuilding your help
+file.</para>
+			</content>
+		</section>
+
+		<section address="UnresolveRefLink">
+			<title>When I build my project, the BuildAssembler step generates a lot of warnings from
+ResolveReferenceLinkComponent stating "Unknown reference link target: XXXX".  How do I suppress these?</title>
+			<content>
+				<para>If third-party assemblies are referenced by your documented types, you may see warnings about
+unresolved reference links.  All this means is that the topic tried to generate a link to the indicated member
+but could find no information for it to generate a valid link.  In such cases, the member name will be rendered
+in bold text rather than a clickable link that takes you to its topic.</para>
+
+				<para>These warnings can be safely ignored.  If you find them bothersome, you can add the
+<link xlink:href="15b6b7be-3778-4487-b524-d558d02e6460" /> to your help file builder project.  This plug-in will
+generate the necessary information to suppress the warnings or generate links to the members if the selected
+help file format supports it (i.e. MS Help Viewer).  See the plug-in topic for more information.</para>
+			</content>
+		</section>
+
 		<section address="DepAsm1">
 			<title>My project relies on third-party assemblies and/or interop assemblies that do not have XML comments
 files.  How can I document my assemblies without them?</title>

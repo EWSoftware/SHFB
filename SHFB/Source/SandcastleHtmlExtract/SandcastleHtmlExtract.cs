@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/05/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 01/09/2017
+// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode application used to extract title and keyword information from HTML files
@@ -11,24 +11,24 @@
 // files to a different encoding in order to build HTML Help 1 (.chm) files that use a different language.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.5  02/02/2008  EFW  Created the code
-// 1.6.0.7  04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a website keyword index
-// 1.7.0.0  06/14/2008  EFW  Fixed bug in handling of TOC nodes without a file
-// 1.8.0.0  07/14/2008  EFW  Added support for running as an MSBuild task
-// 1.9.0.0  06/12/2010  EFW  Added support for multi-format build output
-// 1.9.5.0  07/26/2012  EFW  Added code to remove Help 2 constructs
-// 1.9.7.0  03/02/2013  EFW  Updated how the keyword index files were created so that each entry has a unique
-//                           title when grouped under a common keyword.  Updated to process the files in
-//                           parallel to improve the performance.
-// -------  07/31/2014  EFW  Applied fix from Kalyan00 to correctly save files in the localized and original
-//                           locations with the proper encodings.
-//          09/05/2014  EFW  Added support for setting the maximum degree of parallelism used
+// 02/02/2008  EFW  Created the code
+// 04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a website keyword index
+// 06/14/2008  EFW  Fixed bug in handling of TOC nodes without a file
+// 07/14/2008  EFW  Added support for running as an MSBuild task
+// 06/12/2010  EFW  Added support for multi-format build output
+// 07/26/2012  EFW  Added code to remove Help 2 constructs
+// 03/02/2013  EFW  Updated how the keyword index files were created so that each entry has a unique title when
+//                  grouped under a common keyword.  Updated to process the files in parallel to improve the
+//                  performance.
+// 07/31/2014  EFW  Applied fix from Kalyan00 to correctly save files in the localized and original locations
+//                  with the proper encodings.
+// 09/05/2014  EFW  Added support for setting the maximum degree of parallelism used
 //===============================================================================================================
 
 using System;
@@ -883,7 +883,7 @@ commas, or other special characters.
             using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, projectName + ".hhk"), false,
               Encoding.GetEncoding(codePage)))
             {
-                writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">");
+                writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML//EN\">");
                 writer.WriteLine("<HTML>");
                 writer.WriteLine("  <BODY>");
                 writer.Write("    <UL>");

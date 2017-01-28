@@ -76,6 +76,10 @@
 		<span class="XmlBracket"><xsl:value-of select="text()" disable-output-escaping="yes" /></span>
 	</xsl:template>
 
+	<xsl:template match="xml-bracket-inline">
+		<span class="XmlBracketInline"><xsl:value-of select="text()" disable-output-escaping="yes" /></span>
+	</xsl:template>
+
 	<xsl:template match="xml-comment">
 		<span class="XmlComment"><xsl:value-of select="text()" disable-output-escaping="yes"/></span>
 	</xsl:template>

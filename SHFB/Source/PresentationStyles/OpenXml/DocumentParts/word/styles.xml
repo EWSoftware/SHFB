@@ -979,6 +979,15 @@
 			<w:color w:val="0000FF"/>
 		</w:rPr>
 	</w:style>
+	<w:style w:type="character" w:customStyle="1" w:styleId="XmlBracketInline">
+		<w:name w:val="XML Bracket Inline"/>
+		<w:uiPriority w:val="1"/>
+		<w:qFormat/>
+		<w:rsid w:val="00694EC0"/>
+		<w:rPr>
+			<w:shd w:val="clear" w:color="000000" w:fill="FFFF00" />
+		</w:rPr>
+	</w:style>
 	<w:style w:type="character" w:customStyle="1" w:styleId="XmlComment">
 		<w:name w:val="XML Comment"/>
 		<w:uiPriority w:val="1"/>

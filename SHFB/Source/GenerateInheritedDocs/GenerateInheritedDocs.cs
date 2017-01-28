@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/23/2016
-// Note    : Copyright 2008-2016, Eric Woodruff, All rights reserved
+// Updated : 01/24/2017
+// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode tool that scans XML comments files for <inheritdoc /> tags and produces a
@@ -82,6 +82,14 @@ namespace SandcastleBuilder.InheritedDocumentation
         private static XmlDocument inheritedDocs;
         private static XmlNode docMemberList;
         private static Stack<string> memberStack;
+
+        // For base type/interface inheritance, these classes should be used as a last resort in the given order.
+        // Typically, we don't want to inherit from these but from something more useful in the hierarchy.
+        private static List<string> lastResortInheritableTypes = new List<string>
+        {
+            "T:System.IDisposable",
+            "T:System.Object"
+        };
         #endregion
 
         #region Main program entry point
@@ -470,6 +478,20 @@ namespace SandcastleBuilder.InheritedDocumentation
                     // Then hit the interface implementations
                     foreach(XPathNavigator baseType in apiNode.Select("implements/type/@api"))
                         sources.Add(baseType.Value);
+
+                    // Move last resort types to the end of the list in the given order since we typically don't
+                    // want to inherit from these but something higher up in the hierarchy that may have come
+                    // alphabetically later or a type may have taken precedence over an interface.  For example,
+                    // a user-defined type only inherits from a user-defined interface.  Its base type of
+                    // System.Object would take precedence over the user-defined interface.  This fixes it so
+                    // that the user-defined interface is used first.  In the unlikely event that this still
+                    // picks the wrong type, an explicit cref attribute can be used to specify the proper one.
+                    foreach(string lastResortType in lastResortInheritableTypes)
+                        if(sources.Contains(lastResortType))
+                        {
+                            sources.Remove(lastResortType);
+                            sources.Add(lastResortType);
+                        }
                 }
                 else
                 {

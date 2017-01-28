@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8b636153-2500-4e63-b372-a1595456c3a6" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2017.1.28.0." />
+		</introduction>
+
+		<section address="General">
+			<title>General</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>There are now separate VSIX package installers for Visual Studio 2013 and Visual Studio 2015
+and later.  This is required due to the new VSIX 3 format needed by Visual Studio 2017.</para>
+					</listItem>
+
+					<listItem>
+						<para>The VSIX package installers now run interactively for removing and installing the packages due
+to the Visual Studio 2017 version's insistence on shutting down all running Visual Studio processes before
+installing the package content.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="Documentation">
+			<title>Documentation</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added a FAQ entry about the BuildAssembler 
+<link xlink:href="f5b58289-dd25-45b6-b616-5b8af6ba3739#UnresolveRefLink">unresolved reference link warning</link>
+and how to suppress it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a FAQ entry describing how to
+<link xlink:href="f5b58289-dd25-45b6-b616-5b8af6ba3739#AddLogo">add a logo file</link> to a help file
+builder project.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the member naming option to ignore pipe characters which can occur in some F# member
+names and updated the VB syntax generators to handle F# properties with no return type.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <application>GenerateInheritedDocs</application> so that it only uses
+<codeInline>System.IDisposable</codeInline> or <codeInline>System.Object</codeInline> as the base type from which
+to inherit type documentation as a last resort.  Preference is given to user-defined types and interfaces
+instead.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the extended XML comments IntelliSense support so that it does not incorrectly complete
+the selection when typing "&lt;/".</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed spaces and punctuation characters from the display text of the custom completion
+IntelliSense option names which were causing issues with selection.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from Sam Harwell that fix a bug that was preventing use of the arrow keys to
+scroll the selections in the XML comments IntelliSense popup window.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Christoph Lindemann for providing build task changes that enable support for dynamic
+property values at build time.  See the <link xlink:href="76eb8f39-b225-4881-afa2-13cb7829b944" /> topic for more
+information.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the code colorizer rules for XML to handle inline script elements
+(<codeInline>&lt;% ... %&gt;</codeInline>) in HTML code snippets and HTML element attributes that are missing
+attribute values.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>h1</codeInline> tags to the topic titles in the VS2010 and VS2013 styles so
+that they are more search engine friendly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Jose Deboni for providing Portuguese (pt-BR) resource item file translations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to xinfli for providing Simplified Chinese (zh-CN) resource item file translations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to sakasita001 for providing a fix to the Japanese (ja-JP) resource item file
+translations.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

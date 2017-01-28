@@ -29,11 +29,11 @@
     <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2016, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2017, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2016.9.17.0</HelpFileVersion>
+    <HelpFileVersion>2017.1.28.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -303,6 +303,7 @@
     <None Include="Content\FAQ\PlugIns.aml" />
     <None Include="Content\FAQ\PresentationStyles.aml" />
     <None Include="Content\GettingStarted\ContentFileEditors.aml" />
+    <None Include="Content\GettingStarted\DynamicProperties.aml" />
     <None Include="Content\GettingStarted\GeneralPreferences.aml" />
     <None Include="Content\GettingStarted\SpellCheckerOptions.aml" />
     <None Include="Content\GettingStarted\XCopyDeployment.aml" />
@@ -370,6 +371,7 @@
     <None Include="Content\VersionHistory\v2016.4.9.0.aml" />
     <None Include="Content\VersionHistory\v2016.5.28.aml" />
     <None Include="Content\VersionHistory\v2016.9.17.0.aml" />
+    <None Include="Content\VersionHistory\v20171.28.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

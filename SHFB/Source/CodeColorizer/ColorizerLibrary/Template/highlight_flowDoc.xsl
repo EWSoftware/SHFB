@@ -54,6 +54,7 @@
 <xsl:template match="xml-value"><xsl:value-of select="text()" disable-output-escaping="yes" /></xsl:template>
 <xsl:template match="xml-tag"><Span Style="{{DynamicResource HighlightXmlTag}}"><xsl:value-of select="text()" disable-output-escaping="yes" /></Span></xsl:template>
 <xsl:template match="xml-bracket"><Span Style="{{DynamicResource HighlightXmlBracket}}"><xsl:value-of select="text()" disable-output-escaping="yes" /></Span></xsl:template>
+<xsl:template match="xml-bracket-inline"><Span Style="{{DynamicResource HighlightXmlBracketInline}}"><xsl:value-of select="text()" disable-output-escaping="yes" /></Span></xsl:template>
 <xsl:template match="xml-comment"><Span Style="{{DynamicResource HighlightXmlComment}}"><xsl:value-of select="text()" disable-output-escaping="yes"/></Span></xsl:template>
 <xsl:template match="xml-cdata">
 	<Span Style="{{DynamicResource HighlightXmlBracket}}"><xsl:text>&lt;![CDATA[</xsl:text></Span>

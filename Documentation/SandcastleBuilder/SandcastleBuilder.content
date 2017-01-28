@@ -120,6 +120,11 @@
         <HelpKeyword index="K" term="console mode, Team Build" />
       </HelpKeywords>
     </Topic>
+    <Topic id="76eb8f39-b225-4881-afa2-13cb7829b944" visible="True" title="Using Dynamic Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="dynamic properties" />
+      </HelpKeywords>
+    </Topic>
   </Topic>
   <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio Integration Package">
     <HelpKeywords>
@@ -1380,7 +1385,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="4a295201-9516-4914-b9d1-7db80631b42d" visible="True" isSelected="true" title="Version 2016.9.17.0">
+    <Topic id="8b636153-2500-4e63-b372-a1595456c3a6" visible="True" isSelected="true" title="Version 2017.1.28.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="version, 2017.1.28.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4a295201-9516-4914-b9d1-7db80631b42d" visible="True" title="Version 2016.9.17.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="version, 2016.9.17.0" />
       </HelpKeywords>

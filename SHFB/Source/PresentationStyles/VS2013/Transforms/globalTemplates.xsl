@@ -379,11 +379,13 @@
 					</td>
 				</xsl:if>
 				<td class="titleColumn">
-					<include item="boilerplate_pageTitle">
-						<parameter>
-							<xsl:call-template name="t_topicTitleDecorated"/>
-						</parameter>
-					</include>
+					<h1>
+						<include item="boilerplate_pageTitle">
+							<parameter>
+								<xsl:call-template name="t_topicTitleDecorated"/>
+							</parameter>
+						</include>
+					</h1>
 				</td>
 				<xsl:if test="normalize-space($logoFile) and $placementLC = 'right'">
 					<td class="logoColumn">

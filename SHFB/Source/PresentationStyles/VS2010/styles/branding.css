@@ -88,10 +88,6 @@ div.OH_outerContent table.TitleTable td {
 }
 
 .OH_tdTitleColumn {
-	font-family: Segoe UI, Verdana, Arial;
-	font-size: 1.45em; /*17pt*/
-	font-weight: bold;
-	color: #000000;
 	padding: 0px;
 	padding-left: 10px;
 	text-align: left;
@@ -141,7 +137,7 @@ td.header {
 }
 
 h1 {
-	font-size: 2em; /*24pt*/
+	font-size: 1.5em; /*18pt*/
 	font-weight: 400;
 	margin-top: 0px;
 }

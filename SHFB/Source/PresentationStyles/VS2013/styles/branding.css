@@ -192,12 +192,8 @@ table.titleTable td {
 	border-width: 0px;
 }
 td.titleColumn {
-	font-family: 'Segoe UI' , 'Lucida Grande' , Verdana, Arial, Helvetica, sans-serif;
-	font-size: 2.5em;
-	font-weight: normal;
 	margin-top: 0px;
 	padding-left: 0px;
-	color: #000;
 	vertical-align: middle;
 }
 td.logoColumn {

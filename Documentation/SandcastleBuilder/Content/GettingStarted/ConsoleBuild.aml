@@ -16,8 +16,8 @@ executable used in prior versions of the help file builder has been removed.</pa
 			<title>Building From the Command Line</title>
 			<content>
 				<para>Use <localUri>MSBuild.exe</localUri> to build help file builder projects from the command line.  It
-can be found in the <localUri>%SystemRoot%\Microsoft.NET\Framework\v[version]</localUri> folder where "[version]"
-is an appropriate version of the .NET Framework (currently 4.0.30319).  All of the usual MSBuild command line
+can typically be found in the <localUri>%ProgramFiles(x86)%\MSBuild\[version]\bin</localUri> folder where
+"[version]" is the most recent version of MSBuild (14.0 for example).  All of the usual MSBuild command line
 options can be used.  You can use the <system>/property:n=v</system> option (short form: <system>/p:n=v</system>)
 to override project property values where "n" is a property name and "v" is the value to use.  Below are some
 common command line option and property overrides not directly represented by a matching help file builder
@@ -123,10 +123,10 @@ in a response file (see below) are relative to the project's path as usual.  Bel
 command lines:</para>
 
 <code language="none" title="Note: Lines wrapped for display purposes">
-%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
+%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe
     /p:Configuration=Release HelpFile.shfbproj
 
-%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
+%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe
     /p:CopyrightText="Copyright \xa9 2006-2011"
     /p:FeedbackEMailAdress="Eric@EWoodruff.us"
     HelpFile.shfbproj
@@ -156,7 +156,7 @@ can be on a separate line or all options can be on one line.  Comment lines are 
 to <localUri>MSBuild.exe</localUri>.</para>
 
 <code language="none" title=" ">
-%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe @ResponseFile.rsp
+%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe @ResponseFile.rsp
 </code>
 
 			</content>
@@ -281,7 +281,7 @@ file in debug builds where it may not be needed.</para>
 IF "$(ConfigurationName)"=="Debug" Goto Exit
 
 ECHO Building SHFB help file via MSBuild
-"$(SystemRoot)\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
+%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe"
     /p:CleanIntermediates=True /p:Configuration=Release
     "$(SolutionDir)Doc\SandcastleBuilder.shfbproj"
 
@@ -309,6 +309,7 @@ it with the build process in a similar fashion.</para>
 			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
 			<link xlink:href="ec822059-b179-4add-984d-485580050ffb" />
 			<link xlink:href="96956ab6-fd5e-4bc7-a577-a18b0ff258ea" />
+			<link xlink:href="76eb8f39-b225-4881-afa2-13cb7829b944" />
 		</relatedTopics>
 
 	</developerConceptualDocument>

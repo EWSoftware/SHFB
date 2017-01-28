@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <highlight needs-build="yes" save-build="no">
-    <!-- Map language ID variations to language IDs in this file.
-         "from" should be lower case.  "to" should match an ID on
-         one of the language elements. -->
-    <map>
-        <language from="c#" to="cs"/>
-        <language from="csharp" to="cs"/>
-        <language from="c++" to="cpp"/>
-        <language from="cplusplus" to="cpp"/>
-        <language from="cpp#" to="cpp"/>
-        <language from="f#" to="fs"/>
-        <language from="fsharp" to="fs"/>
-        <language from="fsscript" to="fs"/>
-        <language from="j#" to="jsharp"/>
-        <language from="ecmascript" to="javascript"/>
-        <language from="js" to="javascript"/>
-        <language from="jscript" to="jscriptnet"/>
-        <language from="jscript#" to="jscriptnet"/>
-        <language from="jscript.net" to="jscriptnet"/>
-        <language from="vb" to="vbnet"/>
-        <language from="vb#" to="vbnet"/>
-        <language from="vb.net" to="vbnet"/>
-        <language from="vbs" to="vbscript"/>
-        <language from="htm" to="xml"/>
-        <language from="html" to="xml"/>
-        <language from="aspnet" to="xml"/>
-        <language from="asp.net" to="xml"/>
-        <language from="xsl" to="xml"/>
-        <language from="sql server" to="sql"/>
-        <language from="sqlserver" to="sql"/>
-        <language from="powershell" to="pshell"/>
-        <language from="ps1" to="pshell"/>
-        <language from="py" to="python" />
-    </map>
+	<!-- Map language ID variations to language IDs in this file. "from" should be lowercase.
+			 "to" should match an ID on one of the language elements. -->
+	<map>
+		<language from="c#" to="cs"/>
+		<language from="csharp" to="cs"/>
+		<language from="c++" to="cpp"/>
+		<language from="cplusplus" to="cpp"/>
+		<language from="cpp#" to="cpp"/>
+		<language from="f#" to="fs"/>
+		<language from="fsharp" to="fs"/>
+		<language from="fsscript" to="fs"/>
+		<language from="j#" to="jsharp"/>
+		<language from="ecmascript" to="javascript"/>
+		<language from="js" to="javascript"/>
+		<language from="jscript" to="jscriptnet"/>
+		<language from="jscript#" to="jscriptnet"/>
+		<language from="jscript.net" to="jscriptnet"/>
+		<language from="vb" to="vbnet"/>
+		<language from="vb#" to="vbnet"/>
+		<language from="vb.net" to="vbnet"/>
+		<language from="vbs" to="vbscript"/>
+		<language from="htm" to="xml"/>
+		<language from="html" to="xml"/>
+		<language from="aspnet" to="xml"/>
+		<language from="asp.net" to="xml"/>
+		<language from="xsl" to="xml"/>
+		<language from="sql server" to="sql"/>
+		<language from="sqlserver" to="sql"/>
+		<language from="powershell" to="pshell"/>
+		<language from="ps1" to="pshell"/>
+		<language from="py" to="python" />
+	</map>
 	<!-- families of keywords -->
 	<keywordlists>
 		<!-- Common C-like language keywords (C, C++, C#) -->
@@ -122,27 +121,27 @@
 		</keywordlist>
 		<!-- Managed C++ keywords -->
 		<keywordlist id="kwcpp-managed">
-            <kw>abstract</kw>
-            <kw>array</kw>
-            <kw>delegate</kw>
-            <kw>each</kw>
-            <kw>event</kw>
-            <kw>finally</kw>
-            <kw>gcnew</kw>
-            <kw>generic</kw>
-            <kw>interface</kw>
-            <kw>interior_ptr</kw>
-            <kw>literal</kw>
-            <kw>nullptr</kw>
-            <kw>override</kw>
-            <kw>pin_ptr</kw>
-            <kw>property</kw>
-            <kw>ref</kw>
-            <kw>safe_cast</kw>
-            <kw>sealed</kw>
-            <kw>typeid</kw>
-            <kw>value</kw>
-            <kw>where</kw>
+			<kw>abstract</kw>
+			<kw>array</kw>
+			<kw>delegate</kw>
+			<kw>each</kw>
+			<kw>event</kw>
+			<kw>finally</kw>
+			<kw>gcnew</kw>
+			<kw>generic</kw>
+			<kw>interface</kw>
+			<kw>interior_ptr</kw>
+			<kw>literal</kw>
+			<kw>nullptr</kw>
+			<kw>override</kw>
+			<kw>pin_ptr</kw>
+			<kw>property</kw>
+			<kw>ref</kw>
+			<kw>safe_cast</kw>
+			<kw>sealed</kw>
+			<kw>typeid</kw>
+			<kw>value</kw>
+			<kw>where</kw>
 		</keywordlist>
 		<!-- C# keywords -->
 		<keywordlist id="kwcs-keywords">
@@ -463,111 +462,111 @@
 		</keywordlist>
 		<!-- JavaScript keywords -->
 		<keywordlist id="kwjavascript-statements">
-            <kw>break</kw>
-            <kw>case</kw>
-            <kw>catch</kw>
-            <kw>const</kw>
-            <kw>continue</kw>
-            <kw>debugger</kw>
-            <kw>default</kw>
-            <kw>delete</kw>
-            <kw>do</kw>
-            <kw>each</kw>
-            <kw>else</kw>
-            <kw>export</kw>
-            <kw>false</kw>
-            <kw>for</kw>
-            <kw>function</kw>
-            <kw>get</kw>
-            <kw>if</kw>
-            <kw>in</kw>
-            <kw>instanceof</kw>
-            <kw>let</kw>
-            <kw>new</kw>
-            <kw>null</kw>
-            <kw>return</kw>
-            <kw>set</kw>
-            <kw>switch</kw>
-            <kw>this</kw>
-            <kw>throw</kw>
-            <kw>true</kw>
-            <kw>try</kw>
-            <kw>typeof</kw>
-            <kw>var</kw>
-            <kw>void</kw>
-            <kw>while</kw>
-            <kw>with</kw>
-            <kw>yield</kw>
+			<kw>break</kw>
+			<kw>case</kw>
+			<kw>catch</kw>
+			<kw>const</kw>
+			<kw>continue</kw>
+			<kw>debugger</kw>
+			<kw>default</kw>
+			<kw>delete</kw>
+			<kw>do</kw>
+			<kw>each</kw>
+			<kw>else</kw>
+			<kw>export</kw>
+			<kw>false</kw>
+			<kw>for</kw>
+			<kw>function</kw>
+			<kw>get</kw>
+			<kw>if</kw>
+			<kw>in</kw>
+			<kw>instanceof</kw>
+			<kw>let</kw>
+			<kw>new</kw>
+			<kw>null</kw>
+			<kw>return</kw>
+			<kw>set</kw>
+			<kw>switch</kw>
+			<kw>this</kw>
+			<kw>throw</kw>
+			<kw>true</kw>
+			<kw>try</kw>
+			<kw>typeof</kw>
+			<kw>var</kw>
+			<kw>void</kw>
+			<kw>while</kw>
+			<kw>with</kw>
+			<kw>yield</kw>
 		</keywordlist>
 		<!-- JavaScript function keywords -->
 		<keywordlist id="kwjavascript-functions">
-            <kw>arguments</kw>
-            <kw>decodeURI</kw>
-            <kw>decodeURIComponent</kw>
-            <kw>encodeURI</kw>
-            <kw>encodeURIComponent</kw>
-            <kw>eval</kw>
-            <kw>isFinite</kw>
-            <kw>isNaN</kw>
-            <kw>parseFloat</kw>
-            <kw>parseInt</kw>
+			<kw>arguments</kw>
+			<kw>decodeURI</kw>
+			<kw>decodeURIComponent</kw>
+			<kw>encodeURI</kw>
+			<kw>encodeURIComponent</kw>
+			<kw>eval</kw>
+			<kw>isFinite</kw>
+			<kw>isNaN</kw>
+			<kw>parseFloat</kw>
+			<kw>parseInt</kw>
 		</keywordlist>
 		<!-- JavaScript object keywords -->
 		<keywordlist id="kwjavascript-objects">
-            <kw>ActiveXObject</kw>
-            <kw>Array</kw>
-            <kw>Boolean</kw>
-            <kw>Date</kw>
-            <kw>Debug</kw>
-            <kw>Enumerator</kw>
-            <kw>Error</kw>
-            <kw>EvalError</kw>
-            <kw>Function</kw>
-            <kw>Global</kw>
-            <kw>Math</kw>
-            <kw>Number</kw>
-            <kw>Object</kw>
-            <kw>RangeError</kw>
-            <kw>ReferenceError</kw>
-            <kw>RegExp</kw>
-            <kw>String</kw>
-            <kw>SyntaxError</kw>
-            <kw>TypeError</kw>
-            <kw>URIError</kw>
-            <kw>VBArray</kw>
+			<kw>ActiveXObject</kw>
+			<kw>Array</kw>
+			<kw>Boolean</kw>
+			<kw>Date</kw>
+			<kw>Debug</kw>
+			<kw>Enumerator</kw>
+			<kw>Error</kw>
+			<kw>EvalError</kw>
+			<kw>Function</kw>
+			<kw>Global</kw>
+			<kw>Math</kw>
+			<kw>Number</kw>
+			<kw>Object</kw>
+			<kw>RangeError</kw>
+			<kw>ReferenceError</kw>
+			<kw>RegExp</kw>
+			<kw>String</kw>
+			<kw>SyntaxError</kw>
+			<kw>TypeError</kw>
+			<kw>URIError</kw>
+			<kw>VBArray</kw>
 		</keywordlist>
 		<!-- JScript.NET keywords -->
 		<keywordlist id="kwjscriptnet-statements">
-            <kw>abstract</kw>
-            <kw>boolean</kw>
-            <kw>byte</kw>
-            <kw>char</kw>
-            <kw>class</kw>
-            <kw>decimal</kw>
-            <kw>double</kw>
-            <kw>enum</kw>
-            <kw>extends</kw>
-            <kw>final</kw>
-            <kw>finally</kw>
-            <kw>float</kw>
-            <kw>implements</kw>
-            <kw>import</kw>
-            <kw>int</kw>
-            <kw>interface</kw>
-            <kw>internal</kw>
-            <kw>long</kw>
-            <kw>package</kw>
-            <kw>private</kw>
-            <kw>protected</kw>
-            <kw>protected</kw>
-            <kw>public</kw>
-            <kw>sbyte</kw>
-            <kw>short</kw>
-            <kw>static</kw>
-            <kw>super</kw>
-            <kw>uint</kw>
-            <kw>ulong</kw>
-            <kw>ushort</kw>
+			<kw>abstract</kw>
+			<kw>boolean</kw>
+			<kw>byte</kw>
+			<kw>char</kw>
+			<kw>class</kw>
+			<kw>decimal</kw>
+			<kw>double</kw>
+			<kw>enum</kw>
+			<kw>extends</kw>
+			<kw>final</kw>
+			<kw>finally</kw>
+			<kw>float</kw>
+			<kw>implements</kw>
+			<kw>import</kw>
+			<kw>int</kw>
+			<kw>interface</kw>
+			<kw>internal</kw>
+			<kw>long</kw>
+			<kw>package</kw>
+			<kw>private</kw>
+			<kw>protected</kw>
+			<kw>protected</kw>
+			<kw>public</kw>
+			<kw>sbyte</kw>
+			<kw>short</kw>
+			<kw>static</kw>
+			<kw>super</kw>
+			<kw>uint</kw>
+			<kw>ulong</kw>
+			<kw>ushort</kw>
 		</keywordlist>
 		<!-- J# keywords -->
 		<keywordlist id="kwjsharp">
@@ -818,40 +817,40 @@
 			<kw>$switch</kw>
 			<kw>$this</kw>
 		</keywordlist>
-        <!-- Python keywords -->
-        <keywordlist id="kwpython-keywords">
-            <kw>and</kw>
-            <kw>as</kw>
-            <kw>assert</kw>
-            <kw>break</kw>
-            <kw>class</kw>
-            <kw>continue</kw>
-            <kw>def</kw>
-            <kw>del</kw>
-            <kw>elif</kw>
-            <kw>else</kw>
-            <kw>except</kw>
-            <kw>exec</kw>
-            <kw>finally</kw>
-            <kw>for</kw>
-            <kw>from</kw>
-            <kw>global</kw>
-            <kw>if</kw>
-            <kw>import</kw>
-            <kw>in</kw>
-            <kw>is</kw>
-            <kw>lambda</kw>
-            <kw>not</kw>
-            <kw>or</kw>
-            <kw>pass</kw>
-            <kw>print</kw>
-            <kw>raise</kw>
-            <kw>return</kw>
-            <kw>try</kw>
-            <kw>while</kw>
-            <kw>with</kw>
-            <kw>yield</kw>
-        </keywordlist>
+		<!-- Python keywords -->
+		<keywordlist id="kwpython-keywords">
+			<kw>and</kw>
+			<kw>as</kw>
+			<kw>assert</kw>
+			<kw>break</kw>
+			<kw>class</kw>
+			<kw>continue</kw>
+			<kw>def</kw>
+			<kw>del</kw>
+			<kw>elif</kw>
+			<kw>else</kw>
+			<kw>except</kw>
+			<kw>exec</kw>
+			<kw>finally</kw>
+			<kw>for</kw>
+			<kw>from</kw>
+			<kw>global</kw>
+			<kw>if</kw>
+			<kw>import</kw>
+			<kw>in</kw>
+			<kw>is</kw>
+			<kw>lambda</kw>
+			<kw>not</kw>
+			<kw>or</kw>
+			<kw>pass</kw>
+			<kw>print</kw>
+			<kw>raise</kw>
+			<kw>return</kw>
+			<kw>try</kw>
+			<kw>while</kw>
+			<kw>with</kw>
+			<kw>yield</kw>
+		</keywordlist>
 		<!-- F# language keywords -->
 		<keywordlist id="kwfslang-keywords">
 			<kw>abstract</kw>
@@ -1271,11 +1270,15 @@
 					<regexp id="rx-hidden" attribute="hidden" context="cdata" expression="&lt;!\[CDATA\[" />
 					<!-- A doctype of some sort-->
 					<regexp id="rx-doctype" attribute="xml-bracket" context="doctype" expression="&lt;!" />
+					<!-- Inline script opening element -->
+					<regexp id="rx-inline-open" attribute="xml-bracket-inline" context="value" expression="&lt;%" />
+					<!-- Inline script closing element -->
+					<regexp id="rx-inline-close" attribute="xml-bracket-inline" context="value" expression="%&gt;" />
 					<!-- closing element -->
 					<regexp id="rx-close-elem" attribute="xml-bracket" context="closing-element" expression="&lt;/" />
 					<!-- opening element -->
 					<regexp id="rx-open-elem" attribute="xml-bracket" context="opening-element" expression="&lt;\?{0,1}" />
-                    <!-- Leftover end bracket from doctype -->
+					<!-- Leftover end bracket from doctype -->
 					<regexp id="rx-end-bracket" attribute="xml-bracket" context="value" expression="&gt;" />
 				</context>
 				<!-- cdata tag -->
@@ -1287,7 +1290,7 @@
 					<regexp id="rx-doc-bracket" attribute="xml-bracket" context="value" expression="&gt;" />
 					<!-- Comment -->
 					<regexp id="rx-doc-comment" attribute="xml-comment" context="doctype" expression="&lt;!--(.|\n)*?--&gt;" />
-                    <!-- A quoted string or attribute name -->
+					<!-- A quoted string or attribute name -->
 					<regexp id="rx-doc-quote" attribute="xml-attribute-value" context="doctype" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;|\b(\w|-|\.)+\b)" />
 					<!-- A doctype of some sort-->
 					<regexp id="rx-doc-nested" attribute="xml-bracket" context="doctype" expression="&lt;!" />
@@ -1304,16 +1307,24 @@
 				</context>
 				<!-- attributes group -->
 				<context id="element-attributes" attribute="xml-code">
-					<!-- find end of element -->
+					<!-- Find end of element -->
 					<regexp id="rx-value" attribute="xml-bracket" context="value" expression="(\?|/){0,1}&gt;" />
-					<!-- find attributes... -->
+					<!-- Find attributes -->
 					<regexp id="rx-attr-name" attribute="xml-attribute-name" context="attribute-name" expression="\b((\w|-|\.)+\:){0,1}(\w|-|\.)+\b" />
+					<!-- This is here in case there's an attribute without a value followed by one with a value.  Things
+							 get a bit complicated and this attempts to keep the processing in sync. -->
+					<regexp id="rx-elem-equal" attribute="xml-attribute-equal" context="attribute-name" expression="=" />
 				</context>
 				<!-- attribute name -->
-				<context id="attribute-name" attribute="hidden">
-					<regexp id="rx-elem-attrs" attribute="xml-attribute-value" context="element-attributes" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;|\b(\w|-|\.)+\b)" />
-                    <!-- This must come last as equals can appear in quoted strings -->
+				<context id="attribute-name" attribute="xml-code">
+					<regexp id="rx-elem-attrs" attribute="xml-attribute-value" context="element-attributes" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;)" />
+					<!-- This could be an attribute value without quotes or it could be another attribute name if the last
+							 one had no value.  We'll color it as if it is an attribute name. -->
+					<regexp id="rx-elem-attr-name" attribute="xml-attribute-name" context="element-attributes" expression="\b((\w|-|\.)+\:){0,1}(\w|-|\.)+\b" />
+					<!-- This must come after the conditions above as an equal sign can appear in quoted strings -->
 					<regexp id="rx-elem-equal" attribute="xml-attribute-equal" context="attribute-name" expression="=" />
+					<!-- End of element.  This can happen if there's an attribute name with no value. -->
+					<regexp id="rx-value" attribute="xml-bracket" context="value" expression="(\?|/){0,1}&gt;" />
 				</context>
 			</contexts>
 		</language>
@@ -1332,7 +1343,7 @@
 					<regexp id="rx-close-elem" attribute="xml-bracket" context="closing-element" expression="&lt;/" />
 					<!-- opening element -->
 					<regexp id="rx-open-elem" attribute="xml-bracket" context="opening-element" expression="&lt;\?{0,1}" />
-                    <!-- Leftover end bracket from doctype -->
+					<!-- Leftover end bracket from doctype -->
 					<regexp id="rx-end-bracket" attribute="xml-bracket" context="value" expression="&gt;" />
 				</context>
 				<!-- cdata tag -->
@@ -1344,7 +1355,7 @@
 					<regexp id="rx-doc-bracket" attribute="xml-bracket" context="value" expression="&gt;" />
 					<!-- Comment -->
 					<regexp id="rx-doc-comment" attribute="xml-comment" context="doctype" expression="&lt;!--(.|\n)*?--&gt;" />
-                    <!-- A quoted string or attribute name -->
+					<!-- A quoted string or attribute name -->
 					<regexp id="rx-doc-quote" attribute="xml-attribute-value" context="doctype" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;|\b(\w|-|\.)+\b)" />
 					<!-- A doctype of some sort-->
 					<regexp id="rx-doc-nested" attribute="xml-bracket" context="doctype" expression="&lt;!" />
@@ -1369,7 +1380,7 @@
 				<!-- attribute name -->
 				<context id="attribute-name" attribute="hidden">
 					<regexp id="rx-elem-attrs" attribute="xml-attribute-value" context="element-attributes" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;|\b(\w|-|\.)+\b)" />
-                    <!-- This must come last as equals can appear in quoted strings -->
+					<!-- This must come last as equals can appear in quoted strings -->
 					<regexp id="rx-elem-equal" attribute="xml-attribute-equal" context="attribute-name" expression="=" />
 				</context>
 			</contexts>
@@ -1405,12 +1416,12 @@
 				</context>
 			</contexts>
 		</language>
-		<!-- Powershell language specification -->
+		<!-- PowerShell language specification -->
 		<language id="pshell" tabSize="4" name="PowerShell">
 			<!-- Code contexts: default (most common) is code. -->
 			<contexts default="code">
-					<!-- basic source code context -->
-					<context id="code" attribute="code">
+				<!-- basic source code context -->
+				<context id="code" attribute="code">
 					<!-- " " literals -->
 					<regexp id="dqliteral" attribute="literal" context="code" expression="(&quot;&quot;)|(@&quot;(.|[\r\n])*?&quot;|&quot;(.|\\&quot;|\\\r\n)*?((\\\\)+&quot;|[^\\]{1}&quot;))" />
 					<!-- ' ' literals -->
@@ -1423,7 +1434,7 @@
 					<regexp id="number" attribute="number" context="code" expression="0x[0-9a-fA-F]*|(((?&lt;=[^0-9])(\+|-))?)\b[0-9][0-9]*(\.[0-9]+)?" />
 					<!-- pshell cmdlets -->
 					<regexp id="pshellCmdlet" attribute="pshell-cmdlet" context="code" expression="(\b\w+-\b\w+)" />
-					<!-- keyword powershell -->
+					<!-- keyword PowerShell -->
 					<keyword attribute="keyword" context="code" family="kwpshelllangoo-keywords" />
 					<!-- keyword C-like -->
 					<keyword attribute="keyword" context="code" family="kwclang-keywords" />

@@ -7,6 +7,7 @@
 .highlight-preprocessor { color: #996666; }
 .highlight-xml-tag { color: #AA4400 }
 .highlight-xml-bracket { color: #0000FF }
+.highlight-xml-bracket-inline { background: #FFFF66 }
 .highlight-xml-comment { color: #006633 }
 .highlight-xml-cdata { color: #AA0088 }
 .highlight-xml-attribute-name { color: #0000FF }

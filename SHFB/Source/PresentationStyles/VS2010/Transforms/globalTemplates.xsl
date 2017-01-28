@@ -379,11 +379,13 @@
 					</td>
 				</xsl:if>
 				<td class="OH_tdTitleColumn">
-					<include item="boilerplate_pageTitle">
-						<parameter>
-							<xsl:call-template name="t_topicTitleDecorated"/>
-						</parameter>
-					</include>
+					<h1>
+						<include item="boilerplate_pageTitle">
+							<parameter>
+								<xsl:call-template name="t_topicTitleDecorated"/>
+							</parameter>
+						</include>
+					</h1>
 				</td>
 				<td class="OH_tdRunningTitleColumn">
 					<include item="runningHeaderText" />
