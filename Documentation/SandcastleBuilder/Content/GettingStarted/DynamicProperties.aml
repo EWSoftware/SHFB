@@ -22,8 +22,7 @@ properties.  When built, those properties will be replaced with their values at 
 example, you could enter the value "Version {@HelpFileVersion}, Git Commit ID: {@GitCommitId}" in the
 <legacyBold>Additional footer text</legacyBold> property to show the version number and Git commit ID in the
 footer of each page.</para>
-			</content>
-		
+
 <code language="xml" title=" ">
 	&lt;PropertyGroup&gt;
 		&lt;!-- Add the custom target so that it runs before the help file is built--&gt;
@@ -70,11 +69,12 @@ footer of each page.</para>
 		&lt;/PropertyGroup&gt;
 	&lt;/Target&gt;
 </code>		
+			</content>
 		</section>
 
 		<relatedTopics>
 			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
-			<link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />		
+			<link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

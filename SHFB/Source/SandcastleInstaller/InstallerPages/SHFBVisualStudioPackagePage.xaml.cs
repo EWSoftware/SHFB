@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 12/26/2016
+// Updated : 01/28/2017
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
@@ -385,8 +385,9 @@ namespace Sandcastle.Installer.InstallerPages
             {
                 await Task.Run(() =>
                 {
+                    // Do the uninstall first.  Packages for later versions will still see the package in
+                    // older versions of Visual Studio and uninstall it if not.
                     foreach(var package in vsixPackages.Where(p => !String.IsNullOrEmpty(p.VsixInstallerPath)))
-                    {
                         if(package.InstalledLocations.Count != 0)
                         {
                             // Try uninstalling any prior version before installing the latest release.
@@ -417,7 +418,9 @@ namespace Sandcastle.Installer.InstallerPages
                                     Directory.Delete(packagePath, true);
                         }
 
-                        // Now install the latest release
+                    // Now install the latest release
+                    foreach(var package in vsixPackages.Where(p => !String.IsNullOrEmpty(p.VsixInstallerPath)))
+                    {
                         exitCode = Utility.RunInstaller(package.VsixInstallerPath, "\"" + Path.Combine(
                             Utility.InstallResourcesPath, package.PackageName) + "\"");
 
