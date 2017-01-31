@@ -31,7 +31,7 @@
 				<visualStudio version="12.0" basePath="%VS120COMNTOOLS%\..\IDE" />
 			</package>
 			<package name="SHFBVisualStudioPackage_VS2015AndLater.vsix" description="Visual Studio 2015;Visual Studio 2017">
-				<visualStudio version="14.0" basePath="%VS120COMNTOOLS%\..\IDE" />
+				<visualStudio version="14.0" basePath="%VS140COMNTOOLS%\..\IDE" />
 				<visualStudio version="15.0" basePath="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\{0}\Common7\IDE"
 					editionPaths="Community, Developer, Enterprise" />
 			</package>
