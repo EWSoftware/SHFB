@@ -46,7 +46,7 @@
     </item>
 
     <!-- Copyright notice. {0} = Copyright text, {1} = Year(s), {2} = Holder(s) -->
-    <item id="boilerplate_copyrightNotice"><p>{0} &#169;{1}{2}。保留所有权力</p></item>
+    <item id="boilerplate_copyrightNotice"><p>{0} &#169;{1}{2}。保留所有权利</p></item>
 
     <!-- Glossary related entries -->
     <item id="text_relatedEntries">参见：</item>
