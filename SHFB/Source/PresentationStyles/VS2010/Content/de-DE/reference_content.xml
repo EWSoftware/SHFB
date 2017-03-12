@@ -202,10 +202,6 @@
   <item id="text_instanceThreadSafe">Instanzmember dieses Typs sind threadsicher. </item>
   <item id="text_instanceNotThreadSafe">Instanzmember dieses Typs sind nicht threadsicher. </item>
   
-  <item id="text_NotesForImplementers">Hinweise an Implementierer</item>
-  <item id="text_NotesForCallers">Hinweise an Anrufer</item>
-  <item id="text_NotesForInheritors">Hinweise an Erben</item>
-  
   <!-- boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">Der {0} generische Typ exponiert die folgenden Member.</item>
   <item id="exposedMembersTableText">Der {0} Typ exponiert die folgenden Member.</item>	

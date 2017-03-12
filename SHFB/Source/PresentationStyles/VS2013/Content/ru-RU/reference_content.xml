@@ -202,10 +202,6 @@
   <item id="text_instanceThreadSafe">Члены экземпляра этого типа, являются безопасными для многопоточных операций. </item>
   <item id="text_instanceNotThreadSafe">Члены экземпляра этого типа, являются небезопасными для многопоточных операций. </item>
   
-  <item id="text_NotesForImplementers">Примечания для реализующих объектов</item>
-  <item id="text_NotesForCallers">Примечания для вызывающих объектов</item>
-  <item id="text_NotesForInheritors">Примечания для наследников</item>
-  
   <!-- boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">Универсальный тип {0} предоставляет следующие члены.</item>
   <item id="exposedMembersTableText">Тип {0} предоставляет следующие члены.</item>	

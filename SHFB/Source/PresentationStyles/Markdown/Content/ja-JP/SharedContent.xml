@@ -3,7 +3,7 @@
 
 	<!-- Media file path -->
 	<item id="mediaPath">media/{0}</item>
-	
+
 	<!-- Topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
 	<item id="header"></item>
@@ -18,6 +18,9 @@
 	<item id="alert_title_visualC#">C# メモ</item>
 	<item id="alert_title_visualC++">C++ メモ</item>
 	<item id="alert_title_visualJ#">J# メモ</item>
+	<item id="text_NotesForImplementers">実装時の注意</item>
+	<item id="text_NotesForCallers">利用時の注意</item>
+	<item id="text_NotesForInheritors">継承する場合の注意</item>
 
 	<!-- Alert alt text -->
 	<item id="alert_altText_tip">ヒント</item>

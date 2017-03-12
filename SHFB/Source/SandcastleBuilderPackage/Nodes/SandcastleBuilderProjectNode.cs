@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/12/2016
-// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
+// Updated : 03/12/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
@@ -270,7 +270,7 @@ namespace SandcastleBuilder.Package.Nodes
         public string StartWebServerInstance()
         {
             ProcessStartInfo psi;
-            SandcastleBuilder.Utils.FilePath webServerPath = new SandcastleBuilder.Utils.FilePath(null);
+            Utils.FilePath webServerPath = new Utils.FilePath(null);
             string path, vPath = null, outputPath, defaultPage = "Index.aspx";
             int serverPort = 12345, uniqueId;
 
@@ -336,19 +336,17 @@ namespace SandcastleBuilder.Package.Nodes
 
                         // Fall back to the .NET 2.0/3.5 version?
                         if(!File.Exists(webServerPath))
-                        {
                             webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
+                    }
 
-                            if(!File.Exists(webServerPath))
-                            {
-                                // Try for IIS Express
-                                webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
-                                    @"IIS Express\IISExpress.exe");
-                                vPath = String.Empty;
-                            }
-                        }
+                    if(!File.Exists(webServerPath))
+                    {
+                        // Try for IIS Express
+                        webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                            Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                            @"IIS Express\IISExpress.exe");
+                        vPath = String.Empty;
                     }
 
                     if(!File.Exists(webServerPath))

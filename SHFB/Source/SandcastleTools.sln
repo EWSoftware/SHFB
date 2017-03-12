@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddNamespaceGroups", "AddNamespaceGroups\AddNamespaceGroups.csproj", "{57410D6B-4BA4-400D-A304-1CCE5E571EBA}"
 EndProject
@@ -31,6 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardPresentationStyles"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{64C88721-3289-48BE-B2CA-253B4C312BA7}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		SandcastleTools.ruleset = SandcastleTools.ruleset
 	EndProjectSection
 EndProject

@@ -202,10 +202,6 @@
   <item id="text_instanceThreadSafe">Los miembros de instancia de este tipo son seguros para la ejecuci&#243;n de subprocesos. </item>
   <item id="text_instanceNotThreadSafe">Los miembros de instancia de este tipo no son seguros para la ejecuci&#243;n de subprocesos. </item>
   
-  <item id="text_NotesForImplementers">Nota a los implementadores</item>
-  <item id="text_NotesForCallers">Nota a los consumidores</item>
-  <item id="text_NotesForInheritors">Nota a los herederos</item>
-  
   <!-- boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">El tipo gen&#233;rico {0} expone a los siguientes miembros.</item>
   <item id="exposedMembersTableText">El tipo {0} expone a los siguientes miembros.</item>	
