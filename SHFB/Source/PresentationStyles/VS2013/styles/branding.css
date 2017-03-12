@@ -571,3 +571,12 @@ sup.citation a:link a:visited a:active {
 /* Placeholder for the Help 1 user data style class */
 .userDataStyle {
 }
+
+
+
+p.missing
+{
+	color: #dc143c;
+	font-size: 8.5pt;
+	font-weight: bold;
+}
