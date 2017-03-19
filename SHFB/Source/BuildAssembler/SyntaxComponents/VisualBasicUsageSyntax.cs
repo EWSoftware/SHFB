@@ -873,12 +873,51 @@ namespace Microsoft.Ddue.Tools
 
                 case "type":
                     string id = reference.GetAttribute("api", String.Empty);
-                    WriteNormalTypeReference(id, writer);
                     XPathNodeIterator typeModifiers = reference.Select(typeModifiersExpression);
 
-                    while(typeModifiers.MoveNext())
-                        WriteTypeReference(typeModifiers.Current, writer);
+                    // !EFW - Support value tuple syntax
+                    if(id.StartsWith("T:System.ValueTuple`", StringComparison.Ordinal))
+                    {
+                        writer.WriteString("(");
 
+                        while(typeModifiers.MoveNext())
+                        {
+                            XPathNodeIterator args = reference.Select(specializationArgumentsExpression);
+
+                            while(args.MoveNext())
+                            {
+                                if(args.CurrentPosition > 1)
+                                    writer.WriteString(", ");
+
+                                var elArgs = args.Current.Select(specializationArgumentsExpression);
+
+                                while(elArgs.MoveNext())
+                                {
+                                    if(elArgs.CurrentPosition > 1)
+                                        writer.WriteString(", ");
+
+                                    var elementName = elArgs.Current.GetAttribute("elementName", String.Empty);
+
+                                    if(elementName != null)
+                                    {
+                                        writer.WriteString(elementName);
+                                        writer.WriteString(" As ");
+                                    }
+
+                                    WriteTypeReference(elArgs.Current, writer);
+                                }
+                            }
+                        }
+
+                        writer.WriteString(")");
+                    }
+                    else
+                    {
+                        WriteNormalTypeReference(id, writer);
+
+                        while(typeModifiers.MoveNext())
+                            WriteTypeReference(typeModifiers.Current, writer);
+                    }
                     break;
 
                 case "template":
