@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2017
+// Updated : 03/17/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1894,6 +1894,10 @@ namespace SandcastleBuilder.Gui
                     else
                         excludedWorkingFolder = project.WorkingPath;
                 }
+
+                // While debugging, this occasionally gets a null folder reference so we'll ignore them
+                if(excludedOutputFolder == null || excludedWorkingFolder == null)
+                    excludedOutputFolder = excludedWorkingFolder = "??";
 
                 if(excludedOutputFolder.EndsWith("\\", StringComparison.Ordinal))
                     excludedOutputFolder = excludedOutputFolder.Substring(0, excludedOutputFolder.Length - 1);

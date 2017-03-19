@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- Sandcastle Help File Builder Tasks.  https://GitHub.com/EWSoftware/SHFB -->
 	<UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.GenerateMarkdownContent"
     AssemblyFile="{@SHFBFolder}\SandcastleBuilder.Utils.dll" />

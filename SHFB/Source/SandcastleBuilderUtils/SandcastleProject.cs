@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2017
+// Updated : 03/17/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1779,8 +1779,8 @@ namespace SandcastleBuilder.Utils
                 if(!Double.TryParse(msBuildProject.ToolsVersion, out toolsVersion))
                     toolsVersion = 0.0;
 
-                if(toolsVersion < 4.0)
-                    msBuildProject.Xml.ToolsVersion = "4.0";
+                if(toolsVersion < 14.0)
+                    msBuildProject.Xml.ToolsVersion = "14.0";
 
                 if(!this.ProjectPropertyCache.TryGetValue("SHFBSchemaVersion", out property))
                     throw new BuilderException("PRJ0001", "Invalid or missing SHFBSchemaVersion");

@@ -27,9 +27,6 @@
 			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
 					 be in version order from earliest to most recent. -->
-			<package name="SHFBVisualStudioPackage_VS2013.vsix" description="Visual Studio 2013">
-				<visualStudio version="12.0" basePath="%VS120COMNTOOLS%\..\IDE" />
-			</package>
 			<package name="SHFBVisualStudioPackage_VS2015AndLater.vsix" description="Visual Studio 2015;Visual Studio 2017">
 				<visualStudio version="14.0" basePath="%VS140COMNTOOLS%\..\IDE" />
 				<visualStudio version="15.0" basePath="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\{0}\Common7\IDE"
@@ -39,7 +36,6 @@
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
-			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2017 Community" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2017 Professional" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\Xml\Schemas" />
@@ -48,7 +44,6 @@
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are
 					 in the My Documents folder. -->
-			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2015" location="Visual Studio 2015\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2017" location="Visual Studio 2017\Code Snippets\Xml\My Xml Snippets" />
 		</page>
