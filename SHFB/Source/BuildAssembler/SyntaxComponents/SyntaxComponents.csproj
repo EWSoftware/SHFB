@@ -67,6 +67,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="AspNetSyntax.cs" />
+    <Compile Include="XSharpDeclarationSyntax.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ManagedCPlusPlusDeclarationSyntax.cs" />
     <Compile Include="CSharpDeclarationSyntax.cs" />
@@ -106,6 +107,10 @@
   <ItemGroup>
     <Content Include="SyntaxContent\AspNet.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SyntaxContent\XSharp.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="SyntaxContent\CSharp.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
