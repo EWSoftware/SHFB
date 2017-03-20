@@ -25,7 +25,7 @@ namespace ValueTupleTest
     /// </summary>
     public class ValueTupleTestClass
     {
-        /// <summary>
+/*        /// <summary>
         /// A value tuple field
         /// </summary>
         public (int X, int Y) TupleField;
@@ -76,6 +76,6 @@ namespace ValueTupleTest
         {
             string x = p.Key.KeyX;
             int y = p.Value.ValueY;
-        }
+        }*/
     }
 }
