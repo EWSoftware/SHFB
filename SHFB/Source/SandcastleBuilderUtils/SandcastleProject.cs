@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/28/2016
-// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
+// Updated : 03/17/2017
+// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
@@ -1779,8 +1779,8 @@ namespace SandcastleBuilder.Utils
                 if(!Double.TryParse(msBuildProject.ToolsVersion, out toolsVersion))
                     toolsVersion = 0.0;
 
-                if(toolsVersion < 4.0)
-                    msBuildProject.Xml.ToolsVersion = "4.0";
+                if(toolsVersion < 14.0)
+                    msBuildProject.Xml.ToolsVersion = "14.0";
 
                 if(!this.ProjectPropertyCache.TryGetValue("SHFBSchemaVersion", out property))
                     throw new BuilderException("PRJ0001", "Invalid or missing SHFBSchemaVersion");
@@ -1912,10 +1912,16 @@ namespace SandcastleBuilder.Utils
             if(!propertyCache.TryGetValue(msBuildProperty.Name, out localProperty))
                 return;
 
+            // This can happen on rare occasions, usually on build servers.  Typically, the property in question
+            // is not related to the SHFB project itself.  The name just happens to match a restricted property.
+            // It's better to ignore it rather than abort loading the project and break the build.  We'll just
+            // log it to the output window for reference when debugging.
             if(!localProperty.CanWrite || localProperty.IsDefined(typeof(XmlIgnoreAttribute), true))
-                throw new BuilderException("PRJ0004", String.Format(CultureInfo.CurrentCulture,
-                    "An attempt was made to set a read-only or ignored property: {0}   Value: {1}",
-                    msBuildProperty, value));
+            {
+                System.Diagnostics.Debug.WriteLine("**** An attempt was made to set a read-only or ignored " +
+                    "property: {0}   Value: {1}", msBuildProperty.Name, value);
+                return;
+            }
 
             try
             {

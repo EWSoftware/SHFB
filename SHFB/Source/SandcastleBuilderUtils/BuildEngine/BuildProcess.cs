@@ -2317,6 +2317,12 @@ AllDone:
                     var projectFramework = reflectionDataDictionary.CoreFrameworkMatching(
                         targetFrameworksSeen.First(), new Version(targetFrameworkVersionsSeen.Max(f => f)), true);
 
+                    // .NETStandard is a bit odd.  Its outputs can be used by various frameworks so we'll just
+                    // defer to whatever the user has selected.  If it fails due to version mismatches, they'll
+                    // probably just need to pick a more appropriate framework version.
+                    if(projectFramework == null && targetFrameworksSeen.First().StartsWith(".NETStandard", StringComparison.Ordinal))
+                        projectFramework = frameworkReflectionData;
+
                     if(frameworkReflectionData != projectFramework)
                     {
                         // If redirected and no suitable version was found, we can't go any further

@@ -203,10 +203,6 @@
   <item id="text_instanceThreadSafe">Les membres d'instance de ce type sont sûrs pour des opérations multi-thread. </item>
   <item id="text_instanceNotThreadSafe">Les membres d'instance de ce type ne sont pas sûrs pour les opérations multi-thread. </item>
   
-  <item id="text_NotesForImplementers">Remarques pour les implémenteurs</item>
-  <item id="text_NotesForCallers">Remarques pour les appelants</item>
-  <item id="text_NotesForInheritors">Remarques à l'attention des héritiers</item>
-  
   <!-- boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">Le type générique {0} expose les membres suivants.</item>
   <item id="exposedMembersTableText">Le type {0} expose les membres suivants.</item>	

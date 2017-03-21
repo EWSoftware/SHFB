@@ -336,6 +336,23 @@ namespace Microsoft.Ddue.Tools.Reflection
                 }
             }
 
+            if(reference.Name != "mscorlib")
+            {
+                // Try for a framework assembly in the target platform
+                var assemblyRef = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[Identifier.For(reference.Name).UniqueIdKey];
+
+                if(assemblyRef != null && System.IO.File.Exists(assemblyRef.Location))
+                {
+                    assembly = AssemblyNode.GetAssembly(assemblyRef.Location, null, false, false, false, false);
+
+                    ConsoleApplication.WriteMessage(LogLevel.Info, "Using framework redirect '{0}' in place of '{1}'",
+                        assembly.StrongName, name);
+
+                    cache.Add(name, assembly);
+                    return assembly;
+                }
+            }
+
             // Couldn't find it; return null
             return null;
         }
@@ -348,8 +365,11 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>Always returns null</returns>
         private AssemblyNode UnresolvedReference(AssemblyReference reference, Module module)
         {
-            // Don't raise the event if ignored
-            if(!ignoreIfUnresolved.Contains(reference.Name))
+            // Don't raise the event if ignored.  Also, a bit of a hack for now.  If it's a "System." or a
+            // "Microsoft." assembly, just ignore it.  There are some issues resolving some of the .NETCore
+            // and .NETStandard assemblies due to variations in how they are distributed.
+            if(!ignoreIfUnresolved.Contains(reference.Name) && !reference.Name.StartsWith("System.",
+              StringComparison.Ordinal) && !reference.Name.StartsWith("Microsoft.", StringComparison.Ordinal))
                 OnUnresolvedAssemblyReference(reference, module);
             else
                 ConsoleApplication.WriteMessage(LogLevel.Warn, "Ignoring unresolved assembly " +

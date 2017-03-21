@@ -20,14 +20,14 @@
 	<!-- header and footer -->
 	<item id="header"><span class="introStyle"></span></item>
 	<item id="footer_text"></item>
-  
+
 	<!-- freshness date -->
 	<item id="boilerplate_UpdateTitle"><span class="introStyle">Actualizado: {0}</span></item>
-	<!-- if the TransformComponent of the BuildAssembler config file has the argument: 
+	<!-- if the TransformComponent of the BuildAssembler config file has the argument:
 			 argument key="changeHistoryOptions" value="showDefaultFreshnessDate"
 			 the "text_defaultFreshnessDate" item is used as the default freshness date for topics that don't have a Change History table. -->
 	<item id="text_defaultFreshnessDate"/>
-  
+
 	<!-- topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
 
@@ -41,6 +41,9 @@
 	<item id="alert_title_visualC#">Nota para C#</item>
 	<item id="alert_title_visualC++">Nota para C++</item>
 	<item id="alert_title_visualJ#">Nota para J#</item>
+	<item id="text_NotesForImplementers">Nota a los implementadores</item>
+	<item id="text_NotesForCallers">Nota a los consumidores</item>
+	<item id="text_NotesForInheritors">Nota a los herederos</item>
 
 	<!-- alert alt text -->
 	<item id="alert_altText_tip">Consejo</item>
@@ -51,7 +54,7 @@
 	<item id="alert_altText_visualBasic">Nota para Visual Basic</item>
 	<item id="alert_altText_visualC#">Nota para C#</item>
 	<item id="alert_altText_visualC++">Nota para C++</item>
-	<item id="alert_altText_visualJ#">Nota para J#</item>	
+	<item id="alert_altText_visualJ#">Nota para J#</item>
 
 	<!-- section titles -->
 	<item id="title_remarks">Observaciones</item>

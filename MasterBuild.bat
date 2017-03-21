@@ -30,22 +30,9 @@ ECHO *
 
 IF ERRORLEVEL 1 GOTO End
 
-REM Don't build for VS2013 if it isn't present
-IF NOT EXIST "%VS120COMNTOOLS%..\IDE\devenv.exe" GOTO VS2015
-
-ECHO *
-ECHO * VS2013 package
-ECHO *
-
-"%NUGET%" restore "SandcastleBuilderPackage_VS2013.sln"
-"%MSBUILD%" /nologo /v:m /m "SandcastleBuilderPackage_VS2013.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
-IF ERRORLEVEL 1 GOTO End
-
-:VS2015
-
 REM We need to use MSBuild 15.0 if present in order to support the new VSIX format in VS2017 and  later
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0"
-IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Developer\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Developer\MSBuild\15.0"
+IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0"
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0"
 
 REM If it's not there, use MSBuild 14.0

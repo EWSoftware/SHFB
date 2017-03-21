@@ -9,19 +9,43 @@
       <title>Cause</title>
       <content>
         <para>An attempt was made to use a Visual Studio project as a documentation source that has an
-incompatible format.  C++ projects created with Visual Studio 2008 and earlier do not use an MSBuild-based format
-and cannot be parsed.  Future versions of Visual Studio may introduce new MSBuild elements and attributes
-not recognized by the MSBuild engine used by the help file builder to load project files.  If a project is
-encountered that uses these new elements, it may not be loadable.</para>
+incompatible format.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>MSBuild projects in the version 1.0 and 2.0 format cannot be parsed.  These must be upgraded
+to the newer format used by MSBuild 4.0 and later.</para>
+					</listItem>
+
+					<listItem>
+						<para>C++ projects created with Visual Studio 2008 and earlier do not use an MSBuild-based format
+and cannot be parsed.</para>
+					</listItem>
+
+					<listItem>
+						<para>.NETStandard projects use a different project format only supported by MSBuild 15.0 and later.
+These are not compatible with the standalone GUI.  Help file builder projects using such projects as
+documentation sources must be built from within Visual Studio 2017 or from the command line using MSBuild 15.0.</para>
+					</listItem>
+
+					<listItem>
+						<para>Future versions of Visual Studio may introduce new MSBuild elements and attributes not
+recognized by the MSBuild engine used by the help file builder to load project files resulting in this error.</para>
+					</listItem>
+				</list>
       </content>
     </section>
 
     <section>
       <title>Solution</title>
       <content>
-        <para>Add the assembly and XML comments file created by the Visual Studio project to the help file
-builder project as documentation sources rather than the project file that contains them.  Likewise, add any
-required references from the Visual Studio project to the help file builder project's References project node.</para>
+        <para>As a last resort, add the assembly and XML comments file created by the Visual Studio project to
+the help file builder project as documentation sources rather than the project file that contains them.
+Likewise, add any required references from the Visual Studio project to the help file builder project's
+References project node.</para>
+
+				<para>If the project is using a newer MSBuild file format, please open an issue in the <token>SHFB</token>
+project and request support for the new project file format.</para>
 
       </content>
     </section>

@@ -14,8 +14,11 @@
 	<item id="alert_title_important">Важно</item>
 	<item id="alert_title_visualBasic">Примечание для Visual Basic</item>
 	<item id="alert_title_visualC#">Примечание для C#</item>
-  <item id="alert_title_visualC++">Примечание для C++</item>
+	<item id="alert_title_visualC++">Примечание для C++</item>
 	<item id="alert_title_visualJ#">Примечание для J#</item>
+	<item id="text_NotesForImplementers">Примечания для реализующих объектов</item>
+	<item id="text_NotesForCallers">Примечания для вызывающих объектов</item>
+	<item id="text_NotesForInheritors">Примечания для наследников</item>
 
 	<!-- Alert alt text -->
 	<item id="alert_altText_tip">Подсказка</item>
@@ -25,7 +28,7 @@
 	<item id="alert_altText_important">Важно</item>
 	<item id="alert_altText_visualBasic">Примечание для Visual Basic</item>
 	<item id="alert_altText_visualC#">Примечание для C#</item>
-  <item id="alert_altText_visualC++">Примечание для C++</item>
+	<item id="alert_altText_visualC++">Примечание для C++</item>
 	<item id="alert_altText_visualJ#">Примечание для J#</item>
 
   <!-- Section titles -->

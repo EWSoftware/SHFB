@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
+// Updated : 03/12/2017
+// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to manage the project items and files
@@ -1858,6 +1858,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 dlg.FileName = newName;
                 dlg.InitialDirectory = path;
                 dlg.DefaultExt = Path.GetExtension(file);
+
+                string ext = Path.GetExtension(file);
+
+                if(!String.IsNullOrWhiteSpace(ext))
+                    dlg.Filter = String.Format(CultureInfo.InvariantCulture, "{0} files|*{1}|{2}",
+                        miSelection.Text, ext, dlg.Filter);
 
                 if(dlg.ShowDialog() == DialogResult.OK)
                     try

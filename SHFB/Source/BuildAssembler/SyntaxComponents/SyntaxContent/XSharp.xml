@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+	<!-- Syntax section and code example title.  Add one for the primary ID and one for each alternate ID. -->
+	<item id="devlang_X#">X#</item>
+	<item id="devlang_XSharp">X#</item>
+	<item id="devlang_xs">X#</item>
+
+	<!-- Development language metadata values.  Add one for the primary ID and one for each alternate ID.  -->
+	<item id="metaLang_X#">XSharp</item>
+	<item id="metaLang_XSharp">XSharp</item>
+	<item id="metaLang_xs">XSharp</item>
+
+	<!-- X# syntax section messages -->
+	<item id="UnsupportedOperator_XSharp">X# does not support this operator.</item>
+	<item id="UnsupportedVarargs_XSharp">X# does not support methods that use variable length arguments
+(<span class="code">varargs</span>).  The compiler automatically resolves calls to this method to the same method
+that uses a parameter array.</item>
+
+</content>
