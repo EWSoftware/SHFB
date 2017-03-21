@@ -202,10 +202,6 @@
     <item id="text_instanceThreadSafe">这个类型的实例成员对多线程操作是安全的。</item>
     <item id="text_instanceNotThreadSafe">这个类型的实例成员对多线程操作是不安全的。</item>
 
-    <item id="text_NotesForImplementers">实现时注意</item>
-    <item id="text_NotesForCallers">调用时注意</item>
-    <item id="text_NotesForInheritors">继承时注意</item>
-
     <!-- boilerplate intro to member list tables -->
     <item id="genericExposedMembersTableText">{0} 泛型公开以下成员。</item>
     <item id="exposedMembersTableText">{0} 类型公开以下成员。</item>	

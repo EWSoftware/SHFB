@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : MemberIdFixUpPlugInConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/10/2016
-// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
+// Updated : 03/12/2017
+// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the member ID fix-up plug-in configuration
@@ -188,6 +188,8 @@ namespace SandcastleBuilder.PlugIns
             TreeNode node = null;
 
             string[,] cppExpressions = new[,] {
+                // Overload topic links fix-up
+                { "!:O:", "O:" },
                 // Strip out "`" followed by digits
                 { "`[0-9]+(\\{)", "$1" },
                 // Strip out superfluous "^"

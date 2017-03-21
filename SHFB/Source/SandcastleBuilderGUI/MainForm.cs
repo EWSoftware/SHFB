@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/19/2016
-// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
+// Updated : 03/17/2017
+// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main form for the application.
@@ -1509,19 +1509,17 @@ namespace SandcastleBuilder.Gui
 
                         // Fall back to the .NET 2.0/3.5 version?
                         if(!File.Exists(webServerPath))
-                        {
                             webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
+                    }
 
-                            if(!File.Exists(webServerPath))
-                            {
-                                // Try for IIS Express
-                                webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
-                                    @"IIS Express\IISExpress.exe");
-                                vPath = String.Empty;
-                            }
-                        }
+                    if(!File.Exists(webServerPath))
+                    {
+                        // Try for IIS Express
+                        webServerPath.Path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                            Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                            @"IIS Express\IISExpress.exe");
+                        vPath = String.Empty;
                     }
 
                     if(!File.Exists(webServerPath))
@@ -1896,6 +1894,10 @@ namespace SandcastleBuilder.Gui
                     else
                         excludedWorkingFolder = project.WorkingPath;
                 }
+
+                // While debugging, this occasionally gets a null folder reference so we'll ignore them
+                if(excludedOutputFolder == null || excludedWorkingFolder == null)
+                    excludedOutputFolder = excludedWorkingFolder = "??";
 
                 if(excludedOutputFolder.EndsWith("\\", StringComparison.Ordinal))
                     excludedOutputFolder = excludedOutputFolder.Substring(0, excludedOutputFolder.Length - 1);

@@ -1,0 +1,12 @@
+# Top-most EditorConfig file
+root = true
+
+# Don't use tabs for indentation unless otherwise overridden
+[*]
+indent_style = space
+end_of_line = crlf
+# (Please don't specify an indent_size here; that has too many unintended consequences.)
+
+# XML files of various types
+[*.{xml,aml,csproj,.shfbproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj,props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+indent_style = tab

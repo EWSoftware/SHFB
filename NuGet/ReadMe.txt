@@ -11,7 +11,7 @@ without installing the tools manually such as on a build server.  The following 
   If multiple versions are available for any given reflection data set package, download the latest version as
   it will cover all prior versions as well.
 
-- Set the project's ComponentPath property to the package folder so that the project can find the reflection
+- Set the project's ComponentPath property to the .\packages folder so that the project can find the reflection
   data files and any other third-party build components, plug-ins, presentation styles, etc. deployed as NuGet
   packages.
 

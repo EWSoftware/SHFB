@@ -17,8 +17,11 @@
 	<item id="alert_title_visualC#"><b>C# 备注：</b></item>
 	<item id="alert_title_visualC++"><b>C++ 备注：</b></item>
 	<item id="alert_title_visualJ#"><b>J# 备注：</b></item>
+	<item id="text_NotesForImplementers">Notes to Implementers</item>
+	<item id="text_NotesForCallers">Notes to Callers</item>
+	<item id="text_NotesForInheritors">Notes to Inheritors</item>
 
-    <!-- Alert alt text -->
+	<!-- Alert alt text -->
 	<item id="alert_altText_tip">提示</item>
 	<item id="alert_altText_caution">警告</item>
 	<item id="alert_altText_security">安全性事项</item>

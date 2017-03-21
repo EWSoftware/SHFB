@@ -6,6 +6,7 @@
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
 // 12/30/2012 - EFW - Updated to use TargetTypeDictionary
+// 03/12/2017 - EFW - Fixed exception caused by missing specialization type on ill-formed ID
 
 using System;
 using System.Collections.Generic;
@@ -514,12 +515,14 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteEndElement();
 
+            // The specialization type may be null if the ID is ill-formed.  If so, ignore it.
             for(int i = 0; i < specialization.Count; i++)
-            {
-                if(i > 0)
-                    writer.WriteString(", ");
-                WriteType(specialization[i], DisplayOptions.Default, writer);
-            }
+                if(specialization[i] != null)
+                {
+                    if(i > 0)
+                        writer.WriteString(", ");
+                    WriteType(specialization[i], DisplayOptions.Default, writer);
+                }
 
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", "languageSpecificText");

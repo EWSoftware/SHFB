@@ -202,10 +202,6 @@
   <item id="text_instanceThreadSafe">この型のインスタンスメンバーはスレッドセーフです。</item>
   <item id="text_instanceNotThreadSafe">この型のインスタンスメンバーはスレッドセーフではありません。</item>
   
-  <item id="text_NotesForImplementers">実装時の注意</item>
-  <item id="text_NotesForCallers">利用時の注意</item>
-  <item id="text_NotesForInheritors">継承する場合の注意</item>
-  
   <!-- boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">{0} ジェネリック型は下記のメンバーを公開します。</item>
   <item id="exposedMembersTableText">{0} 型は下記のメンバーを公開します。</item>	

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/01/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
+// Updated : 03/19/2017
+// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -67,6 +67,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
         private static Regex reInvalidAttribute = new Regex(
             "The attribute \"(.*?)\" in element \\<(.*?)\\> is unrecognized", RegexOptions.IgnoreCase);
+
         #endregion
 
         #region Properties
@@ -367,20 +368,17 @@ namespace SandcastleBuilder.Utils.MSBuild
                 projectFile = Path.GetFullPath(projectFile);
 
             if(!File.Exists(projectFile))
-                throw new BuilderException("BE0051", "The specified project " +
-                    "file does not exist: " + projectFile);
+                throw new BuilderException("BE0051", "The specified project file does not exist: " + projectFile);
 
             if(Path.GetExtension(projectFile).ToUpperInvariant() == ".VCPROJ")
-                throw new BuilderException("BE0068", "Incompatible Visual " +
-                    "Studio project file format.  See error code help topic " +
-                    "for more information.\r\nC++ project files prior to Visual " +
+                throw new BuilderException("BE0068", "Incompatible Visual Studio project file format.  See " +
+                    "the error code help topic for more information.\r\nC++ project files prior to Visual " +
                     "Studio 2010 are not currently supported.");
 
             try
             {
                 // If the project is already loaded, we'll use it as-is
-                msBuildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
-                    projectFile).FirstOrDefault();
+                msBuildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectFile).FirstOrDefault();
 
                 if(msBuildProject == null)
                 {
@@ -393,11 +391,13 @@ namespace SandcastleBuilder.Utils.MSBuild
             {
                 // Future MSBuild projects may not be loadable.  Their targets must be added as individual
                 // documentation sources and reference items.
-                if(reInvalidAttribute.IsMatch(ex.Message))
-                    throw new BuilderException("BE0068", "Incompatible Visual Studio project " +
-                        "file format.  See error code help topic for more information.\r\nThis " +
-                        "project may be for a newer version of MSBuild and cannot be loaded.  " +
-                        "Error message:", ex);
+                if(reInvalidAttribute.IsMatch(ex.Message) || ex.Message.StartsWith("The default XML namespace " +
+                  "of the project", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new BuilderException("BE0068", "Incompatible Visual Studio project file format.  " +
+                        "See the error code help topic for more information.\r\nThis project may be for a " +
+                        "newer version of MSBuild and cannot be loaded.  Error message:", ex);
+                }
 
                 throw;
             }

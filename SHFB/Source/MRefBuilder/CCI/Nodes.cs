@@ -8154,6 +8154,11 @@ throwError:
             set { this.templateInstances = value; }
         }
 
+        /// <summary>
+        /// The element names if this is a something that has named elements such as <c>ValueTuple</c>
+        /// </summary>
+        internal Collections.Specialized.StringEnumerator ElementNames { get; set; }
+
         internal TypeNode(NodeType nodeType)
             : base(nodeType)
         {

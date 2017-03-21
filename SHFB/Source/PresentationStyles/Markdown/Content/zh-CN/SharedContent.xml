@@ -3,7 +3,7 @@
 
 	<!-- Media file path -->
 	<item id="mediaPath">media/{0}</item>
-	
+
 	<!-- Topic title -->
 	<item id="boilerplate_pageTitle">{0}</item>
 	<item id="header"></item>
@@ -18,6 +18,9 @@
 	<item id="alert_title_visualC#">C# Note</item>
 	<item id="alert_title_visualC++">C++ Note</item>
 	<item id="alert_title_visualJ#">J# Note</item>
+	<item id="text_NotesForImplementers">Notes to Implementers</item>
+	<item id="text_NotesForCallers">Notes to Callers</item>
+	<item id="text_NotesForInheritors">Notes to Inheritors</item>
 
 	<!-- Alert alt text -->
 	<item id="alert_altText_tip">Tip</item>
