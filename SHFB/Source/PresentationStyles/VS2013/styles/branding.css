@@ -442,6 +442,7 @@ div.caption {
 span.code, span.command {
 	font-family: Consolas, Courier, monospace;
 	color: #000066;
+	background-color: #f4f4f4;
 }
 span.ui {
 	font-weight: bold;
@@ -574,7 +575,7 @@ sup.citation a:link a:visited a:active {
 
 
 
-p.missing
+.missing
 {
 	color: #dc143c;
 	font-size: 8.5pt;
