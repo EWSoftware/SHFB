@@ -15,7 +15,7 @@
 	<!-- reference_content.xml overrides -->
 	<item id="topicTitle_root">{@RootNamespaceTitle}</item>
     <!-- This is used when a title is not specified in the project -->
-    <item id="rootTopicTitleLocalized">Namespaces</item>
+    <item id="rootTopicTitleLocalized">Namensräume</item>
 
 	<item id="productTitle">{@HtmlEncHelpTitle}</item>
 	<item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
@@ -41,7 +41,7 @@
 
 	<!-- Request Example link -->
 	<item id="requestExample"><a id="HT_RequestExampleLink" href="{0}" target="_blank" class="button"
-		title="Request an example for this topic">Request Example</a>
+		title="Beispiel für dieses Thema anfordern">Beispiel anfordern</a>
 		<script type="text/javascript">
 		var HT_requestExampleLink = document.getElementById("HT_RequestExampleLink");
 		var HT_requestExampleLinkText = HT_requestExampleLink.innerHTML;
