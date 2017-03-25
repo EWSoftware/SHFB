@@ -18,6 +18,7 @@
 // without having to add additional reference link data to the help project.
 // 03/28/2015 - EFW - Changed the href-format attribute to a nested hrefFormat element.
 // 06/05/2015 - EFW - Removed support for the Help 2 Index and LocalOrIndex link types
+// 03/24/2017 - EFW - Updated to try and resolve missing overload IDs to an equivalent non-overload method ID
 
 using System;
 using System.Collections.Generic;
@@ -254,6 +255,32 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
 
                 bool targetFound = targets.TryGetValue(targetId, out target, out type);
+
+                // If it's an overload ID that wasn't found, it's possible that the overloads got excluded.
+                // As such, see if we can find a match for a method using the same ID regardless of any
+                // parameters.
+                if(!targetFound && targetId.StartsWith("Overload:", StringComparison.Ordinal) ||
+                  targetId.StartsWith("O:", StringComparison.Ordinal))
+                {
+                    string methodTargetId = "M:" + targetId.Substring(targetId.IndexOf(':') + 1);
+                    methodTargetId = targets.Keys.FirstOrDefault(k => k.StartsWith(methodTargetId));
+
+                    if(methodTargetId != null)
+                    {
+                        targetId = methodTargetId;
+                        targetFound = targets.TryGetValue(targetId, out target, out type);
+                        options |= DisplayOptions.ShowParameters;
+
+                        // Don't use the content as it may not be appropriate for the method.  The default is
+                        // "{0} Overload" which no longer applies.  Instead we'll show the method name and
+                        // its parameters.
+                        if(link.DisplayTarget.Equals("format", StringComparison.OrdinalIgnoreCase))
+                        {
+                            link.DisplayTarget = null;
+                            link.Contents = null;
+                        }
+                    }
+                }
 
                 // If not found and it starts with "System." or "Microsoft." we'll go with the assumption that
                 // it's part of a Microsoft class library that is not part of the core framework but does have
