@@ -14,8 +14,10 @@
 
 	<!-- include and import declarations -->
 	<include schemaLocation="base.xsd" />
+  <!-- Sandcastle fix, required for missing maml:inlineGroup -->
+  <include schemaLocation="inline.xsd"/>
 
-	<!-- element declarations -->
+  <!-- element declarations -->
 	<!-- linking elements -->
 	<element name="link" type="maml:inlineLinkType">
 		<annotation>

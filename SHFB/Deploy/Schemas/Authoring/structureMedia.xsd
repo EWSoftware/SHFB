@@ -14,10 +14,13 @@
 			This schema is part of the base layer.
 		</documentation>
 	</annotation>
-	<!-- include and import declarations -->
+
+  <!-- include and import declarations -->
 	<include schemaLocation="base.xsd"/>
-	
-	<!-- element declarations -->
+  <!-- Sandcastle fix, required for missing maml:mediaLinkType -->
+  <include schemaLocation="inlineLinking.xsd"/>
+
+  <!-- element declarations -->
 	<element name="mediaLink" type="maml:mediaLinkType">
 		<annotation>
 			<documentation>The media element represents media objects of any type. It is intended as a placeholder for images, audio and video.

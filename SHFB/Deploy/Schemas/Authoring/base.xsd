@@ -16,9 +16,12 @@
 		</documentation>
 	</annotation>
 
-	<import schemaLocation="../xlink.xsd" namespace="http://www.w3.org/1999/xlink" />
+  <!-- Sandcastle fix, xlink schema already exists in VisualStudio schema catalog,
+       so only import has to be done without schema location -->
+  <!--<import schemaLocation="../xlink.xsd" namespace="http://www.w3.org/1999/xlink" />-->
+  <import namespace="http://www.w3.org/1999/xlink" />
 
-	<!-- simpleType declarations -->
+  <!-- simpleType declarations -->
 	<simpleType name="mediaFileFormatsType">
 		<annotation>
 			<documentation>

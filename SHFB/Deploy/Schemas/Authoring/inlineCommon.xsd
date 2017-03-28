@@ -6,9 +6,13 @@
 			This schema defines common inline elements.
 		</documentation>
 	</annotation>
-	<!-- include and import declarations -->
+
+  <!-- include and import declarations -->
 	<include schemaLocation="base.xsd" />
-	<!-- element declarations -->
+  <!-- Sandcastle fix, required for missing maml:inlineType -->
+  <include schemaLocation="inline.xsd"/>
+
+  <!-- element declarations -->
 	<!-- language markup -->
 	<element name="quoteInline" type="maml:textType">
 		<annotation>

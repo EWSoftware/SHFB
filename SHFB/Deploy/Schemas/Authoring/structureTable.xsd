@@ -17,7 +17,9 @@
 
 	<!-- include and import declarations -->
 	<include schemaLocation="block.xsd"/>
-	
+  <!-- Sandcastle fix, required for missing maml:sectionContentType -->
+  <include schemaLocation="structure.xsd"/>
+  
 	<!-- element declarations -->
 	<element name="table">
 		<annotation>

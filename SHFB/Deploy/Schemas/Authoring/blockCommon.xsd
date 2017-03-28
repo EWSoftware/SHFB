@@ -14,10 +14,14 @@
 		</documentation>
 	</annotation>
 
-	<!-- include and import declarations -->
+  <!-- include and import declarations -->
 	<include schemaLocation="inline.xsd"/>
+  <!-- Sandcastle fix, required for missing  maml:namedSectionType -->
+  <include schemaLocation="hierarchy.xsd"/>
+  <!-- Sandcastle fix, required for missing  maml:structureSimpleGroup -->
+  <include schemaLocation="structure.xsd"/>
 
-	<!-- Element declarations -->
+  <!-- Element declarations -->
 	<element name="para" type="maml:inlineType">
 		<annotation>
 			<documentation>
