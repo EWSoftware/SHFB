@@ -2,7 +2,7 @@
   <!-- Schemas for MAML -->
 
   <!-- Update Visual Studio's root catalog.xml file by adding
-       <Catalog href="%SHFBROOT%/Schemas/Authoring/catalog.xml"/>.
+       <Catalog href="%SHFBROOT%Schemas/Authoring/catalog.xml"/>.
        A sample of Visual Studio's root catalog.xml path is
        C:\Program Files (x86)\Microsoft Visual Studio 10.0\Xml\Schemas\catalog.xml -->
 
