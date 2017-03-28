@@ -46,6 +46,8 @@
 						</appinfo>
 					</annotation>
 				</element>
+        <!-- Sandcastle extention element -->
+        <element ref="maml:code"/>
 			</choice>
 			<attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
 			<attribute name="language" type="maml:devLanguagesType">
@@ -81,7 +83,53 @@ from the file identified by the source attribute.
 					</documentation>
 				</annotation>
 			</attribute>
-		</complexType>
+      <!-- Sandcastle extention attribute -->
+      <attribute name="removeRegionMarkers" type="boolean">
+        <annotation>
+          <documentation>
+            The removeRegionMarkers attribute allows to specify whether or not
+            region markers within the imported code file or region are removed.
+          </documentation>
+        </annotation>
+      </attribute>
+      <!-- Sandcastle extention attribute -->
+      <attribute name="tabSize" type="int">
+        <annotation>
+          <documentation>
+            This attribute allows to override the default tab size setting for
+            a language which is specified in the syntax file.
+          </documentation>
+        </annotation>
+      </attribute>
+      <!-- Sandcastle extention attribute -->
+      <attribute name="numberLines" type="boolean">
+        <annotation>
+          <documentation>
+            This attribute allows you to override the default setting in the
+            component's configuration.
+          </documentation>
+        </annotation>
+      </attribute>
+      <!-- Sandcastle extention attribute -->
+      <attribute name="outlining" type="boolean">
+        <annotation>
+          <documentation>
+            This attribute allows you to override the default setting in the
+            component's configuration.
+          </documentation>
+        </annotation>
+      </attribute>
+      <!-- Sandcastle extention attribute -->
+      <attribute name="keepSeeTags" type="boolean">
+        <annotation>
+          <documentation>
+            This attribute allows you to tell the build component's code
+            colorizer to preserve see tags within the code so that they can be
+            rendered as clickable links to the related topic.
+          </documentation>
+        </annotation>
+      </attribute>
+    </complexType>
 	</element>
 
 	<simpleType name="codeReferenceStringType">
