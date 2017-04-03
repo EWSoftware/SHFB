@@ -503,7 +503,7 @@ function ParseKeywords(keywords)
 {
     var keywordList = [];
     var checkWord;
-    var words = keywords.split(/\W+/);
+    var words = keywords.split(/[\s!@#$%^&*()\-=+\[\]{}\\|<>;:'",.<>/?`~]+/);
 
     for(var idx = 0; idx < words.length; idx++)
     {
