@@ -21,8 +21,10 @@
 	<include schemaLocation="inlineSoftware.xsd"/>	
 	<include schemaLocation="inlineLinking.xsd"/>	
 	<include schemaLocation="base.xsd"/>
+  <!-- Sandcastle fix, required for missing maml:conditions -->
+  <include schemaLocation="conditionSet.xsd"/>
 
-    <group name="inlineBasicGroup">
+  <group name="inlineBasicGroup">
         <choice>
     		<group ref="maml:inlineCommonGroup"/>
 			<group ref="maml:inlineLinkingGroup"/>

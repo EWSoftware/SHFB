@@ -17,8 +17,12 @@
 
 	<!-- include and import declarations -->
 	<include schemaLocation="base.xsd"/>
+  <!-- Sandcastle fix, required for missing maml:conditions -->
+  <include schemaLocation="conditionSet.xsd"/>
+  <!-- Sandcastle fix, required for missing maml:sectionContentType -->
+  <include schemaLocation="structure.xsd"/>
 
-    <complexType name="listType" mixed="false">
+  <complexType name="listType" mixed="false">
         <choice minOccurs="1" maxOccurs="unbounded">
             <element ref="maml:listItem"/>
             <element name="conditionalSection">

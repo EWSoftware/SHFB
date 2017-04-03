@@ -91,7 +91,21 @@
 	                    </documentation>
 	                </annotation>
 	            </enumeration>
-	        </restriction>
+              <enumeration value="block">
+                <annotation>
+                  <documentation>
+                    The element contains an integer block.
+                  </documentation>
+                </annotation>
+              </enumeration>
+              <enumeration value="integer">
+                <annotation>
+                  <documentation>
+                    The element contains an integer value.
+                  </documentation>
+                </annotation>
+              </enumeration>
+          </restriction>
 	    </simpleType>
 	</element>
 	
