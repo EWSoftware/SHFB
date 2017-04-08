@@ -2,22 +2,22 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2014
-// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
+// Updated : 04/07/2017
+// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the element handler methods for the MAML to flow document converter class
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.4  01/02/2012  EFW  Created the code
-// 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
-// 1.9.7.0  01/11/2013  EFW  Added support for colorizing code blocks
+// 01/02/2012  EFW  Created the code
+// 11/26/2012  EFW  Added support for imported code blocks
+// 01/11/2013  EFW  Added support for colorizing code blocks
 //===============================================================================================================
 
 using System;
@@ -127,6 +127,11 @@ namespace SandcastleBuilder.WPF.Maml
                 if(codeBlock.EndsWith("/*", StringComparison.Ordinal) ||
                   codeBlock.EndsWith("--", StringComparison.Ordinal))
                     codeBlock = codeBlock.Substring(0, codeBlock.Length - 2);
+
+                // Batch file remark
+                if(codeBlock.EndsWith("REM", StringComparison.OrdinalIgnoreCase) && codeBlock.Length > 3 &&
+                  (codeBlock[codeBlock.Length - 4] == '\r' || codeBlock[codeBlock.Length - 4] == '\n'))
+                    codeBlock = codeBlock.Substring(0, codeBlock.Length - 3);
             }
 
             if(removeRegionMarkers)
@@ -1000,6 +1005,17 @@ namespace SandcastleBuilder.WPF.Maml
         private static void ItalicElement(ElementProperties props)
         {
             props.Converter.AddInlineToContainer(new Italic());
+        }
+
+        /// <summary>
+        /// Handle line break elements
+        /// </summary>
+        /// <param name="props">The element properties</param>
+        /// <remarks>This inserts a line break element</remarks>
+        private static void LineBreakElement(ElementProperties props)
+        {
+            props.Converter.AddInlineToContainer(new LineBreak());
+            props.ParseChildren = props.ReturnToParent = false;
         }
 
         /// <summary>

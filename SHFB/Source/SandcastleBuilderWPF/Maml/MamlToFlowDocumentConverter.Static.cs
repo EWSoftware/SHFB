@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
+// Updated : 04/06/2017
+// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the static data definitions used by the MAML to flow document converter class
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.4  01/02/2012  EFW  Created the code
-// 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
+// 01/02/2012  EFW  Created the code
+// 11/26/2012  EFW  Added support for imported code blocks
 //===============================================================================================================
 
 using System;
@@ -353,6 +353,7 @@ namespace SandcastleBuilder.WPF.Maml
             { "legacyBold", BoldElement },
             { "legacyItalic", ItalicElement },
             { "legacyUnderline", UnderlineElement },
+            { "lineBreak", LineBreakElement },
             { "literal", LiteralElement },
             { "localUri", ItalicElement },
             { "math", MathElement },

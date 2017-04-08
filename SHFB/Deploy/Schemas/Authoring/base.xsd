@@ -120,12 +120,10 @@
 			<enumeration value="jsharp" />
 			<enumeration value="ecmascript" />
 			<enumeration value="javascript" />
-			<enumeration value="js" />
 			<enumeration value="jscriptnet" />
 			<enumeration value="jscript.net" />
 			<enumeration value="vbnet" />
 			<enumeration value="vb.net" />
-			<enumeration value="vb#" />
 			<enumeration value="htm" />
 			<enumeration value="aspnet" />
 			<enumeration value="asp.net" />

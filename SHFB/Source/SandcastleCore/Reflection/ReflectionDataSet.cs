@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/30/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
+// Updated : 04/06/2017
+// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
@@ -639,15 +639,18 @@ namespace Sandcastle.Core.Reflection
         /// This is used to see if the framework contains an assembly that uses the specified name
         /// </summary>
         /// <param name="assemblyName">The assembly name without a path or extension or a strong name value.
-        /// If a strong name value is specified, only the name part is used to determine if the assembly is
-        /// present in the framework.  Assembly names are compare case-insensitively.</param>
+        /// If a strong name value is specified, a "starts with" comparison on the description is used to see if
+        /// the assembly is present in the framework.  This allows for matches on strong names with processor
+        /// architecture specified which we don't have.  If only a name is given, just the name is compared.
+        /// Comparisons are case-insensitive.</param>
         /// <returns>True if the framework contains the named assembly, false if not.</returns>
         public bool ContainsAssembly(string assemblyName)
         {
-            if(assemblyName.IndexOf(',') != 0)
-                assemblyName = assemblyName.Split(',')[0].Trim();
+            if(assemblyName.IndexOf(',') != -1)
+                return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.StartsWith(
+                    a.Description, StringComparison.OrdinalIgnoreCase)));
 
-            return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => a.Name.Equals(assemblyName,
+            return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.Equals(a.Name,
                 StringComparison.OrdinalIgnoreCase)));
         }
 
@@ -655,24 +658,32 @@ namespace Sandcastle.Core.Reflection
         /// This is used to find an assembly by name
         /// </summary>
         /// <param name="assemblyName">The assembly name without a path or extension or a strong name value.
-        /// If a strong name value is specified, only the name part is used to determine if the assembly is
-        /// present in the framework.  Assembly names are compared case-insensitively.</param>
+        /// If a strong name value is specified, a "starts with" comparison on the description is used to see if
+        /// the assembly is present in the framework.  This allows for matches on strong names with processor
+        /// architecture specified which we don't have.  If only a name is given, just the name is compared.
+        /// Comparisons are case-insensitive.</param>
         /// <returns>The assembly if found or null if not found</returns>
         public AssemblyDetails FindAssembly(string assemblyName)
         {
-            if(assemblyName.IndexOf(',') != 0)
-                assemblyName = assemblyName.Split(',')[0].Trim();
+            AssemblyDetails ad = null;
+            bool strongName = (assemblyName.IndexOf(',') != -1);
 
             foreach(var al in assemblyLocations)
             {
-                var ad = al.IncludedAssemblies.FirstOrDefault(a => a.Name.Equals(assemblyName,
-                    StringComparison.OrdinalIgnoreCase));
+                if(strongName)
+                {
+                    ad = al.IncludedAssemblies.FirstOrDefault(a => assemblyName.StartsWith(a.Description,
+                        StringComparison.OrdinalIgnoreCase));
+                }
+                else
+                    ad = al.IncludedAssemblies.FirstOrDefault(a => assemblyName.Equals(a.Name,
+                        StringComparison.OrdinalIgnoreCase));
 
                 if(ad != null)
-                    return ad;
+                    break;
             }
 
-            return null;
+            return ad;
         }
 
         /// <summary>

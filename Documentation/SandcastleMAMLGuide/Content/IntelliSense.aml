@@ -12,50 +12,38 @@ the MAML schemas in the Visual Studio global schema cache for you.</para>
 
 <alert class="note">
   <para>Because changes are made to the Program Files folder, you will need administrative
-privileges to perform these updates.  In the instructions below, <localUri>%ProgramFiles%</localUri>
+privileges to perform these updates.  In the instructions below, <localUri>%ProgramFiles(x86)%</localUri>
 is used to refer to the Program Files folder.  This will typically be <localUri>C:\Program Files</localUri>
 on 32-bit systems and <localUri>C:\Program Files (x86)</localUri> on 64-bit systems.  You may need
-to alter the paths below if you installed Visual Studio and/or Sandcastle in different locations.</para>
+to alter the paths below if you installed Visual Studio in a different location.</para>
 </alert>
 
 		</introduction>
 
 <procedure>
-	<title>Integrating MAML Schema Files into Visual Studio</title>
 	<steps class="ordered">
 		<step>
 			<content>
-				<para>Create a subfolder named <localUri>MAML</localUri> under Visual Studio's global schema
-cache folder which is located at <localUri>%ProgramFiles%\Microsoft Visual Studio [x.x]\Xml\Schemas</localUri> where
-"<localUri>[x.x]</localUri>" is each version of Visual studio such as "12.0" (VS 2013) and "14.0" (VS 2015).  You
-can repeat the following steps for each version of Visual Studio that you have installed.</para>
-			</content>
-		</step>
-
-		<step>
-			<content>
-				<para>Copy all of the MAML schemas and the catalog file from the
-<localUri>%ProgramFiles%\Sandcastle\Schemas\Authoring</localUri> folder into the new MAML schemas folder
-that you created in the previous step.</para>
-			</content>
-		</step>
-
-		<step>
-			<content>
-				<para>Update the root <localUri>%ProgramFiles%\Microsoft Visual Studio [x.x]\Xml\Schemas\catalog.xml</localUri>
-file by including the following line:</para>
+				<para>Update the Visual Studio root catalog file.  This will be <localUri>%ProgramFiles(x86)%\Microsoft
+Visual Studio [XX]\Xml\Schemas\catalog.xml</localUri> for Visual Studio 2015 and earlier or
+<localUri>%ProgramFiles(x86)%\Microsoft Visual Studio\[XX]\[Edition]\Xml\Schemas\catalog.xml</localUri> for
+Visual Studio 2017 and later.  "[XX]" will be the version such as 14.0 or 2017 and "[Edition]" will be the
+edition such as Community, Professional, or Enterprise.  Add the following line to the end of the list in the
+<codeInline>SchemaCatalog</codeInline> element:</para>
 
 <code language="xml" title=" ">
-&lt;Catalog href="%InstallRoot%/xml/schemas/MAML/catalog.xml" /&gt;
+&lt;Catalog href="%SHFBROOT%Schemas/Authoring/catalog.xml" /&gt;
 </code>
+
+				<para>By using the path to the copy of the files in the help file builder installation, it will always
+use the most recent version of the schema files.</para>
 			</content>
 		</step>
 
 		<step>
 			<content>
-				<para>IntelliSense should now work for all MAML topics automatically in Visual Studio.  If you had
-Visual Studio open while making the changes, you may need to restart it in order to see IntelliSense in the
-MAML topic files.</para>
+				<para>Restart any open instances of Visual Studio.  IntelliSense should now work for all MAML topics
+automatically.</para>
 			</content>
 		</step>
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 01/28/2017
+// Updated : 04/06/2017
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
@@ -178,7 +178,10 @@ namespace Sandcastle.Installer.InstallerPages
                 {
                     string versionNumber = vs.Attribute("version").Value, basePath = vs.Attribute("basePath").Value,
                         editionPaths = (string)vs.Attribute("editionPaths");
-                    
+
+                    if(!Environment.Is64BitProcess && basePath.IndexOf("(x86)%", StringComparison.Ordinal) != -1)
+                        basePath = basePath.Replace("(x86)%", "%");
+
                     // VS2015 and earlier don't install side-by-side
                     if(editionPaths == null)
                     {
@@ -315,9 +318,11 @@ namespace Sandcastle.Installer.InstallerPages
 
                 imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
 
-                para = new Paragraph(new Bold(new Run("An error occurred while searching for Visual Studio:")));
+                para = new Paragraph(new Bold(new Run("An error occurred while searching for Visual Studio:")))
+                {
+                    Foreground = new SolidColorBrush(Colors.Red)
+                };
 
-                para.Foreground = new SolidColorBrush(Colors.Red);
                 para.Inlines.AddRange(new Inline[] { new LineBreak(), new LineBreak(), new Run(
                     initializationTask.Exception.InnerException.Message) });
 

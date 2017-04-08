@@ -33,7 +33,7 @@
 			<package name="SHFBVisualStudioPackage_VS2015AndLater.vsix" description="Visual Studio 2015;Visual Studio 2017">
 				<visualStudio version="14.0" basePath="%VS140COMNTOOLS%\..\IDE" />
 				<visualStudio version="15.0" basePath="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\{0}\Common7\IDE"
-					editionPaths="Community, Developer, Enterprise" />
+					editionPaths="Community, Professional, Enterprise" />
 			</package>
 		</page>
 
@@ -41,7 +41,7 @@
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
 			<visualStudio version="Visual Studio 2015" location="%VS140COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2017 Community" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Xml\Schemas" />
-			<visualStudio version="Visual Studio 2017 Developer" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Developer\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2017 Professional" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2017 Enterprise" location="%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">

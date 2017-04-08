@@ -134,6 +134,7 @@
 	<item id="title_relatedTopics">See Also</item>
 	<item id="title_extensionUsage">Usage Note</item>
 	<item id="text_extensionUsage">In Visual Basic and C#, you can call this method as an instance method on any object of type {0}. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx">Extension Methods (Visual Basic)</a> or <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension Methods (C# Programming Guide)</a>.</item>
+	<item id="text_moreInheritance">More...</item>
 
 	<!-- Table headers -->
 	<item id="header_namespaceName">Namespace</item>

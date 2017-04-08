@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Sandcastle Tools Rule Set" Description="This is the common set of code analysis rules for Sandcastle Tools projects" ToolsVersion="14.0">
+<RuleSet Name="Sandcastle Tools Rule Set" Description="This is the common set of code analysis rules for Sandcastle Tools projects" ToolsVersion="15.0">
   <Include Path="basiccorrectnessrules.ruleset" Action="Default" />
   <Include Path="basicdesignguidelinerules.ruleset" Action="Default" />
   <Include Path="extendedcorrectnessrules.ruleset" Action="Default" />
@@ -23,5 +23,7 @@
     <Rule Id="IDE0001" Action="None" />
     <Rule Id="IDE0002" Action="None" />
     <Rule Id="IDE0003" Action="None" />
+    <Rule Id="IDE1006" Action="None" />
+    <Rule Id="IDE1006WithoutSuggestion" Action="None" />
   </Rules>
 </RuleSet>

@@ -338,6 +338,12 @@
 		</annotation>
 	</element>
 
+	<element name="lineBreak" type="maml:emptyType">
+		<annotation>
+			<documentation>Identifies a line break (carriage return) within a body of text, without breaking the paragraph.</documentation>
+		</annotation>
+	</element>
+
 	<!-- group declarations -->
 	<group name="inlineCommonGroup">
 		<annotation>
@@ -363,6 +369,7 @@
 			<element ref="maml:dynamicLink"/>
 			<element ref="maml:localizedText"/>
 			<element ref="maml:embeddedLabel"/>
+			<element ref="maml:lineBreak"/>
 		</choice>
 	</group>
 </schema>

@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2016
-// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
+// Updated : 04/07/2017
+// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
 // within them.  It can also include code from an external file or a region within the file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.   This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -898,6 +898,11 @@ namespace SandcastleBuilder.Components
                 if(codeBlock.EndsWith("/*", StringComparison.Ordinal) ||
                   codeBlock.EndsWith("--", StringComparison.Ordinal))
                     codeBlock = codeBlock.Substring(0, codeBlock.Length - 2);
+
+                // Batch file remark
+                if(codeBlock.EndsWith("REM", StringComparison.OrdinalIgnoreCase) && codeBlock.Length > 3 &&
+                  (codeBlock[codeBlock.Length - 4] == '\r' || codeBlock[codeBlock.Length - 4] == '\n'))
+                    codeBlock = codeBlock.Substring(0, codeBlock.Length - 3);
             }
 
             if(code.Attributes["removeRegionMarkers"] != null &&

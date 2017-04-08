@@ -139,7 +139,7 @@
 					<codeInline>inlineType</codeInline>.
 				</para>
 				<para>
-					Open the file <localUri>inline.xsd</localUri>, goto line 60, and add the <codeInline>any</codeInline>
+					Open the file <localUri>inline.xsd</localUri>, goto line 62, and add the <codeInline>any</codeInline>
 					element to the type:
 				</para>
 				<code language="xml" xml:space="preserve">&lt;complexType name="inlineType" mixed="true">
@@ -202,7 +202,7 @@
 					elements we have to extend the type <codeInline>sectionContentType</codeInline>.
 				</para>
 				<para>
-					Open the file <localUri>structure.xsd</localUri>, goto line 67 and add the <codeInline>any</codeInline>
+					Open the file <localUri>structure.xsd</localUri>, goto line 66 and add the <codeInline>any</codeInline>
 					element to the type:
 				</para>
 				<code language="xml" xml:space="preserve">&lt;complexType name="sectionContentType" mixed="false">

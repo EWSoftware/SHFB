@@ -1042,6 +1042,10 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="ddue:lineBreak" name="t_ddue_lineBreak">
+		<xsl:text>  &#xa;</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="ddue:literal" name="t_ddue_literal">
 		<xsl:if test="normalize-space(.)">
 			<xsl:text>_</xsl:text>

@@ -22,7 +22,7 @@ conceptual content to help file builder projects.</para>
 			</content>
 		</section>
 
-		<section address="LearnMAML">
+		<section address="LearnXMLComments">
 			<title>How can I learn about XML comments elements and how to use them?</title>
 			<content>
 				<para>
@@ -50,7 +50,7 @@ in the general XML comments.  For example:</para>
 			</content>
 		</section>
 
-		<section address="HtmlTags">
+		<section address="HtmlTagsInXMLComments">
 			<title>Can I use HTML markup in my XML comments?</title>
 			<content>
 				<para>Yes, you can use HTML markup in your XML comments to add additional formatting.  You can also use
@@ -65,7 +65,7 @@ elements within XML comments.</para>
 			</content>
 		</section>
 
-		<section address="HtmlTags">
+		<section address="HtmlTagsInMAML">
 			<title>Can I use HTML markup in my MAML topics?</title>
 			<content>
 				<para>Not directly.  However, you can wrap a block of HTML in a <codeInline>markup</codeInline> element

@@ -70,15 +70,17 @@
 	<xsl:template name="t_normalize">
 		<xsl:param name="p_text" />
 
-		<!-- If there is a preceding sibling and the text started with whitespace, add a leading space -->
-		<xsl:if test="preceding-sibling::* and starts-with(translate($p_text, '&#x20;&#x9;&#xD;&#xA;', '&#xFF;&#xFF;&#xFF;&#xFF;'), '&#xFF;')">
-			<xsl:text> </xsl:text>
+		<!-- If there is a preceding non-text sibling that isn't lineBreak and the text started with whitespace, add a leading space -->
+		<xsl:if test="preceding-sibling::* and not(preceding-sibling::node()[1][self::text()]) and starts-with(translate($p_text, '&#x20;&#x9;&#xD;&#xA;', '&#xFF;&#xFF;&#xFF;&#xFF;'), '&#xFF;')">
+			<xsl:if test="not(local-name(preceding-sibling::node()[1]) = 'lineBreak')">
+				<xsl:text> </xsl:text>
+			</xsl:if>
 		</xsl:if>
 
 		<xsl:value-of select="normalize-space($p_text)"/>
 
-		<!-- If there is a following sibling and the text ended with whitespace, add a trailing space -->
-		<xsl:if test="following-sibling::* and substring(translate($p_text, '&#x20;&#x9;&#xD;&#xA;', '&#xFF;&#xFF;&#xFF;&#xFF;'), string-length($p_text)) = '&#xFF;'">
+		<!-- If there is a following non-text sibling and the text ended with whitespace, add a trailing space -->
+		<xsl:if test="following-sibling::* and not(following-sibling::node()[1][self::text()]) and substring(translate($p_text, '&#x20;&#x9;&#xD;&#xA;', '&#xFF;&#xFF;&#xFF;&#xFF;'), string-length($p_text)) = '&#xFF;'">
 			<xsl:text> </xsl:text>
 		</xsl:if>
 	</xsl:template>

@@ -135,6 +135,7 @@
   <item id="title_relatedTopics">См. также</item>
   <item id="title_extensionUsage">Примечание об использовании</item>
   <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="http://msdn.microsoft.com/ru-ru/library/bb384936.aspx" target="_blank">Методы расширения (Visual Basic)</a> или <a href="http://msdn.microsoft.com/ru-ru/library/bb383977.aspx" target="_blank">Методы расширения (Руководство по программированию в C#)</a>.</item>
+	<item id="text_moreInheritance">Подробнее...</item>
 
 	<!-- Table headers -->
 	<item id="header_namespaceName">Пространство имён</item>

@@ -327,7 +327,7 @@ namespace Microsoft.Ddue.Tools
                 {
                     // Look for an exact match by type name
                     matches = matches.Where(m => Path.GetFileNameWithoutExtension(m).EndsWith(searchPattern,
-                        StringComparison.Ordinal)).ToList();
+                        StringComparison.OrdinalIgnoreCase)).ToList();
 
                     if(matches.Count != 1)
                     {
@@ -355,7 +355,8 @@ namespace Microsoft.Ddue.Tools
                         sourceFile = matches[0];
                 }
                 else
-                    if(matches.Count == 1)
+                    if(matches.Count == 1 && Path.GetFileNameWithoutExtension(matches[0]).EndsWith(searchPattern,
+                      StringComparison.OrdinalIgnoreCase))
                         sourceFile = matches[0];
 
                 if(sourceFile != null && sourceFile.StartsWith(this.SourceCodeBasePath, StringComparison.OrdinalIgnoreCase))

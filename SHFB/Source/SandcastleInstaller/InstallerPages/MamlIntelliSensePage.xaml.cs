@@ -2,14 +2,14 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 12/14/2014
+// Updated : 04/07/2017
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
 // Studio IntelliSense.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 //    Date     Who  Comments
@@ -39,6 +39,7 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         private string sandcastleSchemaFolder;
+
         #endregion
 
         #region Properties
@@ -133,7 +134,6 @@ namespace Sandcastle.Installer.InstallerPages
                 }
             }
 
-            vsPath = Path.Combine(vsPath, "MAML");
             para.Inlines.Add(new Run("The schemas can be installed for this version of Visual Studio."));
             return true;
         }
@@ -147,45 +147,48 @@ namespace Sandcastle.Installer.InstallerPages
         {
             XNamespace cns = "http://schemas.microsoft.com/xsd/catalog";
             XDocument schemaDoc;
-            string destination;
+            string filePath;
+            bool changed = false;
 
             try
             {
                 Mouse.OverrideCursor = Cursors.Wait;
 
-                if(!Directory.Exists(vsPath))
-                    Directory.CreateDirectory(vsPath);
+                // If this folder exists, remove it.  We no longer install the actual schema files in the Visual
+                // Studio cache.  We just update the catalog to reference them in the SHFBROOT location.  That
+                // way, the most current versions will always be used.
+                filePath = Path.Combine(vsPath, "MAML");
 
-                // Copy the files from the Sandcastle folder to the schema cache
-                foreach(string source in Directory.EnumerateFiles(sandcastleSchemaFolder, "*.*"))
-                {
-                    destination = Path.Combine(vsPath, Path.GetFileName(source));
-                    File.Copy(source, destination, true);
-                }
-
-                // The catalog file should be there after copying the files
-                if(!File.Exists(Path.Combine(vsPath, "catalog.xml")))
-                {
-                    MessageBox.Show("Unable to find the catalog.xml file.  Cannot continue.",
-                        this.PageTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
+                if(Directory.Exists(filePath))
+                    Directory.Delete(filePath, true);
 
                 // Add the reference to our catalog in the main Visual Studio schema catalog if it is not
                 // already there.
-                destination = Path.Combine(vsPath, @"..\catalog.xml");
-                schemaDoc = XDocument.Load(destination);
+                filePath = Path.Combine(vsPath, "catalog.xml");
+                schemaDoc = XDocument.Load(filePath);
 
-                // Check for the catalog entry using both path separators as people may have added it
+                // Check for the old catalog entry using both path separators as people may have added it
                 // manually and used a backslash instead of a forward slash.
-                if(!schemaDoc.Descendants(cns + "Catalog").Attributes("href").Any(h => h.Value.EndsWith(
-                  "MAML/catalog.xml", StringComparison.OrdinalIgnoreCase) || h.Value.EndsWith(
-                  @"MAML\catalog.xml", StringComparison.OrdinalIgnoreCase)))
+                var oldCatalog = schemaDoc.Descendants(cns + "Catalog").Attributes("href").FirstOrDefault(
+                    h => h.Value.EndsWith("MAML/catalog.xml", StringComparison.OrdinalIgnoreCase) ||
+                    h.Value.EndsWith(@"MAML\catalog.xml", StringComparison.OrdinalIgnoreCase));
+
+                if(oldCatalog != null)
+                {
+                    oldCatalog.Parent.Remove();
+                    changed = true;
+                }
+
+                if(!schemaDoc.Descendants(cns + "Catalog").Attributes("href").Any(
+                  h => h.Value.IndexOf("%SHFBROOT%Schemas/Authoring", StringComparison.OrdinalIgnoreCase) != -1))
                 {
                     schemaDoc.Root.Add(new XElement(cns + "Catalog",
-                        new XAttribute("href", "%InstallRoot%/xml/schemas/MAML/catalog.xml")));
-                    schemaDoc.Save(destination);
+                        new XAttribute("href", "%SHFBROOT%Schemas/Authoring/catalog.xml")));
+                    changed = true;
                 }
+
+                if(changed)
+                    schemaDoc.Save(filePath);
             }
             catch(Exception ex)
             {
@@ -217,6 +220,9 @@ namespace Sandcastle.Installer.InstallerPages
             {
                 versionName = vs.Attribute("version").Value;
                 location = vs.Attribute("location").Value;
+
+                if(!Environment.Is64BitProcess && location.IndexOf("(x86)%", StringComparison.Ordinal) != -1)
+                    location = location.Replace("(x86)%", "%");
 
                 cb = new CheckBox { Margin = new Thickness(20, 5, 0, 0) };
                 cb.Content = versionName;
