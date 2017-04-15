@@ -31,6 +31,7 @@
 		<language from="powershell" to="pshell"/>
 		<language from="ps1" to="pshell"/>
 		<language from="py" to="python" />
+		<language from="batch" to="bat" />
 	</map>
 	<!-- families of keywords -->
 	<keywordlists>
@@ -952,6 +953,57 @@
 			<kw>with</kw>
 			<kw>yield</kw>
 		</keywordlist>
+		<!-- MS-DOS batch file keywords -->
+		<keywordlist id="kwbatch-keywords">
+			<kw>ASSIGN</kw>
+			<kw>ATTRIB</kw>
+			<kw>CALL</kw>
+			<kw>CD</kw>
+			<kw>CHDIR</kw>
+			<kw>CHOICE</kw>
+			<kw>CLS</kw>
+			<kw>COM1</kw>
+			<kw>COMMAND</kw>
+			<kw>COMP</kw>
+			<kw>CON</kw>
+			<kw>COPY</kw>
+			<kw>DEL</kw>
+			<kw>DELTREE</kw>
+			<kw>DIR</kw>
+			<kw>DO</kw>
+			<kw>ENDLOCAL</kw>
+			<kw>ERASE</kw>
+			<kw>ERRORLEVEL</kw>
+			<kw>EXIST</kw>
+			<kw>EXIT</kw>
+			<kw>FC</kw>
+			<kw>FIND</kw>
+			<kw>FOR</kw>
+			<kw>GOTO</kw>
+			<kw>IF</kw>
+			<kw>IN</kw>
+			<kw>LPT1</kw>
+			<kw>MD</kw>
+			<kw>MKDIR</kw>
+			<kw>MORE</kw>
+			<kw>MOVE</kw>
+			<kw>NOT</kw>
+			<kw>NUL</kw>
+			<kw>OFF</kw>
+			<kw>PATH</kw>
+			<kw>PAUSE</kw>
+			<kw>PRN</kw>
+			<kw>RD</kw>
+			<kw>REN</kw>
+			<kw>RENAME</kw>
+			<kw>RMDIR</kw>
+			<kw>SGN</kw>
+			<kw>SHIFT</kw>
+			<kw>SORT</kw>
+			<kw>TIME</kw>
+			<kw>TYPE</kw>
+			<kw>XCOPY</kw>
+		</keywordlist>
 	</keywordlists>
 	<!-- Languages syntax specification -->
 	<languages>
@@ -1106,7 +1158,6 @@
 				</context>
 			</contexts>
 		</language>
-
 		<!-- VB.NET -->
 		<language id="vbnet" not-case-sensitive="yes" tabSize="4" name="VB.NET">
 			<contexts default="code">
@@ -1461,6 +1512,44 @@
 				<!-- line comment // ... -->
 				<context id="linecomment" attribute="cpp-linecomment">
 					<!-- finish line of comment end of line -->
+					<linecontinue attribute="hidden" context="code" />
+				</context>
+			</contexts>
+		</language>
+		<!-- MS-DOS batch script language specification -->
+		<language id="bat" not-case-sensitive="yes" tabSize="4" name="Batch Script">
+			<!-- Code contexts: default (most common) is code. -->
+			<contexts default="code">
+				<!-- Basic source code context -->
+				<context id="code" attribute="code">
+					<!-- " " literals -->
+					<regexp id="dqliteral" attribute="literal" context="code" expression="&quot;.*?&quot;" />
+					<!-- ' ' literals -->
+					<regexp id="sqliteral" attribute="literal" context="code" expression="&apos;.*?&apos;" />
+					<!-- Variable -->
+					<regexp id="variable" attribute="preprocessor" context="code" expression="%[A-Za-z0-9_(){}\[\]$*+\-#,;.@!?]+%|%%[A-Za-z0-9_(){}\[\]$*+\-#,;.@!?]+" />
+					<!-- Numbers -->
+					<regexp id="number" attribute="number" context="code" expression="0x[0-9a-fA-F]*|(((?&lt;=[^0-9])(\+|-))?)\b[0-9][0-9]*(\.[0-9]+)?" />
+					<!-- Whole line statements.  These look a bit odd if not handled as a whole line as it may colorize
+						   parts of the displayed text or the comment.  A similar thing can happen for SET as well. -->
+					<regexp id="comment-line" attribute="keyword" context="comment-line-statement" expression="REM|ECHO OFF|ECHO|::" />
+					<regexp id="kw-line" attribute="keyword" context="line-statement" expression="SETLOCAL|SET" />
+					<!-- Keyword batch script -->
+					<keyword attribute="keyword" context="code" family="kwbatch-keywords" />
+				</context>
+				<context id="comment-line-statement" attribute="comment">
+					<linecontinue attribute="hidden" context="code" />
+				</context>
+				<!-- This isn't an XML attribute equal sign but it's got the appropriate color -->
+				<context id="line-statement" attribute="xml-attribute-equal">
+					<!-- " " literals -->
+					<regexp id="dqliteral" attribute="literal" context="line-statement" expression="&quot;.*?&quot;" />
+					<!-- ' ' literals -->
+					<regexp id="sqliteral" attribute="literal" context="line-statement" expression="&apos;.*?&apos;" />
+					<!-- Variable -->
+					<regexp id="variable" attribute="preprocessor" context="code" expression="%[A-Za-z0-9_(){}\[\]$*+\-#,;.@!?]+%|%%[A-Za-z0-9_(){}\[\]$*+\-#,;.@!?]+" />
+					<!-- End of line comment -->
+					<regexp id="endcomment" attribute="comment" context="code" expression="::.*$" />
 					<linecontinue attribute="hidden" context="code" />
 				</context>
 			</contexts>

@@ -69,7 +69,7 @@ signtool sign /q /sha1 [Your signing certificate thumbprint] Documentation.cab
 			<listItem>
 				<para>You can now install silently using a command line similar to the following:</para>
 
-<code language="none" title=" ">
+<code language="bat" title=" ">
 REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us /silent
 	/sourceMedia "C:\FullPathToFile\Documentation.msha"

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
+// Updated : 04/12/2017
+// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a dictionary of reflection data settings for the various .NET
@@ -124,9 +124,12 @@ namespace Sandcastle.Core.Reflection
             if(!this.TryGetValue(title, out dataSet))
                 dataSet = null;
             else
-                if((!dataSet.IsPresent && !dataSet.IsCoreFramework) && withRedirect)
+                if(dataSet.Platform != PlatformType.DotNetStandard && (!dataSet.IsPresent &&
+                  !dataSet.IsCoreFramework) && withRedirect)
+                {
                     dataSet = this.Values.Where(v => v.Platform == dataSet.Platform && v.IsCoreFramework).OrderBy(
                         v => v.Version).FirstOrDefault(v => v.Version > dataSet.Version && v.IsPresent);
+                }
 
             return dataSet;
         }
@@ -171,6 +174,101 @@ namespace Sandcastle.Core.Reflection
                 f.IsPresent).OrderByDescending(f => f.Version).FirstOrDefault();
 
             return dataSet;
+        }
+
+        /// <summary>
+        /// This is used to find the best match for the given set of framework identifiers
+        /// </summary>
+        /// <param name="frameworks">An enumerable list of platform ID/version pairs.  Item1 = Platform ID,
+        /// Item2 = Version in string form.</param>
+        /// <returns>The best matching reflection data set or null if one could not be found</returns>
+        public ReflectionDataSet BestMatchFor(IEnumerable<Tuple<string, string>> frameworks)
+        {
+            List<ReflectionDataSet> bestMatches = new List<ReflectionDataSet>();
+            ReflectionDataSet match;
+
+            foreach(var framework in frameworks)
+            {
+                switch(framework.Item1)
+                {
+                    case PlatformType.DotNetCore:
+                    case PlatformType.DotNetPortable:
+                        match = this.CoreFrameworkMatching(framework.Item1, new Version(framework.Item2), false);
+
+                        if(match == null)
+                            match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
+
+                        if(match != null)
+                            bestMatches.Add(match);
+                        break;
+
+                    case PlatformType.DotNetCoreApp:
+                        match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
+
+                        if(match != null)
+                            bestMatches.Add(match);
+                        break;
+
+                    case PlatformType.DotNetStandard:
+                        switch(framework.Item2)
+                        {
+                            case "1.0":
+                            case "1.1":
+                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
+                                    new Version(4, 5), true);
+                                break;
+
+                            case "1.2":
+                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
+                                    new Version(4, 5, 1), true);
+                                break;
+
+                            case "1.3":
+                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
+                                    new Version(4, 6), true);
+                                break;
+
+                            case "1.4":
+                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
+                                    new Version(4, 6, 1), true);
+                                break;
+
+                            case "1.5":
+                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
+                                    new Version(4, 6, 2), true);
+                                break;
+
+                            default:    // Anything else defaults to the latest
+                                match = null;
+                                break;
+                        }
+
+                        if(match == null)
+                            match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
+
+                        if(match != null)
+                            bestMatches.Add(match);
+                        break;
+
+                    default:
+                        match = this.CoreFrameworkMatching(framework.Item1, new Version(framework.Item2), true);
+
+                        if(match != null)
+                            bestMatches.Add(match);
+                        break;
+                }
+            }
+
+            if(bestMatches.Count == 1)
+                return bestMatches[0];
+
+            if(bestMatches.Count == 0 || !PlatformType.PlatformsAreCompatible(bestMatches.Select(m => m.Platform)))
+                return null;
+
+            // If we get multiple matches, at least one of them should be DotNetFramework so choose the
+            // highest version.
+            return bestMatches.Where(m => m.Platform == PlatformType.DotNetFramework).OrderByDescending(
+                m => m.Version).FirstOrDefault();
         }
         #endregion
     }

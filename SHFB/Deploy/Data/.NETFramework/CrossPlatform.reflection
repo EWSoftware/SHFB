@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ReflectionDataSet Platform=".NETStandard" Version="1.0" Title="Cross Platform (.NETCore/.NETStandard)">
+  <AssemblyLocations />
+  <IgnoredNamespaces />
+  <IgnoredUnresolved />
+  <BindingRedirections />
+</ReflectionDataSet>

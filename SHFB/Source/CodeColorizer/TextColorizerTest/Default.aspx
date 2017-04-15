@@ -18,12 +18,11 @@
 <form id="Form1" method="post" runat="server">
 <h3>Syntax Highlighting C# Control Demonstration</h3>
 <ul>
-    <li>Encapsulate HTML encoded source code in <b>pre</b> and <b>code</b>
-tags.</li>
+    <li>Encapsulate HTML encoded source code in <b>pre</b> and <b>code</b> tags.</li>
     <li>Use the <b>lang</b> parameter to specify the language:
         <ul>
             <li>cs = C#</li>
-			<li>cpp = C++</li>
+			      <li>cpp = C++</li>
             <li>c = C</li>
             <li>fs = F#</li>
             <li>javascript = JavaScript</li>
@@ -36,6 +35,7 @@ tags.</li>
             <li>sql = SQL script</li>
             <li>pshell = PowerShell script</li>
             <li>py = Python</li>
+            <li>bat = MS-DOS batch script</li>
             <li>Anything else = No highlighting</li>
         </ul></li>
 </ul>
@@ -95,6 +95,7 @@ int main( int argc, char* argv[])
     <asp:ListItem Value="sql">sql - SQL script</asp:ListItem>
     <asp:ListItem Value="pshell">pshell - PowerShell script</asp:ListItem>
     <asp:ListItem Value="py">py - Python</asp:ListItem>
+    <asp:ListItem Value="bat">bat - MS-DOS batch script</asp:ListItem>
     <asp:ListItem Value="None">None - No language</asp:ListItem>
 </asp:DropDownList>
 

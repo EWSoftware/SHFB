@@ -30,7 +30,8 @@
 				<ComboBoxItem Content="javascript" />
 				<ComboBoxItem Content="pshell" />
 				<ComboBoxItem Content="sql" />
-				<ComboBoxItem Content="none" />
+        <ComboBoxItem Content="bat" />
+        <ComboBoxItem Content="none" />
 			</ComboBox>
 			<TextBlock Grid.Column="0" Grid.Row="1" Text="Tab Size Override" TextAlignment="Right" Margin="3" />
 			<TextBox Name="txtTabSize" Grid.Column="1" Grid.Row="1" Margin="3" />

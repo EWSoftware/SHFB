@@ -52,12 +52,12 @@ snippets into a single code example.</para>
 
 			<listItem>
 				<para>Syntax highlighting of code blocks in <codeInline>&lt;code&gt;</codeInline> tags.  Languages
-supported include C#, VB.NET, JScript.NET, C++, J#, C, JavaScript, VBScript, XAML, XML, HTML, SQL script,
-PowerShell script, and Python.  An external configuration file is used so that it is possible to extend the
-colorizer to support other languages. The style sheet is also replaceable. All of the features noted above are
-available whether or not you enable the colorizing feature.  The code colorizer is a modified and extended
-version of the one written by Jonathan de Halleux in the Code Project article <externalLink><linkText>Multiple
-Language Syntax Highlighting, Part 2: C# Control</linkText>
+supported include C#, VB.NET, JScript.NET, C++, J#, C, JavaScript, VBScript, XAML, XML, HTML, SQL script, Python,
+PowerShell script, and batch file script.  An external configuration file is used so that it is possible to
+extend the colorizer to support other languages. The style sheet is also replaceable. All of the features noted
+above are available whether or not you enable the colorizing feature.  The code colorizer is a modified and
+extended version of the one written by Jonathan de Halleux in the Code Project article
+<externalLink><linkText>Multiple Language Syntax Highlighting, Part 2: C# Control</linkText>
 <linkUri>http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>.  The modified code is available with the source download for
 the help file builder and the build components.</para>
@@ -289,6 +289,14 @@ follows:</para>
 					</row>
 					<row>
 						<entry>
+							<para>py, python</para>
+						</entry>
+						<entry>
+							<para>Python</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
 							<para>pshell, powershell, ps1</para>
 						</entry>
 						<entry>
@@ -297,10 +305,10 @@ follows:</para>
 					</row>
 					<row>
 						<entry>
-							<para>py, python</para>
+							<para>bat, batch</para>
 						</entry>
 						<entry>
-							<para>Python</para>
+							<para>batch file script</para>
 						</entry>
 					</row>
 					<row>

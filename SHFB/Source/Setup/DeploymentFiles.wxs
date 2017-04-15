@@ -888,10 +888,16 @@
           <Component Id="cmp9D7DB6432C36DFEC71099C6185F7C4A2" Guid="{BAB29D45-BE29-424C-8EAF-C63EACBC5C28}">
             <File Id="fil195DA0A78B8176F302FDBEF9930F02CA" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.6.reflection" />
           </Component>
-          <Component Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" Guid="{B411B2ED-7F40-4F2B-B2C9-A7EDB8A3AADF}">
+          <Component Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" Guid="{46910D7B-F2DC-4BAE-B113-6453ED0E458A}">
+            <File Id="fil5E58A067B18DEEBC1AF6026D7E4C3659" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.7.reflection" />
+          </Component>
+          <Component Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" Guid="{38F772F3-C096-4C3D-98B0-269AD706B26F}">
             <File Id="fil52C4B8424DFDA45A4861C37ECBF74268" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Accessibility.xml" />
           </Component>
-          <Component Id="cmp0D55CEBAFA37B1E940285FCE4F5C0F03" Guid="{D26B6086-BF33-4DF6-8516-893D091633FE}">
+          <Component Id="cmpAAF8097021D6704C624E92321C700098" Guid="{B58B04C7-933A-4EC0-BCE0-AC8D561B6CE5}">
+            <File Id="fil2874B3F0D4C114A6032A176A7DFDFA97" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\CrossPlatform.reflection" />
+          </Component>
+          <Component Id="cmp0D55CEBAFA37B1E940285FCE4F5C0F03" Guid="{B64C4019-668C-4523-A5DC-E7C32FEF8914}">
             <File Id="fil1D7696CC2CD017236045860D94307C0B" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Microsoft.Activities.Build.Debugger.xml" />
           </Component>
           <Component Id="cmpF60FFE46C5D142AC40D4BBFACB056920" Guid="{B054F882-BD0B-49F4-8F66-FBB36E79EE84}">
@@ -2115,7 +2121,10 @@
           <Component Id="cmp69ABFE7EB150FCF42F72B8DD6531D952" Guid="{D39BD658-0DFE-419D-8CCE-99C7C484A35D}">
             <File Id="fil96D3A8DAAF1A1BF7CB7A700C52E83AE9" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Input.StylusPlugIns.xml" />
           </Component>
-          <Component Id="cmp93FDFE2AA3EB3A3448B10C3A41777480" Guid="{A9DA3EF4-E5AC-4BC4-93E8-7CB5DDDEDBC8}">
+          <Component Id="cmp43AE148B6A8AC6CE922A7F105619C5E1" Guid="{56960D46-6A3A-44E4-84DA-ED327112DE4E}">
+            <File Id="filFDE6776E60358BCA6EFC2CFBE4B7D701" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Input.StylusWisp.xml" />
+          </Component>
+          <Component Id="cmp93FDFE2AA3EB3A3448B10C3A41777480" Guid="{817C5FF1-CAB6-4106-B93C-5A86E0897E74}">
             <File Id="filDAB21BF0A0C3446954C7A87579CDAAAC" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Input.xml" />
           </Component>
           <Component Id="cmpD5FDC3408EA3C38D768D4EDC422DEEF3" Guid="{7153714C-EC9F-4035-9282-C071F5E0C27E}">
@@ -6176,6 +6185,14 @@
           <Component Id="cmpD34C1E8E9A4572114ED5425D05B485DC" Guid="{02DCE3BB-DC2B-4B7E-B9E1-8896B5899C3C}">
             <File Id="filAAC6EF310297B0F2103B3F2095B1CC7C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\Web.Config" />
           </Component>
+          <Directory Id="dir95A4168B02E2AAEC6DBAD474E20DDACB" Name="html">
+            <Component Id="cmp1BA881BE35422298ACD50A1505CE1856" Guid="{7C77AB44-830D-408E-AECE-D051A8679064}">
+              <File Id="filA327A4ABECB9B7E1F67EE627114E31D9" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\html\GeneralError.htm" />
+            </Component>
+            <Component Id="cmp2812C03807986C62C7AC9E4F094E3807" Guid="{A432B42D-A5AB-40A3-A41B-73410C55A69E}">
+              <File Id="fil9690D6B8CD861ADA95CBB4C48A1E7A92" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\html\PageNotFound.htm" />
+            </Component>
+          </Directory>
           <Directory Id="dirBA6797DD2A0C5B22361758B3A8C38DDF" Name="scripts">
             <Component Id="cmpEAE4303CE2A8D48A1DE40A15E6F42820" Guid="{13C087DF-19D0-44C8-B42B-2DB076B6B236}">
               <File Id="fil1E5072F60FFD5AE19FC5C3E12E7C0791" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\LegacyWeb\scripts\clipboard.min.js" />
@@ -7527,6 +7544,14 @@
             <Component Id="cmpF95C98A72552C7A0D0C9F0D4ECAA32DA" Guid="{9812EC4E-5BEA-45E4-A947-CF20B27C2F95}">
               <File Id="fil2A692FE893CB69FBD425579DB5B39486" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\Web.Config" />
             </Component>
+            <Directory Id="dir2057F9E55E8017FD4420D26DBC45470B" Name="html">
+              <Component Id="cmp03D11598235CCFE65A2422CB3E367F70" Guid="{96A0D31F-2167-4503-B885-6D3B8FF1C212}">
+                <File Id="fil9118B013A68D2BA0B62A22AC031AB4AD" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\html\GeneralError.htm" />
+              </Component>
+              <Component Id="cmpE84BAB114CAAD56E85DFB99176018796" Guid="{DF0A7FA9-F785-431B-BA52-CBA8DB7F8C0F}">
+                <File Id="filB961D2E6293134C80EBAB7A28D7984F7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\html\PageNotFound.htm" />
+              </Component>
+            </Directory>
             <Directory Id="dir7DC711FC09D1153210FD75424D3CA63F" Name="icons">
               <Component Id="cmpE278BDD1D46038032676473BB4326822" Guid="{9BD248EF-5F68-4543-BB68-A15340C92DB0}">
                 <File Id="filD9BED8014ED43F2566A5988480F53FFE" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\icons\Search.png" />
@@ -7582,12 +7607,6 @@
         </Component>
       </Directory>
       <Directory Id="dir54B0732D1EC7055747BB11A9069B5872" Name="Schemas">
-        <Component Id="cmpC1FC5B8271C227DE7A049E33286DBC45" Guid="{53291B9B-6553-4595-A1D8-BE75F97B62AC}">
-          <File Id="filF62C3294DCDC96501EAAAF7FAD575B63" KeyPath="yes" Source="$(var.RootFolder)\Schemas\xlink.xsd" />
-        </Component>
-        <Component Id="cmpC7B26100D4E42BA8EDE4C85C826D7EE5" Guid="{2F530973-7B3B-4451-AA3A-D80E082C1E02}">
-          <File Id="fil6810DACC5171E93EA4ABAB6AEA16760E" KeyPath="yes" Source="$(var.RootFolder)\Schemas\xml.xsd" />
-        </Component>
         <Directory Id="dirBD57484E1B5DDA3663BCD443C6902B4A" Name="Authoring">
           <Component Id="cmp69C1130FD411BFD37EC7C1AA27941135" Guid="{794508F6-F54C-4D64-A59A-ABC8A6E5ADA6}">
             <File Id="fil71330068FB6FC57823C8617C775BE7BC" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\base.xsd" />
@@ -7718,6 +7737,9 @@
         </Component>
         <Component Id="cmp8F62D40C6E5F398F3C939A7CD8B8ED3C" Guid="{ECCBCF99-0D1C-4F66-8BB2-D2613793CD00}">
           <File Id="fil82CC392E4977F26CC23AE4DF7273CB8E" KeyPath="yes" Source="$(var.RootFolder)\SyntaxContent\XAML.xml" />
+        </Component>
+        <Component Id="cmpE734E3E98FEE2B8DFAB353AC50BFD358" Guid="{A1E4EDE0-BBE0-492B-928A-FC061E37A7BD}">
+          <File Id="fil794D16F5C9581854907B6DA833B1DA13" KeyPath="yes" Source="$(var.RootFolder)\SyntaxContent\XSharp.xml" />
         </Component>
         <Directory Id="dir178EB0A089E362E8A1082FC1414674EE" Name="de-DE">
           <Component Id="cmpDE969540B1E911EAA4336196BC832C9E" Guid="{96A2BA2E-C8C1-461C-8470-D04ED665F20D}">
@@ -8138,7 +8160,9 @@
       <ComponentRef Id="cmp1560F485C85E9186E7A35CEE023E5221" />
       <ComponentRef Id="cmp71D5260815FB10141B306BFAEB60C456" />
       <ComponentRef Id="cmp9D7DB6432C36DFEC71099C6185F7C4A2" />
+      <ComponentRef Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" />
       <ComponentRef Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" />
+      <ComponentRef Id="cmpAAF8097021D6704C624E92321C700098" />
       <ComponentRef Id="cmp0D55CEBAFA37B1E940285FCE4F5C0F03" />
       <ComponentRef Id="cmpF60FFE46C5D142AC40D4BBFACB056920" />
       <ComponentRef Id="cmp7B3B93E7BF02CD31231849EE2CD1D991" />
@@ -8547,6 +8571,7 @@
       <ComponentRef Id="cmpE8D45B5EBE2F4A7B08B5EDB3100A934B" />
       <ComponentRef Id="cmp106603D5AD0AA21D833B3ECAC4F5E19C" />
       <ComponentRef Id="cmp69ABFE7EB150FCF42F72B8DD6531D952" />
+      <ComponentRef Id="cmp43AE148B6A8AC6CE922A7F105619C5E1" />
       <ComponentRef Id="cmp93FDFE2AA3EB3A3448B10C3A41777480" />
       <ComponentRef Id="cmpD5FDC3408EA3C38D768D4EDC422DEEF3" />
       <ComponentRef Id="cmp100824E576976C43C7683B2196A15BFA" />
@@ -9881,6 +9906,8 @@
       <ComponentRef Id="cmpBC3473637F9B2F5B954B03C8A8AB2C1C" />
       <ComponentRef Id="cmp277DD37F7612FC7F6E1A73776198F8C7" />
       <ComponentRef Id="cmpD34C1E8E9A4572114ED5425D05B485DC" />
+      <ComponentRef Id="cmp1BA881BE35422298ACD50A1505CE1856" />
+      <ComponentRef Id="cmp2812C03807986C62C7AC9E4F094E3807" />
       <ComponentRef Id="cmpEAE4303CE2A8D48A1DE40A15E6F42820" />
       <ComponentRef Id="cmp8DD42DE935CE1B4A8ACDFB48CEEFA8DF" />
       <ComponentRef Id="cmpBC88B88212A17C016F2C12D8C878120F" />
@@ -10291,6 +10318,8 @@
       <ComponentRef Id="cmp60A2F7F9FCDC225D682815D9FB6534F0" />
       <ComponentRef Id="cmp25C5FA3E2B63A18DFC760DD825B6303D" />
       <ComponentRef Id="cmpF95C98A72552C7A0D0C9F0D4ECAA32DA" />
+      <ComponentRef Id="cmp03D11598235CCFE65A2422CB3E367F70" />
+      <ComponentRef Id="cmpE84BAB114CAAD56E85DFB99176018796" />
       <ComponentRef Id="cmpE278BDD1D46038032676473BB4326822" />
       <ComponentRef Id="cmp473F16FF89527FD899F49FB3A4ECCF9A" />
       <ComponentRef Id="cmpE134071D786E29BDC5DABBD7046064FD" />
@@ -10306,8 +10335,6 @@
       <ComponentRef Id="cmpEC665E9B381743B89EDA00A221AA76E3" />
       <ComponentRef Id="cmp07BFD8B7D86F938F0C02E1D89D4A1ED9" />
       <ComponentRef Id="cmpF029EC605AE98F89E197F20A8225BC07" />
-      <ComponentRef Id="cmpC1FC5B8271C227DE7A049E33286DBC45" />
-      <ComponentRef Id="cmpC7B26100D4E42BA8EDE4C85C826D7EE5" />
       <ComponentRef Id="cmp69C1130FD411BFD37EC7C1AA27941135" />
       <ComponentRef Id="cmpC92191338F597A2F1FCA31D3DDFB2AF6" />
       <ComponentRef Id="cmpC7CF7DCE3EA1AB291D6F02D5E0295BB9" />
@@ -10347,6 +10374,7 @@
       <ComponentRef Id="cmpCE7007C63F8F2E2829E8E3BC48637192" />
       <ComponentRef Id="cmpFAFD0CC9725FEC8ED7715D926AD39D2C" />
       <ComponentRef Id="cmp8F62D40C6E5F398F3C939A7CD8B8ED3C" />
+      <ComponentRef Id="cmpE734E3E98FEE2B8DFAB353AC50BFD358" />
       <ComponentRef Id="cmpDE969540B1E911EAA4336196BC832C9E" />
       <ComponentRef Id="cmpF6AE9B01AA6F13DAEDF410A51A7BC7F6" />
       <ComponentRef Id="cmpC0190D6FB4C0407B0049DF6FB81274F2" />

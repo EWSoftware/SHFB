@@ -208,6 +208,14 @@ a default language if one is not specified.  The possible language values are as
 							</row>
 							<row>
 								<entry>
+									<para>py, python</para>
+								</entry>
+								<entry>
+									<para>Python</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
 									<para>pshell, powershell, ps1</para>
 								</entry>
 								<entry>
@@ -216,10 +224,10 @@ a default language if one is not specified.  The possible language values are as
 							</row>
 							<row>
 								<entry>
-									<para>py, python</para>
+									<para>bat, batch</para>
 								</entry>
 								<entry>
-									<para>Python</para>
+									<para>batch file script</para>
 								</entry>
 							</row>
 							<row>

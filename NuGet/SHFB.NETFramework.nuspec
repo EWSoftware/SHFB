@@ -2,16 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB.NETFramework</id>
-		<version>4.6.2</version>
-		<title>Sandcastle Help File Builder .NETFramework Reflection Data Set</title>
+		<version>4.7</version>
+		<title>Sandcastle Help File Builder .NETFramework/.NETCore/.NETStandard Reflection Data Set</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
 		<licenseUrl>https://github.com/EWSoftware/SHFB/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This package contains the .NETFramework reflection information data set for use with the EWSoftware.SHFB package.</description>
-		<copyright>Eric Woodruff (c) 2006-2016</copyright>
+		<description>This package contains the .NETFramework/.NETCore/.NETStandard reflection information data set for use with the EWSoftware.SHFB package.</description>
+		<copyright>Eric Woodruff (c) 2006-2017</copyright>
 		<tags>SHFB sandcastle reflection information data set</tags>
 		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one
 				 renders the package uninstallable because its "not compatible with any projects in the solution".

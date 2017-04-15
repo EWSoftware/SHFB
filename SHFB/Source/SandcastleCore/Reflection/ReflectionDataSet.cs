@@ -648,10 +648,10 @@ namespace Sandcastle.Core.Reflection
         {
             if(assemblyName.IndexOf(',') != -1)
                 return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.StartsWith(
-                    a.Description, StringComparison.OrdinalIgnoreCase)));
+                    a.Description, StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename)));
 
             return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.Equals(a.Name,
-                StringComparison.OrdinalIgnoreCase)));
+                StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename)));
         }
 
         /// <summary>
@@ -673,11 +673,11 @@ namespace Sandcastle.Core.Reflection
                 if(strongName)
                 {
                     ad = al.IncludedAssemblies.FirstOrDefault(a => assemblyName.StartsWith(a.Description,
-                        StringComparison.OrdinalIgnoreCase));
+                        StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename));
                 }
                 else
                     ad = al.IncludedAssemblies.FirstOrDefault(a => assemblyName.Equals(a.Name,
-                        StringComparison.OrdinalIgnoreCase));
+                        StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename));
 
                 if(ad != null)
                     break;

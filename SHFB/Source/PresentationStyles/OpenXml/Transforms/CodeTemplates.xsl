@@ -21,6 +21,9 @@
 			<xsl:when test="$v_codeLangLC = 'html' or $v_codeLangLC = 'htm'">
 				<xsl:text>HTML</xsl:text>
 			</xsl:when>
+			<xsl:when test="$v_codeLangLC = 'bat' or $v_codeLangLC = 'batch'">
+				<xsl:text>batch</xsl:text>
+			</xsl:when>
 			<xsl:when test="$v_codeLangLC = 'pshell' or $v_codeLangLC = 'powershell' or $v_codeLangLC = 'ps1'">
 				<xsl:text>PShell</xsl:text>
 			</xsl:when>

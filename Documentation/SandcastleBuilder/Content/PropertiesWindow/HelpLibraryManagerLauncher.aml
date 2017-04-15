@@ -97,7 +97,7 @@ running the Help Library Manager launcher to install content.  The command line 
 &lt;/html&gt;
 </code>
 
-<code language="none" title="Install a Help File">
+<code language="bat" title="Install a Help File">
 REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
 	/sourceMedia "C:\FullPathToFile\HelpContentSetup.msha"
@@ -167,7 +167,7 @@ installing it.  You can ignore any errors returned from the remove request if th
     <para>Below is an example command line for running the Help Library Manager launcher to remove content.  The
 command line is wrapped for display purposes.</para>
 
-<code language="none" title="Install a Help File">
+<code language="bat" title="Install a Help File">
 REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
 	/uninstall /silent /vendor "EWSoftware"

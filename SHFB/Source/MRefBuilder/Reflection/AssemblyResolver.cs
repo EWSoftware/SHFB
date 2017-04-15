@@ -15,6 +15,7 @@
 // 03/02/2012 - EFW - Merged my changes into the code
 // 08/10/2012 - EFW - Added support for ignoreIfUnresolved config element
 // 08/19/2016 - EFW - Added code to resolve a missing mscorlib v255 to System.Runtime
+// 04/11/2017 - EFW - Added code to resolve a missing System.Runtime to mscorlib
 //===============================================================================================================
 
 using System;
@@ -314,8 +315,10 @@ namespace Microsoft.Ddue.Tools.Reflection
                 }
 
             // For mscorlib v255.255.255.255, redirect to System.Runtime.  This is typically one like a .NETCore
-            // framework which redirects all of the system types there.
-            if(reference.Name == "mscorlib" && reference.Version.Major == 255)
+            // framework which redirects all of the system types there.  For a missing System.Runtime, redirect
+            // to mscorlib.  This is most likely a framework such as .NETStandard.  For those, we use the
+            // best matching .NET Framework.
+            if((reference.Name == "mscorlib" && reference.Version.Major == 255) || reference.Name == "System.Runtime")
             {
                 // The system assembly should be set.  If so, it'll point to the one we need.
                 if(SystemTypes.SystemAssembly != null)

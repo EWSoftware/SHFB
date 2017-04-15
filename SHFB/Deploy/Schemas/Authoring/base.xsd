@@ -139,6 +139,8 @@
 			<enumeration value="python" />
 			<enumeration value="ruby" />
 			<enumeration value="pascal" />
+			<enumeration value="bat" />
+			<enumeration value="batch" />
 			<enumeration value="none" />
 		</restriction>
 	</simpleType>

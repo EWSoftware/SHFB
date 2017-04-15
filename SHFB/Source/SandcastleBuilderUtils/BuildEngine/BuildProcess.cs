@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/25/2016
-// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
+// Updated : 04/12/2017
+// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -940,6 +940,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Validate the documentation source information, gather assembly and reference info, and copy
                 // XML comments files to the working folder.
                 this.ValidateDocumentationSources();
+
+                // If the framework reflection data is still set to the .NETStandard placeholder, there were no
+                // project documentation sources.  As such, switch to the most recent .NET Framework.
+                if(frameworkReflectionData.Platform == PlatformType.DotNetStandard)
+                {
+                    frameworkReflectionData = reflectionDataDictionary.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
+                    project.FrameworkVersion = frameworkReflectionData.Title;
+                }
 
                 // Transform the shared builder content files
                 language = project.Language;
@@ -2074,8 +2082,7 @@ AllDone:
         {
             List<string> commentsList = new List<string>();
             Dictionary<string, MSBuildProject> projectDictionary = new Dictionary<string, MSBuildProject>();
-            HashSet<string> targetFrameworksSeen = new HashSet<string>(),
-                targetFrameworkVersionsSeen = new HashSet<string>();
+            HashSet<Tuple<string, string>> targetFrameworksSeen = new HashSet<Tuple<string, string>>();
 
             MSBuildProject projRef;
             XPathDocument testComments;
@@ -2296,8 +2303,8 @@ AllDone:
                         }
 
                         // Note the platforms seen and the highest framework version used
-                        targetFrameworksSeen.Add(msbProject.TargetFrameworkIdentifier);
-                        targetFrameworkVersionsSeen.Add(msbProject.TargetFrameworkVersion);
+                        targetFrameworksSeen.Add(Tuple.Create(msbProject.TargetFrameworkIdentifier,
+                            msbProject.TargetFrameworkVersion));
 
                         // Clone the project's reference information
                         msbProject.CloneReferenceInfo(referenceDictionary);
@@ -2307,21 +2314,14 @@ AllDone:
                     // assemblies used, we cannot mix the project types within the same SHFB project.  They will
                     // need to be documented separately and can be merged using the Version Builder plug-in if
                     // needed.
-                    if(targetFrameworksSeen.Count > 1)
+                    if(!PlatformType.PlatformsAreCompatible(targetFrameworksSeen.Select(t => t.Item1)))
                         throw new BuilderException("BE0070", "Differing framework types were detected in the " +
                             "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different " +
                             "sets of assemblies used, the different frameworks cannot be mixed within the same " +
                             "documentation project.  See the error number topic in the help file for details.");
 
-                    // If a project with a higher framework version was found, switch to that version now
-                    var projectFramework = reflectionDataDictionary.CoreFrameworkMatching(
-                        targetFrameworksSeen.First(), new Version(targetFrameworkVersionsSeen.Max(f => f)), true);
-
-                    // .NETStandard is a bit odd.  Its outputs can be used by various frameworks so we'll just
-                    // defer to whatever the user has selected.  If it fails due to version mismatches, they'll
-                    // probably just need to pick a more appropriate framework version.
-                    if(projectFramework == null && targetFrameworksSeen.First().StartsWith(".NETStandard", StringComparison.Ordinal))
-                        projectFramework = frameworkReflectionData;
+                    // Find the best matching set of framework reflection data
+                    var projectFramework = reflectionDataDictionary.BestMatchFor(targetFrameworksSeen);
 
                     if(frameworkReflectionData != projectFramework)
                     {
@@ -2329,13 +2329,14 @@ AllDone:
                         if(projectFramework == null)
                             throw new BuilderException("BE0073", String.Format(CultureInfo.CurrentCulture,
                                 "A project with a different or higher framework version was found but that " +
-                                "version ({0} {1}) or a suitable redirected version was not found on this " +
-                                "system.  The build cannot continue.", targetFrameworksSeen.First(),
-                                targetFrameworkVersionsSeen.Max(f => f)));
+                                "version or a suitable redirected version was not found on this " +
+                                "system.  The build cannot continue.  Project framework versions: {0}",
+                                String.Join(", ", targetFrameworksSeen.Select(f => f.Item1 + " " + f.Item2))));
 
-                        this.ReportWarning("BE0007", "A project with a different or higher framework version " +
-                            "was found.  Changing project FrameworkVersion property from '{0}' to '{1}' for " +
-                            "the build.", project.FrameworkVersion, projectFramework.Title);
+                        if(frameworkReflectionData.Platform != PlatformType.DotNetStandard)
+                            this.ReportWarning("BE0007", "A project with a different or higher framework version " +
+                                "was found.  Changing project FrameworkVersion property from '{0}' to '{1}' for " +
+                                "the build.", project.FrameworkVersion, projectFramework.Title);
 
                         project.FrameworkVersion = projectFramework.Title;
                         frameworkReflectionData = projectFramework;

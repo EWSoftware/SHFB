@@ -122,7 +122,7 @@ contain spaces, commas, or other special characters. All relative paths specifie
 in a response file (see below) are relative to the project's path as usual.  Below are a couple of example
 command lines:</para>
 
-<code language="none" title="Note: Lines wrapped for display purposes">
+<code language="bat" title="Note: Lines wrapped for display purposes">
 %ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe
     /p:Configuration=Release HelpFile.shfbproj
 
@@ -155,7 +155,7 @@ can be on a separate line or all options can be on one line.  Comment lines are 
 <codeInline>#</codeInline> symbol.  The <codeInline>@</codeInline> switch is used to pass another response file
 to <localUri>MSBuild.exe</localUri>.</para>
 
-<code language="none" title=" ">
+<code language="bat" title=" ">
 %ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe @ResponseFile.rsp
 </code>
 
@@ -277,7 +277,7 @@ command line script that can be used (lines wrapped for display purposes). Repla
 path where you installed it on your PC.  The <codeInline>IF</codeInline> statement prevents building the help
 file in debug builds where it may not be needed.</para>
 
-<code language="none" title="Note: Lines wrapped for display purposes">
+<code language="bat" title="Note: Lines wrapped for display purposes">
 IF "$(ConfigurationName)"=="Debug" Goto Exit
 
 ECHO Building SHFB help file via MSBuild

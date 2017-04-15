@@ -77,6 +77,7 @@
 	<item id="inline_dynamicLink_separatorText">と</item>
   
 	<!-- Development language and code snippet titles for languages without a syntax generator -->
+	<item id="devlang_batch">Batch Script</item>
 	<item id="devlang_HTML">HTML</item>
 	<item id="devlang_PShell">PowerShell</item>
 	<item id="devlang_Python">Python</item>
@@ -88,6 +89,7 @@
 	<item id="noCodeExample"><p>現在有効なコード例がないか、この言語ではサポートされていません。</p></item>
 
 	<!-- Development language metadata values for languages without a syntax generator -->
+	<item id="metaLang_batch">Batch Script</item>
 	<item id="metaLang_HTML">HTML</item>
 	<item id="metaLang_PShell">PowerShell</item>
 	<item id="metaLang_Python">Python</item>

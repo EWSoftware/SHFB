@@ -29,7 +29,7 @@ add a condition to define a default value while you test the project.  For examp
 called <codeInline>MyCustomProperty</codeInline> with a value of "Test" and set the condition to
 <codeInline>'$(MyCustomProperty)' == ''</codeInline>.  This is stored in the project file as:</para>
 
-<code language="none" title=" ">
+<code language="xml" title=" ">
 &lt;MyCustomProperty Condition=" '$(MyCustomProperty)' == '' "&gt;Test&lt;/MyCustomProperty&gt;
 </code>
 

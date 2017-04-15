@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PlatformType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/28/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
+// Updated : 04/10/2017
+// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to define platform type constants
@@ -21,6 +21,7 @@
 //===============================================================================================================
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sandcastle.Core.Reflection
 {
@@ -31,12 +32,16 @@ namespace Sandcastle.Core.Reflection
     {
         /// <summary>.NET Core (Windows Store Apps) Framework</summary>
         public const string DotNetCore = ".NETCore";
+        /// <summary>.NET Core Application</summary>
+        public const string DotNetCoreApp = ".NETCoreApp";
         /// <summary>.NET Framework</summary>
         public const string DotNetFramework = ".NETFramework";
         /// <summary>.NET Micro Framework</summary>
         public const string DotNetMicroFramework = ".NETMicroFramework";
         /// <summary>.NET Portable Library Framework</summary>
         public const string DotNetPortable = ".NETPortable";
+        /// <summary>.NET Standard Framework</summary>
+        public const string DotNetStandard = ".NETStandard";
         /// <summary>Silverlight Framework</summary>
         public const string Silverlight = "Silverlight";
         /// <summary>Windows Phone Framework</summary>
@@ -47,6 +52,8 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This read-only property returns an enumerable list of the valid platform types
         /// </summary>
+        /// <remarks>.NETCoreApp and .NETStandard are not returned by this as they are hybrids that are
+        /// internally generated to match the nearest .NETFramework version.</remarks>
         public static IEnumerable<string> PlatformTypes
         {
             get
@@ -54,6 +61,18 @@ namespace Sandcastle.Core.Reflection
                 return new[] { DotNetFramework, DotNetCore, DotNetMicroFramework, DotNetPortable, Silverlight,
                     WindowsPhone, WindowsPhoneApp };
             }
+        }
+
+        /// <summary>
+        /// This can be used to determine if the given set of platform types are compatible
+        /// </summary>
+        /// <param name="platforms">An enumerable list of platform types</param>
+        /// <returns>Returns true if all of the platform types are either .NETFramework, .NETCore, .NETCoreApp,
+        /// or .NETStandard.</returns>
+        public static bool PlatformsAreCompatible(IEnumerable<string> platforms)
+        {
+            return platforms.All(p => p == PlatformType.DotNetFramework || p == PlatformType.DotNetCore ||
+                p == PlatformType.DotNetCoreApp || p == PlatformType.DotNetStandard);
         }
     }
 }

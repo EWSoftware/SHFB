@@ -44,7 +44,7 @@
 </xsl:template>
 
 <xsl:template match="keyword">
-<Span Style="{{DynamicResource KighlightKeyword}}"><xsl:value-of select="text()" disable-output-escaping="yes" /></Span>
+<Span Style="{{DynamicResource HighlightKeyword}}"><xsl:value-of select="text()" disable-output-escaping="yes" /></Span>
 </xsl:template>
 
 <xsl:template match="preprocessor">

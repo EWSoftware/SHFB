@@ -159,7 +159,9 @@ namespace SandcastleBuilder.Utils.MSBuild
                         if(String.Compare(outputType, "Exe", StringComparison.OrdinalIgnoreCase) == 0 ||
                           String.Compare(outputType, "WinExe", StringComparison.OrdinalIgnoreCase) == 0 ||
                           String.Compare(outputType, "AppContainerExe", StringComparison.OrdinalIgnoreCase) == 0)
+                        {
                             assemblyName += ".exe";
+                        }
                         else
                             if(String.Compare(outputType, "winmdobj", StringComparison.OrdinalIgnoreCase) == 0)
                                 assemblyName += ".winmd";
@@ -172,6 +174,10 @@ namespace SandcastleBuilder.Utils.MSBuild
                         else
                             assemblyName = Path.Combine(Path.Combine(Path.GetDirectoryName(
                                 msBuildProject.FullPath), outputPath), assemblyName);
+
+                    // .NETCoreApp projects don't seem to return the correct output type
+                    if(!File.Exists(assemblyName) && this.TargetFrameworkIdentifier == PlatformType.DotNetCoreApp)
+                        assemblyName = Path.ChangeExtension(assemblyName, "dll");
                 }
 
                 return assemblyName;
