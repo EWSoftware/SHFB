@@ -140,6 +140,7 @@ namespace SandcastleBuilder.PlugIns
             {
                 currentVersion.FrameworkLabel = node.GetAttribute("label", String.Empty).Trim();
                 currentVersion.Version = node.GetAttribute("version", String.Empty).Trim();
+                currentVersion.RipOldApis = false;
 
                 ripOld = node.GetAttribute("ripOldApis", String.Empty);
 
@@ -403,9 +404,9 @@ namespace SandcastleBuilder.PlugIns
                 foreach(VersionSettings vs in allVersions)
                     if(vs.FrameworkLabel == label)
                     {
-                        config.AppendFormat("    <version name=\"SHFB_VBPI_{0}\" file=\"{1:X}.ver\" />\r\n",
+                        config.AppendFormat("    <version name=\"SHFB_VBPI_{0}\" file=\"{1:X}.ver\" ripOldApis=\"{2}\" />\r\n",
                             (vs.FrameworkLabel + " " + vs.Version).GetHashCode().ToString("X",
-                            CultureInfo.InvariantCulture), vs.GetHashCode());
+                            CultureInfo.InvariantCulture), vs.GetHashCode(), vs.RipOldApis);
 
                         File.Copy(vs.ReflectionFilename, Path.Combine(builder.WorkingFolder,
                             String.Format(CultureInfo.InvariantCulture, "{0:X}.ver", vs.GetHashCode())), true);
