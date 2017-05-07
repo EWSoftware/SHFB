@@ -576,6 +576,32 @@ namespace Sandcastle.Core.Reflection
                     if(path == null && l.IncludedAssemblies.Any(a => File.Exists(Path.ChangeExtension(a.Filename, ".xml"))))
                         path = l.Path;
 
+                    // On some systems, the .NET 4.6.2 XML comments files can appear in a generic v4.X folder
+                    // outside of the standard assembly folder.  If they're not in the usual place look there.
+                    if(path == null && platform == PlatformType.DotNetFramework)
+                    {
+                        string externalPath = String.Format("{0}\\v{1}.X", Path.GetDirectoryName(l.Path),
+                            this.Version.Major);
+
+                        if(Directory.Exists(externalPath) && Directory.EnumerateFiles(externalPath, "*.xml").Any())
+                        {
+                            if(language != null && Directory.Exists(Path.Combine(externalPath, language.Name)) &&
+                              Directory.EnumerateFiles(Path.Combine(externalPath, language.Name), "*.xml").Any())
+                            {
+                                path = Path.Combine(externalPath, language.Name);
+                            }
+                            else
+                                if(language != null && Directory.Exists(Path.Combine(externalPath,
+                                  language.TwoLetterISOLanguageName)) && Directory.EnumerateFiles(
+                                  Path.Combine(externalPath, language.TwoLetterISOLanguageName), "*.xml").Any())
+                                {
+                                    path = Path.Combine(externalPath, language.TwoLetterISOLanguageName);
+                                }
+                                else
+                                    path = externalPath;
+                        }
+                    }
+
                     if(path != null)
                         yield return Path.Combine(path, "*.xml");
                 }

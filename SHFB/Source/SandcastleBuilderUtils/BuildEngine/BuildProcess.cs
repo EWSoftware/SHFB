@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/12/2017
+// Updated : 04/24/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1119,6 +1119,27 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Generate namespace summary information
                 this.GenerateNamespaceSummaries();
 
+                // For any reference assemblies that have a hint path, add any matching XML comments file to
+                // the comments file collection for base class comments.  We add these after generating namespace
+                // summaries as these aren't relevant to that step and we don't want to modify them.  We also
+                // want the project documentation source XML files to override comments in these if there's a
+                // conflict so we add them ahead of all other comments files.  We still need to copy the files as
+                // the rest of the build process expects them to be in the working folder.
+                foreach(var r in referenceDictionary.Values.Where(r => r.Item3.Any(v => v.Key == "HintPath")))
+                {
+                    string comments = Path.ChangeExtension(r.Item3.First(kv => kv.Key == "HintPath").Value, ".xml");
+                    string workingPath = workingFolder + Path.GetFileName(comments);
+                    int idx = 0;
+
+                    if(File.Exists(comments) && !commentsFiles.Any(c => c.SourcePath == workingPath))
+                    {
+                        File.Copy(comments, workingPath, true);
+                        File.SetAttributes(workingPath, FileAttributes.Normal);
+
+                        commentsFiles.Insert(idx++, new XmlCommentsFile(workingPath));
+                    }
+                }
+
                 // Expand <inheritdoc /> tags?
                 if(commentsFiles.ContainsInheritedDocumentation)
                 {
@@ -2083,6 +2104,7 @@ AllDone:
             List<string> commentsList = new List<string>();
             Dictionary<string, MSBuildProject> projectDictionary = new Dictionary<string, MSBuildProject>();
             HashSet<Tuple<string, string>> targetFrameworksSeen = new HashSet<Tuple<string, string>>();
+            PackageReferenceResolver packageReferenceResolver = new PackageReferenceResolver(this);
 
             MSBuildProject projRef;
             XPathDocument testComments;
@@ -2307,7 +2329,7 @@ AllDone:
                             msbProject.TargetFrameworkVersion));
 
                         // Clone the project's reference information
-                        msbProject.CloneReferenceInfo(referenceDictionary);
+                        msbProject.CloneReferenceInfo(packageReferenceResolver, referenceDictionary);
                     }
 
                     // If we saw multiple framework types in the projects, stop now.  Due to the different
@@ -2424,8 +2446,8 @@ AllDone:
             }
 
             if(commentsFiles.Count == 0)
-                this.ReportWarning("BE0062", "No XML comments files found.  The help file will not contain " +
-                    "any member comments.");
+                this.ReportWarning("BE0062", "No documentation source XML comments files found.  The help " +
+                    "file will not contain any member comments.");
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }
