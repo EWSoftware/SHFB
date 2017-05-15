@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="63e7d1c3-6706-444b-aa02-5defd7d1da60" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2017.5.15.0." />
+		</introduction>
+
+		<section address="ImportantNotes">
+			<title>Important Notes and Potential Breaking Changes</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>The help file builder Visual Studio package, standalone GUI, and all of the Sandcastle tools
+that run as MSBuild tasks have been updated to use the MSBuild 14.0 references.  This was necessary to enable
+support for Universal Windows and the new .NETStandard format projects.  If you are using the standalone GUI
+you may need to install the <externalLink>
+	<linkText>Microsoft Build Tools 2015</linkText>
+	<linkUri>https://www.microsoft.com/en-us/download/details.aspx?id=48159</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+
+						<para>Any build components, plug-ins, etc. that reference the MSBuild assemblies may need to be
+updated to use the MSBuild 14.0 reference assemblies and then rebuilt.</para>
+					</listItem>
+
+					<listItem>
+						<para>Unfortunately, since I needed to upgrade to MSBuild 14.0 support, I had to drop support for the
+Visual Studio 2013 package as it does not work correctly with MSBuild 14.0.  If you still need Visual Studio 2013
+support, you will need to use the prior release.  The standalone GUI from the current release may also be used.</para>
+					</listItem>
+
+					<listItem>
+						<para>A new cross-platform reflection data set file (<localUri>CrossPlatform.reflection</localUri>)
+was added.  This is the preferred framework version setting to use for all .NETCore and .NETStandard assemblies
+and projects that you want to document.  In addition, using this framework version will allow you to use any
+combination of .NETCore, .NETStandard, and .NETFramework Visual Studio projects or assemblies as documentation
+sources.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Documentation">
+			<title>Documentation</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added a <codeInline>lineBreak</codeInline> element topic to the MAML Guide.</para>
+					</listItem>
+
+					<listItem>
+						<para>Revised the topic on how to install the MAML schemas in the MAML guide so that it shows how to
+use the help file builder copies of the files so that they do not need to be copied into the Visual Studio
+schema cache.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed an exception in BuildAssembler caused by an ill-formed <codeInline>cref</codeInline>
+attribute value.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that it does not match a nested type to an incorrect file as its source
+code location under certain circumstances.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated MRefBuilder to output value tuple element names to support value tuple syntax in the
+syntax generators.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for value tuple syntax in the C# and VB syntax generators.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Resolve Reference Links Component to try and resolve missing overload IDs to an
+equivalent non-overload method ID if the overload ID is not found.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Code Block Component so that it removes the trailing <codeInline>REM</codeInline>
+on regions imported from batch scripts.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Robert van der Hulst for providing the syntax generator to support the X# language
+syntax (<externalLink>
+	<linkUri>https://www.xsharp.info</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink>)</para>
+					</listItem>
+					
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed project file handling so that it can locate assemblies and XML comments files in
+.NETCore/.NETStandard projects that use the <codeInline>TargetFrameworks</codeInline> property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Version Builder plug-in so that it handles version numbers with trailing text
+correctly when sorting the versions.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the IIS Express check when starting the web server to view web output.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made various updates to the build engine to handle .NETCore/.NETStandard projects and the
+cross-platform reflection data set.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the build engine so that it compares the full strong name when determining whether or
+not to exclude reference assemblies that are in the selected reflection data set.  This allows for like-named
+assemblies with a different version to be included as references when generating reflection information (i.e.
+NuGet versions of the .NETCore and .NETStandard framework assemblies).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for resolving package references (the <codeInline>PackageReference</codeInline>
+element) in .NET Core and .NET Standard project files.  All assemblies from the package and any dependent
+packages are automatically added as reference assemblies when generating reflection information.</para>
+					</listItem>
+
+					<listItem>
+						<para>XML comments files for reference assemblies with hint paths are now added to the comments file
+list.  This allows for comments from base class members to be included from package references.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the exception thrown in the help file builder project if an attempt is made to set a
+read-only or ignored property.  Instead, it just ignores the attempt.  Such things can happen on rare occasions
+and it is better to ignore it than abort loading the project.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an overload topic ID fix-up as a common fix-up expression in the Member ID Fix-Ups plug-in.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a default extension type entry when adding new files to the project in the standalone GUI.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the XSL transformations in the Open XML and Markdown presentation styles to prevent
+insertion of extraneous spaces when normalizing text.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the script in the VS2010 and VS2013 presentation styles so that it only inserts a
+trailing space after language-specific text elements when really needed.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the markdown content build task so that it handles duplicate in-page link target
+addresses and issues a warning if any are found.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the code colorizer to support colorizing batch file script.  Use <codeInline>bat</codeInline>
+or <codeInline>batch</codeInline> as the language ID.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the three "Notes to" title items from the reference content files to the shared content
+files in all presentation styles so that they can be used in MAML topics as expected.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the <codeInline>lineBreak</codeInline> MAML element which inserts a line
+break within a body of text without creating a new paragraph.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <localUri>GeneralError.htm</localUri> and <localUri>PageNotFound.htm</localUri> to the
+VS2010 and VS2013 presentation styles and updated their <localUri>Web.config</localUri> files to use them for
+general errors and 404 errors respectively in website output.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Holger Boskugel for providing updated German resource item files.  In addition, he
+provided updates to the MAML schema files so that they include all known elements used by the help file builder
+and can be referenced directly from the help file builder installation location so that they remain current with
+each new release without having to reinstall them in the Visual Studio schema cache.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Cyber-EX for providing a fix to the VS2013 presentation style search script so that
+it works correctly with non-Latin language keywords.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

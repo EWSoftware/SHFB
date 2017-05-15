@@ -175,7 +175,24 @@ member's comments, the inherited versions are ignored:</para>
 				<para>The <codeInline>overloads</codeInline> element will never be inherited.  This prevents the doubling
 of comments on the overloads page.  However, you can inherit the contents of the <codeInline>overloads</codeInline>
 element using a <codeInline>select</codeInline> attribute with a value of "<codeInline>overloads/*</codeInline>".
-See below for an example.</para>
+See the example below in the Examples section that inherits the elements from an <codeInline>overloads</codeInline>
+element.  If the element only contains text and you want to inherit that text, include an <codeInline>overloads</codeInline>
+element with a nested <codeInline>inheritdoc</codeInline> element.  For example:</para>
+
+<code language="cs" title=" ">
+/// &lt;inheritdoc /&gt; 
+/// 
+/// &lt;overloads&gt;
+/// The inheritdoc element outside this "overloads" element inherits the standard
+/// summary, parameters, remarks, etc. for the member itself.
+/// 
+/// The inheritdoc element below will inherit the overload text from the implemented
+/// member and it will appear on the overloads page:
+/// 
+/// &lt;inheritdoc /&gt; 
+/// 
+/// &lt;/overloads&gt;
+</code>
 
 				<para>All other elements will be inherited unless they match an element by the same name that contains a
 <codeInline>cref</codeInline>, <codeInline>href</codeInline>, <codeInline>name</codeInline>,

@@ -33,7 +33,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle MAML Guide</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
-    <HelpFileVersion>1.1.0.3</HelpFileVersion>
+    <HelpFileVersion>2017.5.15.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <PlugInConfigurations>
@@ -207,6 +207,7 @@
     <None Include="ConceptualTemplates\Conceptual.aml" />
     <None Include="Content\VersionHistory\v1.1.0.2.aml" />
     <None Include="Content\VersionHistory\v1.1.0.3.aml" />
+    <None Include="Content\VersionHistory\v20175.15.0.aml" />
     <None Include="ExampleFiles\MediaContent.xml" />
     <None Include="ExampleFiles\Tokens.xml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />

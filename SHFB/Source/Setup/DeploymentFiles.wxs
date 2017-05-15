@@ -68,7 +68,13 @@
       <Component Id="cmp3566CF05D4BE73252B68F81716668DED" Guid="{995DA2CA-26B7-4307-8D30-9C219C4D674C}">
         <File Id="filB86CA9FEE1449886D25C48B83A66916C" KeyPath="yes" Source="$(var.RootFolder)\MRefBuilder.exe.config" />
       </Component>
-      <Component Id="cmpE749CA273C9DB8DDB3026025D6D709B5" Guid="{D5BFFD0E-EE96-473E-B74D-BB37F6315C7B}">
+      <Component Id="cmp1874AB219070404EED322213C6A1A49E" Guid="{4F75545C-867B-4F37-A011-277E32CC5B15}">
+        <File Id="fil05FF769999D602AD4FA6A489C44ED290" KeyPath="yes" Source="$(var.RootFolder)\Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="cmp03F5503D497D187BDDF7D932D5BD55E9" Guid="{7D0715A8-72B3-4988-9414-6280DEF895B0}">
+        <File Id="fil094941A1CF7BE1998B69C59AF0F5D834" KeyPath="yes" Source="$(var.RootFolder)\Newtonsoft.Json.xml" />
+      </Component>
+      <Component Id="cmpE749CA273C9DB8DDB3026025D6D709B5" Guid="{D9E3A48A-6D0A-46F0-9494-A2C2F1CE98D0}">
         <File Id="filEE376814EC4A1E388D39390A3EDE048D" KeyPath="yes" Source="$(var.RootFolder)\NHunspell.dll" />
       </Component>
       <Component Id="cmp1702177D05AC71FF7E35FD63BB1DD870" Guid="{177BDC28-BE64-4732-A8AB-D668BF99C7D4}">
@@ -7896,6 +7902,8 @@
       <ComponentRef Id="cmp91D85178A06806BEAAA0D49E48B8894F" />
       <ComponentRef Id="cmp58A124A7CE4898F21F18DE917B96D351" />
       <ComponentRef Id="cmp3566CF05D4BE73252B68F81716668DED" />
+      <ComponentRef Id="cmp1874AB219070404EED322213C6A1A49E" />
+      <ComponentRef Id="cmp03F5503D497D187BDDF7D932D5BD55E9" />
       <ComponentRef Id="cmpE749CA273C9DB8DDB3026025D6D709B5" />
       <ComponentRef Id="cmp1702177D05AC71FF7E35FD63BB1DD870" />
       <ComponentRef Id="cmp8515DCE334F6ACACBA2542BF2B72509C" />

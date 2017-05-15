@@ -33,7 +33,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2017.1.28.0</HelpFileVersion>
+    <HelpFileVersion>2017.5.15.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -371,7 +371,8 @@
     <None Include="Content\VersionHistory\v2016.4.9.0.aml" />
     <None Include="Content\VersionHistory\v2016.5.28.aml" />
     <None Include="Content\VersionHistory\v2016.9.17.0.aml" />
-    <None Include="Content\VersionHistory\v20171.28.0.aml" />
+    <None Include="Content\VersionHistory\v2017.5.15.0.aml" />
+    <None Include="Content\VersionHistory\v2017.1.28.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

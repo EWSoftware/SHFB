@@ -1380,12 +1380,17 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="8b636153-2500-4e63-b372-a1595456c3a6" visible="True" isSelected="true" title="Version 2017.1.28.0">
+    <Topic id="63e7d1c3-6706-444b-aa02-5defd7d1da60" visible="True" title="Version 2017.5.15.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2017.5.15.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8b636153-2500-4e63-b372-a1595456c3a6" visible="True" title="Version 2017.1.28.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="version, 2017.1.28.0" />
       </HelpKeywords>
