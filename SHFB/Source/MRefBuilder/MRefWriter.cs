@@ -14,6 +14,7 @@
 // 08/06/2014 - EFW - Added code to write out values for literal (constant) fields.
 // 08/23/2016 - EFW - Added support for writing out source code context
 // 03/17/2017 - EFW - Added support for value tuples
+// 05/26/2017 - JRC - Fixed issue with ulong enums
 
 using System;
 using System.Collections.Generic;
@@ -565,7 +566,12 @@ namespace Microsoft.Ddue.Tools
 
                 if(field.DefaultValue != null)
                 {
-                    long fieldValue = Convert.ToInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
+                    long fieldValue;
+
+                    if(field.DefaultValue.Value is ulong)
+                        fieldValue = unchecked((long)(ulong)field.DefaultValue.Value);
+                    else
+                        fieldValue = Convert.ToInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
 
                     // If a single field matches, return it.  Otherwise return all fields that are in value.
                     if(fieldValue == value)
@@ -1801,6 +1807,9 @@ namespace Microsoft.Ddue.Tools
                     EnumNode enumeration = (EnumNode)type;
 
                     writer.WriteStartElement("enumValue");
+
+                    if(value is ulong)
+                        value = unchecked((long)(ulong)value);
 
                     foreach(var field in GetAppliedFields(enumeration, Convert.ToInt64(value, CultureInfo.InvariantCulture)))
                     {
