@@ -368,7 +368,7 @@ namespace SandcastleBuilder.PlugIns
 
             if(ancestor.Attribute("Url") != null)
             {
-                file = Path.GetFileName(ancestor.Attribute("Url").Value);
+                file = "../" + ancestor.Attribute("Url").Value;
                 tocid = Path.GetFileNameWithoutExtension(file);
             }
             else
@@ -377,7 +377,7 @@ namespace SandcastleBuilder.PlugIns
                 var targetChild = ancestor.Descendants("HelpTOCNode").FirstOrDefault(n => n.Attribute("Url") != null);
 
                 if(targetChild != null)
-                    file = Path.GetFileName(targetChild.Attribute("Url").Value);
+                    file = "../" + ancestor.Attribute("Url").Value;
                 else
                     file = "#!";
 
