@@ -3,7 +3,7 @@
 REM Point SHFBROOT at the development folder so that all help files are built using the latest version of the tools.
 SETLOCAL
 
-SET MSBUILD=%ProgramFiles(x86)%\MSBuild\12.0\bin\MSBuild.exe
+SET MSBUILD=%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe
 SET NUGET=%CD%\SHFB\Source\.nuget\NuGet.exe
 SET SHFBROOT=%CD%\SHFB\Deploy\
 SET BuildConfig=%1
@@ -30,7 +30,7 @@ ECHO *
 
 IF ERRORLEVEL 1 GOTO End
 
-REM We need to use MSBuild 15.0 if present in order to support the new VSIX format in VS2017 and  later
+REM We need to use MSBuild 15.0 if present in order to support the new VSIX format in VS2017 and later
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0"
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0"
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0" SET "VS150COMNTOOLS=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0"
