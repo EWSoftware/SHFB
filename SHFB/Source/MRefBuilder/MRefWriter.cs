@@ -15,6 +15,7 @@
 // 08/23/2016 - EFW - Added support for writing out source code context
 // 03/17/2017 - EFW - Added support for value tuples
 // 05/26/2017 - EFW - Fixed up issues with unsigned long enumerated types and duplicate flag values
+// 05/30/2017 - JRC - Fixed issue with negative enums
 
 using System;
 using System.Collections.Generic;
@@ -552,7 +553,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="enumeration">The enumeration from which to get the fields</param>
         /// <param name="value">The value to use in determining the applied fields</param>
         /// <returns>An enumerable list of fields from the enumeration that appear in the value</returns>
-        private static IEnumerable<Field> GetAppliedFields(EnumNode enumeration, ulong value)
+        private static IEnumerable<Field> GetAppliedFields(EnumNode enumeration, long value)
         {
             FieldList list = new FieldList();
             MemberList members = enumeration.Members;
@@ -566,7 +567,12 @@ namespace Microsoft.Ddue.Tools
 
                 if(field.DefaultValue != null)
                 {
-                    ulong fieldValue = Convert.ToUInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
+                   long fieldValue;
+
+                    if(field.DefaultValue.Value is ulong)
+                        fieldValue = unchecked((long)(ulong)field.DefaultValue.Value);
+                    else
+                        fieldValue = Convert.ToInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
 
                     // If a single field matches, return it.  Otherwise return all fields that are in the value
                     // except zero.
@@ -582,11 +588,16 @@ namespace Microsoft.Ddue.Tools
             // because they are present in the combined value AplusB).
             for(int i = 0; i < list.Count; i++)
             {
-                ulong fieldValue = Convert.ToUInt64(list[i].DefaultValue.Value, CultureInfo.InvariantCulture);
+                long fieldValue;
+
+                if(list[i].DefaultValue.Value is ulong)
+                    fieldValue = unchecked((long)(ulong)list[i].DefaultValue.Value);
+                else
+                    fieldValue = Convert.ToInt64(list[i].DefaultValue.Value, CultureInfo.InvariantCulture);
 
                 if(list.Skip(i + 1).Any(f =>
                 {
-                    ulong compare = Convert.ToUInt64(f.DefaultValue.Value, CultureInfo.InvariantCulture);
+                    long compare = Convert.ToInt64(f.DefaultValue.Value, CultureInfo.InvariantCulture);
                     return ((fieldValue & compare) == fieldValue);
                 }))
                 {
@@ -1821,13 +1832,16 @@ namespace Microsoft.Ddue.Tools
 
                     writer.WriteStartElement("enumValue");
 
-                    foreach(var field in GetAppliedFields(enumeration, Convert.ToUInt64(value, CultureInfo.InvariantCulture)))
+                    if(value is ulong)
+                        value = unchecked((long)(ulong)value);
+
+                    foreach(var field in GetAppliedFields(enumeration, Convert.ToInt64(value, CultureInfo.InvariantCulture)))
                     {
                         writer.WriteStartElement("field");
 
                         // !EFW - Change from ComponentOne
                         writer.WriteAttributeString("name", field.Name.Name.TranslateToValidXmlValue());
-                        writer.WriteEndElement();
+                            writer.WriteEndElement();
                     }
 
                     writer.WriteEndElement();
