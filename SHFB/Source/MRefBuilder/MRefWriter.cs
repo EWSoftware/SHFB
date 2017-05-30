@@ -1841,7 +1841,7 @@ namespace Microsoft.Ddue.Tools
 
                         // !EFW - Change from ComponentOne
                         writer.WriteAttributeString("name", field.Name.Name.TranslateToValidXmlValue());
-                            writer.WriteEndElement();
+                        writer.WriteEndElement();
                     }
 
                     writer.WriteEndElement();
