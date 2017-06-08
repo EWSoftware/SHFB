@@ -597,7 +597,13 @@ namespace Microsoft.Ddue.Tools
 
                 if(list.Skip(i + 1).Any(f =>
                 {
-                    long compare = Convert.ToInt64(f.DefaultValue.Value, CultureInfo.InvariantCulture);
+                    long compare;
+
+                    if (f.DefaultValue.Value is ulong)
+                        compare = unchecked((long)(ulong)f.DefaultValue.Value);
+                    else
+                        compare = Convert.ToInt64(f.DefaultValue.Value, CultureInfo.InvariantCulture);
+
                     return ((fieldValue & compare) == fieldValue);
                 }))
                 {
