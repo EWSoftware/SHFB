@@ -194,7 +194,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             {
                 documentList.CompleteAdding();
 
-                if(documentWriter != null)
+                if(documentWriter != null && documentWriter.Status != TaskStatus.Faulted)
                 {
                     int count = documentList.Count;
 
@@ -220,37 +220,39 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// </summary>
         private void WriteDocuments()
         {
-            foreach(var kv in documentList.GetConsumingEnumerable())
+            string lastKey = "??", path = null;
+
+            try
             {
-                var document = kv.Value;
-
-                // Set the evaluation context
-                CustomContext context = new CustomContext();
-                context["key"] = kv.Key;
-
-                XPathExpression xpath = pathExpression.Clone();
-                xpath.SetContext(context);
-
-                // Evaluate the path
-                string path = document.CreateNavigator().Evaluate(xpath).ToString();
-
-                if(basePath != null)
-                    path = Path.Combine(basePath, path);
-
-                string targetDirectory = Path.GetDirectoryName(path);
-
-                if(!Directory.Exists(targetDirectory))
-                    Directory.CreateDirectory(targetDirectory);
-
-                if(writeXhtmlNamespace)
+                foreach(var kv in documentList.GetConsumingEnumerable())
                 {
-                    document.DocumentElement.SetAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-                    document.LoadXml(document.OuterXml);
-                }
+                    var document = kv.Value;
 
-                // Save the document
-                try
-                {
+                    lastKey = kv.Key;
+
+                    // Set the evaluation context
+                    CustomContext context = new CustomContext { ["key"] = lastKey };
+
+                    XPathExpression xpath = pathExpression.Clone();
+                    xpath.SetContext(context);
+
+                    // Evaluate the path
+                    path = document.CreateNavigator().Evaluate(xpath).ToString();
+
+                    if(basePath != null)
+                        path = Path.Combine(basePath, path);
+
+                    string targetDirectory = Path.GetDirectoryName(path);
+
+                    if(!Directory.Exists(targetDirectory))
+                        Directory.CreateDirectory(targetDirectory);
+
+                    if(writeXhtmlNamespace)
+                    {
+                        document.DocumentElement.SetAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+                        document.LoadXml(document.OuterXml);
+                    }
+
                     // selectExpression determines which nodes get saved. If there is no selectExpression we simply
                     // save the root node as before. If there is a selectExpression, we evaluate the XPath expression
                     // and save the resulting node set. The select expression also enables the "literal-text" processing
@@ -278,7 +280,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                                 while(ni.MoveNext())
                                 {
                                     if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
-                                      ni.Current.Name.Equals("literal-text"))
+                                        ni.Current.Name.Equals("literal-text"))
                                     {
                                         writer.Flush();
                                         output.Write(ni.Current.Value);
@@ -293,16 +295,24 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     // Raise an event to indicate that a file was created
                     this.OnComponentEvent(new FileCreatedEventArgs(path, true));
                 }
-                catch(IOException e)
-                {
-                    this.WriteMessage(kv.Key, MessageLevel.Error, "An access error occurred while attempting to " +
-                        "save to the file '{0}'. The error message is '{1}'", path, e.GetExceptionMessage());
-                }
-                catch(XmlException e)
-                {
-                    this.WriteMessage(kv.Key, MessageLevel.Error, "Invalid XML was written to the output " +
-                        "file '{0}'. The error message is '{1}'", path, e.GetExceptionMessage());
-                }
+            }
+            catch(IOException e)
+            {
+                documentList.CompleteAdding();
+                this.WriteMessage(lastKey, MessageLevel.Error, "An access error occurred while attempting to " +
+                    "save to the file '{0}'. The error message is '{1}'", path, e.GetExceptionMessage());
+            }
+            catch(XmlException e)
+            {
+                documentList.CompleteAdding();
+                this.WriteMessage(lastKey, MessageLevel.Error, "Invalid XML was written to the output " +
+                    "file '{0}'. The error message is '{1}'", path, e.GetExceptionMessage());
+            }
+            catch(Exception e)
+            {
+                documentList.CompleteAdding();
+                this.WriteMessage(lastKey, MessageLevel.Error, "An error occurred trying to save the topic " +
+                    "content. The error message is '{0}'", e.GetExceptionMessage());
             }
         }
         #endregion
