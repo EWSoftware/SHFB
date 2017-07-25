@@ -36,15 +36,15 @@
     <item id="topicTitle_event">{0} 事件</item>
 
     <!-- title for operator members -->
-    <item id="topicTitle_operator">{0} 操作符 {1}</item>
+    <item id="topicTitle_operator">{0} 运算符 {1}</item>
 
     <!-- title for op_explicit and op_implicit members -->
     <item id="topicTitle_typeConversion">{0} 转换 {1}</item>
     <!-- title for overload op_explicit and op_implicit topics -->
-    <item id="topicTitle_conversionOperator">{0} 转换操作符</item>
+    <item id="topicTitle_conversionOperator">{0} 转换运算符</item>
 
-    <item id="topicTitle_attachedProperty">{0} 挂接的属性</item>
-    <item id="topicTitle_attachedEvent">{0} 挂接的事件</item>
+    <item id="topicTitle_attachedProperty">{0} 附加属性</item>
+    <item id="topicTitle_attachedEvent">{0} 附加事件</item>
 
     <item id="generic"> 泛型</item>
     <item id="topicTitle_generic_class">{0} 泛型类</item>
@@ -59,17 +59,17 @@
     <item id="topicTitle_enumMembers">成员</item>
 
     <!-- title for operator list topic that has [operators + no type conversions] -->
-    <item id="topicTitle_operators">{0} 操作符</item>
+    <item id="topicTitle_operators">{0} 运算符</item>
     <!-- title for operator list topic that has [operators + type conversions] -->
-    <item id="topicTitle_operatorsAndTypeConversions">{0} 操作符与类型转换</item>
+    <item id="topicTitle_operatorsAndTypeConversions">{0} 运算符与类型转换</item>
     <!-- title for operator list topic that has [no operators + type conversions] -->
     <item id="topicTitle_typeConversions">{0} 类型转换</item>
 
     <item id="topicTitle_constructors">{0} 构造函数</item>
     <item id="topicTitle_properties">{0} 属性</item>
     <item id="topicTitle_events">{0} 事件</item>
-    <item id="topicTitle_attachedProperties">{0} 挂接的属性</item>
-    <item id="topicTitle_attachedEvents">{0} 挂接的事件</item>
+    <item id="topicTitle_attachedProperties">{0} 附加属性</item>
+    <item id="topicTitle_attachedEvents">{0} 附加事件</item>
     <item id="topicTitle_members">{0} 成员</item>
 
     <!-- index entries -->
@@ -86,9 +86,9 @@
     <item id="indexEntry_members">{0}, 所有成员</item>
     <item id="indexEntry_methods">{0}, 方法</item>
     <!-- index entry for operator list topic that has [operators + no type conversions] -->
-    <item id="indexEntry_operators">{0}, 操作符</item>
+    <item id="indexEntry_operators">{0}, 运算符</item>
     <!-- index entry for operator list topic that has [operators + type conversions] -->
-    <item id="indexEntry_operatorsAndTypeConversions">{0}，操作符与类型转换</item>
+    <item id="indexEntry_operatorsAndTypeConversions">{0}，运算符与类型转换</item>
     <!-- index entry for operator list topic that has [no operators + type conversions] -->
     <item id="indexEntry_typeConversions">{0}，类型转换</item>
     <!-- index entries for op_explicit and op_implicit members -->
@@ -96,8 +96,8 @@
     <item id="indexEntry_properties">{0}, 属性</item>
     <item id="indexEntry_fields">{0}, 字段</item>
     <item id="indexEntry_events">{0}, 事件</item>
-    <item id="indexEntry_attachedProperties">{0}, 挂接的属性</item>
-    <item id="indexEntry_attachedEvents">{0}, 挂接的事件</item>
+    <item id="indexEntry_attachedProperties">{0}, 附加属性</item>
+    <item id="indexEntry_attachedEvents">{0}, 附加事件</item>
     <item id="indexEntry_constructors">{0}, 构造函数</item>
     <item id="indexEntry_constructor">{0}, 构造函数</item>
     <item id="indexEntry_constructorType">{0} 构造函数</item>
@@ -105,9 +105,9 @@
     <item id="indexEntry_property">{0} 属性</item>
     <item id="indexEntry_event">{0} 事件</item>
     <item id="indexEntry_field">{0} 字段</item>
-    <item id="indexEntry_operator">{0} 操作符</item>
-    <item id="indexEntry_attachedProperty">{0} 挂接的属性</item>
-    <item id="indexEntry_attachedEvent">{0} 挂接的事件</item>
+    <item id="indexEntry_operator">{0} 运算符</item>
+    <item id="indexEntry_attachedProperty">{0} 附加属性</item>
+    <item id="indexEntry_attachedEvent">{0} 附加事件</item>
     <item id="indexEntry_methodExplicit">{0} 显式实现的方法</item>
     <item id="indexEntry_propertyExplicit">{0} 显式实现的属性</item>
     <item id="indexEntry_eventExplicit">{0} 显式实现的事件</item>
@@ -172,12 +172,12 @@
     <item id="tableTitle_enumerationTypesFilter">枚举</item>
     <item id="tableTitle_constructor">构造函数</item>
     <item id="tableTitle_method">方法</item>
-    <item id="tableTitle_operator">操作符</item>
+    <item id="tableTitle_operator">运算符</item>
     <item id="tableTitle_field">字段</item>
     <item id="tableTitle_property">属性</item>
     <item id="tableTitle_event">事件</item>
-    <item id="tableTitle_attachedEvent">挂接的事件</item>
-    <item id="tableTitle_attachedProperty">挂接的属性</item>
+    <item id="tableTitle_attachedEvent">附加事件</item>
+    <item id="tableTitle_attachedProperty">附加属性</item>
     <item id="tableTitle_explicitInterfaceImplementation">显式接口实现</item>
     <item id="tableTitle_overloadMembers">重载列表</item>
     <item id="tableTitle_extensionMethod">扩展方法</item>
@@ -226,9 +226,9 @@
     <item id="text_propertiesUpper">属性</item>
     <item id="text_eventsUpper">事件</item>
     <item id="text_fieldsUpper">字段</item>
-    <item id="text_operatorsUpper">操作符</item>
-    <item id="text_attachedPropertiesUpper">挂接属性</item>
-    <item id="text_attachedEventsUpper">挂接事件</item>
+    <item id="text_operatorsUpper">运算符</item>
+    <item id="text_attachedPropertiesUpper">附加属性</item>
+    <item id="text_attachedEventsUpper">附加事件</item>
 
     <!-- Alt text for images -->
     <item id="altText_pubClass">公共类</item>
@@ -252,25 +252,25 @@
     <item id="altText_pubField">公共字段</item>
     <item id="altText_pubProperty">公共属性</item>
     <item id="altText_pubEvent">公共事件</item>
-    <item id="altText_pubOperator">公共操作符</item>
-    <item id="altText_pubAttachedProperty">公共的挂接属性</item>
-    <item id="altText_pubAttachedEvent">公共的挂接事件</item>
+    <item id="altText_pubOperator">公共运算符</item>
+    <item id="altText_pubAttachedProperty">公共的附加属性</item>
+    <item id="altText_pubAttachedEvent">公共的附加事件</item>
     <item id="altText_protConstructor">受保护的构造函数</item>
     <item id="altText_protMethod">受保护的方法</item>
     <item id="altText_protField">受保护的字段</item>
     <item id="altText_protProperty">受保护的属性</item>
     <item id="altText_protEvent">受保护的事件</item>
-    <item id="altText_protOperator">受保护的操作符</item>
-    <item id="altText_protAttachedProperty">受保护的挂接属性</item>
-    <item id="altText_protAttachedEvent">受保护的挂接事件</item>
+    <item id="altText_protOperator">受保护的运算符</item>
+    <item id="altText_protAttachedProperty">受保护的附加属性</item>
+    <item id="altText_protAttachedEvent">受保护的附加事件</item>
     <item id="altText_privConstructor">私有构造函数</item>
     <item id="altText_privMethod">私有方法</item>
     <item id="altText_privField">私有字段</item>
     <item id="altText_privProperty">私有属性</item>
     <item id="altText_privEvent">私有事件</item>
-    <item id="altText_privOperator">私有操作符</item>
-    <item id="altText_privtAttachedProperty">私有挂接属性</item>
-    <item id="altText_privAttachedEvent">私有挂接事件</item>
+    <item id="altText_privOperator">私有运算符</item>
+    <item id="altText_privtAttachedProperty">私有附加属性</item>
+    <item id="altText_privAttachedEvent">私有附加事件</item>
     <item id="altText_static">静态成员</item>
     <item id="altText_pubextension">公共扩展器方法</item>
     <item id="altText_protextension">受保护的扩展器方法</item>
