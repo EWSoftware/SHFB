@@ -8,7 +8,7 @@
     <!-- Inserted boilerplate -->
     <item id="definedBy">(由 {0} 定义。)</item>
     <item id="inheritedFrom">(继承自 {0}。)</item>
-    <item id="overridesMember">(覆写 {0}.)</item>
+    <item id="overridesMember">(重写 {0}.)</item>
     <item id="locationInformation">程序集：{0} (模块：{1})</item>
 
     <item id="derivedClasses">派生类</item>
@@ -178,9 +178,9 @@
     <item id="tableTitle_event">事件</item>
     <item id="tableTitle_attachedEvent">挂接的事件</item>
     <item id="tableTitle_attachedProperty">挂接的属性</item>
-    <item id="tableTitle_explicitInterfaceImplementation">显示&#160;接口&#160;实现</item>
-    <item id="tableTitle_overloadMembers">覆写&#160;列表</item>
-    <item id="tableTitle_extensionMethod">扩展&#160;方法</item>
+    <item id="tableTitle_explicitInterfaceImplementation">显式接口实现</item>
+    <item id="tableTitle_overloadMembers">重载列表</item>
+    <item id="tableTitle_extensionMethod">扩展方法</item>
 
     <!-- Thread Safety -->
     <item id="text_threadSafety">线程安全</item>
@@ -480,8 +480,8 @@
     <item id="boilerplate_unmappedXamlXmlns">Not mapped to an xmlns.</item>
 
     <item id="boilerplate_secondaryFrameworkOverride"><br /><br />In <include item="{0}"/>, this member is overridden by {1}.</item>
-    <item id="boilerplate_secondaryFrameworkInherited"><br /><br />In <include item="{0}"/>&#160;<include item="{1}"/>, this member is inherited from {2}{3}{4}.</item>
-    <item id="boilerplate_secondaryFrameworkMember"><br /><br />In <include item="{0}"/>&#160;<include item="{1}"/>, this member is {2}.</item>
+    <item id="boilerplate_secondaryFrameworkInherited"><br /><br />In <include item="{0}"/><include item="{1}"/>, this member is inherited from {2}{3}{4}.</item>
+    <item id="boilerplate_secondaryFrameworkMember"><br /><br />In <include item="{0}"/><include item="{1}"/>, this member is {2}.</item>
 
     <item id="boilerplate_useBaseSummary">This member overrides {0}.</item>
     <item id="boilerplate_useBaseSee">See {0}.</item>

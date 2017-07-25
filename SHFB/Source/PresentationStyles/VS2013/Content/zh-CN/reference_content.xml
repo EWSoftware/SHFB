@@ -2,8 +2,8 @@
 <content xml:space="preserve">
 
     <!-- note text -->
-    <item id="notDocumented">此API没有对应的文档。</item>
-    <item id="preliminaryText">此API尚未最终确定，随时可能调整。</item>
+    <item id="notDocumented">此 API 没有对应的文档。</item>
+    <item id="preliminaryText">此 API 尚未最终确定，随时可能调整。</item>
 
     <!-- main window stuff -->
     <item id="productTitle">.NET 框架类库</item>
@@ -13,11 +13,11 @@
     <item id="rootLink"><referenceLink target="R:Project">命名空间</referenceLink></item>
     <item id="definedBy">(由 {0} 定义。)</item>
     <item id="inheritedFrom">(继承自 {0}。)</item>
-    <item id="overridesMember">(覆写 {0}.)</item>
+    <item id="overridesMember">(重写 {0}.)</item>
     <item id="locationInformation">程序集：{0} (模块：{1})</item>
 
     <item id="derivedClasses">派生类</item>
-    <item id="explicitInterfaceImplementation">显式的接口实现</item>
+    <item id="explicitInterfaceImplementation">显式接口实现</item>
     <item id="returnValue">返回值</item>
     <item id="propertyValue">属性值</item>
     <item id="fieldValue">字段值</item>
@@ -43,15 +43,15 @@
     <item id="topicTitle_event">{0} 事件</item>
 
     <!-- title for operator members -->
-    <item id="topicTitle_operator">{0} 操作符 {1}</item>
+    <item id="topicTitle_operator">{0} 运算符 {1}</item>
 
     <!-- title for op_explicit and op_implicit members -->
     <item id="topicTitle_typeConversion">{0} 转换 {1}</item>
     <!-- title for overload op_explicit and op_implicit topics -->
-    <item id="topicTitle_conversionOperator">{0} 转换操作符</item>
+    <item id="topicTitle_conversionOperator">{0} 转换运算符</item>
 
-    <item id="topicTitle_attachedProperty">{0} 挂接的属性</item>
-    <item id="topicTitle_attachedEvent">{0} 挂接的事件</item>
+    <item id="topicTitle_attachedProperty">{0} 附加属性</item>
+    <item id="topicTitle_attachedEvent">{0} 附加事件</item>
 
     <item id="generic"> 泛型</item>
     <item id="topicTitle_generic_class">{0} 泛型类</item>
@@ -66,17 +66,17 @@
     <item id="topicTitle_enumMembers">成员</item>
 
     <!-- title for operator list topic that has [operators + no type conversions] -->
-    <item id="topicTitle_operators">{0} 操作符</item>
+    <item id="topicTitle_operators">{0} 运算符</item>
     <!-- title for operator list topic that has [operators + type conversions] -->
-    <item id="topicTitle_operatorsAndTypeConversions">{0} 操作符与类型转换</item>
+    <item id="topicTitle_operatorsAndTypeConversions">{0} 运算符与类型转换</item>
     <!-- title for operator list topic that has [no operators + type conversions] -->
     <item id="topicTitle_typeConversions">{0} 类型转换</item>
 
     <item id="topicTitle_constructors">{0} 构造函数</item>
     <item id="topicTitle_properties">{0} 属性</item>
     <item id="topicTitle_events">{0} 事件</item>
-    <item id="topicTitle_attachedProperties">{0} 挂接的属性</item>
-    <item id="topicTitle_attachedEvents">{0} 挂接的事件</item>
+    <item id="topicTitle_attachedProperties">{0} 附加属性</item>
+    <item id="topicTitle_attachedEvents">{0} 附加事件</item>
     <item id="topicTitle_members">{0} 成员</item>
 
     <!-- index entries -->
@@ -93,9 +93,9 @@
     <item id="indexEntry_members">{0}, 所有成员</item>
     <item id="indexEntry_methods">{0}, 方法</item>
     <!-- index entry for operator list topic that has [operators + no type conversions] -->
-    <item id="indexEntry_operators">{0}, 操作符</item>
+    <item id="indexEntry_operators">{0}, 运算符</item>
     <!-- index entry for operator list topic that has [operators + type conversions] -->
-    <item id="indexEntry_operatorsAndTypeConversions">{0}，操作符与类型转换</item>
+    <item id="indexEntry_operatorsAndTypeConversions">{0}，运算符与类型转换</item>
     <!-- index entry for operator list topic that has [no operators + type conversions] -->
     <item id="indexEntry_typeConversions">{0}，类型转换</item>
     <!-- index entries for op_explicit and op_implicit members -->
@@ -103,8 +103,8 @@
     <item id="indexEntry_properties">{0}, 属性</item>
     <item id="indexEntry_fields">{0}, 字段</item>
     <item id="indexEntry_events">{0}, 事件</item>
-    <item id="indexEntry_attachedProperties">{0}, 挂接的属性</item>
-    <item id="indexEntry_attachedEvents">{0}, 挂接的事件</item>
+    <item id="indexEntry_attachedProperties">{0}, 附加属性</item>
+    <item id="indexEntry_attachedEvents">{0}, 附加事件</item>
     <item id="indexEntry_constructors">{0}, 构造函数</item>
     <item id="indexEntry_constructor">{0}, 构造函数</item>
     <item id="indexEntry_constructorType">{0} 构造函数</item>
@@ -112,9 +112,9 @@
     <item id="indexEntry_property">{0} 属性</item>
     <item id="indexEntry_event">{0} 事件</item>
     <item id="indexEntry_field">{0} 字段</item>
-    <item id="indexEntry_operator">{0} 操作符</item>
-    <item id="indexEntry_attachedProperty">{0} 挂接的属性</item>
-    <item id="indexEntry_attachedEvent">{0} 挂接的事件</item>
+    <item id="indexEntry_operator">{0} 运算符</item>
+    <item id="indexEntry_attachedProperty">{0} 附加属性</item>
+    <item id="indexEntry_attachedEvent">{0} 附加事件</item>
     <item id="indexEntry_methodExplicit">{0} 显式实现的方法</item>
     <item id="indexEntry_propertyExplicit">{0} 显式实现的属性</item>
     <item id="indexEntry_eventExplicit">{0} 显式实现的事件</item>
@@ -140,7 +140,7 @@
     <item id="title_platforms">平台</item>
     <item id="title_relatedTopics">参见</item>
     <item id="title_extensionUsage">备注</item>
-    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型{0}的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="http://msdn.microsoft.com/zh-CN/library/bb384936.aspx" target="_blank">扩展方法 (Visual Basic)</a> 或 <a href="http://msdn.microsoft.com/zh-CN/library/bb383977.aspx" target="_blank">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
+    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型 {0} 的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="http://msdn.microsoft.com/zh-CN/library/bb384936.aspx" target="_blank">扩展方法 (Visual Basic)</a> 或 <a href="http://msdn.microsoft.com/zh-CN/library/bb383977.aspx" target="_blank">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
     <item id="text_moreInheritance">更多...</item>
 
     <!-- table headers -->
@@ -183,15 +183,15 @@
     <item id="tableTitle_enumerationTypesFilter">枚举</item>
     <item id="tableTitle_constructor">构造函数</item>
     <item id="tableTitle_method">方法</item>
-    <item id="tableTitle_operator">操作符</item>
+    <item id="tableTitle_operator">运算符</item>
     <item id="tableTitle_field">字段</item>
     <item id="tableTitle_property">属性</item>
     <item id="tableTitle_event">事件</item>
-    <item id="tableTitle_attachedEvent">挂接的事件</item>
-    <item id="tableTitle_attachedProperty">挂接的属性</item>
-    <item id="tableTitle_explicitInterfaceImplementation">显示&#160;接口&#160;实现</item>
-    <item id="tableTitle_overloadMembers">覆写&#160;列表</item>
-    <item id="tableTitle_extensionMethod">扩展&#160;方法</item>
+    <item id="tableTitle_attachedEvent">附加事件</item>
+    <item id="tableTitle_attachedProperty">附加属性</item>
+    <item id="tableTitle_explicitInterfaceImplementation">显式接口实现</item>
+    <item id="tableTitle_overloadMembers">重载列表</item>
+    <item id="tableTitle_extensionMethod">扩展方法</item>
 
     <!-- Thread Safety -->
     <item id="text_threadSafety">线程安全</item>
@@ -213,7 +213,7 @@
     <item id="Overloaded">已重载。</item>	
     <item id="defaultNamespace">( 默认命名空间 )</item>
 
-    <item id="typeLink">类型：&#160;{0}</item>
+    <item id="typeLink">类型：{0}</item>
     <!-- First line of a param or retval description is a link to the type of the param or retval.
        This boilerplate is used if the type is a type parameter of the member's type. -->
     <item id="typeLinkToTypeParameter">
@@ -265,18 +265,18 @@
     <item id="text_propertiesLower">属性</item>
     <item id="text_eventsLower">事件</item>
     <item id="text_fieldsLower">字段</item>
-    <item id="text_operatorsLower">操作符</item>
-    <item id="text_attachedPropertiesLower">挂接属性</item>
-    <item id="text_attachedEventsLower">挂接事件</item>
+    <item id="text_operatorsLower">运算符</item>
+    <item id="text_attachedPropertiesLower">附加属性</item>
+    <item id="text_attachedEventsLower">附加事件</item>
 
     <item id="text_membersUpper">成员</item>
     <item id="text_methodsUpper">方法</item>
     <item id="text_propertiesUpper">属性</item>
     <item id="text_eventsUpper">事件</item>
     <item id="text_fieldsUpper">字段</item>
-    <item id="text_operatorsUpper">操作符</item>
-    <item id="text_attachedPropertiesUpper">挂接属性</item>
-    <item id="text_attachedEventsUpper">挂接事件</item>
+    <item id="text_operatorsUpper">运算符</item>
+    <item id="text_attachedPropertiesUpper">附加属性</item>
+    <item id="text_attachedEventsUpper">附加事件</item>
 
     <!-- alt text for images -->
     <item id="altText_pubClass">公共类</item>
@@ -300,25 +300,25 @@
     <item id="altText_pubField">公共字段</item>
     <item id="altText_pubProperty">公共属性</item>
     <item id="altText_pubEvent">公共事件</item>
-    <item id="altText_pubOperator">公共操作符</item>
-    <item id="altText_pubAttachedProperty">公共的挂接属性</item>
-    <item id="altText_pubAttachedEvent">公共的挂接事件</item>
+    <item id="altText_pubOperator">公共运算符</item>
+    <item id="altText_pubAttachedProperty">公共的附加属性</item>
+    <item id="altText_pubAttachedEvent">公共的附加事件</item>
     <item id="altText_protConstructor">受保护的构造函数</item>
     <item id="altText_protMethod">受保护的方法</item>
     <item id="altText_protField">受保护的字段</item>
     <item id="altText_protProperty">受保护的属性</item>
     <item id="altText_protEvent">受保护的事件</item>
-    <item id="altText_protOperator">受保护的操作符</item>
-    <item id="altText_protAttachedProperty">受保护的挂接属性</item>
-    <item id="altText_protAttachedEvent">受保护的挂接事件</item>
+    <item id="altText_protOperator">受保护的运算符</item>
+    <item id="altText_protAttachedProperty">受保护的附加属性</item>
+    <item id="altText_protAttachedEvent">受保护的附加事件</item>
     <item id="altText_privConstructor">私有构造函数</item>
     <item id="altText_privMethod">私有方法</item>
     <item id="altText_privField">私有字段</item>
     <item id="altText_privProperty">私有属性</item>
     <item id="altText_privEvent">私有事件</item>
-    <item id="altText_privOperator">私有操作符</item>
-    <item id="altText_privtAttachedProperty">私有挂接属性</item>
-    <item id="altText_privAttachedEvent">私有挂接事件</item>
+    <item id="altText_privOperator">私有运算符</item>
+    <item id="altText_privtAttachedProperty">私有附加属性</item>
+    <item id="altText_privAttachedEvent">私有附加事件</item>
     <item id="altText_static">静态成员</item>
     <item id="altText_pubextension">公共扩展器方法</item>
     <item id="altText_protextension">受保护的扩展器方法</item>
@@ -553,17 +553,17 @@
 
     <item id="boilerplate_secondaryFrameworkOverride">
         <br/>
-        <br/>在 <include item="{0}"/> 中，此成员被 {1} 覆写。</item>
+        <br/>在 <include item="{0}"/> 中，此成员被 {1} 重写。</item>
     <item id="boilerplate_secondaryFrameworkInherited">
         <br/>
-        <br/>在 <include item="{0}"/>&#160;<include item="{1}"/>，此成员继承自 {2}{3}{4}。</item>
+        <br/>在 <include item="{0}"/><include item="{1}"/>，此成员继承自 {2}{3}{4}。</item>
     <item id="boilerplate_secondaryFrameworkMember">
         <br/>
-        <br/>在 <include item="{0}"/>&#160;<include item="{1}"/>，此成员为 {2}.</item>
+        <br/>在 <include item="{0}"/><include item="{1}"/>，此成员为 {2}.</item>
 
-    <item id="boilerplate_useBaseSummary">此成员覆写了 {0}。</item>
+    <item id="boilerplate_useBaseSummary">此成员重写了 {0}。</item>
     <item id="boilerplate_useBaseSee">参见 {0}.</item>
-    <item id="boilerplate_useBase">此成员覆写了 {0}，在此主题下应该可以找到更完毕的文档。</item>
+    <item id="boilerplate_useBase">此成员重写了 {0}，在此主题下应该可以找到更完整的文档。</item>
 
     <item id="boilerplate_flagsSummary">此枚举以 {0} 特性标记，表示该枚举可以对其成员值按位绑定。</item>
 

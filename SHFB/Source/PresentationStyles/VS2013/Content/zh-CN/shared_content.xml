@@ -59,7 +59,7 @@
 	<item id="title_remarks">备注</item>
 	<item id="title_changeHistory">修订历史</item>
 	<item id="title_events">事件</item>
-	<item id="title_exceptions">一场</item>
+	<item id="title_exceptions">异常</item>
 	<item id="title_contracts">约定</item>
 	<item id="title_setter">Set</item>
 	<item id="title_getter">Get</item>
@@ -74,7 +74,7 @@
 		disambiguator='table' indexMoniker='!DefaultDynamicLinkIndex' /></item>
 
 	<item id="inline_dynamicLink_prefixText">要获取更多信息，请参考 </item>
-	<item id="inline_dynamicLink_postfixText">.</item>
+	<item id="inline_dynamicLink_postfixText">。</item>
 	<item id="inline_dynamicLink_separatorText"> 和 </item>
   
 	<!-- Development language and code snippet titles for languages without a syntax generator -->
@@ -100,7 +100,7 @@
 	<item id="metaLang_XML">XML</item>
 
 	<!-- language keywords -->
-	<item id="devlang_nullKeyword">空引用 (在 Visual Basic 中为 <span class="keyword">Nothing</span>)</item>
+	<item id="devlang_nullKeyword"><span class="keyword">null</span> (在 Visual Basic 中为 <span class="keyword">Nothing</span>)</item>
 	<item id="devlang_staticKeyword"><span class="keyword">static</span> (在 Visual Basic 中为 <span class="keyword">Shared</span>)</item>
 	<item id="devlang_virtualKeyword"><span class="keyword">virtual</span> (在 Visual Basic 中为 <span class="keyword">Overridable</span>)</item>
 	<item id="devlang_trueKeyword"><span class="keyword">true</span> (在 Visual Basic 中为 <span class="keyword">True</span>)</item>

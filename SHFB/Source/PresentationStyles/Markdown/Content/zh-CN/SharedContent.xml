@@ -61,7 +61,7 @@
 	<item id="devlang_XML">XML</item>
 
 	<!-- Language keywords -->
-	<item id="devlang_nullKeyword">a null reference (`Nothing` in Visual Basic)</item>
+	<item id="devlang_nullKeyword">`null` (`Nothing` in Visual Basic)</item>
 	<item id="devlang_staticKeyword">`static` (`Shared` in Visual Basic)</item>
 	<item id="devlang_virtualKeyword">`virtual` (`Overridable` in Visual Basic)</item>
 	<item id="devlang_trueKeyword">`true` (`True` in Visual Basic)</item>
