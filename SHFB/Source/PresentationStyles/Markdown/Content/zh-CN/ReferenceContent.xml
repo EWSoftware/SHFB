@@ -165,11 +165,11 @@
 
     <!-- Member list table titles -->
     <item id="tableTitle_namespace">命名空间</item>
-    <item id="tableTitle_classTypesFilter">类</item>
-    <item id="tableTitle_structureTypesFilter">结构</item>
-    <item id="tableTitle_interfaceTypesFilter">接口</item>
-    <item id="tableTitle_delegateTypesFilter">委托</item>
-    <item id="tableTitle_enumerationTypesFilter">枚举</item>
+    <item id="tableTitle_class">类</item>
+    <item id="tableTitle_structure">结构</item>
+    <item id="tableTitle_interface">接口</item>
+    <item id="tableTitle_delegate">委托</item>
+    <item id="tableTitle_enumeration">枚举</item>
     <item id="tableTitle_constructor">构造函数</item>
     <item id="tableTitle_method">方法</item>
     <item id="tableTitle_operator">运算符</item>
