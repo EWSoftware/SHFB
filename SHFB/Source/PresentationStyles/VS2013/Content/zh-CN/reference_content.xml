@@ -176,11 +176,11 @@
 
     <!-- member list table titles -->
     <item id="tableTitle_namespace">命名空间</item>
-    <item id="tableTitle_classTypesFilter">类</item>
-    <item id="tableTitle_structureTypesFilter">结构</item>
-    <item id="tableTitle_interfaceTypesFilter">接口</item>
-    <item id="tableTitle_delegateTypesFilter">委托</item>
-    <item id="tableTitle_enumerationTypesFilter">枚举</item>
+    <item id="tableTitle_class">类</item>
+    <item id="tableTitle_structure">结构</item>
+    <item id="tableTitle_interface">接口</item>
+    <item id="tableTitle_delegate">委托</item>
+    <item id="tableTitle_enumeration">枚举</item>
     <item id="tableTitle_constructor">构造函数</item>
     <item id="tableTitle_method">方法</item>
     <item id="tableTitle_operator">运算符</item>
@@ -436,54 +436,24 @@
 
     <item id="MSTV">Microsoft TV</item>
 
-    <item id="Win9xFamily">
-        <include item="Win95"/>, <include item="Win98"/>, <include item="Win98Se"/>, <include item="WinME"/>
-    </item>
-    <item id="WinNt4Family">
-        <include item="WinNT4"/>
-    </item>
-    <item id="WinXpFamily">
-        <include item="WinXPPersonal"/>, <include item="WinXPPro"/>, <include item="WinXPSvr"/>
-    </item>
-    <item id="WinCE">
-        <include item="WindowsCE"/>
-    </item>
-    <item id="Win2K">
-        <include item="WinSvr2000"/>
-    </item>
-    <item id="Win2KSvr">
-        <include item="Win2kServer"/>
-    </item>
-    <item id="Win2KADC">
-        <include item="Win2kDatacenter"/>
-    </item>
+    <item id="Win9xFamily"><include item="Win95"/>, <include item="Win98"/>, <include item="Win98Se"/>, <include item="WinME"/></item>
+    <item id="WinNt4Family"><include item="WinNT4"/></item>
+    <item id="WinXpFamily"><include item="WinXPPersonal"/>, <include item="WinXPPro"/>, <include item="WinXPSvr"/></item>
+    <item id="WinCE"><include item="WindowsCE"/></item>
+    <item id="Win2K"><include item="WinSvr2000"/></item>
+    <item id="Win2KSvr"><include item="Win2kServer"/></item>
+    <item id="Win2KADC"><include item="Win2kDatacenter"/></item>
 
-    <item id="WinNt4Server">
-        <include item="WinNT4Svr"/>
-    </item>
-    <item id="WinNt4Workstation">
-        <include item="WinNT4Wks"/>
-    </item>
-    <item id="Win2kAdvanced">
-        <include item="Win2kDatacenter"/>
-    </item>
-    <item id="Win2kServerApplianceKit"/>
-    <item id="WinXpHome">
-        <include item="WinXPPersonal"/>
-    </item>
-    <item id="WinXpProfessional">
-        <include item="WinXPPro"/>
-    </item>
-    <item id="Win2003Server">
-        <include item="WinXPSvr"/>
-    </item>
-    <item id="NETCF">
-        <include item="PocketPC"/>, <include item="SmartPhone"/>, <include item="WindowsCE"/>
-    </item>
+    <item id="WinNt4Server"><include item="WinNT4Svr"/></item>
+    <item id="WinNt4Workstation"><include item="WinNT4Wks"/></item>
+    <item id="Win2kAdvanced"><include item="Win2kDatacenter"/></item>
+    <item id="Win2kServerApplianceKit"></item>
+    <item id="WinXpHome"><include item="WinXPPersonal"/></item>
+    <item id="WinXpProfessional"><include item="WinXPPro"/></item>
+    <item id="Win2003Server"><include item="WinXPSvr"/></item>
+    <item id="NETCF"><include item="PocketPC"/>, <include item="SmartPhone"/>, <include item="WindowsCE"/></item>
 
-    <item id="XNA">
-        <include item="Xbox360"/>, <include item="Zune" />
-    </item>
+    <item id="XNA"><include item="Xbox360"/>, <include item="Zune" /></item>
 
     <!-- platform names that appear in the Platforms section on mref type and member pages 
        The id values must be in sync with the platform/@name values used in the manifold  platformFilters.xml filter files.
@@ -547,19 +517,12 @@
     <item id="silverlight_mobile_v1">Windows Phone OS 7.0</item>
 
     <!-- Used in the Requirements section to display an xmlns URI for apis that can be used in XAML -->
-    <item id="boilerplate_xamlXmlnsRequirements">
-        <strong>XMLNS for XAML:</strong> {0}</item>
+    <item id="boilerplate_xamlXmlnsRequirements"><strong>XMLNS for XAML:</strong> {0}</item>
     <item id="boilerplate_unmappedXamlXmlns">未映射到一个 xmlns.</item>
 
-    <item id="boilerplate_secondaryFrameworkOverride">
-        <br/>
-        <br/>在 <include item="{0}"/> 中，此成员被 {1} 重写。</item>
-    <item id="boilerplate_secondaryFrameworkInherited">
-        <br/>
-        <br/>在 <include item="{0}"/><include item="{1}"/>，此成员继承自 {2}{3}{4}。</item>
-    <item id="boilerplate_secondaryFrameworkMember">
-        <br/>
-        <br/>在 <include item="{0}"/><include item="{1}"/>，此成员为 {2}.</item>
+    <item id="boilerplate_secondaryFrameworkOverride"><br/><br/>在 <include item="{0}"/> 中，此成员被 {1} 重写。</item>
+    <item id="boilerplate_secondaryFrameworkInherited"><br/><br/>在 <include item="{0}"/><include item="{1}"/>，此成员继承自 {2}{3}{4}。</item>
+    <item id="boilerplate_secondaryFrameworkMember"><br/><br/>在 <include item="{0}"/><include item="{1}"/>，此成员为 {2}.</item>
 
     <item id="boilerplate_useBaseSummary">此成员重写了 {0}。</item>
     <item id="boilerplate_useBaseSee">参见 {0}.</item>
@@ -568,56 +531,20 @@
     <item id="boilerplate_flagsSummary">此枚举以 {0} 特性标记，表示该枚举可以对其成员值按位绑定。</item>
 
     <!-- Legacy content -->
-    <item id="familyTitle">
-        <include item="title_family"/>
-    </item>
+    <item id="familyTitle"><include item="title_family"/></item>
     <item id="allMembersTitle">成员</item>
     <item id="membersTitle">重载列表</item>
-    <item id="hostProtectionAttributeShort">
-        <include item="text_hostProtectionAttribute"/>
-    </item>
-    <item id="classLower">
-        <include item="text_classLower"/>
-    </item>
-    <item id="delegateLower">
-        <include item="text_delegateLower"/>
-    </item>
-    <item id="structureLower">
-        <include item="text_structureLower"/>
-    </item>
-    <item id="interfaceLower">
-        <include item="text_interfaceLower"/>
-    </item>
-    <item id="enumerationLower">
-        <include item="text_enumerationLower"/>
-    </item>
-    <item id="SeeAlsoNamespaceLinkText">
-        <include item="boilerplate_seeAlsoNamespaceLink">
-            <parameter>{0}</parameter>
-        </include>
-    </item>
-    <item id="SeeAlsoTypeLinkText">
-        <include item="boilerplate_seeAlsoTypeLink">
-            <parameter>{0}</parameter>
-            <parameter>{1}</parameter>
-        </include>
-    </item>
-    <item id="SeeAlsoMembersLinkText">
-        <include item="boilerplate_seeAlsoMembersLink">
-            <parameter>{0}</parameter>
-        </include>
-    </item>
-    <item id="SeeAlsoOverloadLinkText">
-        <include item="boilerplate_seeAlsoOverloadLink">
-            <parameter>{0}</parameter>
-        </include>
-    </item>
-    <item id="nonScrollingTypeLinkText">
-        <include item="boilerplate_seeAlsoTypeLink">
-            <parameter>{0}</parameter>
-            <parameter>{1}</parameter>
-        </include>
-    </item>
+    <item id="hostProtectionAttributeShort"><include item="text_hostProtectionAttribute"/></item>
+    <item id="classLower"><include item="text_classLower"/></item>
+    <item id="delegateLower"><include item="text_delegateLower"/></item>
+    <item id="structureLower"><include item="text_structureLower"/></item>
+    <item id="interfaceLower"><include item="text_interfaceLower"/></item>
+    <item id="enumerationLower"><include item="text_enumerationLower"/></item>
+    <item id="SeeAlsoNamespaceLinkText"><include item="boilerplate_seeAlsoNamespaceLink"><parameter>{0}</parameter></include></item>
+    <item id="SeeAlsoTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
+    <item id="SeeAlsoMembersLinkText"><include item="boilerplate_seeAlsoMembersLink"><parameter>{0}</parameter></include></item>
+    <item id="SeeAlsoOverloadLinkText"><include item="boilerplate_seeAlsoOverloadLink"><parameter>{0}</parameter></include></item>
+    <item id="nonScrollingTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
 
     <!-- Show Missing Component messages -->
     <item id="SMCAutoDocConstructor">初始化 <referenceLink target="T:{0}" /> 类的一个新实例</item>
@@ -625,15 +552,9 @@
     <item id="SMCAutoDocDispose">释放被 <referenceLink target="T:{0}" /> 使用的所有资源</item>
     <item id="SMCAutoDocDisposeBool">释放被 <referenceLink target="T:{0}" /> 使用的非托管资源，并且是否托管资源（可选）</item>
     <item id="SMCAutoDocDisposeParam">为 true 则同时释放托管资源和非托管资源；为 false 则只释放非托管资源</item>
-    <item id="SMCMissingTag">
-        <p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{1}" 的 &lt;{0}&gt; 文档]</p>
-    </item>
-    <item id="SMCMissingParamTag">
-        <p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{2}" 的 &lt;{0} name="{1}"/&gt; 文档]</p>
-    </item>
-    <item id="SMCMissingIncludeTarget">
-        <p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[在 “{0}” 中缺少 &lt;include&gt; 目标文档。文件：“{1}” 路径：“{2}”]</p>
-    </item>
+    <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{1}" 的 &lt;{0}&gt; 文档]</p></item>
+    <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[缺少 "{2}" 的 &lt;{0} name="{1}"/&gt; 文档]</p></item>
+    <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 9pt; font-weight: bold;">[在 “{0}” 中缺少 &lt;include&gt; 目标文档。文件：“{1}” 路径：“{2}”]</p></item>
 
     <!-- View Source link text -->
     <item id="sourceCodeLinkText">查看代码</item>
