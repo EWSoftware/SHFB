@@ -149,7 +149,7 @@ function UpdateLST(language)
                     {
                         if(devLangSpan.parentNode.nextSibling.nodeValue != null &&
                           !devLangSpan.parentNode.nextSibling.nodeValue.substring(0, 1).match(/[.,);:!/?]/) &&
-                          (devLangSpan.innerHTML == '&gt;' || devLangSpan.innerHTML == ')'))
+                          (isHelp1 || devLangSpan.innerHTML == '&gt;' || devLangSpan.innerHTML == ')'))
                         {
                             devLangSpan.innerHTML = keyValue[1] + " ";
                         }
@@ -182,7 +182,7 @@ function UpdateLST(language)
                             {
                                 if(devLangSpan.parentNode.nextSibling.nodeValue != null &&
                                   !devLangSpan.parentNode.nextSibling.nodeValue.substring(0, 1).match(/[.,);:!/?]/) &&
-                                  (devLangSpan.innerHTML == '&gt;' || devLangSpan.innerHTML == ')'))
+                                  (isHelp1 || devLangSpan.innerHTML == '&gt;' || devLangSpan.innerHTML == ')'))
                                 {
                                     devLangSpan.innerHTML = keyValue[1] + " ";
                                 }
