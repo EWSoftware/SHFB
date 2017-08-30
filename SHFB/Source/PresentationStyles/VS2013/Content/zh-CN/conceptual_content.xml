@@ -2,7 +2,7 @@
 <content xml:space="preserve">
 
     <!-- main window stuff -->
-    <item id="productTitle">.NET框架指南</item>
+    <item id="productTitle">.NET 框架指南</item>
 
     <!-- body -->
 
@@ -22,7 +22,7 @@
     <item id="title_parentElement">父元素</item>
     <item id="title_elementInformation">元素信息</item>
     <item id="title_textValue">文本值</item>
-    <item id="title_dotNetFrameworkEquivalent">.NET框架等价项</item>
+    <item id="title_dotNetFrameworkEquivalent">.NET 框架等价项</item>
     <item id="title_prerequisites">必备条件</item>
     <item id="title_robustProgramming">鲁棒编程</item>
     <item id="title_securitySection">安全性</item>

@@ -36,7 +36,7 @@
 	<item id="title_remarks">备注</item>
 	<item id="title_changeHistory">修订历史</item>
 	<item id="title_events">事件</item>
-	<item id="title_exceptions">一场</item>
+	<item id="title_exceptions">异常</item>
 	<item id="title_contracts">约定</item>
 	<item id="title_setter">Set</item>
 	<item id="title_getter">Get</item>
