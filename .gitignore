@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 StyleCop.Cache
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
 
 # Build results
 [Dd]ebug/
@@ -44,6 +47,7 @@ Documentation/WebHelp/
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
+*.lock.json
 
 # Others
 ~$*

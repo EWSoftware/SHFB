@@ -1480,20 +1480,29 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Markdown\Content\ja-JP\ja-JP.vsspell" />
     <None Include="Markdown\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="Markdown\Content\zh-CN\zh-CN.vsspell" />
     <None Include="Markdown\SHFBContent\SHFBContent.vsspell" />
+    <None Include="OpenXml\Content\ja-JP\ja-JP.vsspell" />
     <None Include="OpenXml\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="OpenXml\Content\zh-CN\zh-CN.vsspell" />
     <None Include="OpenXml\SHFBContent\SHFBContent.vsspell" />
     <None Include="Shared\StopWordList\StopWordList.vsspell" />
     <None Include="StandardPresentationStyles.csproj.vsspell" />
     <None Include="VS2010\Content\de-DE\de-DE.vsspell" />
+    <None Include="VS2010\Content\ja-JP\ja-JP.vsspell" />
     <None Include="VS2010\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="VS2010\Content\zh-CN\zh-CN.vsspell" />
     <None Include="VS2010\SHFBContent\SHFBContent.vsspell" />
     <None Include="VS2013\Content\de-DE\de-DE.vsspell" />
     <None Include="VS2013\Content\es-ES\es-ES.vsspell" />
     <None Include="VS2013\Content\fr-FR\fr-FR.vsspell" />
     <None Include="VS2013\Content\it-IT\it-IT.vsspell" />
+    <None Include="VS2013\Content\ja-JP\ja-JP.vsspell" />
+    <None Include="VS2013\Content\pt-BR\pt-BR.vsspell" />
     <None Include="VS2013\Content\ru-RU\ru-RU.vsspell" />
+    <None Include="VS2013\Content\zh-CN\zh-CN.vsspell" />
     <None Include="VS2013\SHFBContent\SHFBContent.vsspell" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

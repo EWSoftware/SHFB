@@ -17,11 +17,12 @@ indent_size = 4
 
 dotnet_sort_system_directives_first = true
 
-# "This." and "Me." qualification
-dotnet_style_qualification_for_event = true:suggestion
+# "This." and "Me." qualification.  Use is preferred where true but the lightbulbs tend to show up in places
+# they aren't wanted (within static methods and nameof parameters etc.) so no suggestions are enabled.
+dotnet_style_qualification_for_event = true:none
 dotnet_style_qualification_for_field = false:none
-dotnet_style_qualification_for_method = true:suggestion
-dotnet_style_qualification_for_property = true:suggestion
+dotnet_style_qualification_for_method = true:none
+dotnet_style_qualification_for_property = true:none
 
 # Language keywords vs framework type names
 dotnet_style_predefined_type_for_locals_parameters_members = true:none

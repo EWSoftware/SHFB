@@ -28,8 +28,13 @@ projects from within Visual Studio.  It is installed separately.  The core tools
 for it to work correctly and must be installed first.</Paragraph>
 
         <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
-See the topics in the <Bold>Getting Started</Bold> section of the Sandcastle Help File Builder help file for
-information on additional tools that you may find useful and how to create your first project.</Paragraph>
+<Bold>IMPORTANT:</Bold> Use of the standalone GUI requires installation of the
+<Hyperlink NavigateUri="https://www.microsoft.com/en-us/download/details.aspx?id=48159">Microsoft Build Tools 2015</Hyperlink> .
+If you will only use Visual Studio, the separate build tools are not required.</Paragraph>
+        
+        <Paragraph >See the topics in the <Bold>Getting Started</Bold> section of the Sandcastle Help File
+Builder help file for information on additional tools that you may find useful and how to create your first
+project.</Paragraph>
 
         <Section Name="secResults" />
 

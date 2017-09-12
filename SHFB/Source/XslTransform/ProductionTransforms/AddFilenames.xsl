@@ -15,7 +15,7 @@
 		<msxsl:using namespace="System.Text.RegularExpressions" />
 		<![CDATA[
 			// This is used to generate GUID filenames (MD5 hashes in GUID form)
-			private static HashAlgorithm md5 = HashAlgorithm.Create("MD5");
+			private static HashAlgorithm md5;
 
 			// The reflection file can contain tens of thousands of entries for large assemblies.  HashSet<T> is much
 			// faster at lookups than List<T>.
@@ -32,6 +32,10 @@
 
 					if(namingMethod == "Guid")
 					{
+							// Create on first use to prevent issues if FIPS is enabled
+							if(md5 == null)
+								md5 = HashAlgorithm.Create("MD5");
+
 							byte[] input = Encoding.UTF8.GetBytes(id);
 							byte[] output = md5.ComputeHash(input);
 							Guid guid = new Guid(output);

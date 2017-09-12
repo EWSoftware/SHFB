@@ -9,6 +9,8 @@
 // 11/25/2013 - EFW - Cleaned up the code and removed unused members.  Added support for the visibility options
 // in the API filter.
 // 11/18/2014 - EFW - Added a hack to work around a unique case using "new" to re-implement interface methods
+// 08/28/2017 - EFW - Updated the constructor to remove virtual/overridden members from base types when an
+// overridden member is excluded via the API filter.
 
 using System;
 using System.Collections;
@@ -44,10 +46,17 @@ namespace Microsoft.Ddue.Tools
 
             index = new Dictionary<string, List<Member>>();
 
+            // !EFW - Track excluded overridden members.  These need to be filtered out below or the inherited
+            // base member shows up in the member list.
+            var excludedOverriddenMembers = new List<Member>();
+
             // Add all member of the type except nested types and members that the filter rejects
             foreach(var member in type.Members)
                 if(!(member is TypeNode) && filter.IsExposedMember(member))
                     this.AddMember(member);
+                else
+                    if(member.OverridesBaseClassMember)
+                        excludedOverriddenMembers.Add(member.OverriddenMember);
 
             // For enumerations, don't list inherited members
             if(type is EnumNode)
@@ -146,11 +155,25 @@ namespace Microsoft.Ddue.Tools
 
                     // Don't add members that the filter rejects
                     if(filter.IsExcludedFrameworkMember(type, parentMember) || !filter.IsExposedMember(parentMember))
+                    {
+                        if(parentMember.OverridesBaseClassMember)
+                            excludedOverriddenMembers.Add(parentMember.OverriddenMember);
+
                         continue;
+                    }
 
                     // Don't add members we have overridden
                     if(this.Contains(parentMember))
                         continue;
+
+                    // Don't add virtual members that have had their overridden counterparts excluded
+                    if(excludedOverriddenMembers.Contains(parentMember))
+                    {
+                        if(parentMember.OverridesBaseClassMember)
+                            excludedOverriddenMembers.Add(parentMember.OverriddenMember);
+
+                        continue;
+                    }
 
                     // Otherwise, add the member 
                     this.AddMember(parentMember);

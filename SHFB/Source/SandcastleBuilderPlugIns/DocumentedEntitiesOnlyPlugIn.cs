@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DocumentedEntitiesOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/16/2016
-// Note    : Copyright 2016, Eric Woodruff, All rights reserved
+// Updated : 09/11/2017
+// Note    : Copyright 2016-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to automatically generate an API filter based on the XML
@@ -334,6 +334,9 @@ namespace SandcastleBuilder.PlugIns
             foreach(var file in builder.CommentsFiles)
                 foreach(XmlNode member in file.Members)
                 {
+                    if(member.LocalName != "member")
+                        continue;
+
                     id = member.Attributes["name"].Value;
 
                     // Convert NamespaceDoc types to namespace comments element IDs

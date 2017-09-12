@@ -7,9 +7,11 @@
 // 07/26/2012 - EFW - Added UnauthorizedAccessException check to ignore temporary files that may be locked when
 // attempting to delete them (i.e. virus scanners have them open).
 // 12/11/2013 - EFW - Added MSBuild task support.
+// 08/30/2017 - EFW - Added a more specific error message for FIPS exceptions
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Xsl;
 
@@ -47,15 +49,17 @@ namespace Microsoft.Ddue.Tools
             ConsoleApplication.WriteBanner();
 
             // Specify options
-            OptionCollection options = new OptionCollection();
-            options.Add(new SwitchOption("?", "Show this help page."));
-            options.Add(new ListOption("xsl", "Specify one or more XSL transform files.", "xsltPath") {
-                RequiredMessage = "Specify at least one XSL transform file" });
-            options.Add(new ListOption("arg", "Specify arguments.", "name=value"));
-            options.Add(new StringOption("out", "Specify an output file. If unspecified, output goes to the " +
-                "console.", "outputFilePath"));
-            options.Add(new SwitchOption("w", "Do not ignore insignificant whitespace. By default " +
-                "insignificant whitespace is ignored."));
+            OptionCollection options = new OptionCollection
+            {
+                new SwitchOption("?", "Show this help page."),
+                new ListOption("xsl", "Specify one or more XSL transform files.", "xsltPath") {
+                    RequiredMessage = "Specify at least one XSL transform file" },
+                new ListOption("arg", "Specify arguments.", "name=value"),
+                new StringOption("out", "Specify an output file. If unspecified, output goes to the " +
+                    "console.", "outputFilePath"),
+                new SwitchOption("w", "Do not ignore insignificant whitespace. By default " +
+                    "insignificant whitespace is ignored.")
+            };
 
             // Process options
             ParseArgumentsResult results = options.ParseArguments(args);
@@ -154,9 +158,11 @@ namespace Microsoft.Ddue.Tools
             string input = Environment.ExpandEnvironmentVariables(results.UnusedArguments[0]);
 
             // Prepare the reader
-            XmlReaderSettings readerSettings = new XmlReaderSettings();
-            readerSettings.IgnoreWhitespace = ignoreWhitespace;
-            readerSettings.CloseInput = true;
+            XmlReaderSettings readerSettings = new XmlReaderSettings
+            {
+                IgnoreWhitespace = ignoreWhitespace,
+                CloseInput = true
+            };
 
             // Do each transform
             for(int i = 0; i < transforms.Length; i++)
@@ -245,6 +251,36 @@ namespace Microsoft.Ddue.Tools
                         try
                         {
                             transform.Transform(reader, arguments, writer);
+                        }
+                        catch(TargetInvocationException e)
+                        {
+                            // If performing the Add Filenames transform and using GUID naming, the MD5 hashing
+                            // algorithm can be blocked if the FIPS policy is enabled.  In such cases, tell the
+                            // user to switch to Member Name or Hashed Member Name as the naming method.  This is
+                            // rare and using the alternate naming method is easier than replacing the MD5
+                            // hashing which would be a significant breaking change.
+                            Exception fipsEx = e;
+
+                            while(fipsEx != null)
+                            {
+                                if(fipsEx is InvalidOperationException && fipsEx.Message.IndexOf(" FIPS ",
+                                  StringComparison.Ordinal) != -1)
+                                {
+                                    break;
+                                }
+
+                                fipsEx = fipsEx.InnerException;
+                            }
+
+                            if(fipsEx == null)
+                                throw;
+
+                            ConsoleApplication.WriteMessage(LogLevel.Error, "The FIPS validated cryptographic " +
+                                "algorithms policy appears to be enabled.  This prevents the MD5 hashing algorithm " +
+                                "from being used to generate GUID topic filenames.  Change the project's Naming " +
+                                "Method property to either Member Name or Hashed Member Name which do not rely " +
+                                "on the MD5 hashing algorithm.");
+                            return 1;
                         }
                         catch(XsltException e)
                         {
