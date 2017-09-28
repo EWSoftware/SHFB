@@ -158,7 +158,7 @@ Examples of these types are the Microsoft Office reference assemblies used in Of
 </section>
 
 <section address="PubCompGen">
-  <title>Public compiler generated types and members</title>
+  <title>Public compiler generated types and members (DocumentPublicCompilerGenerated)</title>
   <content>
 		<para>When set to false, the default, the help file builder will remove all compiler generated types and
 members from the help file.  This is usually the desired behavior as compiler generated types are typically
@@ -166,6 +166,32 @@ internal constructs that are not wanted in the help file.  However, in some case
 may be wanted such as for compiler generated resource classes or data access classes.  When true, such types and
 members are included but only if they are public.  Any private, internal, and protected compiler generated types
 and members will still be removed.</para>
+
+  </content>
+</section>
+
+<section address="EditorBrowsableNever">
+  <title>Types and members marked with an EditorBrowsable attribute set to Never (DocumentEditorBrowsableNever)</title>
+  <content>
+		<para>When set to false, the default, the help file builder will exclude all types and members marked with
+an <codeEntityReference qualifyHint="false">T:System.ComponentModel.EditorBrowsableAttribute</codeEntityReference>
+set to <codeInline>Never</codeInline>.  If set to true, they are included.  Types and members must be explicitly
+marked with the attribute to be excluded.  Types derived from excluded types and overridden members that are not
+explicitly marked again will be included.  This mimics the behavior of the Object Browser tool window in Visual
+Studio.</para>
+
+  </content>
+</section>
+
+<section address="NonBrowsable">
+  <title>Types and members marked with a Browsable attribute set to False (DocumentNonBrowsable)</title>
+  <content>
+		<para>When set to false, the help file builder will exclude all types and members marked with
+a <codeEntityReference qualifyHint="false">T:System.ComponentModel.BrowsableAttribute</codeEntityReference>
+set to <codeInline>False</codeInline>.  If set to true, the default, they are included.  Types and members must
+be explicitly marked with the attribute to be excluded.  Types derived from excluded types and overridden members
+that are not explicitly marked again will be included.  This mimics the behavior of the Object Browser tool
+window in Visual Studio.</para>
 
   </content>
 </section>

@@ -140,6 +140,7 @@
     <Compile Include="UI\ConfigurationEditorDlg.Designer.cs">
       <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="VisibleItems.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

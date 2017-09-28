@@ -7,5 +7,5 @@
     <ddue:linkUri>https://GitHub.com/EWSoftware/SHFB</ddue:linkUri>
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
-  <item id="VisualStudioMinVersion">Visual Studio 2013</item>
+  <item id="VisualStudioMinVersion">Visual Studio 2015</item>
 </content>

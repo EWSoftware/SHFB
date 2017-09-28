@@ -20,6 +20,8 @@
 // assemblies that actually represent user code.
 // 12/10/2014 - EFW - Added prefix exclusion for "put_" used on Windows Store/Phone assembly properties
 // 06/19/2015 - EFW - Added support for including public compiler generated types/members
+// 09/21/2017 - EFW - Added support for excluding members based on the presence of an EditorBrowsableAttribute
+// and/or a BrowsableAttribute.
 
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,8 @@ using System.Xml;
 using System.Xml.XPath;
 
 using System.Compiler;
+
+using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.Reflection
 {
@@ -302,6 +306,43 @@ namespace Microsoft.Ddue.Tools.Reflection
                     visibleItems &= ~VisibleItems.PublicCompilerGenerated;
             }
         }
+
+        /// <summary>
+        /// This is used to get or set whether or not types and members marked with an
+        /// <see cref="System.ComponentModel.EditorBrowsableAttribute"/> set to <c>Never</c> are included in the
+        /// output.
+        /// </summary>
+        /// <value>Set to true to include types and members marked as not browsable in the editor or false to
+        /// hide them.</value>
+        public bool IncludeEditorBrowsableNever
+        {
+            get { return ((visibleItems & VisibleItems.EditorBrowsableNever) != 0); }
+            set
+            {
+                if(value)
+                    visibleItems |= VisibleItems.EditorBrowsableNever;
+                else
+                    visibleItems &= ~VisibleItems.EditorBrowsableNever;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not types and members marked with a
+        /// <see cref="System.ComponentModel.BrowsableAttribute"/> set to <c>False</c> are included in the
+        /// output.
+        /// </summary>
+        /// <value>Set to true to include types and members marked as non-browsable or false to hide them</value>
+        public bool IncludeNonBrowsable
+        {
+            get { return ((visibleItems & VisibleItems.NonBrowsable) != 0); }
+            set
+            {
+                if(value)
+                    visibleItems |= VisibleItems.NonBrowsable;
+                else
+                    visibleItems &= ~VisibleItems.NonBrowsable;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -334,6 +375,8 @@ namespace Microsoft.Ddue.Tools.Reflection
             this.IncludeProtectedInternalAsProtected = (bool)configuration.Evaluate("boolean(visibility/protectedInternalAsProtected[@expose='true'])");
             this.IncludeNoPIATypes = (bool)configuration.Evaluate("boolean(visibility/noPIATypes[@expose='true'])");
             this.IncludePublicCompilerGenerated = (bool)configuration.Evaluate("boolean(visibility/publicCompilerGenerated[@expose='true'])");
+            this.IncludeEditorBrowsableNever = (bool)configuration.Evaluate("boolean(visibility/editorBrowsableNever[@expose='true'])");
+            this.IncludeNonBrowsable = (bool)configuration.Evaluate("boolean(visibility/nonBrowsable[@expose='true'])");
 
             // API filter
             XPathNavigator apiFilterNode = configuration.SelectSingleNode("apiFilter");
@@ -442,6 +485,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>True if the type is exposed, false if not</returns>
         public virtual bool IsExposedType(TypeNode type)
         {
+            TypeNode curType;
             bool exposed;
 
             if(type == null)
@@ -472,7 +516,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                 // Don't include compiler-generated types.  Check this and all parents for a compiler generated
                 // attribute.  No-PIA types are kept if wanted though as are public compiler generated types
                 // if explicitly indicated via the visibility settings.
-                TypeNode curType = type;
+                curType = type;
 
                 while(curType != null)
                 {
@@ -506,7 +550,60 @@ namespace Microsoft.Ddue.Tools.Reflection
                 typeExposedCache.Add(type.DeclaringModule.Name + "/" + type.FullName, exposed);
             }
 
+            // Only the current type is checked.  Base types are not checked for the attribute.  This mimics
+            // the behavior of the Object Browser which works the same way.  Unless the attribute is actually
+            // present and set to Never, the type will appear.
+            if(exposed && !this.IncludeEditorBrowsableNever)
+                exposed = IsEditorBrowsable(type.Attributes);
+
+            // As above, only the current type is checked
+            if(exposed && !this.IncludeNonBrowsable)
+                exposed = IsBrowsable(type.Attributes);
+
             return exposed;
+        }
+
+        /// <summary>
+        /// This is used to see if an API member is hidden via the <c>EditorBrowsableAttribute</c>
+        /// </summary>
+        /// <param name="attributes">The attribute list to check</param>
+        /// <returns>Return true if the attribute is not present.  If present, it returns false if set to
+        /// <c>Never</c>, otherwise it returns true.</returns>
+        private static bool IsEditorBrowsable(AttributeList attributes)
+        {
+            var editorBrowsable = attributes.FirstOrDefault(attr => attr.Type.FullName ==
+                "System.ComponentModel.EditorBrowsableAttribute");
+
+            if(editorBrowsable != null && editorBrowsable.Expressions.Count != 0)
+            {
+                var l = editorBrowsable.Expressions[0] as Literal;
+
+                if(l != null)
+                    return ((int)l.Value != 1);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// This is used to see if an API member is hidden via the <c>BrowsableAttribute</c>
+        /// </summary>
+        /// <param name="attributes">The attribute list to check</param>
+        /// <returns>Return true if the attribute is not present.  If present, it returns the attribute setting.</returns>
+        private static bool IsBrowsable(AttributeList attributes)
+        {
+            var browsable = attributes.FirstOrDefault(attr => attr.Type.FullName ==
+                "System.ComponentModel.BrowsableAttribute");
+
+            if(browsable != null && browsable.Expressions.Count != 0)
+            {
+                var l = browsable.Expressions[0] as Literal;
+
+                if(l != null)
+                    return (bool)l.Value;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -593,6 +690,24 @@ namespace Microsoft.Ddue.Tools.Reflection
             if(member.Attributes.Any(attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
              (!this.IncludePublicCompilerGenerated || !member.IsPublic))
                 return false;
+
+            // Members marked with an EditorBrowsableAttribute set to Never based on the visibility settings
+            if(!this.IncludeEditorBrowsableNever)
+            {
+                // Only the current member is checked.  Overridden members in base types are not checked for the
+                // attribute.  This mimics the behavior of the Object Browser which works the same way.  Unless
+                // the attribute is actually present and set to Never, the member will appear.
+                if(!IsEditorBrowsable(member.Attributes))
+                    return false;
+            }
+
+            // Members marked with a BrowsableAttribute set to False based on the visibility settings
+            if(!this.IncludeNonBrowsable)
+            {
+                // As above, only the current member is checked
+                if(!IsBrowsable(member.Attributes))
+                    return false;
+            }
 
             // If not visible based on the visibility settings, ignore it
             if(!this.IsVisible(member))

@@ -78,6 +78,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrowsableAttributesTest.cs" />
     <Compile Include="CodeSnippetGrouping\TestSnippets.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DocumentationInheritance\AttachedEventsAndProperties.cs" />

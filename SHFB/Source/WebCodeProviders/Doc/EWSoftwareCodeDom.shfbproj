@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{aacc5248-c357-442f-b789-17488ee609d9}</ProjectGuid>
-    <SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -19,7 +19,7 @@
     <HtmlHelpName>EWSoftware.CodeDom</HtmlHelpName>
     <ProjectSummary>Web Project Code Providers.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Web Code Providers&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttps://GitHub.com/EWSoftware/SHFB&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttps://GitHub.com/EWSoftware/SHFB&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
-    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <WorkingPath>

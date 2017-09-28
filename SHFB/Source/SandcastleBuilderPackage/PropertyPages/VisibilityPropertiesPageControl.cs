@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 06/19/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 09/27/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Visibility category properties
@@ -19,6 +19,7 @@
 // 10/28/2012  EFW  Updated for use in the standalone GUI
 // 12/03/2013  EFW  Added support for no-PIA types
 // 06/19/2015  EFW  Added support for public compiler generated types/members
+// 09/22/2017  EFW  Added support for filtering by EditorBrowsableAttribute and BrowsableAttribute state
 //===============================================================================================================
 
 using System;
@@ -26,6 +27,8 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
+
+using Sandcastle.Core;
 
 #if !STANDALONEGUI
 using Microsoft.VisualStudio;
@@ -83,6 +86,8 @@ namespace SandcastleBuilder.Package.PropertyPages
             chkSealedProtected.CheckedChanged += base.OnPropertyChanged;
             chkNoPIATypes.CheckedChanged += base.OnPropertyChanged;
             chkPublicCompilerGenerated.CheckedChanged += base.OnPropertyChanged;
+            chkEditorBrowsableNever.CheckedChanged += base.OnPropertyChanged;
+            chkNonBrowsable.CheckedChanged += base.OnPropertyChanged;
         }
         #endregion
 
@@ -148,7 +153,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             // If not found or not valid, we'll ignore it and use the defaults
             if(projProp == null || !Enum.TryParse<VisibleItems>(projProp.UnevaluatedValue, out items))
                 items = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
-                    VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected;
+                    VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected | VisibleItems.NonBrowsable;
 
             chkAttributes.Checked = ((items & VisibleItems.Attributes) != 0);
             chkExplicitInterfaceImplementations.Checked = ((items & VisibleItems.ExplicitInterfaceImplementations) != 0);
@@ -164,6 +169,8 @@ namespace SandcastleBuilder.Package.PropertyPages
             chkSealedProtected.Checked = ((items & VisibleItems.SealedProtected) != 0);
             chkNoPIATypes.Checked = ((items & VisibleItems.NoPIATypes) != 0);
             chkPublicCompilerGenerated.Checked = ((items & VisibleItems.PublicCompilerGenerated) != 0);
+            chkEditorBrowsableNever.Checked = ((items & VisibleItems.EditorBrowsableNever) != 0);
+            chkNonBrowsable.Checked = ((items & VisibleItems.NonBrowsable) != 0);
 
             return true;
         }
@@ -245,6 +252,12 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             if(chkPublicCompilerGenerated.Checked)
                 items |= VisibleItems.PublicCompilerGenerated;
+
+            if(chkEditorBrowsableNever.Checked)
+                items |= VisibleItems.EditorBrowsableNever;
+
+            if(chkNonBrowsable.Checked)
+                items |= VisibleItems.NonBrowsable;
 
 #if !STANDALONEGUI
             this.ProjectMgr.SetProjectProperty("VisibleItems", items.ToString());

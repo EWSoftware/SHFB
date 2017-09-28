@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/28/2016
-// Note    : Copyright 2015-2016, Eric Woodruff, All rights reserved
+// Updated : 09/27/2017
+// Note    : Copyright 2015-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -1105,6 +1105,36 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.AppendTocEntry(entries, replacementValue);
 
             return replacementValue.ToString();
+        }
+        #endregion
+
+        #region Markdown substitution tags
+        //=====================================================================
+
+        /// <summary>
+        /// The markdown API URL format
+        /// </summary>
+        /// <returns>The markdown API URL format</returns>
+        [SubstitutionTag]
+        private string MarkdownApiUrlFormat()
+        {
+            if(sandcastleProject.AppendMarkdownFileExtensionsToUrls)
+                return "{0}.md";
+
+            return "{0}";
+        }
+
+        /// <summary>
+        /// The markdown conceptual URL selector
+        /// </summary>
+        /// <returns>The markdown API URL selector</returns>
+        [SubstitutionTag]
+        private string MarkdownConceptualUrlSelector()
+        {
+            if(sandcastleProject.AppendMarkdownFileExtensionsToUrls)
+                return "concat(/metadata/topic/@id,'.md')";
+
+            return "string(/metadata/topic/@id)";
         }
         #endregion
 

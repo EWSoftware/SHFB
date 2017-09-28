@@ -225,7 +225,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="NamingMethod.cs" />
-    <Compile Include="VisibleItems.cs" />
     <Compile Include="Design\LanguageResourceConverter.cs" />
     <Compile Include="Controls\RefreshableItemListBox.cs">
       <SubType>Component</SubType>

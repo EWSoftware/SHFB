@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/13/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 09/27/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -661,10 +661,26 @@ namespace SandcastleBuilder.WPF.UserControls
 
             spIndexingPanel.Visibility = Visibility.Collapsed;
 
-            codeEntities = new List<string>(cache.AllKeys);
+            var allEntities = new HashSet<string>(cache.AllKeys);
+
+            // Add entries for all namespaces in the project namespace summaries
+            foreach(var ns in currentProject.NamespaceSummaries.Where(n => n.IsDocumented))
+            {
+                string name;
+
+                if(!ns.IsGroup)
+                    name = "N:" + ns.Name;
+                else
+                    name = "G:" + ns.Name.Replace(" (Group)", String.Empty);
+
+                if(!allEntities.Contains(name))
+                    allEntities.Add(name);
+            }
 
             // Add an entry for the root namespace container
-            codeEntities.Add("R:Project_" + currentProject.HtmlHelpName.Replace(" ", "_"));
+            allEntities.Add("R:Project_" + currentProject.HtmlHelpName.Replace(" ", "_"));
+
+            codeEntities = new List<string>(allEntities);
 
             if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
             {

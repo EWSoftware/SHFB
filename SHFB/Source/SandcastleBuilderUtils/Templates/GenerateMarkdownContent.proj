@@ -8,6 +8,7 @@
 		<WorkingFolder>{@HtmlEncWorkingFolder}Output\Markdown</WorkingFolder>
 		<OutputFolder>{@HtmlEncOutputFolder}</OutputFolder>
 		<DefaultTopic>{@DefaultTopic}</DefaultTopic>
+		<AppendMarkdownFileExtensionsToUrls>{@AppendMarkdownFileExtensionsToUrls}</AppendMarkdownFileExtensionsToUrls>
 	</PropertyGroup>
 
 	<!-- This defines the dependencies for the Build target -->
@@ -26,9 +27,10 @@
 
 		<!-- Generate the markdown content -->
 		<SandcastleBuilder.Utils.MSBuild.GenerateMarkdownContent
-      WorkingFolder="$(WorkingFolder)"
-      OutputFolder="$(OutputFolder)"
-			DefaultTopic="$(DefaultTopic)"/>
+			WorkingFolder="$(WorkingFolder)"
+			OutputFolder="$(OutputFolder)"
+			DefaultTopic="$(DefaultTopic)"
+			AppendMarkdownFileExtensionsToUrls="$(AppendMarkdownFileExtensionsToUrls)" />
 
 	</Target>
 

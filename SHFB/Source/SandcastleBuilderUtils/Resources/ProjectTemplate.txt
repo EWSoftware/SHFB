@@ -7,7 +7,7 @@
 
 		<SchemaVersion>2.0</SchemaVersion>
 		<ProjectGuid>$guid1$</ProjectGuid>
-		<SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
+		<SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
 
 		<!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual Studio adds them anyway -->
 		<AssemblyName>$safeprojectname$</AssemblyName>

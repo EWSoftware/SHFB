@@ -533,10 +533,20 @@ namespace Sandcastle.Core.BuildAssembler
                             catalog.Catalogs.Add(asmCat);
                         else
                             asmCat.Dispose();
+
+                    }   // Ignore the errors we may expect to see but log them for debugging purposes
+                    catch(ArgumentException ex)
+                    {
+                        // These can occur if it tries to load a foreign framework assembly (i.e. .NETStandard)
+                        // In this case, the inner exception will be the bad image format exception.  If not,
+                        // report the issue.
+                        if(!(ex.InnerException is BadImageFormatException))
+                            throw;
+
+                        System.Diagnostics.Debug.WriteLine(ex);
                     }
                     catch(FileNotFoundException ex)
                     {
-                        // Ignore the errors we may expect to see but log them for debugging purposes
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
                     catch(FileLoadException ex)

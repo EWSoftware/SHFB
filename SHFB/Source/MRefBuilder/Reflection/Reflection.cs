@@ -16,6 +16,8 @@
 // element types.
 // 06/09/2016 - EFW - Added yet another condition to ParametersMatch() to try and match odd intrinsic/generic
 // element type pairings.
+// 09/19/2017 - EFW - Not done yet.  Added another comparison case to try and match template members with
+// generic and array element parameter types.
 
 using System;
 using System.Collections.Generic;
@@ -286,6 +288,35 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 // Allow matches to versions with generic parameters
                 if(ParametersMatch(parameters, candidate.GetParameters(), false, true))
+                    return candidate;
+            }
+
+            // !EFW - Due to yet another case related to generics used with array types, if we get here with no
+            // matches, give up and just compare by literal type name.  If we get a match great.  If not, who
+            // knows?  We'll handle any such cases as they occur.  They're very uncommon at this point anyway.
+            for(int i = 0; i < candidates.Count; i++)
+            {
+                Member candidate = candidates[i];
+
+                if(candidate.NodeType != member.NodeType)
+                    continue;
+
+                var cp = candidate.GetParameters();
+
+                if(parameters.Count != cp.Count)
+                    continue;
+
+                int pi = 0;
+
+                while(pi < parameters.Count)
+                {
+                    if(parameters[pi].Type.FullName != cp[pi].Type.FullName)
+                        break;
+
+                    pi++;
+                }
+
+                if(pi == parameters.Count)
                     return candidate;
             }
 

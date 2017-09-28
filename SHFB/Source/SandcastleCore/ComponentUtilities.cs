@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
+// Updated : 09/19/2017
+// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -262,10 +262,20 @@ namespace Sandcastle.Core
                             catalog.Catalogs.Add(asmCat);
                         else
                             asmCat.Dispose();
+
+                    }   // Ignore the errors we may expect to see but log them for debugging purposes
+                    catch(ArgumentException ex)
+                    {
+                        // These can occur if it tries to load a foreign framework assembly (i.e. .NETStandard)
+                        // In this case, the inner exception will be the bad image format exception.  If not,
+                        // report the issue.
+                        if(!(ex.InnerException is BadImageFormatException))
+                            throw;
+
+                        System.Diagnostics.Debug.WriteLine(ex);
                     }
                     catch(FileNotFoundException ex)
                     {
-                        // Ignore the errors we may expect to see but log them for debugging purposes
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
                     catch(FileLoadException ex)

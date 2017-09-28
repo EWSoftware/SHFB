@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/17/2017
+// Updated : 09/27/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -70,6 +70,7 @@
 //          05/03/2015  EFW  Removed support for the MS Help 2 file format
 //          01/22/2016  EFW  Added SaveComponentCacheCapacity property
 //          08/25/2016  EFW  Added support for the SourceCodeBasePath property
+//          09/22/2017  EFW  Added support for EditorBrowsable and Browsable attribute visibility settings
 //===============================================================================================================
 
 using System;
@@ -110,7 +111,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// The schema version used in the saved project files
         /// </summary>
-        public static readonly Version SchemaVersion = new Version(2015, 6, 5, 0);
+        public static readonly Version SchemaVersion = new Version(2017, 9, 26, 0);
 
         /// <summary>The default configuration</summary>
         public const string DefaultConfiguration = "Debug";
@@ -192,10 +193,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the underlying MSBuild project
         /// </summary>
-        public Project MSBuildProject
-        {
-            get { return msBuildProject; }
-        }
+        public Project MSBuildProject => msBuildProject;
 
         /// <summary>
         /// This read-only property is used to get whether or not the project is using final values for the
@@ -209,10 +207,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the filename for the project
         /// </summary>
-        public string Filename
-        {
-            get { return msBuildProject.FullPath; }
-        }
+        public string Filename => msBuildProject.FullPath;
 
         /// <summary>
         /// This is used to get or set the configuration to use when building the project
@@ -313,10 +308,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get the dirty state of the project
         /// </summary>
-        public bool IsDirty
-        {
-            get { return msBuildProject.Xml.HasUnsavedChanges; }
-        }
+        public bool IsDirty => msBuildProject.Xml.HasUnsavedChanges;
 
         /// <summary>
         /// This read-only property is used to get the build log file location
@@ -391,9 +383,10 @@ namespace SandcastleBuilder.Utils
 
                     if(!String.IsNullOrWhiteSpace(id))
                     {
-                        imageRef = new ImageReference(new FilePath(item.UnevaluatedInclude, this), id);
-
-                        imageRef.AlternateText = item.GetMetadataValue(BuildItemMetadata.AlternateText);
+                        imageRef = new ImageReference(new FilePath(item.UnevaluatedInclude, this), id)
+                        {
+                            AlternateText = item.GetMetadataValue(BuildItemMetadata.AlternateText)
+                        };
 
                         if(!Boolean.TryParse(item.GetMetadataValue(BuildItemMetadata.CopyToMedia), out copyToMedia))
                             copyToMedia = false;
@@ -421,8 +414,10 @@ namespace SandcastleBuilder.Utils
                 if(argsProp != null && !String.IsNullOrEmpty(argsProp.UnevaluatedValue))
                 {
                     var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
-                        XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve));
-                    xr.Namespaces = false;
+                        XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve))
+                    {
+                        Namespaces = false
+                    };
                     xr.MoveToContent();
 
                     foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
@@ -905,10 +900,7 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the copyright notice that appears in the footer of each page
         /// with any hex value place holders replaced with their actual character.
         /// </summary>
-        public string DecodedCopyrightText
-        {
-            get { return reDecode.Replace(copyrightText, characterMatchEval); }
-        }
+        public string DecodedCopyrightText => reDecode.Replace(copyrightText, characterMatchEval);
 
         /// <summary>
         /// This read-only property is used to get the feedback e-mail address that appears in the footer of each
@@ -1238,6 +1230,20 @@ namespace SandcastleBuilder.Utils
 
         #endregion
 
+        #region Markdown properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property is used to get whether or not to append ".md" extensions to topic URLs
+        /// </summary>
+        /// <value>The default is to false to leave them off.  This is suitable for GitHib wiki content which
+        /// does not add the filename extensions.  Adding them causes the wiki to link to the raw file content
+        /// rather than the rendered topic.  If your site uses them or if you are rendering content to store in
+        /// source control where they are used, set this property to true.</value>
+        public bool AppendMarkdownFileExtensionsToUrls { get; private set; }
+
+        #endregion
+
         #region Show Missing Tags properties
         //=====================================================================
 
@@ -1250,91 +1256,62 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get whether or not missing namespace comments are indicated in the
         /// help file.
         /// </summary>
-        public bool ShowMissingNamespaces
-        {
-            get { return ((this.MissingTags & MissingTags.Namespace) != 0); }
-        }
+        public bool ShowMissingNamespaces => (this.MissingTags & MissingTags.Namespace) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;summary&gt; tags are indicated in
         /// the help file.
         /// </summary>
-        public bool ShowMissingSummaries
-        {
-            get { return ((this.MissingTags & MissingTags.Summary) != 0); }
-        }
+        public bool ShowMissingSummaries => (this.MissingTags & MissingTags.Summary) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;param&gt; tags are indicated in the
         /// help file
         /// </summary>
-        public bool ShowMissingParams
-        {
-            get { return ((this.MissingTags & MissingTags.Parameter) != 0); }
-        }
+        public bool ShowMissingParams => (this.MissingTags & MissingTags.Parameter) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;typeparam&gt; tags on generic types
         /// and methods are indicated in the help file.
         /// </summary>
-        public bool ShowMissingTypeParams
-        {
-            get { return ((this.MissingTags & MissingTags.TypeParameter) != 0); }
-        }
+        public bool ShowMissingTypeParams => (this.MissingTags & MissingTags.TypeParameter) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;returns&gt; tags are indicated in
         /// the help file.
         /// </summary>
-        public bool ShowMissingReturns
-        {
-            get { return ((this.MissingTags & MissingTags.Returns) != 0); }
-        }
+        public bool ShowMissingReturns => (this.MissingTags & MissingTags.Returns) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;value&gt; tags are indicated in the
         /// help file.
         /// </summary>
-        public bool ShowMissingValues
-        {
-            get { return ((this.MissingTags & MissingTags.Value) != 0); }
-        }
+        public bool ShowMissingValues => (this.MissingTags & MissingTags.Value) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;remarks&gt; tags are indicated in
         /// the help file.
         /// </summary>
-        public bool ShowMissingRemarks
-        {
-            get { return ((this.MissingTags & MissingTags.Remarks) != 0); }
-        }
+        public bool ShowMissingRemarks => (this.MissingTags & MissingTags.Remarks) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not constructors are automatically documented if
         /// they are missing the &lt;summary&gt; tag and for classes with compiler generated constructors.
         /// </summary>
-        public bool AutoDocumentConstructors
-        {
-            get { return ((this.MissingTags & MissingTags.AutoDocumentCtors) != 0); }
-        }
+        public bool AutoDocumentConstructors => (this.MissingTags & MissingTags.AutoDocumentCtors) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not dispose methods are automatically documented if
         /// they are missing the &lt;summary&gt; tag and for classes with compiler generated dispose methods.
         /// </summary>
-        public bool AutoDocumentDisposeMethods
-        {
-            get { return ((this.MissingTags & MissingTags.AutoDocumentDispose) != 0); }
-        }
+        public bool AutoDocumentDisposeMethods => (this.MissingTags & MissingTags.AutoDocumentDispose) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not missing &lt;include&gt; tag target
         /// documentation is indicated in the help file.
         /// </summary>
-        public bool ShowMissingIncludeTargets
-        {
-            get { return ((this.MissingTags & MissingTags.IncludeTargets) != 0); }
-        }
+        public bool ShowMissingIncludeTargets => (this.MissingTags & MissingTags.IncludeTargets) != 0;
+
         #endregion
 
         #region Visibility properties
@@ -1349,124 +1326,94 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get whether or not attributes on types and members are documented
         /// in the syntax portion of the help file.
         /// </summary>
-        public bool DocumentAttributes
-        {
-            get { return ((this.VisibleItems & VisibleItems.Attributes) != 0); }
-        }
+        public bool DocumentAttributes => (this.VisibleItems & VisibleItems.Attributes) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not explicit interface implementations are
         /// documented.
         /// </summary>
-        public bool DocumentExplicitInterfaceImplementations
-        {
-            get { return ((this.VisibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0); }
-        }
+        public bool DocumentExplicitInterfaceImplementations => (this.VisibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not inherited members are documented
         /// </summary>
-        public bool DocumentInheritedMembers
-        {
-            get { return ((this.VisibleItems & VisibleItems.InheritedMembers) != 0); }
-        }
+        public bool DocumentInheritedMembers => (this.VisibleItems & VisibleItems.InheritedMembers) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not inherited framework members are documented
         /// </summary>
-        public bool DocumentInheritedFrameworkMembers
-        {
-            get { return ((this.VisibleItems & VisibleItems.InheritedFrameworkMembers) != 0); }
-        }
+        public bool DocumentInheritedFrameworkMembers => (this.VisibleItems & VisibleItems.InheritedFrameworkMembers) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not inherited internal framework members are
         /// documented.
         /// </summary>
-        public bool DocumentInheritedFrameworkInternalMembers
-        {
-            get { return ((this.VisibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0); }
-        }
+        public bool DocumentInheritedFrameworkInternalMembers => (this.VisibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not inherited private framework members are
         /// documented.
         /// </summary>
-        public bool DocumentInheritedFrameworkPrivateMembers
-        {
-            get { return ((this.VisibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0); }
-        }
+        public bool DocumentInheritedFrameworkPrivateMembers => (this.VisibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not internal members are documented in the help
         /// file.
         /// </summary>
-        public bool DocumentInternals
-        {
-            get { return ((this.VisibleItems & VisibleItems.Internals) != 0); }
-        }
+        public bool DocumentInternals => (this.VisibleItems & VisibleItems.Internals) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not private members are documented in the help file
         /// </summary>
-        public bool DocumentPrivates
-        {
-            get { return ((this.VisibleItems & VisibleItems.Privates) != 0); }
-        }
+        public bool DocumentPrivates => (this.VisibleItems & VisibleItems.Privates) != 0;
 
         /// <summary>
         /// This read-only property is used to get or set whether or not private fields are documented in the
         /// help file.
         /// </summary>
-        public bool DocumentPrivateFields
-        {
-            get { return ((this.VisibleItems & VisibleItems.PrivateFields) != 0); }
-        }
+        public bool DocumentPrivateFields => (this.VisibleItems & VisibleItems.PrivateFields) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not protected members are documented in the help
         /// file.
         /// </summary>
-        public bool DocumentProtected
-        {
-            get { return ((this.VisibleItems & VisibleItems.Protected) != 0); }
-        }
+        public bool DocumentProtected => (this.VisibleItems & VisibleItems.Protected) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not protected members of sealed classes are
         /// documented in the help file.
         /// </summary>
-        public bool DocumentSealedProtected
-        {
-            get { return ((this.VisibleItems & VisibleItems.SealedProtected) != 0); }
-        }
+        public bool DocumentSealedProtected => (this.VisibleItems & VisibleItems.SealedProtected) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not "protected internal" members are documented as
         /// "protected" only in the help file.
         /// </summary>
-        public bool DocumentProtectedInternalAsProtected
-        {
-            get { return ((this.VisibleItems & VisibleItems.ProtectedInternalAsProtected) != 0); }
-        }
+        public bool DocumentProtectedInternalAsProtected => (this.VisibleItems & VisibleItems.ProtectedInternalAsProtected) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not no-PIA (Primary Interop Assembly) embedded
         /// interop types are documented in the help file.
         /// </summary>
-        public bool DocumentNoPIATypes
-        {
-            get { return ((this.VisibleItems & VisibleItems.NoPIATypes) != 0); }
-        }
+        public bool DocumentNoPIATypes => (this.VisibleItems & VisibleItems.NoPIATypes) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not public compiler generated types and members are
         /// documented in the help file.
         /// </summary>
-        public bool DocumentPublicCompilerGenerated
-        {
-            get { return ((this.VisibleItems & VisibleItems.PublicCompilerGenerated) != 0); }
-        }
+        public bool DocumentPublicCompilerGenerated => (this.VisibleItems & VisibleItems.PublicCompilerGenerated) != 0;
+
+        /// <summary>
+        /// This read-only property is used to get whether or not members marked with an
+        /// <see cref="System.ComponentModel.EditorBrowsableAttribute"/> set to <c>Never</c> are documented.
+        /// </summary>
+        public bool DocumentEditorBrowsableNever => (this.VisibleItems & VisibleItems.EditorBrowsableNever) != 0;
+
+        /// <summary>
+        /// This read-only property is used to get whether or not members marked with a
+        /// <see cref="System.ComponentModel.BrowsableAttribute"/> set to <c>False</c> are documented.
+        /// </summary>
+        public bool DocumentNonBrowsable => (this.VisibleItems & VisibleItems.NonBrowsable) != 0;
 
         /// <summary>
         /// This read-only property is used to get the API filter
@@ -1494,13 +1441,7 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <inheritdoc />
-        public string BasePath
-        {
-            get
-            {
-                return Path.GetDirectoryName(MSBuildProject.FullPath);
-            }
-        }
+        public string BasePath => Path.GetDirectoryName(MSBuildProject.FullPath);
 
         /// <summary>
         /// This method resolves any MSBuild environment variables in the path objects
@@ -1565,7 +1506,7 @@ namespace SandcastleBuilder.Utils
                 MissingTags.AutoDocumentDispose;
 
             this.VisibleItems = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
-                VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected;
+                VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected | VisibleItems.NonBrowsable;
 
             this.BuildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
             this.SaveComponentCacheCapacity = 100;
@@ -1864,6 +1805,18 @@ namespace SandcastleBuilder.Utils
                                 default:
                                     this.SetLocalProperty(prop, prop.UnevaluatedValue);
                                     break;
+                            }
+                            break;
+
+                        case "visibleitems":
+                            this.SetLocalProperty(prop, prop.UnevaluatedValue);
+
+                            // Editor Browsable and Non-Browsable were added in v2017.9.26.0.  Turn them on by
+                            // default in older projects to keep the same behavior until turned off explicitly.
+                            if(schemaVersion < new Version(2017, 9, 26, 0))
+                            {
+                                this.VisibleItems |= (VisibleItems.EditorBrowsableNever | VisibleItems.NonBrowsable);
+                                msBuildProject.SetProperty("VisibleItems", this.VisibleItems.ToString());
                             }
                             break;
 

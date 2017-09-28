@@ -70,6 +70,11 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         public string DefaultTopic { get; set; }
 
+        /// <summary>
+        /// This is used to pass in whether or not to append extensions to the sidebar topic links
+        /// </summary>
+        public bool AppendMarkdownFileExtensionsToUrls { get; set; }
+
         #endregion
 
         #region Execute methods
@@ -172,7 +177,8 @@ namespace SandcastleBuilder.Utils.MSBuild
                                     if(tocReader.Depth > 1)
                                         sidebar.Write(new String(' ', (tocReader.Depth - 1) * 2));
 
-                                    sidebar.WriteLine("- [{0}]({1})", title, key);
+                                    sidebar.WriteLine("- [{0}]({1}{2})", title, key,
+                                        this.AppendMarkdownFileExtensionsToUrls ? ".md" : String.Empty);
 
                                     topicCount++;
 

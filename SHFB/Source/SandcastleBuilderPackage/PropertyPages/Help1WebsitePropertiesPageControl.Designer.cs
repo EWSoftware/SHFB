@@ -39,6 +39,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cboWebsiteSdkLinkType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dividerLabel3 = new SandcastleBuilder.Utils.Controls.DividerLabel();
+            this.chkAppendMDFileExt = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +57,7 @@
             this.chkBinaryTOC.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBinaryTOC.Location = new System.Drawing.Point(256, 86);
             this.chkBinaryTOC.Name = "chkBinaryTOC";
-            this.chkBinaryTOC.Size = new System.Drawing.Size(455, 29);
+            this.chkBinaryTOC.Size = new System.Drawing.Size(382, 24);
             this.chkBinaryTOC.TabIndex = 3;
             this.chkBinaryTOC.Tag = "BinaryTOC";
             this.chkBinaryTOC.Text = "Create a binary table of contents to reduce load time";
@@ -86,7 +88,7 @@
             this.chkIncludeFavorites.AutoSize = true;
             this.chkIncludeFavorites.Location = new System.Drawing.Point(256, 121);
             this.chkIncludeFavorites.Name = "chkIncludeFavorites";
-            this.chkIncludeFavorites.Size = new System.Drawing.Size(410, 29);
+            this.chkIncludeFavorites.Size = new System.Drawing.Size(345, 24);
             this.chkIncludeFavorites.TabIndex = 4;
             this.chkIncludeFavorites.Tag = "IncludeFavorites";
             this.chkIncludeFavorites.Text = "Include a Favorites tab in the compiled help file";
@@ -99,7 +101,7 @@
             this.cboHtmlSdkLinkType.Location = new System.Drawing.Point(256, 47);
             this.cboHtmlSdkLinkType.MaxDropDownItems = 16;
             this.cboHtmlSdkLinkType.Name = "cboHtmlSdkLinkType";
-            this.cboHtmlSdkLinkType.Size = new System.Drawing.Size(340, 33);
+            this.cboHtmlSdkLinkType.Size = new System.Drawing.Size(340, 28);
             this.cboHtmlSdkLinkType.TabIndex = 2;
             this.cboHtmlSdkLinkType.Tag = "HtmlSdkLinkType";
             // 
@@ -119,7 +121,7 @@
             this.cboWebsiteSdkLinkType.Location = new System.Drawing.Point(342, 207);
             this.cboWebsiteSdkLinkType.MaxDropDownItems = 16;
             this.cboWebsiteSdkLinkType.Name = "cboWebsiteSdkLinkType";
-            this.cboWebsiteSdkLinkType.Size = new System.Drawing.Size(340, 33);
+            this.cboWebsiteSdkLinkType.Size = new System.Drawing.Size(340, 28);
             this.cboWebsiteSdkLinkType.TabIndex = 7;
             this.cboWebsiteSdkLinkType.Tag = "WebsiteSdkLinkType";
             // 
@@ -132,9 +134,32 @@
             this.label1.Text = "We&bsite/Open XML SDK link type";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // dividerLabel3
+            // 
+            this.dividerLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dividerLabel3.Location = new System.Drawing.Point(3, 253);
+            this.dividerLabel3.Name = "dividerLabel3";
+            this.dividerLabel3.Size = new System.Drawing.Size(719, 26);
+            this.dividerLabel3.TabIndex = 8;
+            this.dividerLabel3.Text = "Markdown";
+            // 
+            // chkAppendMDFileExt
+            // 
+            this.chkAppendMDFileExt.AutoSize = true;
+            this.chkAppendMDFileExt.Location = new System.Drawing.Point(111, 282);
+            this.chkAppendMDFileExt.Name = "chkAppendMDFileExt";
+            this.chkAppendMDFileExt.Size = new System.Drawing.Size(437, 24);
+            this.chkAppendMDFileExt.TabIndex = 9;
+            this.chkAppendMDFileExt.Tag = "AppendMarkdownFileExtensionsToUrls";
+            this.chkAppendMDFileExt.Text = "Include the \'.md\' filename extension on markdown topic URLs";
+            this.chkAppendMDFileExt.UseVisualStyleBackColor = true;
+            // 
             // Help1WebsitePropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.chkAppendMDFileExt);
+            this.Controls.Add(this.dividerLabel3);
             this.Controls.Add(this.cboWebsiteSdkLinkType);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboHtmlSdkLinkType);
@@ -145,7 +170,7 @@
             this.Controls.Add(this.chkBinaryTOC);
             this.MinimumSize = new System.Drawing.Size(725, 250);
             this.Name = "Help1WebsitePropertiesPageControl";
-            this.Size = new System.Drawing.Size(725, 250);
+            this.Size = new System.Drawing.Size(725, 323);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -163,7 +188,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboWebsiteSdkLinkType;
         private System.Windows.Forms.Label label1;
-
-
+        private System.Windows.Forms.CheckBox chkAppendMDFileExt;
+        private Utils.Controls.DividerLabel dividerLabel3;
     }
 }
