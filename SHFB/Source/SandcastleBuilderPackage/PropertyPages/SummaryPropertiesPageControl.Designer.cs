@@ -28,105 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtProjectSummary = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dividerLabel1 = new SandcastleBuilder.Utils.Controls.DividerLabel();
-            this.dividerLabel2 = new SandcastleBuilder.Utils.Controls.DividerLabel();
-            this.lblNamespaceSummaryState = new System.Windows.Forms.Label();
-            this.btnEditNamespaces = new System.Windows.Forms.Button();
+            this.host = new System.Windows.Forms.Integration.ElementHost();
+            this.ucSummaryPropertiesPageContent = new SandcastleBuilder.WPF.PropertyPages.SummaryPropertiesPageContent();
             this.SuspendLayout();
             // 
-            // txtProjectSummary
+            // host
             // 
-            this.txtProjectSummary.AcceptsReturn = true;
-            this.txtProjectSummary.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProjectSummary.Location = new System.Drawing.Point(34, 112);
-            this.txtProjectSummary.Multiline = true;
-            this.txtProjectSummary.Name = "txtProjectSummary";
-            this.txtProjectSummary.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtProjectSummary.Size = new System.Drawing.Size(743, 154);
-            this.txtProjectSummary.TabIndex = 2;
-            this.txtProjectSummary.Tag = "ProjectSummary";
-            this.txtProjectSummary.Enter += new System.EventHandler(this.txtProjectSummary_Enter);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(34, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(743, 61);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "&These comments will appear in the root namespaces page.  HTML markup can be used" +
-    " to provide formatting, links for e-mail or to other websites, etc.";
-            // 
-            // dividerLabel1
-            // 
-            this.dividerLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dividerLabel1.Location = new System.Drawing.Point(3, 11);
-            this.dividerLabel1.Name = "dividerLabel1";
-            this.dividerLabel1.Size = new System.Drawing.Size(774, 26);
-            this.dividerLabel1.TabIndex = 0;
-            this.dividerLabel1.Text = "Project S&ummary";
-            // 
-            // dividerLabel2
-            // 
-            this.dividerLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dividerLabel2.Location = new System.Drawing.Point(3, 277);
-            this.dividerLabel2.Name = "dividerLabel2";
-            this.dividerLabel2.Size = new System.Drawing.Size(774, 26);
-            this.dividerLabel2.TabIndex = 3;
-            this.dividerLabel2.Text = "Namespace Summaries";
-            // 
-            // lblNamespaceSummaryState
-            // 
-            this.lblNamespaceSummaryState.AutoSize = true;
-            this.lblNamespaceSummaryState.Location = new System.Drawing.Point(29, 317);
-            this.lblNamespaceSummaryState.Name = "lblNamespaceSummaryState";
-            this.lblNamespaceSummaryState.Size = new System.Drawing.Size(330, 25);
-            this.lblNamespaceSummaryState.TabIndex = 4;
-            this.lblNamespaceSummaryState.Tag = "NamespaceSummaries";
-            this.lblNamespaceSummaryState.Text = "No summaries are defined in the project";
-            // 
-            // btnEditNamespaces
-            // 
-            this.btnEditNamespaces.Location = new System.Drawing.Point(466, 312);
-            this.btnEditNamespaces.Name = "btnEditNamespaces";
-            this.btnEditNamespaces.Size = new System.Drawing.Size(300, 35);
-            this.btnEditNamespaces.TabIndex = 5;
-            this.btnEditNamespaces.Text = "Edit &Namespace Summaries";
-            this.btnEditNamespaces.UseVisualStyleBackColor = true;
-            this.btnEditNamespaces.Click += new System.EventHandler(this.btnEditNamespaces_Click);
+            this.host.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.host.Location = new System.Drawing.Point(0, 0);
+            this.host.Name = "host";
+            this.host.Size = new System.Drawing.Size(400, 400);
+            this.host.TabIndex = 0;
+            this.host.Child = this.ucSummaryPropertiesPageContent;
             // 
             // SummaryPropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.Controls.Add(this.btnEditNamespaces);
-            this.Controls.Add(this.lblNamespaceSummaryState);
-            this.Controls.Add(this.dividerLabel2);
-            this.Controls.Add(this.dividerLabel1);
-            this.Controls.Add(this.txtProjectSummary);
-            this.Controls.Add(this.label2);
-            this.MinimumSize = new System.Drawing.Size(780, 355);
+            this.Controls.Add(this.host);
             this.Name = "SummaryPropertiesPageControl";
-            this.Size = new System.Drawing.Size(780, 355);
+            this.Size = new System.Drawing.Size(400, 400);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
+
         #endregion
 
-        private System.Windows.Forms.TextBox txtProjectSummary;
-        private System.Windows.Forms.Label label2;
-        private Utils.Controls.DividerLabel dividerLabel1;
-        private Utils.Controls.DividerLabel dividerLabel2;
-        private System.Windows.Forms.Label lblNamespaceSummaryState;
-        private System.Windows.Forms.Button btnEditNamespaces;
-
-
+        private System.Windows.Forms.Integration.ElementHost host;
+        private SandcastleBuilder.WPF.PropertyPages.SummaryPropertiesPageContent ucSummaryPropertiesPageContent;
     }
 }

@@ -28,81 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.pgProps = new SandcastleBuilder.Utils.Controls.CustomPropertyGrid();
-            this.lbProperties = new SandcastleBuilder.Utils.Controls.RefreshableItemListBox();
-            this.btnAdd = new System.Windows.Forms.Button();
+            this.host = new System.Windows.Forms.Integration.ElementHost();
+            this.ucUserDefinedPropertiesPageContent = new SandcastleBuilder.WPF.PropertyPages.UserDefinedPropertiesPageContent();
             this.SuspendLayout();
             // 
-            // btnRemove
+            // host
             // 
-            this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemove.Location = new System.Drawing.Point(109, 332);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(100, 35);
-            this.btnRemove.TabIndex = 3;
-            this.btnRemove.Text = "&Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            // 
-            // pgProps
-            // 
-            this.pgProps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pgProps.Location = new System.Drawing.Point(308, 3);
-            this.pgProps.Name = "pgProps";
-            this.pgProps.PropertyNamePaneWidth = 90;
-            this.pgProps.Size = new System.Drawing.Size(483, 323);
-            this.pgProps.TabIndex = 1;
-            this.pgProps.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgProps_PropertyValueChanged);
-            // 
-            // lbProperties
-            // 
-            this.lbProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbProperties.FormattingEnabled = true;
-            this.lbProperties.IntegralHeight = false;
-            this.lbProperties.ItemHeight = 25;
-            this.lbProperties.Location = new System.Drawing.Point(3, 3);
-            this.lbProperties.Name = "lbProperties";
-            this.lbProperties.Size = new System.Drawing.Size(299, 323);
-            this.lbProperties.TabIndex = 0;
-            this.lbProperties.SelectedIndexChanged += new System.EventHandler(this.lbProperties_SelectedIndexChanged);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAdd.Location = new System.Drawing.Point(3, 332);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(100, 35);
-            this.btnAdd.TabIndex = 2;
-            this.btnAdd.Text = "&Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.host.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.host.Location = new System.Drawing.Point(0, 0);
+            this.host.Name = "host";
+            this.host.Size = new System.Drawing.Size(400, 400);
+            this.host.TabIndex = 0;
+            this.host.Child = this.ucUserDefinedPropertiesPageContent;
             // 
             // UserDefinedPropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.Controls.Add(this.btnRemove);
-            this.Controls.Add(this.pgProps);
-            this.Controls.Add(this.lbProperties);
-            this.Controls.Add(this.btnAdd);
-            this.MinimumSize = new System.Drawing.Size(800, 370);
+            this.Controls.Add(this.host);
             this.Name = "UserDefinedPropertiesPageControl";
-            this.Size = new System.Drawing.Size(800, 370);
+            this.Size = new System.Drawing.Size(400, 400);
             this.ResumeLayout(false);
 
         }
 
+
         #endregion
 
-        private System.Windows.Forms.Button btnRemove;
-        private Utils.Controls.CustomPropertyGrid pgProps;
-        private Utils.Controls.RefreshableItemListBox lbProperties;
-        private System.Windows.Forms.Button btnAdd;
-
-
+        private System.Windows.Forms.Integration.ElementHost host;
+        private WPF.PropertyPages.UserDefinedPropertiesPageContent ucUserDefinedPropertiesPageContent;
     }
 }

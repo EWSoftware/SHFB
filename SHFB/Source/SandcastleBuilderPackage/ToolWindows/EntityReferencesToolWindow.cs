@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : EntityReferencesToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 11/14/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to implement the Entity References tool window
@@ -59,12 +59,12 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// </summary>
         public EntityReferencesToolWindow() : base(null)
         {
-            var ucEntityReferences = new EntityReferencesControl { AllowAnimatedGif = true };
+            var ucEntityReferences = new EntityReferencesControl();
+
+            ucEntityReferences.FileContentNeeded += ucEntityReferences_FileContentNeeded;
 
             this.Caption = "Entity References";
             this.Content = ucEntityReferences;
-
-            ucEntityReferences.FileContentNeeded += ucEntityReferences_FileContentNeeded;
         }
         #endregion
 

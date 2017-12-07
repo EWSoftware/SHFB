@@ -12,7 +12,7 @@ namespace SandcastleBuilder.Gui.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -90,9 +90,9 @@ namespace SandcastleBuilder.Gui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::SandcastleBuilder.Utils.Design.ContentFileEditorCollection ContentFileEditors {
+        public global::SandcastleBuilder.Gui.ContentEditors.ContentFileEditorCollection ContentFileEditors {
             get {
-                return ((global::SandcastleBuilder.Utils.Design.ContentFileEditorCollection)(this["ContentFileEditors"]));
+                return ((global::SandcastleBuilder.Gui.ContentEditors.ContentFileEditorCollection)(this["ContentFileEditors"]));
             }
             set {
                 this["ContentFileEditors"] = value;
@@ -267,37 +267,38 @@ namespace SandcastleBuilder.Gui.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<WINDOWPLACEMENT xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <length>0</length>
-  <flags>0</flags>
-  <showCmd>0</showCmd>
-  <ptMinPosition_x>0</ptMinPosition_x>
-  <ptMinPosition_y>0</ptMinPosition_y>
-  <ptMaxPosition_x>0</ptMaxPosition_x>
-  <ptMaxPosition_y>0</ptMaxPosition_y>
-  <rcNormalPosition_left>0</rcNormalPosition_left>
-  <rcNormalPosition_top>0</rcNormalPosition_top>
-  <rcNormalPosition_right>0</rcNormalPosition_right>
-  <rcNormalPosition_bottom>0</rcNormalPosition_bottom>
-</WINDOWPLACEMENT>")]
-        public global::SandcastleBuilder.Gui.WINDOWPLACEMENT WindowPlacement {
-            get {
-                return ((global::SandcastleBuilder.Gui.WINDOWPLACEMENT)(this["WindowPlacement"]));
-            }
-            set {
-                this["WindowPlacement"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://GitHub.com/EWSoftware/SHFB")]
         public string ProjectURL {
             get {
                 return ((string)(this["ProjectURL"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"
+     <WINDOWPLACEMENT xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+      <length>0</length>
+      <flags>0</flags>
+      <showCmd>0</showCmd>
+      <ptMinPosition_x>0</ptMinPosition_x>
+      <ptMinPosition_y>0</ptMinPosition_y>
+      <ptMaxPosition_x>0</ptMaxPosition_x>
+      <ptMaxPosition_y>0</ptMaxPosition_y>
+      <rcNormalPosition_left>0</rcNormalPosition_left>
+      <rcNormalPosition_top>0</rcNormalPosition_top>
+      <rcNormalPosition_right>0</rcNormalPosition_right>
+      <rcNormalPosition_bottom>0</rcNormalPosition_bottom>
+     </WINDOWPLACEMENT>
+    ")]
+        public global::SandcastleBuilder.Gui.WINDOWPLACEMENT WindowPlacement {
+            get {
+                return ((global::SandcastleBuilder.Gui.WINDOWPLACEMENT)(this["WindowPlacement"]));
+            }
+            set {
+                this["WindowPlacement"] = value;
             }
         }
     }

@@ -1,0 +1,149 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.MSHelpViewerPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
+	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="300"
+	MinWidth="550" MinHeight="300" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help Viewer 1.0 _catalog product ID"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtCatalogProductId}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogProductId" MinWidth="130"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="CatalogProductId" Text="VS"/>
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Typically left set to the default, &quot;VS&quot;"/>
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help Viewer 1.0 catalog version"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtCatalogVersion}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogVersion" MinWidth="130"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="CatalogVersion" Text="100"/>
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Typically left set to the default, &quot;100&quot;"/>
+		</Grid>
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help Viewer 2.x content catalog name"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtCatalogName}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogName" MinWidth="130"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="CatalogName" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Only specify this if using a custom catalog name.&#10;Leave blank for the default Visual Studio
+catalog name."/>
+		</Grid>
+		<Grid Grid.Row="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition MaxWidth="500"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Vendor name"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtVendorName}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtVendorName"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="VendorName" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="If not set, &quot;Vendor Name&quot; will be used"/>
+		</Grid>
+		<Grid Grid.Row="4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition MaxWidth="500"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Product title"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtProductTitle}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtProductTitle"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="ProductTitle" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="If not set, the Help Title property value will be used"/>
+		</Grid>
+		<Grid Grid.Row="5" Margin="0,10,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="_Starting TOC sort order"
+				HorizontalAlignment="Right" Target="{Binding ElementName=udcTocOrder}" />
+			<xctk:IntegerUpDown Grid.Column="1" Name="udcTocOrder" Margin="0,3" Width="100" Minimum="-1"
+					Maximum="2147483647" ClipValueToMinMax="True" DefaultValue="-1" DisplayDefaultValueOnEmptyText="True"
+					shfbProps:PropertyPageBinding.ProjectPropertyName="TocOrder"/>
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Use -1 to let the build engine determine the sort order"/>
+		</Grid>
+		<Grid Grid.Row="6">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="TOC parent topic ID"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtTocParentId}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtTocParentId" MinWidth="150" Text="-1"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="TocParentId" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Use -1 to place the root elements at the root of the main table of contents"/>
+		</Grid>
+		<Grid Grid.Row="7">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="TOC parent topic version"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtTocParentVersion}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtTocParentVersion" MinWidth="150" Text="100"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="TocParentVersion" />
+		</Grid>
+		<Grid Grid.Row="8">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Topic version for this file"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtTopicVersion}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtTopicVersion" MinWidth="150" Text="100"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="TopicVersion" />
+		</Grid>
+		<Grid Grid.Row="9" Margin="0,10,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="MS Help Viewer SDK link type"
+				HorizontalAlignment="Right" Target="{Binding ElementName=cboMSHelpViewerSdkLinkType}" />
+			<ComboBox Grid.Column="1" Margin="0,3" Name="cboMSHelpViewerSdkLinkType" Width="220"
+				HorizontalAlignment="Left" DisplayMemberPath="Value" SelectedValuePath="Key"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="MSHelpViewerSdkLinkType" />
+		</Grid>
+	</Grid>
+</UserControl>

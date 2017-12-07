@@ -32,7 +32,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectPropertiesWindow));
             this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.tvPropertyPages = new System.Windows.Forms.TreeView();
-            this.pnlPropertyPages = new SandcastleBuilder.Gui.ContentEditors.ScrollablePanel();
             this.SuspendLayout();
             // 
             // tvPropertyPages
@@ -52,23 +51,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tvPropertyPages.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvPropertyPages_BeforeSelect);
             this.tvPropertyPages.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPropertyPages_AfterSelect);
             // 
-            // pnlPropertyPages
-            // 
-            this.pnlPropertyPages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlPropertyPages.AutoScroll = true;
-            this.pnlPropertyPages.Location = new System.Drawing.Point(226, 12);
-            this.pnlPropertyPages.Name = "pnlPropertyPages";
-            this.pnlPropertyPages.Size = new System.Drawing.Size(544, 531);
-            this.statusBarTextProvider1.SetStatusBarText(this.pnlPropertyPages, "Category properties");
-            this.pnlPropertyPages.TabIndex = 1;
-            // 
             // ProjectPropertiesWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.AutoScroll = true;
+            this.AutoScrollMargin = new System.Drawing.Size(10, 10);
             this.ClientSize = new System.Drawing.Size(782, 555);
-            this.Controls.Add(this.pnlPropertyPages);
             this.Controls.Add(this.tvPropertyPages);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
@@ -87,6 +75,5 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.TreeView tvPropertyPages;
-        private ScrollablePanel pnlPropertyPages;
     }
 }

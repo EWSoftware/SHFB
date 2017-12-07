@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.SummaryPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
+	MinWidth="475" MinHeight="250" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition MaxHeight="250"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Margin="0,0,0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Project Summary" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<Grid Grid.Row="1" Margin="20,0,3,3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Label Grid.Row="0" Margin="3">
+				<Label.Content>
+					<AccessText TextWrapping="Wrap" Text="_These comments will appear in the root namespaces page.  HTML
+markup can be used to provide formatting, links for e-mail or to other websites, etc." />
+				</Label.Content>
+			</Label>
+			<TextBox Grid.Row="1" Name="txtProjectSummary" Margin="3" AcceptsReturn="True"
+				HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
+				shfb:PropertyPageBinding.ProjectPropertyName="ProjectSummary" />
+		</Grid>
+		<Grid Grid.Row="2" Margin="0,0,0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Namespace Summaries" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<Grid Grid.Row="3" Margin="20,0,3,3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Name="lblNamespaceSummaryState" Content="No summaries are defined in the project"
+				Margin="0,3" shfb:PropertyPageBinding.ProjectPropertyName="NamespaceSummaries" />
+			<Button Grid.Column="1" Name="btnEditNamespaceSummaries" Margin="20,3,3,3" Padding="3" MinWidth="180"
+				Content="Edit _Namespace Summaries" Click="btnEditNamespaceSummaries_Click" />
+		</Grid>
+	</Grid>
+</UserControl>

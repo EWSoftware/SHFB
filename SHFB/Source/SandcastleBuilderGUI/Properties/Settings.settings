@@ -20,7 +20,7 @@
     <Setting Name="ASPNETDevServerPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12345</Value>
     </Setting>
-    <Setting Name="ContentFileEditors" Type="SandcastleBuilder.Utils.Design.ContentFileEditorCollection" Scope="User">
+    <Setting Name="ContentFileEditors" Type="SandcastleBuilder.Gui.ContentEditors.ContentFileEditorCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OpenHelpAfterBuild" Type="System.Boolean" Scope="User">
@@ -65,24 +65,25 @@
     <Setting Name="LastUsedPropertyPage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="WindowPlacement" Type="SandcastleBuilder.Gui.WINDOWPLACEMENT" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;WINDOWPLACEMENT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;length&gt;0&lt;/length&gt;
-  &lt;flags&gt;0&lt;/flags&gt;
-  &lt;showCmd&gt;0&lt;/showCmd&gt;
-  &lt;ptMinPosition_x&gt;0&lt;/ptMinPosition_x&gt;
-  &lt;ptMinPosition_y&gt;0&lt;/ptMinPosition_y&gt;
-  &lt;ptMaxPosition_x&gt;0&lt;/ptMaxPosition_x&gt;
-  &lt;ptMaxPosition_y&gt;0&lt;/ptMaxPosition_y&gt;
-  &lt;rcNormalPosition_left&gt;0&lt;/rcNormalPosition_left&gt;
-  &lt;rcNormalPosition_top&gt;0&lt;/rcNormalPosition_top&gt;
-  &lt;rcNormalPosition_right&gt;0&lt;/rcNormalPosition_right&gt;
-  &lt;rcNormalPosition_bottom&gt;0&lt;/rcNormalPosition_bottom&gt;
-&lt;/WINDOWPLACEMENT&gt;</Value>
-    </Setting>
     <Setting Name="ProjectURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://GitHub.com/EWSoftware/SHFB</Value>
+    </Setting>
+    <Setting Name="WindowPlacement" Type="SandcastleBuilder.Gui.WINDOWPLACEMENT" Scope="User">
+      <Value Profile="(Default)">
+     &lt;WINDOWPLACEMENT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+      &lt;length&gt;0&lt;/length&gt;
+      &lt;flags&gt;0&lt;/flags&gt;
+      &lt;showCmd&gt;0&lt;/showCmd&gt;
+      &lt;ptMinPosition_x&gt;0&lt;/ptMinPosition_x&gt;
+      &lt;ptMinPosition_y&gt;0&lt;/ptMinPosition_y&gt;
+      &lt;ptMaxPosition_x&gt;0&lt;/ptMaxPosition_x&gt;
+      &lt;ptMaxPosition_y&gt;0&lt;/ptMaxPosition_y&gt;
+      &lt;rcNormalPosition_left&gt;0&lt;/rcNormalPosition_left&gt;
+      &lt;rcNormalPosition_top&gt;0&lt;/rcNormalPosition_top&gt;
+      &lt;rcNormalPosition_right&gt;0&lt;/rcNormalPosition_right&gt;
+      &lt;rcNormalPosition_bottom&gt;0&lt;/rcNormalPosition_bottom&gt;
+     &lt;/WINDOWPLACEMENT&gt;
+    </Value>
     </Setting>
   </Settings>
 </SettingsFile>

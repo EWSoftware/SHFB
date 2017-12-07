@@ -4299,7 +4299,7 @@ namespace Microsoft.VisualStudio.Project
             if (project != null)
             {
                 string mkDocument = String.Empty;
-                ErrorHandler.ThrowOnFailure(project.GetMkDocument(VSConstants.VSITEMID_ROOT, out mkDocument));
+                //ErrorHandler.ThrowOnFailure(project.GetMkDocument(VSConstants.VSITEMID_ROOT, out mkDocument));
 
                 if (!String.IsNullOrEmpty(mkDocument))
                 {

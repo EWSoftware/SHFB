@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/17/2017
+// Updated : 12/05/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -56,14 +56,15 @@ using Microsoft.Build.Exceptions;
 
 using Sandcastle.Core;
 
-using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.Controls;
-using SandcastleBuilder.Utils.Design;
 
 using SandcastleBuilder.Gui.ContentEditors;
 using SandcastleBuilder.Gui.Properties;
+
+using SandcastleBuilder.WPF.PropertyPages;
+using SandcastleBuilder.WPF.UI;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -106,42 +107,27 @@ namespace SandcastleBuilder.Gui
         /// <remarks>This is used to let the various panes communicate between
         /// each other.  There are probably several different ways to do this
         /// that are better but this is quick and dirty and it works.</remarks>
-        public static MainForm Host
-        {
-            get { return mainForm; }
-        }
+        public static MainForm Host => mainForm;
 
         /// <summary>
         /// Get a reference to the Project Explorer pane
         /// </summary>
-        public ProjectExplorerWindow ProjectExplorer
-        {
-            get { return projectExplorer; }
-        }
+        public ProjectExplorerWindow ProjectExplorer => projectExplorer;
 
         /// <summary>
         /// Get a reference to the Project Properties pane
         /// </summary>
-        public ProjectPropertiesWindow ProjectProperties
-        {
-            get { return projectProperties; }
-        }
+        public ProjectPropertiesWindow ProjectProperties => projectProperties;
 
         /// <summary>
         /// Get a reference to the Project Explorer menu item
         /// </summary>
-        public ToolStripMenuItem ProjectExplorerMenu
-        {
-            get { return miProjectExplorer; }
-        }
+        public ToolStripMenuItem ProjectExplorerMenu => miProjectExplorer;
 
         /// <summary>
         /// Get a reference to the status strip label used for status bar text
         /// </summary>
-        public ToolStripStatusLabel StatusBarTextLabel
-        {
-            get { return tsslStatusText; }
-        }
+        public ToolStripStatusLabel StatusBarTextLabel => tsslStatusText;
 
         /// <summary>
         /// This returns a suffix to use as the project's window state
@@ -181,9 +167,7 @@ namespace SandcastleBuilder.Gui
 
             // We are only going to monitor for file changes.  We won't handle moves, deletes, or renames.
             changedFiles = new HashSet<string>();
-            fsw = new FileSystemWatcher();
-            fsw.NotifyFilter = NotifyFilters.LastWrite;
-            fsw.IncludeSubdirectories = true;
+            fsw = new FileSystemWatcher { NotifyFilter = NotifyFilters.LastWrite, IncludeSubdirectories = true };
             fsw.Changed += fsw_OnChanged;
 
             if(Settings.Default.ContentFileEditors == null)
@@ -241,10 +225,7 @@ namespace SandcastleBuilder.Gui
             if(persistString == typeof(EntityReferenceWindow).FullName)
             {
                 if(entityReferencesWindow == null)
-                {
-                    entityReferencesWindow = new EntityReferenceWindow();
-                    entityReferencesWindow.CurrentProject = project;
-                }
+                    entityReferencesWindow = new EntityReferenceWindow { CurrentProject = project };
 
                 return entityReferencesWindow;
             }
@@ -519,7 +500,7 @@ namespace SandcastleBuilder.Gui
 
                 if(project != null)
                 {
-                    SandcastleBuilder.Package.PropertyPages.ComponentCache.RemoveComponentCache(project.Filename);
+                    ComponentCache.Clear();
                     project.Dispose();
                 }
 
@@ -643,6 +624,9 @@ namespace SandcastleBuilder.Gui
             StringCollection mruList = Settings.Default.MruList;
             string state;
             int idx = 0;
+
+            // Set the owning window for WPF modal dialogs to this form
+            WpfHelpers.MainWindowHandle = this.Handle;
 
             projectExplorer = new ProjectExplorerWindow();
             projectProperties = new ProjectPropertiesWindow();
@@ -800,9 +784,7 @@ namespace SandcastleBuilder.Gui
             if(!e.Cancel)
             {
                 // Save the current window size and position if possible
-                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
-                wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
-
+                WINDOWPLACEMENT wp = new WINDOWPLACEMENT { length = Marshal.SizeOf(typeof(WINDOWPLACEMENT)) };
                 UnsafeNativeMethods.GetWindowPlacement(this.Handle, out wp);
                 Settings.Default.WindowPlacement = wp;
 
@@ -1045,15 +1027,13 @@ namespace SandcastleBuilder.Gui
 
             if(mruList.Count == 0)
             {
-                miMruProject = new ToolStripMenuItem("(Empty)");
-                miMruProject.Enabled = false;
+                miMruProject = new ToolStripMenuItem("(Empty)") { Enabled = false };
                 miRecentProjects.DropDownItems.Add(miMruProject);
             }
             else
                 foreach(string mru in mruList)
                 {
-                    miMruProject = new ToolStripMenuItem();
-                    miMruProject.Text = String.Format(CultureInfo.CurrentCulture, "&{0} {1}", idx++, mru);
+                    miMruProject = new ToolStripMenuItem { Text = $"&{idx++} {mru}" };
                     miMruProject.Click += new EventHandler(miProject_Click);
                     miRecentProjects.DropDownItems.Add(miMruProject);
                 }
@@ -1444,10 +1424,8 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miViewMSHelpViewer_Click(object sender, EventArgs e)
         {
-            using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project, Settings.Default.MSHelpViewerPath))
-            {
-                dlg.ShowDialog();
-            }
+            var dlg = new LaunchMSHelpViewerDlg(project, Settings.Default.MSHelpViewerPath);
+            dlg.ShowModalDialog();
         }
 
         /// <summary>
@@ -1786,8 +1764,7 @@ namespace SandcastleBuilder.Gui
         {
             if(entityReferencesWindow == null)
             {
-                entityReferencesWindow = new EntityReferenceWindow();
-                entityReferencesWindow.CurrentProject = project;
+                entityReferencesWindow = new EntityReferenceWindow { CurrentProject = project };
                 entityReferencesWindow.Show(dockPanel);
             }
             else
@@ -1837,7 +1814,7 @@ namespace SandcastleBuilder.Gui
                     previewWindow.Show(dockPanel);
                 }
 
-                previewWindow.PreviewTopic(project, (fileItem == null) ? null : fileItem.FullPath);
+                previewWindow.PreviewTopic(project, fileItem?.FullPath);
                 previewWindow.Activate();
 
                 // When the state is restored and it's a document pane, it doesn't always become the active pane

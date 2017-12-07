@@ -20,11 +20,8 @@
 //===============================================================================================================
 
 using System;
-using System.IO;
-using System.Xml.Linq;
 
 using Microsoft.VisualStudio.Settings;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Settings;
 
 namespace SandcastleBuilder.Package

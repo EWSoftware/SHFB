@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 10/10/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the general package options
@@ -22,8 +22,11 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 using Microsoft.VisualStudio.Shell;
+
+using SandcastleBuilder.WPF.PropertyPages;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -32,12 +35,13 @@ namespace SandcastleBuilder.Package.PropertyPages
     /// </summary>
     [ClassInterface(ClassInterfaceType.AutoDual), Guid("DE9C39B5-826B-46BE-98B7-DA7909000C95"),
       CLSCompliant(false), ComVisible(true), ToolboxItem(false)]
-    public class SandcastleBuilderOptionsPage : DialogPage
+    public class SandcastleBuilderOptionsPage : UIElementDialogPage
     {
         #region Private data members
         //=====================================================================
 
         private GeneralOptionsControl control;
+
         #endregion
 
         #region Properties
@@ -78,7 +82,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This is overridden to return an instance of our custom user interface control to edit the properties
         /// </summary>
-        protected override System.Windows.Forms.IWin32Window Window
+        protected override UIElement Child
         {
             get
             {
@@ -102,6 +106,35 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
         #endregion
 
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Set the current control values
+        /// </summary>
+        public void SetValues()
+        {
+            if(control != null)
+            {
+                control.MSHelpViewerPath = this.MSHelpViewerPath;
+                control.AspNetDevelopmentServerPort = this.AspNetDevelopmentServerPort;
+                control.VerboseLogging  = this.VerboseLogging;
+                control.OpenLogViewerOnFailedBuild = this.OpenLogViewerOnFailedBuild;
+                control.OpenHelpAfterBuild = this.OpenHelpAfterBuild;
+                control.UseExternalWebBrowser = this.UseExternalWebBrowser;
+
+                // MEF provider options are stored separately to avoid loading the entire package just to access
+                // these options.
+                var mefOptions = new MefProviderOptions(this.Site);
+
+                control.EnableExtendedXmlCommentsCompletion = mefOptions.EnableExtendedXmlCommentsCompletion;
+                control.EnableGoToDefinition = mefOptions.EnableGoToDefinition;
+                control.EnableCtrlClickGoToDefinition = mefOptions.EnableCtrlClickGoToDefinition;
+                control.EnableGoToDefinitionInCRef = mefOptions.EnableGoToDefinitionInCRef;
+            }
+        }
+        #endregion
+
         #region Method overrides
         //=====================================================================
 
@@ -113,9 +146,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             this.MSHelpViewerPath = null;
             this.AspNetDevelopmentServerPort = 12345;
             this.VerboseLogging = this.UseExternalWebBrowser = this.OpenHelpAfterBuild = false;
-
-            if(control != null)
-                control.SetValues(this);
+            this.SetValues();
         }
 
         /// <summary>
@@ -124,9 +155,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e"></param>
         protected override void OnActivate(CancelEventArgs e)
         {
-            if(control != null)
-                control.SetValues(this);
-
+            this.SetValues();
             base.OnActivate(e);
         }
 
@@ -144,23 +173,26 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 // We must apply changes here if valid or they don't stick
                 if(!e.Cancel)
-                    control.ApplyChanges(this);
-            }
-        }
+                {
+                    this.MSHelpViewerPath = control.MSHelpViewerPath;
+                    this.AspNetDevelopmentServerPort = control.AspNetDevelopmentServerPort;
+                    this.VerboseLogging = control.VerboseLogging;
+                    this.OpenLogViewerOnFailedBuild = control.OpenLogViewerOnFailedBuild;
+                    this.OpenHelpAfterBuild = control.OpenHelpAfterBuild;
+                    this.UseExternalWebBrowser = control.UseExternalWebBrowser;
 
-        /// <summary>
-        /// This is overridden to dispose of the control
-        /// </summary>
-        /// <param name="disposing">True if managed resources should be disposed; otherwise, false</param>
-        protected override void Dispose(bool disposing)
-        {
-            if(control != null)
-            {
-                control.Dispose();
-                control = null;
-            }
+                    // MEF provider options are stored separately to avoid loading the entire package just to
+                    // access these options.
+                    var mefOptions = new MefProviderOptions(this.Site);
 
-            base.Dispose(disposing);
+                    mefOptions.EnableExtendedXmlCommentsCompletion = control.EnableExtendedXmlCommentsCompletion;
+                    mefOptions.EnableGoToDefinition = control.EnableGoToDefinition;
+                    mefOptions.EnableCtrlClickGoToDefinition = control.EnableCtrlClickGoToDefinition;
+                    mefOptions.EnableGoToDefinitionInCRef = control.EnableGoToDefinitionInCRef;
+
+                    mefOptions.SaveConfiguration();
+                };
+            }
         }
         #endregion
     }

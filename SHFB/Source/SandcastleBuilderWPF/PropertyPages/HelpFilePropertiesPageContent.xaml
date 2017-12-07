@@ -1,0 +1,238 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.HelpFilePropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
+	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="550"
+	MinWidth="550" MinHeight="480" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="500"/>
+				<ColumnDefinition Width="18" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help t_itle" HorizontalAlignment="Right"
+				Target="{Binding ElementName=txtHelpTitle}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtHelpTitle" Text="A Sandcastle Documented Class Library"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="HelpTitle" />
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="350"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help file name"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtHtmlHelpName}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtHtmlHelpName"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="HtmlHelpName" Text="Documentation"/>
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Do not include a path or extension.  For MS Help Viewer builds, avoid periods,&#10;ampersands,
+and pound signs as they are not valid in the help file name."/>
+		</Grid>
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="150"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help file version" HorizontalAlignment="Right"
+				Target="{Binding ElementName=txtHelpFileVersion}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtHelpFileVersion" Text="1.0.0.0"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="HelpFileVersion" />
+		</Grid>
+		<Grid Grid.Row="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="250"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help file language"
+				HorizontalAlignment="Right" Target="{Binding ElementName=cboLanguage}" />
+			<ComboBox Grid.Column="1" Margin="0,3" Name="cboLanguage" IsEditable="True" DisplayMemberPath="EnglishName"
+				SelectedValuePath="Name" LostKeyboardFocus="cboLanguage_LostKeyboardFocus"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="Language" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Select a value from the dropdown or enter a language identifier such as en-US"/>
+		</Grid>
+		<Grid Grid.Row="4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="170"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Topic file naming method"
+				HorizontalAlignment="Right" Target="{Binding ElementName=cboNamingMethod}" />
+			<ComboBox Grid.Column="1" Margin="0,3" Name="cboNamingMethod" DisplayMemberPath="Value"
+				SelectedValuePath="Key" shfbProps:PropertyPageBinding.ProjectPropertyName="NamingMethod" />
+		</Grid>
+		<Grid Grid.Row="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="170"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="_Conceptual content placement"
+				HorizontalAlignment="Right" Target="{Binding ElementName=cboContentPlacement}" />
+			<ComboBox Grid.Column="1" Margin="0,3" Name="cboContentPlacement" DisplayMemberPath="Value"
+				SelectedValuePath="Key" shfbProps:PropertyPageBinding.ProjectPropertyName="ContentPlacement" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="This will be ignored if overridden by a content layout or&#10;site map topic's API Content setting."/>
+		</Grid>
+		<Grid Grid.Row="6" Margin="0,10,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MinWidth="150"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Label Grid.Column="0" Grid.Row="0"  Margin="0,0,3,0" Content="Include root namespace container"
+					HorizontalAlignment="Right" Target="{Binding ElementName=chkRootNamespaceContainer}" />
+			<Grid Grid.Column="1" Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition MaxWidth="300"/>
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<CheckBox Grid.Column="0" Name="chkRootNamespaceContainer" Margin="0,6"
+					HorizontalAlignment="Left" shfbProps:PropertyPageBinding.ProjectPropertyName="RootNamespaceContainer" />
+				<Label Grid.Column="1" Margin="10,0,3,0" Content="Title"
+					HorizontalAlignment="Right" Target="{Binding ElementName=txtRootNamespaceTitle}" />
+				<TextBox Grid.Column="2" Margin="0,3" Name="txtRootNamespaceTitle" HorizontalAlignment="Stretch"
+					shfbProps:PropertyPageBinding.ProjectPropertyName="RootNamespaceTitle" />
+				<Image Grid.Column="3" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+					ToolTip="If not set, a default title of &quot;Namespaces&quot; is used"/>
+			</Grid>
+			<StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+				<CheckBox Grid.Column="0" Name="chkNamespaceGrouping" Margin="0" HorizontalAlignment="Left"
+					Content="Enable namespace grouping if supported"
+					shfbProps:PropertyPageBinding.ProjectPropertyName="NamespaceGrouping" />
+				<Image Width="12" Margin="10,3,3,3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+					ToolTip="The selected presentation style must support namespace&#10;grouping for this to have any effect."/>
+			</StackPanel>
+			<Label Grid.Column="0" Grid.Row="2"  Margin="0,0,3,0" Content="Maximum group parts"
+					HorizontalAlignment="Right" Target="{Binding ElementName=udcMaximumGroupParts}" />
+			<StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+				<xctk:IntegerUpDown Name="udcMaximumGroupParts" Margin="0,3" Width="50" Minimum="2"
+					Maximum="30" ClipValueToMinMax="True" DefaultValue="2" DisplayDefaultValueOnEmptyText="True"
+					shfbProps:PropertyPageBinding.ProjectPropertyName="MaximumGroupParts"/>
+				<Image Width="12" Margin="10,3,3,3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+					ToolTip="A higher value results in more namespace groups"/>
+			</StackPanel>
+		</Grid>
+		<Grid Grid.Row="7">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<CheckBox Grid.Column="1" Name="chkPreliminary" Margin="0,3" HorizontalAlignment="Left"
+					Content="Include &quot;preliminary documentation&quot; warning"
+					shfbProps:PropertyPageBinding.ProjectPropertyName="Preliminary" />
+		</Grid>
+		<Grid Grid.Row="8">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="_Additional header content"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtHeaderText}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtHeaderText"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="HeaderText" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="HTML elements are supported within this property's value"/>
+		</Grid>
+		<Grid Grid.Row="9">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Additional footer content"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtFooterText}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtFooterText"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="FooterText" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="HTML elements are supported within this property's value"/>
+		</Grid>
+		<Grid Grid.Row="10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="350"/>
+				<ColumnDefinition Width="18" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Copyright notice URL"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtCopyrightHref}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCopyrightHref"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="CopyrightHref" />
+		</Grid>
+		<Grid Grid.Row="11">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Copyright notice text"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtCopyrightText}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCopyrightText"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="CopyrightText" />
+			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="This value is treated as plain text"/>
+		</Grid>
+		<Grid Grid.Row="12">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="300"/>
+				<ColumnDefinition Width="18" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Feedback e-mail address"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtFeedbackEMailAddress}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtFeedbackEMailAddress"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="FeedbackEMailAddress" />
+		</Grid>
+		<Grid Grid.Row="13">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="300"/>
+				<ColumnDefinition Width="18" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="Feedback e-mail link text"
+				HorizontalAlignment="Right" Target="{Binding ElementName=txtFeedbackEMailLinkText}" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtFeedbackEMailLinkText"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="FeedbackEMailLinkText" />
+		</Grid>
+		<Grid Grid.Row="14">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="200"/>
+				<ColumnDefinition MaxWidth="70"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Margin="0,0,3,0" Content="SDK link target"
+				HorizontalAlignment="Right" Target="{Binding ElementName=cboSdkLinkTarget}" />
+			<ComboBox Grid.Column="1" Margin="0,3" Name="cboSdkLinkTarget"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="SdkLinkTarget" />
+		</Grid>
+	</Grid>
+</UserControl>

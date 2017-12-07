@@ -171,7 +171,10 @@
       <Component Id="cmpF64D60E2A7A50FD6241ABDBE27E31F59" Guid="{4F6C605F-1708-4216-A36E-858DC10931E7}">
         <File Id="filED0391668232DF3DEA5823C1D36F49AD" KeyPath="yes" Source="$(var.RootFolder)\WeifenLuo.WinFormsUI.Docking.dll" />
       </Component>
-      <Component Id="cmp51C1C88660576D53C94470BC746A13A8" Guid="{F967CBB2-3F49-4219-A573-2666FFD4887F}">
+      <Component Id="cmp6DF273F8C8C1322EE403E364E1D04A16" Guid="{0C519261-A387-4835-8E0C-E014B1863256}">
+        <File Id="fil4F8E845B9B0CB9B26B9D7BA0D7737124" KeyPath="yes" Source="$(var.RootFolder)\Xceed.Wpf.Toolkit.dll" />
+      </Component>
+      <Component Id="cmp51C1C88660576D53C94470BC746A13A8" Guid="{768F7AA2-FB99-4D36-9D09-3EB738E3861A}">
         <File Id="fil71BA3FAD3D09648177066FBEBEC2EB6F" KeyPath="yes" Source="$(var.RootFolder)\XslTransform.exe" />
       </Component>
       <Directory Id="dirAC46F60E51F0870AE9D1BD44B1F098F3" Name="ConceptualTemplates">
@@ -7929,6 +7932,7 @@
       <ComponentRef Id="cmp56E3DEF6D0A5836F36A1307284549659" />
       <ComponentRef Id="cmpB33DADF2D729CCAE7A61B72DDA2087A3" />
       <ComponentRef Id="cmpF64D60E2A7A50FD6241ABDBE27E31F59" />
+      <ComponentRef Id="cmp6DF273F8C8C1322EE403E364E1D04A16" />
       <ComponentRef Id="cmp51C1C88660576D53C94470BC746A13A8" />
       <ComponentRef Id="cmp2D35A1A915818CF4CC96E15C40F40C2D" />
       <ComponentRef Id="cmpD76FDB944DCAAA5FF14E52A03E106BCE" />

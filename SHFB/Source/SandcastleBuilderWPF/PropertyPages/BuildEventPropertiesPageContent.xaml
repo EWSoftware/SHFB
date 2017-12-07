@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.BuildEventPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="400"
+	MinWidth="475" MinHeight="300" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Label Grid.Row="0" Content="P_re-build event command line:" Target="{Binding ElementName=txtPreBuildEvent}" />
+		<TextBox Grid.Row="1" Name="txtPreBuildEvent" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible"
+				VerticalScrollBarVisibility="Visible" shfb:PropertyPageBinding.ProjectPropertyName="PreBuildEvent" />
+		<Button Grid.Row ="2" Name="btnEditPreBuildEvent" Margin="3" Padding="3" Width="150"
+				HorizontalAlignment="Right" Content="Ed_it Pre-build Event" Click="btnEditBuildEvent_Click" />
+		<Label Grid.Row="3" Content="P_ost-build event command line:" Target="{Binding ElementName=txtPostBuildEvent}" />
+		<TextBox Grid.Row="4" Name="txtPostBuildEvent" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible"
+				VerticalScrollBarVisibility="Visible" shfb:PropertyPageBinding.ProjectPropertyName="PostBuildEvent" />
+		<Grid Grid.Row="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<StackPanel Grid.Column="0" Orientation="Horizontal">
+				<Label Content="Ru_n the post-build event" Target="{Binding ElementName=cboRunPostBuildEvent}" />
+				<ComboBox Name="cboRunPostBuildEvent" SelectedIndex="0" Margin="3" MinWidth="150" SelectedValuePath="Tag"
+					shfb:PropertyPageBinding.ProjectPropertyName="RunPostBuildEvent">
+					<ComboBoxItem Content="On successful build" Tag="OnBuildSuccess" />
+					<ComboBoxItem Content="Always" Tag="Always" />
+				</ComboBox>
+			</StackPanel>
+			<Button Grid.Column="1" Name="btnEditPostBuildEvent" Margin="3" Padding="3" Width="150"
+				Content="Edit Post-b_uild Event" Click="btnEditBuildEvent_Click" />
+		</Grid>
+		<Border Name="bdStandaloneGUI" Grid.Row="6" BorderThickness="1" Margin="0,5,0,5"
+			BorderBrush="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
+			Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}">
+			<TextBlock Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}" TextWrapping="Wrap"
+				FontWeight="Bold" Padding="10,20,10,20" HorizontalAlignment="Center" Text="Pre-build and post-build
+events will only be executed when the project is built with MSBuild or Visual Studio." />
+		</Border>
+	</Grid>
+</UserControl>

@@ -80,14 +80,13 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -95,7 +94,10 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
@@ -143,48 +145,16 @@
     <Compile Include="Controls\CustomPropertyGrid.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DividerGroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\FilePathUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\FilePathUserControl.designer.cs">
-      <DependentUpon>FilePathUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\FolderPathUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\FolderPathUserControl.designer.cs">
-      <DependentUpon>FolderPathUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\ApiFilterEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\ApiFilterEditorDlg.Designer.cs">
-      <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\ContentFileEditor.cs" />
-    <Compile Include="Design\ContentFileEditorCollection.cs" />
     <Compile Include="Design\EscapeValueAttribute.cs" />
     <Compile Include="Design\FilePathObjectEditor.cs" />
     <Compile Include="Design\FilePathTypeConverter.cs" />
-    <Compile Include="Design\FlagsEnumEditor.cs" />
     <Compile Include="Design\FolderPathObjectEditor.cs" />
     <Compile Include="Design\FolderPathTypeConverter.cs" />
     <Compile Include="Design\VersionTypeConverter.cs" />
     <Compile Include="FilePath.cs" />
     <Compile Include="FolderPath.cs" />
     <Compile Include="BuildEngine\FullTextIndex.cs" />
-    <Compile Include="Gac\GacApi.cs" />
-    <Compile Include="Gac\GacEnumerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HelpLibraryManager\LaunchMSHelpViewerDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HelpLibraryManager\LaunchMSHelpViewerDlg.Designer.cs">
-      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="IBasePathProvider.cs" />
     <Compile Include="InheritedDocumentation\CommentsCacheEventArgs.cs" />
     <Compile Include="InheritedDocumentation\IndexedCommentsCache.cs" />
@@ -199,12 +169,6 @@
     <Compile Include="MSBuild\MSBuildProject.cs" />
     <Compile Include="MSBuild\NumberingStyle.cs" />
     <Compile Include="MSBuild\PackageReferenceResolver.cs" />
-    <Compile Include="MSBuild\SelectProjectsDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MSBuild\SelectProjectsDlg.Designer.cs">
-      <DependentUpon>SelectProjectsDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="ApiFilter.cs" />
     <Compile Include="ApiFilterCollection.cs" />
     <Compile Include="MSHelpKeyword.cs" />
@@ -225,7 +189,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="NamingMethod.cs" />
-    <Compile Include="Design\LanguageResourceConverter.cs" />
     <Compile Include="Controls\RefreshableItemListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -242,9 +205,6 @@
     <Compile Include="NamespaceSummaryItem.cs" />
     <Compile Include="NamespaceSummaryItemCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\StatusBarTextProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="SandcastleProject.cs" />
     <Compile Include="ConceptualContent\TocEntry.cs" />
     <Compile Include="ConceptualContent\TocEntryCollection.cs" />
@@ -254,7 +214,6 @@
     <Compile Include="XPath\XPathFunctionContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Spinner.gif" />
     <Content Include="Templates\TransformBuildLog.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -318,32 +277,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\FilePathUserControl.resx">
-      <DependentUpon>FilePathUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\FolderPathUserControl.resx">
-      <DependentUpon>FolderPathUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\StatusBarTextProvider.bmp" />
     <EmbeddedResource Include="Controls\DividerLabel.bmp" />
     <EmbeddedResource Include="Controls\CustomPropertyGrid.bmp" />
-    <EmbeddedResource Include="Controls\DividerGroupBox.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Design\ApiFilterEditorDlg.resx">
-      <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Design\NamespaceSummaryItemEditorDlg.resx">
-      <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HelpLibraryManager\LaunchMSHelpViewerDlg.resx">
-      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MSBuild\SelectProjectsDlg.resx">
-      <DependentUpon>SelectProjectsDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -351,94 +288,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Api_Documented.bmp" />
-    <None Include="Resources\Api_Internal.bmp" />
-    <None Include="Resources\Api_Internal_Class.bmp" />
-    <None Include="Resources\Api_Internal_Constructor.bmp" />
-    <None Include="Resources\Api_Internal_Delegate.bmp" />
-    <None Include="Resources\Api_Internal_Enum.bmp" />
-    <None Include="Resources\Api_Internal_Event.bmp" />
-    <None Include="Resources\Api_Internal_Field.bmp" />
-    <None Include="Resources\Api_Internal_Interface.bmp" />
-    <None Include="Resources\Api_Internal_Method.bmp" />
-    <None Include="Resources\Api_Internal_Operator.bmp" />
-    <None Include="Resources\Api_Internal_Property.bmp" />
-    <None Include="Resources\Api_Internal_Structure.bmp" />
-    <None Include="Resources\Api_Namespace.bmp" />
-    <None Include="Resources\Api_Private.bmp" />
-    <None Include="Resources\Api_Private_Class.bmp" />
-    <None Include="Resources\Api_Private_Constructor.bmp" />
-    <None Include="Resources\Api_Private_Delegate.bmp" />
-    <None Include="Resources\Api_Private_Enum.bmp" />
-    <None Include="Resources\Api_Private_Event.bmp" />
-    <None Include="Resources\Api_Private_Field.bmp" />
-    <None Include="Resources\Api_Private_Interface.bmp" />
-    <None Include="Resources\Api_Private_Method.bmp" />
-    <None Include="Resources\Api_Private_Operator.bmp" />
-    <None Include="Resources\Api_Private_Property.bmp" />
-    <None Include="Resources\Api_Private_Structure.bmp" />
-    <None Include="Resources\Api_Protected.bmp" />
-    <None Include="Resources\Api_Protected_Class.bmp" />
-    <None Include="Resources\Api_Protected_Constructor.bmp" />
-    <None Include="Resources\Api_Protected_Delegate.bmp" />
-    <None Include="Resources\Api_Protected_Enum.bmp" />
-    <None Include="Resources\Api_Protected_Event.bmp" />
-    <None Include="Resources\Api_Protected_Field.bmp" />
-    <None Include="Resources\Api_Protected_Interface.bmp" />
-    <None Include="Resources\Api_Protected_Method.bmp" />
-    <None Include="Resources\Api_Protected_Operator.bmp" />
-    <None Include="Resources\Api_Protected_Property.bmp" />
-    <None Include="Resources\Api_Protected_Structure.bmp" />
-    <None Include="Resources\Api_Public_Class.bmp" />
-    <None Include="Resources\Api_Public_Constructor.bmp" />
-    <None Include="Resources\Api_Public_Delegate.bmp" />
-    <None Include="Resources\Api_Public_Enum.bmp" />
-    <None Include="Resources\Api_Public_Event.bmp" />
-    <None Include="Resources\Api_Public_Field.bmp" />
-    <None Include="Resources\Api_Public_Interface.bmp" />
-    <None Include="Resources\Api_Public_Method.bmp" />
-    <None Include="Resources\Api_Public_Operator.bmp" />
-    <None Include="Resources\Api_Public_Property.bmp" />
-    <None Include="Resources\Api_Public_Structure.bmp" />
-    <None Include="Resources\Api_Undocumented.bmp" />
-    <None Include="Resources\Api_Unknown.bmp" />
-    <None Include="Resources\Content.ico" />
-    <None Include="Resources\Dependencies.ico" />
-    <None Include="Resources\HelpAttrs.ico" />
-    <None Include="Resources\HelpDoc.ico" />
-    <None Include="Resources\MoveDown.bmp" />
-    <None Include="Resources\MoveUp.bmp" />
-    <None Include="Resources\PlugInAdd.png" />
-    <None Include="Resources\PreviewTOC.bmp" />
-    <None Include="Resources\Properties.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
-      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
-      <Name>ColorizerLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
-      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>Sandcastle.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SandcastleLogo.png" />
     <EmbeddedResource Include="Controls\RefreshableItemListBox.bmp" />
-    <EmbeddedResource Include="Controls\FilePathUserControl.bmp" />
-    <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />
     <Compile Include="BuildAction.cs" />
     <Compile Include="ConceptualContent\ApiParentMode.cs" />
     <Compile Include="ConceptualContent\ITableOfContents.cs" />
     <Compile Include="ConceptualContent\ResourceItem.cs" />
     <Compile Include="ConceptualContent\TopicFile.cs" />
     <Compile Include="Design\BuildActionEnumConverter.cs" />
-    <Compile Include="Design\NamespaceSummaryItemEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\NamespaceSummaryItemEditorDlg.Designer.cs">
-      <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="FileItem.cs" />
     <Compile Include="HtmlSdkLinkType.cs" />
     <Compile Include="MSBuild\BuildHelpViewerFile.cs" />

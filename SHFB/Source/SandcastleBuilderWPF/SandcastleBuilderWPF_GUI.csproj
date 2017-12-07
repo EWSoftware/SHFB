@@ -46,12 +46,21 @@
     <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.14.3.0\lib\net45\Microsoft.Build.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Framework.14.3.0\lib\net45\Microsoft.Build.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="PresentationFramework.Luna" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +70,30 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
@@ -80,9 +113,82 @@
     <Compile Include="Maml\MamlToFlowDocumentConverter.Handlers.cs" />
     <Compile Include="Maml\MamlToFlowDocumentConverter.Static.cs" />
     <Compile Include="Maml\NamedStyle.cs" />
+    <Compile Include="PropertyPages\ApiFilterEditorDlg.xaml.cs">
+      <DependentUpon>ApiFilterEditorDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\ApiNodeInfo.cs" />
+    <Compile Include="PropertyPages\ApiVisibility.cs" />
+    <Compile Include="PropertyPages\ApplyChangesEventArgs.cs" />
+    <Compile Include="PropertyPages\BuildEventEditorDlg.xaml.cs">
+      <DependentUpon>BuildEventEditorDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\BuildEventPropertiesPageContent.xaml.cs">
+      <DependentUpon>BuildEventPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\BuildPropertiesNeededEventArgs.cs" />
+    <Compile Include="PropertyPages\BuildPropertiesPageContent.xaml.cs">
+      <DependentUpon>BuildPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\ComponentCache.cs" />
+    <Compile Include="PropertyPages\ComponentPropertiesPageContent.xaml.cs">
+      <DependentUpon>ComponentPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\ComponentSettingsNeededEventArgs.cs" />
+    <Compile Include="PropertyPages\FilePathUserControl.xaml.cs">
+      <DependentUpon>FilePathUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\FolderPathUserControl.xaml.cs">
+      <DependentUpon>FolderPathUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\GeneralOptionsControl.xaml.cs">
+      <DependentUpon>GeneralOptionsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\Help1WebsitePropertiesPageContent.xaml.cs">
+      <DependentUpon>Help1WebsitePropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\HelpFilePropertiesPageContent.xaml.cs">
+      <DependentUpon>HelpFilePropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\LargeTextBoxEditor.cs" />
+    <Compile Include="PropertyPages\MissingTagPropertiesPageContent.xaml.cs">
+      <DependentUpon>MissingTagPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\MSHelpViewerPropertiesPageContent.xaml.cs">
+      <DependentUpon>MSHelpViewerPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\NamespaceSummaryItemEditorDlg.xaml.cs">
+      <DependentUpon>NamespaceSummaryItemEditorDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\PathPropertiesPageContent.xaml.cs">
+      <DependentUpon>PathPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\PlugInPropertiesPageContent.xaml.cs">
+      <DependentUpon>PlugInPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\PresentationStyleSettingsNeededEventArgs.cs" />
+    <Compile Include="PropertyPages\PropertyPageBinding.cs" />
+    <Compile Include="PropertyPages\SummaryPropertiesPageContent.xaml.cs">
+      <DependentUpon>SummaryPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\TransformArgumentsPageContent.xaml.cs">
+      <DependentUpon>TransformArgumentsPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\UserDefinedPropertiesPageContent.xaml.cs">
+      <DependentUpon>UserDefinedPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyPages\UserDefinedProperty.cs" />
+    <Compile Include="PropertyPages\VisibilityPropertiesPageContent.xaml.cs">
+      <DependentUpon>VisibilityPropertiesPageContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SharedResources.cs" />
     <Compile Include="Theme\ThemeColorId.cs" />
     <Compile Include="Theme\ThemeColors.cs" />
+    <Compile Include="UI\LaunchMSHelpViewerDlg.xaml.cs">
+      <DependentUpon>LaunchMSHelpViewerDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SelectProjectsDlg.xaml.cs">
+      <DependentUpon>SelectProjectsDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\BuildLogViewerControl.xaml.cs">
       <DependentUpon>BuildLogViewerControl.xaml</DependentUpon>
     </Compile>
@@ -101,6 +207,9 @@
       <DependentUpon>SiteMapEditorControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UserControls\SpinnerControl.xaml.cs">
+      <DependentUpon>SpinnerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\TokenEditorControl.xaml.cs">
       <DependentUpon>TokenEditorControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -111,7 +220,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\SupportAnimatedGIFBehavior.cs" />
     <Compile Include="Behaviors\TreeViewItemBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -145,9 +253,93 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PropertyPages\ApiFilterEditorDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertyPages\BuildEventEditorDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\BuildEventPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\BuildPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\ComponentPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\FilePathUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\FolderPathUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\GeneralOptionsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\Help1WebsitePropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\HelpFilePropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\MissingTagPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\MSHelpViewerPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\NamespaceSummaryItemEditorDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\PathPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\PlugInPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\SummaryPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\TransformArgumentsPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\UserDefinedPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PropertyPages\VisibilityPropertiesPageContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Theme\VisualStudioThemeResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\LaunchMSHelpViewerDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\SelectProjectsDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\BuildLogViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -168,6 +360,10 @@
     <Page Include="UserControls\SiteMapEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SpinnerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\TokenEditorControl.xaml">
       <SubType>Designer</SubType>
@@ -199,7 +395,6 @@
     <Resource Include="Resources\ImageFile.png" />
     <Resource Include="Resources\Refresh.png" />
     <Resource Include="Resources\SnippetsFile.png" />
-    <Resource Include="Resources\Spinner.gif" />
     <Resource Include="Resources\TokenFile.png" />
     <Resource Include="Resources\Undo.png" />
   </ItemGroup>
@@ -234,6 +429,179 @@
   <ItemGroup>
     <Resource Include="Resources\MoveLeft.png" />
     <Resource Include="Resources\MoveRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APINamespace.png" />
+    <Resource Include="Resources\BuildEvents.png" />
+    <Resource Include="Resources\Information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIClassPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIClassInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIClassPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIClassProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIConstructorPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIMethodPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIMethodInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIConstructorInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIMethodPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIConstructorPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIMethodProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIConstructorProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIDelegatePublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIDelegateInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIDelegatePrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIDelegateProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEnumerationPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEnumerationInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEnumerationPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEnumerationProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEventPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEventInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEventPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIEventProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIFieldPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIFieldInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIFieldPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIFieldProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIInterfacePublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIInterfaceInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIInterfacePrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIInterfaceProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIOperatorPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIOperatorInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIOperatorPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIOperatorProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIPropertyPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIPropertyInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIPropertyPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIPropertyProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIStructurePublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIStructureInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIStructurePrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIStructureProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIProtected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIPrivate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIInherited.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIDocumented.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIInternal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APICaseSensitive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIFullyQualified.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APIPublic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\APINotFound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HelpLibraryManager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SelectProjects.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

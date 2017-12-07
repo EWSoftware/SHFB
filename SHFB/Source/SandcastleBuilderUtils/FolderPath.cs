@@ -59,7 +59,7 @@ namespace SandcastleBuilder.Utils
         /// <p/>If set to a null or empty string, the folder path is cleared
         /// and is considered to be undefined.</value>
         /// <example>
-        /// <code lang="cs">
+        /// <code language="cs">
         /// FolderPath path = new FolderPath();
         /// 
         /// // Set it to a relative path
@@ -71,7 +71,7 @@ namespace SandcastleBuilder.Utils
         /// // Set it to a path based on an environment variable
         /// path.Path = @"%HOMEDRIVE%%HOMEPATH%\Favorites\";
         /// </code>
-        /// <code lang="vbnet">
+        /// <code language="vbnet">
         /// Dim path As New FolderPath()
         ///
         /// ' Set it to a relative path

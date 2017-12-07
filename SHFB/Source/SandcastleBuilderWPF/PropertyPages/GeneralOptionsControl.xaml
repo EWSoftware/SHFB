@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.GeneralOptionsControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="400"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<ScrollViewer>
+		<Grid Margin="5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Label Grid.Row="0" Content="Alternate _MS Help Viewer (.mshc) Tool Path" />
+			<Grid Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<TextBox Grid.Column="0" Name="txtMSHelpViewerPath" Margin="3" />
+				<Button Grid.Column="1" Name="btnSelectMSHCViewer" Margin="2" Padding="10,2,10,2" Content="..."
+				ToolTip="Select MS Help Viewer application" Click="btnSelectMSHCViewer_Click" />
+			</Grid>
+			<Grid Grid.Row="2" Margin="0,10,0,10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0" Margin="3" Content="_ASP.NET Development Web Server Port" />
+				<xctk:IntegerUpDown Grid.Column="1" Name="udcASPNetDevServerPort" Margin="0,6" Width="65"
+					HorizontalAlignment="Left" Minimum="1000" Maximum="99999" ClipValueToMinMax="True"
+					DefaultValue="12345" DisplayDefaultValueOnEmptyText="True" />
+			</Grid>
+			<StackPanel Grid.Row="3" Margin="3">
+				<CheckBox Name="chkVerboseLogging" Content="_Build output verbose logging enabled" Margin="0,3,0,3"
+					HorizontalAlignment="Left" />
+				<CheckBox Name="chkOpenLogViewerOnFailure" Content="Open b_uild log viewer on failed build"
+					Margin="0,3,0,3" HorizontalAlignment="Left" />
+				<CheckBox Name="chkOpenHelpAfterBuild" Content="_Open help file after successful build" Margin="0,3,0,3"
+					HorizontalAlignment="Left" />
+				<CheckBox Name="chkUseExternalBrowser" Content="Use _external web browser to view help websites"
+					Margin="0,3,0,15" HorizontalAlignment="Left" />
+				<CheckBox Name="chkEnableExtendedXmlComments" Content="E_nable extended XML comments completion options"
+					Margin="0,3,0,3" HorizontalAlignment="Left" />
+				<CheckBox Name="chkEnableGoToDefinition" Content="Enable MAM_L/XML comments Go To Definition"
+					Margin="0,3,0,3" HorizontalAlignment="Left" Click="chkEnableGoToDefinition_Click"/>
+				<CheckBox Name="chkEnableCtrlClickGoToDefinition" Content="Enable Ctrl+Clic_k to go to definition"
+					Margin="20,3,0,3" HorizontalAlignment="Left" />
+				<CheckBox Name="chkEnableGoToDefinitionInCRef" Content="Enable for XML comments cre_f values"
+					Margin="20,3,0,3" HorizontalAlignment="Left" />
+				<Label Margin="20,0,0,3">
+					<TextBlock TextWrapping="Wrap">
+					(Set the link color with the <Italic>MAML/XML Comment Link Underline</Italic> display item in the
+<Bold>Environment | Fonts and Colors</Bold> category)
+					</TextBlock>
+				</Label>
+				<TextBlock Margin="3">
+				<Hyperlink Name="lnkSHFBInfo" NavigateUri="https://github.com/EWSoftware/SHFB/wiki" ToolTip="Online help"
+					Click="lnkSHFBInfo_Click">For help, go to the Sandcastle Help File Builder project on GitHub</Hyperlink>
+				</TextBlock>
+			</StackPanel>
+		</Grid>
+	</ScrollViewer>
+</UserControl>

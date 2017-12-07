@@ -16,6 +16,8 @@
 // 08/10/2012 - EFW - Added support for ignoreIfUnresolved config element
 // 08/19/2016 - EFW - Added code to resolve a missing mscorlib v255 to System.Runtime
 // 04/11/2017 - EFW - Added code to resolve a missing System.Runtime to mscorlib
+// 11/06/2017 - EFW - Added code to auto-redirect to a like-named assembly in the cache if one is found.  This
+// helps correct missing assembly issues in .NETCore/.NETStandard projects which can vary by version number.
 //===============================================================================================================
 
 using System;
@@ -315,10 +317,11 @@ namespace Microsoft.Ddue.Tools.Reflection
                 }
 
             // For mscorlib v255.255.255.255, redirect to System.Runtime.  This is typically one like a .NETCore
-            // framework which redirects all of the system types there.  For a missing System.Runtime, redirect
-            // to mscorlib.  This is most likely a framework such as .NETStandard.  For those, we use the
-            // best matching .NET Framework.
-            if((reference.Name == "mscorlib" && reference.Version.Major == 255) || reference.Name == "System.Runtime")
+            // framework which redirects all of the system types there.  For a missing System.Runtime and System
+            // v0.0.0.0, redirect to mscorlib.  This is most likely a framework such as .NETStandard.  For those,
+            // we use the best matching .NET Framework.
+            if((reference.Name == "mscorlib" && reference.Version.Major == 255) ||
+              (reference.Name == "System" && reference.Version.Major == 0) || reference.Name == "System.Runtime")
             {
                 // The system assembly should be set.  If so, it'll point to the one we need.
                 if(SystemTypes.SystemAssembly != null)
@@ -352,6 +355,20 @@ namespace Microsoft.Ddue.Tools.Reflection
                         assembly.StrongName, name);
 
                     cache.Add(name, assembly);
+                    return assembly;
+                }
+
+                // If not, look for it in the cache by name alone
+                string key = cache.Keys.FirstOrDefault(k => k.StartsWith(reference.Name, StringComparison.Ordinal));
+
+                if(key != null)
+                {
+                    assembly = cache[key];
+                    cache.Add(name, assembly);
+
+                    ConsoleApplication.WriteMessage(LogLevel.Info, "Using automatic redirect '{0}' in place of '{1}'",
+                        assembly.StrongName, name);
+
                     return assembly;
                 }
             }

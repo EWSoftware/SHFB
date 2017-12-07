@@ -1,38 +1,34 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : SelectGacEntriesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/28/2008
-// Note    : Copyright 2006-2008, Eric Woodruff, All rights reserved
+// Updated : 10/07/2017
+// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to select GAC entries that should be
-// project references.
+// This file contains the form used to select GAC entries that should be project references
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.2.0.0  09/02/2006  EFW  Created the code
-// 1.8.0.0  07/28/2008  EFW  Moved the form into the Sandcastle Builder GUI
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/02/2006  EFW  Created the code
+// 07/28/2008  EFW  Moved the form into the Sandcastle Builder GUI
+//===============================================================================================================
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Utils.Gac;
+using SandcastleBuilder.Gui.Gac;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
     /// <summary>
-    /// This form is used to let the user select the GAC entries to add as
-    /// project references.
+    /// This form is used to let the user select the GAC entries to add as project references
     /// </summary>
     public partial class SelectGacEntriesDlg : Form
     {
@@ -51,8 +47,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             get
             {
-                ListBox.SelectedObjectCollection selectedItems =
-                    lbGACEntries.SelectedItems;
+                ListBox.SelectedObjectCollection selectedItems = lbGACEntries.SelectedItems;
 
                 Collection<string> items = new Collection<string>();
 

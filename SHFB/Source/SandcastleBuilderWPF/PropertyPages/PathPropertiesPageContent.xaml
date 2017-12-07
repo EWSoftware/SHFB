@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.PathPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
+	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="480"
+	MinWidth="500" MinHeight="480" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Margin="0,0,0,8">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Tool Paths" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<TextBlock Grid.Row="1" Margin="15,0,3,5" TextWrapping="Wrap"
+			Text="If not specified, the help file builder will search for the tools in their well-known locations." />
+		<Grid Grid.Row="2" Margin="0,3,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="20" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" Content="HTML Help 1 compiler path" HorizontalAlignment="Right" />
+			<shfbProps:FolderPathUserControl Grid.Row="0" Grid.Column="1" x:Name="fpHtmlHelp1xCompilerPath"
+				DefaultFolder="ProgramFiles" Title="Select the HTML Help 1 compiler installation location"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="HtmlHelp1xCompilerPath"/>
+			<Label Margin="20,0,0,0" Grid.Row="1" Grid.Column="0" Content="Project-specific components path"
+				HorizontalAlignment="Right" />
+			<shfbProps:FolderPathUserControl Grid.Row="1" Grid.Column="1" x:Name="fpComponentPath"
+				DefaultFolder="MyDocuments" Title="Select the folder containing project-specific build components"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="ComponentPath" />
+			<Image Grid.Row="1" Grid.Column="2" Width="12" Margin="4" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="Use this to find project-specific build components.&#10;If blank, the project folder is searched." />
+		</Grid>
+		<Grid Grid.Row="3" Margin="0,0,0,8">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Source Code Base Path" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<TextBlock Grid.Row="4" Margin="15,0,3,5" TextWrapping="Wrap"
+			Text="If specified and your source code is hosted online, links to it will be included in topics in
+presentation styles that support it (see Transform Args).  An up-to-date program database (PDB) file is required
+for each documented assembly.  Specify the local file system path here, not a URL." />
+		<Grid Grid.Row="5">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<shfbProps:FolderPathUserControl Grid.Row="0" x:Name="fpSourceCodeBasePath" DefaultFolder="MyDocuments"
+				Title="Select the base folder containing source code for the documented assemblies" Margin="40,0,30,0"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="SourceCodeBasePath" />
+			<CheckBox Grid.Row="1" Name="chkWarnOnMissingSourceContext" Margin="40,3,30,0"
+				HorizontalAlignment="Left" Content="Report missing type source contexts as warnings"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="WarnOnMissingSourceContext"/>
+		</Grid>
+		<Grid Grid.Row="6" Margin="0,12,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Output Paths" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<Grid Grid.Row="7" Margin="0,3,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="40" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" Margin="20,0,0,0" Content="Help content output path"
+				HorizontalAlignment="Right" />
+			<shfbProps:FolderPathUserControl Grid.Row="0" Grid.Column="1" x:Name="fpOutputPath"
+				DefaultFolder="MyDocuments" ShowFixedPathOption="False" ShowNewFolderButton="True"
+				PersistablePath="Help\" Title="Select the output location for the help file"
+				PersistablePathChanged="fpOutputPath_PersistablePathChanged"
+				shfbProps:PropertyPageBinding.ProjectPropertyName="OutputPath"/>
+			<StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
+				<Image Width="12" Margin="4" Source="{x:Static shfb:SharedResources.InformationIcon}"
+					ToolTip="The default is a .\Help folder relative to the project folder" />
+				<Image Width="12" Margin="4" Source="{x:Static shfb:SharedResources.CautionIcon}"
+					ToolTip="WARNING: When building a web site or markdown output, the prior content of&#10;the output
+folder will be erased without warning before copying the new&#10;content to it!" />
+			</StackPanel>
+			<Label Margin="20,0,0,0" Grid.Row="1" Grid.Column="0" Content="Working files path"
+				HorizontalAlignment="Right" />
+			<shfbProps:FolderPathUserControl Grid.Row="1" Grid.Column="1" x:Name="fpWorkingPath"
+					DefaultFolder="MyDocuments" ShowNewFolderButton="True" Title="Select the working files location"
+					shfbProps:PropertyPageBinding.ProjectPropertyName="WorkingPath" />
+			<StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+				<Image Width="12" Margin="4" Source="{x:Static shfb:SharedResources.InformationIcon}"
+					ToolTip="The default is a .\Working folder under the Output Path folder" />
+				<Image Width="12" Margin="4" Source="{x:Static shfb:SharedResources.CautionIcon}"
+					ToolTip="WARNING: All files and folders in this path will be erased without warning&#10;when the build
+starts!" />
+			</StackPanel>
+		</Grid>
+	</Grid>
+</UserControl>

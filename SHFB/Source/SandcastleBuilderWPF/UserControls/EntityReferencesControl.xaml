@@ -5,6 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:shfbWPF="clr-namespace:SandcastleBuilder.WPF"
 	xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
+	xmlns:shfbUserControls="clr-namespace:SandcastleBuilder.WPF.UserControls"
 	mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="300"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}" FontSize="12" Name="ucEntityReferences"
 	IsVisibleChanged="ucEntityReferences_IsVisibleChanged">
@@ -102,8 +103,8 @@
         <RadioButton Content="MAML code entity reference" IsChecked="True" Margin="15, 0, 0, 0" Name="rbCodeEntityRef" />
         <RadioButton Content="XML comments see link"  Margin="15, 0, 0, 0" Name="rbXmlSeeLink" />
       </StackPanel>
-      <StackPanel Orientation="Horizontal" Name="spIndexingPanel" Margin="3" >
-        <Image Name="imgSpinner" Width="16" Source="../Resources/Spinner.gif" Margin="0, 3, 5, 3" />
+      <StackPanel Orientation="Horizontal" Name="spIndexingPanel" Margin="3">
+				<shfbUserControls:SpinnerControl Margin="0,0,10,0"/>
 				<TextBlock VerticalAlignment="Center" Text="Indexing comments..." Style="{StaticResource PlainText}" />
       </StackPanel>
     </StackPanel>

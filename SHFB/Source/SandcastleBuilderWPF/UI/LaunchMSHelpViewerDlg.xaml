@@ -1,0 +1,63 @@
+﻿<Window x:Class="SandcastleBuilder.WPF.UI.LaunchMSHelpViewerDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.UserControls"
+	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ResizeMode="NoResize"
+	Title="Open Microsoft Help Viewer Content" Width="700" Height="400" WindowStartupLocation="CenterScreen"
+  Icon="/SandcastleBuilder.WPF;component/Resources/HelpLibraryManager.png"
+	FocusManager.FocusedElement="{Binding ElementName=cboHelpViewerVersion}">
+	<Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBox Grid.Row="0" Name="txtInfo" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+    <Grid Grid.Row="1" Margin="3">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Column="0" Margin="0,0,3,0" Content="_Use Help Viewer Version"
+				HorizontalAlignment="Right" Target="{Binding ElementName=cboHelpViewerVersion}" />
+      <ComboBox Grid.Column="1" Name="cboHelpViewerVersion" Margin="0,3" Width="50" HorizontalAlignment="Left"
+        SelectionChanged="cboHelpViewerVersion_SelectionChanged" SelectedValuePath="Content">
+        <ComboBoxItem Content="1.0" />
+        <ComboBoxItem Content="2.0" />
+        <ComboBoxItem Content="2.1" />
+        <ComboBoxItem Content="2.2" />
+        <ComboBoxItem Content="2.3" />
+      </ComboBox>
+    </Grid>
+    <GroupBox Grid.Row="2" Name="grpOptions" Header="Options">
+      <StackPanel Margin="30,3,3,3">
+        <RadioButton Name="rbOpenCurrent" Margin="3" Content="_Open currently installed help file content for viewing even if it is out of date" />
+        <RadioButton Name="rbInstall" Margin="3" Content="_Install content from last build, replacing any existing installed copy, and open it for viewing" />
+        <RadioButton Name="rbRemove" Margin="3" Content="_Remove the installed content" />
+        <RadioButton Name="rbLaunchContentManager" Margin="3" Content="_Launch help viewer content manager" />
+      </StackPanel>
+    </GroupBox>
+    <Grid Grid.Row="3" Margin="0,5,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Name="btnOK" Padding="3" Width="80" Content="OK" HorizontalAlignment="Left"
+        IsDefault="True" Click="btnOK_Click" />
+      <Grid Grid.Column="1" Name="grdAction" Margin="10,3,10,3">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <shfb:SpinnerControl Grid.Column="0" Margin="0,0,10,0" />
+        <TextBlock Grid.Column="1" Margin="3" Name="lblAction" TextTrimming="CharacterEllipsis" Text="--" />
+      </Grid>
+      <Button Grid.Column="2" Name="btnCancel" Padding="3" Width="80" Content="Cancel" HorizontalAlignment="Right"
+        IsCancel="True" Click="btnCancel_Click" />
+    </Grid>
+  </Grid>
+</Window>

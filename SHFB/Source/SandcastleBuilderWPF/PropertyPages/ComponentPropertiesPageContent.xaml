@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.ComponentPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	mc:Ignorable="d" d:DesignWidth="675" d:DesignHeight="400"
+	MinWidth="675" MinHeight="350" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="Auto" MinHeight="40" />
+			<RowDefinition Height="Auto" MinHeight="100"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Grid Grid.Column="0">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<GroupBox Grid.Row="0" Name="gbAvailableComponents" Margin="0,0,3,0">
+					<GroupBox.Header>
+						<Label Target="{Binding ElementName=lbAvailableComponents}" Content="A_vailable Build Components"
+							shfb:PropertyPageBinding.ProjectPropertyName="ComponentConfigurations" />
+					</GroupBox.Header>
+					<ListBox Name="lbAvailableComponents" SelectionChanged="lbAvailableComponents_SelectionChanged"
+						MouseDoubleClick="lbAvailableComponents_MouseDoubleClick" />
+				</GroupBox>
+				<TextBox Grid.Row="1" Name="txtComponentVersion" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+					Margin="0,3,3,3" Background="Transparent" />
+			</Grid>
+			<GroupBox Grid.Column="1" Name="gbProjectComponents">
+				<GroupBox.Header>
+					<Label Target="{Binding ElementName=lbProjectComponents}" Content="_Build Components in This Project"/>
+				</GroupBox.Header>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<ListBox Grid.Row="0" Name="lbProjectComponents" MouseDoubleClick="lbProjectComponents_MouseDoubleClick">
+						<ListBox.ItemTemplate>
+							<HierarchicalDataTemplate>
+								<CheckBox Name="chkEnabledState" Content="{Binding Name}" IsChecked="{Binding Configuration.Enabled}"
+									Click="chkEnabledState_Click" />
+							</HierarchicalDataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+					<StackPanel Grid.Row="1" Orientation="Horizontal">
+						<Button Name="btnAddComponent" Margin="0,3" Padding="3" Width="100" Click="btnAddComponent_Click"
+							ToolTip="Add the selected available component">
+							<StackPanel Orientation="Horizontal">
+								<Image Source="/SandcastleBuilder.WPF;component/Resources/AddItem.png" />
+								<AccessText Text="_Add" Margin="10,0,0,0" />
+							</StackPanel>
+						</Button>
+						<Button Name="btnConfigure" Margin="6,3" Padding="3" Width="100" Click="btnConfigure_Click"
+							ToolTip="Configure the selected project component">
+							<StackPanel Orientation="Horizontal">
+								<Image Source="/SandcastleBuilder.WPF;component/Resources/PageEdit.png" />
+								<AccessText Text="_Configure" Margin="10,0,0,0" />
+							</StackPanel>
+						</Button>
+						<Button Name="btnDelete" Margin="0,3" Padding="3" Width="100" Click="btnDelete_Click"
+							ToolTip="Delete the selected project component">
+							<StackPanel Orientation="Horizontal">
+								<Image Source="/SandcastleBuilder.WPF;component/Resources/Delete.png" />
+								<AccessText Text="_Delete" Margin="10,0,0,0" />
+							</StackPanel>
+						</Button>
+					</StackPanel>
+				</Grid>
+			</GroupBox>
+		</Grid>
+		<TextBox Grid.Row="1" Name="txtComponentCopyright" VerticalScrollBarVisibility="Visible" IsReadOnly="True"
+				IsReadOnlyCaretVisible="True" Margin="0,3,0,3" TextWrapping="Wrap" Background="Transparent" />
+		<TextBox Grid.Row="2" Name="txtComponentDescription" VerticalScrollBarVisibility="Visible" IsReadOnly="True"
+				IsReadOnlyCaretVisible="True" Margin="0,3,0,0" TextWrapping="Wrap" Background="Transparent" />
+	</Grid>
+</UserControl>

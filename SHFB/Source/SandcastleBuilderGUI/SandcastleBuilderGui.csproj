@@ -105,14 +105,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventEditorForm.cs">
-      <Link>PropertyPages\BuildEventEditorForm.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventEditorForm.designer.cs">
-      <Link>PropertyPages\BuildEventEditorForm.designer.cs</Link>
-      <DependentUpon>BuildEventEditorForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.cs">
       <Link>PropertyPages\BuildEventPropertiesPageControl.cs</Link>
       <SubType>UserControl</SubType>
@@ -128,9 +120,6 @@
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.designer.cs">
       <Link>PropertyPages\BuildPropertiesPageControl.designer.cs</Link>
       <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentCache.cs">
-      <Link>PropertyPages\ComponentCache.cs</Link>
     </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.cs">
       <Link>PropertyPages\ComponentPropertiesPageControl.cs</Link>
@@ -233,6 +222,8 @@
     <Compile Include="ContentEditors\BaseContentEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ContentEditors\ContentFileEditor.cs" />
+    <Compile Include="ContentEditors\ContentFileEditorCollection.cs" />
     <Compile Include="ContentEditors\EntityReferenceWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -333,6 +324,8 @@
     <Compile Include="ContentEditors\TopicEditorWindow.Designer.cs">
       <DependentUpon>TopicEditorWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gac\GacApi.cs" />
+    <Compile Include="Gac\GacEnumerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -363,10 +356,6 @@
     <Compile Include="Spelling\TextLocation.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventEditorForm.resx">
-      <Link>PropertyPages\BuildEventEditorForm.resx</Link>
-      <DependentUpon>BuildEventEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.resx">
       <Link>PropertyPages\BuildEventPropertiesPageControl.resx</Link>
       <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
@@ -536,6 +525,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="StatusBarTextProvider.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="UserPreferencesDlg.cs">

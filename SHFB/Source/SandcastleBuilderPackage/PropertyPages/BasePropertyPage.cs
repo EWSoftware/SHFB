@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 10/26/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 11/21/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used as the base class for package property pages
@@ -16,6 +16,7 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 03/27/2011  EFW  Created the code
+// 10/06/2017  EFW  Reworked to use WPF controls in an ElementHost for better scaling on 4K displays
 //===============================================================================================================
 
 using System;
@@ -28,7 +29,11 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Forms.Integration;
+using WinFormsKeys = System.Windows.Forms.Keys;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -38,23 +43,23 @@ using Microsoft.VisualStudio.Shell.Interop;
 using SandcastleBuilder.Utils.Design;
 using SHFBUtility = SandcastleBuilder.Utils.Utility;
 
+using SandcastleBuilder.WPF;
+using SandcastleBuilder.WPF.PropertyPages;
+
 namespace SandcastleBuilder.Package.PropertyPages
 {
     /// <summary>
     /// This is used as a base class for package property pages
     /// </summary>
-    /// <remarks>This control handles the common tasks of a property page such
-    /// as binding controls to project properties and storing the values when
-    /// they change.  The property "binding" is done by specifying the project
-    /// property name in the control's <c>Tag</c> property.</remarks>
+    /// <remarks>This control handles the common tasks of a property page such as binding controls to project
+    /// properties and storing the values when they change.  The property "binding" is done by specifying the
+    /// project property name using the <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/>
+    /// attached property on the necessary WPF controls.</remarks>
     [ComVisible(true), ToolboxItem(false)]
-    public partial class BasePropertyPage : UserControl, IPropertyPage2
+    public partial class BasePropertyPage : System.Windows.Forms.UserControl, IPropertyPage2
     {
         #region Private data members
         //=====================================================================
-
-        // This is used to define custom user controls that should be scanned
-        private static Collection<string> customUserControls = new Collection<string>();
 
         // This is used to define custom controls and their value property
         private static Dictionary<string, string> customControls = new Dictionary<string, string>();
@@ -63,6 +68,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         private static List<BasePropertyPage> propertyPages = new List<BasePropertyPage>();
 
         private bool isDirty;
+
         #endregion
 
         #region Properties
@@ -71,25 +77,17 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This is used to get a list of all active property pages
         /// </summary>
-        /// <remarks>The <see cref="BuildCompletedEventListener"/> uses this to flush pending changes to
-        /// property pages prior to a build occurring.  Typically, this happens automatically but it does
-        /// not if the build is invoked using the context menu on the project node.  The build event
-        /// listener is used to workaround this issue and ensure the project is current before the build
-        /// takes place.</remarks>
-        internal static List<BasePropertyPage> AllPropertyPages
-        {
-            get { return propertyPages; }
-        }
+        /// <remarks>The <see cref="BuildCompletedEventListener"/> uses this to flush pending changes to property
+        /// pages prior to a build occurring.  Typically, this happens automatically but it does not if the build
+        /// is invoked using the context menu on the project node.  The build event listener is used to
+        /// workaround this issue and ensure the project is current before the build takes place.</remarks>
+        internal static List<BasePropertyPage> AllPropertyPages => propertyPages;
 
         /// <summary>
-        /// This read-only property can be overridden to provide custom validation
-        /// for the property page.
+        /// This read-only property can be overridden to provide custom validation for the property page
         /// </summary>
         /// <value>Return true if valid, or false if not</value>
-        protected virtual bool IsValid
-        {
-            get { return true; }
-        }
+        protected virtual bool IsValid => true;
 
         /// <summary>
         /// This is used to get or set the title of the property page
@@ -110,7 +108,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This is used to get or set the dirty state of the property page
         /// </summary>
-        protected bool IsDirty
+        protected internal bool IsDirty
         {
             get { return isDirty; }
             set
@@ -143,55 +141,27 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <summary>
         /// This is used to access the custom control property mapping dictionary
         /// </summary>
-        /// <remarks>The class recognizes the basic edit controls and those
-        /// derived from them.  If you have custom controls that it does not
-        /// recognize (i.e. those derived from <b>UserControl</b>), you can
-        /// add them to this dictionary using the fully qualified type name
-        /// including namespaces and the property value to use for binding as
-        /// the value for the entry.
-        /// <p/><b>NOTE:</b>You only need to add controls to this property
-        /// if it is not derived from one of the standard edit controls (see
-        /// <see cref="BindProperties"/> for more information).
-        /// <p/>This property is static so it can be populated once at start-up
-        /// for use throughout the application's lifetime.</remarks>
+        /// <remarks>The class recognizes the basic edit controls and those derived from them.  If you have
+        /// custom controls that it does not recognize (i.e. those derived from <b>UserControl</b>), you can
+        /// add them to this dictionary using the fully qualified type name including namespaces and the property
+        /// value to use for binding as the value for the entry.
+        ///
+        /// <para><b>NOTE:</b>You only need to add controls to this property if it is not derived from one of the
+        /// standard edit controls (see <see cref="BindProperties"/> for more information).</para>
+        ///
+        /// <para>This property is static so it can be populated once at start-up for use throughout the
+        /// application's lifetime.</para></remarks>
         /// <example>
-        /// <code lang="cs">
-        /// // Use the SelectedValue property for binding in controls of type
-        /// // EWSoftware.ListControls.MultiColumnComboBox.  This control is
+        /// <code language="cs">
+        /// // Use the PeristablePath property for binding in controls of type
+        /// // SandcastleBuilder.WPF.PropertyPages.FilePathUserControl.  This control is
         /// // not derived from a standard control so we need to add it manually.
         /// BasePropertyPage.CustomControls.Add(
-        ///     "EWSoftware.ListControls.MultiColumnComboBox",
-        ///     "SelectedValue");
+        ///     "SandcastleBuilder.WPF.PropertyPages.FilePathUserControl", "PersistablePath");
         /// </code>
         /// </example>
-        public static Dictionary<string, string> CustomControls
-        {
-            get { return customControls; }
-        }
+        public static Dictionary<string, string> CustomControls => customControls;
 
-        /// <summary>
-        /// This is used to access the custom user control list
-        /// </summary>
-        /// <remarks>The class recognizes the basic panel and container controls
-        /// but will ignore all <c>UserControl</c> derived objects.  If you have
-        /// a user control that you want included in the binding procedure, add
-        /// its full type name to this collection.
-        /// <p/><b>NOTE:</b>You only need to add type names to this property
-        /// if it is not derived from one of the container controls (see
-        /// <see cref="BindProperties"/> for more information).
-        /// <p/>This property is static so it can be populated once at start-up
-        /// for use throughout the application's lifetime.</remarks>
-        /// <example>
-        /// <code lang="cs">
-        /// // Add custom user controls to the change tracking container list
-        /// BasePropertyPage.CustomUserControls.Add("SomeCompany.Controls.UITab");
-        /// BasePropertyPage.CustomUserControls.Add("SomeCompany.Controls.UITabPage");
-        /// </code>
-        /// </example>
-        public static Collection<string> CustomUserControls
-        {
-            get { return customUserControls; }
-        }
         #endregion
 
         #region Constructor
@@ -203,7 +173,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         public BasePropertyPage()
         {
             InitializeComponent();
-            this.Font = Utility.GetDialogFont();
         }
         #endregion
 
@@ -221,24 +190,24 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         /// <param name="keyData">The key data to check</param>
         /// <returns>True if the key was handled, false if not</returns>
-        /// <remarks>This appears to be necessary because the <c>IPropertyPage2.TranslateAccelerator</c>
-        /// method is never called.  As such, Visual Studio invokes help on F1 rather than us getting a
-        /// <c>HelpRequested</c> event and it invokes menus if a mnemonic matches a menu hot key rather
-        /// than focusing the associated control.</remarks>
-        protected override bool ProcessDialogKey(Keys keyData)
+        /// <remarks>This appears to be necessary because the <c>IPropertyPage2.TranslateAccelerator</c> method
+        /// is never called.  As such, Visual Studio invokes help on F1 rather than us getting a
+        /// <c>HelpRequested</c> event and it invokes menus if a mnemonic matches a menu hot key rather than
+        /// focusing the associated control.</remarks>
+        protected override bool ProcessDialogKey(WinFormsKeys keyData)
         {
-            if(keyData == Keys.F1)
+            if(keyData == WinFormsKeys.F1)
             {
                 if(this.ShowHelp())
                     return true;
             }
             else
-                if((keyData & ~Keys.KeyCode) == Keys.Alt)
+                if((keyData & ~WinFormsKeys.KeyCode) == WinFormsKeys.Alt)
                 {
-                    Keys key = (keyData & ~Keys.Alt);
+                    WinFormsKeys key = (keyData & ~WinFormsKeys.Alt);
 
-                    if(((Char.IsLetterOrDigit((char)((ushort)key)) && (key < Keys.F1 || key > Keys.F24)) ||
-                      (key >= Keys.NumPad0 && key <= Keys.Divide)) && this.ProcessMnemonic((char)((ushort)key)))
+                    if(((Char.IsLetterOrDigit((char)((ushort)key)) && (key < WinFormsKeys.F1 || key > WinFormsKeys.F24)) ||
+                      (key >= WinFormsKeys.NumPad0 && key <= WinFormsKeys.Divide)) && this.ProcessMnemonic((char)((ushort)key)))
                           return true;
                 }
 
@@ -250,16 +219,15 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <summary>
-        /// This can be overridden to perform custom initialization for the
-        /// property page.
+        /// This can be overridden to perform custom initialization for the property page
         /// </summary>
         protected virtual void Initialize()
         {
         }
 
         /// <summary>
-        /// Derived classes can connect the change event on custom controls to this method to
-        /// notify the page of changes in the control's value.
+        /// Derived classes can connect the change event on custom controls to this method to notify the page of
+        /// changes in the control's value.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -276,34 +244,34 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// This can be overridden to specify whether the property value is escaped or not.
         /// </summary>
         /// <param name="propertyName">The property name</param>
-        /// <returns>True if the property contains an escaped value, false if not.  When bound,
-        /// an escaped property's value is unescaped before it is assigned to the control.  When
-        /// stored, the new value is escaped before it is stored.</returns>
+        /// <returns>True if the property contains an escaped value, false if not.  When bound, an escaped
+        /// property's value is unescaped before it is assigned to the control.  When stored, the new value is
+        /// escaped before it is stored.</returns>
         protected virtual bool IsEscapedProperty(string propertyName)
         {
             return false;
         }
 
         /// <summary>
-        /// This can be overridden to bind a control to a property in a manner
-        /// other than the default handling supplied by the base class.
+        /// This can be overridden to bind a control to a property in a manner other than the default handling
+        /// supplied by the base class.
         /// </summary>
-        /// <param name="control">The control to bind</param>
-        /// <returns>True if the method bound the control or it should be ignored,
-        /// false if the base class should attempt to bind it in the default manner.</returns>
-        protected virtual bool BindControlValue(Control control)
+        /// <param name="propertyName">The name of the property to bind</param>
+        /// <returns>True if the method bound the control or it should be ignored, false if the base class should
+        /// attempt to bind it in the default manner.</returns>
+        protected virtual bool BindControlValue(string propertyName)
         {
             return false;
         }
 
         /// <summary>
-        /// This can be overridden to store a control value in a property in a manner
-        /// other than the default handling supplied by the base class.
+        /// This can be overridden to store a control value in a property in a manner other than the default
+        /// handling supplied by the base class.
         /// </summary>
-        /// <param name="control">The control from which to store the value</param>
-        /// <returns>True if the method stored the control value or it should be ignored,
-        /// false if the base class should attempt to store the value in the default manner.</returns>
-        protected virtual bool StoreControlValue(Control control)
+        /// <param name="propertyName">The name of the property to store</param>
+        /// <returns>True if the method stored the control value or it should be ignored, false if the base class
+        /// should attempt to store the value in the default manner.</returns>
+        protected virtual bool StoreControlValue(string propertyName)
         {
             return false;
         }
@@ -333,14 +301,12 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <summary>
-        /// This is used to bind the controls in the given collection to their
-        /// associated project properties.
+        /// This is used to bind the controls in the given collection to their associated project properties
         /// </summary>
-        /// <param name="controls">The control collection from which to get
-        /// the bound controls.  Controls are bound if their <see cref="Control.Tag"/>
-        /// property is a string that matches a project property.</param>
-        /// <remarks>This method is recursive</remarks>
-        protected void BindProperties(Control.ControlCollection controls)
+        /// <param name="controls">The control collection from which to get the bound controls.  WPF controls and
+        /// their children in an <see cref="ElementHost"/> are bound if they declare a property name using the
+        /// <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/> attached property.</param>
+        protected void BindProperties(System.Windows.Forms.Control.ControlCollection controls)
         {
             Type t;
             PropertyInfo pi;
@@ -350,127 +316,81 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 this.IsBinding = true;
 
-                foreach(Control c in controls)
+                foreach(var control in controls.OfType<ElementHost>().Select(h => (FrameworkElement)h.Child))
                 {
-                    t = c.GetType();
-                    typeName = t.FullName;
-                    boundProperty = c.Tag as string;
-
-                    // Ignore unbound controls
-                    if(String.IsNullOrEmpty(boundProperty))
+                    foreach(var c in control.AllChildElements().Where(c =>
+                      !String.IsNullOrWhiteSpace(PropertyPageBinding.GetProjectPropertyName(c))))
                     {
-                        // Scan containers too except for user controls unless they are in the custom user control
-                        // list.  They may or may not represent a single-valued item and we can't process them
-                        // reliably.  The same could be true of one of these if it is a derived type.
-                        if(!customControls.ContainsKey(typeName) && (c is GroupBox || c is Panel || c is TabControl ||
-                          c is TabPage || c is SplitContainer || customUserControls.Contains(typeName)))
+                        t = c.GetType();
+                        typeName = t.FullName;
+                        boundProperty = PropertyPageBinding.GetProjectPropertyName(c);
+
+                        // Check for custom types first
+                        if(customControls.ContainsKey(typeName))
                         {
-                            this.BindProperties(c.Controls);
-                            continue;
-                        }
+                            // Find and connect the Changed event for the named property if one exists
+                            var changedEvent = t.GetEvents().Where(ev =>
+                                ev.Name == customControls[typeName] + "Changed").FirstOrDefault();
 
-                        continue;
-                    }
-
-                    // Check for custom types first
-                    if(customControls.ContainsKey(typeName))
-                    {
-                        // Find and connect the Changed event for the named property if one exists
-                        var changedEvent = t.GetEvents().Where(ev =>
-                            ev.Name == customControls[typeName] + "Changed").FirstOrDefault();
-
-                        if(changedEvent != null)
-                        {
-                            EventHandler h = new EventHandler(OnPropertyChanged);
-                            changedEvent.RemoveEventHandler(c, h);
-                            changedEvent.AddEventHandler(c, h);
-                        }
-
-                        pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    else if(c is TextBoxBase || c is Label)
-                    {
-                        c.TextChanged -= OnPropertyChanged;
-                        c.TextChanged += OnPropertyChanged;
-
-                        pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    else if(c is ComboBox)
-                    {
-                        ComboBox cbo = (ComboBox)c;
-                        cbo.SelectedIndexChanged -= OnPropertyChanged;
-                        cbo.SelectedIndexChanged += OnPropertyChanged;
-
-                        if(cbo.DataSource != null)
-                            pi = t.GetProperty("SelectedValue", BindingFlags.Public | BindingFlags.Instance);
-                        else
-                            pi = t.GetProperty("SelectedItem", BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    else if(c is CheckBox)
-                    {
-                        CheckBox cb = (CheckBox)c;
-                        cb.CheckedChanged -= OnPropertyChanged;
-                        cb.CheckedChanged += OnPropertyChanged;
-
-                        pi = t.GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    else if((c is DateTimePicker) || (c is UpDownBase) || (c is TrackBar))
-                    {
-                        DateTimePicker dtp = c as DateTimePicker;
-
-                        if(dtp != null)
-                        {
-                            dtp.ValueChanged -= OnPropertyChanged;
-                            dtp.ValueChanged += OnPropertyChanged;
-                        }
-                        else
-                        {
-                            UpDownBase udc = c as UpDownBase;
-
-                            if(udc != null)
+                            if(changedEvent != null)
                             {
-                                udc.TextChanged -= OnPropertyChanged;
-                                udc.TextChanged += OnPropertyChanged;
+                                Delegate h;
+
+                                if(changedEvent.EventHandlerType == typeof(RoutedPropertyChangedEventHandler<object>))
+                                {
+                                    h = new RoutedPropertyChangedEventHandler<object>(OnWpfPropertyChanged);
+                                }
+                                else
+                                    h = new EventHandler(OnPropertyChanged);
+
+                                changedEvent.RemoveEventHandler(c, h);
+                                changedEvent.AddEventHandler(c, h);
                             }
-                            else
-                            {
-                                TrackBar tbar = (TrackBar)c;
-                                tbar.ValueChanged -= OnPropertyChanged;
-                                tbar.ValueChanged += OnPropertyChanged;
-                            }
+
+                            pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
                         }
+                        else if(c is Label)
+                        {
+                            Label l = (Label)c;
 
-                        pi = t.GetProperty("Value", BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    else if(c is CheckedListBox)
-                    {
-                        CheckedListBox clb = (CheckedListBox)c;
-                        clb.ItemCheck -= OnPropertyChanged;
-                        clb.ItemCheck += OnPropertyChanged;
+                            // No change event for this one but we probably don't need it
 
-                        // Since CheckedListBox is a multi-valued control, the user will have to bind it
-                        // in the BindControlValue() method override.  They'll have to store it in the
-                        // StoreControlValue() method override too.
-                        pi = null;
-                    }
-                    else if(c is ListBox)
-                    {
-                        ListBox lb = (ListBox)c;
-                        lb.SelectedIndexChanged -= OnPropertyChanged;
-                        lb.SelectedIndexChanged += OnPropertyChanged;
+                            pi = t.GetProperty("Content", BindingFlags.Public | BindingFlags.Instance);
+                        }
+                        else if(c is TextBoxBase)
+                        {
+                            TextBoxBase tb = (TextBoxBase)c;
 
-                        if(lb.DataSource != null)
+                            tb.TextChanged -= OnPropertyChanged;
+                            tb.TextChanged += OnPropertyChanged;
+
+                            pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
+                        }
+                        else if(c is Selector)
+                        {
+                            Selector sel = (Selector)c;
+                            sel.SelectionChanged -= OnPropertyChanged;
+                            sel.SelectionChanged += OnPropertyChanged;
+
                             pi = t.GetProperty("SelectedValue", BindingFlags.Public | BindingFlags.Instance);
-                        else
-                            pi = t.GetProperty("SelectedItem", BindingFlags.Public | BindingFlags.Instance);
-                    }
-                    else
-                        pi = null;
+                        }
+                        else if(c is CheckBox)
+                        {
+                            CheckBox cb = (CheckBox)c;
 
-                    // Give the user a chance to handle the control in a custom fashion.  If not handled and we
-                    // couldn't figure out what to use, ignore it.
-                    if(!this.BindControlValue(c) && pi != null)
-                        this.Bind(c, pi, boundProperty);
+                            cb.Click -= OnPropertyChanged;
+                            cb.Click += OnPropertyChanged;
+
+                            pi = t.GetProperty("IsChecked", BindingFlags.Public | BindingFlags.Instance);
+                        }
+                        else
+                            pi = null;
+
+                        // Give the user a chance to handle the control in a custom fashion.  If not handled and
+                        // we couldn't figure out what to use, ignore it.
+                        if(!this.BindControlValue(boundProperty) && pi != null)
+                            this.Bind(c, pi, boundProperty);
+                    }
                 }
             }
             finally
@@ -480,13 +400,12 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <summary>
-        /// Bind the control to the property value by setting the property to
-        /// the current value from the project.
+        /// Bind the control to the property value by setting the property to the current value from the project
         /// </summary>
         /// <param name="control">The control to bind</param>
         /// <param name="propertyInfo">The property information</param>
         /// <param name="boundProperty">The project property name</param>
-        private void Bind(Control control, PropertyInfo propertyInfo, string boundProperty)
+        private void Bind(object control, PropertyInfo propertyInfo, string boundProperty)
         {
             string propValue = null;
             object controlValue;
@@ -505,8 +424,14 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(this.IsEscapedProperty(boundProperty))
                     propValue = EscapeValueAttribute.Unescape(propValue);
 
+                TypeCode typeCode = Type.GetTypeCode(propertyInfo.PropertyType);
+
+                // If it's something like a nullable type, get the type parameter type code
+                if(typeCode == TypeCode.Object && propertyInfo.PropertyType.GenericTypeArguments.Length != 0)
+                    typeCode = Type.GetTypeCode(propertyInfo.PropertyType.GenericTypeArguments[0]);
+
                 // Set the value based on the type
-                switch(Type.GetTypeCode(propertyInfo.PropertyType))
+                switch(typeCode)
                 {
                     case TypeCode.Object:
                     case TypeCode.String:
@@ -578,91 +503,90 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <summary>
-        /// This is used to store the control values in the given collection to
-        /// their associated project properties.
+        /// This is used to store the control values in the given collection to their associated project
+        /// properties.
         /// </summary>
-        /// <param name="controls">The control collection from which to get
-        /// the values.  Controls are bound if their <see cref="Control.Tag"/>
-        /// property is a string that matches a project property.</param>
-        /// <remarks>This method is recursive</remarks>
-        protected void StoreProperties(Control.ControlCollection controls)
+        /// <param name="controls">The control collection from which to get the bound controls.  WPF controls and
+        /// their children in an <see cref="ElementHost"/> are bound if they declare a property name using the
+        /// <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/> attached property.</param>
+        protected void StoreProperties(System.Windows.Forms.Control.ControlCollection controls)
         {
             Type t;
             PropertyInfo pi;
             object controlValue;
             string typeName, boundProperty, propValue;
 
-            foreach(Control c in controls)
+            foreach(var control in controls.OfType<ElementHost>().Select(h => (FrameworkElement)h.Child))
             {
-                t = c.GetType();
-                typeName = t.FullName;
-                boundProperty = c.Tag as string;
-
-                // Ignore unbound controls
-                if(String.IsNullOrEmpty(boundProperty))
+                foreach(var c in control.AllChildElements().Where(c =>
+                  !String.IsNullOrWhiteSpace(PropertyPageBinding.GetProjectPropertyName(c))))
                 {
-                    // Scan containers too except for user controls unless they are in the custom user control
-                    // list.  They may or may not represent a single-valued item and we can't process them
-                    // reliably.  The same could be true of one of these if it's a derived type.
-                    if(!customControls.ContainsKey(typeName) && (c is GroupBox || c is Panel || c is TabControl ||
-                      c is TabPage || c is SplitContainer || customUserControls.Contains(typeName)))
-                        this.StoreProperties(c.Controls);
+                    t = c.GetType();
+                    typeName = t.FullName;
+                    boundProperty = PropertyPageBinding.GetProjectPropertyName(c);
 
-                    continue;
-                }
-
-                // Check for custom types first
-                if(customControls.ContainsKey(typeName))
-                {
-                    pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
-                }
-                else if(c is TextBoxBase || c is Label)
-                    pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
-                else if(c is ComboBox)
-                {
-                    if(((ComboBox)c).DataSource != null)
+                    // Check for custom types first
+                    if(customControls.ContainsKey(typeName))
+                        pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
+                    else if(c is TextBoxBase)
+                        pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
+                    else if(c is Selector)
                         pi = t.GetProperty("SelectedValue", BindingFlags.Public | BindingFlags.Instance);
+                    else if(c is CheckBox)
+                        pi = t.GetProperty("IsChecked", BindingFlags.Public | BindingFlags.Instance);
                     else
-                        pi = t.GetProperty("SelectedItem", BindingFlags.Public | BindingFlags.Instance);
-                }
-                else if(c is CheckBox)
-                    pi = t.GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
-                else if((c is DateTimePicker) || (c is UpDownBase) || (c is TrackBar))
-                    pi = t.GetProperty("Value", BindingFlags.Public | BindingFlags.Instance);
-                else if(c is ListBox)
-                {
-                    if(((ListBox)c).DataSource != null)
-                        pi = t.GetProperty("SelectedValue", BindingFlags.Public | BindingFlags.Instance);
-                    else
-                        pi = t.GetProperty("SelectedItem", BindingFlags.Public | BindingFlags.Instance);
-                }
-                else
-                    pi = null;
+                        pi = null;
 
-                // Note that CheckedListBox is not handled here since it is most likely multi-valued.  The
-                // user must store it in the StoreControLValue() method override.
-
-                // Give the user a chance to handle the control in a custom fashion.  If not handled and we
-                // couldn't figure out what to use, ignore it.
-                if(!this.StoreControlValue(c) && pi != null)
-                {
-                    controlValue = pi.GetValue(c, null);
-
-                    if(controlValue == null)
-                        propValue = String.Empty;
-                    else
-                        propValue = controlValue.ToString();
-
-                    // If the string is empty and the property doesn't exist, don't create it unnecessarily
-                    if(propValue.Length != 0 || this.ProjectMgr.BuildProject.GetProperty(boundProperty) != null)
+                    // Give the user a chance to handle the control in a custom fashion.  If not handled and we
+                    // couldn't figure out what to use, ignore it.
+                    if(!this.StoreControlValue(boundProperty) && pi != null)
                     {
-                        if(this.IsEscapedProperty(boundProperty))
-                            propValue = EscapeValueAttribute.Escape(propValue);
+                        controlValue = pi.GetValue(c, null);
 
-                       this.ProjectMgr.SetProjectProperty(boundProperty, propValue);
+                        if(controlValue == null)
+                            propValue = String.Empty;
+                        else
+                            propValue = controlValue.ToString();
+
+                        // If the string is empty and the property doesn't exist, don't create it unnecessarily
+                        if(propValue.Length != 0 || this.ProjectMgr.BuildProject.GetProperty(boundProperty) != null)
+                        {
+                            if(this.IsEscapedProperty(boundProperty))
+                                propValue = EscapeValueAttribute.Escape(propValue);
+
+                            this.ProjectMgr.SetProjectProperty(boundProperty, propValue);
+                        }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// This handles property changed events for certain WPF custom controls
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void OnWpfPropertyChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            this.OnPropertyChanged(sender, e);
+        }
+
+        /// <summary>
+        /// This is used to determine the minimum size of the property page based on the content pane
+        /// </summary>
+        /// <param name="c">The content pane control</param>
+        /// <returns>The minimum size of the property page</returns>
+        /// <remarks>Even though the WPF control will be scaled correctly, the containing host control does not
+        /// always have an appropriate minimum size.  As such, the host control is created with a smaller size
+        /// than needed and this is called to set the minimum size on the host control based on the minimum size
+        /// reported by the child WPF control.  The WPF control's minimum size is converted to pixels based on
+        /// the current system's DPI.</remarks>
+        protected static System.Drawing.Size DetermineMinimumSize(System.Windows.Controls.Control c)
+        {
+            double pixelWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / System.Windows.SystemParameters.WorkArea.Width,
+                pixelHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / System.Windows.SystemParameters.WorkArea.Height;
+
+            return new System.Drawing.Size((int)(c.MinWidth * pixelWidth), (int)(c.MinHeight * pixelHeight));
         }
         #endregion
 
@@ -783,8 +707,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             RECT r = pRect[0];
 
             // Don't resize smaller than the minimum size if defined
-            this.Bounds = new Rectangle(r.left, r.top,
-                Math.Max(r.right - r.left, this.MinimumSize.Width),
+            this.Bounds = new Rectangle(r.left, r.top, Math.Max(r.right - r.left, this.MinimumSize.Width),
                 Math.Max(r.bottom - r.top, this.MinimumSize.Height));
         }
 

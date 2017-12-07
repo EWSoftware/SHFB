@@ -95,7 +95,7 @@ namespace SandcastleBuilder.Utils
         /// <note type="note">MSBuild environment variable references are also supported (i.e. $(SHFBROOT),
         /// $(OutputPath), etc.).</note>
         /// <example>
-        /// <code lang="cs">
+        /// <code language="cs">
         /// FilePath path = new FilePath();
         ///
         /// // Set it to a relative path
@@ -107,7 +107,7 @@ namespace SandcastleBuilder.Utils
         /// // Set it to a path based on an environment variable
         /// path.Path = @"%HOMEDRIVE%%HOMEPATH%\Favorites\*.*";
         /// </code>
-        /// <code lang="vbnet">
+        /// <code language="vbnet">
         /// Dim path As New FilePath()
         ///
         /// ' Set it to a relative path
@@ -298,14 +298,14 @@ namespace SandcastleBuilder.Utils
         /// <param name="filePath">The <see cref="FilePath"/> to convert.</param>
         /// <returns>The file path as a relative or absolute path string based on its current settings</returns>
         /// <example>
-        /// <code lang="cs">
+        /// <code language="cs">
         /// FilePath filePath = new FilePath(@"%APPDATA%\TestApp\App.config");
         /// 
         /// // The FilePath object is automatically converted to a string
         /// // representing the expanded, fully qualified path.
         /// string pathString = filePath;
         /// </code>
-        /// <code lang="vbnet">
+        /// <code language="vbnet">
         /// Dim filePath As New FilePath("%APPDATA%\TestApp\App.config")
         ///
         /// ' The FilePath object is automatically converted to a string
@@ -386,7 +386,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>A path to the given absolute path that is relative to the given base path</returns>
         /// <remarks>If the base path is null or empty, the current working folder is used.</remarks>
         /// <example>
-        /// <code lang="cs">
+        /// <code language="cs">
         /// string basePath = @"E:\DotNet\CS\TestProject\Source";
         /// string absolutePath = @"E:\DotNet\CS\TestProject\Doc\Help.html";
         /// 
@@ -397,7 +397,7 @@ namespace SandcastleBuilder.Utils
         /// 
         /// // Results in: ..\Doc\Help.html
         /// </code>
-        /// <code lang="vbnet">
+        /// <code language="vbnet">
         /// Dim basePath As String = "E:\DotNet\CS\TestProject\Source"
         /// Dim absolutePath As String = "E:\DotNet\CS\TestProject\Doc\Help.html"
         /// 
@@ -482,7 +482,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>An absolute path</returns>
         /// <remarks>If the base path is null or empty, the current working folder is used.</remarks>
         /// <example>
-        /// <code lang="cs">
+        /// <code language="cs">
         /// string basePath = @"E:\DotNet\CS\TestProject\Source";
         /// string relativePath = @"..\Doc\Help.html";
         /// 
@@ -493,7 +493,7 @@ namespace SandcastleBuilder.Utils
         /// 
         /// // Results in: E:\DotNet\CS\TestProject\Doc\Help.html
         /// </code>
-        /// <code lang="vbnet">
+        /// <code language="vbnet">
         /// Dim basePath As String = "E:\DotNet\CS\TestProject\Source"
         /// Dim relativePath As String = "..\Doc\Help.html"
         /// 

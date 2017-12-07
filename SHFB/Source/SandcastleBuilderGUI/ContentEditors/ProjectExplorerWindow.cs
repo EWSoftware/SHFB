@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2017
+// Updated : 12/06/2017
 // Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -45,8 +45,7 @@ using Sandcastle.Core;
 using SandcastleBuilder.Gui.MSBuild;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
-using SandcastleBuilder.Utils.MSBuild;
+using SandcastleBuilder.WPF.UI;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -118,16 +117,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.AddConceptualTemplates();
             this.AddCustomTemplates();
 
-            subMenu = new ToolStripMenuItem("Documentation Sources");
-            subMenu.DropDown = cmsDocSource;
+            subMenu = new ToolStripMenuItem("Documentation Sources") { DropDown = cmsDocSource };
             MainForm.Host.ProjectExplorerMenu.DropDownItems.Add(subMenu);
 
-            subMenu = new ToolStripMenuItem("References");
-            subMenu.DropDown = cmsReference;
+            subMenu = new ToolStripMenuItem("References") { DropDown = cmsReference };
             MainForm.Host.ProjectExplorerMenu.DropDownItems.Add(subMenu);
 
-            subMenu = new ToolStripMenuItem("Files");
-            subMenu.DropDown = cmsFile;
+            subMenu = new ToolStripMenuItem("Files") { DropDown = cmsFile };
             MainForm.Host.ProjectExplorerMenu.DropDownItems.Add(subMenu);
 
             this.LoadProject();
@@ -145,10 +141,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return true; }
-        }
+        public override bool CanSaveContent => true;
 
         /// <inheritdoc />
         public override bool Save()
@@ -416,8 +409,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 name = Path.GetFileNameWithoutExtension(file);
 
-                miTemplate = new ToolStripMenuItem(name, null, onClick);
-                miTemplate.Tag = file;
+                miTemplate = new ToolStripMenuItem(name, null, onClick) { Tag = file };
                 sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                 miNewItem.DropDownItems.Insert(idx++, miTemplate);
             }
@@ -437,8 +429,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 name = Path.GetFileNameWithoutExtension(file);
 
-                miTemplate = new ToolStripMenuItem(name, null, onClick);
-                miTemplate.Tag = file;
+                miTemplate = new ToolStripMenuItem(name, null, onClick) { Tag = file };
                 sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                 miConceptualTemplates.DropDownItems.Add(miTemplate);
             }
@@ -462,8 +453,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 {
                     name = Path.GetFileNameWithoutExtension(file);
 
-                    miTemplate = new ToolStripMenuItem(name, null, onClick);
-                    miTemplate.Tag = file;
+                    miTemplate = new ToolStripMenuItem(name, null, onClick) { Tag = file };
                     sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                     miCustomTemplates.DropDownItems.Add(miTemplate);
                 }
@@ -481,8 +471,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 {
                     name = Path.GetFileNameWithoutExtension(file);
 
-                    miTemplate = new ToolStripMenuItem(name, null, onClick);
-                    miTemplate.Tag = file;
+                    miTemplate = new ToolStripMenuItem(name, null, onClick) { Tag = file };
                     sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                     miCustomTemplates.DropDownItems.Add(miTemplate);
                 }
@@ -510,9 +499,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(currentProject == null)
                     return;
 
-                root = new TreeNode(Path.GetFileNameWithoutExtension(currentProject.Filename));
-                root.Tag = new NodeData(BuildAction.Project, null);
-                root.Name = "*Project";
+                root = new TreeNode(Path.GetFileNameWithoutExtension(currentProject.Filename))
+                {
+                    Tag = new NodeData(BuildAction.Project, null),
+                    Name = "*Project"
+                };
                 root.ImageIndex = root.SelectedImageIndex = (int)NodeIcon.ProjectNode;
 
                 tvProjectFiles.Nodes.Add(root);
@@ -551,9 +542,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(createRoot)
             {
-                root = new TreeNode("Documentation Sources");
-                root.Tag = new NodeData(BuildAction.DocumentationSource, null);
-                root.Name = "*DocSources";
+                root = new TreeNode("Documentation Sources")
+                {
+                    Tag = new NodeData(BuildAction.DocumentationSource, null),
+                    Name = "*DocSources"
+                };
                 root.ImageIndex = root.SelectedImageIndex = (int)NodeIcon.DocSourceFolder;
 
                 tvProjectFiles.Nodes[0].Nodes.Add(root);
@@ -579,9 +572,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 foreach(DocumentationSource ds in docSources.OrderBy(ds => ds.SourceDescription))
                 {
-                    source = new TreeNode(ds.SourceDescription);
-                    source.Name = ds.SourceFile;
-                    source.Tag = new NodeData(BuildAction.DocumentationSource, ds);
+                    source = new TreeNode(ds.SourceDescription)
+                    {
+                        Name = ds.SourceFile,
+                        Tag = new NodeData(BuildAction.DocumentationSource, ds)
+                    };
                     source.ImageIndex = source.SelectedImageIndex = (int)NodeIcon.DocSource;
                     root.Nodes.Add(source);
                 }
@@ -604,9 +599,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(createRoot)
             {
-                root = new TreeNode("References");
-                root.Tag = new NodeData(BuildAction.ReferenceItem, null);
-                root.Name = "*References";
+                root = new TreeNode("References")
+                {
+                    Tag = new NodeData(BuildAction.ReferenceItem, null),
+                    Name = "*References"
+                };
                 root.ImageIndex = root.SelectedImageIndex = (int)NodeIcon.ReferenceFolder;
 
                 tvProjectFiles.Nodes[0].Nodes.Add(root);
@@ -628,9 +625,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 foreach(ReferenceItem refItem in projectReferences.OrderBy(r => r.Reference))
                 {
-                    source = new TreeNode(refItem.Reference);
-                    source.Name = refItem.Reference;
-                    source.Tag = new NodeData(BuildAction.ReferenceItem, refItem);
+                    source = new TreeNode(refItem.Reference)
+                    {
+                        Name = refItem.Reference,
+                        Tag = new NodeData(BuildAction.ReferenceItem, refItem)
+                    };
                     source.ImageIndex = source.SelectedImageIndex = (int)NodeIcon.ReferenceItem;
                     root.Nodes.Add(source);
                 }

@@ -1,23 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ControlExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 10/05/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class with WPF control extension methods.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/17/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/17/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -51,6 +50,29 @@ namespace SandcastleBuilder.WPF
                 element = VisualTreeHelper.GetParent(element) as FrameworkElement;
 
             return element as T;
+        }
+
+        /// <summary>
+        /// Return all child elements of the given parent element recursively
+        /// </summary>
+        /// <param name="parent">The parent element</param>
+        /// <returns>An enumerable list of all child elements recursively</returns>
+        public static IEnumerable<FrameworkElement> AllChildElements(this FrameworkElement parent)
+        {
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            for(int i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i) as FrameworkElement;
+
+                if(child != null)
+                {
+                    yield return child;
+
+                    foreach(var grandChild in child.AllChildElements())
+                        yield return grandChild;
+                }
+            }
         }
         #endregion
 

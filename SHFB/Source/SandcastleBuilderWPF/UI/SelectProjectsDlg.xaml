@@ -1,0 +1,44 @@
+﻿<Window x:Class="SandcastleBuilder.WPF.UI.SelectProjectsDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ResizeMode="NoResize"
+	Title="Select Solution or Projects as Documentation Source(s)" Width="700" Height="400" WindowStartupLocation="CenterScreen"
+  Icon="/SandcastleBuilder.WPF;component/Resources/SelectProjects.png"
+	FocusManager.FocusedElement="{Binding ElementName=rbAddSolution}">
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0.5" Padding="3">
+      <TextBlock Name="lblSolutionName" TextTrimming="CharacterEllipsis" Text="--" />
+    </Border>
+    <StackPanel Grid.Row="1" Margin="0,10,0,10">
+      <RadioButton Name="rbAddSolution" Margin="0,5,0,5" IsChecked="True" Content="Add the _solution as the documentation source (includes all projects below plus any added later)" />
+      <RadioButton Name="rbAddProjects" Margin="0,0,0,5" Content="Add only the following selected _projects from the solution as documentation sources" />
+    </StackPanel>
+    <ListBox Grid.Row="2" Name="lbProjects" Margin="0,3,0,3">
+      <ListBox.ItemTemplate>
+        <HierarchicalDataTemplate>
+          <CheckBox IsChecked="{Binding IsSelected}" Checked="project_Checked">
+            <TextBlock Text="{Binding ProjectFilename}" />
+          </CheckBox>
+        </HierarchicalDataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <Grid Grid.Row="3">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Name="btnOK" Padding="3" Width="80" Content="OK" HorizontalAlignment="Left"
+          IsDefault="True" Click="btnOK_Click" />
+      <Button Grid.Column="1" Name="btnCancel" Padding="3" Width="80" Content="Cancel" HorizontalAlignment="Right"
+          IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

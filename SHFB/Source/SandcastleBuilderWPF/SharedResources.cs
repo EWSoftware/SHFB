@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SharedResources.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 10/19/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to load shared resources at runtime
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/27/2011  EFW  Created the code
+// 12/27/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -39,7 +39,7 @@ namespace SandcastleBuilder.WPF
         //=====================================================================
 
         private static ResourceDictionary splitButtonResources;
-        private static BitmapImage cautionIcon, noteIcon, securityIcon;
+        private static BitmapImage cautionIcon, noteIcon, securityIcon, informationIcon;
 
         #endregion
 
@@ -67,14 +67,13 @@ namespace SandcastleBuilder.WPF
         /// <summary>
         /// This read-only property returns the Caution icon for the <see cref="Maml.MamlToFlowDocumentConverter" />.
         /// </summary>
-        internal static BitmapImage CautionIcon
+        public static BitmapImage CautionIcon
         {
             get
             {
                 if(cautionIcon == null)
                 {
-                    Uri image = new Uri(
-                        "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertCaution.png");
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertCaution.png");
 
                     // Cache on load to prevent it locking the image
                     cautionIcon = new BitmapImage();
@@ -97,8 +96,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(noteIcon == null)
                 {
-                    Uri image = new Uri(
-                        "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertNote.png");
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertNote.png");
 
                     // Cache on load to prevent it locking the image
                     noteIcon = new BitmapImage();
@@ -121,8 +119,7 @@ namespace SandcastleBuilder.WPF
             {
                 if(securityIcon == null)
                 {
-                    Uri image = new Uri(
-                        "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertSecurity.png");
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertSecurity.png");
 
                     // Cache on load to prevent it locking the image
                     securityIcon = new BitmapImage();
@@ -133,6 +130,29 @@ namespace SandcastleBuilder.WPF
                 }
 
                 return securityIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the information icon for the property pages
+        /// </summary>
+        public static BitmapImage InformationIcon
+        {
+            get
+            {
+                if(informationIcon == null)
+                {
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/Information.png");
+
+                    // Cache on load to prevent it locking the image
+                    informationIcon = new BitmapImage();
+                    informationIcon.BeginInit();
+                    informationIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    informationIcon.UriSource = image;
+                    informationIcon.EndInit();
+                }
+
+                return informationIcon;
             }
         }
         #endregion

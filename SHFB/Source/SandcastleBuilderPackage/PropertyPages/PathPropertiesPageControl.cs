@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/26/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 10/31/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Path category properties
@@ -19,6 +19,7 @@
 // 10/28/2012  EFW  Updated for use in the standalone GUI
 // 12/20/2013  EFW  Added support for the ComponentPath project property
 // 05/03/2015  EFW  Removed support for the MS Help 2 file format
+// 10/31/2017  EFW  Converted the control to WPF for better high DPI scaling support on 4K displays
 //===============================================================================================================
 
 using System;
@@ -29,6 +30,7 @@ using System.Runtime.InteropServices;
 using SandcastleBuilder.Package.Nodes;
 #endif
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.WPF.PropertyPages;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -48,11 +50,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
-            // Set the maximum size to prevent an unnecessary vertical scrollbar
-            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
-
             this.Title = "Paths";
             this.HelpKeyword = "e6fcfa33-e7ee-430a-abfe-6b7962e6d068";
+            this.MinimumSize = DetermineMinimumSize(ucPathPropertiesPageContent);
         }
         #endregion
 
@@ -67,13 +67,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 SandcastleProject currentProject = null;
                 string[] searchFolders;
 
-                txtOutputPath.Text = txtOutputPath.Text.Trim();
-
-                if(txtOutputPath.Text.Length == 0)
-                    txtOutputPath.Text = @".\Help\";
-                else
-                    txtOutputPath.Text = FolderPath.TerminatePath(txtOutputPath.Text);
-
 #if !STANDALONEGUI
                 if(this.ProjectMgr != null)
                     currentProject = ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject;
@@ -84,7 +77,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // component path project property.
                 if(currentProject != null)
                 {
-                    FolderPath componentPath = new FolderPath(txtComponentPath.PersistablePath, currentProject);
+                    FolderPath componentPath = new FolderPath(ucPathPropertiesPageContent.ComponentPath,
+                        currentProject);
 
                     searchFolders = new[] { componentPath.ToString(), Path.GetDirectoryName(currentProject.Filename) };
 
@@ -110,27 +104,8 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 SandcastleProject project = base.CurrentProject;
 #endif
-                txtHtmlHelp1xCompilerPath.Folder = new FolderPath(project);
-                txtComponentPath.Folder = new FolderPath(project);
-                txtSourceCodeBasePath.Folder = new FolderPath(project);
-                txtOutputPath.Folder = new FolderPath(project);
-                txtWorkingPath.Folder = new FolderPath(project);
+                ucPathPropertiesPageContent.SetCurrentProject(project);
             }
-        }
-        #endregion
-
-        #region Event handlers
-        //=====================================================================
-
-        /// <summary>
-        /// If the Output Path is blank, default it to the .\Help folder under the project's path
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void txtOutputPath_PersistablePathChanged(object sender, EventArgs e)
-        {
-            if(String.IsNullOrEmpty(txtOutputPath.PersistablePath))
-                txtOutputPath.PersistablePath = @".\Help";
         }
         #endregion
     }

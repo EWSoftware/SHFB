@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/25/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 12/06/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents the documentation sources container node in a Sandcastle Help
@@ -40,7 +40,7 @@ using Microsoft.VisualStudio;
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.MSBuild;
+using SandcastleBuilder.WPF.UI;
 
 namespace SandcastleBuilder.Package.Nodes
 {

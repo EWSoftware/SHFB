@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/20/2017
+// Updated : 11/06/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -44,7 +44,8 @@ namespace SandcastleBuilder.Utils.MSBuild
         private BuildProcess buildProcess;
         private HashSet<string> resolvedDependencies, packageReferences;
         private JToken packages;
-        private string projectFilename, nugetPackageFolder;
+        private string projectFilename;
+        private string[] nugetPackageFolders;
 
         #endregion
 
@@ -59,11 +60,15 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                if(packages == null || packageReferences.Count == 0)
-                    return Enumerable.Empty<string>();
+                if(packages != null || packageReferences.Count != 0 && nugetPackageFolders != null)
+                    foreach(string assembly in this.ResolvePackageReferencesInternal(packageReferences))
+                        foreach(string folder in nugetPackageFolders)
+                        {
+                            string path = Path.Combine(folder, assembly.Replace("/", @"\"));
 
-                return this.ResolvePackageReferencesInternal(packageReferences).Select(
-                    r => Path.Combine(nugetPackageFolder, r.Replace("/", @"\")));
+                            if(File.Exists(path))
+                                yield return path;
+                        }
             }
         }
         #endregion
@@ -115,7 +120,12 @@ namespace SandcastleBuilder.Utils.MSBuild
                         {
                             packages = ((JProperty)targets.First()).Value;
 
-                            nugetPackageFolder = project.GetPropertyValue("NuGetPackageFolders");
+                            string folders = project.GetPropertyValue("NuGetPackageFolders");
+
+                            if(!String.IsNullOrWhiteSpace(folders))
+                                nugetPackageFolders = folders.Split(';');
+                            else
+                                nugetPackageFolders = new string[0];
 
                             foreach(var reference in project.GetItems("PackageReference"))
                             {

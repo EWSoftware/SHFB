@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.UserDefinedPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit.PropertyGrid;assembly=Xceed.Wpf.Toolkit"
+	mc:Ignorable="d" d:DesignHeight="230" d:DesignWidth="600"
+	MinWidth="500" MinHeight="230" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="2*"/>
+			</Grid.ColumnDefinitions>
+			<ListBox Grid.Column="0" Name="lbProperties" Margin="0,0,0,3" DisplayMemberPath="Name"
+				SelectionChanged="lbProperties_SelectionChanged" />
+			<xctk:PropertyGrid Grid.Column="1" Name="pgProps" Margin="3,0,0,3"
+				ShowTitle="False" ShowSearchBox="False" NameColumnWidth="100" />
+		</Grid>
+		<StackPanel Grid.Row="1" Orientation="Horizontal">
+			<Button Name="btnAdd" Margin="0,3" Padding="3" Width="80" Content="_Add" Click="btnAdd_Click"  />
+			<Button Name="btnRemove" Margin="3,3" Padding="3" Width="80" Content="_Remove" Click="btnRemove_Click" />
+		</StackPanel>
+	</Grid>
+</UserControl>

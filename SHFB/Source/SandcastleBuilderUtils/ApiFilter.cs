@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/15/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
+// Updated : 12/03/2017
+// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an API entry that is to be removed from the reflection information
@@ -167,7 +167,7 @@ namespace SandcastleBuilder.Utils
         /// <param name="apiType">The API entry type</param>
         /// <param name="name">The fully qualified name</param>
         /// <param name="exposed">True to expose it, false to hide it</param>
-        internal ApiFilter(ApiEntryType apiType, string name, bool exposed) : this()
+        public ApiFilter(ApiEntryType apiType, string name, bool exposed) : this()
         {
             int pos;
 

@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.Help1WebsitePropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="230"
+	MinWidth="500" MinHeight="230" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid Margin="3">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Margin="0,0,0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="HTML Help 1 (CHM)" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="150" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" Content="Help _1 SDK link type" HorizontalAlignment="Right"
+					Target="{Binding ElementName=cboHtmlSdkLinkType}" />
+			<ComboBox Grid.Row="0" Grid.Column="1" Name="cboHtmlSdkLinkType" Margin="3" Width="220"
+					HorizontalAlignment="Left" DisplayMemberPath="Value" SelectedValuePath="Key"
+					shfb:PropertyPageBinding.ProjectPropertyName="HtmlSdkLinkType" />
+			<CheckBox Grid.Row="1" Grid.Column="1" Name="chkBinaryTOC" Margin="3" IsChecked="True"
+				Content="Create a binary table of contents to reduce load time" HorizontalAlignment="Left"
+				shfb:PropertyPageBinding.ProjectPropertyName="BinaryTOC"/>
+			<CheckBox Grid.Row="2" Grid.Column="1" Name="chkIncludeFavorites" Margin="3"
+				Content="Include a Favorites tab in the compiled help file" HorizontalAlignment="Left"
+				shfb:PropertyPageBinding.ProjectPropertyName="IncludeFavorites"/>
+		</Grid>
+		<Grid Grid.Row="2" Margin="0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Website (HTML/ASP.NET) / Open XML (DOCX)" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<Grid Grid.Row="3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MaxWidth="220" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" Content="We_bsite/Open XML SDK link type" HorizontalAlignment="Right"
+					Target="{Binding ElementName=cboWebsiteSdkLinkType}" />
+			<ComboBox Grid.Row="0" Grid.Column="1" Name="cboWebsiteSdkLinkType" Margin="3" Width="220"
+					HorizontalAlignment="Left" DisplayMemberPath="Value" SelectedValuePath="Key"
+					shfb:PropertyPageBinding.ProjectPropertyName="WebsiteSdkLinkType" />
+		</Grid>
+		<Grid Grid.Row="4" Margin="0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Margin="3" Text="Markdown" />
+			<Separator Grid.Column="1" Margin="3" />
+		</Grid>
+		<CheckBox Grid.Row="5" Name="chkAppendMDFileExt" Margin="70,3,3,3" HorizontalAlignment="Left"
+				Content="_Include the '.md' filename extension on markdown topic URLs"
+				shfb:PropertyPageBinding.ProjectPropertyName="AppendMarkdownFileExtensionsToUrls"/>
+	</Grid>
+</UserControl>

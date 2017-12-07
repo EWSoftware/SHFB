@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.PropertyPages.VisibilityPropertiesPageContent"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
+	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	mc:Ignorable="d" d:DesignWidth="475" d:DesignHeight="430"
+	MinWidth="475" MinHeight="430" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<Grid ToggleButton.Checked="CheckBox_Click" ToggleButton.Unchecked="CheckBox_Click">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Row="0" Margin="10,10,10,0" Text="Include the following API elements in the documentation:" />
+		<StackPanel Grid.Row="1" Margin="30,3,3,3">
+			<CheckBox Name="chkAttributes" Content="Attr_ibutes on types and their members" Margin="0,3"
+				HorizontalAlignment="Left" shfbProps:PropertyPageBinding.ProjectPropertyName="VisibleItems" />
+			<CheckBox Name="chkExplicitInterfaceImplementations" Content="Explicit interface implementations"
+				Margin="0,3" HorizontalAlignment="Left" />
+			<CheckBox Name="chkInheritedMembers" Content="Inherited base class members" Margin="0,3"
+				HorizontalAlignment="Left" IsChecked="True" Click="chkInheritedMembers_Click" />
+			<CheckBox Name="chkInheritedFrameworkMembers" Content="Inherited .NET Framework members" Margin="0,3"
+				HorizontalAlignment="Left" IsChecked="True" Click="chkInheritedFrameworkMembers_Click" />
+			<CheckBox Name="chkInheritedFrameworkInternalMembers" Content="Inherited .NET Framework internal members"
+				HorizontalAlignment="Left" Margin="0,3" Click="chkInheritedFrameworkInternalMembers_Click" />
+			<CheckBox Name="chkInheritedFrameworkPrivateMembers" Content="Inherited .NET Framework private members"
+				HorizontalAlignment="Left" Margin="0,3" Click="chkInheritedFrameworkPrivateMembers_Click" />
+			<CheckBox Name="chkInternals" Content="Internal members" Margin="0,3" HorizontalAlignment="Left"
+				Click="chkInternals_Click" />
+			<CheckBox Name="chkPrivateFields" Content="Private fields" Margin="0,3" HorizontalAlignment="Left"
+				Click="chkPrivateFields_Click" />
+			<CheckBox Name="chkPrivates" Content="Private members" Margin="0,3" HorizontalAlignment="Left"
+				Click="chkPrivates_Click" />
+			<CheckBox Name="chkProtected" Content="Protected members" Margin="0,3" HorizontalAlignment="Left"
+				IsChecked="True" Click="chkProtected_Click" />
+			<CheckBox Name="chkSealedProtected" Content="Protected members of sealed classes" Margin="0,3"
+				HorizontalAlignment="Left" Click="chkSealedProtected_Click" />
+			<CheckBox Name="chkNoPIATypes" Content="No-PIA (Primary Interop Assembly) embedded interop types"
+				HorizontalAlignment="Left" Margin="0,3" />
+			<CheckBox Name="chkPublicCompilerGenerated" Content="Public compiler generated types and members"
+				HorizontalAlignment="Left" Margin="0,3" />
+			<CheckBox Name="chkEditorBrowsableNever" Content="Types and members marked with an EditorBrowsable
+attribute set to Never" HorizontalAlignment="Left" Margin="0,3" />
+			<CheckBox Name="chkNonBrowsable" Content="Types and members marked with a Browsable attribute set to False"
+				HorizontalAlignment="Left" Margin="0,3" />
+		</StackPanel>
+		<StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal">
+			<CheckBox Name="chkProtectedInternalAsProtected" Content="Doc_ument &quot;protected internal&quot; members as
+&quot;protected&quot; instead" IsChecked="True" />
+			<Image Width="12" Margin="10,0,0,0" Source="{x:Static shfb:SharedResources.InformationIcon}"
+				ToolTip="This option is ignored if the Protected Members option is turned off"/>
+		</StackPanel>
+		<Grid Grid.Row="3" Margin="10,0,3,3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Name="lblAPIFilterState" Content="An API filter has not been defined"
+				Margin="0,3" shfbProps:PropertyPageBinding.ProjectPropertyName="ApiFilter" />
+			<Button Grid.Column="1" Name="btnEditAPIFilter" Margin="20,3,3,3" Padding="3" MinWidth="120"
+				Content="Edit API _Filter" Click="btnEditAPIFilter_Click" />
+		</Grid>
+	</Grid>
+</UserControl>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
+// Updated : 11/21/2017
+// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the project properties
@@ -21,13 +21,12 @@
 //===============================================================================================================
 
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 using SandcastleBuilder.Gui.Properties;
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Package.PropertyPages;
+using SandcastleBuilder.Utils;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -42,6 +41,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         private SandcastleProject currentProject;
+
         #endregion
 
         #region Properties
@@ -57,7 +57,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 currentProject = value;
 
-                if(value == null || pnlPropertyPages.Controls.Count == 0)
+                if(value == null || tvPropertyPages.Nodes.Count == 0)
                     this.LoadPropertyPages();
                 else
                     tvPropertyPages_AfterSelect(this, new TreeViewEventArgs(tvPropertyPages.SelectedNode));
@@ -76,11 +76,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             InitializeComponent();
 
             // Ensure that the file and folder path user controls are known by the base property page class
-            if(!BasePropertyPage.CustomControls.ContainsKey(typeof(SandcastleBuilder.Utils.Controls.FilePathUserControl).FullName))
+            if(!BasePropertyPage.CustomControls.ContainsKey("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl"))
             {
-                BasePropertyPage.CustomControls.Add(typeof(SandcastleBuilder.Utils.Controls.FilePathUserControl).FullName,
+                BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl",
                     "PersistablePath");
-                BasePropertyPage.CustomControls.Add(typeof(SandcastleBuilder.Utils.Controls.FolderPathUserControl).FullName,
+                BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FolderPathUserControl",
                     "PersistablePath");
             }
         }
@@ -119,13 +119,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 var page = (BasePropertyPage)tvPropertyPages.SelectedNode.Tag;
 
-                // Set the container to obey the page's minimum size requirements
-                // and if the visible area is smaller than demanded - show the scrollbars
-                pnlPropertyPages.AutoScrollMinSize = page.MinimumSize;
-                page.Dock = DockStyle.Fill;
-
-                page.SetProject(currentProject);
                 page.Visible = (currentProject != null);
+                page.SetProject(currentProject);
+
+                System.Drawing.Size minSize = (System.Drawing.Size)page.Tag;
+
+                this.AutoScrollMinSize = new System.Drawing.Size(minSize.Width + page.Left,
+                    minSize.Height + page.Top);
             }
         }
 
@@ -190,7 +190,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             get
             {
                 return MainForm.Host.ProjectExplorer.IsDirty ||
-                    pnlPropertyPages.Controls.Cast<BasePropertyPage>().Any(p => p.IsDirty);
+                    this.Controls.OfType<BasePropertyPage>().Any(p => p.IsDirty);
             }
             set { /* Handled by the property pages and the main form */ }
         }
@@ -208,10 +208,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return MainForm.Host.ProjectExplorer.CanSaveContent; }
-        }
+        public override bool CanSaveContent => MainForm.Host.ProjectExplorer.CanSaveContent;
 
         /// <inheritdoc />
         public override bool Save()
@@ -283,7 +280,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// flip through them to see the active options.</remarks>
         public void SetEnabledState(bool enabled)
         {
-            pnlPropertyPages.Enabled = enabled;
+            foreach(var c in this.Controls.OfType<BasePropertyPage>())
+                c.Enabled = enabled;
         }
 
         /// <summary>
@@ -311,21 +309,21 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 typeof(BuildEventPropertiesPageControl)
             };
 
-            pnlPropertyPages.SuspendLayout();
             try
             {
-                tvPropertyPages.BeginUpdate();
-                tvPropertyPages.Nodes.Clear();
-
                 // If pages already exist, dispose of them.  This gives us behavior similar to Visual Studio so
                 // that when a new project is created or another project is loaded, default control values are
                 // used for properties that are not present in the project.
-                if(pnlPropertyPages.Controls.Count != 0)
-                    foreach(Control c in pnlPropertyPages.Controls.Cast<Control>().ToList())
-                    {
-                        c.Dispose();
-                        pnlPropertyPages.Controls.Remove(c);
-                    }
+                foreach(TreeNode n in tvPropertyPages.Nodes)
+                {
+                    Control c = (Control)n.Tag;
+
+                    this.Controls.Remove(c);
+                    c.Dispose();
+                }
+
+                tvPropertyPages.BeginUpdate();
+                tvPropertyPages.Nodes.Clear();
 
                 // Create the property pages
                 foreach(Type pageType in propertyPages)
@@ -333,11 +331,21 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     page = (BasePropertyPage)Activator.CreateInstance(pageType);
                     page.Visible = false;
                     page.DirtyChanged += page_DirtyChanged;
+                    page.Location = new System.Drawing.Point(226, 12);
+
+                    // For the standalone GUI, we don't want it enforcing a minimum size.  We'll control it
+                    // manually.  The controls are hosted on the property page rather than within a panel as
+                    // ElementHosts within panels don't redraw correctly.
+                    page.Tag = page.MinimumSize;
+                    page.MinimumSize = System.Drawing.Size.Empty;
+
+                    page.Size = new System.Drawing.Size(this.Width - page.Location.X - 12, tvPropertyPages.Height);
+                    page.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
                     node = tvPropertyPages.Nodes.Add(page.Title);
                     node.Tag = page;
 
-                    pnlPropertyPages.Controls.Add(page);
+                    this.Controls.Add(page);
                 }
 
                 if(tvPropertyPages.Nodes.Count != 0)
@@ -352,7 +360,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             finally
             {
                 tvPropertyPages.EndUpdate();
-                pnlPropertyPages.ResumeLayout(true);
             }
         }
         #endregion

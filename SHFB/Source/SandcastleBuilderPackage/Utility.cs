@@ -225,25 +225,6 @@ namespace SandcastleBuilder.Package
             else
                 System.Diagnostics.Process.Start(url);
         }
-
-        /// <summary>
-        /// This is used to get the current dialog font for use in property pages, etc.
-        /// </summary>
-        /// <returns>The current dialog font or a Segoe UI 9pt font if it is not available</returns>
-        public static Font GetDialogFont()
-        {
-            IUIHostLocale host = GetServiceFromPackage<IUIHostLocale, IUIHostLocale>(false);
-
-            if(host != null)
-            {
-                UIDLGLOGFONT[] pLOGFONT = new UIDLGLOGFONT[1];
-
-                if(host.GetDialogFont(pLOGFONT) == 0)
-                    return Font.FromLogFont(pLOGFONT[0]);
-            }
-
-            return new Font("Segoe UI", 9.0f);
-        }
         #endregion
     }
 }

@@ -9,19 +9,19 @@
 // This user control is used to edit the Missing Tags category properties
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// 03/27/2011  EFW  Created the code
+// 10/28/2012  EFW  Updated for use in the standalone GUI
+// 10/04/2017  EFW  Converted the control to WPF for better high DPI scaling support on 4K displays
 //===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 using SandcastleBuilder.Utils;
 
@@ -43,22 +43,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
-            // Set the maximum size to prevent an unnecessary vertical scrollbar
-            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
-
             this.Title = "Missing Tags";
             this.HelpKeyword = "5a2ab898-7161-454d-b5d3-959df0de0e36";
-
-            // We are responsible for connecting the change event to all of the unbound controls
-            chkAutoDocumentDisposeMethods.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingIncludeTargets.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingNamespaces.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingParams.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingRemarks.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingReturns.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingSummaries.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingTypeParams.CheckedChanged += base.OnPropertyChanged;
-            chkShowMissingValues.CheckedChanged += base.OnPropertyChanged;
+            this.MinimumSize = DetermineMinimumSize(ucMissingTagPropertiesContent);
         }
         #endregion
 
@@ -66,9 +53,15 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>For this page, we only need to bind one control as all the values are stored in a single
-        /// property.</remarks>
-        protected override bool BindControlValue(Control control)
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            ucMissingTagPropertiesContent.PropertyChanged += this.OnPropertyChanged;
+        }
+
+        /// <inheritdoc />
+        protected override bool BindControlValue(string propertyName)
         {
             MissingTags tags;
 
@@ -89,68 +82,26 @@ namespace SandcastleBuilder.Package.PropertyPages
                     MissingTags.Returns | MissingTags.AutoDocumentCtors | MissingTags.Namespace |
                     MissingTags.AutoDocumentDispose;
 
-            chkAutoDocumentConstructors.Checked = ((tags & MissingTags.AutoDocumentCtors) != 0);
-            chkAutoDocumentDisposeMethods.Checked = ((tags & MissingTags.AutoDocumentDispose) != 0);
-            chkShowMissingIncludeTargets.Checked = ((tags & MissingTags.IncludeTargets) != 0);
-            chkShowMissingNamespaces.Checked = ((tags & MissingTags.Namespace) != 0);
-            chkShowMissingParams.Checked = ((tags & MissingTags.Parameter) != 0);
-            chkShowMissingRemarks.Checked = ((tags & MissingTags.Remarks) != 0);
-            chkShowMissingReturns.Checked = ((tags & MissingTags.Returns) != 0);
-            chkShowMissingSummaries.Checked = ((tags & MissingTags.Summary) != 0);
-            chkShowMissingTypeParams.Checked = ((tags & MissingTags.TypeParameter) != 0);
-            chkShowMissingValues.Checked = ((tags & MissingTags.Value) != 0);
+            ucMissingTagPropertiesContent.MissingTags = tags;
 
             return true;
         }
 
         /// <inheritdoc />
-        /// <remarks>For this page, we only need to bind one control as all the values are stored in a single
-        /// property.</remarks>
-        protected override bool StoreControlValue(Control control)
+        protected override bool StoreControlValue(string propertyName)
         {
-            MissingTags tags = MissingTags.None;
-
 #if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
+
+            this.ProjectMgr.SetProjectProperty("MissingTags",
+                ucMissingTagPropertiesContent.MissingTags.ToString());
 #else
             if(this.CurrentProject == null)
                 return false;
-#endif
-            if(chkAutoDocumentConstructors.Checked)
-                tags |= MissingTags.AutoDocumentCtors;
 
-            if(chkAutoDocumentDisposeMethods.Checked)
-                tags |= MissingTags.AutoDocumentDispose;
-
-            if(chkShowMissingIncludeTargets.Checked)
-                tags |= MissingTags.IncludeTargets;
-
-            if(chkShowMissingNamespaces.Checked)
-                tags |= MissingTags.Namespace;
-            
-            if(chkShowMissingParams.Checked)
-                tags |= MissingTags.Parameter;
-            
-            if(chkShowMissingRemarks.Checked)
-                tags |= MissingTags.Remarks;
-            
-            if(chkShowMissingReturns.Checked)
-                tags |= MissingTags.Returns;
-            
-            if(chkShowMissingSummaries.Checked)
-                tags |= MissingTags.Summary;
-            
-            if(chkShowMissingTypeParams.Checked)
-                tags |= MissingTags.TypeParameter;
-
-            if(chkShowMissingValues.Checked)
-                tags |= MissingTags.Value;
-
-#if !STANDALONEGUI
-            this.ProjectMgr.SetProjectProperty("MissingTags", tags.ToString());
-#else
-            this.CurrentProject.MSBuildProject.SetProperty("MissingTags", tags.ToString());
+            this.CurrentProject.MSBuildProject.SetProperty("MissingTags",
+                ucMissingTagPropertiesContent.MissingTags.ToString());
 #endif
             return true;
         }

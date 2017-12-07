@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2017
+// Updated : 12/06/2017
 // Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -489,7 +489,7 @@ namespace SandcastleBuilder.Package.Nodes
                         if(!f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
                             docSourcesNode.AddDocumentationSource(f);
                         else
-                            foreach(string project in SandcastleBuilder.Utils.MSBuild.SelectProjectsDlg.SelectSolutionOrProjects(f))
+                            foreach(string project in SandcastleBuilder.WPF.UI.SelectProjectsDlg.SelectSolutionOrProjects(f))
                                 docSourcesNode.AddDocumentationSource(project);
                     }
                 }
