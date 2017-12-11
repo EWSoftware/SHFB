@@ -72,47 +72,6 @@
     <item id="topicTitle_attachedEvents">{0} 附加事件</item>
     <item id="topicTitle_members">{0} 成员</item>
 
-    <!-- index entries -->
-    <item id="indexEntry_root">命名空间</item>
-    <item id="indexEntry_namespace">{0} 命名空间</item>
-    <item id="indexEntry_class">{0} 类</item>
-    <item id="indexEntry_structure">{0} 结构</item>
-    <item id="indexEntry_interface">{0} 接口</item>
-    <item id="indexEntry_delegate">{0} 委托</item>
-    <item id="indexEntry_enumeration">{0} 枚举</item>
-    <item id="indexEntry_enumerationMember">{0} 枚举成员</item>
-    <item id="indexEntry_aboutType">{0}, 关于 {0}</item>
-    <item id="indexEntry_derivedTypes">{0}, 派生类型</item>
-    <item id="indexEntry_members">{0}, 所有成员</item>
-    <item id="indexEntry_methods">{0}, 方法</item>
-    <!-- index entry for operator list topic that has [operators + no type conversions] -->
-    <item id="indexEntry_operators">{0}, 运算符</item>
-    <!-- index entry for operator list topic that has [operators + type conversions] -->
-    <item id="indexEntry_operatorsAndTypeConversions">{0}，运算符与类型转换</item>
-    <!-- index entry for operator list topic that has [no operators + type conversions] -->
-    <item id="indexEntry_typeConversions">{0}，类型转换</item>
-    <!-- index entries for op_explicit and op_implicit members -->
-    <item id="indexEntry_conversionOperator">{0} 转换</item>
-    <item id="indexEntry_properties">{0}, 属性</item>
-    <item id="indexEntry_fields">{0}, 字段</item>
-    <item id="indexEntry_events">{0}, 事件</item>
-    <item id="indexEntry_attachedProperties">{0}, 附加属性</item>
-    <item id="indexEntry_attachedEvents">{0}, 附加事件</item>
-    <item id="indexEntry_constructors">{0}, 构造函数</item>
-    <item id="indexEntry_constructor">{0}, 构造函数</item>
-    <item id="indexEntry_constructorType">{0} 构造函数</item>
-    <item id="indexEntry_method">{0} 方法</item>
-    <item id="indexEntry_property">{0} 属性</item>
-    <item id="indexEntry_event">{0} 事件</item>
-    <item id="indexEntry_field">{0} 字段</item>
-    <item id="indexEntry_operator">{0} 运算符</item>
-    <item id="indexEntry_attachedProperty">{0} 附加属性</item>
-    <item id="indexEntry_attachedEvent">{0} 附加事件</item>
-    <item id="indexEntry_methodExplicit">{0} 显式实现的方法</item>
-    <item id="indexEntry_propertyExplicit">{0} 显式实现的属性</item>
-    <item id="indexEntry_eventExplicit">{0} 显式实现的事件</item>
-    <item id="indexEntry_fieldExplicit">{0} 显式实现的字段</item>
-
     <!-- section titles -->
     <item id="title_syntax">语法</item>
     <item id="title_templates">类型参数</item>

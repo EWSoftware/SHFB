@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TransformArgumentsPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/29/2017
+// Updated : 12/10/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -217,13 +217,15 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             if(arg.Value != null || arg.Content == null)
             {
-                txtValue.Height = 20;
+                txtValue.AcceptsReturn = false;
+                txtValue.VerticalAlignment = VerticalAlignment.Top;
                 txtValue.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
                 txtValue.Text = arg.Value;
             }
             else
             {
-                txtValue.Height = Double.NaN;
+                txtValue.AcceptsReturn = true;
+                txtValue.VerticalAlignment = VerticalAlignment.Stretch;
                 txtValue.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
                 var reader = arg.Content.CreateReader();

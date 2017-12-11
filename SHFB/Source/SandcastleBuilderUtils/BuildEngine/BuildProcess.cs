@@ -993,6 +993,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         workingFolder);
                     File.Move(workingFolder + Path.GetFileName(languageFile), workingFolder + "SHFBContent.xml");
 
+                    if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                        substitutionTags.TransformTemplate("WebsiteContent.xml", Path.GetDirectoryName(languageFile),
+                            workingFolder);
+
                     // Copy the stop word list
                     languageFile = Path.Combine(ComponentUtilities.ToolsFolder, @"PresentationStyles\Shared\" +
                         @"StopWordList\" + Path.GetFileNameWithoutExtension(languageFile) +".txt");

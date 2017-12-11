@@ -83,7 +83,7 @@
 					HorizontalAlignment="Right" />
 				<shfbProps:FilePathUserControl Grid.Column="1" Grid.Row="2" x:Name="fpBuildLogFile" UseFileOpenDialog="False"
 					Title="Select the log file location" Filter="Log files (*.log)|*.log|All Files (*.*)|*.*"
-					shfbProps:PropertyPageBinding.ProjectPropertyName="BuildLogFile" />
+					MaxWidth="350" shfbProps:PropertyPageBinding.ProjectPropertyName="BuildLogFile" />
 				<StackPanel Grid.Column="1" Grid.Row="3" Margin="0,10,0,0">
 					<CheckBox Name="chkCleanIntermediates" Margin="0,6" IsChecked="True"
 						Content="_Clean intermediate files after a successful build" HorizontalAlignment="Left"

@@ -43,7 +43,7 @@ namespace SandcastleBuilder.Package.PropertyPages
     /// </summary>
     /// <remarks>This control handles the common tasks of a property page such as binding controls to project
     /// properties and storing the values when they change.  The property "binding" is done by specifying the
-    /// project property name using the <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/>
+    /// project property name using the <see cref="P:SandcastleBuilder.WPF.PropertyPages.PropertyPageBinding.ProjectPropertyName"/>
     /// attached property on the necessary WPF controls.</remarks>
     [ToolboxItem(false)]
     public partial class BasePropertyPage : System.Windows.Forms.UserControl
@@ -257,7 +257,8 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         /// <param name="controls">The control collection from which to get the bound controls.  WPF controls and
         /// their children in an <see cref="ElementHost"/> are bound if they declare a property name using the
-        /// <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/> attached property.</param>
+        /// <see cref="P:SandcastleBuilder.WPF.PropertyPages.PropertyPageBinding.ProjectPropertyName"/> attached
+        /// property.</param>
         protected void BindProperties(System.Windows.Forms.Control.ControlCollection controls)
         {
             Type t;
@@ -460,7 +461,8 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         /// <param name="controls">The control collection from which to get the bound controls.  WPF controls and
         /// their children in an <see cref="ElementHost"/> are bound if they declare a property name using the
-        /// <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/> attached property.</param>
+        /// <see cref="P:SandcastleBuilder.WPF.PropertyPages.PropertyPageBinding.ProjectPropertyName"/> attached
+        /// property.</param>
         protected void StoreProperties(System.Windows.Forms.Control.ControlCollection controls)
         {
             Type t;

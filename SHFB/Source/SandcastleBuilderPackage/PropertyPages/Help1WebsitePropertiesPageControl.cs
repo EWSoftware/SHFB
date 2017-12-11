@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Help1WebsitePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/07/2017
+// Updated : 12/08/2017
 // Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -45,6 +45,16 @@ namespace SandcastleBuilder.Package.PropertyPages
             this.Title = "Help 1/Website";
             this.HelpKeyword = "7d28bf8f-923f-44c1-83e1-337a416947a1";
             this.MinimumSize = DetermineMinimumSize(ucHelp1WebsitePropertiesContent);
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        protected override bool IsEscapedProperty(string propertyName)
+        {
+            return (propertyName == "WebsiteAdContent") ? true : false;
         }
         #endregion
     }

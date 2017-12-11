@@ -60,7 +60,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This is used to set the current project in each of the folder paths
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">The current Sandcastle project</param>
         public void SetCurrentProject(SandcastleProject project)
         {
             fpHtmlHelp1xCompilerPath.Folder = new FolderPath(project);

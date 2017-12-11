@@ -1,24 +1,23 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : EscapeValueAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/28/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/10/2017
+// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains an attribute used to mark properties that need their
-// value escaped when stored in an MSBuild project file.
+// This file contains an attribute used to mark properties that need their value escaped when stored in an
+// MSBuild project file.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.0  06/21/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 06/21/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Text.RegularExpressions;
@@ -29,32 +28,35 @@ using Microsoft.Build.BuildEngine;
 namespace SandcastleBuilder.Utils.Design
 {
     /// <summary>
-    /// This is used to mark a property that needs its value escaped when
-    /// stored in an MSBuild project file.
+    /// This is used to mark a property that needs its value escaped when stored in an MSBuild project file
     /// </summary>
-    /// <remarks>MSBuild requires that the following characters be escaped in
-    /// property values unless they are intended to be interpreted by the
-    /// build engine:  % * ? @ $ ( ) ; '.  In addition, this attribute will
-    /// cause the values to be HTML encoded so that any HTML characters,
-    /// especially tag delimiters are not interpreted.  MSBuild tends to add
-    /// XML namespaces to things it thinks are XML elements.</remarks>
+    /// <remarks>MSBuild requires that the following characters be escaped in property values unless they are
+    /// intended to be interpreted by the build engine:  % * ? @ $ ( ) ; '.  In addition, this attribute will
+    /// cause the values to be HTML encoded so that any HTML characters, especially tag delimiters are not
+    /// interpreted.  MSBuild tends to add XML namespaces to things it thinks are XML elements.</remarks>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class EscapeValueAttribute : Attribute
     {
-        private static Regex reUnescape = new Regex("%[0-9a-f]{2}",
-            RegexOptions.IgnoreCase);
+        #region Private data members
+        //=====================================================================
 
-        private static MatchEvaluator onEscapeMatch = new MatchEvaluator(
-            OnEscapeMatch);
+        private static Regex reUnescape = new Regex("%[0-9a-f]{2}", RegexOptions.IgnoreCase);
+
+        private static MatchEvaluator onEscapeMatch = new MatchEvaluator(OnEscapeMatch);
+
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <summary>
-        /// This is used to HTML encode and escape an MSBuild property value.
+        /// This is used to HTML encode and escape an MSBuild property value
         /// </summary>
         /// <param name="unescapedValue">The unescaped value</param>
         /// <returns>The HTML encoded escaped value</returns>
         public static string Escape(string unescapedValue)
         {
-            string escaped = HttpUtility.HtmlEncode(unescapedValue);
+            string escaped = HttpUtility.HtmlEncode(unescapedValue ?? String.Empty);
             return Utilities.Escape(escaped);
         }
 
@@ -63,11 +65,10 @@ namespace SandcastleBuilder.Utils.Design
         /// </summary>
         /// <param name="escapedValue">The escaped value</param>
         /// <returns>The unescaped and HTML decoded value</returns>
-        /// <remarks>MSBuild provides an escape method but no unescape method.
-        /// Go figure.</remarks>
+        /// <remarks>MSBuild provides an escape method but no unescape method.  Go figure.</remarks>
         public static string Unescape(string escapedValue)
         {
-            string unescaped = reUnescape.Replace(escapedValue, onEscapeMatch);
+            string unescaped = reUnescape.Replace(escapedValue ?? String.Empty, onEscapeMatch);
             return HttpUtility.HtmlDecode(unescaped);
         }
 
@@ -104,5 +105,6 @@ namespace SandcastleBuilder.Utils.Design
 
             return -1;
         }
+        #endregion
     }
 }

@@ -88,8 +88,6 @@
 	<item id="indexEntry_delegate">delegação {0}</item>
 	<item id="indexEntry_enumeration">eumeração {0}</item>
   <item id="indexEntry_enumerationMember">membro da enumeração {0}</item>
-  <item id="indexEntry_aboutType">{0}, sobre {0}</item>
-  <item id="indexEntry_derivedTypes">{0}, tipos derivados</item>
   <item id="indexEntry_members">{0}, todos os membros</item>
   <item id="indexEntry_methods">{0}, métodos</item>
   <!-- index entry for operator list topic that has [operators + no type conversions] -->

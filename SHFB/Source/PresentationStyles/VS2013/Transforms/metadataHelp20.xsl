@@ -710,21 +710,6 @@
 							</includeAttribute>
 						</MSHelp:Keyword>
 					</xsl:if>
-					<!-- multi-topic types (not delegates and enumerations) get about entries, too-->
-					<xsl:if test="$g_apiSubGroup='class' or $g_apiSubGroup='structure' or $g_apiSubGroup='interface'">
-						<MSHelp:Keyword Index="K">
-							<includeAttribute name="Term"
-																item="indexEntry_aboutType">
-								<parameter>
-									<include item="indexEntry_{$g_apiSubGroup}">
-										<parameter>
-											<xsl:copy-of select="."/>
-										</parameter>
-									</include>
-								</parameter>
-							</includeAttribute>
-						</MSHelp:Keyword>
-					</xsl:if>
 				</xsl:for-each>
 				<!-- enumerations get the index entries for their members -->
 				<xsl:if test="$g_apiSubGroup='enumeration'">

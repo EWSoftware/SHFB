@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/26/2017
+// Updated : 12/08/2017
 // Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,8 +23,9 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-
+using System.Windows;
 using Microsoft.Build.Evaluation;
+using Sandcastle.Core;
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
@@ -64,31 +65,41 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 ProjectProperty p;
 
+                try
+                {
 #if !STANDALONEGUI
-                if(base.ProjectMgr != null)
-                {
-                    foreach(var item in ucUserDefinedPropertiesPageContent.UserDefinedProperties)
-                        if(item.WasModified)
-                        {
-                            p = this.ProjectMgr.BuildProject.SetProperty(item.Name, item.Value);
-                            p.Xml.Condition = item.Condition;
-                        }
+                    if(base.ProjectMgr != null)
+                    {
+                        foreach(var item in ucUserDefinedPropertiesPageContent.UserDefinedProperties)
+                            if(item.WasModified)
+                            {
+                                p = this.ProjectMgr.BuildProject.SetProperty(item.Name, item.Value);
+                                p.Xml.Condition = item.Condition;
+                            }
 
-                    this.ProjectMgr.BuildProject.ReevaluateIfNecessary();
-                }
+                        this.ProjectMgr.BuildProject.ReevaluateIfNecessary();
+                    }
 #else
-                if(base.CurrentProject != null)
-                {
-                    foreach(var item in ucUserDefinedPropertiesPageContent.UserDefinedProperties)
-                        if(item.WasModified)
-                        {
-                            p = this.CurrentProject.MSBuildProject.SetProperty(item.Name, item.Value);
-                            p.Xml.Condition = item.Condition;
-                        }
+                    if(base.CurrentProject != null)
+                    {
+                        foreach(var item in ucUserDefinedPropertiesPageContent.UserDefinedProperties)
+                            if(item.WasModified)
+                            {
+                                p = this.CurrentProject.MSBuildProject.SetProperty(item.Name, item.Value);
+                                p.Xml.Condition = item.Condition;
+                            }
 
-                    this.CurrentProject.MSBuildProject.ReevaluateIfNecessary();
-                }
+                        this.CurrentProject.MSBuildProject.ReevaluateIfNecessary();
+                    }
 #endif
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("An error occurred storing the user-defined project properties:\r\n\r\n" +
+                        ex.Message, Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return false;
+                }
+
                 return true;
             }
         }

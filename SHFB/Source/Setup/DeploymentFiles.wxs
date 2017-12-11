@@ -7003,7 +7003,10 @@
             <Component Id="cmp1B8AF027826CEC46F8888C09A23F7B84" Guid="{ABC07B6F-E162-40FC-903A-2603849C7683}">
               <File Id="filE768756CEAA47E17D10EFD8963A3BBE1" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\SHFBContent\ru-RU.xml" />
             </Component>
-            <Component Id="cmp3987B1F08A4A7C4DAF894FC9B3D48168" Guid="{3455E4B7-62C2-4B9F-BFE7-F13E94EB22A8}">
+            <Component Id="cmpB2F7641EBA7E2B2A8D1E294F8F077F9D" Guid="{483E618E-9335-4C8D-8B0A-D90041C19BC8}">
+              <File Id="filD5CD34E16307B61260CB013957E95D7A" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\SHFBContent\WebsiteContent.xml" />
+            </Component>
+            <Component Id="cmp3987B1F08A4A7C4DAF894FC9B3D48168" Guid="{FDB06F65-A769-471E-8111-4C8E643E4D0B}">
               <File Id="fil5D320F3ED0E547282C7B0CB048DFE6EF" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2010\SHFBContent\zh-CHS.xml" />
             </Component>
             <Component Id="cmp5DD3FE2C349C3D632E9BF45278551E3A" Guid="{6144481F-3252-46AF-8EC9-912949EBEB50}">
@@ -7418,7 +7421,10 @@
             <Component Id="cmpD1B2C9EC2806AE146981ECB5264B84C9" Guid="{1A9E4712-3A17-4BD9-A20E-6E20629D4534}">
               <File Id="fil7840B956D35963212659BB325A875CED" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\SHFBContent\ru-RU.xml" />
             </Component>
-            <Component Id="cmp0ED6CB14A4150E1A2DF1464A9CD06A41" Guid="{53E84BF6-037A-4BED-8EE1-9C599F804B23}">
+            <Component Id="cmpE5883718323C40A6D0E464875691B2F4" Guid="{D48C1CC0-1115-4E11-9BAE-CE8A740D7C32}">
+              <File Id="fil4E400915162F0F808D3D9A07B5CCFA04" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\SHFBContent\WebsiteContent.xml" />
+            </Component>
+            <Component Id="cmp0ED6CB14A4150E1A2DF1464A9CD06A41" Guid="{F11BCD70-B6BF-43AF-8331-3DC7B8F762F0}">
               <File Id="filC46B9917C85AD6A4C865D3F4F4188694" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\SHFBContent\zh-CHS.xml" />
             </Component>
             <Component Id="cmp926023CD5C74F5942494DDBEC8E657E7" Guid="{60DEBD95-9062-467E-BCC5-B1BAE3E8CA83}">
@@ -10160,6 +10166,7 @@
       <ComponentRef Id="cmpB781C8A0D52B37C8E7E0EA11C419B042" />
       <ComponentRef Id="cmpB1A5E84DF2DC5EE954F84B6452F128A1" />
       <ComponentRef Id="cmp1B8AF027826CEC46F8888C09A23F7B84" />
+      <ComponentRef Id="cmpB2F7641EBA7E2B2A8D1E294F8F077F9D" />
       <ComponentRef Id="cmp3987B1F08A4A7C4DAF894FC9B3D48168" />
       <ComponentRef Id="cmp5DD3FE2C349C3D632E9BF45278551E3A" />
       <ComponentRef Id="cmp39479A80E0A51E94201166AFCE729999" />
@@ -10287,6 +10294,7 @@
       <ComponentRef Id="cmpD7ED9095756FC22F4F63A34F674EFA4C" />
       <ComponentRef Id="cmpE8906070719061D0AD0835C7C7162652" />
       <ComponentRef Id="cmpD1B2C9EC2806AE146981ECB5264B84C9" />
+      <ComponentRef Id="cmpE5883718323C40A6D0E464875691B2F4" />
       <ComponentRef Id="cmp0ED6CB14A4150E1A2DF1464A9CD06A41" />
       <ComponentRef Id="cmp926023CD5C74F5942494DDBEC8E657E7" />
       <ComponentRef Id="cmpE366B7F85E7FBCADEE5987EC42C4A418" />

@@ -115,7 +115,8 @@
 				<div id="pageFooter" class="pageFooter">
 					<include item="footer_content" />
 				</div>
-			</body>
+        <include item="websiteAdContent" />
+      </body>
 		</html>
 	</xsl:template>
 

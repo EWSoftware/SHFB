@@ -105,6 +105,7 @@
 				<div id="OH_footer" class="OH_footer">
 					<include item="footer_content" />
 				</div>
+        <include item="websiteAdContent" />
 			</body>
 		</html>
 	</xsl:template>

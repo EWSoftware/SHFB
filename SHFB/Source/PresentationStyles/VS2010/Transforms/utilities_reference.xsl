@@ -151,7 +151,8 @@
 					<include item="footer_content" />
 					<xsl:text> </xsl:text>
 				</div>
-			</body>
+        <include item="websiteAdContent" />
+      </body>
 		</html>
 	</xsl:template>
 

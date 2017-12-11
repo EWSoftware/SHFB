@@ -118,6 +118,24 @@
     <NamespaceGrouping>False</NamespaceGrouping>
     <SaveComponentCacheCapacity>0</SaveComponentCacheCapacity>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
+    <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
+    <WebsiteAdContent>&amp;lt%3bscript type=&amp;quot%3btext/javascript&amp;quot%3b&amp;gt%3b
+    function _dmBootstrap%28file%29 {
+        var _dma = document.createElement%28&amp;#39%3bscript&amp;#39%3b%29%3b
+        _dma.type = &amp;#39%3btext/javascript&amp;#39%3b%3b
+        _dma.async = true%3b
+        _dma.src = %28&amp;#39%3bhttps:&amp;#39%3b == document.location.protocol %3f &amp;#39%3bhttps://&amp;#39%3b : &amp;#39%3bhttp://&amp;#39%3b%29 + file%3b
+        %28document.getElementsByTagName%28&amp;#39%3bhead&amp;#39%3b%29[0] || document.getElementsByTagName%28&amp;#39%3bbody&amp;#39%3b%29[0]%29.appendChild%28_dma%29%3b
+    }
+    function _dmFollowup%28file%29 { if %28typeof DMAds === &amp;#39%3bundefined&amp;#39%3b%29 _dmBootstrap%28&amp;#39%3bcdn2.DeveloperMedia.com/a.min.js&amp;#39%3b%29%3b }
+    %28function %28%29 { _dmBootstrap%28&amp;#39%3bcdn1.DeveloperMedia.com/a.min.js&amp;#39%3b%29%3b setTimeout%28_dmFollowup, 2000%29%3b }%29%28%29%3b
+&amp;lt%3b/script&amp;gt%3b
+&amp;lt%3bdiv data-type=&amp;quot%3bad&amp;quot%3b data-publisher=&amp;quot%3bewsoftware.github.io&amp;quot%3b data-format=&amp;quot%3b728x90&amp;quot%3b data-zone=&amp;quot%3bros&amp;quot%3b&amp;gt%3b&amp;lt%3b/div&amp;gt%3b
+</WebsiteAdContent>
+    <AppendMarkdownFileExtensionsToUrls>False</AppendMarkdownFileExtensionsToUrls>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

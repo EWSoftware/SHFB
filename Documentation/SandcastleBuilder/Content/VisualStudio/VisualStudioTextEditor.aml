@@ -17,6 +17,12 @@ package.</para>
 elements, their attributes, and attribute values.  In order to do this, use the option in the guided installer
 to install the MAML schemas in the Visual Studio IntelliSense cache.  If you did not do it when you first
 installed the tools, you can re-run the installer and skip down to the step that installs them.</para>
+
+				<alert class="note">
+					<para>Updates to Visual Studio may reset the global schema cache undoing the changes made by the guided
+installer.  If that happens and you no longer see IntelliSense for MAML files, simply rerun the guided installer
+and apply the changes again.</para>
+				</alert>
 			</content>
 		</section>
 

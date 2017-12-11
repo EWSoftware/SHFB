@@ -221,7 +221,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This is used to set the current project for the build log file path
         /// </summary>
-        /// <param name="project"></param>
+        /// <param name="project">The current Sandcastle project</param>
         public void SetCurrentProject(SandcastleProject project)
         {
             fpBuildLogFile.File = new FilePath(project);

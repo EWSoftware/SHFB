@@ -44,10 +44,17 @@ use the most recent version of the schema files.</para>
 			<content>
 				<para>Restart any open instances of Visual Studio.  IntelliSense should now work for all MAML topics
 automatically.</para>
+				
+				<alert class="note">
+					<para>Updates to Visual Studio may reset the global schema cache undoing the changes made above.  If
+that happens and you no longer see IntelliSense for MAML files, simply apply the changes again.</para>
+				</alert>
+
 			</content>
 		</step>
 
 	</steps>
+
 </procedure>
 
 		<relatedTopics>

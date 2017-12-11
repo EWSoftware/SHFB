@@ -123,21 +123,6 @@
 							</includeAttribute>
 						</meta>
 					</xsl:if>
-					<!-- multi-topic types (not delegates and enumerations) get about entries, too-->
-					<xsl:if test="$g_apiSubGroup='class' or $g_apiSubGroup='structure' or $g_apiSubGroup='interface'">
-						<meta name="System.Keywords">
-							<includeAttribute name="content"
-																item="indexEntry_aboutType">
-								<parameter>
-									<include item="indexEntry_{$g_apiSubGroup}">
-										<parameter>
-											<xsl:copy-of select="."/>
-										</parameter>
-									</include>
-								</parameter>
-							</includeAttribute>
-						</meta>
-					</xsl:if>
 				</xsl:for-each>
 				<!-- enumerations get the index entries for their members -->
 				<xsl:if test="$g_apiSubGroup='enumeration'">

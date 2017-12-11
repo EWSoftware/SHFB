@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/27/2017
+// Updated : 12/10/2017
 // Note    : Copyright 2015-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1070,6 +1070,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             return WebUtility.HtmlEncode(sandcastleProject.TocParentVersion);
         }
+
+        /// <summary>
+        /// The search results display version
+        /// </summary>
+        /// <returns>The display version to show in the help viewer search results pane</returns>
+        [SubstitutionTag]
+        private string SearchResultsDisplayVersion()
+        {
+            string displayVersion = this.TransformText(sandcastleProject.SearchResultsDisplayVersion);
+
+            if(String.IsNullOrWhiteSpace(displayVersion))
+                return String.Empty;
+
+            return $"<meta name=\"Microsoft.Help.DisplayVersion\" content=\"{displayVersion}\" />";
+        }
         #endregion
 
         #region Website substitution tags
@@ -1105,6 +1120,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.AppendTocEntry(entries, replacementValue);
 
             return replacementValue.ToString();
+        }
+
+        /// <summary>
+        /// The website ad content that should appear in on each page
+        /// </summary>
+        /// <returns>The website ad content</returns>
+        [SubstitutionTag]
+        private string WebsiteAdContent()
+        {
+            // Escape braces so that they aren't interpreted as shared content item parameters.  However, we must
+            // replace any other substitution tags before doing that.
+            return this.TransformText(sandcastleProject.WebsiteAdContent).Replace("{", "{{").Replace("}", "}}");
         }
         #endregion
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/16/2017
+// Updated : 12/08/2017
 // Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -188,7 +188,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 this.ProjectMgr.SetProjectProperty("PresentationStyle",
                     ucBuildPropertiesPageContent.SelectedPresentationStyle);
 #else
-                this.CurrentProject.MSBuildProject.SetProperty("SyntaxFilters",
+                this.CurrentProject.MSBuildProject.SetProperty("PresentationStyle",
                     ucBuildPropertiesPageContent.SelectedPresentationStyle);
 #endif
             }

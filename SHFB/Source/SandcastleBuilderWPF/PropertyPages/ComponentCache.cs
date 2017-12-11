@@ -123,7 +123,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// Create a component cache for the given project name
         /// </summary>
-        /// <param name="projectName"></param>
+        /// <param name="projectName">The project filename to use</param>
         /// <returns>A new component cache if one does not already exist or the current instance if one does
         /// already exist.</returns>
         public static ComponentCache CreateComponentCache(string projectName)

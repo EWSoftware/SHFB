@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/27/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 12/10/2017
+// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an XML comment file and is used when searching for and adding missing
@@ -53,10 +53,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This read-only property is used to get the source path of the file
         /// </summary>
-        public string SourcePath
-        {
-            get { return sourcePath; }
-        }
+        public string SourcePath => sourcePath;
 
         /// <summary>
         /// This read-only property is used to get the encoding, typically UTF-8
@@ -113,7 +110,28 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     members = this.Comments.SelectSingleNode("doc/members");
 
                     if(members == null)
-                        throw new InvalidOperationException(sourcePath + " does not contain a 'doc/members' node");
+                    {
+                        // Some framework NuGet packages have invalid XML comments files containing a root
+                        // span element.  Try to fix those up automatically.
+                        if(this.Comments.LastChild != null && this.Comments.LastChild.LocalName == "span" &&
+                          this.Comments.LastChild.HasChildNodes)
+                        {
+                            members = this.Comments.LastChild.FirstChild;
+
+                            if(members.LocalName == "doc")
+                            {
+                                this.Comments.RemoveChild(this.Comments.LastChild);
+                                this.Comments.AppendChild(members);
+
+                                members = members.SelectSingleNode("members");
+                            }
+                            else
+                                members = null;
+                        }
+
+                        if(members == null)
+                            throw new InvalidOperationException(sourcePath + " does not contain a 'doc/members' node");
+                    }
                 }
 
                 return members;

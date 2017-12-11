@@ -55,10 +55,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         /// <value>This returns null for new properties</value>
         [Browsable(false)]
-        public ProjectProperty UnderlyingProperty
-        {
-            get { return projProp; }
-        }
+        public ProjectProperty UnderlyingProperty => projProp;
 
         /// <summary>
         /// This read-only property indicates whether or not the project property was modified

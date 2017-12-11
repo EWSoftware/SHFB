@@ -72,47 +72,6 @@
  	<item id="topicTitle_attachedEvents">{0} 添付イベント</item>
 	<item id="topicTitle_members">{0} メンバー</item>
 
-	<!-- Index entries -->
-	<item id="indexEntry_root">名前空間</item>
-  <item id="indexEntry_namespace">{0} 名前空間</item>
-  <item id="indexEntry_class">{0} クラス</item>
-	<item id="indexEntry_structure">{0} 構造体</item>
-	<item id="indexEntry_interface">{0} インターフェイス</item>
-	<item id="indexEntry_delegate">{0} デリゲート</item>
-	<item id="indexEntry_enumeration">{0} 列挙体</item>
-  <item id="indexEntry_enumerationMember">{0} 列挙体メンバー</item>
-  <item id="indexEntry_aboutType">{0}、{0}について</item>
-  <item id="indexEntry_derivedTypes">{0}、派生型</item>
-  <item id="indexEntry_members">{0}、すべてのメンバー</item>
-  <item id="indexEntry_methods">{0}、メソッド</item>
-  <!-- Index entry for operator list topic that has [operators + no type conversions] -->
-  <item id="indexEntry_operators">{0}、演算子</item>
-  <!-- Index entry for operator list topic that has [operators + type conversions] -->
-  <item id="indexEntry_operatorsAndTypeConversions">{0}、演算子と型変換</item>
-  <!-- Index entry for operator list topic that has [no operators + type conversions] -->
-  <item id="indexEntry_typeConversions">{0}、型変換</item>
-  <!-- Index entries for op_explicit and op_implicit members -->
-  <item id="indexEntry_conversionOperator">{0} 変換</item>
-  <item id="indexEntry_properties">{0}、プロパティ</item>
-  <item id="indexEntry_fields">{0}、フィールド</item>
-  <item id="indexEntry_events">{0}、イベント</item>
-  <item id="indexEntry_attachedProperties">{0}、添付プロパティ</item>
-  <item id="indexEntry_attachedEvents">{0}、添付イベント</item>
-	<item id="indexEntry_constructors">{0}、コンストラクター</item>
-	<item id="indexEntry_constructor">{0}、コンストラクター</item>
-	<item id="indexEntry_constructorType">{0} コンストラクター</item>
-  <item id="indexEntry_method">{0} メソッド</item>
-	<item id="indexEntry_property">{0} プロパティ</item>
-	<item id="indexEntry_event">{0} イベント</item>
-	<item id="indexEntry_field">{0} フィールド</item>
-	<item id="indexEntry_operator">{0} 演算子</item>
-	<item id="indexEntry_attachedProperty">{0} 添付プロパティ</item>
-	<item id="indexEntry_attachedEvent">{0} 添付イベント</item>
-	<item id="indexEntry_methodExplicit">{0} 明示的に実装されたメソッド</item>
-	<item id="indexEntry_propertyExplicit">{0} 明示的に実装されたプロパティ</item>
-	<item id="indexEntry_eventExplicit">{0} 明示的に実装されたイベント</item>
-	<item id="indexEntry_fieldExplicit">{0} 明示的に実装されたフィールド</item>
-
 	<!-- Section titles -->
 	<item id="title_syntax">構文</item>
 	<item id="title_templates">型パラメーター</item>

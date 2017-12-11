@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/27/2017
+// Updated : 12/10/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -71,6 +71,7 @@
 //          01/22/2016  EFW  Added SaveComponentCacheCapacity property
 //          08/25/2016  EFW  Added support for the SourceCodeBasePath property
 //          09/22/2017  EFW  Added support for EditorBrowsable and Browsable attribute visibility settings
+//          12/10/2017  EFW  Added support for the WebsiteAdContent and SearchResultsDisplayVersion properties
 //===============================================================================================================
 
 using System;
@@ -155,8 +156,8 @@ namespace SandcastleBuilder.Utils
         // Help file properties
         private string helpTitle, htmlHelpName, copyrightHref, copyrightText, feedbackEMailAddress,
             feedbackEMailLinkText, headerText, footerText, projectSummary, rootNamespaceTitle, presentationStyle,
-            helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion, tocParentId,
-            tocParentVersion, catalogProductId, catalogVersion, catalogName;
+            helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion, tocParentId, tocParentVersion,
+            catalogProductId, catalogVersion, catalogName;
         private CultureInfo language;
         private int tocOrder;
 
@@ -1037,9 +1038,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the Product ID portion of the MS Help Viewer 1.0 Catalog ID
         /// </summary>
-        /// <remarks><para>If not specified, the default is "VS".</para>
-        /// 
-        /// <para>The MS Help Viewer Catalog 1.0 ID is composed of the <c>CatalogProductId</c> the
+        /// <value>If not specified, the default is "VS".</value>
+        /// <remarks><para>The MS Help Viewer Catalog 1.0 ID is composed of the <c>CatalogProductId</c> the
         /// <see cref="CatalogVersion"/>, and the <see cref="Language"/> code. For example, the English Visual
         /// Studio 10 catalog is <c>VS_100_EN-US</c>.</para>
         /// 
@@ -1063,11 +1063,10 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the Version portion of the MS Help Viewer 1.0 Catalog ID
         /// </summary>
-        /// <remarks><para>If not specified, the default is "100".</para>
-        /// 
-        /// <para>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>, the
-        /// <c>CatalogVersion</c>, and the <see cref="Language"/> code. For example, the English Visual Studio 10
-        /// catalog is <c>VS_100_EN-US</c>.</para>
+        /// <value>If not specified, the default is "100"</value>
+        /// <remarks><para>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>,
+        /// the <c>CatalogVersion</c>, and the <see cref="Language"/> code. For example, the English Visual
+        /// Studio 10 catalog is <c>VS_100_EN-US</c>.</para>
         /// 
         /// <note type="note">You should typically used the default value</note>
         /// </remarks>
@@ -1089,8 +1088,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get a non-standard MS Help Viewer 2.x content catalog name
         /// </summary>
-        /// <remarks>If not specified, the default will be set based on the Visual Studio version catalog related
-        /// to the Help Viewer (VisualStudio12 for Visual Studio 2013 for example).</remarks>
+        /// <value>If not specified, the default will be set based on the Visual Studio version catalog related
+        /// to the Help Viewer (VisualStudio12 for Visual Studio 2013 for example).</value>
         [EscapeValue]
         public string CatalogName
         {
@@ -1109,8 +1108,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the vendor name for the help viewer file
         /// </summary>
-        /// <remarks>The default if not specified will be "Vendor Name".  The value must not contain the ':',
-        /// '\', '/', '.', ',', '#', or '&amp;' characters.</remarks>
+        /// <value>The default if not specified will be "Vendor Name".  The value must not contain the ':',
+        /// '\', '/', '.', ',', '#', or '&amp;' characters.</value>
         [EscapeValue]
         public string VendorName
         {
@@ -1132,8 +1131,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the product title for the help viewer file
         /// </summary>
-        /// <remarks>The default if not specified will be the value of the <see cref="HelpTitle" />
-        /// property.</remarks>
+        /// <value>The default if not specified will be the value of the <see cref="HelpTitle" /> property</value>
         [EscapeValue]
         public string ProductTitle
         {
@@ -1144,7 +1142,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the topic version for each topic in the help file
         /// </summary>
-        /// <remarks>The default is "100" (meaning 10.0)</remarks>
+        /// <value>The default is "100" (meaning 10.0)</value>
         [EscapeValue]
         public string TopicVersion
         {
@@ -1164,7 +1162,7 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the table of contents parent for each root topic in the help
         /// file.
         /// </summary>
-        /// <remarks>The default is "-1" to show the root topics in the root of the main table of content</remarks>
+        /// <value>The default is "-1" to show the root topics in the root of the main table of content</value>
         [EscapeValue]
         public string TocParentId
         {
@@ -1183,7 +1181,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the topic version of the <see cref="TocParentId" /> topic
         /// </summary>
-        /// <remarks>The default is "100" meaning "10.0"</remarks>
+        /// <value>The default is "100" meaning "10.0"</value>
         [EscapeValue]
         public string TocParentVersion
         {
@@ -1203,8 +1201,8 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the sort order for conceptual content so that it appears
         /// within its parent in the correct position.
         /// </summary>
-        /// <remarks>The default is -1 to let the build engine determine the best value to use based on the
-        /// other project properties.</remarks>
+        /// <value>The default is -1 to let the build engine determine the best value to use based on the
+        /// other project properties.</value>
         public int TocOrder
         {
             get { return tocOrder; }
@@ -1216,6 +1214,16 @@ namespace SandcastleBuilder.Utils
                 tocOrder = value;
             }
         }
+
+        /// <summary>
+        /// This is used to get or set the display version shown below entries in the search results pane in the
+        /// help viewer application.
+        /// </summary>
+        /// <value>If not set, a display version will not be shown for topics in the search results pane</value>
+        /// <remarks>If set, this typically refers to the SDK name and version or the module in which the member
+        /// resides to help differentiate it from other entries with the same title in the search results.</remarks>
+        public string SearchResultsDisplayVersion { get; set; }
+
         #endregion
 
         #region Website properties
@@ -1227,6 +1235,13 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>The default is to produce links to online MSDN content</value>
         public HtmlSdkLinkType WebsiteSdkLinkType { get; private set; }
+
+        /// <summary>
+        /// This read-only property is used to get the ad content to place in each page in the website help file
+        /// format.
+        /// </summary>
+        [EscapeValue]
+        public string WebsiteAdContent { get; set; }
 
         #endregion
 

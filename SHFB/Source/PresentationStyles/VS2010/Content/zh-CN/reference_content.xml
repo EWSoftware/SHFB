@@ -88,8 +88,6 @@
     <item id="indexEntry_delegate">{0} 委托</item>
     <item id="indexEntry_enumeration">{0} 枚举</item>
     <item id="indexEntry_enumerationMember">{0} 枚举成员</item>
-    <item id="indexEntry_aboutType">{0}, 关于 {0}</item>
-    <item id="indexEntry_derivedTypes">{0}, 派生类型</item>
     <item id="indexEntry_members">{0}, 所有成员</item>
     <item id="indexEntry_methods">{0}, 方法</item>
     <!-- index entry for operator list topic that has [operators + no type conversions] -->

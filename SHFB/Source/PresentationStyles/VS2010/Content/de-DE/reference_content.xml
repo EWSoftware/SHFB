@@ -89,8 +89,6 @@
 	<item id="indexEntry_delegate">{0} Delegat</item>
 	<item id="indexEntry_enumeration">{0} Enumeration</item>
   <item id="indexEntry_enumerationMember">{0} Enumerationsmember</item>
-  <item id="indexEntry_aboutType">{0}, über {0}</item>
-  <item id="indexEntry_derivedTypes">{0}, abgeleitete Typen</item>
   <item id="indexEntry_members">{0}, Alle Member</item>
   <item id="indexEntry_methods">{0}, Methoden</item>
   <!-- index entry for operator list topic that has [operators + no type conversions] -->

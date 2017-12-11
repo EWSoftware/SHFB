@@ -28,8 +28,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
     public static class PropertyPageBinding
     {
         /// <summary>
-        /// This defines the <see cref="P:SandcastleBuilder.WPF.PropertyPages.ProjectPropertyName"/> attached
-        /// property.
+        /// This defines the <see cref="P:SandcastleBuilder.WPF.PropertyPages.PropertyPageBinding.ProjectPropertyName"/>
+        /// attached property.
         /// </summary>
         /// <AttachedPropertyComments>
         /// <summary>
@@ -46,7 +46,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         /// <param name="element">The element from which to get the value</param>
         /// <returns>The property value</returns>
-        ////[AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
+        [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
         public static string GetProjectPropertyName(UIElement element)
         {
             return (string)element.GetValue(ProjectPropertyNameProperty);

@@ -20,6 +20,7 @@
   <!-- header and footer -->
 	<item id="header"><span class="introStyle"></span></item>
 	<item id="footer_text"></item>
+	<item id="websiteAdContent" />
 
   <!-- freshness date -->
   <item id="boilerplate_UpdateTitle"><span class="introStyle">Aktualisiert: {0}</span></item>

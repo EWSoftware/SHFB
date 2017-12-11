@@ -480,6 +480,7 @@ namespace SandcastleBuilder.WPF.UI
                 }
 
                 cancellationTokenSource.Dispose();
+                cancellationTokenSource = null;
             }
         }
         #endregion

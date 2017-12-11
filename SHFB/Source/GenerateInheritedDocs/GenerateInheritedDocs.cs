@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/24/2017
+// Updated : 12/10/2017
 // Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -348,13 +348,24 @@ namespace SandcastleBuilder.InheritedDocumentation
 
                         if(fieldComments == null || attachedComments == null)
                         {
-                            // If no attached property/events comments are defined, inherit the field's
-                            // comments so that we don't get a "missing comments" error.
-                            node = inheritedDocs.CreateDocumentFragment();
-                            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                                "<member name=\"{0}\"><inheritdoc cref=\"{1}\" /></member>", apiId.Value,
-                                apiField.Value);
-                            docMemberList.AppendChild(node);
+                            // If no attached property/events comments are defined, inherit the field's comments
+                            // so that we don't get a "missing comments" error.  However, if comments do not
+                            // exist for the field, don't bother and let it generate a "missing comments" error
+                            // if needed.  This prevents false GID0002 errors for inherited attached events and
+                            // properties that never actually appear in the documentation.
+                            object fieldNode = docMemberList.SelectSingleNode($"member[@name='{apiField.Value}']");
+
+                            if(fieldNode == null)
+                                fieldNode = commentsCache[apiField.Value];
+
+                            if(fieldNode != null)
+                            {
+                                node = inheritedDocs.CreateDocumentFragment();
+                                node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                    "<member name=\"{0}\"><inheritdoc cref=\"{1}\" /></member>", apiId.Value,
+                                    apiField.Value);
+                                docMemberList.AppendChild(node);
+                            }
                         }
                         else
                         {

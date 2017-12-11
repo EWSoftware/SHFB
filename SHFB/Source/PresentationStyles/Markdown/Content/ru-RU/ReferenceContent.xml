@@ -73,47 +73,6 @@
  	<item id="topicTitle_attachedEvents">{0} - вложенные события</item>
 	<item id="topicTitle_members">{0} - члены</item>
 
-	<!-- Index entries -->
-	<item id="indexEntry_root">Пространства имён</item>
-  <item id="indexEntry_namespace">{0} - пространство имён</item>
-  <item id="indexEntry_class">{0} - класс</item>
-	<item id="indexEntry_structure">{0} - структура</item>
-	<item id="indexEntry_interface">{0} - интерфейс</item>
-	<item id="indexEntry_delegate">{0} - делегат</item>
-	<item id="indexEntry_enumeration">{0} - перечисление</item>
-  <item id="indexEntry_enumerationMember">{0} - член перечисления</item>
-  <item id="indexEntry_aboutType">{0}, о {0}</item>
-  <item id="indexEntry_derivedTypes">{0}, производные типы</item>
-  <item id="indexEntry_members">{0}, все члены</item>
-  <item id="indexEntry_methods">{0}, методы</item>
-  <!-- Index entry for operator list topic that has [operators + no type conversions] -->
-  <item id="indexEntry_operators">{0}, операторы</item>
-  <!-- Index entry for operator list topic that has [operators + type conversions] -->
-  <item id="indexEntry_operatorsAndTypeConversions">{0}, операторы и преобразования типов</item>
-  <!-- Index entry for operator list topic that has [no operators + type conversions] -->
-  <item id="indexEntry_typeConversions">{0}, преобразования типов</item>
-  <!-- Index entries for op_explicit and op_implicit members -->
-  <item id="indexEntry_conversionOperator">{0} преобразования</item>
-  <item id="indexEntry_properties">{0}, свойства</item>
-  <item id="indexEntry_fields">{0}, поля</item>
-  <item id="indexEntry_events">{0}, события</item>
-  <item id="indexEntry_attachedProperties">{0}, вложенные свойства</item>
-  <item id="indexEntry_attachedEvents">{0}, вложенные события</item>
-	<item id="indexEntry_constructors">{0}, конструкторы</item>
-	<item id="indexEntry_constructor">{0}, конструктор</item>
-	<item id="indexEntry_constructorType">{0} конструктор</item>
-  <item id="indexEntry_method">{0} метод</item>
-	<item id="indexEntry_property">{0} свойство</item>
-	<item id="indexEntry_event">{0} событие</item>
-	<item id="indexEntry_field">{0} поле</item>
-	<item id="indexEntry_operator">{0} оператор</item>
-	<item id="indexEntry_attachedProperty">{0} вложенное свойство</item>
-	<item id="indexEntry_attachedEvent">{0} вложенное событие</item>
-	<item id="indexEntry_methodExplicit">{0} явно реализованный метод</item>
-	<item id="indexEntry_propertyExplicit">{0} явно реализованное свойство</item>
-	<item id="indexEntry_eventExplicit">{0} явно реализованное событие</item>
-	<item id="indexEntry_fieldExplicit">{0} явно реализованное поле</item>
-
 	<!-- Section titles -->
 	<item id="title_syntax">Синтаксис</item>
 	<item id="title_templates">Параметры типа</item>

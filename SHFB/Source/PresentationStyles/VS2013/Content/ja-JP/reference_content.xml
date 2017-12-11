@@ -88,8 +88,6 @@
 	<item id="indexEntry_delegate">{0} デリゲート</item>
 	<item id="indexEntry_enumeration">{0} 列挙体</item>
   <item id="indexEntry_enumerationMember">{0} 列挙体メンバー</item>
-  <item id="indexEntry_aboutType">{0}、{0}について</item>
-  <item id="indexEntry_derivedTypes">{0}、派生型</item>
   <item id="indexEntry_members">{0}、すべてのメンバー</item>
   <item id="indexEntry_methods">{0}、メソッド</item>
   <!-- index entry for operator list topic that has [operators + no type conversions] -->

@@ -72,47 +72,6 @@
  	<item id="topicTitle_attachedEvents">{0} Attached Events</item>
 	<item id="topicTitle_members">{0} Members</item>
 
-	<!-- Index entries -->
-	<item id="indexEntry_root">namespaces</item>
-  <item id="indexEntry_namespace">{0} namespace</item>
-  <item id="indexEntry_class">{0} class</item>
-	<item id="indexEntry_structure">{0} structure</item>
-	<item id="indexEntry_interface">{0} interface</item>
-	<item id="indexEntry_delegate">{0} delegate</item>
-	<item id="indexEntry_enumeration">{0} enumeration</item>
-  <item id="indexEntry_enumerationMember">{0} enumeration member</item>
-  <item id="indexEntry_aboutType">{0}, about {0}</item>
-  <item id="indexEntry_derivedTypes">{0}, derived types</item>
-  <item id="indexEntry_members">{0}, all members</item>
-  <item id="indexEntry_methods">{0}, methods</item>
-  <!-- Index entry for operator list topic that has [operators + no type conversions] -->
-  <item id="indexEntry_operators">{0}, operators</item>
-  <!-- Index entry for operator list topic that has [operators + type conversions] -->
-  <item id="indexEntry_operatorsAndTypeConversions">{0}, operators and type conversions</item>
-  <!-- Index entry for operator list topic that has [no operators + type conversions] -->
-  <item id="indexEntry_typeConversions">{0}, type conversions</item>
-  <!-- Index entries for op_explicit and op_implicit members -->
-  <item id="indexEntry_conversionOperator">{0} conversion</item>
-  <item id="indexEntry_properties">{0}, properties</item>
-  <item id="indexEntry_fields">{0}, fields</item>
-  <item id="indexEntry_events">{0}, events</item>
-  <item id="indexEntry_attachedProperties">{0}, attached properties</item>
-  <item id="indexEntry_attachedEvents">{0}, attached events</item>
-	<item id="indexEntry_constructors">{0}, constructors</item>
-	<item id="indexEntry_constructor">{0}, constructor</item>
-	<item id="indexEntry_constructorType">{0} constructor</item>
-  <item id="indexEntry_method">{0} method</item>
-	<item id="indexEntry_property">{0} property</item>
-	<item id="indexEntry_event">{0} event</item>
-	<item id="indexEntry_field">{0} field</item>
-	<item id="indexEntry_operator">{0} operator</item>
-	<item id="indexEntry_attachedProperty">{0} attached property</item>
-	<item id="indexEntry_attachedEvent">{0} attached event</item>
-	<item id="indexEntry_methodExplicit">{0} explicitly implemented method</item>
-	<item id="indexEntry_propertyExplicit">{0} explicitly implemented property</item>
-	<item id="indexEntry_eventExplicit">{0} explicitly implemented event</item>
-	<item id="indexEntry_fieldExplicit">{0} explicitly implemented field</item>
-
 	<!-- Section titles -->
 	<item id="title_syntax">Syntax</item>
 	<item id="title_templates">Type Parameters</item>
