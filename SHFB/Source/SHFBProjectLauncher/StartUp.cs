@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2016
-// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
+// Updated : 12/13/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This application provides a way for the user to choose which application is used to load help file builder
@@ -26,7 +26,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
+using System.Windows;
 
 using SandcastleBuilder.ProjectLauncher.Properties;
 
@@ -81,7 +81,7 @@ namespace SandcastleBuilder.ProjectLauncher
                 if(vsPath != null)
                     return vsPath;
 
-                vsPath = FindVisualStudioPath(@"%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Developer\Common7\IDE");
+                vsPath = FindVisualStudioPath(@"%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\Common7\IDE");
 
                 if(vsPath != null)
                     return vsPath;
@@ -141,9 +141,6 @@ namespace SandcastleBuilder.ProjectLauncher
               StringComparison.OrdinalIgnoreCase))
                 ProjectToLoad = null;
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             // Bring forward user preferences after a version update
             if(!Settings.Default.SettingsUpgraded)
             {
@@ -153,7 +150,11 @@ namespace SandcastleBuilder.ProjectLauncher
             }
 
             if(!LaunchWithPreferredApplication())
-                Application.Run(new ProjectLauncherForm());
+            {
+                var app = new Application();
+
+                app.Run(new ProjectLauncherDlg());
+            }
         }
         #endregion
 
@@ -168,7 +169,8 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             bool success = false;
 
-            // If no project or VS 2010 is present but no preference has been specified, ask the user what to use
+            // If no project or Visual Studio is present but no preference has been specified, ask the user what
+            // to use.
             if(String.IsNullOrEmpty(ProjectToLoad) ||
               (!Settings.Default.AlwaysUseSelection && !String.IsNullOrEmpty(VisualStudioPath)) ||
               (String.IsNullOrEmpty(VisualStudioPath) && !Settings.Default.UseStandaloneGui))
@@ -192,7 +194,7 @@ namespace SandcastleBuilder.ProjectLauncher
             {
                 MessageBox.Show("Unable to determine which application to use to launch the selected " +
                     "help file builder project: " + ex.Message, "Sandcastle Help File Builder Project Launcher",
-                    MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1,
+                    MessageBoxButton.OK, MessageBoxImage.Stop, MessageBoxResult.OK,
                     MessageBoxOptions.DefaultDesktopOnly);
             }
 
@@ -202,7 +204,7 @@ namespace SandcastleBuilder.ProjectLauncher
         /// <summary>
         /// This is used to try to launch the project using the selected application
         /// </summary>
-        /// <param name="useStandaloneGui">True to use the standalone GUI or false to use Visual Studio 2010</param>
+        /// <param name="useStandaloneGui">True to use the standalone GUI or false to use Visual Studio</param>
         /// <returns>True if successful, false if not</returns>
         public static bool LaunchWithSelectedApplication(bool useStandaloneGui)
         {
@@ -229,7 +231,7 @@ namespace SandcastleBuilder.ProjectLauncher
             {
                 MessageBox.Show("Unable to determine which application to use to launch the selected " +
                     "help file builder project: " + ex.Message, "Sandcastle Help File Builder Project Launcher",
-                    MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button1,
+                    MessageBoxButton.OK, MessageBoxImage.Stop, MessageBoxResult.OK,
                     MessageBoxOptions.DefaultDesktopOnly);
             }
 

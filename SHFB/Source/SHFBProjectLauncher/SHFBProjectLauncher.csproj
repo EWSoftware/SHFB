@@ -55,8 +55,7 @@
     <StartupObject>SandcastleBuilder.ProjectLauncher.StartUp</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Images\SHFBProjectLauncher.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -83,30 +82,25 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="ProjectLauncherForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProjectLauncherForm.Designer.cs">
-      <DependentUpon>ProjectLauncherForm.cs</DependentUpon>
+    <Compile Include="ProjectLaucherDlg.xaml.cs">
+      <DependentUpon>ProjectLaucherDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ProjectLauncherForm.resx">
-      <DependentUpon>ProjectLauncherForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -118,8 +112,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="app.manifest" />
-    <None Include="Images\SHFBProjectLauncher.ico" />
+    <Resource Include="Images\SHFBProjectLauncher.ico" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -131,7 +124,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SandcastleLogo.png" />
+    <Resource Include="Resources\SandcastleLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -156,7 +149,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\VisualStudio.png" />
+    <Resource Include="Resources\VisualStudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ProjectLaucherDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

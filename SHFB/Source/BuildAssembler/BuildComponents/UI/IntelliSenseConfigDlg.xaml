@@ -1,0 +1,57 @@
+﻿<Window x:Class="Microsoft.Ddue.Tools.UI.IntelliSenseConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	mc:Ignorable="d" Width="600" Height="235" ResizeMode="NoResize"
+	Title="Configure IntelliSense Component"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=chkIncludeNamespaces}">
+  <Grid Margin="20">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+      <CheckBox Name="chkIncludeNamespaces" Content="_Export project/namespace comments to" />
+      <TextBox Name="txtNamespacesFile" MaxLength="256" Width="175" Margin="6,0,6,0" />
+      <TextBlock Text="(no path or extension)" />
+    </StackPanel>
+    <Label Grid.Row="1" Margin="0,10,0,0" Content="_Folder in which to create the IntelliSense files" />
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox Grid.Column="0" Name="txtFolder" MaxLength="256" />
+      <Button Grid.Column="1" Name="btnSelectFolder" Width="30" Margin="3,0,0,0" Content="..."
+        Click="btnSelectFolder_Click" />
+    </Grid>
+    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,10,0,0">
+      <Label Content="_Maximum writer task cache capacity" />
+      <xctk:IntegerUpDown Grid.Column="1" Name="udcBoundedCapacity" Margin="3,3" Width="60" Minimum="0"
+        Maximum="9999" Increment="100" DefaultValue="100" ClipValueToMinMax="True"
+        DisplayDefaultValueOnEmptyText="True" />
+      <Label Content="(0 for no limit)" />
+    </StackPanel>
+    <Grid Grid.Row="4" Margin="0,20,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Name="btnOK" Margin="0,3,0,3" Padding="3" Width="80" Content="OK" Click="btnOK_Click"  />
+      <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate" ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+      </TextBlock>
+      <Button Grid.Column="2" Name="btnCancel" Margin="0,3,0,3" Padding="3" Width="80" Content="Cancel"
+        IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

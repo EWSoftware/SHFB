@@ -108,7 +108,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// false if it is and it is not exposed.</returns>
         public bool? IsExposedNamespace(Namespace space)
         {
-            return (space.Name.Name == name) ? exposed : (bool?)null;
+            return (space.Name != null && space.Name.Name == name) ? exposed : (bool?)null;
         }
 
         /// <summary>

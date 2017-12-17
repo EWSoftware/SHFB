@@ -486,7 +486,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual bool IsExposedType(TypeNode type)
         {
             TypeNode curType;
-            bool exposed;
+            bool exposed = false;
 
             if(type == null)
                 throw new ArgumentNullException("type");
@@ -504,7 +504,8 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             // !EFW - Added a check for exposed members in unexposed types.  This effectively exposes the type
             // and it should be included whenever this check occurs for it.
-            if(!typeExposedCache.TryGetValue(type.DeclaringModule.Name + "/" + type.FullName, out exposed))
+            if(type.DeclaringModule != null && !typeExposedCache.TryGetValue(type.DeclaringModule.Name + "/" +
+              type.FullName, out exposed))
             {
                 exposed = apiFilter.IsExposedType(type);
 

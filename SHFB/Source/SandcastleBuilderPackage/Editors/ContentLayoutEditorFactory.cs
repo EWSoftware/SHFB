@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 12/17/2017
+// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used generate content layout file editor instances
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/26/2011  EFW  Created the code
+// 12/26/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -50,11 +50,10 @@ namespace SandcastleBuilder.Package.Editors
                 pgrfCDW = 0;
                 pbstrEditorCaption = null;
 
-                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "Content layout files must be associated " +
-                    "with and opened from a Sandcastle Help File Builder project.  Please create a project or " +
-                    "add this file to a project and open it from there.");
-
-                // It should be our file type but open it in the default editor in case it isn't
+                // This typically doesn't happen except for when a content layout file is left open when Visual
+                // studio is closed and a project other than the SHFB project has the focus at that time.  In
+                // such cases, either the content layout file will not be reopened when the solution is or, if it
+                // didn't have the focus when closed, the tab will close when clicked.
                 return VSConstants.VS_E_UNSUPPORTEDFORMAT;
             }
 

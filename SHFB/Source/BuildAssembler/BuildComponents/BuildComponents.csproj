@@ -60,6 +60,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -68,8 +70,13 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SandcastleCore\Properties\AssemblyInfoShared.cs">
@@ -143,11 +150,8 @@
     <Compile Include="TransformComponent.cs" />
     <Compile Include="TransformedTopicEventArgs.cs" />
     <Compile Include="TransformingTopicEventArgs.cs" />
-    <Compile Include="UI\IntelliSenseConfigDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\IntelliSenseConfigDlg.designer.cs">
-      <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
+    <Compile Include="UI\IntelliSenseConfigDlg.xaml.cs">
+      <DependentUpon>IntelliSenseConfigDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SyntaxComponentConfigDlg.cs">
       <SubType>Form</SubType>
@@ -206,10 +210,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\IntelliSenseConfigDlg.resx">
-      <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\SyntaxComponentConfigDlg.resx">
       <DependentUpon>SyntaxComponentConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
@@ -231,6 +231,7 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -291,6 +292,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Web References\MtpsContentService\ContentService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="UI\IntelliSenseConfigDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

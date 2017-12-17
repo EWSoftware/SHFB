@@ -121,10 +121,4 @@
   <data name="SandcastleBuilder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\SHFBProjectLauncher.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SandcastleLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SandcastleLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="VisualStudio" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\VisualStudio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

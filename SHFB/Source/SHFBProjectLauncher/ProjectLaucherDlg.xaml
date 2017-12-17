@@ -1,0 +1,63 @@
+﻿<Window x:Class="SandcastleBuilder.ProjectLauncher.ProjectLauncherDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" Width="550" Height="350" ResizeMode="NoResize"
+	Title="Sandcastle Help File Builder Project Launcher"
+	WindowStartupLocation="CenterScreen" Icon="Images/SHFBProjectLauncher.ico" Closing="ProjectLauncherDlg_Closing">
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Margin="0,0,0,10">Use the following application to open help file builder project
+files:</TextBlock>
+    <Grid Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="100"/>
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Image Grid.Row="0" Grid.Column="0" Margin="0,15" Width="36" HorizontalAlignment="Right"
+        Source="Resources/SandcastleLogo.png" />
+      <RadioButton Grid.Row="0" Grid.Column="1" Name="rbSHFB" Margin="20,0" HorizontalAlignment="Left"
+        VerticalAlignment="Center" Content="_Sandcastle Help File Builder Standalone GUI" Click="AppSelection_Click" />
+      <Image Grid.Row="1" Grid.Column="0" Margin="0,15" Width="36" HorizontalAlignment="Right"
+        Source="Resources/VisualStudio.png" />
+      <StackPanel Grid.Row="1" Grid.Column="1" Margin="20,0" VerticalAlignment="Center">
+        <RadioButton Name="rbVisualStudio" HorizontalAlignment="Left"
+					Content="Latest version of _Visual Studio with SHFB Package" Click="AppSelection_Click" />
+        <TextBlock Margin="0,5,0,0" Name="lblNotInstalled" Text="(Extension package not installed)" />
+      </StackPanel>
+    </Grid>
+    <Grid Grid.Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <CheckBox Grid.Row="0" Name="chkAlwaysUseSelection" Margin="65,20,0,0" HorizontalAlignment="Left"
+					Content="Do not ask again.  _Always use the selected application." />
+      <TextBlock Grid.Row="1" Margin="85,10,20,0" TextWrapping="Wrap">If checked, you can run this from the help
+file builder's Start menu folder to change the default.</TextBlock>
+    </Grid>
+    <Grid Grid.Row="3" Margin="0,20,0,0" VerticalAlignment="Bottom">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Name="btnLaunch" Padding="3" Width="80" HorizontalAlignment="Left"
+        Content="_Launch" IsDefault="True" Click="btnLaunch_Click"  />
+      <Button Grid.Column="1" Name="btnCancel" Padding="3" Width="80" HorizontalAlignment="Right"
+        Content="Close" IsCancel="True" Click="btnCancel_Click" />
+    </Grid>
+  </Grid>
+</Window>

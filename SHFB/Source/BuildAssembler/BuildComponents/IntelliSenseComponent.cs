@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2016
-// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
+// Updated : 12/17/2017
+// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
@@ -35,12 +35,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.UI;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
@@ -62,8 +62,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
     ///       Attributes:
     ///          Include Namespaces (false by default)
     ///          Namespaces filename ("Namespaces" if not specified or empty)
-    ///          Directory (current folder if not specified or empty) --&gt;
-    ///          Bounded cache capacity (0 if not specified --&gt;
+    ///          Output folder (current folder if not specified or empty) --&gt;
+    ///          Bounded cache capacity (0 if not specified) --&gt;
     ///  &lt;output includeNamespaces="false" namespacesFile="Namespaces"
     ///      folder="C:\ProjectDocs\" boundedCapacity="100" /&gt;
     /// &lt;/component&gt;
@@ -102,39 +102,28 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
-                using(IntelliSenseConfigDlg dlg = new IntelliSenseConfigDlg(currentConfiguration))
-                {
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                        currentConfiguration = dlg.Configuration;
-                }
+                var dlg = new IntelliSenseConfigDlg(currentConfiguration);
+
+                if(dlg.ShowModalDialog() ?? false)
+                    currentConfiguration = dlg.Configuration;
 
                 return currentConfiguration;
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"<!-- Output options (optional)
+            public override string DefaultConfiguration =>
+@"<!-- Output options (optional)
   Attributes:
     Include namespaces (false by default)
     Namespaces comments filename (""Namespaces"" if not specified or empty)
-    Output folder (current folder if not specified or empty) -->
-<output includeNamespaces=""false"" namespacesFile=""Namespaces"" folder=""{@OutputFolder}"" />";
-                }
-            }
+    Output folder (current folder if not specified or empty)
+    Bounded cache capacity (0 if not specified)-->
+<output includeNamespaces=""false"" namespacesFile=""Namespaces"" folder=""{@OutputFolder}"" boundedCapacity=""100"" />";
 
             /// <inheritdoc />
             /// <remarks>Indicate a dependency on the missing documentation component as it will produce more
             /// complete documentation with all the proper elements present.</remarks>
-            public override IEnumerable<string> Dependencies
-            {
-                get
-                {
-                    return new List<string> { "Show Missing Documentation Component" };
-                }
-            }
+            public override IEnumerable<string> Dependencies => new List<string> { "Show Missing Documentation Component" };
         }
         #endregion
 
@@ -404,8 +393,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     if(!writers.TryGetValue(comments.AssemblyName, out writer))
                     {
                         fullPath = Path.Combine(outputFolder, comments.AssemblyName + ".xml");
-                        XmlWriterSettings settings = new XmlWriterSettings();
-                        settings.Indent = true;
+                        XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
 
                         try
                         {
