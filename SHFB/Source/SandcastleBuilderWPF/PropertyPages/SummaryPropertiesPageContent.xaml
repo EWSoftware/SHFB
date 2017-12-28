@@ -32,9 +32,8 @@
 markup can be used to provide formatting, links for e-mail or to other websites, etc." />
 				</Label.Content>
 			</Label>
-			<TextBox Grid.Row="1" Name="txtProjectSummary" Margin="3" AcceptsReturn="True"
-				HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
-				shfb:PropertyPageBinding.ProjectPropertyName="ProjectSummary" />
+      <TextBox Grid.Row="1" Name="txtProjectSummary" Margin="3" AcceptsReturn="True" TextWrapping="Wrap"
+        VerticalScrollBarVisibility="Visible" shfb:PropertyPageBinding.ProjectPropertyName="ProjectSummary" />
 		</Grid>
 		<Grid Grid.Row="2" Margin="0,0,0,5">
 			<Grid.ColumnDefinitions>

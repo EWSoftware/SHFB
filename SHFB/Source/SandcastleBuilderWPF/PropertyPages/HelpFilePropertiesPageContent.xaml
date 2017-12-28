@@ -160,8 +160,8 @@ and pound signs as they are not valid in the help file name."/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="_Additional header content"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtHeaderText}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtHeaderText" VerticalScrollBarVisibility="Auto"
-				AcceptsReturn="True" shfbProps:PropertyPageBinding.ProjectPropertyName="HeaderText" />
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtHeaderText" VerticalScrollBarVisibility="Visible"
+				AcceptsReturn="True" TextWrapping="Wrap" shfbProps:PropertyPageBinding.ProjectPropertyName="HeaderText" />
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="HTML elements are supported within this property's value"/>
 		</Grid>
@@ -173,8 +173,8 @@ and pound signs as they are not valid in the help file name."/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="Additional footer content"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtFooterText}" />
-      <TextBox Grid.Column="1" Margin="0,3" Name="txtFooterText" VerticalScrollBarVisibility="Auto"
-				AcceptsReturn="True" shfbProps:PropertyPageBinding.ProjectPropertyName="FooterText" />
+      <TextBox Grid.Column="1" Margin="0,3" Name="txtFooterText" VerticalScrollBarVisibility="Visible"
+				AcceptsReturn="True" TextWrapping="Wrap" shfbProps:PropertyPageBinding.ProjectPropertyName="FooterText" />
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="HTML elements are supported within this property's value"/>
 		</Grid>

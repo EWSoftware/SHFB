@@ -127,7 +127,7 @@
     function _dmFollowup%28file%29 { if %28typeof DMAds === &amp;#39%3bundefined&amp;#39%3b%29 _dmBootstrap%28&amp;#39%3bcdn2.DeveloperMedia.com/a.min.js&amp;#39%3b%29%3b }
     %28function %28%29 { _dmBootstrap%28&amp;#39%3bcdn1.DeveloperMedia.com/a.min.js&amp;#39%3b%29%3b setTimeout%28_dmFollowup, 2000%29%3b }%29%28%29%3b
 &amp;lt%3b/script&amp;gt%3b
-&amp;lt%3bdiv data-type=&amp;quot%3bad&amp;quot%3b data-publisher=&amp;quot%3bewsoftware.github.io&amp;quot%3b data-format=&amp;quot%3b728x90&amp;quot%3b data-zone=&amp;quot%3bros&amp;quot%3b&amp;gt%3b&amp;lt%3b/div&amp;gt%3b
+&amp;lt%3bdiv data-type=&amp;quot%3bad&amp;quot%3b data-publisher=&amp;quot%3bewsoftware.github.io&amp;quot%3b data-format=&amp;quot%3b728x90&amp;quot%3b data-zone=&amp;quot%3bHTMLtoMAML&amp;quot%3b&amp;gt%3b&amp;lt%3b/div&amp;gt%3b
 </WebsiteAdContent>
     <AppendMarkdownFileExtensionsToUrls>False</AppendMarkdownFileExtensionsToUrls>
   </PropertyGroup>

@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-	Title="Build Event Editor" Width="800" Height="600" MinWidth="300" MinHeight="300"
+	Title="Build Event Editor" Width="800" Height="600" MinWidth="300" MinHeight="300" ShowInTaskbar="False"
 	WindowStartupLocation="CenterScreen" Icon="/SandcastleBuilder.WPF;component/Resources/BuildEvents.png"
 	FocusManager.FocusedElement="{Binding ElementName=txtBuildEvent}">
 	<Grid Margin="5">

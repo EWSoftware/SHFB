@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-	mc:Ignorable="d" Width="600" Height="235" ResizeMode="NoResize"
+	mc:Ignorable="d" Width="600" Height="235" ResizeMode="NoResize" ShowInTaskbar="False"
 	Title="Configure IntelliSense Component"
 	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
 	FocusManager.FocusedElement="{Binding ElementName=chkIncludeNamespaces}">

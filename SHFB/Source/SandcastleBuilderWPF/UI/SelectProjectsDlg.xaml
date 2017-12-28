@@ -4,7 +4,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ResizeMode="NoResize"
-	Title="Select Solution or Projects as Documentation Source(s)" Width="700" Height="400" WindowStartupLocation="CenterScreen"
+	Title="Select Solution or Projects as Documentation Source(s)" Width="700" Height="400"
+  WindowStartupLocation="CenterScreen" ShowInTaskbar="False"
   Icon="/SandcastleBuilder.WPF;component/Resources/SelectProjects.png"
 	FocusManager.FocusedElement="{Binding ElementName=rbAddSolution}">
   <Grid Margin="10">

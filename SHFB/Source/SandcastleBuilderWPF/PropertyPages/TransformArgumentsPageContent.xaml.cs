@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TransformArgumentsPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 12/10/2017
+// Updated : 12/21/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -44,6 +44,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         private string lastStyle;
 
         private ComponentCache componentCache;
+        private TransformComponentArgument currentArg;
 
         #endregion
 
@@ -63,16 +64,35 @@ namespace SandcastleBuilder.WPF.PropertyPages
         }
 
         /// <summary>
-        /// This read-only property is use to see if the settings for the currently selected property are valid
+        /// This read-only property is used to see if the settings for the currently selected transform argument
+        /// are valid and to store any changes if they are valid.
         /// </summary>
         public bool IsValid
         {
             get
             {
-                var args = new MouseButtonEventArgs(InputManager.Current.PrimaryMouseDevice, 0, MouseButton.Left);
-                this.lbArguments_PreviewMouseDown(this, args);
+                if(currentArg != null && lbArguments.IsEnabled)
+                {
+                    if(currentArg.Value != null || currentArg.Content == null)
+                        currentArg.Value = txtValue.Text;
+                    else
+                    {
+                        // Ensure the content is valid XML
+                        try
+                        {
+                            currentArg.Content = XElement.Parse("<Content>" + txtValue.Text + "</Content>");
+                        }
+                        catch(XmlException ex)
+                        {
+                            MessageBox.Show("The value does not appear to be valid XML.  Error " + ex.Message,
+                                Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
 
-                return !args.Handled;
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
             }
         }
         #endregion
@@ -167,68 +187,55 @@ namespace SandcastleBuilder.WPF.PropertyPages
         //=====================================================================
 
         /// <summary>
-        /// Validate the current transform argument and store its value
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void lbArguments_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if(lbArguments.SelectedItem == null || !lbArguments.IsEnabled)
-                return;
-
-            var arg = (TransformComponentArgument)lbArguments.SelectedItem;
-
-            if(arg.Value != null || arg.Content == null)
-                arg.Value = txtValue.Text;
-            else
-            {
-                // Ensure the content is valid XML
-                try
-                {
-                    arg.Content = XElement.Parse("<Content>" + txtValue.Text + "</Content>");
-                }
-                catch(XmlException ex)
-                {
-                    MessageBox.Show("The value does not appear to be valid XML.  Error " + ex.Message,
-                        Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
-
-                    e.Handled = true;
-                }
-            }
-        }
-
-        /// <summary>
         /// Show the selected transformation argument value
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
         private void lbArguments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(currentArg != null)
+            {
+                if(changingArg)
+                    return;
+
+                // Revert to the previous item if it's not valid
+                if(!this.IsValid)
+                {
+                    changingArg = e.Handled = true;
+                    lbArguments.SelectedItem = currentArg;
+                    changingArg = false;
+                    return;
+                }
+            }
+
             if(lbArguments.SelectedItem == null || !lbArguments.IsEnabled)
+            {
+                currentArg = null;
                 return;
+            }
 
-            var arg = (TransformComponentArgument)lbArguments.SelectedItem;
+            currentArg = (TransformComponentArgument)lbArguments.SelectedItem;
 
-            txtDescription.Text = arg.Description;
-            chkIsForConceptualBuild.IsChecked = arg.IsForConceptualBuild;
-            chkIsForReferenceBuild.IsChecked = arg.IsForReferenceBuild;
+            txtDescription.Text = currentArg.Description;
+            chkIsForConceptualBuild.IsChecked = currentArg.IsForConceptualBuild;
+            chkIsForReferenceBuild.IsChecked = currentArg.IsForReferenceBuild;
 
             changingArg = true;
 
-            if(arg.Value != null || arg.Content == null)
+            if(currentArg.Value != null || currentArg.Content == null)
             {
                 txtValue.AcceptsReturn = false;
                 txtValue.VerticalAlignment = VerticalAlignment.Top;
-                txtValue.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
-                txtValue.Text = arg.Value;
+                txtValue.VerticalScrollBarVisibility = txtValue.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+                txtValue.Text = currentArg.Value;
             }
             else
             {
                 txtValue.AcceptsReturn = true;
                 txtValue.VerticalAlignment = VerticalAlignment.Stretch;
-                txtValue.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+                txtValue.VerticalScrollBarVisibility = txtValue.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
 
-                var reader = arg.Content.CreateReader();
+                var reader = currentArg.Content.CreateReader();
                 reader.MoveToContent();
                 txtValue.Text = reader.ReadInnerXml();
             }
@@ -300,6 +307,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             try
             {
                 refreshingArgs = true;
+                currentArg = null;
 
                 Mouse.OverrideCursor = Cursors.Wait;
 

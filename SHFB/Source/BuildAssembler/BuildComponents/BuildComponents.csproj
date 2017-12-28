@@ -153,11 +153,8 @@
     <Compile Include="UI\IntelliSenseConfigDlg.xaml.cs">
       <DependentUpon>IntelliSenseConfigDlg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\SyntaxComponentConfigDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\SyntaxComponentConfigDlg.Designer.cs">
-      <DependentUpon>SyntaxComponentConfigDlg.cs</DependentUpon>
+    <Compile Include="UI\SyntaxComponentConfigDlg.xaml.cs">
+      <DependentUpon>SyntaxComponentConfigDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidateComponent.cs" />
     <Compile Include="Web References\MtpsContentService\Reference.cs">
@@ -208,11 +205,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\SyntaxComponentConfigDlg.resx">
-      <DependentUpon>SyntaxComponentConfigDlg.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
@@ -295,6 +287,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\IntelliSenseConfigDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\SyntaxComponentConfigDlg.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

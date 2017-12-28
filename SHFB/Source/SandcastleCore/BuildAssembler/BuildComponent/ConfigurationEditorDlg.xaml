@@ -6,7 +6,7 @@
 	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
 	Title="Component Configuration Editor" Width="800" Height="400" MinWidth="300" MinHeight="300"
 	WindowStartupLocation="CenterScreen" Icon="/Sandcastle.Core;component/Resources/ConfigurationEditor.png"
-	FocusManager.FocusedElement="{Binding ElementName=txtConfiguration}">
+	ShowInTaskbar="False" FocusManager.FocusedElement="{Binding ElementName=txtConfiguration}">
 	<Grid Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />

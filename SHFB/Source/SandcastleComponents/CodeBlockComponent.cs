@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2017
+// Updated : 12/20/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -49,17 +49,17 @@ using System.IO;
 using System.Globalization;
 using System.Net;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler;
-using Sandcastle.Core.BuildAssembler.BuildComponent;
+using ColorizerLibrary;
 
 using Microsoft.Ddue.Tools.BuildComponent;
 
-using ColorizerLibrary;
+using Sandcastle.Core;
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using SandcastleBuilder.Components.UI;
 
@@ -187,11 +187,8 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"<!-- Base path for relative filenames in source attributes (optional) -->
+            public override string DefaultConfiguration =>
+@"<!-- Base path for relative filenames in source attributes (optional) -->
 <basePath value=""{@HtmlEncProjectFolder}"" />
 
 <!-- Base output paths for the files (required).  These should match the parent folder of the output path
@@ -227,17 +224,14 @@ namespace SandcastleBuilder.Components
 	scriptFile=""{@SHFBFolder}PresentationStyles\Colorizer\highlight.js""
 	disabled=""{@DisableCodeBlockComponent}"" language=""cs"" numberLines=""false"" outlining=""false""
 	keepSeeTags=""false"" tabSize=""0"" defaultTitle=""true"" />";
-                }
-            }
 
             /// <inheritdoc />
             public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
-                using(CodeBlockConfigDlg dlg = new CodeBlockConfigDlg(currentConfiguration))
-                {
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                        currentConfiguration = dlg.Configuration;
-                }
+                var dlg = new CodeBlockConfigDlg(currentConfiguration);
+
+                if(dlg.ShowModalDialog() ?? false)
+                    currentConfiguration = dlg.Configuration;
 
                 return currentConfiguration;
             }

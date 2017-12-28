@@ -4,14 +4,14 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
-	mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="350"
-	MinWidth="750" MinHeight="350" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="400"
+	MinWidth="750" MinHeight="400" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	<Grid Margin="3">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="140"/>
+			<RowDefinition Height="200"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
@@ -69,8 +69,9 @@
 					shfb:PropertyPageBinding.ProjectPropertyName="WebsiteSdkLinkType" />
       <Label Grid.Row="1" Grid.Column="0" Content="Website _Ad Content" HorizontalAlignment="Right"
 					Target="{Binding ElementName=txtWebsiteAdContent}" />
-      <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Name="txtWebsiteAdContent" VerticalScrollBarVisibility="Auto"
-				AcceptsReturn="True" shfb:PropertyPageBinding.ProjectPropertyName="WebsiteAdContent" />
+      <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Name="txtWebsiteAdContent" VerticalScrollBarVisibility="Visible"
+				HorizontalScrollBarVisibility="Visible" AcceptsReturn="True"
+        shfb:PropertyPageBinding.ProjectPropertyName="WebsiteAdContent" />
     </Grid>
 		<Grid Grid.Row="4" Margin="0,5">
 			<Grid.ColumnDefinitions>

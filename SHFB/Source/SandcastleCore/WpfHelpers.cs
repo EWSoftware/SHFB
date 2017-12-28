@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : WpfHelpers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2017
+// Updated : 12/20/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,7 +20,9 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Sandcastle.Core
 {
@@ -50,6 +52,29 @@ namespace Sandcastle.Core
                 new WindowInteropHelper(dialog) { Owner = MainWindowHandle };
 
             return dialog.ShowDialog();
+        }
+
+        /// <summary>
+        /// This is used to set the validation state for a control
+        /// </summary>
+        /// <param name="control">The control on which to set the validation state</param>
+        /// <param name="isValid">True if valid, false if not</param>
+        /// <param name="tooltip">The tooltip to show or null for none</param>
+        /// <remarks>If not valid, the border is set to red to highlight the invalid control</remarks>
+        public static void SetValidationState(this Control control, bool isValid, string tooltip)
+        {
+            if(isValid)
+            {
+                control.ClearValue(Control.BorderBrushProperty);
+                control.ClearValue(Control.BorderThicknessProperty);
+            }
+            else
+            {
+                control.BorderBrush = Brushes.Red;
+                control.BorderThickness = new Thickness(1.25);
+            }
+
+            control.ToolTip = tooltip;
         }
         #endregion
     }

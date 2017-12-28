@@ -1,0 +1,144 @@
+﻿<Window x:Class="SandcastleBuilder.Components.UI.CodeBlockConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	mc:Ignorable="d" Width="750" Height="465" ResizeMode="NoResize" ShowInTaskbar="False"
+	Title="Configure Code Block Component"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=txtBasePath}">
+  <Grid Margin="15">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="_Base path for relative paths in &lt;code&gt; 'source' attributes" />
+      <TextBox Grid.Row="1" Grid.Column="0" Name="txtBasePath" MaxLength="256" />
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectFolder" Width="30" Margin="3,0,0,0" Content="..."
+        Click="btnSelectFolder_Click" />
+    </Grid>
+    <Grid Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="_Language syntax configuration file" />
+      <TextBox Grid.Row="1" Grid.Column="0" Name="txtSyntaxFile" MaxLength="256" />
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectSyntax" Width="30" Margin="3,0,0,0" Content="..."
+        Click="SelectFile_Click" />
+    </Grid>
+    <Grid Grid.Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="_XSLT style transformation file" />
+      <TextBox Grid.Row="1" Grid.Column="0" Name="txtXsltStylesheetFile" MaxLength="256" />
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectXsltStylesheet" Width="30" Margin="3,0,0,0" Content="..."
+        Click="SelectFile_Click" />
+    </Grid>
+    <Grid Grid.Row="3">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="Colorized code _style sheet file" />
+      <TextBox Grid.Row="1" Grid.Column="0" Name="txtCssStylesheet" MaxLength="256" />
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectCssStylesheet" Width="30" Margin="3,0,0,0" Content="..."
+        Click="SelectFile_Click" />
+    </Grid>
+    <Grid Grid.Row="4">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="Colorized code _JavaScript file" />
+      <TextBox Grid.Row="1" Grid.Column="0" Name="txtScriptFile" MaxLength="256" />
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectScript" Width="30" Margin="3,0,0,0" Content="..."
+        Click="SelectFile_Click" />
+    </Grid>
+    <Grid Grid.Row="5" Margin="0,10,0,10">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition MaxWidth="120"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Column="0" Content="_Default Language" Margin="0,3,3,3" HorizontalAlignment="Right" />
+      <ComboBox Grid.Column="1" Name="cboLanguage" Margin="3" DisplayMemberPath="Value" SelectedValuePath="Key" />
+      <Label Grid.Column="2" Content="Default _Tab Size" HorizontalAlignment="Right" Margin="20,3,3,3" />
+      <xctk:IntegerUpDown Grid.Column="3" Name="udcTabSize" Margin="3" Width="45" Minimum="0"
+        Maximum="25" Increment="1" DefaultValue="0" ClipValueToMinMax="True" DisplayDefaultValueOnEmptyText="True"
+        HorizontalAlignment="Left" />
+    </Grid>
+    <Grid Grid.Row="6">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <CheckBox Grid.Row="0" Grid.Column="0" Name="chkNumberLines" Margin="0,3" Content="Enable line _numbering" />
+      <CheckBox Grid.Row="1" Grid.Column="0" Name="chkOutlining" Margin="0,3"
+        Content="Enable _collapsible #region and #if/#else/#endif blocks" />
+      <CheckBox Grid.Row="2" Grid.Column="0" Name="chkKeepSeeTags" Margin="0,3"
+        Content="_Keep &lt;see&gt; XML comment tags that occur with the code" />
+      <CheckBox Grid.Row="0" Grid.Column="1" Name="chkDefaultTitle" Margin="0,3"
+        Content="_Use language name as title if one is not specified" IsChecked="True" />
+      <CheckBox Grid.Row="1" Grid.Column="1" Name="chkAllowMissingSource" Margin="0,3"
+        Content="Allo_w missing source code files/regions" />
+      <CheckBox Grid.Row="2" Grid.Column="1" Name="chkRemoveRegionMarkers" Margin="0,3"
+        Content="Remove nested region _markers" />
+    </Grid>
+    <Grid Grid.Row="7" Margin="0,20,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Name="btnOK" Margin="0,3,0,3" Padding="3" Width="80" Content="OK" Click="btnOK_Click"  />
+      <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate" ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+      </TextBlock>
+      <Button Grid.Column="2" Name="btnCancel" Margin="0,3,0,3" Padding="3" Width="80" Content="Cancel"
+        IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

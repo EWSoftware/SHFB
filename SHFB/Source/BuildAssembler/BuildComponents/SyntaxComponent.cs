@@ -20,11 +20,11 @@ using System.ComponentModel.Composition.Hosting;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
@@ -77,27 +77,21 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"<syntax input=""/document/reference"" output=""/document/syntax"" renderReferenceLinks=""false"" />
+            public override string DefaultConfiguration =>
+@"<syntax input=""/document/reference"" output=""/document/syntax"" renderReferenceLinks=""false"" />
 <generators>
     {@SyntaxFilters}
 </generators>
 <containerElement name=""codeSnippetGroup"" addNoExampleTabs=""true"" includeOnSingleSnippets=""false""
     groupingEnabled=""{@CodeSnippetGrouping}"" />";
-                }
-            }
 
             /// <inheritdoc />
             public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
-                using(var dlg = new SyntaxComponentConfigDlg(currentConfiguration, container))
-                {
-                    if(dlg.ShowDialog() == DialogResult.OK)
-                        currentConfiguration = dlg.Configuration;
-                }
+                var dlg = new SyntaxComponentConfigDlg(currentConfiguration, container);
+
+                if(dlg.ShowModalDialog() ?? false)
+                    currentConfiguration = dlg.Configuration;
 
                 return currentConfiguration;
             }
@@ -468,8 +462,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         if(snippetCount != 1)
                         {
                             snippetGroup = new CodeSnippetGroup(document.CreateElement(containerElementName,
-                                namespaceUri));
-                            snippetGroup.IsStandalone = true;
+                                namespaceUri)) { IsStandalone = true };
 
                             allGroups.Insert(groupInsertionPoint++, snippetGroup);
 

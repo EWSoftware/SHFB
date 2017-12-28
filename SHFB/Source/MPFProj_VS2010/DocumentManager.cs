@@ -318,7 +318,8 @@ namespace Microsoft.VisualStudio.Project
         /// <param name="site">The service provider.</param>
         /// <param name="oldName">Full path to the old name of the document.</param>        
         /// <param name="newName">Full path to the new name of the document.</param>        
-        /// <param name="newItemId">The new item id of the document</param>        
+        /// <param name="newItemId">The new item id of the document or VSConstants.VSITEMID_NIL if not changing
+        /// ownership.</param>        
         public static void RenameDocument(IServiceProvider site, string oldName, string newName, uint newItemId)
         {
             if(site == null)
@@ -336,11 +337,6 @@ namespace Microsoft.VisualStudio.Project
                 throw new ArgumentException(SR.GetString(SR.ParameterCannotBeNullOrEmpty, CultureInfo.CurrentUICulture), "newName");
             }
 
-            if(newItemId == VSConstants.VSITEMID_NIL)
-            {
-                throw new ArgumentNullException("newItemId");
-            }
-
             IVsRunningDocumentTable pRDT = site.GetService(typeof(SVsRunningDocumentTable)) as IVsRunningDocumentTable;
             IVsUIShellOpenDocument doc = site.GetService(typeof(SVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
 
@@ -356,18 +352,24 @@ namespace Microsoft.VisualStudio.Project
             {
                 try
                 {
-                    IntPtr pUnk = Marshal.GetIUnknownForObject(pIVsHierarchy);
-                    Guid iid = typeof(IVsHierarchy).GUID;
-                    IntPtr pHier;
-                    Marshal.QueryInterface(pUnk, ref iid, out pHier);
+                    IntPtr pUnk = IntPtr.Zero, pHier = VSConstants.HIERARCHY_DONTCHANGE;
+
+                    if(newItemId != VSConstants.VSITEMID_NIL)
+                    {
+                        pUnk = Marshal.GetIUnknownForObject(pIVsHierarchy);
+                        Guid iid = typeof(IVsHierarchy).GUID;
+                        Marshal.QueryInterface(pUnk, ref iid, out pHier);
+                    }
+                    
                     try
                     {
                         ErrorHandler.ThrowOnFailure(pRDT.RenameDocument(oldName, newName, pHier, newItemId));
                     }
                     finally
                     {
-                        if(pHier != IntPtr.Zero)
+                        if(pHier != IntPtr.Zero && pHier != VSConstants.HIERARCHY_DONTCHANGE)
                             Marshal.Release(pHier);
+
                         if(pUnk != IntPtr.Zero)
                             Marshal.Release(pUnk);
                     }

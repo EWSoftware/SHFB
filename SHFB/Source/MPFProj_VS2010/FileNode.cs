@@ -1120,7 +1120,13 @@ namespace Microsoft.VisualStudio.Project
                         if(!caseOnlyChange)
                             this.RenameFileNode(oldName, newName);
                         else
+                        {
                             this.RenameCaseOnlyChange(newFileName);
+
+                            // We still need to rename it in the RDT but we won't change ownership
+                            DocumentManager.RenameDocument(this.ProjectMgr.Site, oldName, newName,
+                                VSConstants.VSITEMID_NIL);
+                        }
                     }
                 }
                 finally

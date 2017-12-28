@@ -6,7 +6,7 @@
 	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF.UserControls"
 	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" ResizeMode="NoResize"
 	Title="Open Microsoft Help Viewer Content" Width="700" Height="400" WindowStartupLocation="CenterScreen"
-  Icon="/SandcastleBuilder.WPF;component/Resources/HelpLibraryManager.png"
+  ShowInTaskbar="False" Icon="/SandcastleBuilder.WPF;component/Resources/HelpLibraryManager.png"
 	FocusManager.FocusedElement="{Binding ElementName=cboHelpViewerVersion}">
 	<Grid Margin="10">
     <Grid.RowDefinitions>

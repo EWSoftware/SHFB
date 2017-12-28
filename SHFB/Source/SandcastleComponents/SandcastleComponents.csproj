@@ -49,6 +49,8 @@
     <Reference Include="Esent.Interop, Version=1.7.0.0, Culture=neutral, PublicKeyToken=e75931dc3debaf8d, processorArchitecture=MSIL">
       <HintPath>..\ReferenceAssemblies\Esent.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
@@ -58,9 +60,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -74,17 +81,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\CodeBlockConfigDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CodeBlockConfigDlg.Designer.cs">
-      <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="ESentCopyFromIndexComponent.cs" />
     <Compile Include="Commands\ESentIndexCache.cs" />
     <Compile Include="ESentResolveReferenceLinksComponent.cs" />
     <Compile Include="Targets\ESentTargetDictionary.cs" />
     <Compile Include="MultiFormatOutputComponent.cs" />
+    <Compile Include="UI\CodeBlockConfigDlg.xaml.cs">
+      <DependentUpon>CodeBlockConfigDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\ESentCommentsIndexConfigDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,17 +133,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-		<ProjectReference Include="..\BuildAssembler\BuildComponents\BuildComponents.csproj">
-			<Project>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</Project>
-			<Name>BuildComponents</Name>
-			<Private>False</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj">
-			<Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
-			<Name>BuildComponentTargets</Name>
-			<Private>False</Private>
-		</ProjectReference>
-		<ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
+    <ProjectReference Include="..\BuildAssembler\BuildComponents\BuildComponents.csproj">
+      <Project>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</Project>
+      <Name>BuildComponents</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj">
+      <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
+      <Name>BuildComponentTargets</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
       <Private>True</Private>
@@ -151,16 +155,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\CreateSandcastleDB.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CodeBlockConfigDlg.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ESentCommentsIndexConfigDlg.resx">
       <DependentUpon>ESentCommentsIndexConfigDlg.cs</DependentUpon>
@@ -181,6 +182,12 @@
     <EmbeddedResource Include="UI\SqlResolveReferenceLinksConfigDlg.resx">
       <DependentUpon>SqlResolveReferenceLinksConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="UI\CodeBlockConfigDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

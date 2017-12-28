@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2017
+// Updated : 12/20/2017
 // Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,7 +22,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
 using System.Windows.Forms;
@@ -40,7 +39,7 @@ namespace Microsoft.Ddue.Tools.UI
         #region Private data members
         //=====================================================================
 
-        private XDocument config;
+        private XElement config;
 
         #endregion
 
@@ -66,8 +65,8 @@ namespace Microsoft.Ddue.Tools.UI
             InitializeComponent();
 
             // Load the current settings
-            config = XDocument.Parse(currentConfig);
-            var settings = config.Descendants("output").FirstOrDefault();
+            config = XElement.Parse(currentConfig);
+            var settings = config.Element("output");
 
             if(settings != null)
             {
@@ -99,12 +98,9 @@ namespace Microsoft.Ddue.Tools.UI
             txtNamespacesFile.Text = txtNamespacesFile.Text.Trim();
 
             // Store the changes
-            var settings = config.Descendants("output").FirstOrDefault();
+            config.RemoveNodes();
 
-            if(settings != null)
-                settings.Remove();
-
-            config.Root.Add(new XElement("output",
+            config.Add(new XElement("output",
                 new XAttribute("includeNamespaces", chkIncludeNamespaces.IsChecked.Value),
                 new XAttribute("namespacesFile", txtNamespacesFile.Text),
                 new XAttribute("folder", txtFolder.Text),

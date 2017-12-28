@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : GeneralOptionsControl.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/13/2017
+// Updated : 12/21/2017
 // Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,7 +28,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 using Microsoft.Win32;
 
@@ -73,17 +72,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 }
 
                 if(!isValid)
-                {
-                    txtMSHelpViewerPath.BorderBrush = Brushes.Red;
-                    txtMSHelpViewerPath.BorderThickness = new Thickness(2);
-                    txtMSHelpViewerPath.ToolTip = "The viewer application does not exist";
-                }
+                    txtMSHelpViewerPath.SetValidationState(false, "The viewer application does not exist");
                 else
-                {
-                    txtMSHelpViewerPath.BorderBrush = Brushes.Black;
-                    txtMSHelpViewerPath.BorderThickness = new Thickness(1);
-                    txtMSHelpViewerPath.ToolTip = null;
-                }
+                    txtMSHelpViewerPath.SetValidationState(true, null);
 
                 return isValid;
             }

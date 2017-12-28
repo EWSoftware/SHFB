@@ -7,7 +7,7 @@
 	xmlns:shfbPropertyPages="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
 	xmlns:shfbUserControls="clr-namespace:SandcastleBuilder.WPF.UserControls"
   mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-  Title="API Filter" Width="800" Height="600" MinWidth="800" MinHeight="400"
+  Title="API Filter" Width="800" Height="600" MinWidth="800" MinHeight="400" ShowInTaskbar="False"
 	WindowStartupLocation="CenterScreen"  Icon="/SandcastleBuilder.WPF;component/Resources/Filter.png"
 	FocusManager.FocusedElement="{Binding ElementName=tvApiList}" Loaded="ApiFilterEditorDlg_Loaded"
 	Closing="ApiFilterEditorDlg_Closing">
