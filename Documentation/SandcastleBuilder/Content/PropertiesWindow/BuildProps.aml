@@ -5,7 +5,8 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
 		<introduction>
-			<autoOutline lead="The Build category properties control the build process." excludeRelatedTopics="true" />
+			<autoOutline lead="The Build category properties control the build process."
+				excludeRelatedTopics="true">2</autoOutline>
 		</introduction>
 
 		<section address="HelpFileFormats">
@@ -62,6 +63,78 @@ needed when doing a search.</para>
 			</content>
 		</section>
 
+		<section address="SyntaxFilters">
+			<title>Syntax filters (SyntaxFilters)</title>
+			<content>
+				<para>This property lets you specify which languages appear in the <legacyBold>Syntax</legacyBold>
+section of the help topics and the languages that will appear in the code examples.  It can be set to one
+language, a combination of languages, <codeInline>All</codeInline> to include them all, <codeInline>Standard</codeInline>
+(the default) for C#, VB.NET, and C++ only, or <codeInline>None</codeInline> to remove the <legacyBold>Syntax</legacyBold>
+section entirely.  In the property page, put a checkmark next to each syntax filter that you wanted included in
+the API topics.</para>
+
+				<alert class="note">
+					<para>If you want to change the order of the languages in the syntax section and code examples, add the
+Syntax Component to the project on the Components category property page.  Its configuration lets you modify the
+order of the languages in the syntax sections and code examples.</para>
+				</alert>
+
+			</content>
+
+			<sections>
+				<section address="CustomSyntaxGen">
+					<title>Adding Third-Party Syntax Filter Generators</title>
+					<content>
+						<para>Custom language syntax filter generators can be made available via the project's
+<codeInline>Syntax Filters</codeInline> property by creating a syntax filter generator Managed Extensibility
+Framework (MEF) component.  Copy the syntax filter generator's assembly and any supporting files to the
+<localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it in the help file builder's
+<legacyBold>Common Application Data</legacyBold> folder.  If project specific, the components can be located in
+the help file builder project's folder or in a folder referred to in its <codeInline>Component Path</codeInline>
+property.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more
+information.  Refer to the component's documentation for information about its features and configuration
+options.  See the <link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic for information on creating a
+third-party syntax generator.  For a list of current third-party build components, see the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
+
+					</content>
+				</section>
+			</sections>
+		</section>
+
+		<section address="PresentationStyle">
+			<title>Presentation style (PresentationStyle)</title>
+			<content>
+				<para>This property is used to choose the presentation style that determines the layout and appearance of
+the help topics.  Several styles are provided: <codeInline>VS2013</codeInline> (the default),
+<codeInline>VS2010</codeInline>, <codeInline>Open XML Document</codeInline>, and <codeInline>Markdown Content</codeInline>.
+The files for each style are located in the <localUri>.\PresentationStyles</localUri> folder under the main help
+file builder installation folder.</para>
+
+			</content>
+
+			<sections>
+				<section address="CustomStyles">
+					<title>Adding Third-Party Presentation Styles</title>
+					<content>
+						<para>Custom presentation styles can be made available via the project's <codeInline>Presentation Style</codeInline>
+property by creating a presentation style Managed Extensibility Framework (MEF) component.  Copy the
+presentation style's assembly and all supporting files to the <localUri>.\Components and Plug-Ins</localUri>
+folder or a subfolder beneath it in the help file builder's <legacyBold>Common Application Data</legacyBold>
+folder.  If project specific, the components can be located in the help file builder project's folder or in a
+folder referred to in its <codeInline>Component Path</codeInline> property.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PresentationStyles" /> topic for more information.  Refer
+to the presentation style's documentation for information about its features and configuration options.  See the
+<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic for information on creating a third-party
+presentation style.  For a list of current third-party build components, see the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
+
+					</content>
+				</section>
+			</sections>
+
+		</section>
+		
 		<section address="FrmwkVer">
 			<title>Framework version (FrameworkVersion)</title>
 			<content>

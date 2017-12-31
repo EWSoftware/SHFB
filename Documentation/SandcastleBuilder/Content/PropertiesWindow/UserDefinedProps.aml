@@ -10,7 +10,7 @@ file builder project properties.
 
 		<section address="Section1">
 			<content>
-				<mediaLink><image xlink:href="UserDefinedProps"/></mediaLink>
+				<mediaLink><image xlink:href="UserDefinedProps" placement="center" /></mediaLink>
 				
 				<para>User-defined project properties themselves consist of three property values:</para>
 

@@ -57,6 +57,17 @@ external browser instance.</para>
 			</content>
 		</section>
 
+		<section address="WebsiteAdContent">
+			<title>Website Ad Content (WebsiteAdContent)</title>
+			<content>
+				<para>This property is used to insert script and other HTML elements related to ad content providers such
+as Google AdWords or Developer Media advertisement tags.  It only applies to website output.  Enter the necessary
+script and HTML in this property and it will be inserted into the page at the very bottom after the page footer.
+If you want to place the ads in a location other than at the end of the topic, you will need to create your own
+presentation style and modify where the ad content is inserted.</para>
+			</content>
+		</section>
+
 		<section address="AppendMarkdownFileExtensionsToUrls">
 			<title>Include the '.md' filename extension on markdown topic URLs (AppendMarkdownFileExtensionsToUrls)</title>
 			<content>

@@ -187,7 +187,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" isExpanded="true" title="Project Properties Window">
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="property categories, Overview" />
     </HelpKeywords>
@@ -225,7 +225,7 @@
         <HelpKeyword index="K" term="property categories, Help File" />
       </HelpKeywords>
     </Topic>
-    <Topic id="7d28bf8f-923f-44c1-83e1-337a416947a1" visible="True" isSelected="true" title="Help 1/Website Category Properties">
+    <Topic id="7d28bf8f-923f-44c1-83e1-337a416947a1" visible="True" title="Help 1/Website Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, BinaryTOC" />
         <HelpKeyword index="K" term="properties, HtmlSdkLinkType" />
@@ -1377,11 +1377,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="8479cf1a-4f4f-4f0b-89f7-85a04cd78d16" visible="True" title="Version 2017.12.30.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2017.12.30.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="63e7d1c3-6706-444b-aa02-5defd7d1da60" visible="True" title="Version 2017.5.15.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2017.5.15.0" />

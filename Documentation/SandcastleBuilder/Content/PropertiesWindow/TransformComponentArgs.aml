@@ -12,7 +12,7 @@ image into the page headers.  Such arguments are exposed to your project using t
 
 		<section>
 			<content>
-				<mediaLink><image xlink:href="TransformArgsPropPage"/></mediaLink>
+				<mediaLink><image xlink:href="TransformArgsPropPage" placement="center" /></mediaLink>
 
 				<para>The list of available transform component arguments is shown on the left.  As you select each one,
 information about it and its current value are displayed on the right.  The description at the top of the page

@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8479cf1a-4f4f-4f0b-89f7-85a04cd78d16" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2017.12.30.0." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Various utility classes, designer classes, and enumerations were moved between the
+<localUri>Sandcastle.Core</localUri>, <localUri>SandcastleBuilder.Utils</localUri>, and standalone GUI assemblies
+to move code specific to the standalone GUI out of the common assemblies and to better share the code for the new
+WPF property pages and configuration forms.  Support for several new project properties was also added.</para>
+
+						<para>If you have created custom build components, syntax generators, plug-ins, or presentation
+styles, you will need to rebuild them against the latest release.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the <codeInline>websiteAdContent</codeInline> shared content item in the
+VS2010 and VS2013 presentation styles.  If you have custom presentation styles and want to support the
+<codeInline>WebsiteAdContent</codeInline> help file builder project property, you will need to add the content
+item to your custom presentation style resource item and transformation files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>{@SearchResultsDisplayVersion}</codeInline> substitution tag to the MS
+Help Viewer Additional Header Content definitions in the VS2010 and VS2013 presentation styles.  If you have
+custom presentation styles and want to support the property, you will need to add it to your
+<localUri>BuildAssembler.config</localUri> configuration files.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a couple of null reference exceptions in MRefBuilder caused by obfuscated code.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up issues with unsigned long enumerated types and duplicate flag values in MRefBuilder.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that if an overridden member is removed, the matching overridden/virtual
+members in the base types are also removed to prevent them showing up in place of the removed override.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Fixed MRefBuilder so that it automatically redirects the <codeInline>System</codeInline>
+assembly for .NETStandard 2.0 assemblies.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added code to auto-redirect to a like-named assembly in the cache if one is found.  This helps
+correct missing assembly issues in .NETCore/.NETStandard projects which can vary by version number.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to MRefBuilder for excluding types and members based on the presence of
+<codeInline>EditorBrowsableAttribute(Never)</codeInline> and <codeInline>BrowsableAttribute(False)</codeInline>
+settings.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the BuildAssembler Save Component so that if the writer task fails it stops the build and
+reports the problem rather than causing a hang.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the <localUri>AddFilenames.xsl</localUri> transformation and added a more specific
+exception message in XslTransform to clarify the solution to issues caused by the FIPS policy being enabled which
+prevents the MD5 hash from being used with the GUID file naming method.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the GenerateInheritedDocs tool so that it doesn't generate false GID0002 errors for
+inherited attached events and properties that never actually appear in the documentation.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in the Managed Package Framework that could cause renamed files to get saved under
+the old name if the filename was changed with the file open in an editor in Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Help Library Manager Launcher tool so that it finds the correct registry keys when
+SQL Server Management Studio is installed which can result in the 64-bit parent key existing without the expected
+subkeys.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the scan for build components so that it ignores bad image format exceptions nested
+within argument exceptions.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the package reference resolver so that it can handle multiple NuGet package folder paths.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to the XML comments file handling to automatically fix invalid comments files from
+framework NuGet packages that have an invalid <codeInline>span</codeInline> element as the root element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the new <codeInline>DocumentEditorBrowsableNever</codeInline> and
+<codeInline>DocumentNonBrowsable</codeInline> project properties on the Visibility category property page.  For
+backward compatibility, these options will be enabled when the project format is updated.  Turn them off if you
+no longer want members decorated with the related attributes to appear in the help file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the new <codeInline>AppendMarkdownFileExtensionsToUrls</codeInline> property on the
+Help 1/Website category property page to allow adding extensions to the URLs in markdown topics so that the
+output will work in non-GitHub wikis and for topics in source control.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the new <codeInline>WebsiteAdContent</codeInline> property on the Help1/Website category
+property page which allows you to define ad content provider script and HTML in website output.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>SearchResultsDisplayVersion</codeInline> property to the MS Help Viewer
+category property page which allows you to set the content of the <codeInline>Microsoft.Help.DisplayVersion</codeInline>
+metadata item in MS Help Viewer output.  This helps differentiate search results with the same title in the
+search results by adding the specified module name and/or display version to each entry in the help file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the Presentation Style and Syntax Filters properties from the Help File properties page
+to the Build properties page.  This allows the help file formats to be filtered based on what is supported by the
+selected presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Replaced the Windows Forms based project property pages and Visual Studio options page with WPF
+versions for better high DPI scaling support on 4K displays.  Several build component configuration forms have
+also been converted to WPF for the same reason.  Work is on going to replace all of the remaining Windows Forms
+based build component and plug-in configuration forms with WPF versions.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the Markdown presentation style so that it handles <codeInline>see[@langword]</codeInline>
+correctly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for adding the ".md" extensions to topic URLs in the Markdown presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to the VS2010 and VS2013 presentation style script to add the extra space in Help 1
+files after language specific text.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged a change from Scott Hunter to construct website TOC URLs in the VS2013 presentation
+style relative to the root instead of assuming the target is in the <localUri>.\html</localUri> folder.  This
+allows additional content to be added to the project using a site map file and for links to such topics to be
+generated correctly in the TOC fragments.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from OpportunityLiu to fix typos in the Chinese translations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed generation of the <codeInline>indexEntry_aboutType</codeInline> ("about
+TypeName class") index entries as they were just duplicates of the "TypeName class" index entries.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the unused index content items from the Markdown and Open XML presentation styles.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
