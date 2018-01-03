@@ -6656,13 +6656,13 @@
               </Directory>
               <Directory Id="dir59C9E931FF166D9566F35B45A8D2480C" Name="_rels">
                 <Component Id="cmpFB16D59E07C6E412E3DD0E4B996149F9" Guid="{443B8A5A-5478-443A-A199-4A38EBEE3D17}">
-                  <File Id="fil112D506CE9DD86159E072311365A462B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\word\_rels\document.xml.rels" />
+                  <File Id="fil112D506CE9DD86159E072311365A462B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\word\_rels\document.xml_rels" />
                 </Component>
               </Directory>
             </Directory>
             <Directory Id="dir689A62E8820CAA1B474A921DA39A14D4" Name="_rels">
               <Component Id="cmpA06B5BBCA603007B0CF6B0D0E62A020B" Guid="{71131682-5940-45BB-9E97-9ADF45C3BEE0}">
-                <File Id="fil303D867538F30D34E882CF8C04AA15D7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\_rels\rels.xml.rels" />
+                <File Id="fil303D867538F30D34E882CF8C04AA15D7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\_rels\rels.xml_rels" />
               </Component>
             </Directory>
           </Directory>

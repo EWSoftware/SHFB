@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildOpenXmlFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2016
-// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
+// Updated : 01/02/2018
+// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to finish up creation of the Open XML file parts and compress the
@@ -366,6 +366,18 @@ namespace SandcastleBuilder.Utils.MSBuild
         private void SaveRelationships()
         {
             string relationshipsFilename = Path.Combine(this.WorkingFolder, @"word\_rels\document.xml.rels");
+
+            // If the relationships file does not exist, see if it's there under the alternate name used to
+            // support the NuGet deployment.  Certain filenames reserved as part of the Open Packaging
+            // Conventions cause problems with NuGet packages.  This works around the issue.
+            if(!File.Exists(relationshipsFilename))
+            {
+                string altName = Path.Combine(this.WorkingFolder, @"word\_rels\document.xml_rels");
+
+                if(File.Exists(altName))
+                    File.Move(altName, relationshipsFilename);
+            }
+
             XDocument relationshipsFile = XDocument.Load(relationshipsFilename);
             XElement root = relationshipsFile.Root;
 
@@ -1301,7 +1313,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Do the same for the relationships file
             if(!File.Exists(relsFile))
             {
-                altName = Path.Combine(this.WorkingFolder, @"_rels\rels.xml.rels");
+                altName = Path.Combine(this.WorkingFolder, @"_rels\rels.xml_rels");
 
                 if(File.Exists(altName))
                     File.Move(altName, relsFile);

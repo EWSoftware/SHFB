@@ -1434,10 +1434,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="OpenXml\DocumentParts\word\_rels\document.xml.rels">
+    <Content Include="OpenXml\DocumentParts\word\_rels\document.xml_rels">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OpenXml\DocumentParts\_rels\rels.xml.rels">
+    <Content Include="OpenXml\DocumentParts\_rels\rels.xml_rels">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

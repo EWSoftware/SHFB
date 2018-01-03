@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : OpenXml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2016
-// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
+// Updated : 01/02/2018
+// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the presentation style definition for the Open XML presentation style.
@@ -31,12 +31,15 @@ namespace Sandcastle.PresentationStyles
     /// This defines a presentation style used to generate Open XML documents
     /// </summary>
     /// <remarks>
-    /// <note type="important">Two of the content files that make up the document parts,
-    /// "DocumentParts\_rels\rels.xml.rels" and "DocumentParts\Content_Types.xml", are renamed by the build
-    /// process to "DocumentParts\_rels\.rels" and "DocumentParts\[Content_Types].xml".  Those two names are
-    /// reserved as part of the Open Packaging Conventions and when deployed as part of a NuGet package, NuGet
-    /// tends to ignore them when extracting the package content.  As such, we give them non-reserved names for
-    /// inclusion in the package and rename them to their actual names at build time.</note></remarks>
+    /// <note type="important">Three of the content files that make up the document parts,
+    /// "DocumentParts\_rels\rels.xml_rels", "DocumentParts\Content_Types.xml",
+    /// and "DocumentParts\word\_rels\document.xml_rels", are renamed by the build
+    /// process to "DocumentParts\_rels\.rels", "DocumentParts\[Content_Types].xml",
+    /// and "DocumentParts\word\_rels\document.xml.rels".  Those three filenames are reserved as part of the Open
+    /// Packaging Conventions and when deployed as part of a NuGet package, NuGet tends to ignore them when
+    /// extracting the package content or it causes problems reading the package when using third-party tools.
+    /// As such, we give them non-reserved names for inclusion in the package and rename them to their actual
+    /// names at build time.</note></remarks>
     [PresentationStyleExport("OpenXML", "Open XML Document", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This generates an Open XML document containing the " +
         "help content.\r\nOpen XML documents can be converted to other formats such as PDF files.")]
