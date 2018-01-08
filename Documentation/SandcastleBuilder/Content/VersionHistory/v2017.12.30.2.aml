@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3ca9bf44-db1d-45f7-833c-a046d724da1e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+				<para>This is a minor update to correct the two issues noted below.  See the
+<link xlink:href="8479cf1a-4f4f-4f0b-89f7-85a04cd78d16" /> release notes for important information on some
+breaking changes.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+				
+				<list class="bullet">
+					<listItem>
+						<para>Modified the names and handling of the relationship files in the Open XML presentation style to
+work around an issue with the latest version of NuGet which adds a duplicate entry to its content types file for
+the <localUri>.rels</localUri> file type which can break third-party tools that parse the package.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes to fix a couple of issues with the update to the Lightweight Website Style TOC
+plug-in to construct TOC URLs relative to the root.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

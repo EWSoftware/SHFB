@@ -389,6 +389,7 @@
     <None Include="Content\VersionHistory\v2016.5.28.aml" />
     <None Include="Content\VersionHistory\v2016.9.17.0.aml" />
     <None Include="Content\VersionHistory\v2017.12.30.0.aml" />
+    <None Include="Content\VersionHistory\v2017.12.30.2.aml" />
     <None Include="Content\VersionHistory\v2017.5.15.0.aml" />
     <None Include="Content\VersionHistory\v2017.1.28.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
