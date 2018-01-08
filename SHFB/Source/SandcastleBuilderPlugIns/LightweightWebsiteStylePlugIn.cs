@@ -344,7 +344,7 @@ namespace SandcastleBuilder.PlugIns
                         new XAttribute("href", "#!")),
                     new XElement("a",
                         new XAttribute("data-tochassubtree", "true"),
-                        new XAttribute("href", Path.GetFileName(builder.DefaultTopicFile)),
+                        new XAttribute("href", "../" + builder.DefaultTopicFile),
                         new XAttribute("title", builder.ResolvedHelpTitle),
                         new XAttribute("tocid", "roottoc"),
                         new XText(builder.SubstitutionTags.TransformText(builder.CurrentProject.HelpTitle))));
@@ -426,6 +426,7 @@ namespace SandcastleBuilder.PlugIns
             if(sibling.Attribute("Url") != null)
             {
                 targetId = sibling.Attribute("Url").Value;
+                file = "../" + targetId;
                 targetTocId = Path.GetFileNameWithoutExtension(targetId);
             }
             else
@@ -434,9 +435,15 @@ namespace SandcastleBuilder.PlugIns
                 var targetChild = sibling.Descendants("HelpTOCNode").FirstOrDefault(n => n.Attribute("Url") != null);
 
                 if(targetChild != null)
+                {
                     targetId = targetChild.Attribute("Url").Value;
+                    file = "../" + targetId;
+                }
                 else
+                {
                     targetId = "#!";
+                    file = targetId;
+                }
 
                 if(sibling.Attribute("Id") != null)
                     targetTocId = sibling.Attribute("Id").Value;
@@ -449,7 +456,6 @@ namespace SandcastleBuilder.PlugIns
             else
                 currentId = "#!";
 
-            file = Path.GetFileName(targetId);
             tocTitle = sibling.Attribute("Title").Value;
             styleClassSuffix = (targetId == currentId) ? " current" : string.Empty;
 
@@ -499,7 +505,7 @@ namespace SandcastleBuilder.PlugIns
             // Some items in the TOC do not have actual pages associated with them
             if(child.Attribute("Url") != null)
             {
-                file = Path.GetFileName(child.Attribute("Url").Value);
+                file = "../" + child.Attribute("Url").Value;
                 tocid = Path.GetFileNameWithoutExtension(file);
             }
             else
@@ -508,7 +514,7 @@ namespace SandcastleBuilder.PlugIns
                 var targetChild = child.Descendants("HelpTOCNode").FirstOrDefault(n => n.Attribute("Url") != null);
 
                 if(targetChild != null)
-                    file = Path.GetFileName(targetChild.Attribute("Url").Value);
+                    file = "../" + targetChild.Attribute("Url").Value;
                 else
                     file = "#!";
 
