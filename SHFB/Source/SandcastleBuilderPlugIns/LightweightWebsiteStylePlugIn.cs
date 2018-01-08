@@ -377,7 +377,7 @@ namespace SandcastleBuilder.PlugIns
                 var targetChild = ancestor.Descendants("HelpTOCNode").FirstOrDefault(n => n.Attribute("Url") != null);
 
                 if(targetChild != null)
-                    file = "../" + ancestor.Attribute("Url").Value;
+                    file = "../" + targetChild.Attribute("Url").Value;
                 else
                     file = "#!";
 
