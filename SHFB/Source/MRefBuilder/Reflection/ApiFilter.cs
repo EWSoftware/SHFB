@@ -531,7 +531,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                         // members and tagged with a CompilerGenerated attribute.  So, if compiler generated but
                         // has a matching "<CLR>" prefixed type, let it through.
                         if(curType.DeclaringModule != null && !curType.DeclaringModule.Types.Any(
-                          t => t.Name.Name == "<CLR>" + curType.Name.Name))
+                          t => { return t.Name != null && (curType.Name != null && t.Name.Name == "<CLR>" + curType.Name.Name); }))
                             return false;
                     }
 
@@ -836,7 +836,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 return this.IsVisible(type);
             }
-                
+
             if(this.IncludeInternals && (member.IsAssembly || member.IsFamilyAndAssembly))
                 return this.IsVisible(type);
 
@@ -1003,10 +1003,10 @@ namespace Microsoft.Ddue.Tools.Reflection
             }
             else
                 if(expression.NodeType == NodeType.NamedArgument)
-                {
-                    NamedArgument assignment = (NamedArgument)expression;
-                    return this.IsExposedExpression(assignment.Value);
-                }
+            {
+                NamedArgument assignment = (NamedArgument)expression;
+                return this.IsExposedExpression(assignment.Value);
+            }
 
             throw new InvalidOperationException("Encountered unrecognized expression");
         }
