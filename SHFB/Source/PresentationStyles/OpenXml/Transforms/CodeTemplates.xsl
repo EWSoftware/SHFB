@@ -132,7 +132,7 @@
 											<xsl:value-of select="@title" />
 										</xsl:when>
 										<xsl:otherwise>
-											<include item="devlang_{$p_codeLang}"/>
+											<include item="devlang_{$p_codeLang}" undefined="{$p_codeLang}"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</w:t>

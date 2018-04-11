@@ -13,6 +13,7 @@
 // be edited.
 // 04/27/2014 - EFW - Added support for grouping and sorting code snippets based on the order of the defined
 // syntax generators.
+// 03/28/2018 - EFW - Made some changes to set the title to the language ID for unrecognized languages
 
 using System;
 using System.ComponentModel.Composition;
@@ -434,8 +435,21 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                         if(snippet.CodeElement.Attributes["title"] == null)
                         {
+                            string friendlyName = " ";
+
+                            if(!snippet.Language.Equals("none", StringComparison.OrdinalIgnoreCase) &&
+                              !snippet.Language.Equals("other", StringComparison.OrdinalIgnoreCase))
+                            {
+                                // If we have a set of shared language IDs, see if it's in there so that we can
+                                // get a human-readable name.  If not, we'll use the language ID as the title.
+                                var languageIds = (IReadOnlyDictionary<string, string>)BuildComponentCore.Data["LanguageIds"];
+
+                                if(languageIds == null || !languageIds.TryGetValue(snippet.Language, out friendlyName))
+                                    friendlyName = snippet.Language;
+                            }
+
                             attribute = document.CreateAttribute("title");
-                            attribute.Value = " ";
+                            attribute.Value = friendlyName;
                             snippet.CodeElement.Attributes.Append(attribute);
                         }
                     }

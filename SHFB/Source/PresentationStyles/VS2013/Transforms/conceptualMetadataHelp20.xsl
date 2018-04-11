@@ -148,7 +148,7 @@
 							<xsl:when test="/document/metadata/attribute[@name='codelang']/text() = $v_codeLang"/>
 							<xsl:otherwise>
 								<MSHelp:Attr Name="DevLang">
-									<includeAttribute name="Value" item="metaLang_{$v_codeLang}"/>
+									<includeAttribute name="Value" item="metaLang_{$v_codeLang}" undefined="{$v_codeLang}"/>
 								</MSHelp:Attr>
 							</xsl:otherwise>
 						</xsl:choose>

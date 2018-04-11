@@ -59,19 +59,13 @@ namespace SandcastleBuilder.WPF
         /// <returns>An enumerable list of all child elements recursively</returns>
         public static IEnumerable<FrameworkElement> AllChildElements(this FrameworkElement parent)
         {
-            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-
-            for(int i = 0; i < childrenCount; i++)
+            // NOTE: Use LogicalTreeHelper NOT VisualTreeHelper as the control may not be visible yet
+            foreach(var child in LogicalTreeHelper.GetChildren(parent).OfType<FrameworkElement>())
             {
-                var child = VisualTreeHelper.GetChild(parent, i) as FrameworkElement;
+                yield return child;
 
-                if(child != null)
-                {
-                    yield return child;
-
-                    foreach(var grandChild in child.AllChildElements())
-                        yield return grandChild;
-                }
+                foreach(var grandChild in child.AllChildElements())
+                    yield return grandChild;
             }
         }
         #endregion

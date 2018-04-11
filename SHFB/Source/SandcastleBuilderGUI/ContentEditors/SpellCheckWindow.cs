@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
+// Updated : 03/26/2018
+// Note    : Copyright 2013-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to handle spell checking in the text editor windows
@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,7 +28,6 @@ using System.Windows.Forms;
 using System.Xml;
 
 using SandcastleBuilder.Gui.Spelling;
-using SandcastleBuilder.Utils;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -428,8 +426,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(dictionary == null || (projectExplorer != null &&
                   projectExplorer.CurrentProject.Language != dictionary.Language))
                 {
-                    dictionary = GlobalDictionary.CreateGlobalDictionary(
-                        (projectExplorer != null) ? projectExplorer.CurrentProject.Language : null);
+                    dictionary = GlobalDictionary.CreateGlobalDictionary(projectExplorer?.CurrentProject.Language);
                 }
 
                 if(dictionary == null)
@@ -448,6 +445,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     switch(ext)
                     {
                         case ".aml":
+                        case ".axml":
                         case ".ascx":
                         case ".asp":
                         case ".aspx":

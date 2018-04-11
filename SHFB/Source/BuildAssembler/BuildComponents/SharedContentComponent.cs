@@ -8,6 +8,7 @@
 // sharing the common content across all instances with local instance overrides but it loads fast and it
 // typically loads under 60KB of data per instance so it's not worth the extra overhead.
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 03/28/2018 - EFW - Added support for specifying a value to use when the item is undefined
 
 using System;
 using System.Collections.Generic;
@@ -349,6 +350,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                                 this.WriteMessage(key, MessageLevel.Error, "The shared content item '{0}' " +
                                     "could not be formatted with {1} parameters.", item, parameters.Count);
                             }
+                        }
+                        else
+                        {
+                            // If an undefined attribute is specified, use that value instead if not found
+                            string undefined = node.Evaluate(element.Undefined).ToString();
+
+                            if(!String.IsNullOrWhiteSpace(undefined))
+                                contentValue = undefined;
                         }
 
                         // Check for missing content

@@ -5,6 +5,7 @@
 
 // Change History
 // 12/24/2012 - EFW - Move this class into its own file in the Targets namespace and made it public.
+// 03/28/2018 - EFW - Added support for specifying a value to use when the item is undefined
 
 using System.Xml;
 using System.Xml.XPath;
@@ -29,6 +30,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// that will replace the element.
         /// </summary>
         public XPathExpression Item { get; private set; }
+
+        /// <summary>
+        /// This read-only property returns the item XPath expression used to get the value used to replace the
+        /// item if the named item is not found.
+        /// </summary>
+        public XPathExpression Undefined { get; private set; }
 
         /// <summary>
         /// This read-only property returns the XPth expression used to select parameter elements
@@ -61,6 +68,7 @@ namespace Microsoft.Ddue.Tools.Targets
             this.Item = XPathExpression.Compile(item, context);
             this.Parameters = XPathExpression.Compile(parameters, context);
             this.Attribute = XPathExpression.Compile(attribute, context);
+            this.Undefined = XPathExpression.Compile("string(@undefined)", context);
         }
         #endregion
     }

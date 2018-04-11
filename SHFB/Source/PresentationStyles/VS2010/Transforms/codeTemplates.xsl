@@ -126,12 +126,12 @@
 								</xsl:attribute>
 								<xsl:choose>
 									<xsl:when test="$v_nodeCount = 1">
-										<include item="devlang_{@codeLanguage}" />
+										<include item="devlang_{@codeLanguage}" undefined="{@codeLanguage}"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<!-- Use onclick rather than href or HV 2.0 messes up the link -->
 										<a href="#" onclick="javascript:ChangeTab('{$v_id}','{@style}','{position()}','{$v_nodeCount}');return false;">
-											<include item="devlang_{@codeLanguage}" />
+											<include item="devlang_{@codeLanguage}" undefined="{@codeLanguage}"/>
 										</a>
 									</xsl:otherwise>
 								</xsl:choose>
@@ -250,14 +250,14 @@
 												<xsl:value-of select="@title" />
 											</xsl:when>
 											<xsl:otherwise>
-												<include item="devlang_{@codeLanguage}" />
+												<include item="devlang_{@codeLanguage}" undefined="{@codeLanguage}"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:when>
 									<xsl:otherwise>
 										<!-- Use onclick rather than href or HV 2.0 messes up the link -->
 										<a href="#" onclick="javascript:ChangeTab('{$v_id}','{@style}','{position()}','{$v_nodeCount}');return false;">
-											<include item="devlang_{@codeLanguage}" />
+											<include item="devlang_{@codeLanguage}" undefined="{@codeLanguage}"/>
 										</a>
 									</xsl:otherwise>
 								</xsl:choose>

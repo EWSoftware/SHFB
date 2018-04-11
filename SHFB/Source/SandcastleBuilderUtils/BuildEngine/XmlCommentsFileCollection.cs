@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/27/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 04/10/2018
+// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the XML comments files
@@ -150,9 +150,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 groupId = " groupId=\"Project_Comments_{@UniqueId}\" ";
             }
 
-            // The path is not altered if the file is already in or under the working folder (i.e. files added
-            // by plug-ins).
-            foreach(XmlCommentsFile f in this)
+            foreach(XmlCommentsFile f in this.Where(cf => cf.IsValid))
+            {
+                // The path is not altered if the file is already in or under the working folder (i.e. files
+                // added by plug-ins).
                 if(!f.SourcePath.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase))
                 {
                     sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}{2}\"{3}{4} />\r\n",
@@ -164,6 +165,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}\"{2}{3} />\r\n",
                         tagName, HttpUtility.HtmlEncode(f.SourcePath), dupWarning, groupId);
                 }
+            }
 
             return sb.ToString();
         }
@@ -178,7 +180,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             HashSet<string> seenNamespaces = new HashSet<string>();
             string ns;
 
-            foreach(XmlCommentsFile f in this)
+            foreach(XmlCommentsFile f in this.Where(cf => cf.IsValid))
             {
                 // Find all comments elements with a reference.  XML comments files may be ill-formed so
                 // ignore any elements without a cref attribute.

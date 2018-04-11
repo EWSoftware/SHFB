@@ -510,9 +510,15 @@ namespace SandcastleBuilder.Components
             }
 
             // Initialize the code colorizer
-            colorizer = new CodeColorizer(syntaxFile, styleFile);
-            colorizer.UseDefaultTitle = useDefaultTitle;
-            colorizer.TabSize = defaultTabSize;
+            colorizer = new CodeColorizer(syntaxFile, styleFile)
+            {
+                UseDefaultTitle = useDefaultTitle,
+                TabSize = defaultTabSize
+            };
+
+            // Share the language ID mappings so that other components like the Syntax Component can get titles
+            // for languages it doesn't know about.
+            BuildComponentCore.Data["LanguageIds"] = colorizer.FriendlyNames;
 
             // Create the XPath queries
             var context = new CustomContext();

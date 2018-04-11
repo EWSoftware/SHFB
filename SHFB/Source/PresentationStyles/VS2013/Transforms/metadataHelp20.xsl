@@ -562,7 +562,7 @@
 			</xsl:variable>
 			<xsl:if test="normalize-space($v_devlang)!=''">
 				<MSHelp:Attr Name="DevLang">
-					<includeAttribute name="Value" item="metaLang_{$v_devlang}"/>
+					<includeAttribute name="Value" item="metaLang_{$v_devlang}" undefined="{$v_devlang}"/>
 				</MSHelp:Attr>
 			</xsl:if>
 		</xsl:for-each>
@@ -595,7 +595,7 @@
 					<xsl:when test="contains($languagesList,concat($v_devlang,';'))"/>
 					<xsl:otherwise>
 						<MSHelp:Attr Name="DevLang">
-							<includeAttribute name="Value" item="metaLang_{$v_devlang}"/>
+							<includeAttribute name="Value" item="metaLang_{$v_devlang}" undefined="{$v_devlang}"/>
 						</MSHelp:Attr>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -631,7 +631,7 @@
 					<xsl:when test="contains($languagesList2,concat($v_devlang,';'))"/>
 					<xsl:otherwise>
 						<MSHelp:Attr Name="DevLang">
-							<includeAttribute name="Value" item="metaLang_{$v_devlang}"/>
+							<includeAttribute name="Value" item="metaLang_{$v_devlang}" undefined="{$v_devlang}"/>
 						</MSHelp:Attr>
 					</xsl:otherwise>
 				</xsl:choose>

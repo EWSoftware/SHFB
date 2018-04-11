@@ -111,7 +111,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>&#xa;**</xsl:text>
-					<include item="devlang_{$p_codeLang}"/>
+					<include item="devlang_{$p_codeLang}" undefined="{$p_codeLang}"/>
 					<xsl:text>**</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -120,7 +120,7 @@
 		<xsl:text>&#xa;```</xsl:text>
 		<xsl:if test="normalize-space($p_codeLang) != '' and $p_codeLang != 'other' and $p_codeLang != 'none'">
 			<xsl:text> </xsl:text>
-			<include item="devlang_{$p_codeLang}"/>
+			<include item="devlang_{$p_codeLang}" undefined="{$p_codeLang}"/>
 		</xsl:if>
 		<xsl:text>&#xa;</xsl:text>
 		<!-- Use apply-templates rather than copy-of so ddue:codeFeaturedElement nodes are transformed -->

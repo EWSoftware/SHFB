@@ -22,7 +22,7 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.5" shfbVersion="2017.12.30.2" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.5" shfbVersion="2017.12.31.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must

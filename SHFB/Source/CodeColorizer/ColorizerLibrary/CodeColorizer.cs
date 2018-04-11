@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 01/15/2016
+// Updated : 03/27/2018
 // Compiler: Microsoft Visual C#
 //
 // This is used to colorize blocks of code for output as HTML.  The original Code Project article by Jonathan
@@ -437,19 +437,14 @@ namespace ColorizerLibrary
         /// <summary>
         /// This is used to return a read-only dictionary that maps the language IDs to friendly names.
         /// </summary>
-        public IReadOnlyDictionary<string, string> FriendlyNames
-        {
-            get { return friendlyNames; }
-        }
+        public IReadOnlyDictionary<string, string> FriendlyNames => friendlyNames;
 
         /// <summary>
         /// This is used to return a read-only dictionary that maps the alternate IDs to actual IDs present in
         /// the syntax file.
         /// </summary>
-        public IReadOnlyDictionary<string, string> AlternateIds
-        {
-            get { return alternateIds; }
-        }
+        public IReadOnlyDictionary<string, string> AlternateIds => alternateIds;
+
         #endregion
 
 #if DEBUG && BENCHMARK
@@ -500,8 +495,8 @@ namespace ColorizerLibrary
             replaceByCodeDelegate = new MatchEvaluator(ReplaceByCode);
 
             // Friendly name dictionary
-            friendlyNames = new Dictionary<string, string>();
-            alternateIds = new Dictionary<string, string>();
+            friendlyNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            alternateIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>

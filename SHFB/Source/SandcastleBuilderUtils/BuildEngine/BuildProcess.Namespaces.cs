@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/27/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 04/10/2018
+// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
@@ -35,7 +35,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Linq;
 
 using Sandcastle.Core;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -50,6 +49,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private XmlCommentsFileCollection commentsFiles;
 
         private static Regex reStripWhitespace = new Regex(@"\s");
+
         #endregion
 
         #region Properties
@@ -58,10 +58,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This read-only property returns the XML comments files collection
         /// </summary>
-        public XmlCommentsFileCollection CommentsFiles
-        {
-            get { return commentsFiles; }
-        }
+        public XmlCommentsFileCollection CommentsFiles => commentsFiles;
+
         #endregion
 
         #region Namespace summary methods

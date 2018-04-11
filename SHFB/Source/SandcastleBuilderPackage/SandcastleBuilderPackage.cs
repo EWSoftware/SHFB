@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 03/26/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
@@ -356,8 +356,18 @@ namespace SandcastleBuilder.Package
                         solutionEvents.AfterClosing += solutionEvents_AfterClosing;
                 }
 
-                // Set the owning window for WPF modal dialogs to the main Visual Studio window
-                Sandcastle.Core.WpfHelpers.MainWindowHandle = new IntPtr(dte.MainWindow.HWnd);
+                try
+                {
+                    // Set the owning window for WPF modal dialogs to the main Visual Studio window
+                    Sandcastle.Core.WpfHelpers.MainWindowHandle = new IntPtr(dte.MainWindow.HWnd);
+                }
+                catch
+                {
+                    // Ignore exceptions.  There is no main window when invoked for a command line build.
+                    // It may also try to load the package before the main window is available if tool windows
+                    // were left open.  Worst case, modal dialogs may not appear over the main form on dual
+                    // monitor systems.
+                }
             }
         }
 

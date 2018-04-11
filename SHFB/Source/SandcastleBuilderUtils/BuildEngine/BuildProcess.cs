@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/24/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
+// Updated : 01/23/2018
+// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1143,6 +1143,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         commentsFiles.Insert(idx++, new XmlCommentsFile(workingPath));
                     }
                 }
+
+                // Issue a warning if any invalid XML comments files are found.  These will be ignored.  These
+                // occur most often in NuGet packages.  Contact the package owner if you want them fixed.
+                foreach(var f in commentsFiles.Where(cf => !cf.IsValid))
+                    this.ReportWarning("BE0031", "Ignoring invalid XML comments file '{0}'.  Reason: {1}",
+                        f.SourcePath, f.InvalidReason);
 
                 // Expand <inheritdoc /> tags?
                 if(commentsFiles.ContainsInheritedDocumentation)
@@ -2336,11 +2342,11 @@ AllDone:
                         msbProject.CloneReferenceInfo(packageReferenceResolver, referenceDictionary);
                     }
 
-                    // If we saw multiple framework types in the projects, stop now.  Due to the different
-                    // assemblies used, we cannot mix the project types within the same SHFB project.  They will
-                    // need to be documented separately and can be merged using the Version Builder plug-in if
-                    // needed.
-                    if(!PlatformType.PlatformsAreCompatible(targetFrameworksSeen.Select(t => t.Item1)))
+                    // If we saw multiple incompatible framework types in the projects, stop now.  Due to the
+                    // different assemblies used, we cannot mix the project types within the same SHFB project.
+                    // They will need to be documented separately and can be merged using the Version Builder
+                    // plug-in if needed.
+                    if(targetFrameworksSeen.Count > 1 && !PlatformType.PlatformsAreCompatible(targetFrameworksSeen.Select(t => t.Item1)))
                         throw new BuilderException("BE0070", "Differing framework types were detected in the " +
                             "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different " +
                             "sets of assemblies used, the different frameworks cannot be mixed within the same " +

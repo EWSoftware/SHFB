@@ -16,7 +16,7 @@
 // 11/19/2013 - EFW - Merged common code from AllDocumentedFilter and ExternalDocumentedFilter into this class.
 // 11/20/2013 - EFW - Cleaned up the code and removed unused members.  Merged all SHFB visibility options into
 // the API filter.
-// 01/09/2013 - EFW - Added a workaround to allow documenting the compiler generated public types in WINMD
+// 01/09/2014 - EFW - Added a workaround to allow documenting the compiler generated public types in WINMD
 // assemblies that actually represent user code.
 // 12/10/2014 - EFW - Added prefix exclusion for "put_" used on Windows Store/Phone assembly properties
 // 06/19/2015 - EFW - Added support for including public compiler generated types/members
@@ -530,8 +530,8 @@ namespace Microsoft.Ddue.Tools.Reflection
                         // as an internal class prefixed with "<CLR>" and generates a type with the public
                         // members and tagged with a CompilerGenerated attribute.  So, if compiler generated but
                         // has a matching "<CLR>" prefixed type, let it through.
-                        if(curType.DeclaringModule != null && !curType.DeclaringModule.Types.Any(
-                          t => t.Name.Name == "<CLR>" + curType.Name.Name))
+                        if(curType.DeclaringModule == null || curType.Name == null || !curType.DeclaringModule.Types.Any(
+                          t => t.Name != null && t.Name.Name == "<CLR>" + curType.Name.Name))
                             return false;
                     }
 
@@ -836,7 +836,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 return this.IsVisible(type);
             }
-                
+
             if(this.IncludeInternals && (member.IsAssembly || member.IsFamilyAndAssembly))
                 return this.IsVisible(type);
 

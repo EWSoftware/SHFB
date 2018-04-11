@@ -91,7 +91,7 @@ internal static partial class AssemblyInfo
     //
     // This is used to set the assembly file version.  This will change with each new release.  MSIs only
     // support a Major value between 0 and 255 so we drop the century from the year on this one.
-    public const string FileVersion = "17.12.30.2";
+    public const string FileVersion = "17.12.31.0";
 
     // Common product version
     //

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/10/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
+// Updated : 04/10/2018
+// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an XML comment file and is used when searching for and adding missing
@@ -39,11 +39,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        private string sourcePath;
+        private string sourcePath, invalidReason;
         private Encoding enc;
         private XmlDocument comments;
         private XmlNode members;
-        private bool wasModified;
+        private bool wasModified, isValid;
 
         #endregion
 
@@ -63,14 +63,32 @@ namespace SandcastleBuilder.Utils.BuildEngine
             get
             {
                 if(comments == null)
-                {
-                    enc = Encoding.UTF8;
-                    Utility.ReadWithEncoding(sourcePath, ref enc);
-                }
+                    this.LoadXmlComments();
 
                 return enc;
             }
         }
+
+        /// <summary>
+        /// This read-only property indicates whether or not the comments file contains valid, well-formed XML
+        /// </summary>
+        /// <returns>True if it does, false if not.  Invalid XML comments files will not be used as a source
+        /// for comments during the build.  <see cref="InvalidReason"/> returns the cause of the problem.</returns>
+        public bool IsValid
+        {
+            get
+            {
+                if(comments == null)
+                    this.LoadXmlComments();
+
+                return isValid;
+            }
+        }
+
+        /// <summary>
+        /// If <see cref="IsValid"/> returns false, this returns the reason that the XML comments file is invalid
+        /// </summary>
+        public string InvalidReason => invalidReason;
 
         /// <summary>
         /// This is used to load the comments file on first use
@@ -80,19 +98,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             get
             {
                 if(comments == null)
-                {
-                    // Although Visual Studio doesn't add an encoding, the files are UTF-8 encoded
-                    enc = Encoding.UTF8;
-
-                    comments = new XmlDocument();
-
-                    // Read it with the appropriate encoding
-                    comments.LoadXml(Utility.ReadWithEncoding(sourcePath, ref enc));
-
-                    comments.NodeChanged += comments_NodeChanged;
-                    comments.NodeInserted += comments_NodeChanged;
-                    comments.NodeRemoved += comments_NodeChanged;
-                }
+                    this.LoadXmlComments();
 
                 return comments;
             }
@@ -172,6 +178,33 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         #region Methods
         //=====================================================================
+
+        /// <summary>
+        /// This is used to load the XML comments file and ensure it is valid
+        /// </summary>
+        private void LoadXmlComments()
+        {
+            // Although Visual Studio doesn't add an encoding, the files are UTF-8 encoded
+            enc = Encoding.UTF8;
+            comments = new XmlDocument();
+
+            try
+            {
+                comments.LoadXml(Utility.ReadWithEncoding(sourcePath, ref enc));
+                isValid = true;
+                invalidReason = null;
+            }
+            catch(Exception ex)
+            {
+                isValid = false;
+                invalidReason = ex.Message;
+                comments.LoadXml("<?xml version=\"1.0\"?><doc><assembly><name>BadXmlComments</name></assembly><members/></doc>");
+            }
+
+            comments.NodeChanged += comments_NodeChanged;
+            comments.NodeInserted += comments_NodeChanged;
+            comments.NodeRemoved += comments_NodeChanged;
+        }
 
         /// <summary>
         /// Save the comments file if it was modified

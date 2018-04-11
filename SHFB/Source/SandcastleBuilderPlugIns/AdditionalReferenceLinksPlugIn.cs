@@ -394,7 +394,7 @@ namespace SandcastleBuilder.PlugIns
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
-                string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir").EvaluatedValue;
+                string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir")?.EvaluatedValue;
 
                 if(!String.IsNullOrEmpty(outDir) && outDir != @".\")
                     project.MSBuildOutDir = outDir;
