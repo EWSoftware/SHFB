@@ -9,7 +9,6 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
     using OLECMDEXECOPT = Microsoft.VisualStudio.OLE.Interop.OLECMDEXECOPT;
     using OLECMDF = Microsoft.VisualStudio.OLE.Interop.OLECMDF;
     using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
-    using VsMenus = Microsoft.VisualStudio.Shell.VsMenus;
 
     /// <summary>
     /// This is the base class for implementations of <see cref="IOleCommandTarget"/> in managed code.
@@ -162,23 +161,6 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
                 throw new ObjectDisposedException(GetType().Name);
         }
 
-        private int ExecCommand(ref Guid guidCmdGroup, uint nCmdID, OLECMDEXECOPT nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
-        {
-            int rc = VSConstants.S_OK;
-
-            if(!HandlePreExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut) && _next != null)
-            {
-                // Pass it along the chain.
-                rc = this.InnerExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-                if(!ErrorHandler.Succeeded(rc))
-                    return rc;
-
-                HandlePostExec(ref guidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-            }
-
-            return rc;
-        }
-
         /// <summary>
         /// This method supports the implementation for commands which are directly implemented by this command filter.
         /// </summary>
@@ -227,11 +209,6 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         {
         }
 
-        protected virtual int QueryParameterList(ref Guid commandGroup, uint commandId, OLECMDEXECOPT executionOptions, IntPtr pvaIn, IntPtr pvaOut)
-        {
-            return (int)OleConstants.OLECMDERR_E_NOTSUPPORTED;
-        }
-
         /// <summary>
         /// Gets the current status of a particular command.
         /// </summary>
@@ -249,22 +226,18 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         /// <inheritdoc/>
         int IOleCommandTarget.Exec(ref Guid guidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
-            ushort lo = (ushort)(nCmdexecopt & (uint)0xffff);
+            int rc = VSConstants.S_OK;
 
-            switch(lo)
+            if(!HandlePreExec(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut) && _next != null)
             {
-                case (ushort)OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP:
-                    if((nCmdexecopt >> 16) == VsMenus.VSCmdOptQueryParameterList)
-                    {
-                        return QueryParameterList(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
-                    }
-                    break;
+                // Pass it along the chain.
+                rc = this.InnerExec(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
 
-                default:
-                    return ExecCommand(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
+                if(ErrorHandler.Succeeded(rc))
+                    HandlePostExec(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
             }
 
-            return (int)OleConstants.OLECMDERR_E_NOTSUPPORTED;
+            return rc;
         }
 
         /// <inheritdoc/>
