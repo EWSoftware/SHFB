@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ReflectionDataSet Platform=".NETFramework" Version="4.7.1" Title=".NET Framework 4.7.1">
+<ReflectionDataSet Platform=".NETFramework" Version="4.7.2" Title=".NET Framework 4.7.2">
   <AssemblyLocations>
-    <Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1">
+    <Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2">
       <AssemblyDetails Filename="Accessibility.dll" Name="Accessibility" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="CustomMarshalers.dll" Name="CustomMarshalers" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="ISymWrapper.dll" Name="ISymWrapper" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -57,7 +57,7 @@
       <AssemblyDetails Filename="System.Deployment.dll" Name="System.Deployment" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Design.dll" Name="System.Design" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Device.dll" Name="System.Device" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
-      <AssemblyDetails Filename="System.Diagnostics.Tracing.dll" Name="System.Diagnostics.Tracing" Version="4.1.2.0" PublicKeyToken="b03f5f7f11d50a3a" />
+      <AssemblyDetails Filename="System.Diagnostics.Tracing.dll" Name="System.Diagnostics.Tracing" Version="4.2.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.DirectoryServices.dll" Name="System.DirectoryServices" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.DirectoryServices.AccountManagement.dll" Name="System.DirectoryServices.AccountManagement" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.DirectoryServices.Protocols.dll" Name="System.DirectoryServices.Protocols" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
@@ -68,14 +68,14 @@
       <AssemblyDetails Filename="System.IdentityModel.dll" Name="System.IdentityModel" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.IdentityModel.Selectors.dll" Name="System.IdentityModel.Selectors" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.IdentityModel.Services.dll" Name="System.IdentityModel.Services" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
-      <AssemblyDetails Filename="System.IO.Compression.dll" Name="System.IO.Compression" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
+      <AssemblyDetails Filename="System.IO.Compression.dll" Name="System.IO.Compression" Version="4.2.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.IO.Compression.FileSystem.dll" Name="System.IO.Compression.FileSystem" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.IO.Log.dll" Name="System.IO.Log" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Management.dll" Name="System.Management" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Management.Instrumentation.dll" Name="System.Management.Instrumentation" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.Messaging.dll" Name="System.Messaging" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Net.dll" Name="System.Net" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
-      <AssemblyDetails Filename="System.Net.Http.dll" Name="System.Net.Http" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
+      <AssemblyDetails Filename="System.Net.Http.dll" Name="System.Net.Http" Version="4.2.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Net.Http.WebRequest.dll" Name="System.Net.Http.WebRequest" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="System.Numerics.dll" Name="System.Numerics" Version="4.0.0.0" PublicKeyToken="b77a5c561934e089" />
       <AssemblyDetails Filename="System.Printing.dll" Name="System.Printing" Version="4.0.0.0" PublicKeyToken="31bf3856ad364e35" />

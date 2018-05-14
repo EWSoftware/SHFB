@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/10/2017
-// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
+// Updated : 05/08/2018
+// Note    : Copyright 2008-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode tool that scans XML comments files for <inheritdoc /> tags and produces a
@@ -85,7 +85,7 @@ namespace SandcastleBuilder.InheritedDocumentation
 
         // For base type/interface inheritance, these classes should be used as a last resort in the given order.
         // Typically, we don't want to inherit from these but from something more useful in the hierarchy.
-        private static List<string> lastResortInheritableTypes = new List<string>
+        private static readonly List<string> lastResortInheritableTypes = new List<string>
         {
             "T:System.IDisposable",
             "T:System.Object"
@@ -121,8 +121,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             try
             {
                 commentsFiles = new ConcurrentBag<XPathNavigator>();
-                inheritedDocs = new XmlDocument();
-                inheritedDocs.PreserveWhitespace = true;
+                inheritedDocs = new XmlDocument { PreserveWhitespace = true };
                 inheritedDocs.LoadXml(@"<doc>
   <assembly>
     <name>_InheritedDocs_</name>
@@ -593,55 +592,65 @@ namespace SandcastleBuilder.InheritedDocumentation
             if(String.IsNullOrEmpty(filter))
                 filter = "*";
 
-            // Merge based on the element name
-            foreach(XPathNavigator element in fromMember.Select(filter))
-                switch(element.Name)
-                {
-                    case "example":     // Ignore if already present
-                    case "exclude":
-                    case "filterpriority":
-                    case "preliminary":
-                    case "summary":     
-                    case "remarks":
-                    case "returns":
-                    case "threadsafety":
-                    case "value":
-                        if(toMember.SelectSingleNode(element.Name) == null)
-                            toMember.AppendChild(element);
-                        break;
-
-                    case "overloads":
-                        // Ignore completely.  We only need one.
-                        break;
-
-                    default:
-                        if(!element.HasAttributes)
-                            toMember.AppendChild(element);
-                        else
-                        {
-                            // Ignore if there is a duplicate by attribute
-                            // name and value.
-                            duplicate = null;
-
-                            foreach(string attrName in dupAttrs)
-                            {
-                                attrValue = element.GetAttribute(attrName, String.Empty);
-
-                                if(!String.IsNullOrEmpty(attrValue))
-                                {
-                                    duplicate = toMember.SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
-                                        "{0}[@{1}='{2}']", element.Name, attrName, attrValue));
-
-                                    if(duplicate != null)
-                                        break;
-                                }
-                            }
-
-                            if(duplicate == null)
+            try
+            {
+                // Merge based on the element name
+                foreach(XPathNavigator element in fromMember.Select(filter))
+                    switch(element.Name)
+                    {
+                        case "example":     // Ignore if already present
+                        case "exclude":
+                        case "filterpriority":
+                        case "preliminary":
+                        case "summary":
+                        case "remarks":
+                        case "returns":
+                        case "threadsafety":
+                        case "value":
+                            if(toMember.SelectSingleNode(element.Name) == null)
                                 toMember.AppendChild(element);
-                        }
-                        break;
-                }
+                            break;
+
+                        case "overloads":
+                            // Ignore completely.  We only need one.
+                            break;
+
+                        default:
+                            if(!element.HasAttributes)
+                                toMember.AppendChild(element);
+                            else
+                            {
+                                // Ignore if there is a duplicate by attribute
+                                // name and value.
+                                duplicate = null;
+
+                                foreach(string attrName in dupAttrs)
+                                {
+                                    attrValue = element.GetAttribute(attrName, String.Empty);
+
+                                    if(!String.IsNullOrEmpty(attrValue))
+                                    {
+                                        duplicate = toMember.SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
+                                            "{0}[@{1}='{2}']", element.Name, attrName, attrValue));
+
+                                        if(duplicate != null)
+                                            break;
+                                    }
+                                }
+
+                                if(duplicate == null)
+                                    toMember.AppendChild(element);
+                            }
+                            break;
+                    }
+            }
+            catch(XPathException xpe)
+            {
+                // If the XPath query causes an error, include the member ID and the expression to help
+                // locate the problem.
+                throw new XPathException("An XPath exception occurred inheriting comments for:\r\n" +
+                    $"    Member ID: {memberStack.Peek()}\r\n   Expression: {filter}\r\n", xpe);
+            }
         }
         #endregion
 
@@ -717,24 +726,34 @@ namespace SandcastleBuilder.InheritedDocumentation
                 // Inherit from a member other than the base?
                 cref = inheritTag.Attributes["cref"];
 
-                baseMember = LocateBaseDocumentation(name, (cref != null) ? cref.Value : null);
+                baseMember = LocateBaseDocumentation(name, cref?.Value);
 
                 if(baseMember != null && sb.Length != 0)
                 {
                     content = inheritedDocs.CreateDocumentFragment();
 
                     // Merge the content
-                    foreach(XPathNavigator element in baseMember.Select(sb.ToString()))
+                    try
                     {
-                        newNode = inheritedDocs.CreateDocumentFragment();
+                        foreach(XPathNavigator element in baseMember.Select(sb.ToString()))
+                        {
+                            newNode = inheritedDocs.CreateDocumentFragment();
 
-                        // If there's no filter, we don't want the tag
-                        if(filter != null)
-                            newNode.InnerXml = element.OuterXml;
-                        else
-                            newNode.InnerXml = element.InnerXml;
+                            // If there's no filter, we don't want the tag
+                            if(filter != null)
+                                newNode.InnerXml = element.OuterXml;
+                            else
+                                newNode.InnerXml = element.InnerXml;
 
-                        content.AppendChild(newNode);
+                            content.AppendChild(newNode);
+                        }
+                    }
+                    catch(XPathException xpe)
+                    {
+                        // If the XPath query causes an error, include the member ID and the expression to help
+                        // locate the problem.
+                        throw new XPathException("An XPath exception occurred inheriting comments for:\r\n" +
+                            $"    Member ID: {name}\r\n   Expression: {sb.ToString()}\r\n", xpe);
                     }
 
                     // Replace the tag with the content

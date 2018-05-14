@@ -900,7 +900,10 @@
           <Component Id="cmp0205B61EE2BA9D9B46A9807E833B9D9F" Guid="{05765729-7776-4C0D-87E4-605B0E3C206E}">
             <File Id="fil139DA29F0D36815B0CB3275B484844C2" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.7.1.reflection" />
           </Component>
-          <Component Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" Guid="{46910D7B-F2DC-4BAE-B113-6453ED0E458A}">
+          <Component Id="cmp2E808CD21D1AF4A761938FE69B080CC0" Guid="{225043F6-81AB-47D9-B71B-B06287B4D3F4}">
+            <File Id="fil17587E872103A2FF3B0584B70F58121B" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.7.2.reflection" />
+          </Component>
+          <Component Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" Guid="{E363406A-7E9A-4775-A32E-AC125424CC21}">
             <File Id="fil5E58A067B18DEEBC1AF6026D7E4C3659" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.7.reflection" />
           </Component>
           <Component Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" Guid="{38F772F3-C096-4C3D-98B0-269AD706B26F}">
@@ -6637,14 +6640,14 @@
                 </Component>
               </Directory>
               <Directory Id="dir59C9E931FF166D9566F35B45A8D2480C" Name="_rels">
-                <Component Id="cmpFB16D59E07C6E412E3DD0E4B996149F9" Guid="{443B8A5A-5478-443A-A199-4A38EBEE3D17}">
-                  <File Id="fil112D506CE9DD86159E072311365A462B" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\word\_rels\document.xml_rels" />
+                <Component Id="cmpFB17C6355E756F882C26F5DE7CA5E6F0" Guid="{248A45EA-CA62-4BAA-97E5-115D265A4B0E}">
+                  <File Id="fil6852861CCD73E89BBC0A16F8809360FA" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\word\_rels\document.xml_rels" />
                 </Component>
               </Directory>
             </Directory>
             <Directory Id="dir689A62E8820CAA1B474A921DA39A14D4" Name="_rels">
-              <Component Id="cmpA06B5BBCA603007B0CF6B0D0E62A020B" Guid="{71131682-5940-45BB-9E97-9ADF45C3BEE0}">
-                <File Id="fil303D867538F30D34E882CF8C04AA15D7" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\_rels\rels.xml_rels" />
+              <Component Id="cmp3E62F689B1C1D913321A9A96940757CF" Guid="{C9BDE4BC-2249-4F8D-ACBC-D9087710E80F}">
+                <File Id="filFF89B843D4CB6C9DBA6878F6B7AD5C8A" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\OpenXml\DocumentParts\_rels\rels.xml_rels" />
               </Component>
             </Directory>
           </Directory>
@@ -8161,6 +8164,7 @@
       <ComponentRef Id="cmp71D5260815FB10141B306BFAEB60C456" />
       <ComponentRef Id="cmp9D7DB6432C36DFEC71099C6185F7C4A2" />
       <ComponentRef Id="cmp0205B61EE2BA9D9B46A9807E833B9D9F" />
+      <ComponentRef Id="cmp2E808CD21D1AF4A761938FE69B080CC0" />
       <ComponentRef Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" />
       <ComponentRef Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" />
       <ComponentRef Id="cmpAAF8097021D6704C624E92321C700098" />

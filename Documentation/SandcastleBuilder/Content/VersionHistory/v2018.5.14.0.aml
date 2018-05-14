@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0cb436aa-0a55-4176-ab41-4bae20a25467" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version vNext." />
+		</introduction>
+
+		<section address="General">
+			<title>General</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added support for colorizing Xamarin Android code blocks (those with a language ID of
+<codeInline>axml</codeInline>).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added reflection data set files for .NET Framework 4.7.1 and 4.7.2.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Merged changes from Emmanuel Osimosu to fix a null reference exception that could occur under
+certain conditions in MRefBuilder.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Shared Content Component so that it looks for an <codeInline>undefined</codeInline>
+attribute on content items.  If the content item is not found, it uses the value of the <codeInline>undefined</codeInline>
+attribute as the content item value.  This allows unknown code languages to be added without having to modify all
+of the presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Syntax Component so that if an unknown language ID is encountered, it attempts to
+find a friendly name using the code colorizer definitions or, failing that, uses the language ID as the title
+rather than omitting it completely.  This allows unknown languages to be added without the need for modifying the
+presentation styles or code colorizer rules.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added member ID and XPath expression info to XPath exceptions in the GenerateInheritedDocs tool
+to help locate the cause of such problems in the XML comments (i.e. invalid expressions in the
+<codeInline>select</codeInline> attribute).</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the project platform check so that it works properly with .NETPortable project types.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Visual Studio package so that the extended completion set handler's command filter
+does not break other Visual Studio commands like <codeInline>Edit.Goto</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Visual Studio package so that it does not throw an exception when
+<localUri>devenv.exe</localUri> is invoked for a command line build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Additional Reference Links plug-in so that it does not fail if the
+<codeInline>OutDir</codeInline> variable is undefined.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Documented Entities Only plug-in so that it correctly includes commented types with
+no members other than an excluded auto-documented default constructor.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added another member ID fix-up to the common C++ set in the Member ID Fix-Ups plug-in
+submitted by Andy Dennie.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added XML comments file validation checks to throw out those with ill-formed content.  It now
+issues a <link xlink:href="0d3d6929-8094-4133-be7e-4e66222c7b53">BE0031</link> warning instead.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated all presentation styles to add the <codeInline>undefined</codeInline> element to code
+language content item elements to pass a value to use for the language if a named shared content item does not
+exist for it.  This allows unknown code languages to be added without having to modify all of the presentation
+styles.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

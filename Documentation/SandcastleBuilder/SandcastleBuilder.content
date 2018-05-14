@@ -762,6 +762,11 @@
           <HelpKeyword index="K" term="errors, BE0030" />
         </HelpKeywords>
       </Topic>
+      <Topic id="0d3d6929-8094-4133-be7e-4e66222c7b53" visible="True" title="BE0031: Ignoring invalid XML comments file '[file]'.  Reason: [reason]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0031" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="bc38b398-4cca-4972-b4b5-966def8428b4" visible="True" title="BE0032: Reflection data files for the selected framework do not exist yet">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0032" />
@@ -1382,7 +1387,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="3ca9bf44-db1d-45f7-833c-a046d724da1e" visible="True" isSelected="true" title="Version 2017.12.30.2">
+    <Topic id="0cb436aa-0a55-4176-ab41-4bae20a25467" visible="True" isSelected="true" title="Version 2018.5.14.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2018.5.14.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3ca9bf44-db1d-45f7-833c-a046d724da1e" visible="True" title="Version 2017.12.30.2">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2017.12.30.2" />
       </HelpKeywords>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DocumentedEntitiesOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/11/2017
+// Updated : 05/07/2018
 // Note    : Copyright 2016-2017, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -88,10 +88,7 @@ namespace SandcastleBuilder.PlugIns
             /// <summary>
             /// This returns the member ID type (N = Namespace, T = Type, anything else = member)
             /// </summary>
-            public char IdType
-            {
-                get { return this.MemberId[0]; }
-            }
+            public char IdType => this.MemberId[0];
 
             /// <summary>
             /// This is used to get or set the namespace name
@@ -118,7 +115,8 @@ namespace SandcastleBuilder.PlugIns
             /// method.
             /// </summary>
             /// <value>If true and no other members are documented, the type containing the auto-documented
-            /// constructors and dispose methods will be excluded.</value>
+            /// constructors and dispose methods will be excluded unless the related auto-document options are
+            /// enabled.</value>
             public bool IsAutoDocumented { get; set; }
 
             /// <summary>
@@ -166,9 +164,7 @@ namespace SandcastleBuilder.PlugIns
             /// <param name="member">The reflection information file node from which to obtain the details</param>
             public static DocumentationState FromApiMember(XPathNavigator member)
             {
-                var docState = new DocumentationState();
-
-                docState.MemberId = member.SelectSingleNode("@id").Value;
+                var docState = new DocumentationState { MemberId = member.SelectSingleNode("@id").Value };
 
                 if(String.IsNullOrWhiteSpace(docState.MemberId) || docState.MemberId.Length < 2 ||
                   docState.IdType == 'G' || docState.MemberId[1] != ':')
@@ -430,34 +426,44 @@ namespace SandcastleBuilder.PlugIns
                             foreach(var memberGroup in typeDoc.Members.GroupBy(m => m.MemberName))
                             {
                                 isAutoDocumented = false;
+                                isDocumented = memberGroup.All(m => m.IsDocumented);
 
                                 // Auto-document static constructors if wanted.  Only auto-document parameterless
                                 // constructors if wanted and if there are no other constructors or if all other
-                                // constructors are documented as well.  Only auto-document the standard dispose methods
-                                // if wanted.  For all others, base it on whether or not any single method is excluded
-                                // which is how the API filter works.  If one overload is excluded, they are all excluded.
-                                if(memberGroup.Key == ".cctor" && autoDocConstructors)
+                                // constructors are documented as well.  Only auto-document the standard dispose
+                                // methods if wanted.  For all others or if not auto-documenting, base it on
+                                // whether or not any single method is excluded which is how the API filter
+                                // works.  If one overload is excluded, they are all excluded.
+                                if(memberGroup.Key == ".cctor")
                                 {
                                     isAutoDocumented = true;
-                                    isDocumented = !memberGroup.First().IsExplicitlyExcluded;
+
+                                    if(autoDocConstructors)
+                                        isDocumented = !memberGroup.First().IsExplicitlyExcluded;
                                 }
                                 else
-                                    if(memberGroup.Key == ".ctor" && autoDocConstructors)
+                                    if(memberGroup.Key == ".ctor")
                                     {
                                         isAutoDocumented = true;
-                                        isDocumented = (memberGroup.All(m => !m.IsExplicitlyExcluded) &&
-                                            memberGroup.Where(m => m.MemberId.IndexOf('(') != -1).All(m => m.IsDocumented));
+
+                                        if(autoDocConstructors)
+                                        {
+                                            isDocumented = (memberGroup.All(m => !m.IsExplicitlyExcluded) &&
+                                                memberGroup.Where(m => m.MemberId.IndexOf('(') != -1).All(m => m.IsDocumented));
+                                        }
                                     }
                                     else
-                                        if(memberGroup.Key == "Dispose" && autoDocDispose)
+                                        if(memberGroup.Key == "Dispose")
                                         {
                                             isAutoDocumented = true;
-                                            isDocumented = memberGroup.All(m => !m.IsExplicitlyExcluded &&
-                                                (m.MemberId.EndsWith(".Dispose", StringComparison.Ordinal) ||
-                                                m.MemberId.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal)));
+
+                                            if(autoDocDispose)
+                                            {
+                                                isDocumented = memberGroup.All(m => !m.IsExplicitlyExcluded &&
+                                                    (m.MemberId.EndsWith(".Dispose", StringComparison.Ordinal) ||
+                                                    m.MemberId.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal)));
+                                            }
                                         }
-                                        else
-                                            isDocumented = memberGroup.All(m => m.IsDocumented);
 
                                 foreach(var m in memberGroup)
                                 {
@@ -466,20 +472,25 @@ namespace SandcastleBuilder.PlugIns
                                 }
                             }
 
-                            // Document the type if any members are documented or if it is documented but has no members
+                            // Document the type if any members are documented or if it is documented but has no
+                            // members or only has undocumented members (auto-documented members are disabled
+                            // and/or it has only explicitly excluded or undocumented members).
                             originalTypeDocState = typeDoc.IsDocumented;
 
                             typeDoc.IsDocumented = (typeDoc.Members.Any(m => m.IsDocumented) ||
-                                (originalTypeDocState && typeDoc.Members.Count == 0));
+                                (originalTypeDocState && (typeDoc.Members.Count == 0 ||
+                                typeDoc.Members.All(m => !m.IsDocumented))));
 
-                            // One exception is if the only members documented are the auto-documented
+                            // An exception is if the only members documented are the auto-documented
                             // constructors and dispose methods.  In that case, exclude the type unless the
                             // type has documentation as indicated by the original state.
                             if(!originalTypeDocState && typeDoc.IsDocumented &&
                               (typeDoc.Members.Count(m => !m.IsAutoDocumented) != 0 ||
                               typeDoc.Members.All(m => m.IsAutoDocumented)) &&
                               !typeDoc.Members.Any(m => !m.IsAutoDocumented && m.IsDocumented))
+                            {
                                 typeDoc.IsDocumented = false;
+                            }
                         }
                     }
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 11/21/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 05/14/2018
+// Note    : Copyright 2017-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build category properties
@@ -335,7 +335,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             IPresentationStyleMetadata pss;
 
-            if(presentationStyles == null)
+            if(presentationStyles == null || cboPresentationStyle.SelectedItem == null)
                 return;
 
             pss = (IPresentationStyleMetadata)cboPresentationStyle.SelectedItem;
@@ -463,11 +463,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 isBinding = true;
 
                 cboPresentationStyle.IsEnabled = lbSyntaxFilters.IsEnabled = lbHelpFileFormat.IsEnabled = true;
-                cboPresentationStyle.ItemsSource = null;
+                cboPresentationStyle.ItemsSource = lbHelpFileFormat.ItemsSource = lbSyntaxFilters.ItemsSource = null;
 
-                lbHelpFileFormat.Items.Clear();
-                lbSyntaxFilters.Items.Clear();
-                cboPresentationStyle.Items.Clear();
+                if(cboPresentationStyle.Items.Count != 0)
+                    cboPresentationStyle.Items.Clear();
+
+                if(lbHelpFileFormat.Items.Count != 0)
+                    lbHelpFileFormat.Items.Clear();
+
+                if(lbSyntaxFilters.Items.Count != 0)
+                    lbSyntaxFilters.Items.Clear();
 
                 syntaxGenerators = new List<ISyntaxGeneratorMetadata>();
                 presentationStyles = new List<IPresentationStyleMetadata>();

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="0d3d6929-8094-4133-be7e-4e66222c7b53" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Warning BE0031: Ignoring invalid XML comments file '[file]'.  Reason: [reason]</para>
+		</introduction>
+
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>This warning occurs if an XML comments file being used as a documentation source is found to be
+invalid.  The reasons for an invalid XML comments file are typically ill-formed content such as unclosed elements
+or invalid entities.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>Find the invalid XML comments file and fix the invalid comments either by editing the comments in
+the source code or the XML comments file directly.  If the XML comments file is not under your control, such as
+one from a NuGet package or third-party product, contact the owner to have them fix the error and publish an
+update with the corrected XML comments file.</para>
+
+				<para>This is only a warning and the build will continue.  The only noticeable side-effect is that
+member list topics may not contain descriptions for inherited members from types documented by the invalid XML
+comments file.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20e87b11-21a3-493c-8dd6-16ce7694952b" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
