@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="35a678ce-96c8-4d3a-a393-e084ff9c9110" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2018.5.29.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>
+							Added checks to throw out invalid .NET Framework XML comments files.  It now issues a
+<link xlink:href="0d3d6929-8094-4133-be7e-4e66222c7b53">BE0031</link> warning instead similar to invalid
+XML comments files used for documentation sources or reference assemblies.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for redirected .NET Framework XML comments files.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

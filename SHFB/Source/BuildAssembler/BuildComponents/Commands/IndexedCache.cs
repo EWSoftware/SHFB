@@ -6,6 +6,7 @@
 // Change History
 // 01/19/2013 - EFW - Created a new abstract base class for indexed cache classes
 // 01/24/2013 - EFW - Added IDisposable implementation
+// 05/18/2018 - EFW - Added code to handle invalid and redirected XML comments files
 
 using System;
 using System.Collections.Generic;
@@ -91,7 +92,7 @@ namespace Microsoft.Ddue.Tools.Commands
             if(String.IsNullOrWhiteSpace(this.Name))
                 component.WriteMessage(MessageLevel.Error, "Each index must have a unique name");
 
-            // Get the xpath for keys (relative to value nodes)
+            // Get the XPath for keys (relative to value nodes)
             string keyXPath = configuration.GetAttribute("key", String.Empty);
 
             if(String.IsNullOrWhiteSpace(keyXPath))
@@ -169,6 +170,62 @@ namespace Microsoft.Ddue.Tools.Commands
         //=====================================================================
 
         /// <summary>
+        /// This loads an XML file and handles redirection in XML comments files
+        /// </summary>
+        /// <param name="filename">The XML file to load</param>
+        /// <returns>An <see cref="XPathDocument"/> instance for the loaded XML file or null if it could not be
+        /// loaded.</returns>
+        private XPathDocument LoadXmlCommentsFile(string filename)
+        {
+            XPathDocument document = null;
+
+            try
+            {
+                document = new XPathDocument(filename);
+
+                // For XML comments files, some versions of the framework redirect the comments files to a
+                // common location.
+                var redirect = document.CreateNavigator().SelectSingleNode("doc/@redirect");
+
+                if(redirect != null)
+                {
+                    string path = Environment.ExpandEnvironmentVariables(redirect.Value);
+
+                    // If it still starts with a variable reference, it's typically this one which we have to
+                    // handle ourselves.
+                    if(path.StartsWith("%PROGRAMFILESDIR%", StringComparison.Ordinal))
+                    {
+                        string programFiles = Environment.GetFolderPath(Environment.Is64BitProcess ?
+                            Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
+
+                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + @"\");
+                    }
+
+                    if(!Path.IsPathRooted(path) || !File.Exists(path))
+                    {
+                        this.Component.WriteMessage(MessageLevel.Warn, "Ignoring invalid XML comments file " +
+                            $"'{filename}'.  Reason: Unable to locate redirected file {path}");
+                        document = null;
+                    }
+                    else
+                        document = new XPathDocument(path);
+                }
+            }
+            catch(IOException e)
+            {
+                this.Component.WriteMessage(MessageLevel.Error, "An access error occurred while attempting to " +
+                    "load the file '{0}'. The error message is: {1}", filename, e.Message);
+            }
+            catch(XmlException e)
+            {
+                this.Component.WriteMessage(MessageLevel.Warn,
+                    $"Ignoring invalid XML comments file '{filename}'.  Reason: {e.Message}");
+            }
+
+            return document;
+        }
+
+        /// <summary>
         /// This is used to index documents and add their key/file mappings to the cache
         /// </summary>
         /// <param name="configuration">The configuration used to add documents</param>
@@ -191,32 +248,20 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <returns>An enumerable list of the key values in the given file</returns>
         public IEnumerable<string> GetKeys(string file)
         {
-            XPathDocument document = null;
+            XPathDocument document = this.LoadXmlCommentsFile(file);
 
-            try
+            if(document != null)
             {
-                document = new XPathDocument(file);
-            }
-            catch(IOException e)
-            {
-                this.Component.WriteMessage(MessageLevel.Error, "An access error occurred while attempting to " +
-                    "load the file '{0}'. The error message is: {1}", file, e.Message);
-            }
-            catch(XmlException e)
-            {
-                this.Component.WriteMessage(MessageLevel.Error, "The indexed document '{0}' is not a valid " +
-                    "XML document. The error message is: {1}", file, e.Message);
-            }
+                XPathNodeIterator valueNodes = document.CreateNavigator().Select(this.ValueExpression);
 
-            XPathNodeIterator valueNodes = document.CreateNavigator().Select(this.ValueExpression);
+                foreach(XPathNavigator valueNode in valueNodes)
+                {
+                    XPathNavigator keyNode = valueNode.SelectSingleNode(this.KeyExpression);
 
-            foreach(XPathNavigator valueNode in valueNodes)
-            {
-                XPathNavigator keyNode = valueNode.SelectSingleNode(this.KeyExpression);
-
-                // Only return found key values
-                if(keyNode != null)
-                    yield return keyNode.Value;
+                    // Only return found key values
+                    if(keyNode != null)
+                        yield return keyNode.Value;
+                }
             }
         }
 
@@ -228,32 +273,20 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <returns>An enumerable list of the key/value values in the given file</returns>
         public IEnumerable<KeyValuePair<string, XPathNavigator>> GetValues(string file)
         {
-            XPathDocument document = null;
+            XPathDocument document = this.LoadXmlCommentsFile(file);
 
-            try
+            if(document != null)
             {
-                document = new XPathDocument(file);
-            }
-            catch(IOException e)
-            {
-                this.Component.WriteMessage(MessageLevel.Error, "An access error occurred while attempting to " +
-                    "load the file '{0}'. The error message is: {1}", file, e.Message);
-            }
-            catch(XmlException e)
-            {
-                this.Component.WriteMessage(MessageLevel.Error, "The indexed document '{0}' is not a valid " +
-                    "XML document. The error message is: {1}", file, e.Message);
-            }
+                XPathNodeIterator valueNodes = document.CreateNavigator().Select(this.ValueExpression);
 
-            XPathNodeIterator valueNodes = document.CreateNavigator().Select(this.ValueExpression);
+                foreach(XPathNavigator valueNode in valueNodes)
+                {
+                    XPathNavigator keyNode = valueNode.SelectSingleNode(this.KeyExpression);
 
-            foreach(XPathNavigator valueNode in valueNodes)
-            {
-                XPathNavigator keyNode = valueNode.SelectSingleNode(this.KeyExpression);
-
-                // Only return values that have a key
-                if(keyNode != null)
-                    yield return new KeyValuePair<string, XPathNavigator>(keyNode.Value, valueNode);
+                    // Only return values that have a key
+                    if(keyNode != null)
+                        yield return new KeyValuePair<string, XPathNavigator>(keyNode.Value, valueNode);
+                }
             }
         }
         #endregion

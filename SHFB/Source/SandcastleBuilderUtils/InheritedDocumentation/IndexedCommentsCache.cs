@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : IndexedCommentsCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/01/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 05/18/2018
+// Note    : Copyright 2008-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to cache indexed XML comments files
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.5  02/27/2008  EFW  Created the code
-// 1.9.7.0  02/28/2013  EFW  Made updates based on changes in the related Sandcastle index cache classes
+// 02/27/2008  EFW  Created the code
+// 02/28/2013  EFW  Made updates based on changes in the related Sandcastle index cache classes
 //===============================================================================================================
 
 using System;
@@ -47,7 +47,8 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             //=====================================================================
 
             // The index that maps keys to XPath navigators containing the comments
-            Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+            private Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+
             #endregion
 
             #region Properties
@@ -99,21 +100,12 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <summary>
         /// This read-only property returns the number of items indexed
         /// </summary>
-        public int IndexCount
-        {
-            get { return index.Count; }
-        }
+        public int IndexCount => index.Count;
 
         /// <summary>
         /// This read-only property returns the number of comments files that were indexed
         /// </summary>
-        public int FilesIndexed
-        {
-            get
-            {
-                return filesIndexed;
-            }
-        }
+        public int FilesIndexed => filesIndexed;
 
         /// <summary>
         /// This is used to get or set whether or not duplicate entry warnings are generated
@@ -123,10 +115,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <summary>
         /// This read-only property returns all keys in the index
         /// </summary>
-        public IEnumerable<string> AllKeys
-        {
-            get { return index.Keys; }
-        }
+        public IEnumerable<string> AllKeys => index.Keys;
 
         /// <summary>
         /// This read-only property returns the comments for the specified key
@@ -180,10 +169,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <param name="args">The event arguments</param>
         protected virtual void OnReportWarning(CommentsCacheEventArgs args)
         {
-            var handler = ReportWarning;
-
-            if(handler != null)
-                handler(this, args);
+            ReportWarning?.Invoke(this, args);
         }
         #endregion
 
@@ -211,6 +197,64 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
         #region Methods
         //=====================================================================
+
+        /// <summary>
+        /// This loads an XML comments file and handles redirection
+        /// </summary>
+        /// <param name="filename">The XML comments file to load</param>
+        /// <returns>An <see cref="XPathDocument"/> instance for the loaded XML comments file or null if it could
+        /// not be loaded.</returns>
+        private XPathDocument LoadXmlCommentsFile(string filename)
+        {
+            XPathDocument document = null;
+
+            try
+            {
+                document = new XPathDocument(filename);
+
+                // Some versions of the framework redirect the comments files to a common location
+                var redirect = document.CreateNavigator().SelectSingleNode("doc/@redirect");
+
+                if(redirect != null)
+                {
+                    string path = Environment.ExpandEnvironmentVariables(redirect.Value);
+
+                    // If it still starts with a variable reference, it's typically this one which we have to
+                    // handle ourselves.
+                    if(path.StartsWith("%PROGRAMFILESDIR%", StringComparison.Ordinal))
+                    {
+                        string programFiles = Environment.GetFolderPath(Environment.Is64BitProcess ?
+                            Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
+
+                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + @"\");
+                    }
+
+                    if(!Path.IsPathRooted(path) || !File.Exists(path))
+                    {
+                        this.OnReportWarning(new CommentsCacheEventArgs("SHFB: Warning BE0031: Ignoring invalid " +
+                            $"XML comments file '{filename}'.  Reason: Unable to locate redirected file {path}"));
+                        document = null;
+                    }
+                    else
+                        document = new XPathDocument(path);
+                }
+            }
+            catch(IOException e)
+            {
+                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
+                    "An access error occurred while attempting to load the file '{0}'. The error message is: {1}",
+                    filename, e.Message), e);
+            }
+            catch(XmlException e)
+            {
+                System.Diagnostics.Debug.WriteLine("Bad XML comments file '{0}'.  Error: {1}", filename, e);
+
+                this.OnReportWarning(new CommentsCacheEventArgs(
+                    $"SHFB: Warning BE0031: Ignoring invalid XML comments file '{filename}'.  Reason: {e.Message}"));
+            }
+
+            return document;
+        }
 
         /// <summary>
         /// Index all comments files found in the specified folder.
@@ -247,8 +291,12 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
                 if(commentsFiles != null)
                 {
-                    xpathDoc = new XPathDocument(filename);
-                        commentsFiles.Add(xpathDoc.CreateNavigator());
+                    xpathDoc = this.LoadXmlCommentsFile(filename);
+
+                    if(xpathDoc == null)
+                        return;
+
+                    commentsFiles.Add(xpathDoc.CreateNavigator());
                 }
 
                 // Get the keys from the file and add them to the index
@@ -276,43 +324,29 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <returns>An enumerable list of the key values in the given file</returns>
         public IEnumerable<string> GetKeys(string file)
         {
-            XPathDocument document = null;
+            var document = this.LoadXmlCommentsFile(file);
 
-            try
+            if(document != null)
             {
-                document = new XPathDocument(file);
-            }
-            catch(IOException e)
-            {
-                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
-                    "An access error occurred while attempting to load the file '{0}'. The error message is: {1}",
-                    file, e.Message), e);
-            }
-            catch(XmlException e)
-            {
-                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
-                    "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file,
-                    e.Message), e);
-            }
+                XPathNodeIterator valueNodes = document.CreateNavigator().Select(memberListExpr);
 
-            XPathNodeIterator valueNodes = document.CreateNavigator().Select(memberListExpr);
-
-            foreach(XPathNavigator valueNode in valueNodes)
-            {
-                XPathNavigator keyNode = valueNode.SelectSingleNode(keyExpr);
-
-                // Only return found key values
-                if(keyNode != null)
+                foreach(XPathNavigator valueNode in valueNodes)
                 {
-                    yield return keyNode.Value;
+                    XPathNavigator keyNode = valueNode.SelectSingleNode(keyExpr);
 
-                    // Also add a namespace entry for NamespaceDoc classes
-                    if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
-                        yield return "N:" + keyNode.Value.Substring(2, keyNode.Value.Length - 15);
+                    // Only return found key values
+                    if(keyNode != null)
+                    {
+                        yield return keyNode.Value;
 
-                    // Also add a namespace group entry for NamespaceGroupDoc classes
-                    if(keyNode.Value.EndsWith(".NamespaceGroupDoc", StringComparison.Ordinal))
-                        yield return "G:" + keyNode.Value.Substring(2, keyNode.Value.Length - 20);
+                        // Also add a namespace entry for NamespaceDoc classes
+                        if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
+                            yield return "N:" + keyNode.Value.Substring(2, keyNode.Value.Length - 15);
+
+                        // Also add a namespace group entry for NamespaceGroupDoc classes
+                        if(keyNode.Value.EndsWith(".NamespaceGroupDoc", StringComparison.Ordinal))
+                            yield return "G:" + keyNode.Value.Substring(2, keyNode.Value.Length - 20);
+                    }
                 }
             }
         }
@@ -325,45 +359,31 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         /// <returns>An enumerable list of the key/value values in the given file</returns>
         public IEnumerable<KeyValuePair<string, XPathNavigator>> GetValues(string file)
         {
-            XPathDocument document = null;
+            var document = this.LoadXmlCommentsFile(file);
 
-            try
+            if(document != null)
             {
-                document = new XPathDocument(file);
-            }
-            catch(IOException e)
-            {
-                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
-                    "An access error occurred while attempting to load the file '{0}'. The error message is: {1}",
-                    file, e.Message), e);
-            }
-            catch(XmlException e)
-            {
-                throw new InheritedDocsException(String.Format(CultureInfo.CurrentCulture,
-                    "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file,
-                    e.Message), e);
-            }
+                XPathNodeIterator valueNodes = document.CreateNavigator().Select(memberListExpr);
 
-            XPathNodeIterator valueNodes = document.CreateNavigator().Select(memberListExpr);
-
-            foreach(XPathNavigator valueNode in valueNodes)
-            {
-                XPathNavigator keyNode = valueNode.SelectSingleNode(keyExpr);
-
-                // Only return values that have a key
-                if(keyNode != null)
+                foreach(XPathNavigator valueNode in valueNodes)
                 {
-                    yield return new KeyValuePair<string, XPathNavigator>(keyNode.Value, valueNode);
+                    XPathNavigator keyNode = valueNode.SelectSingleNode(keyExpr);
 
-                    // Also add a namespace entry for NamespaceDoc classes
-                    if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
-                        yield return new KeyValuePair<string, XPathNavigator>("N:" + keyNode.Value.Substring(2,
-                            keyNode.Value.Length - 15), valueNode);
+                    // Only return values that have a key
+                    if(keyNode != null)
+                    {
+                        yield return new KeyValuePair<string, XPathNavigator>(keyNode.Value, valueNode);
 
-                    // Also add a namespace group entry for NamespaceGroupDoc classes
-                    if(keyNode.Value.EndsWith(".NamespaceGroupDoc", StringComparison.Ordinal))
-                        yield return new KeyValuePair<string, XPathNavigator>("G:" + keyNode.Value.Substring(2,
-                            keyNode.Value.Length - 20), valueNode);
+                        // Also add a namespace entry for NamespaceDoc classes
+                        if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
+                            yield return new KeyValuePair<string, XPathNavigator>("N:" + keyNode.Value.Substring(2,
+                                keyNode.Value.Length - 15), valueNode);
+
+                        // Also add a namespace group entry for NamespaceGroupDoc classes
+                        if(keyNode.Value.EndsWith(".NamespaceGroupDoc", StringComparison.Ordinal))
+                            yield return new KeyValuePair<string, XPathNavigator>("G:" + keyNode.Value.Substring(2,
+                                keyNode.Value.Length - 20), valueNode);
+                    }
                 }
             }
         }
