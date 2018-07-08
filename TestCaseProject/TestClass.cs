@@ -609,6 +609,32 @@ namespace TestDoc
         }
         #endregion
 
+        #region Value tuple tests
+        //=====================================================================
+
+        /// <summary>
+        /// Mode and range
+        /// </summary>
+        public (TestFlags mode, string range) ModeAndRange { get; set; }
+
+        /// <summary>
+        /// Mode and range
+        /// </summary>
+        public (int mode, string range) AnotherTupleProperty { get; set; }
+
+        /// <summary>
+        /// A value tuple test method
+        /// </summary>
+        /// <param name="p1">Parameter 1</param>
+        /// <param name="p2">Parameter 2</param>
+        /// <returns>A value tuple</returns>
+        public (string X, TestClass Y) ValueTupleMethod((double Value, string Label) p1,
+          (string Test, ReferenceTest Something) p2)
+        {
+            return ("Test", null);
+        }
+        #endregion
+
         /// <summary> 
         /// Increment method increments the stored number by one. 
         /// </summary>

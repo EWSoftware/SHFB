@@ -1478,30 +1478,22 @@ namespace Microsoft.Ddue.Tools
 
                         while(typeModifiers.MoveNext())
                         {
-                            XPathNodeIterator args = reference.Select(specializationArgumentsExpression);
+                            XPathNodeIterator args = typeModifiers.Current.Select(specializationArgumentsExpression);
 
                             while(args.MoveNext())
                             {
                                 if(args.CurrentPosition > 1)
                                     writer.WriteString(", ");
 
-                                var elArgs = args.Current.Select(specializationArgumentsExpression);
+                                var elementName = args.Current.GetAttribute("elementName", String.Empty);
 
-                                while(elArgs.MoveNext())
+                                if(elementName != null)
                                 {
-                                    if(elArgs.CurrentPosition > 1)
-                                        writer.WriteString(", ");
-
-                                    var elementName = elArgs.Current.GetAttribute("elementName", String.Empty);
-
-                                    if(elementName != null)
-                                    {
-                                        writer.WriteString(elementName);
-                                        writer.WriteString(" As ");
-                                    }
-
-                                    WriteTypeReference(elArgs.Current, writer);
+                                    writer.WriteString(elementName);
+                                    writer.WriteString(" As ");
                                 }
+
+                                WriteTypeReference(args.Current, writer);
                             }
                         }
 

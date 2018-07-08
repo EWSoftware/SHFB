@@ -1382,11 +1382,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="3d4f4c7e-7e90-4bbd-8628-cabf62d6c29c" visible="True" isSelected="true" title="Version 2018.7.8.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2018.7.8.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="35a678ce-96c8-4d3a-a393-e084ff9c9110" visible="True" title="Version 2018.5.29.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2018.5.29.0" />

@@ -660,29 +660,21 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
 
                         while(typeModifiers.MoveNext())
                         {
-                            XPathNodeIterator args = reference.Select(specializationArgumentsExpression);
+                            XPathNodeIterator args = typeModifiers.Current.Select(specializationArgumentsExpression);
 
                             while(args.MoveNext())
                             {
                                 if(args.CurrentPosition > 1)
                                     writer.WriteString(", ");
 
-                                var elArgs = args.Current.Select(specializationArgumentsExpression);
+                                WriteTypeReference(args.Current, writer);
 
-                                while(elArgs.MoveNext())
+                                var elementName = args.Current.GetAttribute("elementName", String.Empty);
+
+                                if(elementName != null)
                                 {
-                                    if(elArgs.CurrentPosition > 1)
-                                        writer.WriteString(", ");
-
-                                    WriteTypeReference(elArgs.Current, writer);
-
-                                    var elementName = elArgs.Current.GetAttribute("elementName", String.Empty);
-
-                                    if(elementName != null)
-                                    {
-                                        writer.WriteString(" ");
-                                        writer.WriteString(elementName);
-                                    }
+                                    writer.WriteString(" ");
+                                    writer.WriteString(elementName);
                                 }
                             }
                         }

@@ -612,6 +612,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                             break;
 
                         case "overloads":
+                        case "revisionHistory":
                             // Ignore completely.  We only need one.
                             break;
 

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3d4f4c7e-7e90-4bbd-8628-cabf62d6c29c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2018.7.8.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the syntax generators so that they render <codeInline>ValueType</codeInline> information
+correctly using the updated reflection data sets.</para>
+					</listItem>
+
+					<listItem>
+						<para>Increased the maximum recursion depth allowed when obtaining nested type info in MRefBuilder
+(updates a prior fix from 2012).</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the GenerateInheritedDocs tool to omit the <codeInline>revisionHistory</codeInline>
+element when inheriting documentation from base types/members.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

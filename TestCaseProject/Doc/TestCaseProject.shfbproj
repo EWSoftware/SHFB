@@ -27,7 +27,7 @@
     <CleanIntermediates>False</CleanIntermediates>
     <BuildLogFile>
     </BuildLogFile>
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.7</FrameworkVersion>
     <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
@@ -169,7 +169,7 @@
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
     <HelpTitle>Sandcastle Test Case Library {%40HelpFileVersion}</HelpTitle>
-    <SyntaxFilters>Standard</SyntaxFilters>
+    <SyntaxFilters>C#, Visual Basic, Visual Basic Usage, Managed C++, F#</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>

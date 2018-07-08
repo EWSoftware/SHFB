@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/08/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 07/06/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build category properties
@@ -226,7 +226,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             e.ProjectLoaded = true;
             e.PresentationStyle = presentationStyleProp?.UnevaluatedValue;
-            e.SyntaxFilters = syntaxFiltersProp?.UnevaluatedValue;
+            e.SyntaxFilters = (syntaxFiltersProp?.UnevaluatedValue ?? ComponentUtilities.DefaultSyntaxFilter);
         }
         #endregion
     }

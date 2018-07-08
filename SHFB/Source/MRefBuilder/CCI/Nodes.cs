@@ -16,6 +16,7 @@
 // ListTemplate.cs.
 // 03/14/2014 - EFW - Fixed bug in TypeNode.GetMatchingMethod() reported by SHarwell.
 // 08/23/2016 - EFW - Added support for reading source code context from PDB files
+// 07/06/2018 - EFW - Increased the maximum allowed recursion depth related to the 04/04/2012 fix
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9353,8 +9354,17 @@ done:
                 parentArgs.Add(consolidatedArguments[i]);
             TypeNode declaringType = this.DeclaringType.GetGenericTemplateInstance(module, parentArgs);
             TypeNode nestedType = declaringType.GetNestedType(this.Name);
-            if(nestedType == null) { Debug.Fail("template declaring type dummy instance does not have a nested type corresponding to template"); nestedType = this; }
+
+            if(nestedType == null)
+            {
+                // NOTE: If this fails, it might be exceeding the maximum recursion depth in TypeNode.NestedTypes.
+                // See the comments there for more details.
+                Debug.Fail("template declaring type dummy instance does not have a nested type corresponding to template");
+                nestedType = this;
+            }
+
             if(m == 0) { Debug.Assert(nestedType.template != null); return nestedType; }
+
             return nestedType.GetTemplateInstance(module, null, declaringType, myArgs);
         }
         public virtual TypeNode/*!*/ GetTemplateInstance(Module module, params TypeNode[] typeArguments)
@@ -9848,7 +9858,7 @@ done:
                 // the stack.  The problem is, we can't just ignore all subsequent recursions or it can
                 // throw a different error about a missing template type later on.  The trick is to let it
                 // recurse enough to get all of the information it needs but not enough to overflow the
-                // stack.  The full test case worked at 9 levels of recursion so 20 should be more than
+                // stack.  The full test case worked at 9 levels of recursion so 100 should be more than
                 // enough for any case.  It overflowed at 256 levels of recursion.
                 //
                 // The abbreviated example:
@@ -9873,7 +9883,7 @@ done:
                 // you're wondering, the full test case was the Mass Transit project on GitHub which was
                 // being used as a reference assembly by the person that reported the error.
                 //
-                if(recursionCounter > 20)
+                if(recursionCounter > 100)
                     return null;
 
                 if(this.nestedTypes != null && (this.members == null || this.members.Count == this.memberCount))
