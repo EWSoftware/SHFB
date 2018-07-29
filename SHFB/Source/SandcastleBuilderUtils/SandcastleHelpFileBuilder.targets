@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<!-- Include common targets to allow use in the VSPackage within Visual Studio -->
-	<Import Project="$(MSBuildBinPath)\Microsoft.Common.Targets" />
+	<Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
 
 	<!-- Override this target to removed it.  Visual Studio tries to run it under certain conditions but
        we don't contain one of its dependent targets and we don't need this one anyway as far as I

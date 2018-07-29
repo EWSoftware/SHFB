@@ -52,11 +52,17 @@ csharp_style_expression_bodied_operators = false:none
 csharp_style_expression_bodied_properties = true:suggestion
 
 csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_deconstructed_variable_declaration = false:none
+csharp_style_pattern_local_over_anonymous_function = true:suggestion
 # Prefer true:suggestion on all of these but must support VS2015
 csharp_style_inlined_variable_declaration = false:none
 csharp_style_pattern_matching_over_as_with_null_check = false:none
 csharp_style_pattern_matching_over_is_with_cast_check = false:none
 csharp_style_throw_expression = false:none
+
+csharp_prefer_simple_default_expression = true:suggestion
+
+csharp_preserve_single_line_blocks = true
 
 # Indentation options
 csharp_indent_block_contents = true
@@ -74,14 +80,20 @@ csharp_new_line_between_query_expression_clauses = true
 
 # Spacing options
 csharp_space_after_cast = false
+csharp_space_after_colon_in_inheritance_clause = true
 csharp_space_after_comma = true
 csharp_space_after_dot = false
 csharp_space_after_keywords_in_control_flow_statements = false
 csharp_space_after_semicolon_in_for_statement = true
 csharp_space_around_binary_operators = before_and_after
+csharp_space_before_colon_in_inheritance_clause = true
 csharp_space_before_comma = false
 csharp_space_before_dot = false
 csharp_space_before_open_square_brackets = false
 csharp_space_before_semicolon_in_for_statement = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
 csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
 csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
