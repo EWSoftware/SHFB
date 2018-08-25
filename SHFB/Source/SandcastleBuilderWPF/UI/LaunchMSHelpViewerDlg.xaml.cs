@@ -26,6 +26,8 @@
 // 12/05/2017  EFW  Converted the form to WPF for better high DPI scaling support on 4K displays
 //===============================================================================================================
 
+// Ignore Spelling: Fehr xhelp page&id catalogname
+
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -241,7 +243,7 @@ namespace SandcastleBuilder.WPF.UI
                         msHelpViewer = "ms-xhelp:///?method=page&id=-1";
                     else
                         if(viewerVersion.Major == 2)
-                        arguments = "/catalogname \"" + catalogName + "\"";
+                            arguments = "/catalogname \"" + catalogName + "\"";
                 }
 
                 helpViewerProgress.Report("Opening help content...");

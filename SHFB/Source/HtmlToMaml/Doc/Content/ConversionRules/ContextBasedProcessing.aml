@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="f6e7385f-0647-4897-9145-3c297f4f6c69" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: mailto href xlink -->
     <introduction>
       <para>The following HTML elements must be converted based on their context within the topic.  Since
 the context is hard to translate into an easily defined rule in the rules file, the elements described in

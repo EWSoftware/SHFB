@@ -8,5 +8,92 @@ end_of_line = crlf
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
 
 # XML files of various types
-[*.{xml,aml,csproj,.shfbproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj,props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+[*.{aml,asax,ascx,asmx,asp,aspx,axml,config,content,cshtml,csproj,database,datasource,dbml,disco,discomap,dtsx,edmx,exclude,fxcop,htm,html,items,layout,maml,manifest,master,msha,myapp,nunit,nuspec,proj,projitems,props,publishproj,pubxml,rdl,rdlc,resx,ruleset,settings,shfbproj,shproj,sitemap,snippets,soap,svc,svcinfo,svcmap,targets,tasks,tokens,vbhtml,vbproj,vcxproj,vcxproj.filters,vsct,vsixmanifest,vstemplate,webinfo,wsdl,xaml,xamlcfg,xml,xsd,xsl,xslt,xsx}]
 indent_style = tab
+
+# C#/VB settings
+[*.{cs,vb}]
+indent_size = 4
+
+dotnet_sort_system_directives_first = true
+
+# "This." and "Me." qualification.  Use is preferred where true but the lightbulbs tend to show up in places
+# they aren't wanted (within static methods and nameof parameters etc.) so no suggestions are enabled.
+dotnet_style_qualification_for_event = true:none
+dotnet_style_qualification_for_field = false:none
+dotnet_style_qualification_for_method = true:none
+dotnet_style_qualification_for_property = true:none
+
+# Language keywords vs framework type names
+dotnet_style_predefined_type_for_locals_parameters_members = true:none
+dotnet_style_predefined_type_for_member_access = false:error
+
+# Modern language feature settings
+dotnet_style_coalesce_expression = true:suggestion
+dotnet_style_collection_initializer = true:suggestion
+# Prefer true:error but must support VS2015
+dotnet_style_explicit_tuple_names = false:none
+dotnet_style_null_propagation = true:suggestion
+dotnet_style_object_initializer = true:suggestion
+
+# CSharp code style settings
+[*.cs]
+csharp_style_var_elsewhere = false:none
+csharp_style_var_for_built_in_types = false:none
+csharp_style_var_when_type_is_apparent = false:none
+
+# Prefer true:suggestion but must support VS2015
+csharp_style_expression_bodied_accessors = false:none
+csharp_style_expression_bodied_constructors = false:none
+# Prefer true:suggestion but must support VS2015
+csharp_style_expression_bodied_indexers = false:none
+csharp_style_expression_bodied_methods = false:none
+csharp_style_expression_bodied_operators = false:none
+csharp_style_expression_bodied_properties = true:suggestion
+
+csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_deconstructed_variable_declaration = false:none
+csharp_style_pattern_local_over_anonymous_function = true:suggestion
+# Prefer true:suggestion on all of these but must support VS2015
+csharp_style_inlined_variable_declaration = false:none
+csharp_style_pattern_matching_over_as_with_null_check = false:none
+csharp_style_pattern_matching_over_is_with_cast_check = false:none
+csharp_style_throw_expression = false:none
+
+csharp_prefer_simple_default_expression = true:suggestion
+
+csharp_preserve_single_line_blocks = true
+
+# Indentation options
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents = true
+
+# New line options
+csharp_new_line_before_catch = true
+csharp_new_line_before_else = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_open_brace = all
+csharp_new_line_between_query_expression_clauses = true
+
+# Spacing options
+csharp_space_after_cast = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_after_comma = true
+csharp_space_after_dot = false
+csharp_space_after_keywords_in_control_flow_statements = false
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_before_comma = false
+csharp_space_before_dot = false
+csharp_space_before_open_square_brackets = false
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false

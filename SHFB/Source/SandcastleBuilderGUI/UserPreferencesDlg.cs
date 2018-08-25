@@ -21,6 +21,8 @@
 // 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
+// Ignore Spelling: exe
+
 using System;
 using System.Drawing;
 using System.Globalization;

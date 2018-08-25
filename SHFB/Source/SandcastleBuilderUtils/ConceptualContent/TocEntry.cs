@@ -27,6 +27,8 @@
 // -------  05/07/2015  EFW  Removed all deprecated code
 //===============================================================================================================
 
+// Ignore Spelling: url
+
 using System;
 using System.ComponentModel;
 using System.Globalization;

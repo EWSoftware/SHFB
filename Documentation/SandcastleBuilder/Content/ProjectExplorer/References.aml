@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="9309b01b-87bf-4d68-b035-c10ac77d1522" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: dep -->
 		<introduction>
 			<para>The <application>MRefBuilder</application> tool may not resolve references to all assemblies used by
 a target, especially those found in the Global Assembly Cache (GAC).  As such, it needs a hint to find the files

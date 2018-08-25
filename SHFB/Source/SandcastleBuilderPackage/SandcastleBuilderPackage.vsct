@@ -97,6 +97,7 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<CommandName>cmdidViewAspNetWebsite</CommandName>
+					<!-- Ignore Spelling: loc al -->
 					<ButtonText>View Website (Loc&amp;al Web Dev Server)</ButtonText>
 					<MenuText>View Website (&amp;ASP.NET)</MenuText>
 					<ToolTipText>View Website (&amp;ASP.NET)</ToolTipText>

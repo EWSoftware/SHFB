@@ -19,6 +19,8 @@
 // 11/29/2017  EFW  Moved the class into its own file and updated it for use in a bound tree view
 //===============================================================================================================
 
+// Ignore Spelling: typedata memberdata
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

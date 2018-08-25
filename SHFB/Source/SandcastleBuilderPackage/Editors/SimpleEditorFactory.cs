@@ -205,7 +205,7 @@ namespace SandcastleBuilder.Package.Editors
         /// Caption mentioned by the editor for the doc window.
         /// </param>
         /// <param name="pguidCmdUI">
-        /// The Command UI Guid. Any UI element that is visible in the editor has 
+        /// The Command UI GUID. Any UI element that is visible in the editor has 
         /// to use this GUID.
         /// </param>
         /// <param name="pgrfCDW">Flags for CreateDocumentWindow.</param>

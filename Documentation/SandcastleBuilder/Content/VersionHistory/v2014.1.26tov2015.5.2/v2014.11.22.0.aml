@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="7238a41e-1375-4038-8bf1-d699f4dae668" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: langword rpcode baerbradford -->
 		<introduction>
 			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.11.22.0." />
 		</introduction>

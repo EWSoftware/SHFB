@@ -147,6 +147,7 @@ toolbar button dropdown.  The build log tool window can be opened by selecting <
 Log Content</ui> or from the help file builder's toolbar dropdown button.</para>
 
 		<alert class="note">
+			<!-- Ignore Spelling: entityref -->
 			<para>Shortcut keys have not been assigned to any of the help file builder menu and toolbar options
 to prevent conflicts with default key assignments or custom key assignments that you might have made.  To
 assign shortcut keys to help file builder options, select <ui>Tools</ui> | <ui>Options</ui>, expand the

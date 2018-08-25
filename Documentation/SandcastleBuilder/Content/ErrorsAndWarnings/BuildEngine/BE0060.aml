@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="e076c319-ff84-40dc-bb00-ff4c72718215" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: hlp -->
     <introduction>
       <para>Warning BE0060: The <legacyItalic>[itemType]</legacyItalic>
 '<legacyItalic>[item]</legacyItalic>' contains a comma or '.h' which may cause

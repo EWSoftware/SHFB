@@ -29,6 +29,8 @@
 // 08/05/2014  EFW  Added support for getting a list of syntax generator resource item files
 //===============================================================================================================
 
+// Ignore Spelling: allbutusage
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;

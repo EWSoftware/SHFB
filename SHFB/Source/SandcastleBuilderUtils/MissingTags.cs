@@ -24,6 +24,8 @@
 // 1.8.0.3  11/19/2009  EFW  Added AutoDocumentDipose option
 //=============================================================================
 
+// Ignore Spelling: typeparam
+
 using System;
 
 namespace SandcastleBuilder.Utils

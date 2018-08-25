@@ -19,6 +19,9 @@
 // 02/16/2014  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: Za num ilvl lvl ul li tbl tc br nolink selflink typeparameter img src cx cy xfrm prst
+// Ignore Spelling: rect uri pic dxa
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -18,6 +18,8 @@
 // 12/06/2014  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: bool uint ushort ulong
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

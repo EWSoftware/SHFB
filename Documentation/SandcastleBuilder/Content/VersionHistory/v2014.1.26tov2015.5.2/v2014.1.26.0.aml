@@ -378,6 +378,7 @@ only noticeable on members and properties that return a nested type and resulted
 the parts of the qualified type name.</para>
 							</listItem>
 
+							<!-- Ignore Spelling: Stazzz -->
 							<listItem>
 								<para>Applied a patch to <codeInline>ResolveReferenceLinksComponent</codeInline> from Stazzz to
 write out nested XML elements within the link's inner XML.</para>

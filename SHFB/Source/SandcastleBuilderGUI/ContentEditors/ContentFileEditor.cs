@@ -18,6 +18,8 @@
 // 07/02/2007  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: txt
+
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;

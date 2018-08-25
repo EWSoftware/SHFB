@@ -73,7 +73,7 @@ namespace SandcastleBuilder.Package.Editors
         // --- File extension used for this editor.
         private readonly string _FileExtensionUsed;
 
-        // --- Guid of the command set belonging to this editor
+        // --- GUID of the command set belonging to this editor
         private readonly Guid _CommandSetGuid;
 
         // --- Full path to the file.
@@ -541,7 +541,7 @@ namespace SandcastleBuilder.Package.Editors
         /// instance of this editor is open.
         /// </summary>
         /// <param name="pguidCmdGroup">
-        /// Guid describing which set of command the current command(s) belong to.
+        /// GUID describing which set of command the current command(s) belong to.
         /// </param>
         /// <param name="cCmds">
         /// Number of command which status are being asked for.
@@ -632,7 +632,7 @@ namespace SandcastleBuilder.Package.Editors
         /// Execute a specified command.
         /// </summary>
         /// <param name="pguidCmdGroup">
-        /// Guid describing which set of command the current command(s) belong to.
+        /// GUID describing which set of command the current command(s) belong to.
         /// </param>
         /// <param name="nCmdID">Command that should be executed.</param>
         /// <param name="nCmdexecopt">Options for the command.</param>
@@ -957,7 +957,7 @@ namespace SandcastleBuilder.Package.Editors
 
         // --------------------------------------------------------------------------------
         /// <summary>
-        /// Returns the Guid of the editor factory that created the IVsPersistDocData 
+        /// Returns the GUID of the editor factory that created the IVsPersistDocData 
         /// object.
         /// </summary>
         /// <param name="pClassID">

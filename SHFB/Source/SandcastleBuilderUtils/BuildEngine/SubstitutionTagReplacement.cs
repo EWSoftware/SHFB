@@ -18,6 +18,8 @@
 // 05/10/2015  EFW  Refactored the substitution tag replacement code and moved it into its own class
 //===============================================================================================================
 
+// Ignore Spelling: concat Url img src onclick javascript
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

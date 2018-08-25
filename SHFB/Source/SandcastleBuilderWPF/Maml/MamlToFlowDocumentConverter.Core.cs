@@ -21,6 +21,8 @@
 // 1.9.7.0  01/11/2013  EFW  Added support for colorizing code blocks
 //===============================================================================================================
 
+// Ignore Spelling: Grande Semibold
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

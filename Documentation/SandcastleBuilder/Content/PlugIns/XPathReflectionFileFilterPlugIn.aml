@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="cd68ef02-3493-4af6-96de-1957b0aaf858" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
+		<!-- Ignore Spelling: api apis ctor cctor apidata typedata Eyal -->
+		<introduction>
       <para>This plug-in, based on code submitted by Eyal Post, is used to
 filter out unwanted information from the reflection information file using
 XPath queries.  While the project's <codeInline>ApiFilter</codeInline> property

@@ -18,6 +18,8 @@
 // 12/05/2012  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: href sc langword
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

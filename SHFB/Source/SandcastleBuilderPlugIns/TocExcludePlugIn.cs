@@ -21,6 +21,8 @@
 // -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
+// Ignore Spelling: tocexclude
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

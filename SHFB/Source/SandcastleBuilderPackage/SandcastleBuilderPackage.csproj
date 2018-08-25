@@ -380,6 +380,7 @@
     <None Include="Images\Delete.bmp" />
     <None Include="Images\PlugInAdd.png" />
     <None Include="Images\ComponentAdd.png" />
+    <None Include="Templates\Templates.vsspell" />
     <Resource Include="Resources\Component.ico" />
     <VSCTCompile Include="SandcastleBuilderPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>

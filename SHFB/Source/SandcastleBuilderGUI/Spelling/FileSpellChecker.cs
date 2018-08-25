@@ -18,6 +18,8 @@
 // 05/11/2013  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: Za nis ta ttest ransform xh xhh hh uhhhh Uhhhhhhhh
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

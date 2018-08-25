@@ -27,6 +27,8 @@
 // 09/18/2014  EFW  Added support for NamespaceGroupDoc classes
 //===============================================================================================================
 
+// Ignore Spelling: topicdata
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

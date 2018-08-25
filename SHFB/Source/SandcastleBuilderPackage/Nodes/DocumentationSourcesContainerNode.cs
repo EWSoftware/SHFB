@@ -20,6 +20,8 @@
 // 10/22/2012  EFW  Updated to support .winmd documentation sources
 //===============================================================================================================
 
+// Ignore Spelling: dll
+
 using System;
 using System.Collections.Generic;
 using System.IO;

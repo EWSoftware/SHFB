@@ -5,6 +5,8 @@
 	xmlns:vsst="clr-namespace:SandcastleBuilder.WPF.Theme"
 	xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
 
+	<!-- Ignore Spelling: Hannes Kamecke -->
+	
 	<!-- Element brushes -->
 	<SolidColorBrush x:Key="ButtonBackgroundBrushKey" Color="{Binding Source={x:Static vsst:ThemeColors.Instance}, Path=ButtonBackgroundColor, Mode=OneWay}" />
 	<SolidColorBrush x:Key="ButtonBorderBrushKey" Color="{Binding Source={x:Static vsst:ThemeColors.Instance}, Path=ButtonBorderColor, Mode=OneWay}" />

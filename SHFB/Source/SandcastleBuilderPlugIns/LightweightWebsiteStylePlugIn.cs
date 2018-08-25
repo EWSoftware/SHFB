@@ -20,6 +20,9 @@
 // 05/04/2014  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: Url toc utf img src onclick onmousedown onsubmit javascript nav toclevel tochassubtree
+// Ignore Spelling: tocid roottoc childrenloaded
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -185,7 +188,7 @@ namespace SandcastleBuilder.PlugIns
                     }
                 }
 
-                if(string.IsNullOrEmpty((string)copy.Attribute("Url")))
+                if(String.IsNullOrEmpty((string)copy.Attribute("Url")))
                     return;
 
                 // Generate the lightweight TOC pane
@@ -457,7 +460,7 @@ namespace SandcastleBuilder.PlugIns
                 currentId = "#!";
 
             tocTitle = sibling.Attribute("Title").Value;
-            styleClassSuffix = (targetId == currentId) ? " current" : string.Empty;
+            styleClassSuffix = (targetId == currentId) ? " current" : String.Empty;
 
             if(targetId != currentId && !showSiblings)
                 return null;

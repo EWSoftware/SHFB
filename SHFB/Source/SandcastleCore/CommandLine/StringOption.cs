@@ -7,6 +7,8 @@
 // 03/10/2012 - EFW - Updated code to fix FxCop warnings
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
 
+// Ignore Spelling: xxxx
+
 using System;
 using System.IO;
 

@@ -1,5 +1,7 @@
 namespace SandcastleBuilder.Gui.ContentEditors
 {
+    // Ignore Spelling: ui
+
     partial class TopicEditorWindow
     {
         /// <summary>

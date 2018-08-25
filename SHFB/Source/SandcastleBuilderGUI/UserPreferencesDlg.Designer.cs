@@ -129,7 +129,7 @@ namespace SandcastleBuilder.Gui
             this.chkVerboseLogging.AutoSize = true;
             this.chkVerboseLogging.Location = new System.Drawing.Point(360, 215);
             this.chkVerboseLogging.Name = "chkVerboseLogging";
-            this.chkVerboseLogging.Size = new System.Drawing.Size(339, 29);
+            this.chkVerboseLogging.Size = new System.Drawing.Size(283, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkVerboseLogging, "Verbose Logging: Check this box to display all output messages.  Uncheck to displ" +
         "ay summary messages only.");
             this.chkVerboseLogging.TabIndex = 8;
@@ -150,7 +150,7 @@ namespace SandcastleBuilder.Gui
             0,
             0});
             this.udcASPNetDevServerPort.Name = "udcASPNetDevServerPort";
-            this.udcASPNetDevServerPort.Size = new System.Drawing.Size(94, 31);
+            this.udcASPNetDevServerPort.Size = new System.Drawing.Size(94, 27);
             this.statusBarTextProvider1.SetStatusBarText(this.udcASPNetDevServerPort, "Server Port: Select the port to use when launching the ASP.NET Development Web Se" +
         "rver");
             this.udcASPNetDevServerPort.TabIndex = 4;
@@ -198,10 +198,10 @@ namespace SandcastleBuilder.Gui
             this.pgGeneral.Controls.Add(this.udcASPNetDevServerPort);
             this.pgGeneral.Controls.Add(this.chkVerboseLogging);
             this.pgGeneral.Controls.Add(this.label2);
-            this.pgGeneral.Location = new System.Drawing.Point(4, 34);
+            this.pgGeneral.Location = new System.Drawing.Point(4, 29);
             this.pgGeneral.Name = "pgGeneral";
             this.pgGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.pgGeneral.Size = new System.Drawing.Size(961, 619);
+            this.pgGeneral.Size = new System.Drawing.Size(961, 624);
             this.statusBarTextProvider1.SetStatusBarText(this.pgGeneral, "General user preferences");
             this.pgGeneral.TabIndex = 0;
             this.pgGeneral.Text = "General Preferences";
@@ -212,7 +212,7 @@ namespace SandcastleBuilder.Gui
             this.chkPerUserProjectState.AutoSize = true;
             this.chkPerUserProjectState.Location = new System.Drawing.Point(360, 120);
             this.chkPerUserProjectState.Name = "chkPerUserProjectState";
-            this.chkPerUserProjectState.Size = new System.Drawing.Size(383, 29);
+            this.chkPerUserProjectState.Size = new System.Drawing.Size(320, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkPerUserProjectState, "Save Project State: Check this box to save the window layout for each project per" +
         " user");
             this.chkPerUserProjectState.TabIndex = 5;
@@ -223,7 +223,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.txtMSHelpViewerPath.Location = new System.Drawing.Point(360, 22);
             this.txtMSHelpViewerPath.Name = "txtMSHelpViewerPath";
-            this.txtMSHelpViewerPath.Size = new System.Drawing.Size(358, 31);
+            this.txtMSHelpViewerPath.Size = new System.Drawing.Size(358, 27);
             this.statusBarTextProvider1.SetStatusBarText(this.txtMSHelpViewerPath, "MS Help Viewer (.mshc) Viewer: Enter the path and filename of the application use" +
         "d to view MS Help Viewer files");
             this.txtMSHelpViewerPath.TabIndex = 1;
@@ -242,10 +242,10 @@ namespace SandcastleBuilder.Gui
             this.btnSelectMSHCViewer.Location = new System.Drawing.Point(719, 21);
             this.btnSelectMSHCViewer.Name = "btnSelectMSHCViewer";
             this.btnSelectMSHCViewer.Size = new System.Drawing.Size(32, 25);
-            this.statusBarTextProvider1.SetStatusBarText(this.btnSelectMSHCViewer, "Select Viewer: Browser for the MS Help Viewer viewer application");
+            this.statusBarTextProvider1.SetStatusBarText(this.btnSelectMSHCViewer, "Select Viewer: Browse for the MS Help Viewer file viewer application");
             this.btnSelectMSHCViewer.TabIndex = 2;
             this.btnSelectMSHCViewer.Text = "...";
-            this.toolTip1.SetToolTip(this.btnSelectMSHCViewer, "Select MS Help Viewer viewer application");
+            this.toolTip1.SetToolTip(this.btnSelectMSHCViewer, "Select MS Help Viewer file viewer application");
             this.btnSelectMSHCViewer.UseVisualStyleBackColor = true;
             this.btnSelectMSHCViewer.Click += new System.EventHandler(this.btnSelectViewer_Click);
             // 
@@ -254,7 +254,7 @@ namespace SandcastleBuilder.Gui
             this.chkEnterMatching.AutoSize = true;
             this.chkEnterMatching.Location = new System.Drawing.Point(360, 522);
             this.chkEnterMatching.Name = "chkEnterMatching";
-            this.chkEnterMatching.Size = new System.Drawing.Size(431, 29);
+            this.chkEnterMatching.Size = new System.Drawing.Size(357, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkEnterMatching, "Enter Matching: When checked, matching brackets, parentheses, and quotes will be " +
         "entered automatically in the text editor");
             this.chkEnterMatching.TabIndex = 21;
@@ -266,7 +266,7 @@ namespace SandcastleBuilder.Gui
             this.chkShowLineNumbers.AutoSize = true;
             this.chkShowLineNumbers.Location = new System.Drawing.Point(360, 487);
             this.chkShowLineNumbers.Name = "chkShowLineNumbers";
-            this.chkShowLineNumbers.Size = new System.Drawing.Size(294, 29);
+            this.chkShowLineNumbers.Size = new System.Drawing.Size(245, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkShowLineNumbers, "Show Line Numbers: Check this box to show line numbers in the text editor");
             this.chkShowLineNumbers.TabIndex = 20;
             this.chkShowLineNumbers.Text = "Sho&w line numbers in text editor";
@@ -277,7 +277,7 @@ namespace SandcastleBuilder.Gui
             this.chkOpenHelp.AutoSize = true;
             this.chkOpenHelp.Location = new System.Drawing.Point(360, 250);
             this.chkOpenHelp.Name = "chkOpenHelp";
-            this.chkOpenHelp.Size = new System.Drawing.Size(319, 29);
+            this.chkOpenHelp.Size = new System.Drawing.Size(267, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkOpenHelp, "Open Help: Check this to open the help file after a successful build");
             this.chkOpenHelp.TabIndex = 9;
             this.chkOpenHelp.Text = "&Open help file after successful build";
@@ -294,7 +294,7 @@ namespace SandcastleBuilder.Gui
             "Don\'t save any changes"});
             this.cboBeforeBuildAction.Location = new System.Drawing.Point(360, 167);
             this.cboBeforeBuildAction.Name = "cboBeforeBuildAction";
-            this.cboBeforeBuildAction.Size = new System.Drawing.Size(292, 33);
+            this.cboBeforeBuildAction.Size = new System.Drawing.Size(292, 28);
             this.statusBarTextProvider1.SetStatusBarText(this.cboBeforeBuildAction, "Before Build: Select the action to take before performing a build");
             this.cboBeforeBuildAction.TabIndex = 7;
             // 
@@ -434,10 +434,10 @@ namespace SandcastleBuilder.Gui
             this.pgSpellChecking.Controls.Add(this.chkIgnoreFilenamesAndEMail);
             this.pgSpellChecking.Controls.Add(this.chkIgnoreAllUppercase);
             this.pgSpellChecking.Controls.Add(this.chkIgnoreWordsWithDigits);
-            this.pgSpellChecking.Location = new System.Drawing.Point(4, 34);
+            this.pgSpellChecking.Location = new System.Drawing.Point(4, 29);
             this.pgSpellChecking.Name = "pgSpellChecking";
             this.pgSpellChecking.Padding = new System.Windows.Forms.Padding(3);
-            this.pgSpellChecking.Size = new System.Drawing.Size(961, 619);
+            this.pgSpellChecking.Size = new System.Drawing.Size(961, 624);
             this.statusBarTextProvider1.SetStatusBarText(this.pgSpellChecking, "Spell checking options");
             this.pgSpellChecking.TabIndex = 2;
             this.pgSpellChecking.Text = "Spell Checking";
@@ -468,7 +468,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.lbUserDictionary.FormattingEnabled = true;
             this.lbUserDictionary.IntegralHeight = false;
-            this.lbUserDictionary.ItemHeight = 25;
+            this.lbUserDictionary.ItemHeight = 20;
             this.lbUserDictionary.Location = new System.Drawing.Point(655, 129);
             this.lbUserDictionary.Name = "lbUserDictionary";
             this.lbUserDictionary.Size = new System.Drawing.Size(290, 133);
@@ -518,7 +518,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.lbSpellCheckedAttributes.FormattingEnabled = true;
             this.lbSpellCheckedAttributes.IntegralHeight = false;
-            this.lbSpellCheckedAttributes.ItemHeight = 25;
+            this.lbSpellCheckedAttributes.ItemHeight = 20;
             this.lbSpellCheckedAttributes.Location = new System.Drawing.Point(6, 73);
             this.lbSpellCheckedAttributes.Name = "lbSpellCheckedAttributes";
             this.lbSpellCheckedAttributes.Size = new System.Drawing.Size(327, 140);
@@ -544,7 +544,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.txtAttributeName.Location = new System.Drawing.Point(6, 36);
             this.txtAttributeName.Name = "txtAttributeName";
-            this.txtAttributeName.Size = new System.Drawing.Size(219, 31);
+            this.txtAttributeName.Size = new System.Drawing.Size(219, 27);
             this.statusBarTextProvider1.SetStatusBarText(this.txtAttributeName, "Attribute Name: Enter the name of an XML attribute that should be spell checked");
             this.txtAttributeName.TabIndex = 0;
             // 
@@ -590,7 +590,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.lbIgnoredXmlElements.FormattingEnabled = true;
             this.lbIgnoredXmlElements.IntegralHeight = false;
-            this.lbIgnoredXmlElements.ItemHeight = 25;
+            this.lbIgnoredXmlElements.ItemHeight = 20;
             this.lbIgnoredXmlElements.Location = new System.Drawing.Point(6, 73);
             this.lbIgnoredXmlElements.Name = "lbIgnoredXmlElements";
             this.lbIgnoredXmlElements.Size = new System.Drawing.Size(327, 140);
@@ -616,7 +616,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.txtIgnoredElement.Location = new System.Drawing.Point(6, 36);
             this.txtIgnoredElement.Name = "txtIgnoredElement";
-            this.txtIgnoredElement.Size = new System.Drawing.Size(219, 31);
+            this.txtIgnoredElement.Size = new System.Drawing.Size(219, 27);
             this.statusBarTextProvider1.SetStatusBarText(this.txtIgnoredElement, "Ignored XML Element: Enter the name of an XML element whose content should be ign" +
         "ored when spell checking");
             this.txtIgnoredElement.TabIndex = 0;
@@ -652,7 +652,7 @@ namespace SandcastleBuilder.Gui
             this.cboDefaultLanguage.FormattingEnabled = true;
             this.cboDefaultLanguage.Location = new System.Drawing.Point(599, 49);
             this.cboDefaultLanguage.Name = "cboDefaultLanguage";
-            this.cboDefaultLanguage.Size = new System.Drawing.Size(111, 33);
+            this.cboDefaultLanguage.Size = new System.Drawing.Size(111, 28);
             this.statusBarTextProvider1.SetStatusBarText(this.cboDefaultLanguage, "Default Language: Select the default language to use when a dictionary for the pr" +
         "oject language is not available");
             this.cboDefaultLanguage.TabIndex = 2;
@@ -663,7 +663,7 @@ namespace SandcastleBuilder.Gui
             this.chkTreatUnderscoresAsSeparators.AutoSize = true;
             this.chkTreatUnderscoresAsSeparators.Location = new System.Drawing.Point(67, 237);
             this.chkTreatUnderscoresAsSeparators.Name = "chkTreatUnderscoresAsSeparators";
-            this.chkTreatUnderscoresAsSeparators.Size = new System.Drawing.Size(286, 29);
+            this.chkTreatUnderscoresAsSeparators.Size = new System.Drawing.Size(238, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkTreatUnderscoresAsSeparators, "Treat Underscores as Separators: Check this option to treat underscores as word s" +
         "eparators");
             this.chkTreatUnderscoresAsSeparators.TabIndex = 7;
@@ -675,7 +675,7 @@ namespace SandcastleBuilder.Gui
             this.chkIgnoreXmlInText.AutoSize = true;
             this.chkIgnoreXmlInText.Location = new System.Drawing.Point(67, 202);
             this.chkIgnoreXmlInText.Name = "chkIgnoreXmlInText";
-            this.chkIgnoreXmlInText.Size = new System.Drawing.Size(530, 29);
+            this.chkIgnoreXmlInText.Size = new System.Drawing.Size(443, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreXmlInText, "Ignore XML in Text: Check this option to ignore words that look like XML elements" +
         " in spell checked text");
             this.chkIgnoreXmlInText.TabIndex = 6;
@@ -687,7 +687,7 @@ namespace SandcastleBuilder.Gui
             this.chkIgnoreFilenamesAndEMail.AutoSize = true;
             this.chkIgnoreFilenamesAndEMail.Location = new System.Drawing.Point(67, 167);
             this.chkIgnoreFilenamesAndEMail.Name = "chkIgnoreFilenamesAndEMail";
-            this.chkIgnoreFilenamesAndEMail.Size = new System.Drawing.Size(504, 29);
+            this.chkIgnoreFilenamesAndEMail.Size = new System.Drawing.Size(421, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreFilenamesAndEMail, "Ignore Filenames and E-Mail: Check this option to ignore words that look like fil" +
         "enames and e-mail addresses");
             this.chkIgnoreFilenamesAndEMail.TabIndex = 5;
@@ -699,7 +699,7 @@ namespace SandcastleBuilder.Gui
             this.chkIgnoreAllUppercase.AutoSize = true;
             this.chkIgnoreAllUppercase.Location = new System.Drawing.Point(67, 132);
             this.chkIgnoreAllUppercase.Name = "chkIgnoreAllUppercase";
-            this.chkIgnoreAllUppercase.Size = new System.Drawing.Size(271, 29);
+            this.chkIgnoreAllUppercase.Size = new System.Drawing.Size(226, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreAllUppercase, "Ignore All Uppercase: Check this option to ignore words in all uppercase");
             this.chkIgnoreAllUppercase.TabIndex = 4;
             this.chkIgnoreAllUppercase.Text = "Ignore words in all uppercase";
@@ -710,7 +710,7 @@ namespace SandcastleBuilder.Gui
             this.chkIgnoreWordsWithDigits.AutoSize = true;
             this.chkIgnoreWordsWithDigits.Location = new System.Drawing.Point(67, 97);
             this.chkIgnoreWordsWithDigits.Name = "chkIgnoreWordsWithDigits";
-            this.chkIgnoreWordsWithDigits.Size = new System.Drawing.Size(231, 29);
+            this.chkIgnoreWordsWithDigits.Size = new System.Drawing.Size(191, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreWordsWithDigits, "Ignore Words With Digits: Check this option to ignore words that contain digits");
             this.chkIgnoreWordsWithDigits.TabIndex = 3;
             this.chkIgnoreWordsWithDigits.Text = "&Ignore words with digits";
@@ -722,10 +722,10 @@ namespace SandcastleBuilder.Gui
             this.pgContentEditors.Controls.Add(this.btnAddFile);
             this.pgContentEditors.Controls.Add(this.pgProps);
             this.pgContentEditors.Controls.Add(this.lbContentEditors);
-            this.pgContentEditors.Location = new System.Drawing.Point(4, 34);
+            this.pgContentEditors.Location = new System.Drawing.Point(4, 29);
             this.pgContentEditors.Name = "pgContentEditors";
             this.pgContentEditors.Padding = new System.Windows.Forms.Padding(3);
-            this.pgContentEditors.Size = new System.Drawing.Size(961, 619);
+            this.pgContentEditors.Size = new System.Drawing.Size(961, 624);
             this.statusBarTextProvider1.SetStatusBarText(this.pgContentEditors, "Content file editors");
             this.pgContentEditors.TabIndex = 1;
             this.pgContentEditors.Text = "Content File Editors";
@@ -770,7 +770,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.pgProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pgProps.Location = new System.Drawing.Point(6, 352);
+            this.pgProps.Location = new System.Drawing.Point(6, 348);
             this.pgProps.Name = "pgProps";
             this.pgProps.PropertyNamePaneWidth = 150;
             this.pgProps.Size = new System.Drawing.Size(949, 256);
@@ -785,10 +785,10 @@ namespace SandcastleBuilder.Gui
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbContentEditors.FormattingEnabled = true;
             this.lbContentEditors.IntegralHeight = false;
-            this.lbContentEditors.ItemHeight = 25;
+            this.lbContentEditors.ItemHeight = 20;
             this.lbContentEditors.Location = new System.Drawing.Point(6, 6);
             this.lbContentEditors.Name = "lbContentEditors";
-            this.lbContentEditors.Size = new System.Drawing.Size(893, 340);
+            this.lbContentEditors.Size = new System.Drawing.Size(893, 336);
             this.statusBarTextProvider1.SetStatusBarText(this.lbContentEditors, "Select a content editor item");
             this.lbContentEditors.TabIndex = 0;
             this.lbContentEditors.SelectedIndexChanged += new System.EventHandler(this.lbContentEditors_SelectedIndexChanged);

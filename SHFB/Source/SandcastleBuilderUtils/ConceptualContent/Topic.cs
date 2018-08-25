@@ -23,6 +23,8 @@
 // 06/05/2015  EFW  Removed support for Help 2 attributes
 //===============================================================================================================
 
+// Ignore Spelling: utf xlink
+
 using System;
 using System.ComponentModel;
 using System.Globalization;

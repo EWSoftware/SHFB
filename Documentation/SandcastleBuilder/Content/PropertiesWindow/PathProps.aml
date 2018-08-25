@@ -39,6 +39,7 @@ will be included via a <ui>View Source</ui> link in the Syntax section of topics
 support it (specifically the <codeInline>baseSourceCodeUrl</codeInline> argument in the <ui>Transform Args</ui>
 property category).  Specify the local file system path to the root source code folder here, not a URL.</para>
 
+				<!-- Ignore Spelling: pdb -->
 				<para>An up-to-date program database (PDB) file is required for each documented assembly in order to find
 source code locations for types and members.  Visual Studio will typically generate this automatically unless
 you have turned the option off in the assembly's project properties.  By default the debug info option is set

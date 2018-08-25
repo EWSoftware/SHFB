@@ -23,6 +23,8 @@
 // 05/03/2015  EFW  Removed support for topic transformation files
 //===============================================================================================================
 
+// Ignore Spelling: dll aml
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

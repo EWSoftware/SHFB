@@ -22,6 +22,8 @@
 // 05/14/2014  EFW  Added support for defining dependent plug-ins
 //===============================================================================================================
 
+// Ignore Spelling: Stazzz
+
 using System;
 using System.Collections.Generic;
 using System.IO;

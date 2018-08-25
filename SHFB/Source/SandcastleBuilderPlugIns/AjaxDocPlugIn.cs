@@ -23,6 +23,8 @@
 // 12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
+// Ignore Spelling: url
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

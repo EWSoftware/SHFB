@@ -21,6 +21,8 @@
 // 1.9.3.3  03/06/2012  EFW  Added the code to the project
 //=============================================================================
 
+// Ignore Spelling: Elad Malki
+
 using System;
 using System.ComponentModel;
 using System.Windows;

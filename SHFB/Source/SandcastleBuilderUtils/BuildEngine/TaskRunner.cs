@@ -18,6 +18,8 @@
 // 05/25/2015  EFW  Refactored the task execution code and moved it into its own class
 //===============================================================================================================
 
+// Ignore Spelling: hhc sbapplocale nologo clp
+
 using System;
 using System.Diagnostics;
 using System.IO;

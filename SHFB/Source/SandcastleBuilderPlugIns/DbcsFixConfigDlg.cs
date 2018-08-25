@@ -19,6 +19,8 @@
 // 07/31/2014  EFW  Made the localize app optional
 //===============================================================================================================
 
+// Ignore Spelling: exe
+
 using System;
 using System.IO;
 using System.Windows.Forms;

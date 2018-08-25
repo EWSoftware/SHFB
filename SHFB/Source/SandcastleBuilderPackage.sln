@@ -21,6 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87F7C3A5-F8CC-4DF0-9F82-E8F99E507E6C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		SandcastleBuilderPackage.sln.vsspell = SandcastleBuilderPackage.sln.vsspell
 		SandcastleTools.ruleset = SandcastleTools.ruleset
 	EndProjectSection
 EndProject

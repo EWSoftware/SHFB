@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="b92db9c5-9d0c-4d65-ac6e-d3d25adb4093" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: lt img src href -->
 		<introduction>
 			<para>This topic covers common questions and issues related to Microsoft Assistance Markup Language (MAML)
 and XML comments.</para>

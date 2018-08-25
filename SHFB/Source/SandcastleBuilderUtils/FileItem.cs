@@ -23,6 +23,8 @@
 // 05/08/2015  EFW  Removed support for ExcludeFromToc metadata item
 //===============================================================================================================
 
+// Ignore Spelling: Za
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

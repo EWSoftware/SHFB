@@ -22,6 +22,8 @@
 // 1.9.3.3  12/22/2011  EFW  Updated for use with the new token file editor
 //=============================================================================
 
+// Ignore Spelling: xlink
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

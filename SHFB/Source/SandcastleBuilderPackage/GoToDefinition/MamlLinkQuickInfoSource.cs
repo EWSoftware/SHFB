@@ -19,6 +19,8 @@
 // 12/01/2014  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: xlink
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

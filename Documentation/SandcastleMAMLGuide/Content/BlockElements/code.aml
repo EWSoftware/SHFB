@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="65e7e30a-ba03-4e10-b1f2-763a613b6e27" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: tabsize  xml utf filespec cpp fs fscript js jscript jscriptnet jscript vbnet vbs -->
+		<!-- Ignore Spelling: vbscript htm html xsl jsharp sql sqlserver py pshell powershell endregion -->
     <introduction>
 		<para>This element can be used to display a multi-line code fragment in a conceptual topic.  For single lines
 or keywords, you can use the <codeInline>codeInline</codeInline> element.</para>

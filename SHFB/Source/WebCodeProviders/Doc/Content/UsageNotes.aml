@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="40ba6bda-95d6-4a64-834f-f7cedcb589d1" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
+    <!-- Ignore Spelling: gacutil csharp docpath vbs visualbasic vbscript params foreach -->
+		<introduction>
       <autoOutline />
       <para>A question that comes up with some regularity is how to produce a help file from the XML
 comments in the code for a web project using the <token>SHFB</token>. There are two types of web project:

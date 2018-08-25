@@ -21,6 +21,8 @@
 // 05/13/2015  EFW  Moved the file to the GUI project as it is only used there
 //===============================================================================================================
 
+// Ignore Spelling: Guid
+
 using System.ComponentModel;
 
 using Microsoft.Build.Evaluation;

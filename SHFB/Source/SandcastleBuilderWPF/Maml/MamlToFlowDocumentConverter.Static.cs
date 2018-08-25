@@ -19,6 +19,8 @@
 // 11/26/2012  EFW  Added support for imported code blocks
 //===============================================================================================================
 
+// Ignore Spelling: endregion pragma cpp ui
+
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

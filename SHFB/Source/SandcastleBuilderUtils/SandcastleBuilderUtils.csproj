@@ -275,6 +275,7 @@
     <Content Include="Templates\GenerateMarkdownContent.proj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Templates\Templates.vsspell" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\DividerLabel.bmp" />

@@ -3,6 +3,7 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
+		<!-- Ignore Spelling: Dallmann Jeroen Vos Proc src tfsserver -->
 		<introduction>
 			<para>This topic provides instructions for using the help file builder in conjunction with Team Build to
 generate documentation for your projects.  This information was originally supplied by Tim Dallmann in the MSDN

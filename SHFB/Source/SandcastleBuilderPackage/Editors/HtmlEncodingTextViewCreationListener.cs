@@ -18,6 +18,8 @@
 // 11/23/2012  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: htmlx
+
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 

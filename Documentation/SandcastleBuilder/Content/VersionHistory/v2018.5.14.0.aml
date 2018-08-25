@@ -26,6 +26,7 @@
 			<title>Sandcastle Tools</title>
 			<content>
 				<list class="bullet">
+					<!-- Ignore Spelling: Osimosu -->
 					<listItem>
 						<para>Merged changes from Emmanuel Osimosu to fix a null reference exception that could occur under
 certain conditions in MRefBuilder.</para>

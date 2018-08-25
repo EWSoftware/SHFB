@@ -20,6 +20,8 @@
 // 01/11/2013  EFW  Added support for colorizing code blocks
 //===============================================================================================================
 
+// Ignore Spelling: endregion pragma lang nobullet
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

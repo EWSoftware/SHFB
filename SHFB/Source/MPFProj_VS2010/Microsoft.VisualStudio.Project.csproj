@@ -274,6 +274,7 @@
     <None Include="Diagrams\PropertiesClasses.cd" />
     <None Include="Diagrams\ReferenceClasses.cd" />
     <None Include="Key.snk" />
+    <None Include="Microsoft.VisualStudio.Project.csproj.vsspell" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

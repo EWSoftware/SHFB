@@ -75,7 +75,7 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// Get the item type guid for the item
+        /// Get the item type GUID for the item
         /// </summary>
         public override Guid ItemTypeGuid
         {

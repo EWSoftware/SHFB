@@ -67,6 +67,7 @@ part of the help file builder (also <externalLink>
 					</listItem>
 
 					<listItem>
+						<!-- Ignore Spelling: Sorens -->
 						<para>For a wall chart that contains condensed information on the various XML comment elements,
 see this PDF file also by Michael Sorens:
 <externalLink>

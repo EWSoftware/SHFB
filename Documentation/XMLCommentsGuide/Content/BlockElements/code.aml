@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: tabsize utf filespec fs fscript jscript jscriptnet js vbs vbnet vbscript htm html -->
+		<!-- Ignore Spelling: xsl jsharp sql sqlserver py pshell powershell -->
 		<introduction>
 			<para>This element is used to indicate that a multi-line section of text should be formatted as a code
 block.</para>

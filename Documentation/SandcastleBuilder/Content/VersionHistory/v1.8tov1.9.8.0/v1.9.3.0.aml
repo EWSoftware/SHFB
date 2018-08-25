@@ -79,6 +79,7 @@ re-opened, the project window state is restored.  Window state is saved to a fil
 same name as the project file with a "<localUri>_[USERNAME]</localUri>" suffix.  This option can be turned off in
 the <ui>User Preferences</ui> dialog.</para></listItem>
 
+		<!-- Ignore Spelling: euphory -->
 		<listItem><para>Thanks to euphory for providing additional translations in the Japanese
 shared builder content resource item file.</para></listItem>
 

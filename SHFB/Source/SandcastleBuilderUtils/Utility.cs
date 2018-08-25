@@ -118,7 +118,7 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to obtain the execution priority for a plug-in in the given build step and behavior
+        /// This is used to obtain the execution priority for a plug-in within the given build step and behavior
         /// </summary>
         /// <param name="executionPoints">An enumerable list of execution points to search</param>
         /// <param name="step">The build step</param>

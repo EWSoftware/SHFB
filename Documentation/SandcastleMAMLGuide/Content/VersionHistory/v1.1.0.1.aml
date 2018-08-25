@@ -26,6 +26,7 @@ typos.</para></listItem>
 		<listItem><para>Added a topic on integrating the Sandcastle MAML schema files into the Visual Studio global
 schema cache to provide IntelliSense for MAML topics while editing them in Visual Studio.</para></listItem>
 
+		<!-- Ignore Spelling: Immo Landwerth -->
 		<listItem><para>Added a topic on making the Sandcastle MAML schemas extensible for third-party build
 component elements.  This information was supplied by Immo Landwerth.</para></listItem>
     </list>

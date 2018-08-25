@@ -18,6 +18,8 @@
 // 11/14/2014  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: cli
+
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;

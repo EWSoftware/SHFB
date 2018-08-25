@@ -18,6 +18,8 @@
 // 11/15/2017  EFW  Converted the control to WPF for better high DPI scaling support on 4K displays
 //===============================================================================================================
 
+// Ignore Spelling: mshc docx md
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

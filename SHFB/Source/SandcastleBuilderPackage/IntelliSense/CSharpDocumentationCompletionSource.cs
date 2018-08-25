@@ -21,6 +21,8 @@
 //                  appear when appropriate.
 //===============================================================================================================
 
+// Ignore Spelling: threadsafety langword
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

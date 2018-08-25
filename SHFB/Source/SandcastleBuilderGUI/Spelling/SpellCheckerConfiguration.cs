@@ -18,6 +18,8 @@
 // 05/11/2013  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: lt arn az Cyrl Latn
+
 using System;
 using System.IO;
 using System.Collections.Generic;

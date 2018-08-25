@@ -3,7 +3,7 @@
   <developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
-
+		<!-- Ignore Spelling: Regex -->
     <introduction>
 			<para>The API Filter editor provides a form used to choose the API topics that will appear in the help
 file. It allows you to include or exclude namespaces, types, and members from the documented assemblies as well

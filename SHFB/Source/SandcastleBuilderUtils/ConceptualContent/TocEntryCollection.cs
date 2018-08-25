@@ -24,6 +24,8 @@
 // 05/07/2015  EFW  Removed all deprecated code
 //===============================================================================================================
 
+// Ignore Spelling: utf
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

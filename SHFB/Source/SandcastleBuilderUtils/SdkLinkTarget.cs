@@ -40,8 +40,8 @@ namespace SandcastleBuilder.Utils
         /// the frame has no parent, this value acts like the value
         /// <b>Self</b>.</summary>
         Parent,
-        /// <summary>The URL replaces any framesets that may be loaded. If
-        /// there are no framesets defined, this value acts like the value
+        /// <summary>The URL replaces any frame sets that may be loaded. If
+        /// there are no frame sets defined, this value acts like the value
         /// <b>Self</b>.</summary>
         Top
     }

@@ -9,6 +9,7 @@
       <title>Changes in This Release</title>
       <content>
 <list class="bullet">
+		<!-- Ignore Spelling: Prj -->
     <listItem>A new <legacyBold>Prj Summary</legacyBold> button appears on the main form in the
 Assemblies to Document section.  It opens a form in which you can enter
 summary comments that should appear in the root namespaces page of the

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="a44fe561-efb9-40ac-84eb-b1a00a4a9596" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: lang vsimport helpattr Prantl -->
 		<introduction>
 			<autoOutline lead="Version 1.7.0.0 was released on June 2nd, 2008."
         excludeRelatedTopics="true" />

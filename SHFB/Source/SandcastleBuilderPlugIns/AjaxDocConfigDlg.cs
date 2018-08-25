@@ -18,6 +18,8 @@
 // 1.5.2.0  09/15/2007  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: url
+
 using System;
 using System.Globalization;
 using System.Windows.Forms;

@@ -18,6 +18,8 @@
 // 04/14/2012  EFW  Converted to use WPF
 //===============================================================================================================
 
+// Ignore Spelling: href
+
 using System;
 using System.IO;
 using System.Linq;

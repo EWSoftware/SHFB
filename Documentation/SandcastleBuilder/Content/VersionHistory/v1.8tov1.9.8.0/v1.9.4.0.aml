@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c7f2f7d3-9386-4e1e-9337-9795f42720c6" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
+		<!-- Ignore Spelling: Fehr nobullet configs -->
+		<introduction>
 			<autoOutline lead="Version 1.9.4.0 was released on April 15th, 2012." excludeRelatedTopics="true" />
     </introduction>
 

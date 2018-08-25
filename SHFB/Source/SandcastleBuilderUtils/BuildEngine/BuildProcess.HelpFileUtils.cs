@@ -35,6 +35,8 @@
 // 01/09/2013  EFW  Removed copying of branding files.  They are part of the presentation style now.
 //===============================================================================================================
 
+// Ignore Spelling: Fehr fti
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

@@ -35,6 +35,8 @@
 // 05/03/2015  EFW  Removed support for the MS Help 2 file format and the project converters
 //===============================================================================================================
 
+// Ignore Spelling: arning vpath
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

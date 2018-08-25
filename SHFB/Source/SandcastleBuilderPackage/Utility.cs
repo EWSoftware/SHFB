@@ -18,9 +18,10 @@
 // 04/02/2011  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: Za
+
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;

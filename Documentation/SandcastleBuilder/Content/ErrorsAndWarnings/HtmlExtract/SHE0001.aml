@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
+		<!-- Ignore Spelling: charset -->
+		<introduction>
       <para>Warning SHE0001: LCID '<legacyItalic>[id]</legacyItalic>' not found
 in configuration file.  Defaulting to ANSI code page value of
 '<legacyItalic>[codePage]</legacyItalic>', encoding charset

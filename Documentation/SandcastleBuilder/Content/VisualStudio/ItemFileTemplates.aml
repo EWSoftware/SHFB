@@ -173,6 +173,7 @@ The icon file should be placed in the same folder as the template file and the V
 			<para>404</para>
 		</entry>
 		<entry>
+			<!-- Ignore Spelling: stylesheet -->
 			<para>Stylesheet</para>
 		</entry>
 	</row>

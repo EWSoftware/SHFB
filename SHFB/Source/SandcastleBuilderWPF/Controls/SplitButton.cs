@@ -22,6 +22,8 @@
 // 1.9.3.3  12/28/2011  EFW  Added support for MainButtonCommandTarget
 //=============================================================================
 
+// Ignore Spelling: Huy Pham
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;

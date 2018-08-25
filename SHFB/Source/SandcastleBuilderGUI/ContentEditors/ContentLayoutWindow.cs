@@ -21,6 +21,8 @@
 // 1.9.3.3  12/19/2011  EFW  Rewrote to use the shared WPF Content Layout Editor user control
 //===============================================================================================================
 
+// Ignore Spelling: aml
+
 using System;
 using System.Globalization;
 using System.IO;

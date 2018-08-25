@@ -74,6 +74,10 @@
 //          12/10/2017  EFW  Added support for the WebsiteAdContent and SearchResultsDisplayVersion properties
 //===============================================================================================================
 
+// Ignore Spelling: Fehr Stazzz param typeparam safeprojectname apifilter documentationsources namespacesummaries
+// Ignore Spelling: componentconfigurations pluginconfigurations transformcomponentarguments helpfileformat
+// Ignore Spelling: frameworkversion presentationstyle visibleitems
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -22,6 +22,8 @@
 // 09/28/2017  EFW  Converted the control to WPF for better high DPI scaling support on 4K displays
 //===============================================================================================================
 
+// Ignore Spelling: exe
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics;

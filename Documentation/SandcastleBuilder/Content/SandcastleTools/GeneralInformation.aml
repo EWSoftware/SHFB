@@ -28,6 +28,7 @@ can be combined into a single help file.</para>
 
 				<list class="bullet">
 					<listItem>
+						<!-- Ignore Spelling: tos -->
 						<para><legacyBold>Conceptual Content</legacyBold> - This topic is an example of conceptual content.
 It is written using Microsoft Assistance Markup Language (MAML) and is used to create topics for general
 conceptual information, walkthroughs, how-tos, etc.  For more information about MAML and how to use it, see the

@@ -69,6 +69,8 @@
 //          12/21/2015  EFW  Merged conceptual and reference topic build steps
 //===============================================================================================================
 
+// Ignore Spelling: Fehr Stazzz utf
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

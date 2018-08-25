@@ -27,6 +27,8 @@
 // 05/03/2015  EFW  Removed support for the MS Help 2 file format
 //===============================================================================================================
 
+// Ignore Spelling: arning mshc docx md
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -131,21 +133,21 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// In such cases, command line property overrides are ignored.</value>
         public bool AlwaysLoadProject { get; set; }
 
-    /// <summary>
-    /// <para>Optional String parameter.</para>
-    /// <para>A semicolon-delimited list of property name/value pairs that override properties read from the <see cref="ProjectFile" />.</para>
-    /// </summary>
-    /// <remarks>
-    ///   <para>
-    ///     Use this to provide dynamic properties, that are created during build. When building inside Visual Studio,
-    ///     only static properties are available.</para>
-    ///   <para>
-    ///     This could for example be used if there are custom msbuild targets that initialize properties with version information.</para>
-    /// </remarks>
-    /// <example>Properties="Version=$(SemVersion);Optimize=$(Optimize)"</example>
-    public string Properties { get; set; }
+        /// <summary>
+        /// <para>Optional String parameter.</para>
+        /// <para>A semicolon-delimited list of property name/value pairs that override properties read from the
+        /// <see cref="ProjectFile" />.</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>Use this to provide dynamic properties, that are created during build. When building inside
+        /// Visual Studio, only static properties are available.</para>
+        /// <para>This could for example be used if there are custom MSBuild targets that initialize properties
+        /// with version information.</para>
+        /// </remarks>
+        /// <example>Properties="Version=$(SemVersion);Optimize=$(Optimize)"</example>
+        public string Properties { get; set; }
 
-      #endregion
+        #endregion
 
         #region Task output properties
         //=====================================================================
@@ -358,29 +360,29 @@ namespace SandcastleBuilder.Utils.MSBuild
                     msBuildProject.ReevaluateIfNecessary();
                 }
 
-              // initialize properties that where provided in Properties
-              if (!string.IsNullOrWhiteSpace(Properties))
-              {
-                foreach (string propertyKeyValue in this.Properties.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
+                // initialize properties that where provided in Properties
+                if(!string.IsNullOrWhiteSpace(Properties))
                 {
-                  int length = propertyKeyValue.IndexOf('=');
-                  if (length != -1)
-                  {
-                    string propertyKey = propertyKeyValue.Substring(0, length).Trim();
-                    string propertyValue = propertyKeyValue.Substring(length + 1).Trim();
-
-                    if (!string.IsNullOrWhiteSpace(propertyKey))
+                    foreach(string propertyKeyValue in this.Properties.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                      Log.LogMessage(MessageImportance.Low, "Setting property {0}={1}", propertyKey, propertyValue);
-                      msBuildProject.SetGlobalProperty(propertyKey, propertyValue);
+                        int length = propertyKeyValue.IndexOf('=');
+                        if(length != -1)
+                        {
+                            string propertyKey = propertyKeyValue.Substring(0, length).Trim();
+                            string propertyValue = propertyKeyValue.Substring(length + 1).Trim();
+
+                            if(!string.IsNullOrWhiteSpace(propertyKey))
+                            {
+                                Log.LogMessage(MessageImportance.Low, "Setting property {0}={1}", propertyKey, propertyValue);
+                                msBuildProject.SetGlobalProperty(propertyKey, propertyValue);
+                            }
+                        }
                     }
-                  }
+
+                    msBuildProject.ReevaluateIfNecessary();
                 }
 
-                msBuildProject.ReevaluateIfNecessary();
-              }
-
-              cts = new CancellationTokenSource();
+                cts = new CancellationTokenSource();
 
                 // Associate the MSBuild project with a SHFB project instance and build it
                 using(sandcastleProject = new SandcastleProject(msBuildProject))
@@ -577,21 +579,21 @@ namespace SandcastleBuilder.Utils.MSBuild
                         m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
                 else
                     if(String.Compare(m.Groups[3].Value, "error", StringComparison.OrdinalIgnoreCase) == 0)
-                        Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
-                            m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
-                    else
-                        Log.LogMessage(MessageImportance.High, value.Message);
+                    Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
+                        m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
+                else
+                    Log.LogMessage(MessageImportance.High, value.Message);
             }
             else
                 if(this.Verbose)
-                    Log.LogMessage(MessageImportance.High, value.Message);
-                else
-                {
-                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
-                    // wanted.  Errors will kill the build so we don't have to deal with them here.
-                    if(reWarning.IsMatch(value.Message))
-                        Log.LogWarning(value.Message);
-                }
+                Log.LogMessage(MessageImportance.High, value.Message);
+            else
+            {
+                // If not doing verbose logging, show warnings and let MSBuild filter them out if not
+                // wanted.  Errors will kill the build so we don't have to deal with them here.
+                if(reWarning.IsMatch(value.Message))
+                    Log.LogWarning(value.Message);
+            }
 
             if(value.StepChanged)
             {

@@ -19,6 +19,8 @@
 // 1.0.0.0  12/05/2012  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: typeparamref
+
 using System;
 
 namespace XMLCommentsExamples

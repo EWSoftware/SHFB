@@ -18,6 +18,8 @@
 // 12/26/2011  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: aml
+
 using System;
 using System.IO;
 using System.Linq;

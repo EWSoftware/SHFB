@@ -18,6 +18,8 @@
 // 1.0.0.0  12/06/2012  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: pragma bool
+
 using System;
 
 namespace XMLCommentsExamples.DocumentationInheritance

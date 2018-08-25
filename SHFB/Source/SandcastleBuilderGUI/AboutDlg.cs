@@ -18,6 +18,8 @@
 // 08/02/2006  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: mailto
+
 using System;
 using System.Diagnostics;
 using System.Reflection;

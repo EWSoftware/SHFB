@@ -22,6 +22,8 @@
 // 06/24/2015  EFW  Changed the framework settings classes to reflection data to be more general in nature
 //===============================================================================================================
 
+// Ignore Spelling: seealso
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

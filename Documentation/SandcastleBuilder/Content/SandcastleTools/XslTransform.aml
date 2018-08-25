@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="36b6f77e-5662-4e1f-a075-bae885db0401" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: xsl -->
 		<introduction>
 			<para>This tool, <localUri>XslTransform.exe</localUri>, is used to transform an XML file using one or more
 specified XSL transformations.  It is used at various points in the build process to add entries to the

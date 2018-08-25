@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="a8792cd2-e8a1-4e37-bd16-eea84ac463b1" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
+		<introduction>
       <para>This element can be used to create a note-like section within a conceptual topic to draw attention to
 some important information.</para>
     </introduction>
@@ -43,7 +43,8 @@ the alert class name or an expanded form of it.</para>
           </row>
           <row>
             <entry><para>Language note</para></entry>
-            <entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note, vb, VB,
+						<!-- Ignore Spelling: cpp -->
+						<entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note, vb, VB,
 VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
           </row>
         </table>

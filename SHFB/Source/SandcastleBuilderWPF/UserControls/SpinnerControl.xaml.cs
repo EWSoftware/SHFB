@@ -13,6 +13,8 @@
 // 11/14/2017  EFW  Add the code to the project
 //===============================================================================================================
 
+// Ignore Spelling: blackspikeltd
+
 using System.Windows.Controls;
 
 namespace SandcastleBuilder.WPF.UserControls

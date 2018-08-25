@@ -25,6 +25,8 @@
 // 10/13/2017  EFW  Converted the form to WPF for better high DPI scaling support on 4K displays
 //===============================================================================================================
 
+// Ignore Spelling: topicdata
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

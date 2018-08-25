@@ -23,6 +23,8 @@
 //                  environment variable setting.
 //===============================================================================================================
 
+// Ignore Spelling: vpath Projref
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -181,7 +183,7 @@ namespace SandcastleBuilder.Package.Nodes
                 typeof(DocumentationSourceNodeProperties).GUID);
 
             // The following are not specific to Sandcastle Builder and as such we need a separate GUID
-            // (we simply used guidgen.exe to create new guids).
+            // (we simply used guidgen.exe to create new GUIDs).
             base.AddCATIDMapping(typeof(ProjectNodeProperties), new Guid("CD4A4A5D-345C-4faf-9BDC-AB3F04DEE02F"));
             base.AddCATIDMapping(typeof(FolderNodeProperties), new Guid("9D0F0FAA-F7B1-43ee-A8CF-046B80F2384B"));
             base.AddCATIDMapping(typeof(ReferenceNodeProperties), new Guid("0B6EF0B6-8699-470d-A8A1-16F745810073"));

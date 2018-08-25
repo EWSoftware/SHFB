@@ -18,6 +18,8 @@
 // 1.8.0.1  10/31/2008  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: Eyal
+
 using System;
 using System.Windows.Forms;
 using System.Xml;

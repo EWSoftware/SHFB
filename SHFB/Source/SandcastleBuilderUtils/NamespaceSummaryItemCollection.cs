@@ -22,6 +22,8 @@
 // 11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 //===============================================================================================================
 
+// Ignore Spelling: Stazzz
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

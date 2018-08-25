@@ -19,6 +19,8 @@
 // 03/30/2015  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: blockquote dl ol ul noscript fieldset iframe
+
 using System;
 using System.Collections.Generic;
 using System.IO;

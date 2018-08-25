@@ -16,6 +16,8 @@
 // 1.1.0.2  12/13/2012  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: url
+
 using System;
 using System.Windows;
 using System.Windows.Controls;

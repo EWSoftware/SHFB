@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="e2fcc636-0781-4232-8c7e-fb5edbe40026" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: Joris Zwart neoliet Yannuzzi -->
 		<introduction>
 			<alert class="important">
 				<para>In a future release, support for all deprecated features will be removed in an effort to simplify

@@ -19,6 +19,8 @@
 // 05/25/2015  EFW  Created the code
 //===============================================================================================================
 
+// Ignore Spelling: memberdata proceduredata typedata
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

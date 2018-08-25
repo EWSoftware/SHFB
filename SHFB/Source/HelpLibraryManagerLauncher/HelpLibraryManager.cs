@@ -21,10 +21,11 @@
 // 03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
 //===============================================================================================================
 
+// Ignore Spelling: Fehr runas
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;

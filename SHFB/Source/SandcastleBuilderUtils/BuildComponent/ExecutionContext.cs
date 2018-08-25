@@ -39,7 +39,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
         public BuildStep BuildStep { get; private set; }
 
         /// <summary>
-        /// This read-only property returns the execution behavior for the plug-in in the current context
+        /// This read-only property returns the execution behavior for the plug-in within the current context
         /// </summary>
         /// <value><c>Before</c> indicates that it is being called before the normal help file builder
         /// processing.  <c>After</c> indicates that it is being called after the normal help file builder

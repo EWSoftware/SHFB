@@ -7,6 +7,7 @@
 	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
 	mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="250"
 	MinWidth="500" MinHeight="250" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	<!-- Ignore Spelling: param typeparam -->
 	<Grid ToggleButton.Checked="CheckBox_Click" ToggleButton.Unchecked="CheckBox_Click">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
