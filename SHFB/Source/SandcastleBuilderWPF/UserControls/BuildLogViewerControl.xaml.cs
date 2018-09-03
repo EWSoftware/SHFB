@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2012-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to view the build log content.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.4  01/05/2012  EFW  Created the code
+// 01/05/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -23,11 +23,11 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 using Sandcastle.Core;
 
@@ -43,6 +43,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
         private string logFilename;
         private bool delayedLoad;
+
         #endregion
 
         #region Properties
@@ -89,23 +90,29 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This is used to load a log file
         /// </summary>
-        private void LoadLogFile()
+        /// <remarks>The log is transformed in the background to prevent blocking the UI for an extended period
+        /// of time if it is large.</remarks>
+        private async void LoadLogFile()
         {
             try
             {
-                Mouse.OverrideCursor = Cursors.Wait;
+                pnlFormat.IsEnabled = false;
+                wbContent.NavigateToString("<div style='font-family: Arial; font-size: 9pt'>Loading log file, please wait.</div>");
 
-                wbContent.NavigateToString(" ");    // Must use a space.  It doesn't like String.Empty
+                if(!String.IsNullOrWhiteSpace(logFilename) && File.Exists(logFilename))
+                {
+                    bool filtered = rbFilter.IsChecked.Value, highlight = rbHighlight.IsChecked.Value;
 
-                if(!String.IsNullOrEmpty(logFilename) && File.Exists(logFilename))
-                    wbContent.NavigateToString(TransformLogFile(logFilename, rbFilter.IsChecked.Value,
-                        rbHighlight.IsChecked.Value));
+                    string content = await Task.Run(() => TransformLogFile(logFilename, filtered, highlight));
+
+                    wbContent.NavigateToString(content);
+                }
                 else
                     wbContent.NavigateToString(String.Format(CultureInfo.InvariantCulture, "<div " +
                         "style='font-family: Arial; font-size: 9pt'>Log File: {0}<br /><br />There is no log " +
                         "file to view.  Please build the project first.  You may also need to enable the " +
                         "<b>Keep log file after successful build (KeepLogFile)</b> project property.</div>",
-                        (logFilename == null) ? "(Build cleaned)" : logFilename));
+                        String.IsNullOrWhiteSpace(logFilename) ? "(Build cleaned)" : logFilename));
             }
             catch(Exception ex)
             {
@@ -117,7 +124,7 @@ namespace SandcastleBuilder.WPF.UserControls
             }
             finally
             {
-                Mouse.OverrideCursor = null;
+                pnlFormat.IsEnabled = true;
             }
         }
 
@@ -137,10 +144,7 @@ namespace SandcastleBuilder.WPF.UserControls
             try
             {
                 // Read in the log text.  We'll prefix it with the error message if the transform fails.
-                using(StreamReader sr = new StreamReader(logFile))
-                {
-                    html = sr.ReadToEnd();
-                }
+                html = File.ReadAllText(logFile);
 
                 // Transform the log into something more readable
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
@@ -150,8 +154,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 XsltSettings settings = new XsltSettings(true, true);
 
                 using(var transformReader = XmlReader.Create(Path.Combine(Path.GetDirectoryName(
-                  ComponentUtilities.ToolsFolder), @"Templates\TransformBuildLog.xsl"),
-                  readerSettings))
+                  ComponentUtilities.ToolsFolder), @"Templates\TransformBuildLog.xsl"), readerSettings))
                 {
                     xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 

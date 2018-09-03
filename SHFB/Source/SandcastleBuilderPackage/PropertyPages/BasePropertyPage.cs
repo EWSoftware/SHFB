@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 11/21/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used as the base class for package property pages
@@ -36,6 +36,7 @@ using System.Windows.Forms.Integration;
 using WinFormsKeys = System.Windows.Forms.Keys;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -113,6 +114,8 @@ namespace SandcastleBuilder.Package.PropertyPages
             get { return isDirty; }
             set
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if(isDirty != value && !this.IsBinding)
                 {
                     isDirty = value;
@@ -235,7 +238,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             if(!this.IsBinding)
             {
+#pragma warning disable VSTHRD010
                 this.IsDirty = true;
+#pragma warning restore VSTHRD010
                 this.RefreshControlState(sender, e);
             }
         }
@@ -570,7 +575,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         private void OnWpfPropertyChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+#pragma warning disable VSTHRD010
             this.OnPropertyChanged(sender, e);
+#pragma warning restore VSTHRD010
         }
 
         /// <summary>
@@ -603,6 +610,8 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="bModal">Indicates whether the dialog box is shown modally or not.</param>
         void IPropertyPage.Activate(IntPtr hWndParent, RECT[] pRect, int bModal)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             this.CreateControl();
             this.Initialize();
 
@@ -634,7 +643,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(this.IsValid)
                 {
                     this.StoreProperties(this.Controls);
+#pragma warning disable VSTHRD010
                     this.IsDirty = false;
+#pragma warning restore VSTHRD010
                 }
                 else
                     return VSConstants.S_FALSE;
@@ -723,6 +734,8 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <see cref="IPropertyPage.Activate"/>, but don't count on it.</remarks>
         void IPropertyPage.SetObjects(uint cObjects, object[] ppunk)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if(cObjects == 0)
             {
                 this.ProjectMgr = null;
@@ -848,18 +861,24 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         void IPropertyPage2.Activate(IntPtr hWndParent, RECT[] pRect, int bModal)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).Activate(hWndParent, pRect, bModal);
         }
 
         /// <inheritdoc />
         void IPropertyPage2.Apply()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).Apply();
         }
 
         /// <inheritdoc />
         void IPropertyPage2.Deactivate()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).Deactivate();
         }
 
@@ -872,48 +891,64 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         void IPropertyPage2.GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).GetPageInfo(pPageInfo);
         }
 
         /// <inheritdoc />
         void IPropertyPage2.Help(string pszHelpDir)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).Help(pszHelpDir);
         }
 
         /// <inheritdoc />
         int IPropertyPage2.IsPageDirty()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ((IPropertyPage)this).IsPageDirty();
         }
 
         /// <inheritdoc />
         void IPropertyPage2.Move(RECT[] pRect)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).Move(pRect);
         }
 
         /// <inheritdoc />
         void IPropertyPage2.SetObjects(uint cObjects, object[] ppunk)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).SetObjects(cObjects, ppunk);
         }
 
         /// <inheritdoc />
         void IPropertyPage2.SetPageSite(IPropertyPageSite pPageSite)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).SetPageSite(pPageSite);
         }
 
         /// <inheritdoc />
         void IPropertyPage2.Show(uint nCmdShow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ((IPropertyPage)this).Show(nCmdShow);
         }
 
         /// <inheritdoc />
         int IPropertyPage2.TranslateAccelerator(MSG[] pMsg)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ((IPropertyPage)this).TranslateAccelerator(pMsg);
         }
         #endregion

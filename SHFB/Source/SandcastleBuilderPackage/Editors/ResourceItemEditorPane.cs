@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ResourceItemFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to host the resource item  file editor control
@@ -77,7 +77,9 @@ namespace SandcastleBuilder.Package.Editors
             try
             {
                 // Get the current project so that the editor knows what presentation style items to load
+#pragma warning disable VSTHRD010
                 project = SandcastleBuilderPackage.CurrentSandcastleProject;
+#pragma warning restore VSTHRD010
 
                 if(project == null)
                 {
@@ -98,6 +100,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <inheritdoc />
         protected override void SaveFile(string fileName)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
             Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
             base.UIControl.CommitChanges();

@@ -3,6 +3,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
     using System;
     using System.Runtime.InteropServices;
     using Microsoft.VisualStudio;
+    using Microsoft.VisualStudio.Shell;
 
     using IOleCommandTarget = Microsoft.VisualStudio.OLE.Interop.IOleCommandTarget;
     using OLECMD = Microsoft.VisualStudio.OLE.Interop.OLECMD;
@@ -183,6 +184,8 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         private int InnerExec(ref Guid commandGroup, uint commandId, OLECMDEXECOPT executionOptions, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if(_next != null)
                 return _next.Exec(ref commandGroup, commandId, (uint)executionOptions, pvaIn, pvaOut);
 
@@ -231,7 +234,9 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             if(!HandlePreExec(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut) && _next != null)
             {
                 // Pass it along the chain.
+#pragma warning disable VSTHRD010
                 rc = this.InnerExec(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
+#pragma warning restore VSTHRD010
 
                 if(ErrorHandler.Succeeded(rc))
                     HandlePostExec(ref guidCmdGroup, nCmdID, (OLECMDEXECOPT)nCmdexecopt, pvaIn, pvaOut);
@@ -243,6 +248,8 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         /// <inheritdoc/>
         int IOleCommandTarget.QueryStatus(ref Guid guidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Guid cmdGroup = guidCmdGroup;
             for(uint i = 0; i < cCmds; i++)
             {

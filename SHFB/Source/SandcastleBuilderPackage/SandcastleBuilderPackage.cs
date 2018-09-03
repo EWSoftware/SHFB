@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/26/2018
+// Updated : 09/02/2018
 // Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -62,7 +62,7 @@ namespace SandcastleBuilder.Package
     /// <c>Package</c> class that provides the implementation of the <c>IVsPackage</c> interface and uses the
     /// registration attributes defined in the framework to register itself and its components with the shell.</remarks>
     // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is a package
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     // This attribute is used to register the information needed to show the this package in the Help/About
     // dialog of Visual Studio.
     [InstalledProductRegistration("#110", "#111", "SHFB", IconResourceID = 400)]
@@ -169,7 +169,9 @@ namespace SandcastleBuilder.Package
         {
             get
             {
-                DTE dte = Utility.GetServiceFromPackage<DTE, DTE>(false);
+                ThreadHelper.ThrowIfNotOnUIThread();
+
+                DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
                 Array activeProjects = null;
 
                 if(dte != null)
@@ -196,10 +198,12 @@ namespace SandcastleBuilder.Package
         {
             get
             {
+#pragma warning disable VSTHRD010
                 var pn = CurrentProjectNode;
 
                 if(pn != null)
                     return pn.SandcastleProject;
+#pragma warning restore VSTHRD010
 
                 return null;
             }
@@ -254,16 +258,22 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <remarks>This method is called right after the package is sited, so this is the place where you can
         /// put all the initialization code that relies on services provided by Visual Studio.</remarks>
-        protected override void Initialize()
+        protected override async System.Threading.Tasks.Task InitializeAsync(
+          System.Threading.CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of {0}",
                 this.ToString()));
-            base.Initialize();
+
+            await base.InitializeAsync(cancellationToken, progress);
+
+            // When initialized asynchronously, we may be on a background thread at this point.  Do any
+            // initialization that requires the UI thread after switching to the UI thread.
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             SandcastleBuilderPackage.Instance = this;
 
             // Add our command handlers for menu items (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            OleMenuCommandService mcs = await this.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
 
             if(mcs != null)
             {
@@ -390,8 +400,10 @@ namespace SandcastleBuilder.Package
         /// <param name="format">The help file format</param>
         private static void SetViewHelpCommandState(OleMenuCommand command, HelpFileFormats? format)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Array activeProjects = null;
-            DTE dte = Utility.GetServiceFromPackage<DTE, DTE>(false);
+            DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
             bool visible = false, enabled = false;
 
             if(dte != null)
@@ -401,8 +413,10 @@ namespace SandcastleBuilder.Package
                 // Hide the menu option if a SHFB project is not loaded
                 if(s != null)
                 {
+#pragma warning disable VSTHRD010
                     visible = s.Projects.Cast<Project>().Any(
                         p => p.UniqueName.EndsWith(".shfbproj", StringComparison.OrdinalIgnoreCase));
+#pragma warning restore VSTHRD010
 
                     // Check the active project for the specified help format if visible
                     if(visible)
@@ -453,6 +467,7 @@ namespace SandcastleBuilder.Package
                 if(project == null)
                     return;
 
+#pragma warning disable VSTHRD010
                 if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                     ViewBuiltHelpFile(project, PkgCmdIDList.ViewHtmlHelp);
                 else
@@ -476,6 +491,7 @@ namespace SandcastleBuilder.Package
                                     dlg.ShowModalDialog();
                                 }
                             }
+#pragma warning restore VSTHRD010
             }
         }
 
@@ -487,6 +503,8 @@ namespace SandcastleBuilder.Package
         /// file format launched.  Zero is used for markdown content since there is no viewer for it.</param>
         private static void ViewBuiltHelpFile(SandcastleProject project, uint commandId)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string outputPath;
 
             if(project == null)
@@ -546,12 +564,14 @@ namespace SandcastleBuilder.Package
             try
             {
                 if(outputPath.EndsWith(".chm", StringComparison.OrdinalIgnoreCase) ||
-                    outputPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+                  outputPath.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+                {
                     System.Diagnostics.Process.Start(outputPath);
+                }
                 else
                     if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                     {
-                        var dte = Utility.GetServiceFromPackage<DTE, SDTE>(true);
+                        DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
 
                         if(dte != null)
                         {
@@ -573,6 +593,7 @@ namespace SandcastleBuilder.Package
         }
         #endregion
 
+#pragma warning disable VSTHRD010
         #region Project event handlers
         //=====================================================================
 
@@ -758,6 +779,7 @@ namespace SandcastleBuilder.Package
                 pn.OpenBuildLogToolWindow(true);
         }
         #endregion
+#pragma warning restore VSTHRD010
 
         #region Tool window event handlers
         //=====================================================================
@@ -769,6 +791,8 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void EntityReferencesWindowExecuteHandler(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var window = this.FindToolWindow(typeof(ToolWindows.EntityReferencesToolWindow), 0, true);
 
             if(window == null || window.Frame == null)
@@ -785,6 +809,8 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void TopicPreviewerWindowExecuteHandler(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
             uint pitemid;
             IVsMultiItemSelect ppMIS;
@@ -802,7 +828,7 @@ namespace SandcastleBuilder.Package
 
             if(previewer != null)
             {
-                var ms = Utility.GetServiceFromPackage<IVsMonitorSelection, SVsShellMonitorSelection>(true);
+                var ms = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellMonitorSelection)) as IVsMonitorSelection;
 
                 if(ms != null)
                 {

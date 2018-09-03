@@ -122,7 +122,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                                 if(((elementName == "image" || elementName == "link") && attrName == "xlink:href") ||
                                   (elementName == "topic" && attrName == "id"))
                                 {
+#pragma warning disable VSTHRD010
                                     content = this.CreateInfoText(elementName, tagSpan.GetText());
+#pragma warning restore VSTHRD010
 
                                     if(content != null)
                                     {
@@ -222,9 +224,11 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     var projectFileSearcher = new ProjectFileSearcher(serviceProvider, null);
                     string title, filename, relativePath;
 
+#pragma warning disable VSTHRD010
                     bool found = projectFileSearcher.GetInfoFor(elementName == "image" ?
                         ProjectFileSearcher.IdType.Image : ProjectFileSearcher.IdType.Link, id,
                         out title, out filename, out relativePath);
+#pragma warning restore VSTHRD010
 
                     textBlock.Inlines.AddRange(new Inline[] {
                         new Bold(new Run(elementName == "image" ? "Alternate Text: " : "Title: ")),

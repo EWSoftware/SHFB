@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlGoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that provides the mouse processor handling specific to MAML elements
@@ -155,6 +155,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <inheritdoc />
         protected override void GoToDefinition(string id, string definitionType)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             switch(definitionType)
             {
                 case "codeEntityReference":

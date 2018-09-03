@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CodeEntitySearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to search for and go to code entity declarations by member ID
@@ -70,6 +70,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
             {
                 get
                 {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+
                     if(fullName == null)
                     {
                         object obj;
@@ -100,6 +102,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
             /// <returns>True if successful, false if not</returns>
             public bool GoToSource()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 return (list.GoToSource(idx, VSOBJGOTOSRCTYPE.GS_DEFINITION) == VSConstants.S_OK);
             }
         }
@@ -140,6 +144,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             try
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if(String.IsNullOrWhiteSpace(memberId) || !this.DetermineSearchCriteria(memberId))
                     return false;
 
@@ -368,7 +374,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 }
             }
 
+#pragma warning disable VSTHRD010
             this.DetermineSearchCandidates(searchText);
+#pragma warning restore VSTHRD010
 
             // Add the given search text as the last resort search
             if((searchFlags & _LIB_LISTTYPE.LLT_CLASSES) != 0)
@@ -390,13 +398,15 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// sometimes different projects due to the lack of qualification in most XML comments target IDs.</remarks>
         private void DetermineSearchCandidates(string searchText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             List<string> usingNamespaces = new List<string>(), containingNamespaces = new List<string>();
             List<CodeClass> classes = new List<CodeClass>();
             int searchLine = 0, firstCodeLine = -1;
 
             var dte2 = this.serviceProvider.GetService(typeof(SDTE)) as DTE2;
 
-            if(dte2.ActiveDocument != null && dte2.ActiveDocument.ProjectItem != null &&
+            if(dte2 != null && dte2.ActiveDocument != null && dte2.ActiveDocument.ProjectItem != null &&
               dte2.ActiveDocument.ProjectItem.FileCodeModel != null)
             {
                 var selection = dte2.ActiveDocument.Selection as TextSelection;
@@ -498,11 +508,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 {
                     // Figure out the class for the current location.  It or one of its base classes will be the
                     // highest probability for a match.
+#pragma warning disable VSTHRD010
                     var containingClass = classes.FirstOrDefault(c => searchLine >= c.StartPoint.Line &&
                         searchLine <= c.EndPoint.Line);
 
                     if(containingClass == null)
                         containingClass = classes.FirstOrDefault(c => c.EndPoint.Line > searchLine);
+#pragma warning restore VSTHRD010
 
                     if(containingClass != null)
                     {
@@ -621,6 +633,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// each potential match.</returns>
         private IEnumerable<SearchResult> PerformSearch(_LIB_LISTTYPE listType, VSOBSEARCHCRITERIA2 criteria)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsObjectList2 list;
             uint count;
             int pfOK;
@@ -655,7 +669,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
         private bool IsMatch(string searchText, SearchResult result, bool matchParameters)
         {
             List<string> methodParams = new List<string>(), typeParams = new List<string>();
+#pragma warning disable VSTHRD010
             string name = result.FullName, compareText = (alternateCompareText ?? searchText), paramText, match;
+#pragma warning restore VSTHRD010
 
             // Strip off method parameters.  We'll compare these separately.
             int pos = name.IndexOf('(');

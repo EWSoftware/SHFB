@@ -30,8 +30,10 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             var options = new MefProviderOptions(_serviceProvider);
 
             // only hook when necessary
+#pragma warning disable VSTHRD010
             if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !options.EnableExtendedXmlCommentsCompletion)
                 return;
+#pragma warning restore VSTHRD010
 
             ITextView textView = _editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
 

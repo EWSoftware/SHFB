@@ -2,20 +2,20 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SiteMapFileEditorFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used generate site map file editor instances
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/27/2011  EFW  Created the code
+// 12/27/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -43,6 +43,9 @@ namespace SandcastleBuilder.Package.Editors
             IVsHierarchy pvHier, uint itemid, IntPtr punkDocDataExisting, out IntPtr ppunkDocView,
             out IntPtr ppunkDocData, out string pbstrEditorCaption, out Guid pguidCmdUI, out int pgrfCDW)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+#pragma warning disable VSTHRD010
             if(SandcastleBuilderPackage.CurrentSandcastleProject == null)
             {
                 ppunkDocView = ppunkDocData = IntPtr.Zero;
@@ -54,6 +57,7 @@ namespace SandcastleBuilder.Package.Editors
                 // and will not prompt the user to open it from within the context of a SHFB project.
                 return VSConstants.VS_E_UNSUPPORTEDFORMAT;
             }
+#pragma warning restore VSTHRD010
 
             return base.CreateEditorInstance(grfCreateDoc, pszMkDocument, pszPhysicalView, pvHier, itemid,
                 punkDocDataExisting, out ppunkDocView, out ppunkDocData, out pbstrEditorCaption, out pguidCmdUI,

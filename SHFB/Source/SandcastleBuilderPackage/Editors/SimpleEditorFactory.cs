@@ -1,31 +1,30 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SimpleEditorFactory.cs
 // Author  : Istvan Novak
-// Updated : 12/26/2011
+// Updated : 09/02/2018
 // Source  : http://learnvsxnow.codeplex.com/
-// Note    : Copyright 2008-2011, Istvan Novak, All rights reserved
+// Note    : Copyright 2008-2018, Istvan Novak, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class that implements the core functionality for an
-// editor factory.
+// This file contains a class that implements the core functionality for an editor factory
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/26/2011  EFW  Added the code to the project
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/26/2011  EFW  Added the code to the project
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -77,7 +76,9 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         public void Dispose()
         {
+#pragma warning disable VSTHRD010
             this.Dispose(true);
+#pragma warning restore VSTHRD010
             GC.SuppressFinalize(this);
         }
 
@@ -92,6 +93,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         private void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // --- If disposing equals true, dispose all managed and unmanaged resources
             if(disposing)
             {
@@ -274,6 +277,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         public object GetService(Type serviceType)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return _ServiceProvider.GetService(serviceType);
         }
 

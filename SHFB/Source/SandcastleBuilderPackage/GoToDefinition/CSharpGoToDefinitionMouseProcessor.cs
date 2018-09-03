@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CSharpGoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/10/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that provides the mouse processor handling specific to C# code
@@ -201,6 +201,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <inheritdoc />
         protected override void GoToDefinition(string id, string definitionType)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             switch(definitionType)
             {
                 case "codeEntityReference":
@@ -233,8 +235,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         var shellCommandDispatcher = this.ServiceProvider.GetService(
                             typeof(SUIHostCommandDispatcher)) as IOleCommandTarget;
 
-                        shellCommandDispatcher.Exec(ref cmdGroup, (uint)VSConstants.VSStd97CmdID.GotoDefn,
-                            (uint)OLECMDEXECOPT.OLECMDEXECOPT_DODEFAULT, System.IntPtr.Zero, System.IntPtr.Zero);
+                        if(shellCommandDispatcher != null)
+                            shellCommandDispatcher.Exec(ref cmdGroup, (uint)VSConstants.VSStd97CmdID.GotoDefn,
+                                (uint)OLECMDEXECOPT.OLECMDEXECOPT_DODEFAULT, System.IntPtr.Zero, System.IntPtr.Zero);
                     }
                     break;
 

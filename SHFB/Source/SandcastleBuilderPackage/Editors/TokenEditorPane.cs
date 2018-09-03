@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TokenFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/09/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to host the token file editor control
@@ -20,6 +20,7 @@
 
 using System;
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -93,6 +94,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <inheritdoc />
         protected override void SaveFile(string fileName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
             base.UIControl.CommitChanges();

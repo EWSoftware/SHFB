@@ -48,11 +48,9 @@ a particular purpose and non-infringement.
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell.Interop;
+
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.Project
 {
@@ -61,18 +59,19 @@ namespace Microsoft.VisualStudio.Project
     /// </summary>
     [ComVisible(true)]
     [CLSCompliant(false)]
-    public abstract class ProjectPackage : Microsoft.VisualStudio.Shell.Package
+    public abstract class ProjectPackage : AsyncPackage
     {
         #region fields
         /// <summary>
         /// This is the place to register all the solution listeners.
         /// </summary>
         private List<SolutionListener> solutionListeners = new List<SolutionListener>();
+
         #endregion
 
         #region properties
         /// <summary>
-        /// Add your listener to this list. They should be added in the overridden Initialize befaore calling the base.
+        /// Add your listener to this list. They should be added in the overridden Initialize before calling the base.
         /// </summary>
         protected internal IList<SolutionListener> SolutionListeners
         {
@@ -87,9 +86,15 @@ namespace Microsoft.VisualStudio.Project
         #endregion
 
         #region methods
-        protected override void Initialize()
+
+        protected override async System.Threading.Tasks.Task InitializeAsync(
+          System.Threading.CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            base.Initialize();
+            await base.InitializeAsync(cancellationToken, progress);
+
+            // When initialized asynchronously, we may be on a background thread at this point.  Do any
+            // initialization that requires the UI thread after switching to the UI thread.
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             // Subscribe to the solution events
             this.solutionListeners.Add(new SolutionListenerForProjectReferenceUpdate(this));
@@ -98,22 +103,18 @@ namespace Microsoft.VisualStudio.Project
             this.solutionListeners.Add(new SolutionListenerForProjectEvents(this));
 
             foreach(SolutionListener solutionListener in this.solutionListeners)
-            {
                 solutionListener.Init();
-            }
         }
 
         protected override void Dispose(bool disposing)
         {
-            // Unadvise solution listeners.
+            // Remove solution listeners
             try
             {
                 if(disposing)
                 {
                     foreach(SolutionListener solutionListener in this.solutionListeners)
-                    {
                         solutionListener.Dispose();
-                    }
 
                     // Dispose the UIThread singleton.
                     UIThread.Instance.Dispose();                   

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the Sandcastle Help File Builder project factory
@@ -19,13 +19,13 @@
 //===============================================================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
@@ -69,6 +69,8 @@ namespace SandcastleBuilder.Package
         /// <returns>A project node</returns>
         protected override ProjectNode CreateProject()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ProjectPackage package = (ProjectPackage)this.Package;
 
             SandcastleBuilderProjectNode project = new SandcastleBuilderProjectNode(package);
@@ -123,6 +125,8 @@ namespace SandcastleBuilder.Package
           out string pbstrUpgradedFullyQualifiedFileName, IVsUpgradeLogger pLogger, out int pUpgradeRequired,
           out Guid pguidNewProjectFactory)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint verdict, moreInfo, ignored;
             string[] files = new string[1] { bstrFileName };
             string projectName = Path.GetFileNameWithoutExtension(bstrFileName);

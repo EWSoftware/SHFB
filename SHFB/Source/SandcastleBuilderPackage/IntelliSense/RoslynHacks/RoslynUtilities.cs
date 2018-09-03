@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : RoslynUtilities.cs
 // Author  : Sam Harwell  (sam@tunnelvisionlabs.com)
-// Updated : 06/02/2014
-// Note    : Copyright 2014, Sam Harwell, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2014-2018, Sam Harwell, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains utility methods for detecting the presence of Roslyn extensions for Visual Studio.
@@ -61,7 +61,9 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         /// </returns>
         public static bool? IsRoslynInstalled(IServiceProvider serviceProvider)
         {
-            if (roslynInstalled.HasValue)
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+            if(roslynInstalled.HasValue)
                 return roslynInstalled;
 
             if (IsFinalRoslyn)

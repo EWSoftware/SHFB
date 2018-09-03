@@ -1,32 +1,28 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SimpleEditorPane.cs
 // Author  : Istvan Novak
-// Updated : 12/29/2011
+// Updated : 09/02/2018
 // Source  : http://learnvsxnow.codeplex.com/
-// Note    : Copyright 2008-2011, Istvan Novak, All rights reserved
+// Note    : Copyright 2008-2018, Istvan Novak, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class that implements the core functionality for an
-// editor pane.
+// This file contains a class that implements the core functionality for an editor pane
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/26/2011  EFW  Added the code to the project and updated it to
-//                           support WPF user controls.
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/26/2011  EFW  Added the code to the project and updated it to support WPF user controls
+//===============================================================================================================
 
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -290,6 +286,7 @@ namespace SandcastleBuilder.Package.Editors
                 if(!_IsDirty)
                 {
                     // Check if the QueryEditQuerySave service allow us to change the file
+#pragma warning disable VSTHRD010
                     if(!CanEditFile())
                     {
                         // --- We can not change the file (e.g. a checkout operation failed),
@@ -301,6 +298,7 @@ namespace SandcastleBuilder.Package.Editors
 
                         return;
                     }
+#pragma warning restore VSTHRD010
 
                     // --- It is possible to change the file, so update the status.
                     _IsDirty = true;
@@ -489,6 +487,8 @@ namespace SandcastleBuilder.Package.Editors
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 IVsHierarchy hierarchy;
                 uint itemID;
                 IntPtr docData;
@@ -799,6 +799,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         int IPersistFileFormat.Load(string pszFilename, uint grfMode, int fReadOnly)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // --- A valid file name is required.
             if((pszFilename == null) && ((_FileName == null) || (_FileName.Length == 0)))
                 throw new ArgumentNullException("pszFilename");
@@ -981,6 +983,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         int IVsPersistDocData.IsDocDataDirty(out int pfDirty)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ((IPersistFileFormat)this).IsDirty(out pfDirty);
         }
 
@@ -995,6 +999,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         int IVsPersistDocData.SetUntitledDocPath(string pszDocDataPath)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ((IPersistFileFormat)this).InitNew(FileFormatIndex);
         }
 
@@ -1009,6 +1015,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         int IVsPersistDocData.LoadDocData(string pszMkDocument)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ((IPersistFileFormat)this).Load(pszMkDocument, 0, 0);
         }
 
@@ -1047,6 +1055,8 @@ namespace SandcastleBuilder.Package.Editors
         [SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")]
         int IVsPersistDocData.SaveDocData(VSSAVEFLAGS dwSave, out string pbstrMkDocumentNew, out int pfSaveCanceled)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             pbstrMkDocumentNew = null;
             pfSaveCanceled = 0;
             int hr;
@@ -1214,6 +1224,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         int IVsPersistDocData.ReloadDocData(uint grfFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ((IPersistFileFormat)this).Load(null, grfFlags, 0);
         }
 
@@ -1232,6 +1244,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         private bool CanEditFile()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // --- Check the status of the recursion guard
             if(_GettingCheckoutStatus)
             {
@@ -1285,6 +1299,8 @@ namespace SandcastleBuilder.Package.Editors
         // --------------------------------------------------------------------------------
         private void NotifyDocChanged()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsHierarchy hierarchy;
             uint itemID;
             IntPtr docData;

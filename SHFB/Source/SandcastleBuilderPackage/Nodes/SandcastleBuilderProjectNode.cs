@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
@@ -242,6 +242,8 @@ namespace SandcastleBuilder.Package.Nodes
         {
             try
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 string gui = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT") ?? String.Empty,
                     "SandcastleBuilderGUI.exe");
 
@@ -308,8 +310,10 @@ namespace SandcastleBuilder.Package.Nodes
 
             if(!File.Exists(outputPath))
             {
+#pragma warning disable VSTHRD010
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "A copy of the website does not appear to exist yet.  " +
                     "It may need to be built.");
+#pragma warning restore VSTHRD010
                 return null;
             }
 
@@ -407,6 +411,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="showWindow">True to show the window, false to just update the log file to show</param>
         internal void OpenBuildLogToolWindow(bool showWindow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var window = this.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, true);
 
             if(window == null || window.Frame == null)
@@ -431,6 +437,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// is null</remarks>
         private DropDataType HandleSelectionDataObject(IOleDataObject dataObject, HierarchyNode targetNode)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             DropDataType dropDataType = DropDataType.None;
             bool isWindowsFormat = false;
 
@@ -600,6 +608,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <inheritdoc />
         public override int UpgradeProject(uint grfUpgradeFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Version schemaVersion;
             string propertyValue = base.GetProjectProperty("SHFBSchemaVersion");
 
@@ -785,22 +795,26 @@ namespace SandcastleBuilder.Package.Nodes
 
                     // Unlike the standalone GUI we can't figure out where SHFBROOT should point so we'll make
                     // the user take care of it.
+#pragma warning disable VSTHRD010
                     if(String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SHFBROOT")))
                         Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment " +
                             "variable was not found.  This variable is usually created during installation and " +
                             "may require a reboot.  It may also be defined locally within the project.  Since " +
                             "it has not been set, the project properties may not be editable nor may the project " +
                             "be built properly.  Please ensure the variable is defined and reload the project.");
+#pragma warning restore VSTHRD010
                 }
             }
             catch
             {
                 // Ignore errors.  If we can't set SHFBROOT, let the project load anyway.
+#pragma warning disable VSTHRD010
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment variable " +
                     "was not found and could not be set.  This variable is usually created during installation " +
                     "and may require a reboot.  It may also be defined locally within the project.  Since it " +
                     "has not been set, the project properties may not be editable nor may the project be built " +
                     "properly.  Please ensure the variable is defined and reload the project.");
+#pragma warning restore VSTHRD010
             }
 
             ProjectPropertiesContainerNode projProps = this.FindChild(
@@ -866,6 +880,7 @@ namespace SandcastleBuilder.Package.Nodes
         protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn,
           IntPtr pvaOut)
         {
+#pragma warning disable VSTHRD010
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet)
                 switch(cmd)
                 {
@@ -880,6 +895,7 @@ namespace SandcastleBuilder.Package.Nodes
                     default:
                         break;
                 }
+#pragma warning restore VSTHRD010
 
             return base.ExecCommandOnNode(cmdGroup, cmd, nCmdexecopt, pvaIn, pvaOut);
         }
@@ -993,7 +1009,9 @@ namespace SandcastleBuilder.Package.Nodes
 
             targetNode = targetNode.GetDragTargetHandlerNode();
 
+#pragma warning disable VSTHRD010
             dropDataType = this.HandleSelectionDataObject(pDataObject, targetNode);
+#pragma warning restore VSTHRD010
 
             // Since we can get a mix of files that may not necessarily be moved into the project (i.e.
             // documentation sources and references), we'll always act as if they were copied.

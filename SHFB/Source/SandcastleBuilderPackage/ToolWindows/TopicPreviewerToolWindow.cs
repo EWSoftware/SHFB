@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2012-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to implement the Topic Previewer tool window
@@ -13,9 +13,9 @@
 // This notice, the author's name, and all copyright notices must remain intact in all applications,
 // documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.4  01/21/2012  EFW  Created the code
+// 01/21/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -52,6 +52,7 @@ namespace SandcastleBuilder.Package.ToolWindows
         private TopicPreviewerControl ucTopicPreviewer;
         private object scope;
         private uint selectionMonitorCookie;
+
         #endregion
 
         #region Constructor
@@ -104,6 +105,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// </summary>
         protected override void Initialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
             uint pitemid;
             IVsMultiItemSelect ppMIS;
@@ -147,6 +150,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsMonitorSelection ms = Utility.GetServiceFromPackage<IVsMonitorSelection,
                 SVsShellMonitorSelection>(true);
 
@@ -251,6 +256,8 @@ namespace SandcastleBuilder.Package.ToolWindows
           IVsMultiItemSelect pMISOld, ISelectionContainer pSCOld, IVsHierarchy pHierNew, uint itemidNew,
           IVsMultiItemSelect pMISNew, ISelectionContainer pSCNew)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SandcastleProject shfbProject = null;
             object project;
 
@@ -298,6 +305,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <param name="e">The event arguments</param>
         private void ucTopicPreviewer_FileContentNeeded(object sender, FileContentNeededEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell uiShell = Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true);
             IEnumWindowFrames enumFrames;
             IVsWindowFrame[] frames = new IVsWindowFrame[1];
@@ -332,6 +341,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <param name="e">The event arguments</param>
         private void ucTopicPreviewer_TopicContentNeeded(object sender, TopicContentNeededEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsHierarchy hier;
             IVsPersistDocData persistDocData;
             IVsTextStream srpStream;
@@ -439,6 +450,7 @@ namespace SandcastleBuilder.Package.ToolWindows
         {
             TocEntry t = ucTopicPreviewer.CurrentTopic;
 
+#pragma warning disable VSTHRD010
             if(t != null && !String.IsNullOrEmpty(t.SourceFile))
             {
                 string fullName = t.SourceFile;
@@ -450,6 +462,7 @@ namespace SandcastleBuilder.Package.ToolWindows
             }
             else
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "No file is associated with this topic");
+#pragma warning restore VSTHRD010
         }
         #endregion
     }

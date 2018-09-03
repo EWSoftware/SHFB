@@ -2,26 +2,27 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HtmlEncodingCommandTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/23/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2012-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a command target class that is used to handle the HTML encoding command
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.6.0  11/23/2012  EFW  Created the code
+// 11/23/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
 using System.Net;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -75,6 +76,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <returns>Returns <c>S_OK</c> on success or a failure code if unsuccessful.</returns>
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if(pguidCmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet &&
               nCmdID == PkgCmdIDList.HtmlEncode)
             {
@@ -95,6 +98,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <returns>Returns <c>S_OK</c> on success or a failure code if unsuccessful.</returns>
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if(pguidCmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet &&
               prgCmds[0].cmdID == PkgCmdIDList.HtmlEncode)
             {

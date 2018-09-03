@@ -67,8 +67,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         protected override void Initialize()
         {
             base.Initialize();
-            
+
+#pragma warning disable VSTHRD010
             ucComponentPropertiesPageContent.ComponentsModified += (s, e) => this.IsDirty = true;
+#pragma warning restore VSTHRD010
             ucComponentPropertiesPageContent.ComponentSettingsNeeded += ucComponentPropertiesPageContent_ComponentSettingsNeeded;
         }
 

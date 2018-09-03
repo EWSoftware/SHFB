@@ -68,7 +68,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             base.Initialize();
 
+#pragma warning disable VSTHRD010
             ucPlugInPropertiesPageContent.PlugInsModified += (s, e) => this.IsDirty = true;
+#pragma warning restore VSTHRD010
             ucPlugInPropertiesPageContent.ComponentSettingsNeeded += ucPlugInPropertiesPageContent_ComponentSettingsNeeded;
         }
 

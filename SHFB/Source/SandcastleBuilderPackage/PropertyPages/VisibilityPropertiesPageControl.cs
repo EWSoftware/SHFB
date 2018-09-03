@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/24/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Visibility category properties
@@ -72,6 +72,8 @@ namespace SandcastleBuilder.Package.PropertyPages
             ucVisibilityPropertiesPageContent.ApplyChanges += (s, e) =>
             {
 #if !STANDALONEGUI
+                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
                 e.ChangesApplied = (this.ProjectMgr != null && (!this.IsDirty ||
                     ((IPropertyPage)this).Apply() == VSConstants.S_OK));
 #else

@@ -150,7 +150,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return;
             }
 #endif
+#pragma warning disable VSTHRD010
             this.IsDirty = true;
+#pragma warning restore VSTHRD010
         }
         #endregion
     }

@@ -1,29 +1,28 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildCompletedEventListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/27/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to listen for build started events to
-// flush pending property page changes and for build completed events so that
-// we can open the help file after successful builds if so requested.
+// This file contains the class used to listen for build started events to flush pending property page changes
+// and for build completed events so that we can open the help file after successful builds if so requested.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/18/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/18/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -58,6 +57,8 @@ namespace SandcastleBuilder.Package
         /// issue.</remarks>
         public override int UpdateSolution_StartUpdate(ref int cancelUpdate)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach(var p in BasePropertyPage.AllPropertyPages)
                 if(!p.IsDisposed)
                     ((Microsoft.VisualStudio.OLE.Interop.IPropertyPage)p).Apply();
@@ -75,6 +76,8 @@ namespace SandcastleBuilder.Package
         public override int UpdateProjectCfg_Done(IVsHierarchy hierarchy, IVsCfg configProject,
           IVsCfg configSolution, uint action, int success, int cancel)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SandcastleBuilderProjectNode projectNode;
             SandcastleBuilderOptionsPage options;
             ProjectConfig cfg = configProject as ProjectConfig;

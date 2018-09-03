@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : EntityReferencesToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to implement the Entity References tool window
@@ -49,6 +49,7 @@ namespace SandcastleBuilder.Package.ToolWindows
 
         private object scope;
         private uint selectionMonitorCookie;
+
         #endregion
 
         #region Constructor
@@ -76,6 +77,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// </summary>
         protected override void Initialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
             uint pitemid;
             IVsMultiItemSelect ppMIS;
@@ -119,6 +122,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsMonitorSelection ms = Utility.GetServiceFromPackage<IVsMonitorSelection,
                 SVsShellMonitorSelection>(true);
 
@@ -223,6 +228,8 @@ namespace SandcastleBuilder.Package.ToolWindows
           IVsMultiItemSelect pMISOld, ISelectionContainer pSCOld, IVsHierarchy pHierNew, uint itemidNew,
           IVsMultiItemSelect pMISNew, ISelectionContainer pSCNew)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SandcastleProject shfbProject = null;
             EntityReferencesControl ucEntityReferences;
             object project;
@@ -273,6 +280,8 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <param name="e">The event arguments</param>
         private void ucEntityReferences_FileContentNeeded(object sender, FileContentNeededEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell uiShell = Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true);
             IEnumWindowFrames enumFrames;
             IVsWindowFrame[] frames = new IVsWindowFrame[1];

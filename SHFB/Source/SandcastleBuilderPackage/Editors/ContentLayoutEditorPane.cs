@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to host the content layout file editor control
@@ -51,6 +51,7 @@ namespace SandcastleBuilder.Package.Editors
         //=====================================================================
 
         private FileItem contentLayoutFile;
+
         #endregion
 
         #region Properties
@@ -165,7 +166,9 @@ namespace SandcastleBuilder.Package.Editors
         /// <inheritdoc />
         protected override void LoadFile(string fileName)
         {
+#pragma warning disable VSTHRD010
             var project = SandcastleBuilderPackage.CurrentSandcastleProject;
+#pragma warning restore VSTHRD010
 
             if(project != null)
                 contentLayoutFile = project.FindFile(fileName);
@@ -179,6 +182,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <inheritdoc />
         protected override void SaveFile(string fileName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
             base.UIControl.CommitChanges();
@@ -277,6 +282,7 @@ namespace SandcastleBuilder.Package.Editors
             if(t == null)
                 t = base.UIControl.CurrentTopic;
 
+#pragma warning disable VSTHRD010
             if(t.TopicFile != null)
             {
                 string fullName = t.TopicFile.FullPath;
@@ -288,6 +294,7 @@ namespace SandcastleBuilder.Package.Editors
             }
             else
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "No file is associated with this topic");
+#pragma warning restore VSTHRD010
         }
 
         /// <summary>
@@ -297,6 +304,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="e">The event arguments</param>
         private void cmdAddFromTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             FileNode thisNode = this.FileNode, topicNode = null;
             IVsAddProjectItemDlg addItemDialog;
             string strFilter = String.Empty, strBrowseLocations;
@@ -382,6 +391,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="e">The event arguments</param>
         private void cmdAddAllFromFolder_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             FileNode thisNode = this.FileNode;
             TopicCollection parent, newTopics = new TopicCollection(null);
             Topic selectedTopic = base.UIControl.CurrentTopic;

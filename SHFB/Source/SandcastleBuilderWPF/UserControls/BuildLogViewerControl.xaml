@@ -19,7 +19,7 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition />
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal">
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Name="pnlFormat">
       <RadioButton Content="Plain" Margin="10, 5, 20, 5" Name="rbPlain" IsChecked="True" Checked="Filter_Checked" />
       <RadioButton Content="Highlight warnings and errors" Margin="0, 5, 20, 5" Name="rbHighlight" Checked="Filter_Checked"  />
       <RadioButton Content="Show only warnings and errors" Margin="0, 5, 20, 5" Name="rbFilter" Checked="Filter_Checked" />

@@ -36,8 +36,10 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
             }
 
             // only hook when necessary
+#pragma warning disable VSTHRD010
             if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !enableExtendedCompletion)
                 return null;
+#pragma warning restore VSTHRD010
 
             if(itemToRender != null && itemToRender.GetType().FullName != "Microsoft.CodeAnalysis.Editor.Implementation.Completion.Presentation.CustomCommitCompletion")
             {

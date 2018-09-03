@@ -71,7 +71,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override void Initialize()
         {
+#pragma warning disable VSTHRD010
             ucBuildPropertiesPageContent.PropertyChanged += (s, e) => this.IsDirty = true;
+#pragma warning restore VSTHRD010
             ucBuildPropertiesPageContent.BuildPropertiesNeeded += ucBuildPropertiesPageContent_BuildPropertiesNeeded;
 
             // Set the project as the base path provider so that the folder is correct

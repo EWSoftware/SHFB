@@ -1,23 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SiteMapFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/25/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 09/02/2018
+// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to host the site map file editor control
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/27/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/27/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.IO;
@@ -166,7 +165,9 @@ namespace SandcastleBuilder.Package.Editors
         /// <inheritdoc />
         protected override void LoadFile(string fileName)
         {
+#pragma warning disable VSTHRD010
             var project = SandcastleBuilderPackage.CurrentSandcastleProject;
+#pragma warning restore VSTHRD010
 
             if(project != null)
                 siteMapFile = project.FindFile(fileName);
@@ -180,6 +181,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <inheritdoc />
         protected override void SaveFile(string fileName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true).SetWaitCursor();
 
             base.UIControl.CommitChanges();
@@ -279,6 +282,7 @@ namespace SandcastleBuilder.Package.Editors
             if(t == null)
                 t = base.UIControl.CurrentTopic;
 
+#pragma warning disable VSTHRD010
             if(t.SourceFile.Path.Length != 0)
             {
                 string fullName = t.SourceFile;
@@ -290,6 +294,7 @@ namespace SandcastleBuilder.Package.Editors
             }
             else
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "No file is associated with this topic");
+#pragma warning restore VSTHRD010
         }
 
         /// <summary>
@@ -299,6 +304,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="e">The event arguments</param>
         private void cmdAddFromTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             FileNode thisNode = this.FileNode, topicNode = null;
             IVsAddProjectItemDlg addItemDialog;
             string strFilter = String.Empty, strBrowseLocations;
@@ -384,6 +391,8 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="e">The event arguments</param>
         private void cmdAddAllFromFolder_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             FileNode thisNode = this.FileNode;
             TocEntryCollection parent, newTopics = new TocEntryCollection(null);
             TocEntry selectedTopic = base.UIControl.CurrentTopic;
