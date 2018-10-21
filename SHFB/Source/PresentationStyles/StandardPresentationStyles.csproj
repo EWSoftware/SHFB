@@ -1106,7 +1106,7 @@
     <Content Include="VS2013\Web\scripts\branding-Website.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="VS2013\Web\scripts\jquery-1.11.0.min.js">
+    <Content Include="VS2013\Web\scripts\jquery-3.3.1.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Web\search.html">
