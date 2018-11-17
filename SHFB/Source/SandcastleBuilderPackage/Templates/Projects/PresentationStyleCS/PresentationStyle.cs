@@ -11,6 +11,8 @@
 // their Copy to Output Folder property to "Copy if newer".
 //
 
+// Ignore Spelling: cpp fs
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -82,15 +84,18 @@ namespace $safeprojectname$
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
 
             // By default, this will use the standard web file content from the Sandcastle Help File Builder
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"..\LegacyWeb\*.*",
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"Web\*.*",
                 String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
 
+            // Define the transform component arguments
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoFile", true, true, null,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " +
-                "the path.  Place the file in your project in an icons\\ folder and set the Build Action to " +
-                "Content.  If blank, no logo will appear in the topic headers.  If building website output " +
-                "and your web server is case-sensitive, be sure to match the case of the folder name in your " +
-                "project with that of the presentation style.  The same applies to the logo filename itself."));
+                "the path.\r\n\r\nImportant: Add a folder called \"icons\\\" to the root of your help file " +
+                "builder project and place the logo file in the icons\\ folder.  Set the Build Action property " +
+                "to Content on the logo file's properties.\r\n\r\nIf blank, no logo will appear in the topic " +
+                "headers.  If building website output and your web server is case-sensitive, be sure to match " +
+                "the case of the folder name in your project with that of the presentation style.  The same " +
+                "applies to the logo filename itself."));
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoHeight", true, true, null,
                 "An optional logo height.  If left blank, the actual logo image height is used."));
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoWidth", true, true, null,
@@ -131,8 +136,8 @@ namespace $safeprojectname$
                 "Create a new issue on GitHub: https://github.com/YourUserID/YourProject/issues/new \r\n" +
                 "Send via e-mail: mailto:YourEmailAddress@Domain.com"));
 
-            // Add plug-in dependencies if any
-            //this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
+            // Add the plug-in dependencies if any
+            this.PlugInDependencies.Add(new PlugInDependency("Lightweight Website Style", null));
         }
     }
 }

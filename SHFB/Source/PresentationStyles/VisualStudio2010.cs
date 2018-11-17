@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/27/2017
-// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
+// Updated : 11/07/2018
+// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the presentation style definition for the Visual Studio 2010 presentation style.
@@ -76,7 +76,7 @@ namespace Sandcastle.PresentationStyles
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"icons\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"scripts\*.*"));
             this.ContentFiles.Add(new ContentFiles(this.SupportedFormats, @"styles\*.*"));
-            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"..\LegacyWeb\*.*",
+            this.ContentFiles.Add(new ContentFiles(HelpFileFormats.Website, null, @"Web\*.*",
                 String.Empty, new[] { ".aspx", ".html", ".htm", ".php" }));
 
             // Define the transform component arguments

@@ -10,6 +10,8 @@
 ' their Copy to Output Folder property to "Copy if newer".
 '
 
+' Ignore Spelling: cpp fs
+
 Imports System
 Imports System.Collections.Generic
 Imports System.Reflection
@@ -19,7 +21,7 @@ Imports Sandcastle.Core.PresentationStyle
 
 ' Search for "TODO" to find changes that you need to make to this presentation style template.
 
-Namespace safeprojectname
+Namespace $safeprojectname$
 
     ''' <summary>
     ''' TODO: Set your presentation style's unique ID and description in the export attribute below.
@@ -31,7 +33,7 @@ Namespace safeprojectname
     ''' of.</remarks>
     <PresentationStyleExport("$safeprojectname$", "$safeprojectname$", Version := AssemblyInfo.ProductVersion,
       Copyright := AssemblyInfo.Copyright, Description := "$safeprojectname$ custom presentation style")>
-    Public NotInheritable Class safeprojectnamePresentationStyle
+    Public NotInheritable Class $safeprojectname$PresentationStyle
         Inherits PresentationStyleSettings
 
         ''' <inheritdoc />
@@ -83,15 +85,19 @@ Namespace safeprojectname
             Me.ContentFiles.Add(New ContentFiles(Me.SupportedFormats, "styles\*.*"))
 
             ' By default, this will use the standard web file content from the Sandcastle Help File Builder
-            Me.ContentFiles.Add(New ContentFiles(HelpFileFormats.Website, Nothing, "..\LegacyWeb\*.*",
+            Me.ContentFiles.Add(New ContentFiles(HelpFileFormats.Website, Nothing, "Web\*.*",
                 String.Empty, New String() { ".aspx", ".html", ".htm", ".php" }))
 
+            ' Define the transform component arguments
             Me.TransformComponentArguments.Add(New TransformComponentArgument("logoFile", True, True, Nothing,
                 "An optional logo file to insert into the topic headers.  Specify the filename only, omit " &
-                "the path.  Place the file in your project in an icons\ folder and set the Build Action to " &
-                "Content.  If blank, no logo will appear in the topic headers.  If building website output " &
-                "and your web server is case-sensitive, be sure to match the case of the folder name in your " &
-                "project with that of the presentation style.  The same applies to the logo filename itself."))
+                "the path." & Environment.NewLine & Environment.NewLine &
+                "Important: Add a folder called icons\ to the root of your help file builder project and place " &
+                "the logo file in the icons\ folder.  Set the Build Action property to Content on the logo " &
+                "file's properties." & Environment.NewLine & Environment.NewLine &
+                "If blank, no logo will appear in the topic headers.  If building website output and your web " &
+                "server is case-sensitive, be sure to match the case of the folder name in your project with " &
+                "that of the presentation style.  The same applies to the logo filename itself."))
             Me.TransformComponentArguments.Add(New TransformComponentArgument("logoHeight", True, True, Nothing,
                 "An optional logo height.  If left blank, the actual logo image height is used."))
             Me.TransformComponentArguments.Add(New TransformComponentArgument("logoWidth", True, True, Nothing,
@@ -120,9 +126,9 @@ Namespace safeprojectname
                 "the base source code folder on your project's website here.  Some examples for GitHub are " &
                 "shown below." & Environment.NewLine & Environment.NewLine &
                 "Important: Be sure to set the Source Code Base Path property and terminate the URL below with " &
-                "a slash if necessary."  & Environment.NewLine & Environment.NewLine &
+                "a slash if necessary." & Environment.NewLine & Environment.NewLine &
                 "Format: https://github.com/YourUserID/YourProject/blob/BranchNameOrCommitHash/BaseSourcePath/" &
-                Environment.NewLine &
+                Environment.NewLine & Environment.NewLine &
                 "Master branch: https://github.com/JohnDoe/WidgestProject/blob/master/src/" & Environment.NewLine &
                 "A different branch: https://github.com/JohnDoe/WidgestProject/blob/dev-branch/src/"  & Environment.NewLine &
                 "A specific commit: https://github.com/JohnDoe/WidgestProject/blob/c6e41c4fc2a4a335352d2ae8e7e85a1859751662/src/"))
@@ -135,7 +141,7 @@ Namespace safeprojectname
                 Environment.NewLine & "Send via e-mail: mailto:YourEmailAddress@Domain.com"))
 
             ' Add plug-in dependencies if any
-            'Me.PlugInDependencies.Add(New PlugInDependency("Lightweight Website Style", Nothing))
+            Me.PlugInDependencies.Add(New PlugInDependency("Lightweight Website Style", Nothing))
         End Sub
 
     End Class

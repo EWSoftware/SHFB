@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/21/2017
-// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
+// Updated : 11/05/2018
+// Note    : Copyright 2008-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the project properties
@@ -75,9 +75,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             InitializeComponent();
 
-            // Ensure that the file and folder path user controls are known by the base property page class
+            // Ensure that the custom controls are known by the base property page class
             if(!BasePropertyPage.CustomControls.ContainsKey("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl"))
             {
+                BasePropertyPage.CustomControls.Add("Xceed.Wpf.Toolkit.IntegerUpDown", "Value");
                 BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl",
                     "PersistablePath");
                 BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FolderPathUserControl",

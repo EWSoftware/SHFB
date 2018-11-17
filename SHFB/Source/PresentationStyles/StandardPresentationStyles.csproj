@@ -106,65 +106,65 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\CloseSearch.png">
+    <Content Include="VS2010\Web\CloseSearch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\CollapseAll.png">
+    <Content Include="VS2010\Web\CollapseAll.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Collapsed.gif">
+    <Content Include="VS2010\Web\Collapsed.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Expanded.gif">
+    <Content Include="VS2010\Web\Expanded.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\favicon.ico">
+    <Content Include="VS2010\Web\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\FillNode.aspx">
+    <Content Include="VS2010\Web\FillNode.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\html\GeneralError.htm">
+    <Content Include="VS2010\Web\html\GeneralError.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\html\PageNotFound.htm">
+    <Content Include="VS2010\Web\html\PageNotFound.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Index.aspx">
+    <Content Include="VS2010\Web\Index.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Index.gif">
+    <Content Include="VS2010\Web\Index.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\index.html">
+    <Content Include="VS2010\Web\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Item.gif">
+    <Content Include="VS2010\Web\Item.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\LoadIndexKeywords.aspx">
+    <Content Include="VS2010\Web\LoadIndexKeywords.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\scripts\clipboard.min.js">
+    <Content Include="VS2010\Web\scripts\clipboard.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Search.gif">
+    <Content Include="VS2010\Web\Search.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\SearchHelp.aspx">
+    <Content Include="VS2010\Web\SearchHelp.aspx">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Splitter.gif">
+    <Content Include="VS2010\Web\Splitter.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\SyncTOC.gif">
+    <Content Include="VS2010\Web\SyncTOC.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\TOC.css">
+    <Content Include="VS2010\Web\TOC.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\TOC.js">
+    <Content Include="VS2010\Web\TOC.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Markdown\Content\ConceptualContent.xml">
@@ -1458,22 +1458,22 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LegacyWeb\FillNode.php">
+    <Content Include="VS2010\Web\FillNode.php">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\index.php">
+    <Content Include="VS2010\Web\index.php">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\LoadIndexKeywords.php">
+    <Content Include="VS2010\Web\LoadIndexKeywords.php">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\SearchHelp.inc.php">
+    <Content Include="VS2010\Web\SearchHelp.inc.php">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\SearchHelp.php">
+    <Content Include="VS2010\Web\SearchHelp.php">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="LegacyWeb\Web.Config">
+    <Content Include="VS2010\Web\Web.Config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
