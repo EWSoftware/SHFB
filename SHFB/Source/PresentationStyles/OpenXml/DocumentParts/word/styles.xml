@@ -952,15 +952,6 @@
 			<w:color w:val="996666"/>
 		</w:rPr>
 	</w:style>
-	<w:style w:type="character" w:customStyle="1" w:styleId="Preprocessor">
-		<w:name w:val="Preprocessor"/>
-		<w:uiPriority w:val="1"/>
-		<w:qFormat/>
-		<w:rsid w:val="00694EC0"/>
-		<w:rPr>
-			<w:color w:val="996666"/>
-		</w:rPr>
-	</w:style>
 	<w:style w:type="character" w:customStyle="1" w:styleId="XmlTag">
 		<w:name w:val="XML Tag"/>
 		<w:uiPriority w:val="1"/>
