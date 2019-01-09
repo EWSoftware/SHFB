@@ -1077,6 +1077,12 @@ namespace SandcastleBuilder.Utils.MSBuild
                         new XAttribute("distL", "0"), new XAttribute("distR", "0"),
                             extent, docPr, cNvGraphicFramePr, graphic));
 
+                // Ensure the <w:drawing> is within a <w:r> and not a bare <w:p>
+                if (image.Parent.Name != w + "r")
+                {
+                    drawing = new XElement(w + "r", drawing);
+                }
+                
                 image.ReplaceWith(drawing);
                 imageId++;
             }
