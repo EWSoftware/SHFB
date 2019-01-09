@@ -604,7 +604,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         Enumerable.Range(0, cellCount).Select(_ => new XElement(w + "gridCol")));
                     
                     // then put the <w:tblGrid> element just before the first <w:tr>
-                    table.Elements(w + "tr").First().AddBeforeSelf(tblGrid);
+                    table.Element(w + "tr").AddBeforeSelf(tblGrid);
                 }
                 
                 // Check if this table needs to be "unwrapped" from a parent <w:p>
