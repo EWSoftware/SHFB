@@ -1228,10 +1228,10 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // we're making an assumption here about the indent widths based on the default style
                         // sheet.
                         props.Add(
-                            new XElement(w + "contextualSpacing",
-                                new XAttribute(w + "val", "0")),
                             new XElement(w + "ind",
-                                new XAttribute(w + "left", ((level + 1) * 720).ToString(CultureInfo.InvariantCulture))));
+                                new XAttribute(w + "left", ((level + 1) * 720).ToString(CultureInfo.InvariantCulture))),
+                            new XElement(w + "contextualSpacing",
+                                new XAttribute(w + "val", "0")));
                     }
                 }
 
