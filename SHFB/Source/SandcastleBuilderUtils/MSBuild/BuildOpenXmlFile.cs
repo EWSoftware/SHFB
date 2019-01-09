@@ -690,6 +690,19 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
+        /// The order in which w:rPr elements should be written.
+        /// </summary>
+        private static readonly string[] runPropsOrder = new[]
+            {
+                "rStyle","rFonts","b","bCs","i","iCs","caps","smallCaps",
+                "strike","dstrike","outline","shadow","emboss","imprint",
+                "noProof","snapToGrid","vanish","webHidden","color","spacing",
+                "w","kern","position","sz","szCs","highlight","u","effect",
+                "bdr","shd","fitText","vertAlign","rtl","cs","em","lang",
+                "eastAsianLayout","specVanish","oMath",
+            };
+
+        /// <summary>
         /// Apply the formatting from a span including all nested spans to each run contained within it
         /// </summary>
         /// <param name="span">The root span from which to start applying formatting</param>
@@ -787,6 +800,9 @@ namespace SandcastleBuilder.Utils.MSBuild
                 span.Value = String.Empty;
                 span.Add(content);
             }
+            
+            // Ensure that the order of rPr children is correct
+            runProps = ReorderChildren(runProps, runPropsOrder);
 
             // Add the run properties to each child run
             foreach(var run in span.Elements(w + "r"))
@@ -805,6 +821,21 @@ namespace SandcastleBuilder.Utils.MSBuild
 
             // And finally, remove the span
             span.Remove();
+        }
+        
+        /// <summary>
+        /// Reorders an elements' children by a specific ordering.
+        /// <summary>
+        /// <param name="element">Element whose children should be in a specific order</param>
+        /// <param name="orderings">The specific order of child element, by local name</param>
+        /// <returns><paramref name="element" /> with its children reordered.</returns>
+        private static XElement ReorderChildren(XElement element, IList<string> orderings)
+        {
+            var orderedChildren = element.Elements()
+                                         .OrderBy(e => orderings.IndexOf(e.Name.LocalName))
+                                         .ToArray();
+            element.ReplaceNodes(orderedChildren);
+            return element;
         }
         #endregion
 
