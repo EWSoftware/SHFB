@@ -551,7 +551,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         private static void ConvertHtmlLineBreaks(XDocument document)
         {
             foreach(var lineBreak in document.Descendants("br").ToList())
-                lineBreak.ReplaceWith(new XElement(w + "br"));
+                lineBreak.ReplaceWith(new XElement(w + "r", new XElement(w + "br")));
         }
 
         /// <summary>
