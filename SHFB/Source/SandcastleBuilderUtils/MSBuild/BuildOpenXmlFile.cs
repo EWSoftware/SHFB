@@ -361,6 +361,9 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Make one final pass to wrap remaining stray text nodes that showed up after handling everything.
             // This can happen for stuff in span elements which are skipped by this method.
             WrapStrayElementNodes(document);
+            
+            // Ensure tables are at the proper level and have grid columns
+            CleanupTables(document);
         }
 
         /// <summary>
@@ -579,6 +582,36 @@ namespace SandcastleBuilder.Utils.MSBuild
                         new XAttribute(XNamespace.Xml + "space", "preserve"), text.Value));
 
                 text.ReplaceWith(wrap);
+            }
+        }
+        
+        /// <summary>
+        /// This cleans up table elements so that they include the correct w:tblGrid
+        /// element and that they are not wrapped within a w:p element.
+        /// </summary>
+        /// <param name="document">The document in which to clean up any tables</param>
+        private static void CleanupTables(XDocument document)
+        {
+            foreach (var table in document.Descendants(w + "tbl").ToArray())
+            {
+                XElement tblGrid = table.Element(w + "tblGrid");
+                if (tblGrid == null)
+                {
+                    // Get the count of table cells and create that many <w:gridCol /> elements
+                    // in our <w:tblGrid> element
+                    int cellCount = table.Elements(w + "tr").Max(tr => tr.Elements(w + "tc").Count());
+                    tblGrid = new XElement(w + "tblGrid",
+                        Enumerable.Range(0, cellCount).Select(_ => new XElement(w + "gridCol")));
+                    
+                    // then put the <w:tblGrid> element just before the first <w:tr>
+                    table.Elements(w + "tr").First().AddBeforeSelf(tblGrid);
+                }
+                
+                // Check if this table needs to be "unwrapped" from a parent <w:p>
+                if (table.Parent.Name == w + "p")
+                {
+                    table.Parent.ReplaceWith(table);
+                }
             }
         }
 
