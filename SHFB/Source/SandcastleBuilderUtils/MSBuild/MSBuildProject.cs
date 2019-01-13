@@ -497,10 +497,16 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Typically, they already match in that case.
             if(removeProjectWhenDisposed)
             {
+                // .NET Standard projects use a different platform property name
+                string platformPropertyName = BuildItemMetadata.Platform;
+
+                if(!msBuildProject.ConditionedProperties.ContainsKey(platformPropertyName))
+                    platformPropertyName = "PlatformName";
+
                 if(platform.Equals("Any CPU", StringComparison.OrdinalIgnoreCase))
                 {
                     List<string> values = new List<string>(
-                        msBuildProject.ConditionedProperties[BuildItemMetadata.Platform]);
+                        msBuildProject.ConditionedProperties[platformPropertyName]);
 
                     if(values.IndexOf(platform) == -1 &&
                       values.IndexOf(SandcastleProject.DefaultPlatform) != -1)
@@ -508,7 +514,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 }
 
                 msBuildProject.SetGlobalProperty(BuildItemMetadata.Configuration, configuration);
-                msBuildProject.SetGlobalProperty(BuildItemMetadata.Platform, platform);
+                msBuildProject.SetGlobalProperty(platformPropertyName, platform);
 
                 if(!String.IsNullOrEmpty(outDir))
                 {

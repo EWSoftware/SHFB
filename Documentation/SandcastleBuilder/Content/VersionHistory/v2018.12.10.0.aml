@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="680ad671-535d-4b53-a4c5-0286cbd71b82" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2018.12.10.0.</para>
+
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the property pages so that integer up/down control values are saved properly in the
+standalone GUI.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for installing the package in Visual Studio 2019 Preview.</para>
+
+						<alert class="note">
+							<para>There is a known issue with the project templates not showing up correctly in Visual Studio
+2019 Preview.  In order to work around this issue when creating a new project, clear any filters and enter a
+search term such as "Sandcastle" or "build component" depending on the template you want to use.  So far, only
+the documentation and C# component projects will appear but not the Visual Basic ones.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>Updated the package to support asynchronous loading required by Visual Studio 2019.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the build engine so that it recognizes the newer SDK project format used by .NET Core
+and .NET Standard projects.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the build log viewer control to transform the log file asynchronously so that it
+does not block the UI when loading large log files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the jQuery script used in website output to version 3.3.1.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the shared <localUri>.\LegacyWeb</localUri> files into the VS2010 presentation style
+content since it is the only presentation style that uses the files.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

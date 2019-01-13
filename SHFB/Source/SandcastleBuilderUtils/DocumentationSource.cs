@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
+// Updated : 11/18/2018
+// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a documentation source such as an assembly, an XML comments file, a
@@ -62,7 +62,10 @@ namespace SandcastleBuilder.Utils
             "F184B08F-C81C-45F6-A57F-5ABD9991F28F|" +   // VB.NET
             "8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942|" +   // C++
             "F2A71F9B-5D33-465A-A702-920D77279786|" +   // F#
-            "E6FDF86B-F3D1-11D4-8576-0002A516ECE8" +    // J#
+            "E6FDF86B-F3D1-11D4-8576-0002A516ECE8|" +   // J#
+            "9A19103F-16F7-4668-BE54-9A1E7A4F7556|" +   // C# - .NET Standard/Core project
+            "778DAE3C-4631-46EA-AA77-85C1314464D9|" +   // VB.NET - .NET Standard/Core project
+            "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705" +    // F# - .NET Standard/Core project
             ")\\}\"\\) = \".*?\", \"(?!http)" +
             "(?<Path>.*?proj)\", \"\\{(?<GUID>.*?)\\}\"", RegexOptions.Multiline);
 
