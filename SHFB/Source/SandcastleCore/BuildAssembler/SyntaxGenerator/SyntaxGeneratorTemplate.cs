@@ -70,6 +70,8 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         protected static XPathExpression apiIsAbstractTypeExpression = XPathExpression.Compile("boolean(typedata[@abstract='true'])");
         protected static XPathExpression apiIsSealedTypeExpression = XPathExpression.Compile("boolean(typedata[@sealed='true'])");
         protected static XPathExpression apiIsSerializableTypeExpression = XPathExpression.Compile("boolean(typedata[@serializable='true'])");
+        protected static XPathExpression apiIsReadOnlyStructExpression = XPathExpression.Compile("boolean(attributes/attribute/type[@api='T:System.Runtime.CompilerServices.IsReadOnlyAttribute'])");
+        protected static XPathExpression apiIsRefStructExpression = XPathExpression.Compile("boolean(attributes/attribute/type[@api='T:System.Runtime.CompilerServices.IsByRefLikeAttribute'])");
         // !EFW - Added support for interop metadata
         protected static XPathExpression apiComImportTypeExpression = XPathExpression.Compile("boolean(typedata[@comimport='true'])");
         protected static XPathExpression apiStructLayoutTypeExpression = XPathExpression.Compile("string(typedata/@layout)");
@@ -143,6 +145,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         protected static XPathExpression apiIsUdtReturnExpression = XPathExpression.Compile("boolean(returns/type[@api='T:System.Void']/requiredModifier/type[@api='T:System.Runtime.CompilerServices.IsUdtReturn'])");
         protected static XPathExpression returnsTypeExpression = XPathExpression.Compile("returns/type");
         protected static XPathExpression returnsValueExpression = XPathExpression.Compile("value|nullValue|enumValue");
+        protected static XPathExpression returnsRefExpression = XPathExpression.Compile("boolean(returns/referenceTo)");
 
         // event data
         protected static XPathExpression apiHandlerOfEventExpression = XPathExpression.Compile("eventhandler/*[1]");

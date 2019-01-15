@@ -763,6 +763,11 @@ namespace Microsoft.Ddue.Tools.Reflection
             // Check whether the attribute type is exposed
             TypeNode attributeType = attribute.Type;
 
+            // C# 7.x generates a private attribute type if target framework does not support it.
+            // We need to pass those attributes through and filter them later (ref struct, readonly struct)
+            if (attributeType.FullName .StartsWith("System.Runtime.CompilerServices"))
+                return attributeFilter.IsRequiredType(attributeType);
+
             if(!this.IsExposedType(attributeType))
                 return false;
 
