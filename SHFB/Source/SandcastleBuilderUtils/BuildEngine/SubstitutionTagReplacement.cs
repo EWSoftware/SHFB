@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/10/2017
-// Note    : Copyright 2015-2017, Eric Woodruff, All rights reserved
+// Updated : 01/22/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -679,12 +679,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// The URL encoded help title
         /// </summary>
-        /// <returns>Only &amp;, &lt;, &gt;, and " are replaced for now</returns>
+        /// <returns>Only &amp;, &lt;, &gt;, ", and space are replaced for now</returns>
         [SubstitutionTag]
         private string UrlEncHelpTitle()
         {
-            return sandcastleProject.HelpTitle.Replace("&", "%26").Replace("<", "%3C").Replace(
-                ">", "%3E").Replace("\"", "%22");
+            // Any embedded substitution tags need to be replaced first so that their content is encoded too
+            string helpTitle = TransformText(sandcastleProject.HelpTitle);
+
+            return helpTitle.Replace("&", "%26").Replace("<", "%3C").Replace(">", "%3E").Replace(
+                "\"", "%22").Replace(" ", "%20");
         }
 
         /// <summary>
@@ -859,7 +862,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string UrlEncFeedbackEMailAddress()
         {
-            return (sandcastleProject.FeedbackEMailAddress.Length == 0) ? String.Empty :
+            // Any embedded substitution tags need to be replaced first so that their content is encoded too
+            string feedbackEMailAddress = TransformText(sandcastleProject.FeedbackEMailAddress);
+
+            return (feedbackEMailAddress.Length == 0) ? String.Empty :
                 WebUtility.UrlEncode(sandcastleProject.FeedbackEMailAddress);
         }
 

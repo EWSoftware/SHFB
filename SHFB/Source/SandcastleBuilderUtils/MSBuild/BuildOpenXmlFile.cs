@@ -858,7 +858,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         
         /// <summary>
         /// Reorders an elements' children by a specific ordering.
-        /// <summary>
+        /// </summary>
         /// <param name="element">Element whose children should be in a specific order</param>
         /// <param name="orderings">The specific order of child element, by local name</param>
         /// <returns><paramref name="element" /> with its children reordered.</returns>

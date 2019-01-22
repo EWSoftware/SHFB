@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2018
-// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
+// Updated : 01/22/2019
+// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -1937,6 +1937,7 @@ AllDone:
         private void GatherBuildOutputFilenames()
         {
             string[] patterns = new string[4];
+            SearchOption searchOption = SearchOption.TopDirectoryOnly;
 
             switch(currentFormat)
             {
@@ -1957,44 +1958,45 @@ AllDone:
 
                 default:    // Website and markdown
                     patterns[0] = "*.*";
+                    searchOption = SearchOption.AllDirectories;
                     break;
             }
 
             foreach(string filePattern in patterns)
             {
-                if(filePattern == null)
-                    continue;
-
-                foreach(string file in Directory.EnumerateFiles(outputFolder, filePattern, SearchOption.AllDirectories))
+                if(filePattern != null)
                 {
-                    if(file.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase) ||
-                      file == project.LogFileLocation)
-                        continue;
-
-                    switch(currentFormat)
+                    foreach(string file in Directory.EnumerateFiles(outputFolder, filePattern, searchOption))
                     {
-                        case HelpFileFormats.HtmlHelp1:
-                            help1Files.Add(file);
-                            break;
+                        if(!file.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase) &&
+                          file != project.LogFileLocation)
+                        {
+                            switch(currentFormat)
+                            {
+                                case HelpFileFormats.HtmlHelp1:
+                                    help1Files.Add(file);
+                                    break;
 
-                        case HelpFileFormats.MSHelpViewer:
-                            helpViewerFiles.Add(file);
-                            break;
+                                case HelpFileFormats.MSHelpViewer:
+                                    helpViewerFiles.Add(file);
+                                    break;
 
-                        case HelpFileFormats.OpenXml:
-                            openXmlFiles.Add(file);
-                            break;
+                                case HelpFileFormats.OpenXml:
+                                    openXmlFiles.Add(file);
+                                    break;
 
-                        case HelpFileFormats.Markdown:
-                            markdownFiles.Add(file);
-                            break;
+                                case HelpFileFormats.Markdown:
+                                    markdownFiles.Add(file);
+                                    break;
 
-                        default:    // Website
-                            // Open XML and Markdown are distinct and cannot be combined with web output so
-                            // there's no need to exclude them here.
-                            if(!help1Files.Contains(file) && !helpViewerFiles.Contains(file))
-                                websiteFiles.Add(file);
-                            break;
+                                default:    // Website
+                                    // Open XML and Markdown are distinct and cannot be combined with web output so
+                                    // there's no need to exclude them here.
+                                    if(!help1Files.Contains(file) && !helpViewerFiles.Contains(file))
+                                        websiteFiles.Add(file);
+                                    break;
+                            }
+                        }
                     }
                 }
             }
