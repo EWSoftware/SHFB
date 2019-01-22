@@ -361,6 +361,9 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Make one final pass to wrap remaining stray text nodes that showed up after handling everything.
             // This can happen for stuff in span elements which are skipped by this method.
             WrapStrayElementNodes(document);
+            
+            // Ensure tables are at the proper level and have grid columns
+            CleanupTables(document);
         }
 
         /// <summary>
@@ -551,7 +554,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         private static void ConvertHtmlLineBreaks(XDocument document)
         {
             foreach(var lineBreak in document.Descendants("br").ToList())
-                lineBreak.ReplaceWith(new XElement(w + "br"));
+                lineBreak.ReplaceWith(new XElement(w + "r", new XElement(w + "br")));
         }
 
         /// <summary>
@@ -579,6 +582,36 @@ namespace SandcastleBuilder.Utils.MSBuild
                         new XAttribute(XNamespace.Xml + "space", "preserve"), text.Value));
 
                 text.ReplaceWith(wrap);
+            }
+        }
+        
+        /// <summary>
+        /// This cleans up table elements so that they include the correct w:tblGrid
+        /// element and that they are not wrapped within a w:p element.
+        /// </summary>
+        /// <param name="document">The document in which to clean up any tables</param>
+        private static void CleanupTables(XDocument document)
+        {
+            foreach (var table in document.Descendants(w + "tbl").ToArray())
+            {
+                XElement tblGrid = table.Element(w + "tblGrid");
+                if (tblGrid == null)
+                {
+                    // Get the count of table cells and create that many <w:gridCol /> elements
+                    // in our <w:tblGrid> element
+                    int cellCount = table.Elements(w + "tr").Max(tr => tr.Elements(w + "tc").Count());
+                    tblGrid = new XElement(w + "tblGrid",
+                        Enumerable.Range(0, cellCount).Select(_ => new XElement(w + "gridCol")));
+                    
+                    // then put the <w:tblGrid> element just before the first <w:tr>
+                    table.Element(w + "tr").AddBeforeSelf(tblGrid);
+                }
+                
+                // Check if this table needs to be "unwrapped" from a parent <w:p>
+                if (table.Parent.Name == w + "p")
+                {
+                    table.Parent.ReplaceWith(table);
+                }
             }
         }
 
@@ -690,6 +723,19 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
+        /// The order in which w:rPr elements should be written.
+        /// </summary>
+        private static readonly string[] runPropsOrder = new[]
+            {
+                "rStyle","rFonts","b","bCs","i","iCs","caps","smallCaps",
+                "strike","dstrike","outline","shadow","emboss","imprint",
+                "noProof","snapToGrid","vanish","webHidden","color","spacing",
+                "w","kern","position","sz","szCs","highlight","u","effect",
+                "bdr","shd","fitText","vertAlign","rtl","cs","em","lang",
+                "eastAsianLayout","specVanish","oMath",
+            };
+
+        /// <summary>
         /// Apply the formatting from a span including all nested spans to each run contained within it
         /// </summary>
         /// <param name="span">The root span from which to start applying formatting</param>
@@ -787,6 +833,9 @@ namespace SandcastleBuilder.Utils.MSBuild
                 span.Value = String.Empty;
                 span.Add(content);
             }
+            
+            // Ensure that the order of rPr children is correct
+            runProps = ReorderChildren(runProps, runPropsOrder);
 
             // Add the run properties to each child run
             foreach(var run in span.Elements(w + "r"))
@@ -805,6 +854,21 @@ namespace SandcastleBuilder.Utils.MSBuild
 
             // And finally, remove the span
             span.Remove();
+        }
+        
+        /// <summary>
+        /// Reorders an elements' children by a specific ordering.
+        /// <summary>
+        /// <param name="element">Element whose children should be in a specific order</param>
+        /// <param name="orderings">The specific order of child element, by local name</param>
+        /// <returns><paramref name="element" /> with its children reordered.</returns>
+        private static XElement ReorderChildren(XElement element, IList<string> orderings)
+        {
+            var orderedChildren = element.Elements()
+                                         .OrderBy(e => orderings.IndexOf(e.Name.LocalName))
+                                         .ToArray();
+            element.ReplaceNodes(orderedChildren);
+            return element;
         }
         #endregion
 
@@ -1077,6 +1141,12 @@ namespace SandcastleBuilder.Utils.MSBuild
                         new XAttribute("distL", "0"), new XAttribute("distR", "0"),
                             extent, docPr, cNvGraphicFramePr, graphic));
 
+                // Ensure the <w:drawing> is within a <w:r> and not a bare <w:p>
+                if (image.Parent.Name != w + "r")
+                {
+                    drawing = new XElement(w + "r", drawing);
+                }
+                
                 image.ReplaceWith(drawing);
                 imageId++;
             }
@@ -1228,10 +1298,10 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // we're making an assumption here about the indent widths based on the default style
                         // sheet.
                         props.Add(
-                            new XElement(w + "contextualSpacing",
-                                new XAttribute(w + "val", "0")),
                             new XElement(w + "ind",
-                                new XAttribute(w + "left", ((level + 1) * 720).ToString(CultureInfo.InvariantCulture))));
+                                new XAttribute(w + "left", ((level + 1) * 720).ToString(CultureInfo.InvariantCulture))),
+                            new XElement(w + "contextualSpacing",
+                                new XAttribute(w + "val", "0")));
                     }
                 }
 

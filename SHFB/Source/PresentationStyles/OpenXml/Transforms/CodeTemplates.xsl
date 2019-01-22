@@ -118,7 +118,7 @@
 			<xsl:if test="(normalize-space(@title) != '') or (not(@title) and normalize-space($p_codeLang) != '' and $p_codeLang != 'other' and $p_codeLang != 'none')">
 				<w:tr>
 					<w:trPr>
-						<w:cnfStyle w:firstRow="1" />
+						<w:cnfStyle w:val="100000000000" />
 					</w:trPr>
 					<w:tc>
 						<w:p>
@@ -204,7 +204,7 @@
 							</w:tblPr>
 							<w:tr>
 								<w:trPr>
-									<w:cnfStyle w:firstRow="1" />
+									<w:cnfStyle w:val="100000000000" />
 								</w:trPr>
 								<w:tc>
 									<w:p>
@@ -335,7 +335,7 @@
 					</w:tblPr>
 					<w:tr>
 						<w:trPr>
-							<w:cnfStyle w:firstRow="1" />
+							<w:cnfStyle w:val="100000000000" />
 						</w:trPr>
 						<w:tc>
 							<w:p>

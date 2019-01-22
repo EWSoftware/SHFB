@@ -733,7 +733,7 @@
 	<xsl:template match="ddue:tableHeader/ddue:row" name="t_ddue_tableHeaderRow">
 		<w:tr>
 			<w:trPr>
-				<w:cnfStyle w:firstRow="1" />
+				<w:cnfStyle w:val="100000000000" />
 			</w:trPr>
 			<xsl:apply-templates/>
 		</w:tr>

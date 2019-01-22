@@ -207,7 +207,7 @@
 		<w:tr>
 			<xsl:if test="th">
 				<w:trPr>
-					<w:cnfStyle w:firstRow="1" />
+					<w:cnfStyle w:val="100000000000" />
 				</w:trPr>
 			</xsl:if>
 			<xsl:apply-templates/>
