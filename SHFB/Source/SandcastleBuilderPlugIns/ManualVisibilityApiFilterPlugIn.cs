@@ -348,6 +348,8 @@ namespace SandcastleBuilder.PlugIns
                 "T:System.Reflection.AssemblyFileVersionAttribute",
                 "T:System.Runtime.CompilerServices.ExtensionAttribute",
                 "T:System.Runtime.CompilerServices.FixedBufferAttribute",
+                "T:System.Runtime.CompilerServices.IsReadOnlyAttribute",
+                "T:System.Runtime.CompilerServices.IsByRefLikeAttribute",
                 "T:System.Runtime.InteropServices.ComImportAttribute",
                 "T:System.Runtime.InteropServices.DllImportAttribute",
                 "T:System.Runtime.InteropServices.FieldOffsetAttribute",

@@ -46,6 +46,7 @@
     </NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -93,6 +94,10 @@
     <Compile Include="InteropBug\FixedKeywordBug.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LanguageFeatures\RefStructTest.cs" />
+    <Compile Include="LanguageFeatures\ReadOnlyStructTest.cs" />
+    <Compile Include="LanguageFeatures\RefReturnTest.cs" />
+    <Compile Include="LanguageFeatures\InParameterTest.cs" />
     <Compile Include="ReferenceTest.cs" />
     <Compile Include="SealedOverrideBug\DerivedSealed.cs" />
     <Compile Include="DocumentationInheritance\DocumentationInheritance.cs" />

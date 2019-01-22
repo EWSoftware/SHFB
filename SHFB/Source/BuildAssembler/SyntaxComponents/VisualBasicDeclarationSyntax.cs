@@ -835,9 +835,11 @@ namespace Microsoft.Ddue.Tools
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore FixedBufferAttribute and ParamArrayAttribute
+                // !EFW - Ignore FixedBufferAttribute, ParamArrayAttribute, IsByRefLikeAttribute, IsReadOnlyAttribute too
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
-                  type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsByRefLikeAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsReadOnlyAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
                     continue;
 
                 XPathNodeIterator arguments = (XPathNodeIterator)attribute.Select(attributeArgumentsExpression);

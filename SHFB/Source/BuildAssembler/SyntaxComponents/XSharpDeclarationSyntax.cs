@@ -864,10 +864,12 @@ namespace Microsoft.Ddue.Tools
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore FixedBufferAttribute and ParamArrayAttribute too
+                // !EFW - Ignore ExtensionAttribute, FixedBufferAttribute, ParamArrayAttribute, IsByRefLikeAttribute, IsReadOnlyAttribute too
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.ExtensionAttribute" ||
-                  type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
-                  type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsByRefLikeAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsReadOnlyAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
                     continue;
 
                 if (type.GetAttribute("api", String.Empty) == "T:Vulcan.Internal.ClipperCallingConventionAttribute")

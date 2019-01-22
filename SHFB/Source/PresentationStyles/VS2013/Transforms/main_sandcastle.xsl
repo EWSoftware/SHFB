@@ -398,6 +398,16 @@
 									<xsl:with-param name="qualified" select="true()" />
 								</xsl:apply-templates>
 							</xsl:when>
+							<xsl:when test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.IsReadOnlyAttribute']">
+								<xsl:apply-templates select="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.IsReadOnlyAttribute']/../argument/typeValue/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:when>
+							<xsl:when test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.IsByRefLikeAttribute']">
+								<xsl:apply-templates select="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.IsByRefLikeAttribute']/../argument/typeValue/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:when>
 							<xsl:when test="/document/reference/apidata[@subgroup='event']">
 								<xsl:apply-templates select="/document/reference/eventhandler/type" mode="link">
 									<xsl:with-param name="qualified" select="true()" />

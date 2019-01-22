@@ -118,11 +118,25 @@ namespace Microsoft.Ddue.Tools
 
             string name = (string)reflection.Evaluate(apiNameExpression);
             bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);
+            bool isReadOnlyStruct = (bool)reflection.Evaluate(apiIsReadOnlyStructExpression);
+            bool isRefStruct = (bool)reflection.Evaluate(apiIsRefStructExpression);
 
             if(isSerializable)
                 WriteAttribute("T:System.SerializableAttribute", true, writer);
-            WriteAttributes(reflection, writer);
+            WriteAttributes(reflection, writer, ignoreObsoleteAttribute:isRefStruct);
             WriteVisibility(reflection, writer);
+
+            if(isReadOnlyStruct)
+            {
+                writer.WriteString(" ");
+                writer.WriteKeyword("readonly");
+            }
+            else if(isRefStruct)
+            {
+                writer.WriteString(" ");
+                writer.WriteKeyword("ref");
+            }
+
             writer.WriteString(" ");
             writer.WriteKeyword("struct");
             writer.WriteString(" ");
@@ -708,7 +722,7 @@ namespace Microsoft.Ddue.Tools
         // !EFW - Added indent parameter for property getter/setter attributes.  Added parameterAttributes to
         // suppress line feeds for method parameter attributes.
         private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null,
-            bool parameterAttributes = false)
+            bool parameterAttributes = false, bool ignoreObsoleteAttribute = false)
         {
             // Handle interop attributes first as they are output in metadata
             if(!parameterAttributes)
@@ -721,10 +735,16 @@ namespace Microsoft.Ddue.Tools
             {
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
-                // !EFW - Ignore FixedBufferAttribute and ParamArrayAttribute too
+                // !EFW - Ignore ExtensionAttribute, FixedBufferAttribute, ParamArrayAttribute, IsByRefLikeAttribute, IsReadOnlyAttribute too
                 if(type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.ExtensionAttribute" ||
                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.FixedBufferAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsByRefLikeAttribute" ||
+                   type.GetAttribute("api", String.Empty) == "T:System.Runtime.CompilerServices.IsReadOnlyAttribute" ||
                   type.GetAttribute("api", String.Empty) == "T:System.ParamArrayAttribute")
+                    continue;
+
+                // Ref structs.
+                if(ignoreObsoleteAttribute && type.GetAttribute("api", String.Empty) == "T:System.ObsoleteAttribute")
                     continue;
 
                 if(!String.IsNullOrEmpty(indent))
@@ -1266,6 +1286,7 @@ namespace Microsoft.Ddue.Tools
                 string name = (string)parameter.Evaluate(parameterNameExpression);
                 XPathNavigator type = parameter.SelectSingleNode(parameterTypeExpression);
                 bool isOut = (bool)parameter.Evaluate(parameterIsOutExpression);
+                bool isIn = (bool)parameter.Evaluate(parameterIsInExpression);
                 bool isRef = (bool)parameter.Evaluate(parameterIsRefExpression);
                 bool isParamArray = (bool)parameter.Evaluate(parameterIsParamArrayExpression);
 
@@ -1292,6 +1313,10 @@ namespace Microsoft.Ddue.Tools
                     if(isOut)
                     {
                         writer.WriteKeyword("out");
+                    }
+                    else if(isIn)
+                    {
+                        writer.WriteKeyword("in");
                     }
                     else
                     {
@@ -1329,11 +1354,21 @@ namespace Microsoft.Ddue.Tools
         private void WriteReturnValue(XPathNavigator reflection, SyntaxWriter writer)
         {
             XPathNavigator type = reflection.SelectSingleNode(apiReturnTypeExpression);
-
+            
             if(type == null)
                 writer.WriteKeyword("void");
             else
+            {
+                bool isRef = (bool)reflection.Evaluate(returnsRefExpression);
+
+                if(isRef)
+                {
+                    writer.WriteKeyword("ref");
+                    writer.WriteString(" ");
+                }
+
                 WriteTypeReference(type, writer);
+            }
         }
 
         // References
