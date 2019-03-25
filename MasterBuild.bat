@@ -83,7 +83,7 @@ IF ERRORLEVEL 1 GOTO End
 CD ..\SHFB\Source
 
 "%NUGET%" restore "SHFBSetup.sln"
-"%MSBUILD%" /nologo /v:m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%VS150COMNTOOLS%\bin\MSBuild.exe" /nologo /v:m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 

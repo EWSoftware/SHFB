@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : ProjectLauncherForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 03/22/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This lets the user choose how to launch help file builder projects.
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             InitializeComponent();
 
-            if(Settings.Default.UseStandaloneGui || String.IsNullOrEmpty(StartUp.VisualStudioPath))
+            if(Settings.Default.UseStandaloneGui || String.IsNullOrWhiteSpace(StartUp.VisualStudioPath))
                 rbSHFB.IsChecked = true;
             else
                 rbVisualStudio.IsChecked = true;

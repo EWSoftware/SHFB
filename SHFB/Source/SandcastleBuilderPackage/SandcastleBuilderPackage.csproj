@@ -459,7 +459,7 @@
       <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.vstemplate">
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
       <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -475,7 +475,7 @@
       <RootPath>Templates\Projects\PlugInCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.vstemplate">
+    <ZipProject Include="Templates\Projects\PlugInCS\PlugInCS.vstemplate">
       <RootPath>Templates\Projects\PlugInCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -491,7 +491,7 @@
       <RootPath>Templates\Projects\BuildComponentCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.vstemplate">
+    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
       <RootPath>Templates\Projects\BuildComponentCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -507,7 +507,7 @@
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.vstemplate">
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGeneratorCS.vstemplate">
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -527,7 +527,7 @@
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vstemplate">
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate">
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -543,7 +543,7 @@
       <RootPath>Templates\Projects\PlugInVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.vstemplate">
+    <ZipProject Include="Templates\Projects\PlugInVB\PlugInVB.vstemplate">
       <RootPath>Templates\Projects\PlugInVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -559,7 +559,7 @@
       <RootPath>Templates\Projects\BuildComponentVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.vstemplate">
+    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponentVB.vstemplate">
       <RootPath>Templates\Projects\BuildComponentVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -575,7 +575,7 @@
       <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vstemplate">
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGeneratorVB.vstemplate">
       <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>

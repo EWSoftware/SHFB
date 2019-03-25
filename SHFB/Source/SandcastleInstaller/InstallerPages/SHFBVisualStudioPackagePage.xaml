@@ -18,8 +18,8 @@
 
         <Paragraph>This is a companion to the Sandcastle Help File Builder (SHFB) that will allow you to create,
 manage, and build help file projects from within Visual Studio.  The core build engine and tools that were
-installed in the previous step are required for it to work correctly.  The following Visual Studio versions are
-supported:</Paragraph>
+installed in the previous step are required for it to work correctly.  The following installed versions of Visual
+Studio are supported:</Paragraph>
         
         <List Name="lstVersions" />
 

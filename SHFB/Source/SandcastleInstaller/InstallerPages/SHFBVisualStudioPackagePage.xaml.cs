@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 04/06/2017
+// Updated : 03/20/2019
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
@@ -46,17 +46,15 @@ namespace Sandcastle.Installer.InstallerPages
         /// </summary>
         private class VisualStudioInstallerPackage
         {
-            private HashSet<string> installedLocations = new HashSet<string>();
-
             /// <summary>
             /// The VSIX package name
             /// </summary>
             public string PackageName { get; set; }
 
             /// <summary>
-            /// The package description
+            /// A list of the installed version descriptions
             /// </summary>
-            public string Description { get; set; }
+            public IList<string> InstalledVersionDescriptions { get; } = new List<string>();
 
             /// <summary>
             /// This is used to define the path to the VSIX installer executable
@@ -67,10 +65,7 @@ namespace Sandcastle.Installer.InstallerPages
             /// <summary>
             /// This returns a unique set of locations in which this package is installed
             /// </summary>
-            public ICollection<string> InstalledLocations
-            {
-                get { return installedLocations; }
-            }
+            public ICollection<string> InstalledLocations { get; } = new HashSet<string>();
         }
         #endregion
 
@@ -91,18 +86,12 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle
-        {
-            get { return "SHFB Visual Studio Package"; }
-        }
+        public override string PageTitle => "SHFB Visual Studio Package";
 
         /// <inheritdoc />
         /// <remarks>This returns the .NET Framework version required by the Sandcastle Help File Builder
         /// installed by this release of the package.</remarks>
-        public override Version RequiredFrameworkVersion
-        {
-            get { return frameworkVersion; }
-        }
+        public override Version RequiredFrameworkVersion => frameworkVersion;
 
         /// <summary>
         /// This is overridden to confirm that the user wants to continue without installing the VS package.
@@ -166,104 +155,57 @@ namespace Sandcastle.Installer.InstallerPages
             // Load the Visual Studio package versions
             foreach(var package in configuration.Elements("package"))
             {
-                var vsix = new VisualStudioInstallerPackage
-                {
-                    PackageName = package.Attribute("name").Value,
-                    Description = package.Attribute("description").Value
-                };
+                var vsix = new VisualStudioInstallerPackage { PackageName = package.Attribute("name").Value };
 
                 vsixPackages.Add(vsix);
 
-                foreach(var vs in package.Elements("visualStudio"))
+                var supportedVersions = package.Attribute("supportedVersions").Value.Split(new[] { ',', ' ' },
+                    StringSplitOptions.RemoveEmptyEntries);
+                var versionsFound = VisualStudioInstance.AllInstances.Where(i => supportedVersions.Any(v =>
+                    i.Version.StartsWith(v, StringComparison.Ordinal))).OrderBy(i => i.Version).ToList();
+
+                // Use the latest VSIX installer found
+                if(versionsFound.Any())
+                    vsix.VsixInstallerPath = versionsFound.Last().VSIXInstallerPath;
+
+                foreach(var vs in versionsFound)
                 {
-                    string versionNumber = vs.Attribute("version").Value, basePath = vs.Attribute("basePath").Value,
-                        editionPaths = (string)vs.Attribute("editionPaths");
+                    vsix.InstalledVersionDescriptions.Add(vs.DisplayName);
 
-                    if(!Environment.Is64BitProcess && basePath.IndexOf("(x86)%", StringComparison.Ordinal) != -1)
-                        basePath = basePath.Replace("(x86)%", "%");
+                    // Version 2015.7.25.0 and earlier were installed for the current user only
+                    string basePackagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            @"Microsoft\VisualStudio");
 
-                    // VS2015 and earlier don't install side-by-side
-                    if(editionPaths == null)
+                    if(Directory.Exists(basePackagePath))
                     {
-                        string vsixPath = Path.Combine(Environment.ExpandEnvironmentVariables(basePath),
-                            "VSIXInstaller.exe");
+                        string version = vs.Version.Substring(0, 2) + ".0";
 
-                        // Use the latest one found
-                        if(File.Exists(vsixPath))
-                            vsix.VsixInstallerPath = vsixPath;
-
-                        // Version 2015.7.25.0 and earlier were installed for the current user only
-                        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                            packagePath = Path.Combine(appDataPath, @"Microsoft\VisualStudio\" + versionNumber + @"\Extensions");
-
-                        if(Directory.Exists(packagePath))
+                        // VS2017 and later can install side by side and use a random name for the extensions
+                        // folder starting with the version number.  Exclude the experimental instances.
+                        foreach(string packagePath in Directory.EnumerateDirectories(basePackagePath).Where(p =>
+                          Path.GetFileName(p).StartsWith(version, StringComparison.Ordinal) &&
+                          !p.EndsWith("Exp", StringComparison.OrdinalIgnoreCase)))
                         {
                             // This is used to suppress prompting if the package appears to be installed and the
                             // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
                             // a randomly named folder so we'll have to search for it.
-                            packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
+                            string shfbPackage = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
                                 SearchOption.AllDirectories).FirstOrDefault();
 
-                            if(packagePath != null)
-                                vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
-                        }
-
-                        // Versions after 2015.7.25.0 are installed for all users
-                        appDataPath = Environment.GetFolderPath(Environment.Is64BitProcess ?
-                            Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
-                        packagePath = Path.Combine(appDataPath, "Microsoft Visual Studio " + versionNumber,
-                            @"Common7\IDE\Extensions");
-
-                        if(Directory.Exists(packagePath))
-                        {
-                            packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
-                                SearchOption.AllDirectories).FirstOrDefault();
-
-                            if(packagePath != null)
-                                vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
+                            if(shfbPackage != null)
+                                vsix.InstalledLocations.Add(Path.GetDirectoryName(shfbPackage));
                         }
                     }
-                    else
-                        foreach(string edition in editionPaths.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            // VS2017 and later can be installed side-by-side so find the first one available
-                            string vsixPath = String.Format(CultureInfo.InvariantCulture,
-                                Path.Combine(Environment.ExpandEnvironmentVariables(basePath),
-                                "VSIXInstaller.exe"), edition);
 
-                            // Use the latest one found.  Within an edition it doesn't matter but we still need
-                            // to know about each installed edition.
-                            if(File.Exists(vsixPath))
-                                vsix.VsixInstallerPath = vsixPath;
+                    // Versions after 2015.7.25.0 are installed for all users
+                    if(Directory.Exists(vs.AllUsersExtensionsPath))
+                    {
+                        string shfbPackage = Directory.EnumerateFiles(vs.AllUsersExtensionsPath, "SandcastleBuilder.Utils.dll",
+                            SearchOption.AllDirectories).FirstOrDefault();
 
-                            // Version 2015.7.25.0 and earlier were installed for the current user only
-                            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                packagePath = Path.Combine(appDataPath, @"Microsoft\VisualStudio\" + versionNumber + @"\Extensions");
-
-                            if(Directory.Exists(packagePath))
-                            {
-                                // This is used to suppress prompting if the package appears to be installed and the
-                                // user clicks Next to continue.  VS2012 and later VSIX installers puts the package in
-                                // a randomly named folder so we'll have to search for it.
-                                packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
-                                    SearchOption.AllDirectories).FirstOrDefault();
-
-                                if(packagePath != null)
-                                    vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
-                            }
-
-                            // Versions after 2015.7.25.0 are installed for all users
-                            packagePath = Path.Combine(Path.GetDirectoryName(vsixPath), "Extensions");
-
-                            if(Directory.Exists(packagePath))
-                            {
-                                packagePath = Directory.EnumerateFiles(packagePath, "SandcastleBuilder.Utils.dll",
-                                    SearchOption.AllDirectories).FirstOrDefault();
-
-                                if(packagePath != null)
-                                    vsix.InstalledLocations.Add(Path.GetDirectoryName(packagePath));
-                            }
-                        }
+                        if(shfbPackage != null)
+                            vsix.InstalledLocations.Add(Path.GetDirectoryName(shfbPackage));
+                    }
                 }
             }
 
@@ -293,8 +235,11 @@ namespace Sandcastle.Installer.InstallerPages
                 initializationTask.Wait();
 
                 foreach(var vsix in vsixPackages)
-                    foreach(string v in vsix.Description.Split(';'))
+                    foreach(string v in vsix.InstalledVersionDescriptions)
                         lstVersions.ListItems.Add(new ListItem(new Paragraph(new Run(v))));
+
+                if(lstVersions.ListItems.Count == 0)
+                    lstVersions.ListItems.Add(new ListItem(new Paragraph(new Run("(No supported versions found)"))));
 
                 if(!vsixPackages.Any(p => !String.IsNullOrWhiteSpace(p.VsixInstallerPath)))
                 {
@@ -304,7 +249,7 @@ namespace Sandcastle.Installer.InstallerPages
                         "Unable to locate the VSIX package installer.")) { FontSize = 13 }));
 
                     para = new Paragraph();
-                    para.Inlines.Add(new Run("This could be because a supported version Visual Studio is not " +
+                    para.Inlines.Add(new Run("This could be because a supported version of Visual Studio is not " +
                         "installed on this PC.  The extension package cannot be installed.  If you will not be " +
                         "using Visual Studio to create help projects, you can safely skip this step."));
                     secResults.Blocks.Add(para);

@@ -84,6 +84,11 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -95,6 +100,9 @@
   <ItemGroup>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="..\SandcastleInstaller\VisualStudioInstance.cs">
+      <Link>VisualStudioInstance.cs</Link>
     </Compile>
     <Compile Include="ProjectLaucherDlg.xaml.cs">
       <DependentUpon>ProjectLaucherDlg.xaml</DependentUpon>
@@ -113,6 +121,7 @@
     </Compile>
     <None Include="app.config" />
     <Resource Include="Images\SHFBProjectLauncher.ico" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

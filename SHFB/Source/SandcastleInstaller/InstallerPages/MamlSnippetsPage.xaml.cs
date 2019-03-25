@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlSnippetsPage.cs
 // Author  : Eric Woodruff
-// Updated : 10/08/2015
+// Updated : 03/22/2019
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML snippet files for use with Visual
@@ -16,6 +16,8 @@
 // ==============================================================================================================
 // 11/25/2012  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: Xml
 
 using System;
 using System.IO;
@@ -45,10 +47,8 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle
-        {
-            get { return "MAML Snippet Files"; }
-        }
+        public override string PageTitle => "MAML Snippet Files";
+
         #endregion
 
         #region Constructor
@@ -78,18 +78,13 @@ namespace Sandcastle.Installer.InstallerPages
         /// version of Visual Studio.</returns>
         private bool CheckForSafeInstallation(string vsVersionName, string vsPath)
         {
-            Paragraph para;
-
-            para = new Paragraph();
+            Paragraph para = new Paragraph();
             secResults.Blocks.Add(para);
 
             para.Inlines.AddRange(new Inline[] { new Bold(new Run(vsVersionName)), new Run(" - ") });
 
-            if(vsPath != null)
-                vsPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(vsPath));
-
             // Check for the folder
-            if(String.IsNullOrEmpty(vsPath) || !Directory.Exists(vsPath))
+            if(String.IsNullOrWhiteSpace(vsPath) || !Directory.Exists(vsPath))
             {
                 para.Inlines.Add(new Run("Unable to locate snippet cache for this version of Visual Studio."));
                 return false;
@@ -116,7 +111,8 @@ namespace Sandcastle.Installer.InstallerPages
                 foreach(string source in Directory.EnumerateFiles(sandcastleSnippetsFolder, "*.*",
                   SearchOption.AllDirectories))
                 {
-                    destination = Path.Combine(vsPath, source.Substring(sandcastleSnippetsFolder.Length));
+                    destination = Path.Combine(vsPath, @"Code Snippets\XML\My Xml Snippets",
+                        source.Substring(sandcastleSnippetsFolder.Length));
 
                     if(!Directory.Exists(Path.GetDirectoryName(destination)))
                         Directory.CreateDirectory(Path.GetDirectoryName(destination));
@@ -153,21 +149,21 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void ShowPage()
         {
-            CheckBox cb;
-            string versionName, location;
-
             pnlVersions.Children.Clear();
             secResults.Blocks.Clear();
 
             // Load the possible versions and see if we can safely install them
-            foreach(var vs in configuration.Elements("visualStudio"))
+            foreach(var vs in VisualStudioInstance.AllInstances)
             {
-                versionName = vs.Attribute("version").Value;
-                location = Path.Combine(baseSnippetsFolder, vs.Attribute("location").Value);
+                string location = Path.Combine(baseSnippetsFolder, vs.UserTemplatesBaseFolder);
 
-                cb = new CheckBox { Margin = new Thickness(20, 5, 0, 0) };
-                cb.Content = versionName;
-                cb.IsEnabled = this.CheckForSafeInstallation(versionName, location);
+                CheckBox cb = new CheckBox
+                {
+                    Margin = new Thickness(20, 5, 0, 0),
+                    Content = vs.DisplayName,
+                    IsEnabled = this.CheckForSafeInstallation(vs.DisplayName, location)
+                };
+
                 cb.IsChecked = cb.IsEnabled;
                 cb.Tag = location;
 

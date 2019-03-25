@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 04/07/2017
+// Updated : 03/22/2019
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
@@ -48,10 +48,8 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle
-        {
-            get { return "MAML Schema IntelliSense"; }
-        }
+        public override string PageTitle => "MAML Schema IntelliSense";
+
         #endregion
 
         #region Constructor
@@ -79,30 +77,17 @@ namespace Sandcastle.Installer.InstallerPages
         /// version of Visual Studio.</returns>
         private bool CheckForSafeInstallation(string vsVersionName, ref string vsPath)
         {
-            Paragraph para;
             string checkPath;
 
-            para = new Paragraph();
+            Paragraph para = new Paragraph();
             secResults.Blocks.Add(para);
 
             para.Inlines.AddRange(new Inline[] { new Bold(new Run(vsVersionName)), new Run(" - ") });
 
-            if(vsPath != null)
-                vsPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(vsPath));
-
             try
             {
-                // Check for the folder.  Also check for devenv.exe as some tools install under the Visual Studio
-                // folder and create the environment variable even though the IDE is not there.
-                if(String.IsNullOrEmpty(vsPath) || !Directory.Exists(vsPath) || !File.Exists(Path.Combine(
-                  vsPath, @"..\..\Common7\IDE\devenv.exe")))
-                {
-                    para.Inlines.Add(new Run("Unable to locate this version of Visual Studio."));
-                    return false;
-                }
-
                 // Search for one of the schema files.  If not found, assume it's safe to install them unless
-                // the folder doesn't exist.  It has been known to get by the check above for some reason.
+                // the folder doesn't exist.  It has been known to get by the existence check for some reason.
                 checkPath = Directory.GetFiles(vsPath, "developerStructure.xsd",
                     SearchOption.AllDirectories).FirstOrDefault();
             }
@@ -213,22 +198,19 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
-            CheckBox cb;
-            string versionName, location;
-
             // Load the possible versions, figure out if the schemas are already installed, and if we can
             // safely overwrite them.
-            foreach(var vs in configuration.Elements("visualStudio"))
+            foreach(var vs in VisualStudioInstance.AllInstances)
             {
-                versionName = vs.Attribute("version").Value;
-                location = vs.Attribute("location").Value;
+                string location = vs.XmlSchemaCachePath;
 
-                if(!Environment.Is64BitProcess && location.IndexOf("(x86)%", StringComparison.Ordinal) != -1)
-                    location = location.Replace("(x86)%", "%");
+                CheckBox cb = new CheckBox
+                {
+                    Margin = new Thickness(20, 5, 0, 0),
+                    Content = vs.DisplayName,
+                    IsEnabled = this.CheckForSafeInstallation(vs.DisplayName, ref location)
+                };
 
-                cb = new CheckBox { Margin = new Thickness(20, 5, 0, 0) };
-                cb.Content = versionName;
-                cb.IsEnabled = this.CheckForSafeInstallation(versionName, ref location);
                 cb.IsChecked = cb.IsEnabled;
                 cb.Tag = location;
 

@@ -342,29 +342,53 @@ https://GitHub.com/EWSoftware/SHFB</value>
     <value>A XAML syntax configuration file for use with the BuildAssembler tool</value>
   </data>
   <data name="204" xml:space="preserve">
-    <value>Sandcastle Presentation Style Component</value>
+    <value>Sandcastle Presentation Style Component C#</value>
     <comment>Component projects</comment>
   </data>
   <data name="205" xml:space="preserve">
-    <value>Create a custom presentation style component for use with the Sandcastle Help File Builder and Tools</value>
+    <value>Create a custom presentation style component for use with the Sandcastle Help File Builder and Tools using C#</value>
   </data>
   <data name="206" xml:space="preserve">
-    <value>Sandcastle Help File Builder Plug-In</value>
+    <value>Sandcastle Help File Builder Plug-In C#</value>
   </data>
   <data name="207" xml:space="preserve">
-    <value>Create a build process plug-in for use with the Sandcastle Help File Builder</value>
+    <value>Create a build process plug-in for use with the Sandcastle Help File Builder using C#</value>
   </data>
   <data name="208" xml:space="preserve">
-    <value>BuildAssembler Build Component</value>
+    <value>BuildAssembler Build Component C#</value>
   </data>
   <data name="209" xml:space="preserve">
-    <value>Create a build component for use with BuildAssembler</value>
+    <value>Create a build component for use with BuildAssembler using C#</value>
   </data>
   <data name="210" xml:space="preserve">
-    <value>Build Assembler Syntax Generator</value>
+    <value>Build Assembler Syntax Generator C#</value>
   </data>
   <data name="211" xml:space="preserve">
-    <value>Create a syntax generator for use with the SyntaxComponent in BuildAssembler</value>
+    <value>Create a syntax generator for use with the SyntaxComponent in BuildAssembler in C#</value>
+  </data>
+  <data name="212" xml:space="preserve">
+    <value>BuildAssembler Build Component Visual Basic</value>
+  </data>
+  <data name="213" xml:space="preserve">
+    <value>Create a build component for use with BuildAssembler using Visual Basic</value>
+  </data>
+  <data name="214" xml:space="preserve">
+    <value>Sandcastle Help File Builder Plug-In Visual Basic</value>
+  </data>
+  <data name="215" xml:space="preserve">
+    <value>Create a build process plug-in for use with the Sandcastle Help File Builder using Visual Basic</value>
+  </data>
+  <data name="216" xml:space="preserve">
+    <value>Sandcastle Presentation Style Component Visual Basic</value>
+  </data>
+  <data name="217" xml:space="preserve">
+    <value>Create a custom presentation style component for use with the Sandcastle Help File Builder and Tools using Visual Basic</value>
+  </data>
+  <data name="218" xml:space="preserve">
+    <value>Build Assembler Syntax Generator Visual Basic</value>
+  </data>
+  <data name="219" xml:space="preserve">
+    <value>Create a syntax generator for use with the SyntaxComponent in BuildAssembler in Visual Basic</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
