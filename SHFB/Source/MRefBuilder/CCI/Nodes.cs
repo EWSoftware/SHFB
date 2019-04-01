@@ -6621,7 +6621,7 @@ notfound:
                 return null;
             if(CoreSystemTypes.SystemAssembly == null)
                 Debug.Fail("");
-            if(runtimeAssembly.GetName().Name == "mscorlib")
+            if(runtimeAssembly.GetName().Name == "mscorlib" || runtimeAssembly.GetName().Name == "netstandard")
             {
                 return CoreSystemTypes.SystemAssembly;
             }

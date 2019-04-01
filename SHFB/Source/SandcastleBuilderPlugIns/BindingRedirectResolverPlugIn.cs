@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/05/2016
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
+// Updated : 03/30/2019
+// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add assembly binding redirection support to the MRefBuilder
@@ -117,8 +117,15 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            root = configuration.SelectSingleNode("configuration");
+            // Transform the configuration elements to handle substitution tags
+            string config = buildProcess.SubstitutionTags.TransformText(
+                configuration.SelectSingleNode("configuration").OuterXml);
 
+            XmlDocument doc = new XmlDocument();
+
+            doc.LoadXml(config);
+            root = doc.CreateNavigator().SelectSingleNode("configuration");
+            
             if(root.IsEmptyElement)
                 throw new BuilderException("ABR0001", "The Assembly Binding Redirection Resolver plug-in " +
                     "has not been configured yet");

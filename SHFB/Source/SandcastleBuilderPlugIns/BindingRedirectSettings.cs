@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/04/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 03/30/2019
+// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing binding redirection settings for the Assembly Binding Redirection
 // Resolver plug-in.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.1  11/14/2008  EFW  Created the code
+// 11/14/2008  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -40,9 +40,9 @@ namespace SandcastleBuilder.PlugIns
         #region Private data members
         //=====================================================================
 
-        private string assemblyName, publicKeyToken, culture;
-        private Version oldVersionFrom, oldVersionTo, newVersion;
+        private string assemblyName, oldVersionFrom, oldVersionTo, newVersion;
         private FilePath configFile;
+
         #endregion
 
         #region Properties
@@ -54,10 +54,10 @@ namespace SandcastleBuilder.PlugIns
         [Category("Binding Redirect"), Description("The assembly name (no path or extension)")]
         public string AssemblyName
         {
-            get { return assemblyName; }
+            get => assemblyName;
             set
             {
-                if(String.IsNullOrEmpty(value))
+                if(String.IsNullOrWhiteSpace(value))
                     value = "assemblyName";
 
                 assemblyName = value;
@@ -70,11 +70,7 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If omitted, "null" is assumed</value>
         [Category("Binding Redirect"), Description("The public key token of the assembly.  If omitted, " +
           "\"null\" is assumed.")]
-        public string PublicKeyToken
-        {
-            get { return publicKeyToken; }
-            set { publicKeyToken = value; }
-        }
+        public string PublicKeyToken { get; set; }
 
         /// <summary>
         /// This is used to get or set the culture for the assembly
@@ -82,24 +78,20 @@ namespace SandcastleBuilder.PlugIns
         /// <value>If omitted, "neutral" is assumed</value>
         [Category("Binding Redirect"), Description("The culture of the assembly.  If omitted, " +
           "\"neutral\" is assumed.")]
-        public string Culture
-        {
-            get { return culture; }
-            set { culture = value; }
-        }
+        public string Culture { get; set; }
 
         /// <summary>
         /// This is used to get or set the old version number to redirect to the new version number
         /// </summary>
         [Category("Binding Redirect"), Description("The old version number to redirect to the new " +
-          "version number."), TypeConverter(typeof(VersionTypeConverter))]
-        public Version OldVersion
+          "version number."), DefaultValue("1.0.0.0")]
+        public string OldVersion
         {
-            get { return oldVersionFrom; }
+            get => oldVersionFrom;
             set
             {
                 if(value == null)
-                    value = new Version(1, 0, 0, 0);
+                    value = "1.0.0.0";
 
                 oldVersionFrom = value;
             }
@@ -113,25 +105,21 @@ namespace SandcastleBuilder.PlugIns
         /// version.</value>
         [Category("Binding Redirect"), Description("The ending old version number range to redirect to " +
           "the new version number.  If not set, only OldVersion will be used to redirect a single version."),
-          TypeConverter(typeof(VersionTypeConverter))]
-        public Version OldVersionTo
-        {
-            get { return oldVersionTo; }
-            set { oldVersionTo = value; }
-        }
+          DefaultValue(null)]
+        public string OldVersionTo { get; set; }
 
         /// <summary>
         /// This is used to get or set the new version number to which the old versions are redirected
         /// </summary>
         [Category("Binding Redirect"), Description("The new version number to which the old versions " +
-          "are redirected."), TypeConverter(typeof(VersionTypeConverter))]
-        public Version NewVersion
+          "are redirected."), DefaultValue("1.0.0.1")]
+        public string NewVersion
         {
-            get { return newVersion; }
+            get => newVersion;
             set
             {
                 if(value == null)
-                    value = new Version(1, 0, 0, 1);
+                    value = "1.0.0.1";
 
                 newVersion = value;
             }
@@ -150,7 +138,7 @@ namespace SandcastleBuilder.PlugIns
             "Configuration Files (*.config)|*.config|All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath ConfigurationFile
         {
-            get { return configFile; }
+            get => configFile;
             set
             {
                 if(value == null)
@@ -172,8 +160,8 @@ namespace SandcastleBuilder.PlugIns
         {
             configFile = new FilePath(provider);
             assemblyName = "assemblyName";
-            oldVersionFrom = new Version(1, 0, 0, 0);
-            newVersion = new Version(1, 0, 0, 1);
+            oldVersionFrom = "1.0.0.0";
+            newVersion = "1.0.0.1";
         }
         #endregion
 
@@ -198,8 +186,8 @@ namespace SandcastleBuilder.PlugIns
 
             return String.Format(CultureInfo.InvariantCulture, "{0}, Culture={1}, PublicKeyToken={2}, " +
                 "Version(s) {3} redirect to Version {4}", assemblyName,
-                String.IsNullOrEmpty(culture) ? "neutral" : culture,
-                String.IsNullOrEmpty(publicKeyToken) ? "null" : publicKeyToken, range, newVersion);
+                String.IsNullOrWhiteSpace(this.Culture) ? "neutral" : this.Culture,
+                String.IsNullOrWhiteSpace(this.PublicKeyToken) ? "null" : this.PublicKeyToken, range, newVersion);
         }
         #endregion
 
@@ -220,20 +208,16 @@ namespace SandcastleBuilder.PlugIns
           XPathNavigator navigator)
         {
             BindingRedirectSettings brs = new BindingRedirectSettings(pathProvider);
-            XPathNavigator nav;
-            string value;
-            string[] versions;
-            Version tempVersion;
 
             if(navigator != null)
             {
-                value = navigator.GetAttribute("importFrom", String.Empty).Trim();
+                string value = navigator.GetAttribute("importFrom", String.Empty).Trim();
 
                 if(value.Length != 0)
                     brs.ConfigurationFile = new FilePath(value, pathProvider);
                 else
                 {
-                    nav = navigator.SelectSingleNode("assemblyIdentity");
+                    XPathNavigator nav = navigator.SelectSingleNode("assemblyIdentity");
 
                     if(nav != null)
                     {
@@ -249,28 +233,31 @@ namespace SandcastleBuilder.PlugIns
                         value = nav.GetAttribute("newVersion", String.Empty).Trim();
 
                         if(value.Length != 0)
-                            brs.NewVersion = new Version(value);
+                            brs.NewVersion = value;
 
                         value = nav.GetAttribute("oldVersion", String.Empty).Trim();
-                        versions = value.Split('-');
+
+                        string[] versions = value.Split('-');
 
                         if(versions.Length == 2)
                         {
                             if(versions[0].Trim().Length != 0)
-                                brs.OldVersion = new Version(versions[0]);
+                                brs.OldVersion = versions[0];
 
                             if(versions[1].Trim().Length != 0)
-                                brs.OldVersionTo = new Version(versions[1]);
+                                brs.OldVersionTo = versions[1];
 
-                            if(brs.OldVersion > brs.oldVersionTo)
+                            if(Version.TryParse(brs.OldVersion, out Version oldVersion) &&
+                              Version.TryParse(brs.OldVersionTo, out Version oldVersionTo) &&
+                              oldVersion > oldVersionTo)
                             {
-                                tempVersion = brs.OldVersion;
-                                brs.OldVersion = brs.oldVersionTo;
-                                brs.oldVersionTo = tempVersion;
+                                Version tempVersion = oldVersion;
+                                brs.OldVersion = oldVersionTo.ToString();
+                                brs.oldVersionTo = tempVersion.ToString();
                             }
                         }
                         else
-                            brs.OldVersion = new Version(versions[0]);
+                            brs.OldVersion = versions[0];
                     }
                 }
             }
@@ -289,17 +276,15 @@ namespace SandcastleBuilder.PlugIns
         /// <remarks>The settings are stored in an element called <c>dependentAssembly</c>.</remarks>
         public XmlNode ToXml(XmlDocument config, XmlNode root, bool relativePath)
         {
-            XmlNode node, child;
             XmlAttribute attr;
-            Version tempVersion;
 
             if(config == null)
-                throw new ArgumentNullException("config");
+                throw new ArgumentNullException(nameof(config));
 
             if(root == null)
-                throw new ArgumentNullException("root");
+                throw new ArgumentNullException(nameof(root));
 
-            node = config.CreateNode(XmlNodeType.Element, "dependentAssembly", null);
+            XmlNode node = config.CreateNode(XmlNodeType.Element, "dependentAssembly", null);
             root.AppendChild(node);
 
             if(configFile.Path.Length != 0)
@@ -310,24 +295,24 @@ namespace SandcastleBuilder.PlugIns
                 return node;
             }
 
-            child = config.CreateNode(XmlNodeType.Element, "assemblyIdentity", null);
+            XmlNode child = config.CreateNode(XmlNodeType.Element, "assemblyIdentity", null);
             node.AppendChild(child);
 
             attr = config.CreateAttribute("name");
             attr.Value = assemblyName;
             child.Attributes.Append(attr);
 
-            if(!String.IsNullOrEmpty(publicKeyToken))
+            if(!String.IsNullOrWhiteSpace(this.PublicKeyToken))
             {
                 attr = config.CreateAttribute("publicKeyToken");
-                attr.Value = publicKeyToken;
+                attr.Value = this.PublicKeyToken;
                 child.Attributes.Append(attr);
             }
 
-            if(!String.IsNullOrEmpty(culture))
+            if(!String.IsNullOrWhiteSpace(this.Culture))
             {
                 attr = config.CreateAttribute("culture");
-                attr.Value = culture;
+                attr.Value = this.Culture;
                 child.Attributes.Append(attr);
             }
 
@@ -341,11 +326,12 @@ namespace SandcastleBuilder.PlugIns
                 attr.Value = oldVersionFrom.ToString();
             else
             {
-                if(oldVersionFrom > oldVersionTo)
+                if(Version.TryParse(oldVersionFrom, out Version oldFrom) &&
+                  Version.TryParse(oldVersionTo, out Version oldTo) && oldFrom > oldTo)
                 {
-                    tempVersion = oldVersionFrom;
-                    oldVersionFrom = oldVersionTo;
-                    oldVersionTo = tempVersion;
+                    Version tempVersion = oldFrom;
+                    oldVersionFrom = oldTo.ToString();
+                    oldVersionTo = tempVersion.ToString();
                 }
 
                 attr.Value = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom,

@@ -192,7 +192,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             {
                 // Do not reset for frameworks that redirect all mscorlib types to other assemblies or it results
                 // in a stack overflow.
-                if(assembly.Name == "mscorlib" && !TargetPlatform.AllSystemTypesRedirected)
+                if((assembly.Name == "mscorlib" && !TargetPlatform.AllSystemTypesRedirected) || assembly.Name == "netstandard")
                     ResetMscorlib(assembly);
 
                 resolver.Add(assembly);
@@ -231,7 +231,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             {
                 // Do not reset for frameworks that redirect all mscorlib types to other assemblies or it results
                 // in a stack overflow.
-                if(assembly.Name == "mscorlib" && !TargetPlatform.AllSystemTypesRedirected)
+                if((assembly.Name == "mscorlib" && !TargetPlatform.AllSystemTypesRedirected) || assembly.Name == "netstandard")
                     ResetMscorlib(assembly);
 
                 resolver.Add(assembly);

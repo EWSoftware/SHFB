@@ -67,13 +67,14 @@ builder.  This is used to store cache files and other user settings.  See the
   </row>
   <row>
     <entry>
-			<para>{@BuildDate} or {@BuildDate:[date-format]}</para>
+			<para>{@BuildDate} or {@BuildDate:[date-format]} or {@BuildDateUtc} or {@BuildDateUtc:[date-format]}</para>
 		</entry>
     <entry>
 			<para>This tag allows you to insert a build date/time into a project file or a text project property such
 as <codeInline>HeaderText</codeInline> or <codeInline>FooterText</codeInline>.  If <codeInline>{@BuildDate}</codeInline>
 is used, the full date time is inserted using the default format.  You can also specify a custom date format.
-For example: <codeInline>{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</codeInline></para>
+For example: <codeInline>{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</codeInline>.  If the <codeInline>BuildDateUtc</codeInline>
+tag is used, it inserts the date in Universal Coordinated Time (UTC) instead of local time.</para>
 		</entry>
   </row>
   <row>

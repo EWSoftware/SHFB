@@ -53,6 +53,14 @@ help file builder project.  As such, you can ignore it.  The framework version u
 using the <ui>Build</ui> category <ui>Framework Version</ui> project property.</para>
 		</alert>
 
+		<alert class="important">
+			<para>The New Project dialog box in Visual Studio 2019 and later is significantly different.  It uses
+as search text box and filtering options to find project templates.  Unfortunately, Microsoft has not opened
+up the filtering options to third-party templates.  As such, make sure you clear any current filters and search
+for help file builder templates using some common keywords such as "sandcastle", "build component", "plug-in",
+and "presentation style".  Using those, you should be able to find all of the help file builder related project
+types.</para>
+		</alert>
 	</content>
 </section>
 	  

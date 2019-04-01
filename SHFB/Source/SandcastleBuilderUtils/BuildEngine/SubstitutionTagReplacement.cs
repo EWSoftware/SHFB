@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/22/2019
+// Updated : 03/30/2019
 // Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -66,7 +66,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private static Regex reField = new Regex(@"{@(?<Field>\w*?)(:(?<Format>.*?))?}");
 
-        private MatchEvaluator fieldMatchEval;
+        private readonly MatchEvaluator fieldMatchEval;
         private string fieldFormat;
 
         private StringBuilder replacementValue;
@@ -153,13 +153,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
             string templateText, transformedFile;
 
             if(templateFile == null)
-                throw new ArgumentNullException("templateFile");
+                throw new ArgumentNullException(nameof(templateFile));
 
             if(sourceFolder == null)
-                throw new ArgumentNullException("sourceFolder");
+                throw new ArgumentNullException(nameof(sourceFolder));
 
             if(destFolder == null)
-                throw new ArgumentNullException("destFolder");
+                throw new ArgumentNullException(nameof(destFolder));
 
             if(sourceFolder.Length != 0 && sourceFolder[sourceFolder.Length - 1] != '\\')
                 sourceFolder += @"\";
@@ -206,11 +206,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <returns>The string to use as the replacement</returns>
         private string OnFieldMatch(Match match)
         {
-            MethodInfo method;
             string fieldName = match.Groups["Field"].Value, propertyValue;
 
             // See if a method exists first.  If so, we'll call it and return its value.
-            if(methodCache.TryGetValue(fieldName, out method))
+            if(methodCache.TryGetValue(fieldName, out MethodInfo method))
             {
                 fieldFormat = match.Groups["Format"].Value;
 
@@ -1347,8 +1346,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string BuildDate()
         {
-            return !String.IsNullOrWhiteSpace(fieldFormat) ? String.Format(CultureInfo.CurrentCulture,
+            return !String.IsNullOrWhiteSpace(fieldFormat) ? String.Format(sandcastleProject.Language,
                 "{0:" + fieldFormat + "}", DateTime.Now) :  DateTime.Now.ToString(sandcastleProject.Language);
+        }
+
+        /// <summary>
+        /// The build date in Universal Coordinated Time (UTC)
+        /// </summary>
+        /// <returns>The build date in Universal Coordinated Time (UTC).  An optional format can be applied to
+        /// the result.</returns>
+        [SubstitutionTag]
+        private string BuildDateUtc()
+        {
+            return !String.IsNullOrWhiteSpace(fieldFormat) ? String.Format(sandcastleProject.Language,
+                "{0:" + fieldFormat + "}", DateTime.UtcNow) : DateTime.UtcNow.ToString(sandcastleProject.Language);
         }
 
         /// <summary>

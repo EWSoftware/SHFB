@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/07/2017
-// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
+// Updated : 03/31/2019
+// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -63,9 +63,8 @@ namespace SandcastleBuilder.Utils.MSBuild
         #region Private data members
         //=====================================================================
 
-        private Project msBuildProject;
         private Dictionary<string, ProjectProperty> properties;
-        private bool removeProjectWhenDisposed;
+        private readonly bool removeProjectWhenDisposed;
 
         private static Regex reInvalidAttribute = new Regex(
             "The attribute \"(.*?)\" in element \\<(.*?)\\> is unrecognized", RegexOptions.IgnoreCase);
@@ -78,10 +77,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <summary>
         /// This is used to get the underlying MSBuild project file reference
         /// </summary>
-        public Project ProjectFile
-        {
-            get { return msBuildProject; }
-        }
+        public Project ProjectFile { get; }
 
         /// <summary>
         /// This is used to get the assembly name
@@ -90,14 +86,13 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                ProjectProperty prop;
                 string assemblyName = null, outputType = null, outputPath = null;
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
                 // Give precedence to OutDir if defined.  Ignore ".\" as that's our default.
-                if(properties.TryGetValue(BuildItemMetadata.OutDir, out prop))
+                if(properties.TryGetValue(BuildItemMetadata.OutDir, out ProjectProperty prop))
                 {
                     outputPath = prop.EvaluatedValue;
                   
@@ -123,7 +118,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                     outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
                                 else
                                     outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
-                                        msBuildProject.FullPath));
+                                        this.ProjectFile.FullPath));
 
                                 // If still not there, give up and go for the default
                                 if(!Directory.Exists(outputPath))
@@ -175,7 +170,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                             assemblyName = Path.Combine(outputPath, assemblyName);
                         else
                             assemblyName = Path.Combine(Path.Combine(Path.GetDirectoryName(
-                                msBuildProject.FullPath), outputPath), assemblyName);
+                                this.ProjectFile.FullPath), outputPath), assemblyName);
 
                     // .NETCoreApp projects don't seem to return the correct output type
                     if(!File.Exists(assemblyName) && this.TargetFrameworkIdentifier == PlatformType.DotNetCoreApp)
@@ -208,13 +203,12 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                ProjectProperty prop;
                 string docFile = null, outputPath = null, origDocFile;
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
-                if(properties.TryGetValue("DocumentationFile", out prop))
+                if(properties.TryGetValue("DocumentationFile", out ProjectProperty prop))
                 {
                     docFile = prop.EvaluatedValue;
 
@@ -254,7 +248,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                                 outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
                                             else
                                                 outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
-                                                    msBuildProject.FullPath));
+                                                    this.ProjectFile.FullPath));
 
                                             // If still not there, give up and go for the default
                                             if(!Directory.Exists(outputPath))
@@ -272,14 +266,14 @@ namespace SandcastleBuilder.Utils.MSBuild
                                     docFile = Path.Combine(outputPath, Path.GetFileName(docFile));
                                 else
                                     docFile = Path.Combine(Path.Combine(Path.GetDirectoryName(
-                                        msBuildProject.FullPath), outputPath), Path.GetFileName(docFile));
+                                        this.ProjectFile.FullPath), outputPath), Path.GetFileName(docFile));
 
                                 // Fall back to the original location if not found
                                 if(!File.Exists(docFile))
-                                    docFile = Path.Combine(Path.GetDirectoryName(msBuildProject.FullPath), origDocFile);
+                                    docFile = Path.Combine(Path.GetDirectoryName(this.ProjectFile.FullPath), origDocFile);
                             }
                             else
-                                docFile = Path.Combine(Path.GetDirectoryName(msBuildProject.FullPath), docFile);
+                                docFile = Path.Combine(Path.GetDirectoryName(this.ProjectFile.FullPath), docFile);
                         }
                     }
                 }
@@ -309,12 +303,10 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                ProjectProperty prop;
-
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
-                if(properties.TryGetValue("TargetFrameworkIdentifier", out prop))
+                if(properties.TryGetValue("TargetFrameworkIdentifier", out ProjectProperty prop))
                     return prop.EvaluatedValue;
 
                 // If not found, assume it is a normal .NET Framework project
@@ -371,12 +363,10 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                ProjectProperty prop;
-
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
-                if(properties.TryGetValue("ProjectGuid", out prop))
+                if(properties.TryGetValue("ProjectGuid", out ProjectProperty prop))
                     return prop.EvaluatedValue;
 
                 return Guid.Empty.ToString();
@@ -407,13 +397,13 @@ namespace SandcastleBuilder.Utils.MSBuild
             try
             {
                 // If the project is already loaded, we'll use it as-is
-                msBuildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectFile).FirstOrDefault();
+                this.ProjectFile = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectFile).FirstOrDefault();
 
-                if(msBuildProject == null)
+                if(this.ProjectFile == null)
                 {
                     // Not loaded, so we must load it and dispose of it later
                     removeProjectWhenDisposed = true;
-                    msBuildProject = new Project(projectFile);
+                    this.ProjectFile = new Project(projectFile);
                 }
             }
             catch(InvalidProjectFileException ex)
@@ -467,10 +457,10 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             // If we loaded the MSBuild project, we must unload it.  If not, it
             // is cached and will cause problems if loaded a second time.
-            if(removeProjectWhenDisposed && msBuildProject != null)
+            if(removeProjectWhenDisposed && this.ProjectFile != null)
             {
-                ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
-                ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);
+                ProjectCollection.GlobalProjectCollection.UnloadProject(this.ProjectFile);
+                ProjectCollection.GlobalProjectCollection.UnloadProject(this.ProjectFile.Xml);
             }
         }
         #endregion
@@ -500,21 +490,21 @@ namespace SandcastleBuilder.Utils.MSBuild
                 // .NET Standard projects use a different platform property name
                 string platformPropertyName = BuildItemMetadata.Platform;
 
-                if(!msBuildProject.ConditionedProperties.ContainsKey(platformPropertyName))
+                if(!this.ProjectFile.ConditionedProperties.ContainsKey(platformPropertyName))
                     platformPropertyName = "PlatformName";
 
                 if(platform.Equals("Any CPU", StringComparison.OrdinalIgnoreCase))
                 {
                     List<string> values = new List<string>(
-                        msBuildProject.ConditionedProperties[platformPropertyName]);
+                        this.ProjectFile.ConditionedProperties[platformPropertyName]);
 
                     if(values.IndexOf(platform) == -1 &&
                       values.IndexOf(SandcastleProject.DefaultPlatform) != -1)
                         platform = SandcastleProject.DefaultPlatform;
                 }
 
-                msBuildProject.SetGlobalProperty(BuildItemMetadata.Configuration, configuration);
-                msBuildProject.SetGlobalProperty(platformPropertyName, platform);
+                this.ProjectFile.SetGlobalProperty(BuildItemMetadata.Configuration, configuration);
+                this.ProjectFile.SetGlobalProperty(platformPropertyName, platform);
 
                 if(!String.IsNullOrEmpty(outDir))
                 {
@@ -527,18 +517,18 @@ namespace SandcastleBuilder.Utils.MSBuild
                             outDir = outDir.Substring(0, outDir.Length - 1);
 
                         outDir = Path.Combine(Path.GetDirectoryName(outDir),
-                            Path.GetFileNameWithoutExtension(msBuildProject.FullPath));
+                            Path.GetFileNameWithoutExtension(this.ProjectFile.FullPath));
                     }
 
-                    msBuildProject.SetGlobalProperty(BuildItemMetadata.OutDir, outDir);
+                    this.ProjectFile.SetGlobalProperty(BuildItemMetadata.OutDir, outDir);
                 }
 
-                msBuildProject.ReevaluateIfNecessary();
+                this.ProjectFile.ReevaluateIfNecessary();
             }
 
             // There can be duplicate versions of the properties so pick the last one
             // as it will contain the value to use.
-            properties = msBuildProject.AllEvaluatedProperties.GroupBy(p => p.Name).Select(
+            properties = this.ProjectFile.AllEvaluatedProperties.GroupBy(p => p.Name).Select(
                 g => g.Last()).ToDictionary(p => p.Name);
         }
 
@@ -553,15 +543,15 @@ namespace SandcastleBuilder.Utils.MSBuild
             // Typically, they already match in that case.
             if(removeProjectWhenDisposed)
             {
-                msBuildProject.SetGlobalProperty(SolutionPath, solutionName);
-                msBuildProject.SetGlobalProperty(SolutionDir, FolderPath.TerminatePath(Path.GetDirectoryName(solutionName)));
-                msBuildProject.SetGlobalProperty(SolutionFileName, Path.GetFileName(solutionName));
-                msBuildProject.SetGlobalProperty(SolutionName, Path.GetFileNameWithoutExtension(solutionName));
-                msBuildProject.SetGlobalProperty(SolutionExt, Path.GetExtension(solutionName));
+                this.ProjectFile.SetGlobalProperty(SolutionPath, solutionName);
+                this.ProjectFile.SetGlobalProperty(SolutionDir, FolderPath.TerminatePath(Path.GetDirectoryName(solutionName)));
+                this.ProjectFile.SetGlobalProperty(SolutionFileName, Path.GetFileName(solutionName));
+                this.ProjectFile.SetGlobalProperty(SolutionName, Path.GetFileNameWithoutExtension(solutionName));
+                this.ProjectFile.SetGlobalProperty(SolutionExt, Path.GetExtension(solutionName));
 
-                msBuildProject.ReevaluateIfNecessary();
+                this.ProjectFile.ReevaluateIfNecessary();
 
-                properties = msBuildProject.AllEvaluatedProperties.GroupBy(p => p.Name).Select(
+                properties = this.ProjectFile.AllEvaluatedProperties.GroupBy(p => p.Name).Select(
                     g => g.Last()).ToDictionary(p => p.Name);
             }
         }
@@ -576,12 +566,12 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             string rootPath, path;
 
-            rootPath = Path.GetDirectoryName(msBuildProject.FullPath);
+            rootPath = Path.GetDirectoryName(this.ProjectFile.FullPath);
 
             // Nested project references are ignored.  We'll assume that they exist in the folder with the target
             // and they'll be found automatically.  
             foreach(string refType in (new string[] { "Reference", "COMReference" }))
-                foreach(ProjectItem reference in msBuildProject.GetItems(refType))
+                foreach(ProjectItem reference in this.ProjectFile.GetItems(refType))
                     if(!references.ContainsKey(reference.EvaluatedInclude))
                     {
                         var metadata = reference.Metadata.Select(m => new KeyValuePair<string, string>(m.Name,
@@ -606,18 +596,23 @@ namespace SandcastleBuilder.Utils.MSBuild
                     }
 
             // Resolve any package references by converting them to regular references
-            if(resolver.LoadPackageReferenceInfo(msBuildProject))
+            if(resolver.LoadPackageReferenceInfo(this.ProjectFile))
                 foreach(string pr in resolver.ReferenceAssemblies)
                 {
                     string refName = Path.GetFileNameWithoutExtension(pr);
 
-                    if(!references.ContainsKey(refName) && File.Exists(pr))
+                    if(!references.Keys.Any(r => r.Equals(refName, StringComparison.OrdinalIgnoreCase) ||
+                      (r.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) &&
+                      Path.GetFileNameWithoutExtension(r).Equals(refName, StringComparison.OrdinalIgnoreCase))) &&
+                      File.Exists(pr))
+                    {
                         references.Add(refName, Tuple.Create("Reference", refName,
                             new List<KeyValuePair<string, string>>
                             {
                                 new KeyValuePair<string, string>("HintPath", pr),
                                 new KeyValuePair<string, string>("FromPackageReference", "true")
                             }));
+                    }
                 }
         }
         #endregion

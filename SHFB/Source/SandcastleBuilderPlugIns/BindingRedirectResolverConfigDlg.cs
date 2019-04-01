@@ -2,22 +2,22 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : BindingRedirectResolverConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
+// Updated : 03/30/2019
+// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the assembly binding redirection resolver plug-in configuration
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.1  11/14/2008  EFW  Created the code
-// 1.9.4.0  03/31/2012  EFW  Added Use GAC option
-// 1.9.6.0  11/25/2012  EFW  Added support for Ignore if Unresolved assembly names
+// 11/14/2008  EFW  Created the code
+// 03/31/2012  EFW  Added Use GAC option
+// 11/25/2012  EFW  Added support for Ignore if Unresolved assembly names
 //===============================================================================================================
 
 using System;
@@ -42,6 +42,7 @@ namespace SandcastleBuilder.PlugIns
         private BindingRedirectSettingsCollection items;
         private XmlDocument config;     // The configuration
         private SandcastleProject project;
+
         #endregion
 
         #region Properties
@@ -50,10 +51,8 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This is used to return the configuration information
         /// </summary>
-        public string Configuration
-        {
-            get { return config.OuterXml; }
-        }
+        public string Configuration => config.OuterXml;
+
         #endregion
 
         #region Constructor
@@ -68,7 +67,6 @@ namespace SandcastleBuilder.PlugIns
         {
             XPathNavigator navigator, root;
             string useGac;
-            bool value;
 
             InitializeComponent();
             project = currentProject;
@@ -86,7 +84,7 @@ namespace SandcastleBuilder.PlugIns
 
             useGac = root.GetAttribute("useGAC", String.Empty);
 
-            if(Boolean.TryParse(useGac, out value))
+            if(Boolean.TryParse(useGac, out bool value))
                 chkUseGAC.Checked = value;
 
             if(!root.IsEmptyElement)

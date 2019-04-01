@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/22/2019
+// Updated : 03/30/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -69,7 +69,7 @@
 //          12/21/2015  EFW  Merged conceptual and reference topic build steps
 //===============================================================================================================
 
-// Ignore Spelling: Fehr Stazzz utf
+// Ignore Spelling: Fehr Stazzz utf mscorlib netstandard
 
 using System;
 using System.Collections.Generic;
@@ -629,7 +629,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
-            string resolvedPath, helpFile, languageFile, scriptFile, hintPath, message = null;
+            string resolvedPath, helpFile, languageFile, scriptFile, hintPath;
             SandcastleProject originalProject = null;
 
             System.Diagnostics.Debug.WriteLine("Build process starting\r\n");
@@ -1649,10 +1649,9 @@ AllDone:
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
+                string message = null;
 
-                var agEx = ex as AggregateException;
-
-                if(agEx != null)
+                if(ex is AggregateException agEx)
                     foreach(var inEx in agEx.InnerExceptions)
                     {
                         if(message != null)
@@ -1660,8 +1659,6 @@ AllDone:
 
                         message += inEx.Message + "\r\n" + inEx.StackTrace;
                     }
-
-                var bex = ex as BuilderException;
 
                 do
                 {
@@ -1674,7 +1671,7 @@ AllDone:
                 } while(ex != null);
 
                 // NOTE: Message may contain format markers so pass it as a format argument
-                if(bex != null)
+                if(ex is BuilderException bex)
                     this.ReportError(BuildStep.Failed, bex.ErrorCode, "{0}", message);
                 else
                     this.ReportError(BuildStep.Failed, "BE0065", "BUILD FAILED: {0}", message);
@@ -2393,6 +2390,18 @@ AllDone:
             // Log the references found, if any
             if(referenceDictionary.Count != 0)
             {
+                // If both mscorlib.dll and netstandard.dll are present in the references, remove mscorlib.dll
+                // as netstandard.dll contains all of the necessary info.
+                string mscorlibKey = referenceDictionary.Keys.FirstOrDefault(k => k.Equals("mscorlib",
+                    StringComparison.OrdinalIgnoreCase) || Path.GetFileNameWithoutExtension(k).Equals("mscorlib",
+                    StringComparison.OrdinalIgnoreCase));
+                string netstandardKey = referenceDictionary.Keys.FirstOrDefault(k => k.Equals("netstandard",
+                    StringComparison.OrdinalIgnoreCase) || Path.GetFileNameWithoutExtension(k).Equals("netstandard",
+                    StringComparison.OrdinalIgnoreCase));
+
+                if(!String.IsNullOrWhiteSpace(mscorlibKey) && !String.IsNullOrWhiteSpace(netstandardKey))
+                    referenceDictionary.Remove(mscorlibKey);
+
                 this.ReportProgress("\r\nReferences to include (excluding framework assemblies):");
 
                 string[] keys = new string[referenceDictionary.Keys.Count];

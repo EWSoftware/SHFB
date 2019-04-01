@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/06/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 03/31/2019
+// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
@@ -182,30 +182,32 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                         if(assemblyInfo != null)
                         {
-                            string assemblyName = ((JProperty)assemblyInfo.First()).Name;
-
-                            // System.Runtime.dll is just a redirect of mscorlib.dll so we don't need it.
-                            // "_._" occurs in the framework SDK packages and we can ignore it too.
-                            if(!assemblyName.EndsWith("/System.Runtime.dll", StringComparison.OrdinalIgnoreCase) &&
-                                !assemblyName.EndsWith("_._", StringComparison.Ordinal))
+                            foreach(string assemblyName in assemblyInfo.Select(a => ((JProperty)a).Name))
                             {
-                                references.Add(Path.Combine(p, assemblyName));
-
-                                var dependencies = match["dependencies"];
-
-                                if(dependencies != null)
+                                // Ignore mscorlib.dll as it's types will have been redirected elsewhere so we
+                                // don't need it.  "_._" occurs in the framework SDK packages and we can ignore
+                                // it too.
+                                if(!assemblyName.EndsWith("/mscorlib.dll", StringComparison.OrdinalIgnoreCase) &&
+                                  !assemblyName.EndsWith("_._", StringComparison.Ordinal))
                                 {
-                                    var deps = dependencies.Cast<JProperty>().Select(
-                                        t => t.Name + "/" + t.ToObject<string>()).Where(
-                                            d => !resolvedDependencies.Contains(d)).ToList();
+                                    references.Add(Path.Combine(p, assemblyName));
+                                }
+                            }
 
-                                    if(deps.Count != 0)
-                                    {
-                                        // Track the ones we've seen to prevent getting stuck due to circular
-                                        // references.
-                                        resolvedDependencies.UnionWith(deps);
-                                        references.UnionWith(this.ResolvePackageReferencesInternal(deps));
-                                    }
+                            var dependencies = match["dependencies"];
+
+                            if(dependencies != null)
+                            {
+                                var deps = dependencies.Cast<JProperty>().Select(
+                                    t => t.Name + "/" + t.ToObject<string>()).Where(
+                                        d => !resolvedDependencies.Contains(d)).ToList();
+
+                                if(deps.Count != 0)
+                                {
+                                    // Track the ones we've seen to prevent getting stuck due to circular
+                                    // references.
+                                    resolvedDependencies.UnionWith(deps);
+                                    references.UnionWith(this.ResolvePackageReferencesInternal(deps));
                                 }
                             }
                         }

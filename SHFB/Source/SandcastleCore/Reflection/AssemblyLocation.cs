@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/20/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
+// Updated : 03/30/2019
+// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to contain information about a location and the assemblies for a
@@ -22,7 +22,7 @@
 // 09/20/2015  EFW  Added support for .NETCore 5.0 assemblies which are in a different folder format
 //===============================================================================================================
 
-// Ignore Spelling: mscorlib dotnet
+// Ignore Spelling: mscorlib dotnet netstandard
 
 using System;
 using System.Collections.Generic;
@@ -48,6 +48,7 @@ namespace Sandcastle.Core.Reflection
         private string storedPath;
 
         private BindingList<AssemblyDetails> assemblyDetails;
+
         #endregion
 
         #region Properties
@@ -60,7 +61,7 @@ namespace Sandcastle.Core.Reflection
         /// <remarks>When the stored path is changed, the set of assemblies in it is updated as well</remarks>
         public string StoredPath
         {
-            get { return storedPath; }
+            get => storedPath;
             set
             {
                 if(storedPath != value)
@@ -69,7 +70,7 @@ namespace Sandcastle.Core.Reflection
 
                     this.DetermineAssemblyDetails(true);
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("IsCoreLocation");
+                    this.OnPropertyChanged(nameof(IsCoreLocation));
                 }
             }
         }
@@ -98,31 +99,22 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         /// <value>True if it is the core location, false if not</value>
         /// <remarks>The core location is determined by searching for <c>mscorlib</c> in the assembly set</remarks>
-        public bool IsCoreLocation
-        {
-            get
-            {
-                return assemblyDetails.Any(a => a.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) ||
-                    a.Name.Equals("System.Runtime", StringComparison.OrdinalIgnoreCase));
-            }
-        }
+        public bool IsCoreLocation => assemblyDetails.Any(a =>
+            a.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) ||
+            a.Name.Equals("System.Runtime", StringComparison.OrdinalIgnoreCase) ||
+            a.Name.Equals("netstandard", StringComparison.OrdinalIgnoreCase));
 
         /// <summary>
         /// This read-only property returns a bindable list of all assembly details for this location
         /// </summary>
-        public IList<AssemblyDetails> AllAssemblies
-        {
-            get { return assemblyDetails; }
-        }
+        public IList<AssemblyDetails> AllAssemblies => assemblyDetails;
 
         /// <summary>
         /// This read-only property returns an enumerable list of only the included assembly details for this
         /// location.
         /// </summary>
-        public IEnumerable<AssemblyDetails> IncludedAssemblies
-        {
-            get { return assemblyDetails.Where(a => a.IsIncluded); }
-        }
+        public IEnumerable<AssemblyDetails> IncludedAssemblies => assemblyDetails.Where(a => a.IsIncluded);
+
         #endregion
 
         #region Constructors
@@ -141,8 +133,7 @@ namespace Sandcastle.Core.Reflection
         /// Private constructor
         /// </summary>
         /// <param name="storedPath">The stored path to use</param>
-        private AssemblyLocation(string storedPath)
-            : this()
+        private AssemblyLocation(string storedPath) : this()
         {
             this.storedPath = storedPath;
         }
@@ -162,10 +153,7 @@ namespace Sandcastle.Core.Reflection
         /// <param name="propertyName">The property name that changed</param>
         private void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a8c71d85-0e39-44ba-849f-d6ab36c5179d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2019.3.31.0." />
+		</introduction>
+
+		<!-- Ignore Spelling: addabis Watford -->
+
+		<section address="General">
+			<title>General</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated the guided installer to detect the supported installed versions of Visual Studio and
+their installation locations rather than hard-coding the paths in the configuration file.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed MRefBuilder so that it uses <localUri>netstandard.dll</localUri> as the system assembly
+for the core types if it is loaded.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from addabis to support C# 7.2 language features in the syntax generator
+components (<codeInline>ref return</codeInline>, <codeInline>in</codeInline> parameters, <codeInline>readonly
+structs</codeInline>, and <codeInline>ref structs</codeInline>).</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed an issue with the package reference resolver that was causing it to miss many of the
+reference assemblies in package references.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of duplicate references and inclusion of <localUri>System.Runtime.dll</localUri>
+in the package reference resolver to fix related issues.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Visual Studio extension project templates to use unique descriptions and names so
+that they are discoverable in Visual Studio 2019 New Project dialog box.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified gathering of build output filenames to only scan subfolders for the web and markdown
+formats.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a <codeInline>BuildDateUtc</codeInline> replacement tag that gets the current build
+date/time in Universal Coordinated Time (UTC) format.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for referencing project variables in the Assembly Binding Redirection Plug-In
+configuration.  Use the substitution tag format rather than the MSBuild variable format
+(<codeInline>{@MyAssemblyLatestVersion}</codeInline> rather than <codeInline>$(MyAssemblyLatestVersion)</codeInline>).</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the markdown presentation style so that e-mail links in the footer are formatted correctly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from Christopher Watford to fix some issues in the Open XML presentation style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
