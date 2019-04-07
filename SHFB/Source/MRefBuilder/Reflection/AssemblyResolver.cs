@@ -1,7 +1,7 @@
 //===============================================================================================================
 // System  : Sandcastle MRefBuilder Tool
 // File    : AssemblyResolver.cs
-// Note    : Copyright 2006-2016 Microsoft Corporation
+// Note    : Copyright 2006-2019 Microsoft Corporation
 //
 // This file contains a modified version of the original AssemblyResolver that supports assembly binding
 // redirect elements in its configuration that let you redirect an unknown assembly's strong name to another
@@ -19,6 +19,8 @@
 // 11/06/2017 - EFW - Added code to auto-redirect to a like-named assembly in the cache if one is found.  This
 // helps correct missing assembly issues in .NETCore/.NETStandard projects which can vary by version number.
 //===============================================================================================================
+
+// Ignore Spelling: mscorlib dep gac
 
 using System;
 using System.Collections.Generic;
@@ -134,29 +136,21 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// This read-only property returns a reference to the assembly node cache
         /// </summary>
         /// <remarks>This can be used by derived resolvers to add nodes to the cache</remarks>
-        public Dictionary<string, AssemblyNode> AssemblyCache
-        {
-            get { return cache; }
-        }
+        public Dictionary<string, AssemblyNode> AssemblyCache => cache;
 
         /// <summary>
         /// This read-only property returns a reference to the collection of assembly binding redirections
         /// </summary>
         /// <remarks>This can be used by derived resolvers to add additional redirections</remarks>
-        public Collection<BindingRedirectSettings> BindingRedirections
-        {
-            get { return redirects; }
-        }
+        public Collection<BindingRedirectSettings> BindingRedirections => redirects;
 
         /// <summary>
         /// This read-only property returns a reference to the collection of assemblies to ignore if
         /// unresolved.
         /// </summary>
         /// <remarks>This can be used by derived resolvers to add additional ignored assemblies</remarks>
-        public Collection<string> IgnoreIfUnresolved
-        {
-            get { return ignoreIfUnresolved; }
-        }
+        public Collection<string> IgnoreIfUnresolved => ignoreIfUnresolved;
+
         #endregion
 
         #region Events
@@ -174,10 +168,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="referrer">The module requiring the reference</param>
         protected virtual void OnUnresolvedAssemblyReference(AssemblyReference reference, Module referrer)
         {
-            var handler = UnresolvedAssemblyReference;
-
-            if(handler != null)
-                handler(this, new AssemblyReferenceEventArgs(reference, referrer));
+            UnresolvedAssemblyReference?.Invoke(this, new AssemblyReferenceEventArgs(reference, referrer));
         }
         #endregion
 
@@ -258,7 +249,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual void Add(AssemblyNode assembly)
         {
             if(assembly == null)
-                throw new ArgumentNullException("assembly");
+                throw new ArgumentNullException(nameof(assembly));
 
             assembly.AssemblyReferenceResolution += ResolveReference;
             assembly.AssemblyReferenceResolutionAfterProbingFailed += UnresolvedReference;
@@ -277,7 +268,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             AssemblyNode assembly;
 
             if(reference == null)
-                throw new ArgumentNullException("reference");
+                throw new ArgumentNullException(nameof(reference));
 
             // Try to get it from the cache
             string name = reference.StrongName;
@@ -359,7 +350,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                 }
 
                 // If not, look for it in the cache by name alone
-                string key = cache.Keys.FirstOrDefault(k => k.StartsWith(reference.Name, StringComparison.Ordinal));
+                string key = cache.Keys.FirstOrDefault(k => k.StartsWith(reference.Name + ",", StringComparison.Ordinal));
 
                 if(key != null)
                 {

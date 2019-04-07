@@ -2,7 +2,7 @@
 <topic id="a8c71d85-0e39-44ba-849f-d6ab36c5179d" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2019.3.31.0." />
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2019.4.7.0." />
 		</introduction>
 
 		<!-- Ignore Spelling: addabis Watford -->
@@ -27,6 +27,10 @@ their installation locations rather than hard-coding the paths in the configurat
 					<listItem>
 						<para>Fixed MRefBuilder so that it uses <localUri>netstandard.dll</localUri> as the system assembly
 for the core types if it is loaded.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that it doesn't use the incorrect assembly when using auto-redirection.</para>
 					</listItem>
 
 					<listItem>

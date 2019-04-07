@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
@@ -33,7 +33,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2019.3.31.0</HelpFileVersion>
+    <HelpFileVersion>2019.4.7.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -397,7 +397,7 @@
     <None Include="Content\VersionHistory\v2018.5.14.0.aml" />
     <None Include="Content\VersionHistory\v2018.5.29.0.aml" />
     <None Include="Content\VersionHistory\v2018.7.8.0.aml" />
-    <None Include="Content\VersionHistory\v2019.3.31.0.aml" />
+    <None Include="Content\VersionHistory\v2019.4.7.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
