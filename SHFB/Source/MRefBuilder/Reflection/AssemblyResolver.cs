@@ -20,7 +20,7 @@
 // helps correct missing assembly issues in .NETCore/.NETStandard projects which can vary by version number.
 //===============================================================================================================
 
-// Ignore Spelling: mscorlib dep gac
+// Ignore Spelling: mscorlib dep gac netstandard
 
 using System;
 using System.Collections.Generic;
@@ -312,6 +312,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             // v0.0.0.0, redirect to mscorlib.  This is most likely a framework such as .NETStandard.  For those,
             // we use the best matching .NET Framework.
             if((reference.Name == "mscorlib" && reference.Version.Major == 255) ||
+              (reference.Name == "mscorlib" && SystemTypes.SystemAssembly.Name == "netstandard") ||
               (reference.Name == "System" && reference.Version.Major == 0) || reference.Name == "System.Runtime")
             {
                 // The system assembly should be set.  If so, it'll point to the one we need.

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2019.4.7.0" />
+	<sandcastle version="v2019.4.14.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -14,7 +14,7 @@
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
 			<whatsNew url="http://EWSoftware.github.io/SHFB/html/a8c71d85-0e39-44ba-849f-d6ab36c5179d.htm"
-				description="Sandcastle Help File Builder and Tools v2019.4.7.0 Release Notes" />
+				description="Sandcastle Help File Builder and Tools v2019.4.14.0 Release Notes" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
@@ -24,7 +24,7 @@
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.5" shfbVersion="2019.4.7.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.5" shfbVersion="2019.4.14.0" installerName="SandcastleHelpFileBuilder.msi"/>
 
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">

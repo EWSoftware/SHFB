@@ -548,11 +548,14 @@ namespace XMLCommentsExamples
         /// <summary>
         /// A simple demonstration of the <c>para</c> element.
         /// </summary>
-        /// <remarks>The <c>para</c> element on the first block of text is
-        /// optional.
+        /// <returns>Always returns 0.</returns>
+        /// <remarks>
+        /// <para>The <c>para</c> element is optional if the text in the parent
+        /// element consists of a single sentence or paragraph such as in the
+        /// <c>summary</c> and <c>returns</c> elements on this method.</para>
         /// 
-        /// <para>Subsequent blocks of text must be wrapped in it to create new
-        /// paragraphs.</para>
+        /// <para>When multiple blocks of text are present, each must be
+        /// wrapped in it to create new paragraphs.</para>
         /// 
         /// <para>Paragraph 1.</para>
         /// <para>Paragraph 2.</para>
@@ -565,8 +568,9 @@ namespace XMLCommentsExamples
         /// <p />HTML paragraph elements can also be used.
         /// <p>They work the same way.</p></remarks>
         /// <conceptualLink target="c7973ac7-5a4f-4e4d-9786-5ce659ac8e24" />
-        public void ParagraphExample()
+        public int ParagraphExample()
         {
+            return 0;
         }
         #endregion
 
