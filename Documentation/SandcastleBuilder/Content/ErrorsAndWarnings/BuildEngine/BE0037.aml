@@ -2,7 +2,7 @@
 <topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>Error BE0037: Could not find the path to the HTML Help 1 compiler.</para>
+      <para>Error BE0037: Could not find the path to the HTML Help 1 compiler</para>
     </introduction>
 
     <section>
