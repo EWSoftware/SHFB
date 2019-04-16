@@ -2,7 +2,7 @@
 <topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>Error BE0037: Could not find the path to the HTML Help 1 compiler</para>
+      <para>Error BE0037: Could not find the path to the HTML Help 1 compiler.</para>
     </introduction>
 
     <section>
@@ -22,7 +22,7 @@ any fixed drive.</para>
 <list class="bullet">
   <listItem>Review the <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
 carefully and make sure that you have installed all of the required tools and
-have the latest version of each.</listItem>
+have the latest version of each. It could be that the 'HTML Help Workshop' is not installed, which can be installed from here: https://docs.microsoft.com/previous-versions/windows/desktop/htmlhelp/microsoft-html-help-downloads</listItem>
 
   <listItem>If all else fails, manually specify the location of the HTML Help
 1 compiler by entering the path in the <codeInline>HtmlHelp1xCompilerPath</codeInline>
