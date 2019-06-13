@@ -2,14 +2,14 @@
 // System  : Visual Studio Spell Checker Package
 // File    : ThemeColorId.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/22/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
+// Updated : 05/20/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an enumerated type used to map theme color IDs to Visual Studio theme key elements
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code and can be found at the project website: https://github.com/EWSoftware/VSSpellChecker
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
 // This notice, the author's name, and all copyright notices must remain intact in all applications,
 // documentation, and source files.
 //

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ApiFilterEditorDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
+// Updated : 06/12/2019
+// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the API filter items.
@@ -342,7 +342,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <returns>An enumerable list of API nodes containing type information</returns>
         private IEnumerable<ApiNodeInfo> AddTypes(ApiNodeInfo parentInfo)
         {
-            ApiFilter filter;
             ApiNodeInfo nodeInfo;
             var nodeList = new List<ApiNodeInfo>();
             string fullName, memberName;
@@ -380,7 +379,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     nodeInfo.FilterName = memberName;
 
                 // See if it's in the current filter
-                if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out filter))
+                if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out ApiFilter filter))
                 {
                     nodeInfo.IsIncluded = parentInfo.IsIncluded;
 
@@ -427,7 +426,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <returns>An enumerable list of API nodes containing type information</returns>
         private IEnumerable<ApiNodeInfo> AddBaseTypes(ApiNodeInfo parentInfo)
         {
-            ApiFilter filter;
             ApiNodeInfo nodeInfo;
             var nodeList = new List<ApiNodeInfo>();
             var existingIds = new HashSet<string>();
@@ -463,7 +461,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     nodeInfo = new ApiNodeInfo(memberName, fullName, typeNode, parentInfo);
 
                     // See if it's in the current filter
-                    if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out filter))
+                    if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out ApiFilter filter))
                     {
                         nodeInfo.IsIncluded = parentInfo.IsIncluded;
 
@@ -501,7 +499,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <returns>An enumerable list of API nodes containing member information</returns>
         private IEnumerable<ApiNodeInfo> AddMembers(ApiNodeInfo parentInfo)
         {
-            ApiFilter filter;
             ApiNodeInfo nodeInfo;
             var nodeList = new List<ApiNodeInfo>();
             var existingIds = new HashSet<string>();
@@ -552,7 +549,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                             "api[@id='" + memberNode.Attributes["api"].Value + "']"), parentInfo);
 
                         // See if it's in the current filter
-                        if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out filter))
+                        if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out ApiFilter filter))
                             nodeInfo.IsIncluded = parentInfo.IsIncluded;
                         else
                         {
@@ -586,7 +583,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <returns>An enumerable list of API nodes containing member information</returns>
         private IEnumerable<ApiNodeInfo> AddBaseMembers(ApiNodeInfo parentInfo)
         {
-            ApiFilter filter;
             ApiNodeInfo nodeInfo;
             var  nodeList = new List<ApiNodeInfo>();
             var existingIds = new HashSet<string>();
@@ -627,7 +623,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     nodeInfo = new ApiNodeInfo(memberName, fullName, memberNode, parentInfo);
 
                     // See if it's in the current filter
-                    if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out filter))
+                    if(!buildFilterEntries.TryGetValue(nodeInfo.Id, out ApiFilter filter))
                         nodeInfo.IsIncluded = parentInfo.IsIncluded;
                     else
                     {
@@ -1137,13 +1133,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private async void tvApiList_Expanded(object sender, RoutedEventArgs e)
         {
-            var tvi = e.OriginalSource as TreeViewItem;
-
-            if(tvi != null)
+            if(e.OriginalSource is TreeViewItem tvi)
             {
                 var apiInfo = (ApiNodeInfo)tvi.DataContext;
 
-                if(apiInfo.Parent != null && apiInfo.SubMembers[0].ApiNode == null)
+                if(apiInfo.Parent != null && apiInfo.SubMembers.Count != 0 && apiInfo.SubMembers[0].ApiNode == null)
                 {
                     try
                     {
@@ -1188,9 +1182,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void chkIncludedState_Click(object sender, RoutedEventArgs e)
         {
-            var c = e.OriginalSource as CheckBox;
-
-            if(c != null)
+            if(e.OriginalSource is CheckBox c)
             {
                 this.OptimizeIncludedState((ApiNodeInfo)c.DataContext, true);
                 wasModified = true;
@@ -1492,9 +1484,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void dgSearchResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var source = e.OriginalSource as FrameworkElement;
-
-            if(source != null)
+            if(e.OriginalSource is FrameworkElement source)
             {
                 var parent = source.ParentElementOfType<DataGridCell>();
 

@@ -906,7 +906,10 @@
           <Component Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" Guid="{E363406A-7E9A-4775-A32E-AC125424CC21}">
             <File Id="fil5E58A067B18DEEBC1AF6026D7E4C3659" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.7.reflection" />
           </Component>
-          <Component Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" Guid="{38F772F3-C096-4C3D-98B0-269AD706B26F}">
+          <Component Id="cmp4C70F7F1DA50379B8736A9C80BC48F2F" Guid="{8A6A1D95-2351-4E5E-B305-52EAEF67C7A4}">
+            <File Id="filE97BDD3ABD521A46762F3E21E1EDE013" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\.NETFramework_4.8.reflection" />
+          </Component>
+          <Component Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" Guid="{F97F9BE1-A123-40ED-BCEF-518C03216DB1}">
             <File Id="fil52C4B8424DFDA45A4861C37ECBF74268" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\Accessibility.xml" />
           </Component>
           <Component Id="cmpAAF8097021D6704C624E92321C700098" Guid="{B58B04C7-933A-4EC0-BCE0-AC8D561B6CE5}">
@@ -2088,7 +2091,10 @@
           <Component Id="cmpF286F59F59135C9F5E71E3E33C0EA07A" Guid="{8CB85EE0-B8FA-4217-967F-BC03246D2FCA}">
             <File Id="filEE592226D2674E7A543E2D181D818A06" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Documents.xml" />
           </Component>
-          <Component Id="cmp60902531162953C2F1E01299928E50E6" Guid="{86C937A8-AB85-4569-8F92-F57DD3F00F41}">
+          <Component Id="cmpFB657B7C3081ED1A774367B19337B1E9" Guid="{911F92E9-D957-449F-814B-6EF687FB88E3}">
+            <File Id="fil8A78B4543BBC6EC65CB20CD86C2CC87E" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Forms.Automation.xml" />
+          </Component>
+          <Component Id="cmp60902531162953C2F1E01299928E50E6" Guid="{FBDD8AC1-FE74-48C6-A2EE-BCB2308DAD3F}">
             <File Id="fil9698ADCEB6311ACAF425EFB6CFDAF363" KeyPath="yes" Source="$(var.RootFolder)\Data\.NETFramework\System.Windows.Forms.ComponentModel.Com2Interop.xml" />
           </Component>
           <Component Id="cmpF0F642372A0151E096B4F001BF5697D8" Guid="{3D53D8EB-7716-4897-91E4-46BAC59AEB62}">
@@ -8166,6 +8172,7 @@
       <ComponentRef Id="cmp0205B61EE2BA9D9B46A9807E833B9D9F" />
       <ComponentRef Id="cmp2E808CD21D1AF4A761938FE69B080CC0" />
       <ComponentRef Id="cmp4ED893895D9CDA7AA7EF3ADD4B1AC210" />
+      <ComponentRef Id="cmp4C70F7F1DA50379B8736A9C80BC48F2F" />
       <ComponentRef Id="cmp6EB77E47E67A6BA7506F6D44EAE93192" />
       <ComponentRef Id="cmpAAF8097021D6704C624E92321C700098" />
       <ComponentRef Id="cmp0D55CEBAFA37B1E940285FCE4F5C0F03" />
@@ -8560,6 +8567,7 @@
       <ComponentRef Id="cmp8EE65C7EC60E8065E6B00AB3407AEA93" />
       <ComponentRef Id="cmp2DCAFA9A3BEE01A85A58241316C84255" />
       <ComponentRef Id="cmpF286F59F59135C9F5E71E3E33C0EA07A" />
+      <ComponentRef Id="cmpFB657B7C3081ED1A774367B19337B1E9" />
       <ComponentRef Id="cmp60902531162953C2F1E01299928E50E6" />
       <ComponentRef Id="cmpF0F642372A0151E096B4F001BF5697D8" />
       <ComponentRef Id="cmpC73E230ADBE64CBB32325195191051E9" />

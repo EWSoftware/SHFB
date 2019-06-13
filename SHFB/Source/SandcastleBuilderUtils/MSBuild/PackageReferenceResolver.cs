@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2019
+// Updated : 05/20/2019
 // Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -172,9 +172,22 @@ namespace SandcastleBuilder.Utils.MSBuild
             foreach(var p in referencesToResolve)
                 try
                 {
-                    resolvedDependencies.Add(p);
+                    string packageName = p;
 
-                    var match = packages[p];
+                    resolvedDependencies.Add(packageName);
+
+                    var match = packages[packageName];
+
+                    // If we don't get a match, try it with ".0" on the end.  Sometimes the reference version
+                    // leaves it off.
+                    if(match == null)
+                    {
+                        packageName += ".0";
+                        match = packages[packageName];
+
+                        if(match != null)
+                            resolvedDependencies.Add(packageName);
+                    }
 
                     if(match != null)
                     {
@@ -190,7 +203,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                                 if(!assemblyName.EndsWith("/mscorlib.dll", StringComparison.OrdinalIgnoreCase) &&
                                   !assemblyName.EndsWith("_._", StringComparison.Ordinal))
                                 {
-                                    references.Add(Path.Combine(p, assemblyName));
+                                    references.Add(Path.Combine(packageName, assemblyName));
                                 }
                             }
 

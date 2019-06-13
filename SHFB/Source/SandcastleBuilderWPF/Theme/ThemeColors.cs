@@ -2,14 +2,14 @@
 // System  : Visual Studio Spell Checker Package
 // File    : ThemeColors.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/02/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
+// Updated : 05/20/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to provide Visual Studio theme colors in a version independent manner
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code and can be found at the project website: https://github.com/EWSoftware/VSSpellChecker
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
 // This notice, the author's name, and all copyright notices must remain intact in all applications,
 // documentation, and source files.
 //
@@ -39,6 +39,7 @@ namespace SandcastleBuilder.WPF.Theme
         //=====================================================================
 
         private static ThemeColors instance;
+
         #endregion
 
         #region Properties
@@ -47,394 +48,248 @@ namespace SandcastleBuilder.WPF.Theme
         /// <summary>
         /// This read-only property returns the theme color instance
         /// </summary>
-        public static ThemeColors Instance
-        {
-            get { return instance ?? (instance = new ThemeColors()); }
-        }
+        public static ThemeColors Instance => instance ?? (instance = new ThemeColors());
 
         /// <summary>
         /// Button background color
         /// </summary>
-        public Color ButtonBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonBackgroundColor); }
-        }
+        public Color ButtonBackgroundColor => GetColor(ThemeColorId.ButtonBackgroundColor);
 
         /// <summary>
         /// Button border color
         /// </summary>
-        public Color ButtonBorderColor
-        {
-            get { return GetColor(ThemeColorId.ButtonBorderColor); }
-        }
+        public Color ButtonBorderColor => GetColor(ThemeColorId.ButtonBorderColor);
 
         /// <summary>
         /// Button disabled background color
         /// </summary>
-        public Color ButtonDisabledBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonDisabledBackgroundColor); }
-        }
+        public Color ButtonDisabledBackgroundColor => GetColor(ThemeColorId.ButtonDisabledBackgroundColor);
 
         /// <summary>
         /// Button disabled border color
         /// </summary>
-        public Color ButtonDisabledBorderColor
-        {
-            get { return GetColor(ThemeColorId.ButtonDisabledBorderColor); }
-        }
+        public Color ButtonDisabledBorderColor => GetColor(ThemeColorId.ButtonDisabledBorderColor);
 
         /// <summary>
         /// Button disabled foreground color
         /// </summary>
-        public Color ButtonDisabledForegroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonDisabledForegroundColor); }
-        }
+        public Color ButtonDisabledForegroundColor => GetColor(ThemeColorId.ButtonDisabledForegroundColor);
 
         /// <summary>
         /// Button foreground color
         /// </summary>
-        public Color ButtonForegroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonForegroundColor); }
-        }
+        public Color ButtonForegroundColor => GetColor(ThemeColorId.ButtonForegroundColor);
 
         /// <summary>
         /// Button hover background color
         /// </summary>
-        public Color ButtonHoverBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonHoverBackgroundColor); }
-        }
+        public Color ButtonHoverBackgroundColor => GetColor(ThemeColorId.ButtonHoverBackgroundColor);
 
         /// <summary>
         /// Button hover border color
         /// </summary>
-        public Color ButtonHoverBorderColor
-        {
-            get { return GetColor(ThemeColorId.ButtonHoverBorderColor); }
-        }
+        public Color ButtonHoverBorderColor => GetColor(ThemeColorId.ButtonHoverBorderColor);
 
         /// <summary>
         /// Button hover foreground color
         /// </summary>
-        public Color ButtonHoverForegroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonHoverForegroundColor); }
-        }
+        public Color ButtonHoverForegroundColor => GetColor(ThemeColorId.ButtonHoverForegroundColor);
 
         /// <summary>
         /// Button pressed background color
         /// </summary>
-        public Color ButtonPressedBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonPressedBackgroundColor); }
-        }
+        public Color ButtonPressedBackgroundColor => GetColor(ThemeColorId.ButtonPressedBackgroundColor);
 
         /// <summary>
         /// Button pressed border color
         /// </summary>
-        public Color ButtonPressedBorderColor
-        {
-            get { return GetColor(ThemeColorId.ButtonPressedBorderColor); }
-        }
+        public Color ButtonPressedBorderColor => GetColor(ThemeColorId.ButtonPressedBorderColor);
 
         /// <summary>
         /// Button pressed foreground color
         /// </summary>
-        public Color ButtonPressedForegroundColor
-        {
-            get { return GetColor(ThemeColorId.ButtonPressedForegroundColor); }
-        }
+        public Color ButtonPressedForegroundColor => GetColor(ThemeColorId.ButtonPressedForegroundColor);
 
         /// <summary>
         /// Combo box button mouse over color
         /// </summary>
-        public Color ComboBoxButtonMouseOverBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.ComboBoxButtonMouseOverBackgroundColor); }
-        }
+        public Color ComboBoxButtonMouseOverBackgroundColor => GetColor(ThemeColorId.ComboBoxButtonMouseOverBackgroundColor);
 
         /// <summary>
         /// Combo box disabled glyph color
         /// </summary>
-        public Color ComboBoxDisabledGlyphColor
-        {
-            get { return GetColor(ThemeColorId.ComboBoxDisabledGlyphColor); }
-        }
+        public Color ComboBoxDisabledGlyphColor => GetColor(ThemeColorId.ComboBoxDisabledGlyphColor);
 
         /// <summary>
         /// Combo box glyph color
         /// </summary>
-        public Color ComboBoxGlyphColor
-        {
-            get { return GetColor(ThemeColorId.ComboBoxGlyphColor); }
-        }
+        public Color ComboBoxGlyphColor => GetColor(ThemeColorId.ComboBoxGlyphColor);
 
         /// <summary>
         /// Combo box pop-up background color
         /// </summary>
-        public Color ComboBoxPopupBackground
-        {
-            get { return GetColor(ThemeColorId.ComboBoxPopupBackground); }
-        }
+        public Color ComboBoxPopupBackground => GetColor(ThemeColorId.ComboBoxPopupBackground);
 
         /// <summary>
         /// Disabled text color
         /// </summary>
-        public Color DisabledTextColor
-        {
-            get { return GetColor(ThemeColorId.DisabledTextColor); }
-        }
+        public Color DisabledTextColor => GetColor(ThemeColorId.DisabledTextColor);
 
         /// <summary>
         /// Item border color
         /// </summary>
-        public Color ItemBorderColor
-        {
-            get { return GetColor(ThemeColorId.ItemBorderColor); }
-        }
+        public Color ItemBorderColor => GetColor(ThemeColorId.ItemBorderColor);
 
         /// <summary>
         /// Item color
         /// </summary>
-        public Color ItemColor
-        {
-            get { return GetColor(ThemeColorId.ItemColor); }
-        }
+        public Color ItemColor => GetColor(ThemeColorId.ItemColor);
 
         /// <summary>
         /// Item hover color
         /// </summary>
-        public Color ItemHoverColor
-        {
-            get { return GetColor(ThemeColorId.ItemHoverColor); }
-        }
+        public Color ItemHoverColor => GetColor(ThemeColorId.ItemHoverColor);
 
         /// <summary>
         /// Item hover border color
         /// </summary>
-        public Color ItemHoverBorderColor
-        {
-            get { return GetColor(ThemeColorId.ItemHoverBorderColor); }
-        }
+        public Color ItemHoverBorderColor => GetColor(ThemeColorId.ItemHoverBorderColor);
 
         /// <summary>
         /// Item hover text color
         /// </summary>
-        public Color ItemHoverTextColor
-        {
-            get { return GetColor(ThemeColorId.ItemHoverTextColor); }
-        }
+        public Color ItemHoverTextColor => GetColor(ThemeColorId.ItemHoverTextColor);
 
         /// <summary>
         /// Item selected border color
         /// </summary>
-        public Color ItemSelectedBorderColor
-        {
-            get { return GetColor(ThemeColorId.ItemSelectedBorderColor); }
-        }
+        public Color ItemSelectedBorderColor => GetColor(ThemeColorId.ItemSelectedBorderColor);
 
         /// <summary>
         /// Item selected border not focused color
         /// </summary>
-        public Color ItemSelectedBorderNotFocusedColor
-        {
-            get { return GetColor(ThemeColorId.ItemSelectedBorderNotFocusedColor); }
-        }
+        public Color ItemSelectedBorderNotFocusedColor => GetColor(ThemeColorId.ItemSelectedBorderNotFocusedColor);
 
         /// <summary>
         /// Item selected color
         /// </summary>
-        public Color ItemSelectedColor
-        {
-            get { return GetColor(ThemeColorId.ItemSelectedColor); }
-        }
+        public Color ItemSelectedColor => GetColor(ThemeColorId.ItemSelectedColor);
 
         /// <summary>
         /// Item selected not focused color
         /// </summary>
-        public Color ItemSelectedNotFocusedColor
-        {
-            get { return GetColor(ThemeColorId.ItemSelectedNotFocusedColor); }
-        }
+        public Color ItemSelectedNotFocusedColor => GetColor(ThemeColorId.ItemSelectedNotFocusedColor);
 
         /// <summary>
         /// Item selected text color
         /// </summary>
-        public Color ItemSelectedTextColor
-        {
-            get { return GetColor(ThemeColorId.ItemSelectedTextColor); }
-        }
+        public Color ItemSelectedTextColor => GetColor(ThemeColorId.ItemSelectedTextColor);
 
         /// <summary>
         /// Item selected text not focused color
         /// </summary>
-        public Color ItemSelectedTextNotFocusedColor
-        {
-            get { return GetColor(ThemeColorId.ItemSelectedTextNotFocusedColor); }
-        }
+        public Color ItemSelectedTextNotFocusedColor => GetColor(ThemeColorId.ItemSelectedTextNotFocusedColor);
 
         /// <summary>
         /// Item text color
         /// </summary>
-        public Color ItemTextColor
-        {
-            get { return GetColor(ThemeColorId.ItemTextColor); }
-        }
+        public Color ItemTextColor => GetColor(ThemeColorId.ItemTextColor);
 
         /// <summary>
         /// Light border color
         /// </summary>
-        public Color LightBorderColor
-        {
-            get { return GetColor(ThemeColorId.LightBorderColor); }
-        }
+        public Color LightBorderColor => GetColor(ThemeColorId.LightBorderColor);
 
         /// <summary>
         /// Link text color
         /// </summary>
-        public Color LinkTextColor
-        {
-            get { return GetColor(ThemeColorId.LinkTextColor); }
-        }
+        public Color LinkTextColor => GetColor(ThemeColorId.LinkTextColor);
 
         /// <summary>
         /// Link text hover color
         /// </summary>
-        public Color LinkTextHoverColor
-        {
-            get { return GetColor(ThemeColorId.LinkTextHoverColor); }
-        }
+        public Color LinkTextHoverColor => GetColor(ThemeColorId.LinkTextHoverColor);
 
         /// <summary>
         /// Menu background color
         /// </summary>
-        public Color MenuBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.MenuBackgroundColor); }
-        }
+        public Color MenuBackgroundColor => GetColor(ThemeColorId.MenuBackgroundColor);
 
         /// <summary>
         /// Menu border color
         /// </summary>
-        public Color MenuBorderColor
-        {
-            get { return GetColor(ThemeColorId.MenuBorderColor); }
-        }
+        public Color MenuBorderColor => GetColor(ThemeColorId.MenuBorderColor);
 
         /// <summary>
         /// Menu hover background color
         /// </summary>
-        public Color MenuHoverBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.MenuHoverBackgroundColor); }
-        }
+        public Color MenuHoverBackgroundColor => GetColor(ThemeColorId.MenuHoverBackgroundColor);
 
         /// <summary>
         /// Menu hover text color
         /// </summary>
-        public Color MenuHoverTextColor
-        {
-            get { return GetColor(ThemeColorId.MenuHoverTextColor); }
-        }
+        public Color MenuHoverTextColor => GetColor(ThemeColorId.MenuHoverTextColor);
 
         /// <summary>
         /// Menu separator color
         /// </summary>
-        public Color MenuSeparatorColor
-        {
-            get { return GetColor(ThemeColorId.MenuSeparatorColor); }
-        }
+        public Color MenuSeparatorColor => GetColor(ThemeColorId.MenuSeparatorColor);
 
         /// <summary>
         /// Menu text color
         /// </summary>
-        public Color MenuTextColor
-        {
-            get { return GetColor(ThemeColorId.MenuTextColor); }
-        }
+        public Color MenuTextColor => GetColor(ThemeColorId.MenuTextColor);
 
         /// <summary>
         /// Notification color
         /// </summary>
-        public Color NotificationColor
-        {
-            get { return GetColor(ThemeColorId.NotificationColor); }
-        }
+        public Color NotificationColor => GetColor(ThemeColorId.NotificationColor);
 
         /// <summary>
         /// Notification text color
         /// </summary>
-        public Color NotificationTextColor
-        {
-            get { return GetColor(ThemeColorId.NotificationTextColor); }
-        }
+        public Color NotificationTextColor => GetColor(ThemeColorId.NotificationTextColor);
 
         /// <summary>
         /// Text box border color
         /// </summary>
-        public Color TextBoxBorderColor
-        {
-            get { return GetColor(ThemeColorId.TextBoxBorderColor); }
-        }
+        public Color TextBoxBorderColor => GetColor(ThemeColorId.TextBoxBorderColor);
 
         /// <summary>
         /// Text box color
         /// </summary>
-        public Color TextBoxColor
-        {
-            get { return GetColor(ThemeColorId.TextBoxColor); }
-        }
+        public Color TextBoxColor => GetColor(ThemeColorId.TextBoxColor);
 
         /// <summary>
         /// Text box text color
         /// </summary>
-        public Color TextBoxTextColor
-        {
-            get { return GetColor(ThemeColorId.TextBoxTextColor); }
-        }
+        public Color TextBoxTextColor => GetColor(ThemeColorId.TextBoxTextColor);
 
         /// <summary>
         /// Tool window background color
         /// </summary>
-        public Color ToolWindowBackgroundColor
-        {
-            get { return GetColor(ThemeColorId.ToolWindowBackgroundColor); }
-        }
+        public Color ToolWindowBackgroundColor => GetColor(ThemeColorId.ToolWindowBackgroundColor);
 
         /// <summary>
         /// Tool window border color
         /// </summary>
-        public Color ToolWindowBorderColor
-        {
-            get { return GetColor(ThemeColorId.ToolWindowBorderColor); }
-        }
+        public Color ToolWindowBorderColor => GetColor(ThemeColorId.ToolWindowBorderColor);
 
         /// <summary>
         /// Tool window text color
         /// </summary>
-        public Color ToolWindowTextColor
-        {
-            get { return GetColor(ThemeColorId.ToolWindowTextColor); }
-        }
+        public Color ToolWindowTextColor => GetColor(ThemeColorId.ToolWindowTextColor);
 
         /// <summary>
         /// Tree view glyph color
         /// </summary>
-        public Color TreeViewGlyphColor
-        {
-            get { return GetColor(ThemeColorId.TreeViewGlyphColor); }
-        }
+        public Color TreeViewGlyphColor => GetColor(ThemeColorId.TreeViewGlyphColor);
 
         /// <summary>
         /// Tree view mouse over glyph color
         /// </summary>
-        public Color TreeViewHoverGlyphColor
-        {
-            get { return GetColor(ThemeColorId.TreeViewHoverGlyphColor); }
-        }
+        public Color TreeViewHoverGlyphColor => GetColor(ThemeColorId.TreeViewHoverGlyphColor);
+
         #endregion
 
         #region Constructor
@@ -465,10 +320,7 @@ namespace SandcastleBuilder.WPF.Theme
         /// <param name="propertyName">The property name that changed</param>
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
 #if !STANDALONEGUI

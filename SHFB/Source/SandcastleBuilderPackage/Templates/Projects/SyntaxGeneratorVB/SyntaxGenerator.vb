@@ -65,7 +65,7 @@ Namespace $safeprojectname$
             Implements ISyntaxGeneratorFactory
 
             ''' <inheritdoc />
-            Public ReadOnly Property ResourceItemFileLocation As String
+            Public ReadOnly Property ResourceItemFileLocation As String Implements ISyntaxGeneratorFactory.ResourceItemFileLocation
                 Get
                     Return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent")
                 End Get

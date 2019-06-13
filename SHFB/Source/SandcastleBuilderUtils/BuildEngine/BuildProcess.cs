@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2019
+// Updated : 05/21/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -130,9 +130,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         // The log file stream
         private StreamWriter swLog;
 
-        // Build output file lists
-        private Collection<string> help1Files, helpViewerFiles, websiteFiles, openXmlFiles, markdownFiles;
-
         // Build progress tracking
         private DateTime buildStart, stepStart;
         private bool buildCancelling;
@@ -140,8 +137,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         // Various paths and other strings
         private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, languageFolder,
             defaultTopic, reflectionFile, msBuildExePath;
-
-        private Collection<string> helpFormatOutputFolders;
 
         private CultureInfo language;   // The project language
 
@@ -178,176 +173,111 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This read-only property returns the build start time
         /// </summary>
-        public DateTime BuildStart
-        {
-            get { return buildStart; }
-        }
+        public DateTime BuildStart => buildStart;
 
         /// <summary>
         /// This returns the path to MSBuild.exe
         /// </summary>
-        public string MSBuildExePath
-        {
-            get { return msBuildExePath; }
-        }
+        public string MSBuildExePath => msBuildExePath;
 
         /// <summary>
         /// This returns the location of the help file builder template folder
         /// </summary>
-        public string TemplateFolder
-        {
-            get { return templateFolder; }
-        }
+        public string TemplateFolder => templateFolder;
 
         /// <summary>
         /// This returns the project folder name
         /// </summary>
-        public string ProjectFolder
-        {
-            get { return projectFolder; }
-        }
+        public string ProjectFolder => projectFolder;
 
         /// <summary>
         /// This returns the project filename without the folder
         /// </summary>
-        public string ProjectFilename
-        {
-            get { return Path.GetFileName(originalProjectName); }
-        }
+        public string ProjectFilename => Path.GetFileName(originalProjectName);
 
         /// <summary>
         /// This returns the output folder where the log file and help file can be found after the build process
         /// has finished.
         /// </summary>
-        public string OutputFolder
-        {
-            get { return outputFolder; }
-        }
+        public string OutputFolder => outputFolder;
 
         /// <summary>
         /// This returns the name of the working files folder
         /// </summary>
-        public string WorkingFolder
-        {
-            get { return workingFolder; }
-        }
+        public string WorkingFolder => workingFolder;
 
         /// <summary>
         /// This returns the name of the HTML Help 1 compiler folder determined by the build process
         /// </summary>
-        public string Help1CompilerFolder
-        {
-            get { return hhcFolder; }
-        }
+        public string Help1CompilerFolder => hhcFolder;
 
         /// <summary>
         /// This returns the name of the folder that contains the reflection data for the selected framework
         /// platform and version (.NETFramework 4.5, .NETCore 4.5, Silverlight 5.0, etc.).
         /// </summary>
-        public string FrameworkReflectionDataFolder
-        {
-            get
-            {
-                return Path.GetDirectoryName(frameworkReflectionData.Filename);
-            }
-        }
+        public string FrameworkReflectionDataFolder => Path.GetDirectoryName(frameworkReflectionData.Filename);
 
         /// <summary>
         /// This read-only property returns the language used for resource items, etc.
         /// </summary>
-        public CultureInfo Language
-        {
-            get { return language; }
-        }
+        public CultureInfo Language => language;
 
         /// <summary>
         /// This read-only property returns the resource item file language folder name
         /// </summary>
-        public string LanguageFolder
-        {
-            get { return languageFolder; }
-        }
+        public string LanguageFolder => languageFolder;
 
         /// <summary>
         /// This returns the presentation instance being used by the build process
         /// </summary>
-        public PresentationStyleSettings PresentationStyle
-        {
-            get { return presentationStyle; }
-        }
+        public PresentationStyleSettings PresentationStyle => presentationStyle;
 
         /// <summary>
         /// This returns the name of the main Sandcastle presentation style folder determined by the build
         /// process.
         /// </summary>
-        public string PresentationStyleFolder
-        {
-            get { return FolderPath.TerminatePath(presentationStyle.ResolvePath(presentationStyle.BasePath)); }
-        }
+        public string PresentationStyleFolder => FolderPath.TerminatePath(presentationStyle.ResolvePath(
+            presentationStyle.BasePath));
 
         /// <summary>
         /// This returns the name of the presentation style resource items folder determined by the build
         /// process.
         /// </summary>
-        public string PresentationStyleResourceItemsFolder
-        {
-            get
-            {
-                return FolderPath.TerminatePath(Path.Combine(presentationStyle.ResolvePath(
-                    presentationStyle.ResourceItemsPath), languageFolder));
-            }
-        }
+        public string PresentationStyleResourceItemsFolder => FolderPath.TerminatePath(Path.Combine(
+            presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath), languageFolder));
 
         /// <summary>
         /// This read-only property returns a collection of the output folders specific to each help file format
         /// produced by the build.
         /// </summary>
-        public Collection<string> HelpFormatOutputFolders
-        {
-            get { return helpFormatOutputFolders; }
-        }
+        public Collection<string> HelpFormatOutputFolders { get; } = new Collection<string>();
 
         /// <summary>
         /// This returns the name of the log file used for saving the build progress messages
         /// </summary>
-        public string LogFilename
-        {
-            get { return project.LogFileLocation; }
-        }
+        public string LogFilename => project.LogFileLocation;
 
         /// <summary>
         /// This returns the name of the reflection information file
         /// </summary>
-        public string ReflectionInfoFilename
-        {
-            get { return reflectionFile; }
-        }
+        public string ReflectionInfoFilename => reflectionFile;
 
         /// <summary>
         /// This read-only property returns the framework reflection data dictionary used by the build
         /// </summary>
-        public ReflectionDataSetDictionary ReflectionDataSetDictionary
-        {
-            get { return reflectionDataDictionary; }
-        }
+        public ReflectionDataSetDictionary ReflectionDataSetDictionary => reflectionDataDictionary;
 
         /// <summary>
         /// This read-only property returns the framework reflection data settings used by the build
         /// </summary>
-        public ReflectionDataSet FrameworkReflectionData
-        {
-            get { return frameworkReflectionData; }
-        }
+        public ReflectionDataSet FrameworkReflectionData => frameworkReflectionData;
 
         /// <summary>
         /// This returns the current project being used for the build
         /// </summary>
         /// <remarks>Although there is nothing stopping it, project options should not be modified during a
         /// build.</remarks>
-        public SandcastleProject CurrentProject
-        {
-            get { return project; }
-        }
+        public SandcastleProject CurrentProject => project;
 
         /// <summary>
         /// This returns the current help file format being generated
@@ -356,10 +286,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <b>GenerateHelpProject</b>, and <b>CompilingHelpFile</b> steps will run once for each help file
         /// format selected.  This property allows a plug-in to determine which files it may need to work with
         /// during those steps or to skip processing if it is not relevant.</remarks>
-        public HelpFileFormats CurrentFormat
-        {
-            get { return currentFormat; }
-        }
+        public HelpFileFormats CurrentFormat => currentFormat;
 
         /// <summary>
         /// This read-only property is used to get the partial build type
@@ -388,54 +315,36 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This returns a list of the HTML Help 1 (CHM) files that were built
         /// </summary>
         /// <remarks>If the HTML Help 1 format was not built, this returns an empty collection</remarks>
-        public Collection<string> Help1Files
-        {
-            get { return help1Files; }
-        }
+        public Collection<string> Help1Files { get; } = new Collection<string>();
 
         /// <summary>
         /// This returns a list of the MS Help Viewer (MSHC) files that were built
         /// </summary>
         /// <remarks>If the MS Help Viewer format was not built, this returns an empty collection</remarks>
-        public Collection<string> HelpViewerFiles
-        {
-            get { return helpViewerFiles; }
-        }
+        public Collection<string> HelpViewerFiles { get; } = new Collection<string>();
 
         /// <summary>
         /// This returns a list of the website files that were built
         /// </summary>
         /// <remarks>If the website format was not built, this returns an empty collection</remarks>
-        public Collection<string> WebsiteFiles
-        {
-            get { return websiteFiles; }
-        }
+        public Collection<string> WebsiteFiles { get; } = new Collection<string>();
 
         /// <summary>
         /// This returns a list of the Open XML files that were built
         /// </summary>
         /// <remarks>If the Open XML format was not built, this returns an empty collection</remarks>
-        public Collection<string> OpenXmlFiles
-        {
-            get { return openXmlFiles; }
-        }
+        public Collection<string> OpenXmlFiles { get; } = new Collection<string>();
 
         /// <summary>
         /// This returns a list of the Markdown files that were built
         /// </summary>
         /// <remarks>If the Markdown format was not built, this returns an empty collection</remarks>
-        public Collection<string> MarkdownFiles
-        {
-            get { return markdownFiles; }
-        }
+        public Collection<string> MarkdownFiles { get; } = new Collection<string>();
 
         /// <summary>
         /// This returns the task runner instance
         /// </summary>
-        public TaskRunner TaskRunner
-        {
-            get { return taskRunner; }
-        }
+        public TaskRunner TaskRunner => taskRunner;
 
         /// <summary>
         /// This returns the substitution tag replacement handler instance
@@ -470,7 +379,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// file and must have its <c>Visible</c> property set to True in the layout file.</remarks>
         public string ApiTocParentId
         {
-            get { return apiTocParentId; }
+            get => apiTocParentId;
             set
             {
                 if(value == null || value.Trim().Length == 0)
@@ -490,7 +399,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// project properties.</remarks>
         public int ApiTocOrder
         {
-            get { return apiTocOrder; }
+            get => apiTocOrder;
             set
             {
                 if(value < -1)
@@ -509,7 +418,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <c>Visible</c> property set to False in the layout file.</remarks>
         public string RootContentContainerId
         {
-            get { return rootContentContainerId; }
+            get => rootContentContainerId;
             set
             {
                 if(value == null || value.Trim().Length == 0)
@@ -525,28 +434,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This returns the filename of the default topic as determined by the build engine
         /// </summary>
         /// <remarks>The path is relative to the root of the output folder (i.e. html/DefaultTopic.htm)</remarks>
-        public string DefaultTopicFile
-        {
-            get { return defaultTopic ?? String.Empty; }
-        }
+        public string DefaultTopicFile => defaultTopic ?? String.Empty;
 
         /// <summary>
         /// This returns the <see cref="SandcastleProject.HelpTitle"/> project property value with all
         /// substitution tags it contains, if any, resolved to actual values.
         /// </summary>
-        public string ResolvedHelpTitle
-        {
-            get { return substitutionTags.TransformText(project.HelpTitle); }
-        }
+        public string ResolvedHelpTitle => substitutionTags.TransformText(project.HelpTitle);
 
         /// <summary>
         /// This returns the <see cref="SandcastleProject.HtmlHelpName"/> project property value with all
         /// substitution tags it contains, if any, resolved to actual values.
         /// </summary>
-        public string ResolvedHtmlHelpName
-        {
-            get { return substitutionTags.TransformText(project.HtmlHelpName); }
-        }
+        public string ResolvedHtmlHelpName => substitutionTags.TransformText(project.HtmlHelpName);
 
         /// <summary>
         /// This read-only property returns a hash set used to contain a list of namespaces referenced by the
@@ -567,18 +467,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This read-only property returns the MEF component container
         /// </summary>
-        internal CompositionContainer ComponentContainer
-        {
-            get { return componentContainer; }
-        }
+        internal CompositionContainer ComponentContainer => componentContainer;
 
         /// <summary>
         /// This read-only property returns the syntax generator metadata
         /// </summary>
-        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators
-        {
-            get { return syntaxGenerators; }
-        }
+        internal IEnumerable<ISyntaxGeneratorMetadata> SyntaxGenerators => syntaxGenerators;
+
         #endregion
 
         #region Constructors
@@ -599,13 +494,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             apiTocOrder = -1;
             apiTocParentId = rootContentContainerId = String.Empty;
-
-            help1Files = new Collection<string>();
-            helpViewerFiles = new Collection<string>();
-            websiteFiles = new Collection<string>();
-            openXmlFiles = new Collection<string>();
-            markdownFiles = new Collection<string>();
-            helpFormatOutputFolders = new Collection<string>();
         }
 
         /// <summary>
@@ -949,6 +837,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     frameworkReflectionData = reflectionDataDictionary.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
                     project.FrameworkVersion = frameworkReflectionData.Title;
+
+                    // When using assemblies as documentation sources, a reference to the core types assembly
+                    // is required or it may document the core types (int, string, etc.) as System.Void instead.
+                    if(referenceDictionary.Count == 0)
+                    {
+                        throw new BuilderException("BE0035", "The framework version is set to Cross-platform " +
+                            "(.NET Core/.NET Standard) but no reference assemblies were specified.  Unable to " +
+                            "determine core types assembly.  See the error number topic in the help file for " +
+                            "more information.");
+                    }
                 }
 
                 // Transform the shared builder content files
@@ -1971,26 +1869,26 @@ AllDone:
                             switch(currentFormat)
                             {
                                 case HelpFileFormats.HtmlHelp1:
-                                    help1Files.Add(file);
+                                    this.Help1Files.Add(file);
                                     break;
 
                                 case HelpFileFormats.MSHelpViewer:
-                                    helpViewerFiles.Add(file);
+                                    this.HelpViewerFiles.Add(file);
                                     break;
 
                                 case HelpFileFormats.OpenXml:
-                                    openXmlFiles.Add(file);
+                                    this.OpenXmlFiles.Add(file);
                                     break;
 
                                 case HelpFileFormats.Markdown:
-                                    markdownFiles.Add(file);
+                                    this.MarkdownFiles.Add(file);
                                     break;
 
                                 default:    // Website
                                     // Open XML and Markdown are distinct and cannot be combined with web output so
                                     // there's no need to exclude them here.
-                                    if(!help1Files.Contains(file) && !helpViewerFiles.Contains(file))
-                                        websiteFiles.Add(file);
+                                    if(!this.Help1Files.Contains(file) && !this.HelpViewerFiles.Contains(file))
+                                        this.WebsiteFiles.Add(file);
                                     break;
                             }
                         }
@@ -2026,8 +1924,9 @@ AllDone:
                 }
 
                 if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
-                    throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 " +
-                        "compiler. See the error number topic in the help file for details.\r\n");
+                    throw new BuilderException("BE0037", "Could not find the path to the HTML Help 1 compiler.  " +
+                        "Is the HTML Help Workshop installed?  See the error number topic in the help file " +
+                        "for details.\r\n");
 
                 if(hhcFolder[hhcFolder.Length - 1] != '\\')
                     hhcFolder += @"\";
@@ -2402,7 +2301,7 @@ AllDone:
                 if(!String.IsNullOrWhiteSpace(mscorlibKey) && !String.IsNullOrWhiteSpace(netstandardKey))
                     referenceDictionary.Remove(mscorlibKey);
 
-                this.ReportProgress("\r\nReferences to include (excluding framework assemblies):");
+                this.ReportProgress("\r\nReferences to include:");
 
                 string[] keys = new string[referenceDictionary.Keys.Count];
                 referenceDictionary.Keys.CopyTo(keys, 0);

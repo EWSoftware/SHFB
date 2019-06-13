@@ -6,6 +6,7 @@
 // don't always match the base class's template parameter names (i.e. Collection<TControl> vs Collection<T>).
 // 11/20/2013 - EFW - Replaced the StringWriter with a StringBuilder and cleared out dead code.
 // 09/16/2014 - EFW - Fixed WriteTemplate() so that it treats nested class separators like periods
+// 05/20/2019 - EFW - Skipped writing out required modifiers for in attributes
 
 using System;
 using System.Linq;
@@ -133,8 +134,14 @@ namespace Microsoft.Ddue.Tools.Reflection
                 case NodeType.RequiredModifier:
                     TypeModifier requiredModifierClause = (TypeModifier)type;
                     WriteType(requiredModifierClause.ModifiedType, sb);
-                    sb.Append("|");
-                    WriteType(requiredModifierClause.Modifier, sb);
+
+                    // !EFW - Skip writing out the modifier if it's an InAttribute.  Not sure if this is the best
+                    // way to handle this so we'll have to wait and see.
+                    if(requiredModifierClause.Modifier.Name.Name != "InAttribute")
+                    {
+                        sb.Append("|");
+                        WriteType(requiredModifierClause.Modifier, sb);
+                    }
                     break;
 
                 default:

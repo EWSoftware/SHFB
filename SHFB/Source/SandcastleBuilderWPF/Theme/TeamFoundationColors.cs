@@ -2,15 +2,15 @@
 // System  : Visual Studio Spell Checker Package
 // File    : TeamFoundationColors.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/21/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
+// Updated : 05/20/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that returns theme colors for button elements that are found in the Team
 // Foundation theme color category.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code and can be found at the project website: https://github.com/EWSoftware/VSSpellChecker
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
 // This notice, the author's name, and all copyright notices must remain intact in all applications,
 // documentation, and source files.
 //
@@ -52,146 +52,85 @@ namespace SandcastleBuilder.WPF.Theme
         /// <summary>
         /// Button color key
         /// </summary>
-        public static ThemeResourceKey ButtonColorKey
-        {
-            get
-            {
-                return buttonColorKey ?? (buttonColorKey = new ThemeResourceKey(tfsCategory, "Button",
-                    ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonColorKey => buttonColorKey ??
+            (buttonColorKey = new ThemeResourceKey(tfsCategory, "Button", ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button text color key
         /// </summary>
-        public static ThemeResourceKey ButtonTextColorKey
-        {
-            get
-            {
-                return buttonTextColorKey ?? (buttonTextColorKey = new ThemeResourceKey(tfsCategory, "Button",
-                    ThemeResourceKeyType.ForegroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonTextColorKey => buttonTextColorKey ??
+            (buttonTextColorKey = new ThemeResourceKey(tfsCategory, "Button",
+                ThemeResourceKeyType.ForegroundColor));
 
         /// <summary>
         /// Button border color key
         /// </summary>
-        public static ThemeResourceKey ButtonBorderColorKey
-        {
-            get
-            {
-                return buttonBorderColorKey ?? (buttonBorderColorKey = new ThemeResourceKey(tfsCategory,
-                    "ButtonBorder", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonBorderColorKey => buttonBorderColorKey ??
+            (buttonBorderColorKey = new ThemeResourceKey(tfsCategory, "ButtonBorder",
+                ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button disabled color key
         /// </summary>
-        public static ThemeResourceKey ButtonDisabledColorKey
-        {
-            get
-            {
-                return buttonDisabledColorKey ?? (buttonDisabledColorKey = new ThemeResourceKey(tfsCategory,
-                    "ButtonDisabled", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonDisabledColorKey => buttonDisabledColorKey ??
+            (buttonDisabledColorKey = new ThemeResourceKey(tfsCategory, "ButtonDisabled",
+                ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button disabled text color key
         /// </summary>
-        public static ThemeResourceKey ButtonDisabledTextColorKey
-        {
-            get
-            {
-                return buttonDisabledTextColorKey ?? (buttonDisabledTextColorKey = new ThemeResourceKey
-                    (tfsCategory, "ButtonDisabled", ThemeResourceKeyType.ForegroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonDisabledTextColorKey => buttonDisabledTextColorKey ??
+            (buttonDisabledTextColorKey = new ThemeResourceKey (tfsCategory, "ButtonDisabled",
+                ThemeResourceKeyType.ForegroundColor));
 
         /// <summary>
         /// Button disabled border color key
         /// </summary>
-        public static ThemeResourceKey ButtonDisabledBorderColorKey
-        {
-            get
-            {
-                return buttonDisabledBorderColorKey ?? (buttonDisabledBorderColorKey = new ThemeResourceKey(
-                    tfsCategory, "ButtonDisabledBorder", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonDisabledBorderColorKey => buttonDisabledBorderColorKey ??
+            (buttonDisabledBorderColorKey = new ThemeResourceKey(tfsCategory, "ButtonDisabledBorder",
+                ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button mouse over color key
         /// </summary>
-        public static ThemeResourceKey ButtonMouseOverColorKey
-        {
-            get
-            {
-                return buttonMouseOverColorKey ?? (buttonMouseOverColorKey = new ThemeResourceKey(tfsCategory,
-                    "ButtonMouseOver", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonMouseOverColorKey => buttonMouseOverColorKey ??
+            (buttonMouseOverColorKey = new ThemeResourceKey(tfsCategory, "ButtonMouseOver",
+                ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button mouse over text color key
         /// </summary>
-        public static ThemeResourceKey ButtonMouseOverTextColorKey
-        {
-            get
-            {
-                return buttonMouseOverTextColorKey ?? (buttonMouseOverTextColorKey = new ThemeResourceKey(
-                    tfsCategory, "ButtonMouseOver", ThemeResourceKeyType.ForegroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonMouseOverTextColorKey => buttonMouseOverTextColorKey ??
+            (buttonMouseOverTextColorKey = new ThemeResourceKey(tfsCategory, "ButtonMouseOver",
+                ThemeResourceKeyType.ForegroundColor));
 
         /// <summary>
         /// Button mouse over border color key
         /// </summary>
-        public static ThemeResourceKey ButtonMouseOverBorderColorKey
-        {
-            get
-            {
-                return buttonMouseOverBorderColorKey ?? (buttonMouseOverBorderColorKey = new ThemeResourceKey(
-                    tfsCategory, "ButtonMouseOverBorder", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonMouseOverBorderColorKey => buttonMouseOverBorderColorKey ??
+            (buttonMouseOverBorderColorKey = new ThemeResourceKey(tfsCategory, "ButtonMouseOverBorder",
+                ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button pressed color key
         /// </summary>
-        public static ThemeResourceKey ButtonPressedColorKey
-        {
-            get
-            {
-                return buttonPressedColorKey ?? (buttonPressedColorKey = new ThemeResourceKey(tfsCategory,
-                    "ButtonPressed", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonPressedColorKey => buttonPressedColorKey ??
+            (buttonPressedColorKey = new ThemeResourceKey(tfsCategory, "ButtonPressed",
+                ThemeResourceKeyType.BackgroundColor));
 
         /// <summary>
         /// Button pressed text color key
         /// </summary>
-        public static ThemeResourceKey ButtonPressedTextColorKey
-        {
-            get
-            {
-                return buttonPressedTextColorKey ?? (buttonPressedTextColorKey = new ThemeResourceKey(
-                    tfsCategory, "ButtonPressed", ThemeResourceKeyType.ForegroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonPressedTextColorKey => buttonPressedTextColorKey ??
+            (buttonPressedTextColorKey = new ThemeResourceKey(tfsCategory, "ButtonPressed",
+                ThemeResourceKeyType.ForegroundColor));
 
         /// <summary>
         /// Button pressed border color key
         /// </summary>
-        public static ThemeResourceKey ButtonPressedBorderColorKey
-        {
-            get
-            {
-                return buttonPressedBorderColorKey ?? (buttonPressedBorderColorKey = new ThemeResourceKey(
-                    tfsCategory, "ButtonPressedBorder", ThemeResourceKeyType.BackgroundColor));
-            }
-        }
+        public static ThemeResourceKey ButtonPressedBorderColorKey => buttonPressedBorderColorKey ??
+            (buttonPressedBorderColorKey = new ThemeResourceKey(tfsCategory, "ButtonPressedBorder",
+                ThemeResourceKeyType.BackgroundColor));
         #endregion
     }
 }

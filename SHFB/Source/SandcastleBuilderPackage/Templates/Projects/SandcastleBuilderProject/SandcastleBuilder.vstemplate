@@ -8,6 +8,8 @@
 		<DefaultName>Documentation</DefaultName>
 		<SortOrder>10</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="SandcastleBuilder.shfbproj" ReplaceParameters="true">

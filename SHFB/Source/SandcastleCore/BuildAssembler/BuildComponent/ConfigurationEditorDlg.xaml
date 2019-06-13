@@ -22,9 +22,9 @@ method.  Edit the XML configuration data below.</TextBlock>
         <ColumnDefinition />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Name="btnOK" Padding="3" Width="80" Content="OK" HorizontalAlignment="Left"
+      <Button Grid.Column="0" Name="btnOK" Padding="3" MinWidth="80" Content="OK" HorizontalAlignment="Left"
         ToolTip="Save the configuration" Click="btnOK_Click" />
-      <Button Grid.Column="1" Name="btnCancel" Padding="3" Width="80" Content="Cancel" HorizontalAlignment="Right"
+      <Button Grid.Column="1" Name="btnCancel" Padding="3" MinWidth="80" Content="Cancel" HorizontalAlignment="Right"
         ToolTip="Close without saving" IsCancel="True" />
     </Grid>
   </Grid>

@@ -11,6 +11,10 @@
 		<SortOrder>1020</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+		<LanguageTag>csharp</LanguageTag>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Build Component</ProjectTypeTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="SyntaxGenerator.csproj" ReplaceParameters="true">

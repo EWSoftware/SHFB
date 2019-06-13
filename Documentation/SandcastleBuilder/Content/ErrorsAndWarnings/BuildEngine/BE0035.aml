@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="230e5a68-858d-4272-a3a2-eea156cf379b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Error BE0035: The framework version is set to Cross-platform (.NET Core/.NET Standard) but no
+reference assemblies were specified.  Unable to determine core types assembly.</para>
+		</introduction>
+
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>This typically occurs when you select the "Cross-platform (.NET Core/.NET Standard)" option in the
+Framework Version project property, use an assembly and XML comments file as the documentation sources rather
+than a project, and do not specify any reference assemblies.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>When using the cross-platform framework version type, all framework assemblies are determined by
+examining the package references within the documentation source's project.  If using an assembly as the
+documentation source, it is your responsibility to specify any necessary reference assemblies including all of
+the core framework assemblies.</para>
+
+				<para>The best and easiest solution is to use the assembly's project as the documentation source rather
+than the assembly itself.  This allows the build engine to determine and include all of the proper reference
+assemblies automatically.  If the documentation source assembly was built against the full .NET Framework, select
+one of the other framework versions such as .NET Framework 4.7.2. rather than the cross-platform option.  If for
+some reason you must use a .NET Core/.NET Standard assembly as the documentation source directly rather than its
+project, add at least the framework assembly containing the core types (<localUri>System.Runtime.dll</localUri>
+for .NET Standard).  It is possible that you may need to add other reference assemblies as well to the
+documentation project.  Such assemblies are typically located in the NuGet package reference cache found in
+<localUri>C:\Users\[YOURUSERID]\.nuget\packages\</localUri>.</para>
+
+				<para>If this error occurs while using a solution or project as a documentation source, please open an
+issue at the <token>SHFB</token> project site asking for help along with a small example that can be used to
+reproduce the issue.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20e87b11-21a3-493c-8dd6-16ce7694952b" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

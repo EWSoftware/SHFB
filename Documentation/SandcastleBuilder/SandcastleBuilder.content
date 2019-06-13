@@ -616,12 +616,12 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
-    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" title="Build Engine">
+    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" isExpanded="true" title="Build Engine">
       <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
           <HelpKeyword index="K" term="error, BE0001" />
@@ -782,6 +782,7 @@
           <HelpKeyword index="K" term="errors, BE0034" />
         </HelpKeywords>
       </Topic>
+      <Topic id="230e5a68-858d-4272-a3a2-eea156cf379b" visible="True" isSelected="true" title="BE0035: The framework version is set to Cross-platform but no reference assemblies were specified" />
       <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path to the HTML Help 1 compiler">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0037" />
@@ -1382,7 +1383,7 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />

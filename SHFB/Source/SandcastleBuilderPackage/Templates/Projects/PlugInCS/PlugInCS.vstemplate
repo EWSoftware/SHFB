@@ -11,6 +11,10 @@
 		<SortOrder>1000</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+		<LanguageTag>csharp</LanguageTag>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Plugin</ProjectTypeTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="PlugIn.csproj" ReplaceParameters="true">

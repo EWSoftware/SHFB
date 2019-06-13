@@ -58,11 +58,11 @@
 				HorizontalScrollBarVisibility="Visible" IsReadOnly="True" IsReadOnlyCaretVisible="True"
 				FontFamily="Courier New" FontSize="11" />
 			<StackPanel Grid.Row="1" Orientation="Horizontal">
-				<Button Margin="3" Name="btnBuild" Content="_Build" Width="80" ToolTip="Build the reflection data"
+				<Button Margin="3" Name="btnBuild" Content="_Build" MinWidth="80" ToolTip="Build the reflection data"
 					Click="btnBuild_Click" />
-				<Button Margin="3" Name="btnClose" Content="Close" Width="80" ToolTip="Close this form"
+				<Button Margin="3" Name="btnClose" Content="Close" MinWidth="80" ToolTip="Close this form"
 					IsCancel="True" />
-				<ProgressBar Name="pbProgress" Visibility="Hidden" Width="100" Margin="50,3" IsIndeterminate="True" />
+				<ProgressBar Name="pbProgress" Visibility="Hidden" MinWidth="100" Margin="50,3" IsIndeterminate="True" />
 			</StackPanel>
 		</Grid>
 	</DockPanel>

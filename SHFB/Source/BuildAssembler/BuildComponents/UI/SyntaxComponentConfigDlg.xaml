@@ -40,8 +40,8 @@
       <TextBox Grid.Row="1" Grid.Column="1" Name="txtConfiguration" Margin="3,0,0,3"
         AcceptsReturn="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"/>
       <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
-        <Button Name="btnMoveUp" Margin="0,3,3,3" Padding="3" Width="80" Content="_Up" Click="btnMoveUp_Click"  />
-        <Button Name="btnMoveDown" Margin="3,3,0,3" Padding="3" Width="80" Content="_Down" Click="btnMoveDown_Click"/>
+        <Button Name="btnMoveUp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="_Up" Click="btnMoveUp_Click"  />
+        <Button Name="btnMoveDown" Margin="3,3,0,3" Padding="3" MinWidth="80" Content="_Down" Click="btnMoveDown_Click"/>
       </StackPanel>
       <Grid Grid.Row="2" Grid.Column="1">
         <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
           <ColumnDefinition />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Name="btnReset" Margin="3,3,0,3" Padding="3" Width="80" Content="R_eset"
+        <Button Grid.Column="0" Name="btnReset" Margin="3,3,0,3" Padding="3" MinWidth="80" Content="R_eset"
           Click="btnReset_Click" />
         <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
         <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
@@ -57,8 +57,8 @@
 Help File Builder</Hyperlink>
         </TextBlock>
         <StackPanel Grid.Column="2" Orientation="Horizontal">
-          <Button Name="btnOK" Margin="0,3,3,3" Padding="3" Width="80" Content="OK" Click="btnOK_Click"  />
-          <Button Name="btnCancel" Margin="3,3,0,3" Padding="3" Width="80" Content="Cancel"
+          <Button Name="btnOK" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"  />
+          <Button Name="btnCancel" Margin="3,3,0,3" Padding="3" MinWidth="80" Content="Cancel"
             IsCancel="True" />
         </StackPanel>
       </Grid>

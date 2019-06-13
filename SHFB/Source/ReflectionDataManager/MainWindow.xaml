@@ -55,12 +55,12 @@
 					</Grid.ColumnDefinitions>
 					<Label Grid.Column="0" Grid.Row="0" Margin="3" Content="_Platform ID" HorizontalAlignment="Right"
 						Target="{Binding ElementName=cboPlatform}" />
-					<ComboBox Grid.Column="1" Grid.Row="0" Margin="3" Width="150"
+					<ComboBox Grid.Column="1" Grid.Row="0" Margin="3" MinWidth="150"
 						HorizontalAlignment="Left" Name="cboPlatform" SelectionChanged="cboPlatform_SelectionChanged"
 						SelectedValue="{Binding Path=Platform}" />
 					<Label Grid.Column="2" Grid.Row="0" Margin="3" Content="_Version ID" HorizontalAlignment="Right"
 						Target="{Binding ElementName=txtVersion}" />
-					<TextBox Grid.Column="3" Grid.Row="0" Margin="3" Width="150" HorizontalAlignment="Left"
+					<TextBox Grid.Column="3" Grid.Row="0" Margin="3" MinWidth="150" HorizontalAlignment="Left"
 						Name="txtVersion" Text="{Binding Path=Version, Converter={StaticResource VersionConverterKey}}" />
 					<Label Grid.Column="0" Grid.Row="1" Margin="3" Content="_Title" HorizontalAlignment="Right"
 						Target="{Binding ElementName=txtTitle}" />
@@ -104,9 +104,9 @@
 						</Grid.CommandBindings>
 						<TextBox Grid.Column="0" Margin="3" Name="txtAssemblyPath" HorizontalAlignment="Stretch"
 							Text="{Binding Path=StoredPath, UpdateSourceTrigger=LostFocus}"/>
-						<Button Grid.Column="1" Name="btnSelectFolder" Margin="3" Content="..." Width="23"
+						<Button Grid.Column="1" Name="btnSelectFolder" Margin="3" Content="..." MinWidth="23"
               ToolTip="Select the assembly location" Command="ApplicationCommands.Replace" />
-						<Button Grid.Column="2" Name="btnRefresh" Margin="3" Content="Refres_h" Width="60"
+						<Button Grid.Column="2" Name="btnRefresh" Margin="3" Content="Refres_h" MinWidth="60"
               ToolTip="Refresh the list of assemblies" Command="NavigationCommands.Refresh" />
 					</Grid>
 					<ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="3" Name="lbAssemblyDetails"
@@ -125,12 +125,12 @@
 							<CommandBinding Command="NavigationCommands.NextPage" Executed="cmdNextPage_Executed" CanExecute="Command_CanExecute" />
 							<CommandBinding Command="ApplicationCommands.Delete" Executed="cmdDelete_Executed" CanExecute="Command_CanExecute"  />
 						</StackPanel.CommandBindings>
-						<Button Margin="3" Name="btnPrevious" Content="P_revious" Width="80" Command="NavigationCommands.PreviousPage"
+						<Button Margin="3" Name="btnPrevious" Content="P_revious" MinWidth="80" Command="NavigationCommands.PreviousPage"
 							ToolTip="Move to the previous location" />
-						<Button Margin="3" Name="btnNext" Content="Ne_xt" Width="80" Command="NavigationCommands.NextPage"
+						<Button Margin="3" Name="btnNext" Content="Ne_xt" MinWidth="80" Command="NavigationCommands.NextPage"
 							ToolTip="Move to the next location" />
-						<Button Margin="3" Name="btnAdd" Content="_Add" Width="80" ToolTip="Add a new location" Click="btnAdd_Click" />
-						<Button Margin="3" Name="btnRemove" Content="Re_move" Width="80" Command="ApplicationCommands.Delete"
+						<Button Margin="3" Name="btnAdd" Content="_Add" MinWidth="80" ToolTip="Add a new location" Click="btnAdd_Click" />
+						<Button Margin="3" Name="btnRemove" Content="Re_move" MinWidth="80" Command="ApplicationCommands.Delete"
 							ToolTip="Remove the selected location" />
 					</StackPanel>
 				</Grid>

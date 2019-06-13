@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ReflectionDataSet Platform=".NETFramework" Version="4.7.2" Title=".NET Framework 4.7.2">
+<ReflectionDataSet Platform=".NETFramework" Version="4.8" Title=".NET Framework 4.8">
   <AssemblyLocations>
-    <Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2">
+    <Location Path="%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8">
       <AssemblyDetails Filename="Accessibility.dll" Name="Accessibility" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="CustomMarshalers.dll" Name="CustomMarshalers" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />
       <AssemblyDetails Filename="ISymWrapper.dll" Name="ISymWrapper" Version="4.0.0.0" PublicKeyToken="b03f5f7f11d50a3a" />

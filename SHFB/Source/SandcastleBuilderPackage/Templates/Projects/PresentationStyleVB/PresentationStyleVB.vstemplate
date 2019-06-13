@@ -11,6 +11,10 @@
 		<SortOrder>1030</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+		<LanguageTag>visualbasic</LanguageTag>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Presentation Style</ProjectTypeTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="PresentationStyle.vbproj" ReplaceParameters="true">

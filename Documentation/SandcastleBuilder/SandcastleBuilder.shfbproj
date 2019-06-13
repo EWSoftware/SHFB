@@ -296,6 +296,7 @@
     <None Include="Content\CustomPresentationStyle.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0004.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0031.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0035.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0071.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0072.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0073.aml" />

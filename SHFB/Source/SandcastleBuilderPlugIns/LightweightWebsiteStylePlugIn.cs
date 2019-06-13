@@ -347,7 +347,7 @@ namespace SandcastleBuilder.PlugIns
                         new XAttribute("href", "#!")),
                     new XElement("a",
                         new XAttribute("data-tochassubtree", "true"),
-                        new XAttribute("href", "../" + builder.DefaultTopicFile),
+                        new XAttribute("href", "../" + builder.DefaultTopicFile.Replace("\\", "/")),
                         new XAttribute("title", builder.ResolvedHelpTitle),
                         new XAttribute("tocid", "roottoc"),
                         new XText(builder.SubstitutionTags.TransformText(builder.CurrentProject.HelpTitle))));

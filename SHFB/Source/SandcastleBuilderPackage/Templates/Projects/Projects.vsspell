@@ -1,19 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Visual Studio Spell Checker configuration file - [https://github.com/EWSoftware/VSSpellChecker]
      Do not edit the XML.  Use the configuration file editor in Visual Studio to modify the settings. -->
-<SpellCheckerConfiguration Format="2015.7.24.0">
+<SpellCheckerConfiguration Format="2018.8.16.0">
   <InheritAdditionalDictionaryFolders>True</InheritAdditionalDictionaryFolders>
   <SelectedLanguages />
   <InheritIgnoredWords>True</InheritIgnoredWords>
-  <InheritExcludedExtensions>True</InheritExcludedExtensions>
-  <ExcludedExtension>
-    <Exclude>.csproj</Exclude>
-    <Exclude>.vbproj</Exclude>
-  </ExcludedExtension>
   <InheritXmlSettings>True</InheritXmlSettings>
   <IgnoredWords>
     <Ignore>projectname</Ignore>
     <Ignore>registeredorganization</Ignore>
     <Ignore>safeprojectname</Ignore>
+    <Ignore>visualbasic</Ignore>
   </IgnoredWords>
+  <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
+  <IgnoredFilePatterns>
+    <FilePattern>*.csproj</FilePattern>
+    <FilePattern>*.min.cs</FilePattern>
+    <FilePattern>*.min.js</FilePattern>
+    <FilePattern>*.rproj</FilePattern>
+    <FilePattern>*.vbproj</FilePattern>
+    <FilePattern>\bin\*</FilePattern>
+    <FilePattern>bootstrap*.css</FilePattern>
+    <FilePattern>bootstrap*.js</FilePattern>
+    <FilePattern>CodeAnalysisLog.xml</FilePattern>
+    <FilePattern>GlobalSuppressions.*</FilePattern>
+    <FilePattern>html5shiv.js</FilePattern>
+    <FilePattern>jquery*.d.ts</FilePattern>
+    <FilePattern>jquery*.js</FilePattern>
+    <FilePattern>Resources.Designer.*</FilePattern>
+    <FilePattern>respond*.js</FilePattern>
+    <FilePattern>robots.txt</FilePattern>
+    <FilePattern>Settings.Designer.cs</FilePattern>
+    <FilePattern>Settings.settings</FilePattern>
+    <FilePattern>UpgradeLog.htm</FilePattern>
+  </IgnoredFilePatterns>
+  <InheritIgnoredClassifications>True</InheritIgnoredClassifications>
+  <IgnoredClassifications />
+  <InheritExclusionExpressions>True</InheritExclusionExpressions>
 </SpellCheckerConfiguration>
