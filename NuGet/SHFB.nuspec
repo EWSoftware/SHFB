@@ -27,5 +27,6 @@
 		<file src="&deploy;\Templates\**\*.*" target="tools\Templates" exclude="&commonExcludes;" />
 		<file src="&deploy;\*.*" target="tools" exclude="&deploy;\ICSharpCode*;&deploy;\SandcastleBuilderGUI*;&deploy;\WeifenLuo*;&deploy;\ReflectionDataManager*.*;&deploy;\BuildComponents.xml;&deploy;\ColorizerLibrary.xml;&deploy;\Sandcastle*.xml;&deploy;\SyntaxComponents.xml;&deploy;\*Hunspell*;&deploy;\SHFBProjectLauncher*;&deploy;\ESent*.xml;&deploy;\GenerateInheritedDocs.xml;&deploy;\HelpLibraryManagerLauncher.xml;&deploy;\NHunSpell.xml;&deploy;\SandcastleBuilderGUI.xml;&deploy;\SandcastleHtmlExtract.xml;&deploy;\AddNamespaceGroups.xml;&deploy;\SegregateByNamespace.xml;&deploy;\XslTransform.xml;&deploy;\reflection.org;&commonExcludes;" />
 		<file src="ReadMe.txt" target="ReadMe.txt" />
+		<file src="build\EWSoftware.SHFB.props" target="build" />
 	</files>
 </package>
