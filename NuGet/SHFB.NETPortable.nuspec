@@ -19,6 +19,6 @@
 	</metadata>
 	<files>
 		<file src="..\SHFB\Deploy\Data\.NETPortable\*.*" target="tools\Data\.NETPortable" />
-		<file src="build\EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.NETPortable.props" />
+		<file src="EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.NETPortable.props" />
 	</files>
 </package>

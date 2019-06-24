@@ -19,6 +19,6 @@
 	</metadata>
 	<files>
 		<file src="..\SHFB\Deploy\Data\UniversalWindows\*.*" target="tools\Data\UniversalWindows" />
-		<file src="build\EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.UniversalWindows.props" />
+		<file src="EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.UniversalWindows.props" />
 	</files>
 </package>

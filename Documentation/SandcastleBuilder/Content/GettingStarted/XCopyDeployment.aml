@@ -38,10 +38,23 @@ is searched.</para>
 				<para>If any duplicate components are encountered, the first one loaded based on the above search order
 will be used.</para>
 
-				<para>It is possible to build a project without defining the <codeInline>SHFBROOT</codeInline>
-environment variable such as when using the NuGet package.  To do this, a conditional <codeInline>SHFBROOT</codeInline>
-property must be added to each help file builder project as a child of the main <codeInline>PropertyGroup</codeInline>
-element.  An example is shown below (lines wrapped for display purposes):</para>
+				<para>If your version of Visual Studio supports them, <codeInline>PackageReference</codeInline> elements
+can be used to add the help file builder packages to your project.  The packages contain a properties file that
+defines the necessary project properties to define the root path and component path so that you do not have to
+define them manually as described below.</para>
+
+<code language="xml" title=" ">
+&lt;ItemGroup&gt;
+  &lt;PackageReference Include="EWSoftware.SHFB" Version="2019.6.24" /&gt;
+  &lt;PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.7.2" /&gt;
+&lt;/ItemGroup&gt;
+</code>
+				
+				<para>If not using package references, it is possible to build a project without defining the
+<codeInline>SHFBROOT</codeInline> environment variable such as when using the NuGet package.  To do this, a
+conditional <codeInline>SHFBROOT</codeInline> property must be added to each help file builder project as a child
+of the main <codeInline>PropertyGroup</codeInline> element.  An example is shown below (lines wrapped for display
+purposes):</para>
 
 <code language="xml" title=" ">
 &lt;PropertyGroup&gt;
@@ -68,8 +81,9 @@ guaranteed to work as they have no external tool dependencies.</para>
 based on which platform types you need: .NETCore, .NETFramework, .NETMicroFramework, .NETPortable, Silverlight,
 WindowsPhone, and/or WindowsPhoneApp.  If multiple versions are available for any given reflection data set
 package, download the latest version as it will cover all prior versions as well.  For example, the
-.NETFramework 4.6 package covers all .NET Framework versions from 1.0 to 4.6.</para>
+.NETFramework 4.8 package covers all .NET Framework versions from 1.0 to 4.8.</para>
 				</alert>
+
 			</content>
 		</section>
 

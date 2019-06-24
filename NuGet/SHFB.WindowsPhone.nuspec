@@ -19,6 +19,6 @@
 	</metadata>
 	<files>
 		<file src="..\SHFB\Deploy\Data\WindowsPhone\*.*" target="tools\Data\WindowsPhone" />
-		<file src="build\EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.WindowsPhone.props" />
+		<file src="EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.WindowsPhone.props" />
 	</files>
 </package>

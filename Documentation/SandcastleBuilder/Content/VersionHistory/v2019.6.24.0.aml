@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="cc26cc6a-febf-40f5-b505-348ce6e0d687" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <autoOutline excludeRelatedTopics="true" lead="Release notes for version 2019.6.24.0." />
+    </introduction>
+
+    <!-- Ignore Spelling: Englert -->
+
+    <section address="General">
+      <title>General</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            <para>Added reflection data set files for .NET Framework 4.8</para>
+          </listItem>
+
+        </list>
+      </content>
+    </section>
+
+    <section address="SandcastleTools">
+      <title>Sandcastle Tools</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            <para>Fixed MRefBuilder so that it does not include <codeInline>InAttribute</codeInline> modifiers on
+method parameter types. </para>
+          </listItem>
+
+          <listItem>
+            <para>Added support for colorizing multi-snippet references in <codeInline>codeReference</codeInline>
+MAML elements.</para>
+          </listItem>
+
+        </list>
+      </content>
+    </section>
+
+    <section address="SHFB">
+      <title>Sandcastle Help File Builder</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            <para>Fixed the lightweight TOC plug-in so that it uses a forward slash in the link to the root topic.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed the package reference resolver so that it can locate packages with a shortened version
+number.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed the API Filter editor so that it handles cases where the inherited .NET Framework members
+are omitted via the Visibility options.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed the Open XML build task so that it moves tables out of paragraphs correctly.</para>
+          </listItem>
+
+          <listItem>
+            <para>Added error BE0035 to flag cases where an assembly is used as a documentation source with no
+reference assemblies when using the cross-platform framework version option.</para>
+          </listItem>
+
+          <listItem>
+            <para>Added new <codeInline>LanguageTag</codeInline>, <codeInline>PlatformTag</codeInline>, and
+<codeInline>ProjectTypeTag</codeInline> elements to the project templates so that they are more discoverable in
+the Visual Studio 2019 New Project dialog box.</para>
+          </listItem>
+
+          <listItem>
+            <para>Removed the "Enable Go To Definition In cref" configuration option as it is no longer relevant
+in Visual Studio 2015 and later.</para>
+          </listItem>
+
+          <listItem>
+            <para>Disabled the keyboard filter in Visual Studio 2019 as the augmented completion sets are not
+currently supported.</para>
+          </listItem>
+
+					<listItem>
+						<para>Merged changes from Tom Englert to add a <localUri>.props</localUri> file to each of the
+Sandcastle Help File Builder NuGet packages to define the <codeInline>SHFBROOT</codeInline> and
+<codeInline>ComponentPath</codeInline> project properties based on the location of the packages.</para>
+					</listItem>
+
+        </list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

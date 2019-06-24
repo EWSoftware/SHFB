@@ -19,6 +19,6 @@
 	</metadata>
 	<files>
 		<file src="..\SHFB\Deploy\Data\Silverlight\*.*" target="tools\Data\Silverlight" />
-		<file src="build\EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.Silverlight.props" />
+		<file src="EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.Silverlight.props" />
 	</files>
 </package>
