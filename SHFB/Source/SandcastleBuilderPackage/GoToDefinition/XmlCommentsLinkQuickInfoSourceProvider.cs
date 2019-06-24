@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSourceProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that creates the quick info source specific to XML comments elements
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -38,7 +38,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
     internal sealed class XmlCommentsLinkQuickInfoSourceProvider : IQuickInfoSourceProvider
     {
         [Import]
-        private SVsServiceProvider GlobalServiceProvider = null;
+        private readonly SVsServiceProvider GlobalServiceProvider = null;
 
         [Import]
         internal IViewTagAggregatorFactoryService AggregatorFactory { get; set; }
@@ -52,7 +52,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 return null;
 
             return new XmlCommentsLinkQuickInfoSource(GlobalServiceProvider, textBuffer, this,
-                options.EnableCtrlClickGoToDefinition, options.EnableGoToDefinitionInCRef);
+                options.EnableCtrlClickGoToDefinition);
         }
     }
 }

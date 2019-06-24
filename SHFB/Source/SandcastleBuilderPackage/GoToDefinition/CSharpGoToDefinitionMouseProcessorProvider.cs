@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CSharpGoToDefinitionMouseProcessorProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that creates the mouse processor specific to C# code
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -41,13 +41,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
     internal sealed class CSharpGoToDefinitionMouseProcessorProvider : IMouseProcessorProvider
     {
         [Import]
-        private IClassifierAggregatorService AggregatorFactory = null;
+        private readonly IClassifierAggregatorService AggregatorFactory = null;
 
         [Import]
-        private ITextStructureNavigatorSelectorService NavigatorService = null;
+        private readonly ITextStructureNavigatorSelectorService NavigatorService = null;
 
         [Import]
-        private SVsServiceProvider GlobalServiceProvider = null;
+        private readonly SVsServiceProvider GlobalServiceProvider = null;
 
         /// <inheritdoc />
         public IMouseProcessor GetAssociatedProcessor(IWpfTextView view)
@@ -60,8 +60,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
             var buffer = view.TextBuffer;
 
             return new CSharpGoToDefinitionMouseProcessor(view, GlobalServiceProvider, AggregatorFactory.GetClassifier(buffer),
-                NavigatorService.GetTextStructureNavigator(buffer), CtrlKeyState.GetStateForView(view),
-                options.EnableGoToDefinitionInCRef);
+                NavigatorService.GetTextStructureNavigator(buffer), CtrlKeyState.GetStateForView(view));
         }
     }
 }

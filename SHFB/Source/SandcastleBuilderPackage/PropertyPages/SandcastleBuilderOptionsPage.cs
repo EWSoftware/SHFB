@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/10/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the general package options
@@ -130,7 +130,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 control.EnableExtendedXmlCommentsCompletion = mefOptions.EnableExtendedXmlCommentsCompletion;
                 control.EnableGoToDefinition = mefOptions.EnableGoToDefinition;
                 control.EnableCtrlClickGoToDefinition = mefOptions.EnableCtrlClickGoToDefinition;
-                control.EnableGoToDefinitionInCRef = mefOptions.EnableGoToDefinitionInCRef;
             }
         }
         #endregion
@@ -183,12 +182,12 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                     // MEF provider options are stored separately to avoid loading the entire package just to
                     // access these options.
-                    var mefOptions = new MefProviderOptions(this.Site);
-
-                    mefOptions.EnableExtendedXmlCommentsCompletion = control.EnableExtendedXmlCommentsCompletion;
-                    mefOptions.EnableGoToDefinition = control.EnableGoToDefinition;
-                    mefOptions.EnableCtrlClickGoToDefinition = control.EnableCtrlClickGoToDefinition;
-                    mefOptions.EnableGoToDefinitionInCRef = control.EnableGoToDefinitionInCRef;
+                    var mefOptions = new MefProviderOptions(this.Site)
+                    {
+                        EnableExtendedXmlCommentsCompletion = control.EnableExtendedXmlCommentsCompletion,
+                        EnableGoToDefinition = control.EnableGoToDefinition,
+                        EnableCtrlClickGoToDefinition = control.EnableCtrlClickGoToDefinition
+                    };
 
                     mefOptions.SaveConfiguration();
                 };

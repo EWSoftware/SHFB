@@ -2065,7 +2065,6 @@
 				</a>
 			</w:p>
 		</xsl:if>
-		<br />
 	</xsl:template>
 
 	<xsl:template match="parameters" name="t_parameters">

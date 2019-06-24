@@ -4,7 +4,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-	mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="400"
+	mc:Ignorable="d" d:DesignHeight="375" d:DesignWidth="400"
 	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	<ScrollViewer>
 		<Grid Margin="5">
@@ -31,7 +31,7 @@
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 				<Label Grid.Column="0" Margin="3" Content="_ASP.NET Development Web Server Port" />
-				<xctk:IntegerUpDown Grid.Column="1" Name="udcASPNetDevServerPort" Margin="0,6" Width="65"
+				<xctk:IntegerUpDown Grid.Column="1" Name="udcASPNetDevServerPort" Margin="0,6" MinWidth="65"
 					HorizontalAlignment="Left" Minimum="1000" Maximum="99999" ClipValueToMinMax="True"
 					DefaultValue="12345" DisplayDefaultValueOnEmptyText="True" />
 			</Grid>
@@ -49,8 +49,6 @@
 				<CheckBox Name="chkEnableGoToDefinition" Content="Enable MAM_L/XML comments Go To Definition"
 					Margin="0,3,0,3" HorizontalAlignment="Left" Click="chkEnableGoToDefinition_Click"/>
 				<CheckBox Name="chkEnableCtrlClickGoToDefinition" Content="Enable Ctrl+Clic_k to go to definition"
-					Margin="20,3,0,3" HorizontalAlignment="Left" />
-				<CheckBox Name="chkEnableGoToDefinitionInCRef" Content="Enable for XML comments cre_f values"
 					Margin="20,3,0,3" HorizontalAlignment="Left" />
 				<Label Margin="20,0,0,3">
 					<TextBlock TextWrapping="Wrap">

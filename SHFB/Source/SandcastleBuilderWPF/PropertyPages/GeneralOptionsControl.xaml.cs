@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : GeneralOptionsControl.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 12/21/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to modify the general help file builder package preferences that are unrelated to
@@ -87,8 +87,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public string MSHelpViewerPath
         {
-            get { return txtMSHelpViewerPath.Text; }
-            set { txtMSHelpViewerPath.Text = value; }
+            get => txtMSHelpViewerPath.Text;
+            set => txtMSHelpViewerPath.Text = value;
         }
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public int AspNetDevelopmentServerPort
         {
-            get { return udcASPNetDevServerPort.Value.Value; }
-            set { udcASPNetDevServerPort.Value = value; }
+            get => udcASPNetDevServerPort.Value.Value;
+            set => udcASPNetDevServerPort.Value = value;
         }
 
         /// <summary>
@@ -105,8 +105,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool VerboseLogging
         {
-            get { return chkVerboseLogging.IsChecked.Value; }
-            set { chkVerboseLogging.IsChecked = value; }
+            get => chkVerboseLogging.IsChecked.Value;
+            set => chkVerboseLogging.IsChecked = value;
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool UseExternalWebBrowser
         {
-            get { return chkUseExternalBrowser.IsChecked.Value; }
-            set { chkUseExternalBrowser.IsChecked = value; }
+            get => chkUseExternalBrowser.IsChecked.Value;
+            set => chkUseExternalBrowser.IsChecked = value;
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool OpenHelpAfterBuild
         {
-            get { return chkOpenHelpAfterBuild.IsChecked.Value; }
-            set { chkOpenHelpAfterBuild.IsChecked = value; }
+            get => chkOpenHelpAfterBuild.IsChecked.Value;
+            set => chkOpenHelpAfterBuild.IsChecked = value;
         }
 
         /// <summary>
@@ -133,8 +133,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool OpenLogViewerOnFailedBuild
         {
-            get { return chkOpenLogViewerOnFailure.IsChecked.Value; }
-            set { chkOpenLogViewerOnFailure.IsChecked = value; }
+            get => chkOpenLogViewerOnFailure.IsChecked.Value;
+            set => chkOpenLogViewerOnFailure.IsChecked = value;
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool EnableExtendedXmlCommentsCompletion
         {
-            get { return chkEnableExtendedXmlComments.IsChecked.Value; }
-            set { chkEnableExtendedXmlComments.IsChecked = value; }
+            get => chkEnableExtendedXmlComments.IsChecked.Value;
+            set => chkEnableExtendedXmlComments.IsChecked = value;
         }
 
         /// <summary>
@@ -153,8 +153,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool EnableGoToDefinition
         {
-            get { return chkEnableGoToDefinition.IsChecked.Value; }
-            set { chkEnableGoToDefinition.IsChecked = value; }
+            get => chkEnableGoToDefinition.IsChecked.Value;
+            set => chkEnableGoToDefinition.IsChecked = value;
         }
 
         /// <summary>
@@ -162,18 +162,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool EnableCtrlClickGoToDefinition
         {
-            get { return chkEnableCtrlClickGoToDefinition.IsChecked.Value; }
-            set { chkEnableCtrlClickGoToDefinition.IsChecked = value; }
-        }
-
-        /// <summary>
-        /// Related to the above, if enabled, any XML comments <c>cref</c> attribute value will allow Go To
-        /// Definition and tool tip info.
-        /// </summary>
-        public bool EnableGoToDefinitionInCRef
-        {
-            get { return chkEnableGoToDefinitionInCRef.IsChecked.Value; }
-            set { chkEnableGoToDefinitionInCRef.IsChecked = value; }
+            get => chkEnableCtrlClickGoToDefinition.IsChecked.Value;
+            set => chkEnableCtrlClickGoToDefinition.IsChecked = value;
         }
         #endregion
 
@@ -199,27 +189,27 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnSelectMSHCViewer_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog();
-
-            dlg.Title = "Select the MS Help Viewer (.mshc) application";
-            dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
-            dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            dlg.DefaultExt = "exe";
+            var dlg = new OpenFileDialog
+            {
+                Title = "Select the MS Help Viewer (.mshc) application",
+                Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                DefaultExt = "exe"
+            };
 
             if(dlg.ShowDialog() ?? false)
                 txtMSHelpViewerPath.Text = dlg.FileName;
         }
 
         /// <summary>
-        /// Enable or disable the Ctrl+click and <c>cref</c> options based on the overall Go To Definition
+        /// Enable or disable the Ctrl+click option based on the overall Go To Definition
         /// setting.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
         private void chkEnableGoToDefinition_Click(object sender, RoutedEventArgs e)
         {
-            chkEnableCtrlClickGoToDefinition.IsEnabled = chkEnableGoToDefinitionInCRef.IsEnabled =
-                chkEnableGoToDefinition.IsChecked.Value;
+            chkEnableCtrlClickGoToDefinition.IsEnabled = chkEnableGoToDefinition.IsChecked.Value;
         }
 
         /// <summary>

@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionCommandTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2015-2018, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to enable the Go To Definition context menu command in XML comments and MAML
 // files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -45,9 +45,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private IWpfTextView textView;
-        private GoToDefinitionTextViewCreationListener provider;
-        private bool enableInCRef, goToDefInvoked, isCodeFile;
+        private readonly IWpfTextView textView;
+        private readonly GoToDefinitionTextViewCreationListener provider;
+        private readonly bool isCodeFile;
+        private bool goToDefInvoked;
 
         #endregion
 
@@ -69,14 +70,12 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// </summary>
         /// <param name="textView">The text view to use</param>
         /// <param name="provider">The service provider to use</param>
-        /// <param name="enableInCRef">True to enable in <c>cref</c> targets, false if not</param>
         /// <param name="isCodeFile">True if this is a code file, false if not</param>
         public GoToDefinitionCommandTarget(IWpfTextView textView, GoToDefinitionTextViewCreationListener provider,
-          bool enableInCRef, bool isCodeFile)
+          bool isCodeFile)
         {
             this.textView = textView;
             this.provider = provider;
-            this.enableInCRef = enableInCRef;
             this.isCodeFile = isCodeFile;
         }
         #endregion
@@ -151,8 +150,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 // an endless loop as it will try to invoke ours first.
                 goToDefInvoked = true;
 
-                string definitionType;
-
                 var pos = textView.Caret.Position.BufferPosition;
                 var buffer = pos.Snapshot.TextBuffer;
                 var nav = provider.TextStructureNavigatorSelectorService.GetTextStructureNavigator(buffer);
@@ -163,7 +160,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     var line = pos.GetContainingLine();
                     var aggregator = provider.ClassifierAggregatorService.GetClassifier(buffer);
                     var identifierSpan = ProcessSpans(pos, aggregator.GetClassificationSpans(
-                        new SnapshotSpan(line.Start, line.End)), out definitionType);
+                        new SnapshotSpan(line.Start, line.End)), out string definitionType);
 
                     if(identifierSpan != null)
                     {
@@ -300,10 +297,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         // in the "tag".
                         attrName = classification.Span.GetText();
 
-                        // If it contains "cref", ten next XML doc attribute value will be the target
-                        if(attrName.IndexOf("cref=", StringComparison.Ordinal) != -1 && enableInCRef)
-                            attrName = "cref";
-
                         // As above, for conceptualLink, the next XML doc attribute will be the target
                         if(attrName.StartsWith("<conceptualLink", StringComparison.Ordinal))
                             attrName = "conceptualLink";
@@ -314,14 +307,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         break;
 
                     case "xml doc attribute":
-                        if((attrName == "cref" || attrName == "conceptualLink") &&
-                          classification.Span.Contains(cursorPos) && classification.Span.Length > 2)
+                        if(attrName == "conceptualLink" && classification.Span.Contains(cursorPos) &&
+                          classification.Span.Length > 2)
                         {
                             // Drop the quotes from the span
                             var span = new SnapshotSpan(classification.Span.Snapshot, classification.Span.Start + 1,
                                 classification.Span.Length - 2);
 
-                            definitionType = (attrName == "cref") ? "codeEntityReference" : "conceptualLink";
+                            definitionType = "conceptualLink";
                             return span;
                         }
                         break;
@@ -341,18 +334,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         break;
 
                     case "xml doc comment - attribute name":
-                        attrName = classification.Span.GetText().Trim();
-                        identifier = null;
-
-                        if(attrName == "cref" && !enableInCRef)
-                            attrName = null;
+                        attrName = identifier = null;
                         break;
 
                     case "xml doc comment - attribute value":
-                        if((attrName == "cref" || (elementName == "conceptualLink" && attrName == "target")) &&
+                        if(elementName == "conceptualLink" && attrName == "target" &&
                           classification.Span.Contains(cursorPos) && classification.Span.Length > 1)
                         {
-                            definitionType = (attrName == "cref") ? "codeEntityReference" : "conceptualLink";
+                            definitionType = "conceptualLink";
                             return classification.Span;
                         }
                         break;
@@ -418,39 +407,22 @@ namespace SandcastleBuilder.Package.GoToDefinition
             switch(definitionType)
             {
                 case "codeEntityReference":
-                    if(!IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn || !isCodeFile ||
-                      (id.Length > 2 && id[1] == ':'))
+                    var entitySearcher = new CodeEntitySearcher(provider.ServiceProvider);
+
+                    if(!entitySearcher.GotoDefinitionFor(id))
                     {
-                        var entitySearcher = new CodeEntitySearcher(provider.ServiceProvider);
+                        Guid clsid = Guid.Empty;
 
-                        if(!entitySearcher.GotoDefinitionFor(id))
-                        {
-                            Guid clsid = Guid.Empty;
-                            int result;
-                            var uiShell = provider.ServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+                        if(provider.ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell uiShell)
+                            uiShell.ShowMessageBox(0, ref clsid, "Unable to navigate to XML comments member " +
+                                "definition.", String.Format(CultureInfo.CurrentCulture, "Member ID: {0}\r\n\r\n" +
+                                "If valid, the most likely cause is that it is not a member of a C# project " +
+                                "within the current solution.  Navigating to members in non-C# projects and " +
+                                ".NET Framework or reference assemblies is not supported.", id), String.Empty, 0,
+                                OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
+                                OLEMSGICON.OLEMSGICON_INFO, 0, out int result);
 
-                            if(uiShell != null)
-                                uiShell.ShowMessageBox(0, ref clsid, "Unable to navigate to XML comments member " +
-                                    "definition.", String.Format(CultureInfo.CurrentCulture, "Member ID: {0}\r\n\r\n" +
-                                    "If valid, the most likely cause is that it is not a member of a C# project " +
-                                    "within the current solution.  Navigating to members in non-C# projects and " +
-                                    ".NET Framework or reference assemblies is not supported.", id), String.Empty, 0,
-                                    OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                                    OLEMSGICON.OLEMSGICON_INFO, 0, out result);
-
-                            System.Diagnostics.Debug.WriteLine("Unable to go to declaration for member ID: " + id);
-                        }
-                    }
-                    else
-                    {
-                        // VS2015 and later do support actual Go To Definition on cref targets in XML comments
-                        Guid cmdGroup = VSConstants.GUID_VSStandardCommandSet97;
-                        var shellCommandDispatcher = provider.ServiceProvider.GetService(
-                            typeof(SUIHostCommandDispatcher)) as IOleCommandTarget;
-
-                        if(shellCommandDispatcher != null)
-                            shellCommandDispatcher.Exec(ref cmdGroup, (uint)VSConstants.VSStd97CmdID.GotoDefn,
-                                (uint)OLECMDEXECOPT.OLECMDEXECOPT_DODEFAULT, System.IntPtr.Zero, System.IntPtr.Zero);
+                        System.Diagnostics.Debug.WriteLine("Unable to go to declaration for member ID: " + id);
                     }
                     break;
 
@@ -472,15 +444,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     if(!projectFileSearcher.OpenFileFor(idType, id))
                     {
                         Guid clsid = Guid.Empty;
-                        int result;
-                        var uiShell = provider.ServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
 
-                        if(uiShell != null)
+                        if(provider.ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell uiShell)
                             uiShell.ShowMessageBox(0, ref clsid, "Unable to open file for element target.",
                                 String.Format(CultureInfo.CurrentCulture, "Type: {0}\r\nID: {1}\r\n\r\nIf " +
                                 "valid, it may not be a part of a help file builder project within this " +
                                 "solution.", definitionType, id), String.Empty, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO, 0, out result);
+                                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO, 0, out int result);
 
                         System.Diagnostics.Debug.WriteLine("Unable to go to open file for ID '{0}' ({1}): ", id,
                             definitionType);

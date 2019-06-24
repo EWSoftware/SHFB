@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionTextViewCreationListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/10/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to connect the Go To Definition command filter to the text view adapters
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -45,7 +45,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         //=====================================================================
 
         [Import]
-        private IVsEditorAdaptersFactoryService editorAdaptersFactoryService = null;
+        private readonly IVsEditorAdaptersFactoryService editorAdaptersFactoryService = null;
 
         [Import]
         internal SVsServiceProvider ServiceProvider { get; set; }
@@ -64,9 +64,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <inheritdoc />
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            GoToDefinitionCommandTarget filter;
-            IOleCommandTarget nextTarget;
-
             var options = new MefProviderOptions(ServiceProvider);
 
             if(options.EnableGoToDefinition)
@@ -75,10 +72,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                 if(textView != null)
                 {
-                    filter = new GoToDefinitionCommandTarget(textView, this, options.EnableGoToDefinitionInCRef,
+                    var filter = new GoToDefinitionCommandTarget(textView, this,
                         !textView.TextBuffer.ContentType.IsOfType("xml"));
 
-                    if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out nextTarget)))
+                    if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out IOleCommandTarget nextTarget)))
                     {
                         filter.NextTarget = nextTarget;
                         textView.Properties.GetOrCreateSingletonProperty(() => filter);

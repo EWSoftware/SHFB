@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MefProviderOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to contain the MEF provider configuration settings
@@ -38,7 +38,7 @@ namespace SandcastleBuilder.Package
         #region Private data members
         //=====================================================================
 
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
 
         private const string CollectionPath = @"SHFB\MEF Provider Options";
 
@@ -68,15 +68,6 @@ namespace SandcastleBuilder.Package
         /// the context menu Go To Definition command (bound to the F12 key by default).</value>
         public bool EnableCtrlClickGoToDefinition { get; set; }
 
-        /// <summary>
-        /// Related to the above, if enabled, any XML comments <c>cref</c> attribute value will allow Go To
-        /// Definition and tool tip info.
-        /// </summary>
-        /// <value>True by default in Visual Studio 2013 and earlier, false by default in Visual Studio 2015 and
-        /// later.  This can be disabled in Visual Studio 2015 since it provides tool tip and Go To Definition
-        /// support for <c>cref</c> attribute values by default.</value>
-        public bool EnableGoToDefinitionInCRef { get; set; }
-
         #endregion
 
         #region Constructor
@@ -87,18 +78,10 @@ namespace SandcastleBuilder.Package
         /// </summary>
         public MefProviderOptions(IServiceProvider serviceProvider)
         {
-            if(serviceProvider == null)
-                throw new ArgumentNullException("serviceProvider");
-
-            this.serviceProvider = serviceProvider;
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
             if(!LoadConfiguration())
-            {
                 EnableExtendedXmlCommentsCompletion = EnableGoToDefinition = EnableCtrlClickGoToDefinition = true;
-
-                // Disable by default for VS 2015 and later as it supports it by default
-                EnableGoToDefinitionInCRef = !IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn;
-            }
         }
         #endregion
 
@@ -122,12 +105,11 @@ namespace SandcastleBuilder.Package
                 if(settingsStore.CollectionExists(CollectionPath))
                 {
                     EnableExtendedXmlCommentsCompletion = settingsStore.GetBoolean(CollectionPath,
-                        "EnableExtendedXmlCommentsCompletion", true);
-                    EnableGoToDefinition = settingsStore.GetBoolean(CollectionPath, "EnableGoToDefinition", true);
+                        nameof(EnableExtendedXmlCommentsCompletion), true);
+                    EnableGoToDefinition = settingsStore.GetBoolean(CollectionPath,
+                        nameof(EnableGoToDefinition), true);
                     EnableCtrlClickGoToDefinition = settingsStore.GetBoolean(CollectionPath,
-                        "EnableCtrlClickGoToDefinition", true);
-                    EnableGoToDefinitionInCRef = settingsStore.GetBoolean(CollectionPath,
-                        "EnableGoToDefinitionInCRef", !IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn);
+                        nameof(EnableCtrlClickGoToDefinition), true);
                     success = true;
                 }
             }
@@ -156,12 +138,11 @@ namespace SandcastleBuilder.Package
                 if(!settingsStore.CollectionExists(CollectionPath))
                     settingsStore.CreateCollection(CollectionPath);
 
-                settingsStore.SetBoolean(CollectionPath, "EnableExtendedXmlCommentsCompletion",
+                settingsStore.SetBoolean(CollectionPath, nameof(EnableExtendedXmlCommentsCompletion),
                     EnableExtendedXmlCommentsCompletion);
-                settingsStore.SetBoolean(CollectionPath, "EnableGoToDefinition", EnableGoToDefinition);
-                settingsStore.SetBoolean(CollectionPath, "EnableCtrlClickGoToDefinition",
+                settingsStore.SetBoolean(CollectionPath, nameof(EnableGoToDefinition), EnableGoToDefinition);
+                settingsStore.SetBoolean(CollectionPath, nameof(EnableCtrlClickGoToDefinition),
                     EnableCtrlClickGoToDefinition);
-                settingsStore.SetBoolean(CollectionPath, "EnableGoToDefinitionInCRef", EnableGoToDefinitionInCRef);
                 success = true;
             }
             catch(Exception ex)

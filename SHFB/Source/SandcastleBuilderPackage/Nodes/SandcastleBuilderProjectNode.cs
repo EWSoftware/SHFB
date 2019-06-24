@@ -906,14 +906,16 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="config">The configuration to use</param>
         protected internal override void SetConfiguration(string config)
         {
-            base.SetConfiguration(config);
+            if(!String.IsNullOrWhiteSpace(config))
+            {
+                base.SetConfiguration(config);
 
-            var package = (SandcastleBuilderPackage)this.Package;
-            var options = package.GeneralOptions;
+                var package = (SandcastleBuilderPackage)this.Package;
+                var options = package.GeneralOptions;
 
-            if(options != null)
-                this.BuildProject.SetGlobalProperty("Verbose",
-                    options.VerboseLogging.ToString().ToLowerInvariant());
+                if(options != null)
+                    this.BuildProject.SetGlobalProperty("Verbose", options.VerboseLogging.ToString().ToLowerInvariant());
+            }
         }
 
         /// <inheritdoc />

@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : AugmentedCompletionSet.cs
 // Author  : Sam Harwell  (sam@tunnelvisionlabs.com)
-// Updated : 03/21/2014
-// Note    : Copyright 2014, Sam Harwell, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2014-2019, Sam Harwell, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a custom completion set that merges two separate instance into one
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 using Microsoft.VisualStudio.Language.Intellisense;
 
@@ -69,15 +68,9 @@ namespace SandcastleBuilder.Package.IntelliSense
         public AugmentedCompletionSet(ICompletionSession session, CompletionSet source, CompletionSet secondSource) :
             base(source.Moniker, source.DisplayName, source.ApplicableTo, source.Completions, source.CompletionBuilders)
         {
-            if(source == null)
-                throw new ArgumentNullException("source");
-
-            if(secondSource == null)
-                throw new ArgumentNullException("secondSource");
-
             _session = session;
-            _source = source;
-            _secondSource = secondSource;
+            _source = source ?? throw new ArgumentNullException(nameof(source));
+            _secondSource = secondSource ?? throw new ArgumentNullException(nameof(secondSource));
             UpdateCompletionLists();
             _source.SelectionStatusChanged += HandleUnderlyingSelectionStatusChanged;
             _secondSource.SelectionStatusChanged += HandleUnderlyingSelectionStatusChanged;
@@ -153,22 +146,10 @@ namespace SandcastleBuilder.Package.IntelliSense
         }
 
         /// <inheritdoc />
-        public override IList<Completion> Completions
-        {
-            get
-            {
-                return _completions;
-            }
-        }
+        public override IList<Completion> Completions => _completions;
 
         /// <inheritdoc />
-        public override IList<Completion> CompletionBuilders
-        {
-            get
-            {
-                return _completionBuilders;
-            }
-        }
+        public override IList<Completion> CompletionBuilders => _completionBuilders;
 
         /// <inheritdoc />
         /// <remarks>This method calls <see cref="Filter"/> on each of the underlying completion sets, and then
@@ -301,7 +282,7 @@ namespace SandcastleBuilder.Package.IntelliSense
                 else
                     base.SelectBestMatch();
 
-            if (!_calculatedBestMatch && _session != null && RoslynHacks.RoslynUtilities.IsFinalRoslyn)
+            if (!_calculatedBestMatch && _session != null)
             {
                 // Roslyn doesn't automatically commit a selected unique item when Ctrl+Space is pressed. This block
                 // triggers the completion manually in this case, but only if the selection is unique at the time
@@ -329,14 +310,10 @@ namespace SandcastleBuilder.Package.IntelliSense
         {
             if(disposing)
             {
-                IDisposable sourceDisposable = _source as IDisposable;
-
-                if(sourceDisposable != null)
+                if(_source is IDisposable sourceDisposable)
                     sourceDisposable.Dispose();
 
-                IDisposable secondSourceDisposable = _secondSource as IDisposable;
-
-                if(secondSourceDisposable != null)
+                if(_secondSource is IDisposable secondSourceDisposable)
                     secondSourceDisposable.Dispose();
             }
         }

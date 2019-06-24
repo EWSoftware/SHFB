@@ -4,6 +4,7 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
     using Microsoft.VisualStudio.Editor;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.TextManager.Interop;
     using Microsoft.VisualStudio.Utilities;
@@ -18,7 +19,8 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
         private readonly ICompletionBroker _completionBroker;
 
         [ImportingConstructor]
-        public RoslynTextViewCreationListener(SVsServiceProvider serviceProvider, IVsEditorAdaptersFactoryService editorAdaptersFactoryService, ICompletionBroker completionBroker)
+        public RoslynTextViewCreationListener(SVsServiceProvider serviceProvider,
+          IVsEditorAdaptersFactoryService editorAdaptersFactoryService, ICompletionBroker completionBroker)
         {
             _serviceProvider = serviceProvider;
             _editorAdaptersFactoryService = editorAdaptersFactoryService;
@@ -27,22 +29,25 @@ namespace SandcastleBuilder.Package.IntelliSense.RoslynHacks
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            var options = new MefProviderOptions(_serviceProvider);
-
-            // only hook when necessary
 #pragma warning disable VSTHRD010
-            if((!RoslynUtilities.IsRoslynInstalled(_serviceProvider) ?? true) || !options.EnableExtendedXmlCommentsCompletion)
-                return;
+            // Disable this in VS 2019 for now as it causes problems and non-async completions aren't supported
+            // anyway.
+            if(typeof(ITextBuffer).Assembly.GetName().Version.Major < 16)
+            {
+                var options = new MefProviderOptions(_serviceProvider);
+
+                if(options.EnableExtendedXmlCommentsCompletion)
+                {
+                    ITextView textView = _editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
+
+                    if(textView != null)
+                    {
+                        textView.Properties.AddProperty(typeof(RoslynKeyboardFilter),
+                            new RoslynKeyboardFilter(_completionBroker, textViewAdapter, textView) { Enabled = true });
+                    }
+                }
+            }
 #pragma warning restore VSTHRD010
-
-            ITextView textView = _editorAdaptersFactoryService.GetWpfTextView(textViewAdapter);
-
-            if(textView == null)
-                return;
-
-            RoslynKeyboardFilter filter = new RoslynKeyboardFilter(_completionBroker, textViewAdapter, textView);
-            filter.Enabled = true;
-            textView.Properties.AddProperty(typeof(RoslynKeyboardFilter), filter);
         }
     }
 }

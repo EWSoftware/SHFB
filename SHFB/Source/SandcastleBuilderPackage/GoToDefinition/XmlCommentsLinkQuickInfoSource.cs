@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
+// Updated : 06/19/2019
+// Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that determines whether or not quick info should be shown for specific XML
 // comments elements and what is should contain.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -43,10 +43,11 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private SVsServiceProvider serviceProvider;
-        private ITextBuffer textBuffer;
-        private XmlCommentsLinkQuickInfoSourceProvider provider;
-        private bool ctrlClickEnabled, enableInCRef;
+        private readonly SVsServiceProvider serviceProvider;
+        private readonly ITextBuffer textBuffer;
+        private readonly XmlCommentsLinkQuickInfoSourceProvider provider;
+        private readonly bool ctrlClickEnabled;
+
         #endregion
 
         #region Constructor
@@ -59,15 +60,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <param name="buffer">The buffer to use</param>
         /// <param name="provider">The quick info source provider to use</param>
         /// <param name="ctrlClickEnabled">True if Ctrl+Click on definition is enabled, false if not</param>
-        /// <param name="enableInCRef">True to enable in <c>cref</c> targets, false if not</param>
         public XmlCommentsLinkQuickInfoSource(SVsServiceProvider serviceProvider, ITextBuffer buffer,
-          XmlCommentsLinkQuickInfoSourceProvider provider, bool ctrlClickEnabled, bool enableInCRef)
+          XmlCommentsLinkQuickInfoSourceProvider provider, bool ctrlClickEnabled)
         {
             this.serviceProvider = serviceProvider;
             this.textBuffer = buffer;
             this.provider = provider;
             this.ctrlClickEnabled = ctrlClickEnabled;
-            this.enableInCRef = enableInCRef;
         }
         #endregion
 
@@ -114,10 +113,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             // in the "tag".
                             attrName = tagSpan.GetText();
 
-                            // If it contains "cref", ten next XML doc attribute value will be the target
-                            if(attrName.IndexOf("cref=", StringComparison.Ordinal) != -1 && enableInCRef)
-                                attrName = "cref";
-
                             // As above, for conceptualLink, the next XML doc attribute will be the target
                             if(attrName.StartsWith("<conceptualLink", StringComparison.Ordinal))
                                 attrName = "conceptualLink";
@@ -128,12 +123,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             break;
 
                         case "xml doc attribute":
-                            if((attrName == "cref" || attrName == "conceptualLink") &&
-                              tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 2)
+                            if(attrName == "conceptualLink" && tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 2)
                             {
                                 // Drop the quotes from the span
-                                var span = new SnapshotSpan(tagSpan.Snapshot, tagSpan.Start + 1,
-                                    tagSpan.Length - 2);
+                                var span = new SnapshotSpan(tagSpan.Snapshot, tagSpan.Start + 1, tagSpan.Length - 2);
 
 #pragma warning disable VSTHRD010
                                 content = this.CreateInfoText(attrName, span.GetText());
@@ -174,19 +167,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             break;
 
                         case "xml doc comment - attribute name":
-                            attrName = tagSpan.GetText().Trim();
-                            identifier = null;
-
-                            if(attrName == "cref" && !enableInCRef)
-                                attrName = null;
+                            attrName = identifier = null;
                             break;
 
                         case "xml doc comment - attribute value":
-                            if((attrName == "cref" || (elementName == "conceptualLink" && attrName == "target")) &&
+                            if(elementName == "conceptualLink" && attrName == "target" &&
                               tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 1)
                             {
-                                content = this.CreateInfoText((attrName == "cref") ? attrName : elementName,
-                                    tagSpan.GetText());
+                                content = this.CreateInfoText(elementName, tagSpan.GetText());
 
                                 if(content != null)
                                 {
@@ -305,16 +293,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             new LineBreak(),
                             new Run("Ctrl+Click to open the file")
                         });
-                    break;
-
-                case "cref":
-                    if(!ctrlClickEnabled)
-                        return null;
-
-                    if(!IntelliSense.RoslynHacks.RoslynUtilities.IsFinalRoslyn)
-                        textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition (within solution only)"));
-                    else
-                        textBlock.Inlines.Add(new Run("Ctrl+Click to go to definition"));
                     break;
 
                 default:

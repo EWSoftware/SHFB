@@ -3740,7 +3740,7 @@ namespace Microsoft.VisualStudio.Project
             }
 
             // Can't ask for the active config until the project is opened, so do nothing in that scenario
-            if (!projectOpened)
+            if (!projectOpened || String.IsNullOrWhiteSpace(config))
                 return;
 
             // We cannot change properties during the build so if the config
@@ -6142,6 +6142,10 @@ namespace Microsoft.VisualStudio.Project
             {
                 // Get properties from project file and cache it
                 this.SetCurrentConfiguration();
+
+                if(this.buildProject == null)
+                    return null;
+
                 this.currentConfig = this.buildProject.CreateProjectInstance();
             }
 

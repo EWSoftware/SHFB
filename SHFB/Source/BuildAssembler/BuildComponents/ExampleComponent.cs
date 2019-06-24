@@ -10,6 +10,9 @@
 // 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 // 02/27/2014 - EFW - Removed leading blank lines and trailing whitespace to get rid of excess whitespace in the
 // resulting code sections.
+// 06/23/2019 - EFW - Added support for colorizing multi-snippet references
+
+// Ignore Spelling: Regex ddue
 
 using System;
 using System.Collections.Generic;
@@ -93,8 +96,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
             try
             {
-                XmlReaderSettings settings = new XmlReaderSettings();
-                settings.CheckCharacters = false;
+                XmlReaderSettings settings = new XmlReaderSettings { CheckCharacters = false };
                 XmlReader reader = XmlReader.Create(file, settings);
 
                 try
@@ -125,9 +127,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             content = StripLeadingSpaces(content);
 
                             StoredSnippet snippet = new StoredSnippet(content, language);
-                            List<StoredSnippet> values;
 
-                            if(!snippets.TryGetValue(key, out values))
+                            if(!snippets.TryGetValue(key, out List<StoredSnippet> values))
                             {
                                 values = new List<StoredSnippet>();
                                 snippets.Add(key, values);
@@ -262,7 +263,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private static string StripLeadingSpaces(string text)
         {
             if(text == null)
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
 
             // Remove trailing whitespace and split the text into lines
             string[] lines = text.TrimEnd(new[] { ' ', '\t', '\r', '\n' }).Split('\n');
@@ -395,9 +396,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         // one snippet referenced
 
                         SnippetIdentifier identifier = identifiers.First();
-                        List<StoredSnippet> values;
 
-                        if(snippets.TryGetValue(identifier, out values))
+                        if(snippets.TryGetValue(identifier, out List<StoredSnippet> values))
                         {
 
                             XmlWriter writer = node.InsertAfter();
@@ -432,14 +432,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                         foreach(SnippetIdentifier identifier in identifiers)
                         {
-                            List<StoredSnippet> values;
-
-                            if(snippets.TryGetValue(identifier, out values))
+                            if(snippets.TryGetValue(identifier, out List<StoredSnippet> values))
                             {
                                 foreach(StoredSnippet value in values)
                                 {
-                                    List<StoredSnippet> pieces;
-                                    if(!map.TryGetValue(value.Language, out pieces))
+                                    if(!map.TryGetValue(value.Language, out List<StoredSnippet> pieces))
                                     {
                                         pieces = new List<StoredSnippet>();
                                         map.Add(value.Language, pieces);
@@ -458,13 +455,20 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             writer.WriteStartElement("snippet");
                             writer.WriteAttributeString("language", entry.Key);
 
+                            if(!colorization.TryGetValue(entry.Key, out List<ColorizationRule> rules))
+                                rules = null;
+
                             List<StoredSnippet> values = entry.Value;
+
                             for(int i = 0; i < values.Count; i++)
                             {
                                 if(i > 0)
                                     writer.WriteString("\n\n...\n\n");
 
-                                writer.WriteString(values[i].Text);
+                                if(rules != null)
+                                    WriteColorizedSnippet(ColorizeSnippet(values[i].Text, rules), writer);
+                                else
+                                    writer.WriteString(values[i].Text);
                             }
 
                             writer.WriteEndElement();
