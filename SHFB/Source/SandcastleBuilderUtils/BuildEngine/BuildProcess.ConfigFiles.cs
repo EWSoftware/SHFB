@@ -63,7 +63,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // Add excluded namespaces
             foreach(NamespaceSummaryItem ns in project.NamespaceSummaries)
-                if(!ns.IsDocumented)
+                if(!ns.IsDocumented && !ns.IsGroup)
                 {
                     memberName = ns.Name;
 

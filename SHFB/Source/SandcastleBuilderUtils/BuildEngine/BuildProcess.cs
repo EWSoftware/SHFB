@@ -1016,9 +1016,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 reflectionFile = workingFolder + "reflection.xml";
 
                 // If there is nothing to document, stop the build
-                if(!ComponentUtilities.XmlStreamAxis(reflectionFile, "api").Any())
+                var firstNodes = ComponentUtilities.XmlStreamAxis(reflectionFile, "api").Take(2).ToList();
+
+                if(firstNodes.Count == 0 || (firstNodes.Count == 1 && (firstNodes[0].Attribute("id").Value.StartsWith(
+                  "R:", StringComparison.Ordinal) || firstNodes[0].Attribute("id").Value.StartsWith("G:",
+                  StringComparison.Ordinal))))
+                {
                     throw new BuilderException("BE0033", "No APIs found to document.  See error topic in " +
                         "help file for details.");
+                }
 
                 // Generate namespace summary information
                 this.GenerateNamespaceSummaries();

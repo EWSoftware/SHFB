@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
+// Updated : 07/26/2019
+// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an API entry that is to be removed from the reflection information
@@ -37,11 +37,8 @@ namespace SandcastleBuilder.Utils
         #region Private data members
         //=====================================================================
 
-        private ApiEntryType entryType;
-        private string fullName, filterName;
-        private bool isExposed, isProjectExclude;
+        private string filterName;
 
-        private ApiFilterCollection children;
         #endregion
 
         #region Properties
@@ -50,20 +47,12 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the API entry type
         /// </summary>
-        public ApiEntryType EntryType
-        {
-            get { return entryType; }
-            set { entryType = value; }
-        }
+        public ApiEntryType EntryType { get; set; }
 
         /// <summary>
         /// This is used to get the fully qualified name of the API entry
         /// </summary>
-        public string FullName
-        {
-            get { return fullName; }
-            set { fullName = value; }
-        }
+        public string FullName { get; set; }
 
         /// <summary>
         /// This is used to get the API filter name
@@ -72,7 +61,7 @@ namespace SandcastleBuilder.Utils
         /// methods properties, etc. the type.</value>
         public string FilterName
         {
-            get { return filterName; }
+            get => filterName;
             set
             {
                 if(value == null)
@@ -84,7 +73,7 @@ namespace SandcastleBuilder.Utils
                 // There shouldn't be any parameter info as the ripping feature doesn't support it
                 if(filterName.IndexOf('(') != -1 || filterName.IndexOf("``", StringComparison.Ordinal) != -1)
                     throw new ArgumentException("Filter name contains parameter information which isn't supported",
-                        "value");
+                        nameof(value));
 #endif
             }
         }
@@ -92,31 +81,21 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set whether or not the entry is exposed
         /// </summary>
-        public bool IsExposed
-        {
-            get { return isExposed; }
-            set { isExposed = value; }
-        }
+        public bool IsExposed { get; set; }
 
         /// <summary>
         /// This is used to get or set whether or not the entry is excluded via the project (i.e. via the SHFB
         /// Namespaces option or an <c>&lt;exclude /&gt;</c> tag.
         /// </summary>
-        public bool IsProjectExclude
-        {
-            get { return isProjectExclude; }
-            set { isProjectExclude = value; }
-        }
+        public bool IsProjectExclude { get; set; }
 
         /// <summary>
         /// This returns the child API filter collection for this entry
         /// </summary>
         /// <value>For namespaces and types, if there are children, they represent the specific entries within
         /// the namespace or type to hide or expose.</value>
-        public ApiFilterCollection Children
-        {
-            get { return children; }
-        }
+        public ApiFilterCollection Children { get; } = new ApiFilterCollection();
+
         #endregion
 
         #region IComparable<ApiFilter> Members
@@ -137,12 +116,14 @@ namespace SandcastleBuilder.Utils
                 return 1;
 
             // For types, treat them as equal and sort by name
-            if(entryType < ApiEntryType.Class || entryType > ApiEntryType.Delegate ||
+            if(this.EntryType < ApiEntryType.Class || this.EntryType > ApiEntryType.Delegate ||
               other.EntryType < ApiEntryType.Class || other.EntryType > ApiEntryType.Delegate)
-                result = (int)entryType - (int)other.EntryType;
+            {
+                result = (int)this.EntryType - (int)other.EntryType;
+            }
 
             if(result == 0)
-                result = String.Compare(fullName, other.FullName, StringComparison.CurrentCulture);
+                result = String.Compare(this.FullName, other.FullName, StringComparison.CurrentCulture);
 
             return result;
         }
@@ -157,8 +138,7 @@ namespace SandcastleBuilder.Utils
         /// <overloads>There are two overloads for the constructor</overloads>
         internal ApiFilter()
         {
-            children = new ApiFilterCollection();
-            isExposed = true;
+            this.IsExposed = true;
         }
 
         /// <summary>
@@ -174,14 +154,14 @@ namespace SandcastleBuilder.Utils
             if(name == null)
                 name = String.Empty;
 
-            entryType = apiType;
-            fullName = name;
-            isExposed = exposed;
+            this.EntryType = apiType;
+            this.FullName = name;
+            this.IsExposed = exposed;
 
             // By default, we'll use the last part as the filter name unless it's a namespace
             pos = name.LastIndexOf('.');
 
-            if(entryType == ApiEntryType.Namespace || pos == -1)
+            if(this.EntryType == ApiEntryType.Namespace || pos == -1)
                 this.FilterName = name;
             else
                 this.FilterName = name.Substring(pos + 1);
@@ -201,9 +181,9 @@ namespace SandcastleBuilder.Utils
             string endTag = null;
 
             // Invalid entries are ignored
-            if(entryType != ApiEntryType.None)
+            if(this.EntryType != ApiEntryType.None)
             {
-                switch(entryType)
+                switch(this.EntryType)
                 {
                     case ApiEntryType.Namespace:
                         sb.Append("  <namespace name=\"");
@@ -226,15 +206,15 @@ namespace SandcastleBuilder.Utils
 
                 sb.Append(HttpUtility.HtmlEncode(filterName));
 
-                sb.AppendFormat("\" expose=\"{0}\"", isExposed.ToString().ToLowerInvariant());
+                sb.AppendFormat("\" expose=\"{0}\"", this.IsExposed.ToString().ToLowerInvariant());
 
-                if(children.Count == 0)
+                if(this.Children.Count == 0)
                     sb.Append("/>\r\n");
                 else
                 {
                     sb.Append(">\r\n");
 
-                    foreach(ApiFilter child in children)
+                    foreach(ApiFilter child in this.Children)
                         child.ConvertToString(sb);
 
                     sb.Append(endTag);
@@ -263,7 +243,7 @@ namespace SandcastleBuilder.Utils
             if(!String.IsNullOrEmpty(attrValue))
                 this.FilterName = attrValue;
             else
-                this.FilterName = fullName;
+                this.FilterName = this.FullName;
 
             this.IsExposed = Convert.ToBoolean(xr.GetAttribute("isExposed"), CultureInfo.InvariantCulture);
 
@@ -291,16 +271,16 @@ namespace SandcastleBuilder.Utils
         internal void ToXml(XmlTextWriter xw)
         {
             xw.WriteStartElement("Filter");
-            xw.WriteAttributeString("entryType", entryType.ToString());
-            xw.WriteAttributeString("fullName", fullName);
+            xw.WriteAttributeString("entryType", this.EntryType.ToString());
+            xw.WriteAttributeString("fullName", this.FullName);
 
-            if(filterName != fullName)
+            if(filterName != this.FullName)
                 xw.WriteAttributeString("filterName", filterName);
 
-            xw.WriteAttributeString("isExposed", isExposed.ToString());
+            xw.WriteAttributeString("isExposed", this.IsExposed.ToString());
 
-            if(children.Count != 0)
-                foreach(ApiFilter filter in children)
+            if(this.Children.Count != 0)
+                foreach(ApiFilter filter in this.Children)
                     filter.ToXml(xw);
 
             xw.WriteEndElement();

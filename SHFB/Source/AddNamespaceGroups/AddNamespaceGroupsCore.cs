@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroupsCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/28/2015
-// Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
+// Updated : 07/26/2019
+// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This utility is used to add namespace groups to a reflection data file.  The namespace groups can be used to
@@ -19,6 +19,8 @@
 // 12/07/2013  EFW  Created the code
 // 03/12/2014  EFW  Updated to merge sub-groups into the parent if they are the only child of the parent group
 //===============================================================================================================
+
+// Ignore Spelling: api apidata apis topicdata xmlns
 
 using System;
 using System.Collections.Generic;
@@ -48,8 +50,6 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         private class NamespaceGroup
         {
-            private List<string> children;
-
             /// <summary>
             /// This is used to get or set the namespace name
             /// </summary>
@@ -59,18 +59,7 @@ namespace Microsoft.Ddue.Tools
             /// This read-only property returns a list of the child namespaces if this is a group
             /// </summary>
             /// <remarks>If empty, this is a normal namespace entry</remarks>
-            public List<string> Children
-            {
-                get { return children; }
-            }
-
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            public NamespaceGroup()
-            {
-                children = new List<string>();
-            }
+            public List<string> Children { get; } = new List<string>();
         }
         #endregion
 
@@ -167,9 +156,11 @@ namespace Microsoft.Ddue.Tools
             {
                 XPathDocument source = new XPathDocument(result.UnusedArguments[0]);
 
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.CloseOutput = result.Options["out"].IsPresent;
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    CloseOutput = result.Options["out"].IsPresent
+                };
 
                 using(XmlWriter xw = XmlWriter.Create(output, settings))
                 {
@@ -343,7 +334,6 @@ namespace Microsoft.Ddue.Tools
           bool hasRootNamespaceContainer)
         {
             Dictionary<string, NamespaceGroup> groups = new Dictionary<string, NamespaceGroup>();
-            NamespaceGroup match;
             string[] parts;
             string root;
             int partCount;
@@ -372,9 +362,11 @@ namespace Microsoft.Ddue.Tools
                 // Create a new group to represent the namespace if there are child namespaces and it is not
                 // there already.  A group is only created if it will contain more than one namespace. Namespaces
                 // without any children will end up in their parent as a standard namespace entry.
-                if(root.Length > 2 && !groups.ContainsKey(root) &&
-                  namespaces.Count(n => n.StartsWith(root, StringComparison.Ordinal)) > 1)
+                if(root.Length > 2 && !groups.ContainsKey(root) && namespaces.Count(n => n.StartsWith(root,
+                  StringComparison.Ordinal)) > 1)
+                {
                     groups.Add(root, new NamespaceGroup { Namespace = root });
+                }
             }
 
             // Now place the namespaces in the appropriate group.  Include the group keys as they may not be
@@ -392,7 +384,7 @@ namespace Microsoft.Ddue.Tools
                     else
                         root = String.Join(".", parts, 0, partCount);
 
-                    if(groups.TryGetValue(root, out match))
+                    if(groups.TryGetValue(root, out NamespaceGroup match))
                     {
                         match.Children.Add(space);
                         break;
@@ -436,7 +428,11 @@ namespace Microsoft.Ddue.Tools
                 }
 
             var rootGroup = groups[String.Empty];
-            root = "N" + rootGroup.Children[0].Substring(1);
+
+            if(rootGroup.Children.Count != 0)
+                root = "N" + rootGroup.Children[0].Substring(1);
+            else
+                root = "N:";
 
             if(groups.Count > 1 && rootGroup.Children.Count == 1 && hasRootNamespaceContainer)
             {
