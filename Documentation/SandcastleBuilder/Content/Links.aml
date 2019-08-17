@@ -163,7 +163,7 @@ them, and request help using it, visit the <token>SHFB</token> project site.</pa
 					<listItem>
 						<para>For discussion and questions about help systems in general, visit the <externalLink>
 <linkText>Visual Studio General Questions forum</linkText>
-<linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
+<linkUri>https://social.msdn.microsoft.com/Forums/vstudio/en-US/home?forum=visualstudiogeneral</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink>.</para>
 					</listItem>
@@ -171,7 +171,7 @@ them, and request help using it, visit the <token>SHFB</token> project site.</pa
 					<listItem>
 						<para>The retired <externalLink>
 <linkText>Microsoft Developer Documentation and Help System forum</linkText>
-<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+<linkUri>https://social.msdn.microsoft.com/Forums/en-US/home?forum=devdocs</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink> may also provide information on older help systems.</para>
 					</listItem>

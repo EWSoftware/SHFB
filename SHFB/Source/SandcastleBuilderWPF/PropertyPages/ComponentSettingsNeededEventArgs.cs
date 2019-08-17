@@ -18,6 +18,7 @@
 // 11/07/2017  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.WPF.PropertyPages
@@ -25,7 +26,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
     /// <summary>
     /// This is used to request the current build component or plug-in settings from the current project
     /// </summary>
-    public class ComponentSettingsNeededEventArgs
+    public class ComponentSettingsNeededEventArgs : EventArgs
     {
         /// <summary>
         /// This is used to get or set whether or not a project is loaded

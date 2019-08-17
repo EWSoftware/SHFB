@@ -2,10 +2,10 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/26/2016
+// Updated : 08/15/2019
 // Compiler: Microsoft Visual C#
 //
-// This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
+// This is a version of the ResolveReferenceLinksComponent that stores the member ID URLs and the framework
 // targets in persistent SQL database tables.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -40,7 +40,7 @@ using SandcastleBuilder.Components.UI;
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This is a version of the <c>ResolveReferenceLinksComponent</c> that stores the MSDN content IDs and the
+    /// This is a version of the <c>ResolveReferenceLinksComponent</c> that stores the member ID URLs and the
     /// framework targets in persistent SQL databases.
     /// </summary>
     public class SqlResolveReferenceLinksComponent : ResolveReferenceLinksComponent
@@ -54,7 +54,7 @@ namespace SandcastleBuilder.Components
         [BuildComponentExport("Resolve Reference Links (SQL Cache)", IsVisible = true, IsConfigurable = true,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This component is used to resolve reference links in topics.  It uses a Microsoft " +
-            "SQL Server database to cache MSDN content IDs and .NET Framework reference link targets.  This " +
+            "SQL Server database to cache member ID URLs and .NET Framework reference link targets.  This " +
             "speeds up initialization and conserves memory at the expense of some build time in larger " +
             "projects.  For extremely large projects, it is also possible to cache project reference link " +
             "data to conserve memory.\r\n\r\nThis component requires access to a Microsoft SQL Server " +
@@ -80,18 +80,14 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"{@HRefFormat}
+            public override string DefaultConfiguration => @"{@HRefFormat}
 <locale value=""{@Locale}"" />
 <linkTarget value=""{@SdkLinkTarget}"" />
 
 <helpOutput format=""HtmlHelp1"">
-	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+	<sqlCache connectionString="""" urlLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@HtmlSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
@@ -100,9 +96,9 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""MSHelpViewer"">
-	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+	<sqlCache connectionString="""" urlLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@MSHelpViewerSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
@@ -111,9 +107,9 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""Website"">
-	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+	<sqlCache connectionString="""" urlLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@WebsiteSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
@@ -122,9 +118,9 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""OpenXml"">
-	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+	<sqlCache connectionString="""" urlLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@WebsiteSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
@@ -133,17 +129,15 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""Markdown"">
-	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+	<sqlCache connectionString="""" urlLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
 		projectLocalCacheSize=""2500"" cacheProject=""false"" />
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@WebsiteSdkLinkType}"" groupId=""FrameworkTargets"">
 		{@ReferenceLinkNamespaceFiles}
 	</targets>
 	<targets files=""reflection.xml"" type=""Local"" groupId=""Project_{@UniqueID}"" />
 </helpOutput>";
-                }
-            }
 
             /// <inheritdoc />
             public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
@@ -189,29 +183,28 @@ namespace SandcastleBuilder.Components
         }
 
         /// <summary>
-        /// This is overridden to allow use of an SQL backed MSDN content ID cache
+        /// This is overridden to allow use of an SQL backed member ID URL cache
         /// </summary>
         /// <param name="configuration">The component configuration</param>
-        /// <returns>An MSDN resolver instance</returns>
-        protected override MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
+        /// <returns>A member ID URL resolver instance</returns>
+        protected override IMemberIdUrlResolver CreateMemberIdResolver(XPathNavigator configuration)
         {
-            MsdnResolver resolver;
+            IMemberIdUrlResolver resolver;
             IDictionary<string, string> cache = null;
-            int localCacheSize;
 
-            if(BuildComponentCore.Data.ContainsKey(SharedMsdnContentIdCacheId))
-                cache = BuildComponentCore.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
+            if(BuildComponentCore.Data.ContainsKey(SharedMemberUrlCacheId))
+                cache = BuildComponentCore.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
             if(cache != null)
-                return new MsdnResolver(cache, true);
+                return base.CreateMemberIdResolver(cache, true);
 
-            XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
+            XPathNavigator node = configuration.SelectSingleNode("memberIdUrlCache");
 
-            // If a <cache> element is not specified, use the default resolver
+            // If a memberIdUrlCache element is not specified, use the default resolver
             if(node == null)
-                resolver = base.CreateMsdnResolver(configuration);
+                resolver = base.CreateMemberIdResolver(configuration);
             else
             {
                 node = configuration.SelectSingleNode("sqlCache");
@@ -219,32 +212,32 @@ namespace SandcastleBuilder.Components
 
                 // If a connection string is not defined, use the default resolver
                 if(String.IsNullOrWhiteSpace(connectionString))
-                    resolver = base.CreateMsdnResolver(configuration);
+                    resolver = base.CreateMemberIdResolver(configuration);
                 else
                 {
-                    string cacheSize = node.GetAttribute("msdnLocalCacheSize", String.Empty);
+                    string cacheSize = node.GetAttribute("urlLocalCacheSize", String.Empty);
 
-                    if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
+                    if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out int localCacheSize))
                         localCacheSize = 2500;
 
                     // Load or create the cache database and the resolver.  The resolver will dispose of the
                     // dictionary when it is disposed of since it implements IDisposable.
-                    resolver = new MsdnResolver(new SqlDictionary<string>(connectionString, "ContentIds",
-                        "TargetKey", "ContentId") { LocalCacheSize = localCacheSize }, false);
+                    resolver = base.CreateMemberIdResolver(new SqlDictionary<string>(connectionString, "MemberIdUrls",
+                        "TargetKey", "MemberUrl") { LocalCacheSize = localCacheSize }, false);
 
-                    int cacheCount = resolver.MsdnContentIdCache.Count;
+                    int cacheCount = resolver.CachedUrls.Count;
 
                     if(cacheCount == 0)
                     {
                         // Log a diagnostic message since looking up all IDs can significantly slow the build
-                        this.WriteMessage(MessageLevel.Diagnostic, "The SQL MSDN content ID cache in '" +
+                        this.WriteMessage(MessageLevel.Diagnostic, "The SQL member ID URL cache in '" +
                             connectionString + "' does not exist yet.  All IDs will be looked up in this " +
                             "build which will slow it down.");
                     }
                     else
-                        this.WriteMessage(MessageLevel.Info, "{0} cached MSDN content ID entries exist", cacheCount);
+                        this.WriteMessage(MessageLevel.Info, "{0} cached member ID URL entries exist", cacheCount);
 
-                    BuildComponentCore.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
+                    BuildComponentCore.Data[SharedMemberUrlCacheId] = resolver.CachedUrls;
                 }
             }
 
@@ -306,26 +299,24 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is overridden to report the persistent cache information
         /// </summary>
-        public override void UpdateMsdnContentIdCache()
+        public override void UpdateUrlCache()
         {
-            if(this.MsdnResolver != null)
+            if(this.UrlResolver != null)
             {
-                var cache = this.MsdnResolver.MsdnContentIdCache as SqlDictionary<string>;
-
                 // Only report if we own the cache (it won't have been disposed off yet)
-                if(cache != null && !cache.IsDisposed)
+                if(this.UrlResolver.CachedUrls is SqlDictionary<string> cache && !cache.IsDisposed)
                 {
-                    if(MsdnResolver.CacheItemsAdded != 0)
-                        this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the MSDN content ID " +
-                            "cache.  New cache size: {1} entries", MsdnResolver.CacheItemsAdded, cache.Count);
+                    if(this.UrlResolver.CacheItemsAdded != 0)
+                        this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the member ID URL " +
+                            "cache.  New cache size: {1} entries", this.UrlResolver.CacheItemsAdded, cache.Count);
 
-                    this.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID SQL local cache flushed {0} " +
+                    this.WriteMessage(MessageLevel.Diagnostic, "member ID URL SQL local cache flushed {0} " +
                         "time(s).  Current SQL local cache usage: {1} of {2}.", cache.LocalCacheFlushCount,
                         cache.CurrentLocalCacheCount, cache.LocalCacheSize);
                 }
             }
 
-            base.UpdateMsdnContentIdCache();
+            base.UpdateUrlCache();
         }
         #endregion
     }

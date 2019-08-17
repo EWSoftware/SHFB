@@ -35,7 +35,7 @@
 		</Condition>
 
 		<PropertyRef Id="NETFRAMEWORK40FULL"/>
-		<Condition Message="[ProductName] requires .NET Framework 4.0. You can download it here: http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&amp;displaylang=en">
+		<Condition Message="[ProductName] requires .NET Framework 4.0. You can download it here: https://www.microsoft.com/en-us/download/details.aspx?id=17851">
 			<![CDATA[Installed OR NETFRAMEWORK40FULL]]>
 		</Condition>
 

@@ -12,6 +12,7 @@ DEL ..\..\Deploy\NHunSpell.xml
 DEL ..\..\Deploy\SandcastleBuilderGUI.xml
 DEL ..\..\Deploy\SandcastleHtmlExtract.xml
 DEL ..\..\Deploy\SegregateByNamespace.xml
+DEL ..\..\Deploy\System.ValueTuple.xml
 DEL ..\..\Deploy\XslTransform.xml
 DEL /S /Q ..\..\Deploy\*CodeAnalysis*
 DEL ..\..\Deploy\reflection.org

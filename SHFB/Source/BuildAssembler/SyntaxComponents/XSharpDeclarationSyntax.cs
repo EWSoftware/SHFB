@@ -75,7 +75,7 @@ namespace Microsoft.Ddue.Tools
 
             //System.Diagnostics.Debugger.Launch();
             string name = reflection.Evaluate(apiNameExpression).ToString();
-            InFunctionsClass = (string.Compare(name, "Functions", true) == 0);
+            InFunctionsClass = (string.Compare(name, "Functions", StringComparison.OrdinalIgnoreCase) == 0);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
             bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);
@@ -198,8 +198,6 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
-            string name = (string)reflection.Evaluate(apiContainingTypeNameExpression);
             bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
 
             WriteAttributes(reflection, writer);
@@ -214,7 +212,6 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(" ");
             writer.WriteKeyword("CONSTRUCTOR");
             WriteMethodParameters(reflection, writer);
-
         }
 
         /// <inheritdoc />
@@ -633,7 +630,6 @@ namespace Microsoft.Ddue.Tools
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
-            XPathNavigator handler = reflection.SelectSingleNode(apiHandlerOfEventExpression);
             bool isExplicit = (bool)reflection.Evaluate(apiIsExplicitImplementationExpression);
 
             WriteAttributes(reflection, writer);

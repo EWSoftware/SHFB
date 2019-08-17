@@ -120,13 +120,13 @@ property to make sure that it is set appropriately for your assembly.</para>
 		</section>
 
 		<section address="Proxy">
-			<title>My build fails because I am behind a proxy server and it cannot connect to the MSDN web service.
-How do I fix it?</title>
+			<title>My build fails because I am behind a proxy server and it cannot connect to the cross reference
+service.  How do I fix it?</title>
 			<content>
 				<para>If the SDK link type project property related to the help file format you are building is set to
-<codeInline>MSDN</codeInline>, <application>BuildAssembler</application> will attempt to contact the MSDN web
-service to resolve links to SDK topics.  If you are behind a proxy server, this will most likely fail and will
-abort the build process with an error similar to "<legacyBold>HTTP status 407: Proxy Authentication
+<codeInline>MSDN</codeInline>, <application>BuildAssembler</application> will attempt to contact the cross
+reference service to resolve links to SDK topics.  If you are behind a proxy server, this will most likely fail
+and will abort the build process with an error similar to "<legacyBold>HTTP status 407: Proxy Authentication
 Required</legacyBold>" or "<legacyBold>HTTP status 417: Expectation Failed</legacyBold>".  The simplest fix is
 to set the <codeInline>HtmlSdkLinkType</codeInline> and <codeInline>WebsiteSdkLinkType</codeInline> properties
 to <codeInline>None</codeInline> and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to

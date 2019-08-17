@@ -6,7 +6,7 @@
 			<para>The <externalLink>
 				<linkText>Code Contracts Library</linkText>
 				<linkAlternateText>Code Contracts</linkAlternateText>
-				<linkUri>http://research.microsoft.com/en-us/projects/contracts/</linkUri>
+				<linkUri>https://github.com/Microsoft/CodeContracts</linkUri>
 				<linkTarget>_blank</linkTarget>
 			</externalLink> created by Microsoft contains a tool (<application>ccdocgen</application>) that can be ran
 after a build to insert contract XML documentation elements into the XML comments file for an assembly.</para>

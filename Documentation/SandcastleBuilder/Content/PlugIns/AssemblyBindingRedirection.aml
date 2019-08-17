@@ -143,12 +143,12 @@ a copy of the missing reference assembly.</para>
 			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
 			<externalLink>
 				<linkText>Assembly Binding Redirection</linkText>
-				<linkUri>http://msdn.microsoft.com/en-us/library/2fc472t2.aspx</linkUri>
+				<linkUri>https://docs.microsoft.com/dotnet/framework/configure-apps/how-to-enable-and-disable-automatic-binding-redirection</linkUri>
 				<linkTarget>_blank</linkTarget>
 			</externalLink>
 			<externalLink>
 				<linkText>assemblyBinding Configuration File Element</linkText>
-				<linkUri>http://msdn.microsoft.com/en-us/library/twy1dw1e.aspx</linkUri>
+				<linkUri>https://docs.microsoft.com/dotnet/framework/configure-apps/file-schema/runtime/assemblybinding-element-for-runtime</linkUri>
 				<linkTarget>_blank</linkTarget>
 			</externalLink>
 

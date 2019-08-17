@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/27/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
+// Updated : 08/17/2019
+// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a conceptual content topic file.
@@ -44,6 +44,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         private string id, errorMessage;
         private int revision;
         private bool contentParsed;
+
         #endregion
 
         #region Properties
@@ -54,7 +55,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public ContentFile ContentFile
         {
-            get { return contentFile; }
+            get => contentFile;
             set
             {
                 contentFile = value;
@@ -66,18 +67,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// Get the name of the file without the path
         /// </summary>
-        public string Name
-        {
-            get { return contentFile.Filename; }
-        }
+        public string Name => contentFile.Filename;
 
         /// <summary>
         /// Get the full path to the file
         /// </summary>
-        public string FullPath
-        {
-            get { return contentFile.FullPath; }
-        }
+        public string FullPath => contentFile.FullPath;
 
         /// <summary>
         /// This is used to get the unique ID of the topic
@@ -119,10 +114,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This read-only property is used to return the error message if <see cref="DocumentType" /> returns
         /// <c>Invalid</c>.
         /// </summary>
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-        }
+        public string ErrorMessage => errorMessage;
+
         #endregion
 
         #region Constructor
@@ -135,10 +128,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <exception cref="ArgumentNullException">This is thrown if the content file is null</exception>
         public TopicFile(ContentFile contentFile)
         {
-            if(contentFile == null)
-                throw new ArgumentNullException("contentFile");
-
-            this.contentFile = contentFile;
+            this.contentFile = contentFile ?? throw new ArgumentNullException(nameof(contentFile));
 
             revision = 1;
         }
@@ -157,7 +147,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             XmlReaderSettings settings = new XmlReaderSettings();
             XmlReader xr = null;
             string attrValue;
-            int rev;
 
             if(!reparse && contentParsed)
                 return;
@@ -204,7 +193,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                                 // This is optional
                                 attrValue = xr.GetAttribute("revisionNumber");
 
-                                if(attrValue != null && Int32.TryParse(attrValue, out rev))
+                                if(attrValue != null && Int32.TryParse(attrValue, out int rev))
                                     revision = rev;
 
                                 xr.Read();

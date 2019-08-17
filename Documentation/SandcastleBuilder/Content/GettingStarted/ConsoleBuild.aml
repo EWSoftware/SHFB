@@ -23,7 +23,7 @@ to override project property values where "n" is a property name and "v" is the 
 common command line option and property overrides not directly represented by a matching help file builder
 project property.  For a full list of MSBuild command line options, see the <externalLink>
 						<linkText>MSBuild Command Line Reference</linkText>
-						<linkUri>http://msdn.microsoft.com/en-us/library/ms164311.aspx?ppud=4</linkUri>
+						<linkUri>https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference</linkUri>
 						<linkTarget>_blank</linkTarget>
 					</externalLink>
 				</para>

@@ -13,7 +13,7 @@ successfully.</Paragraph>
   <List>
     <ListItem>
       <Paragraph>Click this link to go to the download page:
-<Hyperlink NavigateUri="http://msdn.microsoft.com/en-us/library/ms669985.aspx">HTML Help Workshop</Hyperlink></Paragraph>
+<Hyperlink NavigateUri="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/htmlhelp/microsoft-html-help-downloads">HTML Help Workshop</Hyperlink></Paragraph>
     </ListItem>
     <ListItem>
       <Paragraph>Once the page opens, click the <Bold>Download HtmlHelp.exe</Bold> link.</Paragraph>

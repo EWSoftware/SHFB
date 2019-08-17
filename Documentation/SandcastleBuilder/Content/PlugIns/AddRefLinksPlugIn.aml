@@ -7,9 +7,9 @@
     <introduction>
       <para>This plug-in is used to add additional reference link targets to the <legacyBold>Reflection Index
 Data</legacyBold> and <legacyBold>Resolve Reference Links</legacyBold> build components so that index links can
-be created to other third party help topics in a Microsoft Help Viewer collection or to additional online MSDN
+be created to other third party help topics in a Microsoft Help Viewer collection or to additional online help
 content.  <codeInline>Id</codeInline> links are only used by Microsoft Help Viewer files.  The <codeInline>Msdn</codeInline>
-link type can be used to create links to additional online MSDN content such as for SharePoint libraries, etc.
+link type can be used to create links to additional online content such as for SharePoint libraries, etc.
 The <codeInline>None</codeInline> link type can also be specified to render the references as non-clickable
 labels.  This may be of use in reducing the number of warnings about unresolved reference links in a build but
 is not really needed as unresolved links are automatically rendered as non-clickable labels.</para>
@@ -44,7 +44,7 @@ this plug-in and reference the project for the base assembly.</para>
 reference link information merged with the current project.  Note that these will only produce a partial build,
 enough to generate reflection information.  XML comments files for the documented assemblies are optional.  A
 link type is associated with each project in the configuration (<codeInline>Id</codeInline> to produce Microsoft
-Help Viewer links, <codeInline>Msdn</codeInline> to produce URLs that link to online MSDN content, or
+Help Viewer links, <codeInline>Msdn</codeInline> to produce URLs that link to online content, or
 <codeInline>None</codeInline> to produce non-clickable labels). The order of the projects in the configuration is
 not relevant.</para>
 

@@ -31,7 +31,7 @@ the reference assemblies may not exist there.  The simplest solution is to downl
 <externalLink>
 	<linkText>targeting pack</linkText>
 	<linkAlternateText>.NET Framework targeting packs</linkAlternateText>
-	<linkUri>http://msdn.microsoft.com/en-us/vstudio/dn250998.aspx</linkUri>
+	<linkUri>https://dotnet.microsoft.com/download/visual-studio-sdks</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink> or copy the reference assemblies from another system that does have them.</para>
 				

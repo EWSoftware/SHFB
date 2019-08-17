@@ -72,6 +72,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -92,6 +95,7 @@
     <Compile Include="BuildAssembler\BuildComponent\IBuildComponentMetadata.cs" />
     <Compile Include="BuildAssembler\BuildComponent\ICopyComponentFactory.cs" />
     <Compile Include="BuildAssembler\BuildComponent\ICopyComponentMetadata.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\IMemberIdUrlResolver.cs" />
     <Compile Include="BuildAssembler\BuildComponent\PlacementAction.cs" />
     <Compile Include="BuildAssembler\CustomContext.cs" />
     <Compile Include="BuildAssembler\CustomVariable.cs" />

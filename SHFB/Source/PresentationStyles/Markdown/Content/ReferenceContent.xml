@@ -92,7 +92,7 @@
 	<item id="title_platforms">Platforms</item>
 	<item id="title_relatedTopics">See Also</item>
 	<item id="title_extensionUsage">Usage Note</item>
-	<item id="text_extensionUsage">In Visual Basic and C#, you can call this method as an instance method on any object of type {0}. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx">Extension Methods (Visual Basic)</a> or <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension Methods (C# Programming Guide)</a>.</item>
+	<item id="text_extensionUsage">In Visual Basic and C#, you can call this method as an instance method on any object of type {0}. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods">Extension Methods (Visual Basic)</a> or <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">Extension Methods (C# Programming Guide)</a>.</item>
 	<item id="text_moreInheritance">More...</item>
 
 	<!-- Table headers -->
@@ -270,12 +270,12 @@
   <item id="obsoleteError">Obsolete (does not compile) in {0} and later</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="http://msdn.microsoft.com/en-us/library/8skskf63.aspx">Using Libraries from Partially Trusted Code</a>.</item>
+	<item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code">Using Libraries from Partially Trusted Code</a>.</item>
 
   <!-- Variance boilerplate text -->
   <item id="text_covariant">This type parameter is covariant. That is, you can use either the type you specified or any type that is more derived. </item>
   <item id="text_contravariant">This type parameter is contravariant. That is, you can use either the type you specified or any type that is less derived. </item>
-  <item id="text_variance">For more information about covariance and contravariance, see <a href="http://msdn.microsoft.com/en-us/library/ee207183.aspx">Covariance and Contravariance (C# and Visual Basic).</a>.</item>
+  <item id="text_variance">For more information about covariance and contravariance, see <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/concepts/covariance-contravariance/index">Covariance and Contravariance (Visual Basic)</a> and <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/concepts/covariance-contravariance/index">Covariance and Contravariance (C#)</a>.</item>
 
   <!-- Non CLS Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">This API is not CLS-compliant.</item>
@@ -291,11 +291,11 @@
 
   <!-- Platforms Information and Platform Notes --> 
   <item id="boilerplate_systemRequirementsLink">
-	  <p>The <include item="netfw"/> and <include item="netcfw"/> do not support all versions of every platform. For a list of the supported versions, see <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx">.NET Framework System Requirements</a>.</p>
+	  <p>The <include item="netfw"/> and <include item="netcfw"/> do not support all versions of every platform. For a list of the supported versions, see <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements">.NET Framework System Requirements</a>.</p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds -->
-  <item id="boilerplate_silverlightPlatforms">For information on the operating systems and browsers supported by <include item="silverlight"/>, see <a href="http://msdn.microsoft.com/en-us/library/dd229102.aspx">Supported Operating Systems and Browsers</a>.</item>
+  <item id="boilerplate_silverlightPlatforms">For information on the operating systems and browsers supported by <include item="silverlight"/>, see <a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)">Supported Operating Systems and Browsers</a>.</item>
 
  	<item id="Win95">Windows 95</item>
 	<item id="Win98Se">Windows 98 Second Edition</item>

@@ -91,10 +91,10 @@ what they mean and possible solutions to fix the problem.</para>
 may take much more time to complete a build.  Another factor that can affect the build time are the
 <codeInline>Html SDK Link Type</codeInline>, <codeInline>MS Help Viewer SDK Link Type</codeInline>, and
 <codeInline>Website SDK Link Type</codeInline> project property settings.  By default, they are all set to
-<codeInline>MSDN</codeInline> which causes the <application>BuildAssembler</application> tool to contact the MSDN
-web service to resolve links to online content for all .NET Framework types and members.  If your internet
-connection is slow, the resulting build will take longer.  See the documentation for the above noted SDK link
-type properties for information on their possible values and the
+<codeInline>MSDN</codeInline> which causes the <application>BuildAssembler</application> tool to contact the
+cross reference service to resolve links to online content for all .NET Framework types and members.  If your
+internet connection is slow, the resulting build will take longer.  See the documentation for the above noted SDK
+link type properties for information on their possible values and the
 <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build components</link> topic for information on
 how you can reduce the build time.</para>
                 </alert>

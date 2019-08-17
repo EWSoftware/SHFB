@@ -22,11 +22,11 @@ elements.  In addition, it adds a custom <codeInline>isDefault</codeInline> attr
 element, a custom <codeInline>splitTOC</codeInline> attribute to the topic where the table of contents should be
 split with API topics appearing below it, and custom <codeInline>isExpanded</codeInline> and
 <codeInline>isSelected</codeInline> attributes to track the expanded/ collapsed and last used topic states for
-the editor.  For more information on the structure of site map files, see the MSDN <externalLink>
-<linkText>ASP.NET Site Maps</linkText><linkUri>http://msdn2.microsoft.com/en-us/library/yy2ykkab.aspx</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> topic.  You can edit the site map file from within the help file
-builder by double-clicking it in the Project Explorer window or by selecting the <ui>Open</ui> option from its
-context menu.  The site map editor window is shown below.</para>
+the editor.  For more information on the structure of site map files, see the <externalLink>
+<linkText>ASP.NET Site Maps</linkText><linkUri>https://docs.microsoft.com/previous-versions/yy2ykkab(v=vs.140)</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> help topic.  You can edit the site map file from within the help
+file builder by double-clicking it in the Project Explorer window or by selecting the <ui>Open</ui> option from
+its context menu.  The site map editor window is shown below.</para>
 
 		<mediaLink><image xlink:href="SiteMapEditor" placement="center" /></mediaLink>
 

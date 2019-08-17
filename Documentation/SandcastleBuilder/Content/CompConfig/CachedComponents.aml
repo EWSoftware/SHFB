@@ -8,16 +8,16 @@
 			<para>The <application>BuildAssembler</application> step of the build process typically takes the most time
 and consumes the most memory.  Slow build times in this step are typically the result of the <legacyBold>Resolve
 Reference Links</legacyBold> component when using MSDN style SDK links.  In such cases, the component has to
-contact the MSDN web service to resolve the reference link to an online content ID.  In addition, it has to load
-a large amount of information about the underlying .NET framework.  The <legacyBold>Copy From Index</legacyBold>
+contact the cross reference service to resolve the reference link to an online content URL.  In addition, it has
+to load a large amount of information about the underlying .NET framework.  The <legacyBold>Copy From Index</legacyBold>
 component instances that load reflection index data and XML comments index data can also consume a large amount
 of memory.  In earlier versions of the Sandcastle tools, the data set for the entire framework was loaded which
 slowed down component initialization and wasted memory.</para>
 
 			<para>Earlier versions of the Sandcastle Help File Builder mitigated these issues somewhat by providing
 versions of the build components that cached the processed data to disk and reloaded it on subsequent builds.
-While this helped speed up initialization and improved build times by caching the MSDN content IDs, it did not
-help reduce memory usage.  Building multiple help file formats also increased memory usage significantly because
+While this helped speed up initialization and improved build times by caching the content URLs, it did not help
+reduce memory usage.  Building multiple help file formats also increased memory usage significantly because
 multiple instances of the build components used for each format did not share common data between them.</para>
 
 		</introduction>
@@ -47,14 +47,14 @@ help file formats in one build does not consume that much more memory than build
 
 					<listItem>
 						<para>The <legacyBold>Resolve Reference Links</legacyBold> component contains built-in support for
-saving resolved MSDN content IDs to a cache file.  This information can be reloaded on subsequent builds thus
+saving resolved member ID URLs to a cache file.  This information can be reloaded on subsequent builds thus
 saving the time required to look up the IDs.  On machines with a slow internet connection, this can reduce the
 build time by 70% or more.</para>
 					</listItem>
 
 					<listItem>
 						<para>The API for the two build components was also revised to allow for derived build components
-that implement alternate caching mechanisms for MSDN content IDs, reflection target data, reflection index data,
+that implement alternate caching mechanisms for content URLs, reflection target data, reflection index data,
 and XML comments index data.  The help file builder contains alternate implementations of the components that
 allow caching the framework data to ESENT or SQL Server databases.  These further reduce the memory requirements
 but can add to the build time in larger projects.</para>
@@ -67,27 +67,27 @@ but can add to the build time in larger projects.</para>
 		<section>
 			<title>Component Usage</title>
 			<content>
-				<para>For most projects, the default component configurations defined in the Sandcastle Help File
-Builder's template files should prove to be sufficient.  They will filter the reflection data by namespace and
-enable MSDN content ID caching by default.</para>
+				<para>For most projects, the default component configurations defined in the presentation style template
+files should prove to be sufficient.  They will filter the reflection data by namespace and enable content URL
+caching by default.</para>
 
 				<alert class="note">
-					<para>The MSDN URL cache is cumulative so you must perform at least one build with each project so as
-to ensure that all URLs for the given project are in the cache.  To rebuild the cache file, simply delete it and
-rebuild your project files.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildSettings" />
+					<para>The member ID URL cache is cumulative so you must perform at least one build with each project so
+as to ensure that all URLs for the given project are in the cache.  To rebuild the cache file, simply delete it
+and rebuild your project files.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildSettings" />
 topic for the location of the cache files.</para>
 				</alert>
 
-				<para>Caching the MSDN content IDs provides the largest performance increase.  This will be most evident
+				<para>Caching the member ID URL provides the largest performance increase.  This will be most evident
 in control libraries in which the classes are derived from Windows Forms, WPF, or web controls which have a large
-number of inherited members thus causing a spike in the number of web service lookups that occur.  Non-UI
-projects with base classes that are simpler result in fewer lookups and benefit less.</para>
+number of inherited members thus causing a spike in the number of service lookups that occur.  Non-UI projects
+with base classes that are simpler result in fewer lookups and benefit less.</para>
 				
-						<para>After the initial build, using cached MSDN content IDs is almost equivalent to setting the
+						<para>After the initial build, using cached member ID URLs is almost equivalent to setting the
 <codeInline>*SdkLinkType</codeInline> property to <codeInline>None</codeInline> / <codeInline>Index</codeInline>
 / <codeInline>Id</codeInline> in regards to build time but adds the benefit of keeping the actual online links in
 place.  That said, the larger the project the less benefit you may see.  For example, if your project contains
-10,000+ topics, it is already going to run pretty long and the few minutes saved by the cached IDs and faster
+10,000+ topics, it is already going to run pretty long and the few minutes saved by the cached URLs and faster
 initialization time may end up making little difference in the end.</para>
 				
 				<para>For very large projects or for machines that do not have enough memory, the alternate ESENT or

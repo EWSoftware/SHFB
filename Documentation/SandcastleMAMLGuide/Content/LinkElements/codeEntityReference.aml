@@ -143,7 +143,7 @@ own link text.</para>
 					&lt;/codeEntityReference&gt;
 					&lt;codeEntityReference qualifyHint="false" autoUpgrade="true"&gt;
 					M:System.IO.FileStream.Flush&lt;/codeEntityReference&gt;
-					&lt;codeEntityReference linkText="FileStream.Flush on MSDN"&gt;
+					&lt;codeEntityReference linkText="FileStream.Flush on Microsoft Docs"&gt;
 					M:System.IO.FileStream.Flush&lt;/codeEntityReference&gt;
 				</code>
 			</content>
@@ -175,7 +175,7 @@ own link text.</para>
 					</codeEntityReference>
 				</para>
 				<para>
-					<codeEntityReference linkText="FileStream.Flush on MSDN">
+					<codeEntityReference linkText="FileStream.Flush on Microsoft Docs">
 						M:System.IO.FileStream.Flush
 					</codeEntityReference>
 				</para>

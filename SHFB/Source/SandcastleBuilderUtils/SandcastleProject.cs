@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/10/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
+// Updated : 08/16/2019
+// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
@@ -132,6 +132,7 @@ namespace SandcastleBuilder.Utils
 
         // Bad characters for the vendor name property
         private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
+
         #endregion
 
         #region Private data members
@@ -140,12 +141,12 @@ namespace SandcastleBuilder.Utils
         // These are used to decode hex values in the copyright text
         private static Regex reDecode = new Regex(@"\\x[0-9a-f]{2,4}", RegexOptions.IgnoreCase);
 
-        private MatchEvaluator characterMatchEval, buildVarMatchEval;
+        private readonly MatchEvaluator characterMatchEval, buildVarMatchEval;
 
         // MS Build and property items
         private Project msBuildProject;
         private Dictionary<string, ProjectProperty> projectPropertyCache;  // MSBuild property cache
-        private bool removeProjectWhenDisposed;
+        private readonly bool removeProjectWhenDisposed;
 
         // Local property info cache
         private static Dictionary<string, PropertyInfo> propertyCache = InitializePropertyCache();
@@ -379,7 +380,6 @@ namespace SandcastleBuilder.Utils
             get
             {
                 ImageReference imageRef;
-                bool copyToMedia;
                 string id;
 
                 foreach(ProjectItem item in msBuildProject.GetItems(BuildAction.Image.ToString()))
@@ -393,7 +393,7 @@ namespace SandcastleBuilder.Utils
                             AlternateText = item.GetMetadataValue(BuildItemMetadata.AlternateText)
                         };
 
-                        if(!Boolean.TryParse(item.GetMetadataValue(BuildItemMetadata.CopyToMedia), out copyToMedia))
+                        if(!Boolean.TryParse(item.GetMetadataValue(BuildItemMetadata.CopyToMedia), out bool copyToMedia))
                             copyToMedia = false;
 
                         imageRef.CopyToMedia = copyToMedia;
@@ -418,15 +418,15 @@ namespace SandcastleBuilder.Utils
 
                 if(argsProp != null && !String.IsNullOrEmpty(argsProp.UnevaluatedValue))
                 {
-                    var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
-                        XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve))
+                    using(var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
+                      XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve))
+                      { Namespaces = false })
                     {
-                        Namespaces = false
-                    };
-                    xr.MoveToContent();
+                        xr.MoveToContent();
 
-                    foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
-                        yield return new TransformComponentArgument(arg);
+                        foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
+                            yield return new TransformComponentArgument(arg);
+                    }
                 }
             }
         }
@@ -464,8 +464,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string ProjectSummary
         {
-            get { return projectSummary; }
-            set { projectSummary = (value ?? String.Empty).Trim(); }
+            get => projectSummary;
+            set => projectSummary = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -500,7 +500,7 @@ namespace SandcastleBuilder.Utils
         /// <value>If left blank, the current project's folder is searched instead</value>
         public FolderPath ComponentPath
         {
-            get { return componentPath; }
+            get => componentPath;
             set
             {
                 if(value == null)
@@ -517,7 +517,7 @@ namespace SandcastleBuilder.Utils
         /// <value>If left blank, source context information will be omitted from the reflection data</value>
         public FolderPath SourceCodeBasePath
         {
-            get { return sourceCodeBasePath; }
+            get => sourceCodeBasePath;
             set
             {
                 if(value == null)
@@ -541,7 +541,7 @@ namespace SandcastleBuilder.Utils
         /// <value>You only need to set this if the builder cannot determine the path for itself</value>
         public FolderPath HtmlHelp1xCompilerPath
         {
-            get { return hhcPath; }
+            get => hhcPath;
             set
             {
                 if(value == null)
@@ -561,7 +561,7 @@ namespace SandcastleBuilder.Utils
         /// erased without warning prior to copying the new web site content to it!</para></remarks>
         public string OutputPath
         {
-            get { return outputPath; }
+            get => outputPath;
             set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -585,7 +585,7 @@ namespace SandcastleBuilder.Utils
         /// erased without warning when the build starts.</para></value>
         public FolderPath WorkingPath
         {
-            get { return workingPath; }
+            get => workingPath;
             set
             {
                 if(value == null)
@@ -626,7 +626,7 @@ namespace SandcastleBuilder.Utils
         /// saved in the path identified in the <see cref="OutputPath" /> property.</value>
         public FilePath BuildLogFile
         {
-            get { return buildLogFile; }
+            get => buildLogFile;
             private set
             {
                 if(value == null)
@@ -662,7 +662,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string FrameworkVersion
         {
-            get { return frameworkVersion; }
+            get => frameworkVersion;
             set
             {
                 // Let bad values through.  The property pages or the build engine will catch bad values if
@@ -770,8 +770,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string RootNamespaceTitle
         {
-            get { return rootNamespaceTitle; }
-            private set { rootNamespaceTitle = (value ?? String.Empty).Trim(); }
+            get => rootNamespaceTitle;
+            private set => rootNamespaceTitle = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -790,7 +790,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>Namespace groups are determined automatically and may be documented as well</remarks>
         public int MaximumGroupParts
         {
-            get { return maximumGroupParts; }
+            get => maximumGroupParts;
             private set
             {
                 if(value < 2)
@@ -806,7 +806,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string HelpTitle
         {
-            get { return helpTitle; }
+            get => helpTitle;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -826,7 +826,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string HtmlHelpName
         {
-            get { return htmlHelpName; }
+            get => htmlHelpName;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -845,7 +845,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string HelpFileVersion
         {
-            get { return helpFileVersion; }
+            get => helpFileVersion;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -868,7 +868,7 @@ namespace SandcastleBuilder.Utils
         /// catalog is <c>VS_100_EN-US</c>.</remarks>
         public CultureInfo Language
         {
-            get { return language; }
+            get => language;
             private set
             {
                 if(value == null || value == CultureInfo.InvariantCulture)
@@ -885,8 +885,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string CopyrightHref
         {
-            get { return copyrightHref; }
-            private set { copyrightHref = (value ?? String.Empty).Trim(); }
+            get => copyrightHref;
+            private set => copyrightHref = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -897,8 +897,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string CopyrightText
         {
-            get { return copyrightText; }
-            private set { copyrightText = (value ?? String.Empty).Trim(); }
+            get => copyrightText;
+            private set => copyrightText = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -917,8 +917,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string FeedbackEMailAddress
         {
-            get { return feedbackEMailAddress; }
-            private set { feedbackEMailAddress = (value ?? String.Empty).Trim(); }
+            get => feedbackEMailAddress;
+            private set => feedbackEMailAddress = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -930,8 +930,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string FeedbackEMailLinkText
         {
-            get { return feedbackEMailLinkText; }
-            private set { feedbackEMailLinkText = (value ?? String.Empty).Trim(); }
+            get => feedbackEMailLinkText;
+            private set => feedbackEMailLinkText = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -940,8 +940,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string HeaderText
         {
-            get { return headerText; }
-            private set { headerText = (value ?? String.Empty).Trim(); }
+            get => headerText;
+            private set => headerText = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -950,16 +950,16 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string FooterText
         {
-            get { return footerText; }
-            private set { footerText = (value ?? String.Empty).Trim(); }
+            get => footerText;
+            private set => footerText = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
-        /// This read-only property is used to get the target window for MSDN SDK links
+        /// This read-only property is used to get the target window for external SDK links
         /// </summary>
-        /// <value>The default is <c>Blank</c> to open the MSDN topics in a new window.  This option only has an
+        /// <value>The default is <c>Blank</c> to open the topics in a new window.  This option only has an
         /// effect on the <see cref="HtmlSdkLinkType"/>, <see cref="MSHelpViewerSdkLinkType"/>, and
-        /// <see cref="WebsiteSdkLinkType"/> properties if they are set to <c>MSDN</c>.</value>
+        /// <see cref="WebsiteSdkLinkType"/> properties if they are set to <c>Msdn</c>.</value>
         public SdkLinkTarget SdkLinkTarget { get; private set; }
 
         /// <summary>
@@ -969,7 +969,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string PresentationStyle
         {
-            get { return presentationStyle; }
+            get => presentationStyle;
             private set
             {
                 // Let bad values through.  The property pages or the build engine will catch bad values if
@@ -994,7 +994,7 @@ namespace SandcastleBuilder.Utils
         /// <value>The default is <strong>Standard</strong> (C#, VB.NET, and C++)</value>
         public string SyntaxFilters
         {
-            get { return syntaxFilters; }
+            get => syntaxFilters;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1019,7 +1019,7 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the type of links used to reference other help topics
         /// referring to framework (SDK) help topics in HTML Help 1 help files.
         /// </summary>
-        /// <value>The default is to produce links to online MSDN content</value>
+        /// <value>The default is to produce links to online content</value>
         public HtmlSdkLinkType HtmlSdkLinkType { get; private set; }
 
         /// <summary>
@@ -1036,7 +1036,7 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the type of links used to reference other help topics
         /// referring to framework (SDK) help topics in MS Help Viewer help files.
         /// </summary>
-        /// <value>The default is to produce links to online MSDN content</value>
+        /// <value>The default is to produce links to online content</value>
         public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType { get; private set; }
 
         /// <summary>
@@ -1052,7 +1052,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string CatalogProductId
         {
-            get { return catalogProductId; }
+            get => catalogProductId;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1077,7 +1077,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string CatalogVersion
         {
-            get { return catalogVersion; }
+            get => catalogVersion;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1097,7 +1097,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string CatalogName
         {
-            get { return catalogName; }
+            get => catalogName;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1117,7 +1117,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string VendorName
         {
-            get { return vendorName; }
+            get => vendorName;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1139,8 +1139,8 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string ProductTitle
         {
-            get { return productTitle; }
-            private set { productTitle = (value ?? String.Empty).Trim(); }
+            get => productTitle;
+            private set => productTitle = (value ?? String.Empty).Trim();
         }
 
         /// <summary>
@@ -1150,7 +1150,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string TopicVersion
         {
-            get { return topicVersion; }
+            get => topicVersion;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1170,7 +1170,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string TocParentId
         {
-            get { return tocParentId; }
+            get => tocParentId;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1189,7 +1189,7 @@ namespace SandcastleBuilder.Utils
         [EscapeValue]
         public string TocParentVersion
         {
-            get { return tocParentVersion; }
+            get => tocParentVersion;
             private set
             {
                 if(String.IsNullOrWhiteSpace(value))
@@ -1209,7 +1209,7 @@ namespace SandcastleBuilder.Utils
         /// other project properties.</value>
         public int TocOrder
         {
-            get { return tocOrder; }
+            get => tocOrder;
             private set
             {
                 if(value < -1)
@@ -1237,7 +1237,7 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the type of links used to reference other help topics
         /// referring to framework (SDK) help topics in HTML Help 1 help files.
         /// </summary>
-        /// <value>The default is to produce links to online MSDN content</value>
+        /// <value>The default is to produce links to online content</value>
         public HtmlSdkLinkType WebsiteSdkLinkType { get; private set; }
 
         /// <summary>
@@ -1481,7 +1481,6 @@ namespace SandcastleBuilder.Utils
         {
             ContentFile contentFile;
             string metadata;
-            int sortOrder;
 
             foreach(ProjectItem item in msBuildProject.GetItems(buildAction.ToString()))
             {
@@ -1494,7 +1493,7 @@ namespace SandcastleBuilder.Utils
 
                 metadata = item.GetMetadataValue(BuildItemMetadata.SortOrder);
 
-                if(!String.IsNullOrWhiteSpace(metadata) && Int32.TryParse(metadata, out sortOrder))
+                if(!String.IsNullOrWhiteSpace(metadata) && Int32.TryParse(metadata, out int sortOrder))
                     contentFile.SortOrder = sortOrder;
 
                 yield return contentFile;
@@ -1568,14 +1567,14 @@ namespace SandcastleBuilder.Utils
             string template;
 
             if(String.IsNullOrEmpty(filename))
-                throw new ArgumentException("A filename must be specified", "filename");
+                throw new ArgumentException("A filename must be specified", nameof(filename));
 
             filename = Path.GetFullPath(filename);
 
             if(!File.Exists(filename))
             {
                 if(mustExist)
-                    throw new ArgumentException("The specific file must exist", "filename");
+                    throw new ArgumentException("The specific file must exist", nameof(filename));
 
                 // Create new project from template file
                 template = Properties.Resources.ProjectTemplate;
@@ -1705,9 +1704,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>The string to use as the replacement</returns>
         private string OnBuildVarMatch(Match match)
         {
-            ProjectProperty prop;
-
-            if(!this.ProjectPropertyCache.TryGetValue(match.Groups[1].Value, out prop))
+            if(!this.ProjectPropertyCache.TryGetValue(match.Groups[1].Value, out ProjectProperty prop))
                 return String.Empty;
 
             return prop.EvaluatedValue;
@@ -1718,7 +1715,6 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         private void LoadProperties()
         {
-            ProjectProperty property;
             Version schemaVersion;
             string helpFormats;
             Dictionary<string, string> translateFormat = new Dictionary<string, string> {
@@ -1734,15 +1730,13 @@ namespace SandcastleBuilder.Utils
             try
             {
                 // Ensure that we use the correct build engine for the project.  Version 4.0 or later is required.
-                double toolsVersion;
-
-                if(!Double.TryParse(msBuildProject.ToolsVersion, out toolsVersion))
+                if(!Double.TryParse(msBuildProject.ToolsVersion, out double toolsVersion))
                     toolsVersion = 0.0;
 
                 if(toolsVersion < 14.0)
                     msBuildProject.Xml.ToolsVersion = "14.0";
 
-                if(!this.ProjectPropertyCache.TryGetValue("SHFBSchemaVersion", out property))
+                if(!this.ProjectPropertyCache.TryGetValue("SHFBSchemaVersion", out ProjectProperty property))
                     throw new BuilderException("PRJ0001", "Invalid or missing SHFBSchemaVersion");
 
                 if(String.IsNullOrEmpty(property.EvaluatedValue))
@@ -1873,15 +1867,14 @@ namespace SandcastleBuilder.Utils
         {
             TypeConverter tc;
             EscapeValueAttribute escAttr;
-            PropertyInfo localProperty;
             FilePath filePath;
             object parsedValue;
 
             if(msBuildProperty == null)
-                throw new ArgumentNullException("msBuildProperty");
+                throw new ArgumentNullException(nameof(msBuildProperty));
 
             // Ignore unknown properties
-            if(!propertyCache.TryGetValue(msBuildProperty.Name, out localProperty))
+            if(!propertyCache.TryGetValue(msBuildProperty.Name, out PropertyInfo localProperty))
                 return;
 
             // This can happen on rare occasions, usually on build servers.  Typically, the property in question
@@ -1952,8 +1945,6 @@ namespace SandcastleBuilder.Utils
         /// <returns>The equivalent new value</returns>
         private static string ConvertOldFrameworkVersion(string oldValue)
         {
-            ReflectionDataSet dataSet;
-
             if(String.IsNullOrWhiteSpace(oldValue))
                 return ReflectionDataSetDictionary.DefaultFrameworkTitle;
 
@@ -1986,7 +1977,7 @@ namespace SandcastleBuilder.Utils
             var rdsd = new ReflectionDataSetDictionary(null);
 
             // If not found, use the default
-            if(!rdsd.TryGetValue(oldValue, out dataSet))
+            if(!rdsd.TryGetValue(oldValue, out ReflectionDataSet dataSet))
                 return ReflectionDataSetDictionary.DefaultFrameworkTitle;
 
             return dataSet.Title;
@@ -2060,12 +2051,10 @@ namespace SandcastleBuilder.Utils
         /// <returns>True if it can be used, false if it cannot be used</returns>
         public bool IsValidUserDefinedPropertyName(string name)
         {
-            ProjectProperty prop;
-
             if(msBuildProject == null || propertyCache.ContainsKey(name) || restrictedProps.Contains(name))
                 return false;
 
-            if(this.ProjectPropertyCache.TryGetValue(name, out prop))
+            if(this.ProjectPropertyCache.TryGetValue(name, out ProjectProperty prop))
                 return (!prop.IsImported && !prop.IsReservedProperty);
 
             return true;
@@ -2094,10 +2083,10 @@ namespace SandcastleBuilder.Utils
                 folder = Path.GetFullPath(Path.Combine(rootPath, folder));
 
             if(String.Compare(folder, 0, rootPath, 0, rootPath.Length, StringComparison.OrdinalIgnoreCase) != 0)
-                throw new ArgumentException("The folder must be below the project's root path", "folder");
+                throw new ArgumentException("The folder must be below the project's root path", nameof(folder));
 
             if(folder.Length == rootPath.Length)
-                throw new ArgumentException("The folder cannot match the project's root path", "folder");
+                throw new ArgumentException("The folder cannot match the project's root path", nameof(folder));
 
             folderPath = new FolderPath(folder, this);
 
@@ -2257,8 +2246,6 @@ namespace SandcastleBuilder.Utils
         /// <param name="filename">The filename for the project</param>
         public void SaveProject(string filename)
         {
-            Version schemaVersion;
-
             try
             {
                 filename = Path.GetFullPath(filename);
@@ -2268,7 +2255,7 @@ namespace SandcastleBuilder.Utils
                 // Update the schema version if necessary but only if the project is dirty
                 var property = msBuildProject.AllEvaluatedProperties.FirstOrDefault(p => p.Name == "SHFBSchemaVersion");
 
-                if(property == null || !Version.TryParse(property.EvaluatedValue, out schemaVersion))
+                if(property == null || !Version.TryParse(property.EvaluatedValue, out Version schemaVersion))
                     schemaVersion = new Version(1, 0, 0, 0);
 
                 if(schemaVersion != SandcastleProject.SchemaVersion)
@@ -2304,7 +2291,6 @@ namespace SandcastleBuilder.Utils
         /// are converted to lowercase for use in XML attribute values.</returns>
         public string ReplacementValueFor(string name)
         {
-            PropertyInfo property;
             bool htmlEncode = false;
 
             if(name.StartsWith("HtmlEnc", StringComparison.OrdinalIgnoreCase))
@@ -2314,9 +2300,9 @@ namespace SandcastleBuilder.Utils
             }
 
             if(String.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
-            if(!propertyCache.TryGetValue(name, out property))
+            if(!propertyCache.TryGetValue(name, out PropertyInfo property))
                 return null;
 
             object value = property.GetValue(this);

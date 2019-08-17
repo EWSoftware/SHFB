@@ -1445,7 +1445,7 @@ namespace SandcastleBuilder.Gui
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
             outputPath = project.OutputPath;
-            vPath = String.Format(" /vpath:\"/SHFBOutput_{0}\"", this.Handle);
+            vPath = $" /vpath:\"/SHFBOutput_{this.Handle}\"";
 
             if(String.IsNullOrEmpty(outputPath))
                 outputPath = Directory.GetCurrentDirectory();

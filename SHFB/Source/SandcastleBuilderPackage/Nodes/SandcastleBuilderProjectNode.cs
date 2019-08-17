@@ -81,27 +81,18 @@ namespace SandcastleBuilder.Package.Nodes
         /// This is overridden to return the project's GUID
         /// </summary>
         /// <returns>The Sandcastle Help File Builder package GUID</returns>
-        public override Guid ProjectGuid
-        {
-            get { return GuidList.guidSandcastleBuilderProjectFactory; }
-        }
+        public override Guid ProjectGuid => GuidList.guidSandcastleBuilderProjectFactory;
 
         /// <summary>
         /// This returns a caption for <c>VSHPROPID_TypeName</c>
         /// </summary>
         /// <returns>Returns "SHFBProject"</returns>
-        public override string ProjectType
-        {
-            get { return "SHFBProject"; }
-        }
+        public override string ProjectType => "SHFBProject";
 
         /// <summary>
         /// This returns the index in the image list of the project node icon
         /// </summary>
-        public override int ImageIndex
-        {
-            get { return imageIndex; }
-        }
+        public override int ImageIndex => imageIndex;
 
         /// <summary>
         /// This is overridden to prevent dropping on project properties nodes.  All other nodes can accept drops
@@ -288,7 +279,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             // Use the project filename's hash code as a unique ID for the website
             uniqueId = this.SandcastleProject.Filename.GetHashCode();
-            vPath = String.Format(" /vpath:\"/SHFBOutput_{0}\"", uniqueId);
+            vPath = $" /vpath:\"/SHFBOutput_{uniqueId}\"";
 
             // Make sure we start out in the project's output folder
             // in case the output folder is relative to it.
@@ -489,10 +480,8 @@ namespace SandcastleBuilder.Package.Nodes
                         }).ToList(),
                     allDocSources = docSources.Concat(refSources).Concat(xmlDocSources).ToList();
 
-                var docSourcesNode = targetNode as DocumentationSourcesContainerNode;
-
                 // If dropped on the Documentation Sources node, add all documentation sources
-                if(docSourcesNode != null)
+                if(targetNode is DocumentationSourcesContainerNode docSourcesNode)
                 {
                     foreach(string f in allDocSources)
                     {
@@ -505,17 +494,15 @@ namespace SandcastleBuilder.Package.Nodes
                 }
                 else
                 {
-                    var refsNode = targetNode as SandcastleBuilderReferenceContainerNode;
-
                     // If dropped on the references node, add all reference files
-                    if(refsNode != null)
+                    if(targetNode is SandcastleBuilderReferenceContainerNode refsNode)
                         foreach(string f in refSources)
                         {
                             var node = refsNode.AddReferenceFromSelectorData(new VSCOMPONENTSELECTORDATA
-                                {
-                                    type = VSCOMPONENTTYPE.VSCOMPONENTTYPE_File,
-                                    bstrFile = f
-                                }, null);
+                            {
+                                type = VSCOMPONENTTYPE.VSCOMPONENTTYPE_File,
+                                bstrFile = f
+                            }, null);
 
                             // Clear the Name and AseemblyName metadata and set the HintPath metadata so that it
                             // treats it correctly when the project is reloaded
@@ -610,10 +597,9 @@ namespace SandcastleBuilder.Package.Nodes
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            Version schemaVersion;
             string propertyValue = base.GetProjectProperty("SHFBSchemaVersion");
 
-            if(String.IsNullOrEmpty(propertyValue) || !Version.TryParse(propertyValue, out schemaVersion) ||
+            if(String.IsNullOrEmpty(propertyValue) || !Version.TryParse(propertyValue, out Version schemaVersion) ||
               schemaVersion > SandcastleProject.SchemaVersion)
             {
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, this.FileName + " was created with a newer " +
@@ -635,9 +621,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// file type build actions, false if not.</returns>
         protected override bool IsItemTypeFileType(string type)
         {
-            SandcastleBuildAction action;
-
-            if(!Enum.TryParse<SandcastleBuildAction>(type, out action))
+            if(!Enum.TryParse<SandcastleBuildAction>(type, out SandcastleBuildAction action))
                 return false;
 
             return action < SandcastleBuildAction.Folder;
@@ -817,22 +801,19 @@ namespace SandcastleBuilder.Package.Nodes
 #pragma warning restore VSTHRD010
             }
 
-            ProjectPropertiesContainerNode projProps = this.FindChild(
-                ProjectPropertiesContainerNode.PropertiesNodeVirtualName) as ProjectPropertiesContainerNode;
 
-            if(projProps == null)
+            if(!(this.FindChild(ProjectPropertiesContainerNode.PropertiesNodeVirtualName) is
+              ProjectPropertiesContainerNode projProps))
             {
                 projProps = new ProjectPropertiesContainerNode(this);
                 this.AddChild(projProps);
             }
 
-            DocumentationSourcesContainerNode docSources = this.FindChild(
-                DocumentationSourcesContainerNode.DocSourcesNodeVirtualName) as DocumentationSourcesContainerNode;
-
-			if(docSources == null)
-			{
+            if(!(this.FindChild(DocumentationSourcesContainerNode.DocSourcesNodeVirtualName) is
+              DocumentationSourcesContainerNode docSources))
+            {
                 docSources = new DocumentationSourcesContainerNode(this);
-				this.AddChild(docSources);
+                this.AddChild(docSources);
             }
 
             if(docSources != null)

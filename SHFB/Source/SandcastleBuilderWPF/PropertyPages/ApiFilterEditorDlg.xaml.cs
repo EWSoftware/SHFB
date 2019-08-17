@@ -1203,8 +1203,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
             ApiEntryType entryType;
             ApiVisibility visibility;
             string id, nodeText, subgroup;
-            int pos, ignoreCase = Convert.ToInt32(!chkCaseSensitive.IsChecked),
-                fullyQualified = Convert.ToInt32(chkFullyQualified.IsChecked);
+            int pos, ignoreCase = Convert.ToInt32(!(chkCaseSensitive.IsChecked ?? false)),
+                fullyQualified = Convert.ToInt32(chkFullyQualified.IsChecked ?? false);
             List<ApiNodeInfo> nodeList;
             XPathNavigator subsubgroup;
             var entryTypeOptions = new Dictionary<ApiEntryType, bool>

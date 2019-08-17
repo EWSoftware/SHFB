@@ -90,7 +90,7 @@ to prevent exceedingly long lists of results.</para>
 	<para>The <ui>MAML code entity reference</ui> format option allows you to insert references to the
 selected element in MAML conceptual topic files as <codeInline>codeEntityReference</codeInline> elements.
 When the help file is built, these will be resolved to links that will take you to the help page for that
-item (i.e. the API member help page for your classes or MSDN Online help pages for .NET Framework members).
+item (i.e. the API member help page for your classes or online help pages for .NET Framework members).
 The <ui>XML comments see link</ui> option is for backward compatibility with the older additional content
 model and should not be used for MAML conceptual content topics.  Note that these older style links will
 only be resolved to a clickable link if the item references a member found in your code.  It will not

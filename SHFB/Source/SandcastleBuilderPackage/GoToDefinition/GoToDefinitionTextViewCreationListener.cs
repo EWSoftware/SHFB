@@ -72,8 +72,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                 if(textView != null)
                 {
-                    var filter = new GoToDefinitionCommandTarget(textView, this,
-                        !textView.TextBuffer.ContentType.IsOfType("xml"));
+                    var filter = new GoToDefinitionCommandTarget(textView, this);
 
                     if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out IOleCommandTarget nextTarget)))
                     {

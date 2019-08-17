@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
+// Updated : 08/15/2019
+// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a target type dictionary used to contain common target dictionaries with their associated
 // link type.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 2.7.3.0  12/29/2012  EFW  Created the code
+// 12/29/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -26,8 +26,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
-
-using Microsoft.Ddue.Tools.BuildComponent;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
@@ -100,13 +98,7 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public ICollection<string> Keys
-        {
-            get
-            {
-                return targetDictionaries.Select(kv => kv.Value.Keys).SelectMany(k => k).ToList();
-            }
-        }
+        public ICollection<string> Keys => targetDictionaries.Select(kv => kv.Value.Keys).SelectMany(k => k).ToList();
 
         /// <inheritdoc />
         /// <remarks>This method is not implemented as targets are never removed</remarks>
@@ -151,13 +143,7 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public ICollection<Target> Values
-        {
-            get
-            {
-                return targetDictionaries.Select(kv => kv.Value.Values).SelectMany(v => v).ToList();
-            }
-        }
+        public ICollection<Target> Values => targetDictionaries.Select(kv => kv.Value.Values).SelectMany(v => v).ToList();
 
         /// <inheritdoc />
         /// <returns>If not found, this implementation returns null.</returns>
@@ -165,17 +151,12 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             get
             {
-                Target t;
-
-                this.TryGetValue(key, out t);
+                this.TryGetValue(key, out Target t);
 
                 return t;
             }
-            set
-            {
-                // Can't set a value since we don't know what type of link is wanted
-                throw new NotImplementedException();
-            }
+            // Can't set a value since we don't know what type of link is wanted
+            set => throw new NotImplementedException();
         }
 
         #endregion
@@ -215,20 +196,11 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public int Count
-        {
-            get
-            {
-                return targetDictionaries.Sum(kv => kv.Value.Count);
-            }
-        }
+        public int Count => targetDictionaries.Sum(kv => kv.Value.Count);
 
         /// <inheritdoc />
         /// <value>This always returns false</value>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <inheritdoc />
         /// <remarks>This method is not implemented as targets are never removed</remarks>
@@ -265,15 +237,9 @@ namespace Microsoft.Ddue.Tools.Targets
 
         /// <summary>
         /// This read-only property is used to determine if any of the target dictionaries require the
-        /// <see cref="MsdnResolver"/> to look up links.
+        /// member ID URL resolver to look up links.
         /// </summary>
-        public bool NeedsMsdnResolver
-        {
-            get
-            {
-                return targetDictionaries.Any(kv => kv.Key == ReferenceLinkType.Msdn);
-            }
-        }
+        public bool NeedsMemberIdUrlResolver => targetDictionaries.Any(kv => kv.Key == ReferenceLinkType.Msdn);
 
         /// <summary>
         /// Add a target type dictionary to the collection

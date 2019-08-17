@@ -9,10 +9,10 @@
   <FlowDocumentScrollViewer>
     <FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
       <Paragraph><Bold FontSize="16">Welcome to the Sandcastle Guided Installation</Bold></Paragraph>
-      <Paragraph>Sandcastle, created by Microsoft, is a set of tools used to create MSDN-style
-documentation from .NET assemblies and their associated XML comments files.  Depending on the type of
-help file that you want to produce, one or more additional tools may be required.  In addition, there are
-community patches and third-party build tools and components that you may find useful.</Paragraph>
+      <Paragraph>Sandcastle, created by Microsoft, is a set of tools used to create documentation from .NET
+assemblies and their associated XML comments files.  Depending on the type of help file that you want to produce,
+one or more additional tools may be required.  In addition, there are community patches and third-party build
+tools and components that you may find useful.</Paragraph>
 
       <Paragraph>This application will guide you through the process needed to create a working
 installation so that you can start producing help files with Sandcastle.  Some of the additional tools,

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2017
-// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
+// Updated : 08/16/2019
+// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
@@ -22,7 +22,7 @@
 // 06/24/2015  EFW  Changed the framework settings classes to reflection data to be more general in nature
 //===============================================================================================================
 
-// Ignore Spelling: seealso
+// Ignore Spelling: seealso cref inheritdoc
 
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace Sandcastle.Core.Reflection
             /// <returns>The value of the given wrapper as a string</returns>
             public static implicit operator String(StringWrapper wrapper)
             {
-                return (wrapper == null) ? null : wrapper.Value;
+                return wrapper?.Value;
             }
         }
         #endregion
@@ -212,7 +212,7 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public string Platform
         {
-            get { return platform; }
+            get => platform;
             set
             {
                 if(platform != value)
@@ -228,7 +228,7 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public Version Version
         {
-            get { return version; }
+            get => version;
             set
             {
                 if(version != value)
@@ -244,7 +244,7 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 if(title != value)
@@ -260,7 +260,7 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public string Notes
         {
-            get { return notes; }
+            get => notes;
             set
             {
                 if(notes != value)
@@ -276,7 +276,7 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         public bool AllSystemTypesRedirected
         {
-            get { return allSystemTypesRedirected; }
+            get => allSystemTypesRedirected;
             set
             {
                 if(allSystemTypesRedirected != value)
@@ -292,61 +292,37 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         /// <value>True if it is the core framework, false if not</value>
         /// <remarks>The core location is determined by searching for <c>mscorlib</c> in the assembly set</remarks>
-        public bool IsCoreFramework
-        {
-            get
-            {
-                return assemblyLocations.Any(a => a.IsCoreLocation);
-            }
-        }
+        public bool IsCoreFramework => assemblyLocations.Any(a => a.IsCoreLocation);
 
         /// <summary>
         /// This read-only property is used to get the core framework location if there is one
         /// </summary>
         /// <value>The core framework location or null if there isn't one</value>
         /// <remarks>The core location is determined by searching for <c>mscorlib</c> in the assembly set</remarks>
-        public AssemblyLocation CoreFrameworkLocation
-        {
-            get
-            {
-                return assemblyLocations.FirstOrDefault(a => a.IsCoreLocation);
-            }
-        }
+        public AssemblyLocation CoreFrameworkLocation => assemblyLocations.FirstOrDefault(a => a.IsCoreLocation);
 
         /// <summary>
         /// This read-only property returns a bindable list of assembly locations
         /// </summary>
-        public IBindingList AssemblyLocations
-        {
-            get { return assemblyLocations; }
-        }
+        public IBindingList AssemblyLocations => assemblyLocations;
 
         /// <summary>
         /// This read-only property returns a bindable list of ignored namespaces used for building the
         /// reflection data.
         /// </summary>
-        public IBindingList IgnoredNamespaces
-        {
-            get { return ignoredNamespaces; }
-        }
+        public IBindingList IgnoredNamespaces => ignoredNamespaces;
 
         /// <summary>
         /// This read-only property returns a bindable list of ignored unresolved assembly identities used for
         /// building the reflection data.
         /// </summary>
-        public IBindingList IgnoredUnresolved
-        {
-            get { return ignoredUnresolved; }
-        }
+        public IBindingList IgnoredUnresolved => ignoredUnresolved;
 
         /// <summary>
         /// This read-only property returns a bindable list of binding redirections used for building the
         /// reflection data.
         /// </summary>
-        public IBindingList BindingRedirections
-        {
-            get { return bindingRedirections; }
-        }
+        public IBindingList BindingRedirections => bindingRedirections;
 
         /// <summary>
         /// This read-only property can be used to determine if the reflection data set's core assemblies are
@@ -394,26 +370,25 @@ namespace Sandcastle.Core.Reflection
             assemblyLocations = new BindingList<AssemblyLocation>();
             assemblyLocations.ListChanged += (s, e) =>
             {
-                this.OnPropertyChanged("AssemblyLocations");
-                this.OnPropertyChanged("IsCoreFramework");
+                this.OnPropertyChanged(nameof(AssemblyLocations));
+                this.OnPropertyChanged(nameof(IsCoreFramework));
             };
 
             ignoredNamespaces = new BindingList<StringWrapper>();
-            ignoredNamespaces.ListChanged += (s, e) => this.OnPropertyChanged("IgnoredNamespaces");
+            ignoredNamespaces.ListChanged += (s, e) => this.OnPropertyChanged(nameof(IgnoredNamespaces));
 
             ignoredUnresolved = new BindingList<StringWrapper>();
-            ignoredUnresolved.ListChanged += (s, e) => this.OnPropertyChanged("IgnoredUnresolved");
+            ignoredUnresolved.ListChanged += (s, e) => this.OnPropertyChanged(nameof(IgnoredUnresolved));
 
             bindingRedirections = new BindingList<BindingRedirection>();
-            bindingRedirections.ListChanged += (s, e) => this.OnPropertyChanged("BindingRedirections");
+            bindingRedirections.ListChanged += (s, e) => this.OnPropertyChanged(nameof(BindingRedirections));
         }
 
         /// <summary>
         /// File constructor
         /// </summary>
         /// <param name="filename">The filename from which to load the reflection data set information</param>
-        public ReflectionDataSet(string filename)
-            : this()
+        public ReflectionDataSet(string filename) : this()
         {
             this.Filename = filename;
 
@@ -457,10 +432,7 @@ namespace Sandcastle.Core.Reflection
         /// <param name="propertyName">The property name that changed</param>
         private void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -515,8 +487,8 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The configuration entries</returns>
         public string IgnoreIfUnresolvedConfiguration()
         {
-            return String.Join("\r\n", ignoredUnresolved.Select(i => String.Format(
-                "<assemblyIdentity name=\"{0}\" />", i.Value)));
+            return String.Join("\r\n", ignoredUnresolved.Select(
+                i => $"<assemblyIdentity name=\"{i.Value}\" />"));
         }
 
         /// <summary>
@@ -540,8 +512,8 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The configuration entries</returns>
         public string IgnoredNamespacesConfiguration()
         {
-            return String.Join("\r\n", ignoredNamespaces.Select(i => String.Format(
-                "<namespace name=\"{0}\" expose=\"false\" />", WebUtility.HtmlEncode(i.Value))));
+            return String.Join("\r\n", ignoredNamespaces.Select(i =>
+                $"<namespace name=\"{WebUtility.HtmlEncode(i.Value)}\" expose=\"false\" />"));
         }
 
         /// <summary>

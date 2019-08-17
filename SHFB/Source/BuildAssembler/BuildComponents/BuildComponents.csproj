@@ -60,6 +60,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -74,8 +77,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Extended.Wpf.Toolkit.3.2.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,11 +96,7 @@
     <Compile Include="LanguageSpecificTextComponent.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
+    <Compile Include="MicrosoftDocsXRefServiceResolver.cs" />
     <Compile Include="Snippets\CodeSnippet.cs" />
     <Compile Include="Snippets\CodeSnippetGroup.cs" />
     <Compile Include="Snippets\ColorizationRule.cs" />
@@ -110,7 +109,6 @@
     <Compile Include="InheritDocumentationComponent.cs" />
     <Compile Include="IntelliSenseComponent.cs" />
     <Compile Include="MSHCComponent.cs" />
-    <Compile Include="MsdnResolver.cs" />
     <Compile Include="ResolveConceptualLinksComponent.cs" />
     <Compile Include="ResolveReferenceLinksComponent.cs" />
     <Compile Include="CloneComponent.cs" />
@@ -157,11 +155,6 @@
       <DependentUpon>SyntaxComponentConfigDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidateComponent.cs" />
-    <Compile Include="Web References\MtpsContentService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SandcastleCore\Sandcastle.Core.csproj">
@@ -207,83 +200,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://services.msdn.microsoft.com/ContentServices/ContentService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\MtpsContentService\</RelPath>
-      <UpdateFromURL>http://services.msdn.microsoft.com/ContentServices/ContentService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>BuildComponents_MtpsContentService_ContentService</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms0.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\atoms7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\ContentService.wsdl" />
-    <None Include="Web References\MtpsContentService\default.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\default0.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\default1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\default2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Web References\MtpsContentService\getContentResponse1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MtpsContentService\getNavigationPathsResponse1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MtpsContentService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\MtpsContentService\urn_msdn_com_public_content_syndication_2006_09_common.xsd">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\MtpsContentService\ContentService.disco" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\IntelliSenseConfigDlg.xaml">

@@ -758,7 +758,7 @@
 								<xsl:text>_blank</xsl:text>
 							</xsl:attribute>
 							<xsl:attribute name="href">
-								<xsl:text>http://msdn.microsoft.com/en-us/devlabs/dd491992.aspx</xsl:text>
+								<xsl:text>https://github.com/Microsoft/CodeContracts</xsl:text>
 							</xsl:attribute>
 							<xsl:text>Learn more about contracts</xsl:text>
 						</a>

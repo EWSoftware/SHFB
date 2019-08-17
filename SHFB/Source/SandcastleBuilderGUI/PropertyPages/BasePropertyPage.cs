@@ -304,33 +304,25 @@ namespace SandcastleBuilder.Package.PropertyPages
                         }
                         else if(c is Label)
                         {
-                            Label l = (Label)c;
-
                             // No change event for this one but we probably don't need it
-
                             pi = t.GetProperty("Content", BindingFlags.Public | BindingFlags.Instance);
                         }
-                        else if(c is TextBoxBase)
+                        else if(c is TextBoxBase tb)
                         {
-                            TextBoxBase tb = (TextBoxBase)c;
-
                             tb.TextChanged -= OnPropertyChanged;
                             tb.TextChanged += OnPropertyChanged;
 
                             pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
                         }
-                        else if(c is Selector)
+                        else if(c is Selector sel)
                         {
-                            Selector sel = (Selector)c;
                             sel.SelectionChanged -= OnPropertyChanged;
                             sel.SelectionChanged += OnPropertyChanged;
 
                             pi = t.GetProperty("SelectedValue", BindingFlags.Public | BindingFlags.Instance);
                         }
-                        else if(c is CheckBox)
+                        else if(c is CheckBox cb)
                         {
-                            CheckBox cb = (CheckBox)c;
-
                             cb.Click -= OnPropertyChanged;
                             cb.Click += OnPropertyChanged;
 

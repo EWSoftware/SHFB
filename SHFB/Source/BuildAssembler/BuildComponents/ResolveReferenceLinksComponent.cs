@@ -19,6 +19,9 @@
 // 03/28/2015 - EFW - Changed the href-format attribute to a nested hrefFormat element.
 // 06/05/2015 - EFW - Removed support for the Help 2 Index and LocalOrIndex link types
 // 03/24/2017 - EFW - Updated to try and resolve missing overload IDs to an equivalent non-overload method ID
+// 08/15/2019 - EFW - Replaced the MSDN resolver with the new Microsoft Docs resolver
+
+// Ignore Spelling: Stazzz href url xpath cref seealso nolink selflink xhelp
 
 using System;
 using System.Collections.Generic;
@@ -62,29 +65,28 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <summary>
-        /// This is used as the key name when sharing the MSDN content ID cache across instances
+        /// This is used as the key name when sharing the URL cache across instances
         /// </summary>
-        public const string SharedMsdnContentIdCacheId = "SharedMsdnContentIdCache";
+        public const string SharedMemberUrlCacheId = "SharedMemberUrlCache";
 
         /// <summary>
         /// This is used as the key name when sharing the target dictionaries across instances
         /// </summary>
         public const string SharedReferenceTargetsId = "SharedReferenceTargets";
+
         #endregion
 
         #region Private data members
         //=====================================================================
 
-        private static XPathExpression referenceLinkExpression = XPathExpression.Compile("//referenceLink");
+        private static readonly XPathExpression referenceLinkExpression = XPathExpression.Compile("//referenceLink");
 
         private Dictionary<string, TargetDictionary> sharedTargets;
         private TargetTypeDictionary targets;
 
         private LinkTextResolver resolver;
 
-        private MsdnResolver msdnResolver;
-
-        private string linkTarget, msdnIdCacheFile;
+        private string linkTarget, memberIdUrlCacheFile;
 
         // WebDocs target URL formatting (legacy Microsoft stuff)
         private XPathExpression baseUrl;
@@ -96,20 +98,15 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the MSDN resolver instance
+        /// This read-only property returns the member ID URL resolver instance
         /// </summary>
-        protected MsdnResolver MsdnResolver
-        {
-            get { return msdnResolver; }
-        }
+        protected IMemberIdUrlResolver UrlResolver { get; private set; }
 
         /// <summary>
         /// This read-only property returns the target type dictionary
         /// </summary>
-        protected TargetTypeDictionary Targets
-        {
-            get { return targets; }
-        }
+        protected TargetTypeDictionary Targets => targets;
+
         #endregion
 
         #region Constructor
@@ -130,8 +127,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            TargetDictionary newTargets;
-            ReferenceLinkType type;
             string attrValue, id;
 
             targets = new TargetTypeDictionary();
@@ -148,7 +143,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             // document. If specified, local links will be made relative to the base-url.
             string baseUrlValue = configuration.GetAttribute("base-url", String.Empty);
 
-            if(!String.IsNullOrEmpty(baseUrlValue))
+            if(!String.IsNullOrWhiteSpace(baseUrlValue))
                 baseUrl = XPathExpression.Compile(baseUrlValue);
 
             // hrefFormat is a string format that is used to format the value of local href attributes. The
@@ -161,7 +156,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             // The container XPath can be replaced; this is useful
             string containerValue = configuration.GetAttribute("container", String.Empty);
 
-            if(!String.IsNullOrEmpty(containerValue))
+            if(!String.IsNullOrWhiteSpace(containerValue))
                 XmlTargetDictionaryUtilities.ContainerExpression = containerValue;
 
             XPathNodeIterator targetsNodes = configuration.Select("targets");
@@ -176,18 +171,18 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 // Get target type
                 attrValue = targetsNode.GetAttribute("type", String.Empty);
 
-                if(String.IsNullOrEmpty(attrValue))
+                if(String.IsNullOrWhiteSpace(attrValue))
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute " +
                         "that specifies which type of links to create");
 
-                if(!Enum.TryParse<ReferenceLinkType>(attrValue, true, out type))
+                if(!Enum.TryParse<ReferenceLinkType>(attrValue, true, out ReferenceLinkType type))
                     this.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type",
                         attrValue);
 
                 // Check for shared instance by ID.  If not there, create it and add it.
                 id = targetsNode.GetAttribute("id", String.Empty);
 
-                if(!sharedTargets.TryGetValue(id, out newTargets))
+                if(!sharedTargets.TryGetValue(id, out TargetDictionary newTargets))
                 {
                     this.WriteMessage(MessageLevel.Info, "Loading {0} reference link type targets", type);
 
@@ -212,16 +207,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             if(this.BuildAssembler.VerbosityLevel == MessageLevel.Info)
                 this.WriteMessage(MessageLevel.Info, "{0} total reference link targets", targets.Count);
 
-            if(targets.NeedsMsdnResolver)
+            if(targets.NeedsMemberIdUrlResolver)
             {
-                this.WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver");
+                this.WriteMessage(MessageLevel.Info, "Creating member ID URL resolver");
 
-                msdnResolver = this.CreateMsdnResolver(configuration);
+                this.UrlResolver = this.CreateMemberIdResolver(configuration);
 
                 string localeValue = (string)configuration.Evaluate("string(locale/@value)");
 
-                if(msdnResolver != null && !String.IsNullOrWhiteSpace(localeValue))
-                    msdnResolver.Locale = localeValue;
+                if(this.UrlResolver != null && !String.IsNullOrWhiteSpace(localeValue))
+                    this.UrlResolver.Locale = localeValue;
             }
 
             linkTarget = (string)configuration.Evaluate("string(linkTarget/@value)");
@@ -233,8 +228,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            Target target = null, keyTarget;
-            string msdnUrl = null;
+            Target target = null;
+            string memberUrl = null;
 
             foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
             {
@@ -263,7 +258,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                   targetId.StartsWith("O:", StringComparison.Ordinal))
                 {
                     string methodTargetId = "M:" + targetId.Substring(targetId.IndexOf(':') + 1);
-                    methodTargetId = targets.Keys.FirstOrDefault(k => k.StartsWith(methodTargetId));
+                    methodTargetId = targets.Keys.FirstOrDefault(k => k.StartsWith(methodTargetId,
+                        StringComparison.Ordinal));
 
                     if(methodTargetId != null)
                     {
@@ -284,7 +280,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                 // If not found and it starts with "System." or "Microsoft." we'll go with the assumption that
                 // it's part of a Microsoft class library that is not part of the core framework but does have
-                // documentation available on MSDN.  Worst case it doesn't and we get an unresolved link warning
+                // documentation available online.  Worst case it doesn't and we get an unresolved link warning
                 // instead of an unknown reference target warning.
                 if(!targetFound && ((targetId.Length > 9 && targetId.Substring(2).StartsWith("System.",
                   StringComparison.Ordinal)) || (targetId.Length > 12 && targetId.Substring(2).StartsWith(
@@ -318,15 +314,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     {
                         bool isConversionOperator = false;
 
-                        MethodTarget method = target as MethodTarget;
-
-                        if(method != null)
+                        if(target is MethodTarget method)
                             isConversionOperator = method.IsConversionOperator;
 
                         MemberTarget member = target as MemberTarget;
 
                         // If conversion operator is found, always link to individual topic
-                        if(member != null && !String.IsNullOrEmpty(member.OverloadId) && !isConversionOperator)
+                        if(member != null && !String.IsNullOrWhiteSpace(member.OverloadId) && !isConversionOperator)
                         {
                             Target overloadTarget = targets[member.OverloadId];
 
@@ -338,7 +332,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         }
 
                         // If individual conversion operator is found, always display parameters
-                        if(isConversionOperator && member != null && !String.IsNullOrEmpty(member.OverloadId))
+                        if(isConversionOperator && member != null && !String.IsNullOrWhiteSpace(member.OverloadId))
                             options = options | DisplayOptions.ShowParameters;
                         else
                             options = options & ~DisplayOptions.ShowParameters;
@@ -352,40 +346,57 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     if(targetId == key)
                         type = ReferenceLinkType.Self;
                     else
-                        if(target != null && targets.TryGetValue(key, out keyTarget) && target.File == keyTarget.File)
+                        if(target != null && targets.TryGetValue(key, out Target keyTarget) && target.File == keyTarget.File)
                             type = ReferenceLinkType.Self;
 
                 // !EFW - Redirect enumeration fields to the containing enumerated type so that we
                 // get a valid link target.  Enum fields don't have a topic to themselves.
                 if(type != ReferenceLinkType.None && type != ReferenceLinkType.Self && type != ReferenceLinkType.Local &&
-                  targetId.StartsWith("F:", StringComparison.OrdinalIgnoreCase))
+                  targetId.StartsWith("F:", StringComparison.Ordinal))
                 {
-                    MemberTarget member = target as MemberTarget;
-
-                    if(member != null)
+                    if(target is MemberTarget member && member.ContainingType is SimpleTypeReference typeRef &&
+                      targets[typeRef.Id] is EnumerationTarget)
                     {
-                        SimpleTypeReference typeRef = member.ContainingType as SimpleTypeReference;
-
-                        if(typeRef != null && targets[typeRef.Id] is EnumerationTarget)
-                            targetId = typeRef.Id;
+                        targetId = typeRef.Id;
                     }
                 }
 
-                // Get MSDN endpoint if needed
+                // Get the URL for the member ID if needed
                 if(type == ReferenceLinkType.Msdn)
-                    if(msdnResolver != null && !msdnResolver.IsDisabled)
+                    if(this.UrlResolver != null && !this.UrlResolver.IsDisabled)
                     {
-                        msdnUrl = msdnResolver.GetMsdnUrl(targetId);
+                        memberUrl = this.UrlResolver.ResolveUrlForId(targetId);
 
-                        if(String.IsNullOrEmpty(msdnUrl))
+                        // The Microsoft Docs cross reference service doesn't appear to support overloads links
+                        // so try to convert to one of the overload members and use that as the target instead.
+                        if(String.IsNullOrWhiteSpace(memberUrl) && !this.UrlResolver.IsDisabled &&
+                          targetId.StartsWith("Overload:", StringComparison.Ordinal) ||
+                          targetId.StartsWith("O:", StringComparison.Ordinal))
+                        {
+                            string methodTargetId = "M:" + targetId.Substring(targetId.IndexOf(':') + 1);
+                            methodTargetId = targets.Keys.FirstOrDefault(k => k.StartsWith(methodTargetId,
+                                StringComparison.Ordinal));
+
+                            if(methodTargetId != null)
+                            {
+                                memberUrl = this.UrlResolver.ResolveUrlForId(methodTargetId);
+
+                                if(memberUrl != null)
+                                    this.UrlResolver.CachedUrls[targetId] = memberUrl;
+                            }
+                        }
+
+                        if(String.IsNullOrWhiteSpace(memberUrl))
                         {
                             // If the web service failed, report the reason
-                            if(msdnResolver.IsDisabled)
-                                this.WriteMessage(key, MessageLevel.Warn, "MSDN web service failed.  No " +
-                                    "further look ups will be performed for this build.\r\nReason: {0}",
-                                    msdnResolver.DisabledReason);
+                            if(this.UrlResolver.IsDisabled)
+                            {
+                                this.WriteMessage(key, MessageLevel.Warn, "Member ID URL resolver service failed.  " +
+                                    "No further look ups will be performed for this build.\r\nReason: {0}",
+                                    this.UrlResolver.DisabledReason);
+                            }
                             else
-                                this.WriteMessage(key, MessageLevel.Warn, "MSDN URL not found for target '{0}'.",
+                                this.WriteMessage(key, MessageLevel.Warn, "Member ID URL not found for target '{0}'.",
                                     targetId);
 
                             type = ReferenceLinkType.None;
@@ -429,7 +440,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     case ReferenceLinkType.Msdn:
                         writer.WriteStartElement("a");
-                        writer.WriteAttributeString("href", msdnUrl);
+                        writer.WriteAttributeString("href", memberUrl);
                         writer.WriteAttributeString("target", linkTarget);
                         break;
 
@@ -440,7 +451,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 }
 
                 // Write the link text
-                if(String.IsNullOrEmpty(link.DisplayTarget))
+                if(String.IsNullOrWhiteSpace(link.DisplayTarget))
                 {
                     if(link.Contents == null)
                     {
@@ -485,8 +496,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                         using(StringWriter textStore = new StringWriter(CultureInfo.InvariantCulture))
                         {
-                            XmlWriterSettings settings = new XmlWriterSettings();
-                            settings.ConformanceLevel = ConformanceLevel.Fragment;
+                            XmlWriterSettings settings = new XmlWriterSettings { ConformanceLevel = ConformanceLevel.Fragment };
 
                             using(XmlWriter xmlStore = XmlWriter.Create(textStore, settings))
                             {
@@ -539,10 +549,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// dispose of the unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if(disposing && msdnResolver != null && !msdnResolver.IsDisposed)
+            if(disposing && this.UrlResolver != null && !this.UrlResolver.IsDisposed)
             {
-                this.UpdateMsdnContentIdCache();
-                msdnResolver.Dispose();
+                this.UpdateUrlCache();
+                this.UrlResolver.Dispose();
+                this.UrlResolver = null;
             }
 
             if(targets != null)
@@ -563,109 +574,128 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         /// <summary>
-        /// This is used to create an MSDN resolver for the reference link to use in looking up MSDN content iDs
+        /// This is used to create a member ID URL resolver for the component to use in looking up help website
+        /// URLs.
         /// </summary>
         /// <param name="configuration">The component configuration</param>
-        /// <returns>An MSDN resolver instance</returns>
+        /// <returns>An <see cref="IMemberIdUrlResolver"/> instance</returns>
         /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
         /// other than the default dictionary serialized to a binary file.  It also allows sharing the cache
         /// across instances by placing it in the <see cref="BuildComponentCore.Data"/> dictionary using the key
-        /// name <c>SharedMsdnContentIdCacheID</c>.
+        /// name <see cref="SharedMemberUrlCacheId"/>.
         /// 
-        /// <para>If overridden, the <see cref="UpdateMsdnContentIdCache"/> method should also be overridden to
+        /// <para>If overridden, the <see cref="UpdateUrlCache"/> method should also be overridden to
         /// persist changes to the cache if needed.</para></remarks>
-        protected virtual MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
+        /// <overloads>There are two overloads for this method</overloads>
+        protected virtual IMemberIdUrlResolver CreateMemberIdResolver(XPathNavigator configuration)
         {
-            MsdnResolver newResolver;
+            IMemberIdUrlResolver newResolver;
             IDictionary<string, string> cache = null;
 
-            if(BuildComponentCore.Data.ContainsKey(SharedMsdnContentIdCacheId))
-                cache = BuildComponentCore.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
+            if(BuildComponentCore.Data.ContainsKey(SharedMemberUrlCacheId))
+                cache = BuildComponentCore.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
             if(cache != null)
-                return new MsdnResolver(cache, true);
+                return this.CreateMemberIdResolver(cache, true);
 
             // If a <cache> element is not specified, we'll use the standard resolver without a persistent cache.
             // We will share it across all instances though.
-            XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
+            XPathNavigator node = configuration.SelectSingleNode("memberIdUrlCache");
 
             if(node == null)
-                newResolver = new MsdnResolver();
+                newResolver = this.CreateMemberIdResolver(null, false);
             else
             {
                 // Keep the filename.  If we own it, we'll update the cache file when disposed.
-                msdnIdCacheFile = node.GetAttribute("path", String.Empty);
+                memberIdUrlCacheFile = node.GetAttribute("path", String.Empty);
 
-                if(String.IsNullOrWhiteSpace(msdnIdCacheFile))
+                if(String.IsNullOrWhiteSpace(memberIdUrlCacheFile))
                     this.WriteMessage(MessageLevel.Error, "You must specify a path attribute value on the " +
-                        "msdnContentIdCache element.");
+                        "memberIdUrlCache element.");
 
                 // Create the folder if it doesn't exist
-                msdnIdCacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(msdnIdCacheFile));
-                string path = Path.GetDirectoryName(msdnIdCacheFile);
+                memberIdUrlCacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(memberIdUrlCacheFile));
+                string path = Path.GetDirectoryName(memberIdUrlCacheFile);
 
                 if(!Directory.Exists(path))
                     Directory.CreateDirectory(path);
 
                 // Load the cache if it exists
-                if(!File.Exists(msdnIdCacheFile))
+                if(!File.Exists(memberIdUrlCacheFile))
                 {
                     // Logged as a diagnostic message since looking up all IDs can significantly slow the build
-                    this.WriteMessage(MessageLevel.Diagnostic, "The MSDN content ID cache '" + msdnIdCacheFile +
+                    this.WriteMessage(MessageLevel.Diagnostic, "The member ID URL cache '" + memberIdUrlCacheFile +
                         "' does not exist yet.  All IDs will be looked up in this build which will slow it down.");
 
-                    newResolver = new MsdnResolver();
+                    newResolver = this.CreateMemberIdResolver(null, false);
                 }
                 else
-                    using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Open, FileAccess.Read,
+                    using(FileStream fs = new FileStream(memberIdUrlCacheFile, FileMode.Open, FileAccess.Read,
                       FileShare.Read))
                     {
                         BinaryFormatter bf = new BinaryFormatter();
-                        newResolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs), false);
+                        newResolver = this.CreateMemberIdResolver((IDictionary<string, string>)bf.Deserialize(fs), false);
 
-                        this.WriteMessage(MessageLevel.Info, "Loaded {0} cached MSDN content ID entries",
-                            newResolver.MsdnContentIdCache.Count);
+                        this.WriteMessage(MessageLevel.Info, "Loaded {0} cached member ID URL entries",
+                            newResolver.CachedUrls.Count);
                     }
             }
 
-            BuildComponentCore.Data[SharedMsdnContentIdCacheId] = newResolver.MsdnContentIdCache;
+            BuildComponentCore.Data[SharedMemberUrlCacheId] = newResolver.CachedUrls;
 
             return newResolver;
         }
 
         /// <summary>
-        /// This is used to update the MSDN content ID cache file
+        /// This is used to create a member ID URL resolver for the component to use in looking up help website
+        /// URLs.
+        /// </summary>
+        /// <param name="cache">A cache of existing URLs or null to use the default cache.</param>
+        /// <param name="isShared">True if the cache is shared, false if not.  If not shared, the cache will
+        /// be disposed of when the instance is disposed of.  If <paramref name="cache"/> is null, this parameter
+        /// is ignored.</param>
+        /// <returns>An <see cref="IMemberIdUrlResolver"/> instance</returns>
+        protected virtual IMemberIdUrlResolver CreateMemberIdResolver(IDictionary<string, string> cache, bool isShared)
+        {
+            if(cache != null)
+                return new MicrosoftDocsXRefServiceResolver(cache, isShared);
+
+            return new MicrosoftDocsXRefServiceResolver();
+        }
+
+        /// <summary>
+        /// This is used to update the URL cache file
         /// </summary>
         /// <remarks>The default implementation serializes the standard dictionary to a file using binary
         /// serialization if new entries were added and it loaded the cache file.</remarks>
-        public virtual void UpdateMsdnContentIdCache()
+        public virtual void UpdateUrlCache()
         {
-            if(msdnIdCacheFile != null && msdnResolver != null && MsdnResolver.CacheItemsAdded != 0)
+            if(memberIdUrlCacheFile != null && this.UrlResolver != null && this.UrlResolver.CacheItemsAdded != 0)
             {
-                this.WriteMessage(MessageLevel.Info, "MSDN content ID cache updated.  Saving new information to " +
-                    msdnIdCacheFile);
+                this.WriteMessage(MessageLevel.Info, "Member ID URL cache updated.  Saving new information to " +
+                    memberIdUrlCacheFile);
 
                 try
                 {
-                    using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Create, FileAccess.ReadWrite,
+                    using(FileStream fs = new FileStream(memberIdUrlCacheFile, FileMode.Create, FileAccess.ReadWrite,
                       FileShare.None))
                     {
                         BinaryFormatter bf = new BinaryFormatter();
-                        bf.Serialize(fs, msdnResolver.MsdnContentIdCache);
+                        bf.Serialize(fs, this.UrlResolver.CachedUrls);
                     }
 
-                    this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the MSDN content ID " +
-                        "cache.  New cache size: {1} entries", MsdnResolver.CacheItemsAdded,
-                        msdnResolver.MsdnContentIdCache.Count);
+                    this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the member ID URL cache.  " +
+                        "New cache size: {1} entries", this.UrlResolver.CacheItemsAdded,
+                        this.UrlResolver.CachedUrls.Count);
                 }
                 catch(IOException ex)
                 {
                     // Most likely it couldn't access the file.  We'll issue a warning but will continue with
                     // the build.
-                    this.WriteMessage(MessageLevel.Warn, "Unable to create MSDN content ID cache file.  It " +
-                        "will be created or updated on a subsequent build: " + ex.Message);
+                    this.WriteMessage(MessageLevel.Warn, "Unable to create member ID URL cache file.  It will " +
+                        "be created or updated on a subsequent build: " + ex.Message);
                 }
             }
         }

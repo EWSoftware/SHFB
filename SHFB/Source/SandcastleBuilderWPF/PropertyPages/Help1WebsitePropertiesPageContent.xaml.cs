@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : Help1WebsitePropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/07/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 08/16/2019
+// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help 1, Website, Open XML, and Markdown category properties
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             InitializeComponent();
 
             cboHtmlSdkLinkType.ItemsSource = cboWebsiteSdkLinkType.ItemsSource = (new Dictionary<string, string> {
-                { HtmlSdkLinkType.Msdn.ToString(), "Online links to MSDN help topics" },
+                { HtmlSdkLinkType.Msdn.ToString(), "Links to online help topics" },
                 { HtmlSdkLinkType.None.ToString(), "No SDK links" } }).ToList();
 
             cboHtmlSdkLinkType.SelectedIndex = cboWebsiteSdkLinkType.SelectedIndex = 0;

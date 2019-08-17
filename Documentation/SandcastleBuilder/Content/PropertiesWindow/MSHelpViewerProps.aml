@@ -136,10 +136,10 @@ resides to help differentiate it from other entries with the same title in the s
 				<para>This property is used to define the type of links used to reference other help topics referring
 to framework (SDK) help topics. It can be set to <codeInline>None</codeInline> which renders non-clickable links,
 <codeInline>Id</codeInline> which renders MS Help Viewer style <codeInline>ms-xhelp</codeInline> style links, or
-<codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN help content for the topic.
+<codeInline>MSDN</codeInline> (the default) which renders links to the online help content for the topic.
 When set to <codeInline>MSDN</codeInline>, the
 <link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">Sdk Link Target</link> property is used to
-define where the MSDN links will open in the browser.</para>
+define where the external links will open in the browser.</para>
 			</content>
 		</section>
 

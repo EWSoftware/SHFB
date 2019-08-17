@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 08/17/2019
+// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to obtain the current build property settings from the project
@@ -18,12 +18,14 @@
 // 11/16/2017  EFW  Created the code
 //===============================================================================================================
 
+using System;
+
 namespace SandcastleBuilder.WPF.PropertyPages
 {
     /// <summary>
     /// This is used to request the current build component or plug-in settings from the current project
     /// </summary>
-    public class BuildPropertiesNeededEventArgs
+    public class BuildPropertiesNeededEventArgs : EventArgs
     {
         /// <summary>
         /// This is used to get or set whether or not a project is loaded

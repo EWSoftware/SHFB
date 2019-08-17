@@ -253,6 +253,7 @@ namespace Microsoft.Ddue.Tools.UI
                         {
                             try
                             {
+                                // Parse it to ensure it's valid XML
                                 var element = XElement.Parse("<configuration>" + txtConfiguration.Text +
                                     "</configuration>");
 

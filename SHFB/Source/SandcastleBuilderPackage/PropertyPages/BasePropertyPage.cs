@@ -111,7 +111,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         protected internal bool IsDirty
         {
-            get { return isDirty; }
+            get => isDirty;
             set
             {
                 ThreadHelper.ThrowIfNotOnUIThread();
@@ -357,33 +357,25 @@ namespace SandcastleBuilder.Package.PropertyPages
                         }
                         else if(c is Label)
                         {
-                            Label l = (Label)c;
-
                             // No change event for this one but we probably don't need it
-
                             pi = t.GetProperty("Content", BindingFlags.Public | BindingFlags.Instance);
                         }
-                        else if(c is TextBoxBase)
+                        else if(c is TextBoxBase tb)
                         {
-                            TextBoxBase tb = (TextBoxBase)c;
-
                             tb.TextChanged -= OnPropertyChanged;
                             tb.TextChanged += OnPropertyChanged;
 
                             pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
                         }
-                        else if(c is Selector)
+                        else if(c is Selector sel)
                         {
-                            Selector sel = (Selector)c;
                             sel.SelectionChanged -= OnPropertyChanged;
                             sel.SelectionChanged += OnPropertyChanged;
 
                             pi = t.GetProperty("SelectedValue", BindingFlags.Public | BindingFlags.Instance);
                         }
-                        else if(c is CheckBox)
+                        else if(c is CheckBox cb)
                         {
-                            CheckBox cb = (CheckBox)c;
-
                             cb.Click -= OnPropertyChanged;
                             cb.Click += OnPropertyChanged;
 
@@ -674,15 +666,15 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="pPageInfo">The parameters are returned in this one-sized array.</param>
         void IPropertyPage.GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
-            PROPPAGEINFO info = new PROPPAGEINFO();
-
-            info.cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO));
-            info.dwHelpContext = 0;
-            info.pszDocString = info.pszHelpFile = null;
-            info.pszTitle = this.Title ?? String.Empty;
-            info.SIZE.cx = this.Width;
-            info.SIZE.cy = this.Height;
-            pPageInfo[0] = info;
+            pPageInfo[0] = new PROPPAGEINFO
+            {
+                cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
+                dwHelpContext = 0,
+                pszDocString = null,
+                pszHelpFile = null,
+                pszTitle = this.Title ?? String.Empty,
+                SIZE = new SIZE { cx = this.Width, cy = this.Height }
+            };
         }
 
         /// <summary>
@@ -769,8 +761,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     for(int i = 0; i < cObjects; i++)
                     {
                         NodeProperties property = (NodeProperties)ppunk[i];
-                        IVsCfgProvider provider;
-                        ErrorHandler.ThrowOnFailure(property.Node.ProjectMgr.GetCfgProvider(out provider));
+                        ErrorHandler.ThrowOnFailure(property.Node.ProjectMgr.GetCfgProvider(out IVsCfgProvider provider));
                         uint[] expected = new uint[1];
                         ErrorHandler.ThrowOnFailure(provider.GetCfgs(0, null, expected, null));
 

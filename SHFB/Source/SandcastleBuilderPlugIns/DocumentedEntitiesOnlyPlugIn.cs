@@ -196,7 +196,7 @@ namespace SandcastleBuilder.PlugIns
                         if(pos != -1)
                             memberName = memberName.Substring(0, pos);
 
-                        pos = memberName.IndexOf("``");
+                        pos = memberName.IndexOf("``", StringComparison.Ordinal);
 
                         if(pos != -1)
                             memberName = memberName.Substring(0, pos);

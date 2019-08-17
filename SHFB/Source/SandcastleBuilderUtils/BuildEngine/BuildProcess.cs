@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/21/2019
+// Updated : 08/16/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2019,8 +2019,8 @@ AllDone:
         {
             List<string> commentsList = new List<string>();
             Dictionary<string, MSBuildProject> projectDictionary = new Dictionary<string, MSBuildProject>();
-            HashSet<Tuple<string, string>> targetFrameworksSeen = new HashSet<Tuple<string, string>>();
             PackageReferenceResolver packageReferenceResolver = new PackageReferenceResolver(this);
+            var targetFrameworksSeen = new HashSet<(string PlatformType, string Version)>();
 
             MSBuildProject projRef;
             XPathDocument testComments;
@@ -2241,8 +2241,7 @@ AllDone:
                         }
 
                         // Note the platforms seen and the highest framework version used
-                        targetFrameworksSeen.Add(Tuple.Create(msbProject.TargetFrameworkIdentifier,
-                            msbProject.TargetFrameworkVersion));
+                        targetFrameworksSeen.Add((msbProject.TargetFrameworkIdentifier, msbProject.TargetFrameworkVersion));
 
                         // Clone the project's reference information
                         msbProject.CloneReferenceInfo(packageReferenceResolver, referenceDictionary);
@@ -2252,11 +2251,14 @@ AllDone:
                     // different assemblies used, we cannot mix the project types within the same SHFB project.
                     // They will need to be documented separately and can be merged using the Version Builder
                     // plug-in if needed.
-                    if(targetFrameworksSeen.Count > 1 && !PlatformType.PlatformsAreCompatible(targetFrameworksSeen.Select(t => t.Item1)))
+                    if(targetFrameworksSeen.Count > 1 && !PlatformType.PlatformsAreCompatible(
+                      targetFrameworksSeen.Select(t => t.PlatformType)))
+                    {
                         throw new BuilderException("BE0070", "Differing framework types were detected in the " +
                             "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different " +
                             "sets of assemblies used, the different frameworks cannot be mixed within the same " +
                             "documentation project.  See the error number topic in the help file for details.");
+                    }
 
                     // Find the best matching set of framework reflection data
                     var projectFramework = reflectionDataDictionary.BestMatchFor(targetFrameworksSeen);
@@ -2265,16 +2267,20 @@ AllDone:
                     {
                         // If redirected and no suitable version was found, we can't go any further
                         if(projectFramework == null)
+                        {
                             throw new BuilderException("BE0073", String.Format(CultureInfo.CurrentCulture,
                                 "A project with a different or higher framework version was found but that " +
                                 "version or a suitable redirected version was not found on this " +
                                 "system.  The build cannot continue.  Project framework versions: {0}",
-                                String.Join(", ", targetFrameworksSeen.Select(f => f.Item1 + " " + f.Item2))));
+                                String.Join(", ", targetFrameworksSeen.Select(f => f.PlatformType + " " + f.Version))));
+                        }
 
                         if(frameworkReflectionData.Platform != PlatformType.DotNetStandard)
+                        {
                             this.ReportWarning("BE0007", "A project with a different or higher framework version " +
                                 "was found.  Changing project FrameworkVersion property from '{0}' to '{1}' for " +
                                 "the build.", project.FrameworkVersion, projectFramework.Title);
+                        }
 
                         project.FrameworkVersion = projectFramework.Title;
                         frameworkReflectionData = projectFramework;

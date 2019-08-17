@@ -35,7 +35,7 @@ using them, visit the <token>SHFB</token> project site.</para>
 					<listItem>
 						<para>For discussion and questions about help systems in general, visit the <externalLink>
 <linkText>Visual Studio General Questions forum</linkText>
-<linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
+<linkUri>https://social.msdn.microsoft.com/Forums/vstudio/en-US/home?forum=visualstudiogeneral</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink>.</para>
 					</listItem>
@@ -43,7 +43,7 @@ using them, visit the <token>SHFB</token> project site.</para>
 					<listItem>
 						<para>The retired <externalLink>
 <linkText>Microsoft Developer Documentation and Help System forum</linkText>
-<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+<linkUri>https://social.msdn.microsoft.com/Forums/en-US/home?forum=devdocs</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink> may also provide information on older help systems.</para>
 					</listItem>
@@ -70,11 +70,11 @@ usage see the <externalLink>
 						<para>For general background information, see the Wikipedia entry
 <externalLink>
 	<linkText>Microsoft Assistance Markup Language</linkText>
-	<linkUri>http://en.wikipedia.org/wiki/Microsoft_Assistance_Markup_Language</linkUri>
+	<linkUri>https://en.wikipedia.org/wiki/Microsoft_Assistance_Markup_Language</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink> or, for schema information, see the MAML information at	<externalLink>
 	<linkText>help-info.de</linkText>
-	<linkUri>http://www.help-info.de/en/Help_Info_AP_Help/longhorn_maml_example.htm</linkUri>
+	<linkUri>https://www.help-info.de/en/Help_Info_AP_Help/longhorn_maml_example.htm</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink>.</para>
 					</listItem>

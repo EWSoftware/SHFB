@@ -2,21 +2,21 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentResolveReferenceLinksConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
+// Updated : 08/15/2019
+// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the ESENT Resolve Reference Links
 // component.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.7.0  03/12/2013  EFW  Created the code
+// 03/12/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -38,6 +38,7 @@ namespace SandcastleBuilder.Components.UI
         //=====================================================================
 
         private XElement config;     // The configuration
+
         #endregion
 
         #region Properties
@@ -46,10 +47,8 @@ namespace SandcastleBuilder.Components.UI
         /// <summary>
         /// This is used to return the configuration information
         /// </summary>
-        public string Configuration
-        {
-            get { return config.ToString(); }
-        }
+        public string Configuration => config.ToString();
+
         #endregion
 
         #region Constructor
@@ -71,9 +70,9 @@ namespace SandcastleBuilder.Components.UI
             // format).  However, the settings will be the same across all of them.
             config = XElement.Parse(currentConfig);
 
-            node = config.Descendants("msdnContentIdCache").First();
-            txtContentIdCachePath.Text = node.Attribute("cachePath").Value;
-            udcContentIdLocalCacheSize.Value = ((int?)node.Attribute("localCacheSize") ?? 2500);
+            node = config.Descendants("memberIdUrlCache").First();
+            txtMemberIdUrlCachePath.Text = node.Attribute("cachePath").Value;
+            udcMemberIdUrlLocalCacheSize.Value = ((int?)node.Attribute("localCacheSize") ?? 2500);
 
             node = config.Descendants("targets").First(d => d.Attribute("id").Value == "FrameworkTargets");
             txtFrameworkTargetsCachePath.Text = node.Attribute("cachePath").Value;
@@ -162,10 +161,10 @@ namespace SandcastleBuilder.Components.UI
 
             using(FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
-                if(b == btnSelectContentIdCacheFolder)
+                if(b == btnSelectMemberIdUrlCacheFolder)
                 {
-                    t = txtContentIdCachePath;
-                    dlg.Description = "Select the MSDN content ID cache folder";
+                    t = txtMemberIdUrlCachePath;
+                    dlg.Description = "Select the member ID URL cache folder";
                 }
                 else
                     if(b == btnSelectFrameworkTargetsCacheFolder)
@@ -212,22 +211,22 @@ namespace SandcastleBuilder.Components.UI
         {
             bool isValid = true;
 
-            txtContentIdCachePath.Text = txtContentIdCachePath.Text.Trim();
+            txtMemberIdUrlCachePath.Text = txtMemberIdUrlCachePath.Text.Trim();
             txtFrameworkTargetsCachePath.Text = txtFrameworkTargetsCachePath.Text.Trim();
             txtProjectTargetsCachePath.Text = txtProjectTargetsCachePath.Text.Trim();
 
             epErrors.Clear();
 
-            if(txtContentIdCachePath.Text.Length == 0)
+            if(txtMemberIdUrlCachePath.Text.Length == 0)
             {
-                epErrors.SetError(txtContentIdCachePath, "The content ID cache path is required");
+                epErrors.SetError(txtMemberIdUrlCachePath, "The content ID cache path is required");
                 isValid = false;
             }
             else
-                if(txtContentIdCachePath.Text == txtFrameworkTargetsCachePath.Text ||
-                  txtContentIdCachePath.Text == txtProjectTargetsCachePath.Text)
+                if(txtMemberIdUrlCachePath.Text == txtFrameworkTargetsCachePath.Text ||
+                  txtMemberIdUrlCachePath.Text == txtProjectTargetsCachePath.Text)
                 {
-                    epErrors.SetError(txtContentIdCachePath, "The content ID cache path must be unique");
+                    epErrors.SetError(txtMemberIdUrlCachePath, "The content ID cache path must be unique");
                     isValid = false;
                 }
 
@@ -237,7 +236,7 @@ namespace SandcastleBuilder.Components.UI
                 isValid = false;
             }
             else
-                if(txtFrameworkTargetsCachePath.Text == txtContentIdCachePath.Text ||
+                if(txtFrameworkTargetsCachePath.Text == txtMemberIdUrlCachePath.Text ||
                   txtFrameworkTargetsCachePath.Text == txtProjectTargetsCachePath.Text)
                 {
                     epErrors.SetError(txtFrameworkTargetsCachePath, "The Framework target cache path must be unique");
@@ -255,10 +254,10 @@ namespace SandcastleBuilder.Components.UI
                 return;
 
             // Update each help format configuration with the same values
-            foreach(var n in config.Descendants("msdnContentIdCache"))
+            foreach(var n in config.Descendants("memberIdUrlCache"))
             {
-                n.Attribute("cachePath").Value = txtContentIdCachePath.Text;
-                n.SetAttributeValue("localCacheSize", (int)udcContentIdLocalCacheSize.Value);
+                n.Attribute("cachePath").Value = txtMemberIdUrlCachePath.Text;
+                n.SetAttributeValue("localCacheSize", (int)udcMemberIdUrlLocalCacheSize.Value);
             }
 
             foreach(var n in config.Descendants("targets").Where(d => d.Attribute("id").Value == "FrameworkTargets"))
@@ -289,7 +288,7 @@ namespace SandcastleBuilder.Components.UI
         /// <param name="e">The event arguments</param>
         private void btnPurge_Click(object sender, EventArgs e)
         {
-            string[] allPaths = new[] { txtContentIdCachePath.Text, txtFrameworkTargetsCachePath.Text,
+            string[] allPaths = new[] { txtMemberIdUrlCachePath.Text, txtFrameworkTargetsCachePath.Text,
                 txtProjectTargetsCachePath.Text };
             string resolvedPath = null;
 

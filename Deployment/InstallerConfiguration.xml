@@ -13,7 +13,7 @@
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://EWSoftware.github.io/SHFB/html/cc26cc6a-febf-40f5-b505-348ce6e0d687.htm"
+			<whatsNew url="https://EWSoftware.github.io/SHFB/html/cc26cc6a-febf-40f5-b505-348ce6e0d687.htm"
 				description="Sandcastle Help File Builder and Tools v2019.6.24.0 Release Notes" />
 		</page>
 

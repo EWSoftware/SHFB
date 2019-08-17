@@ -2,15 +2,15 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2014
-// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
+// Updated : 08/16/2019
+// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a dictionary backed by a SQL Server table.  An optional group ID can be used to segregate
 // values within the dictionary.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -58,8 +58,9 @@ namespace SandcastleBuilder.Components
             private SqlCommand cmd;
             private SqlDataReader rdr;
             private BinaryFormatter bf;
-            private string keyFieldName, valueFieldName;
-            private bool isReferenceType;
+            private readonly string keyFieldName, valueFieldName;
+            private readonly bool isReferenceType;
+
             #endregion
 
             #region Constructor
@@ -119,10 +120,7 @@ namespace SandcastleBuilder.Components
             //=====================================================================
 
             /// <inheritdoc />
-            object System.Collections.IEnumerator.Current
-            {
-                get { return this.Current; }
-            }
+            object System.Collections.IEnumerator.Current => this.Current;
 
             /// <inheritdoc />
             public bool MoveNext()
@@ -174,6 +172,7 @@ namespace SandcastleBuilder.Components
         private SqlCommand cmdRetrieveValue, cmdInsertUpdateValue;
         private BinaryFormatter bf;
         private bool isReferenceType, isDisposed;
+
         #endregion
 
         #region Properties
@@ -182,10 +181,7 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This read-only property returns the group ID
         /// </summary>
-        public string GroupId
-        {
-            get { return groupId; }
-        }
+        public string GroupId => groupId;
 
         /// <summary>
         /// Set this to a non-zero value to enable local caching of values to speed up read-only access
@@ -194,7 +190,7 @@ namespace SandcastleBuilder.Components
         /// from the database.</value>
         public int LocalCacheSize
         {
-            get { return localCacheSize; }
+            get => localCacheSize;
             set
             {
                 if(value < 1)
@@ -216,26 +212,18 @@ namespace SandcastleBuilder.Components
         /// This read-only property returns the number of times the local cache was flushed because it filled up
         /// </summary>
         /// <value>This can help in figuring out an appropriate local cache size</value>
-        public int LocalCacheFlushCount
-        {
-            get { return localCacheFlushCount; }
-        }
+        public int LocalCacheFlushCount => localCacheFlushCount;
 
         /// <summary>
         /// This read-only property returns the current number of local cache entries in use
         /// </summary>
-        public int CurrentLocalCacheCount
-        {
-            get { return (localCache == null) ? 0 : localCache.Count; }
-        }
+        public int CurrentLocalCacheCount => (localCache == null) ? 0 : localCache.Count;
 
         /// <summary>
         /// This read-only property returns whether or not the cache has been disposed of
         /// </summary>
-        public bool IsDisposed
-        {
-            get { return isDisposed; }
-        }
+        public bool IsDisposed => isDisposed;
+
         #endregion
 
         #region Constructors
@@ -401,10 +389,30 @@ ELSE
         }
 
         /// <inheritdoc />
-        /// <remarks>This property is not implemented</remarks>
         public ICollection<string> Keys
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                var keys = new HashSet<string>();
+
+                using(var cmd = new SqlCommand { Connection = connection, CommandType = CommandType.Text })
+                {
+                    if(groupIdFieldName == null)
+                        cmd.CommandText = String.Format(CultureInfo.InvariantCulture, "Select {0} From {1}",
+                            keyFieldName, tableName);
+                    else
+                        cmd.CommandText = String.Format(CultureInfo.InvariantCulture, "Select {0} From {1} " +
+                            "Where {2} = '{3}'", keyFieldName, tableName, groupIdFieldName, groupId);
+
+                    using(var rdr = cmd.ExecuteReader())
+                    {
+                        while(rdr.Read())
+                            keys.Add((string)rdr[0]);
+                    }
+                }
+
+                return keys;
+            }
         }
 
         /// <inheritdoc />
@@ -454,19 +462,14 @@ ELSE
 
         /// <inheritdoc />
         /// <remarks>This property is not implemented</remarks>
-        public ICollection<TValue> Values
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public ICollection<TValue> Values => throw new NotImplementedException();
 
         /// <inheritdoc />
         public TValue this[string key]
         {
             get
             {
-                TValue value;
-
-                if(!this.TryGetValue(key, out value))
+                if(!this.TryGetValue(key, out TValue value))
                     throw new KeyNotFoundException();
 
                 return value;
@@ -515,9 +518,7 @@ ELSE
         /// <inheritdoc />
         public bool Contains(KeyValuePair<string, TValue> item)
         {
-            TValue value;
-
-            return this.TryGetValue(item.Key, out value);
+            return this.TryGetValue(item.Key, out TValue value);
         }
 
         /// <inheritdoc />
@@ -552,10 +553,7 @@ ELSE
 
         /// <inheritdoc />
         /// <value>Always returns false</value>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <inheritdoc />
         /// <remarks>This method is not implemented</remarks>

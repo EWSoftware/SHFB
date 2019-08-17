@@ -276,9 +276,9 @@ the appropriate location.  An example is shown below:</para>
 		<para>For more information about template files, see the <externalLink>
 <linkText>Creating Project and Item Templates</linkText>
 <linkAlternateText>VSTemplate information</linkAlternateText>
-<linkUri>http://msdn.microsoft.com/en-us/library/s365byhx(v=VS.100).aspx</linkUri>
+<linkUri>https://docs.microsoft.com/previous-versions/visualstudio/visual-studio-2010/s365byhx(v=vs.100)</linkUri>
 <linkTarget>_blank</linkTarget>
-</externalLink> MSDN topic.</para>
+</externalLink> help topic.</para>
 
 	</content>
 </section>

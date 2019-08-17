@@ -53,7 +53,7 @@ use them.</para>
 					<listItem>
 						<para>Two sets of <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build data components</link>
 (one for ESENT databases and one for SQL Server databases) that cache key information such as comments index,
-reflection index, reflection target, and MSDN content IDs across builds.  These are used primarily for large
+reflection index, reflection target, and member ID URLs across builds.  These are used primarily for large
 projects that run out of memory during the build.</para>
 					</listItem>
 				</list>

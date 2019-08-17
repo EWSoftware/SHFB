@@ -764,7 +764,7 @@
 					<w:p>
 						<a>
 							<xsl:attribute name="href">
-								<xsl:text>http://research.microsoft.com/en-us/projects/contracts/</xsl:text>
+								<xsl:text>https://github.com/Microsoft/CodeContracts</xsl:text>
 							</xsl:attribute>
 							<include item="contracts_LearnMore" />
 						</a>

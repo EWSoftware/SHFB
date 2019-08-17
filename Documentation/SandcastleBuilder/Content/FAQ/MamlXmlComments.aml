@@ -15,7 +15,7 @@ and XML comments.</para>
 				<para>See the <externalLink>
 					<linkText>Sandcastle MAML Guide</linkText>
 					<linkAlternateText>Sandcastle MAML Guide</linkAlternateText>
-					<linkUri>http://ewsoftware.github.io/MAMLGuide</linkUri>
+					<linkUri>https://ewsoftware.github.io/MAMLGuide</linkUri>
 					<linkTarget>_blank</linkTarget>
 				</externalLink> for information on MAML and how to use it.  See the topics in the
 <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> section of this help file for information on adding
@@ -30,7 +30,7 @@ conceptual content to help file builder projects.</para>
 					See the <externalLink>
 						<linkText>Sandcastle XML Comments Guide</linkText>
 						<linkAlternateText>Sandcastle XML Comments Guide</linkAlternateText>
-						<linkUri>http://ewsoftware.github.io/XMLCommentsGuide</linkUri>
+						<linkUri>https://ewsoftware.github.io/XMLCommentsGuide</linkUri>
 						<linkTarget>_blank</linkTarget>
 					</externalLink> for information on XML comments and how to use them.</para>
 			</content>
@@ -75,7 +75,7 @@ topic's content from the physical markup.  You are much better off using an equi
 the content if one exists.  See the <codeInline>markup</codeInline> element topic in the <externalLink>
 					<linkText>Sandcastle MAML Guide</linkText>
 					<linkAlternateText>markup</linkAlternateText>
-					<linkUri>http://ewsoftware.github.io/MAMLGuide/html/aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e.htm</linkUri>
+					<linkUri>https://ewsoftware.github.io/MAMLGuide/html/aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e.htm</linkUri>
 					<linkTarget>_blank</linkTarget>
 				</externalLink> for more information.</para>
 
@@ -141,7 +141,7 @@ member help topic?</title>
 reference the topic.  The <externalLink>
 					<linkText>XML Comments Guide</linkText>
 					<linkAlternateText>conceptualLink</linkAlternateText>
-					<linkUri>http://ewsoftware.github.io/XMLCommentsGuide/html/db2703b4-12bc-4cf5-8642-544b41002809.htm</linkUri>
+					<linkUri>https://ewsoftware.github.io/XMLCommentsGuide/html/db2703b4-12bc-4cf5-8642-544b41002809.htm</linkUri>
 					<linkTarget>_blank</linkTarget>
 				</externalLink> contains more information and examples.  The <link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
 can be used to add a link.  Set the <ui>Type</ui> to "Table of Contents", change the <ui>Insert as</ui> option
@@ -188,12 +188,12 @@ public TestClass
 				<para>See the XML comments guide, specifically the topics on the <externalLink>
 					<linkText>AttachedEventComments</linkText>
 					<linkAlternateText>AttachedEventComments</linkAlternateText>
-					<linkUri>http://ewsoftware.github.io/XMLCommentsGuide/html/3563f000-5677-4cd9-afd7-4e3f2a7fe4fc.htm</linkUri>
+					<linkUri>https://ewsoftware.github.io/XMLCommentsGuide/html/3563f000-5677-4cd9-afd7-4e3f2a7fe4fc.htm</linkUri>
 					<linkTarget>_blank</linkTarget>
 				</externalLink> and <externalLink>
 						<linkText>AttachedPropertyComments</linkText>
 						<linkAlternateText>AttachedPropertyComments</linkAlternateText>
-						<linkUri>http://ewsoftware.github.io/XMLCommentsGuide/html/c0346d23-f376-4948-8f9a-d17b2f1acef3.htm</linkUri>
+						<linkUri>https://ewsoftware.github.io/XMLCommentsGuide/html/c0346d23-f376-4948-8f9a-d17b2f1acef3.htm</linkUri>
 						<linkTarget>_blank</linkTarget>
 					</externalLink> elements.  Examples are provided.</para>
 			</content>

@@ -167,7 +167,7 @@ additional content items in a project (no API content).</para>
 
 							<listItem>
 								<para>Additional Reference Links - Add additional sources of reference links for third-party
-libraries or MSDN content that does not appear in your help file.</para>
+libraries or online content that does not appear in your help file.</para>
 							</listItem>
 
 							<listItem>
@@ -263,7 +263,7 @@ insert common elements or sections of documentation.</para>
 
 					<listItem>
 						<para>A set of cached build data components that cache key information such as comment, reflection
-index information, and MSDN URLs across builds in order to speed them up.</para>
+index information, and member ID URLs across builds in order to speed them up.</para>
 					</listItem>
 				</list>
 

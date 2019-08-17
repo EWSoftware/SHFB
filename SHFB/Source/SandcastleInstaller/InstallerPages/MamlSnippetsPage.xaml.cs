@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlSnippetsPage.cs
 // Author  : Eric Woodruff
-// Updated : 03/22/2019
+// Updated : 08/17/2019
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML snippet files for use with Visual
@@ -38,7 +38,6 @@ namespace Sandcastle.Installer.InstallerPages
         #region Private data members
         //=====================================================================
 
-        private XElement configuration;
         private string sandcastleSnippetsFolder, baseSnippetsFolder;
 
         #endregion
@@ -141,8 +140,6 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
-            this.configuration = configuration;
-
             base.Initialize(configuration);
         }
 
@@ -171,8 +168,10 @@ namespace Sandcastle.Installer.InstallerPages
             }
 
             if(pnlVersions.Children.Count == 0)
-                throw new InvalidOperationException("At least one visualStudio element must be defined in the " +
-                    "configuration");
+            {
+                btnInstallSnippets.IsEnabled = btnChangeFolder.IsEnabled = false;
+                pnlVersions.Children.Add(new Label { Content = "No usable versions of Visual Studio were found" });
+            }
 
             // SHFBROOT will exist as a system environment variable if it is installed correctly
             sandcastleSnippetsFolder = Environment.GetEnvironmentVariable("SHFBROOT", EnvironmentVariableTarget.Machine);

@@ -256,7 +256,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         {
             XPathNavigator nav;
             string attrValue;
-            int boundedCapacity;
 
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
@@ -308,7 +307,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 // Allow limiting the writer task collection to conserve memory
                 attrValue = nav.GetAttribute("boundedCapacity", String.Empty);
 
-                if(!String.IsNullOrWhiteSpace(attrValue) && Int32.TryParse(attrValue, out boundedCapacity) &&
+                if(!String.IsNullOrWhiteSpace(attrValue) && Int32.TryParse(attrValue, out int boundedCapacity) &&
                   boundedCapacity > 0)
                     commentsList = new BlockingCollection<CommentsInfo>(boundedCapacity);
             }
@@ -375,7 +374,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private void WriteComments()
         {
             CommentsInfo lastComments = null;
-            XmlWriter writer;
             string fullPath;
 
             // Assembly names are compared case insensitively
@@ -390,7 +388,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     if(String.IsNullOrWhiteSpace(comments.AssemblyName))
                         continue;
 
-                    if(!writers.TryGetValue(comments.AssemblyName, out writer))
+                    if(!writers.TryGetValue(comments.AssemblyName, out XmlWriter writer))
                     {
                         fullPath = Path.Combine(outputFolder, comments.AssemblyName + ".xml");
                         XmlWriterSettings settings = new XmlWriterSettings { Indent = true };

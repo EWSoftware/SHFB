@@ -110,7 +110,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             Process currentProcess = null;
 
             if(processFilename == null)
-                throw new ArgumentNullException("process");
+                throw new ArgumentNullException(nameof(processFilename));
 
             currentBuild.ReportProgress("[{0}{1}]", processFilename,
                 !String.IsNullOrWhiteSpace(targetFile) ? " - " + targetFile : String.Empty);

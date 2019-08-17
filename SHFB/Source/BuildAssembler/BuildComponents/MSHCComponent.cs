@@ -21,6 +21,8 @@
 // 12/24/2015 - EFW - Updated to be thread safe
 //===============================================================================================================
 
+// Ignore Spelling: Fehr toc utf xml Attr Hx
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -213,20 +215,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         // TOC information of a document
         private class TocInfo
         {
-            private string _parent;
-            private string _parentVersion;
-            private int _order;
-
             public TocInfo(string parent, string parentVersion, int order)
             {
-                _parent = parent;
-                _parentVersion = parentVersion;
-                _order = order;
+                this.Parent = parent;
+                this.ParentVersion = parentVersion;
+                this.Order = order;
             }
 
-            public string Parent { get { return _parent; } }
-            public string ParentVersion { get { return _parentVersion; } }
-            public int Order { get { return _order; } }
+            public string Parent { get ; }
+            public string ParentVersion { get; }
+            public int Order { get; }
         }
         #endregion
 
@@ -346,9 +344,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 if(!nsmgr.HasNamespace(Help2Namespace.Prefix))
                     nsmgr.AddNamespace(Help2Namespace.Prefix, Help2Namespace.Uri);
 
-                XmlElement elem = xml.SelectSingleNode(Help2XPath.TocTitle, nsmgr) as XmlElement;
-
-                if(elem != null)
+                if(xml.SelectSingleNode(Help2XPath.TocTitle, nsmgr) is XmlElement elem)
                     AddMHSMeta(head, MHSMetaName.Title, elem.GetAttribute(Help2Attr.Title));
 
                 foreach(XmlElement keyword in xml.SelectNodes(String.Format(CultureInfo.InvariantCulture, Help2XPath.Keyword, Help2Value.K), nsmgr))
@@ -388,9 +384,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             AddMHSMeta(head, MHSMetaName.TopicLocale, locale);
             AddMHSMeta(head, MHSMetaName.Id, id);
 
-            TocInfo tocInfo;
-
-            if(_toc.TryGetValue(id, out tocInfo))
+            if(_toc.TryGetValue(id, out TocInfo tocInfo))
             {
                 AddMHSMeta(head, MHSMetaName.TocParent, tocInfo.Parent);
 
@@ -409,7 +403,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private void LoadToc(XPathNavigator navigator, string parent, string parentVersion)
         {
             // EFW - Reworked to support sortOrder attribute
-            int sortOrder = 0, tempOrder;
+            int sortOrder = 0;
             XPathNodeIterator interator = navigator.SelectChildren(TocXPath.Topic, String.Empty);
 
             while(interator.MoveNext())
@@ -420,7 +414,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 // If a sort order is defined, start from that value
                 string order = current.GetAttribute(TocAttr.SortOrder, String.Empty);
 
-                if(!String.IsNullOrEmpty(order) && Int32.TryParse(order, out tempOrder))
+                if(!String.IsNullOrEmpty(order) && Int32.TryParse(order, out int tempOrder))
                     sortOrder = tempOrder;
 
                 if(!String.IsNullOrEmpty(id))
@@ -438,13 +432,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         }
 
         // Adds Microsoft Help System meta data to the output document
-        private void AddMHSMeta(XmlNode headElement, string name, string content)
+        private static void AddMHSMeta(XmlNode headElement, string name, string content)
         {
-            this.AddMHSMeta(headElement, name, content, false);
+            AddMHSMeta(headElement, name, content, false);
         }
 
         // Adds Microsoft Help System meta data to the output document
-        private void AddMHSMeta(XmlNode headElement, string name, string content, bool multiple)
+        private static void AddMHSMeta(XmlNode headElement, string name, string content, bool multiple)
         {
             if(!String.IsNullOrEmpty(content))
             {
@@ -466,7 +460,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         }
 
         // Modifies an attribute value to prevent conflicts with Microsoft Help System branding
-        private void ModifyAttribute(XmlDocument document, string name, string value)
+        private static void ModifyAttribute(XmlDocument document, string name, string value)
         {
             XmlNodeList list = document.SelectNodes(String.Format(CultureInfo.InvariantCulture,
                 @"//*[@{0}='{1}']", name, value));

@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/12/2017
-// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
+// Updated : 08/16/2019
+// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a dictionary of reflection data settings for the various .NET
@@ -41,10 +41,8 @@ namespace Sandcastle.Core.Reflection
         /// This read-only property is used to get the title of the default framework version to use
         /// </summary>
         /// <remarks>The default is the .NET Framework 4.5</remarks>
-        public static string DefaultFrameworkTitle
-        {
-            get { return ".NET Framework 4.5"; }
-        }
+        public static string DefaultFrameworkTitle => ".NET Framework 4.5";
+
         #endregion
 
         #region Constructor
@@ -119,17 +117,15 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The framework settings if found or null if not found</returns>
         public ReflectionDataSet CoreFrameworkByTitle(string title, bool withRedirect)
         {
-            ReflectionDataSet dataSet;
-
-            if(!this.TryGetValue(title, out dataSet))
+            if(!this.TryGetValue(title, out ReflectionDataSet dataSet))
                 dataSet = null;
             else
                 if(dataSet.Platform != PlatformType.DotNetStandard && (!dataSet.IsPresent &&
                   !dataSet.IsCoreFramework) && withRedirect)
-                {
-                    dataSet = this.Values.Where(v => v.Platform == dataSet.Platform && v.IsCoreFramework).OrderBy(
-                        v => v.Version).FirstOrDefault(v => v.Version > dataSet.Version && v.IsPresent);
-                }
+            {
+                dataSet = this.Values.Where(v => v.Platform == dataSet.Platform && v.IsCoreFramework).OrderBy(
+                    v => v.Version).FirstOrDefault(v => v.Version > dataSet.Version && v.IsPresent);
+            }
 
             return dataSet;
         }
@@ -179,21 +175,20 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This is used to find the best match for the given set of framework identifiers
         /// </summary>
-        /// <param name="frameworks">An enumerable list of platform ID/version pairs.  Item1 = Platform ID,
-        /// Item2 = Version in string form.</param>
+        /// <param name="frameworks">An enumerable list of platform ID/version pairs</param>
         /// <returns>The best matching reflection data set or null if one could not be found</returns>
-        public ReflectionDataSet BestMatchFor(IEnumerable<Tuple<string, string>> frameworks)
+        public ReflectionDataSet BestMatchFor(IEnumerable<(string PlatformType, string Version)> frameworks)
         {
             List<ReflectionDataSet> bestMatches = new List<ReflectionDataSet>();
             ReflectionDataSet match;
 
             foreach(var framework in frameworks)
             {
-                switch(framework.Item1)
+                switch(framework.PlatformType)
                 {
                     case PlatformType.DotNetCore:
                     case PlatformType.DotNetPortable:
-                        match = this.CoreFrameworkMatching(framework.Item1, new Version(framework.Item2), false);
+                        match = this.CoreFrameworkMatching(framework.PlatformType, new Version(framework.Version), false);
 
                         if(match == null)
                             match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
@@ -210,7 +205,7 @@ namespace Sandcastle.Core.Reflection
                         break;
 
                     case PlatformType.DotNetStandard:
-                        switch(framework.Item2)
+                        switch(framework.Version)
                         {
                             case "1.0":
                             case "1.1":
@@ -251,7 +246,7 @@ namespace Sandcastle.Core.Reflection
                         break;
 
                     default:
-                        match = this.CoreFrameworkMatching(framework.Item1, new Version(framework.Item2), true);
+                        match = this.CoreFrameworkMatching(framework.PlatformType, new Version(framework.Version), true);
 
                         if(match != null)
                             bestMatches.Add(match);

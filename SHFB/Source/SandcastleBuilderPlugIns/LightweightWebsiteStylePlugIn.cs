@@ -8,7 +8,7 @@
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add elements for the lightweight website style such as a search
-// box and a table of contents in the topics similar to the current MSDN lightweight style.
+// box and a table of contents in the topics similar to the MSDN lightweight style.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -42,14 +42,14 @@ namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
     /// This plug-in class is used to add elements for the lightweight website style such as a search box and a
-    /// table of contents in the topics similar to the current MSDN lightweight style.
+    /// table of contents in the topics similar to the MSDN lightweight style.
     /// </summary>
     /// <remarks>This is a presentation style dependency plug-in and has no configurable elements.  As such, it
     /// is hidden.</remarks>
     [HelpFileBuilderPlugInExport("Lightweight Website Style", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright + "\r\nPortions Copyright \xA9 2014, Sam Harwell, All Rights Reserved",
       Description = "This plug-in embeds elements for the lightweight website style such as a search box and " +
-        "a table of contents in the topics similar to the current MSDN lightweight style.", IsHidden = true)]
+        "a table of contents in the topics similar to the MSDN lightweight style.", IsHidden = true)]
     public sealed class LightweightWebsiteStylePlugIn : IPlugIn
     {
         #region Private data members

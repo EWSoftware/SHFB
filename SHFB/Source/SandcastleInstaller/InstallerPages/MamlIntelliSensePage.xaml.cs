@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 03/22/2019
+// Updated : 08/17/2019
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
@@ -218,7 +218,10 @@ namespace Sandcastle.Installer.InstallerPages
             }
 
             if(pnlVersions.Children.Count == 0)
-                throw new InvalidOperationException("At least one visualStudio element must be defined");
+            {
+                pnlVersions.Children.Add(new Label { Content = "No usable versions of Visual Studio were found" });
+                btnInstallSchemas.IsEnabled = false;
+            }
 
             base.Initialize(configuration);
         }

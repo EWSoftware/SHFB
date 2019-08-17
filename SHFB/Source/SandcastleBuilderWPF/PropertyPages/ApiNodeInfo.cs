@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ApiNodeInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
+// Updated : 08/16/2019
+// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to associate additional information with each tree node to make it easier
@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -43,7 +44,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private BindingList<ApiNodeInfo> subMembers;
+        private readonly BindingList<ApiNodeInfo> subMembers;
 
         private bool isIncluded, isExpanded, isSelected;
         private Brush backgroundBrush;
@@ -118,7 +119,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public Brush BackgroundBrush
         {
-            get { return backgroundBrush; }
+            get => backgroundBrush;
             set
             {
                 if(backgroundBrush != value)
@@ -134,7 +135,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsIncluded
         {
-            get { return isIncluded; }
+            get => isIncluded;
             set
             {
                 if(isIncluded != value)
@@ -150,7 +151,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsExpanded
         {
-            get { return isExpanded; }
+            get => isExpanded;
             set
             {
                 if(isExpanded != value)
@@ -166,7 +167,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public bool IsSelected
         {
-            get { return isSelected; }
+            get => isSelected;
             set
             {
                 if(isSelected != value)
@@ -192,7 +193,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 string uri = "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/API{0}{1}.png";
 
                 if(this.ApiNode == null)
-                    uri = String.Format(uri, this.Id, String.Empty);
+                    uri = String.Format(CultureInfo.InvariantCulture, uri, this.Id, String.Empty);
                 else
                     switch(this.EntryType)
                     {
@@ -200,11 +201,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
                             break;
 
                         case ApiEntryType.Namespace:
-                            uri = String.Format(uri, this.EntryType, String.Empty);
+                            uri = String.Format(CultureInfo.InvariantCulture, uri, this.EntryType, String.Empty);
                             break;
 
                         default:
-                            uri = String.Format(uri, this.EntryType, this.Visibility);
+                            uri = String.Format(CultureInfo.InvariantCulture, uri, this.EntryType, this.Visibility);
                             break;
                     }
 
@@ -236,8 +237,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="apiParent">The API node that is the parent of this one</param>
         public ApiNodeInfo(string text, string apiId, XmlNode apiNode, ApiNodeInfo apiParent)
         {
-            ApiVisibility visibility;
-
             this.Parent = apiParent;
             this.Id = apiId;
             this.ApiNode = apiNode;
@@ -247,7 +246,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             if(apiNode != null)
             {
                 this.NodeText = this.DetermineNodeText(text);
-                this.EntryType = this.DetermineApiEntryTypeAndVisibility(out visibility);
+                this.EntryType = this.DetermineApiEntryTypeAndVisibility(out ApiVisibility visibility);
                 this.Visibility = visibility;
 
                 string fullName = apiId;

@@ -170,7 +170,7 @@ namespace Sandcastle.Installer.InstallerPages
                     
                 para = new Paragraph(new Run("Click this link to go to the download page: "));
                 para.Inlines.Add(new Hyperlink(new Run(".NET Framework and .NET SDKs")) {
-                    NavigateUri = new Uri("https://msdn.microsoft.com/en-us/vstudio/aa496123")
+                    NavigateUri = new Uri("https://dotnet.microsoft.com/")
                 });
 
                 list.ListItems.Add(new ListItem(para));

@@ -94,8 +94,8 @@ fragment of a member name or it can be a regular expression used to find more co
   <linkTarget>_blank</linkTarget></externalLink> for a brief introduction to regular expressions and how to use
 them.  See the <externalLink>
   <linkText>.NET Framework Regular Expressions</linkText>
-  <linkUri>http://msdn.microsoft.com/en-us/library/hs600312.aspx</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink> topic on MSDN for complete details about the various regular
+  <linkUri>https://docs.microsoft.com/dotnet/standard/base-types/regular-expressions</linkUri>
+  <linkTarget>_blank</linkTarget></externalLink> help topic for complete details about the various regular
 expression elements and options.  A few simple search examples are show in the table below.</para>
 
 		<table>

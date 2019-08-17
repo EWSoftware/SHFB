@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="0f0cc654-6ddf-4673-a001-b29885ca0310" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: localdb apis api -->
 		<introduction>
-			<para>This set of components uses a Microsoft SQL Server database to cache MSDN content IDs, .NET Framework
+			<para>This set of components uses a Microsoft SQL Server database to cache member ID URLs, .NET Framework
 reference link targets, .NET Framework reflection data, and .NET Framework comments.  This speeds up
 initialization and conserves memory at the expense of some build time in larger projects.  For extremely large
 projects, it is also possible to cache the related project data to conserve memory.</para>
@@ -11,11 +12,11 @@ projects, it is also possible to cache the related project data to conserve memo
 		<section>
 			<title>Set Up and Configuration</title>
 			<content>
-				<para>All three components require an existing SQL Server database in order to cache the MSDN content
-IDs, the framework data, and the project data if enabled.  You must specify the SQL Server connection string in
-each component's configuration dialog by clicking the <ui>Setup</ui> button.  The default connection string
-assumes the use of a LocalDB instance of SQL Server.  Full versions and Express versions are also supported.
-Adjust the connection string as necessary.</para>
+				<para>All three components require an existing SQL Server database in order to cache the member ID URLs,
+the framework data, and the project data if enabled.  You must specify the SQL Server connection string in each
+component's configuration dialog by clicking the <ui>Setup</ui> button.  The default connection string assumes
+the use of a LocalDB instance of SQL Server.  Full versions and Express versions are also supported.  Adjust the
+connection string as necessary.</para>
 
 				<para>The set up dialog contains an option to execute a script that will create the database and all of
 the necessary tables.  This script only needs to be executed once the very first time you add one of the
@@ -23,8 +24,8 @@ components to a project file.  Adjust the location of the database files if nece
 the necessary permissions to create databases and tables on the server defined in the connection string.  If not,
 you may need your database administrator to create and initialize the database.</para>
 
-				<para>The Resolve Reference Links component allows you to configure the local cache size for the MSDN
-content IDs, the framework reflection data, and the project data if enabled.  The Comments Index and Reflection
+				<para>The Resolve Reference Links component allows you to configure the local cache size for the member
+ID URLs, the framework reflection data, and the project data if enabled.  The Comments Index and Reflection
 Index components allow you to specify the local cache size and the maximum number of uncached project data files
 to keep in memory during the build.  In all cases, the local cache size determines how many items are cached in
 memory after being retrieved from the database.  This gives a slight performance increase over having to read the
@@ -48,8 +49,8 @@ cache database tables.  They will be filled with data again on the next build.</
 		<section>
 			<title>Example Configurations</title>
 			<content>
-				<para>The examples given below are taken from the Sandcastle Help File Builder's configuration file
-templates.  When used with it, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
+				<para>The examples given below are taken from the presentation style configuration file templates.  When
+used with them, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
 and <codeInline>{@LocalDataFolder}</codeInline> to insert special folder and project option values into the
 configuration at build time. If using the component in your own build scripts, replace the tags with an actual
 absolute or relative path or an appropriate option value.  The <codeInline>{@ProjectLinks}</codeInline> option
@@ -108,9 +109,9 @@ files so that their information is cached in the same group within the table dat
   &lt;locale value="{@Locale}" /&gt;
   &lt;linkTarget value="{@SdkLinkTarget}" /&gt;
   &lt;sqlCache connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle"
-    msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
+    urlLocalCacheSize="2500" frameworkLocalCacheSize="2500"
     projectLocalCacheSize="2500" cacheProject="false" /&gt;
-  &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" /&gt;
+  &lt;memberIdUrlCache path="{@LocalDataFolder}Cache\MemberIdUrl.cache" /&gt;
   &lt;targets base="{@FrameworkReflectionDataFolder}" recurse="true" files="*.xml"
 		type="{@SdkLinkType}" groupId="FrameworkTargets"&gt;
     &lt;!-- A list of namespace elements can be specified here to limit what data is loaded

@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.udcContentIdLocalCacheSize = new System.Windows.Forms.NumericUpDown();
+            this.udcMemberIdUrlLocalCacheSize = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.btnSetConnectionString = new System.Windows.Forms.Button();
             this.txtConnectionString = new System.Windows.Forms.TextBox();
@@ -52,7 +52,7 @@
             this.btnPurge = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.udcContentIdLocalCacheSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udcMemberIdUrlLocalCacheSize)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udcFrameworkTargetsLocalCacheSize)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -64,14 +64,14 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.udcContentIdLocalCacheSize);
+            this.groupBox1.Controls.Add(this.udcMemberIdUrlLocalCacheSize);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 171);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(854, 77);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "&MSDN Content ID Cache";
+            this.groupBox1.Text = "&Member ID URL Cache";
             // 
             // label5
             // 
@@ -82,24 +82,24 @@
             this.label5.Text = "(0 to disable local cache)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // udcContentIdLocalCacheSize
+            // udcMemberIdUrlLocalCacheSize
             // 
-            this.udcContentIdLocalCacheSize.Increment = new decimal(new int[] {
+            this.udcMemberIdUrlLocalCacheSize.Increment = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.udcContentIdLocalCacheSize.Location = new System.Drawing.Point(277, 31);
-            this.udcContentIdLocalCacheSize.Maximum = new decimal(new int[] {
+            this.udcMemberIdUrlLocalCacheSize.Location = new System.Drawing.Point(277, 31);
+            this.udcMemberIdUrlLocalCacheSize.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.udcContentIdLocalCacheSize.Name = "udcContentIdLocalCacheSize";
-            this.udcContentIdLocalCacheSize.Size = new System.Drawing.Size(92, 31);
-            this.udcContentIdLocalCacheSize.TabIndex = 1;
-            this.udcContentIdLocalCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.udcContentIdLocalCacheSize.Value = new decimal(new int[] {
+            this.udcMemberIdUrlLocalCacheSize.Name = "udcMemberIdUrlLocalCacheSize";
+            this.udcMemberIdUrlLocalCacheSize.Size = new System.Drawing.Size(92, 27);
+            this.udcMemberIdUrlLocalCacheSize.TabIndex = 1;
+            this.udcMemberIdUrlLocalCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.udcMemberIdUrlLocalCacheSize.Value = new decimal(new int[] {
             2500,
             0,
             0,
@@ -205,7 +205,7 @@
             0,
             0});
             this.udcFrameworkTargetsLocalCacheSize.Name = "udcFrameworkTargetsLocalCacheSize";
-            this.udcFrameworkTargetsLocalCacheSize.Size = new System.Drawing.Size(92, 31);
+            this.udcFrameworkTargetsLocalCacheSize.Size = new System.Drawing.Size(92, 27);
             this.udcFrameworkTargetsLocalCacheSize.TabIndex = 1;
             this.udcFrameworkTargetsLocalCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcFrameworkTargetsLocalCacheSize.Value = new decimal(new int[] {
@@ -240,7 +240,7 @@
             this.chkEnableLocalCache.AutoSize = true;
             this.chkEnableLocalCache.Location = new System.Drawing.Point(6, -1);
             this.chkEnableLocalCache.Name = "chkEnableLocalCache";
-            this.chkEnableLocalCache.Size = new System.Drawing.Size(467, 29);
+            this.chkEnableLocalCache.Size = new System.Drawing.Size(395, 24);
             this.chkEnableLocalCache.TabIndex = 0;
             this.chkEnableLocalCache.Text = "&Enable caching of current project reflection target data";
             this.chkEnableLocalCache.UseVisualStyleBackColor = true;
@@ -270,7 +270,7 @@
             0,
             0});
             this.udcProjectTargetsLocalCacheSize.Name = "udcProjectTargetsLocalCacheSize";
-            this.udcProjectTargetsLocalCacheSize.Size = new System.Drawing.Size(92, 31);
+            this.udcProjectTargetsLocalCacheSize.Size = new System.Drawing.Size(92, 27);
             this.udcProjectTargetsLocalCacheSize.TabIndex = 2;
             this.udcProjectTargetsLocalCacheSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcProjectTargetsLocalCacheSize.Value = new decimal(new int[] {
@@ -337,7 +337,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configure SQL Resolve Reference Links Component";
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.udcContentIdLocalCacheSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udcMemberIdUrlLocalCacheSize)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.udcFrameworkTargetsLocalCacheSize)).EndInit();
             this.groupBox3.ResumeLayout(false);
@@ -356,7 +356,7 @@
         private System.Windows.Forms.Button btnSetConnectionString;
         private System.Windows.Forms.TextBox txtConnectionString;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown udcContentIdLocalCacheSize;
+        private System.Windows.Forms.NumericUpDown udcMemberIdUrlLocalCacheSize;
         private System.Windows.Forms.LinkLabel lnkProjectSite;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;

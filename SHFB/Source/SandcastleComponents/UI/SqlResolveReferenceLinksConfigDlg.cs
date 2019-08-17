@@ -74,7 +74,7 @@ namespace SandcastleBuilder.Components.UI
             node = config.Descendants("sqlCache").First();
 
             txtConnectionString.Text = node.Attribute("connectionString").Value;
-            udcContentIdLocalCacheSize.Value = (int)node.Attribute("msdnLocalCacheSize");
+            udcMemberIdUrlLocalCacheSize.Value = (int)node.Attribute("urlLocalCacheSize");
             udcFrameworkTargetsLocalCacheSize.Value = (int)node.Attribute("frameworkLocalCacheSize");
             udcProjectTargetsLocalCacheSize.Value = (int)node.Attribute("projectLocalCacheSize");
             chkEnableLocalCache.Checked = (bool)node.Attribute("cacheProject");
@@ -162,7 +162,7 @@ namespace SandcastleBuilder.Components.UI
             foreach(var n in config.Descendants("sqlCache"))
             {
                 n.Attribute("connectionString").Value = txtConnectionString.Text;
-                n.SetAttributeValue("msdnLocalCacheSize", (int)udcContentIdLocalCacheSize.Value);
+                n.SetAttributeValue("urlLocalCacheSize", (int)udcMemberIdUrlLocalCacheSize.Value);
                 n.SetAttributeValue("frameworkLocalCacheSize", (int)udcFrameworkTargetsLocalCacheSize.Value);
                 n.SetAttributeValue("projectLocalCacheSize", (int)udcProjectTargetsLocalCacheSize.Value);
                 n.SetAttributeValue("cacheProject", chkEnableLocalCache.Checked);
@@ -206,7 +206,7 @@ namespace SandcastleBuilder.Components.UI
                     using(SqlCommand cmd = new SqlCommand())
                     {
                         cmd.Connection = cn;
-                        cmd.CommandText = "TRUNCATE TABLE ContentIds";
+                        cmd.CommandText = "TRUNCATE TABLE MemberIdUrls";
                         cmd.ExecuteNonQuery();
 
                         cmd.CommandText = "TRUNCATE TABLE Targets";

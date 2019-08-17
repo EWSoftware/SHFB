@@ -57,11 +57,11 @@ the URLs.  For example:</para>
 
 <code language="none" title=" ">
 Old URL Formats:
-http://www.ewoodruff.us/shfbdocs/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
-http://www.ewoodruff.us/shfbdocs/?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+https://ewsoftware.github.io/SHFB/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+https://ewsoftware.github.io/SHFB/?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
 
 New URL Format:
-http://www.ewoodruff.us/shfbdocs/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+https://ewsoftware.github.io/SHFB/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
 </code>
 					</listItem>
 

@@ -114,7 +114,8 @@ catalog.  The <codeInline>sourceMedia</codeInline>/<codeInline>sourceUri</codeIn
 the content based on the settings in the specified <localUri>HelpContentSetup.msha</localUri> file.  For more
 information on the available command line options, see the <externalLink><linkText>Help Library Manager
 Administrator's Guide</linkText><linkAlternateText>Help Library Manager Admin Guide</linkAlternateText>
-<linkUri>http://msdn.microsoft.com/en-us/library/ee855704.aspx</linkUri> <linkTarget>_blank</linkTarget></externalLink>.</para>
+<linkUri>https://docs.microsoft.com/visualstudio/help-viewer/command-line-arguments?view=vs-2019</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>.</para>
 
 <alert class="tip">
   <para>If the product and/or version values contain spaces, they should be enclosed in quote marks.</para>
@@ -272,15 +273,9 @@ information to create it.</para>
 				</entry>
 				<entry>
 					<para>A Help Library Manager exit code.  See the <externalLink>
-						<linkText>
-							Help
-							Library Manager Administrator's Guide
-						</linkText>
-						<linkAlternateText>
-							Help Library Manager
-							Admin Guide
-						</linkAlternateText>
-						<linkUri>http://msdn.microsoft.com/en-us/library/ee855704.aspx</linkUri>
+						<linkText>Help Library Manager Administrator's Guide</linkText>
+						<linkAlternateText>Help Library Manager Admin Guide</linkAlternateText>
+						<linkUri>https://docs.microsoft.com/visualstudio/help-viewer/command-line-arguments?view=vs-2019</linkUri>
 						<linkTarget>_blank</linkTarget>
 					</externalLink> for a list of possible exit codes and their meaning.</para>
 				</entry>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionCommandTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2019
+// Updated : 08/17/2019
 // Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -47,7 +47,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
         private readonly IWpfTextView textView;
         private readonly GoToDefinitionTextViewCreationListener provider;
-        private readonly bool isCodeFile;
         private bool goToDefInvoked;
 
         #endregion
@@ -70,13 +69,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// </summary>
         /// <param name="textView">The text view to use</param>
         /// <param name="provider">The service provider to use</param>
-        /// <param name="isCodeFile">True if this is a code file, false if not</param>
-        public GoToDefinitionCommandTarget(IWpfTextView textView, GoToDefinitionTextViewCreationListener provider,
-          bool isCodeFile)
+        public GoToDefinitionCommandTarget(IWpfTextView textView, GoToDefinitionTextViewCreationListener provider)
         {
             this.textView = textView;
             this.provider = provider;
-            this.isCodeFile = isCodeFile;
         }
         #endregion
 
@@ -188,7 +184,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <param name="definitionType">On return, this contains the definition type if one was found or null
         /// if not.</param>
         /// <returns>The snapshot span for the definition if one was found, null if not</returns>
-        private SnapshotSpan? ProcessSpans(SnapshotPoint cursorPos, IList<ClassificationSpan> spans,
+        private static SnapshotSpan? ProcessSpans(SnapshotPoint cursorPos, IList<ClassificationSpan> spans,
           out string definitionType)
         {
             string elementName = null, attrName = null, identifier = null, spanText;

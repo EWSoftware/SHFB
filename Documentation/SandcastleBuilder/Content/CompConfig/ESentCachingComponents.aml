@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: apis api -->
 		<introduction>
-			<para>This set of components uses ESENT databases to cache MSDN content IDs, .NET Framework reference link
+			<para>This set of components uses ESENT databases to cache member ID URLs, .NET Framework reference link
 targets, .NET Framework reflection data, and .NET Framework comments.  This speeds up initialization and
 conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also
 possible to cache the related project data to conserve memory.</para>
@@ -16,14 +17,14 @@ and no set up is required.  The build components use a slightly modified version
 <externalLink>
 	<linkText>Managed ESENT</linkText>
 	<linkAlternateText>Managed ESENT</linkAlternateText>
-	<linkUri>http://ManagedESENT.CodePlex.com</linkUri>
+	<linkUri>https://github.com/microsoft/managedesent</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink> library to store the cached information in a series of ESENT databases accessed using a
 persistent dictionary instance.  The database files are created on first use during the build based on the
 component configuration settings.</para>
 
 				<para>The Resolve Reference Links component allows you to configure the location and local cache size for
-the MSDN content IDs, the framework reflection data, and the project data if enabled.  The Comments Index and
+the member ID URLs, the framework reflection data, and the project data if enabled.  The Comments Index and
 Reflection Index components allow you to specify the location of the framework data and the project data if
 enabled along with the local cache size and the maximum number of uncached project data files to keep in memory
 during the build.  In all cases, the local cache size determines how many items are cached in memory after being
@@ -50,8 +51,8 @@ cache database files.  They will be recreated on the next build.</para>
 		<section>
 			<title>Example Configurations</title>
 			<content>
-				<para>The examples given below are taken from the Sandcastle Help File Builder's configuration file
-templates.  When used with it, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
+				<para>The examples given below are taken from the presentation style configuration file templates.  When
+used with them, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
 and <codeInline>{@LocalDataFolder}</codeInline> to insert special folder and project option values into the
 configuration at build time. If using the component in your own build scripts, replace the tags with an actual
 absolute or relative path or an appropriate option value.  The <codeInline>{@ProjectLinks}</codeInline> option
@@ -109,8 +110,8 @@ files so that their information is cached in the same database.</para>
 &lt;component id="Resolve Reference Links (ESENT Cache)"&gt;
   &lt;locale value="{@Locale}" /&gt;
   &lt;linkTarget value="{@SdkLinkTarget}" /&gt;
-  &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-    cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" /&gt;
+  &lt;memberIdUrlCache path="{@LocalDataFolder}Cache\MemberIdUrl.cache"
+    cachePath="{@LocalDataFolder}Cache\ESentMemberIdUrlCache" localCacheSize="2500" /&gt;
   &lt;targets base="{@FrameworkReflectionDataFolder}" recurse="true" files="*.xml"
 		type="{@SdkLinkType}" id="FrameworkTargets"
 		cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500"&gt;

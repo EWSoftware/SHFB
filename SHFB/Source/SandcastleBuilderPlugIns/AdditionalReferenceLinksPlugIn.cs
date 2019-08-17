@@ -8,7 +8,7 @@
 //
 // This file contains a plug-in designed to add additional reference link targets to the Reflection Index Data
 // and Resolve Reference Links build components so that links can be created to other third party help in a
-// help collection or additional online MSDN content.
+// help collection or additional online content.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -45,13 +45,13 @@ namespace SandcastleBuilder.PlugIns
     /// <summary>
     /// This plug-in class is designed to add additional reference link targets to the <strong>Reflection Index
     /// Data</strong> and <strong>Resolve Reference Links</strong> build components so that links can be created
-    /// to other third party help in a help collection or additional online MSDN content.
+    /// to other third party help in a help collection or additional online content.
     /// </summary>
     [HelpFileBuilderPlugInExport("Additional Reference Links", IsConfigurable = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to add additional reference link targets to the Reflection Index " +
         "Data and Resolve Reference Links build component so that links can be created to other third " +
-        "party help in a help collection or additional online MSDN content.")]
+        "party help in a help collection or additional online content.")]
     public sealed class AdditionalReferenceLinksPlugIn : IPlugIn, IProgress<BuildProgressEventArgs>
     {
         #region Private data members

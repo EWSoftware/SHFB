@@ -72,7 +72,7 @@ Added link target: &lt;externalLink&gt;
 If the link contains XML entities, they must be encoded (i.e. the ampersand):
 &lt;externalLink&gt;
     &lt;linkText&gt;MSDN Documentation Forum&lt;/linkText&gt;
-    &lt;linkUri&gt;http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;amp;SiteID=1&lt;/linkUri&gt;
+    &lt;linkUri&gt;https://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;amp;SiteID=1&lt;/linkUri&gt;
 &lt;/externalLink&gt;
 </code>
       </content>
@@ -93,7 +93,7 @@ If the link contains XML entities, they must be encoded (i.e. the ampersand):
 
         <para>If the link contains XML entities, they must be encoded (i.e. the ampersand):
 <externalLink><linkText>MSDN Documentation Forum</linkText>
-<linkUri>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;SiteID=1</linkUri></externalLink></para>
+<linkUri>https://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;SiteID=1</linkUri></externalLink></para>
       </content>
     </section>
 

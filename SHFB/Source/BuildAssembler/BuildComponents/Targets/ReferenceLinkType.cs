@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ReferenceLinkType.cs
-// Note    : Copyright 2010-2015 Microsoft Corporation
+// Note    : Copyright 2010-2019 Microsoft Corporation
 //
 // This file contains an enumerated type that defines the reference content link types
 //
@@ -30,7 +30,7 @@ namespace Microsoft.Ddue.Tools.Targets
         Self,
         /// <summary>Local links</summary>
         Local,
-        /// <summary>Online links to MSDN (Framework types only)</summary>
+        /// <summary>Links to online content (Framework types only)</summary>
         Msdn,
         /// <summary>Id links (MS Help Viewer only)</summary>
         Id

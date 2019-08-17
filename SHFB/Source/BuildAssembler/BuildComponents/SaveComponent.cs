@@ -84,8 +84,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            int boundedCapacity;
-
             settings.Encoding = Encoding.UTF8;
             settings.CloseOutput = true;
 
@@ -146,9 +144,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
             if(!String.IsNullOrWhiteSpace(outputMethod))
             {
-                XmlOutputMethod method;
-
-                if(!Enum.TryParse(outputMethod, true, out method))
+                if(!Enum.TryParse(outputMethod, true, out XmlOutputMethod method))
                     throw new ConfigurationErrorsException("The specified output method is not valid for the " +
                         "save component");
 
@@ -169,9 +165,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             // Allow limiting the writer task collection to conserve memory
             string capacity = saveNode.GetAttribute("boundedCapacity", String.Empty);
 
-            if(!String.IsNullOrWhiteSpace(capacity) && Int32.TryParse(capacity, out boundedCapacity) &&
+            if(!String.IsNullOrWhiteSpace(capacity) && Int32.TryParse(capacity, out int boundedCapacity) &&
               boundedCapacity > 0)
+            {
                 documentList = new BlockingCollection<KeyValuePair<string, XmlDocument>>(boundedCapacity);
+            }
 
             // Use a pipeline task to allow the actual saving to occur while other topics are being generated
             documentWriter = Task.Run(() => WriteDocuments());

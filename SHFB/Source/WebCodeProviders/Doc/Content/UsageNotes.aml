@@ -204,13 +204,8 @@ are available at the following locations:</para>
 
 				<list class="bullet">
 					<listItem>
-						<para><externalLink><linkText>Visual Studio 2005 Web Deployment Add-In</linkText>
-<linkUri>http://msdn.microsoft.com/en-us/asp.net/aa336619.aspx</linkUri></externalLink></para>
-					</listItem>
-					<listItem>
 						<para><externalLink><linkText>Visual Studio 2008 Web Deployment Add-In</linkText>
-<linkUri>http://www.microsoft.com/downloads/details.aspx?FamilyId=0AA30AE8-C73B-4BDD-BB1B-FE697256C459&amp;displaylang=en</linkUri>
-</externalLink></para>
+<linkUri>https://www.microsoft.com/en-us/download/details.aspx?id=25163</linkUri></externalLink></para>
 					</listItem>
 				</list>
 

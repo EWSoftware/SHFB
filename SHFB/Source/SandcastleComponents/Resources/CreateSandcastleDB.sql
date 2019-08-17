@@ -9,11 +9,11 @@ GO
 USE [Sandcastle]
 GO
 
--- MSDN content IDs table
-CREATE TABLE [dbo].[ContentIds](
-	[TargetKey] [varchar](768) NOT NULL,
-	[ContentId] [varchar](12) NULL,
- CONSTRAINT [PK_ContentIds] PRIMARY KEY CLUSTERED
+-- Member ID URLs table
+CREATE TABLE [dbo].[MemberIdUrls](
+	[TargetKey] [varchar](2048) NOT NULL,
+	[MemberUrl] [varchar](2048) NULL,
+ CONSTRAINT [PK_MemberIdUrls] PRIMARY KEY CLUSTERED
 (
 	[TargetKey] ASC
 ) ON [PRIMARY]
@@ -24,7 +24,7 @@ GO
 -- Reflection data and XML comments index table
 CREATE TABLE [dbo].[IndexData](
 	[GroupId] [varchar](50) NOT NULL,
-	[IndexKey] [varchar](768) NOT NULL,
+	[IndexKey] [varchar](2048) NOT NULL,
 	[IndexValue] [varchar](max) NULL,
  CONSTRAINT [PK_IndexData] PRIMARY KEY CLUSTERED 
 (
@@ -44,7 +44,7 @@ GO
 -- Reflection targets table
 CREATE TABLE [dbo].[Targets](
 	[GroupId] [varchar](50) NOT NULL,
-	[TargetKey] [varchar](768) NOT NULL,
+	[TargetKey] [varchar](2048) NOT NULL,
 	[TargetValue] [varbinary](max) NULL,
  CONSTRAINT [PK_Targets] PRIMARY KEY CLUSTERED 
 (

@@ -1497,7 +1497,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             bool encode;
 
             if(folder == null)
-                throw new ArgumentNullException("folder");
+                throw new ArgumentNullException(nameof(folder));
 
             if(folder.Length != 0 && folder[folder.Length - 1] != '\\')
                 folder += @"\";

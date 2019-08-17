@@ -156,7 +156,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public XmlCommentsFile(string filename)
         {
             if(String.IsNullOrEmpty(filename))
-                throw new ArgumentException("filename cannot be null", "filename");
+                throw new ArgumentException("filename cannot be null", nameof(filename));
 
             sourcePath = filename;
         }

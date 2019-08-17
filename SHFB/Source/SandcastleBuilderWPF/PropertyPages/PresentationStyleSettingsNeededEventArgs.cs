@@ -18,12 +18,14 @@
 // 10/29/2017  EFW  Created the code
 //===============================================================================================================
 
+using System;
+
 namespace SandcastleBuilder.WPF.PropertyPages
 {
     /// <summary>
     /// This is used to request the current presentation style settings from the current project
     /// </summary>
-    public class PresentationStyleSettingsNeededEventArgs
+    public class PresentationStyleSettingsNeededEventArgs : EventArgs
     {
         /// <summary>
         /// This is used to get or set whether or not a project is loaded

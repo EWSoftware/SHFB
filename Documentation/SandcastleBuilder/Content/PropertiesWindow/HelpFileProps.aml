@@ -356,7 +356,7 @@ navigate to the page you want to link to.  The URL to the page will appear in th
 is an example:</para>
 
 				<code language="none" title=" ">
-					http://www.ewoodruff.us/shfbdocs/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+					https://ewsoftware.github.io/SHFB/html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
 				</code>
 
 				<para>If using an older presentation style that uses the frame-based index page, the URL must use a query
@@ -369,7 +369,7 @@ the default page in the right-hand pane.  You can replace <localUri>Index.aspx</
 index pages such as the HTML or PHP version.  Here is an example link:</para>
 
 				<code language="none" title=" ">
-					http://www.ewoodruff.us/shfbdocs/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
+					https://ewsoftware.github.io/SHFB/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
 				</code>
 
 				<alert class="tip">
@@ -526,13 +526,13 @@ plus the title of the page in which the link appears.</para>
 			<title>SDK link target (SdkLinkTarget)</title>
 			<content>
 				<para>When an SDK link type property is set to <codeInline>MSDN</codeInline>, the
-<codeInline>SDK Link Target</codeInline> property is used to define where the MSDN links will open in the browser.
-This property has no effect if the SDK link type property for a particular help file format is set to any other
-value.  The default value is <codeInline>Blank</codeInline> to open MSDN links in a new window.  It can also be
-set to <codeInline>Self</codeInline>, <codeInline>Parent</codeInline>, or <codeInline>Top</codeInline> which have
-the same effect of replacing the current window's content with the content of the MSDN topic. The last two are
-useful when producing web output as they will cause the MSDN links to replace the frame set with the MSDN topic
-page.</para>
+<codeInline>SDK Link Target</codeInline> property is used to define where the external links will open in the
+browser.  This property has no effect if the SDK link type property for a particular help file format is set to
+any other value.  The default value is <codeInline>Blank</codeInline> to open external links in a new window.  It
+can also be set to <codeInline>Self</codeInline>, <codeInline>Parent</codeInline>, or <codeInline>Top</codeInline>
+which have the same effect of replacing the current window's content with the content of the target topic.  The
+last two are useful when producing web output as they will cause the external links to replace the frame set with
+the target topic page.</para>
 
 			</content>
 		</section>

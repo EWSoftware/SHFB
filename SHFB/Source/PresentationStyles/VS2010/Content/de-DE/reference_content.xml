@@ -139,7 +139,7 @@
 	<item id="title_platforms">Plattformen</item>
 	<item id="title_relatedTopics">Siehe auch</item>
 	<item id="title_extensionUsage">Verwendungshinweise</item>
-	<item id="text_extensionUsage">In Visual Basic und C# können Sie diese Methode als Instanzmethode eines beliebigen Objektes vom Typ {0} aufrufen. Wenn Sie die Instanzmethodensyntax beim Methodenaufruf anwenden, lassen Sie den ersten Parameter weg. Für weitere Informationen siehe <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx" target="_blank">Extension Methods (Visual Basic)</a> or <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx" target="_blank">Erweiterungsmethoden (C# Programmierhandbuch)</a>.</item>
+	<item id="text_extensionUsage">In Visual Basic und C# können Sie diese Methode als Instanzmethode eines beliebigen Objektes vom Typ {0} aufrufen. Wenn Sie die Instanzmethodensyntax beim Methodenaufruf anwenden, lassen Sie den ersten Parameter weg. Für weitere Informationen siehe <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank">Extension Methods (Visual Basic)</a> or <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank">Erweiterungsmethoden (C# Programmierhandbuch)</a>.</item>
 	<item id="text_moreInheritance">More...</item>
 
 	<!-- table headers -->
@@ -222,7 +222,7 @@
 									 prefer-overload="true" /> Attribut des Typs oder Members hat den folgenden <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
 									 prefer-overload="true" /> Eigenschaftswert: {1}. Das <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
 									 prefer-overload="true" /> hat keine Auswirkung auf Desktop Applikationen (die typischerweise durch Doppelklick auf ein Icon, durch Eingabe eines Befehls oder einer URL in einem Browser gestartet werden). Für mehr Information dazu siehe <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
-									 prefer-overload="true" /> class or <a href="http://msdn.microsoft.com/en-us/library/ms172338.aspx" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
+									 prefer-overload="true" /> class or <a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
 
 	<!-- Obsolete boilerplate text -->
   <item id="boilerplate_obsoleteShort"><strong>Obsolet. </strong></item>
@@ -371,12 +371,12 @@
   <item id="obsoleteError">Obsolet (compiliert nicht) in {0} und später</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="boilerplate_aptca">Volles Vertrauen gegenüber dem unmittelbaren Aufrufer. Dieser Member kann nicht von teilweise vertrautem Code verwendet werden. Für mehr Information dazu siehe <a href="http://msdn.microsoft.com/en-us/library/8skskf63.aspx" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
+	<item id="boilerplate_aptca">Volles Vertrauen gegenüber dem unmittelbaren Aufrufer. Dieser Member kann nicht von teilweise vertrautem Code verwendet werden. Für mehr Information dazu siehe <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
 
   <!-- Variance boilerplate text -->
   <item id="text_covariant">Dieser Typparameter ist kovariant. Das bedeutet, Sie können entweder den spezifizierten oder einen weiter abgeleiteten Typ verwenden. </item>
   <item id="text_contravariant">Dieser Typparameter ist kontravariant. Das bedeutet, Sie können entweder den spezifizierten oder einen weniger abgeleiteten Typ verwenden. </item>
-  <item id="text_variance">Für mehr Informationen über Kovarianz und Kontravarianz siehe <a href="http://msdn.microsoft.com/en-us/library/ee207183.aspx" target="_blank">Kovarianz und Kontravarianz (C# und Visual Basic).</a>.</item>
+  <item id="text_variance">Für mehr Informationen über Kovarianz und Kontravarianz siehe <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank">Kovarianz und Kontravarianz (C# und Visual Basic).</a>.</item>
 
   <!-- Non-CLS Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">Die API ist nicht CLS-konform.</item>
@@ -395,12 +395,12 @@
 	  <strong>{0} Plattformhinweis</strong> {1}
   </item>
   <item id="boilerplate_systemRequirementsLink">
-	  <p>Der <include item="netfw"/> und <include item="netcfw"/> unterstützen nicht alle Versionen jeglicher Plattform. Für eine Liste der unterstützten Versionen siehe <a href="http://msdn.microsoft.com/en-us/library/8z6watww.aspx" target="_blank">.NET Framework Systemanforderungen</a>.</p>
+	  <p>Der <include item="netfw"/> und <include item="netcfw"/> unterstützen nicht alle Versionen jeglicher Plattform. Für eine Liste der unterstützten Versionen siehe <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank">.NET Framework Systemanforderungen</a>.</p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds --> 
   <item id="boilerplate_silverlightPlatforms">
-    Für Informationen bzgl. Betriebssystemen und Browsern, die von <include item="silverlight"/> unterstützt werden, siehe <a href="http://msdn.microsoft.com/en-us/library/dd229102.aspx" target="_blank">Unterstützte Betriebssysteme und Browser</a>.
+    Für Informationen bzgl. Betriebssystemen und Browsern, die von <include item="silverlight"/> unterstützt werden, siehe <a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank">Unterstützte Betriebssysteme und Browser</a>.
   </item>
 
  	<item id="Win95">Windows 95</item>

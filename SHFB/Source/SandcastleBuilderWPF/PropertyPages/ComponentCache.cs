@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ComponentCache.cs
 // Author  : Eric Woodruff
-// Updated : 10/29/2017
-// Note    : Copyright 2015-2017, Eric Woodruff, All rights reserved
+// Updated : 08/17/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This is used to create shared instances of a composition container used to access help file builder
@@ -45,7 +45,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         private static ConcurrentDictionary<string, ComponentCache> instances =
             new ConcurrentDictionary<string, ComponentCache>();
 
-        private string projectName;
         private object syncRoot;
         private HashSet<string> lastSearchFolders;
         private CompositionContainer componentContainer;
@@ -108,10 +107,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// Private constructor
         /// </summary>
-        /// <param name="projectName">The project name with which the component cache is associated</param>
-        private ComponentCache(string projectName)
+        private ComponentCache()
         {
-            this.projectName = projectName;
             syncRoot = new Object();
             lastSearchFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
@@ -128,10 +125,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// already exist.</returns>
         public static ComponentCache CreateComponentCache(string projectName)
         {
-            ComponentCache cache;
-
-            if(!instances.TryGetValue(projectName, out cache))
-                cache = instances.AddOrUpdate(projectName, new ComponentCache(projectName), (k, v) => v);
+            if(!instances.TryGetValue(projectName, out ComponentCache cache))
+                cache = instances.AddOrUpdate(projectName, new ComponentCache(), (k, v) => v);
 
             return cache;
         }
@@ -141,10 +136,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public static void Clear()
         {
-            ComponentCache cache;
-
             foreach(string key in instances.Keys)
-                if(instances.TryRemove(key, out cache))
+                if(instances.TryRemove(key, out ComponentCache cache))
                     lock(cache.syncRoot)
                     {
                         if(cache.cancellationTokenSource != null)

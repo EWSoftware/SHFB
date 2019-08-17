@@ -2,10 +2,10 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/26/2016
+// Updated : 08/15/2019
 // Compiler: Microsoft Visual C#
 //
-// This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
+// This is a version of the ResolveReferenceLinksComponent that stores the member ID URLs and the framework
 // targets in persistent ESENT databases.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -43,7 +43,7 @@ using SandcastleBuilder.Components.UI;
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This is a version of the <c>ResolveReferenceLinksComponent</c> that stores the MSDN content IDs and the
+    /// This is a version of the <c>ResolveReferenceLinksComponent</c> that stores the member ID URLs and the
     /// framework targets in persistent ESENT databases.
     /// </summary>
     public class ESentResolveReferenceLinksComponent : ResolveReferenceLinksComponent
@@ -57,7 +57,7 @@ namespace SandcastleBuilder.Components
         [BuildComponentExport("Resolve Reference Links (ESENT Cache)", IsVisible = true, IsConfigurable = true,
           Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This component is used to resolve reference links in topics.  It uses ESENT " +
-            "databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up " +
+            "databases to cache member ID URLs and .NET Framework reference link targets.  This speeds up " +
             "initialization and conserves memory at the expense of some build time in larger projects.  For " +
             "extremely large projects, it is also possible to cache project reference link data to conserve " +
             "memory.\r\n\r\nThe ESENT database engine is part of every version of Microsoft Windows and no " +
@@ -82,17 +82,13 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"{@HRefFormat}
+            public override string DefaultConfiguration => @"{@HRefFormat}
 <locale value=""{@Locale}"" />
 <linkTarget value=""{@SdkLinkTarget}"" />
 
 <helpOutput format=""HtmlHelp1"">
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
-		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMemberIdUrlCache"" localCacheSize=""2500"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@HtmlSdkLinkType}"" id=""FrameworkTargets""
 		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
@@ -102,8 +98,8 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""MSHelpViewer"">
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
-		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMemberIdUrlCache"" localCacheSize=""2500"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@MSHelpViewerSdkLinkType}"" id=""FrameworkTargets""
 		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
@@ -113,8 +109,8 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""Website"">
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
-		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMemberIdUrlCache"" localCacheSize=""2500"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@WebsiteSdkLinkType}"" id=""FrameworkTargets""
 		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
@@ -124,8 +120,8 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""OpenXml"">
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
-		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMemberIdUrlCache"" localCacheSize=""2500"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@WebsiteSdkLinkType}"" id=""FrameworkTargets""
 		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
@@ -135,8 +131,8 @@ namespace SandcastleBuilder.Components
 </helpOutput>
 
 <helpOutput format=""Markdown"">
-	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache""
-		cachePath=""{@LocalDataFolder}Cache\ESentMsdnContentIdCache"" localCacheSize=""2500"" />
+	<memberIdUrlCache path=""{@LocalDataFolder}Cache\MemberIdUrl.cache""
+		cachePath=""{@LocalDataFolder}Cache\ESentMemberIdUrlCache"" localCacheSize=""2500"" />
 	<targets base=""{@FrameworkReflectionDataFolder}"" recurse=""true"" files=""*.xml""
 		type=""{@WebsiteSdkLinkType}"" id=""FrameworkTargets""
 		cachePath=""{@LocalDataFolder}Cache\ESentFrameworkTargetCache"" localCacheSize=""2500"">
@@ -144,8 +140,6 @@ namespace SandcastleBuilder.Components
 	</targets>
 	<targets files=""reflection.xml"" type=""Local"" id=""ProjectTargets"" />
 </helpOutput>";
-                }
-            }
 
             /// <inheritdoc />
             public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
@@ -196,68 +190,67 @@ namespace SandcastleBuilder.Components
         }
 
         /// <summary>
-        /// This is overridden to allow use of an ESENT backed MSDN content ID cache
+        /// This is overridden to allow use of an ESENT backed member ID URL cache
         /// </summary>
         /// <param name="configuration">The component configuration</param>
-        /// <returns>An MSDN resolver instance</returns>
-        protected override MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
+        /// <returns>A member ID URL resolver instance</returns>
+        protected override IMemberIdUrlResolver CreateMemberIdResolver(XPathNavigator configuration)
         {
-            MsdnResolver resolver;
+            IMemberIdUrlResolver resolver;
             IDictionary<string, string> cache = null;
-            int localCacheSize;
 
-            if(BuildComponentCore.Data.ContainsKey(SharedMsdnContentIdCacheId))
-                cache = BuildComponentCore.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
+            if(BuildComponentCore.Data.ContainsKey(SharedMemberUrlCacheId))
+                cache = BuildComponentCore.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
             if(cache != null)
-                return new MsdnResolver(cache, true);
+                return base.CreateMemberIdResolver(cache, true);
 
-            XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
+            XPathNavigator node = configuration.SelectSingleNode("memberIdUrlCache");
 
-            // If an <msdnContentIdCache> element is not specified, use the default resolver
+            // If a memberIdUrlCache element is not specified, use the default resolver
             if(node == null)
-                resolver = base.CreateMsdnResolver(configuration);
+                resolver = base.CreateMemberIdResolver(configuration);
             else
             {
-                string msdnIdCachePath = node.GetAttribute("cachePath", String.Empty);
+                string cachePath = node.GetAttribute("cachePath", String.Empty);
 
                 // If a cache path is not defined, use the default resolver
-                if(String.IsNullOrWhiteSpace(msdnIdCachePath))
-                    resolver = base.CreateMsdnResolver(configuration);
+                if(String.IsNullOrWhiteSpace(cachePath))
+                    resolver = base.CreateMemberIdResolver(configuration);
                 else
                 {
-                    msdnIdCachePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(msdnIdCachePath));
+                    cachePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(cachePath));
 
                     string cacheSize = node.GetAttribute("localCacheSize", String.Empty);
 
-                    if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
+                    if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out int localCacheSize))
                         localCacheSize = 2500;
 
                     // Load or create the cache database and the resolver.  The resolver will dispose of the
                     // dictionary when it is disposed of since it implements IDisposable.  We won't compress the
                     // columns as they're typically not that big and there aren't usually that many entries.
                     // This gives a slight performance increase.
-                    resolver = new MsdnResolver(new PersistentDictionary<string, string>(msdnIdCachePath, false)
+                    resolver = base.CreateMemberIdResolver(new PersistentDictionary<string, string>(cachePath, false)
                         { LocalCacheSize = localCacheSize }, false);
 
                     // We own the cache and will report statistics when done
                     ownsResolverCache = true;
 
-                    int cacheCount = resolver.MsdnContentIdCache.Count;
+                    int cacheCount = resolver.CachedUrls.Count;
 
                     if(cacheCount == 0)
                     {
                         // Log a diagnostic message since looking up all IDs can significantly slow the build
-                        this.WriteMessage(MessageLevel.Diagnostic, "The ESENT MSDN content ID cache in '" +
-                            msdnIdCachePath + "' does not exist yet.  All IDs will be looked up in this build " +
+                        this.WriteMessage(MessageLevel.Diagnostic, "The ESENT member ID URL cache in '" +
+                            cachePath + "' does not exist yet.  All IDs will be looked up in this build " +
                             "which will slow it down.");
                     }
                     else
-                        this.WriteMessage(MessageLevel.Info, "{0} cached MSDN content ID entries exist", cacheCount);
+                        this.WriteMessage(MessageLevel.Info, "{0} cached member ID URL entries exist", cacheCount);
 
-                    BuildComponentCore.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
+                    BuildComponentCore.Data[SharedMemberUrlCacheId] = resolver.CachedUrls;
                 }
             }
 
@@ -297,25 +290,23 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is overridden to report the persistent cache information
         /// </summary>
-        public override void UpdateMsdnContentIdCache()
+        public override void UpdateUrlCache()
         {
-            if(ownsResolverCache && this.MsdnResolver != null)
+            if(ownsResolverCache && this.UrlResolver != null)
             {
-                var cache = this.MsdnResolver.MsdnContentIdCache as PersistentDictionary<string, string>;
-
-                if(cache != null)
+                if(this.UrlResolver.CachedUrls is PersistentDictionary<string, string> cache)
                 {
-                    if(MsdnResolver.CacheItemsAdded != 0)
-                        this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the MSDN content ID " +
-                            "cache.  New cache size: {1} entries", MsdnResolver.CacheItemsAdded, cache.Count);
+                    if(this.UrlResolver.CacheItemsAdded != 0)
+                        this.WriteMessage(MessageLevel.Diagnostic, "{0} entries added to the member ID URL " +
+                            "cache.  New cache size: {1} entries", this.UrlResolver.CacheItemsAdded, cache.Count);
 
-                    this.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID ESENT local cache flushed {0} " +
+                    this.WriteMessage(MessageLevel.Diagnostic, "Member ID URL ESENT local cache flushed {0} " +
                         "time(s).  Current ESENT local cache usage: {1} of {2}.", cache.LocalCacheFlushCount,
                         cache.CurrentLocalCacheCount, cache.LocalCacheSize);
                 }
             }
 
-            base.UpdateMsdnContentIdCache();
+            base.UpdateUrlCache();
         }
         #endregion
     }

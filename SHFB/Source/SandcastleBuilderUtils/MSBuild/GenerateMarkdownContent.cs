@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : GenerateMarkdownContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/05/2017
-// Note    : Copyright 2015-2017, Eric Woodruff, All rights reserved
+// Updated : 08/17/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to finish up creation of the markdown content and copy it to the
@@ -281,9 +281,8 @@ namespace SandcastleBuilder.Utils.MSBuild
             foreach(var span in topic.Descendants("span").Where(s => s.Attribute("id") != null).ToList())
             {
                 string id = span.Attribute("id").Value;
-                var sectionTitle = span.PreviousNode as XText;
 
-                if(sectionTitle != null)
+                if(span.PreviousNode is XText sectionTitle)
                 {
                     // We may get more than one line so find the last one with a section title which will be
                     // the closest to the span.
@@ -294,7 +293,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     if(title != null)
                     {
                         int pos = title.IndexOf(' ');
-                        
+
                         if(pos != -1)
                         {
                             title = title.Substring(pos + 1).Trim();
@@ -339,9 +338,9 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(href.Value.Length > 1 && href.Value[0] == '#')
                 {
-                    string id = href.Value.Substring(1).Trim(), target;
+                    string id = href.Value.Substring(1).Trim();
 
-                    if(linkTargets.TryGetValue(id, out target))
+                    if(linkTargets.TryGetValue(id, out string target))
                     {
                         if(target == "PageHeader")
                             if(!linkTargets.TryGetValue("PageHeader", out target))
@@ -388,10 +387,10 @@ namespace SandcastleBuilder.Utils.MSBuild
         private void RecursiveCopy(string sourcePath, string destPath, ref int fileCount )
         {
             if(sourcePath == null)
-                throw new ArgumentNullException("sourcePath");
+                throw new ArgumentNullException(nameof(sourcePath));
 
             if(destPath == null)
-                throw new ArgumentNullException("destPath");
+                throw new ArgumentNullException(nameof(destPath));
 
             if(destPath[destPath.Length - 1] != '\\')
                 destPath += @"\";
