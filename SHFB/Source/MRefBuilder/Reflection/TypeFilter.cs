@@ -4,6 +4,7 @@
 // Change history:
 // 11/24/2013 - EFW - Cleaned up the code and removed unused members.  Added support for a "required" attribute
 // that indicates a type is required and should always be exposed.
+// 08/23/2019 - EFW - Added check for template type if derived from a template
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         //=====================================================================
 
         private string name;
-        private bool exposed, required;
+        private readonly bool exposed, required;
 
         private List<MemberFilter> memberFilters;
         #endregion
@@ -88,9 +89,12 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             bool? typeIsRequired = null;
 
-            // Check to see if the type is nested
-            if(type.DeclaringType == null && type.Name.Name == name)
+            // See if the type matches or it's derived from a template and the template name matches
+            if(type.DeclaringType == null && (type.Name.Name == name || (type.Template != null &&
+              type.Template.Name.Name == name)))
+            {
                 typeIsRequired = required;
+            }
             else
                 if(name != null && name.IndexOf('.') != -1)
                 {
@@ -129,9 +133,12 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             bool? typeIsExposed = null;
 
-            // Check to see if the type is nested
-            if(type.DeclaringType == null && type.Name.Name == name)
+            // See if the type matches or it's derived from a template and the template name matches
+            if(type.DeclaringType == null && (type.Name.Name == name || (type.Template != null &&
+              type.Template.Name.Name == name)))
+            {
                 typeIsExposed = exposed;
+            }
             else
                 if(name != null && name.IndexOf('.') != -1)
                 {
