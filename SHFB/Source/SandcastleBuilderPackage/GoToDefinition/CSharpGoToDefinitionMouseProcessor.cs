@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CSharpGoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2019
+// Updated : 09/02/2019
 // Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -76,50 +76,16 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 // Highlight the span if it matches what we are looking for and it contains the mouse span
                 switch(name)
                 {
-                    case "xml doc tag":
-                        // Track the last seen element or attribute.  The classifier in VS2013 and earlier does
-                        // not break up the XML comments into elements and attributes so we may get a mix of text
-                        // in the "tag".
-                        attrName = classification.Span.GetText();
-
-                        // As above, for conceptualLink, the next XML doc attribute will be the target
-                        if(attrName.StartsWith("<conceptualLink", StringComparison.Ordinal))
-                            attrName = "conceptualLink";
-
-                        // For token, the next XML doc comment will contain the token name
-                        if(attrName == "<token>")
-                            attrName = "token";
-                        break;
-
-                    case "xml doc attribute":
-                        if(attrName == "conceptualLink" && classification.Span.Contains(mousePoint) &&
-                          classification.Span.Length > 2)
-                        {
-                            // Drop the quotes from the span
-                            var span = new SnapshotSpan(classification.Span.Snapshot, classification.Span.Start + 1,
-                                classification.Span.Length - 2);
-
-                            if(this.SetHighlightSpan(span, "link"))
-                                return true;
-                        }
-                        break;
-
-                    case "xml doc comment":
-                        if(attrName == "token" && classification.Span.Contains(mousePoint) &&
-                          classification.Span.Length > 1)
-                        {
-                            if(this.SetHighlightSpan(classification.Span, "token"))
-                                return true;
-                        }
-                        break;
-
-                    // VS2015 is more specific in its classifications
                     case "xml doc comment - name":
                         elementName = classification.Span.GetText().Trim();
                         break;
 
                     case "xml doc comment - attribute name":
-                        attrName = identifier = null;
+                        attrName = classification.Span.GetText().Trim();
+                        identifier = null;
+
+                        if(attrName == "cref")
+                            attrName = null;
                         break;
 
                     case "xml doc comment - attribute value":

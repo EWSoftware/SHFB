@@ -27,6 +27,12 @@ compilers, it contains instructions on where to get them and how to install them
 				<para>When using the guided installation, you can skip the <ui>Requirements</ui> section below as it
 takes care of all of the required steps.  See the <ui>Recommended Additions</ui> sections for additional tools
 not included in the guided installation that you may find useful.</para>
+
+				<para>The help file builder tools and the Visual Studio package can be installed manually by running the
+MSI and VSIX installers found in the <localUri>.\InstallResources</localUri> folder extracted from the guided
+installer download.  If installing the tools manually, the optional components such as the XML schemas and
+snippets will not be installed.  You will also need to ensure the requirements noted below are also present if
+needed.</para>
 			</content>
 		</section>
 

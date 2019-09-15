@@ -1383,12 +1383,17 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="3bb3e240-7c36-456b-bebd-972ff1508c15" visible="True" isSelected="true" title="Version 2019.8.24.0">
+    <Topic id="06a9fd7f-31bb-4bb8-b685-04cc59fc36dd" visible="True" title="Version 2019.9.15.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2019.9.15.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3bb3e240-7c36-456b-bebd-972ff1508c15" visible="True" title="Version 2019.8.24.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2019.8.24.0" />
       </HelpKeywords>

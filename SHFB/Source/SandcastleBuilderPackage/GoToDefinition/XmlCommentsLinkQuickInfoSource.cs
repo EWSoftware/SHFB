@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2019
+// Updated : 09/02/2019
 // Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -107,74 +107,25 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                     switch(name)
                     {
-                        case "xml doc tag":
-                            // Track the last seen element or attribute.  The classifier in VS2013 and earlier does
-                            // not break up the XML comments into elements and attributes so we may get a mix of text
-                            // in the "tag".
-                            attrName = tagSpan.GetText();
-
-                            // As above, for conceptualLink, the next XML doc attribute will be the target
-                            if(attrName.StartsWith("<conceptualLink", StringComparison.Ordinal))
-                                attrName = "conceptualLink";
-
-                            // For token, the next XML doc comment will contain the token name
-                            if(attrName == "<token>")
-                                attrName = "token";
-                            break;
-
-                        case "xml doc attribute":
-                            if(attrName == "conceptualLink" && tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 2)
-                            {
-                                // Drop the quotes from the span
-                                var span = new SnapshotSpan(tagSpan.Snapshot, tagSpan.Start + 1, tagSpan.Length - 2);
-
-#pragma warning disable VSTHRD010
-                                content = this.CreateInfoText(attrName, span.GetText());
-#pragma warning restore VSTHRD010
-
-                                if(content != null)
-                                {
-                                    applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(span,
-                                        SpanTrackingMode.EdgeExclusive);
-
-                                    quickInfoContent.Add(content);
-                                }
-
-                                return;
-                            }
-                            break;
-
-                        case "xml doc comment":
-                            if(attrName == "token" && tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 1)
-                            {
-                                content = this.CreateInfoText(attrName, tagSpan.GetText());
-
-                                if(content != null)
-                                {
-                                    applicableToSpan = textBuffer.CurrentSnapshot.CreateTrackingSpan(tagSpan,
-                                        SpanTrackingMode.EdgeExclusive);
-
-                                    quickInfoContent.Add(content);
-                                }
-
-                                return;
-                            }
-                            break;
-
-                        // VS2015 is more specific in its classifications
                         case "xml doc comment - name":
                             elementName = tagSpan.GetText().Trim();
                             break;
 
                         case "xml doc comment - attribute name":
-                            attrName = identifier = null;
+                            attrName = tagSpan.GetText().Trim();
+                            identifier = null;
+
+                            if(attrName == "cref")
+                                attrName = null;
                             break;
 
                         case "xml doc comment - attribute value":
                             if(elementName == "conceptualLink" && attrName == "target" &&
                               tagSpan.Contains(triggerPoint.Value) && tagSpan.Length > 1)
                             {
+#pragma warning disable VSTHRD010
                                 content = this.CreateInfoText(elementName, tagSpan.GetText());
+#pragma warning restore VSTHRD010
 
                                 if(content != null)
                                 {
