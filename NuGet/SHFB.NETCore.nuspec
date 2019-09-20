@@ -6,7 +6,7 @@
 		<title>Sandcastle Help File Builder .NETCore Reflection Data Set</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
-		<licenseUrl>https://github.com/EWSoftware/SHFB/blob/master/LICENSE</licenseUrl>
+        <license type="expression">MS-PL</license>
 		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
