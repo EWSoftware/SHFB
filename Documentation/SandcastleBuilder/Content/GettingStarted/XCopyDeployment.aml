@@ -11,7 +11,7 @@ be copied to the help file builder folder or a sub-folder beneath it.</para>
 			<para>A NuGet Package is also available (<application>EWSoftware.SHFB</application>) that allows you to
 deploy the Sandcastle Help File Builder tools inside of a project to build help files without installing the
 tools manually and without defining the <environmentVariable>SHFBROOT</environmentVariable> environment variable.
-Certain limitation apply in this case and are detailed in the package's Read Me file which is displayed when the
+Certain limitations apply in this case and are detailed in the package's Read Me file which is displayed when the
 package is installed.</para>
 		</introduction>
 
