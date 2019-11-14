@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : HelpFileProperitesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 12/03/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
+// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Help File category properties
 //
@@ -62,6 +61,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
             cboLanguage.ItemsSource = supportedLanguages;
             cboLanguage.SelectedValue = supportedLanguages.First(c => c.Name.Equals("en-US",
                 StringComparison.OrdinalIgnoreCase));
+
+            cboContentPlacement.SelectedIndex = cboNamingMethod.SelectedIndex = 0;
         }
         #endregion
 

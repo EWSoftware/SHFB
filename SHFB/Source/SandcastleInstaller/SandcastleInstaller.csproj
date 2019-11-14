@@ -111,10 +111,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="InstallerPages\ExtendedDocCommentsProviderPage.xaml.cs">
+      <DependentUpon>ExtendedDocCommentsProviderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualStudioInstance.cs" />
     <Page Include="InstallerPages\CompletionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstallerPages\ExtendedDocCommentsProviderPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="InstallerPages\Help1CompilerPage.xaml">
       <SubType>Designer</SubType>
@@ -131,10 +138,6 @@
     <Page Include="InstallerPages\MamlSnippetsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="InstallerPages\RequiredFrameworkPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="InstallerPages\SandcastleHelpFileBuilderPage.xaml">
       <SubType>Designer</SubType>
@@ -184,9 +187,6 @@
     </Compile>
     <Compile Include="InstallerPages\MamlSnippetsPage.xaml.cs">
       <DependentUpon>MamlSnippetsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="InstallerPages\RequiredFrameworkPage.xaml.cs">
-      <DependentUpon>RequiredFrameworkPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstallerPages\SandcastleHelpFileBuilderPage.xaml.cs">
       <DependentUpon>SandcastleHelpFileBuilderPage.xaml</DependentUpon>
@@ -273,6 +273,7 @@
     <PostBuildEvent>REM Use a post-build event to copy the executable to the deployment folder so that we don't overwrite
 REM the actual installation configuration file with the test version in the project.
 IF '$(ConfigurationName)'=='Release' COPY /Y "$(TargetPath)" "$(ProjectDir)..\..\..\Deployment\"
+IF '$(ConfigurationName)'=='Release' COPY /Y "$(TargetPath).config" "$(ProjectDir)..\..\..\Deployment\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

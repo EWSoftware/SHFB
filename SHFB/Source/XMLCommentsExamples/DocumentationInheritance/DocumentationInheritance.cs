@@ -2,20 +2,19 @@
 // System  : Sandcastle Tools - XML Comments Example
 // File    : DocumentationInheritance.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
+// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 //
 // This class is used to demonstrate the inheritdoc XML comments element.  It serves no useful purpose.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  12/06/2012  EFW  Created the code
+// 12/06/2012  EFW  Created the code
 //===============================================================================================================
 
 // Ignore Spelling: pragma bool
@@ -131,7 +130,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
     /// </summary>
     /// <remarks>This will inherit just the last &lt;para&gt; tag from
     /// the base class's &lt;remarks&gt; tag:
-    /// <inheritdoc select="para[last()]" />
+    /// <inheritdoc path="para[last()]" />
     /// </remarks>
     /// <conceptualLink target="86453FFB-B978-4A2A-9EB5-70E118CA8073" />
     public class DerivedClassWithInheritedDocs : BaseInheritDoc
@@ -180,8 +179,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
             // shown.
         }
 
-        /// <inheritdoc cref="OverloadedMethod(string)"
-        ///     select="param|overloads/*" />
+        /// <inheritdoc cref="OverloadedMethod(string)" path="param|overloads/*" />
         /// <param name="x">An integer parameter</param>
         public void OverloadedMethod(string p1, int x)
         {
@@ -213,7 +211,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
             return false;
         }
 
-        /// <inheritdoc select="summary|remarks|param" />
+        /// <inheritdoc path="summary|remarks|param" />
         public override void MethodWithLotsOfComments(int x)
         {
             // For this override, we don't want all the comments, just those
@@ -224,7 +222,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
         /// This only includes one of the examples
         /// </summary>
         /// <example>
-        /// <inheritdoc select="span[@id='Example 2']" />
+        /// <inheritdoc path="span[@id='Example 2']" />
         /// </example>
         protected override void MethodWithTwoExamples()
         {
@@ -237,8 +235,7 @@ namespace XMLCommentsExamples.DocumentationInheritance
         /// public and this doesn't override.
         /// </summary>
         /// <example>
-        /// <inheritdoc cref="MethodWithTwoExamples"
-        ///     select="span[@id='Example 2']" />
+        /// <inheritdoc cref="MethodWithTwoExamples" path="span[@id='Example 2']" />
         /// </example>
         public void MethodUsingSharedExample()
         {

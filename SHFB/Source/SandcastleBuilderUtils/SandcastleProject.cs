@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
+// Updated : 11/97/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1730,7 +1730,7 @@ namespace SandcastleBuilder.Utils
             try
             {
                 // Ensure that we use the correct build engine for the project.  Version 4.0 or later is required.
-                if(!Double.TryParse(msBuildProject.ToolsVersion, out double toolsVersion))
+                if(!Double.TryParse(msBuildProject.Xml.ToolsVersion, out double toolsVersion))
                     toolsVersion = 0.0;
 
                 if(toolsVersion < 14.0)

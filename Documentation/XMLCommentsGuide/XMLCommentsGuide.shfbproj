@@ -100,7 +100,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
-    <HelpFileVersion>2014.5.31.0</HelpFileVersion>
+    <HelpFileVersion>2019.11.7.0</HelpFileVersion>
     <CatalogName>VisualStudio11</CatalogName>
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
@@ -239,6 +239,7 @@
     <None Include="Content\SectionElements\value.aml" />
     <None Include="Content\UsageNotes.aml" />
     <None Include="Content\VersionHistory\v1.0.0.0.aml" />
+    <None Include="Content\VersionHistory\v2019.11.7.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\VersionHistory\v2014.5.31.0.aml" />

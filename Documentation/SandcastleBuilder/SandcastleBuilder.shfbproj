@@ -284,6 +284,7 @@
     <Folder Include="media\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
     <None Include="Content\VersionHistory\v2019.6.24.0.aml" />
     <None Include="Content\AddConceptContent\AddContent.aml" />
     <None Include="Content\AddConceptContent\SiteMapEditor.aml" />

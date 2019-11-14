@@ -2,22 +2,20 @@
 // System  : Sandcastle Guided Installation
 // File    : IInstallerPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/28/2013
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
 //
 // This file contains an interface definition used to implement an installer page
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  02/05/2011  EFW  Created the code
-// 1.1.0.0  03/05/2012  EFW  Converted to use WPF
+// 02/05/2011  EFW  Created the code
+// 03/05/2012  EFW  Converted to use WPF
 //===============================================================================================================
 
-using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -60,13 +58,6 @@ namespace Sandcastle.Installer.InstallerPages
         Control Control { get; }
 
         /// <summary>
-        /// This read-only property returns the required .NET Framework version required by the tool installed by
-        /// the page.
-        /// </summary>
-        /// <remarks>Return the minimum .NET Framework version required or null if no version is required.</remarks>
-        Version RequiredFrameworkVersion { get; }
-
-        /// <summary>
         /// This read-only property is used to get an enumerable list of <see cref="CompletionAction"/> instances
         /// that should be offered when the guided installation has completed.
         /// </summary>
@@ -77,6 +68,7 @@ namespace Sandcastle.Installer.InstallerPages
         /// installation completes.
         /// </summary>
         bool SuggestReboot { get; }
+
         #endregion
 
         #region Methods
@@ -97,6 +89,7 @@ namespace Sandcastle.Installer.InstallerPages
         /// This method is used to handle tasks that should occur when the page is hidden
         /// </summary>
         void HidePage();
+
         #endregion
     }
 }

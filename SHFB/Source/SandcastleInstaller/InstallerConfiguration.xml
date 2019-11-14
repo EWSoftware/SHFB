@@ -4,7 +4,7 @@
 	<pathOffset location="..\..\..\..\..\Deployment" />
 
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2019.6.24.0" />
+	<sandcastle version="v2019.9.15.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -16,27 +16,26 @@
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="https://EWSoftware.github.io/SHFB/html/cc26cc6a-febf-40f5-b505-348ce6e0d687.htm"
-				description="Sandcastle Help File Builder and Tools v2019.6.24.0 Release Notes" />
+			<whatsNew url="https://EWSoftware.github.io/SHFB/html/06a9fd7f-31bb-4bb8-b685-04cc59fc36dd.htm"
+				description="Sandcastle Help File Builder and Tools v2019.9.15.0 Release Notes" />
 		</page>
-
-		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
 			<page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.5" shfbVersion="2019.6.24.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			shfbVersion="2019.9.15.0" installerName="SandcastleHelpFileBuilder.msi"/>
 
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
-			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
+			packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
 			<package name="SHFBVisualStudioPackage_VS2015AndLater.vsix" supportedVersions="14,15,16" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage" />
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage" />
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />
+		<page type="Sandcastle.Installer.InstallerPages.ExtendedDocCommentsProviderPage" />
 		<page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
 	</pages>
 </configuration>

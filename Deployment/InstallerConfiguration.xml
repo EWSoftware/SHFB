@@ -17,23 +17,22 @@
 				description="Sandcastle Help File Builder and Tools v2019.9.15.0 Release Notes" />
 		</page>
 
-		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
-
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
 			<page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.5" shfbVersion="2019.9.15.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			shfbVersion="2019.9.15.0" installerName="SandcastleHelpFileBuilder.msi"/>
 
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
-			frameworkVersion="4.5" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
+			packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">
 			<package name="SHFBVisualStudioPackage_VS2015AndLater.vsix" supportedVersions="14,15,16" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage" />
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage" />
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />
+		<page type="Sandcastle.Installer.InstallerPages.ExtendedDocCommentsProviderPage" />
 		<page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
 	</pages>
 </configuration>

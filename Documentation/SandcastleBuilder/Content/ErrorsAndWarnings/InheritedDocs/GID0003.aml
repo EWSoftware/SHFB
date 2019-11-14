@@ -8,7 +8,7 @@
 		<section>
 			<title>Cause</title>
 			<content>
-				<para>This warning occurs if the member ID for an element on which an <codeInline>&lt;inheritDoc /&gt;</codeInline>
+				<para>This warning occurs if the member ID for an element on which an <codeInline>&lt;inheritdoc /&gt;</codeInline>
 tag appears cannot be found in the reflection information file.</para>
 
 			</content>

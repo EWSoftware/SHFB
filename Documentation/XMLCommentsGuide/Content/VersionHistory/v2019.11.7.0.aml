@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="12ce0516-6612-43a2-903c-3ab9a4a6b0ae" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2019.11.7.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Updated the <link xlink:href="86453FFB-B978-4A2A-9EB5-70E118CA8073" /> documentation to note
+that the <codeInline>select</codeInline> attribute has been deprecated and replaced by the <codeInline>path</codeInline>
+attribute to be consistent with the XML comments IntelliSense usage in Visual Studio 2019 version 16.4.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="0999CAAA-4992-4352-9ED2-965892040176" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -2,8 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SandcastleHelpFileBuilderPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/26/2016
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder
 //
@@ -41,25 +40,14 @@ namespace Sandcastle.Installer.InstallerPages
 
         private string shfbFolder, installerName;
         private bool searchPerformed, suggestReboot;
-        private Version frameworkVersion, shfbVersion;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle
-        {
-            get { return "Sandcastle Help File Builder and Tools"; }
-        }
-
-        /// <inheritdoc />
-        /// <remarks>This returns the .NET Framework version required by the Sandcastle Help File Builder
-        /// installed by this release of the package.</remarks>
-        public override Version RequiredFrameworkVersion
-        {
-            get { return frameworkVersion; }
-        }
+        public override string PageTitle => "Sandcastle Help File Builder and Tools";
 
         /// <summary>
         /// This is overridden to prevent continuing until the Sandcastle tools are installed
@@ -83,10 +71,7 @@ namespace Sandcastle.Installer.InstallerPages
         /// <summary>
         /// This is overridden to return true if the installer was executed.
         /// </summary>
-        public override bool SuggestReboot
-        {
-            get { return suggestReboot; }
-        }
+        public override bool SuggestReboot => suggestReboot;
 
         /// <summary>
         /// This is overridden to return completion actions that offers to open the Sandcastle and SHFB help
@@ -113,10 +98,8 @@ namespace Sandcastle.Installer.InstallerPages
         /// <summary>
         /// This is used to retrieve the help file builder version
         /// </summary>
-        public Version HelpFileBuilderVersion
-        {
-            get { return shfbVersion; }
-        }
+        public Version HelpFileBuilderVersion { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -142,17 +125,13 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
-            if(configuration.Attribute("frameworkVersion") == null)
-                throw new InvalidOperationException("A frameworkVersion attribute value is required");
-
             if(configuration.Attribute("shfbVersion") == null)
                 throw new InvalidOperationException("A shfbVersion attribute value is required");
 
             if(configuration.Attribute("installerName") == null)
                 throw new InvalidOperationException("An installer attribute value is required");
 
-            frameworkVersion = new Version(configuration.Attribute("frameworkVersion").Value);
-            shfbVersion = new Version(configuration.Attribute("shfbVersion").Value);
+            this.HelpFileBuilderVersion = new Version(configuration.Attribute("shfbVersion").Value);
             installerName = configuration.Attribute("installerName").Value;
 
             base.Initialize(configuration);
@@ -191,16 +170,16 @@ namespace Sandcastle.Installer.InstallerPages
 
                         // The file version is missing the century to satisfy the MSI rule for the major version
                         // value so we'll add the century back from the SHFB version to get a match.
-                        installedVersion = new Version(fvi.FileMajorPart + (shfbVersion.Major / 100 * 100),
+                        installedVersion = new Version(fvi.FileMajorPart + (this.HelpFileBuilderVersion.Major / 100 * 100),
                             fvi.FileMinorPart, fvi.FileBuildPart, fvi.FilePrivatePart);
                     }
 
-                    if(installedVersion < shfbVersion)
+                    if(installedVersion < this.HelpFileBuilderVersion)
                         shfbFolder = null;
                     else
                     {
                         // If the version is greater, we can't go on as this package is out of date
-                        if(installedVersion > shfbVersion)
+                        if(installedVersion > this.HelpFileBuilderVersion)
                         {
                             shfbFolder = null;
                             pnlControls.Visibility = Visibility.Collapsed;
@@ -227,9 +206,11 @@ namespace Sandcastle.Installer.InstallerPages
                 imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
 
                 para = new Paragraph(new Bold(new Run(
-                    "An error occurred while searching for the Sandcastle Help File Builder:")));
+                    "An error occurred while searching for the Sandcastle Help File Builder:")))
+                {
+                    Foreground = new SolidColorBrush(Colors.Red)
+                };
 
-                para.Foreground = new SolidColorBrush(Colors.Red);
                 para.Inlines.AddRange(new Inline[] { new LineBreak(), new LineBreak(), new Run(ex.Message) });
 
                 secResults.Blocks.Add(para);

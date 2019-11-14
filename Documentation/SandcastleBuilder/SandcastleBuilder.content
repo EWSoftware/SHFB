@@ -616,7 +616,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
@@ -971,7 +971,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="077ce20b-7998-4fec-8d79-16d990e1cf3b" visible="True" title="Generate Inherited Documentation">
+    <Topic id="077ce20b-7998-4fec-8d79-16d990e1cf3b" visible="True" isExpanded="true" title="Generate Inherited Documentation">
       <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, GID0001" />
@@ -1015,6 +1015,11 @@
       <Topic id="9d23a808-2231-44c2-ae45-61c697dda415" visible="True" title="GID0009: Circular reference detected: [member ID stack]">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, GID0009" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="69791faf-a420-4fc9-9dba-10d3f3f817a1" visible="True" isSelected="true" title="GID0010: '[member ID]' uses the deprecated inheritdoc 'select' attribute">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0010" />
         </HelpKeywords>
       </Topic>
     </Topic>
@@ -1383,7 +1388,7 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isSelected="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />

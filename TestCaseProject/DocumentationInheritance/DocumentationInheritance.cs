@@ -108,7 +108,7 @@ namespace TestDoc.DocumentationInheritance
     /// </summary>
     /// <remarks>This will inherit just the last &lt;para&gt; tag from
     /// the base class's &lt;remarks&gt; tag:
-    /// <inheritdoc select="para[last()]" />
+    /// <inheritdoc path="para[last()]" />
     /// </remarks>
     public class DerivedClassWithInheritedDocs : BaseInheritDoc
     {
@@ -157,7 +157,7 @@ namespace TestDoc.DocumentationInheritance
         }
 
         /// <inheritdoc cref="OverloadedMethod(string)"
-        ///     select="param|overloads/*" />
+        ///     path="param|overloads/*" />
         /// <param name="x">An integer parameter</param>
         public void OverloadedMethod(string p1, int x)
         {
@@ -189,7 +189,7 @@ namespace TestDoc.DocumentationInheritance
             return false;
         }
 
-        /// <inheritdoc select="summary|remarks|param" />
+        /// <inheritdoc path="summary|remarks|param" />
         public override void MethodWithLotsOfComments(int x)
         {
             // For this override, we don't want all the comments, just those
@@ -200,7 +200,7 @@ namespace TestDoc.DocumentationInheritance
         /// This only includes one of the examples
         /// </summary>
         /// <example>
-        /// <inheritdoc select="span[@id='Example 2']" />
+        /// <inheritdoc path="span[@id='Example 2']" />
         /// </example>
         protected override void MethodWithTwoExamples()
         {
@@ -214,7 +214,7 @@ namespace TestDoc.DocumentationInheritance
         /// </summary>
         /// <example>
         /// <inheritdoc cref="MethodWithTwoExamples"
-        ///     select="span[@id='Example 2']" />
+        ///     path="span[@id='Example 2']" />
         /// </example>
         public void MethodUsingSharedExample()
         {

@@ -10,11 +10,11 @@ documentation to be inherited from base types/members.</para>
 
 			<autoOutline lead="none" />
 			
-				<alert class="note">
-					<para>This is a custom XML comments element implemented by Sandcastle and the Sandcastle Help File
-Builder.  It will not appear in the list of valid elements for XML comments IntelliSense.</para>
-				</alert>
-
+			<alert class="note">
+				<para>Prior to Visual Studio 2019 version 16.4, this was a custom XML comments element implemented by
+Sandcastle and the Sandcastle Help File Builder.  It does not appear in the list of IntelliSense elements for XML
+comments prior to that release.</para>
+			</alert>
 		</introduction>
 
 		<section address="Syntax">
@@ -29,19 +29,25 @@ be inherited from any member from classes within your own assemblies or from mem
 as the base .NET Framework class library.  The syntax of the element is as follows:</para>
 
 <code language="xml" title=" ">
-&lt;inheritdoc [cref="member"] [select="xpath-filter-expr"] /&gt;
+&lt;inheritdoc [cref="member"] [path="xpath-filter-expr"] /&gt;
 </code>
 
+				<alert class="important">
+					<para>As of November 2019, the <codeInline>select</codeInline> attribute has been deprecated.  Use the
+equivalent <codeInline>path</codeInline> attribute instead which is consistent with the XML comments IntelliSense
+usage in Visual Studio 2019.</para>
+				</alert>
+				
 				<para>The optional <codeInline>cref</codeInline> attribute overrides the standard search method to allow
 documentation inheritance from an alternate user-specified member indicated by the <legacyItalic>member</legacyItalic>
 value.</para>
 
-				<para>The optional <codeInline>select</codeInline> attribute applies the specified XPath filter
+				<para>The optional <codeInline>path</codeInline> attribute applies the specified XPath filter
 expression to the inherited comments.  This is useful if you want to limit the inherited documentation to a
 specific subset of elements or just select a particular instance or set of comments.  The expression can be any valid
 XPath query that will result in a node set.</para>
 
-				<para>By making use of the <codeInline>cref</codeInline> and <codeInline>select</codeInline> attributes
+				<para>By making use of the <codeInline>cref</codeInline> and <codeInline>path</codeInline> attributes
 either by themselves or together, you can fine tune the inheritance of documentation.  You can also nest the
 element within other elements to further refine the level of inheritance.</para>
 
@@ -133,7 +139,7 @@ working backwards up the inheritance chain.</para>
 					</listItem>
 
 					<listItem>
-						<para>In all cases, if a <codeInline>select</codeInline> attribute is present, it is used to filter
+						<para>In all cases, if a <codeInline>path</codeInline> attribute is present, it is used to filter
 the inherited comments based on the specified XPath query.</para>
 					</listItem>
 
@@ -174,7 +180,7 @@ member's comments, the inherited versions are ignored:</para>
 
 				<para>The <codeInline>overloads</codeInline> element will never be inherited.  This prevents the doubling
 of comments on the overloads page.  However, you can inherit the contents of the <codeInline>overloads</codeInline>
-element using a <codeInline>select</codeInline> attribute with a value of "<codeInline>overloads/*</codeInline>".
+element using a <codeInline>path</codeInline> attribute with a value of "<codeInline>overloads/*</codeInline>".
 See the example below in the Examples section that inherits the elements from an <codeInline>overloads</codeInline>
 element.  If the element only contains text and you want to inherit that text, include an <codeInline>overloads</codeInline>
 element with a nested <codeInline>inheritdoc</codeInline> element.  For example:</para>
@@ -219,10 +225,10 @@ etc. in order to inherit specific parts of the documentation within those elemen
 level inheritance rules apply and will be used to locate the first member with comments from which to inherit
 documentation.  In addition, a filter will be automatically included based on the parent element or elements
 within which the <codeInline>inheritdoc</codeInline> element is nested.  The <codeInline>cref</codeInline> and
-<codeInline>select</codeInline> attributes can also be applied to further qualify how the documentation is
+<codeInline>path</codeInline> attributes can also be applied to further qualify how the documentation is
 inherited.  If you do not want to have the parent elements automatically included in the filter, you must supply
-a <codeInline>select</codeInline> attribute with a rooted XPath query that specifies from where to obtain the
-comments (i.e. <codeInline>select="/summary/node()"</codeInline>).</para>
+a <codeInline>path</codeInline> attribute with a rooted XPath query that specifies from where to obtain the
+comments (i.e. <codeInline>path="/summary/node()"</codeInline>).</para>
 
 			</content>
 		</section>

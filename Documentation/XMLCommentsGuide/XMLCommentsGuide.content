@@ -256,7 +256,12 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
-    <Topic id="380415aa-8aca-4abf-a1ae-bf8566c229f1" visible="True" isSelected="true" title="Version 2015.10.10.0">
+    <Topic id="12ce0516-6612-43a2-903c-3ab9a4a6b0ae" visible="True" isSelected="true" title="Version 2019.11.7.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2019.11.7.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="380415aa-8aca-4abf-a1ae-bf8566c229f1" visible="True" title="Version 2015.10.10.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="version, 2015.10.10.0" />
       </HelpKeywords>

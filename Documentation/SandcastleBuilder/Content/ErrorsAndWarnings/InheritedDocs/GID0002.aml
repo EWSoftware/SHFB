@@ -9,7 +9,7 @@
     <section>
       <title>Cause</title>
       <content>
-        <para>This warning will appear of an <codeInline>&lt;inheritDoc /&gt;</codeInline>
+        <para>This warning will appear of an <codeInline>&lt;inheritdoc /&gt;</codeInline>
 element specified a <codeInline>cref</codeInline> attribute but the resulting
 XPath query resulted in no matches.</para>
       </content>

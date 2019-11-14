@@ -11,6 +11,8 @@
 // </summary>
 // ------------------------------------------------------------------------------------------------
 
+// Ignore Spelling: inheritdoc api apidata filterpriority threadsafety cref
+
 // Change History
 // 12/21/2012 - EFW - Moved this component into the main BuildComponents project and removed the CopyComponents
 // project as this was the only thing in it.
@@ -57,34 +59,35 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         // XPathExpression for API name.
-        private static XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
+        private static readonly XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
 
         // XPathExpression for API group.
-        private static XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
+        private static readonly XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
 
         // XPathExpression for API subgroup.
-        private static XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
+        private static readonly XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
 
         // XPathExpression for API ancestors.
-        private static XPathExpression typeExpression = XPathExpression.Compile("family/ancestors/type/@api");
+        private static readonly XPathExpression typeExpression = XPathExpression.Compile("family/ancestors/type/@api");
 
         // XPathExpression for API type interface implementations.
-        private static XPathExpression interfaceImplementationExpression = XPathExpression.Compile("implements/type/@api");
+        private static readonly XPathExpression interfaceImplementationExpression = XPathExpression.Compile("implements/type/@api");
 
         // XPathExpression for API containers.
-        private static XPathExpression containerTypeExpression = XPathExpression.Compile("string(containers/type/@api)");
+        private static readonly XPathExpression containerTypeExpression = XPathExpression.Compile("string(containers/type/@api)");
 
         // XPathExpression for override members.
-        private static XPathExpression overrideMemberExpression = XPathExpression.Compile("overrides/member/@api");
+        private static readonly XPathExpression overrideMemberExpression = XPathExpression.Compile("overrides/member/@api");
 
         // XPathExpression for API member interface implementations.
-        private static XPathExpression interfaceImplementationMemberExpression = XPathExpression.Compile("implements/member/@api");
+        private static readonly XPathExpression interfaceImplementationMemberExpression = XPathExpression.Compile("implements/member/@api");
 
         // XPathExpression for <inheritdoc /> nodes.
-        private static XPathExpression inheritDocExpression = XPathExpression.Compile("//inheritdoc");
+        private static readonly XPathExpression inheritDocExpression = XPathExpression.Compile("//inheritdoc");
 
         // XPathExpression that looks for example, filterpriority, preliminary, remarks, returns, summary, threadsafety and value nodes.
-        private static XPathExpression tagsExpression = XPathExpression.Compile("example|filterpriority|preliminary|remarks|returns|summary|threadsafety|value");
+        private static readonly XPathExpression tagsExpression = XPathExpression.Compile(
+            "example|filterpriority|preliminary|remarks|returns|summary|threadsafety|value");
 
         // XPathExpression for source nodes.
         private static XPathExpression sourceExpression;
@@ -97,6 +100,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
         // A cache for reflection files.
         private IndexedCache reflectionIndex;
+
         #endregion
 
         #region Constructor
@@ -121,21 +125,21 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XPathNavigator copyNode = configuration.SelectSingleNode("copy");
 
             if(copyNode == null)
-                base.ParentBuildComponent.WriteMessage(MessageLevel.Error, "A copy element is required to " +
+                this.ParentBuildComponent.WriteMessage(MessageLevel.Error, "A copy element is required to " +
                     "define the indexes from which to obtain comments and reflection information");
 
             // Get the comments info
             string sourceName = copyNode.GetAttribute("name", string.Empty);
 
             if(String.IsNullOrEmpty(sourceName))
-                base.ParentBuildComponent.WriteMessage(MessageLevel.Error, "Each copy command must specify " +
+                this.ParentBuildComponent.WriteMessage(MessageLevel.Error, "Each copy command must specify " +
                     "an index to copy from");
 
             // Get the reflection info
             string reflectionName = copyNode.GetAttribute("use", String.Empty);
 
             if(String.IsNullOrEmpty(reflectionName))
-                base.ParentBuildComponent.WriteMessage(MessageLevel.Error, "Each copy command must specify " +
+                this.ParentBuildComponent.WriteMessage(MessageLevel.Error, "Each copy command must specify " +
                     "an index to get reflection information from");
 
             this.commentsIndex = (IndexedCache)data[sourceName];
@@ -162,7 +166,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <param name="key">Id of the topic specified</param>
         private void DeleteNode(XPathNavigator inheritDocNodeNavigator, string key)
         {
-            base.ParentBuildComponent.WriteMessage(MessageLevel.Info, "Comments not found for topic: {0}", key);
+            this.ParentBuildComponent.WriteMessage(MessageLevel.Info, "Comments not found for topic: {0}", key);
             inheritDocNodeNavigator.DeleteSelf();
         }
 
@@ -201,7 +205,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         this.DeleteNode(inheritDocNodeNavigator, cref);
                     else
                     {
-                        this.UpdateNode(inheritDocNodeNavigator, contentNodeNavigator);
+                        this.UpdateNode(key, inheritDocNodeNavigator, contentNodeNavigator);
 
                         if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count != 0)
                             this.InheritDocumentation(cref);
@@ -225,7 +229,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     {
                         // Inherit from base types
                         XPathNodeIterator typeNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(typeExpression);
-                        this.GetComments(typeNodeIterator, inheritDocNodeNavigator);
+                        this.GetComments(key, typeNodeIterator, inheritDocNodeNavigator);
 
                         // no <inheritdoc /> nodes were found, so continue with next iteration. Otherwise inherit from interface implementation types.
                         if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
@@ -233,7 +237,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                         // Inherit from interface implementation types
                         XPathNodeIterator interfaceNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(interfaceImplementationExpression);
-                        this.GetComments(interfaceNodeIterator, inheritDocNodeNavigator);
+                        this.GetComments(key, interfaceNodeIterator, inheritDocNodeNavigator);
                     }
                     else if(group == "member")
                     {
@@ -269,7 +273,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                                 if(contentNodeNavigator == null)
                                     continue;
 
-                                this.UpdateNode(inheritDocNodeNavigator, contentNodeNavigator);
+                                this.UpdateNode(key, inheritDocNodeNavigator, contentNodeNavigator);
 
                                 if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                                     break;
@@ -281,14 +285,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         {
                             // Inherit from override members.
                             XPathNodeIterator memberNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(overrideMemberExpression);
-                            this.GetComments(memberNodeIterator, inheritDocNodeNavigator);
+                            this.GetComments(key, memberNodeIterator, inheritDocNodeNavigator);
 
                             if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                                 continue;
 
                             // Inherit from interface implementations members.
                             XPathNodeIterator interfaceNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(interfaceImplementationMemberExpression);
-                            this.GetComments(interfaceNodeIterator, inheritDocNodeNavigator);
+                            this.GetComments(key, interfaceNodeIterator, inheritDocNodeNavigator);
                         }
                     }
 
@@ -302,14 +306,23 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <summary>
         /// Updates the node replacing inheritdoc node with comments found.
         /// </summary>
+        /// <param name="key">Id of the topic specified</param>
         /// <param name="inheritDocNodeNavigator">Navigator for inheritdoc node</param>
         /// <param name="contentNodeNavigator">Navigator for content</param>
-        private void UpdateNode(XPathNavigator inheritDocNodeNavigator, XPathNavigator contentNodeNavigator)
+        private void UpdateNode(string key, XPathNavigator inheritDocNodeNavigator, XPathNavigator contentNodeNavigator)
         {
             // retrieve the selection filter if specified.
             string selectValue = inheritDocNodeNavigator.GetAttribute("select", string.Empty);
 
-            if(!string.IsNullOrEmpty(selectValue))
+            if(!String.IsNullOrWhiteSpace(selectValue))
+            {
+                this.ParentBuildComponent.WriteMessage(key, MessageLevel.Warn, "The inheritdoc 'select' " +
+                    "attribute has been deprecated.  Use the equivalent 'path' attribute instead.");
+            }
+            else
+                selectValue = inheritDocNodeNavigator.GetAttribute("path", string.Empty);
+
+            if(!String.IsNullOrWhiteSpace(selectValue))
                 sourceExpression = XPathExpression.Compile(selectValue);
 
             inheritDocNodeNavigator.MoveToParent();
@@ -330,9 +343,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <summary>
         /// Gets the comments for inheritdoc node.
         /// </summary>
+        /// <param name="key">Id of the topic specified</param>
         /// <param name="iterator">Iterator for API information</param>
         /// <param name="inheritDocNodeNavigator">Navigator for inheritdoc node</param>
-        private void GetComments(XPathNodeIterator iterator, XPathNavigator inheritDocNodeNavigator)
+        private void GetComments(string key, XPathNodeIterator iterator, XPathNavigator inheritDocNodeNavigator)
         {
             foreach(XPathNavigator navigator in iterator)
             {
@@ -341,7 +355,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 if(contentNodeNavigator == null)
                     continue;
 
-                this.UpdateNode(inheritDocNodeNavigator, contentNodeNavigator);
+                this.UpdateNode(key, inheritDocNodeNavigator, contentNodeNavigator);
 
                 if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                     break;

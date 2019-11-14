@@ -2,8 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 03/20/2019
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
 //
@@ -77,7 +76,6 @@ namespace Sandcastle.Installer.InstallerPages
         private List<VisualStudioInstallerPackage> vsixPackages;
 
         private bool searchPerformed, installerExecuted;
-        private Version frameworkVersion;
         private Guid packageGuid;
 
         #endregion
@@ -87,11 +85,6 @@ namespace Sandcastle.Installer.InstallerPages
 
         /// <inheritdoc />
         public override string PageTitle => "SHFB Visual Studio Package";
-
-        /// <inheritdoc />
-        /// <remarks>This returns the .NET Framework version required by the Sandcastle Help File Builder
-        /// installed by this release of the package.</remarks>
-        public override Version RequiredFrameworkVersion => frameworkVersion;
 
         /// <summary>
         /// This is overridden to confirm that the user wants to continue without installing the VS package.
@@ -143,13 +136,9 @@ namespace Sandcastle.Installer.InstallerPages
 
         public void InitializeInternal(XElement configuration)
         {
-            if(configuration.Attribute("frameworkVersion") == null)
-                throw new InvalidOperationException("A frameworkVersion attribute value is required");
-
             if(configuration.Attribute("packageGuid") == null)
                 throw new InvalidOperationException("A packageGuid attribute value is required");
 
-            frameworkVersion = new Version(configuration.Attribute("frameworkVersion").Value);
             packageGuid = new Guid(configuration.Attribute("packageGuid").Value);
 
             // Load the Visual Studio package versions

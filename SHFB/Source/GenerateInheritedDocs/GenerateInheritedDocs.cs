@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2018
-// Note    : Copyright 2008-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
+// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the console mode tool that scans XML comments files for <inheritdoc /> tags and produces a
 // new XML comments file containing the inherited documentation for use by Sandcastle.
@@ -177,7 +176,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             int cacheSize = 100;
 
             if(!File.Exists(configFile))
-                throw new ArgumentException("Configuration file not found: " + configFile, "configFile");
+                throw new ArgumentException("Configuration file not found: " + configFile, nameof(configFile));
 
             config = new XPathDocument(configFile);
             navConfig = config.CreateNavigator();
@@ -441,6 +440,15 @@ namespace SandcastleBuilder.InheritedDocumentation
                 // Apply a selection filter?
                 filter = inheritTag.Attributes["select"];
 
+                if(filter != null)
+                {
+                    // Deprecated as of Nov 2019 to match Visual Studio 2019 usage
+                    Console.WriteLine("SHFB: Warning GID0010: '{0}' uses the deprecated inheritdoc 'select' " +
+                        "attribute.  Use the equivalent 'path' attribute instead.", name);
+                }
+                else
+                    filter = inheritTag.Attributes["path"];
+
                 // Inherit from a member other than the base?
                 cref = inheritTag.Attributes["cref"];
 
@@ -695,6 +703,15 @@ namespace SandcastleBuilder.InheritedDocumentation
 
                 // Apply a selection filter?
                 filter = inheritTag.Attributes["select"];
+
+                if(filter != null)
+                {
+                    // Deprecated as of Nov 2019 to match Visual Studio 2019 usage
+                    Console.WriteLine("SHFB: Warning GID0010: '{0}' uses the deprecated inheritdoc 'select' " +
+                        "attribute.  Use the equivalent 'path' attribute instead.", name);
+                }
+                else
+                    filter = inheritTag.Attributes["path"];
 
                 if(filter != null)
                 {

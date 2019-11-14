@@ -2,15 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CSharpDocumentationCompletionSource.cs
 // Author  : Sam Harwell  (sam@tunnelvisionlabs.com)
-// Updated : 03/24/2014
-// Note    : Copyright 2014, Sam Harwell, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/07/2019
+// Note    : Copyright 2014-2019, Sam Harwell, All rights reserved
 //
 // This file contains an augmented completion source that extends the default XML comments elements with the
 // extended elements from Sandcastle.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -59,14 +58,8 @@ namespace SandcastleBuilder.Package.IntelliSense
         public CSharpDocumentationCompletionSource(ITextBuffer textBuffer,
           CSharpDocumentationCompletionSourceProvider provider)
         {
-            if(textBuffer == null)
-                throw new ArgumentNullException("textBuffer");
-
-            if(provider == null)
-                throw new ArgumentNullException("provider");
-
-            _textBuffer = textBuffer;
-            _provider = provider;
+            _textBuffer = textBuffer ?? throw new ArgumentNullException(nameof(textBuffer));
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
 
         /// <inheritdoc />
@@ -129,8 +122,8 @@ namespace SandcastleBuilder.Package.IntelliSense
                     "inherited from base types/members.", iconSource, ""),
                 new CustomCompletion(session, "inheritdocCref", prefix + "inheritdoc cref=\"\xFF\"/>",
                     "Inherit documentation from a specific member.", iconSource, ""),
-                new CustomCompletion(session, "inheritdocCrefSelect", prefix + "inheritdoc cref=\"\xFF\" " +
-                    "select=\"summary|remarks\"/>", "Inherit documentation from a specific member and comments.",
+                new CustomCompletion(session, "inheritdocCrefPath", prefix + "inheritdoc cref=\"\xFF\" " +
+                    "path=\"summary|remarks\"/>", "Inherit documentation from a specific member and comments.",
                     iconSource, ""),
                 new SandcastleCompletion("token", prefix + "token", "This element represents a replaceable tag within " +
                     "a topic.", iconSource, "")
