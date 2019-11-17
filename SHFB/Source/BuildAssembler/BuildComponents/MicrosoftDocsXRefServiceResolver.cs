@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MicrosoftDocsXRefServiceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
+// Updated : 11/15/2019
 // Note    : Copyright 2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -73,6 +73,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <overloads>There are two overloads for the constructor</overloads>
         public MicrosoftDocsXRefServiceResolver()
         {
+            // .NET 4.5 doesn't use TLS 1.2 by default so we have to manually tell it to use it or the web client
+            // connections will fail.  This can be removed once we upgrade to .NET 4.6.2 or later.
+            if((ServicePointManager.SecurityProtocol & SecurityProtocolType.Tls12) != SecurityProtocolType.Tls12)
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             client = new WebClient();
 
             this.CrossReferenceUrlFormat = "https://xref.docs.microsoft.com/query?uid={0}";

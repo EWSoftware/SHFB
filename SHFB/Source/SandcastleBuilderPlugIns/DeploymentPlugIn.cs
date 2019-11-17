@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
+// Updated : 11/15/2019
+// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to deploy the resulting help file output to a location other
@@ -264,6 +264,12 @@ namespace SandcastleBuilder.PlugIns
                         rootPath = target.LocalPath;
                     else
                     {
+                        // .NET 4.5 doesn't use TLS 1.2 by default so we have to manually tell it to use it or the
+                        // web client connections will fail.  This can be removed once we upgrade to .NET 4.6.2 or
+                        // later.
+                        if((ServicePointManager.SecurityProtocol & SecurityProtocolType.Tls12) != SecurityProtocolType.Tls12)
+                            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                         // FTP, HTTP, etc.
                         rootPath = target.ToString();
                         webClient = new WebClient();

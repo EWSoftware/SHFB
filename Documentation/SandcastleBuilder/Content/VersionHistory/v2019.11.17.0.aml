@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f8d393f6-a081-43ad-9a84-e8d379f2de56" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: Englert Exe -->
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2019.11.17.0." />
+
+			<alert class="note">
+				<para>This will be the last release that supports Visual Studio 2015.  The next release will be updated
+to use .NET 4.7 and Visual Studio 2017 or later.</para>
+			</alert>
+		</introduction>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Updated the Generate Inherited Documentation tool to issue a warning
+(<link xlink:href="69791faf-a420-4fc9-9dba-10d3f3f817a1">GID0010</link>) if it finds the deprecated
+<codeInline>select</codeInline> attribute on the <codeInline>inheritdoc</codeInline> element.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the URL resolver so that the web client connection uses TLS 1.2 which is now required by
+the server hosting the service.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Merged changes into the default project template from Tom Englert to allow the help file
+builder NuGet packages to be referenced and restored within the help file project itself.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the build engine so that it sets the <codeInline>TargetFramework</codeInline> property in
+the documentation source project when multi-targeting is being used.  This allows other properties that use it to
+be resolved correctly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed documentation assembly determination by checking the <codeInline>TargetExt</codeInline>
+property and using it as the target assembly extension when the output type is "Exe".  This solves a problem with
+web SDK projects that output a native code host runtime assembly alongside the actual DLL.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Docs">
+			<title>Documentation</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Updated the XML comments guide <codeInline>inheritdoc</codeInline> documentation to note that
+the <codeInline>select</codeInline> attribute has been deprecated in favor of the <codeInline>path</codeInline>
+attribute to be consistent with upcoming support for the element in Visual Studio 2019's IntelliSense.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

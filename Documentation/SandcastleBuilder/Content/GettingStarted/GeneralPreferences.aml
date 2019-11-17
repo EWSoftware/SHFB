@@ -91,13 +91,21 @@ website output will be opened in a tabbed document window within Visual Studio.<
 					</listItem>
 
 					<listItem>
-						<para><ui>Enable extended XML comments completion options</ui> - (Visual Studio extension package
+						<para><ui>Enable extended XML comments completion options</ui> - (Visual Studio 2017 extension package
 only) If checked, extended XML comments completion items specific to the Sandcastle tools will appear as options
 in the completion pop-up when entering XML comments in C# projects.  These can be used to quickly enter
 Sandcastle-specific elements such as <codeInline>code</codeInline> elements with source and region attributes,
 <codeInline>see langword</codeInline> elements, <codeInline>inheritdoc</codeInline> extensions, etc.  This option
 can be disabled if you do not wish to use the extended elements or if you think the completion provider is
 causing issues with Visual Studio.</para>
+
+						<para>For extended XML comments completion support in Visual Studio 2019 and later, install the
+<externalLink>
+<linkText>Extended XML Documentation Comments Completion Provider</linkText>
+<linkAlternateText>Extended XML Documentation Comments Completion Provider</linkAlternateText>
+<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> package which can be downloaded and installed from the Visual Studio Gallery.</para>
 					</listItem>
 
 					<listItem>

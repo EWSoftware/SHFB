@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2019
+// Updated : 11/16/2019
 // Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -66,7 +66,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         private Dictionary<string, ProjectProperty> properties;
         private readonly bool removeProjectWhenDisposed;
 
-        private static Regex reInvalidAttribute = new Regex(
+        private static readonly Regex reInvalidAttribute = new Regex(
             "The attribute \"(.*?)\" in element \\<(.*?)\\> is unrecognized", RegexOptions.IgnoreCase);
 
         #endregion
@@ -157,7 +157,22 @@ namespace SandcastleBuilder.Utils.MSBuild
                           String.Compare(outputType, "WinExe", StringComparison.OrdinalIgnoreCase) == 0 ||
                           String.Compare(outputType, "AppContainerExe", StringComparison.OrdinalIgnoreCase) == 0)
                         {
-                            assemblyName += ".exe";
+                            string ext = ".exe";
+
+                            // .NET Core web SDK projects sometimes output a native code runtime host executable
+                            // and compile the code into a separate assembly.  In these cases, the output type
+                            // is Exe but the target extension is .dll.  When they differ, assume the target
+                            // extension is the correct one to use.
+                            if(properties.TryGetValue("TargetExt", out prop))
+                            {
+                                if(!String.IsNullOrWhiteSpace(prop.EvaluatedValue) &&
+                                  !prop.EvaluatedValue.Equals(ext, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    ext = prop.EvaluatedValue;
+                                }
+                            }
+
+                            assemblyName += ext;
                         }
                         else
                             if(String.Compare(outputType, "winmdobj", StringComparison.OrdinalIgnoreCase) == 0)
@@ -181,14 +196,26 @@ namespace SandcastleBuilder.Utils.MSBuild
                     if(!File.Exists(assemblyName) && properties.TryGetValue("TargetFrameworks", out prop))
                     {
                         outputPath = Path.GetDirectoryName(assemblyName);
+                        string targetFramework = null;
 
                         foreach(string subfolder in prop.EvaluatedValue.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
                             if(Directory.EnumerateFiles(Path.Combine(outputPath, subfolder),
                               Path.GetFileName(assemblyName)).Any())
                             {
+                                targetFramework = subfolder;
                                 assemblyName = Path.Combine(outputPath, subfolder, Path.GetFileName(assemblyName));
                                 break;
                             }
+
+                        // Set TargetFramework if necessary as some people use it to as a variable in other paths
+                        // to references etc. when multi-targeting.
+                        if(!String.IsNullOrWhiteSpace(targetFramework) && !properties.Keys.Contains("TargetFramework"))
+                        {
+                            this.ProjectFile.SetProperty("TargetFramework", targetFramework);
+                            this.ProjectFile.ReevaluateIfNecessary();
+
+                            properties.Add("TargetFramework", this.ProjectFile.GetProperty("TargetFramework"));
+                        }
                     }
                 }
 
@@ -203,7 +230,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                string docFile = null, outputPath = null, origDocFile;
+                string docFile, outputPath = null, origDocFile;
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
@@ -343,7 +370,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(versionValue == null)
                 {
                     // If not found but TargetFrameworks is specified, just assume some version of .NETFramework
-                    if(properties.TryGetValue("TargetFrameworks", out prop))
+                    if(properties.Keys.Contains("TargetFrameworks"))
                         return "4.5.2";
 
                     throw new InvalidOperationException("Unable to determine target framework version for project");

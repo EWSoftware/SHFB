@@ -616,7 +616,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
@@ -1017,7 +1017,7 @@
           <HelpKeyword index="K" term="warnings, GID0009" />
         </HelpKeywords>
       </Topic>
-      <Topic id="69791faf-a420-4fc9-9dba-10d3f3f817a1" visible="True" isSelected="true" title="GID0010: '[member ID]' uses the deprecated inheritdoc 'select' attribute">
+      <Topic id="69791faf-a420-4fc9-9dba-10d3f3f817a1" visible="True" title="GID0010: '[member ID]' uses the deprecated inheritdoc 'select' attribute">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, GID0010" />
         </HelpKeywords>
@@ -1388,11 +1388,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="f8d393f6-a081-43ad-9a84-e8d379f2de56" visible="True" isSelected="true" title="Version 2019.11.17.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2019.11.17.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="06a9fd7f-31bb-4bb8-b685-04cc59fc36dd" visible="True" title="Version 2019.9.15.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2019.9.15.0" />

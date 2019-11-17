@@ -33,7 +33,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2019.9.15.0</HelpFileVersion>
+    <HelpFileVersion>2019.11.17.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -285,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
+    <None Include="Content\VersionHistory\v2019.11.17.0.aml" />
     <None Include="Content\VersionHistory\v2019.6.24.0.aml" />
     <None Include="Content\AddConceptContent\AddContent.aml" />
     <None Include="Content\AddConceptContent\SiteMapEditor.aml" />

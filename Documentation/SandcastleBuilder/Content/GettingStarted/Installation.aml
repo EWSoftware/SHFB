@@ -115,6 +115,18 @@ editor extension that checks the spelling of comments, strings, and plain text a
 a tool window.  Support is included for spell checking source code, XML files, and MAML topic files.</para>
 					</listItem>
 
+						<listItem>
+							<para>For extended XML comments completion support in Visual Studio 2019 and later, install the
+<externalLink>
+<linkText>Extended XML Documentation Comments Completion Provider</linkText>
+<linkAlternateText>Extended XML Documentation Comments Completion Provider</linkAlternateText>
+<linkUri>https://marketplace.visualstudio.com/items?itemName=EWoodruff.ExtendedDocCommentsProvider</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> package which can be downloaded and installed from the Visual Studio Gallery.  It is an editor
+extension that augments the standard XML documentation comments elements with custom elements, attributes, and
+attribute values supported by the Sandcastle Help File Builder and other documentation tools.</para>
+						</listItem>
+
 					<listItem>
 						<para>For a Visual Studio add-in used to create XML comments automatically, check out SubMain's
 <externalLink>
