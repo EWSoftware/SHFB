@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
@@ -18,15 +18,13 @@
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\SHFB\Deploy\ColorizerLibrary.dll" />
       <DocumentationSource sourceFile="..\..\SHFB\Deploy\ICSharpCode.TextEditor.dll" />
-      <DocumentationSource sourceFile="..\..\SHFB\Deploy\WeifenLuo.WinFormsUI.Docking.dll" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\BuildAssembler\BuildComponents\BuildComponents.csproj" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
-      <DocumentationSource sourceFile="..\..\SHFB\Deploy\Xceed.Wpf.Toolkit.dll" />
-    </DocumentationSources>
-    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+<DocumentationSource sourceFile="..\..\SHFB\Deploy\WeifenLuo.WinFormsUI.Docking.dll" />
+<DocumentationSource sourceFile="..\..\SHFB\Source\BuildAssembler\BuildComponents\BuildComponents.csproj" />
+<DocumentationSource sourceFile="..\..\SHFB\Source\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj" />
+<DocumentationSource sourceFile="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
+<DocumentationSource sourceFile="..\..\SHFB\Deploy\Xceed.Wpf.Toolkit.dll" /></DocumentationSources>
+    <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
     <ApiFilter />
     <ComponentConfigurations />
     <NamespaceSummaries />

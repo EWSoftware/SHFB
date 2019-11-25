@@ -34,9 +34,9 @@
 			NOT NEWERVERSIONDETECTED
 		</Condition>
 
-		<PropertyRef Id="NETFRAMEWORK40FULL"/>
-		<Condition Message="[ProductName] requires .NET Framework 4.0. You can download it here: https://www.microsoft.com/en-us/download/details.aspx?id=17851">
-			<![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+		<PropertyRef Id="WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED"/>
+		<Condition Message="[ProductName] requires .NET Framework 4.7.2. You can download it here: https://dotnet.microsoft.com/download">
+			<![CDATA[Installed OR WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED]]>
 		</Condition>
 
 		<!-- Media -->

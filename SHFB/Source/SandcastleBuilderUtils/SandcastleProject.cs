@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/97/2019
+// Updated : 11/17/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -130,21 +130,21 @@ namespace SandcastleBuilder.Utils
             "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName", "SccProvider",
             "SchemaVersion", "SHFBSchemaVersion", "TransformComponentArguments", "Verbose" };
 
-        // Bad characters for the vendor name property
-        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
-
         #endregion
 
         #region Private data members
         //=====================================================================
 
+        // Bad characters for the vendor name property
+        private static readonly Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
+
         // These are used to decode hex values in the copyright text
-        private static Regex reDecode = new Regex(@"\\x[0-9a-f]{2,4}", RegexOptions.IgnoreCase);
+        private static readonly Regex reDecode = new Regex(@"\\x[0-9a-f]{2,4}", RegexOptions.IgnoreCase);
 
         private readonly MatchEvaluator characterMatchEval, buildVarMatchEval;
 
         // MS Build and property items
-        private Project msBuildProject;
+        private readonly Project msBuildProject;
         private Dictionary<string, ProjectProperty> projectPropertyCache;  // MSBuild property cache
         private readonly bool removeProjectWhenDisposed;
 
@@ -1729,7 +1729,7 @@ namespace SandcastleBuilder.Utils
 
             try
             {
-                // Ensure that we use the correct build engine for the project.  Version 4.0 or later is required.
+                // Ensure that we use the correct build engine for the project.  Version 14.0 or later is required.
                 if(!Double.TryParse(msBuildProject.Xml.ToolsVersion, out double toolsVersion))
                     toolsVersion = 0.0;
 

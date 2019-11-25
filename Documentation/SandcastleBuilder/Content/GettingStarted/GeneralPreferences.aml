@@ -116,14 +116,10 @@ MAML target links) and the option to go to the definition of the item if possibl
 context menu command is selected or Ctrl+Click is pressed while hovering over the text.  Some limitations apply.
 See the <link xlink:href="ba11d6d5-2f99-4b26-b384-21324ef1b49a" /> topic for details.</para>
 
-						<para>The first sub-option allows you to enable or disable the Ctrl+Click Go To Definition feature.
+						<para>The sub-option allows you to enable or disable the Ctrl+Click Go To Definition feature.
 This allows you to disable it if you prefer to use the context menu option or its hot key (F12 by default) to
 invoke the Go To Definition option.</para>
 						
-						<para>The second sub-option allows you to enable or disable the Go To Definition feature for XML
-comments <codeInline>cref</codeInline> attributes.  This is useful in Visual Studio 2015 and later which has
-expanded information tool tips and Go To Definition support for them built in.</para>
-
 						<para>These options can be disabled individually or entirely if you do not wish to use the Go To
 Definition support or if you think the options are causing issues with Visual Studio.</para>
 					</listItem>

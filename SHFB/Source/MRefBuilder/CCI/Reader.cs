@@ -7,6 +7,9 @@
 // 11/21/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
 // 12/15/2013 - EFW - Fixed a bug found when parsing the .NET 4.5.1 Framework assemblies
 // 08/23/2016 - EFW - Added support for reading source code context from PDB files
+// 11/24/2019 - EFW - Fixed incorrect handling of missing security attributes
+
+// Ignore Spelling: typelib mscorlib vararg Struct param
 
 using System.Collections;
 using System.Collections.Generic;
@@ -278,7 +281,7 @@ namespace System.Compiler.Metadata
         private unsafe void ReadFileIntoUnmanagedBuffer(System.IO.FileStream/*!*/ inputStream)
         {
             long size = inputStream.Seek(0, System.IO.SeekOrigin.End);
-            if (size > int.MaxValue) throw new System.IO.FileLoadException();
+            if (size > Int32.MaxValue) throw new System.IO.FileLoadException();
             inputStream.Seek(0, System.IO.SeekOrigin.Begin);
             int n = (int)size;
             this.bufferLength = n;
@@ -373,7 +376,7 @@ namespace System.Compiler.Metadata
                   new Module.ResourceProvider(this.GetResources), this.directory);
                 assembly.reader = this;
                 this.ReadModuleProperties(assembly);
-                this.ReadAssemblyProperties(assembly); //Hashvalue, Name, etc.
+                this.ReadAssemblyProperties(assembly); //Hash value, Name, etc.
                 this.module = assembly;
                 this.ReadAssemblyReferences(assembly);
                 this.ReadModuleReferences(assembly);
@@ -1308,6 +1311,7 @@ nextModRef:     ;
             if (cons == null) cons = new Method();
             return this.GetCustomAttribute(cons, sigReader, caBlobLength);
         }
+
         private AttributeList GetPermissionAttributes2(int blobIndex, System.Security.Permissions.SecurityAction action)
         {
             AttributeList result = new AttributeList();
@@ -1325,49 +1329,64 @@ nextModRef:     ;
                 result.Add(this.GetPermissionAttribute2(sigReader, action));
             return result;
         }
+
         private AttributeNode GetPermissionAttribute2(MemoryCursor/*!*/ sigReader, System.Security.Permissions.SecurityAction action)
         {
             int typeNameLength = sigReader.ReadCompressedInt();
             string serializedTypeName = sigReader.ReadUTF8(typeNameLength);
+
+            sigReader.ReadCompressedInt(); // caBlobLength
+
+            int numProps = sigReader.ReadCompressedInt(); // Skip over the number of properties in the CA blob
+
+            ExpressionList arguments = new ExpressionList
+            {
+                new Literal(action, CoreSystemTypes.SecurityAction)
+            };
+
+            this.GetCustomAttributeNamedArguments(arguments, (ushort)numProps, sigReader);
+
+            // EFW - Get the constructor after reading the above as we still need to keep the reader in the
+            // right location by skipping the parameter info.
             TypeNode attrType = null;
+
             try
             {
                 attrType = this.GetTypeFromSerializedName(serializedTypeName);
             }
-            catch (InvalidMetadataException) { }
-            if (attrType == null)
+            catch(InvalidMetadataException)
+            {
+            }
+
+            if(attrType == null)
             {
                 HandleError(this.module, String.Format(CultureInfo.CurrentCulture, ExceptionStrings.CouldNotResolveType, serializedTypeName));
                 return null;
             }
+
             InstanceInitializer cons = attrType.GetConstructor(CoreSystemTypes.SecurityAction);
-            if (cons == null)
+
+            if(cons == null)
             {
                 HandleError(this.module, String.Format(CultureInfo.CurrentCulture,
                 ExceptionStrings.SecurityAttributeTypeDoesNotHaveADefaultConstructor, serializedTypeName));
                 return null;
             }
 
-            sigReader.ReadCompressedInt(); //caBlobLength
-
-            int numProps = sigReader.ReadCompressedInt(); //Skip over the number of properties in the CA blob
-
-            ExpressionList arguments = new ExpressionList();
-
-            arguments.Add(new Literal(action, CoreSystemTypes.SecurityAction));
-
-            this.GetCustomAttributeNamedArguments(arguments, (ushort)numProps, sigReader);
-
             return new AttributeNode(new MemberBinding(null, cons), arguments);
         }
+
         private static void HandleError(Module mod, string errorMessage)
         {
             if (mod != null)
             {
-                if (mod.MetadataImportErrors == null) mod.MetadataImportErrors = new ArrayList();
+                if (mod.MetadataImportErrors == null)
+                    mod.MetadataImportErrors = new ArrayList();
+
                 mod.MetadataImportErrors.Add(new InvalidMetadataException(errorMessage));
             }
         }
+
         private AttributeNode GetCustomAttribute(int i)
         {
             CustomAttributeRow ca = this.tables.CustomAttributeTable[i];
@@ -1389,7 +1408,7 @@ nextModRef:     ;
 
             int posAtBlobStart = sigReader.Position;
 
-            sigReader.ReadUInt16(); //Prolog
+            sigReader.ReadUInt16(); // Prologue
 
             for (int j = 0; j < n; j++)
             {
@@ -1645,7 +1664,7 @@ nextModRef:     ;
                 throw new InvalidMetadataException(ExceptionStrings.BadSerializedTypeName);
             }
             if (typeName[0] == ',')
-            { //Muti dimensional array
+            { //Multi-dimensional array
                 int rank = 1;
                 while (rank < typeName.Length && typeName[rank] == ',') rank++;
                 if (rank < typeName.Length && typeName[rank] == ']')
@@ -1725,7 +1744,7 @@ nextModRef:     ;
         {
             i = 0;
             int n = source.Length;
-            nspace = string.Empty;
+            nspace = String.Empty;
             while (true)
             {
                 int start = i;
@@ -2793,7 +2812,7 @@ nextModRef:     ;
                     if ((((Method)result).CallingConvention & CallingConventionFlags.VarArg) != 0)
                     {
                         MemoryCursor sRdr = this.tables.GetBlobCursor(mref.Signature);
-                        sRdr.ReadByte(); //hdr
+                        sRdr.ReadByte(); // Header
                         int pCount = sRdr.ReadCompressedInt();
                         this.ParseTypeSignature(sRdr); //rType
                         bool genParameterEncountered = false;
@@ -2839,7 +2858,7 @@ nextModRef:     ;
                 }
                 goto done;
             }
-            int typeParamCount = int.MinValue;
+            int typeParamCount = Int32.MinValue;
             CallingConventionFlags callingConvention = CallingConventionFlags.Default;
             if ((header & 0x20) != 0) callingConvention |= CallingConventionFlags.HasThis;
             if ((header & 0x40) != 0) callingConvention |= CallingConventionFlags.ExplicitThis;
@@ -2896,11 +2915,11 @@ nextModRef:     ;
                     if (m == null) continue;
                     if (m.ReturnType == null) continue;
                     TypeNode mrtype = TypeNode.StripModifiers(m.ReturnType);
-                    //^ assert mrtype != null;
+                    ////^ assert mrtype != null;
                     if (!mrtype.IsStructurallyEquivalentTo(TypeNode.StripModifiers(returnType))) continue;
                     if (!m.ParameterTypesMatchStructurally(paramTypes)) continue;
                     if (m.CallingConvention != callingConvention) continue;
-                    if (typeParamCount != int.MinValue && (!m.IsGeneric || m.TemplateParameters == null || m.TemplateParameters.Count != typeParamCount))
+                    if (typeParamCount != Int32.MinValue && (!m.IsGeneric || m.TemplateParameters == null || m.TemplateParameters.Count != typeParamCount))
                         continue;
                     result = m;
                     goto done;
@@ -3265,7 +3284,7 @@ nextModRef:     ;
                         }
                         catch
                         {
-                            HandleError(this.module, string.Format(CultureInfo.CurrentCulture, ExceptionStrings.CannotLoadTypeExtension, lastInterface.FullName, compilerDllName));
+                            HandleError(this.module, String.Format(CultureInfo.CurrentCulture, ExceptionStrings.CannotLoadTypeExtension, lastInterface.FullName, compilerDllName));
                             goto ExtensionNotFound;
                         }
                         if (rassem == null) goto ExtensionNotFound;
@@ -3474,7 +3493,7 @@ nextModRef:     ;
                   "[" + modName + "]" + namesp + "." + name));
             }
             result = expectStruct ? (TypeNode)new Struct() : (TypeNode)new Class();
-            if (name != null && name.ToString().StartsWith("I") && name.ToString().Length > 1 && char.IsUpper(name.ToString()[1]))
+            if (name != null && name.ToString().StartsWith("I") && name.ToString().Length > 1 && Char.IsUpper(name.ToString()[1]))
                 result = new Interface();
             result.Flags |= TypeFlags.Public;
             result.Name = name;
@@ -4289,7 +4308,7 @@ nextModRef:     ;
                 int fatHeaderSize = header2 >> 4;
                 if (fatHeaderSize == 2) return;
                 if (fatHeaderSize != 3) throw new InvalidMetadataException(ExceptionStrings.InvalidFatMethodHeader);
-                this.reader.tables.Skip(2); //Skip over maxstack. No need to remember it.
+                this.reader.tables.Skip(2); //Skip over max stack.  No need to remember it.
                 this.size = this.reader.tables.GetInt32();
                 int localIndex = this.reader.tables.GetInt32();
                 this.bodyReader = this.reader.tables.GetNewCursor();
@@ -5042,7 +5061,7 @@ nextModRef:     ;
                     transferStatement = true; //Falls through to the next basic block, so implicitly a "transfer" statement
                     goto done;
                 }
-                //^ assume expr != null;
+                ////^ assume expr != null;
                 this.operandStack.Push(expr);
                 this.isReadOnly = false;
                 this.isVolatile = false;

@@ -4,7 +4,7 @@
 
 	<PropertyGroup>
 		<!-- A framework version is required for NuGet restore.  This can be any valid version -->
-		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
 
 		<!-- The configuration and platform will be used to determine which assemblies to include from solution and
 				 project documentation sources -->
@@ -21,7 +21,7 @@
 		<Name>$safeprojectname$</Name>
 
 		<!-- SHFB properties -->
-		<FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+		<FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
 		<OutputPath>.\Help\</OutputPath>
 		<HtmlHelpName>$safeprojectname$</HtmlHelpName>
 		<Language>en-US</Language>

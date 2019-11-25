@@ -19,7 +19,7 @@ namespace SandcastleBuilder.Utils.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -62,15 +62,12 @@ namespace SandcastleBuilder.Utils.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;Project ToolsVersion=&quot;14.0&quot; DefaultTargets=&quot;Build&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
-        ///	&lt;PropertyGroup&gt;
-        ///		&lt;!-- The configuration and platform will be used to determine which assemblies to include from solution and
-        ///				 project documentation sources --&gt;
-        ///		&lt;Configuration Condition=&quot; &apos;$(Configuration)&apos; == &apos;&apos; &quot;&gt;Debug&lt;/Configuration&gt;
-        ///		&lt;Platform Condition=&quot; &apos;$(Platform)&apos; == &apos;&apos; &quot;&gt;AnyCPU&lt;/Platform&gt;
+        ///	&lt;!-- Import the common properties to support NuGet restore --&gt;
+        ///	&lt;Import Project=&quot;$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props&quot; Condition=&quot;Exists(&apos;$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props&apos;)&quot; /&gt;
         ///
-        ///		&lt;SchemaVersion&gt;2.0&lt;/SchemaVersion&gt;
-        ///		&lt;ProjectGuid&gt;$guid1$&lt;/ProjectGuid&gt;
-        ///		&lt;SHFB [rest of string was truncated]&quot;;.
+        ///	&lt;PropertyGroup&gt;
+        ///		&lt;!-- A framework version is required for NuGet restore.  This can be any valid version --&gt;
+        ///		&lt;TargetFrameworkVersion&gt;v4.7.2 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ProjectTemplate {
             get {

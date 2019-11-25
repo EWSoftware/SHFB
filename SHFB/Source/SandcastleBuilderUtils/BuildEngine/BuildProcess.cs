@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
+// Updated : 11/24/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -271,6 +270,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This read-only property returns the framework reflection data settings used by the build
         /// </summary>
         public ReflectionDataSet FrameworkReflectionData => frameworkReflectionData;
+
+        /// <summary>
+        /// This read-only property is used to indicate whether or not the netstandard.dll assembly should
+        /// be ignored as a reference assembly.
+        /// </summary>
+        /// <remarks>When using the cross-platform data set, it should be included.  For all others, it should be
+        /// ignored as it is probably just a reference assembly for a .NETStandard reference assembly in a
+        /// regular .NET Framework project for example.</remarks>
+        public bool IgnoreNetStandardAssembly { get; private set; }
 
         /// <summary>
         /// This returns the current project being used for the build
@@ -541,9 +549,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 buildStart = stepStart = DateTime.Now;
 
-                // The version of MSBuild to use is based on the tools version set in the project
+                // Use the latest version of MSBuild available rather than a specific version
+                string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
+                    t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion;
+
+                if(latestToolsVersion == null)
+                {
+                    latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
+                        t => Version.TryParse(t.ToolsVersion, out Version ver) ? ver : new Version()).ToString();
+                }
+
                 msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
-                    t => t.ToolsVersion == project.MSBuildProject.ToolsVersion).ToolsPath, "MSBuild.exe");
+                    t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
 
                 // Get the location of the template files
                 templateFolder = ComponentUtilities.ToolsFolder + @"Templates\";
@@ -652,6 +669,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportWarning("BE0072", "Project framework version '{0}' not found.  It has been " +
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkReflectionData.Title);
+
+                this.IgnoreNetStandardAssembly = (frameworkReflectionData.Platform != PlatformType.DotNetStandard);
 
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,

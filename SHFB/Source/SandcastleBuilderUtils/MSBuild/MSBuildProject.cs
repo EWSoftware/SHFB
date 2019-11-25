@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2019
+// Updated : 11/18/2019
 // Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -371,7 +371,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 {
                     // If not found but TargetFrameworks is specified, just assume some version of .NETFramework
                     if(properties.Keys.Contains("TargetFrameworks"))
-                        return "4.5.2";
+                        return "4.7.2";
 
                     throw new InvalidOperationException("Unable to determine target framework version for project");
                 }

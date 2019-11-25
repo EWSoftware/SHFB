@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="14.0" DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="15.0" DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- Sandcastle Tools MSBuild Tasks.  https://GitHub.com/EWSoftware/SHFB -->
 	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.MRefBuilder"
     AssemblyFile="{@SHFBFolder}\MRefBuilder.exe" />
@@ -11,6 +11,7 @@
 		<TargetFrameworkVersion>v{@FrameworkVersionShort}</TargetFrameworkVersion>
 		<AddXamlSyntaxData>{@AddXamlSyntaxData}</AddXamlSyntaxData>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
+		<IgnoreNetStandardAssembly>{@IgnoreNetStandardAssembly}</IgnoreNetStandardAssembly>
 		<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 		<UseTargetPlatformAsNuGetTargetMoniker>false</UseTargetPlatformAsNuGetTargetMoniker>
@@ -47,7 +48,8 @@
 			ConfigurationFile="MRefBuilder.config"
 			ReflectionFilename="reflection.org"
       Assemblies="@(Assembly)"
-      References="@(ReferencePath)" />
+      References="@(ReferencePath)"
+			IgnoreNetStandardAssembly="$(IgnoreNetStandardAssembly)"/>
 
 		<!-- Merge duplicate topics (if any) and add XAML syntax data if needed -->
 		<Copy SourceFiles="reflection.org" DestinationFiles="reflection.all" />

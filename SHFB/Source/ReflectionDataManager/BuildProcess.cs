@@ -2,8 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/29/2016
-// Note    : Copyright 2015-2016, Eric Woodruff, All rights reserved
+// Updated : 11/19/2019
+// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to build the reflection data
@@ -17,6 +17,8 @@
 // ==============================================================================================================
 // 06/29/2015  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: nologo clp
 
 using System;
 using System.Diagnostics;
@@ -47,11 +49,11 @@ namespace ReflectionDataManager
         #region Private data members
         //=====================================================================
 
-        private ReflectionDataSet dataSet;
-        private string workingFolder, msBuildExePath;
+        private readonly ReflectionDataSet dataSet;
+        private readonly string workingFolder, msBuildExePath;
         private bool errorDetected;
 
-        private static Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
+        private static readonly Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
             @"Fatal Error|Unexpected error.*):|Process is terminated|Build FAILED|\w+\s*:\s*Error\s.*?:|" +
             @"\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
@@ -81,18 +83,21 @@ namespace ReflectionDataManager
         /// <param name="dataSet">The reflection data set to build</param>
         public BuildProcess(ReflectionDataSet dataSet)
         {
-            if(dataSet == null)
-                throw new ArgumentNullException("dataSet");
-
-            this.dataSet = dataSet;
+            this.dataSet = dataSet ?? throw new ArgumentNullException(nameof(dataSet));
 
             workingFolder = Path.GetTempFileName();
             File.Delete(workingFolder);
             Directory.CreateDirectory(workingFolder);
 
             // Use the latest version of MSBuild available rather than a specific version
-            string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
-                t => new Version(t.ToolsVersion)).ToString();
+            string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
+                t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion;
+
+            if(latestToolsVersion == null)
+            {
+                latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
+                    t => Version.TryParse(t.ToolsVersion, out Version ver) ? ver : new Version()).ToString();
+            }
 
             msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
                 t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
@@ -203,7 +208,7 @@ namespace ReflectionDataManager
             Process currentProcess = null;
 
             if(processFilename == null)
-                throw new ArgumentNullException("processFilename");
+                throw new ArgumentNullException(nameof(processFilename));
 
             if(this.ProgressProvider != null)
                 this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture, "[{0}{1}]", processFilename,

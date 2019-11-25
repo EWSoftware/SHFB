@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
+// Updated : 11/18/2019
 // Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -40,8 +40,8 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This read-only property is used to get the title of the default framework version to use
         /// </summary>
-        /// <remarks>The default is the .NET Framework 4.5</remarks>
-        public static string DefaultFrameworkTitle => ".NET Framework 4.5";
+        /// <remarks>The default is the .NET Framework 4.7.2</remarks>
+        public static string DefaultFrameworkTitle => ".NET Framework 4.7.2";
 
         #endregion
 

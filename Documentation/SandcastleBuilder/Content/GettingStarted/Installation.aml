@@ -46,7 +46,7 @@ needed.</para>
 					<listItem>
 						<para>The
 <externalLink>
-	<linkText>.NET Framework 4.5</linkText>
+	<linkText>.NET Framework 4.7.2</linkText>
 	<linkUri>https://www.microsoft.com/net</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink> or later is required to run the tools.</para>
@@ -55,11 +55,12 @@ needed.</para>
 					<listItem>
 						<para>If you are using the standalone GUI to build help file projects, you will need to install the
 <externalLink>
-	<linkText>Microsoft Build Tools 2015</linkText>
-	<linkUri>https://www.microsoft.com/en-us/download/details.aspx?id=48159</linkUri>
+	<linkText>Microsoft Build Tools <token>VisualStudioMinVersion</token> or later</linkText>
+	<linkUri>https://visualstudio.microsoft.com/downloads</linkUri>
 	<linkTarget>_blank</linkTarget>
-</externalLink>.  If you are using Visual Studio 2015 or later to build help file projects, there is no need to
-install the build tools separately.  The version of MSBuild deployed with Visual Studio will work as expected.</para>
+</externalLink>.  If you are using <token>VisualStudioMinVersion</token> or later to build help file projects,
+there is no need to install the build tools separately.  The version of MSBuild deployed with Visual Studio will
+work as expected.</para>
 					</listItem>
 				</list>
 

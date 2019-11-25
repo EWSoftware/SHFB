@@ -38,7 +38,7 @@ ECHO *
 IF ERRORLEVEL 1 GOTO End
 
 ECHO *
-ECHO * VS2015 and later package
+ECHO * VS2017 and later package
 ECHO *
 
 "%NUGET%" restore "SandcastleBuilderPackage.sln"

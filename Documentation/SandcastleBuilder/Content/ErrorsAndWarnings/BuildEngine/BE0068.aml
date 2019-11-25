@@ -23,12 +23,6 @@ and cannot be parsed.</para>
 					</listItem>
 
 					<listItem>
-						<para>.NETStandard projects use a different project format only supported by MSBuild 15.0 and later.
-These are not compatible with the standalone GUI.  Help file builder projects using such projects as
-documentation sources must be built from within Visual Studio 2017 or from the command line using MSBuild 15.0.</para>
-					</listItem>
-
-					<listItem>
 						<para>Future versions of Visual Studio may introduce new MSBuild elements and attributes not
 recognized by the MSBuild engine used by the help file builder to load project files resulting in this error.</para>
 					</listItem>
