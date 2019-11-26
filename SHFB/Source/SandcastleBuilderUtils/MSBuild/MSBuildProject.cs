@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2019
+// Updated : 11/26/2019
 // Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
 // process.
@@ -532,6 +531,11 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 this.ProjectFile.SetGlobalProperty(BuildItemMetadata.Configuration, configuration);
                 this.ProjectFile.SetGlobalProperty(platformPropertyName, platform);
+
+                // Set Platform too since some .NET Core projects do use it even if it isn't in the
+                // conditioned properties above.
+                if(platformPropertyName != BuildItemMetadata.Platform)
+                    this.ProjectFile.SetGlobalProperty(BuildItemMetadata.Platform, platform);
 
                 if(!String.IsNullOrEmpty(outDir))
                 {

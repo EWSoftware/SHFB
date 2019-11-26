@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckerConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/13/2014
-// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/25/2019
+// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the spell checker's configuration settings
 //
@@ -299,12 +298,12 @@ namespace SandcastleBuilder.Gui.Spelling
                     TreatUnderscoreAsSeparator ? new XElement("TreatUnderscoreAsSeparator") : null);
 
                 if(ignoredXmlElements.Count != DefaultIgnoredXmlElements.Count() ||
-                  DefaultIgnoredXmlElements.Except(ignoredXmlElements).Count() != 0)
+                  DefaultIgnoredXmlElements.Except(ignoredXmlElements).Any())
                     root.Add(new XElement("IgnoredXmlElements",
                         ignoredXmlElements.Select(i => new XElement("Ignore") { Value = i })));
 
                 if(spellCheckedXmlAttributes.Count != DefaultSpellCheckedAttributes.Count() ||
-                  DefaultSpellCheckedAttributes.Except(spellCheckedXmlAttributes).Count() != 0)
+                  DefaultSpellCheckedAttributes.Except(spellCheckedXmlAttributes).Any())
                     root.Add(new XElement("SpellCheckedXmlAttributes",
                         spellCheckedXmlAttributes.Select(i => new XElement("SpellCheck") { Value = i })));
 

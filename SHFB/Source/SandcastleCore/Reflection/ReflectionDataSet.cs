@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
+// Updated : 11/25/2019
 // Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
 // specific set of assemblies.
@@ -593,7 +592,7 @@ namespace Sandcastle.Core.Reflection
 
                         // Odd case but it appears that the folder does exist in some cases with no comments
                         // files in it for the assemblies.
-                        if(commentGroups.Count() != 0)
+                        if(commentGroups.Any())
                         {
                             HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
                                 f => Path.GetFileName(f)));

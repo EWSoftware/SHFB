@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : UserDefinedProperty.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/25/2019
+// Note    : Copyright 2019, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to edit user-defined project properties
 //
@@ -87,7 +86,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                         throw new ArgumentException("The entered name matches an existing project or " +
                             "reserved property name");
 
-                    if(this.Owner.UserDefinedProperties.Where(p => p != this && p.Name == value).Count() != 0)
+                    if(this.Owner.UserDefinedProperties.Any(p => p != this && p.Name == value))
                         throw new ArgumentException("The entered name matches an existing user-defined " +
                             "property name");
                 }
@@ -162,7 +161,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     idx++;
 
                 } while(!this.Owner.Project.IsValidUserDefinedPropertyName(newPropName) ||
-                    this.Owner.UserDefinedProperties.Where(p => p.Name == newPropName).Count() != 0);
+                    this.Owner.UserDefinedProperties.Any(p => p.Name == newPropName));
 
                 name = newPropName;
                 propValue = String.Empty;

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SiteMapEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 11/25/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to edit site map files
@@ -153,7 +153,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             topics.ListChanged += new ListChangedEventHandler(topics_ListChanged);
 
-            if(topics.Count != 0 && topics.Find(t => t.IsSelected, false).Count() == 0)
+            if(topics.Count != 0 && !topics.Find(t => t.IsSelected, false).Any())
                 topics[0].IsSelected = true;
 
             tvContent.ItemsSource = topics;

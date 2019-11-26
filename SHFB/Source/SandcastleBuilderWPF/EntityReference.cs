@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReference.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/25/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the entity reference class used by the Entity References control
 //
@@ -163,7 +162,7 @@ namespace SandcastleBuilder.WPF
             {
                 var subMatches = sub.Find(findText);
 
-                if(subMatches.Count() != 0)
+                if(subMatches.Any())
                 {
                     // Make sure this node is expanded so that we can move to it in the tree view
                     this.IsExpanded = true;

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/24/2019
+// Updated : 11/25/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -2067,7 +2067,7 @@ AllDone:
             // to see if the project has any.
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            if(project.DocumentationSources.Count() == 0)
+            if(!project.DocumentationSources.Any())
                 throw new BuilderException("BE0039", "The project does not have any documentation sources defined");
 
             // Clone the project's references.  These will be added to a build project later on so we'll note the

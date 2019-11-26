@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ContentLayoutEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 11/25/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit content layout files
 //
@@ -153,7 +152,7 @@ namespace SandcastleBuilder.WPF.UserControls
             topics.Load();
             topics.ListChanged += new ListChangedEventHandler(topics_ListChanged);
 
-            if(topics.Count !=0 && topics.Find(t => t.IsSelected, false).Count() == 0)
+            if(topics.Count != 0 && !topics.Find(t => t.IsSelected, false).Any())
                 topics[0].IsSelected = true;
 
             tvContent.ItemsSource = topics;
