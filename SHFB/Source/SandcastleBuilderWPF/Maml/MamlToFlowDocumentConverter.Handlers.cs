@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2017
-// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 12/13/2019
+// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
 //
@@ -233,9 +232,7 @@ namespace SandcastleBuilder.WPF.Maml
 
                 // The following steps can take a few seconds for large documents with complex coloring such
                 // as large XML files.
-                var fd = XamlReader.Parse(colorizedContent) as FlowDocument;
-
-                if(fd != null)
+                if(XamlReader.Parse(colorizedContent) is FlowDocument fd)
                     using(MemoryStream stream = new MemoryStream())
                     {
                         // Flow document elements are attached to their parent document.  To break the bond we
@@ -268,15 +265,14 @@ namespace SandcastleBuilder.WPF.Maml
         private static void AlertElement(ElementProperties props)
         {
             XAttribute attribute;
-            string title = null, icon = null;
 
             // Map the class name to a title
             attribute = props.Element.Attribute("class");
 
-            if(attribute == null || !AlertTitles.TryGetValue(attribute.Value, out title))
+            if(attribute == null || !AlertTitles.TryGetValue(attribute.Value, out string title))
                 title = "Note";
 
-            if(attribute == null || !AlertIcons.TryGetValue(attribute.Value, out icon))
+            if(attribute == null || !AlertIcons.TryGetValue(attribute.Value, out string icon))
                 icon = "AlertNote";
 
             Section alert = new Section();
@@ -320,7 +316,7 @@ namespace SandcastleBuilder.WPF.Maml
             Section code = new Section();
             props.Converter.AddToBlockContainer(code);
             string language = "none", title, sourceFile, region;
-            bool removeRegionMarkers, numberLines;
+            bool removeRegionMarkers;
 
             if(props.Element.Name.LocalName != "codeReference")
             {
@@ -412,7 +408,7 @@ namespace SandcastleBuilder.WPF.Maml
             // See if lines are to be numbered
             attribute = props.Element.Attribute("numberLines");
 
-            if(attribute == null || !Boolean.TryParse(attribute.Value, out numberLines))
+            if(attribute == null || !Boolean.TryParse(attribute.Value, out bool numberLines))
                 numberLines = false;
 
             // If importing from an external file, include that info in the content
@@ -481,10 +477,9 @@ namespace SandcastleBuilder.WPF.Maml
             if(props.ParseChildren && props.Element.HasElements)
             {
                 Section s = new Section();
-                string title;
 
                 // If this is a named section, add the standard title
-                if(NamedSectionTitles.TryGetValue(props.Element.Name.LocalName, out title))
+                if(NamedSectionTitles.TryGetValue(props.Element.Name.LocalName, out string title))
                 {
                     Paragraph p = new Paragraph(new Run(title));
                     s.Blocks.Add(p);
@@ -505,9 +500,8 @@ namespace SandcastleBuilder.WPF.Maml
         private static void SummaryElement(ElementProperties props)
         {
             XAttribute abstractAttr = props.Element.Attribute("abstract");
-            bool excluded;
 
-            if(abstractAttr == null || !Boolean.TryParse(abstractAttr.Value, out excluded))
+            if(abstractAttr == null || !Boolean.TryParse(abstractAttr.Value, out bool excluded))
                 excluded = false;
 
             if(!excluded)
@@ -609,9 +603,7 @@ namespace SandcastleBuilder.WPF.Maml
             List<XElement> tasks = new List<XElement>(), reference = new List<XElement>(),
                 concepts = new List<XElement>(), otherResources = new List<XElement>(),
                 tokenContent = new List<XElement>();
-            XElement token;
             XAttribute attribute;
-            Guid topicId, href;
             string linkType;
 
             if(!props.ParseChildren || !props.Element.HasElements)
@@ -634,7 +626,7 @@ namespace SandcastleBuilder.WPF.Maml
 
             // Expand tokens first
             foreach(var link in props.Element.Nodes().OfType<XElement>().Where(n => n.Name.LocalName == "token"))
-                if(props.Converter.Tokens.TryGetValue(link.Value.Trim(), out token))
+                if(props.Converter.Tokens.TryGetValue(link.Value.Trim(), out XElement token))
                     tokenContent.AddRange(token.Nodes().OfType<XElement>());
 
             // Group the elements by type or topic ID
@@ -643,12 +635,12 @@ namespace SandcastleBuilder.WPF.Maml
                 linkType = link.Name.LocalName;
                 attribute = link.Attribute("topicType_id");
 
-                if(attribute == null || !Guid.TryParse(attribute.Value, out topicId))
+                if(attribute == null || !Guid.TryParse(attribute.Value, out Guid topicId))
                     topicId = Guid.Empty;
 
                 attribute = link.Attribute(xlink + "href");
 
-                if(attribute == null || !Guid.TryParse(attribute.Value, out href))
+                if(attribute == null || !Guid.TryParse(attribute.Value, out Guid href))
                     href = Guid.Empty;
 
                 if(href != Guid.Empty && (linkType == "link" || linkType == "legacyLink") && (
@@ -808,8 +800,7 @@ namespace SandcastleBuilder.WPF.Maml
                     imageBlock.Child = image;
                 else
                 {
-                    StackPanel sp = new StackPanel();
-                    sp.HorizontalAlignment = alignment;
+                    StackPanel sp = new StackPanel { HorizontalAlignment = alignment };
 
                     if(captionAfter)
                         sp.Children.Add(image);
@@ -1051,9 +1042,12 @@ namespace SandcastleBuilder.WPF.Maml
             // Not all fonts support the superscript and subscript variants and WPF 4.0 has some bugs in
             // it's handling of digits with those variants.  As such, we'll use the baseline alignment and
             // a smaller font size to achieve a similar result.
-            Span s = new Span(new Run(reCondenseWhitespace.Replace(props.Element.Value.Trim(), " ")));
-            s.BaselineAlignment = BaselineAlignment.Subscript;
-            s.FontSize = s.FontSize * 0.75;
+            Span s = new Span(new Run(reCondenseWhitespace.Replace(props.Element.Value.Trim(), " ")))
+            {
+                BaselineAlignment = BaselineAlignment.Subscript
+            };
+
+            s.FontSize *= 0.75;
 
             props.Converter.AddInlineToContainer(new Span(s));
             props.ParseChildren = false;
@@ -1068,9 +1062,12 @@ namespace SandcastleBuilder.WPF.Maml
             // Not all fonts support the superscript and subscript variants and WPF 4.0 has some bugs in
             // it's handling of digits with those variants.  As such, we'll use the baseline alignment and
             // a smaller font size to achieve a similar result.
-            Span s = new Span(new Run(reCondenseWhitespace.Replace(props.Element.Value.Trim(), " ")));
-            s.BaselineAlignment = BaselineAlignment.Superscript;
-            s.FontSize = s.FontSize * 0.75;
+            Span s = new Span(new Run(reCondenseWhitespace.Replace(props.Element.Value.Trim(), " ")))
+            {
+                BaselineAlignment = BaselineAlignment.Superscript
+            };
+
+            s.FontSize *= 0.75;
 
             props.Converter.AddInlineToContainer(s);
             props.ParseChildren = false;
@@ -1098,7 +1095,6 @@ namespace SandcastleBuilder.WPF.Maml
             XAttribute hint;
             string linkText, memberId = (props.Element.Value ?? String.Empty).Trim();
             string[] parts;
-            bool qualifyHint;
             char prefix = 'N';
             int pos;
 
@@ -1108,7 +1104,7 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 hint = props.Element.Attribute("qualifyHint");
 
-                if(hint == null || !Boolean.TryParse(hint.Value, out qualifyHint))
+                if(hint == null || !Boolean.TryParse(hint.Value, out bool qualifyHint))
                     qualifyHint = false;
 
                 // Remove parameters from the ID
@@ -1173,7 +1169,7 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 l = new Hyperlink { NavigateUri = new Uri(linkUri, UriKind.RelativeOrAbsolute) };
             }
-            catch(UriFormatException )
+            catch(UriFormatException)
             {
                 l = new Hyperlink { NavigateUri = new Uri("none://UNABLE_TO_CONVERT_URL_TO_URI",
                     UriKind.RelativeOrAbsolute) };
@@ -1493,7 +1489,7 @@ namespace SandcastleBuilder.WPF.Maml
             XElement titleElement;
             XAttribute addressAttr;
             List<XElement> divisions;
-            Dictionary<XElement, Tuple<string, string>> divisionIds = new Dictionary<XElement, Tuple<string, string>>();
+            Dictionary<XElement, (string Id, string Title)> divisionIds = new Dictionary<XElement, (string Id, string Title)>();
             List<GlossaryEntry> entries = new List<GlossaryEntry>();
             string address, id, title;
             bool isFirst = true;
@@ -1522,7 +1518,7 @@ namespace SandcastleBuilder.WPF.Maml
             if(divisions.Count == 0)
             {
                 divisions = new List<XElement>() { props.Element };
-                divisionIds.Add(props.Element, Tuple.Create<string, string>(null, null));
+                divisionIds.Add(props.Element, (null, null));
             }
             else
             {
@@ -1544,7 +1540,7 @@ namespace SandcastleBuilder.WPF.Maml
                     else
                         title = null;
 
-                    divisionIds.Add(d, Tuple.Create(id, title));
+                    divisionIds.Add(d, (id, title));
 
                     if(!String.IsNullOrEmpty(title))
                     {
@@ -1578,10 +1574,10 @@ namespace SandcastleBuilder.WPF.Maml
                 var titleAndId = divisionIds[d];
 
                 // Add a title if there is one
-                if(!String.IsNullOrEmpty(titleAndId.Item2))
+                if(!String.IsNullOrEmpty(titleAndId.Title))
                 {
-                    id = titleAndId.Item1;
-                    p = new Paragraph(new Run(titleAndId.Item2)) { Name = id };
+                    id = titleAndId.Id;
+                    p = new Paragraph(new Run(titleAndId.Title)) { Name = id };
                     glossary.Blocks.Add(p);
                     p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.GlossaryDivisionTitle);
                 }

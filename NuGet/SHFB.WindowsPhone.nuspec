@@ -6,8 +6,9 @@
 		<title>Sandcastle Help File Builder WindowsPhone Reflection Data Set</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
-        <license type="expression">MS-PL</license>
+		<license type="expression">MS-PL</license>
 		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
+		<icon>SHFB.png</icon>
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This package contains the WindowsPhone reflection information data set for use with the EWSoftware.SHFB package.</description>
@@ -20,5 +21,6 @@
 	<files>
 		<file src="..\SHFB\Deploy\Data\WindowsPhone\*.*" target="tools\Data\WindowsPhone" />
 		<file src="EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.WindowsPhone.props" />
+		<file src="SHFB.png" target="SHFB.png" />
 	</files>
 </package>

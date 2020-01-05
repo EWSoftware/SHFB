@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PkgCmdID.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2013-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 12/13/2019
+// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
 //
 // This file contains various command IDs for the package
 //
@@ -35,8 +34,6 @@ namespace SandcastleBuilder.Package
         public const uint ViewMshcHelp = 0x0009;
         /// <summary>View ASP.NET website output (development web server)</summary>
         public const uint ViewAspNetWebsite = 0x000B;
-        /// <summary>View HTML web site output (file system)</summary>
-        public const uint ViewHtmlWebsite = 0x000C;
         /// <summary>View FAQ topic in help file</summary>
         public const uint ViewFaq = 0x0019;
         /// <summary>View SHFB help file</summary>

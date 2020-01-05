@@ -423,7 +423,6 @@
     <Resource Include="Resources\AspNetWebsite.png" />
     <Resource Include="Resources\MSHelpViewer.png" />
     <Resource Include="Resources\ShowHelp.png" />
-    <Resource Include="Resources\HtmlWebsite.png" />
     <Resource Include="Resources\LogFile.png" />
     <Resource Include="Resources\EntityReferences.png" />
     <Resource Include="Resources\Docx.png" />

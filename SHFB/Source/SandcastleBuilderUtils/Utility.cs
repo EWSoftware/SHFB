@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/01/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
+// Updated : 12/15/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a utility class with extension and utility methods
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         // Regular expressions used for encoding detection and parsing
-        private static Regex reXmlEncoding = new Regex("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
+        private static readonly Regex reXmlEncoding = new Regex("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
 
         #endregion
 
@@ -50,35 +50,19 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// Show a help topic in the SHFB help file
+        /// Show a help topic by opening the SHFB help website
         /// </summary>
         /// <param name="topic">The topic ID to display (will be formatted as "html/[Topic_ID].htm")</param>
-        /// <remarks>Since the standalone GUI already has a Help 1 file, we'll just display the topic
-        /// that it contains rather than integrating an MSHC help file into the VS 2010 collection.</remarks>
         public static void ShowHelpTopic(string topic)
         {
-            string path = null, anchor = String.Empty;
+            string anchor = String.Empty;
             int pos;
 
             if(String.IsNullOrEmpty(topic))
-                throw new ArgumentException("A topic must be specified", "topic");
+                throw new ArgumentException("A topic must be specified", nameof(topic));
 
             try
             {
-                path = Path.Combine(ComponentUtilities.ToolsFolder, @"Help\SandcastleBuilder.chm");
-
-                // It may not be there in development builds so look in the release folder.  If still not found,
-                // just ignore it.
-                if(!File.Exists(path))
-                {
-                    path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
-                        Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
-                        @"EWSoftware\Sandcastle Help File Builder\Help\SandcastleBuilder.chm");
-
-                    if(!File.Exists(path))
-                        return;
-                }
-
                 // If there's an anchor, split it off
                 pos = topic.IndexOf('#');
 
@@ -88,13 +72,13 @@ namespace SandcastleBuilder.Utils
                     topic = topic.Substring(0, pos);
                 }
 
-                Form form = new Form();
-                form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/" + topic + ".htm" + anchor);
+                System.Diagnostics.Process.Start($"https://ewsoftware.github.io/SHFB/html/{topic}.htm{anchor}");
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show($"Unable to view online help\r\n\r\nReason: {ex.Message}",
+                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         #endregion

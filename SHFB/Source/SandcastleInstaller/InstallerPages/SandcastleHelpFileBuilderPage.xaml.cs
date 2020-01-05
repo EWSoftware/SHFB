@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SandcastleHelpFileBuilderPage.cs
 // Author  : Eric Woodruff
-// Updated : 11/07/2019
+// Updated : 12/13/2019
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder
 //
@@ -85,10 +85,18 @@ namespace Sandcastle.Installer.InstallerPages
                 {
                     yield return new CompletionAction
                     {
-                        Description = "Open the Sandcastle Help File Builder help file",
+                        Description = "View help for the Sandcastle Help File Builder",
                         Action = new Action(() =>
                         {
-                            Utility.Open(Path.Combine(shfbFolder, @"Help\SandcastleBuilder.chm"));
+                            try
+                            {
+                                System.Diagnostics.Process.Start("https://ewsoftware.github.io/SHFB/index.html");
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show($"Unable to view online help\r\n\r\nReason: {ex.Message}",
+                                    "Install", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            }
                         })
                     };
                 }

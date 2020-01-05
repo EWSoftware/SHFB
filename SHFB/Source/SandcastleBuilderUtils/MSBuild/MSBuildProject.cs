@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2019
+// Updated : 12/13/2019
 // Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -229,7 +229,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                string docFile, outputPath = null, origDocFile;
+                string docFile = null, outputPath = null, origDocFile;
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
@@ -303,10 +303,12 @@ namespace SandcastleBuilder.Utils.MSBuild
                         }
                     }
                 }
-                else
+
+                // If not defined or not found, assume it's in the same place as the assembly with the same name
+                // but a ".xml" extension.  This can happen when using Team Build for some reason or if using
+                // project properties in the documentation file property that don't evaluate for some reason.
+                if(String.IsNullOrWhiteSpace(docFile) || !File.Exists(docFile))
                 {
-                    // If not defined, assume it's in the same place as the assembly with the same name
-                    // but a ".xml" extension.  This can happen when using Team Build for some reason.
                     docFile = this.AssemblyName;
 
                     if(!String.IsNullOrEmpty(docFile))
@@ -593,7 +595,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="resolver">The package reference resolver to use</param>
         /// <param name="references">The dictionary used to contain the cloned reference information</param>
         internal void CloneReferenceInfo(PackageReferenceResolver resolver, Dictionary<string,
-          Tuple<string, string, List<KeyValuePair<string, string>>>> references)
+          (string ReferenceType, string ReferenceName, List<(string Name, string Value)> Metadata)> references)
         {
             string rootPath, path;
 
@@ -605,25 +607,23 @@ namespace SandcastleBuilder.Utils.MSBuild
                 foreach(ProjectItem reference in this.ProjectFile.GetItems(refType))
                     if(!references.ContainsKey(reference.EvaluatedInclude))
                     {
-                        var metadata = reference.Metadata.Select(m => new KeyValuePair<string, string>(m.Name,
-                            m.EvaluatedValue)).ToList();
-                        var hintPath = metadata.FirstOrDefault(m => m.Key == "HintPath");
+                        var metadata = reference.Metadata.Select(m => (m.Name, m.EvaluatedValue)).ToList();
+                        var hintPath = metadata.FirstOrDefault(m => m.Name == "HintPath");
 
                         // Convert relative paths to absolute paths
-                        if(hintPath.Key != null)
+                        if(hintPath.Name != null)
                         {
                             path = reference.GetMetadataValue("HintPath");
 
                             if(!Path.IsPathRooted(path))
                             {
                                 metadata.Remove(hintPath);
-                                metadata.Add(new KeyValuePair<string,string>("HintPath",
-                                    Path.Combine(rootPath, path)));
+                                metadata.Add(("HintPath", Path.Combine(rootPath, path)));
                             }
                         }
 
-                        references.Add(reference.EvaluatedInclude, Tuple.Create(reference.ItemType,
-                            reference.EvaluatedInclude, metadata));
+                        references.Add(reference.EvaluatedInclude,
+                            (reference.ItemType, reference.EvaluatedInclude, metadata));
                     }
 
             // Resolve any package references by converting them to regular references
@@ -637,12 +637,11 @@ namespace SandcastleBuilder.Utils.MSBuild
                       Path.GetFileNameWithoutExtension(r).Equals(refName, StringComparison.OrdinalIgnoreCase))) &&
                       File.Exists(pr))
                     {
-                        references.Add(refName, Tuple.Create("Reference", refName,
-                            new List<KeyValuePair<string, string>>
-                            {
-                                new KeyValuePair<string, string>("HintPath", pr),
-                                new KeyValuePair<string, string>("FromPackageReference", "true")
-                            }));
+                        references.Add(refName, ("Reference", refName, new List<(string Name, string Value)>
+                        {
+                            ("HintPath", pr),
+                            ("FromPackageReference", "true")
+                        }));
                     }
                 }
         }

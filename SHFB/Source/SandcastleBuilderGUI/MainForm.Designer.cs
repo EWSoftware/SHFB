@@ -96,14 +96,13 @@ namespace SandcastleBuilder.Gui
             this.miViewMSHelpViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             this.miViewAspNetWebsite = new System.Windows.Forms.ToolStripMenuItem();
-            this.miViewHtmlWebsite = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.miViewOpenXml = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
             this.miOpenHelpAfterBuild = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbViewHelpFile = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.miCleanOutput = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbViewHelpFile = new System.Windows.Forms.ToolStripSplitButton();
             this.tcbConfig = new System.Windows.Forms.ToolStripComboBox();
             this.tcbPlatform = new System.Windows.Forms.ToolStripComboBox();
             this.miWindow = new System.Windows.Forms.ToolStripMenuItem();
@@ -171,7 +170,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator1,
             this.miExit});
             this.miProject.Name = "miProject";
-            this.miProject.Size = new System.Drawing.Size(50, 29);
+            this.miProject.Size = new System.Drawing.Size(46, 24);
             this.sbStatusBarText.SetStatusBarText(this.miProject, "File related options");
             this.miProject.Text = "&File";
             // 
@@ -181,7 +180,7 @@ namespace SandcastleBuilder.Gui
             this.miNewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miNewProject.Name = "miNewProject";
             this.miNewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.miNewProject.Size = new System.Drawing.Size(379, 30);
+            this.miNewProject.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miNewProject, "Start a brand new project");
             this.miNewProject.Text = "&New Project";
             this.miNewProject.Click += new System.EventHandler(this.miNewProject_Click);
@@ -189,7 +188,7 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(376, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(325, 6);
             // 
             // miOpenProject
             // 
@@ -197,7 +196,7 @@ namespace SandcastleBuilder.Gui
             this.miOpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miOpenProject.Name = "miOpenProject";
             this.miOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.miOpenProject.Size = new System.Drawing.Size(379, 30);
+            this.miOpenProject.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miOpenProject, "Open an existing project");
             this.miOpenProject.Text = "&Open Project...";
             this.miOpenProject.Click += new System.EventHandler(this.miOpenProject_Click);
@@ -205,7 +204,7 @@ namespace SandcastleBuilder.Gui
             // miCloseProject
             // 
             this.miCloseProject.Name = "miCloseProject";
-            this.miCloseProject.Size = new System.Drawing.Size(379, 30);
+            this.miCloseProject.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miCloseProject, "Close the project");
             this.miCloseProject.Text = "Clos&e Project";
             this.miCloseProject.Click += new System.EventHandler(this.miCloseProject_Click);
@@ -213,12 +212,12 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(376, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(325, 6);
             // 
             // miClose
             // 
             this.miClose.Name = "miClose";
-            this.miClose.Size = new System.Drawing.Size(379, 30);
+            this.miClose.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miClose, "Close the current window");
             this.miClose.Text = "&Close";
             this.miClose.Click += new System.EventHandler(this.miClose_Click);
@@ -226,7 +225,7 @@ namespace SandcastleBuilder.Gui
             // miCloseAll
             // 
             this.miCloseAll.Name = "miCloseAll";
-            this.miCloseAll.Size = new System.Drawing.Size(379, 30);
+            this.miCloseAll.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miCloseAll, "Close all open content editors");
             this.miCloseAll.Text = "C&lose All Content Editors";
             this.miCloseAll.Click += new System.EventHandler(this.miCloseAll_Click);
@@ -234,7 +233,7 @@ namespace SandcastleBuilder.Gui
             // miCloseAllButCurrent
             // 
             this.miCloseAllButCurrent.Name = "miCloseAllButCurrent";
-            this.miCloseAllButCurrent.Size = new System.Drawing.Size(379, 30);
+            this.miCloseAllButCurrent.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miCloseAllButCurrent, "Close all but the current content editor");
             this.miCloseAllButCurrent.Text = "Close All &But Current Content Editor";
             this.miCloseAllButCurrent.Click += new System.EventHandler(this.miCloseAll_Click);
@@ -242,19 +241,19 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator14
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(376, 6);
+            this.toolStripSeparator14.Size = new System.Drawing.Size(325, 6);
             // 
             // miProjectExplorer
             // 
             this.miProjectExplorer.Name = "miProjectExplorer";
-            this.miProjectExplorer.Size = new System.Drawing.Size(379, 30);
+            this.miProjectExplorer.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miProjectExplorer, "Project Explorer options");
             this.miProjectExplorer.Text = "&Project Explorer";
             // 
             // miExplorerSeparator
             // 
             this.miExplorerSeparator.Name = "miExplorerSeparator";
-            this.miExplorerSeparator.Size = new System.Drawing.Size(376, 6);
+            this.miExplorerSeparator.Size = new System.Drawing.Size(325, 6);
             // 
             // miSave
             // 
@@ -262,7 +261,7 @@ namespace SandcastleBuilder.Gui
             this.miSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miSave.Name = "miSave";
             this.miSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.miSave.Size = new System.Drawing.Size(379, 30);
+            this.miSave.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miSave, "Save all changes to the current item");
             this.miSave.Text = "&Save";
             this.miSave.Click += new System.EventHandler(this.miSave_Click);
@@ -270,7 +269,7 @@ namespace SandcastleBuilder.Gui
             // miSaveAs
             // 
             this.miSaveAs.Name = "miSaveAs";
-            this.miSaveAs.Size = new System.Drawing.Size(379, 30);
+            this.miSaveAs.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miSaveAs, "Save the current item under a new name");
             this.miSaveAs.Text = "Save &As...";
             this.miSaveAs.Click += new System.EventHandler(this.miSaveAs_Click);
@@ -283,7 +282,7 @@ namespace SandcastleBuilder.Gui
             this.miSaveAll.Name = "miSaveAll";
             this.miSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.miSaveAll.Size = new System.Drawing.Size(379, 30);
+            this.miSaveAll.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miSaveAll, "Save all open items and the project");
             this.miSaveAll.Text = "Sa&ve All";
             this.miSaveAll.Click += new System.EventHandler(this.miSaveAll_Click);
@@ -291,14 +290,14 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(376, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(325, 6);
             // 
             // miRecentProjects
             // 
             this.miRecentProjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
             this.miRecentProjects.Name = "miRecentProjects";
-            this.miRecentProjects.Size = new System.Drawing.Size(379, 30);
+            this.miRecentProjects.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miRecentProjects, "Select a recent project to load");
             this.miRecentProjects.Text = "&Recent Projects";
             this.miRecentProjects.DropDownOpening += new System.EventHandler(this.miRecentProjects_DropDownOpening);
@@ -307,18 +306,18 @@ namespace SandcastleBuilder.Gui
             // 
             this.toolStripMenuItem1.Enabled = false;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(158, 30);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(144, 26);
             this.toolStripMenuItem1.Text = "(Empty)";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(376, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(325, 6);
             // 
             // miUserPreferences
             // 
             this.miUserPreferences.Name = "miUserPreferences";
-            this.miUserPreferences.Size = new System.Drawing.Size(379, 30);
+            this.miUserPreferences.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miUserPreferences, "Modify user preferences");
             this.miUserPreferences.Text = "&User Preferences...";
             this.miUserPreferences.Click += new System.EventHandler(this.miUserPreferences_Click);
@@ -326,12 +325,12 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(376, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(325, 6);
             // 
             // miExit
             // 
             this.miExit.Name = "miExit";
-            this.miExit.Size = new System.Drawing.Size(379, 30);
+            this.miExit.Size = new System.Drawing.Size(328, 26);
             this.sbStatusBarText.SetStatusBarText(this.miExit, "Exit this application");
             this.miExit.Text = "E&xit";
             this.miExit.Click += new System.EventHandler(this.miExit_Click);
@@ -344,7 +343,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator8,
             this.miAbout});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(61, 29);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.sbStatusBarText.SetStatusBarText(this.helpToolStripMenuItem, "Help related options");
             this.helpToolStripMenuItem.Text = "&Help";
             // 
@@ -352,7 +351,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.miHelp.Name = "miHelp";
             this.miHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.miHelp.Size = new System.Drawing.Size(380, 30);
+            this.miHelp.Size = new System.Drawing.Size(331, 26);
             this.sbStatusBarText.SetStatusBarText(this.miHelp, "View the help file");
             this.miHelp.Text = "&Help";
             this.miHelp.Click += new System.EventHandler(this.miHelp_Click);
@@ -362,7 +361,7 @@ namespace SandcastleBuilder.Gui
             this.miFaq.Image = global::SandcastleBuilder.Gui.Properties.Resources.FAQ;
             this.miFaq.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miFaq.Name = "miFaq";
-            this.miFaq.Size = new System.Drawing.Size(380, 30);
+            this.miFaq.Size = new System.Drawing.Size(331, 26);
             this.sbStatusBarText.SetStatusBarText(this.miFaq, "View frequently asked questions");
             this.miFaq.Text = "&Frequently Asked Questions";
             this.miFaq.Click += new System.EventHandler(this.miHelp_Click);
@@ -370,14 +369,14 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(377, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(328, 6);
             // 
             // miAbout
             // 
             this.miAbout.Image = global::SandcastleBuilder.Gui.Properties.Resources.About;
             this.miAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miAbout.Name = "miAbout";
-            this.miAbout.Size = new System.Drawing.Size(380, 30);
+            this.miAbout.Size = new System.Drawing.Size(331, 26);
             this.sbStatusBarText.SetStatusBarText(this.miAbout, "View application, system, and contact information");
             this.miAbout.Text = "&About Sandcastle Help File Builder...";
             this.miAbout.Click += new System.EventHandler(this.miAbout_Click);
@@ -392,7 +391,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator9,
             this.miCleanOutput});
             this.miDocumentation.Name = "miDocumentation";
-            this.miDocumentation.Size = new System.Drawing.Size(147, 29);
+            this.miDocumentation.Size = new System.Drawing.Size(126, 24);
             this.sbStatusBarText.SetStatusBarText(this.miDocumentation, "Documentation related options");
             this.miDocumentation.Text = "&Documentation";
             // 
@@ -403,7 +402,7 @@ namespace SandcastleBuilder.Gui
             this.miBuildProject.Name = "miBuildProject";
             this.miBuildProject.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
-            this.miBuildProject.Size = new System.Drawing.Size(304, 30);
+            this.miBuildProject.Size = new System.Drawing.Size(267, 26);
             this.sbStatusBarText.SetStatusBarText(this.miBuildProject, "Build the current project to produce a help file");
             this.miBuildProject.Text = "&Build Project";
             this.miBuildProject.Click += new System.EventHandler(this.miBuildProject_Click);
@@ -416,7 +415,7 @@ namespace SandcastleBuilder.Gui
             this.miCancelBuild.Name = "miCancelBuild";
             this.miCancelBuild.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.C)));
-            this.miCancelBuild.Size = new System.Drawing.Size(304, 30);
+            this.miCancelBuild.Size = new System.Drawing.Size(267, 26);
             this.sbStatusBarText.SetStatusBarText(this.miCancelBuild, "Cancel the current build process");
             this.miCancelBuild.Text = "&Cancel Build";
             this.miCancelBuild.Click += new System.EventHandler(this.miCancelBuild_Click);
@@ -424,13 +423,13 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(301, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(264, 6);
             // 
             // miViewHelp
             // 
             this.miViewHelp.DropDown = this.ctxViewHelpMenu;
             this.miViewHelp.Name = "miViewHelp";
-            this.miViewHelp.Size = new System.Drawing.Size(304, 30);
+            this.miViewHelp.Size = new System.Drawing.Size(267, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewHelp, "View the help file produced by the last build");
             this.miViewHelp.Text = "&View Help File";
             // 
@@ -445,14 +444,12 @@ namespace SandcastleBuilder.Gui
             this.miViewMSHelpViewer,
             this.toolStripSeparator18,
             this.miViewAspNetWebsite,
-            this.miViewHtmlWebsite,
             this.toolStripSeparator11,
             this.miViewOpenXml,
             this.toolStripSeparator19,
             this.miOpenHelpAfterBuild});
             this.ctxViewHelpMenu.Name = "ctxViewHelpMenu";
-            this.ctxViewHelpMenu.OwnerItem = this.tsbViewHelpFile;
-            this.ctxViewHelpMenu.Size = new System.Drawing.Size(502, 244);
+            this.ctxViewHelpMenu.Size = new System.Drawing.Size(424, 190);
             this.ctxViewHelpMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ctxViewHelpMenu_Opening);
             // 
             // miViewHelpFile
@@ -462,7 +459,7 @@ namespace SandcastleBuilder.Gui
             this.miViewHelpFile.Name = "miViewHelpFile";
             this.miViewHelpFile.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.V)));
-            this.miViewHelpFile.Size = new System.Drawing.Size(501, 30);
+            this.miViewHelpFile.Size = new System.Drawing.Size(423, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewHelpFile, "View help file using first available format");
             this.miViewHelpFile.Text = "&View Help File";
             this.miViewHelpFile.Click += new System.EventHandler(this.miViewHelpFile_Click);
@@ -470,12 +467,12 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(498, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(420, 6);
             // 
             // miViewHtmlHelp1
             // 
             this.miViewHtmlHelp1.Name = "miViewHtmlHelp1";
-            this.miViewHtmlHelp1.Size = new System.Drawing.Size(501, 30);
+            this.miViewHtmlHelp1.Size = new System.Drawing.Size(423, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewHtmlHelp1, "View HTML Help 1 (.chm) help file");
             this.miViewHtmlHelp1.Text = "View &HTML Help 1 (.chm) File";
             this.miViewHtmlHelp1.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
@@ -483,12 +480,12 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator16
             // 
             this.toolStripSeparator16.Name = "toolStripSeparator16";
-            this.toolStripSeparator16.Size = new System.Drawing.Size(498, 6);
+            this.toolStripSeparator16.Size = new System.Drawing.Size(420, 6);
             // 
             // miViewMSHelpViewer
             // 
             this.miViewMSHelpViewer.Name = "miViewMSHelpViewer";
-            this.miViewMSHelpViewer.Size = new System.Drawing.Size(501, 30);
+            this.miViewMSHelpViewer.Size = new System.Drawing.Size(423, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewMSHelpViewer, "View MS Help Viewer (.mshc) help file or the related content manager");
             this.miViewMSHelpViewer.Text = "View M&S Help Viewer (.mshc) File/Content Manager";
             this.miViewMSHelpViewer.Click += new System.EventHandler(this.miViewMSHelpViewer_Click);
@@ -496,33 +493,25 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator18
             // 
             this.toolStripSeparator18.Name = "toolStripSeparator18";
-            this.toolStripSeparator18.Size = new System.Drawing.Size(498, 6);
+            this.toolStripSeparator18.Size = new System.Drawing.Size(420, 6);
             // 
             // miViewAspNetWebsite
             // 
             this.miViewAspNetWebsite.Name = "miViewAspNetWebsite";
-            this.miViewAspNetWebsite.Size = new System.Drawing.Size(501, 30);
+            this.miViewAspNetWebsite.Size = new System.Drawing.Size(423, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewAspNetWebsite, "View the website using the local ASP.NET Development Web Server");
             this.miViewAspNetWebsite.Text = "View Website (Loc&al Web Dev Server)";
             this.miViewAspNetWebsite.Click += new System.EventHandler(this.miViewAspNetWebsite_Click);
             // 
-            // miViewHtmlWebsite
-            // 
-            this.miViewHtmlWebsite.Name = "miViewHtmlWebsite";
-            this.miViewHtmlWebsite.Size = new System.Drawing.Size(501, 30);
-            this.sbStatusBarText.SetStatusBarText(this.miViewHtmlWebsite, "View the website using the basic HTML index page on the local file system");
-            this.miViewHtmlWebsite.Text = "View &Website (Local File System)";
-            this.miViewHtmlWebsite.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
-            // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(498, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(420, 6);
             // 
             // miViewOpenXml
             // 
             this.miViewOpenXml.Name = "miViewOpenXml";
-            this.miViewOpenXml.Size = new System.Drawing.Size(501, 30);
+            this.miViewOpenXml.Size = new System.Drawing.Size(423, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewOpenXml, "View Open XML (.docx) help file");
             this.miViewOpenXml.Text = "View Open &XML (.docx) File";
             this.miViewOpenXml.Click += new System.EventHandler(this.miViewBuiltHelpFile_Click);
@@ -530,28 +519,15 @@ namespace SandcastleBuilder.Gui
             // toolStripSeparator19
             // 
             this.toolStripSeparator19.Name = "toolStripSeparator19";
-            this.toolStripSeparator19.Size = new System.Drawing.Size(498, 6);
+            this.toolStripSeparator19.Size = new System.Drawing.Size(420, 6);
             // 
             // miOpenHelpAfterBuild
             // 
             this.miOpenHelpAfterBuild.Name = "miOpenHelpAfterBuild";
-            this.miOpenHelpAfterBuild.Size = new System.Drawing.Size(501, 30);
+            this.miOpenHelpAfterBuild.Size = new System.Drawing.Size(423, 26);
             this.sbStatusBarText.SetStatusBarText(this.miOpenHelpAfterBuild, "Check this option to automatically open the help file after a successful build");
             this.miOpenHelpAfterBuild.Text = "&Open help file after successful build";
             this.miOpenHelpAfterBuild.Click += new System.EventHandler(this.miOpenHelpAfterBuild_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(301, 6);
-            // 
-            // miCleanOutput
-            // 
-            this.miCleanOutput.Name = "miCleanOutput";
-            this.miCleanOutput.Size = new System.Drawing.Size(304, 30);
-            this.sbStatusBarText.SetStatusBarText(this.miCleanOutput, "Clean the output folder by deleting all files in it");
-            this.miCleanOutput.Text = "Clea&n Output Folder";
-            this.miCleanOutput.Click += new System.EventHandler(this.miCleanOutput_Click);
             // 
             // tsbViewHelpFile
             // 
@@ -561,10 +537,23 @@ namespace SandcastleBuilder.Gui
             this.tsbViewHelpFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbViewHelpFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbViewHelpFile.Name = "tsbViewHelpFile";
-            this.tsbViewHelpFile.Size = new System.Drawing.Size(37, 29);
+            this.tsbViewHelpFile.Size = new System.Drawing.Size(35, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbViewHelpFile, "View the help file produced by the last build");
             this.tsbViewHelpFile.ToolTipText = "View help file from last build";
             this.tsbViewHelpFile.ButtonClick += new System.EventHandler(this.miViewHelpFile_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(264, 6);
+            // 
+            // miCleanOutput
+            // 
+            this.miCleanOutput.Name = "miCleanOutput";
+            this.miCleanOutput.Size = new System.Drawing.Size(267, 26);
+            this.sbStatusBarText.SetStatusBarText(this.miCleanOutput, "Clean the output folder by deleting all files in it");
+            this.miCleanOutput.Text = "Clea&n Output Folder";
+            this.miCleanOutput.Click += new System.EventHandler(this.miCleanOutput_Click);
             // 
             // tcbConfig
             // 
@@ -595,7 +584,7 @@ namespace SandcastleBuilder.Gui
             this.miClearOutput,
             this.toolStripMenuItem4});
             this.miWindow.Name = "miWindow";
-            this.miWindow.Size = new System.Drawing.Size(90, 29);
+            this.miWindow.Size = new System.Drawing.Size(78, 24);
             this.sbStatusBarText.SetStatusBarText(this.miWindow, "Window list");
             this.miWindow.Text = "&Window";
             // 
@@ -606,7 +595,7 @@ namespace SandcastleBuilder.Gui
             this.miViewProjectExplorer.Name = "miViewProjectExplorer";
             this.miViewProjectExplorer.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.P)));
-            this.miViewProjectExplorer.Size = new System.Drawing.Size(379, 30);
+            this.miViewProjectExplorer.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewProjectExplorer, "View the project explorer");
             this.miViewProjectExplorer.Text = "&Project Explorer";
             this.miViewProjectExplorer.Click += new System.EventHandler(this.miViewProjectExplorer_Click);
@@ -617,7 +606,7 @@ namespace SandcastleBuilder.Gui
             this.miViewProjectProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miViewProjectProperties.Name = "miViewProjectProperties";
             this.miViewProjectProperties.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.miViewProjectProperties.Size = new System.Drawing.Size(379, 30);
+            this.miViewProjectProperties.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewProjectProperties, "View project properties");
             this.miViewProjectProperties.Text = "Project P&roperties";
             this.miViewProjectProperties.Click += new System.EventHandler(this.miViewProjectProperties_Click);
@@ -629,7 +618,7 @@ namespace SandcastleBuilder.Gui
             this.miEntityReferences.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miEntityReferences.Name = "miEntityReferences";
             this.miEntityReferences.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.miEntityReferences.Size = new System.Drawing.Size(379, 30);
+            this.miEntityReferences.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miEntityReferences, "Open the entity references window");
             this.miEntityReferences.Text = "&Entity References";
             this.miEntityReferences.Click += new System.EventHandler(this.miEntityReferences_Click);
@@ -641,7 +630,7 @@ namespace SandcastleBuilder.Gui
             this.miPreviewTopic.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miPreviewTopic.Name = "miPreviewTopic";
             this.miPreviewTopic.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.miPreviewTopic.Size = new System.Drawing.Size(379, 30);
+            this.miPreviewTopic.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miPreviewTopic, "Preview the MAML conceptual topics in the project");
             this.miPreviewTopic.Text = "&Topic Previewer";
             this.miPreviewTopic.Click += new System.EventHandler(this.miPreviewTopic_Click);
@@ -649,7 +638,7 @@ namespace SandcastleBuilder.Gui
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(376, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(323, 6);
             // 
             // miViewOutput
             // 
@@ -658,7 +647,7 @@ namespace SandcastleBuilder.Gui
             this.miViewOutput.Name = "miViewOutput";
             this.miViewOutput.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.W)));
-            this.miViewOutput.Size = new System.Drawing.Size(379, 30);
+            this.miViewOutput.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewOutput, "View the last build\'s output");
             this.miViewOutput.Text = "Build &Output";
             this.miViewOutput.Click += new System.EventHandler(this.miViewOutput_Click);
@@ -666,7 +655,7 @@ namespace SandcastleBuilder.Gui
             // miViewLog
             // 
             this.miViewLog.Name = "miViewLog";
-            this.miViewLog.Size = new System.Drawing.Size(379, 30);
+            this.miViewLog.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miViewLog, "View the last build\'s log file");
             this.miViewLog.Text = "Build &Log Content";
             this.miViewLog.Click += new System.EventHandler(this.miViewOutput_Click);
@@ -676,7 +665,7 @@ namespace SandcastleBuilder.Gui
             this.miClearOutput.Name = "miClearOutput";
             this.miClearOutput.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.X)));
-            this.miClearOutput.Size = new System.Drawing.Size(379, 30);
+            this.miClearOutput.Size = new System.Drawing.Size(326, 26);
             this.sbStatusBarText.SetStatusBarText(this.miClearOutput, "Clear the last build information from the output window");
             this.miClearOutput.Text = "&Clear Output Window";
             this.miClearOutput.Click += new System.EventHandler(this.miClearOutput_Click);
@@ -684,7 +673,7 @@ namespace SandcastleBuilder.Gui
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(376, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(323, 6);
             // 
             // tsbNewProject
             // 
@@ -693,7 +682,7 @@ namespace SandcastleBuilder.Gui
             this.tsbNewProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbNewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNewProject.Name = "tsbNewProject";
-            this.tsbNewProject.Size = new System.Drawing.Size(23, 29);
+            this.tsbNewProject.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbNewProject, "Start a brand new project");
             this.tsbNewProject.ToolTipText = "Start a brand new project";
             this.tsbNewProject.Click += new System.EventHandler(this.miNewProject_Click);
@@ -705,7 +694,7 @@ namespace SandcastleBuilder.Gui
             this.tsbOpenProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbOpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOpenProject.Name = "tsbOpenProject";
-            this.tsbOpenProject.Size = new System.Drawing.Size(23, 29);
+            this.tsbOpenProject.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbOpenProject, "Open an existing project");
             this.tsbOpenProject.ToolTipText = "Open an existing project";
             this.tsbOpenProject.Click += new System.EventHandler(this.miOpenProject_Click);
@@ -717,7 +706,7 @@ namespace SandcastleBuilder.Gui
             this.tsbSave.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSave.Name = "tsbSave";
-            this.tsbSave.Size = new System.Drawing.Size(23, 29);
+            this.tsbSave.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbSave, "Save all changes to the current item");
             this.tsbSave.ToolTipText = "Save the current item";
             this.tsbSave.Click += new System.EventHandler(this.miSave_Click);
@@ -729,7 +718,7 @@ namespace SandcastleBuilder.Gui
             this.tsbSaveAll.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSaveAll.Name = "tsbSaveAll";
-            this.tsbSaveAll.Size = new System.Drawing.Size(23, 29);
+            this.tsbSaveAll.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbSaveAll, "Save all items and the project");
             this.tsbSaveAll.ToolTipText = "Save all items and the project";
             this.tsbSaveAll.Click += new System.EventHandler(this.miSaveAll_Click);
@@ -740,7 +729,7 @@ namespace SandcastleBuilder.Gui
             this.tsbProjectExplorer.Image = global::SandcastleBuilder.Gui.Properties.Resources.Explorer;
             this.tsbProjectExplorer.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbProjectExplorer.Name = "tsbProjectExplorer";
-            this.tsbProjectExplorer.Size = new System.Drawing.Size(24, 29);
+            this.tsbProjectExplorer.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbProjectExplorer, "View the project explorer");
             this.tsbProjectExplorer.ToolTipText = "View project explorer";
             this.tsbProjectExplorer.Click += new System.EventHandler(this.miViewProjectExplorer_Click);
@@ -752,7 +741,7 @@ namespace SandcastleBuilder.Gui
             this.tsbProjectProperties.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbProjectProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbProjectProperties.Name = "tsbProjectProperties";
-            this.tsbProjectProperties.Size = new System.Drawing.Size(23, 29);
+            this.tsbProjectProperties.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbProjectProperties, "View the project properties");
             this.tsbProjectProperties.ToolTipText = "View project properties";
             this.tsbProjectProperties.Click += new System.EventHandler(this.miViewProjectProperties_Click);
@@ -764,7 +753,7 @@ namespace SandcastleBuilder.Gui
             this.tsbCodeEntitySearch.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbCodeEntitySearch.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCodeEntitySearch.Name = "tsbCodeEntitySearch";
-            this.tsbCodeEntitySearch.Size = new System.Drawing.Size(23, 29);
+            this.tsbCodeEntitySearch.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbCodeEntitySearch, "Insert token, image, and code entity/snippet references");
             this.tsbCodeEntitySearch.ToolTipText = "Token, image, and code entity/snippet references";
             this.tsbCodeEntitySearch.Click += new System.EventHandler(this.miEntityReferences_Click);
@@ -776,7 +765,7 @@ namespace SandcastleBuilder.Gui
             this.tsbPreviewTopic.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbPreviewTopic.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPreviewTopic.Name = "tsbPreviewTopic";
-            this.tsbPreviewTopic.Size = new System.Drawing.Size(23, 29);
+            this.tsbPreviewTopic.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbPreviewTopic, "Preview the MAML conceptual topics in the project");
             this.tsbPreviewTopic.ToolTipText = "Topic previewer";
             this.tsbPreviewTopic.Click += new System.EventHandler(this.miPreviewTopic_Click);
@@ -788,7 +777,7 @@ namespace SandcastleBuilder.Gui
             this.tsbBuildProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbBuildProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbBuildProject.Name = "tsbBuildProject";
-            this.tsbBuildProject.Size = new System.Drawing.Size(23, 29);
+            this.tsbBuildProject.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbBuildProject, "Build the current project to produce a help file");
             this.tsbBuildProject.ToolTipText = "Build the help file";
             this.tsbBuildProject.Click += new System.EventHandler(this.miBuildProject_Click);
@@ -801,7 +790,7 @@ namespace SandcastleBuilder.Gui
             this.tsbCancelBuild.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbCancelBuild.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCancelBuild.Name = "tsbCancelBuild";
-            this.tsbCancelBuild.Size = new System.Drawing.Size(23, 29);
+            this.tsbCancelBuild.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbCancelBuild, "Cancel the current build process");
             this.tsbCancelBuild.ToolTipText = "Cancel the current build process";
             this.tsbCancelBuild.Click += new System.EventHandler(this.miCancelBuild_Click);
@@ -813,7 +802,7 @@ namespace SandcastleBuilder.Gui
             this.tsbViewOutput.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbViewOutput.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbViewOutput.Name = "tsbViewOutput";
-            this.tsbViewOutput.Size = new System.Drawing.Size(23, 29);
+            this.tsbViewOutput.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbViewOutput, "View output from last build");
             this.tsbViewOutput.ToolTipText = "View build output";
             this.tsbViewOutput.Click += new System.EventHandler(this.miViewOutput_Click);
@@ -825,7 +814,7 @@ namespace SandcastleBuilder.Gui
             this.tsbFaq.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tsbFaq.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbFaq.Name = "tsbFaq";
-            this.tsbFaq.Size = new System.Drawing.Size(24, 29);
+            this.tsbFaq.Size = new System.Drawing.Size(29, 29);
             this.sbStatusBarText.SetStatusBarText(this.tsbFaq, "View frequently asked questions");
             this.tsbFaq.ToolTipText = "View frequently asked questions";
             this.tsbFaq.Click += new System.EventHandler(this.miHelp_Click);
@@ -854,7 +843,7 @@ namespace SandcastleBuilder.Gui
             this.mnuMain.Location = new System.Drawing.Point(0, 0);
             this.mnuMain.MdiWindowListItem = this.miWindow;
             this.mnuMain.Name = "mnuMain";
-            this.mnuMain.Size = new System.Drawing.Size(1016, 33);
+            this.mnuMain.Size = new System.Drawing.Size(1016, 28);
             this.mnuMain.TabIndex = 0;
             // 
             // tsbMain
@@ -884,7 +873,7 @@ namespace SandcastleBuilder.Gui
             this.toolStripSeparator4,
             this.tsbFaq,
             this.tsbAbout});
-            this.tsbMain.Location = new System.Drawing.Point(0, 33);
+            this.tsbMain.Location = new System.Drawing.Point(0, 28);
             this.tsbMain.Name = "tsbMain";
             this.tsbMain.Size = new System.Drawing.Size(1016, 32);
             this.tsbMain.TabIndex = 1;
@@ -921,9 +910,9 @@ namespace SandcastleBuilder.Gui
             this.tsslStatusText,
             this.tsslProgressNote,
             this.tspbProgressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 710);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 708);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1016, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(1016, 27);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -931,7 +920,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.tsslStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.tsslStatusText.Name = "tsslStatusText";
-            this.tsslStatusText.Size = new System.Drawing.Size(895, 25);
+            this.tsslStatusText.Size = new System.Drawing.Size(895, 27);
             this.tsslStatusText.Spring = true;
             this.tsslStatusText.Text = "Ready";
             this.tsslStatusText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -942,7 +931,7 @@ namespace SandcastleBuilder.Gui
             this.tsslProgressNote.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
             this.tsslProgressNote.Margin = new System.Windows.Forms.Padding(0);
             this.tsslProgressNote.Name = "tsslProgressNote";
-            this.tsslProgressNote.Size = new System.Drawing.Size(4, 25);
+            this.tsslProgressNote.Size = new System.Drawing.Size(4, 27);
             this.tsslProgressNote.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tspbProgressBar
@@ -954,9 +943,9 @@ namespace SandcastleBuilder.Gui
             // dockPanel
             // 
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dockPanel.Location = new System.Drawing.Point(0, 65);
+            this.dockPanel.Location = new System.Drawing.Point(0, 60);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(1016, 645);
+            this.dockPanel.Size = new System.Drawing.Size(1016, 648);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -1089,7 +1078,6 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripMenuItem miViewHtmlHelp1;
         private System.Windows.Forms.ToolStripMenuItem miViewAspNetWebsite;
-        private System.Windows.Forms.ToolStripMenuItem miViewHtmlWebsite;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
         private System.Windows.Forms.ToolStripMenuItem miOpenHelpAfterBuild;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;

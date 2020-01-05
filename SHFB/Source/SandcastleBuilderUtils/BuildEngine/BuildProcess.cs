@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
+// Updated : 12/13/2019
 // Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -107,7 +107,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         private SandcastleProject project;      // The project to build
-        private string originalProjectName;
+        private readonly string originalProjectName;
 
         // The composition container for build components and the syntax generator list
         private CompositionContainer componentContainer;
@@ -118,7 +118,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private ReflectionDataSetDictionary reflectionDataDictionary;
         private ReflectionDataSet frameworkReflectionData;
         private Collection<string> assembliesList;
-        private Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>> referenceDictionary;
+        private Dictionary<string, (string ReferenceType, string ReferenceName,
+            List<(string Name, string Value)> Metadata)> referenceDictionary;
         private HashSet<string> referencedNamespaces;
 
         // Conceptual content settings
@@ -945,7 +946,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // Add the references
                         foreach(var r in referenceDictionary.Values)
                         {
-                            projectItem = msBuildProject.AddItem(r.Item1, r.Item2, r.Item3)[0];
+                            projectItem = msBuildProject.AddItem(r.ReferenceType, r.ReferenceName,
+                                r.Metadata.Select(m => new KeyValuePair<string, string>(m.Name, m.Value)))[0];
 
                             // Make sure hint paths are correct by adding the project folder to any relative
                             // paths.  Skip any containing MSBuild variable references.
@@ -1054,9 +1056,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // want the project documentation source XML files to override comments in these if there's a
                 // conflict so we add them ahead of all other comments files.  We still need to copy the files as
                 // the rest of the build process expects them to be in the working folder.
-                foreach(var r in referenceDictionary.Values.Where(r => r.Item3.Any(v => v.Key == "HintPath")))
+                foreach(var r in referenceDictionary.Values.Where(r => r.Metadata.Any(v => v.Name == "HintPath")))
                 {
-                    string comments = Path.ChangeExtension(r.Item3.First(kv => kv.Key == "HintPath").Value, ".xml");
+                    string comments = Path.ChangeExtension(r.Metadata.First(kv => kv.Name == "HintPath").Value, ".xml");
                     string workingPath = workingFolder + Path.GetFileName(comments);
                     int idx = 0;
 
@@ -1583,6 +1585,8 @@ AllDone:
                         message += inEx.Message + "\r\n" + inEx.StackTrace;
                     }
 
+                Exception origEx = ex;
+
                 do
                 {
                     if(message != null)
@@ -1594,7 +1598,7 @@ AllDone:
                 } while(ex != null);
 
                 // NOTE: Message may contain format markers so pass it as a format argument
-                if(ex is BuilderException bex)
+                if(origEx is BuilderException bex)
                     this.ReportError(BuildStep.Failed, bex.ErrorCode, "{0}", message);
                 else
                     this.ReportError(BuildStep.Failed, "BE0065", "BUILD FAILED: {0}", message);
@@ -2057,7 +2061,8 @@ AllDone:
                 lastSolution = null;
 
             assembliesList = new Collection<string>();
-            referenceDictionary = new Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>>();
+            referenceDictionary = new Dictionary<string, (string ReferenceType, string ReferenceName,
+                List<(string Name, string Value)> MetaData)>();
             commentsFiles = new XmlCommentsFileCollection();
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
@@ -2073,10 +2078,13 @@ AllDone:
             // Clone the project's references.  These will be added to a build project later on so we'll note the
             // necessary information needed to create the reference in the future project.
             foreach(string refType in (new string[] { "Reference", "COMReference" }))
+            {
                 foreach(ProjectItem reference in project.MSBuildProject.GetItems(refType))
-                    referenceDictionary.Add(reference.EvaluatedInclude, Tuple.Create(reference.ItemType,
-                        reference.EvaluatedInclude, reference.Metadata.Select(m =>
-                            new KeyValuePair<string, string>(m.Name, m.EvaluatedValue)).ToList()));
+                {
+                    referenceDictionary.Add(reference.EvaluatedInclude, (reference.ItemType,
+                        reference.EvaluatedInclude, reference.Metadata.Select(m => (m.Name, m.EvaluatedValue)).ToList()));
+                }
+            }
 
             // Convert project references to regular references that point to the output assembly.  Project
             // references get built and we may not have enough info for that to happen successfully.  As such,
@@ -2107,9 +2115,9 @@ AllDone:
                     projRef.SetConfiguration(project.Configuration, project.Platform, project.MSBuildOutDir,
                         usesProjectSpecificOutput);
 
-                    referenceDictionary.Add(projRef.AssemblyName, Tuple.Create("Reference",
+                    referenceDictionary.Add(projRef.AssemblyName, ("Reference",
                         Path.GetFileNameWithoutExtension(projRef.AssemblyName),
-                        (new [] { new KeyValuePair<string, string>("HintPath", projRef.AssemblyName) }).ToList()));
+                        (new [] { ("HintPath", projRef.AssemblyName) }).ToList()));
                 }
             }
 

@@ -46,19 +46,19 @@ namespace Sandcastle.Core.BuildAssembler
         #region Private data members
         //=====================================================================
 
-        private CancellationTokenSource tokenSource;
+        private readonly CancellationTokenSource tokenSource;
 
-        private List<BuildComponentCore> components = new List<BuildComponentCore>();
+        private readonly List<BuildComponentCore> components = new List<BuildComponentCore>();
 
-        private BlockingCollection<Tuple<LogLevel, string>> messageLog =
-            new BlockingCollection<Tuple<LogLevel, string>>();
+        private readonly BlockingCollection<(LogLevel Level, string Message)> messageLog =
+            new BlockingCollection<(LogLevel Level, string Message)>();
 
         private CompositionContainer componentContainer;
         private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> allBuildComponents;
         private HashSet<string> componentFolders;
 
         private MessageLevel verbosityLevel;
-        private Action<LogLevel, string> messageLogger;
+        private readonly Action<LogLevel, string> messageLogger;
         private int warningCount;
 
         #endregion
@@ -69,10 +69,7 @@ namespace Sandcastle.Core.BuildAssembler
         /// <summary>
         /// This read-only property returns the current list of build components
         /// </summary>
-        public IEnumerable<BuildComponentCore> BuildComponents
-        {
-            get { return components; }
-        }
+        public IEnumerable<BuildComponentCore> BuildComponents => components;
 
         /// <summary>
         /// The verbosity level for the message handlers
@@ -83,7 +80,7 @@ namespace Sandcastle.Core.BuildAssembler
         /// <remarks>It is up to the message handler to make use of this property</remarks>
         public MessageLevel VerbosityLevel
         {
-            get { return verbosityLevel; }
+            get => verbosityLevel;
             set
             {
                 if(value < MessageLevel.Info)
@@ -113,10 +110,7 @@ namespace Sandcastle.Core.BuildAssembler
         /// <param name="messageLogger">The message logger action</param>
         public BuildAssemblerCore(Action<LogLevel, string> messageLogger)
         {
-            if(messageLogger == null)
-                throw new ArgumentNullException("messageLogger");
-
-            this.messageLogger = messageLogger;
+            this.messageLogger = messageLogger ?? throw new ArgumentNullException(nameof(messageLogger));
 
             tokenSource = new CancellationTokenSource();
 
@@ -177,10 +171,7 @@ namespace Sandcastle.Core.BuildAssembler
         /// arguments class containing information for the event handlers.</param>
         internal void OnComponentEvent(object sender, EventArgs e)
         {
-            var handler = ComponentEvent;
-
-            if(handler != null)
-                handler(sender, e);
+            this.ComponentEvent?.Invoke(sender, e);
         }
         #endregion
 
@@ -214,15 +205,14 @@ namespace Sandcastle.Core.BuildAssembler
 
                     // See if a verbosity level has been specified.  If so, set it.
                     var verbosity = configNav.SelectSingleNode("/configuration/@verbosity");
-                    MessageLevel level;
 
-                    if(verbosity == null || !Enum.TryParse<MessageLevel>(verbosity.Value, out level))
+                    if(verbosity == null || !Enum.TryParse<MessageLevel>(verbosity.Value, out MessageLevel level))
                         level = MessageLevel.Info;
 
                     this.VerbosityLevel = level;
 
                     if(level > MessageLevel.Info)
-                        messageLog.Add(LogMessage(LogLevel.Info, "Loading configuration..."));
+                        messageLog.Add((LogLevel.Info, "Loading configuration..."));
 
                     // Find all available build components
                     this.CreateComponentContainer(configNav.SelectSingleNode(
@@ -237,15 +227,15 @@ namespace Sandcastle.Core.BuildAssembler
 
                     // Proceed through the build manifest, processing all topics named there
                     if(level > MessageLevel.Info)
-                        messageLog.Add(LogMessage(LogLevel.Info, "Processing topics..."));
+                        messageLog.Add((LogLevel.Info, "Processing topics..."));
 
                     int count = this.Apply(manifest);
 
-                    messageLog.Add(LogMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
+                    messageLog.Add((LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
                         "Processed {0} topic(s)", count)));
 
                     if(warningCount != 0)
-                        messageLog.Add(LogMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
+                        messageLog.Add((LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
                             "{0} warning(s)", warningCount)));
                 }
                 finally
@@ -257,7 +247,7 @@ namespace Sandcastle.Core.BuildAssembler
             Task logger = Task.Factory.StartNew(() =>
             {
                 foreach(var msg in messageLog.GetConsumingEnumerable())
-                    messageLogger(msg.Item1, msg.Item2);
+                    messageLogger(msg.Level, msg.Message);
             }, tokenSource.Token);
 
             Task.WaitAll(new[] { builder, logger}, tokenSource.Token);
@@ -322,8 +312,7 @@ namespace Sandcastle.Core.BuildAssembler
                 // Create the document.  The root node is always called "document" and the topic type is added
                 // using the "type" attribute.  This can be used to run a different set of components based on
                 // the document type.
-                XmlDocument document = new XmlDocument();
-                document.PreserveWhitespace = true;
+                XmlDocument document = new XmlDocument { PreserveWhitespace = true };
 
                 var element = document.CreateElement("document");
                 var attr = document.CreateAttribute("type");
@@ -428,7 +417,7 @@ namespace Sandcastle.Core.BuildAssembler
         public BuildComponentCore LoadComponent(XPathNavigator configuration)
         {
             if(configuration == null)
-                throw new ArgumentNullException("configuration");
+                throw new ArgumentNullException(nameof(configuration));
 
             // Get the component ID
             string id = configuration.GetAttribute("id", String.Empty);
@@ -613,19 +602,8 @@ namespace Sandcastle.Core.BuildAssembler
         /// </summary>
         /// <param name="level">The log level</param>
         /// <param name="message">The message</param>
-        /// <returns></returns>
-        private static Tuple<LogLevel, string> LogMessage(LogLevel level, string message)
-        {
-            return Tuple.Create<LogLevel, string>(level, message);
-        }
-
-        /// <summary>
-        /// This is a helper method used to create log message tuples
-        /// </summary>
-        /// <param name="level">The log level</param>
-        /// <param name="message">The message</param>
-        /// <returns></returns>
-        private static Tuple<LogLevel, string> LogMessage(MessageLevel level, string message)
+        /// <returns>A tuple containing the log level and the message</returns>
+        private static (LogLevel Level, string Message) LogMessage(MessageLevel level, string message)
         {
             LogLevel logLevel;
 
@@ -649,7 +627,7 @@ namespace Sandcastle.Core.BuildAssembler
                     break;
             }
 
-            return Tuple.Create<LogLevel, string>(logLevel, message);
+            return (logLevel, message);
         }
 
         /// <summary>
@@ -697,7 +675,7 @@ namespace Sandcastle.Core.BuildAssembler
                         if(!messageLog.IsAddingCompleted)
                             messageLog.Add(m);
                         else
-                            messageLogger(m.Item1, m.Item2);
+                            messageLogger(m.Level, m.Message);
                         break;
 
                     case MessageLevel.Error:
@@ -708,7 +686,7 @@ namespace Sandcastle.Core.BuildAssembler
                         if(!messageLog.IsAddingCompleted)
                             messageLog.Add(m2);
                         else
-                            messageLogger(m2.Item1, m2.Item2);
+                            messageLogger(m2.Level, m2.Message);
 
                         if(System.Diagnostics.Debugger.IsAttached)
                             System.Diagnostics.Debugger.Break();

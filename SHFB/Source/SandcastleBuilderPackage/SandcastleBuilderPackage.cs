@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 12/13/2019
+// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
 //
@@ -145,21 +144,13 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <remarks>My assumption, which appears to be correct, is that this should return the same value as the
         /// <c>SandcastleBuilderProjectNode.ProjectType</c> property.</remarks>
-        public override string ProductUserContext
-        {
-            get { return "SHFBProject"; }
-        }
+        public override string ProductUserContext => "SHFBProject";
 
         /// <summary>
         /// Return the general options page for the package
         /// </summary>
-        public SandcastleBuilderOptionsPage GeneralOptions
-        {
-            get
-            {
-                return (SandcastleBuilderOptionsPage)this.GetDialogPage(typeof(SandcastleBuilderOptionsPage));
-            }
-        }
+        public SandcastleBuilderOptionsPage GeneralOptions =>
+            (SandcastleBuilderOptionsPage)this.GetDialogPage(typeof(SandcastleBuilderOptionsPage));
 
         /// <summary>
         /// This returns a <see cref="SandcastleBuilderProjectNode"/> instance for the
@@ -171,17 +162,14 @@ namespace SandcastleBuilder.Package
             {
                 ThreadHelper.ThrowIfNotOnUIThread();
 
-                DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
                 Array activeProjects = null;
 
-                if(dte != null)
+                if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
                     activeProjects = dte.ActiveSolutionProjects as Array;
 
                 if(activeProjects != null && activeProjects.Length > 0)
                 {
-                    Project p = activeProjects.GetValue(0) as Project;
-
-                    if(p != null)
+                    if(activeProjects.GetValue(0) is Project p)
                         return (p.Object as SandcastleBuilderProjectNode);
                 }
 
@@ -273,9 +261,7 @@ namespace SandcastleBuilder.Package
             SandcastleBuilderPackage.Instance = this;
 
             // Add our command handlers for menu items (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = await this.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-
-            if(mcs != null)
+            if(await this.GetServiceAsync(typeof(IMenuCommandService)) is OleMenuCommandService mcs)
             {
                 CommandID commandId;
                 OleMenuCommand menuItem;
@@ -298,11 +284,6 @@ namespace SandcastleBuilder.Package
                 // Create the command for button ViewAspNetWebsite
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewAspNetWebsite);
                 menuItem = new OleMenuCommand(ViewAspNetWebsiteExecuteHandler, null, ViewAspNetWebsiteQueryStatusHandler, commandId);
-                mcs.AddCommand(menuItem);
-
-                // Create the command for button ViewHtmlWebsite
-                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewHtmlWebsite);
-                menuItem = new OleMenuCommand(ViewHtmlWebsiteExecuteHandler, null, ViewHtmlWebsiteQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
 
                 // Create the command for button ViewFaq
@@ -354,9 +335,7 @@ namespace SandcastleBuilder.Package
             buildCompletedListener = new BuildCompletedEventListener(this);
 
             // Register for solution events so that we can clear the component cache when necessary
-            var dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
-
-            if(dte != null)
+            if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
             {
                 if(dte.Events != null)
                 {
@@ -403,10 +382,9 @@ namespace SandcastleBuilder.Package
             ThreadHelper.ThrowIfNotOnUIThread();
 
             Array activeProjects = null;
-            DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
             bool visible = false, enabled = false;
 
-            if(dte != null)
+            if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
             {
                 Solution s = dte.Solution;
 
@@ -433,10 +411,8 @@ namespace SandcastleBuilder.Package
 
                         if(activeProjects != null && activeProjects.Length > 0)
                         {
-                            Project p = activeProjects.GetValue(0) as Project;
-
-                            if(p != null && p.Object != null && p.UniqueName.EndsWith(".shfbproj",
-                              StringComparison.OrdinalIgnoreCase))
+                            if(activeProjects.GetValue(0) is Project p && p.Object != null &&
+                              p.UniqueName.EndsWith(".shfbproj", StringComparison.OrdinalIgnoreCase))
                             {
                                 SandcastleBuilderProjectNode pn = (SandcastleBuilderProjectNode)p.Object;
                                 string projectHelpFormat = (pn.GetProjectProperty("HelpFileFormat") ??
@@ -571,9 +547,7 @@ namespace SandcastleBuilder.Package
                 else
                     if(outputPath.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                     {
-                        DTE dte = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
-
-                        if(dte != null)
+                        if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
                         {
                             var doc = dte.ItemOperations.OpenFile(outputPath, EnvDTE.Constants.vsViewKindPrimary);
 
@@ -717,26 +691,6 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// Set the state of the View HTML website help command
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void ViewHtmlWebsiteQueryStatusHandler(object sender, EventArgs e)
-        {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.Website);
-        }
-
-        /// <summary>
-        /// View the last built HTML help website
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void ViewHtmlWebsiteExecuteHandler(object sender, EventArgs e)
-        {
-            ViewBuiltHelpFile(null, PkgCmdIDList.ViewHtmlWebsite);
-        }
-
-        /// <summary>
         /// Set the state of the View Open XML help command
         /// </summary>
         /// <param name="sender">The sender of the event</param>
@@ -812,8 +766,6 @@ namespace SandcastleBuilder.Package
             ThreadHelper.ThrowIfNotOnUIThread();
 
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
-            uint pitemid;
-            IVsMultiItemSelect ppMIS;
             string filename = null;
 
             var window = this.FindToolWindow(typeof(ToolWindows.TopicPreviewerToolWindow), 0, true);
@@ -824,18 +776,14 @@ namespace SandcastleBuilder.Package
             var windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
 
-            TopicPreviewerToolWindow previewer = window as TopicPreviewerToolWindow;
-
-            if(previewer != null)
+            if(window is TopicPreviewerToolWindow previewer)
             {
-                var ms = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellMonitorSelection)) as IVsMonitorSelection;
-
-                if(ms != null)
+                if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellMonitorSelection)) is IVsMonitorSelection ms)
                 {
                     try
                     {
                         // Get the current filename and, if it's a MAML topic, show it by default
-                        ms.GetCurrentSelection(out ppHier, out pitemid, out ppMIS, out ppSC);
+                        ms.GetCurrentSelection(out ppHier, out uint pitemid, out IVsMultiItemSelect ppMIS, out ppSC);
 
                         if(pitemid != VSConstants.VSITEMID_NIL && ppHier != IntPtr.Zero)
                         {

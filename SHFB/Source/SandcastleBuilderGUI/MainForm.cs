@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 12/13/2019
+// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
 //
 // This file contains the main form for the application.
 //
@@ -90,13 +89,13 @@ namespace SandcastleBuilder.Gui
         private EntityReferenceWindow entityReferencesWindow;
         private PreviewTopicWindow previewWindow;
         private FileSystemWatcher fsw;
-        private HashSet<string> changedFiles;
+        private readonly HashSet<string> changedFiles;
         private bool checkingForChangedFiles;
         private string excludedOutputFolder, excludedWorkingFolder;
 
         private static MainForm mainForm;
 
-        private static Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
+        private static readonly Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
             @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
         #endregion
 
@@ -787,7 +786,7 @@ namespace SandcastleBuilder.Gui
             {
                 // Save the current window size and position if possible
                 WINDOWPLACEMENT wp = new WINDOWPLACEMENT { length = Marshal.SizeOf(typeof(WINDOWPLACEMENT)) };
-                UnsafeNativeMethods.GetWindowPlacement(this.Handle, out wp);
+                UnsafeNativeMethods.GetWindowPlacement(this.Handle, ref wp);
                 Settings.Default.WindowPlacement = wp;
 
                 // Save the content state.  If open, hide some of the windows
@@ -1317,8 +1316,7 @@ namespace SandcastleBuilder.Gui
         private void ctxViewHelpMenu_Opening(object sender, CancelEventArgs e)
         {
             miViewHtmlHelp1.Enabled = ((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0);
-            miViewAspNetWebsite.Enabled = miViewHtmlWebsite.Enabled =
-                ((project.HelpFileFormat & HelpFileFormats.Website) != 0);
+            miViewAspNetWebsite.Enabled = ((project.HelpFileFormat & HelpFileFormats.Website) != 0);
             miViewOpenXml.Enabled = ((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0);
             miOpenHelpAfterBuild.Checked = Settings.Default.OpenHelpAfterBuild;
         }
@@ -1431,7 +1429,7 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// Launch the ASP.NET Development Web Server to view the website output (Index.aspx/Index.html)
+        /// Launch the development web server to view the website output (Index.aspx/Index.html)
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -1439,7 +1437,7 @@ namespace SandcastleBuilder.Gui
         {
             ProcessStartInfo psi;
             FilePath webServerPath = new FilePath(null);
-            string outputPath, path, vPath = null, defaultPage = "Index.aspx";
+            string outputPath, path, vPath, defaultPage = "Index.aspx";
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
@@ -1595,9 +1593,8 @@ namespace SandcastleBuilder.Gui
         private void miClose_Click(object sender, EventArgs e)
         {
             dockPanel.CheckFocusedContent();    // HACK
-            BaseContentEditor content = dockPanel.ActiveContent as BaseContentEditor;
 
-            if(content == null)
+            if(!(dockPanel.ActiveContent is BaseContentEditor content))
                 content = projectExplorer;
 
             if(content != null && content.CanClose)
@@ -1648,10 +1645,9 @@ namespace SandcastleBuilder.Gui
         private void miSave_Click(object sender, EventArgs e)
         {
             dockPanel.CheckFocusedContent();    // HACK
-            BaseContentEditor content = dockPanel.ActiveContent as BaseContentEditor;
 
             // Save the project by default
-            if(content == null || !content.CanSaveContent)
+            if(!(dockPanel.ActiveContent is BaseContentEditor content) || !content.CanSaveContent)
                 content = projectExplorer;
 
             if(content != null)
@@ -1666,9 +1662,8 @@ namespace SandcastleBuilder.Gui
         private void miSaveAs_Click(object sender, EventArgs e)
         {
             dockPanel.CheckFocusedContent();    // HACK
-            BaseContentEditor content = dockPanel.ActiveContent as BaseContentEditor;
 
-            if(content == null)
+            if(!(dockPanel.ActiveContent is BaseContentEditor content))
                 content = projectExplorer;
 
             if(content != null && content.CanSaveContent)
@@ -1737,8 +1732,7 @@ namespace SandcastleBuilder.Gui
             {
                 // Make sure we start out in the project's output folder
                 // in case the output folder is relative to it.
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(
-                    Path.GetFullPath(project.Filename)));
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
                 lastBuildLog = project.LogFileLocation;
             }
@@ -1952,8 +1946,7 @@ namespace SandcastleBuilder.Gui
                 catch(Exception ex)
                 {
                     Debug.Write(ex);
-                    MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {

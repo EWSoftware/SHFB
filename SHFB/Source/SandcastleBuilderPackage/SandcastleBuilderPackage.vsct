@@ -104,18 +104,6 @@
 				</Strings>
 			</Button>
 
-			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlWebsite" priority="0x0101">
-				<Icon guid="HtmlWebsite.pngGuid" id="HtmlWebsite.pngId" />
-				<CommandFlag>DefaultInvisible</CommandFlag>
-				<CommandFlag>DynamicVisibility</CommandFlag>
-				<Strings>
-					<CommandName>cmdidViewHtmlWebsite</CommandName>
-					<ButtonText>View &amp;Website (Local File System)</ButtonText>
-					<MenuText>View &amp;Website (HTML)</MenuText>
-					<ToolTipText>View &amp;Website (HTML)</ToolTipText>
-				</Strings>
-			</Button>
-
 			<Button guid="guidSandcastleBuilderPackageCommandSet" id="ViewFaq" priority="0x0100">
 				<Icon guid="FAQ.pngGuid" id="FAQ.pngId" />
 				<Strings>
@@ -236,7 +224,6 @@
 			<Bitmap guid="HtmlHelp.pngGuid" href="Resources\HtmlHelp.png" usedList="HtmlHelp.pngId" />
 			<Bitmap guid="MSHelpViewer.pngGuid" href="Resources\MSHelpViewer.png" usedList="MSHelpViewer.pngId" />
 			<Bitmap guid="AspNetWebsite.pngGuid" href="Resources\AspNetWebsite.png" usedList="AspNetWebsite.pngId" />
-			<Bitmap guid="HtmlWebsite.pngGuid" href="Resources\HtmlWebsite.png" usedList="HtmlWebsite.pngId" />
 			<Bitmap guid="FAQ.pngGuid" href="Resources\FAQ.png" usedList="FAQ.pngId" />
 			<Bitmap guid="ShowHelp.pngGuid" href="Resources\ShowHelp.png" usedList="ShowHelp.pngId" />
 			<Bitmap guid="LogFile.pngGuid" href="Resources\LogFile.png" usedList="LogFile.pngId" />
@@ -261,9 +248,6 @@
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="MshcHelpGroup" />
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewAspNetWebsite" priority="0x0100">
-			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" />
-		</CommandPlacement>
-		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHtmlWebsite" priority="0x0101">
 			<Parent guid="guidSandcastleBuilderPackageCommandSet" id="WebsiteHelpGroup" />
 		</CommandPlacement>
 		<CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewFaq" priority="0x0100">
@@ -418,7 +402,6 @@
 			<IDSymbol name="ViewHtmlHelp" value="0x0007" />
 			<IDSymbol name="ViewMshcHelp" value="0x0009" />
 			<IDSymbol name="ViewAspNetWebsite" value="0x000B" />
-			<IDSymbol name="ViewHtmlWebsite" value="0x000C" />
 			<IDSymbol name="ViewFaq" value="0x0019" />
 			<IDSymbol name="ViewShfbHelp" value="0x001A" />
 			<IDSymbol name="OpenInStandaloneGUI" value="0x001C" />
@@ -447,10 +430,6 @@
 
 		<GuidSymbol name="AspNetWebsite.pngGuid" value="{8e8669cc-c445-4357-a96b-5797bee36ac4}">
 			<IDSymbol name="AspNetWebsite.pngId" value="1" />
-		</GuidSymbol>
-
-		<GuidSymbol name="HtmlWebsite.pngGuid" value="{91eda879-4fc3-4406-a430-042466fa275d}">
-			<IDSymbol name="HtmlWebsite.pngId" value="1" />
 		</GuidSymbol>
 
 		<GuidSymbol name="FAQ.pngGuid" value="{7a81b577-79eb-46cf-9255-0e07d047cc5e}">
