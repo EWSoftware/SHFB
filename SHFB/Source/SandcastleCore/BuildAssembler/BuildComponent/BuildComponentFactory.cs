@@ -115,12 +115,16 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <remarks>The base implementation uses a generic editor dialog that edits the XML as text</remarks>
         public virtual string ConfigureComponent(string currentConfiguration, CompositionContainer container)
         {
+        #if DOTNETCORE
+            return "";
+        #else
             var dlg = new ConfigurationEditorDlg() { Configuration = currentConfiguration };
 
             if(dlg.ShowModalDialog() ?? false)
                 currentConfiguration = dlg.Configuration;
 
             return currentConfiguration;
+        #endif
         }
         #endregion
     }

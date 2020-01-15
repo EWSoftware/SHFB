@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>SandcastleBuilder.Utils</RootNamespace>
+    <PackageId>SandcastleBuilder.Utils</PackageId>
+    <Authors>Eric Woodruff</Authors>
+    <Company>Eric Woodruff</Company>
+    <Product>Sandcastle</Product>
+    <PackageDescription>Sandcastle Help File Builder and Tools</PackageDescription>
+    <Description>This assembly contains the project, build engine, and Managed Extensibility Framework (MEF) classes used by all of the other Sandcastle Help File Builder applications.</Description>
+    <Copyright>Copyright © 2006-2020, Eric Woodruff, All Rights Reserved</Copyright>
+    <PackageProjectUrl>https://github.com/EWSoftware/SHFB</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/EWSoftware/SHFB</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <PackageTags>Sandcastle;Help;Builder;Utilities</PackageTags>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Version>19.11.17</Version>
+    <InformationalVersion Condition="'$(Configuration)'=='Release'">Release Build</InformationalVersion>
+    <InformationalVersion Condition="'$(Configuration)'!='Release'">Debug Build</InformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>Sandcastle.Utils</AssemblyName>
+    <OutputPath>bin\$(Configuration)</OutputPath>
+    <DocumentationFile>$(OutputPath)\Sandcastle.Utils.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netcore'))">
+    <DefineConstants>DOTNETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Exclude unused / unavailable code items -->
+  <ItemGroup>
+    <Compile Remove="Controls\**" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+    <Compile Remove="Properties\AssemblyInfoShared.cs" />
+    <Compile Remove="Design\FilePathObjectEditor.cs" />
+    <Compile Remove="Design\FilePathStringEditor.cs" />
+    <Compile Remove="Design\FilePathTypeConverter.cs" />
+    <Compile Remove="Design\FolderPathObjectEditor.cs" />
+    <Compile Remove="Design\FolderPathStringEditor.cs" />
+    <Compile Remove="Design\FolderPathTypeConverter.cs" />
+    <EmbeddedResource Remove="Controls\**" />
+    <None Remove="Controls\**" />
+    <None Remove="packages.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <NoneInvisible Include="@(None-&gt;WithMetadataValue('Visible', 'false'))" />
+    <None Remove="@(NoneInvisible)" />
+  </ItemGroup>
+
+  <Target Name="IncludeNoneInvisible" BeforeTargets="PrepareForBuild">
+    <ItemGroup>
+      <None Include="@(NoneInvisible)" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build" Version="16.4.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.4.0" />
+    <PackageReference Include="Microsoft.Build.Runtime" Version="16.4.0" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.4.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="DotNetZip" Version="1.13.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core-DotNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
