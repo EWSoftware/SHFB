@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>SandcastleBuilder.Core</RootNamespace>
     <PackageId>SandcastleBuilder.Core</PackageId>
     <Authors>Eric Woodruff</Authors>
@@ -13,10 +13,8 @@
     <PackageProjectUrl>https://github.com/EWSoftware/SHFB</PackageProjectUrl>
     <RepositoryUrl>https://github.com/EWSoftware/SHFB</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <PackageTags>Sandcastle;Help;Builder;Utilities</PackageTags>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Version>19.11.17</Version>
     <InformationalVersion Condition="'$(Configuration)'=='Release'">Release Build</InformationalVersion>
@@ -43,7 +41,6 @@
     <Compile Remove="WpfHelpers.cs" />
     <None Remove="Properties\**" />
     <None Remove="Resources\**" />
-    <None Remove="**\*.targets" />
     <None Remove="BuildAssembler\BuildComponent\ConfigurationEditorDlg.xaml" />
     <None Remove="packages.config" />
   </ItemGroup>
