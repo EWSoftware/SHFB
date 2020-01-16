@@ -33,12 +33,18 @@ namespace SandcastleBuilder.Utils.Design
 
     [CompilerGenerated]
     internal class FilePathTypeConverter { }
+    
+    [CompilerGenerated]
+    internal class FilePathStringEditor { }
 
     [CompilerGenerated]
     internal class FolderPathObjectEditor { }
 
     [CompilerGenerated]
     internal class FolderPathTypeConverter { }
+    
+    [CompilerGenerated]
+    internal class FolderPathStringEditor { }
 }
 
 namespace System.Drawing.Design

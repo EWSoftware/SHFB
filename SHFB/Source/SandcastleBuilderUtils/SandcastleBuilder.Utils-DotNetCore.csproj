@@ -22,9 +22,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>Sandcastle.Utils</AssemblyName>
+    <AssemblyName>SandcastleBuilder.Utils</AssemblyName>
     <OutputPath>bin\$(Configuration)</OutputPath>
-    <DocumentationFile>$(OutputPath)\Sandcastle.Utils.xml</DocumentationFile>
+    <DocumentationFile>$(OutputPath)\$(TargetFramework)\SandcastleBuilder.Utils.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('netcore'))">
