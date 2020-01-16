@@ -6,8 +6,7 @@
 // Note    : Copyright 2007-2020, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
-// pages.  It's a really basic implementation but should get the job done.
+// This file Provides proxy serialization and deserialization functionality.
 //
 // Design Decision:
 //    This class does not exist in .NET core, so this just proxies functionality to Newtonsoft.Json. If the

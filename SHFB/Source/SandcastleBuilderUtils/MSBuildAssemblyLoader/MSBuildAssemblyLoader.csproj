@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>Sandcastle.Core</RootNamespace>
-    <PackageId>Sandcastle.Core</PackageId>
+    <RootNamespace>MSBuildAssemblyLoader</RootNamespace>
+    <PackageId>MSBuildAssemblyLoader</PackageId>
     <Authors>Eric Woodruff</Authors>
     <Company>Eric Woodruff</Company>
     <Product>Sandcastle</Product>
@@ -24,31 +24,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>Sandcastle.Core</AssemblyName>
-    <OutputPath>bin\$(Configuration)</OutputPath>
-    <DocumentationFile>$(OutputPath)\$(TargetFramework)\Sandcastle.Core.xml</DocumentationFile>
-    <DefineConstants>DOTNETCORE</DefineConstants>
+    <AssemblyName>MSBuildAssemblyLoader</AssemblyName>
+    <OutputPath>..\bin\$(Configuration)</OutputPath>
+    <DocumentationFile>$(OutputPath)\$(TargetFramework)\MSBuildAssemblyLoader.xml</DocumentationFile>
   </PropertyGroup>
-
-  <!-- Exclude unused / unavailable code items -->
-  <ItemGroup>
-    <EmbeddedResource Remove="Properties\**" />
-    <EmbeddedResource Remove="Resources\**" />
-    <Compile Remove="Properties\**" />
-    <Compile Remove="Resources\**" />
-    <Compile Remove="BuildAssembler\BuildComponent\ConfigurationEditorDlg.xaml.cs" />
-    <Compile Remove="WpfHelpers.cs" />
-    <None Remove="Properties\**" />
-    <None Remove="Resources\**" />
-    <None Remove="BuildAssembler\BuildComponent\ConfigurationEditorDlg.xaml" />
-    <None Remove="packages.config" />
-  </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.4.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.4.0" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.4.0" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <OutputType>Library</OutputType>
     <RootNamespace>SandcastleBuilder.Utils</RootNamespace>
     <PackageId>SandcastleBuilder.Utils</PackageId>
     <Authors>Eric Woodruff</Authors>
@@ -19,21 +20,21 @@
     <Version>19.11.17</Version>
     <InformationalVersion Condition="'$(Configuration)'=='Release'">Release Build</InformationalVersion>
     <InformationalVersion Condition="'$(Configuration)'!='Release'">Debug Build</InformationalVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup>
     <AssemblyName>SandcastleBuilder.Utils</AssemblyName>
     <OutputPath>bin\$(Configuration)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\SandcastleBuilder.Utils.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('netcore'))">
     <DefineConstants>DOTNETCORE</DefineConstants>
   </PropertyGroup>
+  
 
   <!-- Exclude unused / unavailable code items -->
   <ItemGroup>
     <Compile Remove="Controls\**" />
+    <Compile Remove="MSBuildAssemblyLoader\**" />
     <Compile Remove="Properties\AssemblyInfo.cs" />
     <Compile Remove="Properties\AssemblyInfoShared.cs" />
     <Compile Remove="Design\FilePathObjectEditor.cs" />
@@ -43,20 +44,11 @@
     <Compile Remove="Design\FolderPathStringEditor.cs" />
     <Compile Remove="Design\FolderPathTypeConverter.cs" />
     <EmbeddedResource Remove="Controls\**" />
+    <EmbeddedResource Remove="MSBuildAssemblyLoader\**" />
     <None Remove="Controls\**" />
+    <None Remove="MSBuildAssemblyLoader\**" />
     <None Remove="packages.config" />
   </ItemGroup>
-
-  <ItemGroup>
-    <NoneInvisible Include="@(None-&gt;WithMetadataValue('Visible', 'false'))" />
-    <None Remove="@(NoneInvisible)" />
-  </ItemGroup>
-
-  <Target Name="IncludeNoneInvisible" BeforeTargets="PrepareForBuild">
-    <ItemGroup>
-      <None Include="@(NoneInvisible)" />
-    </ItemGroup>
-  </Target>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="16.4.0" />
@@ -65,6 +57,7 @@
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.4.0" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="DotNetZip" Version="1.13.4" />
   </ItemGroup>
