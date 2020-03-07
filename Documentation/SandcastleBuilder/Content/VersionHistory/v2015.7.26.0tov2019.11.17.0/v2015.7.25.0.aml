@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="90c2bedf-fe6e-4f99-8a33-84b441701269" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<alert class="important">
+				<para>This release removes all deprecated features and makes a significant number of changes to the
+build engine.  These changes were necessary to move forward with new features and to make supporting the existing
+features more manageable.  Review the sections below for details.</para>
+			</alert>
+			
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2015.7.25.0." />
+		</introduction>
+
+		<section address="RemovedFeatures">
+			<title>Deprecated Features Removed</title>
+			<content>
+				<para>Effective with this release, the following changes were made to remove deprecated features that are
+no longer supported:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed unused tools: AggregateByNamespace, ChmBuilder, DBCSFix, MergeXml, SegregateByAssembly</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>/internal</codeInline> MRefBuilder command line option.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the obsolete platform configuration options from the MRefBuilder configuration file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the Prototype style and Microsoft Help 2 production XSL transformations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the deprecated presentation styles: Prototype, Hana, and VS2005</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the Hierarchical TOC plug-in.  It did not work with MS Help Viewer output and was
+superseded by the namespace grouping support in the presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed support for the Microsoft Help 2 file format and all related project properties:
+<codeInline>HtmlHelp2xCompilerPath</codeInline>, <codeInline>CollectionTocStyle</codeInline>,
+<codeInline>MSHelp2SdkLinkType</codeInline>, <codeInline>IncludeStopWordList</codeInline>,
+<codeInline>PlugInNamespaces</codeInline>, and <codeInline>HelpAttributes</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>CppCommentsFixup</codeInline> property and all related code.  Use the
+<link xlink:href="17d977a6-e3dc-4ef4-9bbf-718ef4823854" /> instead.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed support for topic (<localUri>.topic</localUri>) file transformation and the
+<codeInline>TopicTransform</codeInline> build action.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the file system based additional content model used to add HTML topics to the table of
+contents.  HTML files can still be included but a site map file must be added to the project to define their
+layout in the table of contents.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed all HTML file transformation options (code import, code colorizing, replacement tags,
+etc.).  HTML files can still be included and referenced via a site map file but they will not receive any
+transformation.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed support for HTML files from the content layout file editor.  Only MAML topics can
+appear in a content layout file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed support for the project item metadata element <codeInline>ExcludeFromToc</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the old project format converters and the New Project from Other Format option in the
+standalone GUI and Visual Studio package.  I could not guarantee they worked well now anyway and they were
+getting in the way of other changes I want to make to the build engine.</para>
+					</listItem>
+
+					<listItem>
+						<para>Dropped support for Visual Studio 2010 and 2012 from the Visual Studio package.</para>
+					</listItem>
+
+					<listItem>
+						<para>Dropped support for installing the schemas and snippets in Visual Studio 2008-2012 in the
+guided installer.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<para>If you use the ESent or SQL Server data caching components, they will need to be removed and added
+back to your projects in order to obtain changes made to their configuration elements.  If you have created
+custom build components, syntax generators, plug-ins, or presentation styles, carefully read the following items
+as you may need to update your components based on these changes.  If you need help in determining how to update
+a component so that it can be used with the new build engine, please open an issue at the project site on
+GitHub.</para>
+				
+				<list class="bullet">
+					<listItem>
+						<para>Updated all projects to use .NET 4.5 and made it the minimum framework version in the guided
+installer.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the build engine so that it can be ran in the background as an asynchronous task rather
+than requiring a separate thread.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed lots of obsolete code from the build engine and changed the <codeInline>SandcastleProject</codeInline>
+class so that it is a read-only wrapper around the underlying MSBuild project.  This prevents inadvertent changes
+to the underlying project during builds and allows building sub-projects without first having to clone the
+sub-project in case it is already in the global project collection.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked documentation source component enumeration to simplify usage.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked conceptual content item enumeration and added the ability to add conceptual content
+items directly to the build process instance without having to use a temporary project instance from which
+the items are copied to the build process.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the manual visibility and API filter methods from the build engine into a new
+<link xlink:href="d377a638-6dfc-4041-ba7b-97561de26f0d" />.  If your plug-in made use of the old methods in the
+build engine that manually applied the API filter and/or visibility options, remove the related code and note in
+your plug-in's documentation and description that the new plug-in should be used in conjunction with it.</para>
+					</listItem>
+
+					<listItem>
+						<para>The BuildAssembler configuration files in any custom presentation styles will need to be
+updated by replacing any references to <codeInline>{@SHFBFolder}Data\{@TargetFrameworkIdentifier}</codeInline>
+with <codeInline>{@FrameworkReflectionDataFolder}</codeInline>.  This will allow them to find the reflection
+data files.</para>
+					</listItem>
+				</list>
+
+				</content>
+		</section>
+
+		<section address="Documentation">
+			<title>Documentation</title>
+			<content>
+				<para>The Sandcastle Tools help file has been removed.  All of its former content has been merged into
+this help file.  Additional topics have been added to document the underlying Sandcastle tools.</para>
+			</content>
+		</section>
+
+		<section address="HelpFileBuilder">
+			<title>Help File Builder </title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the HelpLibraryManagerLauncher tool so that it adds the default catalog name to the
+command line arguments if one is not explicitly specified.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from Sam Harwell to correct issues with the extended XML comment element
+auto-completion in Visual Studio 2015.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed loading of the reflection information file in the build engine and replaced it with
+XML stream axis methods which greatly reduces memory usage in the build engine for large builds.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked how the default topic was determined.  This corrects an issue that caused it to not
+determine the default topic and fail the build under certain conditions.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved clearing the prior web/markdown content to the start of the build where the other format
+output is deleted.  This allows other output generated by the build such as IntelliSense comments files to be
+placed in the output folder without being lost when the web/markdown content is generated.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the <codeInline>Help File Version</codeInline> property to the <codeInline>Help File</codeInline>
+property page.  It does not have to be in the form of a version number anymore.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>Visibility</codeInline> category option to support documenting public
+compiler generated types and members.  Private, internal, and protected compiler generated members are always
+excluded as before.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the build engine so that it utilizes the new reflection data set dictionary to find
+and load information about the available frameworks.  This effectively allows framework information to be treated
+like any other project-specific component.  See the  <link xlink:href="032f1fab-6625-4ffb-9316-57fb3e4a03ff" />
+topic for more information on generating framework reflection data.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added separate NuGet reflection data packages for each of the framework types.  This works
+around the NuGet package size limitation and allows you to install the core help file builder NuGet package and
+only the reflection data for the frameworks that you actually need.  See the
+<link xlink:href="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" /> topic for more information.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a case in the AddNamespaceGroups tool where it would not always create groups correctly
+under certain conditions (submitted by dgedge33).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the extension method parameter comparisons in the MRefBuilder extension method add-in so
+that it does not add extension methods to types with matching method signatures.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the API filter in MRefBuilder so that an internal type in one assembly does not hide a
+public type of the same name in another assembly if the internal one is seen first.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that internal interfaces are not listed on types that implement them.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed VersionBuilder so that when the rip option is enabled, it correctly removes extension
+methods when they no longer appear in the latest release.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for including public compiler generated types and members in the MRefBuilder
+visibility options.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the Reflection Data Manager tool which is now used to define reflection data set files
+and build the reflection data for the various frameworks.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for running SegregateByAssembly as an MSBuild task.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the keyword lookup script in the VS2013 presentation style so that it initializes the
+word dictionary object correctly to prevent keywords being interpreted as property names (i.e. "length").</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the VS2013 presentation style so that the content does not go under the vertical
+scrollbar in the Help 1 and MS Help Viewer formats.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged a change from Drew Gross that closes an XSS vulnerability in the legacy website script
+used by the VS2010 presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the missing <localUri>CodeExample.png</localUri> image to the Open XML presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an <codeInline>includeEnumValues</codeInline> transformation argument to all presentation
+styles.  If set to true, the default, a column for the numeric value of each field is included in enumerated type
+topics.  If set to false, the numeric value column is excluded.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the order of the sections on the member list pages in all presentation styles to more
+closely match the order on MSDN.  Also updated the table of contents transformation to order the type subtopics
+so that they're consistent with the order in the member list pages.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

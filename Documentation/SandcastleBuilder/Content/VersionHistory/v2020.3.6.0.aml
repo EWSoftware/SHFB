@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fa3bd7c8-2b1d-4e66-9278-e36f57e098a6" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2020.3.6.0.</para>
+
+			<alert class="important">
+				<para>All tools have been updated to use .NET 4.7.2 and it is now the minimum framework version required.
+Due to the updated framework version, support for Visual Studio 2015 has been dropped from the Visual Studio
+package.  Only Visual Studio 2017 and later will be supported going forward.  The standalone GUI can be used if
+needed.</para>
+			</alert>
+		</introduction>
+
+		<section>
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed MRefBuilder so that it correctly handles missing security attribute types when loading
+security attribute information.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an option to ignore <localUri>netstandard.dll</localUri> in the list of references if not
+using the cross-platform reflection data set.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>When setting the configuration and platform, <codeInline>Platform</codeInline> is also set
+along with <codeInline>PlatformName</codeInline> even if <codeInline>Platform</codeInline> is not seen.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the build engine so that it reports the correct error number rather than the general
+BE0065 error when a more specific one is supplied.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of XML comments files so that it can find them in projects that use
+multi-targeting with unresolved property values in the comments filename property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <ui>Local File System</ui> website viewing option.  It caused too much confusion due to
+blocked scripts.  Use the <ui>View Website (Local Web Dev Server)</ui> option instead.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7603a301-1567-4f97-84ea-165d209dab7d" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2016.5.28.0.</para>
+		</introduction>
+
+		<section>
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed MRefBuilder so that it correctly sets the system assembly types for frameworks such as
+<codeInline>.NETCore</codeInline> that redirect them out of <codeInline>mscorlib</codeInline> into
+<codeInline>System.Runtime</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Show Missing Component so that it uses double quotes around the member ID when it
+contains a single quote when checking for auto-documented constructors and dispose methods.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		
+		<section>
+			<title>Sandcastle Help File Builder</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the Help File property page so that the presentation style property value is set
+correctly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the GUI and VSPackage to look for and use IIS Express to view the website output if the
+development web server cannot be found.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged a change to the Version Builder Plug-In configuration from Pedro Lamas to try and
+parse and compare versions as version values first and then fall back to string comparisons to get a proper
+sort order in either case.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for installing the VSPackage in Visual Studio 15 Preview 2.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

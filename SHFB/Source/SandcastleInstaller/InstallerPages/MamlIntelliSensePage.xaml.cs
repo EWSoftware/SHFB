@@ -2,8 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 08/17/2019
-// Compiler: Microsoft Visual C#
+// Updated : 03/06/2020
 //
 // This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
 // Studio IntelliSense.
@@ -198,23 +197,32 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
+            if(configuration.Attribute("supportedVersions") == null)
+                throw new InvalidOperationException("A supportedVersions attribute value is required");
+
+            var supportedVersions = configuration.Attribute("supportedVersions").Value.Split(new[] { ',', ' ' },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
+
             // Load the possible versions, figure out if the schemas are already installed, and if we can
             // safely overwrite them.
             foreach(var vs in VisualStudioInstance.AllInstances)
             {
-                string location = vs.XmlSchemaCachePath;
-
-                CheckBox cb = new CheckBox
+                if(supportedVersions.Any(v => vs.Version.StartsWith(v, StringComparison.Ordinal)))
                 {
-                    Margin = new Thickness(20, 5, 0, 0),
-                    Content = vs.DisplayName,
-                    IsEnabled = this.CheckForSafeInstallation(vs.DisplayName, ref location)
-                };
+                    string location = vs.XmlSchemaCachePath;
 
-                cb.IsChecked = cb.IsEnabled;
-                cb.Tag = location;
+                    CheckBox cb = new CheckBox
+                    {
+                        Margin = new Thickness(20, 5, 0, 0),
+                        Content = vs.DisplayName,
+                        IsEnabled = this.CheckForSafeInstallation(vs.DisplayName, ref location)
+                    };
 
-                pnlVersions.Children.Add(cb);
+                    cb.IsChecked = cb.IsEnabled;
+                    cb.Tag = location;
+
+                    pnlVersions.Children.Add(cb);
+                }
             }
 
             if(pnlVersions.Children.Count == 0)
