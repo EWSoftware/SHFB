@@ -2,8 +2,7 @@
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 03/27/2018
-// Compiler: Microsoft Visual C#
+// Updated : 05/17/2020
 //
 // This is used to colorize blocks of code for output as HTML.  The original Code Project article by Jonathan
 // can be found at: http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con.
@@ -279,6 +278,8 @@ namespace ColorizerLibrary
         // This is used to find the collapsible region boundaries
         private static Regex reCollapseMarkers = new Regex(
             @"^\s*(#region\s(.*)|#if\s(.*)|#else|#end\s?if|#end\s?region)", RegexOptions.IgnoreCase);
+
+        private static int uniqueRegionId;
 
         // Syntax description file, friendly name dictionary, and alternate IDs dictionary
         private XmlDocument languageSyntax;
@@ -928,6 +929,7 @@ namespace ColorizerLibrary
                         case "#region":
                         case "#if":
                         case "#else":
+                            uniqueRegionId++;
                             nestingLevel++;
 
                             if(!addLineNumbers)
@@ -944,7 +946,7 @@ namespace ColorizerLibrary
                                 "class=\"highlight-collapsed\">{2}</span></span><span id=\"hrExp{0}\" " +
                                 "style=\"display: inline;\">{1}<span class=\"highlight-collapsebox\" " +
                                 "onclick=\"javascript: HighlightExpandCollapse('hrCol{0}', " +
-                                "'hrExp{0}');\">-</span>", line, lineInfo, regions[regionIdx].Description);
+                                "'hrExp{0}');\">-</span>", uniqueRegionId, lineInfo, regions[regionIdx].Description);
 
                             regionIdx++;
 
@@ -959,7 +961,7 @@ namespace ColorizerLibrary
                                     "class=\"highlight-collapsed\">{2}</span></span><span id=\"hrExp{0}_{1}\" " +
                                     "style=\"display: inline;\"><span class=\"highlight-collapsebox\" " +
                                     "onclick=\"javascript: HighlightExpandCollapse('hrCol{0}_{1}', " +
-                                    "'hrExp{0}_{1}');\">-</span>", line, regionIdx, regions[regionIdx].Description);
+                                    "'hrExp{0}_{1}');\">-</span>", uniqueRegionId, regionIdx, regions[regionIdx].Description);
 
                                 regionIdx++;
                             }
