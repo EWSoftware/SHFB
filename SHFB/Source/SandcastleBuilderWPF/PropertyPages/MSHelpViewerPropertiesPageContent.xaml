@@ -5,7 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
 	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
-	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
 	mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="340"
 	MinWidth="550" MinHeight="340" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	<Grid Margin="3">

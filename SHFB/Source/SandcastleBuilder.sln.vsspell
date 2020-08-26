@@ -30,6 +30,8 @@
     <Ignore>xml</Ignore>
     <Ignore>xmlns</Ignore>
     <Ignore>cctor</Ignore>
+    <Ignore>param</Ignore>
+    <Ignore>typeparam</Ignore>
   </IgnoredWords>
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>

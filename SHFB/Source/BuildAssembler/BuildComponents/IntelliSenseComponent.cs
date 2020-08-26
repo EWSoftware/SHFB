@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
+// Updated : 05/29/2020
+// Note    : Copyright 2007-2020, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
@@ -167,6 +167,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             public XPathNavigator Returns { get; set; }
 
             /// <summary>
+            /// The value element comments
+            /// </summary>
+            public XPathNavigator Value { get; set; }
+
+            /// <summary>
             /// The exception element comments
             /// </summary>
             public XPathNodeIterator Exceptions { get; set; }
@@ -197,6 +202,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 this.Params = comments.Select(component.paramExpression);
                 this.TypeParams = comments.Select(component.typeparamExpression);
                 this.Returns = comments.SelectSingleNode(component.returnsExpression);
+                this.Value = comments.SelectSingleNode(component.valueExpression);
                 this.Exceptions = comments.Select(component.exceptionExpression);
                 this.CodeContracts = comments.Select(component.codeContractsExpression);
 
@@ -227,7 +233,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private XPathExpression assemblyExpression, subgroupExpression, elementsExpression;
 
         private XPathExpression summaryExpression, paramExpression, typeparamExpression, returnsExpression,
-            exceptionExpression, codeContractsExpression;
+            valueExpression, exceptionExpression, codeContractsExpression;
 
         private BlockingCollection<CommentsInfo> commentsList;
         private Task commentsWriter;
@@ -275,6 +281,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             paramExpression = XPathExpression.Compile("param");
             typeparamExpression = XPathExpression.Compile("typeparam");
             returnsExpression = XPathExpression.Compile("returns");
+            valueExpression = XPathExpression.Compile("value");
             exceptionExpression = XPathExpression.Compile("exception");
             codeContractsExpression = XPathExpression.Compile("requires|ensures|ensuresOnThrow|pure|invariant|" +
                 "getter|setter");
@@ -428,6 +435,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     if(comments.Returns != null)
                         writer.WriteNode(comments.Returns, true);
+
+                    if(comments.Value != null)
+                        writer.WriteNode(comments.Value, true);
 
                     foreach(XPathNavigator nav in comments.Exceptions)
                         writer.WriteNode(nav, true);
