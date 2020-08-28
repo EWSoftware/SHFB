@@ -32,6 +32,9 @@
       <Component Id="cmp850196005FCEEF1CA2D3E513B5D438D2" Guid="{9D2E0D18-F60B-4573-8F53-D9CDF86077AB}">
         <File Id="fil6A03C372AABF7DD92D12A1D3DB2FEE05" KeyPath="yes" Source="$(var.RootFolder)\ColorizerLibrary.xml" />
       </Component>
+      <Component Id="cmp72E4FD51E0E29AC1AAC1D9EC129BFE39" Guid="{B45D6187-1A05-4F1C-A922-DB8BE00144B4}">
+        <File Id="fil40D13D9A2BD93F02AD6022792C24363B" KeyPath="yes" Source="$(var.RootFolder)\DotNetProjects.Wpf.Extended.Toolkit.dll" />
+      </Component>
       <Component Id="cmp1E3A46AAB1AEC1C0867B4366AA14C74A" Guid="{99BB99EE-CFA3-43E8-A3F5-CDDAE8410B37}">
         <File Id="fil817B659AADCC5E1ADAD9FE8BCC456866" KeyPath="yes" Source="$(var.RootFolder)\Esent.Collections.dll" />
       </Component>
@@ -65,17 +68,8 @@
       <Component Id="cmp47710F4ED559988F6A71463791BDDB20" Guid="{CC712A0B-833F-45A6-B112-8B407346229F}">
         <File Id="fil80F96581DD65AAB4B3CA909D515B85AB" KeyPath="yes" Source="$(var.RootFolder)\Ionic.Zip.Reduced.dll" />
       </Component>
-      <Component Id="cmpB8CA284799BDD010AF88440D99DB9EEF" Guid="{82061DA0-1639-4C28-8F87-2FD5B2BA6241}">
-        <File Id="fil6195710111923048ABBCC64D92C0043A" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.Build.dll" />
-      </Component>
-      <Component Id="cmpFA74F6B0FEED0F13C5AB27468ADEAC3A" Guid="{1D702305-22D1-4061-918D-12D9CBCBFF47}">
-        <File Id="fil20D2C90D4F232857C1192DFFC805EEEA" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.Build.Engine.dll" />
-      </Component>
-      <Component Id="cmp7AC5BF8BF3F963049084AF1F825035FC" Guid="{0DB14B59-64B9-404E-B0C6-CFE12F01F223}">
-        <File Id="fil0CADCD85C173C023142FBEE239D8AD10" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.Build.Framework.dll" />
-      </Component>
-      <Component Id="cmp4CC2B741351755B4D0C3DAC95AE9BD2F" Guid="{8E029402-F9BE-4DCE-8D82-6AD3BB096371}">
-        <File Id="filDE94B38070BC9AC38FAC9FC381B8DA5E" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.Build.Utilities.Core.dll" />
+      <Component Id="cmpD77D48D0992811F0DD0522F9CEFB4644" Guid="{A5F0D800-A638-4AB4-9E77-2A1CDD6A3080}">
+        <File Id="fil9FD02A018D373F9596134444932FE692" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.Build.Locator.dll" />
       </Component>
       <Component Id="cmp91D85178A06806BEAAA0D49E48B8894F" Guid="{D1FE4385-6659-42FE-B01D-4DC3CF411589}">
         <File Id="filEE750CD1A7F2233AAAF0644F1DB722CA" KeyPath="yes" Source="$(var.RootFolder)\MRefBuilder.config" />
@@ -159,6 +153,9 @@
       <Component Id="cmp857EBDF3A05062DB24AB5DF805D643EB" Guid="{9237632C-220B-4793-9318-08B9601053F5}">
         <File Id="fil3DD2C18B6F25430DA54C36819434B23B" KeyPath="yes" Source="$(var.RootFolder)\SegregateByNamespace.exe" />
       </Component>
+      <Component Id="cmp39BAA70A368194908C55B4CDEECB3D4C" Guid="{C0EEA2D7-BE70-4B6F-B6C8-B5F98D9AB292}">
+        <File Id="filF09F535745DBD62410579DE7323619F2" KeyPath="yes" Source="$(var.RootFolder)\SegregateByNamespace.exe.config" />
+      </Component>
       <Component Id="SHFBProjectLauncher.exe" Guid="{D9AA7E0D-6467-4DDF-A798-E3E8890A8720}">
 				<File Id="SHFBProjectLauncher.exe" KeyPath="yes" Source="$(var.RootFolder)\SHFBProjectLauncher.exe">
 					<Shortcut Id="SHFBProjectLauncher.exe"
@@ -177,7 +174,7 @@
 					</Extension>
 				</ProgId>
 			</Component>
-      <Component Id="cmp6F2CD371CC1458C510364DB3B3E08AC7" Guid="{183C1748-6A3A-4C51-A48B-D535BD96ABA5}">
+      <Component Id="cmp6F2CD371CC1458C510364DB3B3E08AC7" Guid="{329E9B01-5B29-4F4D-BFDC-768CBC22BE88}">
         <File Id="filC664FBB23CA021BD3B335591F0027DA3" KeyPath="yes" Source="$(var.RootFolder)\SHFBProjectLauncher.exe.config" />
       </Component>
       <Component Id="cmpB092835B25713C5EC3C27546E3250C95" Guid="{B468F42C-F4E5-4FBF-A4AB-EE9363460265}">
@@ -185,12 +182,6 @@
       </Component>
       <Component Id="cmp56E3DEF6D0A5836F36A1307284549659" Guid="{4A19FD32-2109-4512-9366-709BE799B522}">
         <File Id="fil216C786232AC5BA78768E339B258BDB3" KeyPath="yes" Source="$(var.RootFolder)\SyntaxComponents.xml" />
-      </Component>
-      <Component Id="cmp33FDA478CB86F083519801379B2D2D8B" Guid="{158DE4FA-0EEE-4766-9BDC-3EF196D3959B}">
-        <File Id="fil5D4575804C3CE3ACC76FF53290806177" KeyPath="yes" Source="$(var.RootFolder)\System.Collections.Immutable.dll" />
-      </Component>
-      <Component Id="cmp90E68E5D3A8B34B60F5646BAF1356B3E" Guid="{AD748150-3B28-4B57-A6D4-CF553BCC61D7}">
-        <File Id="fil5C62401CE64B3D4E4095780D4D1C1101" KeyPath="yes" Source="$(var.RootFolder)\System.Threading.Tasks.Dataflow.dll" />
       </Component>
       <Component Id="cmpB33DADF2D729CCAE7A61B72DDA2087A3" Guid="{4B1A6FB9-494F-4D53-8D4A-96D74A8F687D}">
         <File Id="fil610DB4B1467F7384FE836BAC91B5D8B1" KeyPath="yes" Source="$(var.RootFolder)\VersionBuilder.exe" />
@@ -200,9 +191,6 @@
       </Component>
       <Component Id="cmpF64D60E2A7A50FD6241ABDBE27E31F59" Guid="{4F6C605F-1708-4216-A36E-858DC10931E7}">
         <File Id="filED0391668232DF3DEA5823C1D36F49AD" KeyPath="yes" Source="$(var.RootFolder)\WeifenLuo.WinFormsUI.Docking.dll" />
-      </Component>
-      <Component Id="cmp6DF273F8C8C1322EE403E364E1D04A16" Guid="{0C519261-A387-4835-8E0C-E014B1863256}">
-        <File Id="fil4F8E845B9B0CB9B26B9D7BA0D7737124" KeyPath="yes" Source="$(var.RootFolder)\Xceed.Wpf.Toolkit.dll" />
       </Component>
       <Component Id="cmp51C1C88660576D53C94470BC746A13A8" Guid="{768F7AA2-FB99-4D36-9D09-3EB738E3861A}">
         <File Id="fil71BA3FAD3D09648177066FBEBEC2EB6F" KeyPath="yes" Source="$(var.RootFolder)\XslTransform.exe" />
@@ -7926,6 +7914,7 @@
       <ComponentRef Id="cmp25D29CB75764362ED2C8CD56167F4461" />
       <ComponentRef Id="cmp5486C86710067514FAB1EC5256D97B31" />
       <ComponentRef Id="cmp850196005FCEEF1CA2D3E513B5D438D2" />
+      <ComponentRef Id="cmp72E4FD51E0E29AC1AAC1D9EC129BFE39" />
       <ComponentRef Id="cmp1E3A46AAB1AEC1C0867B4366AA14C74A" />
       <ComponentRef Id="cmpE3224824E6CBD4A4454836A57D493C0D" />
       <ComponentRef Id="cmp72017B4A7326E21748F7FAF5D51C81F7" />
@@ -7937,10 +7926,7 @@
       <ComponentRef Id="cmp5553F425DF10497AB12D84691B9B203D" />
       <ComponentRef Id="cmpF6AF7C98B30945DBF757C200CF382260" />
       <ComponentRef Id="cmp47710F4ED559988F6A71463791BDDB20" />
-      <ComponentRef Id="cmpB8CA284799BDD010AF88440D99DB9EEF" />
-      <ComponentRef Id="cmpFA74F6B0FEED0F13C5AB27468ADEAC3A" />
-      <ComponentRef Id="cmp7AC5BF8BF3F963049084AF1F825035FC" />
-      <ComponentRef Id="cmp4CC2B741351755B4D0C3DAC95AE9BD2F" />
+      <ComponentRef Id="cmpD77D48D0992811F0DD0522F9CEFB4644" />
       <ComponentRef Id="cmp91D85178A06806BEAAA0D49E48B8894F" />
       <ComponentRef Id="cmp58A124A7CE4898F21F18DE917B96D351" />
       <ComponentRef Id="cmp3566CF05D4BE73252B68F81716668DED" />
@@ -7966,16 +7952,14 @@
       <ComponentRef Id="cmpA1DEF9962CD798332ED52BD176A3120A" />
       <ComponentRef Id="cmp1F30A63455BC8620D42E07693D4F8EB2" />
       <ComponentRef Id="cmp857EBDF3A05062DB24AB5DF805D643EB" />
+      <ComponentRef Id="cmp39BAA70A368194908C55B4CDEECB3D4C" />
       <ComponentRef Id="SHFBProjectLauncher.exe" />
       <ComponentRef Id="cmp6F2CD371CC1458C510364DB3B3E08AC7" />
       <ComponentRef Id="cmpB092835B25713C5EC3C27546E3250C95" />
       <ComponentRef Id="cmp56E3DEF6D0A5836F36A1307284549659" />
-      <ComponentRef Id="cmp33FDA478CB86F083519801379B2D2D8B" />
-      <ComponentRef Id="cmp90E68E5D3A8B34B60F5646BAF1356B3E" />
       <ComponentRef Id="cmpB33DADF2D729CCAE7A61B72DDA2087A3" />
       <ComponentRef Id="cmp3647A3052DAC50714218BD92536B0A91" />
       <ComponentRef Id="cmpF64D60E2A7A50FD6241ABDBE27E31F59" />
-      <ComponentRef Id="cmp6DF273F8C8C1322EE403E364E1D04A16" />
       <ComponentRef Id="cmp51C1C88660576D53C94470BC746A13A8" />
       <ComponentRef Id="cmp6F5780974CAFA6E1F01945C179FD398F" />
       <ComponentRef Id="cmp2D35A1A915818CF4CC96E15C40F40C2D" />

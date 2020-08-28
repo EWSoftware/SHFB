@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
+// Updated : 08/26/2020
+// Note    : Copyright 2006-2020, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -95,6 +95,7 @@ using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.Utils.MSBuild;
 
 using Microsoft.Build.Evaluation;
+using System.Xml;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -1583,6 +1584,9 @@ AllDone:
                             message += "\r\n\r\n";
 
                         message += inEx.Message + "\r\n" + inEx.StackTrace;
+
+                        if(inEx is XmlException x)
+                            message += "\r\nSource URI: " + x.SourceUri;
                     }
 
                 Exception origEx = ex;
@@ -1593,6 +1597,10 @@ AllDone:
                         message += "\r\n\r\n";
 
                     message += ex.Message + "\r\n" + ex.StackTrace;
+
+                    if(ex is XmlException x)
+                        message += "\r\nSource URI: " + x.SourceUri;
+
                     ex = ex.InnerException;
 
                 } while(ex != null);

@@ -1,0 +1,20 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SuggestedBindingRedirects Include="Microsoft.Build, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <MaxVersion>15.1.0.0</MaxVersion>
+    </SuggestedBindingRedirects>
+    <SuggestedBindingRedirects Include="Microsoft.Build.Framework, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <MaxVersion>15.1.0.0</MaxVersion>
+    </SuggestedBindingRedirects>
+    <SuggestedBindingRedirects Include="Microsoft.Build.Utilities.Core, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <MaxVersion>15.1.0.0</MaxVersion>
+    </SuggestedBindingRedirects>
+    <SuggestedBindingRedirects Include="Microsoft.Build.Tasks.Core, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <MaxVersion>15.1.0.0</MaxVersion>
+    </SuggestedBindingRedirects>
+  </ItemGroup>
+</Project>

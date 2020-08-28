@@ -1,0 +1,24 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="EnsureMSBuildAssembliesNotCopied" AfterTargets="Build" Condition="'$(DisableMSBuildAssemblyCopyCheck)' != 'true'">
+    <ItemGroup>
+      <MSBuildPackagesWithoutPrivateAssets
+        Include="@(PackageReference)"
+        Condition="
+          '%(PackageReference.ExcludeAssets)' != 'runtime' and
+          (
+            '%(PackageReference.Identity)' == 'Microsoft.Build' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Framework' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Utilities.Core' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Tasks.Core' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Engine' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Conversion.Core' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Runtime' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Localization' or
+            '%(PackageReference.Identity)' == 'Microsoft.Build.Engine'
+          )"/>
+    </ItemGroup>
+    <Error
+      Condition="'@(MSBuildPackagesWithoutPrivateAssets)' != ''"
+      Text="A PackageReference to Microsoft.Build.* without ExcludeAssets=&quot;runtime&quot; exists in your project. This will cause MSBuild assemblies to be copied to your output directory, causing your application to load them at runtime. To use the copy of MSBuild registered by MSBuildLocator, set ExcludeAssets=&quot;runtime&quot; on the MSBuild PackageReferences. To disable this check, set the property DisableMSBuildAssemblyCopyCheck=true in your project file (not recommended as you must distributed all of MSBuild + associated toolset). Package(s) referenced: @(MSBuildPackagesWithoutPrivateAssets)" />
+  </Target>
+</Project>

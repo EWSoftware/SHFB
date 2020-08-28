@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
+// Updated : 08/26/2020
+// Note    : Copyright 2008-2020, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
 // process.
@@ -607,7 +607,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 foreach(ProjectItem reference in this.ProjectFile.GetItems(refType))
                     if(!references.ContainsKey(reference.EvaluatedInclude))
                     {
-                        var metadata = reference.Metadata.Select(m => (m.Name, m.EvaluatedValue)).ToList();
+                        var metadata = reference.Metadata.Select(m => (Name: m.Name, EvaluatedValue: m.EvaluatedValue)).ToList();
                         var hintPath = metadata.FirstOrDefault(m => m.Name == "HintPath");
 
                         // Convert relative paths to absolute paths
