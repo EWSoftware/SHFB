@@ -1,3 +1,7 @@
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace TestDoc.Generics
 {
     /// <summary>
@@ -70,6 +74,17 @@ namespace TestDoc.Generics
             temp = lhs;
             lhs = rhs;
             rhs = temp;
+        }
+
+        /// <summary>
+        /// Test default parameter with reference type
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token</param>
+        /// <param name="x">An integer</param>
+        /// <returns>A task</returns>
+        public Task ConnectAsync(CancellationToken cancellationToken = default, int x = default)
+        {
+            return null;
         }
     }
 }

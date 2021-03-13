@@ -136,7 +136,7 @@ and pound signs as they are not valid in the help file name."/>
 			<Label Grid.Column="0" Grid.Row="2"  Margin="0,0,3,0" Content="Maximum group parts"
 					HorizontalAlignment="Right" Target="{Binding ElementName=udcMaximumGroupParts}" />
 			<StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
-				<xctk:IntegerUpDown Name="udcMaximumGroupParts" Margin="0,3" Width="50" Minimum="2"
+				<xctk:IntegerUpDown Name="udcMaximumGroupParts" Margin="0,3" MinWidth="50" Minimum="2"
 					Maximum="30" ClipValueToMinMax="True" DefaultValue="2" DisplayDefaultValueOnEmptyText="True"
 					shfbProps:PropertyPageBinding.ProjectPropertyName="MaximumGroupParts"/>
 				<Image Width="12" Margin="10,3,3,3" Source="{x:Static shfb:SharedResources.InformationIcon}"

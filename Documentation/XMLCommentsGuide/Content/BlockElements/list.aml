@@ -5,6 +5,7 @@
 			<para>This element describes content that should be displayed as a list or a table.</para>
 		</introduction>
 
+		<!-- Ignore Spelling: listheader -->
 		<section>
 			<title>Syntax</title>
 			<content>
@@ -44,11 +45,11 @@ or
 or
 
 &lt;list type="table"&gt;
-  &lt;listHeader&gt;
+  &lt;listheader&gt;
     &lt;term&gt;Multi-column table header&lt;/term&gt;
     &lt;term&gt;Add additional term or description elements to create new header columns&lt;/term&gt;
     ...
-  &lt;/listHeader&gt;
+  &lt;/listheader&gt;
   &lt;item&gt;
     &lt;description&gt;Multi-column table&lt;/description&gt;
     &lt;description&gt;Add additional term or description elements to create new columns&lt;/description&gt;
@@ -120,9 +121,9 @@ a separate line with the description following in a new paragraph.</para>
             <entry><para>table</para></entry>
             <entry>
 							<para>A multi-column table.  The <codeInline>item</codeInline> elements create new rows in the
-table.  With this type, the optional <codeInline>listHeader</codeInline> element can be used to define the column
+table.  With this type, the optional <codeInline>listheader</codeInline> element can be used to define the column
 headers.  Use a <codeInline>term</codeInline> or a <codeInline>description</codeInline> element to define the
-columns in the <codeInline>listHeader</codeInline> and each <codeInline>item</codeInline> element.</para>
+columns in the <codeInline>listheader</codeInline> and each <codeInline>item</codeInline> element.</para>
 						</entry>
           </row>
         </table>

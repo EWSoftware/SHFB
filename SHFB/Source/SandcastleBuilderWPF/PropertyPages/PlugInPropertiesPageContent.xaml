@@ -51,21 +51,21 @@
 						</ListBox.ItemTemplate>
 					</ListBox>
 					<StackPanel Grid.Row="1" Orientation="Horizontal">
-						<Button Name="btnAddPlugIn" Margin="0,3" Padding="3" Width="100" Click="btnAddPlugIn_Click"
+						<Button Name="btnAddPlugIn" Margin="0,3" Padding="3" MinWidth="100" Click="btnAddPlugIn_Click"
 							ToolTip="Add the selected available plug-in">
 							<StackPanel Orientation="Horizontal">
 								<Image Source="/SandcastleBuilder.WPF;component/Resources/AddItem.png" />
 								<AccessText Text="_Add" Margin="10,0,0,0" />
 							</StackPanel>
 						</Button>
-						<Button Name="btnConfigure" Margin="6,3" Padding="3" Width="100" Click="btnConfigure_Click"
+						<Button Name="btnConfigure" Margin="6,3" Padding="3" MinWidth="100" Click="btnConfigure_Click"
 							ToolTip="Configure the selected project plug-in">
 							<StackPanel Orientation="Horizontal">
 								<Image Source="/SandcastleBuilder.WPF;component/Resources/PageEdit.png" />
 								<AccessText Text="_Configure" Margin="10,0,0,0" />
 							</StackPanel>
 						</Button>
-						<Button Name="btnDelete" Margin="0,3" Padding="3" Width="100" Click="btnDelete_Click"
+						<Button Name="btnDelete" Margin="0,3" Padding="3" MinWidth="100" Click="btnDelete_Click"
 							ToolTip="Delete the selected project plug-in">
 							<StackPanel Orientation="Horizontal">
 								<Image Source="/SandcastleBuilder.WPF;component/Resources/Delete.png" />

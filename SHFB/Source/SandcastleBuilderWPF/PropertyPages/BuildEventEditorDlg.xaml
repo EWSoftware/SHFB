@@ -36,10 +36,10 @@
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
-			<Button Grid.Column="0" Name="btnInsertMacro" Margin="3" Padding="3" Width="80" HorizontalAlignment="Left"
+			<Button Grid.Column="0" Name="btnInsertMacro" Margin="3" Padding="3" MinWidth="80" HorizontalAlignment="Left"
 				Content="_Insert" Click="btnInsertMacro_Click" />
-			<Button Grid.Column="1" Name="btnOK" Margin="3" Padding="3" Width="80" Content="OK" Click="btnOK_Click"  />
-			<Button Grid.Column="2" Name="btnCancel" Margin="3" Padding="3" Width="80" Content="Cancel" IsCancel="True" />
+			<Button Grid.Column="1" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"  />
+			<Button Grid.Column="2" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel" IsCancel="True" />
 		</Grid>
 	</Grid>
 </Window>

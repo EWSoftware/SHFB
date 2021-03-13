@@ -22,8 +22,8 @@
 				ShowTitle="False" ShowSearchBox="False" NameColumnWidth="100" />
 		</Grid>
 		<StackPanel Grid.Row="1" Orientation="Horizontal">
-			<Button Name="btnAdd" Margin="0,3" Padding="3" Width="80" Content="_Add" Click="btnAdd_Click"  />
-			<Button Name="btnRemove" Margin="3,3" Padding="3" Width="80" Content="_Remove" Click="btnRemove_Click" />
+			<Button Name="btnAdd" Margin="0,3" Padding="3" MinWidth="80" Content="_Add" Click="btnAdd_Click"  />
+			<Button Name="btnRemove" Margin="3,3" Padding="3" MinWidth="80" Content="_Remove" Click="btnRemove_Click" />
 		</StackPanel>
 	</Grid>
 </UserControl>

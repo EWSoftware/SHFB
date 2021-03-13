@@ -9,7 +9,7 @@
 	xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
 	xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
 	xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
-	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100" FontSize="12"
+	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}">
   <UserControl.BindingGroup>
     <BindingGroup />
@@ -361,10 +361,10 @@
                   <TextBox Grid.Column="0" VerticalAlignment="Center" Name="txtTopicFilename" Margin="3,0"
 										IsReadOnly="True" Text="{Binding Path=SourceFile.PersistablePath, Mode=OneWay}"
 										IsReadOnlyCaretVisible="True" TabIndex="6" />
-                  <Button Grid.Column="1" Name="btnAssociateTopic" Content="..." Width="23" Margin="3"
+                  <Button Grid.Column="1" Name="btnAssociateTopic" Content="..." MinWidth="23" Margin="3"
 										ToolTip="Associate a file with this topic" Click="btnAssociateTopic_Click" TabIndex="7" />
-                  <Button Grid.Column="2" Name="btnClearTopic" ToolTip="Clear the file associated with this topic"
-										Margin="3" Click="btnClearTopic_Click" HorizontalAlignment="Right" Width="22" TabIndex="8"
+									<Button Grid.Column="2" Name="btnClearTopic" ToolTip="Clear the file associated with this topic"
+										Margin="3" Click="btnClearTopic_Click" HorizontalAlignment="Right" MinWidth="22" TabIndex="8"
 										Padding="2">
                     <Image Source="{StaticResource RemoveLink}" />
                   </Button>
@@ -377,7 +377,7 @@
                 Name="chkDefaultTopic" Margin="3,3" IsChecked="{Binding IsDefaultTopic, Mode=TwoWay}" TabIndex="10" />
                 <Label Content="API Content" HorizontalAlignment="Right" VerticalAlignment="Top"
                 Grid.Column="0" Grid.Row="3" />
-                <ComboBox Grid.Column="1" Grid.Row="3" Margin="3,3" Width="180" HorizontalAlignment="Left"
+                <ComboBox Grid.Column="1" Grid.Row="3" Margin="3,3" MinWidth="180" HorizontalAlignment="Left"
                Name="cboApiParentMode" SelectedValuePath="Key" DisplayMemberPath="Value"
                SelectedValue="{Binding ApiParentMode, Mode=TwoWay}" TabIndex="11" />
               </Grid>

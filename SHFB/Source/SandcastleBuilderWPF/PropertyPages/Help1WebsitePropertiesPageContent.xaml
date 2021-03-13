@@ -35,7 +35,7 @@
 			</Grid.ColumnDefinitions>
 			<Label Grid.Row="0" Grid.Column="0" Content="Help _1 SDK link type" HorizontalAlignment="Right"
 					Target="{Binding ElementName=cboHtmlSdkLinkType}" />
-			<ComboBox Grid.Row="0" Grid.Column="1" Name="cboHtmlSdkLinkType" Margin="3" Width="220"
+			<ComboBox Grid.Row="0" Grid.Column="1" Name="cboHtmlSdkLinkType" Margin="3" MinWidth="220"
 					HorizontalAlignment="Left" DisplayMemberPath="Value" SelectedValuePath="Key"
 					shfb:PropertyPageBinding.ProjectPropertyName="HtmlSdkLinkType" />
 			<CheckBox Grid.Row="1" Grid.Column="1" Name="chkBinaryTOC" Margin="3" IsChecked="True"
@@ -64,7 +64,7 @@
 			</Grid.ColumnDefinitions>
 			<Label Grid.Row="0" Grid.Column="0" Content="We_bsite/Open XML SDK link type" HorizontalAlignment="Right"
 					Target="{Binding ElementName=cboWebsiteSdkLinkType}" />
-			<ComboBox Grid.Row="0" Grid.Column="1" Name="cboWebsiteSdkLinkType" Margin="3" Width="220"
+			<ComboBox Grid.Row="0" Grid.Column="1" Name="cboWebsiteSdkLinkType" Margin="3" MinWidth="220"
 					HorizontalAlignment="Left" DisplayMemberPath="Value" SelectedValuePath="Key"
 					shfb:PropertyPageBinding.ProjectPropertyName="WebsiteSdkLinkType" />
       <Label Grid.Row="1" Grid.Column="0" Content="Website _Ad Content" HorizontalAlignment="Right"

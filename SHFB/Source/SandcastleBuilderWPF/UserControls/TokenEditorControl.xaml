@@ -5,7 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
 	xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
-	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100" FontSize="12"
+	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}">
   <UserControl.BindingGroup>
     <BindingGroup />
@@ -139,7 +139,7 @@
       </Grid.RowDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="_Token ID" HorizontalAlignment="Right"
         Target="{Binding ElementName=txtTokenName}" />
-      <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Name="txtTokenName" Margin="3,3" Width="250"
+      <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Name="txtTokenName" Margin="3,3" MinWidth="250"
         Text="{Binding Path=TokenName, Mode=TwoWay}" />
       <Label Grid.Row="1" Grid.Column="0" Content="Token _Content" HorizontalAlignment="Left"
         Target="{Binding ElementName=txtTokenValue}" />

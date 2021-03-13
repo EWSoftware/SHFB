@@ -23,7 +23,7 @@
       </Grid.ColumnDefinitions>
       <Label Grid.Column="0" Margin="0,0,3,0" Content="_Use Help Viewer Version"
 				HorizontalAlignment="Right" Target="{Binding ElementName=cboHelpViewerVersion}" />
-      <ComboBox Grid.Column="1" Name="cboHelpViewerVersion" Margin="0,3" Width="50" HorizontalAlignment="Left"
+      <ComboBox Grid.Column="1" Name="cboHelpViewerVersion" Margin="0,3" MinWidth="50" HorizontalAlignment="Left"
         SelectionChanged="cboHelpViewerVersion_SelectionChanged" SelectedValuePath="Content">
         <ComboBoxItem Content="1.0" />
         <ComboBoxItem Content="2.0" />
@@ -46,7 +46,7 @@
         <ColumnDefinition />
         <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Name="btnOK" Padding="3" Width="80" Content="OK" HorizontalAlignment="Left"
+      <Button Grid.Column="0" Name="btnOK" Padding="3" MinWidth="80" Content="OK" HorizontalAlignment="Left"
         IsDefault="True" Click="btnOK_Click" />
       <Grid Grid.Column="1" Name="grdAction" Margin="10,3,10,3">
         <Grid.ColumnDefinitions>
@@ -56,7 +56,7 @@
         <shfb:SpinnerControl Grid.Column="0" Margin="0,0,10,0" />
         <TextBlock Grid.Column="1" Margin="3" Name="lblAction" TextTrimming="CharacterEllipsis" Text="--" />
       </Grid>
-      <Button Grid.Column="2" Name="btnCancel" Padding="3" Width="80" Content="Cancel" HorizontalAlignment="Right"
+      <Button Grid.Column="2" Name="btnCancel" Padding="3" MinWidth="80" Content="Cancel" HorizontalAlignment="Right"
         IsCancel="True" Click="btnCancel_Click" />
     </Grid>
   </Grid>

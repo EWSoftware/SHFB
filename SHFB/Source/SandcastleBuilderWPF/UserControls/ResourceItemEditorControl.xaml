@@ -4,7 +4,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
-	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100" FontSize="12"
+	mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="750" MinWidth="100"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}">
   <UserControl.BindingGroup>
     <BindingGroup />
@@ -101,7 +101,7 @@
         <RowDefinition />
       </Grid.RowDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="Item ID" HorizontalAlignment="Right" />
-      <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Name="txtID" Margin="3,3" Width="250"
+      <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Name="txtID" Margin="3,3" MinWidth="250"
         Text="{Binding Path=Id, Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True" />
       <Label Grid.Row="1" Grid.Column="0" Content="Source File" HorizontalAlignment="Right" />
       <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Name="txtSourceFile" Margin="3,3"
@@ -110,7 +110,7 @@
         Target="{Binding ElementName=txtItemContent}" />
       <Button Grid.Row="2" Grid.Column="1" Name="btnUndo" ToolTip="Undo changes to this item (Ctrl+Z)"
         Command="ApplicationCommands.Undo" HorizontalAlignment="Left" Margin="3">
-        <Image Source="{StaticResource Undo}" Height="16" Width="16" />
+        <Image Source="{StaticResource Undo}" Height="16" />
       </Button>
       <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Name="txtValue" Margin="3,0"
         Text="{Binding Value, Mode=TwoWay}" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible"

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/26/2020
-// Note    : Copyright 2006-2020, Eric Woodruff, All rights reserved
+// Updated : 03/12/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
 //
@@ -2268,8 +2268,11 @@ AllDone:
 
                             if(!commentsList.Contains(workingPath))
                             {
-                                // These are handled below
-                                commentsList.Add(workingPath);
+                                // These are handled below.  Insert project comments files at the start of the
+                                // list so that any SHFB project comments files are seen last and will override
+                                // the project XML comments files.  This allows substituting comments based on
+                                // the language or some other criteria.
+                                commentsList.Insert(0, workingPath);
                             }
                             else
                                 this.ReportProgress("    Ignoring duplicate comments file '{0}'", workingPath);

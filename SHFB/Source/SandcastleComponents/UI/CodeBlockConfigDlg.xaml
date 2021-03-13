@@ -30,7 +30,7 @@
       </Grid.ColumnDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="_Base path for relative paths in &lt;code&gt; 'source' attributes" />
       <TextBox Grid.Row="1" Grid.Column="0" Name="txtBasePath" MaxLength="256" />
-      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectFolder" Width="30" Margin="3,0,0,0" Content="..."
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectFolder" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="btnSelectFolder_Click" />
     </Grid>
     <Grid Grid.Row="1">
@@ -44,7 +44,7 @@
       </Grid.ColumnDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="_Language syntax configuration file" />
       <TextBox Grid.Row="1" Grid.Column="0" Name="txtSyntaxFile" MaxLength="256" />
-      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectSyntax" Width="30" Margin="3,0,0,0" Content="..."
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectSyntax" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" />
     </Grid>
     <Grid Grid.Row="2">
@@ -58,7 +58,7 @@
       </Grid.ColumnDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="_XSLT style transformation file" />
       <TextBox Grid.Row="1" Grid.Column="0" Name="txtXsltStylesheetFile" MaxLength="256" />
-      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectXsltStylesheet" Width="30" Margin="3,0,0,0" Content="..."
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectXsltStylesheet" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" />
     </Grid>
     <Grid Grid.Row="3">
@@ -72,7 +72,7 @@
       </Grid.ColumnDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="Colorized code _style sheet file" />
       <TextBox Grid.Row="1" Grid.Column="0" Name="txtCssStylesheet" MaxLength="256" />
-      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectCssStylesheet" Width="30" Margin="3,0,0,0" Content="..."
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectCssStylesheet" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" />
     </Grid>
     <Grid Grid.Row="4">
@@ -86,7 +86,7 @@
       </Grid.ColumnDefinitions>
       <Label Grid.Row="0" Grid.Column="0" Content="Colorized code _JavaScript file" />
       <TextBox Grid.Row="1" Grid.Column="0" Name="txtScriptFile" MaxLength="256" />
-      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectScript" Width="30" Margin="3,0,0,0" Content="..."
+      <Button Grid.Row="1" Grid.Column="1" Name="btnSelectScript" MinWidth="30" Margin="3,0,0,0" Content="..."
         Click="SelectFile_Click" />
     </Grid>
     <Grid Grid.Row="5" Margin="0,10,0,10">
@@ -99,7 +99,7 @@
       <Label Grid.Column="0" Content="_Default Language" Margin="0,3,3,3" HorizontalAlignment="Right" />
       <ComboBox Grid.Column="1" Name="cboLanguage" Margin="3" DisplayMemberPath="Value" SelectedValuePath="Key" />
       <Label Grid.Column="2" Content="Default _Tab Size" HorizontalAlignment="Right" Margin="20,3,3,3" />
-      <xctk:IntegerUpDown Grid.Column="3" Name="udcTabSize" Margin="3" Width="45" Minimum="0"
+      <xctk:IntegerUpDown Grid.Column="3" Name="udcTabSize" Margin="3" MinWidth="45" Minimum="0"
         Maximum="25" Increment="1" DefaultValue="0" ClipValueToMinMax="True" DisplayDefaultValueOnEmptyText="True"
         HorizontalAlignment="Left" />
     </Grid>
@@ -131,13 +131,13 @@
         <ColumnDefinition />
         <ColumnDefinition Width="Auto" />
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Name="btnOK" Margin="0,3,0,3" Padding="3" Width="80" Content="OK" Click="btnOK_Click"  />
+      <Button Grid.Column="0" Name="btnOK" Margin="0,3,0,3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"  />
       <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
         <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
           RequestNavigate="lnkProjectSite_RequestNavigate" ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
 Help File Builder</Hyperlink>
       </TextBlock>
-      <Button Grid.Column="2" Name="btnCancel" Margin="0,3,0,3" Padding="3" Width="80" Content="Cancel"
+      <Button Grid.Column="2" Name="btnCancel" Margin="0,3,0,3" Padding="3" MinWidth="80" Content="Cancel"
         IsCancel="True" />
     </Grid>
   </Grid>

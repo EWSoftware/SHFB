@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/11/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used as the base class for package property pages
 //
@@ -63,10 +62,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         // This is used to define custom controls and their value property
-        private static Dictionary<string, string> customControls = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> customControls = new Dictionary<string, string>();
 
         // This is used to track active property pages
-        private static List<BasePropertyPage> propertyPages = new List<BasePropertyPage>();
+        private static readonly List<BasePropertyPage> propertyPages = new List<BasePropertyPage>();
 
         private bool isDirty;
 
@@ -413,7 +412,16 @@ namespace SandcastleBuilder.Package.PropertyPages
                 var projProp = this.ProjectMgr.BuildProject.GetProperty(boundProperty);
 
                 if(projProp != null)
+                {
+                    // A recent change to Microsoft.Common.targets overrides our OutputPath property with a copy
+                    // containing a function call that ensures a trailing backslash as the unevaluated value.  If
+                    // we see an imported property with a predecessor, use the predecessor to get our unevaluated
+                    // value.
+                    while(projProp.IsImported && projProp.Predecessor != null)
+                        projProp = projProp.Predecessor;
+
                     propValue = projProp.UnevaluatedValue;
+                }
 
                 // If null, the property probably doesn't exist so ignore it
                 if(propValue == null)

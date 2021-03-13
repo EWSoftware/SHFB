@@ -9,7 +9,7 @@
 	xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
 	xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
 	xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
-	mc:Ignorable="d" d:DesignHeight="550" d:DesignWidth="900" MinWidth="100" FontSize="12"
+	mc:Ignorable="d" d:DesignHeight="550" d:DesignWidth="900" MinWidth="100"
 	Background="{DynamicResource ToolWindowBackgroundBrushKey}">
   <UserControl.BindingGroup>
     <BindingGroup />
@@ -424,15 +424,15 @@
                   <TextBox Grid.Column="0" VerticalAlignment="Center" Name="txtTopicFilename" Margin="3,0"
 										IsReadOnly="True" Text="{Binding TopicFilename, Mode=OneWay}" IsReadOnlyCaretVisible="True"
 										TabIndex="8" />
-                  <Button Grid.Column="1" Name="btnAssociateTopic" Content="..." Width="23" Margin="3"
+                  <Button Grid.Column="1" Name="btnAssociateTopic" Content="..." MinWidth="23" Margin="3"
 										ToolTip="Associate a file with this topic" Click="btnAssociateTopic_Click" TabIndex="9" />
                   <Button Grid.Column="2" Name="btnClearTopic" ToolTip="Clear the file associated with this topic"
-										Click="btnClearTopic_Click" HorizontalAlignment="Right" Width="22" TabIndex="10" Padding="2"
+										Click="btnClearTopic_Click" HorizontalAlignment="Right" MinWidth="22" TabIndex="10" Padding="2"
 										Margin="3">
                     <Image Source="{StaticResource RemoveLink}" />
                   </Button>
-                  <Button Grid.Column="3" Name="btnRefreshAssociations" Padding="2" Margin="3"
-										ToolTip="Refresh file associations to reflect project changes" Click="btnRefreshAssociations_Click" TabIndex="11">
+									<Button Grid.Column="3" Name="btnRefreshAssociations" Padding="2" Margin="3" TabIndex="11"
+										ToolTip="Refresh file associations to reflect project changes" Click="btnRefreshAssociations_Click">
                     <Image Source="{StaticResource RefreshDocument}" />
                   </Button>
                 </Grid>
@@ -476,7 +476,7 @@
                 <CheckBox Grid.Row="5" Grid.Column="1" Content="Use as MS Help Viewer root container" VerticalAlignment="Center"
                     Name="chkMSHelpViewRoot" Margin="3,3" IsChecked="{Binding IsMSHVRootContentContainer, Mode=TwoWay}" TabIndex="18" />
                 <Label Content="API Content" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0" Grid.Row="6" />
-                <ComboBox Grid.Column="1" Grid.Row="6" Margin="3,3" Width="180" HorizontalAlignment="Left"
+                <ComboBox Grid.Column="1" Grid.Row="6" Margin="3,3" MinWidth="180" HorizontalAlignment="Left"
 									Name="cboApiParentMode" SelectedValuePath="Key" DisplayMemberPath="Value"
 									SelectedValue="{Binding ApiParentMode, Mode=TwoWay}" TabIndex="19" />
               </Grid>

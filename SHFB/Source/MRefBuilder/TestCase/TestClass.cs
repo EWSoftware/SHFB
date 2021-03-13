@@ -16,7 +16,9 @@
 // Command line arguments: /out:reflection.org C:\GH\SHFB\SHFB\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
 // Working directory: C:\GH\SHFB\SHFB\Deploy\
 
-using System.Collections.Generic;
+//using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ValueTupleTest
 {
@@ -25,6 +27,19 @@ namespace ValueTupleTest
     /// </summary>
     public class ValueTupleTestClass
     {
+        /// <summary>
+        /// Test default parameter with reference type
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token</param>
+        /// <param name="x">An integer</param>
+        /// <param name="y">An integer</param>
+        /// <param name="p">A point</param>
+        /// <returns>A task</returns>
+        public Task ConnectAsync(CancellationToken cancellationToken = default, int x = default)
+        {
+            return null;
+        }
+
 /*        /// <summary>
         /// A value tuple field
         /// </summary>

@@ -19,7 +19,7 @@
 		<Label Grid.Row="0" Content="P_re-build event command line:" Target="{Binding ElementName=txtPreBuildEvent}" />
 		<TextBox Grid.Row="1" Name="txtPreBuildEvent" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible"
 				VerticalScrollBarVisibility="Visible" shfb:PropertyPageBinding.ProjectPropertyName="PreBuildEvent" />
-		<Button Grid.Row ="2" Name="btnEditPreBuildEvent" Margin="3" Padding="3" Width="150"
+		<Button Grid.Row ="2" Name="btnEditPreBuildEvent" Margin="3" Padding="3" MinWidth="150"
 				HorizontalAlignment="Right" Content="Ed_it Pre-build Event" Click="btnEditBuildEvent_Click" />
 		<Label Grid.Row="3" Content="P_ost-build event command line:" Target="{Binding ElementName=txtPostBuildEvent}" />
 		<TextBox Grid.Row="4" Name="txtPostBuildEvent" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible"
@@ -37,7 +37,7 @@
 					<ComboBoxItem Content="Always" Tag="Always" />
 				</ComboBox>
 			</StackPanel>
-			<Button Grid.Column="1" Name="btnEditPostBuildEvent" Margin="3" Padding="3" Width="150"
+			<Button Grid.Column="1" Name="btnEditPostBuildEvent" Margin="3" Padding="3" MinWidth="150"
 				Content="Edit Post-b_uild Event" Click="btnEditBuildEvent_Click" />
 		</Grid>
 		<Border Name="bdStandaloneGUI" Grid.Row="6" BorderThickness="1" Margin="0,5,0,5"

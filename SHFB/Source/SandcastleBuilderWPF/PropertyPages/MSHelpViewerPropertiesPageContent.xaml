@@ -30,7 +30,7 @@
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help Viewer 1.0 _catalog product ID"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtCatalogProductId}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogProductId" Width="130"
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogProductId" MinWidth="130"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="CatalogProductId" Text="VS"/>
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="Typically left set to the default, &quot;VS&quot;"/>
@@ -43,7 +43,7 @@
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help Viewer 1.0 catalog version"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtCatalogVersion}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogVersion" Width="130"
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogVersion" MinWidth="130"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="CatalogVersion" Text="100"/>
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="Typically left set to the default, &quot;100&quot;"/>
@@ -56,7 +56,7 @@
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="Help Viewer 2.x content catalog name"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtCatalogName}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogName" Width="130"
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtCatalogName" MinWidth="130"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="CatalogName" />
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="Only specify this if using a custom catalog name.&#10;Leave blank for the default Visual Studio
@@ -96,7 +96,7 @@ catalog name."/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="_Starting TOC sort order"
 				HorizontalAlignment="Right" Target="{Binding ElementName=udcTocOrder}" />
-			<xctk:IntegerUpDown Grid.Column="1" Name="udcTocOrder" Margin="0,3" Width="100" Minimum="-1"
+			<xctk:IntegerUpDown Grid.Column="1" Name="udcTocOrder" Margin="0,3" MinWidth="100" Minimum="-1"
 					Maximum="2147483647" ClipValueToMinMax="True" DefaultValue="-1" DisplayDefaultValueOnEmptyText="True"
 					shfbProps:PropertyPageBinding.ProjectPropertyName="TocOrder"/>
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
@@ -110,7 +110,7 @@ catalog name."/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="TOC parent topic ID"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtTocParentId}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtTocParentId" Width="150" Text="-1"
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtTocParentId" MinWidth="150" Text="-1"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="TocParentId" />
 			<Image Grid.Column="2" Width="12" Margin="3" Source="{x:Static shfb:SharedResources.InformationIcon}"
 				ToolTip="Use -1 to place the root elements at the root of the main table of contents"/>
@@ -122,7 +122,7 @@ catalog name."/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="TOC parent topic version"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtTocParentVersion}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtTocParentVersion" Width="150" Text="100"
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtTocParentVersion" MinWidth="150" Text="100"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="TocParentVersion" />
 		</Grid>
 		<Grid Grid.Row="8">
@@ -132,7 +132,7 @@ catalog name."/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="Topic version for this file"
 				HorizontalAlignment="Right" Target="{Binding ElementName=txtTopicVersion}" />
-			<TextBox Grid.Column="1" Margin="0,3" Name="txtTopicVersion" Width="150" Text="100"
+			<TextBox Grid.Column="1" Margin="0,3" Name="txtTopicVersion" MinWidth="150" Text="100"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="TopicVersion" />
 		</Grid>
     <Grid Grid.Row="9">
@@ -156,7 +156,7 @@ other topics with the same title in the search results"/>
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="0" Margin="0,0,3,0" Content="MS Help Viewer SDK link type"
 				HorizontalAlignment="Right" Target="{Binding ElementName=cboMSHelpViewerSdkLinkType}" />
-			<ComboBox Grid.Column="1" Margin="0,3" Name="cboMSHelpViewerSdkLinkType" Width="220"
+			<ComboBox Grid.Column="1" Margin="0,3" Name="cboMSHelpViewerSdkLinkType" MinWidth="220"
 				HorizontalAlignment="Left" DisplayMemberPath="Value" SelectedValuePath="Key"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="MSHelpViewerSdkLinkType" />
 		</Grid>

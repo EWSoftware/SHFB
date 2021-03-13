@@ -54,9 +54,9 @@ file builder's Start menu folder to change the default.</TextBlock>
         <ColumnDefinition />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Name="btnLaunch" Padding="3" Width="80" HorizontalAlignment="Left"
+      <Button Grid.Column="0" Name="btnLaunch" Padding="3" MinWidth="80" HorizontalAlignment="Left"
         Content="_Launch" IsDefault="True" Click="btnLaunch_Click"  />
-      <Button Grid.Column="1" Name="btnCancel" Padding="3" Width="80" HorizontalAlignment="Right"
+      <Button Grid.Column="1" Name="btnCancel" Padding="3" MinWidth="80" HorizontalAlignment="Right"
         Content="Close" IsCancel="True" Click="btnCancel_Click" />
     </Grid>
   </Grid>

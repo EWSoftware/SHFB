@@ -36,9 +36,9 @@
         <ColumnDefinition />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Name="btnOK" Padding="3" Width="80" Content="OK" HorizontalAlignment="Left"
+      <Button Grid.Column="0" Name="btnOK" Padding="3" MinWidth="80" Content="OK" HorizontalAlignment="Left"
           IsDefault="True" Click="btnOK_Click" />
-      <Button Grid.Column="1" Name="btnCancel" Padding="3" Width="80" Content="Cancel" HorizontalAlignment="Right"
+      <Button Grid.Column="1" Name="btnCancel" Padding="3" MinWidth="80" Content="Cancel" HorizontalAlignment="Right"
           IsCancel="True" />
     </Grid>
   </Grid>

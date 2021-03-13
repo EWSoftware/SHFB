@@ -7607,7 +7607,7 @@
                 <File Id="fil0419F8D8F105784824EF8602792F3B55" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\clipboard.min.js" />
               </Component>
               <Component Id="cmpBC97D1B677B94AB461C68A15B0989909" Guid="{92084F8F-1B3C-4A56-95DA-4B85EEFB26D4}">
-                <File Id="fil9DD873BFE4729C897CC1B54AF181995C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\jquery-3.3.1.min.js" />
+                <File Id="fil9DD873BFE4729C897CC1B54AF181995C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\jquery-3.5.1.min.js" />
               </Component>
             </Directory>
           </Directory>

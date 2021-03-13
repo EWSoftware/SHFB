@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2019
-// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/11/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
 //
@@ -1834,9 +1833,22 @@ namespace SandcastleBuilder.Utils
                             break;
 
                         default:
-                            // These may or may not contain variable references so use the final value if
-                            // requested.
-                            this.SetLocalProperty(prop, this.UsingFinalValues ? prop.EvaluatedValue : prop.UnevaluatedValue);
+                            // These may or may not contain variable references so use the final value if requested
+                            if(UsingFinalValues)
+                                this.SetLocalProperty(prop, prop.EvaluatedValue);
+                            else
+                            {
+                                // A recent change to Microsoft.Common.targets overrides our OutputPath property
+                                // with a copy containing a function call that ensures a trailing backslash as the
+                                // unevaluated value.  If we see an imported property with a predecessor, use the
+                                // predecessor to get our unevaluated value.
+                                var p = prop;
+
+                                while(p.IsImported && p.Predecessor != null)
+                                    p = p.Predecessor;
+
+                                this.SetLocalProperty(p, p.UnevaluatedValue);
+                            }
                             break;
                     }
 

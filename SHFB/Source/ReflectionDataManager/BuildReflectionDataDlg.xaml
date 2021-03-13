@@ -56,7 +56,7 @@
 			</Grid.RowDefinitions>
 			<TextBox Grid.Row="0" Name="txtBuildOutput" Margin="5,2" VerticalScrollBarVisibility="Visible"
 				HorizontalScrollBarVisibility="Visible" IsReadOnly="True" IsReadOnlyCaretVisible="True"
-				FontFamily="Courier New" FontSize="11" />
+				FontFamily="Courier New" />
 			<StackPanel Grid.Row="1" Orientation="Horizontal">
 				<Button Margin="3" Name="btnBuild" Content="_Build" MinWidth="80" ToolTip="Build the reflection data"
 					Click="btnBuild_Click" />

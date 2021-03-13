@@ -68,8 +68,19 @@
 		<Content Include="icons\Help.png" />
 	</ItemGroup>
 
-	<!-- Import the SHFB build targets -->
-	<Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+	<!-- Uncomment this to use the NuGet packages when SHFB is not installed locally, e.g. in the CI build pipeline.
+			Update the package versions to the latest releases.
+	<ItemGroup>
+		<PackageReference Include="EWSoftware.SHFB" Version="2020.3.6" />
+		<PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0" />
+	</ItemGroup>
+	-->
+
+	<!-- Import the common build targets during NuGet restore because before the packages are being installed, $(SHFBROOT) is not set yet -->
+	<Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="'$(MSBuildRestoreSessionId)' != ''"/>
+
+	<!-- Import the SHFB build targets during build -->
+	<Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" Condition="'$(MSBuildRestoreSessionId)' == ''"/>
 
 	<!-- The pre-build and post-build event properties must appear *after* the targets file import in order to be
 			 evaluated correctly. -->
