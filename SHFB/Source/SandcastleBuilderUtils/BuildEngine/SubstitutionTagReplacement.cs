@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/24/2019
-// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
+// Updated : 03/14/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
 //
@@ -56,19 +56,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        private BuildProcess currentBuild;
-        private SandcastleProject sandcastleProject;
-        private Project msbuildProject;
-        private PresentationStyleSettings presentationStyle;
+        private readonly BuildProcess currentBuild;
+        private readonly SandcastleProject sandcastleProject;
+        private readonly Project msbuildProject;
+        private readonly PresentationStyleSettings presentationStyle;
 
-        private Dictionary<string, MethodInfo> methodCache;
+        private readonly Dictionary<string, MethodInfo> methodCache;
 
-        private static Regex reField = new Regex(@"{@(?<Field>\w*?)(:(?<Format>.*?))?}");
+        private static readonly Regex reField = new Regex(@"{@(?<Field>\w*?)(:(?<Format>.*?))?}");
 
         private readonly MatchEvaluator fieldMatchEval;
         private string fieldFormat;
 
-        private StringBuilder replacementValue;
+        private readonly StringBuilder replacementValue;
 
         #endregion
 
@@ -254,6 +254,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             return propertyValue;
         }
         #endregion
+
+// All substitution tag members below are referenced indirectly, not through the code
+#pragma warning disable IDE0051
 
         #region Project and build folder substitution tags
         //=====================================================================
@@ -813,10 +816,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return "<p>" + WebUtility.HtmlEncode(sandcastleProject.DecodedCopyrightText) + "</p>";
 
             if(sandcastleProject.CopyrightText.Length == 0)
-                return String.Format(CultureInfo.CurrentCulture, "<p><a href='{0}' target='_blank'>{0}</a></p>",
+            {
+                return String.Format(CultureInfo.CurrentCulture,
+                    "<p><a href=\"{0}\" target=\"_blank\" rel=\"noopener noreferrer\">{0}</a></p>",
                     WebUtility.HtmlEncode(sandcastleProject.CopyrightHref));
+            }
 
-            return String.Format(CultureInfo.CurrentCulture, "<p><a href='{0}' target='_blank'>{1}</a></p>",
+            return String.Format(CultureInfo.CurrentCulture,
+                "<p><a href=\"{0}\" target=\"_blank\" rel=\"noopener noreferrer\">{1}</a></p>",
                 WebUtility.HtmlEncode(sandcastleProject.CopyrightHref),
                 WebUtility.HtmlEncode(sandcastleProject.DecodedCopyrightText));
         }
@@ -829,7 +836,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string HtmlEncCopyrightHref()
         {
             return (sandcastleProject.CopyrightHref.Length == 0) ? String.Empty :
-                String.Format(CultureInfo.CurrentCulture, "<a href='{0}' target='_blank'>{0}</a>",
+                String.Format(CultureInfo.CurrentCulture,
+                    "<a href=\"{0}\" target=\"_blank\" rel=\"noopener noreferrer\">{0}</a>",
                     WebUtility.HtmlEncode(sandcastleProject.CopyrightHref));
         }
 
@@ -1452,6 +1460,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
         #endregion
 
+#pragma warning restore IDE0051
+
         #region Helper methods
         //=====================================================================
 
@@ -1605,5 +1615,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
         }
         #endregion
+
     }
 }

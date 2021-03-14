@@ -688,6 +688,9 @@
 						<xsl:attribute name="href">
 							<xsl:text>https://github.com/Microsoft/CodeContracts</xsl:text>
 						</xsl:attribute>
+						<xsl:attribute name="rel">
+							<xsl:text>noopener noreferrer</xsl:text>
+						</xsl:attribute>
 						<xsl:text>Learn more about contracts</xsl:text>
 					</a>
 					<xsl:text>&#xa;</xsl:text>
@@ -1188,6 +1191,9 @@
 					<xsl:attribute name="target">_blank</xsl:attribute>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:attribute name="rel">
+				<xsl:text>noopener noreferrer</xsl:text>
+			</xsl:attribute>
 			<xsl:if test="normalize-space($p_alt)">
 				<xsl:attribute name="title">
 					<xsl:value-of select="normalize-space($p_alt)"/>

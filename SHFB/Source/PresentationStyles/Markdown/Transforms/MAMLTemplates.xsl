@@ -1203,6 +1203,9 @@
 			<xsl:attribute name="href">
 				<xsl:value-of select="normalize-space(ddue:linkUri)"/>
 			</xsl:attribute>
+			<xsl:attribute name="rel">
+				<xsl:text>noopener noreferrer</xsl:text>
+			</xsl:attribute>
 			<xsl:if test="normalize-space(ddue:linkAlternateText)">
 				<xsl:attribute name="title">
 					<xsl:value-of select="normalize-space(ddue:linkAlternateText)"/>
@@ -1229,7 +1232,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:legacyLink" name="t_ddue_legacyLink">
-		<a href="{@xlink:href}">
+		<a href="{@xlink:href}" rel="noopener noreferrer">
 			<xsl:apply-templates />
 		</a>
 	</xsl:template>

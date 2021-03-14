@@ -138,7 +138,7 @@
 	<item id="title_platforms">Platformas</item>
 	<item id="title_relatedTopics">Vea tambi&#233;n</item>
 	<item id="title_extensionUsage">Nota sobre el uso</item>
-	<item id="text_extensionUsage">En Visual Basic y C#, se puede llamar a este m&#233;todo como a un m&#233;todo de instancia en cualquier objeto de tipo {0}. Cuando emplee la sintaxis de m&#233;todo de instancia para llamar a este m&#233;todo, omita el primer par&#225;metro. Para obtener m&#225;s informaci&#243;n, vea <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank">M&#233;todos de extensi&#243;n (Visual Basic)</a> o <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank">M&#233;todos de extensi&#243;n (Gu&#237;a de programaci&#243;n C#)</a>.</item>
+	<item id="text_extensionUsage">En Visual Basic y C#, se puede llamar a este m&#233;todo como a un m&#233;todo de instancia en cualquier objeto de tipo {0}. Cuando emplee la sintaxis de m&#233;todo de instancia para llamar a este m&#233;todo, omita el primer par&#225;metro. Para obtener m&#225;s informaci&#243;n, vea <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">M&#233;todos de extensi&#243;n (Visual Basic)</a> o <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">M&#233;todos de extensi&#243;n (Gu&#237;a de programaci&#243;n C#)</a>.</item>
 	<item id="text_moreInheritance">Mas...</item>
 
 	<!-- table headers -->
@@ -222,7 +222,7 @@
 									 prefer-overload="true" /> aplicado a este tipo o miembro tiene los siguientes <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
 									 prefer-overload="true" /> valor de propiedad: {1}. El atributo <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
 									 prefer-overload="true" /> no afecta a aplicaciones de escritorio (que son iniciadas comunmente haciendo doble clic en un &#237;cono, escribiendo un comando, o ingresando una URL en un navegador). Para mas informaci&#243;n, vea la clase <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
-									 prefer-overload="true" /> o <a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank">Programaci&#243;n de SQL Server y atributos de protecci&#243;n del host</a>.</item>
+									 prefer-overload="true" /> o <a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank" rel="noopener noreferrer">Programaci&#243;n de SQL Server y atributos de protecci&#243;n del host</a>.</item>
 
 	<!-- Obsolete boilerplate text -->
   <item id="boilerplate_obsoleteShort"><strong>Obsoleto. </strong></item>
@@ -371,12 +371,12 @@
   <item id="obsoleteError">Obsoleto (no compila) en {0} y posteriores</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
+	<item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank" rel="noopener noreferrer">Using Libraries from Partially Trusted Code</a>.</item>
 
   <!-- Variance boilerplate text -->
   <item id="text_covariant">Este par&#225;metro de tipo es covariante. Es decir, puede usar el tipo especificado o cualquier tipo que sea m&#225;s derivado. </item>
   <item id="text_contravariant">Este par&#225;metro de tipo es contravariante. Es decir, puede usar el tipo especificado o cualquier tipo que sea menos derivado. </item>
-  <item id="text_variance">Para obtener m&#225;s informaci&#243;n sobre la covarianza y la contravarianza, vea <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank">Covarianza and contravarianza (C# y Visual Basic).</a>.</item>
+  <item id="text_variance">Para obtener m&#225;s informaci&#243;n sobre la covarianza y la contravarianza, vea <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank" rel="noopener noreferrer">Covarianza and contravarianza (C# y Visual Basic).</a>.</item>
 
   <!-- Non Cls Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">Esta API no es conforme a CLS.</item>
@@ -395,12 +395,12 @@
 	  <strong>{0} Nota sobre plataforma:</strong> {1}
   </item>
   <item id="boilerplate_systemRequirementsLink">
-	  <p>El <include item="netfw"/> y el <include item="netcfw"/> no soportan todas las versiones de todas las plataformas. Para obtener una lista de las versiones soportadas, vea <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank">Requisitos de sistema de .NET Framework</a>.</p>
+	  <p>El <include item="netfw"/> y el <include item="netcfw"/> no soportan todas las versiones de todas las plataformas. Para obtener una lista de las versiones soportadas, vea <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank" rel="noopener noreferrer">Requisitos de sistema de .NET Framework</a>.</p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds --> 
   <item id="boilerplate_silverlightPlatforms">
-    Para obtener informaci&#243;n sobre los sistemas operativos y navegadores soportados por <include item="silverlight"/>, vea <a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank">Sistemas operativos y navegadores soportados</a>.
+    Para obtener informaci&#243;n sobre los sistemas operativos y navegadores soportados por <include item="silverlight"/>, vea <a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank" rel="noopener noreferrer">Sistemas operativos y navegadores soportados</a>.
   </item>
 
  	<item id="Win95">Windows 95</item>

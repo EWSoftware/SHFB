@@ -92,7 +92,7 @@
 	<item id="title_platforms">プラットフォーム</item>
 	<item id="title_relatedTopics">関連項目</item>
 	<item id="title_extensionUsage">使用上の注意</item>
-	<item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank">拡張メソッド(Visual Basic)</a>または<a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
+	<item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">拡張メソッド(Visual Basic)</a>または<a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
 	<item id="text_moreInheritance">More...</item>
 
 	<!-- Table headers -->
@@ -280,12 +280,12 @@
   <item id="obsoleteError">廃止された (コンパイル不可) バージョン: {0}</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="boilerplate_aptca">直前の呼び出し元に対する完全な信頼。このメンバーは、部分信頼コードからは使えません。詳細は、<a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank">部分信頼コードからのライブラリの使用</a>を参照してください。</item>
+	<item id="boilerplate_aptca">直前の呼び出し元に対する完全な信頼。このメンバーは、部分信頼コードからは使えません。詳細は、<a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank" rel="noopener noreferrer">部分信頼コードからのライブラリの使用</a>を参照してください。</item>
 
   <!-- Variance boilerplate text -->
   <item id="text_covariant">この型パラメーターは共変です。つまり、指定した型か、その型から派生した任意の型が使えます。</item>
   <item id="text_contravariant">この型パラメーターは反変です。つまり、指定した型か、その型が継承する任意の型が使えます。</item>
-  <item id="text_variance">共変と反変についての詳細は、<a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank">共変性と反変性 (C# および Visual Basic)</a>を参照してください。</item>
+  <item id="text_variance">共変と反変についての詳細は、<a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank" rel="noopener noreferrer">共変性と反変性 (C# および Visual Basic)</a>を参照してください。</item>
 
   <!-- Non CLS Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">このAPIはCLS準拠ではありません。</item>
@@ -301,12 +301,12 @@
 
   <!-- Platforms Information and Platform Notes --> 
   <item id="boilerplate_systemRequirementsLink">
-	  <p><include item="netfw" />と<include item="netcfw" />では、各プラットフォームのすべてのバージョンはサポートしていません。サポートしているバージョンについては、<a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank">.NET Framework システム要件</a>を参照してください。</p>
+	  <p><include item="netfw" />と<include item="netcfw" />では、各プラットフォームのすべてのバージョンはサポートしていません。サポートしているバージョンについては、<a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank" rel="noopener noreferrer">.NET Framework システム要件</a>を参照してください。</p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds -->
   <item id="boilerplate_silverlightPlatforms">
-    <include item="silverlight" />によってサポートされているOSとブラウザーの詳細は、<a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank">サポートされているオペレーティング システムとブラウザー</a>を参照してください。
+    <include item="silverlight" />によってサポートされているOSとブラウザーの詳細は、<a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank" rel="noopener noreferrer">サポートされているオペレーティング システムとブラウザー</a>を参照してください。
   </item>
 
  	<item id="Win95">Windows 95</item>

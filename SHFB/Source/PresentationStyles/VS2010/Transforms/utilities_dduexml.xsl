@@ -1447,6 +1447,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
+			<xsl:attribute name="rel">
+				<xsl:text>noopener noreferrer</xsl:text>
+			</xsl:attribute>
 			<xsl:value-of select="normalize-space(ddue:linkText)"/>
 		</a>
 	</xsl:template>
@@ -1469,7 +1472,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddue:legacyLink" name="t_ddue_legacyLink">
-		<a href="{@xlink:href}">
+		<a href="{@xlink:href}" rel="noopener noreferrer">
 			<xsl:apply-templates />
 		</a>
 	</xsl:template>

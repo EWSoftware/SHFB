@@ -21,9 +21,12 @@
         <xsl:if test="$data/link">
           <xsl:text>, </xsl:text>
           <a>
-            <xsl:attribute name="target">_blank</xsl:attribute>
             <xsl:attribute name="href"><xsl:value-of select="$data/link/text()" /></xsl:attribute>
-            <xsl:value-of select="$data/link/text()" />
+            <xsl:attribute name="target">_blank</xsl:attribute>
+						<xsl:attribute name="rel">
+							<xsl:text>noopener noreferrer</xsl:text>
+						</xsl:attribute>
+						<xsl:value-of select="$data/link/text()" />
           </a>
         </xsl:if>
       </div>

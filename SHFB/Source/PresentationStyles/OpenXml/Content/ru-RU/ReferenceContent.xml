@@ -93,7 +93,7 @@
 	<item id="title_platforms">Платформы</item>
   <item id="title_relatedTopics">См. также</item>
   <item id="title_extensionUsage">Примечание об использовании</item>
-  <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank">Методы расширения (Visual Basic)</a> или <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank">Методы расширения (Руководство по программированию в C#)</a>.</item>
+  <item id="text_extensionUsage">В Visual Basic и C# этот метод можно вызывать как метод экземпляра для любого объекта типа {0}. При вызове метода для экземпляра следует опускать первый параметр. Дополнительные сведения см. в разделе <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">Методы расширения (Visual Basic)</a> или <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">Методы расширения (Руководство по программированию в C#)</a>.</item>
 
 	<!-- Table headers -->
 	<item id="header_namespaceName">Пространство имён</item>
@@ -272,12 +272,12 @@
   <item id="obsoleteError">Устарело (не компилируется) в {0} и более поздних версиях</item>
   	
 	<!-- APTCA Boilerplate text -->
-	<item id="boilerplate_aptca">Полное доверие для модуля немедленного вызова. Данный элемент не может использоваться кодом с частичным доверием. Дополнительные сведения см. в разделе <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank">Использование библиотек из не вполне надежного кода</a>.</item>
+	<item id="boilerplate_aptca">Полное доверие для модуля немедленного вызова. Данный элемент не может использоваться кодом с частичным доверием. Дополнительные сведения см. в разделе <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank" rel="noopener noreferrer">Использование библиотек из не вполне надежного кода</a>.</item>
   
   <!-- Variance boilerplate text -->
   <item id="text_covariant">Этот параметр типа является ковариантным. Это означает, что можно использовать либо указанный тип, либо более производный тип. </item>
   <item id="text_contravariant">Этот параметр типа является контрвариантным. Это означает, что можно использовать либо указанный тип, либо менее производный тип. </item>
-  <item id="text_variance">Дополнительные сведения о ковариации и контрвариации см. в разделе <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank">Ковариация и контравариация в универсальных шаблонах</a>.</item>
+  <item id="text_variance">Дополнительные сведения о ковариации и контрвариации см. в разделе <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank" rel="noopener noreferrer">Ковариация и контравариация в универсальных шаблонах</a>.</item>
   
   <!-- Non CLS Compliant boilerplate text-->
   <item id="boilerplate_NotClsCompliant">Этот интерфейс API CLS-несовместим.</item>
@@ -295,13 +295,13 @@
   <item id="boilerplate_systemRequirementsLink">
 	  <w:p>
 			<w:r>
-        <w:t><include item="netfw"/> и <include item="netcfw"/> поддерживают не все версии каждой платформы. Поддерживаемые версии перечислены в разделе <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank">Требования к системе для .NET Framework</a>.</w:t>
+        <w:t><include item="netfw"/> и <include item="netcfw"/> поддерживают не все версии каждой платформы. Поддерживаемые версии перечислены в разделе <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank" rel="noopener noreferrer">Требования к системе для .NET Framework</a>.</w:t>
 			</w:r>
 		</w:p>
   </item>
   
   <!-- Platforms boilerplate for Silverlight mref builds -->
-  <item id="boilerplate_silverlightPlatforms">Список операционных систем и браузеров, поддерживаемых <include item="silverlight"/>, см. в разделе <a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank">Поддерживаемые операционные системы и браузеры</a>.</item>
+  <item id="boilerplate_silverlightPlatforms">Список операционных систем и браузеров, поддерживаемых <include item="silverlight"/>, см. в разделе <a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank" rel="noopener noreferrer">Поддерживаемые операционные системы и браузеры</a>.</item>
 
  	<item id="Win95">Windows 95</item>
 	<item id="Win98Se">Windows 98 Second Edition</item>

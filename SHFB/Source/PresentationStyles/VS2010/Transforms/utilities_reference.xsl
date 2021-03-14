@@ -2233,6 +2233,9 @@
 						<xsl:value-of select="@startLine"/>
 					</xsl:if>
 				</xsl:attribute>
+				<xsl:attribute name="rel">
+					<xsl:text>noopener noreferrer</xsl:text>
+				</xsl:attribute>
 				<includeAttribute name="title" item="sourceCodeLinkTitle" />
 				<include item="sourceCodeLinkText" />
 			</a>

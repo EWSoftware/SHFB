@@ -333,9 +333,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                         // If individual conversion operator is found, always display parameters
                         if(isConversionOperator && member != null && !String.IsNullOrWhiteSpace(member.OverloadId))
-                            options = options | DisplayOptions.ShowParameters;
+                            options |= DisplayOptions.ShowParameters;
                         else
-                            options = options & ~DisplayOptions.ShowParameters;
+                            options &= ~DisplayOptions.ShowParameters;
                     }
                 }
 
@@ -442,6 +442,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         writer.WriteStartElement("a");
                         writer.WriteAttributeString("href", memberUrl);
                         writer.WriteAttributeString("target", linkTarget);
+                        writer.WriteAttributeString("rel", "noopener noreferrer");
                         break;
 
                     case ReferenceLinkType.Id:

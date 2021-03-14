@@ -138,7 +138,7 @@
     <item id="title_platforms">平台</item>
     <item id="title_relatedTopics">参见</item>
     <item id="title_extensionUsage">备注</item>
-    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型{0}的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank">扩展方法 (Visual Basic)</a> 或 <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
+    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型{0}的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (Visual Basic)</a> 或 <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
     <item id="text_moreInheritance">更多...</item>
 
     <!-- table headers -->
@@ -223,7 +223,7 @@
 									 prefer-overload="true" /> attribute applied to this type or member has the following <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
 									 prefer-overload="true" /> property value: {1}. The <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
 									 prefer-overload="true" /> does not affect desktop applications (which are typically started by double-clicking an icon, typing a command, or entering a URL in a browser). For more information, see the <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
-									 prefer-overload="true" /> class or <a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
+									 prefer-overload="true" /> class or <a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank" rel="noopener noreferrer">SQL Server Programming and Host Protection Attributes</a>.</item>
 
     <!-- Obsolete boilerplate text -->
     <item id="boilerplate_obsoleteShort">
@@ -378,12 +378,12 @@
     <item id="obsoleteError">已在 {0} 及后续版本中过时 (无法编译)</item>
 
     <!-- APTCA Boilerplate text -->
-    <item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank">Using Libraries from Partially Trusted Code</a>.</item>
+    <item id="boilerplate_aptca">Full trust for the immediate caller. This member cannot be used by partially trusted code. For more information, see <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank" rel="noopener noreferrer">Using Libraries from Partially Trusted Code</a>.</item>
 
     <!-- Variance boilerplate text -->
     <item id="text_covariant">This type parameter is covariant. That is, you can use either the type you specified or any type that is more derived. </item>
     <item id="text_contravariant">This type parameter is contravariant. That is, you can use either the type you specified or any type that is less derived. </item>
-    <item id="text_variance">For more information about covariance and contravariance, see <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/concepts/covariance-contravariance/index">Covariance and Contravariance (Visual Basic)</a> and <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/concepts/covariance-contravariance/index">Covariance and Contravariance (C#)</a>.</item>
+    <item id="text_variance">For more information about covariance and contravariance, see <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/concepts/covariance-contravariance/index" target="_blank" rel="noopener noreferrer">Covariance and Contravariance (Visual Basic)</a> and <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/concepts/covariance-contravariance/index" target="_blank" rel="noopener noreferrer">Covariance and Contravariance (C#)</a>.</item>
 
     <!-- Non-CLS Compliant boilerplate text-->
     <item id="boilerplate_NotClsCompliant">This API is not CLS-compliant.</item>
@@ -402,12 +402,12 @@
         <strong>{0} 平台备注：</strong> {1}
     </item>
     <item id="boilerplate_systemRequirementsLink">
-        <p>“<include item="netfw"/> and <include item="netcfw"/>”不被所有的平台和版本支持。请参阅 <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank">.NET 框架系统需求</a> 以了解所有支持的平台和版本。</p>
+        <p>“<include item="netfw"/> and <include item="netcfw"/>”不被所有的平台和版本支持。请参阅 <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank" rel="noopener noreferrer">.NET 框架系统需求</a> 以了解所有支持的平台和版本。</p>
     </item>
 
     <!-- Platforms boilerplate for Silverlight mref builds --> 
     <item id="boilerplate_silverlightPlatforms">
-    要获取 <include item="silverlight"/> 所支持的操作系统和浏览器，请参见<a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank">支持的操作系统和浏览器</a>。
+    要获取 <include item="silverlight"/> 所支持的操作系统和浏览器，请参见<a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank" rel="noopener noreferrer">支持的操作系统和浏览器</a>。
     </item>
 
     <item id="Win95">Windows 95</item>

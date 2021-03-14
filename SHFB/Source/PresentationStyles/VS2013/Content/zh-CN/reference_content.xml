@@ -138,7 +138,7 @@
     <item id="title_platforms">平台</item>
     <item id="title_relatedTopics">参见</item>
     <item id="title_extensionUsage">备注</item>
-    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型 {0} 的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank">扩展方法 (Visual Basic)</a> 或 <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
+    <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型 {0} 的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="https://docs.microsoft.com/dotnet/visual-basic/programming-guide/language-features/procedures/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (Visual Basic)</a> 或 <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" target="_blank" rel="noopener noreferrer">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
     <item id="text_moreInheritance">更多...</item>
 
     <!-- table headers -->
@@ -223,7 +223,7 @@
 									 prefer-overload="true" /> 属性适用于这个类型或成员具有以下 <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources"
 									 prefer-overload="true" /> 特性：{1}。 这个 <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
 									 prefer-overload="true" /> 不影响桌面应用（一般通过双击图标、输入命令或在浏览器中输入URL来启动的）。更多信息参见 <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"
-									 prefer-overload="true" /> 类或<a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank">SQL Server 编程和宿主保护特性</a>。</item>
+									 prefer-overload="true" /> 类或<a href="https://docs.microsoft.com/dotnet/framework/performance/sql-server-programming-and-host-protection-attributes" target="_blank" rel="noopener noreferrer">SQL Server 编程和宿主保护特性</a>。</item>
 
     <!-- Obsolete boilerplate text -->
     <item id="boilerplate_obsoleteShort">
@@ -378,12 +378,12 @@
     <item id="obsoleteError">已在 {0} 及后续版本中过时 (无法编译)</item>
 
     <!-- APTCA Boilerplate text -->
-    <item id="boilerplate_aptca">要求完全信任立即调用者。完全信任的直接调用者。 此成员不能由部分受信任的代码使用。 有关详细信息，请参阅 <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank">通过部分受信任的代码使用库</a>。</item>
+    <item id="boilerplate_aptca">要求完全信任立即调用者。完全信任的直接调用者。 此成员不能由部分受信任的代码使用。 有关详细信息，请参阅 <a href="https://docs.microsoft.com/dotnet/framework/misc/using-libraries-from-partially-trusted-code" target="_blank" rel="noopener noreferrer">通过部分受信任的代码使用库</a>。</item>
 
     <!-- Variance boilerplate text -->
     <item id="text_covariant">此类型参数是协变的。换言之，你可以使用指定类型或派生程度更高的类型。</item>
     <item id="text_contravariant">此类型参数是逆变的。换言之，你可以适用指定类型或派生程度更低的类型。</item>
-    <item id="text_variance">有关协变与逆变的详细信息，请参阅 <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank">协变和逆变（C# 和 Visual Basic）</a>。</item>
+    <item id="text_variance">有关协变与逆变的详细信息，请参阅 <a href="https://docs.microsoft.com/previous-versions/ee207183(v=vs.140)" target="_blank" rel="noopener noreferrer">协变和逆变（C# 和 Visual Basic）</a>。</item>
 
     <!-- Non-CLS Compliant boilerplate text-->
     <item id="boilerplate_NotClsCompliant">这个 API 不是 CLS兼容的。</item>
@@ -402,12 +402,12 @@
         <strong>{0} 平台备注：</strong> {1}
     </item>
     <item id="boilerplate_systemRequirementsLink">
-        <p>“<include item="netfw"/> and <include item="netcfw"/>”不被所有的平台和版本支持。请参阅 <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank">.NET 框架系统需求</a> 以了解所有支持的平台和版本。</p>
+        <p>“<include item="netfw"/> and <include item="netcfw"/>”不被所有的平台和版本支持。请参阅 <a href="https://docs.microsoft.com/dotnet/framework/get-started/system-requirements" target="_blank" rel="noopener noreferrer">.NET 框架系统需求</a> 以了解所有支持的平台和版本。</p>
     </item>
 
     <!-- Platforms boilerplate for Silverlight mref builds --> 
     <item id="boilerplate_silverlightPlatforms">
-    要获取 <include item="silverlight"/> 所支持的操作系统和浏览器，请参见<a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank">支持的操作系统和浏览器</a>。
+    要获取 <include item="silverlight"/> 所支持的操作系统和浏览器，请参见<a href="https://docs.microsoft.com/previous-versions/windows/silverlight/dotnet-windows-silverlight/cc838158(v=vs.95)" target="_blank" rel="noopener noreferrer">支持的操作系统和浏览器</a>。
     </item>
 
     <item id="Win95">Windows 95</item>
