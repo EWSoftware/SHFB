@@ -15,6 +15,8 @@
 // 05/09/2015 - EFW - Removed the deprecated /internal command line option and platform configuration options
 // 08/23/2016 - EFW - Added support for writing out source code context
 
+// Ignore Spelling: dep 
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +31,8 @@ using System.Compiler;
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 using Sandcastle.Core.Reflection;
+
+using Microsoft.Build.Locator;
 
 using Microsoft.Ddue.Tools.Reflection;
 
@@ -53,11 +57,34 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Main program entry point
+        /// Main program entry point (command line)
         /// </summary>
         /// <param name="args">Command line arguments</param>
         /// <returns>Zero on success or non-zero on failure</returns>
+        /// <remarks>When ran from the command line as a standalone application, we are responsible for locating
+        /// and loading the MSBuild assemblies.</remarks>
         public static int Main(string[] args)
+        {
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return 1;
+            }
+
+            return MainEntryPoint(args);
+        }
+
+        /// <summary>
+        /// Main program entry point (MSBuild task)
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        public static int MainEntryPoint(string[] args)
         {
             string path, version, framework = null, assemblyPath, typeName;
 
@@ -65,14 +92,13 @@ namespace Microsoft.Ddue.Tools
             ConsoleApplication.WriteBanner();
 
             // Specify options
-            OptionCollection options = new OptionCollection();
-            options.Add(new SwitchOption("?", "Show this help page."));
-            options.Add(new StringOption("out", "Specify an output file. If unspecified, output goes to the " +
-                "console.", "outputFilePath"));
-            options.Add(new StringOption("config", "Specify a configuration file. If unspecified, " +
-                "MRefBuilder.config is used", "configFilePath"));
-            options.Add(new ListOption("dep", "Specify assemblies to load for dependencies.",
-                "dependencyAssembly"));
+            OptionCollection options = new OptionCollection
+            {
+                new SwitchOption("?", "Show this help page."),
+                new StringOption("out", "Specify an output file. If unspecified, output goes to the console.", "outputFilePath"),
+                new StringOption("config", "Specify a configuration file. If unspecified, MRefBuilder.config is used", "configFilePath"),
+                new ListOption("dep", "Specify assemblies to load for dependencies.", "dependencyAssembly")
+            };
 
             // Process options
             ParseArgumentsResult results = options.ParseArguments(args);
@@ -350,7 +376,7 @@ namespace Microsoft.Ddue.Tools
             }
 
             // Dependency directory
-            string[] dependencies = new string[0];
+            string[] dependencies = Array.Empty<string>();
 
             if(results.Options["dep"].IsPresent)
                 dependencies = (string[])results.Options["dep"].Value;

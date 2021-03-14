@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardPresentationStyles", "StandardPresentationStyles.csproj", "{70CFBFC8-F047-4FFD-A999-98CC3EB39BD9}"
 EndProject
@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7E0DDC9-A909-4265-80E8-D721201B6E71}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet.config = NuGet.config
+		StandardPresentationStyles.sln.vsspell = StandardPresentationStyles.sln.vsspell
 	EndProjectSection
 EndProject
 Global
@@ -29,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C1E8921-1874-4335-9516-8EC1F18660D2}
 	EndGlobalSection
 EndGlobal

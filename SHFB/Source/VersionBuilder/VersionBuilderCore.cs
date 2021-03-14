@@ -7,6 +7,8 @@
 // 10/12/2013 - Added changes from Stazzz to merge information about additional extension methods even when the
 // type and method are defined in different assemblies.
 
+// Ignore Spelling: Stazzz
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,6 +17,8 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
+using Microsoft.Build.Locator;
+
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 
@@ -22,7 +26,7 @@ namespace Microsoft.Ddue.Tools
 {
     public static class VersionBuilderCore
     {
-        private static Dictionary<string, Dictionary<String, XPathNavigator>> extensionMethods = 
+        private static readonly Dictionary<string, Dictionary<String, XPathNavigator>> extensionMethods = 
             new Dictionary<string, Dictionary<String, XPathNavigator>>();
 
         /// <summary>
@@ -30,8 +34,35 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         public static bool Cancel { get; set; }
 
-        // Methods
+        /// <summary>
+        /// Main program entry point (command line)
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        /// <remarks>When ran from the command line as a standalone application, we are responsible for locating
+        /// and loading the MSBuild assemblies.</remarks>
         public static int Main(string[] args)
+        {
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return 1;
+            }
+
+            return MainEntryPoint(args);
+        }
+
+        /// <summary>
+        /// Main entry point (MSBuild task)
+        /// </summary>
+        /// <param name="args">The command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        public static int MainEntryPoint(string[] args)
         {
             XPathDocument document;
 
@@ -180,21 +211,19 @@ namespace Microsoft.Ddue.Tools
                             if((reader.NodeType == XmlNodeType.Element) && (reader.LocalName == "api"))
                             {
                                 string key = String.Empty;
-                                List<KeyValuePair<string, string>> list3 = null;
                                 string str7 = String.Empty;
-                                Dictionary<string, ElementInfo> dictionary3 = null;
                                 XmlReader reader2 = reader.ReadSubtree();
                                 XPathNavigator navigator3 = new XPathDocument(reader2).CreateNavigator();
 
                                 key = (string)navigator3.Evaluate(expression2);
 
-                                if(!versionIndex.TryGetValue(key, out list3))
+                                if(!versionIndex.TryGetValue(key, out List<KeyValuePair<string, string>> list3))
                                 {
                                     list3 = new List<KeyValuePair<string, string>>();
                                     versionIndex.Add(key, list3);
                                 }
 
-                                if(!dictionary2.TryGetValue(key, out dictionary3))
+                                if(!dictionary2.TryGetValue(key, out Dictionary<string, ElementInfo> dictionary3))
                                 {
                                     dictionary3 = new Dictionary<string, ElementInfo>();
                                     dictionary2.Add(key, dictionary3);
@@ -202,15 +231,17 @@ namespace Microsoft.Ddue.Tools
 
                                 foreach(XPathNavigator navigator4 in navigator3.Select(expression4))
                                 {
-                                    ElementInfo info4;
                                     string str8 = navigator4.GetAttribute("api", String.Empty);
-                                    if(!dictionary3.TryGetValue(str8, out info4))
+                                    
+                                    if(!dictionary3.TryGetValue(str8, out ElementInfo info4))
                                     {
                                         XPathNavigator elementNode = null;
+                                        
                                         if((navigator4.SelectSingleNode("*") != null) || (navigator4.SelectChildren(XPathNodeType.Attribute).Count > 1))
                                         {
                                             elementNode = navigator4;
                                         }
+                                        
                                         info4 = new ElementInfo(info3.Group, info3.Name, elementNode);
                                         dictionary3.Add(str8, info4);
                                         continue;
@@ -244,8 +275,7 @@ namespace Microsoft.Ddue.Tools
                                                 if(specNode == null || specNode.SelectChildren(XPathNodeType.Element).Count == specNode.Select(templates).Count)
                                                 {
                                                     // Either non-generic type or all type parameters are from within this method
-                                                    Dictionary<String, XPathNavigator> extMethods;
-                                                    if(!extensionMethods.TryGetValue(typeID, out extMethods))
+                                                    if(!extensionMethods.TryGetValue(typeID, out Dictionary<string, XPathNavigator> extMethods))
                                                     {
                                                         extMethods = new Dictionary<String, XPathNavigator>();
                                                         extensionMethods.Add(typeID, extMethods);
@@ -374,8 +404,9 @@ namespace Microsoft.Ddue.Tools
                                         XmlReader reader6 = reader5.ReadSubtree();
                                         reader6.MoveToContent();
                                         reader6.ReadStartElement();
-                                        Dictionary<String, XPathNavigator> eElems;
-                                        var hasExtensionMethods = extensionMethods.TryGetValue(str10, out eElems);
+
+                                        var hasExtensionMethods = extensionMethods.TryGetValue(str10, out Dictionary<string, XPathNavigator> eElems);
+                                        
                                         if(hasExtensionMethods)
                                         {
                                             readElements.Clear();

@@ -6,6 +6,8 @@
 // Change history:
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
+// Ignore Spelling: tx
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -884,7 +886,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             IndexedExample exampleIndex;
             if(cache.TryGetValue(examplePath, out exampleIndex))
             {
-                // move the file from its current position to the head of the lru linked list
+                // move the file from its current position to the head of the LRU linked list
                 lruLinkedList.Remove(exampleIndex.ListNode);
                 lruLinkedList.AddFirst(exampleIndex.ListNode);
             }
@@ -902,7 +904,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                         lruLinkedList.RemoveLast();
                     }
                 }
-                // add the new file to the cache and to the head of the lru linked list
+                // add the new file to the cache and to the head of the LRU linked list
                 cache.Add(examplePath, exampleIndex);
                 exampleIndex.ListNode = lruLinkedList.AddFirst(examplePath);
             }

@@ -9,6 +9,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
+using Microsoft.Build.Locator;
+
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 
@@ -21,10 +23,10 @@ namespace Microsoft.Ddue.Tools
     public static class SegregateByNamespaceCore
     {
         // Fields
-        private static XPathExpression apiExpression = XPathExpression.Compile("/*/apis/api");
-        private static XPathExpression apiNamespaceExpression = XPathExpression.Compile("string(containers/namespace/@api)");
-        private static XPathExpression assemblyNameExpression = XPathExpression.Compile("string(containers/library/@assembly)");
-        private static XPathExpression namespaceIdExpression = XPathExpression.Compile("string(@id)");
+        private static readonly XPathExpression apiExpression = XPathExpression.Compile("/*/apis/api");
+        private static readonly XPathExpression apiNamespaceExpression = XPathExpression.Compile("string(containers/namespace/@api)");
+        private static readonly XPathExpression assemblyNameExpression = XPathExpression.Compile("string(containers/library/@assembly)");
+        private static readonly XPathExpression namespaceIdExpression = XPathExpression.Compile("string(@id)");
 
         /// <summary>
         /// This property is used to cancel the operation from the MSBuild task
@@ -32,11 +34,34 @@ namespace Microsoft.Ddue.Tools
         public static bool Canceled { get; set; }
 
         /// <summary>
+        /// Main program entry point (command line)
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        /// <remarks>When ran from the command line as a standalone application, we are responsible for locating
+        /// and loading the MSBuild assemblies.</remarks>
+        public static int Main(string[] args)
+        {
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return 1;
+            }
+
+            return MainEntryPoint(args);
+        }
+
+        /// <summary>
         /// Main program entry point
         /// </summary>
         /// <param name="args">Command line arguments</param>
         /// <returns>Zero on success or non-zero on failure</returns>
-        public static int Main(string[] args)
+        public static int MainEntryPoint(string[] args)
         {
             XPathDocument document;
 

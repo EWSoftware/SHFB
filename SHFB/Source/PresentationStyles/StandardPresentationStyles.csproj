@@ -1495,7 +1495,6 @@
     <None Include="OpenXml\Content\zh-CN\zh-CN.vsspell" />
     <None Include="OpenXml\SHFBContent\SHFBContent.vsspell" />
     <None Include="Shared\StopWordList\StopWordList.vsspell" />
-    <None Include="StandardPresentationStyles.csproj.vsspell" />
     <None Include="VS2010\Content\de-DE\de-DE.vsspell" />
     <None Include="VS2010\Content\ja-JP\ja-JP.vsspell" />
     <None Include="VS2010\Content\ru-RU\ru-RU.vsspell" />

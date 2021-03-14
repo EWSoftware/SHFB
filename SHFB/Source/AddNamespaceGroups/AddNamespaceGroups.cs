@@ -2,13 +2,12 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroups.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/12/2013
-// Compiler: Microsoft Visual C#
+// Updated : 03/13/2021
 //
 // This file contains the class used to make AddNamespaceGroups callable from MSBuild projects.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Date        Who  Comments
@@ -115,7 +114,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
                 if(this.MaximumParts > 1)
                     args.Add("/maxParts:" + this.MaximumParts.ToString(CultureInfo.InvariantCulture));
 
-                success = (AddNamespaceGroupsCore.Main(args.ToArray()) == 0);
+                success = (AddNamespaceGroupsCore.MainEntryPoint(args.ToArray()) == 0);
             }
             catch(Exception ex)
             {

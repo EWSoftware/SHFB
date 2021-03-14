@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionBuilder", "VersionBuilder.csproj", "{62C554D0-12B0-4B4D-B750-5CEEF1DA97C5}"
 EndProject
@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EDAFE85-6D81-43E1-B12B-8E6C879B3E1D}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet.config = NuGet.config
+		VersionBuilder.sln.vsspell = VersionBuilder.sln.vsspell
 	EndProjectSection
 EndProject
 Global
@@ -29,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {947B5F0C-5884-4699-B75F-DCF39DDCC8AE}
 	EndGlobalSection
 EndGlobal

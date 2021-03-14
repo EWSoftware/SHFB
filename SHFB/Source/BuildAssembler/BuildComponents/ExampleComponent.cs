@@ -12,8 +12,6 @@
 // resulting code sections.
 // 06/23/2019 - EFW - Added support for colorizing multi-snippet references
 
-// Ignore Spelling: Regex ddue
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;

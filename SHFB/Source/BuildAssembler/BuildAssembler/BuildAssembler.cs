@@ -96,7 +96,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
                 args.Add("/config:" + this.ConfigurationFile);
                 args.Add(this.ManifestFile);
 
-                success = (BuildAssemblerConsole.Main(args.ToArray()) == 0);
+                success = (BuildAssemblerConsole.MainEntryPoint(args.ToArray()) == 0);
             }
             catch(Exception ex)
             {

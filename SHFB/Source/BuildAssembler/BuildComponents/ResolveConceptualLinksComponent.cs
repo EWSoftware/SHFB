@@ -21,6 +21,8 @@
 // 06/05/2015 - EFW - Removed support for the Help 2 Index link type
 //===============================================================================================================
 
+// Ignore Spelling: gfraiteur
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

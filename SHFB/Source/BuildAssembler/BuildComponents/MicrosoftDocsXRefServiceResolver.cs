@@ -19,8 +19,6 @@
 // 08/12/2019  EFW  Created the code
 //===============================================================================================================
 
-// Ignore Spelling: href
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;

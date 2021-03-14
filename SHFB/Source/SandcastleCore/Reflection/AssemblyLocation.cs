@@ -22,8 +22,6 @@
 // 09/20/2015  EFW  Added support for .NETCore 5.0 assemblies which are in a different folder format
 //===============================================================================================================
 
-// Ignore Spelling: mscorlib dotnet netstandard
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

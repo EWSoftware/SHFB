@@ -99,7 +99,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 				IndexedFile document;
 				if (cache.TryGetValue(file, out document))
 				{
-					// move the file from its current position to the head of the lru linked list
+					// move the file from its current position to the head of the LRU linked list
 					lruLinkedList.Remove(document.ListNode);
 					lruLinkedList.AddFirst(document.ListNode);
 				}
@@ -117,7 +117,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 							lruLinkedList.RemoveLast();
 						}
 					}
-					// add the new file to the cache and to the head of the lru linked list
+					// add the new file to the cache and to the head of the LRU linked list
 					cache.Add(file, document);
 					document.ListNode = lruLinkedList.AddFirst(file);
 				}

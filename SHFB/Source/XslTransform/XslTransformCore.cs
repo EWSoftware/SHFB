@@ -15,6 +15,8 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Xsl;
 
+using Microsoft.Build.Locator;
+
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 
@@ -40,11 +42,34 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Main program entry point
+        /// Main program entry point (command line)
         /// </summary>
         /// <param name="args">Command line arguments</param>
         /// <returns>Zero on success or non-zero on failure</returns>
+        /// <remarks>When ran from the command line as a standalone application, we are responsible for locating
+        /// and loading the MSBuild assemblies.</remarks>
         public static int Main(string[] args)
+        {
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return 1;
+            }
+
+            return MainEntryPoint(args);
+        }
+
+        /// <summary>
+        /// Main program entry point (MSBuild task)
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        public static int MainEntryPoint(string[] args)
         {
             ConsoleApplication.WriteBanner();
 

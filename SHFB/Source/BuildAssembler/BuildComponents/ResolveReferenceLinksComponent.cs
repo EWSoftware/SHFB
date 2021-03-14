@@ -21,7 +21,7 @@
 // 03/24/2017 - EFW - Updated to try and resolve missing overload IDs to an equivalent non-overload method ID
 // 08/15/2019 - EFW - Replaced the MSDN resolver with the new Microsoft Docs resolver
 
-// Ignore Spelling: Stazzz href url xpath cref seealso nolink selflink xhelp
+// Ignore Spelling: Stazzz
 
 using System;
 using System.Collections.Generic;

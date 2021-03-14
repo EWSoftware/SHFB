@@ -2,8 +2,7 @@
 // System  : Sandcastle Segregate By Namespace Tool
 // File    : SegregateByNamespace.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2015
-// Compiler: Microsoft Visual C#
+// Updated : 03/13/2021
 //
 // This file contains the class used to make SegregateByNamespace callable from MSBuild projects.
 //
@@ -100,7 +99,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
 
                 args.Add(this.ReflectionFilename);
 
-                success = (SegregateByNamespaceCore.Main(args.ToArray()) == 0);
+                success = (SegregateByNamespaceCore.MainEntryPoint(args.ToArray()) == 0);
             }
             catch(Exception ex)
             {

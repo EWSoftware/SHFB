@@ -10,6 +10,8 @@
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 
+// Ignore Spelling: xor
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

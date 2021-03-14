@@ -179,7 +179,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             string topicdataSubgroup = (string)referenceNode.Evaluate(topicdataSubgroupExpression);
 
             // get the namespace and type name of the current type to locate the filter information that applies to the current topic
-            // For filtering inherited members, the platform filters use the namespace and typ ename of the inheriting type, not the declaring type,
+            // For filtering inherited members, the platform filters use the namespace and type name of the inheriting type, not the declaring type,
             string topicNamespaceName = (string)referenceNode.Evaluate(apiNamespaceNameExpression);
             string topicTypeName = (string)referenceNode.Evaluate(memberTypeNameExpression);
 

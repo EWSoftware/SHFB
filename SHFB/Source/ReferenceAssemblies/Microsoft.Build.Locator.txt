@@ -1,6 +1,0 @@
-This is a patched version that includes the Microsoft.Build.Engine assembly and a couple of supporting assemblies
-in the set to load on demand.  These can be removed once the NuGet package is updated to include the patch.
-
-My branch: https://github.com/EWSoftware/MSBuildLocator
-Original branch: https://github.com/microsoft/MSBuildLocator
-License: https://github.com/microsoft/MSBuildLocator/blob/master/LICENSE

@@ -40,6 +40,8 @@
 // 04/24/2015  EFW  Added support for the Markdown help file format
 //===============================================================================================================
 
+// Ignore Spelling: de Halleux lt
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;

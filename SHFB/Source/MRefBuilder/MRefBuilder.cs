@@ -2,18 +2,20 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : MRefBuilder.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/24/2010
+// Updated : 03/13/2011
 //
 // This file contains the class used to make MRefBuilder callable from MSBuild projects.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Date        Who  Comments
 // ==============================================================================================================
 // 12/10/2013  EFW  Created the code
 //===============================================================================================================
+
+// Ignore Spelling: dep
 
 using System;
 using System.Collections.Generic;
@@ -139,7 +141,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
                 foreach(ITaskItem item in this.Assemblies)
                     args.Add(item.ItemSpec);
 
-                success = (MRefBuilderCore.Main(args.ToArray()) == 0);
+                success = (MRefBuilderCore.MainEntryPoint(args.ToArray()) == 0);
             }
             catch(Exception ex)
             {

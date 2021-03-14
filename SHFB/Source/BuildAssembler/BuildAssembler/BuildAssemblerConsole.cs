@@ -15,6 +15,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
+using Microsoft.Build.Locator;
+
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 using Sandcastle.Core.BuildAssembler;
@@ -26,15 +28,41 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     class BuildAssemblerConsole
     {
+        /// <summary>
+        /// The build assembler instance
+        /// </summary>
         [Export(typeof(BuildAssemblerCore))]
         public static BuildAssemblerCore BuildAssembler { get; private set; }
 
         /// <summary>
-        /// Main program entry point
+        /// Main program entry point (command line)
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        /// <remarks>When ran from the command line as a standalone application, we are responsible for locating
+        /// and loading the MSBuild assemblies.</remarks>
+        public static int Main(string[] args)
+        {
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return 1;
+            }
+
+            return MainEntryPoint(args);
+        }
+
+        /// <summary>
+        /// Main program entry point (MSBuild task)
         /// </summary>
         /// <param name="args">The command line arguments</param>
         /// <returns>Zero on success or one on failure</returns>
-        public static int Main(string[] args)
+        public static int MainEntryPoint(string[] args)
         {
             int exitCode = 0;
 
@@ -43,9 +71,11 @@ namespace Microsoft.Ddue.Tools
             #region Read command line arguments, and setup config
 
             // Specify options
-            OptionCollection options = new OptionCollection();
-            options.Add(new SwitchOption("?", "Show this help page."));
-            options.Add(new StringOption("config", "Specify a configuration file.", "configFilePath"));
+            OptionCollection options = new OptionCollection
+            {
+                new SwitchOption("?", "Show this help page."),
+                new StringOption("config", "Specify a configuration file.", "configFilePath")
+            };
 
             // Process options
             ParseArgumentsResult results = options.ParseArguments(args);

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XslTransform", "XslTransform.csproj", "{88A4B9E2-AE05-4817-879C-15461DA29761}"
 EndProject
@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB118A6F-2755-4B8F-A31D-E917AB7DFEF4}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet.config = NuGet.config
+		XslTransform.sln.vsspell = XslTransform.sln.vsspell
 	EndProjectSection
 EndProject
 Global
@@ -29,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48238FD6-2C8A-4E9E-A62E-08F4E74A78ED}
 	EndGlobalSection
 EndGlobal

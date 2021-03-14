@@ -11,8 +11,6 @@
 // </summary>
 // ------------------------------------------------------------------------------------------------
 
-// Ignore Spelling: inheritdoc api apidata filterpriority threadsafety cref
-
 // Change History
 // 12/21/2012 - EFW - Moved this component into the main BuildComponents project and removed the CopyComponents
 // project as this was the only thing in it.

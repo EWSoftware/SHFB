@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : App.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2015
+// Updated : 03/13/2021
 // Note    : Copyright 2015, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,10 +19,11 @@
 //===============================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
+
+using Microsoft.Build.Locator;
 
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
@@ -63,20 +64,33 @@ namespace ReflectionDataManager
 
             base.OnStartup(e);
 
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return;
+            }
+
             // If command line options are present, perform a build
             if(e.Args.Length != 0)
             {
                 ConsoleApplication.WriteBanner();
 
                 // Specify options
-                OptionCollection options = new OptionCollection();
-                options.Add(new SwitchOption("?", "Show this help page."));
-                options.Add(new StringOption("platform", "Specify the platform to use for the build",
-                    "platformName") { RequiredMessage = "A platform parameter value is required" });
-                options.Add(new StringOption("version", "Specify the version to use for the build.  If not " +
-                    "specified, the most recent version for the specified platform is used.", "version"));
-                options.Add(new ListOption("path", "Specify additional paths to search for reflection data set " +
-                    "files if necessary.", "dataSetPath"));
+                OptionCollection options = new OptionCollection
+                {
+                    new SwitchOption("?", "Show this help page."),
+                    new StringOption("platform", "Specify the platform to use for the build", "platformName")
+                    { RequiredMessage = "A platform parameter value is required" },
+                    new StringOption("version", "Specify the version to use for the build.  If not " +
+                        "specified, the most recent version for the specified platform is used.", "version"),
+                    new ListOption("path", "Specify additional paths to search for reflection data set " +
+                        "files if necessary.", "dataSetPath")
+                };
 
                 // Process options
                 ParseArgumentsResult parsedArguments = options.ParseArguments(e.Args);

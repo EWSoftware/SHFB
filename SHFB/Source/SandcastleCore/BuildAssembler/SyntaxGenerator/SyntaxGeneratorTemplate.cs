@@ -15,9 +15,6 @@
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly and updated for use via MEF
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 
-// Ignore Spelling: typedata memberdata fielddata proceduredata propertydata eventhandler eventargs
-// Ignore Spelling: attachedeventdata attachedpropertydata bool sbyte ushort uint ulong
-
 using System;
 using System.Globalization;
 using System.Xml.XPath;

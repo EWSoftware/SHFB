@@ -13,6 +13,8 @@
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 
+// Ignore Spelling: unicode
+
 using System;
 using System.Globalization;
 using System.IO;

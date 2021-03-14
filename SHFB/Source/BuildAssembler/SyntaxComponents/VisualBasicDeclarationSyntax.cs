@@ -16,10 +16,11 @@
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 // 12/04/2015 - EFW - Fixed WriteOperatorSyntax() so that it handles assignment operators properly
 
+// Ignore Spelling: unicode xor
+
 using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Xml.XPath;
 

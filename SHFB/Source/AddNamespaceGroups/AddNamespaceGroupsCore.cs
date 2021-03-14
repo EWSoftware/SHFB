@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Add Namespace Groups Utility
 // File    : AddNamespaceGroupsCore.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2019
-// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/13/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This utility is used to add namespace groups to a reflection data file.  The namespace groups can be used to
 // combine namespaces with a common root into entries in the table of contents in the generated help file.
@@ -20,8 +19,6 @@
 // 03/12/2014  EFW  Updated to merge sub-groups into the parent if they are the only child of the parent group
 //===============================================================================================================
 
-// Ignore Spelling: api apidata apis topicdata xmlns
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +26,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
+
+using Microsoft.Build.Locator;
 
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
@@ -78,11 +77,34 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Main program entry point
+        /// Main program entry point (command line)
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
+        /// <remarks>When ran from the command line as a standalone application, we are responsible for locating
+        /// and loading the MSBuild assemblies.</remarks>
+        public static int Main(string[] args)
+        {
+            try
+            {
+                MSBuildLocator.RegisterDefaults();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Unable to register MSBuild defaults: " + ex.Message + "\r\n\r\n" +
+                    "You probably need to install the Microsoft Build Tools for Visual Studio 2017 or later.");
+                return 1;
+            }
+
+            return MainEntryPoint(args);
+        }
+
+        /// <summary>
+        /// Main program entry point (MSBuild task)
         /// </summary>
         /// <param name="args">Command line arguments</param>
         /// <returns>Zero on success, a non-zero value on failure</returns>
-        public static int Main(string[] args)
+        public static int MainEntryPoint(string[] args)
         {
             List<string> namespaces = new List<string>();
             XPathNavigator projectRoot = null;
@@ -90,10 +112,11 @@ namespace Microsoft.Ddue.Tools
 
             ConsoleApplication.WriteBanner();
 
-            OptionCollection options = new OptionCollection {
+            OptionCollection options = new OptionCollection
+            {
                 new SwitchOption("?", "Show this help page."),
-                new StringOption("out", "Specify an output filename. If unspecified, output goes to the " +
-                    "console.", "outputFile"),
+                new StringOption("out", "Specify an output filename. If unspecified, output goes to the console.",
+                    "outputFile"),
                 new StringOption("maxParts", "Specify the maximum number of namespace parts to consider " +
                     "when creating groups.  A higher value creates more groups.  The default (and minimum) " +
                     "is 2.", "999")

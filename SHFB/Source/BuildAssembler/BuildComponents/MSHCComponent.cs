@@ -21,7 +21,7 @@
 // 12/24/2015 - EFW - Updated to be thread safe
 //===============================================================================================================
 
-// Ignore Spelling: Fehr toc utf xml Attr Hx
+// Ignore Spelling: Fehr
 
 using System;
 using System.Collections.Generic;

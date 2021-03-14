@@ -7,31 +7,9 @@
   <InheritIgnoredClassifications>True</InheritIgnoredClassifications>
   <IgnoredClassifications />
   <InheritIgnoredWords>True</InheritIgnoredWords>
-  <IgnoredWords>
-    <Ignore>api</Ignore>
-    <Ignore>apidata</Ignore>
-    <Ignore>apis</Ignore>
-    <Ignore>args</Ignore>
-    <Ignore>cref</Ignore>
-    <Ignore>csharp</Ignore>
-    <Ignore>ctor</Ignore>
-    <Ignore>ddue</Ignore>
-    <Ignore>dduetools</Ignore>
-    <Ignore>href</Ignore>
-    <Ignore>html</Ignore>
-    <Ignore>http</Ignore>
-    <Ignore>inheritdoc</Ignore>
-    <Ignore>localhost</Ignore>
-    <Ignore>proj</Ignore>
-    <Ignore>regex</Ignore>
-    <Ignore>safeprojectname</Ignore>
-    <Ignore>shfb</Ignore>
-    <Ignore>shfbproj</Ignore>
-    <Ignore>xml</Ignore>
-    <Ignore>xmlns</Ignore>
-    <Ignore>cctor</Ignore>
-  </IgnoredWords>
+  <InheritIgnoredWords>True</InheritIgnoredWords>
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
+  <IgnoredWordsFile>IgnoredWords.dic</IgnoredWordsFile>
 </SpellCheckerConfiguration>

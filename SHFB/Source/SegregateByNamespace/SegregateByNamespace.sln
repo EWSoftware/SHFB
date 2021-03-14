@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegregateByNamespace", "SegregateByNamespace.csproj", "{5EA1AADE-4D33-4C3E-9A00-AA1200031D87}"
 EndProject
@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A8531FD0-18CE-4D37-A5A2-247FDCE9F8AD}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet.config = NuGet.config
+		SegregateByNamespace.sln.vsspell = SegregateByNamespace.sln.vsspell
 	EndProjectSection
 EndProject
 Global
@@ -29,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F204926B-DD63-4FAC-A793-F206E0D42423}
 	EndGlobalSection
 EndGlobal

@@ -12,6 +12,8 @@
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
 
+// Ignore Spelling: unicode
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;

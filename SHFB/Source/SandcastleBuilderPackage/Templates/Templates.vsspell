@@ -4,11 +4,18 @@
 <SpellCheckerConfiguration Format="2018.8.16.0">
   <InheritAdditionalDictionaryFolders>True</InheritAdditionalDictionaryFolders>
   <SelectedLanguages />
-  <IncludeInProjectSpellCheck>False</IncludeInProjectSpellCheck>
   <InheritIgnoredClassifications>True</InheritIgnoredClassifications>
   <IgnoredClassifications />
   <InheritIgnoredWords>True</InheritIgnoredWords>
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
+  <IgnoredWordsFile></IgnoredWordsFile>
+  <IgnoredWords>
+    <Ignore>ness</Ignore>
+    <Ignore>plugin</Ignore>
+    <Ignore>registeredorganization</Ignore>
+    <Ignore>xyz</Ignore>
+    <Ignore>pdbonly</Ignore>
+  </IgnoredWords>
 </SpellCheckerConfiguration>

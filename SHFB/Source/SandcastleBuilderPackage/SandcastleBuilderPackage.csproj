@@ -425,9 +425,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Templates\ProjectItems\ConceptualContent\Topics\Topics.vsspell" />
-    <None Include="Templates\ProjectItems\OtherContent\OtherContent.vsspell" />
-    <None Include="Templates\Projects\Projects.vsspell" />
     <None Include="Templates\ReadMe.txt" />
     <!-- Each ZipProject must contain a RootPath element to define the root path used to group the project files
          into the same template archive. -->

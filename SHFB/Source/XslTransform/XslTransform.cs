@@ -2,8 +2,7 @@
 // System  : Sandcastle XslTransform Tool
 // File    : XslTransform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/16/2015
-// Compiler: Microsoft Visual C#
+// Updated : 03/13/2021
 //
 // This file contains the class used to make XslTransform callable from MSBuild projects.
 //
@@ -19,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -146,7 +144,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
                 args.Add(this.InputFile);
                 args.Add("/out:" + this.OutputFile);
 
-                success = (XslTransformCore.Main(args.ToArray()) == 0);
+                success = (XslTransformCore.MainEntryPoint(args.ToArray()) == 0);
             }
             catch(Exception ex)
             {

@@ -126,7 +126,7 @@ namespace Microsoft.Ddue.Tools
         private List<string> excludedAncestorList = new List<string>();
 
         // List of assemblies whose members get XAML syntax.  The assembly name key is compared case-insensitively.
-        // The nested dictionary is a list of assembly namespaces that have one or more xmlns uris for xaml.
+        // The nested dictionary is a list of assembly namespaces that have one or more xmlns URIs for xaml.
         private Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies =
             new Dictionary<string, Dictionary<string, List<string>>>(StringComparer.OrdinalIgnoreCase);
 

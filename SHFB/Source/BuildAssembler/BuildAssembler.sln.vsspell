@@ -7,9 +7,14 @@
   <InheritIgnoredClassifications>True</InheritIgnoredClassifications>
   <IgnoredClassifications />
   <InheritIgnoredWords>True</InheritIgnoredWords>
-  <IgnoredWordsFile></IgnoredWordsFile>
+  <IgnoredWordsFile>..\IgnoredWords.dic</IgnoredWordsFile>
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
   <ImportSettingsFile>..\SandcastleBuilder.sln.vsspell</ImportSettingsFile>
+  <IgnoredWords>
+    <Ignore>Buchner</Ignore>
+    <Ignore>Sergey</Ignore>
+    <Ignore>Zhurikhin</Ignore>
+  </IgnoredWords>
 </SpellCheckerConfiguration>
