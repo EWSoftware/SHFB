@@ -15,8 +15,9 @@
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 // 12/04/2015 - EFW - Fixed WriteOperatorSyntax() so that it handles assignment operators properly
+// 03/14/2021 - EFW - Added support for defaultValue element and nullable type syntax
 
-// Ignore Spelling: unicode xor
+// Ignore Spelling: xor
 
 using System;
 using System.Globalization;
@@ -1104,6 +1105,7 @@ namespace Microsoft.Ddue.Tools
 
             switch(value.LocalName)
             {
+                case "defaultValue":  // VB assigns a default value based on the type for Nothing so it works for value types too
                 case "nullValue":
                     writer.WriteKeyword("Nothing");
                     break;
@@ -1501,6 +1503,24 @@ namespace Microsoft.Ddue.Tools
                         }
 
                         writer.WriteString(")");
+                    }
+                    else if(id.StartsWith("T:System.Nullable`", StringComparison.Ordinal))
+                    {
+                        // !EFW - Support nullable type syntax
+                        while(typeModifiers.MoveNext())
+                        {
+                            XPathNodeIterator args = typeModifiers.Current.Select(specializationArgumentsExpression);
+
+                            while(args.MoveNext())
+                            {
+                                if(args.CurrentPosition > 1)
+                                    writer.WriteString(", ");
+
+                                WriteTypeReference(args.Current, writer);
+                            }
+                        }
+
+                        writer.WriteString("?");
                     }
                     else
                     {

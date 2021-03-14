@@ -13,8 +13,7 @@
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
-
-// Ignore Spelling: unicode
+// 03/14/2021 - EFW - Added support for defaultValue element
 
 using System;
 using System.Globalization;
@@ -758,6 +757,13 @@ namespace Microsoft.Ddue.Tools
             {
                 case "nullValue":
                     writer.WriteKeyword("null");
+                    break;
+
+                case "defaultValue":
+                    // I'm making an assumption about syntax here
+                    writer.WriteString("new ");
+                    this.WriteTypeReference(type, writer);
+                    writer.WriteString("()");
                     break;
 
                 case "typeValue":

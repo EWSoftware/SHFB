@@ -17,6 +17,9 @@
 // 03/14/2014 - EFW - Fixed bug in TypeNode.GetMatchingMethod() reported by SHarwell.
 // 08/23/2016 - EFW - Added support for reading source code context from PDB files
 // 07/06/2018 - EFW - Increased the maximum allowed recursion depth related to the 04/04/2012 fix
+// 03/14/2021 - EFW - Added TypeNode.IsNullable property
+
+// Ignore Spelling: str Guid ptr Zonnon Comega nop mrefs al
 
 using System.Collections;
 using System.Collections.Generic;
@@ -607,7 +610,7 @@ tryAgain:
                 {
 TryAgain:
                     int c = Document.uniqueKeyCounter;
-                    int cp1 = c == int.MaxValue ? 1 : c + 1;
+                    int cp1 = c == Int32.MaxValue ? 1 : c + 1;
                     if(System.Threading.Interlocked.CompareExchange(ref Document.uniqueKeyCounter, cp1, c) != c)
                         goto TryAgain;
                     this.uniqueKey = cp1;
@@ -928,7 +931,7 @@ TryAgain:
         TBStr = 0x24,    // Ptr to OS preferred (SBCS/Unicode) BSTR
         VariantBool = 0x25,    // OLE defined BOOLEAN (2 bytes, true == -1, false == 0)
         FunctionPtr = 0x26,    // Function pointer
-        AsAny = 0x28,    // Paired with Object type and does runtime marshalling determination
+        AsAny = 0x28,    // Paired with Object type and does runtime marshaling determination
         LPArray = 0x2a,    // C style array
         LPStruct = 0x2b,    // Pointer to a structure
         CustomMarshaler = 0x2c, // Native type supplied by custom code   
@@ -2134,7 +2137,7 @@ TryAgain:
             string[] messageParameters = this.MessageParameters;
             if(messageParameters == null || messageParameters.Length == 0)
                 return localizedString;
-            return string.Format(localizedString, messageParameters);
+            return String.Format(localizedString, messageParameters);
         }
         public abstract int Severity
         {
@@ -2854,7 +2857,7 @@ TryAgain:
                 char ch = text[i];
                 hcode = hcode * 17 + ch;
             }
-            this.hashCode = ((int)hcode) & int.MaxValue;
+            this.hashCode = ((int)hcode) & Int32.MaxValue;
         }
         public static Identifier/*!*/ For(SourceContext sctx)
         {
@@ -2881,7 +2884,7 @@ TryAgain:
                 char ch = name[i];
                 hcode = hcode * 17 + ch;
             }
-            this.hashCode = ((int)hcode) & int.MaxValue;
+            this.hashCode = ((int)hcode) & Int32.MaxValue;
         }
 
         public Identifier(string name, SourceContext sctx)
@@ -2913,7 +2916,7 @@ TryAgain:
             }
             if(isASCII)
             {
-                this.hashCode = ((int)hcode) & int.MaxValue;
+                this.hashCode = ((int)hcode) & Int32.MaxValue;
                 this.length = length;
                 this.name = new string((sbyte*)pointer, offset, length, Encoding.ASCII);
                 return;
@@ -2925,7 +2928,7 @@ TryAgain:
                 char ch = name[i];
                 hcode = hcode * 17 + ch;
             }
-            this.hashCode = ((int)hcode) & int.MaxValue;
+            this.hashCode = ((int)hcode) & Int32.MaxValue;
         }
         /// <summary>
         /// Use when pointer+offset points to a null terminated string of UTF8 code points.
@@ -2949,7 +2952,7 @@ TryAgain:
                     goto doUTF8decoding;
                 hcode = hcode * 17 + b;
             }
-            this.hashCode = ((int)hcode) & int.MaxValue;
+            this.hashCode = ((int)hcode) & Int32.MaxValue;
             this.name = new string((sbyte*)pointer, 0, this.length, Encoding.ASCII);
             return;
 doUTF8decoding:
@@ -2959,7 +2962,7 @@ doUTF8decoding:
                 char ch = name[i];
                 hcode = hcode * 17 + ch;
             }
-            this.hashCode = ((int)hcode) & int.MaxValue;
+            this.hashCode = ((int)hcode) & Int32.MaxValue;
         }
         /// <summary>
         /// Use when pointer points to a string of UTF8 code points of a given length
@@ -6834,7 +6837,7 @@ notfound:
             if(this.friends == null)
                 this.friends = new TrivialHashtable();
             object ob = this.friends[assembly.UniqueKey];
-            if(ob == (object)string.Empty)
+            if(ob == (object)String.Empty)
                 return false;
             if(ob == this)
                 return true;
@@ -6890,7 +6893,7 @@ notfound:
                 return true;
             }
 
-            this.friends[assembly.UniqueKey] = string.Empty;
+            this.friends[assembly.UniqueKey] = String.Empty;
             return false;
         }
 
@@ -7058,7 +7061,7 @@ notfound:
                     throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
                         ExceptionStrings.InvalidAssemblyStrongName, assemblyStrongName), "assemblyStrongName");
                 i++;
-                while(i < n && char.IsWhiteSpace(assemblyStrongName[i]))
+                while(i < n && Char.IsWhiteSpace(assemblyStrongName[i]))
                     i++;
                 switch(assemblyStrongName[i])
                 {
@@ -7090,7 +7093,7 @@ notfound:
                 while(i < n && assemblyStrongName[i] == ']')
                     i++;
             }
-            while(i < n && char.IsWhiteSpace(assemblyStrongName[i]))
+            while(i < n && Char.IsWhiteSpace(assemblyStrongName[i]))
                 i++;
             if(i < n)
                 throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
@@ -7107,13 +7110,13 @@ notfound:
                     ArrayList tokArr = new ArrayList();
                     if(n % 2 == 1)
                     {
-                        tokArr.Add(byte.Parse(token.Substring(0, 1), System.Globalization.NumberStyles.HexNumber, null));
+                        tokArr.Add(Byte.Parse(token.Substring(0, 1), System.Globalization.NumberStyles.HexNumber, null));
                         n--;
                     }
                     for(i = 0; i < n; i += 2)
                     {
                         byte b = 0;
-                        bool goodByte = byte.TryParse(token.Substring(i, 2), System.Globalization.NumberStyles.HexNumber, null, out b);
+                        bool goodByte = Byte.TryParse(token.Substring(i, 2), System.Globalization.NumberStyles.HexNumber, null, out b);
                         Debug.Assert(goodByte);
                         tokArr.Add(b);
                     }
@@ -7121,7 +7124,7 @@ notfound:
                 }
                 else
                 {
-                    ulong tk = ulong.Parse(token, System.Globalization.NumberStyles.HexNumber, null);
+                    ulong tk = UInt64.Parse(token, System.Globalization.NumberStyles.HexNumber, null);
                     tok = new byte[8];
                     tok[0] = (byte)(tk >> 56);
                     tok[1] = (byte)(tk >> 48);
@@ -7144,18 +7147,18 @@ notfound:
             Debug.Assert(assemblyStrongName != null);
             int n = assemblyStrongName.Length;
             Debug.Assert(0 <= i && i < n);
-            while(i < n && char.IsWhiteSpace(assemblyStrongName[i]))
+            while(i < n && Char.IsWhiteSpace(assemblyStrongName[i]))
                 i++;
             StringBuilder sb = new StringBuilder(n);
             while(i < n)
             {
                 char ch = assemblyStrongName[i];
-                if(ch == ',' || ch == ']' || char.IsWhiteSpace(ch))
+                if(ch == ',' || ch == ']' || Char.IsWhiteSpace(ch))
                     break;
                 sb.Append(ch);
                 i++;
             }
-            while(i < n && char.IsWhiteSpace(assemblyStrongName[i]))
+            while(i < n && Char.IsWhiteSpace(assemblyStrongName[i]))
                 i++;
             return sb.ToString();
         }
@@ -7167,7 +7170,7 @@ notfound:
             if(PlatformHelpers.StringCompareOrdinalIgnoreCase(assemblyStrongName, i, target, 0, target.Length) != 0)
                 goto throwError;
             i += target.Length;
-            while(i < n && char.IsWhiteSpace(assemblyStrongName[i]))
+            while(i < n && Char.IsWhiteSpace(assemblyStrongName[i]))
                 i++;
             if(i >= n || assemblyStrongName[i] != '=')
                 goto throwError;
@@ -8300,7 +8303,7 @@ throwError:
                     Identifier defMemName = null;
                     for(int j = 0, m = attrs == null ? 0 : attrs.Count; j < m; j++)
                     {
-                        //^ assert attrs != null;
+                        ////^ assert attrs != null;
                         AttributeNode attr = attrs[j];
                         if(attr == null)
                             continue;
@@ -8605,6 +8608,12 @@ done:
                 this.isGeneric = value;
             }
         }
+
+        /// <summary>
+        /// True if this is a nullable type (<see cref="System.Nullable{T}" />)
+        /// </summary>
+        /// <remarks>For some reason, Nullable is considered a value type rather than a reference type by MRefBuilder</remarks>
+        public virtual bool IsNullable => this.IsGeneric && this.Name.Name.StartsWith("Nullable`", StringComparison.Ordinal);
 
         public virtual bool IsNestedAssembly
         {
@@ -9438,7 +9447,7 @@ done:
         private static bool TypeIsNotFullySpecialized(TypeNode t)
         {
             TypeNode tt = TypeNode.StripModifiers(t);
-            //^ assert tt != null;        
+            ////^ assert tt != null;        
             if(tt is TypeParameter || tt is ClassParameter || tt.IsNotFullySpecialized)
                 return true;
             for(int j = 0, m = tt.StructuralElementTypes == null ? 0 : tt.StructuralElementTypes.Count; j < m; j++)
@@ -10313,7 +10322,7 @@ done:
         }
         protected internal Type runtimeType;
         /// <summary>
-        /// Gets a System.Type instance corresponding to this type. The assembly containin this type must be normalized
+        /// Gets a System.Type instance corresponding to this type. The assembly containing this type must be normalized
         /// and must have a location on disk or must have been loaded via AssemblyNode.GetRuntimeAssembly.
         /// </summary>
         /// <returns>A System.Type instance. (A runtime type.)</returns>
@@ -12066,7 +12075,7 @@ returnFullName:
 
             for(int i = 0; i < n; i++)
             {
-                //^ assert dparams != null;
+                ////^ assert dparams != null;
                 Parameter p = dparams[i];
                 if(p == null)
                     continue;
@@ -12161,7 +12170,7 @@ returnFullName:
                 bool goodMatch = func != null && func.ReturnType == returnType;
                 if(goodMatch)
                 {
-                    //^ assert func != null;
+                    ////^ assert func != null;
                     ParameterList fpars = func.Parameters;
                     int m = fpars == null ? 0 : fpars.Count;
                     goodMatch = n == m;
@@ -12794,7 +12803,7 @@ returnFullName:
 
         public override bool IsStructurallyEquivalentTo(TypeNode type)
         {
-            if(object.ReferenceEquals(this, type))
+            if(Object.ReferenceEquals(this, type))
                 return true;
             ITypeParameter tp = type as ITypeParameter;
             if(tp == null)
@@ -13104,7 +13113,7 @@ returnFullName:
 
         public override bool IsStructurallyEquivalentTo(TypeNode type)
         {
-            if(object.ReferenceEquals(this, type))
+            if(Object.ReferenceEquals(this, type))
                 return true;
             ITypeParameter tp = type as ITypeParameter;
             if(tp == null)
@@ -14120,7 +14129,7 @@ returnFullName:
             this.parameterTypes = parameterTypes;
             this.returnType = returnType;
             this.typeCode = ElementType.FunctionPointer;
-            this.varArgStart = int.MaxValue;
+            this.varArgStart = Int32.MaxValue;
         }
         private CallingConventionFlags callingConvention;
         public CallingConventionFlags CallingConvention
@@ -16962,7 +16971,7 @@ tryNext:
         public InterfaceList ImplementedInterfaceExpressions;
         // if this is the backing field for some event, then ForEvent is that event
         public Event ForEvent;
-        public bool IsModelfield = false; //set to true if this field serves as the representation of a modelfield in a class
+        public bool IsModelfield = false; //set to true if this field serves as the representation of a model field in a class
 
         public Field()
             : base(NodeType.Field)
@@ -17194,7 +17203,7 @@ tryNext:
         /// </summary>
         public TypeNodeList ImplementedTypes;
         public TypeNodeList ImplementedTypeExpressions;
-        public bool IsModelfield = false;   //set to true if this property serves as the representation of a modelfield in an interface
+        public bool IsModelfield = false;   //set to true if this property serves as the representation of a model field in an interface
 
         public Property() : base(NodeType.Property)
         {
@@ -18458,11 +18467,11 @@ tryNext:
         }
         internal static int StringCompareOrdinalIgnoreCase(string strA, int indexA, string strB, int indexB, int length)
         {
-            return string.Compare(strA, indexA, strB, indexB, length, StringComparison.OrdinalIgnoreCase);
+            return String.Compare(strA, indexA, strB, indexB, length, StringComparison.OrdinalIgnoreCase);
         }
         internal static int StringCompareOrdinalIgnoreCase(string strA, string strB)
         {
-            return string.Compare(strA, strB, StringComparison.OrdinalIgnoreCase);
+            return String.Compare(strA, strB, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

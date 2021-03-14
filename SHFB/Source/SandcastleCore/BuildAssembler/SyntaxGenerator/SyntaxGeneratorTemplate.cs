@@ -14,6 +14,7 @@
 // 11/29/2013 - EFW - Added support for interop metadata
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly and updated for use via MEF
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
+// 03/14/2021 - EFW - Added support for nullable type syntax
 
 using System;
 using System.Globalization;
@@ -683,6 +684,24 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
                         }
 
                         writer.WriteString(")");
+                    }
+                    else if(id.StartsWith("T:System.Nullable`", StringComparison.Ordinal))
+                    {
+                        // !EFW - Support nullable type syntax
+                        while(typeModifiers.MoveNext())
+                        {
+                            XPathNodeIterator args = typeModifiers.Current.Select(specializationArgumentsExpression);
+
+                            while(args.MoveNext())
+                            {
+                                if(args.CurrentPosition > 1)
+                                    writer.WriteString(", ");
+
+                                WriteTypeReference(args.Current, writer);
+                            }
+                        }
+
+                        writer.WriteString("?");
                     }
                     else
                     {

@@ -13,8 +13,7 @@
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 // 11/20/2014 - EFW - Added support for writing out method parameter attributes
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
-
-// Ignore Spelling: unicode
+// 03/14/2021 - EFW - Added support for defaultValue element
 
 using System;
 using System.Globalization;
@@ -1514,6 +1513,12 @@ namespace Microsoft.Ddue.Tools
             {
                 case "nullValue":
                     writer.WriteKeyword("nullptr");
+                    break;
+
+                case "defaultValue":
+                    // I'm making an assumption about syntax here
+                    this.WriteTypeReference(type, writer);
+                    writer.WriteString("()");
                     break;
 
                 case "typeValue":

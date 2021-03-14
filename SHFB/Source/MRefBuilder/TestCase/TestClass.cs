@@ -35,7 +35,7 @@ namespace ValueTupleTest
         /// <param name="y">An integer</param>
         /// <param name="p">A point</param>
         /// <returns>A task</returns>
-        public Task ConnectAsync(CancellationToken cancellationToken = default, int x = default)
+        public Task ConnectAsync(CancellationToken cancellationToken = default, int x = default, double? y = default)
         {
             return null;
         }

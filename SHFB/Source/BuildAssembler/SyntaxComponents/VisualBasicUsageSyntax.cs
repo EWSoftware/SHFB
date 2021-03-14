@@ -9,6 +9,7 @@
 // default is false to exclude it.
 // 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
+// 03/14/2021 - EFW - Added support for nullable type syntax
 
 // Ignore Spelling: xor
 
@@ -904,6 +905,24 @@ namespace Microsoft.Ddue.Tools
                         }
 
                         writer.WriteString(")");
+                    }
+                    else if(id.StartsWith("T:System.Nullable`", StringComparison.Ordinal))
+                    {
+                        // !EFW - Support nullable type syntax
+                        while(typeModifiers.MoveNext())
+                        {
+                            XPathNodeIterator args = typeModifiers.Current.Select(specializationArgumentsExpression);
+
+                            while(args.MoveNext())
+                            {
+                                if(args.CurrentPosition > 1)
+                                    writer.WriteString(", ");
+
+                                WriteTypeReference(args.Current, writer);
+                            }
+                        }
+
+                        writer.WriteString("?");
                     }
                     else
                     {

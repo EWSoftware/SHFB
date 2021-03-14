@@ -16,6 +16,7 @@
 // 03/17/2017 - EFW - Added support for value tuples
 // 05/26/2017 - EFW - Fixed up issues with unsigned long enumerated types and duplicate flag values
 // 05/30/2017 - JRC - Fixed issue with negative enums
+// 03/14/2021 - EFW - Added support for defaultValue element for default value structs on parameters
 
 using System;
 using System.Collections.Generic;
@@ -41,14 +42,14 @@ namespace Microsoft.Ddue.Tools
         #region Private data members
         //=====================================================================
 
-        private XmlWriter writer;
-        private ApiNamer namer;
+        private readonly XmlWriter writer;
+        private readonly ApiNamer namer;
 
-        private HashSet<string> assemblyNames;
-        private Dictionary<TypeNode, List<TypeNode>> descendantIndex;
-        private Dictionary<Interface, List<TypeNode>> implementorIndex;
+        private readonly HashSet<string> assemblyNames;
+        private readonly Dictionary<TypeNode, List<TypeNode>> descendantIndex;
+        private readonly Dictionary<Interface, List<TypeNode>> implementorIndex;
 
-        private Dictionary<string, List<MRefBuilderCallback>> startTagCallbacks, endTagCallbacks;
+        private readonly Dictionary<string, List<MRefBuilderCallback>> startTagCallbacks, endTagCallbacks;
 
         private int namespaceCount, typeCount, memberCount;
 
@@ -60,34 +61,23 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This read-only property returns the API namer being used
         /// </summary>
-        public ApiNamer ApiNamer
-        {
-            get { return namer; }
-        }
+        public ApiNamer ApiNamer => namer;
 
         /// <summary>
         /// This read-only property returns a count of the namespaces found
         /// </summary>
-        public int NamespaceCount
-        {
-            get { return namespaceCount; }
-        }
+        public int NamespaceCount => namespaceCount;
 
         /// <summary>
         /// This read-only property returns a count of the types found
         /// </summary>
-        public int TypeCount
-        {
-            get { return typeCount; }
-        }
+        public int TypeCount => typeCount;
 
         /// <summary>
         /// This read-only property returns a count of the members found
         /// </summary>
-        public int MemberCount
-        {
-            get { return memberCount; }
-        }
+        public int MemberCount => memberCount;
+
         #endregion
 
         #region Constructor
@@ -115,9 +105,7 @@ namespace Microsoft.Ddue.Tools
             startTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
             endTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
 
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            writer = XmlWriter.Create(output, settings);
+            writer = XmlWriter.Create(output, new XmlWriterSettings { Indent = true });
 
             this.namer = namer;
         }
@@ -271,10 +259,10 @@ namespace Microsoft.Ddue.Tools
         /// <param name="method">The method for which to load source context info</param>
         private void SetSourceContext(Method method)
         {
-            if(method.DeclaringType.DeclaringModule.reader.PdbExists && method.ProviderHandle is int &&
+            if(method.DeclaringType.DeclaringModule.reader.PdbExists && method.ProviderHandle is int providerHandle &&
               method.FirstLineContext.Document == null)
             {
-                uint token = (uint)(int)method.ProviderHandle | 0x06000000;
+                uint token = (uint)providerHandle | 0x06000000;
                 method.DeclaringType.DeclaringModule.reader.GetMethodDebugSymbols(method, token);
 
                 if(method.FirstLineContext.Document != null)
@@ -403,9 +391,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="callback">The callback to invoke</param>
         public void RegisterStartTagCallback(string name, MRefBuilderCallback callback)
         {
-            List<MRefBuilderCallback> current;
-
-            if(!startTagCallbacks.TryGetValue(name, out current))
+            if(!startTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> current))
             {
                 current = new List<MRefBuilderCallback>();
                 startTagCallbacks.Add(name, current);
@@ -421,9 +407,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="callback">The callback to invoke</param>
         public void RegisterEndTagCallback(string name, MRefBuilderCallback callback)
         {
-            List<MRefBuilderCallback> current;
-
-            if(!endTagCallbacks.TryGetValue(name, out current))
+            if(!endTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> current))
             {
                 current = new List<MRefBuilderCallback>();
                 endTagCallbacks.Add(name, current);
@@ -439,9 +423,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="info">The information to pass to the callbacks</param>
         private void StartElementCallbacks(string name, object info)
         {
-            List<MRefBuilderCallback> callbacks;
-
-            if(startTagCallbacks.TryGetValue(name, out callbacks))
+            if(startTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> callbacks))
                 foreach(MRefBuilderCallback callback in callbacks)
                     callback(writer, info);
         }
@@ -453,9 +435,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="info">The information to pass to the callbacks</param>
         private void EndElementCallbacks(string name, object info)
         {
-            List<MRefBuilderCallback> callbacks;
-
-            if(endTagCallbacks.TryGetValue(name, out callbacks))
+            if(endTagCallbacks.TryGetValue(name, out List<MRefBuilderCallback> callbacks))
                 foreach(MRefBuilderCallback callback in callbacks)
                     callback(writer, info);
         }
@@ -511,10 +491,10 @@ namespace Microsoft.Ddue.Tools
           SecurityAttributeList securityAttributes)
         {
             if(attributes == null)
-                throw new ArgumentNullException("attributes");
+                throw new ArgumentNullException(nameof(attributes));
 
             if(securityAttributes == null)
-                throw new ArgumentNullException("securityAttributes");
+                throw new ArgumentNullException(nameof(securityAttributes));
 
             foreach(var attribute in attributes)
             {
@@ -537,7 +517,7 @@ namespace Microsoft.Ddue.Tools
 
                 foreach(var permissionAttribute in permissionAttributes)
                 {
-                    // Saw an example where this was null; ildasm shows no permission attribute, so skip it
+                    // Saw an example where this was null; IDLASM shows no permission attribute, so skip it
                     if(permissionAttribute == null)
                         continue;
 
@@ -569,8 +549,8 @@ namespace Microsoft.Ddue.Tools
                 {
                    long fieldValue;
 
-                    if(field.DefaultValue.Value is ulong)
-                        fieldValue = unchecked((long)(ulong)field.DefaultValue.Value);
+                    if(field.DefaultValue.Value is ulong defValue)
+                        fieldValue = unchecked((long)defValue);
                     else
                         fieldValue = Convert.ToInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
 
@@ -590,8 +570,8 @@ namespace Microsoft.Ddue.Tools
             {
                 long fieldValue;
 
-                if(list[i].DefaultValue.Value is ulong)
-                    fieldValue = unchecked((long)(ulong)list[i].DefaultValue.Value);
+                if(list[i].DefaultValue.Value is ulong defValue)
+                    fieldValue = unchecked((long)defValue);
                 else
                     fieldValue = Convert.ToInt64(list[i].DefaultValue.Value, CultureInfo.InvariantCulture);
 
@@ -599,8 +579,8 @@ namespace Microsoft.Ddue.Tools
                 {
                     long compare;
 
-                    if (f.DefaultValue.Value is ulong)
-                        compare = unchecked((long)(ulong)f.DefaultValue.Value);
+                    if (f.DefaultValue.Value is ulong fieldDefValue)
+                        compare = unchecked((long)fieldDefValue);
                     else
                         compare = Convert.ToInt64(f.DefaultValue.Value, CultureInfo.InvariantCulture);
 
@@ -629,9 +609,7 @@ namespace Microsoft.Ddue.Tools
                 parent = parent.GetTemplateType();
 
                 // Get the list of children for that parent (i.e. the sibling list)
-                List<TypeNode> siblings;
-
-                if(!descendantIndex.TryGetValue(parent, out siblings))
+                if(!descendantIndex.TryGetValue(parent, out List<TypeNode> siblings))
                 {
                     siblings = new List<TypeNode>();
                     descendantIndex[parent] = siblings;
@@ -648,8 +626,6 @@ namespace Microsoft.Ddue.Tools
         /// <param name="type">The type to add to the index</param>
         private void PopulateImplementorIndex(TypeNode type)
         {
-            List<TypeNode> implementors;
-
             foreach(var i in this.GetExposedInterfaces(type.Interfaces))
             {
                 var contract = i;
@@ -659,7 +635,7 @@ namespace Microsoft.Ddue.Tools
                     contract = (Interface)contract.GetTemplateType();
 
                 // Get the list of implementors
-                if(!implementorIndex.TryGetValue(contract, out implementors))
+                if(!implementorIndex.TryGetValue(contract, out List<TypeNode> implementors))
                 {
                     implementors = new List<TypeNode>();
                     implementorIndex[contract] = implementors;
@@ -814,10 +790,8 @@ namespace Microsoft.Ddue.Tools
                     DelegateNode handler = (DelegateNode)type;
                     AttributeList retValAttributes = null;
 
-                    var endInvoke = handler.Members.FirstOrDefault(m => m.Name.Name.Equals("EndInvoke",
-                        StringComparison.Ordinal)) as Method;
 
-                    if(endInvoke != null)
+                    if(handler.Members.FirstOrDefault(m => m.Name.Name.Equals("EndInvoke", StringComparison.Ordinal)) is Method endInvoke)
                         retValAttributes = endInvoke.ReturnAttributes;
 
                     this.WriteGenericParameters(handler.TemplateParameters);
@@ -1005,9 +979,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="contract"></param>
         private void WriteImplementors(Interface contract)
         {
-            List<TypeNode> implementors;
-
-            if(!implementorIndex.TryGetValue(contract, out implementors))
+            if(!implementorIndex.TryGetValue(contract, out List<TypeNode> implementors))
                 return;
 
             if(implementors != null && implementors.Count != 0)
@@ -1434,7 +1406,7 @@ namespace Microsoft.Ddue.Tools
         {
             writer.WriteStartElement("apidata");
 
-            string name = api.Name.Name, group = null, subgroup = null, subsubgroup = null;
+            string name = api.Name.Name, group, subgroup = null, subsubgroup = null;
 
             if(api.NodeType == NodeType.Namespace)
                 group = "namespace";
@@ -1538,7 +1510,7 @@ namespace Microsoft.Ddue.Tools
         public void WriteTypeReference(TypeNode type, string elementName = null, AttributeList attributes = null)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             string[] names = null;
 
@@ -1550,9 +1522,7 @@ namespace Microsoft.Ddue.Tools
 
                 if(tupleElementNames != null && tupleElementNames.Expressions.Count != 0)
                 {
-                    var exp = tupleElementNames.Expressions[0] as Literal;
-
-                    if(exp != null)
+                    if(tupleElementNames.Expressions[0] is Literal exp)
                     {
                         names = exp.Value as string[];
 
@@ -1612,7 +1582,7 @@ namespace Microsoft.Ddue.Tools
         public void WriteMemberReference(Member member)
         {
             if(member == null)
-                throw new ArgumentNullException("member");
+                throw new ArgumentNullException(nameof(member));
 
             writer.WriteStartElement("member");
 
@@ -1651,7 +1621,7 @@ namespace Microsoft.Ddue.Tools
                     this.WriteTypeReference(attribute.Type);
 
                     foreach(var expression in attribute.Expressions)
-                        this.WriteExpression(expression);
+                        this.WriteExpression(attribute.Type, expression);
 
                     writer.WriteEndElement();
                 }
@@ -1664,12 +1634,22 @@ namespace Microsoft.Ddue.Tools
         /// Write out an expression
         /// </summary>
         /// <param name="expression">The expression to write</param>
-        protected void WriteExpression(Expression expression)
+        protected void WriteExpression(TypeNode type, Expression expression)
         {
             if(expression.NodeType == NodeType.Literal)
             {
                 writer.WriteStartElement("argument");
-                this.WriteLiteral((Literal)expression);
+
+                var literal = (Literal)expression;
+
+                // If the literal is null but the parameter type is a value type, change the type in the
+                // literal from Object to the parameter type.  The WriteLiteral() method will then be able
+                // to write out the defaultValue element rather than the nullValue element.
+                if(literal.Value == null && type.IsValueType && !type.IsNullable)
+                    literal = new Literal(null, type);
+
+                this.WriteLiteral(literal);
+
                 writer.WriteEndElement();
             }
             else
@@ -1830,7 +1810,7 @@ namespace Microsoft.Ddue.Tools
                 this.WriteTypeReference(type);
 
             if(value == null)
-                writer.WriteElementString("nullValue", String.Empty);
+                writer.WriteElementString(literal.Type.IsValueType ? "defaultValue" : "nullValue", String.Empty);
             else
                 if(type.NodeType == NodeType.EnumNode)
                 {
@@ -1838,8 +1818,8 @@ namespace Microsoft.Ddue.Tools
 
                     writer.WriteStartElement("enumValue");
 
-                    if(value is ulong)
-                        value = unchecked((long)(ulong)value);
+                    if(value is ulong longValue)
+                        value = unchecked((long)longValue);
 
                     foreach(var field in GetAppliedFields(enumeration, Convert.ToInt64(value, CultureInfo.InvariantCulture)))
                     {
@@ -1915,7 +1895,9 @@ namespace Microsoft.Ddue.Tools
             this.WriteTypeReference(parameter.Type, null, parameter.Attributes);
 
             if(parameter.IsOptional && parameter.DefaultValue != null)
-                this.WriteExpression(parameter.DefaultValue);
+            {
+                this.WriteExpression(parameter.Type, parameter.DefaultValue);
+            }
 
             if(parameter.Attributes != null && parameter.Attributes.Count != 0)
             {
