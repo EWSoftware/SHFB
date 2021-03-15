@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/20/2019
-// Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/14/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
 //
@@ -41,8 +40,8 @@ namespace SandcastleBuilder.Utils.MSBuild
         #region Private data members
         //=====================================================================
 
-        private BuildProcess buildProcess;
-        private HashSet<string> resolvedDependencies, packageReferences;
+        private readonly BuildProcess buildProcess;
+        private readonly HashSet<string> resolvedDependencies, packageReferences, implicitPackageFolders;
         private JToken packages;
         private string projectFilename;
         private string[] nugetPackageFolders;
@@ -61,6 +60,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             get
             {
                 if(packages != null || packageReferences.Count != 0 && nugetPackageFolders != null)
+                {
                     foreach(string assembly in this.ResolvePackageReferencesInternal(packageReferences))
                         foreach(string folder in nugetPackageFolders)
                         {
@@ -69,6 +69,11 @@ namespace SandcastleBuilder.Utils.MSBuild
                             if(File.Exists(path))
                                 yield return path;
                         }
+                }
+
+                foreach(string folder in implicitPackageFolders)
+                    foreach(string reference in Directory.EnumerateFiles(folder, "*.dll"))
+                        yield return reference;
             }
         }
         #endregion
@@ -86,6 +91,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
             resolvedDependencies = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             packageReferences = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            implicitPackageFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
         #endregion
 
@@ -96,8 +102,9 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// This is used to load the package reference information from the given project
         /// </summary>
         /// <param name="project">The MSBuild project from which to get the package references</param>
+        /// <param name="targetFramework">A target framework value used to resolve implicit package references</param>
         /// <returns>True if package reference info was loaded, false if not</returns>
-        public bool LoadPackageReferenceInfo(Project project)
+        public bool LoadPackageReferenceInfo(Project project, string targetFramework)
         {
             packages = null;
             resolvedDependencies.Clear();
@@ -125,7 +132,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                             if(!String.IsNullOrWhiteSpace(folders))
                                 nugetPackageFolders = folders.Split(';');
                             else
-                                nugetPackageFolders = new string[0];
+                                nugetPackageFolders = Array.Empty<string>();
 
                             foreach(var reference in project.GetItems("PackageReference"))
                             {
@@ -155,7 +162,34 @@ namespace SandcastleBuilder.Utils.MSBuild
                     "Reason: {1}", projectFilename, ex.Message);
             }
 
-            return (packages != null && packageReferences.Count != 0);
+            // If we have a target framework, look for default implicit packages.  This will helps us find
+            // references for .NETStandard 2.1 and later which don't have an explicit package reference.
+            if(!String.IsNullOrWhiteSpace(targetFramework))
+            {
+                string defaultImplicitPackages = project.GetPropertyValue("DefaultImplicitPackages"),
+                    targetingPackRoot = project.GetPropertyValue("NetCoreTargetingPackRoot");
+
+                if(!String.IsNullOrWhiteSpace(defaultImplicitPackages) && !String.IsNullOrWhiteSpace(targetingPackRoot))
+                {
+                    foreach(string package in defaultImplicitPackages.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        string rootPath = Path.Combine(targetingPackRoot, package);
+
+                        // Most exist with a ".Ref" suffix
+                        if(!Directory.Exists(rootPath))
+                            rootPath += ".Ref";
+
+                        if(Directory.Exists(rootPath))
+                        {
+                            foreach(string path in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories))
+                                if(path.EndsWith(targetFramework, StringComparison.OrdinalIgnoreCase))
+                                    implicitPackageFolders.Add(path);
+                        }
+                    }
+                }
+            }
+
+            return (packages != null && packageReferences.Count != 0) || implicitPackageFolders.Count != 0;
         }
 
         /// <summary>

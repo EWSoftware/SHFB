@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/26/2020
-// Note    : Copyright 2008-2020, Eric Woodruff, All rights reserved
+// Updated : 03/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
 // process.
@@ -325,6 +325,27 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
+        /// This read-only property is used to get the target framework
+        /// </summary>
+        public string TargetFramework
+        {
+            get
+            {
+                if(properties == null)
+                    throw new InvalidOperationException("Configuration has not been set");
+
+                if(properties.TryGetValue("TargetFramework", out ProjectProperty prop))
+                    return prop.EvaluatedValue;
+
+                // If multi-targeting, return the first target type for now
+                if(properties.TryGetValue("TargetFrameworks", out prop))
+                    return prop.EvaluatedValue.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+                return String.Empty;
+            }
+        }
+
+        /// <summary>
         /// This is used to get the target framework identifier
         /// </summary>
         public string TargetFrameworkIdentifier
@@ -607,7 +628,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 foreach(ProjectItem reference in this.ProjectFile.GetItems(refType))
                     if(!references.ContainsKey(reference.EvaluatedInclude))
                     {
-                        var metadata = reference.Metadata.Select(m => (Name: m.Name, EvaluatedValue: m.EvaluatedValue)).ToList();
+                        var metadata = reference.Metadata.Select(m => (m.Name, m.EvaluatedValue)).ToList();
                         var hintPath = metadata.FirstOrDefault(m => m.Name == "HintPath");
 
                         // Convert relative paths to absolute paths
@@ -627,7 +648,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     }
 
             // Resolve any package references by converting them to regular references
-            if(resolver.LoadPackageReferenceInfo(this.ProjectFile))
+            if(resolver.LoadPackageReferenceInfo(this.ProjectFile, this.TargetFramework))
                 foreach(string pr in resolver.ReferenceAssemblies)
                 {
                     string refName = Path.GetFileNameWithoutExtension(pr);
