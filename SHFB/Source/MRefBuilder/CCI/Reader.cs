@@ -8,6 +8,7 @@
 // 12/15/2013 - EFW - Fixed a bug found when parsing the .NET 4.5.1 Framework assemblies
 // 08/23/2016 - EFW - Added support for reading source code context from PDB files
 // 11/24/2019 - EFW - Fixed incorrect handling of missing security attributes
+// 03/15/2021 - EFW - Added support for reading portable PDB files for source context information
 
 // Ignore Spelling: typelib mscorlib vararg Struct param
 
@@ -19,8 +20,6 @@ using System.IO;
 using System.Linq;
 using Marshal = System.Runtime.InteropServices.Marshal;
 using System.Runtime.InteropServices;
-
-using Sandcastle.Core;
 
 namespace System.Compiler.Metadata
 {
@@ -184,6 +183,8 @@ namespace System.Compiler.Metadata
         internal NamespaceList namespaceList;
         internal ISymUnmanagedReader debugReader;
 
+        Microsoft.DiaSymReader.ISymUnmanagedReader portableDebugReader;
+
         internal bool getDebugSymbols;
         private bool getDebugSymbolsFailed;
         private TypeNodeList currentTypeParameters;
@@ -335,11 +336,20 @@ namespace System.Compiler.Metadata
 
                     case 0x806d0005:    // EC_NOT_FOUND
                     case 0x806d0014:    // EC_INVALID_EXE_TIMESTAMP
-                        // Sometimes, GetReaderForFile erroneously reports missing PDB files as being out of date 
-                        // so we check if the file actually exists before reporting the error.  The mere absence
-                        // of a PDB file is not an error.
-                        if(File.Exists(Path.ChangeExtension(filename, ".pdb")))
-                            this.PdbOutOfDate = true;
+                        if(debugReader != null)
+                        {
+                            Marshal.ReleaseComObject(this.debugReader);
+                            debugReader = null;
+                        }
+
+                        // For these errors, see if it's in the portable PDB format.  If so, we can use it.
+                        var symBinder = new Microsoft.DiaSymReader.PortablePdb.SymBinder();
+
+                        hresult = symBinder.GetReaderFromPdbFile(new NotImplementedMetadataProvider(),
+                            Path.ChangeExtension(filename, ".pdb"), out portableDebugReader);
+
+                        if(hresult == 0)
+                            this.PdbExists = true;
                         break;
 
                     default:
@@ -2432,29 +2442,37 @@ nextModRef:     ;
 
         internal void GetMethodDebugSymbols(Method/*!*/ method, uint methodToken)
         {
-            ISymUnmanagedMethod methodInfo = null;
-            try
+            if(debugReader != null)
             {
-                if(this.debugReader != null)
-                    try
-                    {
-                        this.debugReader.GetMethod(methodToken, ref methodInfo);
-                        method.RecordSequencePoints(methodInfo);
-                    }
-                    catch(COMException)
-                    {
-                    }
-                    catch(InvalidCastException)
-                    {
-                    }
-                    catch(InvalidComObjectException)
-                    {
-                    }
+                ISymUnmanagedMethod methodInfo = null;
+
+                try
+                {
+                    debugReader.GetMethod(methodToken, ref methodInfo);
+                    method.RecordSequencePoints(methodInfo);
+                }
+                catch(COMException)
+                {
+                }
+                catch(InvalidCastException)
+                {
+                }
+                catch(InvalidComObjectException)
+                {
+                }
+                finally
+                {
+                    if(methodInfo != null)
+                        Marshal.ReleaseComObject(methodInfo);
+                }
+
+                return;
             }
-            finally
+
+            if(portableDebugReader != null)
             {
-                if(methodInfo != null)
-                    Marshal.ReleaseComObject(methodInfo);
+                if(portableDebugReader.GetMethod((int)methodToken, out Microsoft.DiaSymReader.ISymUnmanagedMethod methodInfo) == 0)
+                    method.RecordSequencePoints(methodInfo);
             }
         }
 
@@ -5868,5 +5886,13 @@ nextModRef:     ;
 
     internal class EmptyImporter : IMetaDataImport
     {
+    }
+
+    sealed class NotImplementedMetadataProvider : Microsoft.DiaSymReader.IMetadataImportProvider
+    {
+        public object GetMetadataImport()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

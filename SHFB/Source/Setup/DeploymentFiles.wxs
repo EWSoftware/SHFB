@@ -71,6 +71,12 @@
       <Component Id="cmpD77D48D0992811F0DD0522F9CEFB4644" Guid="{A5F0D800-A638-4AB4-9E77-2A1CDD6A3080}">
         <File Id="fil9FD02A018D373F9596134444932FE692" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.Build.Locator.dll" />
       </Component>
+      <Component Id="cmpB84FF3E662CF624991495002BF1BC88D" Guid="{1EC77BDD-3F61-4897-BC0B-0EC6EE3840B7}">
+        <File Id="fil05A7E61A6DFFA36C9ED0BAF2B52724DF" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.DiaSymReader.dll" />
+      </Component>
+      <Component Id="cmpF0D4D41B81E5ED3B8BAA88C2312050FC" Guid="{5446000B-3B8E-4DA1-87D3-C96E7DE68D25}">
+        <File Id="fil641B2BF9110E3D77DDC079CF7C278E38" KeyPath="yes" Source="$(var.RootFolder)\Microsoft.DiaSymReader.PortablePdb.dll" />
+      </Component>
       <Component Id="cmp91D85178A06806BEAAA0D49E48B8894F" Guid="{D1FE4385-6659-42FE-B01D-4DC3CF411589}">
         <File Id="filEE750CD1A7F2233AAAF0644F1DB722CA" KeyPath="yes" Source="$(var.RootFolder)\MRefBuilder.config" />
       </Component>
@@ -182,6 +188,9 @@
       </Component>
       <Component Id="cmp56E3DEF6D0A5836F36A1307284549659" Guid="{4A19FD32-2109-4512-9366-709BE799B522}">
         <File Id="fil216C786232AC5BA78768E339B258BDB3" KeyPath="yes" Source="$(var.RootFolder)\SyntaxComponents.xml" />
+      </Component>
+      <Component Id="cmpC4D6E68A472E9CC1FAF71994B5B4DE32" Guid="{9C752C3B-03FC-4A76-AB01-F314E941FE0B}">
+        <File Id="fil741DE04C3124C1446D2FFF811D83E100" KeyPath="yes" Source="$(var.RootFolder)\System.Reflection.Metadata.dll" />
       </Component>
       <Component Id="cmpB33DADF2D729CCAE7A61B72DDA2087A3" Guid="{4B1A6FB9-494F-4D53-8D4A-96D74A8F687D}">
         <File Id="fil610DB4B1467F7384FE836BAC91B5D8B1" KeyPath="yes" Source="$(var.RootFolder)\VersionBuilder.exe" />
@@ -7606,7 +7615,7 @@
               <Component Id="cmpB1BB18E75BE29FA70FCB3AAD1EC835B6" Guid="{0B765AEB-3BD2-47A7-8DC3-088C6592074E}">
                 <File Id="fil0419F8D8F105784824EF8602792F3B55" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\clipboard.min.js" />
               </Component>
-              <Component Id="cmpBC97D1B677B94AB461C68A15B0989909" Guid="{92084F8F-1B3C-4A56-95DA-4B85EEFB26D4}">
+              <Component Id="cmp45A9B1E9FFA8474F777B8A8D3B8CC5DC" Guid="{92084F8F-1B3C-4A56-95DA-4B85EEFB26D4}">
                 <File Id="fil9DD873BFE4729C897CC1B54AF181995C" KeyPath="yes" Source="$(var.RootFolder)\PresentationStyles\VS2013\Web\scripts\jquery-3.5.1.min.js" />
               </Component>
             </Directory>
@@ -7927,6 +7936,8 @@
       <ComponentRef Id="cmpF6AF7C98B30945DBF757C200CF382260" />
       <ComponentRef Id="cmp47710F4ED559988F6A71463791BDDB20" />
       <ComponentRef Id="cmpD77D48D0992811F0DD0522F9CEFB4644" />
+      <ComponentRef Id="cmpB84FF3E662CF624991495002BF1BC88D" />
+      <ComponentRef Id="cmpF0D4D41B81E5ED3B8BAA88C2312050FC" />
       <ComponentRef Id="cmp91D85178A06806BEAAA0D49E48B8894F" />
       <ComponentRef Id="cmp58A124A7CE4898F21F18DE917B96D351" />
       <ComponentRef Id="cmp3566CF05D4BE73252B68F81716668DED" />
@@ -7957,6 +7968,7 @@
       <ComponentRef Id="cmp6F2CD371CC1458C510364DB3B3E08AC7" />
       <ComponentRef Id="cmpB092835B25713C5EC3C27546E3250C95" />
       <ComponentRef Id="cmp56E3DEF6D0A5836F36A1307284549659" />
+      <ComponentRef Id="cmpC4D6E68A472E9CC1FAF71994B5B4DE32" />
       <ComponentRef Id="cmpB33DADF2D729CCAE7A61B72DDA2087A3" />
       <ComponentRef Id="cmp3647A3052DAC50714218BD92536B0A91" />
       <ComponentRef Id="cmpF64D60E2A7A50FD6241ABDBE27E31F59" />
@@ -10367,7 +10379,7 @@
       <ComponentRef Id="cmp9F9C007EE8078C787D081D90E8EDF1B1" />
       <ComponentRef Id="cmp9C74B263BCC9787FAE1C5FDCA12BAAAA" />
       <ComponentRef Id="cmpB1BB18E75BE29FA70FCB3AAD1EC835B6" />
-      <ComponentRef Id="cmpBC97D1B677B94AB461C68A15B0989909" />
+      <ComponentRef Id="cmp45A9B1E9FFA8474F777B8A8D3B8CC5DC" />
       <ComponentRef Id="cmp0DB2BFCB1CD3D868AFA7505967E53E49" />
       <ComponentRef Id="cmpB5731877051694D27A4B704D1C45F5A6" />
       <ComponentRef Id="cmpD71FEBFFF1212B11D4A42D3095E07A6D" />

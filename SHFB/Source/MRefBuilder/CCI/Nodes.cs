@@ -18,6 +18,7 @@
 // 08/23/2016 - EFW - Added support for reading source code context from PDB files
 // 07/06/2018 - EFW - Increased the maximum allowed recursion depth related to the 04/04/2012 fix
 // 03/14/2021 - EFW - Added TypeNode.IsNullable property
+// 03/15/2021 - EFW - Added support for reading portable PDB files for source context information
 
 // Ignore Spelling: str Guid ptr Zonnon Comega nop mrefs al
 
@@ -622,6 +623,10 @@ TryAgain:
 
     internal class UnmanagedDocument : Document
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="ptrToISymUnmanagedDocument">Windows PDB document</param>
         internal UnmanagedDocument(IntPtr ptrToISymUnmanagedDocument)
         {
             //^ base();
@@ -654,6 +659,27 @@ TryAgain:
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(idoc);
                 }
             }
+
+            this.LineNumber = -1;
+            this.Text = null;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="doc">Portable PDB document</param>
+        internal UnmanagedDocument(Microsoft.DiaSymReader.ISymUnmanagedDocument doc)
+        {
+            Guid docType = Guid.Empty, language = Guid.Empty, vendor = Guid.Empty;
+
+            doc.GetDocumentType(ref docType);
+            doc.GetLanguage(ref language);
+            doc.GetLanguageVendor(ref vendor);
+
+            this.DocumentType = docType;
+            this.Language = language;
+            this.LanguageVendor = vendor;
+            this.Name = Microsoft.DiaSymReader.SymUnmanagedExtensions.GetName(doc);
 
             this.LineNumber = -1;
             this.Text = null;
@@ -16388,6 +16414,10 @@ tryNext:
         /// </summary>
         internal SourceContext FirstLineContext { get; set; }
 
+        /// <summary>
+        /// Get sequence points from a Windows PDB method entry
+        /// </summary>
+        /// <param name="methodInfo">The method from which to get the sequence points</param>
         internal void RecordSequencePoints(ISymUnmanagedMethod methodInfo)
         {
             if(methodInfo == null || this.contextForOffset != null)
@@ -16431,6 +16461,59 @@ tryNext:
 
             for(int i = 0; i < count; i++)
                 System.Runtime.InteropServices.Marshal.Release(docPtrs[i]);
+        }
+
+        /// <summary>
+        /// Get sequence points from a portable PDB method entry
+        /// </summary>
+        /// <param name="methodInfo">The method from which to get the sequence points</param>
+        internal void RecordSequencePoints(Microsoft.DiaSymReader.ISymUnmanagedMethod methodInfo)
+        {
+            if(methodInfo == null || this.contextForOffset != null)
+                return;
+
+            this.contextForOffset = new TrivialHashtable();
+
+            if(methodInfo.GetSequencePointCount(out int count) == 0)
+            {
+                Microsoft.DiaSymReader.ISymUnmanagedDocument[] documents = new Microsoft.DiaSymReader.ISymUnmanagedDocument[count];
+                int[] offsets = new int[count];
+                int[] startLines = new int[count];
+                int[] startColumns = new int[count];
+                int[] endLines = new int[count];
+                int[] endColumns = new int[count];
+
+                if(methodInfo.GetSequencePoints(count, out int numPoints, offsets, documents, startLines,
+                    startColumns, endLines, endColumns) == 0)
+                {
+                    Debug.Assert(count == numPoints);
+
+                    bool firstLineSet = false;
+
+                    for(int i = 0; i < count; i++)
+                    {
+                        // The magic hex constant below works around weird data reported from GetSequencePoints.
+                        // The constant comes from ILDASM's source code, which performs essentially the same test.
+                        const uint Magic = 0xFEEFEE;
+
+                        if(startLines[i] >= Magic || endLines[i] >= Magic)
+                            continue;
+
+                        var doc = new UnmanagedDocument(documents[i]);
+
+                        SourceContext context = new SourceContext(doc, doc.GetOffset((uint)startLines[i],
+                            (uint)startColumns[i]), doc.GetOffset((uint)endLines[i], (uint)endColumns[i]));
+
+                        if(!firstLineSet)
+                        {
+                            this.FirstLineContext = context;
+                            firstLineSet = true;
+                        }
+
+                        this.contextForOffset[offsets[i] + 1] = context;
+                    }
+                }
+            }
         }
 
         private static Method NotSpecified = new Method();

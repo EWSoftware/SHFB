@@ -23,10 +23,10 @@ namespace Microsoft.Ddue.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private List<AssemblyNode> accessoryAssemblies, assemblies;
-        private Dictionary<string, Namespace> catalog;
-        private ApiFilter filter;
-        private AssemblyResolver resolver;
+        private readonly List<AssemblyNode> accessoryAssemblies, assemblies;
+        private readonly Dictionary<string, Namespace> catalog;
+        private readonly ApiFilter filter;
+        private readonly AssemblyResolver resolver;
 
         #endregion
 
@@ -36,34 +36,22 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <summary>
         /// This read-only property returns the assembly resolver in use
         /// </summary>
-        public AssemblyResolver Resolver
-        {
-            get { return resolver; }
-        }
+        public AssemblyResolver Resolver => resolver;
 
         /// <summary>
         /// This read-only property returns the API filter in use
         /// </summary>
-        public ApiFilter ApiFilter
-        {
-            get { return filter; }
-        }
+        public ApiFilter ApiFilter => filter;
 
         /// <summary>
         /// This read-only property returns an enumerable list of the loaded accessory assemblies
         /// </summary>
-        public IEnumerable<AssemblyNode> AccessoryAssemblies
-        {
-            get { return accessoryAssemblies; }
-        }
+        public IEnumerable<AssemblyNode> AccessoryAssemblies => accessoryAssemblies;
 
         /// <summary>
         /// This read-only property returns a list of the assemblies to parse
         /// </summary>
-        public IEnumerable<AssemblyNode> Assemblies
-        {
-            get { return assemblies; }
-        }
+        public IEnumerable<AssemblyNode> Assemblies => assemblies;
 
         /// <summary>
         /// This read-only property returns the base path for source code related to the assemblies
@@ -239,22 +227,15 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 if(this.SourceCodeBasePath != null)
                 {
-                    if(assembly.reader.PdbOutOfDate)
+                    if(!assembly.reader.PdbExists)
                     {
                         ConsoleApplication.WriteMessage(LogLevel.Warn, "The program database (PDB) file " +
-                            "associated with '{0}' is out of date.  Source context information is unavailable.",
-                            filePath);
+                            "associated with '{0}' does not exist or could not be loaded.  Source context " +
+                            "information is unavailable.", filePath);
                     }
                     else
-                        if(!assembly.reader.PdbExists)
-                        {
-                            ConsoleApplication.WriteMessage(LogLevel.Warn, "The program database (PDB) file " +
-                                "associated with '{0}' does not exist or could not be loaded.  Source context " +
-                                "information is unavailable.", filePath);
-                        }
-                        else
-                            ConsoleApplication.WriteMessage(LogLevel.Info, "Found a current program database " +
-                                "(PDB) file for '{0}'.", filePath);
+                        ConsoleApplication.WriteMessage(LogLevel.Info, "Found a current program database " +
+                            "(PDB) file for '{0}'.", filePath);
                 }
             }
         }
@@ -309,9 +290,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         private void StoreType(TypeNode type)
         {
             string spaceName = GetNamespaceName(type);
-            Namespace space;
 
-            if(!catalog.TryGetValue(spaceName, out space))
+            if(!catalog.TryGetValue(spaceName, out Namespace space))
             {
                 space = new Namespace(new Identifier(spaceName));
                 catalog.Add(spaceName, space);
