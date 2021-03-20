@@ -95,8 +95,13 @@ namespace System.Compiler
         public static void SetFrameworkInformation(string platformType, string version,
           IEnumerable<string> componentLocations)
         {
+            var ver = new Version(version);
             var rdsd = new Sandcastle.Core.Reflection.ReflectionDataSetDictionary(componentLocations);
-            var dataSet = rdsd.CoreFrameworkMatching(platformType, new Version(version), true);
+            var dataSet = rdsd.CoreFrameworkMatching(platformType, ver, true);
+            bool isDotNetStandard = platformType == Sandcastle.Core.Reflection.PlatformType.DotNetStandard;
+
+            if(dataSet == null && isDotNetStandard)
+                dataSet = rdsd.Values.FirstOrDefault(ds => ds.Platform == platformType && ds.Version == ver);
 
             if(dataSet == null)
                 throw new InvalidOperationException(String.Format("Unable to locate information for the " +
@@ -105,31 +110,34 @@ namespace System.Compiler
 
             var coreLocation = dataSet.CoreFrameworkLocation;
 
-            if(coreLocation == null)
+            if(coreLocation == null && !isDotNetStandard)
                 throw new InvalidOperationException(String.Format("A core framework location has not been " +
                     "defined for the framework '{0} {1}'", platformType, version));
 
             Platform = dataSet.Platform;
             TargetVersion = dataSet.Version;
             TargetRuntimeVersion = "v" + dataSet.Version.ToString();
-            AllSystemTypesRedirected = dataSet.AllSystemTypesRedirected;
+            AllSystemTypesRedirected = dataSet.AllSystemTypesRedirected || dataSet.Platform == Sandcastle.Core.Reflection.PlatformType.DotNetStandard;
             GenericTypeNamesMangleChar = '`';
-            PlatformAssembliesLocation = coreLocation.Path;
+            PlatformAssembliesLocation = coreLocation?.Path ?? String.Empty;
 
-            var ad = dataSet.FindAssembly("mscorlib");
-
-            if(ad != null)
-                SystemAssemblyLocation = ad.Filename;
-            else
+            if(!isDotNetStandard)
             {
-                // Frameworks that redirect all system types typically redirect them to System.Runtime
-                ad = dataSet.FindAssembly("System.Runtime");
+                var ad = dataSet.FindAssembly("mscorlib");
 
-                if(ad == null)
-                    throw new InvalidOperationException(String.Format("The system types assembly could not be " +
-                        "found for the framework '{0} {1}'", platformType, version));
+                if(ad != null)
+                    SystemAssemblyLocation = ad.Filename;
+                else
+                {
+                    // Frameworks that redirect all system types typically redirect them to System.Runtime
+                    ad = dataSet.FindAssembly("System.Runtime");
 
-                SystemAssemblyLocation = ad.Filename;
+                    if(ad == null)
+                        throw new InvalidOperationException(String.Format("The system types assembly could not be " +
+                            "found for the framework '{0} {1}'", platformType, version));
+
+                    SystemAssemblyLocation = ad.Filename;
+                }
             }
 
             // Load references to all the other framework assemblies
@@ -247,7 +255,8 @@ namespace System.Compiler
             }
             if (TargetPlatform.TargetVersion != null)
             {
-                if (TargetPlatform.TargetVersion.Major > 1 || TargetPlatform.TargetVersion.Minor > 1 ||
+                if (TargetPlatform.Platform == Sandcastle.Core.Reflection.PlatformType.DotNetStandard ||
+                  TargetPlatform.TargetVersion.Major > 1 || TargetPlatform.TargetVersion.Minor > 1 ||
                   (TargetPlatform.TargetVersion.Minor == 1 && TargetPlatform.TargetVersion.Build == 9999))
                 {
                     if (SystemAssembly.IsValidTypeName(StandardIds.System, Identifier.For("Nullable`1")))
@@ -436,7 +445,7 @@ namespace System.Compiler
                 case ElementType.Object:
                 case ElementType.String:
                 case ElementType.Class:
-                    if (name.Length > 1 && name[0] == 'I' && char.IsUpper(name[1]))
+                    if (name.Length > 1 && name[0] == 'I' && System.Char.IsUpper(name[1]))
                         result = new Interface();
                     else if (name == "MulticastDelegate" || name == "Delegate")
                         result = new Class();

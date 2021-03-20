@@ -15,6 +15,7 @@
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly and updated for use via MEF
 // 10/08/2015 - EFW - Added support for writing out the value of constant fields
 // 03/14/2021 - EFW - Added support for nullable type syntax
+// 03/19/2021 - EFW - Added support for nullable reference types
 
 using System;
 using System.Globalization;
@@ -626,6 +627,12 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <param name="writer">The syntax writer to which the type reference is written</param>
         protected virtual void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
+            string nullable = reference.GetAttribute("nullable", String.Empty);
+            bool isNullable = false;
+
+            if(!String.IsNullOrWhiteSpace(nullable) && nullable.Equals("true", StringComparison.OrdinalIgnoreCase))
+                isNullable = true;
+
             switch(reference.LocalName)
             {
                 case "arrayOf":
@@ -640,17 +647,26 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
                         writer.WriteString(",");
 
                     writer.WriteString("]");
+
+                    if(isNullable)
+                        writer.WriteString("?");
                     break;
 
                 case "pointerTo":
                     XPathNavigator pointee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(pointee, writer);
                     writer.WriteString("*");
+
+                    if(isNullable)
+                        writer.WriteString("?");
                     break;
 
                 case "referenceTo":
                     XPathNavigator referee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(referee, writer);
+
+                    if(isNullable)
+                        writer.WriteString("?");
                     break;
 
                 case "type":
@@ -709,6 +725,9 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
 
                         while(typeModifiers.MoveNext())
                             WriteTypeReference(typeModifiers.Current, writer);
+
+                        if(isNullable)
+                            writer.WriteString("?");
                     }
                     break;
 

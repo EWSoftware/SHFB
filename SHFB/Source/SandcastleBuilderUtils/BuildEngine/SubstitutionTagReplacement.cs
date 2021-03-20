@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2021
+// Updated : 03/19/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -611,6 +611,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Version v = currentBuild.FrameworkReflectionData.Version;
 
+            // If the reflection data isn't for the .NET Framework use v4.8
+            if(currentBuild.FrameworkReflectionData.Platform != Sandcastle.Core.Reflection.PlatformType.DotNetFramework)
+                v = new Version(4, 8);
+
             if(v.Build > 0 && v.Build < 10)
                 return currentBuild.FrameworkReflectionData.Version.ToString(3);
 
@@ -625,16 +629,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string FrameworkReflectionDataFolder()
         {
             return currentBuild.FrameworkReflectionDataFolder;
-        }
-
-        /// <summary>
-        /// The indicator to ignore or include netstandard.dll if found as a reference assembly
-        /// </summary>
-        /// <returns>The ignore flag</returns>
-        [SubstitutionTag]
-        private string IgnoreNetStandardAssembly()
-        {
-            return currentBuild.IgnoreNetStandardAssembly.ToString().ToLowerInvariant();
         }
         #endregion
 

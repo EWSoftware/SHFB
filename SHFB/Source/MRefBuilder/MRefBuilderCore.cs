@@ -468,7 +468,10 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 // Load dependencies
-                foreach(string dependency in dependencies)
+                foreach(string dependency in dependencies.OrderBy(d =>
+                    d.IndexOf("mscorlib", StringComparison.OrdinalIgnoreCase) != -1 ||
+                    d.IndexOf("netstandard", StringComparison.OrdinalIgnoreCase) != -1 ||
+                    d.IndexOf("System.Runtime", StringComparison.OrdinalIgnoreCase) != -1 ? 0 : 1))
                 {
                     try
                     {
@@ -490,7 +493,10 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 // Parse the assemblies
-                foreach(string dllPath in results.UnusedArguments)
+                foreach(string dllPath in results.UnusedArguments.OrderBy(d =>
+                    d.IndexOf("mscorlib", StringComparison.OrdinalIgnoreCase) != -1 ||
+                    d.IndexOf("netstandard", StringComparison.OrdinalIgnoreCase) != -1 ||
+                    d.IndexOf("System.Runtime", StringComparison.OrdinalIgnoreCase) != -1 ? 0 : 1))
                 {
                     try
                     {

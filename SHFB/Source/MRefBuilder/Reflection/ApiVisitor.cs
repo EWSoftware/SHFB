@@ -178,9 +178,12 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                // Do not reset for frameworks that redirect all mscorlib types to other assemblies or it results
-                // in a stack overflow.
-                if((assembly.Name == "mscorlib" && !TargetPlatform.AllSystemTypesRedirected) || assembly.Name == "netstandard")
+                // Do not reset for frameworks that redirect all mscorlib/netstandard types to other assemblies
+                // or it results in a stack overflow.
+                if((assembly.Name == "mscorlib" || assembly.Name == "netstandard") && !TargetPlatform.AllSystemTypesRedirected)
+                    ResetMscorlib(assembly);
+
+                if(TargetPlatform.AllSystemTypesRedirected && assembly.Name == "System.Runtime")
                     ResetMscorlib(assembly);
 
                 resolver.Add(assembly);
@@ -217,9 +220,12 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                // Do not reset for frameworks that redirect all mscorlib types to other assemblies or it results
-                // in a stack overflow.
-                if((assembly.Name == "mscorlib" && !TargetPlatform.AllSystemTypesRedirected) || assembly.Name == "netstandard")
+                // Do not reset for frameworks that redirect all mscorlib/netstandard types to other assemblies
+                // or it results in a stack overflow.
+                if((assembly.Name == "mscorlib" || assembly.Name == "netstandard") && !TargetPlatform.AllSystemTypesRedirected)
+                    ResetMscorlib(assembly);
+
+                if(TargetPlatform.AllSystemTypesRedirected && assembly.Name == "System.Runtime")
                     ResetMscorlib(assembly);
 
                 resolver.Add(assembly);
@@ -250,6 +256,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             TargetPlatform.Clear();
             CoreSystemTypes.Clear();
             CoreSystemTypes.SystemAssembly = assembly;
+            TargetPlatform.PlatformAssembliesLocation = Path.GetDirectoryName(assembly.Location);
             CoreSystemTypes.Initialize(true, false);
         }
 

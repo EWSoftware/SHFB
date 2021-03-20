@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2019
-// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/19/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a dictionary of reflection data settings for the various .NET
 // Framework platforms and versions.
@@ -187,56 +186,16 @@ namespace Sandcastle.Core.Reflection
                 switch(framework.PlatformType)
                 {
                     case PlatformType.DotNetCore:
+                    case PlatformType.DotNetCoreApp:
+                    case PlatformType.DotNetStandard:
+                        match = this.CoreFrameworkMostRecent(PlatformType.DotNetStandard);
+
+                        if(match != null)
+                            bestMatches.Add(match);
+                        break;
+
                     case PlatformType.DotNetPortable:
                         match = this.CoreFrameworkMatching(framework.PlatformType, new Version(framework.Version), false);
-
-                        if(match == null)
-                            match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
-
-                        if(match != null)
-                            bestMatches.Add(match);
-                        break;
-
-                    case PlatformType.DotNetCoreApp:
-                        match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
-
-                        if(match != null)
-                            bestMatches.Add(match);
-                        break;
-
-                    case PlatformType.DotNetStandard:
-                        switch(framework.Version)
-                        {
-                            case "1.0":
-                            case "1.1":
-                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
-                                    new Version(4, 5), true);
-                                break;
-
-                            case "1.2":
-                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
-                                    new Version(4, 5, 1), true);
-                                break;
-
-                            case "1.3":
-                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
-                                    new Version(4, 6), true);
-                                break;
-
-                            case "1.4":
-                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
-                                    new Version(4, 6, 1), true);
-                                break;
-
-                            case "1.5":
-                                match = this.CoreFrameworkMatching(PlatformType.DotNetFramework,
-                                    new Version(4, 6, 2), true);
-                                break;
-
-                            default:    // Anything else defaults to the latest
-                                match = null;
-                                break;
-                        }
 
                         if(match == null)
                             match = this.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
@@ -260,8 +219,14 @@ namespace Sandcastle.Core.Reflection
             if(bestMatches.Count == 0 || !PlatformType.PlatformsAreCompatible(bestMatches.Select(m => m.Platform)))
                 return null;
 
-            // If we get multiple matches, at least one of them should be DotNetFramework so choose the
-            // highest version.
+            // If we get multiple matches, at least one of them should be DotNetStandard or DotNetFramework so
+            // choose the highest version.
+            match = bestMatches.Where(m => m.Platform == PlatformType.DotNetStandard).OrderByDescending(
+                m => m.Version).FirstOrDefault();
+
+            if(match != null)
+                return match;
+
             return bestMatches.Where(m => m.Platform == PlatformType.DotNetFramework).OrderByDescending(
                 m => m.Version).FirstOrDefault();
         }

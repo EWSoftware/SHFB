@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DotNetStandardTestCases": {
+      "commandName": "Executable",
+      "executablePath": "C:\\GH\\SHFB\\SHFB\\Deploy\\SandcastleBuilderGUI.exe",
+      "commandLineArgs": "C:\\GH\\SHFB\\SHFB\\Source\\MRefBuilder\\DotNetStandardTestCases\\Docs\\TestCases.shfbproj",
+      "workingDirectory": "C:\\GH\\SHFB\\SHFB\\Source\\MRefBuilder\\DotNetStandardTestCases\\Docs"
+    }
+  }
+}

@@ -17,6 +17,7 @@
 // 05/26/2017 - EFW - Fixed up issues with unsigned long enumerated types and duplicate flag values
 // 05/30/2017 - JRC - Fixed issue with negative enums
 // 03/14/2021 - EFW - Added support for defaultValue element for default value structs on parameters
+// 03/16/2021 - EFW - Added support for writing out the nullable context for nullable reference types
 
 using System;
 using System.Collections.Generic;
@@ -763,7 +764,9 @@ namespace Microsoft.Ddue.Tools
 
             // !EFW - Change from ComponentOne
             writer.WriteAttributeString("id", namer.GetTypeName(type).TranslateToValidXmlValue());
-
+#if DEBUG
+            writer.WriteAttributeString("nullableContext", type.NullableContext.ToString());
+#endif            
             this.StartElementCallbacks("api", type);
 
             this.WriteApiData(type);
@@ -790,13 +793,14 @@ namespace Microsoft.Ddue.Tools
                     DelegateNode handler = (DelegateNode)type;
                     AttributeList retValAttributes = null;
 
-
                     if(handler.Members.FirstOrDefault(m => m.Name.Name.Equals("EndInvoke", StringComparison.Ordinal)) is Method endInvoke)
                         retValAttributes = endInvoke.ReturnAttributes;
 
                     this.WriteGenericParameters(handler.TemplateParameters);
                     this.WriteParameters(handler.Parameters);
-                    this.WriteReturnValue(handler.ReturnType, retValAttributes);
+
+                    this.WriteReturnValue(handler.ReturnType, retValAttributes,
+                        DetermineNullableState(handler, retValAttributes).GetEnumerator());
                     break;
 
                 case NodeType.EnumNode:
@@ -1052,7 +1056,7 @@ namespace Microsoft.Ddue.Tools
                         this.WriteSourceContext(member.DeclaringType.SourceContext, member.DeclaringType.SourceContext);
 
                     this.WriteFieldData(field);
-                    this.WriteReturnValue(field.Type, field.Attributes);
+                    this.WriteReturnValue(field.Type, field.Attributes, field.NullableStates.GetEnumerator());
 
                     // Write enumeration and literal (constant) field values
                     if(field.DeclaringType.NodeType == NodeType.EnumNode)
@@ -1081,7 +1085,8 @@ namespace Microsoft.Ddue.Tools
                         this.WriteGenericParameters(method.TemplateParameters);
 
                     this.WriteParameters(method.Parameters);
-                    this.WriteReturnValue(method.ReturnType, method.ReturnAttributes);
+                    this.WriteReturnValue(method.ReturnType, method.ReturnAttributes,
+                        DetermineNullableState(method, method.ReturnAttributes).GetEnumerator());
                     this.WriteImplementedMembers(method.GetImplementedMethods());
 
                     if(method.SecurityAttributes != null)
@@ -1100,7 +1105,8 @@ namespace Microsoft.Ddue.Tools
 
                     this.WritePropertyData(property);
                     this.WriteParameters(property.Parameters);
-                    this.WriteReturnValue(property.Type, property.Attributes);
+                    this.WriteReturnValue(property.Type, property.Attributes,
+                        DetermineNullableState(property.DeclaringType, property.Attributes).GetEnumerator());
                     this.WriteImplementedMembers(property.GetImplementedProperties());
                     break;
 
@@ -1507,7 +1513,11 @@ namespace Microsoft.Ddue.Tools
         /// <param name="elementName">An element name if the type reference is part of a type such as
         /// <c>ValueTuple</c> or null if not.</param>
         /// <param name="attributes">An optional list of attributes to check for tuple element names</param>
-        public void WriteTypeReference(TypeNode type, string elementName = null, AttributeList attributes = null)
+        /// <param name="nullableStates">An enumerable list of the nullable states for the type's parts</param>
+        /// <param name="lastState">The last used nullable state.  If it's common to all parts, there will only
+        /// be one entry that applies to all parts.</param>
+        public void WriteTypeReference(TypeNode type, string elementName = null, AttributeList attributes = null,
+          IEnumerator<NullableState> nullableStates = null, NullableState lastState = NullableState.NotSpecified)
         {
             if(type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1532,7 +1542,7 @@ namespace Microsoft.Ddue.Tools
                 }
             }
 
-            this.WriteStartTypeReference(type, elementName);
+            this.WriteStartTypeReference(type, elementName, nullableStates, lastState);
             writer.WriteEndElement();
         }
 
@@ -1892,7 +1902,8 @@ namespace Microsoft.Ddue.Tools
             if(parameter.IsOptional)
                 this.WriteBooleanAttribute("optional", true);
 
-            this.WriteTypeReference(parameter.Type, null, parameter.Attributes);
+            this.WriteTypeReference(parameter.Type, null, parameter.Attributes,
+                DetermineNullableState(parameter.DeclaringMethod, parameter.Attributes).GetEnumerator());
 
             if(parameter.IsOptional && parameter.DefaultValue != null)
             {
@@ -2012,34 +2023,78 @@ namespace Microsoft.Ddue.Tools
         /// <param name="type">The type for which to write a starting type reference</param>
         /// <param name="elementName">An element name if the type reference is part of a type such as
         /// <c>ValueTuple</c> or null if not.</param>
-        private void WriteStartTypeReference(TypeNode type, string elementName = null)
+        /// <param name="nullableStates">An enumerable list of the nullable states for the type's parts</param>
+        /// <param name="lastState">The last used nullable state.  If it's common to all parts, there will only
+        /// be one entry that applies to all parts.</param>
+        private void WriteStartTypeReference(TypeNode type, string elementName = null,
+          IEnumerator<NullableState> nullableStates = null, NullableState lastState = NullableState.NotSpecified)
         {
+            NullableState ns = NullableState.NotSpecified;
+
+            if(type.IsValueType)
+                ns = NullableState.ValueType;
+            else
+            {
+                if(nullableStates != null && nullableStates.MoveNext())
+                    ns = nullableStates.Current;
+                else
+                    ns = lastState;
+            }
+
             switch(type.NodeType)
             {
                 case NodeType.ArrayType:
                     ArrayType array = type as ArrayType;
                     writer.WriteStartElement("arrayOf");
+#if DEBUG
+                    if(ns != NullableState.NotSpecified)
+                        writer.WriteAttributeString("nullableState", ns.ToString());
+#endif
+                    if(ns == NullableState.Nullable)
+                        writer.WriteAttributeString("nullable", "true");
+
                     writer.WriteAttributeString("rank", array.Rank.ToString(CultureInfo.InvariantCulture));
-                    this.WriteTypeReference(array.ElementType);
+                    this.WriteTypeReference(array.ElementType, null, null, nullableStates, ns);
                     break;
 
                 case NodeType.Reference:
                     Reference reference = type as Reference;
                     writer.WriteStartElement("referenceTo");
-                    this.WriteTypeReference(reference.ElementType);
+#if DEBUG
+                    if(ns != NullableState.NotSpecified)
+                        writer.WriteAttributeString("nullableState", ns.ToString());
+#endif
+                    if(ns == NullableState.Nullable)
+                        writer.WriteAttributeString("nullable", "true");
+
+                    this.WriteTypeReference(reference.ElementType, null, null, nullableStates, ns);
                     break;
 
                 case NodeType.Pointer:
                     Pointer pointer = type as Pointer;
                     writer.WriteStartElement("pointerTo");
-                    this.WriteTypeReference(pointer.ElementType);
+#if DEBUG
+                    if(ns != NullableState.NotSpecified)
+                        writer.WriteAttributeString("nullableState", ns.ToString());
+#endif
+                    if(ns == NullableState.Nullable)
+                        writer.WriteAttributeString("nullable", "true");
+
+                    this.WriteTypeReference(pointer.ElementType, null, null, nullableStates, ns);
                     break;
 
                 case NodeType.OptionalModifier:
                     TypeModifier optionalModifierClause = type as TypeModifier;
                     this.WriteStartTypeReference(optionalModifierClause.ModifiedType);
                     writer.WriteStartElement("optionalModifier");
-                    this.WriteTypeReference(optionalModifierClause.Modifier);
+#if DEBUG
+                    if(ns != NullableState.NotSpecified)
+                        writer.WriteAttributeString("nullableState", ns.ToString());
+#endif
+                    if(ns == NullableState.Nullable)
+                        writer.WriteAttributeString("nullable", "true");
+
+                    this.WriteTypeReference(optionalModifierClause.Modifier, null, null, nullableStates, ns);
                     writer.WriteEndElement();
                     break;
 
@@ -2047,7 +2102,14 @@ namespace Microsoft.Ddue.Tools
                     TypeModifier requiredModifierClause = type as TypeModifier;
                     this.WriteStartTypeReference(requiredModifierClause.ModifiedType);
                     writer.WriteStartElement("requiredModifier");
-                    this.WriteTypeReference(requiredModifierClause.Modifier);
+#if DEBUG
+                    if(ns != NullableState.NotSpecified)
+                        writer.WriteAttributeString("nullableState", ns.ToString());
+#endif
+                    if(ns == NullableState.Nullable)
+                        writer.WriteAttributeString("nullable", "true");
+
+                    this.WriteTypeReference(requiredModifierClause.Modifier, null, null, nullableStates, ns);
                     writer.WriteEndElement();
                     break;
 
@@ -2065,6 +2127,12 @@ namespace Microsoft.Ddue.Tools
                     else
                     {
                         writer.WriteStartElement("type");
+#if DEBUG
+                        if(ns != NullableState.NotSpecified)
+                            writer.WriteAttributeString("nullableState", ns.ToString());
+#endif
+                        if(ns == NullableState.Nullable)
+                            writer.WriteAttributeString("nullable", "true");
 
                         if(!String.IsNullOrWhiteSpace(elementName))
                             writer.WriteAttributeString("elementName", elementName);
@@ -2092,7 +2160,7 @@ namespace Microsoft.Ddue.Tools
                                     if(type.ElementNames != null && type.ElementNames.MoveNext())
                                         nextElementName = type.ElementNames.Current;
 
-                                    this.WriteTypeReference(arg, nextElementName);
+                                    this.WriteTypeReference(arg, nextElementName, null, nullableStates, ns);
                                 }
 
                                 writer.WriteEndElement();
@@ -2139,12 +2207,13 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="type">The return value type</param>
         /// <param name="attributes">The return value attributes if any</param>
-        private void WriteReturnValue(TypeNode type, AttributeList attributes)
+        /// <param name="nullableStates">The nullable states for the return value type</param>
+        private void WriteReturnValue(TypeNode type, AttributeList attributes, IEnumerator<NullableState> nullableStates = null)
         {
             if(type.FullName != "System.Void")
             {
                 writer.WriteStartElement("returns");
-                this.WriteTypeReference(type, null, attributes);
+                this.WriteTypeReference(type, null, attributes, nullableStates);
                 writer.WriteEndElement();
             }
         }
@@ -2181,6 +2250,83 @@ namespace Microsoft.Ddue.Tools
         {
             // !EFW - Change from ComponentOne
             writer.WriteAttributeString(attribute, value.TranslateToValidXmlValue());
+        }
+
+        /// <summary>
+        /// Determine the nullable state of a member based on its type and the presence of a Nullable or
+        /// NullableContext attribute.
+        /// </summary>
+        /// <param name="parent">The parent member or type to use for context</param>
+        /// <param name="attributes">The attributes to search</param>
+        /// <returns>An enumerable list of the nullable states</returns>
+        private static IEnumerable<NullableState> DetermineNullableState(Member parent, AttributeList attributes)
+        {
+            Literal literal = null;
+            byte[] states = Array.Empty<byte>();
+            var nullableStates = new List<NullableState>();
+
+            if(attributes != null && attributes.Count != 0)
+            {
+                // For reference types, there may be a Nullable or NullableContext attribute that
+                // defines the nullable state.
+                var nullable = attributes.FirstOrDefault(a => a.Type.Name.Name == "NullableAttribute");
+
+                // The expression will be a single byte if the state is common to all parts of the
+                // type.  For arrays and generics with differing states, it will be a byte[] that defines
+                // the nullable state of each part.  The states are as defined in the NullableState
+                // enumeration (0 = Oblivious, 1 = Non-nullable, and 2 = Nullable).  For example:
+                //
+                // [Nullable({ 2, 1, 2, 1 })]
+                // Dictionary<string, string[]?>? x;
+                //
+                // Element 0 is for the type overall (a nullable dictionary), element 1 is for the key
+                // (a non-nullable string), element 2 is for the nullable array, and element 3 is for the
+                // array type (non-nullable strings).
+                // 
+                // As shown above, if another array or generic is nested as a type parameter, the pattern
+                // repeats for the subelements (the first is for the type overall followed by its parts).
+                if(nullable?.Expressions?.Count == 1 && nullable.Expressions[0] is Literal na)
+                    literal = na;
+                else
+                {
+                    var context = attributes.FirstOrDefault(a => a.Type.Name.Name == "NullableContextAttribute");
+
+                    if(context?.Expressions?.Count == 1 && context.Expressions[0] is Literal nc)
+                        literal = nc;
+                }
+
+                if(literal != null)
+                {
+                    if(literal.Value is byte value)
+                        states = new[] { value };
+                    else
+                    {
+                        if(literal.Value is byte[] values)
+                            states = values;
+                    }
+                }
+            }
+
+            if(states.Length == 0)
+            {
+                if(parent is Method method)
+                    return DetermineNullableState(method.DeclaringType, method.Attributes);
+
+                if(parent is TypeNode type)
+                    nullableStates.Add(type.NullableContext);
+                else
+                    nullableStates.Add(NullableState.NotSpecified);
+            }
+            else
+                foreach(byte s in states)
+                {
+                    if(Enum.IsDefined(typeof(NullableState), (int)s))
+                        nullableStates.Add((NullableState)s);
+                    else
+                        nullableStates.Add(NullableState.Oblivious);
+                }
+
+            return nullableStates;
         }
         #endregion
     }

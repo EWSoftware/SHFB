@@ -19,6 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetStandardTestCases", "DotNetStandardTestCases\DotNetStandardTestCases.csproj", "{8B5C08A1-A186-4677-9BC8-915982C8C3DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8DCAD75-879F-4C97-803B-C9A17F227B04} = {A8DCAD75-879F-4C97-803B-C9A17F227B04}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +42,10 @@ Global
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5C08A1-A186-4677-9BC8-915982C8C3DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5C08A1-A186-4677-9BC8-915982C8C3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5C08A1-A186-4677-9BC8-915982C8C3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5C08A1-A186-4677-9BC8-915982C8C3DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

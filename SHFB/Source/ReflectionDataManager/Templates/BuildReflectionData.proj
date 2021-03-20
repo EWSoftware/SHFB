@@ -19,8 +19,7 @@
 			WorkingFolder="$(WorkingFolder)"
 			ConfigurationFile="BuildReflectionData.config"
 			ReflectionFilename="reflection.org"
-			Assemblies="@(Assembly)"
-			IgnoreNetStandardAssembly="True" />
+			Assemblies="@(Assembly)" />
 
 		<!-- Merge duplicate topics (if any), add XAML syntax data if needed, apply the document model
 				 transformation, and add filenames-->

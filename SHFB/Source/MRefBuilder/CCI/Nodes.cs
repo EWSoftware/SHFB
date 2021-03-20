@@ -19,6 +19,7 @@
 // 07/06/2018 - EFW - Increased the maximum allowed recursion depth related to the 04/04/2012 fix
 // 03/14/2021 - EFW - Added TypeNode.IsNullable property
 // 03/15/2021 - EFW - Added support for reading portable PDB files for source context information
+// 03/16/2021 - EFW - Added support for determining the nullable context for nullable reference types
 
 // Ignore Spelling: str Guid ptr Zonnon Comega nop mrefs al
 
@@ -27,6 +28,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Compiler.Metadata;
 using System.Diagnostics;
+using System.Linq;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -7974,6 +7976,33 @@ throwError:
     }
 
     /// <summary>
+    /// This defines the nullable states
+    /// </summary>
+    public enum NullableState
+    {
+        /// <summary>
+        /// Oblivious, no nullable checking
+        /// </summary>
+        Oblivious,
+        /// <summary>
+        /// Non-nullable
+        /// </summary>
+        NonNullable,
+        /// <summary>
+        /// Nullable
+        /// </summary>
+        Nullable,
+        /// <summary>
+        /// Nullable state not specified, defer to method or type (MRefBuilder internal use only)
+        /// </summary>
+        NotSpecified = 998,
+        /// <summary>
+        /// Value type, no nullable state (MRefBuilder internal use only)
+        /// </summary>
+        ValueType = 999
+    }
+
+    /// <summary>
     /// The common base class for all types. This type should not be extended directly.
     /// Instead extend one of the standard subclasses such as Class, Struct or Interface, since in
     /// the CLR a type has to be an instance of one the subclasses, and a type which does not extend
@@ -11014,6 +11043,51 @@ done:
         public override string ToString()
         {
             return this.GetFullUnmangledNameWithTypeParameters();
+        }
+
+        private NullableState? nullableContext;
+
+        /// <summary>
+        /// This read-only property returns the nullable context for the type
+        /// </summary>
+        /// <value>The nullable context of the type</value>
+        public NullableState NullableContext
+        {
+            get
+            {
+                if(nullableContext == null)
+                {
+                    TypeNode currentType = this;
+
+                    // For reference types, if not specified, assume oblivious
+                    nullableContext = NullableState.Oblivious;
+
+                    while(currentType != null)
+                    {
+                        if(currentType.IsValueType)
+                        {
+                            nullableContext = NullableState.ValueType;
+                            break;
+                        }
+
+                        var context = currentType.Attributes.FirstOrDefault(a => a.Type.Name.Name == "NullableContextAttribute");
+
+                        if(context?.Expressions?.Count == 1)
+                        {
+                            if(context.Expressions[0] is Literal exp && exp.Value is byte value &&
+                              Enum.IsDefined(typeof(NullableState), (int)value))
+                            {
+                                nullableContext = (NullableState)value;
+                                break;
+                            }
+                        }
+
+                        currentType = currentType.DeclaringType;
+                    }
+                }
+
+                return nullableContext.Value;
+            }
         }
     }
 
@@ -17276,6 +17350,83 @@ tryNext:
         public override string ToString()
         {
             return this.DeclaringType.GetFullUnmangledNameWithTypeParameters() + "." + this.Name;
+        }
+
+        private List<NullableState> nullableStates;
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of the nullable states for the field's type
+        /// </summary>
+        public IEnumerable<NullableState> NullableStates
+        {
+            get
+            {
+                if(nullableStates == null)
+                {
+                    nullableStates = new List<NullableState>();
+
+                    // Value types are never nullable
+                    if(type.IsValueType)
+                        nullableStates.Add(NullableState.ValueType);
+                    else
+                    {
+                        // For reference types, there may be a Nullable or NullableContext attribute that
+                        // defines the nullable state.
+                        Literal literal = null;
+                        byte[] states = Array.Empty<byte>();
+
+                        var nullable = this.Attributes.FirstOrDefault(a => a.Type.Name.Name == "NullableAttribute");
+
+                        // The expression will be a single byte if the state is common to all parts of the
+                        // type.  For arrays and generics with differing states, it will be a byte[] that defines
+                        // the nullable state of each part.  The states are as defined in the NullableState
+                        // enumeration (0 = Oblivious, 1 = Non-nullable, and 2 = Nullable).  For example:
+                        //
+                        // [Nullable({ 2, 1, 2, 1 })]
+                        // Dictionary<string, string[]?>? x;
+                        //
+                        // Element 0 is for the type overall (a nullable dictionary), element 1 is for the key
+                        // (a non-nullable string), element 2 is for the nullable array, and element 3 is for the
+                        // array type (non-nullable strings).
+                        // 
+                        // As shown above, if another array or generic is nested as a type parameter, the pattern
+                        // repeats for the subelements (the first is for the type overall followed by its parts).
+                        if(nullable?.Expressions?.Count == 1 && nullable.Expressions[0] is Literal na)
+                            literal = na;
+                        else
+                        {
+                            var context = this.Attributes.FirstOrDefault(a => a.Type.Name.Name == "NullableContextAttribute");
+
+                            if(context?.Expressions?.Count == 1 && context.Expressions[0] is Literal nc)
+                                literal = nc;
+                        }
+
+                        if(literal != null)
+                        {
+                            if(literal.Value is byte value)
+                                states = new[] { value };
+                            else
+                            {
+                                if(literal.Value is byte[] values)
+                                    states = values;
+                            }
+                        }
+
+                        if(states.Length == 0)
+                            nullableStates.Add(this.DeclaringType.NullableContext);
+                        else
+                            foreach(byte s in states)
+                            {
+                                if(Enum.IsDefined(typeof(NullableState), (int)s))
+                                    nullableStates.Add((NullableState)s);
+                                else
+                                    nullableStates.Add(NullableState.Oblivious);
+                            }
+                    }
+                }
+
+                return nullableStates;
+            }
         }
     }
 

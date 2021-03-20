@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
-// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
+// Updated : 03/19/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
 // specific set of assemblies.
@@ -288,8 +288,10 @@ namespace Sandcastle.Core.Reflection
         /// This read-only property is used to determine if this entry represents a core framework
         /// </summary>
         /// <value>True if it is the core framework, false if not</value>
-        /// <remarks>The core location is determined by searching for <c>mscorlib</c> in the assembly set</remarks>
-        public bool IsCoreFramework => assemblyLocations.Any(a => a.IsCoreLocation);
+        /// <remarks>The core location is determined by searching for <c>mscorlib</c>, <c>netstandard</c>, or
+        /// <c>System.Runtime</c> in the assembly set.  If the platform type is .NET Standard it is automatically
+        /// considered to be a core framework.</remarks>
+        public bool IsCoreFramework => this.Platform == PlatformType.DotNetStandard || assemblyLocations.Any(a => a.IsCoreLocation);
 
         /// <summary>
         /// This read-only property is used to get the core framework location if there is one
@@ -331,6 +333,11 @@ namespace Sandcastle.Core.Reflection
         {
             get
             {
+                // .NET Standard is handled through NuGet packages so we'll assume it's present somewhere on
+                // the system.  Package resolution will locate the assemblies in their actual location.
+                if(this.Platform == PlatformType.DotNetStandard)
+                    return true;
+
                 AssemblyLocation al = assemblyLocations.FirstOrDefault(l => l.IsCoreLocation);
 
                 return (al != null && al.IncludedAssemblies.Any() && File.Exists(al.IncludedAssemblies.First().Filename));

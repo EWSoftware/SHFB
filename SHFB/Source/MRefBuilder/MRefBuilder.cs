@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : MRefBuilder.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/13/2011
+// Updated : 03/18/2021
 //
 // This file contains the class used to make MRefBuilder callable from MSBuild projects.
 //
@@ -50,13 +50,6 @@ namespace Microsoft.Ddue.Tools.MSBuild
         /// </summary>
         [Required]
         public string ReflectionFilename { get; set; }
-
-        /// <summary>
-        /// This is used to pass in the indicator as to whether or not netstandard.dll is included if seen
-        /// in the list of reference assemblies.
-        /// </summary>
-        [Required]
-        public bool IgnoreNetStandardAssembly { get; set; }
 
         /// <summary>
         /// This is used to pass in the assemblies to reflect over
@@ -127,15 +120,7 @@ namespace Microsoft.Ddue.Tools.MSBuild
                 if(this.References != null)
                 {
                     foreach(ITaskItem item in this.References)
-                    {
-                        string assemblyName = Path.GetFileName(item.ItemSpec);
-
-                        if(!assemblyName.Equals("netstandard.dll", StringComparison.OrdinalIgnoreCase) ||
-                          !this.IgnoreNetStandardAssembly)
-                        {
-                            args.Add("/dep:" + item.ItemSpec);
-                        }
-                    }
+                        args.Add("/dep:" + item.ItemSpec);
                 }
 
                 foreach(ITaskItem item in this.Assemblies)

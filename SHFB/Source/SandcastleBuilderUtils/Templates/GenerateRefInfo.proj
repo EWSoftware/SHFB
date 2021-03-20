@@ -7,11 +7,10 @@
 
 	<!-- Task properties -->
 	<PropertyGroup>
-		<TargetFrameworkIdentifier>{@TargetFrameworkIdentifier}</TargetFrameworkIdentifier>
+		<TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
 		<TargetFrameworkVersion>v{@FrameworkVersionShort}</TargetFrameworkVersion>
 		<AddXamlSyntaxData>{@AddXamlSyntaxData}</AddXamlSyntaxData>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
-		<IgnoreNetStandardAssembly>{@IgnoreNetStandardAssembly}</IgnoreNetStandardAssembly>
 		<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
 		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 		<UseTargetPlatformAsNuGetTargetMoniker>false</UseTargetPlatformAsNuGetTargetMoniker>
@@ -48,8 +47,7 @@
 			ConfigurationFile="MRefBuilder.config"
 			ReflectionFilename="reflection.org"
       Assemblies="@(Assembly)"
-      References="@(ReferencePath)"
-			IgnoreNetStandardAssembly="$(IgnoreNetStandardAssembly)"/>
+      References="@(ReferencePath)"/>
 
 		<!-- Merge duplicate topics (if any) and add XAML syntax data if needed -->
 		<Copy SourceFiles="reflection.org" DestinationFiles="reflection.all" />

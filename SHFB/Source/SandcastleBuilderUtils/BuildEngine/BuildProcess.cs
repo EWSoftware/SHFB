@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/12/2021
+// Updated : 03/19/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -272,15 +272,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This read-only property returns the framework reflection data settings used by the build
         /// </summary>
         public ReflectionDataSet FrameworkReflectionData => frameworkReflectionData;
-
-        /// <summary>
-        /// This read-only property is used to indicate whether or not the netstandard.dll assembly should
-        /// be ignored as a reference assembly.
-        /// </summary>
-        /// <remarks>When using the cross-platform data set, it should be included.  For all others, it should be
-        /// ignored as it is probably just a reference assembly for a .NETStandard reference assembly in a
-        /// regular .NET Framework project for example.</remarks>
-        public bool IgnoreNetStandardAssembly { get; private set; }
 
         /// <summary>
         /// This returns the current project being used for the build
@@ -672,7 +663,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkReflectionData.Title);
 
-                this.IgnoreNetStandardAssembly = (frameworkReflectionData.Platform != PlatformType.DotNetStandard);
 
                 // Get the composition container used to find build components in the rest of the build process
                 componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
@@ -851,24 +841,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Validate the documentation source information, gather assembly and reference info, and copy
                 // XML comments files to the working folder.
                 this.ValidateDocumentationSources();
-
-                // If the framework reflection data is still set to the .NETStandard placeholder, there were no
-                // project documentation sources.  As such, switch to the most recent .NET Framework.
-                if(frameworkReflectionData.Platform == PlatformType.DotNetStandard)
-                {
-                    frameworkReflectionData = reflectionDataDictionary.CoreFrameworkMostRecent(PlatformType.DotNetFramework);
-                    project.FrameworkVersion = frameworkReflectionData.Title;
-
-                    // When using assemblies as documentation sources, a reference to the core types assembly
-                    // is required or it may document the core types (int, string, etc.) as System.Void instead.
-                    if(referenceDictionary.Count == 0)
-                    {
-                        throw new BuilderException("BE0035", "The framework version is set to Cross-platform " +
-                            "(.NET Core/.NET Standard) but no reference assemblies were specified.  Unable to " +
-                            "determine core types assembly.  See the error number topic in the help file for " +
-                            "more information.");
-                    }
-                }
 
                 // Transform the shared builder content files
                 language = project.Language;
@@ -2313,12 +2285,9 @@ AllDone:
                                 String.Join(", ", targetFrameworksSeen.Select(f => f.PlatformType + " " + f.Version))));
                         }
 
-                        if(frameworkReflectionData.Platform != PlatformType.DotNetStandard)
-                        {
-                            this.ReportWarning("BE0007", "A project with a different or higher framework version " +
-                                "was found.  Changing project FrameworkVersion property from '{0}' to '{1}' for " +
-                                "the build.", project.FrameworkVersion, projectFramework.Title);
-                        }
+                        this.ReportWarning("BE0007", "A project with a different or higher framework version " +
+                            "was found.  Changing project FrameworkVersion property from '{0}' to '{1}' for " +
+                            "the build.", project.FrameworkVersion, projectFramework.Title);
 
                         project.FrameworkVersion = projectFramework.Title;
                         frameworkReflectionData = projectFramework;
@@ -2357,13 +2326,16 @@ AllDone:
                 referenceDictionary.Keys.CopyTo(keys, 0);
                 Array.Sort(keys);
 
-                // Filter out references related to the framework.  MRefBuilder will resolve these
-                // automatically.
+                // Filter out references related to the framework.  MRefBuilder will resolve these automatically.
+                // They're left in for .NET Standard as MRefBuilder takes care of merging assemblies with the
+                // dependencies based on what it can find.
                 foreach(string key in keys)
-                    if(frameworkReflectionData.ContainsAssembly(key))
+                {
+                    if(frameworkReflectionData.Platform != PlatformType.DotNetStandard && frameworkReflectionData.ContainsAssembly(key))
                         referenceDictionary.Remove(key);
                     else
                         this.ReportProgress("    {0}", key);
+                }
 
                 if(referenceDictionary.Count == 0)
                     this.ReportProgress("    None");
