@@ -313,7 +313,8 @@ namespace Microsoft.Ddue.Tools.Reflection
             // we use the best matching .NET Framework.
             if((reference.Name == "mscorlib" && reference.Version.Major == 255) ||
               (reference.Name == "mscorlib" && SystemTypes.SystemAssembly.Name == "netstandard") ||
-              (reference.Name == "System" && reference.Version.Major == 0) || reference.Name == "System.Runtime")
+              (reference.Name == "System" && reference.Version.Major == 0) || reference.Name == "System.Runtime" ||
+              reference.Name == "netstandard")
             {
                 // The system assembly should be set.  If so, it'll point to the one we need.
                 if(SystemTypes.SystemAssembly != null)

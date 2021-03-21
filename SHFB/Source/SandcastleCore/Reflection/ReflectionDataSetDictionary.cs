@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2021
+// Updated : 03/20/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a dictionary of reflection data settings for the various .NET
@@ -216,18 +216,19 @@ namespace Sandcastle.Core.Reflection
             if(bestMatches.Count == 1)
                 return bestMatches[0];
 
-            if(bestMatches.Count == 0 || !PlatformType.PlatformsAreCompatible(bestMatches.Select(m => m.Platform)))
+            if(bestMatches.Count == 0 || !PlatformType.PlatformsAreCompatible(bestMatches.Select(m => (m.Platform, m.Version))))
                 return null;
 
-            // If we get multiple matches, at least one of them should be DotNetStandard or DotNetFramework so
-            // choose the highest version.
-            match = bestMatches.Where(m => m.Platform == PlatformType.DotNetStandard).OrderByDescending(
+            // If we get multiple matches, at least one of them should be DotNetFramework or DotNetStandard so
+            // choose the highest version favoring .NETFramework over .NETStandard as it will have the most
+            // types and we want all of its XML comments files.
+            match = bestMatches.Where(m => m.Platform == PlatformType.DotNetFramework).OrderByDescending(
                 m => m.Version).FirstOrDefault();
 
             if(match != null)
                 return match;
 
-            return bestMatches.Where(m => m.Platform == PlatformType.DotNetFramework).OrderByDescending(
+            return bestMatches.Where(m => m.Platform == PlatformType.DotNetStandard).OrderByDescending(
                 m => m.Version).FirstOrDefault();
         }
         #endregion

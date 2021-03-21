@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PlatformType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2017
-// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/21/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to define platform type constants
 //
@@ -20,6 +19,7 @@
 // 06/21/2015  EFW  Moved to the Reflection namespace and reworked for use with the Reflection Data Manager
 //===============================================================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,25 +54,30 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         /// <remarks>.NETCoreApp and .NETStandard are not returned by this as they are hybrids that are
         /// internally generated to match the nearest .NETFramework version.</remarks>
-        public static IEnumerable<string> PlatformTypes
-        {
-            get
-            {
-                return new[] { DotNetFramework, DotNetCore, DotNetMicroFramework, DotNetPortable, Silverlight,
-                    WindowsPhone, WindowsPhoneApp };
-            }
-        }
+        public static IEnumerable<string> PlatformTypes => new[] { DotNetFramework, DotNetCore,
+            DotNetMicroFramework, DotNetPortable, Silverlight, WindowsPhone, WindowsPhoneApp };
 
         /// <summary>
         /// This can be used to determine if the given set of platform types are compatible
         /// </summary>
         /// <param name="platforms">An enumerable list of platform types</param>
-        /// <returns>Returns true if all of the platform types are either .NETFramework, .NETCore, .NETCoreApp,
-        /// or .NETStandard.</returns>
-        public static bool PlatformsAreCompatible(IEnumerable<string> platforms)
+        /// <returns>Always returns true for now.  It appears that with some changes to MRefBuilder it is now
+        /// possible to mix assemblies from different platforms.  This is being retained for now in case that
+        /// is proved to be incorrect.</returns>
+        public static bool PlatformsAreCompatible(IEnumerable<(string platform, Version version)> platforms)
         {
-            return platforms.All(p => p == PlatformType.DotNetFramework || p == PlatformType.DotNetCore ||
-                p == PlatformType.DotNetCoreApp || p == PlatformType.DotNetStandard);
+            /*
+            if(platforms.All(p => p.platform == PlatformType.DotNetFramework ||
+              (p.platform == PlatformType.DotNetStandard && p.version.Major == 2 && p.version.Minor < 2)))
+            {
+                return true;
+            }
+
+            return platforms.All(p => p.platform == PlatformType.DotNetCore ||
+                p.platform == PlatformType.DotNetCoreApp ||
+                (p.platform == PlatformType.DotNetStandard && p.version.Major < 2));
+            */
+            return platforms.Any();
         }
     }
 }

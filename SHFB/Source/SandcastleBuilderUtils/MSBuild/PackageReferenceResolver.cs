@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2021
+// Updated : 03/21/2021
 // Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
@@ -110,6 +110,15 @@ namespace SandcastleBuilder.Utils.MSBuild
             resolvedDependencies.Clear();
             packageReferences.Clear();
 
+            // This is mostly guesswork so it may still need some revisions
+            string targetingPackRoot = project.GetPropertyValue("NetCoreTargetingPackRoot");
+
+            // Strip off the OS part if there
+            int dash = targetFramework.IndexOf('-');
+
+            if(dash > 0)
+                targetFramework = targetFramework.Substring(0, dash);
+
             try
             {
                 projectFilename = project.FullPath;
@@ -143,9 +152,62 @@ namespace SandcastleBuilder.Utils.MSBuild
                             }
                         }
                         else
+                        {
                             buildProcess.ReportWarning("BE0011", "Unable to load package reference information " +
                                 "for '{0}'.  Reason: Unable to locate targets element in project assets file '{1}'.",
                                 projectFilename, assetFile);
+                        }
+
+                        // See if there's a frameworks element.  If so, get the package names from it to use
+                        // with the implicit package references below.
+                        JToken frameworks = null;
+
+                        var projectNode = packageInfo["project"];
+
+                        if(projectNode != null)
+                            frameworks = projectNode["frameworks"];
+
+                        if(frameworks != null && frameworks.Count() != 0)
+                        {
+                            var references = (JObject)frameworks[((JObject)frameworks).Properties().First().Name]["frameworkReferences"];
+
+                            if(references != null)
+                            {
+                                foreach(JProperty prop in references.Properties())
+                                {
+                                    string rootPath = Path.Combine(targetingPackRoot, prop.Name);
+
+                                    // Most exist with a ".Ref" suffix
+                                    if(!Directory.Exists(rootPath))
+                                    {
+                                        rootPath += ".Ref";
+
+                                        // We may need to strip off the last part of the identifier (i.e. ".Windows")
+                                        if(!Directory.Exists(rootPath))
+                                        {
+                                            rootPath = rootPath.Substring(0, rootPath.Length - 4);
+
+                                            int dot = rootPath.LastIndexOf('.');
+
+                                            if(dot != -1)
+                                            {
+                                                rootPath = rootPath.Substring(0, dot);
+
+                                                if(!Directory.Exists(rootPath))
+                                                    rootPath += ".Ref";
+                                            }
+                                        }
+                                    }
+
+                                    if(Directory.Exists(rootPath))
+                                    {
+                                        foreach(string path in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories))
+                                            if(path.EndsWith(targetFramework, StringComparison.OrdinalIgnoreCase))
+                                                implicitPackageFolders.Add(path);
+                                    }
+                                }
+                            }
+                        }
                     }
                     else
                         buildProcess.ReportWarning("BE0011", "Unable to load package reference information " +
@@ -166,8 +228,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             // references for .NETStandard 2.1 and later which don't have an explicit package reference.
             if(!String.IsNullOrWhiteSpace(targetFramework))
             {
-                string defaultImplicitPackages = project.GetPropertyValue("DefaultImplicitPackages"),
-                    targetingPackRoot = project.GetPropertyValue("NetCoreTargetingPackRoot");
+                string defaultImplicitPackages = project.GetPropertyValue("DefaultImplicitPackages");
 
                 if(!String.IsNullOrWhiteSpace(defaultImplicitPackages) && !String.IsNullOrWhiteSpace(targetingPackRoot))
                 {
@@ -177,7 +238,25 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                         // Most exist with a ".Ref" suffix
                         if(!Directory.Exists(rootPath))
+                        {
                             rootPath += ".Ref";
+
+                            // We may need to strip off the last part of the identifier (i.e. ".Windows")
+                            if(!Directory.Exists(rootPath))
+                            {
+                                rootPath = rootPath.Substring(0, rootPath.Length - 4);
+
+                                int dot = rootPath.LastIndexOf('.');
+
+                                if(dot != -1)
+                                {
+                                    rootPath = rootPath.Substring(0, dot);
+
+                                    if(!Directory.Exists(rootPath))
+                                        rootPath += ".Ref";
+                                }
+                            }
+                        }
 
                         if(Directory.Exists(rootPath))
                         {
@@ -240,22 +319,22 @@ namespace SandcastleBuilder.Utils.MSBuild
                                     references.Add(Path.Combine(packageName, assemblyName));
                                 }
                             }
+                        }
 
-                            var dependencies = match["dependencies"];
+                        var dependencies = match["dependencies"];
 
-                            if(dependencies != null)
+                        if(dependencies != null)
+                        {
+                            var deps = dependencies.Cast<JProperty>().Select(
+                                t => t.Name + "/" + t.ToObject<string>()).Where(
+                                    d => !resolvedDependencies.Contains(d)).ToList();
+
+                            if(deps.Count != 0)
                             {
-                                var deps = dependencies.Cast<JProperty>().Select(
-                                    t => t.Name + "/" + t.ToObject<string>()).Where(
-                                        d => !resolvedDependencies.Contains(d)).ToList();
-
-                                if(deps.Count != 0)
-                                {
-                                    // Track the ones we've seen to prevent getting stuck due to circular
-                                    // references.
-                                    resolvedDependencies.UnionWith(deps);
-                                    references.UnionWith(this.ResolvePackageReferencesInternal(deps));
-                                }
+                                // Track the ones we've seen to prevent getting stuck due to circular
+                                // references.
+                                resolvedDependencies.UnionWith(deps);
+                                references.UnionWith(this.ResolvePackageReferencesInternal(deps));
                             }
                         }
                     }

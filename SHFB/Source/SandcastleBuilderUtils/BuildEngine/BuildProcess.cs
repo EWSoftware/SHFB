@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2021
+// Updated : 03/21/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -2215,7 +2215,8 @@ AllDone:
                             {
                                 // Assemblies are parsed in place by MRefBuilder so we don't have to do anything
                                 // with them here.
-                                this.ReportProgress("    Found assembly '{0}'", workingPath);
+                                this.ReportProgress("    Found assembly '{0}' ({1} {2})", workingPath,
+                                    msbProject.TargetFrameworkIdentifier, msbProject.TargetFrameworkVersion);
                                 assembliesList.Add(workingPath);
                             }
                             else
@@ -2262,12 +2263,13 @@ AllDone:
                     // They will need to be documented separately and can be merged using the Version Builder
                     // plug-in if needed.
                     if(targetFrameworksSeen.Count > 1 && !PlatformType.PlatformsAreCompatible(
-                      targetFrameworksSeen.Select(t => t.PlatformType)))
+                      targetFrameworksSeen.Select(t => (t.PlatformType, new Version(t.Version)))))
                     {
                         throw new BuilderException("BE0070", "Differing framework types were detected in the " +
-                            "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different " +
-                            "sets of assemblies used, the different frameworks cannot be mixed within the same " +
-                            "documentation project.  See the error number topic in the help file for details.");
+                            "documentation sources (i.e. .NETFramework, .NETCore).  Due to differences in " +
+                            "how the core types are redirected, the different frameworks cannot be mixed " +
+                            "within the same documentation project.  See the error number topic in the help " +
+                            "file for details.");
                     }
 
                     // Find the best matching set of framework reflection data
@@ -2308,18 +2310,6 @@ AllDone:
             // Log the references found, if any
             if(referenceDictionary.Count != 0)
             {
-                // If both mscorlib.dll and netstandard.dll are present in the references, remove mscorlib.dll
-                // as netstandard.dll contains all of the necessary info.
-                string mscorlibKey = referenceDictionary.Keys.FirstOrDefault(k => k.Equals("mscorlib",
-                    StringComparison.OrdinalIgnoreCase) || Path.GetFileNameWithoutExtension(k).Equals("mscorlib",
-                    StringComparison.OrdinalIgnoreCase));
-                string netstandardKey = referenceDictionary.Keys.FirstOrDefault(k => k.Equals("netstandard",
-                    StringComparison.OrdinalIgnoreCase) || Path.GetFileNameWithoutExtension(k).Equals("netstandard",
-                    StringComparison.OrdinalIgnoreCase));
-
-                if(!String.IsNullOrWhiteSpace(mscorlibKey) && !String.IsNullOrWhiteSpace(netstandardKey))
-                    referenceDictionary.Remove(mscorlibKey);
-
                 this.ReportProgress("\r\nReferences to include:");
 
                 string[] keys = new string[referenceDictionary.Keys.Count];

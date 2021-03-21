@@ -124,7 +124,7 @@ namespace DotNetStandardTestCases
 
         public string TestMethod(string? x, int[]? y, int?[] z)
         {
-            return null;
+            return String.Empty;
         }
     }
 

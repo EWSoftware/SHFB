@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2021
+// Updated : 03/21/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
@@ -187,12 +187,11 @@ namespace Sandcastle.Core.Reflection
         //=====================================================================
 
         private string platform, title, notes;
-        private bool allSystemTypesRedirected;
         private Version version;
 
-        private BindingList<AssemblyLocation> assemblyLocations;
-        private BindingList<StringWrapper> ignoredNamespaces, ignoredUnresolved;
-        private BindingList<BindingRedirection> bindingRedirections;
+        private readonly BindingList<AssemblyLocation> assemblyLocations;
+        private readonly BindingList<StringWrapper> ignoredNamespaces, ignoredUnresolved;
+        private readonly BindingList<BindingRedirection> bindingRedirections;
 
         #endregion
 
@@ -271,18 +270,8 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This is used to get or set whether or not all <c>System</c> types are redirected to other assemblies
         /// </summary>
-        public bool AllSystemTypesRedirected
-        {
-            get => allSystemTypesRedirected;
-            set
-            {
-                if(allSystemTypesRedirected != value)
-                {
-                    allSystemTypesRedirected = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
+        [Obsolete("This property is no longer used and will be removed in a future version")]
+        public bool AllSystemTypesRedirected { get; set; }
 
         /// <summary>
         /// This read-only property is used to determine if this entry represents a core framework
@@ -404,8 +393,15 @@ namespace Sandcastle.Core.Reflection
             if(dataSet.Attribute("Version") == null || !Version.TryParse(dataSet.Attribute("Version").Value, out version))
                 version = new Version();
 
+            // This is a hack but the old cross-platform file should be going away.  We need it to look like
+            // .NETStandard 2.0 so change the version.
+            if(platform == PlatformType.DotNetStandard && version.Major == 1 &&
+              filename.EndsWith("CrossPlatform.reflection", StringComparison.OrdinalIgnoreCase))
+            {
+                version = new Version(2, 0);
+            }
+
             title = dataSet.Attribute("Title").Value;
-            allSystemTypesRedirected = ((bool?)dataSet.Attribute("AllSystemTypesRedirected") ?? false);
             notes = (string)dataSet.Element("Notes");
 
             foreach(var location in dataSet.Descendants("Location"))
@@ -457,7 +453,6 @@ namespace Sandcastle.Core.Reflection
                     (version == null || (version.Major == 0 && version.Minor < 1 && version.Build < 1 &&
                         version.Revision < 1)) ? null : new XAttribute("Version", version),
                     new XAttribute("Title", (title ?? "Unknown")),
-                    !allSystemTypesRedirected ? null : new XAttribute("AllSystemTypesRedirected", true),
                     String.IsNullOrWhiteSpace(notes) ? null : new XElement("Notes", notes)
             ));
 

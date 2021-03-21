@@ -6471,11 +6471,15 @@ notfound:
                     if(Reader.StaticAssemblyCache[key] == this)
                         Reader.StaticAssemblyCache.Remove(key);
                 }
-                AssemblyReference aRef = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[Identifier.For(this.Name).UniqueIdKey];
-                if(aRef != null && aRef.Assembly == this)
+
+                if(!String.IsNullOrWhiteSpace(TargetPlatform.SystemAssemblyLocation))
                 {
-                    aRef.Assembly = null;
-                    //TODO: what about other static references to the assembly, such as SystemTypes.SystemXmlAssembly?
+                    AssemblyReference aRef = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[Identifier.For(this.Name).UniqueIdKey];
+                    if(aRef != null && aRef.Assembly == this)
+                    {
+                        aRef.Assembly = null;
+                        //TODO: what about other static references to the assembly, such as SystemTypes.SystemXmlAssembly?
+                    }
                 }
             }
             base.Dispose();

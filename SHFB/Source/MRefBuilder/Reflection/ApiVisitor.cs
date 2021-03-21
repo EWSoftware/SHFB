@@ -7,6 +7,8 @@
 // 01/06/2014 - EFW - Removed resetting of mscorlib for frameworks that forward all their types to other
 // assemblies.  This prevents a stack overflow.
 // 08/23/2016 - EFW - Added support for writing out source code context
+// 03/21/2021 - EFW - Fixed handling of system assembly location to allow for a mixed set of assemblies using
+// different platform types.
 
 using System;
 using System.Collections.Generic;
@@ -178,13 +180,10 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                // Do not reset for frameworks that redirect all mscorlib/netstandard types to other assemblies
-                // or it results in a stack overflow.
-                if((assembly.Name == "mscorlib" || assembly.Name == "netstandard") && !TargetPlatform.AllSystemTypesRedirected)
-                    ResetMscorlib(assembly);
-
-                if(TargetPlatform.AllSystemTypesRedirected && assembly.Name == "System.Runtime")
-                    ResetMscorlib(assembly);
+                // Ignore these.  We've identified the system types assembly already and the other two won't
+                // contain any usable types.
+                if(assembly.Name == "mscorlib" || assembly.Name == "netstandard" || assembly.Name == "System.Runtime")
+                    return;
 
                 resolver.Add(assembly);
                 accessoryAssemblies.Add(assembly);
@@ -220,13 +219,10 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                // Do not reset for frameworks that redirect all mscorlib/netstandard types to other assemblies
-                // or it results in a stack overflow.
-                if((assembly.Name == "mscorlib" || assembly.Name == "netstandard") && !TargetPlatform.AllSystemTypesRedirected)
-                    ResetMscorlib(assembly);
-
-                if(TargetPlatform.AllSystemTypesRedirected && assembly.Name == "System.Runtime")
-                    ResetMscorlib(assembly);
+                // Ignore these.  We've identified the system types assembly already and the other two won't
+                // contain any usable types.
+                if(assembly.Name == "mscorlib" || assembly.Name == "netstandard" || assembly.Name == "System.Runtime")
+                    return;
 
                 resolver.Add(assembly);
                 assemblies.Add(assembly);
@@ -246,6 +242,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             }
         }
 
+        /* 03/21/2021 - Most likely no longer needed.  Remove later if that is the case.
         /// <summary>
         /// This is used to reset the target platform information if mscorlib is specified as one of the
         /// reference assemblies or documented assemblies.
@@ -258,7 +255,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             CoreSystemTypes.SystemAssembly = assembly;
             TargetPlatform.PlatformAssembliesLocation = Path.GetDirectoryName(assembly.Location);
             CoreSystemTypes.Initialize(true, false);
-        }
+        }*/
 
         /// <summary>
         /// This is used to get a namespace name

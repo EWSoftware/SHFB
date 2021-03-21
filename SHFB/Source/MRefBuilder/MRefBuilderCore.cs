@@ -14,6 +14,8 @@
 // 10/16/2014 - EFW - Added support for WindowsStoreAndPhoneNamer.
 // 05/09/2015 - EFW - Removed the deprecated /internal command line option and platform configuration options
 // 08/23/2016 - EFW - Added support for writing out source code context
+// 03/21/2021 - EFW - Fixed handling of system assembly location to allow for a mixed set of assemblies using
+// different platform types.
 
 // Ignore Spelling: dep 
 
@@ -183,12 +185,27 @@ namespace Microsoft.Ddue.Tools
                     if(!String.IsNullOrWhiteSpace(folder.Value) && Directory.Exists(folder.Value))
                         componentFolders.Add(folder.Value);
 
+            // Get the dependencies
+            string[] dependencies = Array.Empty<string>();
+
+            if(results.Options["dep"].IsPresent)
+                dependencies = (string[])results.Options["dep"].Value;
+
             if(!String.IsNullOrEmpty(framework) && !String.IsNullOrEmpty(version))
-                TargetPlatform.SetFrameworkInformation(framework, version, componentFolders);
+            {
+                var coreNames = new HashSet<string>(new[] { "netstandard", "mscorlib", "System.Runtime" },
+                    StringComparer.OrdinalIgnoreCase);
+
+                var coreFrameworkAssemblies = results.UnusedArguments.Concat(dependencies).Where(d =>
+                    coreNames.Contains(Path.GetFileNameWithoutExtension(d)));
+
+                TargetPlatform.SetFrameworkInformation(framework, version, componentFolders,
+                    coreFrameworkAssemblies);
+            }
             else
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, "Unknown target framework " +
-                    "version '{0} {1}'.", framework, version);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "Unknown target framework version '{0} {1}'.",
+                    framework, version);
                 return 1;
             }
 
@@ -375,12 +392,6 @@ namespace Microsoft.Ddue.Tools
                 }
             }
 
-            // Dependency directory
-            string[] dependencies = Array.Empty<string>();
-
-            if(results.Options["dep"].IsPresent)
-                dependencies = (string[])results.Options["dep"].Value;
-
             try
             {
                 // Create a writer
@@ -468,10 +479,7 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 // Load dependencies
-                foreach(string dependency in dependencies.OrderBy(d =>
-                    d.IndexOf("mscorlib", StringComparison.OrdinalIgnoreCase) != -1 ||
-                    d.IndexOf("netstandard", StringComparison.OrdinalIgnoreCase) != -1 ||
-                    d.IndexOf("System.Runtime", StringComparison.OrdinalIgnoreCase) != -1 ? 0 : 1))
+                foreach(string dependency in dependencies)
                 {
                     try
                     {
@@ -493,10 +501,7 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 // Parse the assemblies
-                foreach(string dllPath in results.UnusedArguments.OrderBy(d =>
-                    d.IndexOf("mscorlib", StringComparison.OrdinalIgnoreCase) != -1 ||
-                    d.IndexOf("netstandard", StringComparison.OrdinalIgnoreCase) != -1 ||
-                    d.IndexOf("System.Runtime", StringComparison.OrdinalIgnoreCase) != -1 ? 0 : 1))
+                foreach(string dllPath in results.UnusedArguments)
                 {
                     try
                     {

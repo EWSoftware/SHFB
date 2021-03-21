@@ -12,6 +12,8 @@
 // is being used for the core framework types.
 // 05/09/2015 - EFW - Removed obsolete core framework assembly definitions and related methods.
 // 05/09/2016 - EFW - Fixed SystemAssemblyLocation so that it is set when all system types are redirected.
+// 03/21/2021 - EFW - Fixed handling of system assembly location to allow for a mixed set of assemblies using
+// different platform types.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,7 +39,7 @@ namespace System.Compiler
         {
             get
             {
-                Version v = TargetPlatform.TargetVersion;
+                Version v = TargetVersion;
 
                 if (v == null)
                 {
@@ -64,7 +66,6 @@ namespace System.Compiler
         public static string Platform;
         public static Version TargetVersion;
         public static string TargetRuntimeVersion;
-        public static bool AllSystemTypesRedirected;
 
         public static string PlatformAssembliesLocation = String.Empty;
 
@@ -74,16 +75,13 @@ namespace System.Compiler
         {
             get
             {
-                if(TargetPlatform.assemblyReferenceFor == null)
+                if(assemblyReferenceFor == null)
                     throw new InvalidOperationException("AssemblyReferenceFor not set!  Has target platform " +
                         "information been set?");
 
-                return TargetPlatform.assemblyReferenceFor;
+                return assemblyReferenceFor;
             }
-            set
-            {
-                TargetPlatform.assemblyReferenceFor = value;
-            }
+            set => assemblyReferenceFor = value;
         }
 
         //!EFW
@@ -93,7 +91,7 @@ namespace System.Compiler
         /// <param name="platformType">The platform type</param>
         /// <param name="version">The framework version</param>
         public static void SetFrameworkInformation(string platformType, string version,
-          IEnumerable<string> componentLocations)
+          IEnumerable<string> componentLocations, IEnumerable<string> coreFrameworkAssemblies)
         {
             var ver = new Version(version);
             var rdsd = new Sandcastle.Core.Reflection.ReflectionDataSetDictionary(componentLocations);
@@ -110,35 +108,77 @@ namespace System.Compiler
 
             var coreLocation = dataSet.CoreFrameworkLocation;
 
+            // The old cross-platform reflection data set for .NETStandard relied solely on dependency assemblies.
+            // It will probably go away but we need to support it for the time being.
             if(coreLocation == null && !isDotNetStandard)
+            {
                 throw new InvalidOperationException(String.Format("A core framework location has not been " +
                     "defined for the framework '{0} {1}'", platformType, version));
+            }
 
             Platform = dataSet.Platform;
-            TargetVersion = dataSet.Version;
-            TargetRuntimeVersion = "v" + dataSet.Version.ToString();
-            AllSystemTypesRedirected = dataSet.AllSystemTypesRedirected || dataSet.Platform == Sandcastle.Core.Reflection.PlatformType.DotNetStandard;
-            GenericTypeNamesMangleChar = '`';
-            PlatformAssembliesLocation = coreLocation?.Path ?? String.Empty;
 
-            if(!isDotNetStandard)
+            // A few things can change such as the generic type name mangling character based on the .NET
+            // Framework version.  For all other platforms, assume the current framework version as they will
+            // use the most recent stuff.
+            if(Platform == Sandcastle.Core.Reflection.PlatformType.DotNetFramework)
+                TargetVersion = dataSet.Version;
+            else
+                TargetVersion = typeof(object).Module.Assembly.GetName().Version;
+
+            TargetRuntimeVersion = "v" + TargetVersion.ToString();
+            GenericTypeNamesMangleChar = '`';
+
+            // The SystemAssemblyLocation must be set before loading anything or it tends to mess up the type
+            // system and we get erroneous results or a crash.  To do this, search for mscorlib, netstandard,
+            // and System.Runtime int he framework assemblies and any dependencies.  Take a look at each one
+            // and use the first one with more than 1 type in it.  That will be the system assembly.  If there's
+            // only one type, it redirects all of its types to the core assembly and others.
+            var coreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            if(coreLocation != null)
             {
                 var ad = dataSet.FindAssembly("mscorlib");
 
                 if(ad != null)
-                    SystemAssemblyLocation = ad.Filename;
-                else
+                    coreSet.Add(ad.Filename);
+
+                ad = dataSet.FindAssembly("netstandard");
+
+                if(ad != null)
+                    coreSet.Add(ad.Filename);
+
+                ad = dataSet.FindAssembly("System.Runtime");
+
+                if(ad != null)
+                    coreSet.Add(ad.Filename);
+            }
+
+            coreSet.UnionWith(coreFrameworkAssemblies);
+
+            // Use a temporary variable as we need to dispose of the reader before assigning it
+            string sysAsmLocation = null;
+
+            foreach(string coreFile in coreSet)
+            {
+                using(var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule())
                 {
-                    // Frameworks that redirect all system types typically redirect them to System.Runtime
-                    ad = dataSet.FindAssembly("System.Runtime");
-
-                    if(ad == null)
-                        throw new InvalidOperationException(String.Format("The system types assembly could not be " +
-                            "found for the framework '{0} {1}'", platformType, version));
-
-                    SystemAssemblyLocation = ad.Filename;
+                    // Access the reader metadata so that we don't force a load of the type system
+                    if(ca.reader.tables.TypeDefTable.Length > 1)
+                    {
+                        sysAsmLocation = coreFile;
+                        break;
+                    }
                 }
             }
+
+            // If we fail to find one explicitly, which is possible with some of the earlier .NET Core versions,
+            // use the current .NET Framework's mscorlib.
+            if(String.IsNullOrWhiteSpace(sysAsmLocation))
+                sysAsmLocation = typeof(object).Module.Assembly.Location;
+
+            SystemAssemblyLocation = sysAsmLocation;
+            PlatformAssembliesLocation = Path.GetDirectoryName(SystemAssemblyLocation);
 
             // Load references to all the other framework assemblies
             var allAssemblies = dataSet.IncludedAssemblies.ToList();
@@ -149,8 +189,7 @@ namespace System.Compiler
             foreach(var asm in allAssemblies)
                 if(!asm.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) && File.Exists(asm.Filename))
                 {
-                    AssemblyReference aref = new AssemblyReference(asm.ToString());
-                    aref.Location = asm.Filename;
+                    AssemblyReference aref = new AssemblyReference(asm.ToString()) { Location = asm.Filename };
                     assemblyReferenceFor[Identifier.For(asm.Name).UniqueIdKey] = aref;
                 }
 
@@ -161,8 +200,6 @@ namespace System.Compiler
     public static class CoreSystemTypes
     {
         internal static bool Initialized;
-
-        internal static bool IsInitialized { get { return Initialized; } }
 
         //system assembly (the basic runtime)
         public static AssemblyNode/*!*/ SystemAssembly;
@@ -255,8 +292,7 @@ namespace System.Compiler
             }
             if (TargetPlatform.TargetVersion != null)
             {
-                if (TargetPlatform.Platform == Sandcastle.Core.Reflection.PlatformType.DotNetStandard ||
-                  TargetPlatform.TargetVersion.Major > 1 || TargetPlatform.TargetVersion.Minor > 1 ||
+                if (TargetPlatform.TargetVersion.Major > 1 || TargetPlatform.TargetVersion.Minor > 1 ||
                   (TargetPlatform.TargetVersion.Minor == 1 && TargetPlatform.TargetVersion.Build == 9999))
                 {
                     if (SystemAssembly.IsValidTypeName(StandardIds.System, Identifier.For("Nullable`1")))
@@ -439,7 +475,8 @@ namespace System.Compiler
 
         internal static TypeNode/*!*/ GetDummyTypeNode(AssemblyNode declaringAssembly, string/*!*/ nspace, string/*!*/ name, ElementType typeCode)
         {
-            TypeNode result = null;
+            TypeNode result;
+
             switch (typeCode)
             {
                 case ElementType.Object:
@@ -454,6 +491,7 @@ namespace System.Compiler
                     else
                         result = new Class();
                     break;
+
                 default:
                     if (name == "CciMemberKind")
                         result = new EnumNode();
@@ -461,6 +499,7 @@ namespace System.Compiler
                         result = new Struct();
                     break;
             }
+
             result.Name = Identifier.For(name);
             result.Namespace = Identifier.For(nspace);
             result.DeclaringModule = declaringAssembly;
@@ -475,38 +514,38 @@ namespace System.Compiler
         //system assembly (the basic runtime)
         public static AssemblyNode/*!*/ SystemAssembly
         {
-            get { return CoreSystemTypes.SystemAssembly; }
-            set { CoreSystemTypes.SystemAssembly = value; }
+            get => CoreSystemTypes.SystemAssembly;
+            set => CoreSystemTypes.SystemAssembly = value;
         }
 
         //Special base types
-        public static Class/*!*/ Object { get { return CoreSystemTypes.Object; } }
-        public static Class/*!*/ String { get { return CoreSystemTypes.String; } }
-        public static Class/*!*/ ValueType { get { return CoreSystemTypes.ValueType; } }
-        public static Class/*!*/ Enum { get { return CoreSystemTypes.Enum; } }
-        public static Class/*!*/ Delegate { get { return CoreSystemTypes.Delegate; } }
-        public static Class/*!*/ MulticastDelegate { get { return CoreSystemTypes.MulticastDelegate; } }
-        public static Class/*!*/ Array { get { return CoreSystemTypes.Array; } }
-        public static Class/*!*/ Type { get { return CoreSystemTypes.Type; } }
-        public static Class/*!*/ Exception { get { return CoreSystemTypes.Exception; } }
-        public static Class/*!*/ Attribute { get { return CoreSystemTypes.Attribute; } }
+        public static Class/*!*/ Object => CoreSystemTypes.Object;
+        public static Class/*!*/ String => CoreSystemTypes.String;
+        public static Class/*!*/ ValueType => CoreSystemTypes.ValueType;
+        public static Class/*!*/ Enum => CoreSystemTypes.Enum;
+        public static Class/*!*/ Delegate => CoreSystemTypes.Delegate;
+        public static Class/*!*/ MulticastDelegate => CoreSystemTypes.MulticastDelegate;
+        public static Class/*!*/ Array => CoreSystemTypes.Array;
+        public static Class/*!*/ Type => CoreSystemTypes.Type;
+        public static Class/*!*/ Exception => CoreSystemTypes.Exception;
+        public static Class/*!*/ Attribute => CoreSystemTypes.Attribute;
 
         //primitive types
-        public static Struct/*!*/ Boolean { get { return CoreSystemTypes.Boolean; } }
-        public static Struct/*!*/ Char { get { return CoreSystemTypes.Char; } }
-        public static Struct/*!*/ Int8 { get { return CoreSystemTypes.Int8; } }
-        public static Struct/*!*/ UInt8 { get { return CoreSystemTypes.UInt8; } }
-        public static Struct/*!*/ Int16 { get { return CoreSystemTypes.Int16; } }
-        public static Struct/*!*/ UInt16 { get { return CoreSystemTypes.UInt16; } }
-        public static Struct/*!*/ Int32 { get { return CoreSystemTypes.Int32; } }
-        public static Struct/*!*/ UInt32 { get { return CoreSystemTypes.UInt32; } }
-        public static Struct/*!*/ Int64 { get { return CoreSystemTypes.Int64; } }
-        public static Struct/*!*/ UInt64 { get { return CoreSystemTypes.UInt64; } }
-        public static Struct/*!*/ Single { get { return CoreSystemTypes.Single; } }
-        public static Struct/*!*/ Double { get { return CoreSystemTypes.Double; } }
-        public static Struct/*!*/ IntPtr { get { return CoreSystemTypes.IntPtr; } }
-        public static Struct/*!*/ UIntPtr { get { return CoreSystemTypes.UIntPtr; } }
-        public static Struct/*!*/ DynamicallyTypedReference { get { return CoreSystemTypes.DynamicallyTypedReference; } }
+        public static Struct/*!*/ Boolean => CoreSystemTypes.Boolean;
+        public static Struct/*!*/ Char => CoreSystemTypes.Char;
+        public static Struct/*!*/ Int8 => CoreSystemTypes.Int8;
+        public static Struct/*!*/ UInt8 => CoreSystemTypes.UInt8;
+        public static Struct/*!*/ Int16 => CoreSystemTypes.Int16;
+        public static Struct/*!*/ UInt16 => CoreSystemTypes.UInt16;
+        public static Struct/*!*/ Int32 => CoreSystemTypes.Int32;
+        public static Struct/*!*/ UInt32 => CoreSystemTypes.UInt32;
+        public static Struct/*!*/ Int64 => CoreSystemTypes.Int64;
+        public static Struct/*!*/ UInt64 => CoreSystemTypes.UInt64;
+        public static Struct/*!*/ Single => CoreSystemTypes.Single;
+        public static Struct/*!*/ Double => CoreSystemTypes.Double;
+        public static Struct/*!*/ IntPtr => CoreSystemTypes.IntPtr;
+        public static Struct/*!*/ UIntPtr => CoreSystemTypes.UIntPtr;
+        public static Struct/*!*/ DynamicallyTypedReference => CoreSystemTypes.DynamicallyTypedReference;
 
         // Types required for a complete rendering
         // of binary attribute information
@@ -526,13 +565,13 @@ namespace System.Compiler
         public static Interface/*!*/ IList;
 
         //Special types
-        public static Struct/*!*/ ArgIterator { get { return CoreSystemTypes.ArgIterator; } }
-        public static Class/*!*/ IsVolatile { get { return CoreSystemTypes.IsVolatile; } }
-        public static Struct/*!*/ Void { get { return CoreSystemTypes.Void; } }
-        public static Struct/*!*/ RuntimeFieldHandle { get { return CoreSystemTypes.RuntimeTypeHandle; } }
-        public static Struct/*!*/ RuntimeMethodHandle { get { return CoreSystemTypes.RuntimeTypeHandle; } }
-        public static Struct/*!*/ RuntimeTypeHandle { get { return CoreSystemTypes.RuntimeTypeHandle; } }
-        public static Struct/*!*/ RuntimeArgumentHandle { get { return CoreSystemTypes.RuntimeArgumentHandle; } }
+        public static Struct/*!*/ ArgIterator => CoreSystemTypes.ArgIterator;
+        public static Class/*!*/ IsVolatile => CoreSystemTypes.IsVolatile;
+        public static Struct/*!*/ Void => CoreSystemTypes.Void;
+        public static Struct/*!*/ RuntimeFieldHandle => CoreSystemTypes.RuntimeTypeHandle;
+        public static Struct/*!*/ RuntimeMethodHandle => CoreSystemTypes.RuntimeTypeHandle;
+        public static Struct/*!*/ RuntimeTypeHandle => CoreSystemTypes.RuntimeTypeHandle;
+        public static Struct/*!*/ RuntimeArgumentHandle => CoreSystemTypes.RuntimeArgumentHandle;
 
         //Special attributes    
         public static Class/*!*/ AllowPartiallyTrustedCallersAttribute;
@@ -591,7 +630,7 @@ namespace System.Compiler
         //Classes need for System.TypeCode
         public static Class/*!*/ DBNull;
         public static Struct/*!*/ DateTime;
-        public static Struct/*!*/ Decimal { get { return CoreSystemTypes.Decimal; } }
+        public static Struct/*!*/ Decimal => CoreSystemTypes.Decimal;
         public static Struct/*!*/ TimeSpan;
 
         //Classes and interfaces used by the Framework

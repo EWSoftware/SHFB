@@ -47,6 +47,8 @@ filterpriority
 fs
 fsscript
 gcnew
+Guid
+Hashtable
 href
 html
 http
