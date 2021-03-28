@@ -7,7 +7,7 @@
 
 	<!-- Task properties -->
 	<PropertyGroup>
-		<TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+		<TargetFrameworkIdentifier>{@TargetFrameworkIdentifier}</TargetFrameworkIdentifier>
 		<TargetFrameworkVersion>v{@FrameworkVersionShort}</TargetFrameworkVersion>
 		<AddXamlSyntaxData>{@AddXamlSyntaxData}</AddXamlSyntaxData>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>

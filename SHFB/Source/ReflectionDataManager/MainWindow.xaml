@@ -45,7 +45,6 @@
 						<RowDefinition />
 						<RowDefinition />
 						<RowDefinition />
-						<RowDefinition />
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
@@ -56,8 +55,7 @@
 					<Label Grid.Column="0" Grid.Row="0" Margin="3" Content="_Platform ID" HorizontalAlignment="Right"
 						Target="{Binding ElementName=cboPlatform}" />
 					<ComboBox Grid.Column="1" Grid.Row="0" Margin="3" MinWidth="150"
-						HorizontalAlignment="Left" Name="cboPlatform" SelectionChanged="cboPlatform_SelectionChanged"
-						SelectedValue="{Binding Path=Platform}" />
+						HorizontalAlignment="Left" Name="cboPlatform" SelectedValue="{Binding Path=Platform}" />
 					<Label Grid.Column="2" Grid.Row="0" Margin="3" Content="_Version ID" HorizontalAlignment="Right"
 						Target="{Binding ElementName=txtVersion}" />
 					<TextBox Grid.Column="3" Grid.Row="0" Margin="3" MinWidth="150" HorizontalAlignment="Left"
@@ -74,9 +72,6 @@
 					<Label Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Margin="3,0"
 						Content="Contains core framework assemblies"
 						Visibility="{Binding Path=IsCoreFramework, Converter={StaticResource BoolToVisibilityKey}}"/>
-					<Label Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Margin="3,0"
-						Content="All System types in mscorlib are redirected to other assemblies"
-						Visibility="{Binding Path=AllSystemTypesRedirected, Converter={StaticResource BoolToVisibilityKey}}"/>
 				</Grid>
 			</Border>
 			<Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5,2" Padding="10" Name="bdAssemblyLocation">

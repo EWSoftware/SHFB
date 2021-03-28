@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PlatformType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/21/2021
+// Updated : 03/27/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to define platform type constants
@@ -30,6 +30,8 @@ namespace Sandcastle.Core.Reflection
     /// </summary>
     public static class PlatformType
     {
+        /// <summary>.NET 5.0 or later</summary>
+        public const string DotNet= ".NET";
         /// <summary>.NET Core (Windows Store Apps) Framework</summary>
         public const string DotNetCore = ".NETCore";
         /// <summary>.NET Core Application</summary>
@@ -52,32 +54,35 @@ namespace Sandcastle.Core.Reflection
         /// <summary>
         /// This read-only property returns an enumerable list of the valid platform types
         /// </summary>
-        /// <remarks>.NETCoreApp and .NETStandard are not returned by this as they are hybrids that are
-        /// internally generated to match the nearest .NETFramework version.</remarks>
-        public static IEnumerable<string> PlatformTypes => new[] { DotNetFramework, DotNetCore,
-            DotNetMicroFramework, DotNetPortable, Silverlight, WindowsPhone, WindowsPhoneApp };
+        /// <remarks>.NETCoreApp is not returned.  It will be redirected to one of the other types.</remarks>
+        public static IEnumerable<string> PlatformTypes => new[] { DotNet, DotNetFramework, DotNetCore,
+            DotNetStandard, DotNetMicroFramework, DotNetPortable, Silverlight, WindowsPhone, WindowsPhoneApp };
 
         /// <summary>
-        /// This can be used to determine if the given set of platform types are compatible
+        /// This can be used to determine if the given set of platform types are compatible with each other for
+        /// documentation purposes.
         /// </summary>
         /// <param name="platforms">An enumerable list of platform types</param>
-        /// <returns>Always returns true for now.  It appears that with some changes to MRefBuilder it is now
-        /// possible to mix assemblies from different platforms.  This is being retained for now in case that
-        /// is proved to be incorrect.</returns>
+        /// <returns>True if they are compatible, false if not</returns>
+        /// <remarks>In general, platforms that have all of their types in mscorlib or netstandard are compatible.
+        /// All platforms that redirect their types to System.Runtime are also typically compatible.  Mixing the
+        /// two or any combination of other frameworks is not compatible.</remarks>
         public static bool PlatformsAreCompatible(IEnumerable<(string platform, Version version)> platforms)
         {
-            /*
             if(platforms.All(p => p.platform == PlatformType.DotNetFramework ||
-              (p.platform == PlatformType.DotNetStandard && p.version.Major == 2 && p.version.Minor < 2)))
+              (p.platform == PlatformType.DotNetStandard && p.version.Major == 2)))
             {
                 return true;
             }
 
-            return platforms.All(p => p.platform == PlatformType.DotNetCore ||
-                p.platform == PlatformType.DotNetCoreApp ||
-                (p.platform == PlatformType.DotNetStandard && p.version.Major < 2));
-            */
-            return platforms.Any();
+            if(platforms.All(p => p.platform == PlatformType.DotNet || p.platform == PlatformType.DotNetCore ||
+              p.platform == PlatformType.DotNetCoreApp || (p.platform == PlatformType.DotNetStandard &&
+              p.version.Major < 2)))
+            {
+                return true;
+            }
+
+            return platforms.Select(p => p.platform).Distinct().Count() == 1;
         }
     }
 }

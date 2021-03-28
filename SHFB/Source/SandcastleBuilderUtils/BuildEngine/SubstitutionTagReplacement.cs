@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/19/2021
+// Updated : 03/27/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -34,6 +34,7 @@ using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+using Sandcastle.Core.Reflection;
 
 using SandcastleBuilder.Utils.Design;
 
@@ -588,6 +589,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string TargetFrameworkIdentifier()
         {
+            // If the reflection data is for .NETStandard or .NET 5.0 use .NET Framework use v4.8
+            if(currentBuild.FrameworkReflectionData.Platform == PlatformType.DotNet ||
+              currentBuild.FrameworkReflectionData.Platform == PlatformType.DotNetStandard)
+            {
+                return PlatformType.DotNetFramework;
+            }
+
             return currentBuild.FrameworkReflectionData.Platform;
         }
 
@@ -611,14 +619,37 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Version v = currentBuild.FrameworkReflectionData.Version;
 
-            // If the reflection data isn't for the .NET Framework use v4.8
-            if(currentBuild.FrameworkReflectionData.Platform != Sandcastle.Core.Reflection.PlatformType.DotNetFramework)
+            // If the reflection data is for .NETStandard or .NET 5.0 use .NET Framework use v4.8
+            if(currentBuild.FrameworkReflectionData.Platform == PlatformType.DotNet ||
+              currentBuild.FrameworkReflectionData.Platform == PlatformType.DotNetStandard)
+            {
                 v = new Version(4, 8);
+            }
 
             if(v.Build > 0 && v.Build < 10)
                 return currentBuild.FrameworkReflectionData.Version.ToString(3);
 
             return v.ToString(2);
+        }
+
+        /// <summary>
+        /// The reflection data set platform
+        /// </summary>
+        /// <returns>The reflection data set platform type</returns>
+        [SubstitutionTag]
+        private string ReflectionDataSetPlatform()
+        {
+            return currentBuild.FrameworkReflectionData.Platform;
+        }
+
+        /// <summary>
+        /// The reflection data set platform version
+        /// </summary>
+        /// <returns>The reflection data set platform version</returns>
+        [SubstitutionTag]
+        private string ReflectionDataSetVersion()
+        {
+            return currentBuild.FrameworkReflectionData.Version.ToString();
         }
 
         /// <summary>

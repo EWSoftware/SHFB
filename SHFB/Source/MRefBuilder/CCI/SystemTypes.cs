@@ -98,13 +98,12 @@ namespace System.Compiler
             var dataSet = rdsd.CoreFrameworkMatching(platformType, ver, true);
             bool isDotNetStandard = platformType == Sandcastle.Core.Reflection.PlatformType.DotNetStandard;
 
-            if(dataSet == null && isDotNetStandard)
-                dataSet = rdsd.Values.FirstOrDefault(ds => ds.Platform == platformType && ds.Version == ver);
-
             if(dataSet == null)
+            {
                 throw new InvalidOperationException(String.Format("Unable to locate information for the " +
                     "framework version '{0} {1}' or a suitable redirected version on this system",
                     platformType, version));
+            }
 
             var coreLocation = dataSet.CoreFrameworkLocation;
 
@@ -129,16 +128,50 @@ namespace System.Compiler
             TargetRuntimeVersion = "v" + TargetVersion.ToString();
             GenericTypeNamesMangleChar = '`';
 
+            // Load references to all the other framework assemblies
+            var allAssemblies = dataSet.IncludedAssemblies.ToList();
+
+            assemblyReferenceFor = new TrivialHashtable(allAssemblies.Count);
+
             // The SystemAssemblyLocation must be set before loading anything or it tends to mess up the type
             // system and we get erroneous results or a crash.  To do this, search for mscorlib, netstandard,
             // and System.Runtime int he framework assemblies and any dependencies.  Take a look at each one
             // and use the first one with more than 1 type in it.  That will be the system assembly.  If there's
             // only one type, it redirects all of its types to the core assembly and others.
-            var coreSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            if(coreLocation != null)
+            // Use a temporary variable as we need to dispose of the reader before assigning it
+            string sysAsmLocation = null;
+
+            // Give precedence to the dependency assemblies
+            foreach(string coreFile in coreFrameworkAssemblies.OrderBy(d =>
+              d.IndexOf("System.Runtime.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 0 :
+              d.IndexOf("netstandard.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 1 :
+              d.IndexOf("mscorlib.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 2 : 3))
             {
-                var ad = dataSet.FindAssembly("mscorlib");
+                // Odd case.  If mixing .NETFramework with .NET Standard 2+, it doesn't like using the
+                // netstandard assembly so defer to the full framework's mscorlib
+                if(dataSet.Platform == Sandcastle.Core.Reflection.PlatformType.DotNetFramework &&
+                  coreFile.IndexOf(@"ref\netstandard2", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    continue;
+                }
+
+                using(var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule())
+                {
+                    // Access the reader metadata so that we don't force a load of the type system
+                    if(ca.reader.tables.TypeDefTable.Length > 1)
+                    {
+                        sysAsmLocation = coreFile;
+                        break;
+                    }
+                }
+            }
+
+            // If a suitable one isn't found there, use the reflection data set
+            if(String.IsNullOrWhiteSpace(sysAsmLocation) && coreLocation != null)
+            {
+                var coreSet = new List<string>();
+                var ad = dataSet.FindAssembly("System.Runtime");
 
                 if(ad != null)
                     coreSet.Add(ad.Filename);
@@ -148,26 +181,21 @@ namespace System.Compiler
                 if(ad != null)
                     coreSet.Add(ad.Filename);
 
-                ad = dataSet.FindAssembly("System.Runtime");
+                ad = dataSet.FindAssembly("mscorlib");
 
                 if(ad != null)
                     coreSet.Add(ad.Filename);
-            }
 
-            coreSet.UnionWith(coreFrameworkAssemblies);
-
-            // Use a temporary variable as we need to dispose of the reader before assigning it
-            string sysAsmLocation = null;
-
-            foreach(string coreFile in coreSet)
-            {
-                using(var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule())
+                foreach(string coreFile in coreSet)
                 {
-                    // Access the reader metadata so that we don't force a load of the type system
-                    if(ca.reader.tables.TypeDefTable.Length > 1)
+                    using(var ca = (AssemblyNode)new Reader(coreFile, null, true, false, true, false).ReadModule())
                     {
-                        sysAsmLocation = coreFile;
-                        break;
+                        // Access the reader metadata so that we don't force a load of the type system
+                        if(ca.reader.tables.TypeDefTable.Length > 1)
+                        {
+                            sysAsmLocation = coreFile;
+                            break;
+                        }
                     }
                 }
             }
@@ -180,20 +208,17 @@ namespace System.Compiler
             SystemAssemblyLocation = sysAsmLocation;
             PlatformAssembliesLocation = Path.GetDirectoryName(SystemAssemblyLocation);
 
-            // Load references to all the other framework assemblies
-            var allAssemblies = dataSet.IncludedAssemblies.ToList();
-
-            TrivialHashtable assemblyReferenceFor = new TrivialHashtable(allAssemblies.Count);
-
-            // Loading mscorlib causes a reset of the reference cache and other info so we must ignore it
             foreach(var asm in allAssemblies)
-                if(!asm.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) && File.Exists(asm.Filename))
+            {
+                if(!asm.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
+                  !asm.Name.Equals("netstandard", StringComparison.OrdinalIgnoreCase) &&
+                  !asm.Name.Equals("System.Runtime", StringComparison.OrdinalIgnoreCase) &&
+                  File.Exists(asm.Filename))
                 {
                     AssemblyReference aref = new AssemblyReference(asm.ToString()) { Location = asm.Filename };
                     assemblyReferenceFor[Identifier.For(asm.Name).UniqueIdKey] = aref;
                 }
-
-            TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
+            }
         }
     }
 

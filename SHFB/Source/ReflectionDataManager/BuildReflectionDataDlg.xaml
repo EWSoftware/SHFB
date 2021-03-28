@@ -57,7 +57,7 @@
 			<TextBox Grid.Row="0" Name="txtBuildOutput" Margin="5,2" VerticalScrollBarVisibility="Visible"
 				HorizontalScrollBarVisibility="Visible" IsReadOnly="True" IsReadOnlyCaretVisible="True"
 				FontFamily="Courier New" />
-			<StackPanel Grid.Row="1" Orientation="Horizontal">
+			<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="3,3,3,5">
 				<Button Margin="3" Name="btnBuild" Content="_Build" MinWidth="80" ToolTip="Build the reflection data"
 					Click="btnBuild_Click" />
 				<Button Margin="3" Name="btnClose" Content="Close" MinWidth="80" ToolTip="Close this form"

@@ -1,37 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="a73e776d-0f62-41ee-aa5f-637916c09553" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>Error BE0070: Differing framework types were detected in the documentation sources (i.e.
-.NET, Silverlight, Portable).  Due to the different sets of assemblies used, they cannot be mixed
-within the same documentation project.</para>
-    </introduction>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Error BE0070: Differing framework types were detected in the documentation sources (i.e. .NET 5 and
+.NET Standard 2.x).  Due to differences in how the core types are redirected, the different frameworks cannot be
+mixed within the same documentation project.</para>
+		</introduction>
 
-    <section>
-      <title>Cause</title>
-      <content>
-        <para>Visual Studio solutions or projects were included as documentation sources that contained projects for
-a combination of the standard .NET Framework, Silverlight Framework, and/or the .NET Portable Framework.  This is not
-allowed as each uses separate framework assemblies that cannot be mixed as it would cause incorrect reflection
-information to be produced for the combined sets of classes.</para>
-      </content>
-    </section>
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>Visual Studio solutions or projects were included as documentation sources that contained projects for
+a combination of the full .NET Framework, .NET 5.0, .NET Standard, Silverlight Framework, and/or the .NET Portable
+Framework.  This is not allowed as each uses separate framework assemblies that cannot be mixed as it would cause
+incorrect reflection information to be produced for the combined sets of classes.</para>
+			</content>
+		</section>
 
-    <section>
-      <title>Solution</title>
-      <content>
-        <para>Separate the .NET Framework, Silverlight Framework, and .NET Portable Framework assembly projects into
-their own help file builder projects.  The help file projects can then be built separately to produce two or more help
-files.  If you would prefer to have one help file for all of the assemblies, use the
-<link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /> to include the other help file projects into the
-primary project.</para>
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>Separate the projects by platform into their own help file builder projects.  The help file projects
+can then be built separately to produce two or more help files.  If you would prefer to have one help file for all
+of the assemblies, use the <link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /> to include the other help
+file projects into the primary project.</para>
 
-      </content>
-    </section>
+				<para>Typically, projects for the full .NET Framework and .NET Standard 2.x can be mixed in the same help
+file builder project as can projects for .NET 5.0, .NET Standard 1.x, and .NET Core 1.0 through 3.1.  All other combinations
+will usually have to be separated.  There may be combinations that have not been discovered yet that are incompatible.  These
+will result in incorrect documentation or an error that causes the MRefBuilder tool to fail.</para>
 
-    <relatedTopics>
+			</content>
+		</section>
+
+		<relatedTopics>
 			<link xlink:href="20e87b11-21a3-493c-8dd6-16ce7694952b" />
-    </relatedTopics>
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

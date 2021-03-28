@@ -501,7 +501,10 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 // Parse the assemblies
-                foreach(string dllPath in results.UnusedArguments)
+                foreach(string dllPath in results.UnusedArguments.OrderBy(d =>
+                  d.IndexOf("System.Runtime.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 0 :
+                  d.IndexOf("netstandard.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 1 :
+                  d.IndexOf("mscorlib.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 2 : 3))
                 {
                     try
                     {

@@ -44,8 +44,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         //=====================================================================
 
         private VisibleItems visibleItems;
-        private RootFilter apiFilter, attributeFilter;
-        private Dictionary<string, bool> namespaceCache, typeExposedCache;
+        private readonly RootFilter apiFilter, attributeFilter;
+        private readonly Dictionary<string, bool> namespaceCache, typeExposedCache;
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// attributes will still be included such as <c>ObsoleteAttribute</c>, <c>ExtensionAttribute</c>, etc.</value>
         public bool IncludeAttributes
         {
-            get { return ((visibleItems & VisibleItems.Attributes) != 0); }
+            get => ((visibleItems & VisibleItems.Attributes) != 0);
             set
             {
                 if(value)
@@ -76,7 +76,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include explicit interface implementations or false to hide them</value>
         public bool IncludeExplicitInterfaceImplementations
         {
-            get { return ((visibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0); }
+            get => ((visibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0);
             set
             {
                 if(value)
@@ -92,7 +92,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include inherited members or false to hide them</value>
         public bool IncludeInheritedMembers
         {
-            get { return ((visibleItems & VisibleItems.InheritedMembers) != 0); }
+            get => ((visibleItems & VisibleItems.InheritedMembers) != 0);
             set
             {
                 if(value)
@@ -111,7 +111,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <see cref="IncludeInheritedMembers"/> must also be enabled.</value>
         public bool IncludeInheritedFrameworkMembers
         {
-            get { return ((visibleItems & VisibleItems.InheritedFrameworkMembers) != 0); }
+            get => ((visibleItems & VisibleItems.InheritedFrameworkMembers) != 0);
             set
             {
                 if(value)
@@ -132,7 +132,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// enabled.</value>
         public bool IncludeInheritedFrameworkPrivateMembers
         {
-            get { return ((visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0); }
+            get => ((visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0);
             set
             {
                 if(value)
@@ -154,7 +154,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// be enabled.</value>
         public bool IncludeInheritedFrameworkInternalMembers
         {
-            get { return ((visibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0); }
+            get => ((visibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0);
             set
             {
                 if(value)
@@ -173,7 +173,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include internal members or false to hide them</value>
         public bool IncludeInternals
         {
-            get { return ((visibleItems & VisibleItems.Internals) != 0); }
+            get => ((visibleItems & VisibleItems.Internals) != 0);
             set
             {
                 if(value)
@@ -189,7 +189,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include private members or false to hide them</value>
         public bool IncludePrivates
         {
-            get { return ((visibleItems & VisibleItems.Privates) != 0); }
+            get => ((visibleItems & VisibleItems.Privates) != 0);
             set
             {
                 if(value)
@@ -209,7 +209,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// this set to false, they are omitted from the output to reduce unnecessary clutter.</remarks>
         public bool IncludePrivateFields
         {
-            get { return ((visibleItems & VisibleItems.PrivateFields) != 0); }
+            get => ((visibleItems & VisibleItems.PrivateFields) != 0);
             set
             {
                 if(value)
@@ -225,7 +225,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include protected members or false to hide them</value>
         public bool IncludeProtected
         {
-            get { return ((visibleItems & VisibleItems.Protected) != 0); }
+            get => ((visibleItems & VisibleItems.Protected) != 0);
             set
             {
                 if(value)
@@ -244,7 +244,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// them normally.  This option is ignored if <see cref="IncludeProtected"/> is false.</value>
         public bool IncludeProtectedInternalAsProtected
         {
-            get { return ((visibleItems & VisibleItems.ProtectedInternalAsProtected) != 0); }
+            get => ((visibleItems & VisibleItems.ProtectedInternalAsProtected) != 0);
             set
             {
                 if(value)
@@ -262,7 +262,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// work, <see cref="IncludeProtected"/> must also be enabled.</value>
         public bool IncludeSealedProtected
         {
-            get { return ((visibleItems & VisibleItems.SealedProtected) != 0); }
+            get => ((visibleItems & VisibleItems.SealedProtected) != 0);
             set
             {
                 if(value)
@@ -279,7 +279,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include no-PIA embedded interop types or false to hide them</value>
         public bool IncludeNoPIATypes
         {
-            get { return ((visibleItems & VisibleItems.NoPIATypes) != 0); }
+            get => ((visibleItems & VisibleItems.NoPIATypes) != 0);
             set
             {
                 if(value)
@@ -297,7 +297,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// Protected, internal, and private compiler generated types/members are always excluded.</value>
         public bool IncludePublicCompilerGenerated
         {
-            get { return ((visibleItems & VisibleItems.PublicCompilerGenerated) != 0); }
+            get => ((visibleItems & VisibleItems.PublicCompilerGenerated) != 0);
             set
             {
                 if(value)
@@ -316,7 +316,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// hide them.</value>
         public bool IncludeEditorBrowsableNever
         {
-            get { return ((visibleItems & VisibleItems.EditorBrowsableNever) != 0); }
+            get => ((visibleItems & VisibleItems.EditorBrowsableNever) != 0);
             set
             {
                 if(value)
@@ -334,7 +334,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>Set to true to include types and members marked as non-browsable or false to hide them</value>
         public bool IncludeNonBrowsable
         {
-            get { return ((visibleItems & VisibleItems.NonBrowsable) != 0); }
+            get => ((visibleItems & VisibleItems.NonBrowsable) != 0);
             set
             {
                 if(value)
@@ -355,7 +355,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public ApiFilter(XPathNavigator configuration)
         {
             if(configuration == null)
-                throw new ArgumentNullException("configuration");
+                throw new ArgumentNullException(nameof(configuration));
 
             namespaceCache = new Dictionary<string, bool>();
             typeExposedCache = new Dictionary<string, bool>();
@@ -417,7 +417,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual bool HasExposedMembers(TypeNode type)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             return apiFilter.HasExposedMembers(type);
         }
@@ -429,9 +429,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>True if it is exposed, false if not</returns>
         public virtual bool IsExposedApi(Member api)
         {
-            Namespace space = api as Namespace;
-
-            if(space != null)
+            if(api is Namespace space)
                 return this.IsExposedNamespace(space);
 
             TypeNode type = api as TypeNode;
@@ -450,7 +448,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual bool IsExposedNamespace(Namespace space)
         {
             if(space == null)
-                throw new ArgumentNullException("space");
+                throw new ArgumentNullException(nameof(space));
 
             // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
             // are not valid in XML.  Exclude those by default.
@@ -460,9 +458,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             string name = space.Name.Name;
 
             // Look in cache to see if namespace exposure is already determined
-            bool exposed;
-
-            if(!namespaceCache.TryGetValue(name, out exposed))
+            if(!namespaceCache.TryGetValue(name, out bool exposed))
             {
                 // The namespace is exposed if any types in it are exposed              
                 exposed = this.NamespaceContainsExposedTypes(space) ?? false;
@@ -489,7 +485,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             bool exposed = false;
 
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
             // are not valid in XML.  Exclude those by default.
@@ -577,10 +573,19 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(editorBrowsable != null && editorBrowsable.Expressions.Count != 0)
             {
-                var l = editorBrowsable.Expressions[0] as Literal;
+                if(editorBrowsable.Expressions[0] is Literal l)
+                {
+                    if(l.Value is int value)
+                        return value != 1;
 
-                if(l != null)
-                    return ((int)l.Value != 1);
+                    // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
+                    // mixed as the types don't match up correctly between the core assemblies.  In such cases,
+                    // the assemblies will have to be documented separately.
+                    throw new InvalidOperationException("Unexpected EditorBrowsableAttribute value type.  The " +
+                        "platforms for the documentation source assemblies may not be compatible and may need " +
+                        "to be documented separately.  See the help topic for SHFB error code BE0070 for more " +
+                        "information.");
+                }
             }
 
             return true;
@@ -598,10 +603,19 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(browsable != null && browsable.Expressions.Count != 0)
             {
-                var l = browsable.Expressions[0] as Literal;
+                if(browsable.Expressions[0] is Literal l)
+                {
+                    if(l.Value is bool value)
+                        return value;
 
-                if(l != null)
-                    return (bool)l.Value;
+                    // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
+                    // mixed as the types don't match up correctly between the core assemblies.  In such cases,
+                    // the assemblies will have to be documented separately.
+                    throw new InvalidOperationException("Unexpected BrowsableAttribute value type.  The " +
+                        "platforms for the documentation source assemblies may not be compatible and may " +
+                        "need to be documented separately.  See the help topic for SHFB error code BE0070 for " +
+                        "more information.");
+                }
             }
 
             return true;
@@ -617,7 +631,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual bool IsDocumentedInterface(TypeNode type)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // ApiFilter was extended to support interfaces that are filtered out (embedded interop types) but
             // still contribute to the list of a type's implemented interfaces.
@@ -638,7 +652,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual bool IsExposedMember(Member member)
         {
             if(member == null)
-                throw new ArgumentNullException("member");
+                throw new ArgumentNullException(nameof(member));
 
             // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
             // are not valid in XML.  Exclude those by default.
@@ -758,7 +772,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public virtual bool IsExposedAttribute(AttributeNode attribute)
         {
             if(attribute == null)
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
 
             // Check whether the attribute type is exposed
             TypeNode attributeType = attribute.Type;
@@ -826,9 +840,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(this.IncludePrivates && member.IsPrivate)
             {
-                Field field = member as Field;
-
-                if(field != null)
+                if(member is Field field)
                 {
                     if(!this.IncludePrivateFields)
                         return false;
@@ -914,7 +926,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public string GetVisibility(Member api)
         {
             if(api == null)
-                throw new ArgumentNullException("api");
+                throw new ArgumentNullException(nameof(api));
 
             if(api.IsPublic)
                 return "public";

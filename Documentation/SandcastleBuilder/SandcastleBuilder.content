@@ -616,12 +616,12 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
-    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" title="Build Engine">
+    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" isExpanded="true" title="Build Engine">
       <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
           <HelpKeyword index="K" term="error, BE0001" />
@@ -940,7 +940,7 @@
           <HelpKeyword index="K" term="errors, BE0069" />
         </HelpKeywords>
       </Topic>
-      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" title="BE0070: Differing framework types were detected">
+      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" isSelected="true" title="BE0070: Differing framework types were detected in the documentation sources">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0070" />
         </HelpKeywords>
@@ -971,7 +971,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="077ce20b-7998-4fec-8d79-16d990e1cf3b" visible="True" isExpanded="true" title="Generate Inherited Documentation">
+    <Topic id="077ce20b-7998-4fec-8d79-16d990e1cf3b" visible="True" title="Generate Inherited Documentation">
       <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, GID0001" />
@@ -1398,7 +1398,7 @@
         <HelpKeyword index="K" term="versions, 2020.3.6.0" />
       </HelpKeywords>
     </Topic>
-    <Topic id="dc3de2e5-750a-4839-88f9-62eb108c087e" visible="True" isSelected="true" title="Versions 2015.7.25.0 through 2019.11.17.0">
+    <Topic id="dc3de2e5-750a-4839-88f9-62eb108c087e" visible="True" title="Versions 2015.7.25.0 through 2019.11.17.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="prior versions, Versions 2015.7.25.0 to 2019.11.17.0" />
       </HelpKeywords>

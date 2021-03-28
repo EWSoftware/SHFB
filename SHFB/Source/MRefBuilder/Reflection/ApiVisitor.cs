@@ -219,10 +219,9 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             if(assembly != null)
             {
-                // Ignore these.  We've identified the system types assembly already and the other two won't
-                // contain any usable types.
-                if(assembly.Name == "mscorlib" || assembly.Name == "netstandard" || assembly.Name == "System.Runtime")
-                    return;
+                // If generating reflection data for a framework, reset the core library if seen
+                if(assembly.Name == CoreSystemTypes.SystemAssembly.Name)
+                    ResetMscorlib(assembly);
 
                 resolver.Add(assembly);
                 assemblies.Add(assembly);
@@ -242,7 +241,6 @@ namespace Microsoft.Ddue.Tools.Reflection
             }
         }
 
-        /* 03/21/2021 - Most likely no longer needed.  Remove later if that is the case.
         /// <summary>
         /// This is used to reset the target platform information if mscorlib is specified as one of the
         /// reference assemblies or documented assemblies.
@@ -255,7 +253,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             CoreSystemTypes.SystemAssembly = assembly;
             TargetPlatform.PlatformAssembliesLocation = Path.GetDirectoryName(assembly.Location);
             CoreSystemTypes.Initialize(true, false);
-        }*/
+        }
 
         /// <summary>
         /// This is used to get a namespace name

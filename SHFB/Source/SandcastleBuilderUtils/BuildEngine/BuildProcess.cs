@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/21/2021
+// Updated : 03/24/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -2266,7 +2266,7 @@ AllDone:
                       targetFrameworksSeen.Select(t => (t.PlatformType, new Version(t.Version)))))
                     {
                         throw new BuilderException("BE0070", "Differing framework types were detected in the " +
-                            "documentation sources (i.e. .NETFramework, .NETCore).  Due to differences in " +
+                            "documentation sources (i.e. .NET 5 and .NET Standard 2.x).  Due to differences in " +
                             "how the core types are redirected, the different frameworks cannot be mixed " +
                             "within the same documentation project.  See the error number topic in the help " +
                             "file for details.");
@@ -2317,14 +2317,14 @@ AllDone:
                 Array.Sort(keys);
 
                 // Filter out references related to the framework.  MRefBuilder will resolve these automatically.
-                // They're left in for .NET Standard as MRefBuilder takes care of merging assemblies with the
-                // dependencies based on what it can find.
+                // They're left in for .NET Standard and .NET 5 or later as MRefBuilder takes care of merging
+                // assemblies with the dependencies based on what it can find.
                 foreach(string key in keys)
                 {
-                    if(frameworkReflectionData.Platform != PlatformType.DotNetStandard && frameworkReflectionData.ContainsAssembly(key))
-                        referenceDictionary.Remove(key);
-                    else
+                    if(frameworkReflectionData.KeepReferenceAssembly(key))
                         this.ReportProgress("    {0}", key);
+                    else
+                        referenceDictionary.Remove(key);
                 }
 
                 if(referenceDictionary.Count == 0)

@@ -1883,6 +1883,16 @@ namespace Microsoft.Ddue.Tools
         /// <param name="parameter">The parameter to write out</param>
         private void WriteParameter(Parameter parameter)
         {
+            // Certain combinations of platform (.NET 5.0 and .NET Standard 2.x for example) cannot be
+            // mixed as the types don't match up correctly between the core assemblies.  In such cases,
+            // the assemblies will have to be documented separately.
+            if(parameter.Type.Name.Name == "Void")
+            {
+                // This one may or may not be an error.  It could be a missing reference assembly that was ignored.
+                ConsoleApplication.WriteMessage(LogLevel.Warn, "Unexpected parameter type Void.  This may be " +
+                    "an issue (missing reference assembly?).  Declaring method: " + parameter.DeclaringMethod.FullName);
+            }
+
             writer.WriteStartElement("parameter");
 
             // !EFW - Change from ComponentOne

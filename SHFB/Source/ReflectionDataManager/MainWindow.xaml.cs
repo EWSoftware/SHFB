@@ -334,20 +334,6 @@ namespace ReflectionDataManager
         }
 
         /// <summary>
-        /// Enable or disable the version text box based on the platform ID
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void cboPlatform_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string platform = (string)cboPlatform.SelectedItem;
-
-            dataSet.AllSystemTypesRedirected = (platform == PlatformType.DotNetCore ||
-                platform == PlatformType.DotNetPortable || platform == PlatformType.WindowsPhoneApp);
-
-        }
-
-        /// <summary>
         /// Select the folder that contains the assemblies
         /// </summary>
         /// <param name="sender">The sender of the event</param>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/21/2021
+// Updated : 03/24/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
@@ -279,7 +279,8 @@ namespace Sandcastle.Core.Reflection
         /// <value>True if it is the core framework, false if not</value>
         /// <remarks>The core location is determined by searching for <c>mscorlib</c>, <c>netstandard</c>, or
         /// <c>System.Runtime</c> in the assembly set.  If the platform type is .NET Standard it is automatically
-        /// considered to be a core framework.</remarks>
+        /// considered to be a core framework for backward compatibility with the data set that did not contain
+        /// any assembly information.</remarks>
         public bool IsCoreFramework => this.Platform == PlatformType.DotNetStandard || assemblyLocations.Any(a => a.IsCoreLocation);
 
         /// <summary>
@@ -322,9 +323,9 @@ namespace Sandcastle.Core.Reflection
         {
             get
             {
-                // .NET Standard is handled through NuGet packages so we'll assume it's present somewhere on
+                // These are handled through NuGet packages so we'll assume it's present somewhere on
                 // the system.  Package resolution will locate the assemblies in their actual location.
-                if(this.Platform == PlatformType.DotNetStandard)
+                if(this.Platform == PlatformType.DotNet || this.Platform == PlatformType.DotNetStandard)
                     return true;
 
                 AssemblyLocation al = assemblyLocations.FirstOrDefault(l => l.IsCoreLocation);
@@ -683,6 +684,21 @@ namespace Sandcastle.Core.Reflection
             }
 
             return ad;
+        }
+
+        /// <summary>
+        /// This is used to see if a reference assembly should be kept when building reflection data
+        /// </summary>
+        /// <param name="assemblyName">The assembly name without a path or extension or a strong name value.
+        /// If a strong name value is specified, a "starts with" comparison on the description is used to see if
+        /// the assembly is present in the framework.  This allows for matches on strong names with processor
+        /// architecture specified which we don't have.  If only a name is given, just the name is compared.
+        /// Comparisons are case-insensitive.</param>
+        /// <returns>True if the reference assembly should be kept, false if not.</returns>
+        public bool KeepReferenceAssembly(string assemblyName)
+        {
+            return this.Platform == PlatformType.DotNet || this.Platform == PlatformType.DotNetStandard ||
+                !this.ContainsAssembly(assemblyName);
         }
 
         /// <summary>
