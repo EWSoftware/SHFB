@@ -1,24 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourceNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/29/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the class that exposes the properties for the
-// DocumentationSourceNode object.
+// This file contains the class that exposes the properties for the DocumentationSourceNode object
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/30/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/30/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -46,37 +43,36 @@ namespace SandcastleBuilder.Package.Nodes
         #region Private data members
         //=====================================================================
 
-        private XElement documentationSource;
+        private readonly XElement documentationSource;
         private FilePath sourceFile;
-        private string configuration, platform;
+        private string configuration, platform, targetFramework;
         private bool includeSubFolders;
 
-        // These are used to convert MSBuild variable references to normal
-        // environment variable references.
-        private static Regex reMSBuildVar = new Regex(@"\$\((.*?)\)");
+        // These are used to convert MSBuild variable references to normal environment variable references
+        private static readonly Regex reMSBuildVar = new Regex(@"\$\((.*?)\)");
 
-        private MatchEvaluator buildVarMatchEval;
+        private readonly MatchEvaluator buildVarMatchEval;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         // NOTE: If you apply a type converter attribute to any property, it must be of the type
-        //       PropertyPageTypeConverterAttribute or it will be ignored.
+        // PropertyPageTypeConverterAttribute or it will be ignored.
 
         /// <summary>
-        /// This is used to get or set the project configuration to use when
-        /// the source path refers to a Visual Studio solution or project.
+        /// This is used to get or set the project configuration to use when the source path refers to a Visual
+        /// Studio solution or project.
         /// </summary>
-        /// <value>If not set, the configuration value from the owning help
-        /// file project will be used.  This will be ignored for assembly
-        /// and XML comments file entries.</value>
+        /// <value>If not set, the configuration value from the owning help file project will be used.  This will
+        /// be ignored for assembly and XML comments file entries.</value>
         [Category("Project"), Description("The configuration to use for a solution or project " +
           "documentation source.  If blank, the configuration from the owning help file project " +
           "will be used."), DefaultValue(null), DisplayName("Configuration")]
         public string Configuration
         {
-            get { return configuration; }
+            get => configuration;
             set
             {
                 this.CheckProjectIsEditable();
@@ -85,23 +81,23 @@ namespace SandcastleBuilder.Package.Nodes
                     value = value.Trim();
 
                 configuration = value;
+
                 this.StoreDocumentationSourceChanges();
             }
         }
 
         /// <summary>
-        /// This is used to get or set the project platform to use when the
-        /// source path refers to a Visual Studio solution or project.
+        /// This is used to get or set the project platform to use when the source path refers to a Visual Studio
+        /// solution or project.
         /// </summary>
-        /// <value>If not set, the platform value from the owning help file
-        /// project will be used.  This will be ignored for assembly and XML
-        /// comments file entries.</value>
+        /// <value>If not set, the platform value from the owning help file project will be used.  This will be
+        /// ignored for assembly and XML comments file entries.</value>
         [Category("Project"), Description("The platform to use for a solution or project documentation " +
           "source.  If blank, the platform from the owning help file project will be used."),
           DefaultValue(null), DisplayName("Platform")]
         public string Platform
         {
-            get { return platform; }
+            get => platform;
             set
             {
                 this.CheckProjectIsEditable();
@@ -110,6 +106,32 @@ namespace SandcastleBuilder.Package.Nodes
                     value = value.Trim();
 
                 platform = value;
+
+                this.StoreDocumentationSourceChanges();
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set the project target framework to use when the source path refers to a
+        /// Visual Studio solution or project.
+        /// </summary>
+        /// <value>This only applies if the project uses multi-targeting.  If not set, the first target framework
+        /// will be used.  This will be ignored for assembly and XML comments file entries.</value>
+        [Category("Project"), Description("The target framework to use for project documentation sources that " +
+          "use multi-targeting.  If blank, the first target framework will be used."),
+          DefaultValue(null), DisplayName("Target Framework")]
+        public string TargetFramework
+        {
+            get => targetFramework;
+            set
+            {
+                this.CheckProjectIsEditable();
+
+                if(value != null)
+                    value = value.Trim();
+
+                targetFramework = value;
+
                 this.StoreDocumentationSourceChanges();
             }
         }
@@ -117,9 +139,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is used to set or get the documentation source file path
         /// </summary>
-        /// <value>Wildcards are supported.  If used, all files matching
-        /// the wildcard will be included as long as their extension is one of
-        /// the following: .exe, .dll, .*proj, .sln.</value>
+        /// <value>Wildcards are supported.  If used, all files matching the wildcard will be included as long as
+        /// their extension is one of the following: .exe, .dll, .*proj, .sln.</value>
         [Category("File"), Description("The path to the documentation source file(s)"),
           MergableProperty(false), Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           RefreshProperties(RefreshProperties.All), PropertyPageTypeConverter(typeof(FilePathTypeConverter)),
@@ -133,11 +154,11 @@ namespace SandcastleBuilder.Package.Nodes
             "All Files (*.*)|*.*", FileDialogType.FileOpen), DisplayName("Source File")]
         public FilePath SourceFile
         {
-            get { return sourceFile; }
+            get => sourceFile;
             set
             {
                 if(value == null || value.Path.Length == 0)
-                    throw new ArgumentException("A file path must be specified", "value");
+                    throw new ArgumentException("A file path must be specified", nameof(value));
 
                 this.CheckProjectIsEditable();
 
@@ -150,20 +171,17 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// This is used to get or set whether subfolders are included when
-        /// searching for files if the <see cref="SourceFile" /> value
-        /// contains wildcards.
+        /// This is used to get or set whether subfolders are included when searching for files if the
+        /// <see cref="SourceFile" /> value contains wildcards.
         /// </summary>
-        /// <value>If set to true and the source file value contains wildcards,
-        /// subfolders will be included.  If set to false, the default, or the
-        /// source file value does not contain wildcards, only the top-level
+        /// <value>If set to true and the source file value contains wildcards, subfolders will be included.  If
+        /// set to false, the default, or the source file value does not contain wildcards, only the top-level
         /// folder is included in the search.</value>
-        [Category("File"), Description("True to include subfolders in " +
-          "wildcard searches or false to only search the top-level folder."),
-          DefaultValue(false), DisplayName("Include Subfolders")]
+        [Category("File"), Description("True to include subfolders in wildcard searches or false to only " +
+          "search the top-level folder."), DefaultValue(false), DisplayName("Include Subfolders")]
         public bool IncludeSubFolders
         {
-            get { return includeSubFolders; }
+            get => includeSubFolders;
             set
             {
                 this.CheckProjectIsEditable();
@@ -195,25 +213,36 @@ namespace SandcastleBuilder.Package.Nodes
 
             if(documentationSource.Attribute("configuration") != null)
             {
-                if(!String.IsNullOrEmpty(configuration))
+                if(!String.IsNullOrWhiteSpace(configuration))
                     documentationSource.Attribute("configuration").Value = configuration;
                 else
                     documentationSource.Attributes("configuration").Remove();
             }
             else
-                if(!String.IsNullOrEmpty(configuration))
+                if(!String.IsNullOrWhiteSpace(configuration))
                     documentationSource.Add(new XAttribute("configuration", configuration));
 
             if(documentationSource.Attribute("platform") != null)
             {
-                if(!String.IsNullOrEmpty(platform))
+                if(!String.IsNullOrWhiteSpace(platform))
                     documentationSource.Attribute("platform").Value = platform;
                 else
                     documentationSource.Attributes("platform").Remove();
             }
             else
-                if(!String.IsNullOrEmpty(platform))
+                if(!String.IsNullOrWhiteSpace(platform))
                     documentationSource.Add(new XAttribute("platform", platform));
+
+            if(documentationSource.Attribute("targetFramework") != null)
+            {
+                if(!String.IsNullOrWhiteSpace(targetFramework))
+                    documentationSource.Attribute("targetFramework").Value = targetFramework;
+                else
+                    documentationSource.Attributes("targetFramework").Remove();
+            }
+            else
+                if(!String.IsNullOrWhiteSpace(targetFramework))
+                    documentationSource.Add(new XAttribute("targetFramework", targetFramework));
 
             if(documentationSource.Attribute("subFolders") != null)
             {
@@ -278,6 +307,9 @@ namespace SandcastleBuilder.Package.Nodes
             if(documentationSource.Attribute("platform") != null)
                 platform = documentationSource.Attribute("platform").Value;
 
+            if(documentationSource.Attribute("targetFramework") != null)
+                targetFramework = documentationSource.Attribute("targetFramework").Value;
+
             if(documentationSource.Attribute("subFolders") != null)
                 includeSubFolders = documentationSource.Attribute("subFolders").Value.Equals(
                     "true", StringComparison.OrdinalIgnoreCase);
@@ -302,13 +334,7 @@ namespace SandcastleBuilder.Package.Nodes
 
         /// <inheritdoc />
         [Browsable(false)]
-        string IBasePathProvider.BasePath
-        {
-            get
-            {
-                return Path.GetDirectoryName(this.Node.ProjectMgr.BuildProject.FullPath);
-            }
-        }
+        string IBasePathProvider.BasePath => Path.GetDirectoryName(this.Node.ProjectMgr.BuildProject.FullPath);
 
         /// <summary>
         /// This method resolves any MSBuild environment variables in the

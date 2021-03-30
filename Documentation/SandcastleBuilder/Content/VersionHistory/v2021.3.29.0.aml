@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="70b704dc-03c8-4934-b83e-e84d4d7f927a" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: tabnapping -->
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version vNext." />
+		</introduction>
+
+		<section address="ReflectionDataSets">
+			<title>Reflection Data Set (Framework Version) Changes</title>
+			<content>
+				<para>The following reflection data sets are no longer deployed with the Sandcastle Help File Builder and
+no longer appear as an option in the <legacyBold>Framework Version</legacyBold> project property.  However, if
+you need them, these data sets are still available via NuGet packages.  If you need to install one of the
+packages:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Add the package to one of the documentation source projects so that it is available in the
+<localUri>.\packages</localUri> folder.  Set the help file builder project's
+<link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068#ComponentPath">Component Path</link> property to the
+package folder and it will locate the additional reflection data set files.  If needed, force a package restore
+to ensure it is present.</para>
+					</listItem>
+
+					<listItem>
+						<para>Download the package from the link below and extract the content to a subfolder in the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents">build components folder</link>.  You will
+need to create the components folder if it has not been used before.  Components placed here are available
+automatically to all help file builder projects.</para>
+					</listItem>
+
+					<listItem>
+						<para>Another option is to extract the package content to a subfolder within the help file builder
+project folder.  Components placed in a project subfolder are available to that project but no others.</para>
+					</listItem>
+				</list>
+
+				<para>Whichever option you choose, you may need to close and reopen the project properties window to see
+them as a framework version option after they are installed.</para>
+
+				<para>Options removed (download the NuGet packages here:
+					<externalLink>
+						<linkText>EWSoftware NuGet Packages</linkText>
+						<linkUri>https://www.nuget.org/packages?q=ewsoftware+shfb+reflection+data</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink>):</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.NETMicroFramework</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>.NET Micro Framework versions 4.2, 4.3, and 4.4</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.NETCore</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>.NET for Windows Store Apps</para>
+							</listItem>
+							<listItem>
+								<para>.NET for Windows Store Apps (8.1)</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.NETPortable</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>.NET Portable Library versions 4.0 (Legacy), 4.5, 4.6, 5.0, and 5.0 (NuGet)</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.Silverlight</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>Silverlight versions 3.0, 4.0, and 5.0</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.UniversalWindows</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>.NET for Universal Windows</para>
+							</listItem>
+							<listItem>
+								<para>.NET for Universal Windows (NuGet)</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.WindowsPhone</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>.NET for Windows Phone</para>
+							</listItem>
+							<listItem>
+								<para>.NET for Windows Phone Silverlight (8.1)</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.WindowsPhoneApp</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>.NET for Windows Phone Store Apps (8.1)</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para><localUri>EWSoftware.SHFB.NETFramework</localUri></para>
+						<list class="bullet">
+							<listItem>
+								<para>To reduce clutter, the following .NET Framework versions have been removed but are
+available in this package along with the version options noted below: 1.0, 1.1, 2.0, 3.0, 3.5,
+4.0 Platform Update 1 (KB2478063), 4.5, 4.5.1, 4.6, 4.6.1, 4.7, 4.7.1.</para>
+
+								<para>.NET Framework versions 4.0, 4.5.2, 4.6.2, 4.7.2, and 4.8 are still available as framework
+version options by default.  As noted above, the removed options are still available in the NuGet package if
+needed.  This may not be necessary as the older options will redirect to the nearest available option and you
+should not see any difference.</para>
+							</listItem>
+						</list>
+
+					</listItem>
+
+				</list>
+
+				<alert class="important">
+					<para>The <legacyBold>Cross-platform (.NET Core/.NET Standard)</legacyBold> option is still included
+with the help file builder and the .NET Framework NuGet package.  However, you should consider this option
+deprecated and use the new <legacyBold>.NET Core/.NET Standard/.NET 5.0+</legacyBold> option instead as it
+will handle the current .NET Core and .NET Standard versions as well as .NET 5.0 and later.  It also contains a
+proper set of reflection data so that inherited framework member information will be accurate.</para>
+				</alert>
+
+			</content>
+		</section>
+
+		<section address="SandcastleTools">
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added support for reading portable PDB files in MRefBuilder so that source context information
+is available for .NETCore/.NETStandard assemblies that use that format for their PDB files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed MRefBuilder so that it writes out a new <codeInline>defaultValue</codeInline> element
+rather than a <codeInline>nullValue</codeInline> element for value type parameters (structures) with a null
+default value assigned (e.g. <codeInline>public Task ConnectAsync(CancellationToken cancellationToken = default)</codeInline>).</para>
+					</listItem>
+
+
+					<listItem>
+						<para>Updated the syntax writers to handle the new <codeInline>defaultValue</codeInline> element.
+Note that this may be a breaking change for custom syntax writers if their language supports the
+<codeInline>default</codeInline> keyword on parameters as they will not recognize the new element and will
+ignore it in cases like the example above resulting in a blank to the right of the equals sign.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the C# and Visual Basic syntax writers to use the nullable type syntax rather than the
+full nullable type name for nullable types (e.g. <codeInline>double?</codeInline> rather than
+<codeInline>Nullable&lt;double&gt;</codeInline>).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to MRefBuilder to generate nullable state attributes on types to indicate
+nullable reference types.  The syntax writer for C# was updated to generate nullable reference types when
+generating the syntax section (e.g. <codeInline>public string? FindSomething(IEnumerable&lt;string?&gt;,
+IEqualityComparer&lt;string?&gt;? keyComparer = null)</codeInline>.</para>
+
+						<para>If you have custom syntax writers for languages that also support nullable reference types you
+will need to update them by handling the new <codeInline>nullable</codeInline> attribute on the
+<codeInline>type</codeInline> element when rendering type references.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>value</codeInline> element to the IntelliSense build component as it is
+now shown in the quick info in Visual Studio 2019 16.6 and later.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="SHFB">
+			<title>Sandcastle Help File Builder</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Removed all MSBuild assemblies from the distribution and updated the standalone GUI and all
+tools to use the MSBuild Locator to find a copy of MSBuild to use.  This should remove the dependency on a
+specific version of the MSBuild tools in the standalone GUI.  As long as some version of the MSBuild Tools is
+installed (2017 or later), it should work as expected.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the source URI to XML exception information in build errors to help identify the file
+causing the problem.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of properties in the property pages of help file builder project files so that
+if a property such as <codeInline>OutputPath</codeInline> is overridden by an import, it uses the correct copy
+from the help file builder project for editing.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the order of XML comments file processing so that XML comments files added to the
+help file builder project as documentation sources will always override XML comments files from projects
+containing matching members.  This allows the help file builder project comments file to replace or add to
+comments in the documentation source project comments file.  This is useful for substituting comments files for
+different languages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changes in this release should resolve all issues related to automatically finding the implicit
+package references for .NET Standard 2.1 and .NET 5.0 projects when used as documentation sources.  It should
+now be possible to use projects as documentation sources for all platform types without the need for manually
+adding references to assemblies in NuGet packages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made adjustments to which platform types can be documented together within the same help file
+builder project.  In general, platforms that have all of their core types in <localUri>mscorlib</localUri> or
+<localUri>netstandard</localUri> are compatible (e.g. all .NET Framework or all .NET Standard 2.x but the two
+cannot be mixed in the same documentation project).  All platforms that redirect their core types to
+<localUri>System.Runtime</localUri> or other assemblies are also typically compatible (e.g. .NET Standard 1.x,
+.NET Core, and .NET 5.0).  Mixing platforms from the two sets or with any combination of other platform types is
+typically not compatible.  The help file builder will detect the common issues and disallow them
+(<link xlink:href="a73e776d-0f62-41ee-aa5f-637916c09553">error BE0070</link>).</para>
+
+						<para>There may be certain combinations that are still not compatible with each other and will result
+in invalid documentation or a build failure.  MRefBuilder to is able to detect a few of these cases and will
+report an error or warning in such cases.  Any such issues will have to be addressed in a future update.</para>
+					</listItem>
+
+					<listItem>
+						<para>As noted above, a proper reflection data set for .NET Core/.NET Standard/.NET 5.0 or later
+was added.  This replaces the old Cross-Platform reflection data set which should be considered obsolete and
+should not be used anymore as the framework version in the help file builder project.</para>
+					</listItem>
+
+					<listItem>
+						<para>A new <codeInline>TargetFramework</codeInline> property was added to documentation sources.
+If set to a recognized target framework value (e.g. <codeInline>net40</codeInline>,
+<codeInline>netstandard20</codeInline>, <codeInline>net5.0</codeInline>, etc.), this is used to determine which
+assembly to use when extracting assembly and comments file information from projects that use multi-targeting.
+If not set, the build engine will make an attempt to determine a common target framework based on all projects
+given as documentation sources.  If one can be found, it will be used.  If a common target framework cannot be
+determined, the first target framework in each project will be used.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a duplicate ID issue with collapsible regions in colorized code.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated JQuery in the VS2013 presentation style to version 3.5.1.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all anchor links generated by the presentation styles and tools to include a
+<codeInline>rel="noopener noreferrer"</codeInline> attribute to prevent reverse tabnapping</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="Documentation">
+			<title>Documentation</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Corrected the casing of the <codeInline>listheader</codeInline> element in the
+<codeInline>list</codeInline> XML comments example in the XML comments guide.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -20,15 +20,21 @@ incorrect reflection information to be produced for the combined sets of classes
 		<section>
 			<title>Solution</title>
 			<content>
-				<para>Separate the projects by platform into their own help file builder projects.  The help file projects
-can then be built separately to produce two or more help files.  If you would prefer to have one help file for all
-of the assemblies, use the <link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /> to include the other help
-file projects into the primary project.</para>
+				<para>If the documentation source solutions and projects use multi-targeting, you can set the target
+framework to use explicitly by specifying it in the <codeInline>TargetFramework</codeInline> property on each
+documentation source.</para>
+
+				<para>If the projects do not share a common target framework, separate the projects by platform into
+their own help file builder projects.  The help file projects can then be built separately to produce two or more
+help files.  If you would prefer to have one help file for all of the assemblies, use the
+<link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /> to include the other help file projects into the
+primary project.</para>
 
 				<para>Typically, projects for the full .NET Framework and .NET Standard 2.x can be mixed in the same help
-file builder project as can projects for .NET 5.0, .NET Standard 1.x, and .NET Core 1.0 through 3.1.  All other combinations
-will usually have to be separated.  There may be combinations that have not been discovered yet that are incompatible.  These
-will result in incorrect documentation or an error that causes the MRefBuilder tool to fail.</para>
+file builder project as can projects for .NET 5.0, .NET Standard 1.x, and .NET Core 1.0 through 3.1.  All other
+combinations will usually have to be separated.  There may be combinations that have not been discovered yet that
+are incompatible.  These will result in incorrect documentation or an error that causes the MRefBuilder tool to
+fail.</para>
 
 			</content>
 		</section>

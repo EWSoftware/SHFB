@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PlatformType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2021
+// Updated : 03/28/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to define platform type constants
@@ -64,17 +64,20 @@ namespace Sandcastle.Core.Reflection
         /// </summary>
         /// <param name="platforms">An enumerable list of platform types</param>
         /// <returns>True if they are compatible, false if not</returns>
-        /// <remarks>In general, platforms that have all of their types in mscorlib or netstandard are compatible.
-        /// All platforms that redirect their types to System.Runtime are also typically compatible.  Mixing the
-        /// two or any combination of other frameworks is not compatible.</remarks>
+        /// <remarks>In general, platforms that have all of their types in mscorlib or netstandard are compatible
+        /// but you can't mix both.  All platforms that redirect their types to System.Runtime and other
+        /// assemblies are also typically compatible.  Mixing the sets or any combination of other frameworks
+        /// is not compatible.</remarks>
         public static bool PlatformsAreCompatible(IEnumerable<(string platform, Version version)> platforms)
         {
-            if(platforms.All(p => p.platform == PlatformType.DotNetFramework ||
-              (p.platform == PlatformType.DotNetStandard && p.version.Major == 2)))
+            // All .NETFramework of any version or all .NETStandard 2.x is okay
+            if(platforms.All(p => p.platform == PlatformType.DotNetFramework) ||
+               platforms.All(p => p.platform == PlatformType.DotNetStandard && p.version.Major == 2))
             {
                 return true;
             }
 
+            // All .NET, .NETCore, .NETCoreApp of any version or .NET Standard 1.x is okay
             if(platforms.All(p => p.platform == PlatformType.DotNet || p.platform == PlatformType.DotNetCore ||
               p.platform == PlatformType.DotNetCoreApp || (p.platform == PlatformType.DotNetStandard &&
               p.version.Major < 2)))
@@ -82,6 +85,14 @@ namespace Sandcastle.Core.Reflection
                 return true;
             }
 
+            // .NETStandard 1.x and .NETStandard 2.x is not okay
+            if(platforms.All(p => p.platform == PlatformType.DotNetStandard) &&
+               platforms.Select(p => p.version.Major).Distinct().Count() != 1)
+            {
+                return false;
+            }
+
+            // All of a single platform any version is okay.  A mix of anything else is not.
             return platforms.Select(p => p.platform).Distinct().Count() == 1;
         }
     }

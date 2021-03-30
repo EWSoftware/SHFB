@@ -12,7 +12,7 @@
 		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>This package contains the .NETFramework/.NETCore/.NETStandard reflection information data set for use with the EWSoftware.SHFB package.</description>
-		<copyright>Eric Woodruff (c) 2006-2018</copyright>
+		<copyright>Eric Woodruff (c) 2006-2021</copyright>
 		<tags>SHFB sandcastle reflection information data set</tags>
 		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one
 				 renders the package uninstallable because its "not compatible with any projects in the solution".

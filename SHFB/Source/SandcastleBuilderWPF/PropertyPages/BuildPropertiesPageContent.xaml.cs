@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 05/14/2018
-// Note    : Copyright 2017-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/28/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
 //
@@ -22,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -93,7 +93,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         private ReflectionDataSetDictionary reflectionDataSets;
         private List<ISyntaxGeneratorMetadata> syntaxGenerators;
         private List<IPresentationStyleMetadata> presentationStyles;
-        private List<HelpFileFormatItem> allHelpFileFormats;
+        private readonly List<HelpFileFormatItem> allHelpFileFormats;
         private List<SyntaxFilterItem> allSyntaxFilters;
         private ComponentCache componentCache;
 
@@ -139,25 +139,14 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This read-only property is used to get the currently selected syntax filters
         /// </summary>
-        public string SelectedSyntaxFilters
-        {
-            get
-            {
-                return ComponentUtilities.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
-                    allSyntaxFilters.Where(f => f.IsSelected).Select(f => f.Id)));
-            }
-        }
+        public string SelectedSyntaxFilters => ComponentUtilities.ToRecognizedSyntaxFilterIds(syntaxGenerators,
+            String.Join(", ", allSyntaxFilters.Where(f => f.IsSelected).Select(f => f.Id)));
 
         /// <summary>
         /// This read-only property is used to get the currently selected presentation style
         /// </summary>
-        public string SelectedPresentationStyle
-        {
-            get
-            {
-                return (string)cboPresentationStyle.SelectedValue;
-            }
-        }
+        public string SelectedPresentationStyle => (string)cboPresentationStyle.SelectedValue;
+
         #endregion
 
         #region Events
@@ -238,7 +227,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             if(reflectionDataSets != null && currentProject != null && currentProject.Filename != lastProjectName)
                 return;
 
-            lastProjectName = currentProject == null ? null : currentProject.Filename;
+            lastProjectName = currentProject?.Filename;
 
             try
             {
@@ -252,7 +241,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
 
                 MessageBox.Show("Unexpected error loading reflection data set info: " + ex.Message, Constants.AppName,
                     MessageBoxButton.OK, MessageBoxImage.Error);
@@ -416,7 +405,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
             }
         }
 
@@ -442,7 +431,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
             }
         }
 
@@ -550,7 +539,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
 
                 MessageBox.Show("Unexpected error loading syntax generators and presentation styles: " +
                     ex.Message, Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -559,6 +548,24 @@ namespace SandcastleBuilder.WPF.PropertyPages
             {
                 Mouse.OverrideCursor = null;
                 isBinding = false;
+            }
+        }
+
+        /// <summary>
+        /// View information about other reflection data sets available as NuGet packages
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void lnkOtherDataSets_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(lnkOtherDataSets.NavigateUri.AbsoluteUri);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Unable to navigate to website.  Reason: " + ex.Message,
+                    Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
         #endregion

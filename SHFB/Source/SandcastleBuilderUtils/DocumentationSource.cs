@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2018
-// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/29/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a documentation source such as an assembly, an XML comments file, a
 // solution, or a project.
@@ -52,11 +51,11 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         private FilePath sourceFile;
-        private string configuration, platform;
+        private string configuration, platform, targetFramework;
         private bool includeSubFolders;
 
         // Regular expression used to parse solution files
-        private static Regex reExtractProjectGuids = new Regex(
+        private static readonly Regex reExtractProjectGuids = new Regex(
             "^Project\\(\"\\{(" +
             "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC|" +   // C#
             "F184B08F-C81C-45F6-A57F-5ABD9991F28F|" +   // VB.NET
@@ -85,7 +84,7 @@ namespace SandcastleBuilder.Utils
           DefaultValue(null)]
         public string Configuration
         {
-            get { return configuration; }
+            get => configuration;
             set
             {
                 configuration = (value ?? String.Empty).Trim();
@@ -103,10 +102,28 @@ namespace SandcastleBuilder.Utils
           "source.  If blank, the platform from the owning help file project will be used."), DefaultValue(null)]
         public string Platform
         {
-            get { return platform; }
+            get => platform;
             set
             {
                 platform = (value ?? String.Empty).Trim();
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set the project target framework to use when the source path refers to a
+        /// Visual Studio solution or project.
+        /// </summary>
+        /// <value>This only applies if the project uses multi-targeting.  If not set, the first target framework
+        /// will be used.  This will be ignored for assembly and XML comments file entries.</value>
+        [Category("Project"), Description("The target framework to use for project documentation sources that " +
+          "use multi-targeting.  If blank, the first target framework will be used."), DefaultValue(null)]
+        public string TargetFramework
+        {
+            get => targetFramework;
+            set
+            {
+                targetFramework = (value ?? String.Empty).Trim();
                 this.OnPropertyChanged();
             }
         }
@@ -129,14 +146,14 @@ namespace SandcastleBuilder.Utils
             "All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath SourceFile
         {
-            get { return sourceFile; }
+            get => sourceFile;
             set
             {
                 if(value == null || value.Path.Length == 0)
-                    throw new ArgumentException("A file path must be specified", "value");
+                    throw new ArgumentException("A file path must be specified", nameof(value));
 
                 sourceFile = value;
-                sourceFile.PersistablePathChanging += (s, e) => this.OnPropertyChanged("SourceFile");
+                sourceFile.PersistablePathChanging += (s, e) => this.OnPropertyChanged(nameof(SourceFile));
                 this.OnPropertyChanged();
             }
         }
@@ -152,7 +169,7 @@ namespace SandcastleBuilder.Utils
           "search the top-level folder."), DefaultValue(false)]
         public bool IncludeSubFolders
         {
-            get { return includeSubFolders; }
+            get => includeSubFolders;
             set
             {
                 includeSubFolders = value;
@@ -180,11 +197,18 @@ namespace SandcastleBuilder.Utils
 
                 if((ext.IndexOfAny(wildcards) != -1 || ext == ".sln" ||
                   ext.EndsWith("proj", StringComparison.Ordinal)) &&
-                  (!String.IsNullOrEmpty(configuration) || !String.IsNullOrEmpty(platform)))
+                  (!String.IsNullOrWhiteSpace(configuration) || !String.IsNullOrWhiteSpace(platform) ||
+                  !String.IsNullOrWhiteSpace(targetFramework)))
                 {
-                    config = String.Format(CultureInfo.InvariantCulture, " ({0}|{1})",
-                        (String.IsNullOrEmpty(configuration)) ? "$(Configuration)" : configuration,
-                        (String.IsNullOrEmpty(platform)) ? "$(Platform)" : platform);
+                    string[] parts = new[] { configuration, platform, targetFramework };
+
+                    if(String.IsNullOrWhiteSpace(parts[0]) && !String.IsNullOrWhiteSpace(parts[1]))
+                        parts[0] = "$(Configuration)";
+
+                    if(!String.IsNullOrWhiteSpace(parts[0]) && String.IsNullOrWhiteSpace(parts[1]))
+                        parts[1] = "$(Platform)";
+
+                    config = " (" + String.Join("|", parts.Where(p => !String.IsNullOrWhiteSpace(p))) + ")";
                 }
 
                 if(path.IndexOfAny(wildcards) != -1 && this.IncludeSubFolders)
@@ -204,14 +228,16 @@ namespace SandcastleBuilder.Utils
         /// <param name="filename">The filename of the documentation source</param>
         /// <param name="configuration">The configuration to use for projects</param>
         /// <param name="platform">The platform to use for projects</param>
+        /// <param name="targetFramework">The target framework to use for projects</param>
         /// <param name="includeSubfolders">True to include subfolders, false to only search the top-level folder</param>
         /// <param name="basePathProvider">The base path provider</param>
-        internal DocumentationSource(string filename, string configuration, string platform, bool includeSubfolders,
-          IBasePathProvider basePathProvider)
+        internal DocumentationSource(string filename, string configuration, string platform,
+          string targetFramework, bool includeSubfolders, IBasePathProvider basePathProvider)
         {
             this.includeSubFolders = includeSubfolders;
             this.configuration = configuration;
             this.platform = platform;
+            this.targetFramework = targetFramework;
             this.SourceFile = new FilePath(filename, basePathProvider);
         }
         #endregion
@@ -230,10 +256,7 @@ namespace SandcastleBuilder.Utils
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -249,9 +272,7 @@ namespace SandcastleBuilder.Utils
         /// The configuration and platform settings are not considered.</remarks>
         public override bool Equals(object obj)
         {
-            DocumentationSource ds = obj as DocumentationSource;
-
-            if(ds == null)
+            if(!(obj is DocumentationSource ds))
                 return false;
 
             return (this == ds || this.SourceFile == ds.SourceFile);
@@ -383,7 +404,7 @@ namespace SandcastleBuilder.Utils
         /// platform build combinations in which they are enabled.</returns>
         public static IEnumerable<string> ProjectsIn(string solutionFile)
         {
-            string solutionContent, folder = Path.GetDirectoryName(solutionFile);
+            string solutionContent;
 
             using(StreamReader sr = new StreamReader(solutionFile))
             {
@@ -407,8 +428,6 @@ namespace SandcastleBuilder.Utils
         private static IEnumerable<ProjectFileConfiguration> ExtractProjectsFromSolution(string solutionFile,
           string configuration, string platform)
         {
-            Regex reIsInBuild;
-            Match buildMatch;
             string solutionContent, folder = Path.GetDirectoryName(solutionFile);
 
             using(StreamReader sr = new StreamReader(solutionFile))
@@ -422,11 +441,11 @@ namespace SandcastleBuilder.Utils
             foreach(Match solutionMatch in projects)
             {
                 // See if the project is included in the build and get the configuration and platform
-                reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
+                var reIsInBuild = new Regex(String.Format(CultureInfo.InvariantCulture,
                     @"\{{{0}\}}\.{1}\|{2}\.Build\.0\s*=\s*(?<Configuration>.*?)\|(?<Platform>.*)",
                     solutionMatch.Groups["GUID"].Value, configuration, platform), RegexOptions.IgnoreCase);
 
-                buildMatch = reIsInBuild.Match(solutionContent);
+                var buildMatch = reIsInBuild.Match(solutionContent);
 
                 // If the platform is "AnyCPU" and it didn't match, try "Any CPU" (with a space)
                 if(!buildMatch.Success && platform.Equals("AnyCPU", StringComparison.OrdinalIgnoreCase))

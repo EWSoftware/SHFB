@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2021
+// Updated : 03/29/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -22,7 +22,7 @@
 // 10/22/2012  EFW  Updated to support the .winmd output type
 //===============================================================================================================
 
-// Ignore Spelling: Exe winmdobj dll
+// Ignore Spelling: Exe winmdobj dll netcoreapp
 
 using System;
 using System.Collections.Generic;
@@ -63,6 +63,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         //=====================================================================
 
         private Dictionary<string, ProjectProperty> properties;
+        private string[] targetFrameworks;
         private readonly bool removeProjectWhenDisposed;
 
         private static readonly Regex reInvalidAttribute = new Regex(
@@ -192,19 +193,24 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     // If the TargetFrameworks property is used, the assembly is most likely in a subfolder
                     // under the output folder based on one of the target frameworks specified.
-                    if(!File.Exists(assemblyName) && properties.TryGetValue("TargetFrameworks", out prop))
+                    if(!File.Exists(assemblyName) && this.TargetFrameworks.Any())
                     {
                         outputPath = Path.GetDirectoryName(assemblyName);
                         string targetFramework = null;
 
-                        foreach(string subfolder in prop.EvaluatedValue.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-                            if(Directory.EnumerateFiles(Path.Combine(outputPath, subfolder),
-                              Path.GetFileName(assemblyName)).Any())
+                        // Find the requested target type if specified or the first one that exists if not
+                        foreach(string subfolder in this.TargetFrameworks)
+                        {
+                            if((String.IsNullOrWhiteSpace(this.RequestedTargetFramework) ||
+                              this.RequestedTargetFramework.Equals(subfolder, StringComparison.OrdinalIgnoreCase)) &&
+                              Directory.EnumerateFiles(Path.Combine(outputPath, subfolder),
+                                Path.GetFileName(assemblyName)).Any())
                             {
                                 targetFramework = subfolder;
                                 assemblyName = Path.Combine(outputPath, subfolder, Path.GetFileName(assemblyName));
                                 break;
                             }
+                        }
 
                         // Set TargetFramework if necessary as some people use it to as a variable in other paths
                         // to references etc. when multi-targeting.
@@ -337,13 +343,50 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(properties.TryGetValue("TargetFramework", out ProjectProperty prop))
                     return prop.EvaluatedValue;
 
-                // If multi-targeting, return the first target type for now
-                if(properties.TryGetValue("TargetFrameworks", out prop))
-                    return prop.EvaluatedValue.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                // If multi-targeting, return the requested target type if present or the first one if not
+                if(this.TargetFrameworks.Any())
+                {
+                    if(!String.IsNullOrWhiteSpace(this.RequestedTargetFramework) && this.TargetFrameworks.Any(t =>
+                      t.Equals(this.RequestedTargetFramework)))
+                    {
+                        return this.RequestedTargetFramework;
+                    }
+
+                    return this.TargetFrameworks.First();
+                }
 
                 return String.Empty;
             }
         }
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of the target frameworks if specified
+        /// </summary>
+        /// <value>An enumerable list of the target frameworks or an empty enumerable if not specified</value>
+        public IEnumerable<string> TargetFrameworks
+        {
+            get
+            {
+                if(properties == null)
+                    throw new InvalidOperationException("Configuration has not been set");
+
+                if(targetFrameworks == null)
+                {
+                    if(properties.TryGetValue("TargetFrameworks", out ProjectProperty prop))
+                        targetFrameworks = prop.EvaluatedValue.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    else
+                        targetFrameworks = Array.Empty<string>();
+                }
+
+                return targetFrameworks;
+            }
+        }
+
+        /// <summary>
+        /// For projects that use multi-targeting, the documentation source can specify which target it wants
+        /// to use.  If not specified, the first target type is used
+        /// </summary>
+        public string RequestedTargetFramework { get; set; }
 
         /// <summary>
         /// This is used to get the target framework identifier
@@ -358,8 +401,8 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(properties.TryGetValue("TargetFrameworkIdentifier", out ProjectProperty prop))
                     return prop.EvaluatedValue;
 
-                // If not found, assume it is a normal .NET Framework project
-                return PlatformType.DotNetFramework;
+                // If not found, determine it from the target framework
+                return this.IdentifierAndVersionFromTargetFramework.TargetFrameworkIdentifier;
             }
         }
 
@@ -386,22 +429,58 @@ namespace SandcastleBuilder.Utils.MSBuild
                     default:
                         if(properties.TryGetValue("TargetFrameworkVersion", out prop))
                             versionValue = prop.EvaluatedValue;
+                        else
+                            versionValue = this.IdentifierAndVersionFromTargetFramework.Version;
                         break;
                 }
 
-                if(versionValue == null)
-                {
-                    // If not found but TargetFrameworks is specified, just assume some version of .NETFramework
-                    if(properties.Keys.Contains("TargetFrameworks"))
-                        return "4.7.2";
-
+                if(String.IsNullOrWhiteSpace(versionValue))
                     throw new InvalidOperationException("Unable to determine target framework version for project");
-                }
 
                 if(versionValue[0] == 'v')
                     versionValue = versionValue.Substring(1);
 
                 return versionValue;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property is used to determine the target framework identifier and version from the
+        /// target framework.
+        /// </summary>
+        /// <returns>A tuple containing the target framework identifier and version if it could be determined
+        /// or two empty strings if not.</returns>
+        private (string TargetFrameworkIdentifier, string Version) IdentifierAndVersionFromTargetFramework
+        {
+            get
+            {
+                string tf = this.TargetFramework;
+
+                /*
+                netstandardx.x  .NETStandard vx.x
+                netcoreappx.x   .NETCoreApp vx.x
+                net5.0          .NETCoreApp v5.0
+                netxxx          .NETFramework vx.x[.x]  (.NET 1.0 - 4.8, may be three digits such as net451)
+                */
+                if(tf.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
+                    return (".NETStandard", tf.Substring(11));
+
+                if(tf.StartsWith("netcoreapp", StringComparison.OrdinalIgnoreCase))
+                    return (".NETCoreApp", tf.Substring(10));
+
+                if(tf.StartsWith("net") && tf.Length > 3 && Char.IsDigit(tf[3]))
+                {
+                    if(tf.Length > 5 && tf[4] == '.')
+                        return (".NETCoreApp", tf.Substring(3));
+
+                    if(tf.Length == 5)
+                        return (".NETFramework", $"{tf[3]}.{tf[4]}");
+
+                    if(tf.Length == 6)
+                        return (".NETFramework", $"{tf[3]}.{tf[4]}.{tf[5]}");
+                }
+
+                return (String.Empty, String.Empty);
             }
         }
 

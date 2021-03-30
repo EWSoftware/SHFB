@@ -616,12 +616,12 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
-    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" isExpanded="true" title="Build Engine">
+    <Topic id="20e87b11-21a3-493c-8dd6-16ce7694952b" visible="True" title="Build Engine">
       <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
           <HelpKeyword index="K" term="error, BE0001" />
@@ -940,7 +940,7 @@
           <HelpKeyword index="K" term="errors, BE0069" />
         </HelpKeywords>
       </Topic>
-      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" isSelected="true" title="BE0070: Differing framework types were detected in the documentation sources">
+      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" title="BE0070: Differing framework types were detected in the documentation sources">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0070" />
         </HelpKeywords>
@@ -1393,6 +1393,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="70b704dc-03c8-4934-b83e-e84d4d7f927a" visible="True" isSelected="true" title="Version 2021.3.29.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2021.3.29.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="fa3bd7c8-2b1d-4e66-9278-e36f57e098a6" visible="True" title="Version 2020.3.6.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2020.3.6.0" />

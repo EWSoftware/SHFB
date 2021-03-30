@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ReflectionDataSet Platform=".NETStandard" Version="1.0" Title="Cross-platform (.NET Core/.NET Standard)">
-  <Notes>This acts as a placeholder for the .NET Core and .NET Standard frameworks introduced with Visual Studio 2017.  These frameworks are hybrids that work across multiple platforms.  As such, the build engine determines which .NETFramework reflection data set to use based on the versions found in the documentation source projects.</Notes>
+<ReflectionDataSet Platform=".NETStandard" Version="2.0" Title="Cross-platform (.NET Core/.NET Standard)">
+  <Notes>DEPRECATED: Use the .NET Core/.NET Standard/.NET 5.0+ reflection data set instead.</Notes>
   <AssemblyLocations />
   <IgnoredNamespaces />
   <IgnoredUnresolved />

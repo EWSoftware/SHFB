@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>EWSoftware.SHFB.NET</id>
+		<version>5.0</version>
+		<title>Sandcastle Help File Builder .NET Core/.NET Standard/.NET 5.0+ Reflection Data Set</title>
+		<authors>Eric Woodruff</authors>
+		<owners>Eric Woodruff</owners>
+		<license type="expression">MS-PL</license>
+		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
+		<icon>SHFB.png</icon>
+		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>This package contains the reflection data set for .NET Core, .NET Standard, and .NET 5.0 or later for use with the EWSoftware.SHFB package (version 2021.3.29 or later only).</description>
+		<copyright>Eric Woodruff (c) 2021</copyright>
+		<tags>SHFB sandcastle reflection information data set</tags>
+		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one
+				 renders the package uninstallable because its "not compatible with any projects in the solution".
+				 Not sure what that means other than we can't have a dependency here. -->
+	</metadata>
+	<files>
+		<file src="..\SHFB\Deploy\Data\.NET\*.*" target="tools\Data\.NET" />
+		<file src="EWSoftware.SHFB.ReflectionData.props" target="build\EWSoftware.SHFB.NET.props" />
+		<file src="SHFB.png" target="SHFB.png" />
+	</files>
+</package>

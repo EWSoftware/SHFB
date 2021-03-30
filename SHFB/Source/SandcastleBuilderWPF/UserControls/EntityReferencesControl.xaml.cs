@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/29/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
 // and table of content entries and allows them to be dragged and dropped into a topic editor window.
@@ -59,6 +58,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
         private CancellationTokenSource indexTokenSource;
         private Task<IndexedCommentsCache> indexTask;
+
         #endregion
 
         #region Properties
@@ -69,7 +69,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public SandcastleProject CurrentProject
         {
-            get { return currentProject; }
+            get => currentProject;
             set
             {
                 currentProject = value;
@@ -137,7 +137,6 @@ namespace SandcastleBuilder.WPF.UserControls
         private List<EntityReference> LoadTokenInfo()
         {
             EntityReference tokenFileEntity = null;
-            TokenCollection tokenColl;
 
             if(tokens != null)
                 return tokens;
@@ -164,7 +163,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         tokens.Add(tokenFileEntity);
 
                         // If open in an editor, use the edited values
-                        if(!args.TokenFiles.TryGetValue(tokenFile.FullPath, out tokenColl))
+                        if(!args.TokenFiles.TryGetValue(tokenFile.FullPath, out TokenCollection tokenColl))
                         {
                             tokenColl = new TokenCollection(tokenFile.FullPath);
                             tokenColl.Load();
@@ -253,8 +252,7 @@ namespace SandcastleBuilder.WPF.UserControls
         private List<EntityReference> LoadTableOfContentsInfo()
         {
             List<ITableOfContents> tocFiles;
-            TopicCollection contentLayout;
-            TocEntryCollection siteMap, mergedToc;
+            TocEntryCollection mergedToc;
             EntityReference er;
             bool hasSelectedItem = false;
 
@@ -275,7 +273,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 foreach(var contentFile in currentProject.ContentFiles(BuildAction.ContentLayout))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.ContentLayoutFiles.TryGetValue(contentFile.FullPath, out contentLayout))
+                    if(!args.ContentLayoutFiles.TryGetValue(contentFile.FullPath, out TopicCollection contentLayout))
                     {
                         contentLayout = new TopicCollection(contentFile);
                         contentLayout.Load();
@@ -288,7 +286,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 foreach(var contentFile in currentProject.ContentFiles(BuildAction.SiteMap))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.SiteMapFiles.TryGetValue(contentFile.FullPath, out siteMap))
+                    if(!args.SiteMapFiles.TryGetValue(contentFile.FullPath, out TocEntryCollection siteMap))
                     {
                         siteMap = new TocEntryCollection(contentFile);
                         siteMap.Load();
@@ -608,6 +606,8 @@ namespace SandcastleBuilder.WPF.UserControls
                     {
                         using(projRef = new MSBuildProject(sourceProject.ProjectFileName))
                         {
+                            projRef.RequestedTargetFramework = ds.TargetFramework;
+
                             // Use the project file configuration and platform properties if they are set.  If
                             // not, use the documentation source values.  If they are not set, use the SHFB
                             // project settings.
@@ -712,10 +712,9 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <returns>The text to use or null if there is nothing to copy</returns>
         private string GetTextToCopy()
         {
-            EntityReference r = tvEntities.SelectedItem as EntityReference;
             string textToCopy = null;
 
-            if(r != null)
+            if(tvEntities.SelectedItem is EntityReference r)
                 switch(r.EntityType)
                 {
                     case EntityType.File:
@@ -792,7 +791,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void ucEntityReferences_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            bool loadInfo = false;
+            bool loadInfo;
 
             if(currentProject != null)
                 if(this.IsVisible)

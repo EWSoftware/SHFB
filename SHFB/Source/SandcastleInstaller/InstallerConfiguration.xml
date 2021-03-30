@@ -4,7 +4,7 @@
 	<pathOffset location="..\..\..\..\..\Deployment" />
 
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2020.3.6.0" />
+	<sandcastle version="v2021.3.29.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -16,8 +16,8 @@
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="https://EWSoftware.github.io/SHFB/html/fa3bd7c8-2b1d-4e66-9278-e36f57e098a6.htm"
-				description="Sandcastle Help File Builder and Tools v2020.3.6.0 Release Notes" />
+			<whatsNew url="https://EWSoftware.github.io/SHFB/html/70b704dc-03c8-4934-b83e-e84d4d7f927a.htm"
+				description="Sandcastle Help File Builder and Tools v2021.3.29.0 Release Notes" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -25,7 +25,7 @@
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			shfbVersion="2020.3.6.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			shfbVersion="2021.3.29.0" installerName="SandcastleHelpFileBuilder.msi"/>
 
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0">

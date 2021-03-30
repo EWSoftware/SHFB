@@ -73,6 +73,15 @@ comments file, and reference information.  If not set, the global <codeInline>Pl
 setting is used.  The default global option value is <codeInline>AnyCPU</codeInline>.</para>
 					</listItem>
 
+					<listItem>
+						<para><codeInline>TargetFramework</codeInline> - For Visual Studio solution and project documentation
+sources, this can be used to indicate the target framework for projects that use multi-targeting (e.g.
+<codeInline>net40</codeInline>, <codeInline>netstandard20</codeInline>, <codeInline>net5.0</codeInline>, etc.).
+This will be used to determine which assembly to use when extracting assembly and comments file information from
+the projects.  If not set, the build engine will make an attempt to determine a common target framework based on
+all projects given as documentation sources.  If one can be found, it will be used.  If a common target framework
+cannot be determined, the first target framework in each project will be used.</para>
+					</listItem>
 				</list>
 			</content>
 		</section>

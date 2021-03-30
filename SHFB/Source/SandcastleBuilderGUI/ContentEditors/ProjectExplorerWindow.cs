@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2017
-// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/29/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage the project items and files
 //
@@ -1060,7 +1059,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                         foreach(string file in projectList)
                         {
-                            docSources.Add(file, null, null, false);
+                            docSources.Add(file, null, null, null, false);
 
                             ext = Path.GetExtension(file).ToLowerInvariant();
 
@@ -1070,19 +1069,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
                                 otherFile = Path.ChangeExtension(file, ".dll");
 
                                 if(File.Exists(otherFile))
-                                    docSources.Add(otherFile, null, null, false);
+                                    docSources.Add(otherFile, null, null, null, false);
                                 else
                                 {
                                     otherFile = Path.ChangeExtension(file, ".exe");
 
                                     if(File.Exists(otherFile))
-                                        docSources.Add(otherFile, null, null, false);
+                                        docSources.Add(otherFile, null, null, null, false);
                                     else
                                     {
                                         otherFile = Path.ChangeExtension(file, ".winmd");
 
                                         if(File.Exists(otherFile))
-                                            docSources.Add(otherFile, null, null, false);
+                                            docSources.Add(otherFile, null, null, null, false);
                                     }
                                 }
                             }
@@ -1092,7 +1091,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                                     otherFile = Path.ChangeExtension(file, ".xml");
 
                                     if(File.Exists(otherFile))
-                                        docSources.Add(otherFile, null, null, false);
+                                        docSources.Add(otherFile, null, null, null, false);
                                 }
                         }
 
@@ -1923,9 +1922,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void tvProjectFiles_ItemDrag(object sender, ItemDragEventArgs e)
         {
             DataObject data = new DataObject();
-            TreeNode node = e.Item as TreeNode;
 
-            if(node != null && node.Tag != null && e.Button == MouseButtons.Left)
+            if(e.Item is TreeNode node && node.Tag != null && e.Button == MouseButtons.Left)
             {
                 // The tree supports dragging and dropping of nodes
                 data.SetData(typeof(TreeNode), node);
@@ -2186,12 +2184,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         if(ext == ".sln")
                         {
                             foreach(string project in SelectProjectsDlg.SelectSolutionOrProjects(file))
-                                docSources.Add(project, null, null, false);
+                                docSources.Add(project, null, null, null, false);
 
                             continue;
                         }
 
-                        docSources.Add(file, null, null, false);
+                        docSources.Add(file, null, null, null, false);
 
                         // If there's a match for a comments file or an assembly, add it too.
                         if(ext == ".xml")
@@ -2199,19 +2197,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             otherFile = Path.ChangeExtension(file, ".dll");
 
                             if(File.Exists(otherFile))
-                                docSources.Add(otherFile, null, null, false);
+                                docSources.Add(otherFile, null, null, null, false);
                             else
                             {
                                 otherFile = Path.ChangeExtension(file, ".exe");
 
                                 if(File.Exists(otherFile))
-                                    docSources.Add(otherFile, null, null, false);
+                                    docSources.Add(otherFile, null, null, null, false);
                                 else
                                 {
                                     otherFile = Path.ChangeExtension(file, ".winmd");
 
                                     if(File.Exists(otherFile))
-                                        docSources.Add(otherFile, null, null, false);
+                                        docSources.Add(otherFile, null, null, null, false);
                                 }
                             }
                         }
@@ -2221,7 +2219,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                                 otherFile = Path.ChangeExtension(file, ".xml");
 
                                 if(File.Exists(otherFile))
-                                    docSources.Add(otherFile, null, null, false);
+                                    docSources.Add(otherFile, null, null, null, false);
                             }
 
                         continue;

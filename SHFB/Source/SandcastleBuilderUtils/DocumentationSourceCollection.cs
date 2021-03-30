@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSourceCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 03/29/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the documentation sources
 //
@@ -42,7 +41,7 @@ namespace SandcastleBuilder.Utils
         #region Private data members
         //=====================================================================
 
-        private SandcastleProject projectFile;
+        private readonly SandcastleProject projectFile;
 
         #endregion
 
@@ -79,7 +78,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>The information is stored as an XML fragment</remarks>
         private void FromXml(string docSources)
         {
-            string sourceFile, config, platform;
+            string sourceFile, config, platform, targetFramework;
             bool subFolders;
 
             using(var xr = new XmlTextReader(docSources, XmlNodeType.Element,
@@ -95,8 +94,9 @@ namespace SandcastleBuilder.Utils
                         sourceFile = xr.GetAttribute("sourceFile");
                         config = xr.GetAttribute("configuration");
                         platform = xr.GetAttribute("platform");
+                        targetFramework = xr.GetAttribute("targetFramework");
                         subFolders = Convert.ToBoolean(xr.GetAttribute("subFolders"), CultureInfo.InvariantCulture);
-                        this.Add(sourceFile, config, platform, subFolders);
+                        this.Add(sourceFile, config, platform, targetFramework, subFolders);
                     }
 
                     xr.Read();
@@ -122,11 +122,14 @@ namespace SandcastleBuilder.Utils
                         xw.WriteStartElement("DocumentationSource");
                         xw.WriteAttributeString("sourceFile", ds.SourceFile.PersistablePath);
 
-                        if(!String.IsNullOrEmpty(ds.Configuration))
+                        if(!String.IsNullOrWhiteSpace(ds.Configuration))
                             xw.WriteAttributeString("configuration", ds.Configuration);
 
-                        if(!String.IsNullOrEmpty(ds.Platform))
+                        if(!String.IsNullOrWhiteSpace(ds.Platform))
                             xw.WriteAttributeString("platform", ds.Platform);
+
+                        if(!String.IsNullOrWhiteSpace(ds.TargetFramework))
+                            xw.WriteAttributeString("targetFramework", ds.TargetFramework);
 
                         if(ds.IncludeSubFolders)
                             xw.WriteAttributeString("subFolders", ds.IncludeSubFolders.ToString());
@@ -150,12 +153,14 @@ namespace SandcastleBuilder.Utils
         /// <param name="filename">The filename to add</param>
         /// <param name="config">The configuration to use for projects</param>
         /// <param name="platform">The platform to use for projects</param>
+        /// <param name="targetFramework">The target framework to use for projects</param>
         /// <param name="subFolders">True to include subfolders, false to only search the top-level folder</param>
         /// <returns>The <see cref="DocumentationSource" /> added to the project or the existing item if the
         /// filename already exists in the collection.</returns>
         /// <remarks>The <see cref="DocumentationSource" /> constructor is internal so that we control creation
         /// of the items and can associate them with the project.</remarks>
-        public DocumentationSource Add(string filename, string config, string platform, bool subFolders)
+        public DocumentationSource Add(string filename, string config, string platform, string targetFramework,
+          bool subFolders)
         {
             DocumentationSource item;
 
@@ -163,7 +168,7 @@ namespace SandcastleBuilder.Utils
             if(Path.IsPathRooted(filename))
                 filename = FilePath.AbsoluteToRelativePath(projectFile.BasePath, filename);
 
-            item = new DocumentationSource(filename, config, platform, subFolders, projectFile);
+            item = new DocumentationSource(filename, config, platform, targetFramework, subFolders, projectFile);
 
             if(!base.Contains(item))
                 base.Add(item);

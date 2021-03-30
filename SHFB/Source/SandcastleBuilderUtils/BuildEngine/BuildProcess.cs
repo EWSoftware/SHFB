@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2021
+// Updated : 03/29/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -2139,7 +2139,10 @@ AllDone:
                               !String.IsNullOrWhiteSpace(projectSpecificFolder.EvaluatedValue) &&
                               Convert.ToBoolean(projectSpecificFolder.EvaluatedValue, CultureInfo.InvariantCulture));
 
-                            projRef = new MSBuildProject(sourceProject.ProjectFileName);
+                            projRef = new MSBuildProject(sourceProject.ProjectFileName)
+                            {
+                                RequestedTargetFramework = ds.TargetFramework
+                            };
 
                             // Use the project file configuration and platform properties if they are set.  If not,
                             // use the documentation source values.  If they are not set, use the SHFB project settings.
@@ -2201,6 +2204,62 @@ AllDone:
                 if(projectDictionary.Count != 0)
                 {
                     this.ReportProgress("\r\nParsing project files");
+
+                    // If any projects are multi-targeting but a specific target framework was not specified,
+                    // try to determine a common target framework that can be used across all of them so that we
+                    // can ensure compatibility.
+                    var noRequestedTarget = projectDictionary.Values.Where(p => p.TargetFrameworks.Any() &&
+                      String.IsNullOrWhiteSpace(p.RequestedTargetFramework));
+
+                    if(noRequestedTarget.Any())
+                    {
+                        // If there are any single target projects, see if they have a common target framework
+                        var singleTarget = projectDictionary.Values.Where(p => !p.TargetFrameworks.Any());
+                        string commonTarget = null;
+
+                        if(singleTarget.Any())
+                        {
+                            var singleTFs = singleTarget.Select(p => p.TargetFramework).Distinct();
+
+                            if(singleTFs.Count() == 1)
+                            {
+                                string tf = singleTFs.First();
+
+                                if(noRequestedTarget.All(p => p.TargetFrameworks.Contains(tf)))
+                                    commonTarget = tf;
+                            }
+                        }
+
+                        if(commonTarget == null)
+                        {
+                            // If not, see if the multi-targeted projects have a common entry
+                            foreach(var t in noRequestedTarget.SelectMany(p => p.TargetFrameworks).ToList())
+                            {
+                                if(noRequestedTarget.All(p => p.TargetFrameworks.Contains(t)))
+                                {
+                                    commonTarget = t;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if(commonTarget != null)
+                        {
+                            this.ReportProgress("    Multi-targeted projects where found.  The common target " +
+                                "framework '{0}' will be used.  Override using the TargetFramework property on " +
+                                "the documentation sources.", commonTarget);
+
+                            foreach(var p in noRequestedTarget)
+                                p.RequestedTargetFramework = commonTarget;
+                        }
+                        else
+                        {
+                            // This may work or it may not depending on their compatibility
+                            this.ReportProgress("    Multi-targeted projects where found but no common target " +
+                                "framework could be determined.  The first target framework in each will be " +
+                                "used.  Override using the TargetFramework property on the documentation sources.");
+                        }
+                    }
 
                     foreach(MSBuildProject msbProject in projectDictionary.Values)
                     {
