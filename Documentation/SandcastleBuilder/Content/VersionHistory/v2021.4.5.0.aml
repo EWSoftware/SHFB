@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2021.4.5.0.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Changed the Size to Content property of fixed height WPF forms to prevent clipping at certain
+screen resolutions.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the build to use a unique name for <localUri>GenerateRefInfo.proj</localUri> so that
+the assembly resolution task uses a unique name for its cache during parallel builds of documentation projects.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Moved the processing for <localUri>MergeDuplicates.xsl</localUri> and
+<localUri>AddXamlSyntaxData.xsl</localUri> into MRefBuilder and removed the XSL transformations.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Moved the processing for <localUri>FixScriptSharp.xsl</localUri> into the related Script#
+plug-in and removed the XSL transformation.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the processing for the Segregate By Namespace tool into the Reflection Data Manager tool
+and removed the Segregate By Namespace tool.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

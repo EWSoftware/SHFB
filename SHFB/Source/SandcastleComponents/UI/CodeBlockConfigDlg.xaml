@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
-	mc:Ignorable="d" Width="750" Height="465" ResizeMode="NoResize" ShowInTaskbar="False"
+	mc:Ignorable="d" Width="750" SizeToContent="Height" ResizeMode="NoResize" ShowInTaskbar="False"
 	Title="Configure Code Block Component"
 	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
 	FocusManager.FocusedElement="{Binding ElementName=txtBasePath}">

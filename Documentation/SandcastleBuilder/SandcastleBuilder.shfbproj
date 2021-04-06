@@ -33,7 +33,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2021.3.29.0</HelpFileVersion>
+    <HelpFileVersion>2021.4.5.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -45,7 +45,6 @@
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleComponents\SandcastleComponents.csproj" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleHtmlExtract\SandcastleHtmlExtract.csproj" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\SegregateByNamespace\SegregateByNamespace.csproj" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\AddNamespaceGroups\AddNamespaceGroups.csproj" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\XslTransform\XslTransform.csproj" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleCore\Sandcastle.Core.csproj" />
@@ -408,6 +407,7 @@
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.5.2.0.aml" />
     <None Include="Content\VersionHistory\v2020.3.6.0.aml" />
     <None Include="Content\VersionHistory\v2021.3.29.0.aml" />
+    <None Include="Content\VersionHistory\v2021.4.5.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2021
+// Updated : 04/03/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -1454,19 +1454,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string ProjectNodeIdRequired()
         {
             return "Project_" + sandcastleProject.HtmlHelpName.Replace(" ", "_").Replace("&", "_");
-        }
-
-        /// <summary>
-        /// Add XAML syntax data transformation setting
-        /// </summary>
-        /// <returns>The "Add XAML syntax data" transformation setting.  If the XAML syntax generator is present,
-        /// add XAML syntax data to the reflection file.</returns>
-        [SubstitutionTag]
-        private string AddXamlSyntaxData()
-        {
-            return ComponentUtilities.SyntaxFiltersFrom(currentBuild.SyntaxGenerators,
-              sandcastleProject.SyntaxFilters).Any(s => s.Id == "XAML Usage") ?
-                @";~\ProductionTransforms\AddXamlSyntaxData.xsl" : String.Empty;
         }
 
         /// <summary>

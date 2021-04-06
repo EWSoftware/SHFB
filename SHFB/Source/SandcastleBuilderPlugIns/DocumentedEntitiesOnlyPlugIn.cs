@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DocumentedEntitiesOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/07/2018
-// Note    : Copyright 2016-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/03/2021
+// Note    : Copyright 2016-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to automatically generate an API filter based on the XML
 // comments member IDs to limit the help file content to only the documented entities.
@@ -21,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
@@ -553,12 +553,17 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("Regenerating reflection information based on the documented members API filter...");
 
+            // The project is named uniquely due to a cache used by the assembly resolution task that uses the
+            // project name to name the cache.  If not unique, it can cause parallel builds to fail as it can't
+            // access the same cache file in more than one build.
+            string generateRefInfoProjectFile = Directory.EnumerateFiles(builder.WorkingFolder, "GenerateRefInfo*.proj").FirstOrDefault();
+
             // Silverlight build targets are only available for 32-bit builds regardless of the framework
             // version and require the 32-bit version of MSBuild in order to load the target file correctly.
             if(builder.CurrentProject.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                builder.TaskRunner.Run32BitProject("GenerateRefInfo.proj", false);
+                builder.TaskRunner.Run32BitProject(generateRefInfoProjectFile, false);
             else
-                builder.TaskRunner.RunProject("GenerateRefInfo.proj", false);
+                builder.TaskRunner.RunProject(generateRefInfoProjectFile, false);
         }
         #endregion
 

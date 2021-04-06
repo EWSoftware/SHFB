@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2021
+// Updated : 04/05/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -471,7 +471,15 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(tf.StartsWith("net") && tf.Length > 3 && Char.IsDigit(tf[3]))
                 {
                     if(tf.Length > 5 && tf[4] == '.')
-                        return (".NETCoreApp", tf.Substring(3));
+                    {
+                        string version = tf.Substring(3);
+                        int pos = version.IndexOf('-');
+
+                        if(pos != -1)
+                            version = version.Substring(0, pos);
+
+                        return (".NETCoreApp", version);
+                    }
 
                     if(tf.Length == 5)
                         return (".NETFramework", $"{tf[3]}.{tf[4]}");

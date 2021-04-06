@@ -2,25 +2,25 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/03/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the reflection information file produced after running
 // MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing a help
 // file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-// ==============================================================================================================
-// 1.6.0.5  01/25/2008  EFW  Created the code
-// 1.8.0.0  07/14/2008  EFW  Updated for use with MSBuild project format
-// 1.9.9.0  12/04/2013  EFW  Updated for use with the new visibility settings in MRefBuilder.config.
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+//    Date     Who  Comments
+// =====================================================================================================
+// 01/25/2008  EFW  Created the code
+// 07/14/2008  EFW  Updated for use with MSBuild project format
+// 12/04/2013  EFW  Updated for use with the new visibility settings in MRefBuilder.config.
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 04/03/2021  EFW  Replaced FixScriptSharp.xsl with code in this plug-in that modifies the reflection.org file
 //===============================================================================================================
 
 // Ignore Spelling: Nikhil Kothari
@@ -31,6 +31,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
@@ -48,7 +49,7 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     [HelpFileBuilderPlugInExport("Script# Reflection File Fixer", RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nScript# is Copyright \xA9 " +
-      "2007-2013 Nikhil Kothari, All Rights Reserved",
+      "2007-2021 Nikhil Kothari, All Rights Reserved",
       Description = "This plug-in is used to modify the reflection information file produced after running " +
       "MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing " +
       "a help file.")]
@@ -60,6 +61,7 @@ namespace SandcastleBuilder.PlugIns
         private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
+
         #endregion
 
         #region IPlugIn implementation
@@ -76,7 +78,7 @@ namespace SandcastleBuilder.PlugIns
                 if(executionPoints == null)
                     executionPoints = new List<ExecutionPoint>
                     {
-                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before)
+                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.BeforeAndAfter)
                     };
 
                 return executionPoints;
@@ -120,8 +122,10 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            if(this.ModifyMRefBuilderConfig())
-                this.ModifyGenerateRefInfoProject();
+            if(context.Behavior == ExecutionBehaviors.Before)
+                this.ModifyMRefBuilderConfig();
+            else
+                this.FixScriptSharpReflectionData();
         }
         #endregion
 
@@ -243,80 +247,175 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is used to modify the GenerateRefInfo.proj file for use with Script#
+        /// This is used to fix up the Script# elements in the reflection.org file
         /// </summary>
-        private void ModifyGenerateRefInfoProject()
+        private void FixScriptSharpReflectionData()
         {
-            XmlNamespaceManager nsm;
-            XmlDocument project;
-            XmlNode target, task;
-            XmlAttribute attr;
-            string projectFile;
+            HashSet<string> typesWithGlobalAttribute = new HashSet<string>(),
+                typesWithRecordAttribute = new HashSet<string>(), delegateTypes = new HashSet<string>();
+            var delegateParameters = new Dictionary<string, XElement>();
+            string reflectionDataModified = Path.Combine(Path.GetDirectoryName(builder.ReflectionInfoFilename),
+                Guid.NewGuid().ToString() + ".xml");
 
-            projectFile = builder.WorkingFolder + "GenerateRefInfo.proj";
+            XElement apiNode, apiData, ancestors, parameters;
+            string apiId, group, subgroup, containingType;
 
-            // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
-            // has bypassed it so only issue a warning.
-            if(!File.Exists(projectFile))
+            // Make a first pass to find delegate types and their invoke members and types tagged with the
+            // global and/or record attribute.
+            using(XmlReader reader = XmlReader.Create(builder.ReflectionInfoFilename,
+              new XmlReaderSettings { IgnoreWhitespace = true }))
             {
-                builder.ReportWarning("SSP0003", "The reflection information generation project '{0}' could " +
-                    "not be found.  The Script# plug-in did not run successfully.", projectFile);
-                return;
+                reader.ReadToFollowing("api");
+
+                while(!reader.EOF)
+                {
+                    if(reader.NodeType != XmlNodeType.Element)
+                    {
+                        reader.Read();
+                        continue;
+                    }
+
+                    apiNode = (XElement)XNode.ReadFrom(reader);
+                    apiData = apiNode.Element("apidata");
+                    apiId = apiNode.Attribute("id").Value;
+                    group = apiData.Attribute("group").Value;
+
+                    // Types are always seen first followed by their members
+                    if(group == "type")
+                    {
+                        ancestors = apiNode.Element("family")?.Element("ancestors");
+
+                        if(ancestors != null && ancestors.Descendants("type").Any(
+                          t => t.Attribute("api").Value == "T:System.MulticastDelegate"))
+                        {
+                            delegateTypes.Add(apiId);
+                        }
+
+                        if(apiNode.Descendants("attribute").Any(d => d.Element("type").Attribute(
+                          "api").Value == "T:System.GlobalMethodsAttribute"))
+                        {
+                            typesWithGlobalAttribute.Add(apiId);
+                        }
+
+                        if(apiNode.Descendants("attribute").Any(d => d.Element("type").Attribute(
+                          "api").Value == "T:System.RecordAttribute"))
+                        {
+                            typesWithRecordAttribute.Add(apiId);
+                        }
+                    }
+
+                    if(group == "member")
+                    {
+                        containingType = apiNode.Element("containers").Element("type").Attribute("api").Value;
+
+                        if(delegateTypes.Contains(containingType) && apiId[0] == 'M' &&
+                          apiId.IndexOf(".Invoke(", StringComparison.Ordinal) != -1)
+                        {
+                            parameters = apiNode.Element("parameters");
+
+                            if(parameters != null && !delegateParameters.ContainsKey(containingType))
+                                delegateParameters.Add(containingType, new XElement(parameters));
+                        }
+                    }
+                }
             }
 
-            builder.ReportProgress("Adding Script# AfterGenerateRefInfo tasks to GenerateRefInfo.proj");
+            using(XmlReader reader = XmlReader.Create(builder.ReflectionInfoFilename, new XmlReaderSettings {
+              IgnoreWhitespace = true }))
+            using(XmlWriter writer = XmlWriter.Create(reflectionDataModified, new XmlWriterSettings {
+              Indent = true, CloseOutput = true }))
+            {
+                writer.WriteStartDocument();
+                reader.Read();
 
-            // Add the transform that fixes up the Script# elements to the AfterGenerateRefInfo project target.
-            // Note that we use a customized version that adds a <scriptSharp /> element to each API node so that
-            // our custom JavaScript syntax generator applies the casing rules to the member names.
-            project = new XmlDocument();
-            project.Load(projectFile);
-            nsm = new XmlNamespaceManager(project.NameTable);
-            nsm.AddNamespace("MSBuild", project.DocumentElement.NamespaceURI);
+                while(!reader.EOF)
+                {
+                    if(reader.NodeType != XmlNodeType.Element)
+                    {
+                        reader.Read();
+                        continue;
+                    }
 
-            target = project.SelectSingleNode("//MSBuild:Target[@Name='AfterGenerateRefInfo']", nsm);
+                    switch(reader.Name)
+                    {
+                        case "apis":
+                        case "reflection":
+                            writer.WriteStartElement(reader.Name);
+                            reader.Read();
+                            break;
 
-            if(target == null)
-                throw new BuilderException("SSP0004", "Unable to locate AfterGenerateRefInfo target " +
-                    "in project file");
+                        case "api":
+                            apiNode = (XElement)XNode.ReadFrom(reader);
+                            apiData = apiNode.Element("apidata");
 
-            task = project.CreateElement("Message", nsm.LookupNamespace("MSBuild"));
-            attr = project.CreateAttribute("Text");
-            attr.Value = "Fixing up Script# elements...";
-            task.Attributes.Append(attr);
-            target.AppendChild(task);
+                            apiId = apiNode.Attribute("id").Value;
+                            group = apiData.Attribute("group").Value;
+                            subgroup = apiData.Attribute("subgroup")?.Value;
 
-            task = project.CreateElement("Copy", nsm.LookupNamespace("MSBuild"));
-            attr = project.CreateAttribute("SourceFiles");
-            attr.Value = "reflection.org";
-            task.Attributes.Append(attr);
+                            // Add a "scriptSharp" element to each API node so that the JavaScript syntax
+                            // generator will apply the casing rules to the member name.
+                            apiNode.Add(new XElement("scriptSharp"));
 
-            attr = project.CreateAttribute("DestinationFiles");
-            attr.Value = "scriptsharp.org";
-            task.Attributes.Append(attr);
-            target.AppendChild(task);
+                            if(group == "type")
+                            {
+                                ancestors = apiNode.Element("family")?.Element("ancestors");
 
-            task = project.CreateElement("Microsoft.Ddue.Tools.MSBuild.XslTransform", nsm.LookupNamespace("MSBuild"));
-            attr = project.CreateAttribute("WorkingFolder");
-            attr.Value = "$(WorkingFolder)";
-            task.Attributes.Append(attr);
+                                if(ancestors != null && ancestors.Descendants("type").Any(
+                                  t => t.Attribute("api").Value == "T:System.Enum"))
+                                {
+                                    // Fix subgroup and remove ancestors from enumerations
+                                    apiData.Attribute("subgroup").Value = "enumeration";
+                                    ancestors.Parent.Remove();
 
-            attr = project.CreateAttribute("Transformations");
-            attr.Value = Path.Combine(ComponentUtilities.ToolsFolder,
-                @"~\ProductionTransforms\FixScriptSharp.xsl");
-            task.Attributes.Append(attr);
+                                    // Remove invalid enumeration members
+                                    foreach(var el in apiNode.Descendants("element").Where(
+                                      el => !el.Attribute("api").Value.StartsWith("F:", StringComparison.Ordinal) ||
+                                        el.Attribute("api").Value.IndexOf("value__", StringComparison.Ordinal) != -1).ToArray())
+                                    {
+                                        el.Remove();
+                                    }
+                                }
 
-            attr = project.CreateAttribute("InputFile");
-            attr.Value = "scriptsharp.org";
-            task.Attributes.Append(attr);
+                                if(delegateTypes.Contains(apiId))
+                                {
+                                    // Fix subgroup and remove ancestors and elements from enumerations
+                                    apiData.Attribute("subgroup").Value = "delegate";
+                                    ancestors?.Parent.Remove();
+                                    apiNode.Element("elements").Remove();
 
-            attr = project.CreateAttribute("OutputFile");
-            attr.Value = "reflection.org";
-            task.Attributes.Append(attr);
+                                    // Add delegate parameters
+                                    if(delegateParameters.TryGetValue(apiId, out parameters))
+                                        apiNode.Add(parameters);
+                                }
+                            }
 
-            target.AppendChild(task);
+                            if(group == "member")
+                            {
+                                containingType = apiNode.Element("containers").Element("type").Attribute("api").Value;
 
-            project.Save(projectFile);
+                                // Annotate members in types that have the global attributes
+                                if(typesWithGlobalAttribute.Contains(containingType))
+                                    apiData.Add(new XAttribute("global", "true"));
+
+                                // Annotate constructors in types that have the record attribute
+                                if(subgroup == "constructor" && typesWithRecordAttribute.Contains(containingType))
+                                    apiData.Add(new XAttribute("record", "true"));
+                            }
+
+                            apiNode.WriteTo(writer);
+                            break;
+
+                        default:
+                            writer.WriteNode(reader.ReadSubtree(), true);
+                            break;
+                    }
+                }
+
+                writer.WriteEndDocument();
+            }
+
+            File.Delete(builder.ReflectionInfoFilename);
+            File.Move(reflectionDataModified, builder.ReflectionInfoFilename);
         }
         #endregion
     }

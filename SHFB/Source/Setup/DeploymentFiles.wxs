@@ -156,12 +156,6 @@
       <Component Id="cmp1F30A63455BC8620D42E07693D4F8EB2" Guid="{E0B2BB50-B8AD-45B7-AC90-ACDDD3857E91}">
         <File Id="fil0AF4FDEFA7C356923D922095B30DE82F" KeyPath="yes" Source="$(var.RootFolder)\SandcastleHtmlExtract.exe.config" />
       </Component>
-      <Component Id="cmp857EBDF3A05062DB24AB5DF805D643EB" Guid="{9237632C-220B-4793-9318-08B9601053F5}">
-        <File Id="fil3DD2C18B6F25430DA54C36819434B23B" KeyPath="yes" Source="$(var.RootFolder)\SegregateByNamespace.exe" />
-      </Component>
-      <Component Id="cmp39BAA70A368194908C55B4CDEECB3D4C" Guid="{C0EEA2D7-BE70-4B6F-B6C8-B5F98D9AB292}">
-        <File Id="filF09F535745DBD62410579DE7323619F2" KeyPath="yes" Source="$(var.RootFolder)\SegregateByNamespace.exe.config" />
-      </Component>
       <Component Id="SHFBProjectLauncher.exe" Guid="{D9AA7E0D-6467-4DDF-A798-E3E8890A8720}">
 				<File Id="SHFBProjectLauncher.exe" KeyPath="yes" Source="$(var.RootFolder)\SHFBProjectLauncher.exe">
 					<Shortcut Id="SHFBProjectLauncher.exe"
@@ -4413,22 +4407,13 @@
         <Component Id="cmp0DB2BFCB1CD3D868AFA7505967E53E49" Guid="{2A29D970-F130-4896-BA1E-E7FA69D8BFFC}">
           <File Id="fil0A4EBA6D07C294338E15F8D2AF2B1A6F" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\AddFilenames.xsl" />
         </Component>
-        <Component Id="cmpB5731877051694D27A4B704D1C45F5A6" Guid="{EC95D93F-E3A4-4223-BC0D-88F93480344A}">
-          <File Id="filF46235504561DBEE45DB37B866CBB7CA" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\AddXamlSyntaxData.xsl" />
-        </Component>
-        <Component Id="cmpD71FEBFFF1212B11D4A42D3095E07A6D" Guid="{0F9B7041-04C7-4508-8E77-C01869AD927A}">
+        <Component Id="cmpD71FEBFFF1212B11D4A42D3095E07A6D" Guid="{755BD9EA-BFE1-44CF-B85D-5BB6F81F7225}">
           <File Id="filA18ADA93E66357518738A2A522747B9E" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\ApplyVSDocModel.xsl" />
         </Component>
         <Component Id="cmpF33698F03655F58B41016B8441C8D96E" Guid="{0F36FBF0-047B-4D79-8868-FFF480DE7B7C}">
           <File Id="fil3348C5C27B6C476C1FCCBA0BC1B4F40B" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\CreateVSToc.xsl" />
         </Component>
-        <Component Id="cmpEC665E9B381743B89EDA00A221AA76E3" Guid="{02EC3A06-64C4-4C44-BFD2-4DCFD51B4A4E}">
-          <File Id="filA6EE338614A48053E3433F15B528583D" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\FixScriptSharp.xsl" />
-        </Component>
-        <Component Id="cmp07BFD8B7D86F938F0C02E1D89D4A1ED9" Guid="{A3B3E400-4F29-44F0-A107-E037E081E4E3}">
-          <File Id="fil2E681C534D903710F63148BCA4472309" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\MergeDuplicates.xsl" />
-        </Component>
-        <Component Id="cmpF029EC605AE98F89E197F20A8225BC07" Guid="{D10BF01D-E4EE-4AF5-9FB6-2ECF828AED82}">
+        <Component Id="cmpF029EC605AE98F89E197F20A8225BC07" Guid="{4FDD40F1-69D4-435F-ADEE-C04BFF250AE7}">
           <File Id="filB97B75B8C21BFCC182DD2B8B853A7C9D" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\ReflectionToManifest.xsl" />
         </Component>
       </Directory>
@@ -4749,8 +4734,6 @@
       <ComponentRef Id="cmp13D7B27E0FA7D0DCBE021E7E032EA95B" />
       <ComponentRef Id="cmpA1DEF9962CD798332ED52BD176A3120A" />
       <ComponentRef Id="cmp1F30A63455BC8620D42E07693D4F8EB2" />
-      <ComponentRef Id="cmp857EBDF3A05062DB24AB5DF805D643EB" />
-      <ComponentRef Id="cmp39BAA70A368194908C55B4CDEECB3D4C" />
       <ComponentRef Id="SHFBProjectLauncher.exe" />
       <ComponentRef Id="cmp6F2CD371CC1458C510364DB3B3E08AC7" />
       <ComponentRef Id="cmpB092835B25713C5EC3C27546E3250C95" />
@@ -6101,11 +6084,8 @@
       <ComponentRef Id="cmpB1BB18E75BE29FA70FCB3AAD1EC835B6" />
       <ComponentRef Id="cmp45A9B1E9FFA8474F777B8A8D3B8CC5DC" />
       <ComponentRef Id="cmp0DB2BFCB1CD3D868AFA7505967E53E49" />
-      <ComponentRef Id="cmpB5731877051694D27A4B704D1C45F5A6" />
       <ComponentRef Id="cmpD71FEBFFF1212B11D4A42D3095E07A6D" />
       <ComponentRef Id="cmpF33698F03655F58B41016B8441C8D96E" />
-      <ComponentRef Id="cmpEC665E9B381743B89EDA00A221AA76E3" />
-      <ComponentRef Id="cmp07BFD8B7D86F938F0C02E1D89D4A1ED9" />
       <ComponentRef Id="cmpF029EC605AE98F89E197F20A8225BC07" />
       <ComponentRef Id="cmp69C1130FD411BFD37EC7C1AA27941135" />
       <ComponentRef Id="cmpC92191338F597A2F1FCA31D3DDFB2AF6" />

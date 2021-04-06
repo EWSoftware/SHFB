@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2019
-// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/04/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to build the reflection data
 //
@@ -16,11 +15,13 @@
 //    Date     Who  Comments
 // ==============================================================================================================
 // 06/29/2015  EFW  Created the code
+// 04/04/2021  EFW  Merged code from SegregateByNamespace into the build process and removed the separate tool
 //===============================================================================================================
 
 // Ignore Spelling: nologo clp
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -30,6 +31,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
@@ -56,6 +59,11 @@ namespace ReflectionDataManager
         private static readonly Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
             @"Fatal Error|Unexpected error.*):|Process is terminated|Build FAILED|\w+\s*:\s*Error\s.*?:|" +
             @"\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+        private static readonly XPathExpression apiExpression = XPathExpression.Compile("/*/apis/api");
+        private static readonly XPathExpression apiNamespaceExpression = XPathExpression.Compile("string(containers/namespace/@api)");
+        private static readonly XPathExpression assemblyNameExpression = XPathExpression.Compile("string(containers/library/@assembly)");
+        private static readonly XPathExpression namespaceIdExpression = XPathExpression.Compile("string(@id)");
 
         #endregion
 
@@ -176,6 +184,9 @@ namespace ReflectionDataManager
 
             this.Run(msBuildExePath, projectFile, "/nologo /clp:NoSummary /v:n");
 
+            this.ProgressProvider.Report("Segregating reflection data by namespace");
+            this.SegregateByNamespace();
+
             string targetPath = Path.GetDirectoryName(dataSet.Filename);
 
             if(this.ProgressProvider != null)
@@ -189,7 +200,7 @@ namespace ReflectionDataManager
                 this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
                     "Copying new reflection data files to {0}...", targetPath));
 
-            foreach(string file in Directory.EnumerateFiles(workingFolder + @"\Segregated"))
+            foreach(string file in Directory.EnumerateFiles(Path.Combine(workingFolder, "Segregated")))
                 File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
 
             if(this.ProgressProvider != null)
@@ -337,6 +348,128 @@ namespace ReflectionDataManager
                 }
 
             } while(line != null);
+        }
+
+        /// <summary>
+        /// This is used to split the reflection data into separate file by namespace
+        /// </summary>
+        private void SegregateByNamespace()
+        {
+            string reflectionDataFile = Path.Combine(workingFolder, "reflection.xml"),
+                outputPath = Path.Combine(workingFolder, "Segregated");
+
+            XPathDocument document = new XPathDocument(reflectionDataFile);
+
+            Dictionary<string, object> dictionary3;
+            XmlWriter writer;
+            string current;
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+
+            Dictionary<string, Dictionary<string, object>> dictionary = new Dictionary<string, Dictionary<string, object>>();
+            Dictionary<string, XmlWriter> dictionary2 = new Dictionary<string, XmlWriter>();
+            XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+
+            try
+            {
+                Directory.CreateDirectory(outputPath);
+
+                XPathNodeIterator iterator = document.CreateNavigator().Select(apiExpression);
+
+                foreach(XPathNavigator navigator in iterator)
+                {
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    current = (string)navigator.Evaluate(apiNamespaceExpression);
+
+                    if(!String.IsNullOrEmpty(current))
+                    {
+                        String key = (string)navigator.Evaluate(assemblyNameExpression);
+
+                        if(!dictionary.TryGetValue(current, out dictionary3))
+                        {
+                            dictionary3 = new Dictionary<string, object>();
+                            dictionary.Add(current, dictionary3);
+                        }
+
+                        if(!dictionary3.ContainsKey(key))
+                            dictionary3.Add(key, null);
+                    }
+                }
+
+                foreach(string currentKey in dictionary.Keys)
+                {
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    string filename = currentKey.Substring(2) + ".xml";
+
+                    if(filename == ".xml")
+                        filename = "default_namespace.xml";
+                    else
+                    {
+                        if(filename.IndexOfAny(invalidChars) != -1)
+                            foreach(char c in invalidChars)
+                                filename = filename.Replace(c, '_');
+                    }
+
+                    filename = Path.Combine(outputPath, filename);
+
+                    writer = XmlWriter.Create(filename, settings);
+
+                    dictionary2.Add(currentKey, writer);
+
+                    writer.WriteStartElement("reflection");
+                    writer.WriteStartElement("assemblies");
+
+                    dictionary3 = dictionary[currentKey];
+
+                    foreach(string assemblyName in dictionary3.Keys)
+                    {
+                        this.CancellationToken.ThrowIfCancellationRequested();
+
+                        XPathNavigator navigator2 = document.CreateNavigator().SelectSingleNode(
+                            "/*/assemblies/assembly[@name='" + assemblyName + "']");
+
+                        if(navigator2 != null)
+                            navigator2.WriteSubtree(writer);
+                        else
+                            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
+                                "Input file does not contain node for '{0}' assembly", assemblyName));
+                    }
+
+                    writer.WriteEndElement();
+                    writer.WriteStartElement("apis");
+                }
+
+                foreach(XPathNavigator navigator in iterator)
+                {
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    current = (string)navigator.Evaluate(apiNamespaceExpression);
+
+                    if(string.IsNullOrEmpty(current))
+                        current = (string)navigator.Evaluate(namespaceIdExpression);
+
+                    writer = dictionary2[current];
+                    navigator.WriteSubtree(writer);
+                }
+
+                foreach(XmlWriter w in dictionary2.Values)
+                {
+                    this.CancellationToken.ThrowIfCancellationRequested();
+
+                    w.WriteEndElement();
+                    w.WriteEndElement();
+                    w.WriteEndDocument();
+                }
+
+                ConsoleApplication.WriteMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
+                    "Wrote information on {0} APIs to {1} files.", iterator.Count, dictionary2.Count));
+            }
+            finally
+            {
+                foreach(XmlWriter w in dictionary2.Values)
+                    w.Close();
+            }
         }
         #endregion
     }

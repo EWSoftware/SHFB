@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2021
+// Updated : 04/03/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -912,6 +912,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     substitutionTags.TransformTemplate("MRefBuilder.config", templateFolder, workingFolder);
                     scriptFile = substitutionTags.TransformTemplate("GenerateRefInfo.proj", templateFolder, workingFolder);
 
+                    // The project is named uniquely due to a cache used by the assembly resolution task that
+                    // uses the project name to name the cache.  If not unique, it can cause parallel builds to
+                    // fail as it can't access the same cache file in more than one build.
+                    string oldName = scriptFile;
+
+                    scriptFile = scriptFile.Replace(".proj", "-" + Guid.NewGuid().ToString() + ".proj");
+                    File.Move(oldName, scriptFile);
+
                     try
                     {
                         msBuildProject = new Project(scriptFile);
@@ -964,9 +972,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // Silverlight build targets are only available for 32-bit builds regardless of the framework
                     // version and require the 32-bit version of MSBuild in order to load the target file correctly.
                     if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                        taskRunner.Run32BitProject("GenerateRefInfo.proj", false);
+                        taskRunner.Run32BitProject(scriptFile, false);
                     else
-                        taskRunner.RunProject("GenerateRefInfo.proj", false);
+                        taskRunner.RunProject(scriptFile, false);
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }

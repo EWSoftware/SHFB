@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/03/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to generate version information for assemblies in the current project
 // and others related to the same product that can be merged into the current project's help file topics.
@@ -20,7 +19,7 @@
 // 08/13/2008  EFW  Updated to support the new project format
 // 06/27/2010  EFW  Added support for /rip option
 // 12/17/2013  EFW  Updated to use MEF for the plug-ins
-// 12/28/2013  EFW  Updated to run VersionBuilder tool as an MSBuild task in GenerateRefInfo.proj
+// 12/28/2013  EFW  Updated to run VersionBuilder tool as an MSBuild task in TransformManifest.proj
 //===============================================================================================================
 
 using System;
@@ -424,7 +423,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is used to modify the GenerateRefInfo.proj file for use with VersionBuilder
+        /// This is used to modify the TransformManifest.proj file for use with VersionBuilder
         /// </summary>
         private void ModifyTransformManifestProject()
         {

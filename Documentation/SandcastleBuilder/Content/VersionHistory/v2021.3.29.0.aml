@@ -3,7 +3,7 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<!-- Ignore Spelling: tabnapping -->
 		<introduction>
-			<autoOutline excludeRelatedTopics="true" lead="Release notes for version vNext." />
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2019.3.29.0." />
 		</introduction>
 
 		<section address="ReflectionDataSets">

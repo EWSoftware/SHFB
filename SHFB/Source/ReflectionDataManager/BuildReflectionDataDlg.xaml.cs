@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildReflectionDataDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/16/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/04/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the window class that is used to manage the build settings and build the reflection data
 //
@@ -37,7 +36,7 @@ namespace ReflectionDataManager
         #region Private data members
         //=====================================================================
 
-        private ReflectionDataSet dataSet;
+        private readonly ReflectionDataSet dataSet;
         private CancellationTokenSource cancellationTokenSource;
 
         #endregion

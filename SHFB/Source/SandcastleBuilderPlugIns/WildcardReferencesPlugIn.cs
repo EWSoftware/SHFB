@@ -2,22 +2,21 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/03/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the MRefBuilder project file by adding in reference
 // assemblies matching wildcard search paths.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.2.0  01/17/2011  EFW  Created the code
-// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+// 01/17/2011  EFW  Created the code
+// 12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 // Ignore Spelling: mscorlib
@@ -137,11 +136,14 @@ namespace SandcastleBuilder.PlugIns
             ProjectItem projectItem;
             Dictionary<string, string> assemblies = new Dictionary<string, string>();
 
-            string filename, projectFile = builder.WorkingFolder + "GenerateRefInfo.proj";
+            // The project is named uniquely due to a cache used by the assembly resolution task that uses the
+            // project name to name the cache.  If not unique, it can cause parallel builds to fail as it can't
+            // access the same cache file in more than one build.
+            string projectFile = Directory.EnumerateFiles(builder.WorkingFolder, "GenerateRefInfo*.proj").FirstOrDefault();
 
             // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
             // has bypassed it so only issue a warning.
-            if(!File.Exists(projectFile))
+            if(projectFile == null || !File.Exists(projectFile))
             {
                 builder.ReportWarning("WRP0003", "The reflection information generation project '{0}' could " +
                     "not be found.  The Wildcard References plug-in did not run.", projectFile);
@@ -153,7 +155,7 @@ namespace SandcastleBuilder.PlugIns
                 foreach(string fullPath in Directory.EnumerateFiles(r.ReferencePath, r.Wildcard,
                   (r.Recursive) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
-                    filename = Path.GetFileNameWithoutExtension(fullPath);
+                    string filename = Path.GetFileNameWithoutExtension(fullPath);
 
                     // "mscorlib" is ignored as it causes MRefBuilder to reset its target platform information.
                     // For something like Silverlight, that probably isn't what we want it to do so we'll ignore

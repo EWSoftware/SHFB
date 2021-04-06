@@ -18,6 +18,8 @@
 // 05/30/2017 - JRC - Fixed issue with negative enums
 // 03/14/2021 - EFW - Added support for defaultValue element for default value structs on parameters
 // 03/16/2021 - EFW - Added support for writing out the nullable context for nullable reference types
+// 04/03/2021 - EFW - Moved duplicate type/member merging and XAML syntax attributes to MRefBuilder and removed
+// the MergeDuplicates.xsl and AddXamlSyntaxData.xsl transformations.
 
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,7 @@ using System.Compiler;
 using Microsoft.Ddue.Tools.Reflection;
 
 using Sandcastle.Core;
+using System.Xml.Linq;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -106,7 +109,7 @@ namespace Microsoft.Ddue.Tools
             startTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
             endTagCallbacks = new Dictionary<string, List<MRefBuilderCallback>>();
 
-            writer = XmlWriter.Create(output, new XmlWriterSettings { Indent = true });
+            writer = XmlWriter.Create(output, new XmlWriterSettings { Indent = true, CloseOutput = true });
 
             this.namer = namer;
         }
@@ -118,7 +121,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if(disposing && writer.WriteState != WriteState.Closed)
                 writer.Close();
 
             base.Dispose(disposing);
@@ -718,18 +721,20 @@ namespace Microsoft.Ddue.Tools
             {
                 writer.WriteStartElement("elements");
 
-                foreach(var type in types)
+                // Skip hidden types but if a type is not exposed and has exposed members we must add it.  Also,
+                // group by type name and only add the first entry.  If multiple assemblies are documented and
+                // they contain duplicate types, we get duplicate type entries.  The duplicate types and members
+                // will be merged after the file has been created.  It's easier to do it that way than when the
+                // types are visited during the file's creation.
+                foreach(var type in types.Where(t => this.ApiFilter.IsExposedType(t) ||
+                  this.ApiFilter.HasExposedMembers(t)).GroupBy(t => t.FullName).Select(g => g.First()))
                 {
-                    // Skip hidden types but if a type is not exposed and has exposed members we must add it
-                    if(base.ApiFilter.IsExposedType(type) || base.ApiFilter.HasExposedMembers(type))
-                    {
-                        writer.WriteStartElement("element");
+                    writer.WriteStartElement("element");
 
-                        // !EFW - Change from ComponentOne
-                        writer.WriteAttributeString("api", namer.GetTypeName(type).TranslateToValidXmlValue());
+                    // !EFW - Change from ComponentOne
+                    writer.WriteAttributeString("api", namer.GetTypeName(type).TranslateToValidXmlValue());
 
-                        writer.WriteEndElement();
-                    }
+                    writer.WriteEndElement();
                 }
 
                 writer.WriteEndElement();
@@ -886,14 +891,41 @@ namespace Microsoft.Ddue.Tools
                 }
             }
 
+            // XAML syntax properties
+            bool hasContentProperty = false;
+
+            if(type.NodeType == NodeType.Class || type.NodeType == NodeType.Struct)
+            {
+                var defaultConstructor = type.GetConstructors().Cast<Method>().FirstOrDefault(m => m.IsPublic &&
+                    m.Parameters.Count == 0);
+
+                if(defaultConstructor != null && this.ApiFilter.IsExposedMember(defaultConstructor))
+                    this.WriteStringAttribute("defaultConstructor", namer.GetMemberName(defaultConstructor).TranslateToValidXmlValue());
+
+                var contentProperty = type.Attributes.FirstOrDefault(a => a.Type.Name.Name == "ContentPropertyAttribute" &&
+                    a.Expressions.Count == 1);
+
+                if(contentProperty != null && contentProperty.Expressions[0] is Literal l)
+                {
+                    this.WriteStringAttribute("contentProperty", ("P:" + type.FullName + "." + l.Value.ToString()).TranslateToValidXmlValue());
+                    hasContentProperty = true;
+                }
+
+                if(type.NodeType == NodeType.Struct && !type.Members.Where(m => m.NodeType == NodeType.Property).Cast<Property>().Any(
+                  p => p.IsPublic && p.Setter != null && p.Setter.IsPublic))
+                {
+                    this.WriteStringAttribute("noSettableProperties", "true");
+                }
+            }
+
             this.StartElementCallbacks("typedata", type);
             this.EndElementCallbacks("typedata", type);
 
             writer.WriteEndElement();
 
-            // For classes, recored base type
+            // For classes, record base type
             if(type is Class)
-                this.WriteHierarchy(type);
+                this.WriteHierarchy(type, hasContentProperty);
         }
 
         /// <summary>
@@ -949,7 +981,8 @@ namespace Microsoft.Ddue.Tools
         /// Write out the hierarchy for a type
         /// </summary>
         /// <param name="type">The type for which to write the hierarchy</param>
-        private void WriteHierarchy(TypeNode type)
+        /// <param name="hasContentProperty">True if the type has a XAML content property, false if not</param>
+        private void WriteHierarchy(TypeNode type, bool hasContentProperty)
         {
             writer.WriteStartElement("family");
 
@@ -957,7 +990,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteStartElement("ancestors");
 
             for(TypeNode ancestor = type.BaseType; ancestor != null; ancestor = ancestor.BaseType)
-                this.WriteTypeReference(ancestor);
+                this.WriteTypeReference(ancestor, null, null, null, NullableState.NotSpecified, !hasContentProperty);
 
             writer.WriteEndElement();
 
@@ -1516,8 +1549,11 @@ namespace Microsoft.Ddue.Tools
         /// <param name="nullableStates">An enumerable list of the nullable states for the type's parts</param>
         /// <param name="lastState">The last used nullable state.  If it's common to all parts, there will only
         /// be one entry that applies to all parts.</param>
+        /// <param name="addContentProperty">True to add the content property attribute for XAML syntax or
+        /// false to omit it.</param>
         public void WriteTypeReference(TypeNode type, string elementName = null, AttributeList attributes = null,
-          IEnumerator<NullableState> nullableStates = null, NullableState lastState = NullableState.NotSpecified)
+          IEnumerator<NullableState> nullableStates = null, NullableState lastState = NullableState.NotSpecified,
+          bool addContentProperty = false)
         {
             if(type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1542,7 +1578,7 @@ namespace Microsoft.Ddue.Tools
                 }
             }
 
-            this.WriteStartTypeReference(type, elementName, nullableStates, lastState);
+            this.WriteStartTypeReference(type, elementName, nullableStates, lastState, addContentProperty);
             writer.WriteEndElement();
         }
 
@@ -2036,8 +2072,11 @@ namespace Microsoft.Ddue.Tools
         /// <param name="nullableStates">An enumerable list of the nullable states for the type's parts</param>
         /// <param name="lastState">The last used nullable state.  If it's common to all parts, there will only
         /// be one entry that applies to all parts.</param>
+        /// <param name="addContentProperty">True to add the content property attribute for XAML syntax or
+        /// false to omit it.</param>
         private void WriteStartTypeReference(TypeNode type, string elementName = null,
-          IEnumerator<NullableState> nullableStates = null, NullableState lastState = NullableState.NotSpecified)
+          IEnumerator<NullableState> nullableStates = null, NullableState lastState = NullableState.NotSpecified,
+          bool addContentProperty = false)
         {
             NullableState ns = NullableState.NotSpecified;
 
@@ -2188,6 +2227,15 @@ namespace Microsoft.Ddue.Tools
                         if(type.DeclaringType != null)
                             this.WriteTypeReference(type.DeclaringType);
                     }
+
+                    if(addContentProperty)
+                    {
+                        var contentProperty = type.Attributes.FirstOrDefault(a => a.Type.Name.Name == "ContentPropertyAttribute" &&
+                            a.Expressions.Count == 1);
+
+                        if(contentProperty != null && contentProperty.Expressions[0] is Literal l)
+                            this.WriteStringAttribute("contentProperty", "P:" + type.FullName + "." + l.Value.ToString());
+                    }
                     break;
             }
         }
@@ -2337,6 +2385,178 @@ namespace Microsoft.Ddue.Tools
                 }
 
             return nullableStates;
+        }
+        #endregion
+
+        #region Merge duplicate type and member reflection information
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to merge duplicate type and member information in a reflection data file into single
+        /// entries containing the necessary element and library information.
+        /// </summary>
+        /// <param name="reflectionDataFile">The source reflection data file</param>
+        /// <remarks>This will merge duplicate type and member information in the given reflection data file.
+        /// This process is easier after the file is created rather than trying to do it when the types are being
+        /// visited and written to it.  The merged data is saved back to the same filename.</remarks>
+        /// <returns>A tuple containing the number of merged types and members</returns>
+        public (int MergedTypes, int MergedMembers) MergeDuplicateReflectionData(string reflectionDataFile)
+        {
+            var duplicateTypesAndMembers = new Dictionary<string, List<XElement>>();
+            var duplicatesSeen = new HashSet<string>();
+            int mergedTypes = 0, mergedMembers = 0;
+            bool hasDuplicates = false;
+
+            writer.Close();
+
+            // Make a first pass to find duplicate types and members
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
+            {
+                reader.ReadToFollowing("api");
+
+                while(!reader.EOF)
+                {
+                    string id = reader.GetAttribute("id");
+
+                    if(duplicateTypesAndMembers.TryGetValue(id, out List<XElement> duplicates))
+                    {
+                        if(duplicates == null)
+                        {
+                            duplicates = new List<XElement>();
+                            duplicateTypesAndMembers[id] = duplicates;
+                        }
+
+                        duplicates.Add((XElement)XNode.ReadFrom(reader));
+                        hasDuplicates = true;
+                    }
+                    else
+                    {
+                        duplicateTypesAndMembers.Add(id, null);
+                        reader.ReadToFollowing("api");
+                    }
+                }
+            }
+
+            if(!hasDuplicates)
+                return (0, 0);
+
+            string mergedReflectionDataFile = Path.Combine(Path.GetDirectoryName(reflectionDataFile),
+                Guid.NewGuid().ToString() + ".xml");
+
+            // Clone the file and merge the duplicates
+            using(XmlReader reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { IgnoreWhitespace = true }))
+            using(XmlWriter writer = XmlWriter.Create(mergedReflectionDataFile, new XmlWriterSettings {
+              Indent = true, CloseOutput = true }))
+            {
+                writer.WriteStartDocument();
+                reader.Read();
+
+                while(!reader.EOF)
+                {
+                    if(reader.NodeType != XmlNodeType.Element)
+                    {
+                        reader.Read();
+                        continue;
+                    }
+
+                    switch(reader.Name)
+                    {
+                        case "apis":
+                        case "reflection":
+                            writer.WriteStartElement(reader.Name);
+                            reader.Read();
+                            break;
+
+                        case "api":
+                            string id = reader.GetAttribute("id");
+
+                            // Merge duplicate types and members
+                            var duplicates = duplicateTypesAndMembers[id];
+
+                            if(duplicates == null)
+                                writer.WriteNode(reader.ReadSubtree(), true);
+                            else
+                            {
+                                var apiNode = (XElement)XNode.ReadFrom(reader);
+
+                                // Add the first one, skip the duplicates
+                                if(!duplicatesSeen.Contains(id))
+                                {
+                                    // Merge library info
+                                    var library = apiNode.Element("containers").Element("library");
+                                    string assemblyName = library.Attribute("assembly").Value;
+
+                                    // There can be duplicate assembly names so we only add the first of each
+                                    library.AddAfterSelf(duplicates.Select(
+                                        d => d.Element("containers").Element("library")).GroupBy(
+                                            l => l.Attribute("assembly").Value).Where(
+                                                g => g.Key != assemblyName).Select(g => g.First()));
+
+                                    if(id[0] == 'T')
+                                    {
+                                        var thisNodesElements = apiNode.Element("elements");
+
+                                        if(thisNodesElements == null)
+                                            thisNodesElements = new XElement("elements");
+
+                                        var allElements = duplicates.SelectMany(d => d.Descendants("element")).Concat(
+                                            thisNodesElements.Descendants("element"));
+                                        int count = duplicates.Count + 1;
+
+                                        // Merge element info for types.  First, see which ones don't appear in
+                                        // all copies of the type.
+                                        var missingMembers = allElements.Select(
+                                            el => (el.Attribute("api").Value, el)).GroupBy(
+                                                m => m.Value).Where(g => g.Count() != count);
+
+                                        // For those that don't but they do exist in the node we are keeping, add
+                                        // library info to those elements.  If they don't exist in the node we are
+                                        // keeping, add a new element to the node with the library info.
+                                        foreach(var g in missingMembers)
+                                        {
+                                            var memberElement = g.FirstOrDefault(m => m.el.Parent.Parent == apiNode).el;
+
+                                            if(memberElement == null)
+                                            {
+                                                memberElement = new XElement(g.First().el);
+                                                thisNodesElements.Add(memberElement);
+                                            }
+
+                                            var libraries = new XElement("libraries");
+
+                                            memberElement.Add(libraries);
+
+                                            foreach(var lib in g.Select(m => m.el.Parent.Parent.Element(
+                                              "containers").Element("library")).OrderBy(l => l.Attribute("assembly").Value))
+                                            {
+                                                libraries.Add(new XElement(lib));
+                                            }
+                                        }
+
+                                        mergedTypes += count;
+                                    }
+                                    else
+                                        mergedMembers++;
+
+                                    duplicatesSeen.Add(id);
+                                    apiNode.WriteTo(writer);
+                                }
+                            }
+                            break;
+
+                        default:
+                            writer.WriteNode(reader.ReadSubtree(), true);
+                            break;
+                    }
+                }
+
+                writer.WriteEndDocument();
+            }
+
+            File.Delete(reflectionDataFile);
+            File.Move(mergedReflectionDataFile, reflectionDataFile);
+
+            return (mergedTypes, mergedMembers);
         }
         #endregion
     }

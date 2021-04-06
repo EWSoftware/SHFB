@@ -4,8 +4,6 @@
 		AssemblyFile="{@SHFBFolder}\MRefBuilder.exe" />
 	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
 		AssemblyFile="{@SHFBFolder}\XslTransform.exe" />
-	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace"
-		AssemblyFile="{@SHFBFolder}\SegregateByNamespace.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
@@ -21,20 +19,13 @@
 			ReflectionFilename="reflection.org"
 			Assemblies="@(Assembly)" />
 
-		<!-- Merge duplicate topics (if any), add XAML syntax data if needed, apply the document model
-				 transformation, and add filenames-->
+		<!-- Apply the document model transformation and add filenames -->
 		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
-			Transformations="~\ProductionTransforms\MergeDuplicates.xsl;~\ProductionTransforms\AddXamlSyntaxData.xsl;~\ProductionTransforms\ApplyVSDocModel.xsl;~\ProductionTransforms\AddFilenames.xsl"
+			Transformations="~\ProductionTransforms\ApplyVSDocModel.xsl;~\ProductionTransforms\AddFilenames.xsl"
 			Arguments="IncludeAllMembersTopic=false"
 			InputFile="reflection.org"
 			OutputFile="reflection.xml" />
-
-		<!-- Segregate the reflection data by namespace -->
-		<Microsoft.Ddue.Tools.MSBuild.SegregateByNamespace
-			WorkingFolder="$(WorkingFolder)"
-			ReflectionFilename="reflection.xml"
-			OutputFolder=".\Segregated" />
 
 	</Target>
 

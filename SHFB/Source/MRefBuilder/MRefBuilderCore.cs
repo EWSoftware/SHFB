@@ -369,14 +369,15 @@ namespace Microsoft.Ddue.Tools
 
             // Get a text writer for output
             TextWriter output = Console.Out;
+            string reflectionDataFile = null;
 
             if(results.Options["out"].IsPresent)
             {
-                string file = (string)results.Options["out"].Value;
+                reflectionDataFile = (string)results.Options["out"].Value;
 
                 try
                 {
-                    output = new StreamWriter(file, false, Encoding.UTF8);
+                    output = new StreamWriter(reflectionDataFile, false, Encoding.UTF8);
                 }
                 catch(IOException e)
                 {
@@ -534,9 +535,21 @@ namespace Microsoft.Ddue.Tools
                 if(ApiVisitor.Canceled)
                     ConsoleApplication.WriteMessage(LogLevel.Error, "MRefBuilder task canceled");
                 else
+                {
                     ConsoleApplication.WriteMessage(LogLevel.Info, "Wrote information on {0} namespaces, " +
                         "{1} types, and {2} members", ApiVisitor.NamespaceCount, ApiVisitor.TypeCount,
                         ApiVisitor.MemberCount);
+
+                    if(!String.IsNullOrWhiteSpace(reflectionDataFile))
+                    {
+                        ConsoleApplication.WriteMessage(LogLevel.Info, "Merging duplicate type and member information");
+
+                        var (mergedTypes, mergedMembers) = ApiVisitor.MergeDuplicateReflectionData(reflectionDataFile);
+
+                        ConsoleApplication.WriteMessage(LogLevel.Info, "Merged {0} duplicate type(s) and {1} " +
+                            "duplicate member(s)", mergedTypes, mergedMembers);
+                    }
+                }
             }
             finally
             {

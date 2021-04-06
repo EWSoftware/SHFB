@@ -1393,7 +1393,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="70b704dc-03c8-4934-b83e-e84d4d7f927a" visible="True" isSelected="true" title="Version 2021.3.29.0">
+    <Topic id="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" visible="True" isSelected="true" title="Version 2021.4.5.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2021.4.5.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="70b704dc-03c8-4934-b83e-e84d4d7f927a" visible="True" title="Version 2021.3.29.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2021.3.29.0" />
       </HelpKeywords>

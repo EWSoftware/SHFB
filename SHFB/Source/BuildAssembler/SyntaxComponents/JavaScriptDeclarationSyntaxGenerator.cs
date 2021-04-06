@@ -2,21 +2,20 @@
 // System  : Sandcastle Build Components
 // File    : JavaScriptDeclarationSyntaxGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/16/2012
+// Updated : 04/03/2021
 // Note    : This is a slightly modified version of the Microsoft ScriptSharpDeclarationSyntaxGenerator
-//           (Copyright 2007-2012 Microsoft Corporation).  My changes are indicated by my initials "EFW" in a
+//           (Copyright 2007-2021 Microsoft Corporation).  My changes are indicated by my initials "EFW" in a
 //           comment on the changes.
-// Compiler: Microsoft Visual C#
 //
 // This file contains a JavaScript declaration syntax generator that is used to add a JavaScript Syntax section
 // to each generated API topic.  This version differs from the ScriptSharpDeclarationSyntaxGenerator in that it
 // looks for a <scriptSharp /> element in the <api> node and, if found, only then will it apply the casing rules
 // to the member name.  If not present, no casing rules are applied to the member names thus it is suitable for
 // use with regular JavaScript such as that used in AjaxDoc projects.  There are actually only two minor changes
-// plus a change to the FixScriptSharp.xsl transformation.
+// plus a change to the Script# Reflection File Fixer plug-in.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -46,8 +45,8 @@ namespace Microsoft.Ddue.Tools
     /// member names thus it is suitable for use with regular JavaScript such as that used in AjaxDoc projects.</para>
     /// 
     /// <para>In order to use this script generator with Script# content, the Sandcastle reflection data file
-    /// must first be transformed using the XSL transformation <b>ProductionTransforms\FixScriptSharp.xsl</b> so
-    /// that the necessary changes are made to it.</para>
+    /// must first be transformed using the Script# Reflection File Fixer plug-in so that the necessary changes
+    /// are made to it.</para>
     /// </remarks>
     public sealed class JavaScriptDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
@@ -65,13 +64,8 @@ namespace Microsoft.Ddue.Tools
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public string ResourceItemFileLocation
-            {
-                get
-                {
-                    return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent");
-                }
-            }
+            public string ResourceItemFileLocation => Path.Combine(ComponentUtilities.AssemblyFolder(
+                Assembly.GetExecutingAssembly()), "SyntaxContent");
 
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
@@ -92,6 +86,7 @@ namespace Microsoft.Ddue.Tools
         // EFW - Added XPath expression to locate the scriptSharp element
         private static readonly XPathExpression scriptSharpExpression =
             XPathExpression.Compile("boolean(scriptSharp)");
+
         #endregion
 
         #region Private methods
@@ -105,18 +100,20 @@ namespace Microsoft.Ddue.Tools
         /// <param name="reflection">The reflection information</param>
         /// <param name="attributeName">The attribute for which to search</param>
         /// <returns>True if found or false if not found</returns>
-        private static bool HasAttribute(XPathNavigator reflection,
-          string attributeName)
+        private static bool HasAttribute(XPathNavigator reflection, string attributeName)
         {
             attributeName = "T:" + attributeName;
             XPathNodeIterator iterator = (XPathNodeIterator)reflection.Evaluate(
                 SyntaxGeneratorTemplate.apiAttributesExpression);
 
             foreach(XPathNavigator navigator in iterator)
-                if(navigator.SelectSingleNode(
-                  SyntaxGeneratorTemplate.attributeTypeExpression).GetAttribute(
+            {
+                if(navigator.SelectSingleNode(SyntaxGeneratorTemplate.attributeTypeExpression).GetAttribute(
                   "api", String.Empty) == attributeName)
+                {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -130,10 +127,11 @@ namespace Microsoft.Ddue.Tools
         /// <returns>True if unsupported or false if it is supported</returns>
         private bool IsUnsupported(XPathNavigator reflection, SyntaxWriter writer)
         {
-            if(base.IsUnsupportedGeneric(reflection, writer) ||
-              base.IsUnsupportedExplicit(reflection, writer) ||
+            if(base.IsUnsupportedGeneric(reflection, writer) || base.IsUnsupportedExplicit(reflection, writer) ||
               base.IsUnsupportedUnsafe(reflection, writer))
+            {
                 return true;
+            }
 
             if(HasAttribute(reflection, "System.NonScriptableAttribute"))
             {
@@ -199,8 +197,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>The containing type name if found or null if not found</returns>
         private static string ReadContainingTypeName(XPathNavigator reflection)
         {
-            return (string)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiContainingTypeNameExpression);
+            return (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiContainingTypeNameExpression);
         }
 
         /// <summary>
@@ -209,14 +206,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="reflection">The reflection information</param>
         /// <returns>The full containing type name prefixed with its namespace
         /// or null if not found</returns>
-        private static string ReadFullContainingTypeName(
-          XPathNavigator reflection)
+        private static string ReadFullContainingTypeName(XPathNavigator reflection)
         {
             string nameSpace = ReadNamespaceName(reflection);
             string typeName = ReadContainingTypeName(reflection);
 
-            if(String.IsNullOrEmpty(nameSpace) || HasAttribute(reflection,
-              "System.IgnoreNamespaceAttribute"))
+            if(String.IsNullOrEmpty(nameSpace) || HasAttribute(reflection, "System.IgnoreNamespaceAttribute"))
                 return typeName;
 
             return String.Concat(nameSpace, ".", typeName);
@@ -233,8 +228,7 @@ namespace Microsoft.Ddue.Tools
             string nameSpace = ReadNamespaceName(reflection);
             string typeName = ReadTypeName(reflection);
 
-            if(String.IsNullOrEmpty(nameSpace) || HasAttribute(reflection,
-              "System.IgnoreNamespaceAttribute"))
+            if(String.IsNullOrEmpty(nameSpace) || HasAttribute(reflection, "System.IgnoreNamespaceAttribute"))
                 return typeName;
 
             return String.Concat(nameSpace, ".", typeName);
@@ -252,14 +246,15 @@ namespace Microsoft.Ddue.Tools
         /// <c>System.PreserveCaseAttribute</c>.</remarks>
         private static string ReadMemberName(XPathNavigator reflection)
         {
-            string identifier = (string)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiNameExpression);
+            string identifier = (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiNameExpression);
 
             // EFW - Don't apply the rule if <scriptSharp /> isn't found
             // or the PreserveCaseAttribute is found.
             if((bool)reflection.Evaluate(scriptSharpExpression) &&
               !HasAttribute(reflection, "System.PreserveCaseAttribute"))
+            {
                 identifier = CreateCamelCaseName(identifier);
+            }
 
             return identifier;
         }
@@ -271,8 +266,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>The namespace name</returns>
         private static string ReadNamespaceName(XPathNavigator reflection)
         {
-            return (string)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiContainingNamespaceNameExpression);
+            return (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiContainingNamespaceNameExpression);
         }
 
         /// <summary>
@@ -282,8 +276,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>The type name</returns>
         private static string ReadTypeName(XPathNavigator reflection)
         {
-            return (string)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiNameExpression);
+            return (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiNameExpression);
         }
 
         /// <summary>
@@ -375,18 +368,11 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="parameter">The parameter information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        private static void WriteParameter(XPathNavigator parameter,
-          SyntaxWriter writer)
+        private static void WriteParameter(XPathNavigator parameter, SyntaxWriter writer)
         {
-            string paramName = (string)parameter.Evaluate(
-                SyntaxGeneratorTemplate.parameterNameExpression);
+            string paramName = (string)parameter.Evaluate(SyntaxGeneratorTemplate.parameterNameExpression);
 
-// EFW - Unused so removed
-//            XPathNavigator navigator = parameter.SelectSingleNode(
-//                SyntaxGeneratorTemplate.parameterTypeExpression);
-
-            if((bool)parameter.Evaluate(
-              SyntaxGeneratorTemplate.parameterIsParamArrayExpression))
+            if((bool)parameter.Evaluate(SyntaxGeneratorTemplate.parameterIsParamArrayExpression))
             {
                 writer.WriteString("... ");
             }
@@ -399,11 +385,9 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        private static void WriteParameterList(XPathNavigator reflection,
-          SyntaxWriter writer)
+        private static void WriteParameterList(XPathNavigator reflection, SyntaxWriter writer)
         {
-            XPathNodeIterator iterator = reflection.Select(
-              SyntaxGeneratorTemplate.apiParametersExpression);
+            XPathNodeIterator iterator = reflection.Select(SyntaxGeneratorTemplate.apiParametersExpression);
 
             writer.WriteString("(");
 
@@ -424,8 +408,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        private static void WriteRecordConstructorSyntax(
-          XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteRecordConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string nameSpace = ReadNamespaceName(reflection);
             string containingType = ReadContainingTypeName(reflection);
@@ -444,8 +427,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        private static void WriteRecordSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        private static void WriteRecordSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string nameSpace = ReadNamespaceName(reflection);
             string typeName = ReadTypeName(reflection);
@@ -464,8 +446,7 @@ namespace Microsoft.Ddue.Tools
             switch(reference.LocalName)
             {
                 case "arrayOf":
-                    int rank = Convert.ToInt32(reference.GetAttribute("rank",
-                        String.Empty), CultureInfo.InvariantCulture);
+                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty), CultureInfo.InvariantCulture);
                     XPathNavigator navigator = reference.SelectSingleNode(typeExpression);
 
                     WriteTypeReference(navigator, writer);
@@ -500,8 +481,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteAttachedEventSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteAttachedEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
         }
 
@@ -510,13 +490,11 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteAttachedPropertySyntax(
-          XPathNavigator reflection, SyntaxWriter writer)
+        public override void WriteAttachedPropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string containingTypeName = ReadContainingTypeName(reflection);
             string memberName = ReadMemberName(reflection);
-            string fullName = String.Concat(containingTypeName, ".",
-                memberName.Substring(3));
+            string fullName = String.Concat(containingTypeName, ".", memberName.Substring(3));
 
             if(memberName.StartsWith("Get", StringComparison.OrdinalIgnoreCase))
             {
@@ -539,8 +517,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteClassSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(this.IsUnsupported(reflection, writer))
                 return;
@@ -567,19 +544,16 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("'");
 
             bool hasBaseClass = false;
-            XPathNavigator reference = reflection.SelectSingleNode(
-                SyntaxGeneratorTemplate.apiBaseClassExpression);
+            XPathNavigator reference = reflection.SelectSingleNode(SyntaxGeneratorTemplate.apiBaseClassExpression);
 
-            if(!(reference == null || (bool)reference.Evaluate(
-              SyntaxGeneratorTemplate.typeIsObjectExpression)))
+            if(!(reference == null || (bool)reference.Evaluate(SyntaxGeneratorTemplate.typeIsObjectExpression)))
             {
                 WriteIndentedNewLine(writer);
                 this.WriteTypeReference(reference, writer);
                 hasBaseClass = true;
             }
 
-            XPathNodeIterator iterator = reflection.Select(
-                SyntaxGeneratorTemplate.apiImplementedInterfacesExpression);
+            XPathNodeIterator iterator = reflection.Select(SyntaxGeneratorTemplate.apiImplementedInterfacesExpression);
 
             if(iterator.Count != 0)
             {
@@ -609,8 +583,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteConstructorSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(!this.IsUnsupported(reflection, writer))
             {
@@ -634,8 +607,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteDelegateSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteKeyword("function");
             WriteParameterList(reflection, writer);
@@ -647,8 +619,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteEnumerationSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string identifier = ReadFullTypeName(reflection);
 
@@ -661,8 +632,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(".createEnum('");
             writer.WriteIdentifier(identifier);
             writer.WriteString("', ");
-            writer.WriteString(HasAttribute(reflection,
-                "System.FlagsAttribute") ? "true" : "false");
+            writer.WriteString(HasAttribute(reflection, "System.FlagsAttribute") ? "true" : "false");
             writer.WriteString(");");
         }
 
@@ -671,13 +641,11 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteEventSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(!this.IsUnsupported(reflection, writer))
             {
-                if(reflection.Select(
-                  SyntaxGeneratorTemplate.apiParametersExpression).Count > 0)
+                if(reflection.Select(SyntaxGeneratorTemplate.apiParametersExpression).Count > 0)
                     writer.WriteMessage("UnsupportedIndex_" + this.Language);
                 else
                 {
@@ -705,8 +673,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteFieldSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(!this.IsUnsupported(reflection, writer))
             {
@@ -716,11 +683,9 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteKeyword("var");
                 writer.WriteString(" ");
 
-                if((bool)reflection.Evaluate(
-                  SyntaxGeneratorTemplate.apiIsStaticExpression))
+                if((bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsStaticExpression))
                 {
-                    writer.WriteIdentifier(ReadFullContainingTypeName(
-                        reflection));
+                    writer.WriteIdentifier(ReadFullContainingTypeName(reflection));
                     writer.WriteString(".");
                 }
 
@@ -733,8 +698,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteInterfaceSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(!this.IsUnsupported(reflection, writer))
             {
@@ -757,11 +721,9 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteNamespaceSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            string identifier = reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiNameExpression).ToString();
+            string identifier = reflection.Evaluate(SyntaxGeneratorTemplate.apiNameExpression).ToString();
 
             writer.WriteString("Type.createNamespace('");
             writer.WriteIdentifier(identifier);
@@ -773,8 +735,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteNormalMethodSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(this.IsUnsupported(reflection, writer))
                 return;
@@ -813,8 +774,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteOperatorSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedOperator_" + this.Language);
         }
@@ -834,8 +794,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WritePropertySyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(this.IsUnsupported(reflection, writer))
                 return;
@@ -847,23 +806,15 @@ namespace Microsoft.Ddue.Tools
             }
 
             string identifier = ReadMemberName(reflection);
-            bool isStatic = (bool)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiIsStaticExpression);
-            bool isReadProp = (bool)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiIsReadPropertyExpression);
-            bool isWriteProp = (bool) reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiIsWritePropertyExpression);
-
-// EFW - Unused so removed
-//            XPathNavigator navigator = reflection.SelectSingleNode(
-//                SyntaxGeneratorTemplate.apiReturnTypeExpression);
+            bool isStatic = (bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsStaticExpression);
+            bool isReadProp = (bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsReadPropertyExpression);
+            bool isWriteProp = (bool) reflection.Evaluate(SyntaxGeneratorTemplate.apiIsWritePropertyExpression);
 
             if(isReadProp)
             {
                 if(isStatic)
                 {
-                    writer.WriteIdentifier(ReadFullContainingTypeName(
-                        reflection));
+                    writer.WriteIdentifier(ReadFullContainingTypeName(reflection));
                     writer.WriteString(".");
                     writer.WriteString("get_");
                     writer.WriteIdentifier(identifier);
@@ -887,8 +838,7 @@ namespace Microsoft.Ddue.Tools
             {
                 if(isStatic)
                 {
-                    writer.WriteIdentifier(ReadFullContainingTypeName(
-                        reflection));
+                    writer.WriteIdentifier(ReadFullContainingTypeName(reflection));
                     writer.WriteString(".");
                     writer.WriteString("set_");
                     writer.WriteIdentifier(identifier);
@@ -914,8 +864,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="reflection">The reflection information</param>
         /// <param name="writer">The syntax writer to which it is written</param>
-        public override void WriteStructureSyntax(XPathNavigator reflection,
-          SyntaxWriter writer)
+        public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(!this.IsUnsupported(reflection, writer))
                 writer.WriteMessage("UnsupportedStructure_" + this.Language);
