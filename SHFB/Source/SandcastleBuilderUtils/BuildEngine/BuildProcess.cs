@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2021
+// Updated : 04/09/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -968,6 +968,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                    scriptFile = Path.GetFileName(scriptFile);
 
                     // Silverlight build targets are only available for 32-bit builds regardless of the framework
                     // version and require the 32-bit version of MSBuild in order to load the target file correctly.
