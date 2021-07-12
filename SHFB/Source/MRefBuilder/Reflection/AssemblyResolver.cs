@@ -33,7 +33,7 @@ using System.Compiler;
 
 using Sandcastle.Core;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This is a the assembly resolver for Sandcastle's <b>MRefBuilder</b> tool.  It supports assembly
@@ -67,7 +67,7 @@ namespace Microsoft.Ddue.Tools.Reflection
     /// filename.  See the Crystal Reports assembly example below.</note>
     /// </remarks>
     /// <example>
-    /// <code lang="xml" title="Sample MRefBuilder.config">
+    /// <code language="xml" title="Sample MRefBuilder.config">
     /// <![CDATA[
     /// <configuration>
     ///   <dduetools>
@@ -76,8 +76,7 @@ namespace Microsoft.Ddue.Tools.Reflection
     ///
     ///     <!-- Replace the resolver element with this.  Update the path
     ///          to point to the location of the assembly on your system. -->
-    ///     <resolver type="Microsoft.Ddue.Tools.Reflection.AssemblyResolver"
-    ///         assembly="%SHFBROOT%\MRefBuilder.exe" use-gac="false">
+    ///     <resolver type="Sandcastle.Tools.Reflection.AssemblyResolver" use-gac="false">
     ///
     ///       <!-- Add an assemblyBinding element to contain the redirects -->
     ///       <assemblyBinding>
@@ -119,9 +118,10 @@ namespace Microsoft.Ddue.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, AssemblyNode> cache = new Dictionary<string, AssemblyNode>();
-        private Collection<BindingRedirectSettings> redirects;
-        private Collection<string> ignoreIfUnresolved;
+        private readonly Dictionary<string, AssemblyNode> cache = new Dictionary<string, AssemblyNode>();
+        private readonly Collection<BindingRedirectSettings> redirects;
+        private readonly Collection<string> ignoreIfUnresolved;
+
         #endregion
 
         #region Properties
@@ -150,6 +150,11 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// </summary>
         /// <remarks>This can be used by derived resolvers to add additional ignored assemblies</remarks>
         public Collection<string> IgnoreIfUnresolved => ignoreIfUnresolved;
+
+        /// <summary>
+        /// This is used to get or set the message logger to use to report issues
+        /// </summary>
+        public Action<LogLevel, string> MessageLogger { get; set; }
 
         #endregion
 
@@ -196,6 +201,9 @@ namespace Microsoft.Ddue.Tools.Reflection
             Collection<BindingRedirectSettings> importedSettings;
             BindingRedirectSettings brs;
 
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             string useGacValue = configuration.GetAttribute("use-gac", String.Empty);
 
             if(!String.IsNullOrEmpty(useGacValue))
@@ -209,21 +217,20 @@ namespace Microsoft.Ddue.Tools.Reflection
                 // Import settings from a configuration file?
                 if(!String.IsNullOrEmpty(brs.ConfigurationFile))
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Importing settings from: {0}",
-                        brs.ConfigurationFile);
+                    this.MessageLogger(LogLevel.Info, $"Importing settings from: {brs.ConfigurationFile}");
+
                     importedSettings = BindingRedirectSettings.FromConfigFile(brs.ConfigurationFile);
 
                     foreach(BindingRedirectSettings imported in importedSettings)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Info,
-                            "Loaded assembly binding redirect: {0}", imported.ToString());
+                        this.MessageLogger(LogLevel.Info,
+                            $"Loaded assembly binding redirect: {imported}");
                         redirects.Add(imported);
                     }
                 }
                 else
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Loaded assembly binding redirect: {0}",
-                        brs.ToString());
+                    this.MessageLogger(LogLevel.Info, $"Loaded assembly binding redirect: {brs}");
                     redirects.Add(brs);
                 }
             }
@@ -297,8 +304,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             foreach(BindingRedirectSettings brs in redirects)
                 if(brs.IsRedirectFor(name) && cache.ContainsKey(brs.StrongName))
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Using redirect '{0}' in place of '{1}'",
-                        brs.StrongName, name);
+                    this.MessageLogger(LogLevel.Info, $"Using redirect '{brs.StrongName}' in place of '{name}'");
 
                     assembly = cache[brs.StrongName];
 
@@ -344,8 +350,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                 {
                     assembly = AssemblyNode.GetAssembly(assemblyRef.Location, null, false, false, false, false);
 
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Using framework redirect '{0}' in place of '{1}'",
-                        assembly.StrongName, name);
+                    this.MessageLogger(LogLevel.Info, $"Using framework redirect '{assembly.StrongName}' in place of '{name}'");
 
                     cache.Add(name, assembly);
                     return assembly;
@@ -359,8 +364,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                     assembly = cache[key];
                     cache.Add(name, assembly);
 
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Using automatic redirect '{0}' in place of '{1}'",
-                        assembly.StrongName, name);
+                    this.MessageLogger(LogLevel.Info, $"Using automatic redirect '{assembly.StrongName}' in place of '{name}'");
 
                     return assembly;
                 }
@@ -385,9 +389,8 @@ namespace Microsoft.Ddue.Tools.Reflection
               StringComparison.Ordinal) && !reference.Name.StartsWith("Microsoft.", StringComparison.Ordinal))
                 OnUnresolvedAssemblyReference(reference, module);
             else
-                ConsoleApplication.WriteMessage(LogLevel.Warn, "Ignoring unresolved assembly " +
-                    "reference: {0} ({1}) required by {2}", reference.Name, reference.StrongName,
-                    module.Name);
+                this.MessageLogger(LogLevel.Warn,
+                    $"Ignoring unresolved assembly reference: {reference.Name} ({reference.StrongName}) required by {module.Name}");
 
             return null;
         }

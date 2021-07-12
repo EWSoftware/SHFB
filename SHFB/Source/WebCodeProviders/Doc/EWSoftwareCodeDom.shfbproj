@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- The configuration and platform will be used to determine which
          assemblies to include from solution and project documentation
@@ -19,25 +19,24 @@
     <HtmlHelpName>EWSoftware.CodeDom</HtmlHelpName>
     <ProjectSummary>Web Project Code Providers.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Web Code Providers&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttps://GitHub.com/EWSoftware/SHFB&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttps://GitHub.com/EWSoftware/SHFB&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
-    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, NonBrowsable</VisibleItems>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <WorkingPath>
     </WorkingPath>
     <BuildLogFile>
     </BuildLogFile>
-    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.7.2</FrameworkVersion>
     <HelpTitle>EWSoftware.CodeDom Namespace Documentation</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>Copyright \xA9 2008-2015, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>Copyright \xA9 2008-2021, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
-    <HelpFileVersion>1.1.0.0</HelpFileVersion>
+    <HelpFileVersion>2015.6.7.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\..\Deploy\Extras\EWSoftware.CodeDom.dll" />
-      <DocumentationSource sourceFile="..\..\..\Deploy\Extras\EWSoftware.CodeDom.xml" />
+      <DocumentationSource sourceFile="..\WebCodeProviders.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />

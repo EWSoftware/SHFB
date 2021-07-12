@@ -11,7 +11,6 @@ IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Cur
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Professional\MSBuild\Current" SET "MSBUILD=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Professional\MSBuild\Current\bin\MSBuild.exe"
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current" SET "MSBUILD=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\bin\MSBuild.exe"
 
-SET NUGET=%CD%\SHFB\Source\.nuget\NuGet.exe
 SET SHFBROOT=%CD%\SHFB\Deploy\
 SET BuildConfig=%1
 
@@ -23,17 +22,7 @@ ECHO *
 ECHO * Core tools
 ECHO *
 
-"%NUGET%" restore "SandcastleTools.sln"
-"%MSBUILD%" /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
-
-IF ERRORLEVEL 1 GOTO End
-
-ECHO *
-ECHO * Standalone GUI
-ECHO *
-
-"%NUGET%" restore "SandcastleBuilder.sln"
-"%MSBUILD%" /nologo /v:m /m "SandcastleBuilder.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /r /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 
@@ -41,8 +30,7 @@ ECHO *
 ECHO * VS2017 and later package
 ECHO *
 
-"%NUGET%" restore "SandcastleBuilderPackage.sln"
-"%MSBUILD%" /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /r /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 :BuildDocs
@@ -74,14 +62,13 @@ ECHO *
 ECHO * Documentation
 ECHO *
 
-"%MSBUILD%" /nologo /v:m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nologo /v:m /m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 
 CD ..\SHFB\Source
 
-"%NUGET%" restore "SHFBSetup.sln"
-"%MSBUILD%" /nologo /v:m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nologo /v:m /m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 

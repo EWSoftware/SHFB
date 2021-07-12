@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SiteMapFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the site map file editor control
 //
@@ -57,10 +56,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return siteMapFile.FullPath; }
-        }
+        public string Filename => siteMapFile.FullPath;
 
         /// <summary>
         /// This read-only property returns the current topic collection including any unsaved edits
@@ -309,7 +305,6 @@ namespace SandcastleBuilder.Package.Editors
             FileNode thisNode = this.FileNode, topicNode = null;
             IVsAddProjectItemDlg addItemDialog;
             string strFilter = String.Empty, strBrowseLocations;
-            int iDontShowAgain;
             uint uiFlags;
             IVsProject3 project;
             Guid projectGuid;
@@ -331,8 +326,7 @@ namespace SandcastleBuilder.Package.Editors
                     __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView);
 
                 int hr = addItemDialog.AddProjectItemDlg((topicNode ?? thisNode).ID, ref projectGuid, project,
-                    uiFlags, "Other Content", "Html Page", ref strBrowseLocations, ref strFilter,
-                    out iDontShowAgain);
+                    uiFlags, "Other Content", "Html Page", ref strBrowseLocations, ref strFilter, out _);
 
                 // If successful, get the current project item (the one just added) and add it as a topic
                 // to the collection.

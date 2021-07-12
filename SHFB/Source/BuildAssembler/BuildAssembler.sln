@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssembler", "BuildAssembler\BuildAssembler.csproj", "{5BA19924-5A65-46E0-97CD-948595932584}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildAssembler", "BuildAssembler\BuildAssembler.csproj", "{5BA19924-5A65-46E0-97CD-948595932584}"
 	ProjectSection(ProjectDependencies) = postProject
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41} = {30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}
 		{CEAEC85B-973A-4414-8668-723EB65E5088} = {CEAEC85B-973A-4414-8668-723EB65E5088}
@@ -11,20 +11,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssembler", "BuildAsse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponents", "BuildComponents\BuildComponents.csproj", "{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntaxComponents", "SyntaxComponents\SyntaxComponents.csproj", "{CEAEC85B-973A-4414-8668-723EB65E5088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SyntaxComponents", "SyntaxComponents\SyntaxComponents.csproj", "{CEAEC85B-973A-4414-8668-723EB65E5088}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponentTargets", "BuildComponentTargets\BuildComponentTargets.csproj", "{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildComponentTargets", "BuildComponentTargets\BuildComponentTargets.csproj", "{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleCore", "..\SandcastleCore\SandcastleCore.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleComponents", "..\SandcastleComponents\SandcastleComponents.csproj", "{9708B799-DC83-4404-B8C6-FA444C310DCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorizerLibrary", "..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{00CF4B08-5AD9-40F7-9DCD-AA0D38D0FFED}"
 	ProjectSection(SolutionItems) = preProject
 		BuildAssembler.sln.vsspell = BuildAssembler.sln.vsspell
-		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Global

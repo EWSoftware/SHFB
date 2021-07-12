@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 07/06/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
 //
@@ -83,9 +82,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 SandcastleProject project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 #else
             // Set the project as the base path provider so that the folder is correct
-            if(base.CurrentProject != null)
+            if(this.CurrentProject != null)
             {
-                SandcastleProject project = base.CurrentProject;
+                SandcastleProject project = this.CurrentProject;
 #endif
                 ucBuildPropertiesPageContent.SetCurrentProject(project);
             }
@@ -122,11 +121,9 @@ namespace SandcastleBuilder.Package.PropertyPages
             // Get the selected help file formats
             if(propertyName == "HelpFileFormat")
             {
-                HelpFileFormats formats;
-
                 ProjectProperty projProp = currentProject.MSBuildProject.GetProperty("HelpFileFormat");
 
-                if(projProp == null || !Enum.TryParse<HelpFileFormats>(projProp.UnevaluatedValue, out formats))
+                if(projProp == null || !Enum.TryParse(projProp.UnevaluatedValue, out HelpFileFormats formats))
                     formats = HelpFileFormats.HtmlHelp1;
 
                 ucBuildPropertiesPageContent.SelectedHelpFileFormats = formats;

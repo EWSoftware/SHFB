@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a specialization
@@ -24,12 +24,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the template type
         /// </summary>
-        public SimpleTypeReference TemplateType { get; private set; }
+        public SimpleTypeReference TemplateType { get; }
 
         /// <summary>
         /// This read-only property returns the arguments
         /// </summary>
-        public IList<TypeReference> Arguments { get; private set; }
+        public IList<TypeReference> Arguments { get; }
 
         #endregion
 
@@ -43,14 +43,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="arguments">The arguments</param>
         public Specialization(SimpleTypeReference templateType, IList<TypeReference> arguments)
         {
-            if(templateType == null)
-                throw new ArgumentNullException("templateType");
-
-            if(arguments == null)
-                throw new ArgumentNullException("arguments");
-
-            this.TemplateType = templateType;
-            this.Arguments = arguments;
+            this.TemplateType = templateType ?? throw new ArgumentNullException(nameof(templateType));
+            this.Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
         }
         #endregion
     }

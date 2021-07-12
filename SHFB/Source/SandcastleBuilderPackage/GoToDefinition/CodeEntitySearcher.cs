@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CodeEntitySearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to search for and go to code entity declarations by member ID
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -43,12 +42,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private SVsServiceProvider serviceProvider;
+        private readonly SVsServiceProvider serviceProvider;
         private IVsObjectManager2 objectManager;
         private IVsLibrary2 library;
         private _LIB_LISTTYPE searchFlags;
         private string alternateCompareText;
-        private List<string> typeParameters, methodParameters, searchClassCandidates, searchMemberCandidates;
+        private readonly List<string> typeParameters, methodParameters;
+        private List<string> searchClassCandidates, searchMemberCandidates;
+
         #endregion
 
         #region Search results class
@@ -59,8 +60,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// </summary>
         private class SearchResult
         {
-            private IVsObjectList2 list;
-            private uint idx;
+            private readonly IVsObjectList2 list;
+            private readonly uint idx;
             private string fullName;
 
             /// <summary>
@@ -74,11 +75,12 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                     if(fullName == null)
                     {
-                        object obj;
 
                         if(list.GetProperty(idx, (int)_VSOBJLISTELEMPROPID.VSOBJLISTELEMPROPID_FULLNAME,
-                          out obj) == VSConstants.S_OK)
+                          out object obj) == VSConstants.S_OK)
+                        {
                             fullName = (string)obj;
+                        }
                     }
 
                     return fullName;
@@ -404,15 +406,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
             List<CodeClass> classes = new List<CodeClass>();
             int searchLine = 0, firstCodeLine = -1;
 
-            var dte2 = this.serviceProvider.GetService(typeof(SDTE)) as DTE2;
 
-            if(dte2 != null && dte2.ActiveDocument != null && dte2.ActiveDocument.ProjectItem != null &&
-              dte2.ActiveDocument.ProjectItem.FileCodeModel != null)
+            if(this.serviceProvider.GetService(typeof(SDTE)) is DTE2 dte2 && dte2.ActiveDocument != null &&
+              dte2.ActiveDocument.ProjectItem != null && dte2.ActiveDocument.ProjectItem.FileCodeModel != null)
             {
-                var selection = dte2.ActiveDocument.Selection as TextSelection;
                 var fileCodeModel = dte2.ActiveDocument.ProjectItem.FileCodeModel;
 
-                if(selection != null)
+                if(dte2.ActiveDocument.Selection is TextSelection selection)
                     searchLine = selection.ActivePoint.Line;
 
                 // Get all using namespaces, containing namespaces, and classes in the current file
@@ -424,27 +424,27 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     }
                     else
                         if(ce.Kind == vsCMElement.vsCMElementClass)
-                        {
-                            // A class in the global namespace
-                            classes.Add((CodeClass)ce);
+                    {
+                        // A class in the global namespace
+                        classes.Add((CodeClass)ce);
 
-                            if(firstCodeLine == -1)
-                                firstCodeLine = 1;
-                        }
-                        else
+                        if(firstCodeLine == -1)
+                            firstCodeLine = 1;
+                    }
+                    else
                             if(ce.Kind == vsCMElement.vsCMElementNamespace)
-                            {
-                                // A class within a namespace.  Typically there will only be one per file but
-                                // we'll account for multiples.
-                                containingNamespaces.Add(((CodeNamespace)ce).Name);
+                    {
+                        // A class within a namespace.  Typically there will only be one per file but
+                        // we'll account for multiples.
+                        containingNamespaces.Add(((CodeNamespace)ce).Name);
 
-                                if(firstCodeLine == -1)
-                                    firstCodeLine = ce.EndPoint.Line + 1;
+                        if(firstCodeLine == -1)
+                            firstCodeLine = ce.EndPoint.Line + 1;
 
-                                foreach(CodeElement nce in ce.Children)
-                                    if(nce.Kind == vsCMElement.vsCMElementClass)
-                                        classes.Add((CodeClass)nce);
-                            }
+                        foreach(CodeElement nce in ce.Children)
+                            if(nce.Kind == vsCMElement.vsCMElementClass)
+                                classes.Add((CodeClass)nce);
+                    }
 
                 // Remove stuff that looks like core framework namespaces unless any containing namespaces
                 // include similar names.
@@ -635,21 +635,17 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            IVsObjectList2 list;
-            uint count;
-            int pfOK;
-
             int result = library.GetList2((uint)listType, (uint)_LIB_LISTFLAGS.LLF_USESEARCHFILTER,
-                new[] { criteria }, out list);
+                new[] { criteria }, out IVsObjectList2 list);
 
             if(result == VSConstants.S_OK && list != null)
             {
-                result = list.GetItemCount(out count);
+                result = list.GetItemCount(out uint count);
 
                 if(result == VSConstants.S_OK && count != 0)
                     for(uint idx = 0; idx < count; idx++)
                     {
-                        result = list.CanGoToSource(idx, VSOBJGOTOSRCTYPE.GS_DEFINITION, out pfOK);
+                        result = list.CanGoToSource(idx, VSOBJGOTOSRCTYPE.GS_DEFINITION, out int pfOK);
 
                         // Ignore anything for which we can't go to the source
                         if(result == VSConstants.S_OK && pfOK == 1)

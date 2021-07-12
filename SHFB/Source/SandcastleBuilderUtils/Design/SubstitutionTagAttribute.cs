@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/13/2021
+// Note    : Copyright 2021, Eric Woodruff, All rights reserved
 //
 // This file contains an attribute class used to mark substitution tag replacement methods
 //

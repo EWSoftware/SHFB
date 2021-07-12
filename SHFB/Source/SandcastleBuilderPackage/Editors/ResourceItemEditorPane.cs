@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 09/02/2018
 // Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a class used to host the resource item  file editor control
 //

@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 11/07/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the class used to obtain the current build component settings from the project
 //
@@ -19,6 +18,7 @@
 //===============================================================================================================
 
 using System;
+
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.WPF.PropertyPages

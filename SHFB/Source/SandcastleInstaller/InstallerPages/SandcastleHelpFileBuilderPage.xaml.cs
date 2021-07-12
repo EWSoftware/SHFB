@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SandcastleHelpFileBuilderPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/13/2019
+// Updated : 04/21/2021
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder
 //
@@ -133,6 +133,9 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             if(configuration.Attribute("shfbVersion") == null)
                 throw new InvalidOperationException("A shfbVersion attribute value is required");
 
@@ -290,7 +293,7 @@ namespace Sandcastle.Installer.InstallerPages
                 await Task.Run(() =>
                 {
                     Utility.RunInstaller(Path.Combine(Utility.InstallResourcesPath, installerName), null);
-                });
+                }).ConfigureAwait(true);
 
                 success = true;
             }

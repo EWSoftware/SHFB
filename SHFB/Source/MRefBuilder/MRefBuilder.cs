@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : MRefBuilder.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/18/2021
+// Updated : 05/31/2021
 //
 // This file contains the class used to make MRefBuilder callable from MSBuild projects.
 //
@@ -19,17 +19,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.Compiler;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Xml.XPath;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
+using Sandcastle.Core.Reflection;
 
-namespace Microsoft.Ddue.Tools.MSBuild
+namespace Sandcastle.Tools.MSBuild
 {
     public class MRefBuilder : Task, ICancelableTask
     {
+        #region Private data members
+        //=====================================================================
+
+        private ManagedReflectionWriter apiVisitor;
+
+        #endregion
+
         #region Task properties
         //=====================================================================
 
@@ -74,8 +89,8 @@ namespace Microsoft.Ddue.Tools.MSBuild
         /// <remarks>The build will be canceled as soon as the current type has finished being visited</remarks>
         public void Cancel()
         {
-            if(MRefBuilderCore.ApiVisitor != null)
-                MRefBuilderCore.ApiVisitor.Canceled = true;
+            if(apiVisitor != null)
+                apiVisitor.Canceled = true;
         }
         #endregion
 
@@ -88,17 +103,14 @@ namespace Microsoft.Ddue.Tools.MSBuild
         /// <returns>True on success, false on failure</returns>
         public override bool Execute()
         {
-            List<string> args = new List<string>();
             string currentDirectory = null;
             bool success = false;
 
-            // Log messages via MSBuild
-            ConsoleApplication.Log = this.Log;
-            ConsoleApplication.ToolName = "MRefBuilder";
+            this.WriteBanner();
 
             if(this.Assemblies == null || this.Assemblies.Length == 0)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, "At least one assembly (.dll or .exe) is " +
+                this.WriteMessage(LogLevel.Error, "At least one assembly (.dll or .exe) is " +
                     "required for MRefBuilder to parse");
                 return false;
             }
@@ -112,26 +124,12 @@ namespace Microsoft.Ddue.Tools.MSBuild
                     Directory.SetCurrentDirectory(Path.GetFullPath(this.WorkingFolder));
                 }
 
-                if(!String.IsNullOrWhiteSpace(this.ConfigurationFile))
-                    args.Add("/config:" + this.ConfigurationFile);
-
-                args.Add("/out:" + this.ReflectionFilename);
-
-                if(this.References != null)
-                {
-                    foreach(ITaskItem item in this.References)
-                        args.Add("/dep:" + item.ItemSpec);
-                }
-
-                foreach(ITaskItem item in this.Assemblies)
-                    args.Add(item.ItemSpec);
-
-                success = (MRefBuilderCore.MainEntryPoint(args.ToArray()) == 0);
+                success = this.GenerateReflectionInformation();
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                ConsoleApplication.WriteMessage(LogLevel.Error, "An unexpected error occurred trying to " +
+                this.WriteMessage(LogLevel.Error, "An unexpected error occurred trying to " +
                     "execute the MRefBuilder MSBuild task: {0}", ex);
             }
             finally
@@ -143,5 +141,479 @@ namespace Microsoft.Ddue.Tools.MSBuild
             return success;
         }
         #endregion
+
+        #region Main program entry point
+        //=====================================================================
+
+        /// <summary>
+        /// Main program entry point (MSBuild task)
+        /// </summary>
+        /// <returns>True on success or false failure</returns>
+        public bool GenerateReflectionInformation()
+        {
+            string path, version, framework = null, assemblyPath, typeName;
+
+            // Load the configuration file
+            XPathDocument config;
+            XPathNavigator configNav;
+
+            string configDirectory = Path.GetDirectoryName(this.ConfigurationFile);
+
+            try
+            {
+                config = new XPathDocument(this.ConfigurationFile);
+                configNav = config.CreateNavigator();
+            }
+            catch(IOException e)
+            {
+                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to read " +
+                    "the configuration file '{0}'. The error message is: {1}", this.ConfigurationFile, e.Message);
+                return false;
+            }
+            catch(UnauthorizedAccessException e)
+            {
+                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to read " +
+                    "the configuration file '{0}'. The error message is: {1}", this.ConfigurationFile, e.Message);
+                return false;
+            }
+            catch(XmlException e)
+            {
+                this.WriteMessage(LogLevel.Error, "The configuration file '{0}' is not " +
+                    "well-formed. The error message is: {1}", this.ConfigurationFile, e.Message);
+                return false;
+            }
+
+            // Adjust the target platform
+            var platformNode = configNav.SelectSingleNode("/configuration/dduetools/platform");
+
+            if(platformNode == null)
+            {
+                this.WriteMessage(LogLevel.Error, "A platform element is required to define the " +
+                    "framework type and version to use.");
+                return false;
+            }
+
+            // !EFW - Use the framework definition file to load core framework assembly reference information
+            version = platformNode.GetAttribute("version", String.Empty);
+            framework = platformNode.GetAttribute("framework", String.Empty);
+
+            // Get component locations used to find additional reflection data definition files
+            List<string> componentFolders = new List<string>();
+            var locations = configNav.SelectSingleNode("/configuration/dduetools/componentLocations");
+
+            if(locations != null)
+                foreach(XPathNavigator folder in locations.Select("location/@folder"))
+                    if(!String.IsNullOrWhiteSpace(folder.Value) && Directory.Exists(folder.Value))
+                        componentFolders.Add(folder.Value);
+
+            // Get the dependencies
+            var dependencies = new List<string>();
+
+            if(this.References != null)
+                dependencies.AddRange(this.References.Select(r => r.ItemSpec));
+
+            if(!String.IsNullOrEmpty(framework) && !String.IsNullOrEmpty(version))
+            {
+                var coreNames = new HashSet<string>(new[] { "netstandard", "mscorlib", "System.Runtime" },
+                    StringComparer.OrdinalIgnoreCase);
+
+                var coreFrameworkAssemblies = this.Assemblies.Select(a => a.ItemSpec).Concat(dependencies).Where(
+                    d => coreNames.Contains(Path.GetFileNameWithoutExtension(d)));
+
+                TargetPlatform.SetFrameworkInformation(framework, version, componentFolders,
+                    coreFrameworkAssemblies);
+            }
+            else
+            {
+                this.WriteMessage(LogLevel.Error, "Unknown target framework version '{0} {1}'.",
+                    framework, version);
+                return false;
+            }
+
+            // Create an API member namer
+            ApiNamer namer;
+
+            // Apply a different naming method to assemblies using these frameworks
+            if(framework == PlatformType.DotNetCore || framework == PlatformType.DotNetPortable ||
+              framework == PlatformType.WindowsPhone || framework == PlatformType.WindowsPhoneApp)
+            {
+                namer = new WindowsStoreAndPhoneNamer();
+            }
+            else
+                namer = new OrcasNamer();
+
+            XPathNavigator namerNode = configNav.SelectSingleNode("/configuration/dduetools/namer");
+
+            if(namerNode != null)
+            {
+                assemblyPath = namerNode.GetAttribute("assembly", String.Empty);
+                typeName = namerNode.GetAttribute("type", String.Empty);
+
+                if(!String.IsNullOrWhiteSpace(assemblyPath))
+                {
+                    assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
+
+                    if(!Path.IsPathRooted(assemblyPath))
+                        assemblyPath = Path.Combine(configDirectory, assemblyPath);
+                }
+
+                try
+                {
+                    Assembly assembly = !String.IsNullOrWhiteSpace(assemblyPath) ? Assembly.LoadFrom(assemblyPath) :
+                        Assembly.GetExecutingAssembly();
+                    namer = (ApiNamer)assembly.CreateInstance(typeName);
+
+                    if(namer == null)
+                    {
+                        this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                            "component assembly '{1}'.", typeName, assembly.Location);
+                        return false;
+                    }
+                }
+                catch(IOException e)
+                {
+                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return false;
+                }
+                catch(UnauthorizedAccessException e)
+                {
+                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return false;
+                }
+                catch(BadImageFormatException)
+                {
+                    this.WriteMessage(LogLevel.Error, "The component assembly '{0}' is not a " +
+                        "valid managed assembly.", assemblyPath);
+                    return false;
+                }
+                catch(TypeLoadException)
+                {
+                    this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        "component assembly '{1}'.", typeName, assemblyPath);
+                    return false;
+                }
+                catch(MissingMethodException)
+                {
+                    this.WriteMessage(LogLevel.Error, "No appropriate constructor exists for " +
+                        "the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath);
+                    return false;
+                }
+                catch(TargetInvocationException e)
+                {
+                    this.WriteMessage(LogLevel.Error, "An error occurred while initializing the " +
+                        "type '{0}' in the component assembly '{1}'. The error message and stack trace " +
+                        "follows: {2}", typeName, assemblyPath, e.InnerException);
+                    return false;
+                }
+                catch(InvalidCastException)
+                {
+                    this.WriteMessage(LogLevel.Error, "The type '{0}' in the component assembly " +
+                        "'{1}' is not a component type.", typeName, assemblyPath);
+                    return false;
+                }
+            }
+
+            // Create a resolver
+            AssemblyResolver resolver = new AssemblyResolver();
+            XPathNavigator resolverNode = configNav.SelectSingleNode("/configuration/dduetools/resolver");
+
+            if(resolverNode != null)
+            {
+                assemblyPath = resolverNode.GetAttribute("assembly", String.Empty);
+                typeName = resolverNode.GetAttribute("type", String.Empty);
+
+                if(!String.IsNullOrWhiteSpace(assemblyPath))
+                {
+                    assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
+
+                    if(!Path.IsPathRooted(assemblyPath))
+                        assemblyPath = Path.Combine(configDirectory, assemblyPath);
+                }
+
+                try
+                {
+                    Assembly assembly = !String.IsNullOrWhiteSpace(assemblyPath) ? Assembly.LoadFrom(assemblyPath) :
+                        Assembly.GetExecutingAssembly();
+                    resolver = (AssemblyResolver)assembly.CreateInstance(typeName, false, BindingFlags.Public |
+                        BindingFlags.Instance, null, new object[1] { resolverNode }, null, null);
+
+                    if(resolver == null)
+                    {
+                        this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                            "component assembly '{1}'.", typeName, assembly.Location);
+                        return false;
+                    }
+                }
+                catch(IOException e)
+                {
+                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return false;
+                }
+                catch(UnauthorizedAccessException e)
+                {
+                    this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return false;
+                }
+                catch(BadImageFormatException)
+                {
+                    this.WriteMessage(LogLevel.Error, "The component assembly '{0}' is not a " +
+                        "valid managed assembly.", assemblyPath);
+                    return false;
+                }
+                catch(TypeLoadException)
+                {
+                    this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        "component assembly '{1}'.", typeName, assemblyPath);
+                    return false;
+                }
+                catch(MissingMethodException)
+                {
+                    this.WriteMessage(LogLevel.Error, "No appropriate constructor exists for " +
+                        "the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath);
+                    return false;
+                }
+                catch(TargetInvocationException e)
+                {
+                    this.WriteMessage(LogLevel.Error, "An error occurred while initializing the " +
+                        "type '{0}' in the component assembly '{1}'. The error message and stack trace " +
+                        "follows: {2}", typeName, assemblyPath, e.InnerException);
+                    return false;
+                }
+                catch(InvalidCastException)
+                {
+                    this.WriteMessage(LogLevel.Error, "The type '{0}' in the component assembly " +
+                        "'{1}' is not a component type.", typeName, assemblyPath);
+                    return false;
+                }
+            }
+
+            resolver.MessageLogger = (lvl, msg) => this.WriteMessage(lvl, msg);
+            resolver.UnresolvedAssemblyReference += UnresolvedAssemblyReferenceHandler;
+
+            // Get a text writer for output
+            TextWriter output;
+
+            try
+            {
+                output = new StreamWriter(this.ReflectionFilename, false, Encoding.UTF8);
+            }
+            catch(IOException e)
+            {
+                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to " +
+                    "create an output file. The error message is: {0}", e.Message);
+                return false;
+            }
+            catch(UnauthorizedAccessException e)
+            {
+                this.WriteMessage(LogLevel.Error, "An error occurred while attempting to " +
+                    "create an output file. The error message is: {0}", e.Message);
+                return false;
+            }
+
+            try
+            {
+                // Create a writer
+                string sourceCodeBasePath = (string)configNav.Evaluate(
+                    "string(/configuration/dduetools/sourceContext/@basePath)");
+                bool warnOnMissingContext = false;
+
+                if(!String.IsNullOrWhiteSpace(sourceCodeBasePath))
+                {
+                    warnOnMissingContext = (bool)configNav.Evaluate(
+                        "boolean(/configuration/dduetools/sourceContext[@warnOnMissingSourceContext='true'])");
+                }
+                else
+                    this.WriteMessage(LogLevel.Info, "No source code context base path " +
+                        "specified.  Source context information is unavailable.");
+
+                apiVisitor = new ManagedReflectionWriter(output, namer, resolver, sourceCodeBasePath,
+                    warnOnMissingContext, new ApiFilter(configNav.SelectSingleNode("/configuration/dduetools")))
+                {
+                    MessageLogger = (lvl, msg) => this.WriteMessage(lvl, msg)
+                };
+
+                // Register add-ins to the builder
+                XPathNodeIterator addinNodes = configNav.Select("/configuration/dduetools/addins/addin");
+
+                foreach(XPathNavigator addinNode in addinNodes)
+                {
+                    assemblyPath = addinNode.GetAttribute("assembly", String.Empty);
+                    typeName = addinNode.GetAttribute("type", String.Empty);
+
+                    if(!String.IsNullOrWhiteSpace(assemblyPath))
+                    {
+                        assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
+
+                        if(!Path.IsPathRooted(assemblyPath))
+                            assemblyPath = Path.Combine(configDirectory, assemblyPath);
+                    }
+
+                    try
+                    {
+                        Assembly assembly = !String.IsNullOrWhiteSpace(assemblyPath) ? Assembly.LoadFrom(assemblyPath) :
+                            Assembly.GetExecutingAssembly();
+                        MRefBuilderAddIn addin = (MRefBuilderAddIn)assembly.CreateInstance(typeName, false,
+                            BindingFlags.Public | BindingFlags.Instance, null,
+                            new object[2] { apiVisitor, addinNode }, null, null);
+
+                        if(addin == null)
+                        {
+                            this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in " +
+                                "the add-in assembly '{1}'.", typeName, assembly.Location);
+                            return false;
+                        }
+                    }
+                    catch(IOException e)
+                    {
+                        this.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                            "attempting to load the add-in assembly '{0}'. The error message is: {1}",
+                            assemblyPath, e.Message);
+                        return false;
+                    }
+                    catch(BadImageFormatException)
+                    {
+                        this.WriteMessage(LogLevel.Error, "The add-in assembly '{0}' is not a " +
+                            "valid managed assembly.", assemblyPath);
+                        return false;
+                    }
+                    catch(TypeLoadException)
+                    {
+                        this.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                            "add-in assembly '{1}'.", typeName, assemblyPath);
+                        return false;
+                    }
+                    catch(MissingMethodException)
+                    {
+                        this.WriteMessage(LogLevel.Error, "No appropriate constructor exists " +
+                            "for the type '{0}' in the add-in assembly '{1}'.", typeName, assemblyPath);
+                        return false;
+                    }
+                    catch(TargetInvocationException e)
+                    {
+                        this.WriteMessage(LogLevel.Error, "An error occurred while initializing " +
+                            "the type '{0}' in the add-in assembly '{1}'. The error message and stack trace " +
+                            "follows: {2}", typeName, assemblyPath, e.InnerException);
+                        return false;
+                    }
+                    catch(InvalidCastException)
+                    {
+                        this.WriteMessage(LogLevel.Error, "The type '{0}' in the add-in " +
+                            "assembly '{1}' is not an MRefBuilderAddIn type.", typeName, assemblyPath);
+                        return false;
+                    }
+                }
+
+                // Load dependencies
+                foreach(string dependency in dependencies)
+                {
+                    try
+                    {
+                        // Expand environment variables
+                        path = Environment.ExpandEnvironmentVariables(dependency);
+
+                        // If x86 but it didn't exist, assume it's a 32-bit system and change the name
+                        if(path.IndexOf("%ProgramFiles(x86)%", StringComparison.Ordinal) != -1)
+                            path = Environment.ExpandEnvironmentVariables(path.Replace("(x86)", String.Empty));
+
+                        apiVisitor.LoadAccessoryAssemblies(path);
+                    }
+                    catch(IOException e)
+                    {
+                        this.WriteMessage(LogLevel.Error, "An error occurred while loading " +
+                            "dependency assemblies. The error message is: {0}", e.Message);
+                        return false;
+                    }
+                }
+
+                // Parse the assemblies
+                foreach(string dllPath in this.Assemblies.Select(a => a.ItemSpec).OrderBy(d =>
+                  d.IndexOf("System.Runtime.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 0 :
+                  d.IndexOf("netstandard.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 1 :
+                  d.IndexOf("mscorlib.dll", StringComparison.OrdinalIgnoreCase) != -1 ? 2 : 3))
+                {
+                    try
+                    {
+                        // Expand environment variables
+                        path = Environment.ExpandEnvironmentVariables(dllPath);
+
+                        // If x86 but it didn't exist, assume it's a 32-bit system and change the name
+                        if(path.IndexOf("%ProgramFiles(x86)%", StringComparison.Ordinal) != -1)
+                            path = Environment.ExpandEnvironmentVariables(path.Replace("(x86)", String.Empty));
+
+                        apiVisitor.LoadAssemblies(path);
+                    }
+                    catch(IOException e)
+                    {
+                        this.WriteMessage(LogLevel.Error, "An error occurred while loading " +
+                            "assemblies for reflection. The error message is: {0}", e.Message);
+                        return false;
+                    }
+                }
+
+                this.WriteMessage(LogLevel.Info, "Loaded {0} assemblies for reflection and " +
+                    "{1} dependency assemblies.", apiVisitor.Assemblies.Count(),
+                    apiVisitor.AccessoryAssemblies.Count());
+
+                apiVisitor.VisitApis();
+
+                if(apiVisitor.Canceled)
+                    this.WriteMessage(LogLevel.Error, "MRefBuilder task canceled");
+                else
+                {
+                    this.WriteMessage(LogLevel.Info, "Wrote information on {0} namespaces, " +
+                        "{1} types, and {2} members", apiVisitor.NamespaceCount, apiVisitor.TypeCount,
+                        apiVisitor.MemberCount);
+
+                    this.WriteMessage(LogLevel.Info, "Merging duplicate type and member information");
+
+                    var (mergedTypes, mergedMembers) = apiVisitor.MergeDuplicateReflectionData(this.ReflectionFilename);
+
+                    this.WriteMessage(LogLevel.Info, "Merged {0} duplicate type(s) and {1} " +
+                        "duplicate member(s)", mergedTypes, mergedMembers);
+                }
+            }
+            finally
+            {
+                if(apiVisitor != null)
+                    apiVisitor.Dispose();
+
+                if(output != null)
+                    output.Close();
+            }
+
+            return apiVisitor != null && !apiVisitor.Canceled;
+        }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to report unresolved assembly information
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        /// <remarks>An unresolved assembly reference will terminate the application</remarks>
+        private void UnresolvedAssemblyReferenceHandler(object sender, AssemblyReferenceEventArgs e)
+        {
+            this.WriteMessage(LogLevel.Error, "Unresolved assembly reference: {0} ({1}) required by {2}",
+                e.Reference.Name, e.Reference.StrongName, e.Referrer.Name);
+
+            // If in the debugger, break so that we can see what was missed
+            if(System.Diagnostics.Debugger.IsAttached)
+                System.Diagnostics.Debugger.Break();
+
+            Environment.Exit(1);
+        }
+        #endregion
+
     }
 }

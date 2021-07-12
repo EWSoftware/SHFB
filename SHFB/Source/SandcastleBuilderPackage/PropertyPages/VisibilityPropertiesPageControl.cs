@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Visibility category properties
 //
@@ -88,7 +87,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         protected override bool BindControlValue(string propertyName)
         {
             ProjectProperty projProp;
-            VisibleItems items;
 
 #if !STANDALONEGUI
             if(this.ProjectMgr == null)
@@ -108,7 +106,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 projProp = this.ProjectMgr.BuildProject.GetProperty("ApiFilter");
 #else
-                var filter = new ApiFilterCollection { Project = base.CurrentProject };
+                var filter = new ApiFilterCollection { Project = this.CurrentProject };
 
                 projProp = this.CurrentProject.MSBuildProject.GetProperty("ApiFilter");
 #endif
@@ -127,9 +125,11 @@ namespace SandcastleBuilder.Package.PropertyPages
             projProp = this.CurrentProject.MSBuildProject.GetProperty("VisibleItems");
 #endif
             // If not found or not valid, we'll ignore it and use the defaults
-            if(projProp == null || !Enum.TryParse<VisibleItems>(projProp.UnevaluatedValue, out items))
+            if(projProp == null || !Enum.TryParse(projProp.UnevaluatedValue, out VisibleItems items))
+            {
                 items = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
                     VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected | VisibleItems.NonBrowsable;
+            }
 
             ucVisibilityPropertiesPageContent.VisibleItems = items;
             return true;

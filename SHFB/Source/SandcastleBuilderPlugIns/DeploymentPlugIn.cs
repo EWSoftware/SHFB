@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2019
-// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to deploy the resulting help file output to a location other
 // than the output folder (i.e. a file share, an FTP site, a web server, etc.).
@@ -29,12 +28,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Cache;
-using System.Windows.Forms;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
@@ -49,10 +47,9 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to copy the resulting help file output to a location other than the output
     /// folder (i.e. a file share, an FTP site, a web server, etc.).
     /// </summary>
-    [HelpFileBuilderPlugInExport("Output Deployment", IsConfigurable = true,
-      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-      Description = "This plug-in is used to deploy the resulting help file output to a location other than " +
-        "the output folder (i.e. a file share, a web server, an FTP site, etc.).")]
+    [HelpFileBuilderPlugInExport("Output Deployment", Version = AssemblyInfo.ProductVersion,
+      Copyright = AssemblyInfo.Copyright, Description = "This plug-in is used to deploy the resulting help file " +
+        "output to a location other than the output folder (i.e. a file share, a web server, an FTP site, etc.).")]
     public sealed class DeploymentPlugIn : IPlugIn
     {
         #region Private data members
@@ -65,6 +62,7 @@ namespace SandcastleBuilder.PlugIns
         // Plug-in configuration options
         private DeploymentLocation deployHelp1, deployHelpViewer, deployWebsite, deployOpenXml, deployMarkdown;
         private bool deleteAfterDeploy, verboseLogging, renameMSHA;
+
         #endregion
 
         #region IPlugIn implementation
@@ -92,34 +90,15 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(DeploymentConfigDlg dlg = new DeploymentConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
-            XPathNavigator root, msHelpViewer;
-            string value;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             builder = buildProcess;
 
@@ -128,31 +107,21 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            root = configuration.SelectSingleNode("configuration");
-            value = root.GetAttribute("deleteAfterDeploy", String.Empty);
+            if(configuration.IsEmpty)
+                throw new BuilderException("ODP0001", "The Output Deployment plug-in has not been configured yet");
 
-            if(!String.IsNullOrEmpty(value))
-                deleteAfterDeploy = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
+            deleteAfterDeploy = (bool)configuration.Attribute("deleteAfterDeploy");
+            verboseLogging = (bool?)configuration.Attribute("verboseLogging") ?? false;
 
-            value = root.GetAttribute("verboseLogging", String.Empty);
+            deployHelp1 = DeploymentLocation.FromXml(configuration, "help1x");
+            deployHelpViewer = DeploymentLocation.FromXml(configuration, "helpViewer");
+            deployWebsite = DeploymentLocation.FromXml(configuration, "website");
+            deployOpenXml = DeploymentLocation.FromXml(configuration, "openXml");
+            deployMarkdown = DeploymentLocation.FromXml(configuration, "markdown");
 
-            if(!String.IsNullOrEmpty(value))
-                verboseLogging = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
+            var msHelpViewer = configuration.XPathSelectElement("deploymentLocation[@id='helpViewer']");
 
-            if(root.IsEmptyElement)
-                throw new BuilderException("ODP0001", "The Output Deployment plug-in has not been " +
-                    "configured yet");
-
-            deployHelp1 = DeploymentLocation.FromXPathNavigator(root, "help1x");
-            deployHelpViewer = DeploymentLocation.FromXPathNavigator(root, "helpViewer");
-            deployWebsite = DeploymentLocation.FromXPathNavigator(root, "website");
-            deployOpenXml = DeploymentLocation.FromXPathNavigator(root, "openXml");
-            deployMarkdown = DeploymentLocation.FromXPathNavigator(root, "markdown");
-
-            msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
-
-            if(msHelpViewer == null || !Boolean.TryParse(msHelpViewer.GetAttribute("renameMSHA",
-              String.Empty).Trim(), out renameMSHA))
+            if(msHelpViewer == null || !Boolean.TryParse(msHelpViewer.Attribute("renameMSHA").Value, out renameMSHA))
                 renameMSHA = false;
 
             // At least one deployment location must be defined

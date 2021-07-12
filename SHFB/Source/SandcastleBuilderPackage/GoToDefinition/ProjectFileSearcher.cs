@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ProjectFileSearcher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to search for an open files related to MAML link-type elements such as for
 // topics, images, code references, and tokens.
@@ -46,10 +45,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private SVsServiceProvider serviceProvider;
-        private ITextView textView;
+        private readonly SVsServiceProvider serviceProvider;
+        private readonly ITextView textView;
         private Solution currentSolution;
-        private List<MSBuildProject> shfbProjects;
+        private readonly List<MSBuildProject> shfbProjects;
 
         internal static string tokenId;
 
@@ -130,7 +129,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     if(TopicIdCache.Instance.IsIndexingTopics)
                         return true;
 
-                    string topicTitle, topicFilename, relativePath, anchor = null;
+                    string anchor = null;
 
                     // Remove anchor name references.  We'll try to select it in the opened file.
                     if(id.IndexOf('#') != -1)
@@ -139,7 +138,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         id = id.Substring(0, id.IndexOf('#'));
                     }
 
-                    if(!TopicIdCache.Instance.GetTopicInfo(id, out topicTitle, out topicFilename, out relativePath))
+                    if(!TopicIdCache.Instance.GetTopicInfo(id, out string topicTitle, out string topicFilename,
+                      out string relativePath))
                     {
                         // Not found, try re-indexing to update the info
                         return TopicIdCache.Instance.SetCurrentSolutionAndProjects(currentSolution.FullName, shfbProjects);
@@ -157,9 +157,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                             if(!String.IsNullOrWhiteSpace(anchor))
                             {
-                                var selection = window.Selection as TextSelection;
-
-                                if(selection != null)
+                                if(window.Selection is TextSelection selection)
                                     selection.FindText(anchor);
                             }
 
@@ -314,18 +312,14 @@ namespace SandcastleBuilder.Package.GoToDefinition
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            ITextDocument document;
-
 #pragma warning disable VSTHRD010
             // Determine the current project as it will be searched first
             if(textView != null && textView.TextDataModel.DocumentBuffer.Properties.TryGetProperty(
-              typeof(ITextDocument), out document))
+              typeof(ITextDocument), out ITextDocument document))
             {
                 if(document != null && document.TextBuffer != null)
                 {
-                    var dte2 = this.serviceProvider.GetService(typeof(SDTE)) as DTE2;
-
-                    if(dte2 != null && dte2.Solution != null)
+                    if(this.serviceProvider.GetService(typeof(SDTE)) is DTE2 dte2 && dte2.Solution != null)
                     {
                         currentSolution = dte2.Solution;
                         var prjItem = dte2.Solution.FindProjectItem(document.FilePath);
@@ -350,26 +344,22 @@ namespace SandcastleBuilder.Package.GoToDefinition
             }
             else
             {
-                    var dte2 = this.serviceProvider.GetService(typeof(SDTE)) as DTE2;
+                if(this.serviceProvider.GetService(typeof(SDTE)) is DTE2 dte2 && dte2.Solution != null)
+                {
+                    currentSolution = dte2.Solution;
 
-                    if(dte2 != null && dte2.Solution != null)
+                    if(dte2.ActiveSolutionProjects is Array activeSolutionProjects && activeSolutionProjects.Length > 0)
                     {
-                        currentSolution = dte2.Solution;
+                        var activeProject = activeSolutionProjects.GetValue(0) as EnvDTE.Project;
 
-                        var activeSolutionProjects = dte2.ActiveSolutionProjects as Array;
+                        var currentProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
+                            activeProject.FullName).FirstOrDefault(p => p.FullPath == activeProject.FullName);
 
-                        if(activeSolutionProjects != null && activeSolutionProjects.Length > 0)
-                        {
-                            var activeProject = activeSolutionProjects.GetValue(0) as EnvDTE.Project;
-
-                            var currentProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
-                                activeProject.FullName).FirstOrDefault(p => p.FullPath == activeProject.FullName);
-
-                            if(currentProject != null &&
-                              currentProject.FullPath.EndsWith(".shfbproj", StringComparison.OrdinalIgnoreCase))
-                                shfbProjects.Add(currentProject);
-                        }
+                        if(currentProject != null &&
+                          currentProject.FullPath.EndsWith(".shfbproj", StringComparison.OrdinalIgnoreCase))
+                            shfbProjects.Add(currentProject);
                     }
+                }
             }
 #pragma warning restore VSTHRD010
 
@@ -431,9 +421,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                             {
                                 window.Activate();
 
-                                var selection = window.Selection as TextSelection;
-
-                                if(selection != null)
+                                if(window.Selection is TextSelection selection)
                                     selection.FindText(id);
 
                                 return true;

@@ -1,24 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderComReferenceNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the class that represents COM reference nodes in the
-// project.
+// This file contains the class that represents COM reference nodes in the project
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/23/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/23/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
@@ -66,10 +63,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is overridden to return a GUID for the node
         /// </summary>
-        public override Guid ItemTypeGuid
-        {
-            get { return new Guid("A14B8007-1325-4ccb-A4F5-0C662F80E1E6"); }
-        }
+        public override Guid ItemTypeGuid => new Guid("A14B8007-1325-4ccb-A4F5-0C662F80E1E6");
 
         /// <inheritdoc />
         protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText,

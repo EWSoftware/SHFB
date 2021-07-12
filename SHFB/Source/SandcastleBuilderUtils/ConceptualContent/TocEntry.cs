@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a table of contents entry.  This is used to build the table of
 // contents entries for content layout and site map files.
@@ -14,17 +13,17 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.3.0.0  09/17/2006  EFW  Created the code
-// 1.3.3.1  12/08/2006  EFW  Added NeedsColorizing property
-// 1.4.0.0  03/09/2007  EFW  Added support for <code source="file" /> tags
-// 1.5.0.2  07/03/2007  EFW  Added support for saving as a site map file
-// 1.6.0.7  04/12/2008  EFW  Added support for a split table of contents
-// 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
-// 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
-// 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
-// -------  05/07/2015  EFW  Removed all deprecated code
+// 09/17/2006  EFW  Created the code
+// 12/08/2006  EFW  Added NeedsColorizing property
+// 03/09/2007  EFW  Added support for <code source="file" /> tags
+// 07/03/2007  EFW  Added support for saving as a site map file
+// 04/12/2008  EFW  Added support for a split table of contents
+// 08/11/2008  EFW  Modified to support the new project format
+// 06/15/2010  EFW  Added support for MS Help Viewer TOC format
+// 12/20/2011  EFW  Updated for use with the new content layout editor
+// 05/07/2015  EFW  Removed all deprecated code
 //===============================================================================================================
 
 // Ignore Spelling: url
@@ -49,12 +48,11 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region Private data members
         //=====================================================================
 
-        private IBasePathProvider pathProvider;
-        private TocEntryCollection children;
         private FilePath sourceFile;
         private ApiParentMode apiParentMode;
         private string title;
         private bool isDefaultTopic, isSelected, isExpanded;
+
         #endregion
 
         #region Properties
@@ -69,31 +67,25 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This returns the <see cref="IBasePathProvider" /> for the entry.
         /// </summary>
-        public IBasePathProvider BasePathProvider
-        {
-            get { return pathProvider; }
-        }
+        public IBasePathProvider BasePathProvider { get; }
 
         /// <summary>
         /// This returns the child table of contents collection for this entry
         /// </summary>
         /// <value>If empty, this is a single item in the table of contents.  If it has children, they are listed
         /// below this one.  A file may or may not be associated with this entry if it is a root node.</value>
-        public TocEntryCollection Children
-        {
-            get { return children; }
-        }
+        public TocEntryCollection Children { get; } = new TocEntryCollection();
 
         /// <summary>
         /// This is used to get or set the entry's source file path.
         /// </summary>
         public FilePath SourceFile
         {
-            get { return sourceFile; }
+            get => sourceFile;
             set
             {
                 if(value == null)
-                    sourceFile = new FilePath(pathProvider);
+                    sourceFile = new FilePath(this.BasePathProvider);
                 else
                     sourceFile = value;
             }
@@ -124,7 +116,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 if(value != title)
@@ -143,14 +135,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public bool IsDefaultTopic
         {
-            get { return isDefaultTopic; }
+            get => isDefaultTopic;
             set
             {
                 if(value != isDefaultTopic)
                 {
                     isDefaultTopic = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                    this.OnPropertyChanged(nameof(ToolTip));  // Affects tool tip too
                 }
             }
         }
@@ -167,14 +159,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public ApiParentMode ApiParentMode
         {
-            get { return apiParentMode; }
+            get => apiParentMode;
             set
             {
                 if(value != apiParentMode)
                 {
                     apiParentMode = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                    this.OnPropertyChanged(nameof(ToolTip));  // Affects tool tip too
                 }
             }
         }
@@ -186,7 +178,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// its state is remembered when reloaded.</remarks>
         public bool IsSelected
         {
-            get { return isSelected; }
+            get => isSelected;
             set
             {
                 if(value != isSelected)
@@ -204,7 +196,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// its state is remembered when reloaded.</remarks>
         public bool IsExpanded
         {
-            get { return isExpanded && this.Children.Count != 0; }
+            get => isExpanded && this.Children.Count != 0;
             set
             {
                 if(value != isExpanded)
@@ -285,7 +277,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             if(this.SortOrder > other.SortOrder)
                 return 1;
 
-            return String.Compare(this.Title, other.Title, false, CultureInfo.CurrentCulture);
+            return String.Compare(this.Title, other.Title, StringComparison.Ordinal);
         }
         #endregion
 
@@ -298,15 +290,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>A clone of this table of contents entry</returns>
         public object Clone()
         {
-            TocEntry clone = new TocEntry(pathProvider);
+            TocEntry clone = new TocEntry(this.BasePathProvider)
+            {
+                DestinationFile = this.DestinationFile,
+                IsDefaultTopic = false,   // Can't have more than one
+                SortOrder = this.SortOrder,
+                SourceFile = (FilePath)sourceFile.Clone(),
+                Title = this.Title
+            };
 
-            clone.DestinationFile = this.DestinationFile;
-            clone.IsDefaultTopic = false;   // Can't have more than one
-            clone.SortOrder = this.SortOrder;
-            clone.SourceFile = (FilePath)sourceFile.Clone();
-            clone.Title = this.Title;
-
-            foreach(TocEntry child in children)
+            foreach(TocEntry child in this.Children)
                 clone.Children.Add((TocEntry)child.Clone());
 
             return clone;
@@ -322,12 +315,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="basePathProvider">The base path provider</param>
         public TocEntry(IBasePathProvider basePathProvider)
         {
-            pathProvider = basePathProvider;
+            this.BasePathProvider = basePathProvider;
             this.SortOrder = Int32.MaxValue;
-            children = new TocEntryCollection();
-            sourceFile = new FilePath(pathProvider);
 
-            children.ListChanged += childList_ListChanged;
+            sourceFile = new FilePath(basePathProvider);
+
+            this.Children.ListChanged += childList_ListChanged;
         }
         #endregion
 
@@ -345,10 +338,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -362,7 +352,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             this.SortOrder = -1;
 
-            foreach(TocEntry t in children)
+            foreach(TocEntry t in this.Children)
                 t.ResetSortOrder();
         }
 
@@ -408,11 +398,11 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public static bool operator ==(TocEntry t1, TocEntry t2)
         {
             // Do they reference the same entry?
-            if(Object.ReferenceEquals(t1, t2))
+            if(ReferenceEquals(t1, t2))
                 return true;
 
-            // Check null reference first (cast to object first to avoid stack overflow)
-            if(t1 as object == null)
+            // Check null reference first
+            if(t1 is null || t2 is null)
                 return false;
 
             return t1.Equals(t2);
@@ -437,7 +427,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>True if t1 is less than t2, false if not.</returns>
         public static bool operator <(TocEntry t1, TocEntry t2)
         {
-            return (t1.CompareTo(t2) < 0);
+            return (t1 == null && t2 != null) || (t1 != null && t1.CompareTo(t2) < 0);
         }
 
         /// <summary>
@@ -448,7 +438,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>True if t1 is greater than t2, false if not.</returns>
         public static bool operator >(TocEntry t1, TocEntry t2)
         {
-            return (t1.CompareTo(t2) > 0);
+            return t1 != null && t1.CompareTo(t2) > 0;
         }  
 
         /// <summary>
@@ -499,13 +489,17 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             else
                 orderAttr = String.Empty;
 
-            if(children.Count == 0)
-                sb.AppendFormat("<topic id=\"{0}\" file=\"{0}\"{1}{2} />\r\n", url, orderAttr, titleAttr);
+            if(this.Children.Count == 0)
+            {
+                sb.AppendFormat(CultureInfo.InvariantCulture, "<topic id=\"{0}\" file=\"{0}\"{1}{2} />\r\n", url,
+                    orderAttr, titleAttr);
+            }
             else
             {
-                sb.AppendFormat("<topic id=\"{0}\" file=\"{0}\"{1}{2}>\r\n", url, orderAttr, titleAttr);
+                sb.AppendFormat(CultureInfo.InvariantCulture, "<topic id=\"{0}\" file=\"{0}\"{1}{2}>\r\n", url,
+                    orderAttr, titleAttr);
 
-                children.ConvertToString(sb);
+                this.Children.ConvertToString(sb);
                 sb.Append("</topic>\r\n");
             }
         }
@@ -549,10 +543,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 this.Title = site.Attributes["title"].Value;
 
                 if(site.Attributes["url"] == null)
-                    sourceFile = new FilePath(pathProvider);
+                    sourceFile = new FilePath(this.BasePathProvider);
                 else
-                    sourceFile = new FilePath(site.Attributes["url"].Value,
-                        pathProvider);
+                    sourceFile = new FilePath(site.Attributes["url"].Value, this.BasePathProvider);
 
                 if(site.Attributes["isDefault"] != null)
                     this.IsDefaultTopic = true;
@@ -570,9 +563,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(site.ChildNodes.Count != 0)
                     foreach(XmlNode childSite in site.ChildNodes)
                     {
-                        child = new TocEntry(pathProvider);
+                        child = new TocEntry(this.BasePathProvider);
                         child.LoadSiteMapNode(childSite);
-                        children.Add(child);
+                        
+                        this.Children.Add(child);
                     }
             }
         }
@@ -584,6 +578,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public void SaveAsSiteMapNode(XmlNode root)
         {
             XmlAttribute attr;
+
+            if(root == null)
+                throw new ArgumentNullException(nameof(root));
 
             XmlNode child = root.OwnerDocument.CreateNode(XmlNodeType.Element, "siteMapNode", root.NamespaceURI);
 
@@ -631,8 +628,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             root.AppendChild(child);
 
-            if(children.Count != 0)
-                foreach(TocEntry te in children)
+            if(this.Children.Count != 0)
+                foreach(TocEntry te in this.Children)
                     te.SaveAsSiteMapNode(child);
         }
 
@@ -648,8 +645,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             if(sourceFile == sourceFilename)
                 return this;
 
-            if(children.Count != 0)
-                foreach(TocEntry entry in children)
+            if(this.Children.Count != 0)
+                foreach(TocEntry entry in this.Children)
                 {
                     match = entry.ContainsMatch(sourceFilename);
 

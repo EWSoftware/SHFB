@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/12/2016
-// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that exposes the properties for the SandcastleBuilderProjectNode object
 //
@@ -46,14 +45,8 @@ namespace SandcastleBuilder.Package.Nodes
         [Browsable(false)]
         public string TargetFramework
         {
-            get
-            {
-                return this.Node.ProjectMgr.GetProjectProperty("TargetFramework");
-            }
-            set
-            {
-                this.Node.ProjectMgr.SetProjectProperty("TargetFramework", value);
-            }
+            get => this.Node.ProjectMgr.GetProjectProperty(nameof(TargetFramework));
+            set => this.Node.ProjectMgr.SetProjectProperty(nameof(TargetFramework), value);
         }
 
         /// <summary>
@@ -63,14 +56,8 @@ namespace SandcastleBuilder.Package.Nodes
         [Browsable(false)]
         public string AssemblyName
         {
-            get
-            {
-                return this.Node.ProjectMgr.GetProjectProperty(ProjectFileConstants.AssemblyName);
-            }
-            set
-            {
-                this.Node.ProjectMgr.SetProjectProperty(ProjectFileConstants.AssemblyName, value);
-            }
+            get => this.Node.ProjectMgr.GetProjectProperty(ProjectFileConstants.AssemblyName);
+            set => this.Node.ProjectMgr.SetProjectProperty(ProjectFileConstants.AssemblyName, value);
         }
 
         /// <summary>
@@ -80,14 +67,8 @@ namespace SandcastleBuilder.Package.Nodes
         [Browsable(false)]
         public string RootNamespace
         {
-            get
-            {
-                return this.Node.ProjectMgr.GetProjectProperty(ProjectFileConstants.RootNamespace);
-            }
-            set
-            {
-                this.Node.ProjectMgr.SetProjectProperty(ProjectFileConstants.RootNamespace, value);
-            }
+            get => this.Node.ProjectMgr.GetProjectProperty(ProjectFileConstants.RootNamespace);
+            set => this.Node.ProjectMgr.SetProjectProperty(ProjectFileConstants.RootNamespace, value);
         }
         #endregion
 

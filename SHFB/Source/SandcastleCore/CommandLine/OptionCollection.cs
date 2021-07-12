@@ -24,7 +24,8 @@ namespace Sandcastle.Core.CommandLine
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, BaseOption> map = new Dictionary<string, BaseOption>();
+        private readonly Dictionary<string, BaseOption> map = new Dictionary<string, BaseOption>();
+
         #endregion
 
         #region Properties
@@ -39,9 +40,7 @@ namespace Sandcastle.Core.CommandLine
         {
             get
             {
-                BaseOption option;
-
-                if(map.TryGetValue(name, out option))
+                if(map.TryGetValue(name, out BaseOption option))
                     return option;
 
                 return null;
@@ -56,7 +55,7 @@ namespace Sandcastle.Core.CommandLine
         protected override void InsertItem(int index, BaseOption item)
         {
             if(item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             base.InsertItem(index, item);
             map[item.Name] = item;
@@ -81,6 +80,9 @@ namespace Sandcastle.Core.CommandLine
         /// <inheritdoc />
         protected override void SetItem(int index, BaseOption item)
         {
+            if(item == null)
+                throw new ArgumentNullException(nameof(item));
+
             BaseOption o = base[index];
 
             base.SetItem(index, item);
@@ -100,6 +102,9 @@ namespace Sandcastle.Core.CommandLine
         /// <returns>The results of parsing the command line option strings</returns>
         public ParseArgumentsResult ParseArguments(string[] args)
         {
+            if(args == null)
+                throw new ArgumentNullException(nameof(args));
+
             ParseArgumentsResult results = new ParseArgumentsResult(this);
 
             this.ParseArguments(args, results);
@@ -120,7 +125,7 @@ namespace Sandcastle.Core.CommandLine
         public void WriteOptionSummary(TextWriter writer)
         {
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             foreach(BaseOption option in this)
             {

@@ -12,7 +12,7 @@ using System.Xml;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This class implements the type member filter
@@ -22,8 +22,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private string name;
-        private bool exposed;
+        private readonly string name;
+        private readonly bool exposed;
 
         #endregion
 
@@ -36,6 +36,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="configuration">The XML reader from which to get the configuration information</param>
         public MemberFilter(XmlReader configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             if(configuration.NodeType != XmlNodeType.Element || configuration.Name != "member")
                 throw new InvalidOperationException("The configuration element must be named 'member'");
 
@@ -55,6 +58,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// false if it is and it is not exposed.</returns>
         public bool? IsExposedMember(Member member)
         {
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             // Try for an exact match first
             if(member.Name.Name == name)
                 return exposed;

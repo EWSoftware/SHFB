@@ -1,24 +1,21 @@
-//=============================================================================
+//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : TagOptions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/17/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/08/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a class that is used to contain options for tag entries
-// from the conversion rules file.
+// This file contains a class that is used to contain options for tag entries from the conversion rules file
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/17/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/17/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -28,18 +25,19 @@ using System.Text.RegularExpressions;
 namespace HtmlToMamlConversion
 {
     /// <summary>
-    /// This is used to contain the options and state for a <c>Tag</c> entry
-    /// from the conversion rules file.
+    /// This is used to contain the options and state for a <c>Tag</c> entry from the conversion rules file
     /// </summary>
     public class TagOptions
     {
         #region Private data members
         //=====================================================================
 
-        private XPathNodeIterator matchRules;
-        private Stack<string> endTags;
+        private readonly XPathNodeIterator matchRules;
+        private readonly Stack<string> endTags;
 
-        private string startTag, endTag, tagAttributes, tag, attributes, closing;
+        private readonly string startTag, endTag, tagAttributes;
+        private string tag, attributes, closing;
+
         #endregion
 
         #region Properties
@@ -49,26 +47,18 @@ namespace HtmlToMamlConversion
         /// This returns the replacement tag to use based on the last
         /// evaluation.
         /// </summary>
-        public string Tag
-        {
-            get { return tag; }
-        }
+        public string Tag => tag;
 
         /// <summary>
         /// This returns the attributes to use based on the last evaluation
         /// </summary>
-        public string Attributes
-        {
-            get { return attributes; }
-        }
+        public string Attributes => attributes;
 
         /// <summary>
         /// This returns the closing "/" if the element is an end tag
         /// </summary>
-        public string Closing
-        {
-            get { return closing; }
-        }
+        public string Closing => closing;
+
         #endregion
 
         #region Constructor
@@ -92,8 +82,7 @@ namespace HtmlToMamlConversion
         //=====================================================================
 
         /// <summary>
-        /// Evaluate the match and determine the properties to use for the
-        /// replacement.
+        /// Evaluate the match and determine the properties to use for the replacement
         /// </summary>
         /// <param name="match">The regular expression match to evaluate</param>
         public void Evaluate(Match match)
@@ -125,8 +114,7 @@ namespace HtmlToMamlConversion
             if(matchRules.Count != 0)
                 foreach(XPathNavigator rule in matchRules)
                 {
-                    reRule = new Regex(rule.GetAttribute("expression",
-                        String.Empty), RegexOptions.IgnoreCase |
+                    reRule = new Regex(rule.GetAttribute("expression", String.Empty), RegexOptions.IgnoreCase |
                         RegexOptions.Singleline);
 
                     if(reRule.IsMatch(match.Value))

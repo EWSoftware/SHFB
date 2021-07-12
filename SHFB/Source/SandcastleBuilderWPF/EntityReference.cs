@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReference.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the entity reference class used by the Entity References control
 //
@@ -70,7 +70,7 @@ namespace SandcastleBuilder.WPF
         /// </summary>
         public bool IsSelected
         {
-            get { return isSelected; }
+            get => isSelected;
             set
             {
                 if(value != isSelected)
@@ -86,7 +86,7 @@ namespace SandcastleBuilder.WPF
         /// </summary>
         public bool IsExpanded
         {
-            get { return isExpanded && this.SubEntities.Count != 0; }
+            get => isExpanded && this.SubEntities.Count != 0;
             set
             {
                 if(value != isExpanded)
@@ -100,7 +100,7 @@ namespace SandcastleBuilder.WPF
         /// <summary>
         /// A list of sub-entities for this entity (only used for file entities)
         /// </summary>
-        public IList<EntityReference> SubEntities { get; private set; }
+        public IList<EntityReference> SubEntities { get; }
 
         #endregion
 
@@ -130,10 +130,7 @@ namespace SandcastleBuilder.WPF
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

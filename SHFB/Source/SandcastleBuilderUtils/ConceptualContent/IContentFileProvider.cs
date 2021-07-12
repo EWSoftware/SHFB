@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : IContentFileProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/18/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an interface used to provide content files from a help file builder project or some other
 // source.

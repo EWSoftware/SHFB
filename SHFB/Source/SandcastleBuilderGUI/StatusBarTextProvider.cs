@@ -1,34 +1,30 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Status Bar Text Provider
 // File    : StatusBarTextProvider.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/21/2007
-// Note    : Copyright 2005-2007, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2005-2021, Eric Woodruff, All rights reserved
 //
-// http://www.codeproject.com/cs/miscctrl/statusbartext.asp
+// https://www.codeproject.com/Articles/12226/A-Status-Bar-Text-Provider-for-Menu-Items-and-Form
 //
-// This file contains an IExtenderProvider component that allows you to add
-// status bar text for menu items and form controls.  Comment or uncomment
-// the DONET_20 definition below to disable or enabled support for the
+// This file contains an IExtenderProvider component that allows you to add status bar text for menu items and
+// form controls.  Comment or uncomment the DONET_20 definition below to disable or enabled support for the
 // .NET 2.0 menu strip, tool strip, and status strip components.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  04/28/2005  EFW  Created the code
-// 2.0.0.0  01/28/2006  EFW  Updated it for use with .NET 2.0 as well
-// 2.0.0.1  06/26/2006  EFW  Added static methods for progress bar controls
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/28/2005  EFW  Created the code
+// 01/28/2006  EFW  Updated it for use with .NET 2.0 as well
+// 06/26/2006  EFW  Added static methods for progress bar controls
+//===============================================================================================================
 
-// When this line is commented out, the component only supports the StatusBar
-// control.  When uncommented, it will also support the  new .NET 2.0 tool
-// strip controls (ToolStrip, MenuStrip, StatusStrip, etc).
+// When this line is commented out, the component only supports the StatusBar control.  When uncommented, it
+// will also support the  new .NET 2.0 tool strip controls (ToolStrip, MenuStrip, StatusStrip, etc).
 #define DOTNET_20
 
 using System;
@@ -119,8 +115,8 @@ namespace SandcastleBuilder.Utils.Controls
             /// </summary>
             public string Message
             {
-                get { return message; }
-                set { message = value; }
+                get => message;
+                set => message = value;
             }
 
             /// <summary>
@@ -128,8 +124,8 @@ namespace SandcastleBuilder.Utils.Controls
             /// </summary>
             public bool ShowAsBlank
             {
-                get { return showAsBlank; }
-                set { showAsBlank = value; }
+                get => showAsBlank;
+                set => showAsBlank = value;
             }
 
             //=================================================================
@@ -178,8 +174,9 @@ namespace SandcastleBuilder.Utils.Controls
         private string instanceDefaultText;
 
         // These are for the status text messages
-        private Hashtable htOptions;
+        private readonly Hashtable htOptions;
         private bool hookedMenuEvents, hookedFormEvent;
+
         #endregion
 
         #region Properties
@@ -275,7 +272,7 @@ namespace SandcastleBuilder.Utils.Controls
           Description("The application status bar or tool strip item used to display the text")]
         public static object ApplicationStatusBar
         {
-            get { return appStatusBar; }
+            get => appStatusBar;
             set
             {
 #if !DOTNET_20
@@ -283,15 +280,12 @@ namespace SandcastleBuilder.Utils.Controls
 #else
                 if(value != null && !(value is StatusBar) && !(value is ToolStripItem))
 #endif
-                    throw new ArgumentException("The object must be " +
-                        "a StatusBar or a ToolStripItem");
+                    throw new ArgumentException("The object must be a StatusBar or a ToolStripItem");
 
                 appStatusBar = value;
                 appDefaultText = null;
 
-                StatusBar sb = appStatusBar as StatusBar;
-
-                if(sb != null)
+                if(appStatusBar is StatusBar sb)
                 {
                     if(sb.ShowPanels && appDisplayPanel < sb.Panels.Count)
                         appDefaultText = sb.Panels[appDisplayPanel].Text;
@@ -301,8 +295,7 @@ namespace SandcastleBuilder.Utils.Controls
 #if DOTNET_20
                 else
                 {
-                    ToolStripItem tsi = appStatusBar as ToolStripItem;
-                    if(tsi != null)
+                    if(appStatusBar is ToolStripItem tsi)
                         appDefaultText = tsi.Text;
                 }
 #endif
@@ -320,7 +313,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <see cref="InstanceDisplayPanel"/> is used instead.
         /// <p/>The default is zero (the first panel).  If the status bar does
         /// not have panels, the index exceeds the panel count, or the status
-        /// bar's <see cref="System.Windows.Forms.StatusBar.ShowPanels"/>
+        /// bar's <see cref="StatusBar.ShowPanels"/>
         /// property is false, messages will be shown in the status bar's
         /// <b>Text</b> property instead.  This property is ignored if using a
         /// tool strip item to display the text.</value>
@@ -332,7 +325,7 @@ namespace SandcastleBuilder.Utils.Controls
             "application status bar has panels displayed")]
         public static int ApplicationDisplayPanel
         {
-            get { return appDisplayPanel; }
+            get => appDisplayPanel;
             set
             {
                 if(value < 0)
@@ -341,9 +334,7 @@ namespace SandcastleBuilder.Utils.Controls
                 appDisplayPanel = value;
                 appDefaultText = null;
 
-                StatusBar sb = appStatusBar as StatusBar;
-
-                if(sb != null)
+                if(appStatusBar is StatusBar sb)
                 {
                     if(sb.ShowPanels && appDisplayPanel < sb.Panels.Count)
                         appDefaultText = sb.Panels[appDisplayPanel].Text;
@@ -353,8 +344,7 @@ namespace SandcastleBuilder.Utils.Controls
 #if DOTNET_20
                 else
                 {
-                    ToolStripItem tsi = appStatusBar as ToolStripItem;
-                    if(tsi != null)
+                    if(appStatusBar is ToolStripItem tsi)
                         appDefaultText = tsi.Text;
                 }
 #endif
@@ -374,14 +364,12 @@ namespace SandcastleBuilder.Utils.Controls
             "for the application status bar")]
         public static string ApplicationDefaultText
         {
-            get { return appDefaultText; }
+            get => appDefaultText;
             set
             {
                 appDefaultText = value;
 
-                StatusBar sb = appStatusBar as StatusBar;
-
-                if(sb != null)
+                if(appStatusBar is StatusBar sb)
                 {
                     if(sb.ShowPanels && appDisplayPanel < sb.Panels.Count)
                         sb.Panels[appDisplayPanel].Text = appDefaultText;
@@ -391,8 +379,7 @@ namespace SandcastleBuilder.Utils.Controls
 #if DOTNET_20
                 else
                 {
-                    ToolStripItem tsi = appStatusBar as ToolStripItem;
-                    if(tsi != null)
+                    if(appStatusBar is ToolStripItem tsi)
                         tsi.Text = appDefaultText;
                 }
 #endif
@@ -411,8 +398,8 @@ namespace SandcastleBuilder.Utils.Controls
           Description("A tool strip label item used to display a status message")]
         public static ToolStripStatusLabel StatusLabel
         {
-            get { return statusLabel; }
-            set { statusLabel = value; }
+            get => statusLabel;
+            set => statusLabel = value;
         }
 
         /// <summary>
@@ -426,8 +413,8 @@ namespace SandcastleBuilder.Utils.Controls
           Description("A tool strip label item used to display a status message")]
         public static ToolStripProgressBar ProgressBar
         {
-            get { return progressBar; }
-            set { progressBar = value; }
+            get => progressBar;
+            set => progressBar = value;
         }
 #endif
 
@@ -448,7 +435,7 @@ namespace SandcastleBuilder.Utils.Controls
           Description("The status bar or tool strip item to use instead of ApplicationStatusBar")]
         public object InstanceStatusBar
         {
-            get { return instanceStatusBar; }
+            get => instanceStatusBar;
             set
             {
 #if !DOTNET_20
@@ -480,7 +467,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <value>The default is zero (the first panel).  If the status
         /// bar does not have panels, the index exceeds the panel count,
         /// or the status bar's
-        /// <see cref="System.Windows.Forms.StatusBar.ShowPanels"/> property
+        /// <see cref="StatusBar.ShowPanels"/> property
         /// is false, messages will be shown in the status bar's <b>Text</b>
         /// property instead.  If using the <see cref="ApplicationStatusBar"/>,
         /// this property is ignored.  It is also ignored if using a tool
@@ -494,7 +481,7 @@ namespace SandcastleBuilder.Utils.Controls
             "using ApplicationStatusBar")]
         public int InstanceDisplayPanel
         {
-            get { return instanceDisplayPanel; }
+            get => instanceDisplayPanel;
             set
             {
                 if(value < 0)
@@ -522,7 +509,7 @@ namespace SandcastleBuilder.Utils.Controls
             "for the instance status bar")]
         public string InstanceDefaultText
         {
-            get { return instanceDefaultText; }
+            get => instanceDefaultText;
             set
             {
                 instanceDefaultText = value;
@@ -574,9 +561,8 @@ namespace SandcastleBuilder.Utils.Controls
             get
             {
                 Form frm = null;
-                Control p = this.StatusBar as Control;
 
-                if(p != null)
+                if(this.StatusBar is Control p)
                     p = p.Parent;
 #if DOTNET_20
                 else    // It's a control hosted in a tool strip item
@@ -616,9 +602,7 @@ namespace SandcastleBuilder.Utils.Controls
         {
             get
             {
-                StatusBar sb = this.StatusBar as StatusBar;
-
-                if(sb != null)
+                if(this.StatusBar is StatusBar sb)
                 {
                     if(sb.ShowPanels && this.DisplayPanel < sb.Panels.Count)
                         return sb.Panels[this.DisplayPanel].Text;
@@ -628,8 +612,7 @@ namespace SandcastleBuilder.Utils.Controls
 #if DOTNET_20
                 else
                 {
-                    ToolStripItem tsi = this.StatusBar as ToolStripItem;
-                    if(tsi != null)
+                    if(this.StatusBar is ToolStripItem tsi)
                         return tsi.Text;
                 }
 #endif
@@ -637,9 +620,7 @@ namespace SandcastleBuilder.Utils.Controls
             }
             set
             {
-                StatusBar sb = this.StatusBar as StatusBar;
-
-                if(sb != null)
+                if(this.StatusBar is StatusBar sb)
                 {
                     if(sb.ShowPanels && this.DisplayPanel < sb.Panels.Count)
                         sb.Panels[this.DisplayPanel].Text = value;
@@ -649,8 +630,7 @@ namespace SandcastleBuilder.Utils.Controls
 #if DOTNET_20
                 else
                 {
-                    ToolStripItem tsi = this.StatusBar as ToolStripItem;
-                    if(tsi != null)
+                    if(this.StatusBar is ToolStripItem tsi)
                         tsi.Text = value;
                 }
 #endif
@@ -663,11 +643,9 @@ namespace SandcastleBuilder.Utils.Controls
         // </summary>
         // <param name="sender">The sender of the event</param>
         // <param name="e">The event arguments</param>
-        private void Form_Activated(object sender, System.EventArgs e)
+        private void Form_Activated(object sender, EventArgs e)
         {
-            Form frm = sender as Form;
-
-            if(frm != null && this.StatusBar != null)
+            if(sender is Form frm && this.StatusBar != null)
             {
                 Control ctl = frm.ActiveControl;
 
@@ -724,7 +702,7 @@ namespace SandcastleBuilder.Utils.Controls
         // </summary>
         // <param name="sender">The sender of the event</param>
         // <param name="e">The event arguments</param>
-        private void Form_MenuComplete(object sender, System.EventArgs e)
+        private void Form_MenuComplete(object sender, EventArgs e)
         {
             if(this.StatusBar == null)
                 return;
@@ -752,11 +730,9 @@ namespace SandcastleBuilder.Utils.Controls
             // always get the Leave event to reset the text.  The
             // Activated and Deactivated events are also hooked to
             // set and restore the text.
-            if(!hookedFormEvent && this.StatusBar != null)
+            if(!hookedFormEvent)
             {
-                Control p = sender as Control;
-
-                if(p != null)
+                if(sender is Control p)
                     p = p.Parent;
 #if DOTNET_20
                 else    // It's a control hosted in a tool strip item
@@ -765,9 +741,7 @@ namespace SandcastleBuilder.Utils.Controls
 
                 while(p != null)
                 {
-                    Form frm = p as Form;
-
-                    if(frm != null)
+                    if(p is Form frm)
                     {
                         frm.Activated += new EventHandler(Form_Activated);
 
@@ -821,10 +795,8 @@ namespace SandcastleBuilder.Utils.Controls
             if(item == null || !htOptions.Contains(item))
                 return null;
 
-            TabControl tc = item as TabControl;
-
             // Show status bar text for the tab page if there is any
-            if(tc != null && htOptions.Contains(tc.SelectedTab))
+            if(item is TabControl tc && htOptions.Contains(tc.SelectedTab))
                 item = tc.SelectedTab;
 
             PropertyOptions po = (PropertyOptions)htOptions[item];
@@ -1193,8 +1165,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <overloads>There are six overloads for this method.</overloads>
         public static void InitializeProgressBar(int maximum)
         {
-            StatusBarTextProvider.InitializeProgressBar(0, maximum, 0,
-                1, null);
+            InitializeProgressBar(0, maximum, 0, 1, null);
         }
 
         /// <summary>
@@ -1207,8 +1178,7 @@ namespace SandcastleBuilder.Utils.Controls
         public static void InitializeProgressBar(int maximum,
           string progressNote)
         {
-            StatusBarTextProvider.InitializeProgressBar(0, maximum, 0,
-                1, progressNote);
+            InitializeProgressBar(0, maximum, 0, 1, progressNote);
         }
 
         /// <summary>
@@ -1219,8 +1189,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <param name="maximum">The maximum value</param>
         public static void InitializeProgressBar(int minimum, int maximum)
         {
-            StatusBarTextProvider.InitializeProgressBar(minimum, maximum,
-                0, 1, null);
+            InitializeProgressBar(minimum, maximum, 0, 1, null);
         }
 
         /// <summary>
@@ -1233,8 +1202,7 @@ namespace SandcastleBuilder.Utils.Controls
         public static void InitializeProgressBar(int minimum, int maximum,
           int current)
         {
-            StatusBarTextProvider.InitializeProgressBar(minimum, maximum,
-                current, 1, null);
+            InitializeProgressBar(minimum, maximum, current, 1, null);
         }
 
         /// <summary>
@@ -1248,8 +1216,7 @@ namespace SandcastleBuilder.Utils.Controls
         public static void InitializeProgressBar(int minimum, int maximum,
           string progressNote)
         {
-            StatusBarTextProvider.InitializeProgressBar(minimum, maximum,
-                0, 1, progressNote);
+            InitializeProgressBar(minimum, maximum, 0, 1, progressNote);
         }
 
         /// <summary>
@@ -1319,7 +1286,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <param name="current">The current value</param>
         public static void UpdateProgress(int current)
         {
-            StatusBarTextProvider.UpdateProgress(current, null);
+            UpdateProgress(current, null);
         }
 
         /// <summary>
@@ -1350,7 +1317,7 @@ namespace SandcastleBuilder.Utils.Controls
         /// <overloads>There are two overloads for this method.</overloads>
         public static void ResetProgressBar()
         {
-            StatusBarTextProvider.ResetProgressBar(null);
+            ResetProgressBar(null);
         }
 
         /// <summary>

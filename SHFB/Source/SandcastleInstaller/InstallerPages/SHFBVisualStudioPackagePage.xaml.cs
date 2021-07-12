@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 11/07/2019
+// Updated : 04/21/2021
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
 //
@@ -73,7 +73,7 @@ namespace Sandcastle.Installer.InstallerPages
 
         private XElement pageConfiguration;
         private Task initializationTask;
-        private List<VisualStudioInstallerPackage> vsixPackages;
+        private readonly List<VisualStudioInstallerPackage> vsixPackages;
 
         private bool searchPerformed, installerExecuted;
         private Guid packageGuid;
@@ -136,6 +136,9 @@ namespace Sandcastle.Installer.InstallerPages
 
         public void InitializeInternal(XElement configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             if(configuration.Attribute("packageGuid") == null)
                 throw new InvalidOperationException("A packageGuid attribute value is required");
 
@@ -377,7 +380,7 @@ namespace Sandcastle.Installer.InstallerPages
                                 "installer trying to install the package: " +
                                 exitCode.ToString(CultureInfo.InvariantCulture));
                     }
-                });
+                }).ConfigureAwait(true);
 
                 success = true;
             }

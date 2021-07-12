@@ -1,24 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/07/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/08/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that represents an individual topic.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/12/2008  EFW  Created the code
-// 1.0.0.2  08/07/2012  EFW  Incorporated various changes from Dany R
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/12/2008  EFW  Created the code
+// 08/07/2012  EFW  Incorporated various changes from Dany R
+//===============================================================================================================
+
+// Ignore Spelling: Dany
 
 using System;
 using System.Collections.Generic;
@@ -38,13 +38,14 @@ namespace HtmlToMamlConversion
         //=====================================================================
 
         private FilePath sourceFile;
-        private TopicCollection subtopics;
+        private readonly TopicCollection subtopics;
         private MSHelpAttrCollection helpAttributes;
         private MSHelpKeywordCollection helpKeywords;
         private Guid id;
         private string title, body, topicAbstract, revisionNumber;
         private bool tocExclude, defaultTopic, splitToc;
         private int sortOrder;
+
         #endregion
 
         #region Properties
@@ -56,25 +57,22 @@ namespace HtmlToMamlConversion
         /// <value>If set to null, the item will represent a container node with no associated topic.</value>
         public FilePath SourceFile
         {
-            get { return sourceFile; }
-            set { sourceFile = value; }
+            get => sourceFile;
+            set => sourceFile = value;
         }
 
         /// <summary>
         /// This is used to get the collection of sub-topics, if any
         /// </summary>
-        public TopicCollection Subtopics
-        {
-            get { return subtopics; }
-        }
+        public TopicCollection Subtopics => subtopics;
 
         /// <summary>
         /// This returns the topic's unique ID
         /// </summary>
         public Guid Id
         {
-            get { return id; }
-            set { id = value; }
+            get => id;
+            set => id = value;
         }
 
         /// <summary>
@@ -82,8 +80,8 @@ namespace HtmlToMamlConversion
         /// </summary>
         public string RevisionNumber
         {
-            get { return revisionNumber; }
-            set { revisionNumber = value; }
+            get => revisionNumber;
+            set => revisionNumber = value;
         }
 
         /// <summary>
@@ -91,8 +89,8 @@ namespace HtmlToMamlConversion
         /// </summary>
         public string Title
         {
-            get { return title; }
-            set { title = value; }
+            get => title;
+            set => title = value;
         }
 
         /// <summary>
@@ -100,8 +98,8 @@ namespace HtmlToMamlConversion
         /// </summary>
         public string TopicAbstract
         {
-            get { return topicAbstract; }
-            set { topicAbstract = value; }
+            get => topicAbstract;
+            set => topicAbstract = value;
         }
 
         /// <summary>
@@ -109,59 +107,42 @@ namespace HtmlToMamlConversion
         /// </summary>
         public string Body
         {
-            get { return body; }
-            set { body = value; }
+            get => body;
+            set => body = value;
         }
 
         /// <summary>
         /// This returns the TOC exclude flag if found in the topic
         /// </summary>
-        public bool TocExclude
-        {
-            get { return tocExclude; }
-        }
+        public bool TocExclude => tocExclude;
 
         /// <summary>
         /// This returns the default topic flag if found in the topic
         /// </summary>
-        public bool IsDefaultTopic
-        {
-            get { return defaultTopic; }
-        }
+        public bool IsDefaultTopic => defaultTopic;
 
         /// <summary>
         /// This returns the split TOC flag if found in the topic
         /// </summary>
-        public bool SplitToc
-        {
-            get { return splitToc; }
-        }
+        public bool SplitToc => splitToc;
 
         /// <summary>
         /// This returns the sort order value if found in the topic
         /// </summary>
-        public int SortOrder
-        {
-            get { return sortOrder; }
-        }
+        public int SortOrder => sortOrder;
 
         /// <summary>
         /// Get the help attributes collection
         /// </summary>
         /// <value>If null or empty, there are no attributes</value>
-        public MSHelpAttrCollection HelpAttributes
-        {
-            get { return helpAttributes; }
-        }
+        public MSHelpAttrCollection HelpAttributes => helpAttributes;
 
         /// <summary>
         /// Get the help keywords collection
         /// </summary>
         /// <value>If null or empty, there are no keywords </value>
-        public MSHelpKeywordCollection HelpKeywords
-        {
-            get { return helpKeywords; }
-        }
+        public MSHelpKeywordCollection HelpKeywords => helpKeywords;
+
         #endregion
 
         #region Constructor

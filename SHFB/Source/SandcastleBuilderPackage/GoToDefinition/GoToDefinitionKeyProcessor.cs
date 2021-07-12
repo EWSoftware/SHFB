@@ -2,15 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionKeyProcessor.cs
 // Author  : Noah Richards
-// Updated : 12/08/2014
-// Note    : Copyright 2009-2014, Noah Richards, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2009-2021, Noah Richards, All rights reserved
 //
 // This file contains the class used to listen for the control key being pressed or released to update the Ctrl
 // key state tracker for a view.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -36,7 +35,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private CtrlKeyState state;
+        private readonly CtrlKeyState state;
 
         #endregion
 

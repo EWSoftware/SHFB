@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ApiFilterEditorDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/12/2019
-// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the API filter items.
 //
@@ -39,10 +38,12 @@ using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.XPath;
+
+using SandcastleBuilder.WPF.XPath;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -54,7 +55,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private ApiFilterCollection apiFilter;
+        private readonly ApiFilterCollection apiFilter;
         private bool wasModified;
 
         private SandcastleProject tempProject;
@@ -63,7 +64,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
         private BuildProcess buildProcess;
         private CancellationTokenSource cancellationTokenSource;
-        private IProgress<string> loadApiInfoProgress;
+        private readonly IProgress<string> loadApiInfoProgress;
 
         private XmlDocument reflectionInfo;
         private XPathNavigator navigator;
@@ -200,7 +201,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
             loadApiInfoProgress.Report("Loading documented namespace information...");
 
             reflectionInfo = new XmlDocument();
-            reflectionInfo.Load(reflectionFile);
+
+            using(var reader = XmlReader.Create(reflectionFile, new XmlReaderSettings { CloseInput = true }))
+            {
+                reflectionInfo.Load(reader);
+            }
 
             // Get the root APIs node as that's all we'll ever search
             apisNode = reflectionInfo.SelectSingleNode("reflection/apis");
@@ -267,10 +272,10 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             nodeList.Sort((x, y) =>
             {
-                int rVal = String.Compare(x.Id, y.Id, StringComparison.CurrentCulture);
+                int rVal = String.Compare(x.Id, y.Id, StringComparison.Ordinal);
 
                 // Sometimes group namespace IDs are the same as normal namespaces, return group namespaces first
-                return rVal == 0 ? -String.Compare(x.NodeText, y.NodeText, StringComparison.CurrentCulture) : rVal;
+                return rVal == 0 ? -String.Compare(x.NodeText, y.NodeText, StringComparison.Ordinal) : rVal;
             });
 
             // Load the tree view with the namespaces for documented APIs as children of the first root node
@@ -988,7 +993,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     SuppressApiFilter = true        // We must suppress the current API filter for this build
                 };
 
-                var apiNodes = await Task.Run(() => this.BuildProject(), cancellationTokenSource.Token);
+                var apiNodes = await Task.Run(() => this.BuildProject(), cancellationTokenSource.Token).ConfigureAwait(true);
 
                 if(!cancellationTokenSource.IsCancellationRequested)
                 {
@@ -1048,7 +1053,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void ApiFilterEditorDlg_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ApiFilterEditorDlg_Closing(object sender, CancelEventArgs e)
         {
             if(cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
             {
@@ -1105,7 +1110,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("7df16a60-f718-4b8f-bfa2-88c42906070c");
+            UiUtility.ShowHelpTopic("7df16a60-f718-4b8f-bfa2-88c42906070c");
         }
 
         /// <summary>
@@ -1160,7 +1165,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                                 return this.AddBaseMembers(apiInfo);
                             }
-                        });
+                        }).ConfigureAwait(true);
 
                         apiInfo.SubMembers.Clear();
 

@@ -2,15 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
-// Updated : 01/09/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the abstract base class used to handle Ctrl+clicks on valid elements to go to their
 // definition if possible.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -42,9 +41,9 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private CtrlKeyState ctrlState;
-        private IClassifier aggregator;
-        private ITextStructureNavigator navigator;
+        private readonly CtrlKeyState ctrlState;
+        private readonly IClassifier aggregator;
+        private readonly ITextStructureNavigator navigator;
         private Point? mouseDownAnchorPoint;
 
         #endregion
@@ -88,7 +87,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
             {
                 var classifier = UnderlineClassifierProvider.GetClassifierForView(this.TextView);
 
-                return (classifier != null) ? classifier.CurrentUnderlineSpanType : null;
+                return classifier?.CurrentUnderlineSpanType;
             }
         }
         #endregion

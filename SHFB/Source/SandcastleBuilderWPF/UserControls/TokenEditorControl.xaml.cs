@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TokenEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/09/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit token files
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -27,7 +26,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils.ConceptualContent;
 
 namespace SandcastleBuilder.WPF.UserControls
@@ -40,9 +41,9 @@ namespace SandcastleBuilder.WPF.UserControls
         #region Private data members
         //=====================================================================
 
-        private TokenCollection tokens;
         private IEnumerator<Token> matchEnumerator;
         private Point startDragPoint;
+
         #endregion
 
         #region Properties
@@ -51,10 +52,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This read-only property returns the current token collection including any edits
         /// </summary>
-        public TokenCollection Tokens
-        {
-            get { return tokens; }
-        }
+        public TokenCollection Tokens { get; private set; }
+
         #endregion
 
         #region Routed events
@@ -100,27 +99,29 @@ namespace SandcastleBuilder.WPF.UserControls
         public void LoadTokenFile(string tokenFile, string selectedToken)
         {
             if(tokenFile == null)
-                throw new ArgumentNullException("tokenFile", "A token filename must be specified");
+                throw new ArgumentNullException(nameof(tokenFile), "A token filename must be specified");
 
-            tokens = new TokenCollection(tokenFile);
-            tokens.Load();
+            this.Tokens = new TokenCollection(tokenFile);
+            this.Tokens.Load();
 
-            tokens.ListChanged += new ListChangedEventHandler(tokens_ListChanged);
+            this.Tokens.ListChanged += new ListChangedEventHandler(tokens_ListChanged);
 
-            if(tokens.Count != 0)
+            if(this.Tokens.Count != 0)
+            {
                 if(selectedToken == null)
-                    tokens[0].IsSelected = true;
+                    this.Tokens[0].IsSelected = true;
                 else
                 {
-                    var match = tokens.Find(t => t.TokenName == selectedToken).FirstOrDefault();
+                    var match = this.Tokens.Find(t => t.TokenName == selectedToken).FirstOrDefault();
 
                     if(match != null)
                         match.IsSelected = true;
                     else
-                        tokens[0].IsSelected = true;
+                        this.Tokens[0].IsSelected = true;
                 }
+            }
 
-            lbTokens.ItemsSource = tokens;
+            lbTokens.ItemsSource = this.Tokens;
 
             this.tokens_ListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, -1));
         }
@@ -131,10 +132,9 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <returns>The string to copy to the clipboard or null if there is nothing to copy</returns>
         private string GetTextToCopy()
         {
-            Token t = lbTokens.SelectedItem as Token;
             string textToCopy;
 
-            if(t != null)
+            if(lbTokens.SelectedItem is Token t)
                 textToCopy = t.ToToken();
             else
                 textToCopy = null;
@@ -151,7 +151,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        void tokens_ListChanged(object sender, ListChangedEventArgs e)
+        private void tokens_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(e.PropertyDescriptor != null)
                 switch(e.PropertyDescriptor.Name)
@@ -166,11 +166,11 @@ namespace SandcastleBuilder.WPF.UserControls
                 }
 
             if(sender != this)
-                base.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
+                this.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
 
             // Update control state based on the collection content
             lbTokens.IsEnabled = txtTokenName.IsEnabled = txtTokenValue.IsEnabled =
-                (tokens != null && tokens.Count != 0);
+                (this.Tokens != null && this.Tokens.Count != 0);
 
             CommandManager.InvalidateRequerySuggested();
 
@@ -189,7 +189,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void btnGo_Click(object sender, RoutedEventArgs e)
         {
-            if(tokens == null || tokens.Count == 0)
+            if(this.Tokens == null || this.Tokens.Count == 0)
                 return;
 
             if(txtFindID.Text.Trim().Length == 0)
@@ -207,7 +207,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // If this is the first time, get all matches
             if(matchEnumerator == null)
-                matchEnumerator = tokens.Find(t =>
+                matchEnumerator = this.Tokens.Find(t =>
                   (!String.IsNullOrEmpty(t.TokenName) && t.TokenName.IndexOf(txtFindID.Text,
                     StringComparison.CurrentCultureIgnoreCase) != -1) ||
                   (!String.IsNullOrEmpty(t.TokenValue) && t.TokenValue.IndexOf(txtFindID.Text,
@@ -227,7 +227,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     matchEnumerator = null;
                 }
 
-                MessageBox.Show("No more matches found", "Token Editor", MessageBoxButton.OK,
+                MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
         }
@@ -271,10 +271,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdAddItem_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if(tokens != null)
+            if(this.Tokens != null)
             {
                 Token t = new Token { TokenValue = "Add token content here" };
-                tokens.Add(t);
+                this.Tokens.Add(t);
 
                 t.IsSelected = true;
                 lbTokens.ScrollIntoView(t);
@@ -302,13 +302,11 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdDelete_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Token t = lbTokens.SelectedItem as Token;
-
-            if(t != null && MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Are you sure you " +
-              "want to delete the token '{0}'?", t.TokenName), "Token Editor", MessageBoxButton.YesNo,
-              MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if(lbTokens.SelectedItem is Token t && MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
+              "Are you sure you want to delete the token '{0}'?", t.TokenName), Constants.AppName,
+              MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
-                tokens.Remove(t);
+                this.Tokens.Remove(t);
                 lbTokens.Focus();
             }
         }
@@ -348,7 +346,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdHelp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("ed6870bb-772d-4596-9fc1-5638ae6d621b");
+            UiUtility.ShowHelpTopic("ed6870bb-772d-4596-9fc1-5638ae6d621b");
         }
         #endregion
 

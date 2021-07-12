@@ -2,29 +2,26 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FilePath.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/23/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to represent a file path.  Support is included for treating the path as fixed
 // or relative and for expanding environment variables in the path name.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.3.4.0  12/29/2006  EFW  Created the code
-// 1.8.0.0  06/21/2008  EFW  Added handling of MSBuild variable references and reworked BasePath support to make
-//                           it usable in a multi-project environment like Visual Studio.
+// 12/29/2006  EFW  Created the code
+// 06/21/2008  EFW  Added handling of MSBuild variable references and reworked BasePath support to make it
+//                  usable in a multi-project environment like Visual Studio.
 //===============================================================================================================
 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -40,9 +37,7 @@ namespace SandcastleBuilder.Utils
     /// This class is used to represent a file path.  Support is included for treating the path as fixed or
     /// relative and for expanding environment variables in the path name.
     /// </summary>
-    [Serializable, DefaultProperty("Path"),
-      Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-      TypeConverter(typeof(FilePathTypeConverter))]
+    [Serializable, DefaultProperty("Path"), TypeConverter(typeof(FilePathTypeConverter))]
     public class FilePath : ICloneable
     {
         #region Private data members
@@ -51,9 +46,10 @@ namespace SandcastleBuilder.Utils
         // This is used to convert MSBuild variable references to normal environment variable references
         internal static Regex reMSBuildVar = new Regex(@"\$\((.*?)\)");
 
-        private IBasePathProvider basePathProvider; // Base path provider
+        private readonly IBasePathProvider basePathProvider; // Base path provider
         private string filePath;                    // Instance path
         private bool isFixedPath;
+
         #endregion
 
         #region Properties
@@ -63,10 +59,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get the base path provider for the object.
         /// </summary>
         [Browsable(false), XmlIgnore]
-        public IBasePathProvider BasePathProvider
-        {
-            get { return basePathProvider; }
-        }
+        public IBasePathProvider BasePathProvider => basePathProvider;
 
         /// <summary>
         /// This returns the base path for the object
@@ -124,7 +117,7 @@ namespace SandcastleBuilder.Utils
           RefreshProperties(RefreshProperties.Repaint)]
         public virtual string Path
         {
-            get { return filePath; }
+            get => filePath;
             set
             {
                 this.OnPersistablePathChanging(EventArgs.Empty);
@@ -146,7 +139,7 @@ namespace SandcastleBuilder.Utils
 
                     if(!IOPath.IsPathRooted(tempPath))
                     {
-                        filePath = FilePath.RelativeToAbsolutePath(this.BasePath, filePath);
+                        filePath = RelativeToAbsolutePath(this.BasePath, filePath);
                         isFixedPath = false;
                     }
                 }
@@ -174,9 +167,9 @@ namespace SandcastleBuilder.Utils
                 if(isFixedPath || filePath.Length == 0 || filePath[0] == '%' || (m.Success && m.Index == 0))
                     return filePath;
 
-                return FilePath.AbsoluteToRelativePath(this.BasePath, filePath);
+                return AbsoluteToRelativePath(this.BasePath, filePath);
             }
-            set { this.Path = value; }
+            set => this.Path = value;
         }
 
         /// <summary>
@@ -225,10 +218,7 @@ namespace SandcastleBuilder.Utils
         /// expansions in the designer.
         /// </summary>
         [Description("The fully qualified path with environment variables expanded")]
-        public string ExpandedPath
-        {
-            get { return this.ToString(); }
-        }
+        public string ExpandedPath => this.ToString();
 
         /// <summary>
         /// This is used to indicate whether or not the path will be treated as a relative or fixed path when
@@ -241,7 +231,7 @@ namespace SandcastleBuilder.Utils
           "BasePath property."), RefreshProperties(RefreshProperties.Repaint)]
         public bool IsFixedPath
         {
-            get { return isFixedPath; }
+            get => isFixedPath;
             set
             {
                 this.OnPersistablePathChanging(EventArgs.Empty);
@@ -265,10 +255,7 @@ namespace SandcastleBuilder.Utils
         /// <param name="e">The event arguments</param>
         protected void OnPersistablePathChanging(EventArgs e)
         {
-            var handler = PersistablePathChanging;
-
-            if(handler != null)
-                handler(this, e);
+            PersistablePathChanging?.Invoke(this, e);
         }
 
         /// <summary>
@@ -282,10 +269,7 @@ namespace SandcastleBuilder.Utils
         /// <param name="e">The event arguments</param>
         protected void OnPersistablePathChanged(EventArgs e)
         {
-            var handler = PersistablePathChanged;
-
-            if(handler != null)
-                handler(this, e);
+            PersistablePathChanged?.Invoke(this, e);
         }
         #endregion
 
@@ -329,10 +313,10 @@ namespace SandcastleBuilder.Utils
         /// <returns>True if equal, false if not.</returns>
         public static bool operator == (FilePath firstPath, FilePath secondPath)
         {
-            if((object)firstPath == null && (object)secondPath == null)
+            if(firstPath is null && secondPath is null)
                 return true;
 
-            if((object)firstPath == null)
+            if(firstPath is null)
                 return false;
 
             return firstPath.Equals(secondPath);
@@ -346,7 +330,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>True if not equal, false if they are.</returns>
         public static bool operator != (FilePath firstPath, FilePath secondPath)
         {
-            if((object)firstPath == null && (object)secondPath == null)
+            if(firstPath is null && secondPath is null)
                 return false;
 
             if(firstPath == null)
@@ -361,7 +345,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="path">The path to expand</param>
         /// <returns>The fully qualified path name</returns>
-        /// <remarks>The <b>System.IO.Path</b> version of <see cref="System.IO.Path.GetFullPath"/> will throw an
+        /// <remarks>The <b>System.IO.Path</b> version of <see cref="IOPath.GetFullPath"/> will throw an
         /// exception if the path contains wildcard characters.  This version does not.
         /// </remarks>
         public static string GetFullPath(string path)
@@ -426,7 +410,7 @@ namespace SandcastleBuilder.Utils
 
             // Just in case, make sure the path is absolute
             if(!IOPath.IsPathRooted(absolutePath))
-                absolutePath = FilePath.GetFullPath(absolutePath);
+                absolutePath = GetFullPath(absolutePath);
 
             // Remove trailing backslashes for comparison
             if(FolderPath.IsPathTerminated(basePath))
@@ -547,7 +531,7 @@ namespace SandcastleBuilder.Utils
 
             // If it's below the base path, just add it to the base path
             if(idx == 0)
-                return FilePath.GetFullPath(basePath + IOPath.DirectorySeparatorChar + relativePath);
+                return GetFullPath(basePath + IOPath.DirectorySeparatorChar + relativePath);
 
             string absPath = String.Join(IOPath.DirectorySeparatorChar.ToString(), baseParts, 0,
                 Math.Max(0, baseParts.Length - idx));
@@ -555,7 +539,7 @@ namespace SandcastleBuilder.Utils
             absPath += IOPath.DirectorySeparatorChar + String.Join(IOPath.DirectorySeparatorChar.ToString(),
                 relParts, idx, relParts.Length - idx);
 
-            return FilePath.GetFullPath(absPath);
+            return GetFullPath(absPath);
         }
         #endregion
 

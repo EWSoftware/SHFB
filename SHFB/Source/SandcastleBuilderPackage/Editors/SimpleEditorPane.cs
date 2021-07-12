@@ -2,10 +2,9 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SimpleEditorPane.cs
 // Author  : Istvan Novak
-// Updated : 09/02/2018
+// Updated : 05/26/2021
 // Source  : http://learnvsxnow.codeplex.com/
-// Note    : Copyright 2008-2018, Istvan Novak, All rights reserved
-// Compiler: Microsoft Visual C#
+// Note    : Copyright 2008-2021, Istvan Novak, All rights reserved
 //
 // This file contains a class that implements the core functionality for an editor pane
 //
@@ -64,7 +63,7 @@ namespace SandcastleBuilder.Package.Editors
         #region Private fields
 
         // --- UI control bound to this editor pane.
-        private TUIControl _UIControl;
+        private readonly TUIControl _UIControl;
 
         // --- File extension used for this editor.
         private readonly string _FileExtensionUsed;
@@ -429,30 +428,21 @@ namespace SandcastleBuilder.Package.Editors
         /// Gets the ID of the editor factory creating instances of this editor pane.
         /// </summary>
         // --------------------------------------------------------------------------------
-        public Guid FactoryGuid
-        {
-            get { return typeof(TFactory).GUID; }
-        }
+        public Guid FactoryGuid => typeof(TFactory).GUID;
 
         // --------------------------------------------------------------------------------
         /// <summary>
         /// Gets the file extension used by the editor.
         /// </summary>
         // --------------------------------------------------------------------------------
-        public string FileExtensionUsed
-        {
-            get { return _FileExtensionUsed; }
-        }
+        public string FileExtensionUsed => _FileExtensionUsed;
 
         // --------------------------------------------------------------------------------
         /// <summary>
         /// Gets the UI control associated with the editor.
         /// </summary>
         // --------------------------------------------------------------------------------
-        public TUIControl UIControl
-        {
-            get { return _UIControl; }
-        }
+        public TUIControl UIControl => _UIControl;
 
         /// <summary>
         /// This is used to get the <see cref="ICommonCommandSupport"/> interface
@@ -463,9 +453,7 @@ namespace SandcastleBuilder.Package.Editors
         {
             get
             {
-                var commandSupport = _UIControl as ICommonCommandSupport;
-
-                if(commandSupport == null)
+                if(!(_UIControl is ICommonCommandSupport commandSupport))
                     commandSupport = this as ICommonCommandSupport;
 
                 return commandSupport;
@@ -475,10 +463,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <summary>
         /// This read-only property returns the dirty state of the file
         /// </summary>
-        public bool IsDirty
-        {
-            get { return _IsDirty; }
-        }
+        public bool IsDirty => _IsDirty;
 
         /// <summary>
         /// This read-only property returns the file node associated with the document being edited
@@ -489,9 +474,6 @@ namespace SandcastleBuilder.Package.Editors
             {
                 ThreadHelper.ThrowIfNotOnUIThread();
 
-                IVsHierarchy hierarchy;
-                uint itemID;
-                IntPtr docData;
                 uint docCookie = 0;
                 object node = null;
 
@@ -510,7 +492,7 @@ namespace SandcastleBuilder.Package.Editors
                 {
                     // --- Lock the document
                     ErrorHandler.ThrowOnFailure(runningDocTable.FindAndLockDocument((uint)_VSRDTFLAGS.RDT_ReadLock,
-                        _FileName, out hierarchy,out itemID, out docData, out docCookie));
+                        _FileName, out IVsHierarchy hierarchy,out uint itemID, out IntPtr docData, out docCookie));
 
                     ErrorHandler.ThrowOnFailure(hierarchy.GetProperty(itemID, (int)__VSHPROPID.VSHPROPID_ExtObject,
                         out node));
@@ -558,10 +540,12 @@ namespace SandcastleBuilder.Package.Editors
                 return VSConstants.E_INVALIDARG;
 
             // --- Wrap parameters into argument type instance
-            QueryStatusArgs statusArgs = new QueryStatusArgs(pguidCmdGroup);
-            statusArgs.CommandCount = cCmds;
-            statusArgs.Commands = prgCmds;
-            statusArgs.PCmdText = pCmdText;
+            QueryStatusArgs statusArgs = new QueryStatusArgs(pguidCmdGroup)
+            {
+                CommandCount = cCmds,
+                Commands = prgCmds,
+                PCmdText = pCmdText
+            };
 
             // --- By default all commands are supported
             OLECMDF cmdf = OLECMDF.OLECMDF_SUPPORTED;
@@ -650,10 +634,12 @@ namespace SandcastleBuilder.Package.Editors
           IntPtr pvaIn, IntPtr pvaOut)
         {
             // --- Wrap parameters into argument type instance
-            ExecArgs execArgs = new ExecArgs(pguidCmdGroup, nCmdID);
-            execArgs.CommandExecOpt = nCmdexecopt;
-            execArgs.PvaIn = pvaIn;
-            execArgs.PvaOut = pvaOut;
+            ExecArgs execArgs = new ExecArgs(pguidCmdGroup, nCmdID)
+            {
+                CommandExecOpt = nCmdexecopt,
+                PvaIn = pvaIn,
+                PvaOut = pvaOut
+            };
 
             var commandSupport = this.CommonCommandSupport;
 
@@ -803,7 +789,7 @@ namespace SandcastleBuilder.Package.Editors
 
             // --- A valid file name is required.
             if((pszFilename == null) && ((_FileName == null) || (_FileName.Length == 0)))
-                throw new ArgumentNullException("pszFilename");
+                throw new ArgumentNullException(nameof(pszFilename));
 
             _Loading = true;
             int hr = VSConstants.S_OK;
@@ -1052,7 +1038,6 @@ namespace SandcastleBuilder.Package.Editors
         /// <param name="pfSaveCanceled">Value 1 if the document could not be saved.</param>
         /// <returns>S_OK if the method succeeds.</returns>
         // --------------------------------------------------------------------------------
-        [SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")]
         int IVsPersistDocData.SaveDocData(VSSAVEFLAGS dwSave, out string pbstrMkDocumentNew, out int pfSaveCanceled)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -1070,12 +1055,11 @@ namespace SandcastleBuilder.Package.Editors
                           (IVsQueryEditQuerySave2)GetService(typeof(SVsQueryEditQuerySave));
 
                         // Call QueryEditQuerySave
-                        uint result;
                         hr = queryEditQuerySave.QuerySaveFile(
                           _FileName, // filename
                           0, // flags
                           null, // file attributes
-                          out result); // result
+                          out uint result); // result
 
                         if(ErrorHandler.Failed(hr))
                         {
@@ -1262,8 +1246,7 @@ namespace SandcastleBuilder.Package.Editors
 
                 // Now call the QueryEdit method to find the edit status of this file
                 string[] documents = { _FileName };
-                uint result;
-                uint outFlags;
+
 
                 // This function can pop up a dialog to ask the user to checkout the file.
                 // When this dialog is visible, it is possible to receive other request to change
@@ -1274,9 +1257,10 @@ namespace SandcastleBuilder.Package.Editors
                   documents, // Files to edit
                   null, // Input flags
                   null, // Input array of VSQEQS_FILE_ATTRIBUTE_DATA
-                  out result, // result of the checkout
-                  out outFlags // Additional flags
+                  out uint result, // result of the checkout
+                  out _ // Additional flags
                   );
+
                 if(ErrorHandler.Succeeded(hr) && (result == (uint)tagVSQueryEditResult.QER_EditOK))
                 {
                     // In this case (and only in this case) we can return true from this function.
@@ -1301,9 +1285,6 @@ namespace SandcastleBuilder.Package.Editors
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            IVsHierarchy hierarchy;
-            uint itemID;
-            IntPtr docData;
             uint docCookie = 0;
 
             // --- Make sure that we have a file name
@@ -1318,7 +1299,7 @@ namespace SandcastleBuilder.Package.Editors
             {
                 // --- Lock the document
                 ErrorHandler.ThrowOnFailure(runningDocTable.FindAndLockDocument((uint)_VSRDTFLAGS.RDT_ReadLock,
-                    _FileName, out hierarchy,out itemID, out docData, out docCookie));
+                    _FileName, out IVsHierarchy hierarchy,out uint itemID, out IntPtr docData, out docCookie));
 
                 // --- Send the notification
                 ErrorHandler.ThrowOnFailure(runningDocTable.NotifyDocumentChanged(docCookie,

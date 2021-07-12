@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildEventEditorDlg.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/03/2017
-// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a form used to edit a build event and insert macro placeholders
 //
@@ -38,7 +37,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private SortedDictionary<string, string> macros;
+        private readonly SortedDictionary<string, string> macros;
 
         #endregion
 
@@ -50,7 +49,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public string BuildEventText
         {
-            get { return txtBuildEvent.Text; }
+            get => txtBuildEvent.Text;
             set
             {
                 txtBuildEvent.Text = value;
@@ -120,7 +119,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     if(outputPath.Length == 0)
                         outputPath = "Help\\";
 
-                    if(!Path.IsPathRooted(outputPath))
+                    if(!Path.IsPathRooted(outputPath) && project != null)
                     {
                         outputPath = Path.GetFullPath(Path.Combine(project.DirectoryPath, outputPath));
                         macros["OutputPath"] = outputPath;

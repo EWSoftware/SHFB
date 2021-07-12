@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/03/2015
 // Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the enumerated type that defines the node icon index values for the project explorer
 //

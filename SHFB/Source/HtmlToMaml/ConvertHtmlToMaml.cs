@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : ConvertHtmlToMaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/07/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a utility used to convert HTML files to MAML topics and
-// create some supporting files.
+// This file contains a utility used to convert HTML files to MAML topics and create some supporting files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/12/2008  EFW  Created the code
-// 1.0.0.2  08/07/2012  EFW  Incorporated various changes from Dany R
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/12/2008  EFW  Created the code
+// 08/07/2012  EFW  Incorporated various changes from Dany R
+//===============================================================================================================
+
+// Ignore Spelling: Dany
 
 using System;
 using System.Diagnostics;
@@ -29,8 +28,7 @@ using System.Reflection;
 namespace HtmlToMamlConversion
 {
     /// <summary>
-    /// This utility is used to convert HTML files to MAML topics and create
-    /// some supporting files.
+    /// This utility is used to convert HTML files to MAML topics and create some supporting files.
     /// </summary>
     public static class ConvertHtmlToMaml
     {
@@ -39,9 +37,8 @@ namespace HtmlToMamlConversion
         /// <summary>
         /// Main program entry point
         /// </summary>
-        /// <param name="args">The command line arguments (the source folder,
-        /// the destination folder, and the optional "/companion" option to
-        /// create companion files for each topic file).</param>
+        /// <param name="args">The command line arguments (the source folder, the destination folder, and the
+        /// optional "/companion" option to create companion files for each topic file).</param>
         /// <returns>Zero on success, non-zero on failure</returns>
         public static int Main(string[] args)
         {
@@ -64,12 +61,10 @@ namespace HtmlToMamlConversion
                     destFolder = Path.GetFullPath(args[1]);
 
                     for(int i = 2; i < args.Length; i++)
-                        if(args[i].Length > 1 && args[i].Substring(1).Equals("companion",
-                          StringComparison.OrdinalIgnoreCase))
+                        if(args[i].Length > 1 && args[i].Substring(1).Equals("companion", StringComparison.OrdinalIgnoreCase))
                             createCompanionFile = true;
                         else
-                            if(args[i].Length > 1 && args[i].Substring(1).Equals("moveIntro",
-                              StringComparison.OrdinalIgnoreCase))
+                            if(args[i].Length > 1 && args[i].Substring(1).Equals("moveIntro", StringComparison.OrdinalIgnoreCase))
                                 moveIntro = true;
                             else
                                 badArgs = true;
@@ -77,8 +72,7 @@ namespace HtmlToMamlConversion
 
                 if(badArgs)
                 {
-                    Console.WriteLine("Syntax: ConvertHtmlToMaml sourceFolder destFolder " +
-                        "[/companion] [/moveIntro]");
+                    Console.WriteLine("Syntax: ConvertHtmlToMaml sourceFolder destFolder [/companion] [/moveIntro]");
                     return 1;
                 }
 
@@ -99,8 +93,7 @@ namespace HtmlToMamlConversion
 
                 swLog = new StreamWriter(Path.Combine(destFolder, "_ConversionLog.log"));
 
-                HtmlToMaml htmlToMaml = new HtmlToMaml(sourceFolder, destFolder, createCompanionFile,
-                    moveIntro);
+                HtmlToMaml htmlToMaml = new HtmlToMaml(sourceFolder, destFolder, createCompanionFile, moveIntro);
 
                 htmlToMaml.ConversionProgress += htmlToMaml_ConversionProgress;
 
@@ -109,7 +102,7 @@ namespace HtmlToMamlConversion
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 Console.WriteLine(ex.ToString());
             }
             finally
@@ -118,7 +111,7 @@ namespace HtmlToMamlConversion
                     swLog.Close();
 
 #if DEBUG
-                if(System.Diagnostics.Debugger.IsAttached)
+                if(Debugger.IsAttached)
                 {
                     Console.WriteLine("Hit ENTER...");
                     Console.ReadLine();

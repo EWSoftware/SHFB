@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : GeneralOptionsControl.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 06/19/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to modify the general help file builder package preferences that are unrelated to
 // individual projects.
@@ -34,6 +33,8 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 
 using Sandcastle.Core;
+
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -68,7 +69,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     }
                     catch(Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine(ex);
+                        Debug.WriteLine(ex);
                         isValid = false;
                     }
                 }

@@ -1,26 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SplitButton.cs
 // Author  : Huy Pham
-// Updated : 12/28/2011
+// Updated : 04/17/2021
 // Source  : http://huydinhpham.blogspot.com/2008/09/wpf-drop-down-and-split-button.html
-// Note    : Copyright 2008-2011, Huy Pham, All rights reserved
-// Compiler: Microsoft Visual C#
+// Note    : Copyright 2008-2021, Huy Pham, All rights reserved
 //
 // This file contains a class that implements a split button
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/04/2011  EFW  Added the code to the project
-// 1.9.3.3  12/19/2011  EFW  Added support for MainButtonCommandParameter
-// 1.9.3.3  12/28/2011  EFW  Added support for MainButtonCommandTarget
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/04/2011  EFW  Added the code to the project
+// 12/19/2011  EFW  Added support for MainButtonCommandParameter
+// 12/28/2011  EFW  Added support for MainButtonCommandTarget
+//===============================================================================================================
 
 // Ignore Spelling: Huy Pham
 
@@ -50,11 +48,13 @@ namespace SandcastleBuilder.WPF.Controls
     public class SplitButton : ToggleButton
     {
         #region Dependency Properties
+        //=====================================================================
 
         /// <summary>
         /// The dropdown context menu dependency property
         /// </summary>
-        public static readonly DependencyProperty DropDownContextMenuProperty = DependencyProperty.Register("DropDownContextMenu", typeof(ContextMenu), typeof(SplitButton), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty DropDownContextMenuProperty = DependencyProperty.Register(
+            "DropDownContextMenu", typeof(ContextMenu), typeof(SplitButton), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The image dependency property
@@ -101,6 +101,7 @@ namespace SandcastleBuilder.WPF.Controls
         #endregion
 
         #region Constructors
+        //=====================================================================
 
         /// <summary>
         /// Constructor
@@ -111,18 +112,18 @@ namespace SandcastleBuilder.WPF.Controls
             var binding = new Binding("DropDownContextMenu.IsOpen") { Source = this };
             SetBinding(IsCheckedProperty, binding);
         }
-
         #endregion
 
         #region Properties
+        //=====================================================================
 
         /// <summary>
         /// The dropdown context menu property
         /// </summary>
         public ContextMenu DropDownContextMenu
         {
-            get { return GetValue(DropDownContextMenuProperty) as ContextMenu; }
-            set { SetValue(DropDownContextMenuProperty, value); }
+            get => GetValue(DropDownContextMenuProperty) as ContextMenu;
+            set => SetValue(DropDownContextMenuProperty, value);
         }
 
         /// <summary>
@@ -130,8 +131,8 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public ImageSource Image
         {
-            get { return GetValue(ImageProperty) as ImageSource; }
-            set { SetValue(ImageProperty, value); }
+            get => GetValue(ImageProperty) as ImageSource;
+            set => SetValue(ImageProperty, value);
         }
 
         /// <summary>
@@ -139,8 +140,8 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public string Text
         {
-            get { return GetValue(TextProperty) as string; }
-            set { SetValue(TextProperty, value); }
+            get => GetValue(TextProperty) as string;
+            set => SetValue(TextProperty, value);
         }
 
         /// <summary>
@@ -148,8 +149,8 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public UIElement Target
         {
-            get { return GetValue(TargetProperty) as UIElement; }
-            set { SetValue(TargetProperty, value); }
+            get => GetValue(TargetProperty) as UIElement;
+            set => SetValue(TargetProperty, value);
         }
 
         /// <summary>
@@ -157,8 +158,8 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public ICommand MainButtonCommand
         {
-            get { return GetValue(MainButtonCommandProperty) as ICommand; }
-            set { SetValue(MainButtonCommandProperty, value); }
+            get => GetValue(MainButtonCommandProperty) as ICommand;
+            set => SetValue(MainButtonCommandProperty, value);
         }
 
         /// <summary>
@@ -166,8 +167,8 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public IInputElement MainButtonCommandTarget
         {
-            get { return GetValue(MainButtonCommandTargetProperty) as IInputElement; }
-            set { SetValue(MainButtonCommandTargetProperty, value); }
+            get => GetValue(MainButtonCommandTargetProperty) as IInputElement;
+            set => SetValue(MainButtonCommandTargetProperty, value);
         }
 
         /// <summary>
@@ -175,8 +176,8 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public object MainButtonCommandParameter
         {
-            get { return GetValue(MainButtonCommandParameterProperty); }
-            set { SetValue(MainButtonCommandParameterProperty, value); }
+            get => GetValue(MainButtonCommandParameterProperty);
+            set => SetValue(MainButtonCommandParameterProperty, value);
         }
 
         /// <summary>
@@ -184,13 +185,13 @@ namespace SandcastleBuilder.WPF.Controls
         /// </summary>
         public ICommand DropDownButtonCommand
         {
-            get { return GetValue(DropDownButtonCommandProperty) as ICommand; }
-            set { SetValue(DropDownButtonCommandProperty, value); }
+            get => GetValue(DropDownButtonCommandProperty) as ICommand;
+            set => SetValue(DropDownButtonCommandProperty, value);
         }
-
         #endregion
 
         #region Public Override Methods
+        //=====================================================================
 
         /// <inheritdoc />
         public override void OnApplyTemplate()
@@ -198,10 +199,10 @@ namespace SandcastleBuilder.WPF.Controls
             base.OnApplyTemplate();
             SetMainButtonCommand();
         }
-
         #endregion
 
         #region Protected Override Methods
+        //=====================================================================
 
         /// <inheritdoc />
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -210,7 +211,9 @@ namespace SandcastleBuilder.WPF.Controls
 
             if(e.Property == MainButtonCommandProperty || e.Property == MainButtonCommandTargetProperty ||
               e.Property == MainButtonCommandParameterProperty)
+            {
                 SetMainButtonCommand();
+            }
 
             if(e.Property == DropDownButtonCommandProperty)
                 Command = DropDownButtonCommand;
@@ -230,10 +233,10 @@ namespace SandcastleBuilder.WPF.Controls
             DropDownContextMenu.Placement = PlacementMode.Bottom;
             DropDownContextMenu.IsOpen = !DropDownContextMenu.IsOpen;
         }
-
         #endregion
 
         #region Private Methods
+        //=====================================================================
 
         /// <summary>
         /// Set the main button's command
@@ -241,19 +244,13 @@ namespace SandcastleBuilder.WPF.Controls
         private void SetMainButtonCommand()
         {
             // Set up the event handlers
-            if(Template != null)
+            if(Template != null && Template.FindName("PART_Button", this) is ButtonBase button)
             {
-                var button = Template.FindName("PART_Button", this) as ButtonBase;
-
-                if(button != null)
-                {
-                    button.Command = MainButtonCommand;
-                    button.CommandTarget = MainButtonCommandTarget;
-                    button.CommandParameter = MainButtonCommandParameter;
-                }
+                button.Command = MainButtonCommand;
+                button.CommandTarget = MainButtonCommandTarget;
+                button.CommandParameter = MainButtonCommandParameter;
             }
         }
-
         #endregion
     }
 }

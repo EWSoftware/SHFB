@@ -1,24 +1,21 @@
-//=============================================================================
+//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : ImageReferenceCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/30/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/08/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a class that used to contain a collection of image
-// references.
+// This file contains a class that used to contain a collection of image references
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/12/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/12/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Collections.ObjectModel;
@@ -38,8 +35,7 @@ namespace HtmlToMamlConversion
         /// <summary>
         /// Write the image reference collection to a media content file.
         /// </summary>
-        /// <param name="filename">The file to which the image reference
-        /// collection is saved.</param>
+        /// <param name="filename">The file to which the image reference collection is saved.</param>
         public void Save(string filename)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -53,11 +49,10 @@ namespace HtmlToMamlConversion
 
                 writer.WriteStartDocument();
 
-                // There are normally some attributes on this element but
-                // they aren't used by Sandcastle so we'll ignore them.
+                // There are normally some attributes on this element but they aren't used by Sandcastle so we'll
+                // ignore them.
                 writer.WriteStartElement("stockSharedContentDefinitions");
-                writer.WriteAttributeString("fileAssetGuid",
-                    Guid.NewGuid().ToString());
+                writer.WriteAttributeString("fileAssetGuid", Guid.NewGuid().ToString());
                 writer.WriteAttributeString("assetTypeId", "MediaContent");
 
                 foreach(ImageReference ir in this)
@@ -66,11 +61,9 @@ namespace HtmlToMamlConversion
                     writer.WriteAttributeString("id", ir.Id);
                     writer.WriteStartElement("image");
 
-                    // The art build component assumes everything is in a
-                    // single, common folder.  The build process will ensure
-                    // that happens.  As such, we only need the filename here.
-                    writer.WriteAttributeString("file", Path.GetFileName(
-                        ir.SourceFile));
+                    // The art build component assumes everything is in a single, common folder.  The build
+                    // process will ensure that happens.  As such, we only need the filename here.
+                    writer.WriteAttributeString("file", Path.GetFileName(ir.SourceFile));
 
                     if(!String.IsNullOrEmpty(ir.AlternateText))
                     {

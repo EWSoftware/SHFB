@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SdkLinkTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/16/2019
-// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the link target for SDK links
 //

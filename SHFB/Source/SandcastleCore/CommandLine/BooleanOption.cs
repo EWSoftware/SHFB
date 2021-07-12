@@ -39,10 +39,10 @@ namespace Sandcastle.Core.CommandLine
             if(argument != "+" && argument != "-")
                 return ParseResult.MalformedArgument;
 
-            if(base.IsPresent)
+            if(this.IsPresent)
                 return ParseResult.MultipleOccurence;
 
-            base.Value = (argument == "+");
+            this.Value = (argument == "+");
 
             return ParseResult.Success;
         }
@@ -50,7 +50,7 @@ namespace Sandcastle.Core.CommandLine
         /// <inheritdoc />
         internal override void WriteTemplate(TextWriter writer)
         {
-            writer.WriteLine("/{0}+|-", base.Name);
+            writer.WriteLine("/{0}+|-", this.Name);
         }
         #endregion
     }

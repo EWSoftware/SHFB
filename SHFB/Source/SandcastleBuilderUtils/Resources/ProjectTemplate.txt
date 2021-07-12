@@ -49,7 +49,7 @@
 	<!-- Uncomment this to use the NuGet packages when SHFB is not installed locally, e.g. in the CI build pipeline.
 			Update the package versions to the latest releases.
 	<ItemGroup>
-		<PackageReference Include="EWSoftware.SHFB" Version="2019.9.15" />
+		<PackageReference Include="EWSoftware.SHFB" Version="2021.4.9" />
 		<PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0" />
 	</ItemGroup>
 	-->

@@ -1,25 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CommandTargetArguments.cs
 // Author  : Istvan Novak
-// Updated : 12/26/2011
+// Updated : 05/26/2021
 // Source  : http://learnvsxnow.codeplex.com/
-// Note    : Copyright 2008-2011, Istvan Novak, All rights reserved
-// Compiler: Microsoft Visual C#
+// Note    : Copyright 2008-2021, Istvan Novak, All rights reserved
 //
-// This file contains classes that define event arguments used by the
-// SimpleEditorPane class.
+// This file contains classes that define event arguments used by the SimpleEditorPane class
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/26/2011  EFW  Added the code to the project
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/26/2011  EFW  Added the code to the project
+//===============================================================================================================
 
 using System;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -70,28 +67,22 @@ namespace SandcastleBuilder.Package.Editors
         /// Gets the ID of the command group.
         /// </summary>
         // --------------------------------------------------------------------------------
-        public Guid GroupId
-        {
-            get { return _GroupId; }
-        }
+        public Guid GroupId => _GroupId;
 
         // --------------------------------------------------------------------------------
         /// <summary>
         /// Gets the ID of the command within the group.
         /// </summary>
         // --------------------------------------------------------------------------------
-        public uint CommandId
-        {
-            get { return _CommandId; }
-        }
+        public uint CommandId => _CommandId;
 
         /// <summary>
         /// Options for the command
         /// </summary>
         public uint CommandExecOpt
         {
-            get { return _CommandExecOpt; }
-            set { _CommandExecOpt = value; }
+            get => _CommandExecOpt;
+            set => _CommandExecOpt = value;
         }
 
         /// <summary>
@@ -99,8 +90,8 @@ namespace SandcastleBuilder.Package.Editors
         /// </summary>
         public IntPtr PvaIn
         {
-            get { return _pvaIn; }
-            set { _pvaIn = value; }
+            get => _pvaIn;
+            set => _pvaIn = value;
         }
 
         /// <summary>
@@ -108,10 +99,9 @@ namespace SandcastleBuilder.Package.Editors
         /// </summary>
         public IntPtr PvaOut
         {
-            get { return _pvaOut; }
-            set { _pvaOut = value; }
+            get => _pvaOut;
+            set => _pvaOut = value;
         }
-
         #endregion
     }
     #endregion
@@ -153,18 +143,15 @@ namespace SandcastleBuilder.Package.Editors
         /// <summary>
         /// The group ID
         /// </summary>
-        public Guid GroupId
-        {
-            get { return _GroupId; }
-        }
+        public Guid GroupId => _GroupId;
 
         /// <summary>
         /// The command count
         /// </summary>
         public uint CommandCount
         {
-            get { return _CommandCount; }
-            set { _CommandCount = value; }
+            get => _CommandCount;
+            set => _CommandCount = value;
         }
 
         /// <summary>
@@ -172,8 +159,8 @@ namespace SandcastleBuilder.Package.Editors
         /// </summary>
         public OLECMD[] Commands
         {
-            get { return _Commands; }
-            set { _Commands = value; }
+            get => _Commands;
+            set => _Commands = value;
         }
 
         /// <summary>
@@ -181,27 +168,23 @@ namespace SandcastleBuilder.Package.Editors
         /// </summary>
         public IntPtr PCmdText
         {
-            get { return _pCmdText; }
-            set { _pCmdText = value; }
+            get => _pCmdText;
+            set => _pCmdText = value;
         }
 
         /// <summary>
         /// The first command ID
         /// </summary>
-        public uint FirstCommandId
-        {
-            get { return _Commands[0].cmdID; }
-        }
+        public uint FirstCommandId => _Commands[0].cmdID;
 
         /// <summary>
         /// The first command status
         /// </summary>
         public uint FirstCommandStatus
         {
-            get { return _Commands[0].cmdf; }
-            set { _Commands[0].cmdf = value; }
+            get => _Commands[0].cmdf;
+            set => _Commands[0].cmdf = value;
         }
-
         #endregion
     }
     #endregion

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/08/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the User Defined category properties
 //
@@ -80,7 +79,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                         this.ProjectMgr.BuildProject.ReevaluateIfNecessary();
                     }
 #else
-                    if(base.CurrentProject != null)
+                    if(this.CurrentProject != null)
                     {
                         foreach(var item in ucUserDefinedPropertiesPageContent.UserDefinedProperties)
                             if(item.WasModified)
@@ -116,13 +115,13 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             ucUserDefinedPropertiesPageContent.Project = ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject;
 #else
-            if(base.CurrentProject == null)
+            if(this.CurrentProject == null)
             {
                 this.Enabled = false;
                 return;
             }
 
-            ucUserDefinedPropertiesPageContent.Project = base.CurrentProject;
+            ucUserDefinedPropertiesPageContent.Project = this.CurrentProject;
 #endif
             ucUserDefinedPropertiesPageContent.PropertyChanged += this.OnPropertyChanged;
             ucUserDefinedPropertiesPageContent.ProjectIsEditable += UcUserDefinedPropertiesPageContent_ProjectIsEditable;

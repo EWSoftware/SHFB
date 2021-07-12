@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : SandcastleBuilderFileNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that exposes the properties for the SandcastleBuilderFileNode object
 //
@@ -51,8 +50,8 @@ namespace SandcastleBuilder.Package.Nodes
         [Browsable(false), AutomationBrowsable(false)]
         public override BuildAction BuildAction
         {
-            get { return base.BuildAction; }
-            set { base.BuildAction = value; }
+            get => base.BuildAction;
+            set => base.BuildAction = value;
         }
 
         /// <summary>
@@ -61,10 +60,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <remarks>The examples don't show this property but it does get used.  If not present, an exception is
         /// thrown.</remarks>
         [Browsable(false)]
-        public string URL
-        {
-            get { return "file:///" + this.Node.Url; }
-        }
+        public string URL => "file:///" + this.Node.Url;
+
         #endregion
 
         #region File node properties
@@ -108,7 +105,7 @@ namespace SandcastleBuilder.Package.Nodes
           DisplayName("Image ID")]
         public string ImageId
         {
-            get { return this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.ImageId); }
+            get => this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.ImageId);
             set
             {
                 if(value != null)
@@ -125,7 +122,7 @@ namespace SandcastleBuilder.Package.Nodes
           DisplayName("Alternate Text")]
         public string AlternateText
         {
-            get { return this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.AlternateText); }
+            get => this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.AlternateText);
             set
             {
                 if(value != null)
@@ -147,18 +144,12 @@ namespace SandcastleBuilder.Package.Nodes
         {
             get
             {
-                bool value;
-
-                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.CopyToMedia), out value))
+                if(!Boolean.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.CopyToMedia), out bool value))
                     return false;
 
                 return value;
             }
-            set
-            {
-                this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.CopyToMedia,
-                    value.ToString(CultureInfo.InvariantCulture));
-            }
+            set => this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.CopyToMedia, value.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -170,18 +161,12 @@ namespace SandcastleBuilder.Package.Nodes
         {
             get
             {
-                int value;
-
-                if(!Int32.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.SortOrder), out value))
+                if(!Int32.TryParse(this.Node.ItemNode.GetMetadata(SandcastleBuildItemMetadata.SortOrder), out int value))
                     return 0;
 
                 return value;
             }
-            set
-            {
-                this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.SortOrder,
-                    value.ToString(CultureInfo.InvariantCulture));
-            }
+            set => this.Node.ItemNode.SetMetadata(SandcastleBuildItemMetadata.SortOrder, value.ToString(CultureInfo.InvariantCulture));
         }
         #endregion
 
@@ -253,7 +238,7 @@ namespace SandcastleBuilder.Package.Nodes
                     break;
             }
 
-            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(new PropertyDescriptor[] { });
+            var adjustedProps = new PropertyDescriptorCollection(Array.Empty<PropertyDescriptor>());
 
             // NOTE: Visual Studio requires that the property descriptors be wrapped in a
             // DesignPropertyDescriptor.  In addition, any TypeConverterAttribute must be

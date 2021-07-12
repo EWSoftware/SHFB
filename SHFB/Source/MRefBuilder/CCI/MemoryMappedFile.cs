@@ -7,8 +7,6 @@
 // 11/22/2013 - EFW - Cleared out the conditional statements
 // 12/16/2013 - EFW - Added hack to work around a bug when parsing .NETCore 4.5 assemblies.
 
-using System;
-using System.Compiler;
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
@@ -19,11 +17,11 @@ namespace System.Compiler.Metadata
 {
     unsafe internal sealed class MemoryCursor
     {
-        private byte* buffer, pb;
+        private readonly byte* buffer;
+        private byte* pb;
         readonly internal int Length;
 
-        internal MemoryCursor(MemoryMappedFile/*!*/ memoryMap)
-            : this(memoryMap.Buffer, memoryMap.Length)
+        internal MemoryCursor(MemoryMappedFile/*!*/ memoryMap) : this(memoryMap.Buffer, memoryMap.Length)
         {
         }
 
@@ -51,8 +49,8 @@ namespace System.Compiler.Metadata
 
         internal int Position
         {
-            get { return (int)(this.pb - this.buffer); }
-            set { this.pb = this.buffer + value; }
+            get => (int)(this.pb - this.buffer);
+            set => this.pb = this.buffer + value;
         }
         internal void Align(int size)
         {
@@ -62,31 +60,31 @@ namespace System.Compiler.Metadata
                 pb += size - remainder;
         }
 
-        //internal System.Char Char(int i){ return *(System.Char*)(this.pb+i*sizeof(System.Char)); }
-        //internal System.SByte SByte(int i){ return *(System.SByte*)(this.pb+i*sizeof(System.SByte)); }
+        ////internal System.Char Char(int i){ return *(System.Char*)(this.pb+i*sizeof(System.Char)); }
+        ////internal System.SByte SByte(int i){ return *(System.SByte*)(this.pb+i*sizeof(System.SByte)); }
         internal System.Int16 Int16(int i) { return *(System.Int16*)(this.pb + i * sizeof(System.Int16)); }
         internal System.Int32 Int32(int i) { return *(System.Int32*)(this.pb + i * sizeof(System.Int32)); }
-        //internal System.Int64 Int64(int i){ return *(System.Int64*)(this.pb+i*sizeof(System.Int64)); }
+        ////internal System.Int64 Int64(int i){ return *(System.Int64*)(this.pb+i*sizeof(System.Int64)); }
         internal System.Byte Byte(int i) { return *(System.Byte*)(this.pb + i * sizeof(System.Byte)); }
         internal System.UInt16 UInt16(int i) { return *(System.UInt16*)(this.pb + i * sizeof(System.UInt16)); }
-        //internal System.UInt32 UInt32(int i){ return *(System.UInt32*)(this.pb+i*sizeof(System.UInt32)); }
-        //internal System.UInt64 UInt64(int i){ return *(System.UInt64*)(this.pb+i*sizeof(System.UInt64)); }
-        //internal System.Boolean Boolean(int i){ return *(System.Boolean*)(this.pb+i*sizeof(System.Boolean)); }
-        //internal System.Single Single(int i){ return *(System.Single*)(this.pb+i*sizeof(System.Single)); }
-        //internal System.Double Double(int i){ return *(System.Double*)(this.pb+i*sizeof(System.Double)); }
+        ////internal System.UInt32 UInt32(int i){ return *(System.UInt32*)(this.pb+i*sizeof(System.UInt32)); }
+        ////internal System.UInt64 UInt64(int i){ return *(System.UInt64*)(this.pb+i*sizeof(System.UInt64)); }
+        ////internal System.Boolean Boolean(int i){ return *(System.Boolean*)(this.pb+i*sizeof(System.Boolean)); }
+        ////internal System.Single Single(int i){ return *(System.Single*)(this.pb+i*sizeof(System.Single)); }
+        ////internal System.Double Double(int i){ return *(System.Double*)(this.pb+i*sizeof(System.Double)); }
 
-        //internal void SkipChar(int c){ this.pb += c*sizeof(System.Char); }
-        //internal void SkipSByte(int c){ this.pb += c*sizeof(System.SByte); }
+        ////internal void SkipChar(int c){ this.pb += c*sizeof(System.Char); }
+        ////internal void SkipSByte(int c){ this.pb += c*sizeof(System.SByte); }
         internal void SkipInt16(int c) { this.pb += c * sizeof(System.Int16); }
         internal void SkipInt32(int c) { this.pb += c * sizeof(System.Int32); }
-        //internal void SkipInt64(int c){ this.pb += c*sizeof(System.Int64); }
+        ////internal void SkipInt64(int c){ this.pb += c*sizeof(System.Int64); }
         internal void SkipByte(int c) { this.pb += c * sizeof(System.Byte); }
         internal void SkipUInt16(int c) { this.pb += c * sizeof(System.UInt16); }
-        //internal void SkipUInt32(int c){ this.pb += c*sizeof(System.UInt32); }
-        //internal void SkipUInt64(int c){ this.pb += c*sizeof(System.UInt64); }
-        //internal void SkipBoolean(int c){ this.pb += c*sizeof(System.Boolean); }
-        //internal void SkipSingle(int c){ this.pb += c*sizeof(System.Single); }
-        //internal void SkipDouble(int c){ this.pb += c*sizeof(System.Double); }
+        ////internal void SkipUInt32(int c){ this.pb += c*sizeof(System.UInt32); }
+        ////internal void SkipUInt64(int c){ this.pb += c*sizeof(System.UInt64); }
+        ////internal void SkipBoolean(int c){ this.pb += c*sizeof(System.Boolean); }
+        ////internal void SkipSingle(int c){ this.pb += c*sizeof(System.Single); }
+        ////internal void SkipDouble(int c){ this.pb += c*sizeof(System.Double); }
 
         internal System.Char ReadChar() { byte* pb = this.pb; System.Char v = *(System.Char*)pb; this.pb = pb + sizeof(System.Char); return v; }
         internal System.SByte ReadSByte() { byte* pb = this.pb; System.SByte v = *(System.SByte*)pb; this.pb = pb + sizeof(System.SByte); return v; }

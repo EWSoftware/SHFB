@@ -54,8 +54,12 @@
     <DocumentationFile>bin\Release\SandcastleBuilder.Package.xml</DocumentationFile>
     <CreateVsixContainer>True</CreateVsixContainer>
     <Prefer32Bit>false</Prefer32Bit>
+    <DeployExtension>False</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=4.6.97.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.4.6.97\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\packages\EnvDTE.8.0.0\lib\net10\EnvDTE.dll</HintPath>
@@ -198,6 +202,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Luna" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\packages\stdole.7.0.3300\lib\net10\stdole.dll</HintPath>
@@ -205,6 +211,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -865,12 +872,16 @@
       <Name>SandcastleBuilderUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
-      <Project>{d3b06405-3435-4329-9233-2df1bf5028aa}</Project>
+      <Project>{1e9be929-4cba-4668-a141-0bbdb0ac9f0f}</Project>
       <Name>SandcastleBuilderWPF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+    <ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>Sandcastle.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">
+      <Project>{3464677b-467d-4a35-baf4-543fb5fa9d66}</Project>
+      <Name>SandcastlePlatformWindows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

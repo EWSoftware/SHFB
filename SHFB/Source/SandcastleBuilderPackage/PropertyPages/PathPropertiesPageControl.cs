@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/31/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Path category properties
 //
@@ -96,13 +95,13 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             // Set the project as the base path provider so that the folder is correct
 #if !STANDALONEGUI
-            if(base.ProjectMgr != null)
+            if(this.ProjectMgr != null)
             {
                 SandcastleProject project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 #else
-            if(base.CurrentProject != null)
+            if(this.CurrentProject != null)
             {
-                SandcastleProject project = base.CurrentProject;
+                SandcastleProject project = this.CurrentProject;
 #endif
                 ucPathPropertiesPageContent.SetCurrentProject(project);
             }

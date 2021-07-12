@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 03/11/2021
+// Updated : 05/10/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used as the base class for package property pages
@@ -40,8 +40,9 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils.Design;
-using SHFBUtility = SandcastleBuilder.Utils.Utility;
 
 using SandcastleBuilder.WPF;
 using SandcastleBuilder.WPF.PropertyPages;
@@ -159,7 +160,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// // SandcastleBuilder.WPF.PropertyPages.FilePathUserControl.  This control is
         /// // not derived from a standard control so we need to add it manually.
         /// BasePropertyPage.CustomControls.Add(
-        ///     "SandcastleBuilder.WPF.PropertyPages.FilePathUserControl", "PersistablePath");
+        ///     "Sandcastle.Platform.Windows.UserControls.FilePathUserControl", "PersistablePath");
         /// </code>
         /// </example>
         public static Dictionary<string, string> CustomControls => customControls;
@@ -297,7 +298,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             if(!String.IsNullOrEmpty(this.HelpKeyword))
             {
-                SHFBUtility.ShowHelpTopic(this.HelpKeyword);
+                UiUtility.ShowHelpTopic(this.HelpKeyword);
                 return true;
             }
 

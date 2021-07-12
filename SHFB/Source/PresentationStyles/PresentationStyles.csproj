@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>Sandcastle.PresentationStyles</AssemblyName>
+		<RootNamespace>Sandcastle.PresentationStyles</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+		<OutputPath>..\..\Deploy\Components\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+		<OutputPath>..\..\Deploy\Components\</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="PresentationStyles.sln.vsspell" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SandcastleCore\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif" Link="Colorizer\CopyCode.gif">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif" Link="Colorizer\CopyCode_h.gif">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\DocumentTemplate.xaml" Link="Colorizer\DocumentTemplate.xaml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.css" Link="Colorizer\highlight.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xml" Link="Colorizer\highlight.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xsl" Link="Colorizer\highlight.xsl">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight_flowDoc.xsl" Link="Colorizer\highlight_flowDoc.xsl">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Colorizer\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Markdown\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="OpenXml\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Shared\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="VS2010\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="VS2013\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="Markdown\**\*.vsspell" />
+		<Content Remove="OpenXml\**\*.vsspell" />
+		<Content Remove="Shared\**\*.vsspell" />
+		<Content Remove="VS2010\**\*.vsspell" />
+		<Content Remove="VS2013\**\*.vsspell" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+	</ItemGroup>
+
+</Project>

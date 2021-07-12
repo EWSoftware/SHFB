@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2021
+// Updated : 07/09/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -137,7 +137,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         // Various paths and other strings
         private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, languageFolder,
-            defaultTopic, reflectionFile, msBuildExePath;
+            defaultTopic, reflectionFile;
 
         private CultureInfo language;   // The project language
 
@@ -175,11 +175,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This read-only property returns the build start time
         /// </summary>
         public DateTime BuildStart => buildStart;
-
-        /// <summary>
-        /// This returns the path to MSBuild.exe
-        /// </summary>
-        public string MSBuildExePath => msBuildExePath;
 
         /// <summary>
         /// This returns the location of the help file builder template folder
@@ -283,10 +278,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns the current help file format being generated
         /// </summary>
-        /// <remarks>The <b>GenerateHelpFormatTableOfContents</b>, <b>GenerateHelpFileIndex</b>,
-        /// <b>GenerateHelpProject</b>, and <b>CompilingHelpFile</b> steps will run once for each help file
-        /// format selected.  This property allows a plug-in to determine which files it may need to work with
-        /// during those steps or to skip processing if it is not relevant.</remarks>
+        /// <remarks>The <strong>GenerateHelpProject</strong>, and <strong>CompilingHelpFile</strong>
+        /// steps will run once for each help file format selected.  This property allows a plug-in to determine
+        /// which files it may need to work with during those steps or to skip processing if it is not relevant.</remarks>
         public HelpFileFormats CurrentFormat => currentFormat;
 
         /// <summary>
@@ -295,7 +289,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <remarks>Partial builds occur when editing the namespace summaries, editing the API filter, and as
         /// part of some plug-ins that do not require all build options.  In a partial build, build steps after
         /// the point indicated by this property are not executed and the build stops.</remarks>
-        public PartialBuildType PartialBuildType { get; private set; }
+        public PartialBuildType PartialBuildType { get; }
 
         /// <summary>
         /// This is used to get the conceptual content settings in effect for the build
@@ -487,7 +481,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <overloads>There are two overloads for the constructor.</overloads>
         public BuildProcess(SandcastleProject buildProject)
         {
-            project = buildProject;
+            project = buildProject ?? throw new ArgumentNullException(nameof(buildProject));
 
             // Save a copy of the project filename.  If using a temporary project, it won't match the passed
             // project's name.
@@ -520,8 +514,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             ProjectItem projectItem;
             string resolvedPath, helpFile, languageFile, scriptFile, hintPath;
             SandcastleProject originalProject = null;
+            bool success = true;
 
-            System.Diagnostics.Debug.WriteLine("Build process starting\r\n");
+            Debug.WriteLine("Build process starting\r\n");
 
             try
             {
@@ -542,21 +537,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 buildStart = stepStart = DateTime.Now;
 
-                // Use the latest version of MSBuild available rather than a specific version
-                string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
-                    t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion;
-
-                if(latestToolsVersion == null)
-                {
-                    latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
-                        t => Version.TryParse(t.ToolsVersion, out Version ver) ? ver : new Version()).ToString();
-                }
-
-                msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
-                    t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
-
                 // Get the location of the template files
-                templateFolder = ComponentUtilities.ToolsFolder + @"Templates\";
+                templateFolder = Path.Combine(ComponentUtilities.RootFolder, "Templates");
 
                 // Make sure we start out in the project's output folder in case the output folder is relative
                 // to it.
@@ -565,7 +547,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(projectFolder.Length == 0)
                     projectFolder = Directory.GetCurrentDirectory();
 
-                projectFolder += @"\";
+                projectFolder += Path.DirectorySeparatorChar;
 
                 Directory.SetCurrentDirectory(projectFolder);
 
@@ -581,8 +563,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(!Directory.Exists(outputFolder))
                     Directory.CreateDirectory(outputFolder);
 
-                if(outputFolder[outputFolder.Length - 1] != '\\')
-                    outputFolder += @"\";
+                if(outputFolder[outputFolder.Length - 1] != Path.DirectorySeparatorChar)
+                    outputFolder += Path.DirectorySeparatorChar;
 
                 // Create the log file.  The log may be in a folder other than the output so make sure it exists
                 // too.
@@ -597,12 +579,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     BuildStep.Initializing);
 
                 if(project.WorkingPath.Path.Length == 0)
-                    workingFolder = outputFolder + @"Working\";
+                    workingFolder = outputFolder + @"Working" + Path.DirectorySeparatorChar;
                 else
                     workingFolder = project.WorkingPath;
 
                 if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
-                    BuildProcess.VerifySafePath("OutputPath", outputFolder, projectFolder);
+                    VerifySafePath("OutputPath", outputFolder, projectFolder);
 
                 // The output folder and the working folder cannot be the same
                 if(workingFolder == outputFolder)
@@ -623,9 +605,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportProgress("The SHFBROOT system environment variable was not found.  This " +
                         "variable is usually created during installation and may require a reboot.  It has " +
                         "been defined temporarily for this process as: SHFBROOT={0}",
-                        ComponentUtilities.ToolsFolder);
+                        ComponentUtilities.RootFolder);
 
-                    Environment.SetEnvironmentVariable("SHFBROOT", ComponentUtilities.ToolsFolder);
+                    Environment.SetEnvironmentVariable("SHFBROOT", ComponentUtilities.RootFolder);
                 }
 
                 this.ReportProgress("Locating components in the following folder(s):");
@@ -634,9 +616,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportProgress("    {0}", project.ComponentPath);
 
                 this.ReportProgress("    {0}", Path.GetDirectoryName(project.Filename));
-
-                this.ReportProgress("    {0}", ComponentUtilities.ComponentsFolder);
-                this.ReportProgress("    {0}", ComponentUtilities.ToolsFolder);
+                this.ReportProgress("    {0}", ComponentUtilities.ThirdPartyComponentsFolder);
+                this.ReportProgress("    {0}", ComponentUtilities.CoreComponentsFolder);
 
                 // Get the framework reflection data settings to use for the build
                 reflectionDataDictionary = new ReflectionDataSetDictionary(new[] { project.ComponentPath,
@@ -718,7 +699,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         // Clear any data from a prior run
                         this.ReportProgress(BuildStep.ClearWorkFolder, "Clearing working folder...");
-                        BuildProcess.VerifySafePath("WorkingPath", workingFolder, projectFolder);
+                        VerifySafePath("WorkingPath", workingFolder, projectFolder);
 
                         if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                         {
@@ -882,19 +863,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    substitutionTags.TransformTemplate(Path.GetFileName(languageFile), Path.GetDirectoryName(languageFile),
-                        workingFolder);
-                    File.Move(workingFolder + Path.GetFileName(languageFile), workingFolder + "SHFBContent.xml");
+                    substitutionTags.TransformTemplate(Path.GetFileName(languageFile),
+                        Path.GetDirectoryName(languageFile), workingFolder);
+                    File.Move(Path.Combine(workingFolder, Path.GetFileName(languageFile)),
+                        Path.Combine(workingFolder, "SHFBContent.xml"));
 
                     if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                         substitutionTags.TransformTemplate("WebsiteContent.xml", Path.GetDirectoryName(languageFile),
                             workingFolder);
 
                     // Copy the stop word list
-                    languageFile = Path.Combine(ComponentUtilities.ToolsFolder, @"PresentationStyles\Shared\" +
-                        @"StopWordList\" + Path.GetFileNameWithoutExtension(languageFile) +".txt");
-                    File.Copy(languageFile, workingFolder + "StopWordList.txt");
-                    File.SetAttributes(workingFolder + "StopWordList.txt", FileAttributes.Normal);
+                    languageFile = Path.Combine(ComponentUtilities.CoreComponentsFolder, "Shared",
+                        "StopWordList", Path.GetFileNameWithoutExtension(languageFile) +".txt");
+                    File.Copy(languageFile, Path.Combine(workingFolder, "StopWordList.txt"));
+                    File.SetAttributes(Path.Combine(workingFolder, "StopWordList.txt"), FileAttributes.Normal);
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
@@ -905,7 +887,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Generate the reflection information
                 this.ReportProgress(BuildStep.GenerateReflectionInfo, "Generating reflection information...");
 
-                reflectionFile = workingFolder + "reflection.org";
+                reflectionFile = Path.Combine(workingFolder, "reflection.org");
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
@@ -944,7 +926,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                     // If the full path length would exceed the system maximums, make it relative
                                     // to keep it under the maximum lengths.
                                     if(hintPath.Length > 259 || Path.GetDirectoryName(hintPath).Length > 247)
-                                        hintPath = FolderPath.AbsoluteToRelativePath(workingFolder, hintPath);
+                                        hintPath = FilePath.AbsoluteToRelativePath(workingFolder, hintPath);
 
                                     projectItem.SetMetadataValue(BuildItemMetadata.HintPath, hintPath);
                                 }
@@ -985,39 +967,57 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(this.PartialBuildType == PartialBuildType.GenerateReflectionInfo)
                 {
                     commentsFiles.Save();
-                    goto AllDone;       // Yeah, I know it's evil but it's quick
+                    return;
                 }
 
-                // Transform the reflection output based on the document model and create the topic manifest
-                this.ReportProgress(BuildStep.TransformReflectionInfo, "Transforming reflection output...");
+                // Apply the presentation style's document model to the reflection information file
+                this.ReportProgress(BuildStep.ApplyDocumentModel, "Applying document model to reflection output...");
+
+                string reflectionFileWithDocModel = Path.ChangeExtension(reflectionFile, ".xml");
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    scriptFile = substitutionTags.TransformTemplate("TransformManifest.proj", templateFolder, workingFolder);
-
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    taskRunner.RunProject("TransformManifest.proj", false);
+                    presentationStyle.DocumentModelApplicator.RootNamespaceContainerId =
+                        !project.RootNamespaceContainer ? String.Empty : "Project_" +
+                            project.HtmlHelpName.Replace(" ", "_").Replace("&", "_");
+
+                    presentationStyle.DocumentModelApplicator.ApplyDocumentModel(reflectionFile, reflectionFileWithDocModel);
 
                     // Change the reflection file extension before running the ExecutionBehaviors.After plug-ins
                     // so that the plug-ins (if any) get the correct filename.
-                    reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
+                    reflectionFile = reflectionFileWithDocModel;
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
                 else
-                    reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
+                    reflectionFile = reflectionFileWithDocModel;
+
+                if(project.NamespaceGrouping)
+                {
+                    if(presentationStyle.SupportsNamespaceGrouping)
+                        this.AddNamespaceGroupEntries();
+                    else
+                    {
+                        this.ReportWarning("BE0027", "Namespace grouping was requested but the selected " +
+                            "presentation style does not support it.  Option ignored.");
+                    }
+                }
+
+                // Add topic filenames to API members in the reflection information file
+                this.AddApiTopicFilenames();
+
+                // Generate the API topic manifest
+                this.GenerateApiTopicManifest();
 
                 // If this was a partial build used to obtain information for namespace and namespace group
                 // comments, stop now.
                 if(this.PartialBuildType == PartialBuildType.TransformReflectionInfo)
                 {
                     commentsFiles.Save();
-                    goto AllDone;       // Yeah, I know it's evil but it's quick
+                    return;
                 }
-
-                // Load the transformed reflection information file
-                reflectionFile = workingFolder + "reflection.xml";
 
                 // If there is nothing to document, stop the build
                 var firstNodes = ComponentUtilities.XmlStreamAxis(reflectionFile, "api").Take(2).ToList();
@@ -1042,7 +1042,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 foreach(var r in referenceDictionary.Values.Where(r => r.Metadata.Any(v => v.Name == "HintPath")))
                 {
                     string comments = Path.ChangeExtension(r.Metadata.First(kv => kv.Name == "HintPath").Value, ".xml");
-                    string workingPath = workingFolder + Path.GetFileName(comments);
+                    string workingPath = Path.Combine(workingFolder, Path.GetFileName(comments));
                     int idx = 0;
 
                     if(File.Exists(comments) && !commentsFiles.Any(c => c.SourcePath == workingPath))
@@ -1083,7 +1083,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
 
                     // This should always be last so that it overrides comments in the project XML comments files
-                    commentsFiles.Add(new XmlCommentsFile(workingFolder + "_InheritedDocs_.xml"));
+                    commentsFiles.Add(new XmlCommentsFile(Path.Combine(workingFolder, "_InheritedDocs_.xml")));
                 }
 
                 commentsFiles.Save();
@@ -1122,20 +1122,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Merge the conceptual and additional content TOC info
                 this.MergeConceptualAndAdditionalContentTocInfo();
 
-                // Generate the intermediate table of contents file.  This
-                // must occur prior to running BuildAssembler as the MS Help
-                // Viewer build component is dependent on the toc.xml file.
+                // Generate the intermediate table of contents file for API content.  This must occur prior to
+                // running BuildAssembler as the MS Help Viewer build component is dependent on the toc.xml file.
                 this.ReportProgress(BuildStep.GenerateIntermediateTableOfContents,
-                    "Generating intermediate table of contents file...");
+                    "Generating intermediate table of contents file for API content...");
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
-                    scriptFile = substitutionTags.TransformTemplate("GenerateIntermediateTOC.proj", templateFolder,
-                        workingFolder);
-
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    taskRunner.RunProject("GenerateIntermediateTOC.proj", false);
+                    presentationStyle.ApiTableOfContentsGenerator.GenerateApiTocFile(reflectionFile,
+                        Path.Combine(workingFolder, "toc.xml"));
 
                     // Determine the API content placement
                     this.DetermineApiContentPlacement();
@@ -1146,7 +1143,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.ReportProgress("Generating conceptual content intermediate TOC file...");
 
                         toc.SaveToIntermediateTocFile((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 ?
-                            this.RootContentContainerId : null, project.TocOrder, workingFolder + "_ConceptualTOC_.xml");
+                            this.RootContentContainerId : null, project.TocOrder, Path.Combine(workingFolder, "_ConceptualTOC_.xml"));
                     }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1206,7 +1203,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         workingFolder);
 
                     if(!Path.GetFileName(resolvedPath).Equals("sandcastle.config", StringComparison.OrdinalIgnoreCase))
-                        File.Move(workingFolder + Path.GetFileName(resolvedPath), workingFolder + "sandcastle.config");
+                    {
+                        File.Move(Path.Combine(workingFolder, Path.GetFileName(resolvedPath)),
+                            Path.Combine(workingFolder, "sandcastle.config"));
+                    }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
@@ -1260,34 +1260,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 {
-                    // Generate the table of contents and set the default topic
-                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
-                        "Generating HTML Help 1 table of contents file...");
-
                     currentFormat = HelpFileFormats.HtmlHelp1;
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-                        // It got created in the ExtractingHtmlInfo step above
-                        // so there is actually nothing to do here.
-
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
-                    // Generate the help file index
-                    this.ReportProgress(BuildStep.GenerateHelpFileIndex, "Generating HTML Help 1 index file...");
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-                        // It got created in the ExtractingHtmlInfo step above
-                        // so there is actually nothing to do here.
-
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
 
                     // Generate the help project file
                     this.ReportProgress(BuildStep.GenerateHelpProject, "Generating HTML Help 1 project file...");
@@ -1318,33 +1291,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                 {
-                    // The following build steps are executed to allow plug-ins to handle any necessary processing
-                    // but nothing actually happens here:
-                    //
-                    //      BuildStep.GenerateHelpFormatTableOfContents
-                    //      BuildStep.GenerateHelpProject
-                    //
-                    // For the MS Help Viewer format, there is no project file to compile and the TOC layout is
-                    // generated when the help file is ultimately installed using metadata within each topic file.
-                    // All of the necessary TOC info is stored in the intermediate TOC file generated prior to
-                    // building the topics.  The BuildAssembler MSHCComponent inserts the TOC info into each topic
-                    // as it is built.
-
-                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
-                        "Executing informational Generate Table of Contents " +
-                        "build step for plug-ins (not used for MS Help Viewer)");
-
                     currentFormat = HelpFileFormats.MSHelpViewer;
 
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
-                    this.ReportProgress(BuildStep.GenerateHelpProject,
-                        "Executing informational Generate Help Project " +
-                        "build step for plug-ins (not used for MS Help Viewer)");
+                    // This build step is executed to allow plug-ins to handle any necessary processing but
+                    // nothing actually happens here as there is no project file to compile for this format.
+                    this.ReportProgress(BuildStep.GenerateHelpProject, "Executing informational Generate Help " +
+                        "Project build step for plug-ins (not used for MS Help Viewer)");
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
@@ -1361,21 +1313,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         // Rename the content setup file to use the help filename to keep them related and
                         // so that multiple output files can be sent to the same output folder.
-                        File.Move(workingFolder + "HelpContentSetup.msha", workingFolder + this.ResolvedHtmlHelpName + ".msha");
+                        File.Move(Path.Combine(workingFolder, "HelpContentSetup.msha"),
+                            Path.Combine(workingFolder, this.ResolvedHtmlHelpName + ".msha"));
 
                         // Generate the example install and remove scripts
                         substitutionTags.TransformTemplate("InstallMSHC.bat", templateFolder, workingFolder);
-                        File.Move(workingFolder + "InstallMSHC.bat", workingFolder + "Install_" +
-                            this.ResolvedHtmlHelpName + ".bat");
+                        File.Move(Path.Combine(workingFolder, "InstallMSHC.bat"),
+                            Path.Combine(workingFolder, "Install_" + this.ResolvedHtmlHelpName + ".bat"));
 
                         substitutionTags.TransformTemplate("RemoveMSHC.bat", templateFolder, workingFolder);
-                        File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" +
-                            this.ResolvedHtmlHelpName + ".bat");
+                        File.Move(Path.Combine(workingFolder, "RemoveMSHC.bat"),
+                            Path.Combine(workingFolder, "Remove_" + this.ResolvedHtmlHelpName + ".bat"));
 
                         // Copy the launcher utility
-                        File.Copy(ComponentUtilities.ToolsFolder + "HelpLibraryManagerLauncher.exe",
-                            workingFolder + "HelpLibraryManagerLauncher.exe");
-                        File.SetAttributes(workingFolder + "HelpLibraryManagerLauncher.exe", FileAttributes.Normal);
+                        File.Copy(Path.Combine(ComponentUtilities.ToolsFolder, "HelpLibraryManagerLauncher.exe"),
+                            Path.Combine(workingFolder, "HelpLibraryManagerLauncher.exe"));
+                        File.SetAttributes(Path.Combine(workingFolder, "HelpLibraryManagerLauncher.exe"),
+                            FileAttributes.Normal);
 
                         scriptFile = substitutionTags.TransformTemplate("BuildHelpViewerFile.proj", templateFolder,
                             workingFolder);
@@ -1391,50 +1345,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                 {
-                    // Generate the table of contents and set the default topic
-                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
-                        "Generating website table of contents file...");
-
                     currentFormat = HelpFileFormats.Website;
-
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-                        // It got created in the ExtractingHtmlInfo step above
-                        // so there is actually nothing to do here.
-
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
                     this.GenerateWebsite();
                 }
 
                 if((project.HelpFileFormat & HelpFileFormats.OpenXml) != 0)
                 {
-                    // The following build steps are executed to allow plug-ins to handle any necessary processing
-                    // but nothing actually happens here:
-                    //
-                    //      BuildStep.GenerateHelpFormatTableOfContents
-                    //      BuildStep.GenerateHelpProject
-                    //
-                    // For the Open XML format, there is no project file to compile and the TOC layout is
-                    // generated when the document is opened.  All of the necessary TOC info is stored in the
-                    // intermediate TOC file generated prior to building the topics.  The process used to merge
-                    // the topics into a single document uses it to define the order in which the topics are
-                    // combined.
-
-                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents, "Executing informational " +
-                        "Generate Table of Contents build step for plug-ins (not used for Open XML)");
-
                     currentFormat = HelpFileFormats.OpenXml;
 
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
+                    // This build step is executed to allow plug-ins to handle any necessary processing but
+                    // nothing actually happens here as there is no project file to compile for this format.
                     this.ReportProgress(BuildStep.GenerateHelpProject, "Executing informational Generate Help " +
                         "Project build step for plug-ins (not used for Open XML)");
 
@@ -1463,27 +1383,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if((project.HelpFileFormat & HelpFileFormats.Markdown) != 0)
                 {
-                    // The following build steps are executed to allow plug-ins to handle any necessary processing
-                    // but nothing actually happens here:
-                    //
-                    //      BuildStep.GenerateHelpFormatTableOfContents
-                    //      BuildStep.GenerateHelpProject
-                    //
-                    // For the Markdown format, there is no project file to compile and the TOC layout is
-                    // generated by the build task.  All of the necessary TOC info is stored in the intermediate
-                    // TOC file generated prior to building the topics.  The build task uses it to find the
-                    // topics to finalize and generate the sidebar TOC file.
-                    this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents, "Executing informational " +
-                        "Generate Table of Contents build step for plug-ins (not used for Markdown)");
-
                     currentFormat = HelpFileFormats.Markdown;
 
-                    if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                    {
-                        this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.ExecutePlugIns(ExecutionBehaviors.After);
-                    }
-
+                    // This build step is executed to allow plug-ins to handle any necessary processing but
+                    // nothing actually happens here as there is no project file to compile for this format.
                     this.ReportProgress(BuildStep.GenerateHelpProject, "Executing informational Generate Help " +
                         "Project build step for plug-ins (not used for Markdown)");
 
@@ -1537,27 +1440,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
                 }
-AllDone:
-                TimeSpan runtime = DateTime.Now - buildStart;
-
-                this.ReportProgress(BuildStep.Completed, "\r\nBuild completed successfully at {0}.  " +
-                    "Total time: {1:00}:{2:00}:{3:00.0000}\r\n", DateTime.Now, Math.Floor(runtime.TotalSeconds / 3600),
-                    Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60));
-
-                System.Diagnostics.Debug.WriteLine("Build process finished successfully\r\n");
             }
             catch(OperationCanceledException )
             {
                 buildCancelling = true;
+                success = false;
 
                 this.ReportError(BuildStep.Canceled, "BE0064", "BUILD CANCELLED BY USER");
 
-                System.Diagnostics.Debug.WriteLine("Build process aborted\r\n");
+                Debug.WriteLine("Build process aborted\r\n");
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
                 string message = null;
+                success = false;
 
                 if(ex is AggregateException agEx)
                     foreach(var inEx in agEx.InnerExceptions)
@@ -1593,10 +1490,21 @@ AllDone:
                 else
                     this.ReportError(BuildStep.Failed, "BE0065", "BUILD FAILED: {0}", message);
 
-                System.Diagnostics.Debug.WriteLine("Build process failed\r\n");
+                Debug.WriteLine("Build process failed\r\n");
             }
             finally
             {
+                if(success)
+                {
+                    TimeSpan runtime = DateTime.Now - buildStart;
+
+                    this.ReportProgress(BuildStep.Completed, "\r\nBuild completed successfully at {0}.  " +
+                        "Total time: {1:00}:{2:00}:{3:00.0000}\r\n", DateTime.Now, Math.Floor(runtime.TotalSeconds / 3600),
+                        Math.Floor((runtime.TotalSeconds % 3600) / 60), (runtime.TotalSeconds % 60));
+
+                    Debug.WriteLine("Build process finished successfully\r\n");
+                }
+
                 try
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
@@ -1609,6 +1517,15 @@ AllDone:
 
                 try
                 {
+                    // Close the log file now so that plug-ins such as the completion notification plug-in can
+                    // access the log file.
+                    if(swLog != null)
+                    {
+                        swLog.WriteLine("</buildStep>\r\n</shfbBuild>");
+                        swLog.Close();
+                        swLog = null;
+                    }
+
                     this.ExecutePlugIns(ExecutionBehaviors.After);
 
                     if(componentContainer != null)
@@ -1621,13 +1538,6 @@ AllDone:
                 }
                 finally
                 {
-                    if(swLog != null)
-                    {
-                        swLog.WriteLine("</buildStep>\r\n</shfbBuild>");
-                        swLog.Close();
-                        swLog = null;
-                    }
-
                     // If we created a copy of the project, dispose of it and return to the original
                     if(originalProject != null)
                     {
@@ -1929,7 +1839,7 @@ AllDone:
             this.ReportProgress("Finding tools...");
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.ToolsFolder);
+            this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.RootFolder);
 
             // Find the help compilers by looking on all fixed drives but only if the related format is used
             if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
@@ -1939,7 +1849,7 @@ AllDone:
                 if(hhcFolder.Length == 0)
                 {
                     this.ReportProgress("Searching for HTML Help 1 compiler...");
-                    hhcFolder = BuildProcess.FindOnFixedDrives(@"\HTML Help Workshop");
+                    hhcFolder = FindOnFixedDrives(@"\HTML Help Workshop");
                 }
 
                 if(hhcFolder.Length == 0 || !Directory.Exists(hhcFolder))
@@ -2036,8 +1946,6 @@ AllDone:
             var targetFrameworksSeen = new HashSet<(string PlatformType, string Version)>();
 
             MSBuildProject projRef;
-            XPathDocument testComments;
-            XPathNavigator navComments;
             int fileCount;
             string workingPath, lastSolution;
 
@@ -2406,13 +2314,13 @@ AllDone:
             // XML comments files are copied to the working folder in case they need to be fixed up
             foreach(string commentsName in commentsList)
             {
-                workingPath = workingFolder + Path.GetFileName(commentsName);
+                workingPath = Path.Combine(workingFolder, Path.GetFileName(commentsName));
 
                 // Warn if there is a duplicate and copy the comments file to a unique name to preserve its
                 // content.
                 if(File.Exists(workingPath))
                 {
-                    workingPath = workingFolder + Guid.NewGuid().ToString("B");
+                    workingPath = Path.Combine(workingFolder, Guid.NewGuid().ToString("B"));
 
                     this.ReportWarning("BE0063", "'{0}' matches a previously copied comments filename.  The " +
                         "duplicate will be copied to a unique name to preserve the comments it contains.",
@@ -2422,14 +2330,17 @@ AllDone:
                 try
                 {
                     // Not all XML files found may be comments files.  Ignore those that are not.
-                    testComments = new XPathDocument(commentsName);
-                    navComments = testComments.CreateNavigator();
-
-                    if(navComments.SelectSingleNode("doc/members") == null)
+                    using(var reader = XmlReader.Create(commentsName, new XmlReaderSettings { CloseInput = true }))
                     {
-                        this.ReportWarning("BE0005", "File '{0}' does not contain a 'doc/members' node and " +
-                            "will not be used as an XML comments file.", commentsName);
-                        continue;
+                        var testComments = new XPathDocument(reader);
+                        var navComments = testComments.CreateNavigator();
+
+                        if(navComments.SelectSingleNode("doc/members") == null)
+                        {
+                            this.ReportWarning("BE0005", "File '{0}' does not contain a 'doc/members' node and " +
+                                "will not be used as an XML comments file.", commentsName);
+                            continue;
+                        }
                     }
                 }
                 catch(Exception ex)

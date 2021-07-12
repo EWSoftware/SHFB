@@ -2,20 +2,19 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : OADocumentationSourceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used for documentation source automation
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.0  03/30/2011  EFW  Created the code
+// 03/30/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -55,8 +54,8 @@ namespace SandcastleBuilder.Package.Automation
         /// </summary>
         public override string Name
         {
-            get { return base.Name; }
-            set { throw new InvalidOperationException(); }
+            get => base.Name;
+            set => throw new InvalidOperationException();
         }
 
         /// <summary>
@@ -80,25 +79,20 @@ namespace SandcastleBuilder.Package.Automation
         /// <summary>
         /// Gets the ProjectItems collection containing the ProjectItem object supporting this property.
         /// </summary>
-        public override EnvDTE.ProjectItems Collection
+        public override EnvDTE.ProjectItems Collection => UIThread.DoOnUIThread(() =>
         {
-            get
-            {
-                return UIThread.DoOnUIThread(() =>
-                {
-                    // Get the parent node
-                    DocumentationSourcesContainerNode parentNode =
-                        this.Node.Parent as DocumentationSourcesContainerNode;
-                    System.Diagnostics.Debug.Assert(parentNode != null, "Failed to get the parent node");
+            // Get the parent node
+            var parentNode = this.Node.Parent as DocumentationSourcesContainerNode;
 
-                    // Get the ProjectItems object for the parent node
-                    if(parentNode != null)
-                        return ((OADocSourcesFolderItem)parentNode.GetAutomationObject()).ProjectItems;
+            System.Diagnostics.Debug.Assert(parentNode != null, "Failed to get the parent node");
 
-                    return null;
-                });
-            }
-        }
+            // Get the ProjectItems object for the parent node
+            if(parentNode != null)
+                return ((OADocSourcesFolderItem)parentNode.GetAutomationObject()).ProjectItems;
+
+            return null;
+        });
+
         #endregion
     }
 }

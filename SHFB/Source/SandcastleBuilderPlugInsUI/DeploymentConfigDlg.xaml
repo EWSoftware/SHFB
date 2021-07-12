@@ -1,0 +1,72 @@
+﻿<Window x:Class="SandcastleBuilder.PlugIns.UI.DeploymentConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="clr-namespace:SandcastleBuilder.PlugIns.UI"
+	mc:Ignorable="d" Width="800" ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height"
+	Title="Configure Output Deployment Plug-In" WindowStartupLocation="CenterScreen"
+	Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=chkDeleteAfterDeploy}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition MinHeight="325" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Margin="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<CheckBox Grid.Column="0" Name="chkDeleteAfterDeploy" Margin="3"
+				Content="Delete source files _after deploying them" />
+			<CheckBox Grid.Column="1" Name="chkVerboseLogging" Margin="3"
+				Content="_Log the names of all files deployed" />
+		</Grid>
+		<TabControl Grid.Row="1" Margin="3" Name="tabConfig">
+			<TabItem Name="pgHelp1" Header="HTML Help 1">
+				<ui:DeploymentConfigUserControl x:Name="ucHelp1" Margin="3" />
+			</TabItem>
+			<TabItem Name="pgMSHelpViewer" Header="MS Help Viewer">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<ui:DeploymentConfigUserControl Grid.Row="0" x:Name="ucMSHelpViewer" Margin="3" />
+					<CheckBox Grid.Row="1" Name="chkRenameMSHA" Margin="3,0,0,10"
+						Content="_Rename MSHA file to HelpContentSetup.msha when deployed" />
+				</Grid>
+			</TabItem>
+			<TabItem Name="pgWebsite" Header="Website">
+				<ui:DeploymentConfigUserControl x:Name="ucWebsite" Margin="3" />
+			</TabItem>
+			<TabItem Name="pgOpenXml"  Header="Open XML">
+				<ui:DeploymentConfigUserControl x:Name="ucOpenXml" Margin="3" />
+			</TabItem>
+			<TabItem Name="pgMarkdown" Header="Markdown Content">
+				<ui:DeploymentConfigUserControl x:Name="ucMarkdown" Margin="3" />
+			</TabItem>
+		</TabControl>
+		<Grid Grid.Row="3" Margin="0,3,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+				HorizontalAlignment="Left" ToolTip="Save settings"/>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+			</TextBlock>
+			<Button Grid.Column="2" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+				Click="btnHelp_Click"  ToolTip="View help for this component" />
+			<Button Grid.Column="3" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel"
+        HorizontalAlignment="Right" IsCancel="True" ToolTip="Cancel without saving changes" />
+		</Grid>
+	</Grid>
+</Window>

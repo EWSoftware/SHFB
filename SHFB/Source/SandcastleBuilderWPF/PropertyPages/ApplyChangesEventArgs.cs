@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 10/11/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the class used for the property page ApplyChanges event
 //

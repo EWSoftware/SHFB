@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Token.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a conceptual content token that can be used to insert a common item,
 // value, or construct into topics.
@@ -38,6 +37,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
         private string tokenName, tokenValue;
         private bool isSelected;
+
         #endregion
 
         #region Properties
@@ -49,7 +49,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <value>If the value is null or empty, a new GUID is assigned as the name</value>
         public string TokenName
         {
-            get { return tokenName; }
+            get => tokenName;
             set
             {
                 if(value == null || value != tokenName)
@@ -71,7 +71,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// time with the appropriate project value.</value>
         public string TokenValue
         {
-            get { return tokenValue; }
+            get => tokenValue;
             set
             {
                 if(value != tokenValue)
@@ -88,7 +88,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <remarks>Used by the editor for binding in the list box</remarks>
         public bool IsSelected
         {
-            get { return isSelected; }
+            get => isSelected;
             set
             {
                 if(value != isSelected)
@@ -137,10 +137,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

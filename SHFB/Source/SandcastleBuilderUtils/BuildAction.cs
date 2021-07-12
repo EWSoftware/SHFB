@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildAction.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/13/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the build action (item name) for build items in a project
 //

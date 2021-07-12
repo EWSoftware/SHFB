@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/20/2019
 // Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a class that returns theme colors for button elements that are found in the Team
 // Foundation theme color category.

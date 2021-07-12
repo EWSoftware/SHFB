@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to manage the project's files in the Project Explorer tree view control
 //
@@ -23,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Forms;
 
@@ -40,7 +38,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private TreeView treeView;
+        private readonly TreeView treeView;
+
         #endregion
 
         #region Constructor
@@ -130,16 +129,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(compareData.BuildAction > BuildAction.Folder)
                     continue;
 
-                if(compareData.BuildAction == BuildAction.Folder &&
-                  newNodeData.BuildAction != BuildAction.Folder)
+                if(compareData.BuildAction == BuildAction.Folder && newNodeData.BuildAction != BuildAction.Folder)
                     continue;
 
-                if(compareData.BuildAction != BuildAction.Folder &&
-                  newNodeData.BuildAction == BuildAction.Folder)
+                if(compareData.BuildAction != BuildAction.Folder && newNodeData.BuildAction == BuildAction.Folder)
                     break;
 
-                if(String.Compare(nodes[idx].Text, newNode.Text,
-                  StringComparison.OrdinalIgnoreCase) > 0)
+                if(String.Compare(nodes[idx].Text, newNode.Text, StringComparison.OrdinalIgnoreCase) > 0)
                     break;
             }
 
@@ -167,6 +163,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TreeNode[] matches;
             string name;
             string[] parts;
+
+            if(files == null)
+                throw new ArgumentNullException(nameof(files));
 
             if(files.Count > 0)
                 project = files[0].Project;
@@ -256,9 +255,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     if(fileItem == null)
                         fileItem = project.AddFolderToProject(folder);
 
-                    itemNode = new TreeNode(name);
-                    itemNode.Name = folder;
-                    itemNode.Tag = new NodeData(BuildAction.Folder, fileItem);
+                    itemNode = new TreeNode(name)
+                    {
+                        Name = folder,
+                        Tag = new NodeData(BuildAction.Folder, fileItem)
+                    };
+
                     itemNode.ImageIndex = itemNode.SelectedImageIndex = (int)NodeIcon.GeneralFolder;
 
                     AddNode(root.Nodes, itemNode);
@@ -287,9 +289,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     else
                         root = treeView.Nodes[0];
 
-                    itemNode = new TreeNode(Path.GetFileName(key));
-                    itemNode.Name = key;
-                    itemNode.Tag = new NodeData(fileItem.BuildAction, fileItem);
+                    itemNode = new TreeNode(Path.GetFileName(key))
+                    {
+                        Name = key,
+                        Tag = new NodeData(fileItem.BuildAction, fileItem)
+                    };
+
                     itemNode.ImageIndex = itemNode.SelectedImageIndex = (int)NodeIconFromFilename(key);
 
                     AddNode(root.Nodes, itemNode);
@@ -307,11 +312,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="node">The node in which to refresh the children</param>
         public void RefreshPathsInChildren(TreeNode node)
         {
-            NodeData nodeData;
+            if(node == null)
+                throw new ArgumentNullException(nameof(node));
 
             foreach(TreeNode n in node.Nodes)
             {
-                nodeData = (NodeData)n.Tag;
+                NodeData nodeData = (NodeData)n.Tag;
                 ((FileItem)nodeData.Item).RefreshPaths();
 
                 if(n.Nodes.Count != 0)
@@ -330,6 +336,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             FileItem fileItem;
             TreeNode[] children;
             string projectFolder;
+
+            if(node == null)
+                throw new ArgumentNullException(nameof(node));
 
             try
             {

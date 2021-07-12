@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlCommentsLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2019
-// Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that determines whether or not quick info should be shown for specific XML
 // comments elements and what is should contain.
@@ -224,11 +223,10 @@ namespace SandcastleBuilder.Package.GoToDefinition
             {
                 case "conceptualLink":
                     var projectFileSearcher = new ProjectFileSearcher(serviceProvider, null);
-                    string title, filename, relativePath;
 
 #pragma warning disable VSTHRD010
                     bool found = projectFileSearcher.GetInfoFor(ProjectFileSearcher.IdType.Link, id,
-                        out title, out filename, out relativePath);
+                        out string title, out _, out string relativePath);
 #pragma warning restore VSTHRD010
 
                     textBlock.Inlines.AddRange(new Inline[] {

@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 12/06/2017
 // Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a form used to indicate whether to add the solution or just selected projects from within
 // it as documentation sources.
@@ -25,13 +24,15 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 
-using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.WPF.UI
 {
     /// <summary>
-    /// Interaction logic for SelectProjectsDlg.xaml
+    /// This form is used to indicate whether to add the solution or just selected projects from within it as
+    /// documentation sources.
     /// </summary>
     public partial class SelectProjectsDlg : Window
     {

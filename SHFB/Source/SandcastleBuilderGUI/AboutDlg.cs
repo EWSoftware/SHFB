@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : AboutDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2016
-// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This form is used to display application version information.
 //
@@ -34,7 +33,7 @@ namespace SandcastleBuilder.Gui
     /// <summary>
     /// This form is used to display application version information.
     /// </summary>
-    public partial class AboutDlg : System.Windows.Forms.Form
+    public partial class AboutDlg : Form
     {
         #region Constructor
         //=====================================================================

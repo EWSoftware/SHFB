@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildItemMetadata.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that holds a set of constants that define build item metadata names
 //

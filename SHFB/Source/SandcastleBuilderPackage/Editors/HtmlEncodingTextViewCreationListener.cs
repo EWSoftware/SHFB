@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HtmlEncodingTextViewCreationListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/29/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to connect the HTML encoding command filter to the text view adapters
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -62,7 +61,6 @@ namespace SandcastleBuilder.Package.Editors
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             HtmlEncodingCommandTarget filter;
-            IOleCommandTarget nextTarget;
 
             var wpfTextView = adaptersFactory.GetWpfTextView(textViewAdapter);
 
@@ -74,7 +72,7 @@ namespace SandcastleBuilder.Package.Editors
 
             filter = new HtmlEncodingCommandTarget(wpfTextView);
 
-            if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out nextTarget)))
+            if(ErrorHandler.Succeeded(textViewAdapter.AddCommandFilter(filter, out IOleCommandTarget nextTarget)))
             {
                 filter.NextTarget = nextTarget;
                 wpfTextView.Properties.GetOrCreateSingletonProperty(() => filter);

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 07/10/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder project factory
 //
@@ -127,15 +126,15 @@ namespace SandcastleBuilder.Package
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            uint verdict, moreInfo, ignored;
             string[] files = new string[1] { bstrFileName };
             string projectName = Path.GetFileNameWithoutExtension(bstrFileName);
             bool continueUpgrade = false;
 
             pbstrUpgradedFullyQualifiedFileName = bstrFileName;
 
+
             // Be sure we need an upgrade
-            this.UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out ignored);
+            this.UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out _);
 
             if(pUpgradeRequired == 0)
                 return VSConstants.S_OK;
@@ -144,8 +143,8 @@ namespace SandcastleBuilder.Package
             IVsQueryEditQuerySave2 qes = Utility.GetServiceFromPackage<IVsQueryEditQuerySave2, SVsQueryEditQuerySave>(true);
 
             ErrorHandler.ThrowOnFailure(qes.QueryEditFiles((uint)tagVSQueryEditFlags.QEF_ReportOnly |
-                (uint)__VSQueryEditFlags2.QEF_AllowUnopenedProjects, 1, files, null, null, out verdict,
-                out moreInfo));
+                (uint)__VSQueryEditFlags2.QEF_AllowUnopenedProjects, 1, files, null, null, out uint verdict,
+                out uint moreInfo));
 
             if(verdict == (uint)tagVSQueryEditResult.QER_EditOK)
                 continueUpgrade = true;
@@ -182,7 +181,7 @@ namespace SandcastleBuilder.Package
             if((moreInfo & (uint)tagVSQueryEditResultFlags.QER_MaybeChanged) != 0)
             {
                 this.UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired,
-                    out pguidNewProjectFactory, out ignored);
+                    out pguidNewProjectFactory, out _);
 
                 if(pUpgradeRequired == 0)
                 {
@@ -218,35 +217,37 @@ namespace SandcastleBuilder.Package
         public int UpgradeProject_CheckOnly(string bstrFileName, IVsUpgradeLogger pLogger, out int pUpgradeRequired,
           out Guid pguidNewProjectFactory, out uint pUpgradeProjectCapabilityFlags)
         {
-            XNamespace msbuild = "http://schemas.microsoft.com/developer/msbuild/2003";
-            Version toolsVersion, projectVersion;
-
             pUpgradeRequired = 0;
             pguidNewProjectFactory = this.GetType().GUID;
             pUpgradeProjectCapabilityFlags = PUVFF_SXSBACKUP;
 
-            XDocument project = XDocument.Load(bstrFileName);
-
-            // Check the ToolsVerion attribute first.  It should be 4.0 or later
-            var toolsVersionAttr = project.Root.Attribute("ToolsVersion");
-
-            if(toolsVersionAttr == null || String.IsNullOrWhiteSpace(toolsVersionAttr.Value) ||
-              !Version.TryParse(toolsVersionAttr.Value, out toolsVersion) || toolsVersion.Major < 4)
-                pUpgradeRequired = 1;
-            else
+            if(File.Exists(bstrFileName))
             {
-                // Next, see if the SHFB schema version is current
-                XElement property = project.Root.Descendants(msbuild + "SHFBSchemaVersion").FirstOrDefault();
+                XNamespace msbuild = "http://schemas.microsoft.com/developer/msbuild/2003";
+                XDocument project = XDocument.Load(bstrFileName);
 
-                if(property == null || !Version.TryParse(property.Value, out projectVersion) ||
-                  projectVersion < SandcastleProject.SchemaVersion)
+                // Check the ToolsVerion attribute first.  It should be 4.0 or later
+                var toolsVersionAttr = project.Root.Attribute("ToolsVersion");
+
+                if(toolsVersionAttr == null || String.IsNullOrWhiteSpace(toolsVersionAttr.Value) ||
+                  !Version.TryParse(toolsVersionAttr.Value, out Version toolsVersion) || toolsVersion.Major < 4)
+                {
                     pUpgradeRequired = 1;
+                }
+                else
+                {
+                    // Next, see if the SHFB schema version is current
+                    XElement property = project.Root.Descendants(msbuild + "SHFBSchemaVersion").FirstOrDefault();
+
+                    if(property == null || !Version.TryParse(property.Value, out Version projectVersion) ||
+                      projectVersion < SandcastleProject.SchemaVersion)
+                        pUpgradeRequired = 1;
+                }
             }
 
             // If it's of a higher version, we'll let the project node catch it.  Despite what the documentation
             // for this interface says, any value returned from here appears to be ignored and you cannot prevent
             // it from either loading or continuing with the conversion when the shell calls it.
-
             return VSConstants.S_OK;
         }
         #endregion

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/31/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to hold the conceptual content for a project during a build
 //
@@ -37,58 +36,35 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// </summary>
     public class ConceptualContentSettings
     {
-        #region Private data members
-        //=====================================================================
-
-        private List<ImageReference> imageFiles;
-        private List<ContentFile> codeSnippetFiles, tokenFiles, contentLayoutFiles;
-        private List<TopicCollection> topics;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
         /// This is used to get the conceptual content image files
         /// </summary>
-        public IList<ImageReference> ImageFiles
-        {
-            get { return imageFiles; }
-        }
+        public IList<ImageReference> ImageFiles { get; }
 
         /// <summary>
         /// This is used to get the conceptual content code snippet files
         /// </summary>
-        public IList<ContentFile> CodeSnippetFiles
-        {
-            get { return codeSnippetFiles; }
-        }
+        public IList<ContentFile> CodeSnippetFiles { get; }
 
         /// <summary>
         /// This is used to get the conceptual content token files
         /// </summary>
-        public IList<ContentFile> TokenFiles
-        {
-            get { return tokenFiles; }
-        }
+        public IList<ContentFile> TokenFiles { get; }
 
         /// <summary>
         /// This is used to get the conceptual content layout files
         /// </summary>
-        public IList<ContentFile> ContentLayoutFiles
-        {
-            get { return contentLayoutFiles; }
-        }
+        public IList<ContentFile> ContentLayoutFiles { get; }
 
         /// <summary>
         /// This is used to get a collection of the conceptual content topics
         /// </summary>
         /// <remarks>Each item in the collection represents one content layout file from the project</remarks>
-        public IList<TopicCollection> Topics
-        {
-            get { return topics; }
-        }
+        public IList<TopicCollection> Topics { get; }
+
         #endregion
 
         #region Constructor
@@ -100,11 +76,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="project">The project from which to load the settings</param>
         public ConceptualContentSettings(SandcastleProject project)
         {
-            imageFiles = project.ImagesReferences.ToList();
-            codeSnippetFiles = project.ContentFiles(BuildAction.CodeSnippets).OrderBy(f => f.LinkPath).ToList();
-            tokenFiles = project.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath).ToList();
-            contentLayoutFiles = project.ContentFiles(BuildAction.ContentLayout).ToList();
-            topics = project.ContentFiles(BuildAction.ContentLayout).Select(file => new TopicCollection(file)).ToList();
+            if(project == null)
+                throw new ArgumentNullException(nameof(project));
+
+            this.ImageFiles = project.ImagesReferences.ToList();
+            this.CodeSnippetFiles = project.ContentFiles(BuildAction.CodeSnippets).OrderBy(f => f.LinkPath).ToList();
+            this.TokenFiles = project.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath).ToList();
+            this.ContentLayoutFiles = project.ContentFiles(BuildAction.ContentLayout).ToList();
+            this.Topics = project.ContentFiles(BuildAction.ContentLayout).Select(file => new TopicCollection(file)).ToList();
         }
         #endregion
 
@@ -127,13 +106,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             string folder;
             bool missingFile = false;
 
+            if(builder == null)
+                throw new ArgumentNullException(nameof(builder));
+
             builder.ReportProgress("Copying standard token shared content file...");
             builder.SubstitutionTags.TransformTemplate("HelpFileBuilderTokens.tokens", builder.TemplateFolder,
                 builder.WorkingFolder);
 
             builder.ReportProgress("Checking for other token files...");
 
-            foreach(var tokenFile in this.tokenFiles)
+            foreach(var tokenFile in this.TokenFiles)
                 if(!File.Exists(tokenFile.FullPath))
                 {
                     missingFile = true;
@@ -152,7 +134,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             builder.ReportProgress("Checking for code snippets files...");
 
-            foreach(var snippetsFile in this.codeSnippetFiles)
+            foreach(var snippetsFile in this.CodeSnippetFiles)
                 if(!File.Exists(snippetsFile.FullPath))
                 {
                     missingFile = true;
@@ -165,7 +147,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 throw new BuilderException("BE0053", "One or more code snippets files could not be found");
 
             // Save the image info to a shared content file and copy the image files to the working folder
-            folder = builder.WorkingFolder + "media";
+            folder = Path.Combine(builder.WorkingFolder, "media");
 
             if(!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
@@ -176,10 +158,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             builder.ReportProgress("Copying images and creating the media map file...");
 
             // Copy all image project items and create the content file
-            this.SaveImageSharedContent(builder.WorkingFolder + "_MediaContent_.xml", folder, builder);
+            this.SaveImageSharedContent(Path.Combine(builder.WorkingFolder, "_MediaContent_.xml"), folder, builder);
 
             // Copy the topic files
-            folder = builder.WorkingFolder + "ddueXml";
+            folder = Path.Combine(builder.WorkingFolder, "ddueXml");
 
             if(!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
@@ -191,7 +173,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 "*.xml", SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
 
             // Create topic files
-            foreach(TopicCollection tc in topics)
+            foreach(TopicCollection tc in Topics)
             {
                 tc.Load();
                 tc.GenerateConceptualTopics(folder, builder, validNamespaces);
@@ -208,25 +190,22 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// to the media folder immediately.</remarks>
         public void SaveImageSharedContent(string filename, string imagePath, BuildProcess builder)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
             string destFile;
+
+            if(builder == null)
+                throw new ArgumentNullException(nameof(builder));
 
             builder.EnsureOutputFoldersExist("media");
 
-            try
+            using(var writer = XmlWriter.Create(filename, new XmlWriterSettings { Indent = true, CloseOutput = true }))
             {
-                settings.Indent = true;
-                settings.CloseOutput = true;
-                writer = XmlWriter.Create(filename, settings);
-
                 writer.WriteStartDocument();
 
                 // There are normally some attributes on this element but they aren't used by Sandcastle so we'll
                 // ignore them.
                 writer.WriteStartElement("stockSharedContentDefinitions");
 
-                foreach(var ir in imageFiles)
+                foreach(var ir in this.ImageFiles)
                 {
                     writer.WriteStartElement("item");
                     writer.WriteAttributeString("id", ir.Id);
@@ -274,11 +253,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 writer.WriteEndElement();   // </stockSharedContentDefinitions>
                 writer.WriteEndDocument();
             }
-            finally
-            {
-                if(writer != null)
-                    writer.Close();
-            }
         }
 
         /// <summary>
@@ -290,6 +264,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// into the BuildAssembler manifest file.</remarks>
         public void CreateConfigurationFiles(BuildProcess builder)
         {
+            if(builder == null)
+                throw new ArgumentNullException(nameof(builder));
+
             this.CreateCompanionFiles(builder);
             this.CreateContentMetadata(builder);
             this.MergeConceptualManifest(builder);
@@ -301,14 +278,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="builder">The build process</param>
         private void CreateCompanionFiles(BuildProcess builder)
         {
-            string destFolder = builder.WorkingFolder + "xmlComp\\";
+            string destFolder = Path.Combine(builder.WorkingFolder, "xmlComp");
 
             builder.ReportProgress("    Companion files");
 
             if(!Directory.Exists(destFolder))
                 Directory.CreateDirectory(destFolder);
 
-            foreach(TopicCollection tc in topics)
+            foreach(TopicCollection tc in this.Topics)
                 foreach(Topic t in tc)
                     t.WriteCompanionFile(destFolder, builder);
         }
@@ -330,32 +307,21 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// thing with different files.</remarks>
         private void CreateContentMetadata(BuildProcess builder)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
-
             builder.ReportProgress("    _ContentMetadata_.xml");
 
-            try
+            using(var writer = XmlWriter.Create(Path.Combine(builder.WorkingFolder, "_ContentMetadata_.xml"),
+              new XmlWriterSettings { Indent = true, CloseOutput = true }))
             {
-                settings.Indent = true;
-                settings.CloseOutput = true;
-                writer = XmlWriter.Create(builder.WorkingFolder + "_ContentMetadata_.xml", settings);
-
                 writer.WriteStartDocument();
                 writer.WriteStartElement("metadata");
 
                 // Write out each topic and all of its sub-topics
-                foreach(TopicCollection tc in topics)
+                foreach(TopicCollection tc in this.Topics)
                     foreach(Topic t in tc)
                         t.WriteMetadata(writer, builder);
 
-                writer.WriteEndElement();   // </metadata>
+                writer.WriteEndElement();
                 writer.WriteEndDocument();
-            }
-            finally
-            {
-                if(writer != null)
-                    writer.Close();
             }
         }
 
@@ -365,23 +331,17 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="builder">The build process</param>
         private void MergeConceptualManifest(BuildProcess builder)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
-            string conceptualManifest = builder.WorkingFolder + "ConceptualManifest.xml",
-                referenceManifest = builder.WorkingFolder + "manifest.xml";
+            string conceptualManifest = Path.Combine(builder.WorkingFolder, "ConceptualManifest.xml"),
+                referenceManifest = Path.Combine(builder.WorkingFolder, "manifest.xml");
 
             builder.ReportProgress("    Merging topic IDs into manifest.xml");
 
-            try
+            using(var writer = XmlWriter.Create(conceptualManifest, new XmlWriterSettings { Indent = true, CloseOutput = true }))
             {
-                settings.Indent = true;
-                settings.CloseOutput = true;
-                writer = XmlWriter.Create(conceptualManifest, settings);
-
                 writer.WriteStartDocument();
                 writer.WriteStartElement("topics");
 
-                foreach(TopicCollection tc in topics)
+                foreach(TopicCollection tc in this.Topics)
                     foreach(Topic t in tc)
                         t.WriteManifest(writer, builder);
 
@@ -396,20 +356,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                         writer.WriteEndElement();
                     }
 
-                writer.WriteEndElement();   // </topics>
+                writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
-            finally
-            {
-                if(writer != null)
-                    writer.Close();
 
-                if(File.Exists(referenceManifest))
-                    File.Copy(referenceManifest, Path.ChangeExtension(referenceManifest, "old"), true);
+            if(File.Exists(referenceManifest))
+                File.Copy(referenceManifest, Path.ChangeExtension(referenceManifest, "old"), true);
 
-                File.Copy(conceptualManifest, referenceManifest, true);
-                File.Delete(conceptualManifest);
-            }
+            File.Copy(conceptualManifest, referenceManifest, true);
+            File.Delete(conceptualManifest);
         }
         #endregion
     }

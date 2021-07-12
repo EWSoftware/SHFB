@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ComponentPropertiesPageContent.cs
 // Author  : Eric Woodruff
-// Updated : 11/03/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/31/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Components category properties
 //
@@ -26,8 +25,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 using Sandcastle.Core;
+using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using SandcastleBuilder.Utils.BuildComponent;
@@ -63,7 +64,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         //=====================================================================
 
         private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> availableComponents;
-        private ComponentConfigurationDictionary currentConfigs;
+        private List<Lazy<IConfigurationEditor, IConfigurationEditorMetadata>> availableConfigEditors;
         private ComponentCache componentCache;
 
         #endregion
@@ -74,7 +75,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This read-only property returns the selected component configurations
         /// </summary>
-        public ComponentConfigurationDictionary SelectedComponents => currentConfigs;
+        public ComponentConfigurationDictionary SelectedComponents { get; private set; }
 
         #endregion
 
@@ -177,7 +178,22 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void lbProjectComponents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            this.btnConfigure_Click(sender, e);
+            var config = (ComponentConfig)lbProjectComponents.SelectedItem;
+
+            if(config != null && availableConfigEditors.Any(ed => ed.Metadata.Id == config.Name))
+                this.btnConfigure_Click(sender, e);
+        }
+
+        /// <summary>
+        /// Update the state of the Configure button based on whether or not the selected component is editable
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void lbProjectComponents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var config = (ComponentConfig)lbProjectComponents.SelectedItem;
+
+            btnConfigure.IsEnabled = config != null && availableConfigEditors.Any(ed => ed.Metadata.Id == config.Name);
         }
 
         /// <summary>
@@ -245,7 +261,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     {
                         try
                         {
-                            var c = currentConfigs.Add(key, true, String.Format(CultureInfo.InvariantCulture,
+                            var c = this.SelectedComponents.Add(key, true, String.Format(CultureInfo.InvariantCulture,
                                 "<component id=\"{0}\">{1}</component>", key, component.Value.DefaultConfiguration));
                             match = new ComponentConfig { Name = key, Configuration = c };
                         }
@@ -260,12 +276,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                         lbProjectComponents.SelectedIndex = lbProjectComponents.Items.Add(match);
                         lbProjectComponents.Items.Refresh();
-                        btnConfigure.IsEnabled = btnDelete.IsEnabled = true;
+                        btnDelete.IsEnabled = true;
 
                         this.ComponentsModified?.Invoke(this, EventArgs.Empty);
 
                         // Open the configuration dialog to configure it when first added if needed
-                        btnConfigure_Click(sender, e);
+                        if(availableConfigEditors.Any(ed => ed.Metadata.Id == key))
+                            btnConfigure_Click(sender, e);
                     }
                 }
             }
@@ -278,34 +295,23 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnConfigure_Click(object sender, RoutedEventArgs e)
         {
-            string newConfig, currentConfig;
             var config = (ComponentConfig)lbProjectComponents.SelectedItem;
 
-            if(config != null && availableComponents != null)
+            if(config != null && availableComponents != null && availableConfigEditors != null)
             {
                 var component = availableComponents.FirstOrDefault(p => p.Metadata.Id == config.Name);
+                var editor = availableConfigEditors.FirstOrDefault(ed => ed.Metadata.Id == config.Name);
 
-                if(component != null)
+                if(component != null && editor != null)
                 {
-                    if(!component.Metadata.IsConfigurable)
-                    {
-                        if(sender == btnConfigure)
-                            MessageBox.Show("The selected build component contains no editable configuration information",
-                                Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Information);
-                        return;
-                    }
-
-                    currentConfig = config.Configuration.Configuration;
-
                     try
                     {
-                        newConfig = component.Value.ConfigureComponent(currentConfig,
-                            componentCache.ComponentContainer);
+                        XElement currentConfig = XElement.Parse(config.Configuration.Configuration);
 
                         // Only store it if new or if it changed
-                        if(currentConfig != newConfig)
+                        if(editor.Value.EditConfiguration(currentConfig, componentCache.ComponentContainer))
                         {
-                            config.Configuration.Configuration = newConfig;
+                            config.Configuration.Configuration = currentConfig.ToString();
                             this.ComponentsModified?.Invoke(this, EventArgs.Empty);
                         }
                     }
@@ -318,9 +324,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     }
                 }
                 else
-                    MessageBox.Show("The selected build component could not be found in any of the component " +
-                        "or project folders and cannot be used.", Constants.AppName, MessageBoxButton.OK,
+                {
+                    MessageBox.Show("The selected build component or its editor could not be found in any of the " +
+                        "component or project folders and cannot be used.", Constants.AppName, MessageBoxButton.OK,
                         MessageBoxImage.Error);
+                }
             }
         }
 
@@ -333,9 +341,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             var config = (ComponentConfig)lbProjectComponents.SelectedItem;
 
-            if(config != null && currentConfigs.ContainsKey(config.Name))
+            if(config != null && this.SelectedComponents.ContainsKey(config.Name))
             {
-                currentConfigs.Remove(config.Name);
+                this.SelectedComponents.Remove(config.Name);
                 this.ComponentsModified?.Invoke(this, EventArgs.Empty);
 
                 int idx = lbProjectComponents.SelectedIndex;
@@ -400,6 +408,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                 availableComponents = componentCache.ComponentContainer.GetExports<BuildComponentFactory,
                     IBuildComponentMetadata>().ToList();
+                availableConfigEditors = componentCache.ComponentContainer.GetExports<IConfigurationEditor,
+                    IConfigurationEditorMetadata>().ToList();
 
                 // Only load those that indicate that they are visible to the property page.  There may be
                 // duplicate component IDs across the assemblies found.  See
@@ -440,16 +450,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     return;
                 }
 
-                currentConfigs = projectSettings.Components;
+                this.SelectedComponents = projectSettings.Components;
 
-                foreach(var kv in currentConfigs)
+                foreach(var kv in this.SelectedComponents)
                     lbProjectComponents.Items.Add(new ComponentConfig { Name = kv.Key, Configuration = kv.Value });
 
                 if(lbProjectComponents.Items.Count != 0)
                 {
                     lbProjectComponents.Items.Refresh();
                     lbProjectComponents.SelectedIndex = 0;
-                    btnConfigure.IsEnabled = btnDelete.IsEnabled = true;
+                    btnDelete.IsEnabled = true;
                 }
                 else
                     btnConfigure.IsEnabled = btnDelete.IsEnabled = false;

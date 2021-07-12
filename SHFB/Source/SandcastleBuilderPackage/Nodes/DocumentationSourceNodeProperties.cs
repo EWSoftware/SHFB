@@ -28,6 +28,8 @@ using System.Xml.Linq;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 
+using Sandcastle.Platform.Windows.Design;
+
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;

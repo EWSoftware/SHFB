@@ -2,27 +2,27 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : Constants.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/04/2014
-// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/22/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains various constants for the help file builder applications
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  08/02/2006  EFW  Created the code
-// 1.8.0.0  10/05/2008  EFW  Moved to SandcastleBuilder.Utils and added some new items
-// 1.8.0.3  07/04/2009  EFW  Merged build component and plug-in folder
-// 1.9.6.0  11/13/2012  EFW  Added support for third-party presentation styles
-// -------  01/02/2014  EFW  Moved the constants to Sandcastle.Core
+// 08/02/2006  EFW  Created the code
+// 10/05/2008  EFW  Moved to SandcastleBuilder.Utils and added some new items
+// 07/04/2009  EFW  Merged build component and plug-in folder
+// 11/13/2012  EFW  Added support for third-party presentation styles
+// 01/02/2014  EFW  Moved the constants to Sandcastle.Core
 //===============================================================================================================
 
 using System;
+using System.IO;
 
 namespace Sandcastle.Core
 {
@@ -48,12 +48,12 @@ namespace Sandcastle.Core
         /// </summary>
         /// <remarks>This folder will be located under the <see cref="Environment.SpecialFolder">CommonApplicationData</see>
         /// or <see cref="Environment.SpecialFolder">LocalApplicationData</see> folder.</remarks>
-        public const string ProgramDataFolder = CompanyName + "\\" + AppName;
+        public static readonly string ProgramDataFolder = Path.Combine(CompanyName, AppName);
 
         /// <summary>
         /// This folder is located under the <see cref="Environment.SpecialFolder">CommonApplicationData</see>
         /// folder and contains custom build components that can be added to a project.
         /// </summary>
-        public const string ComponentsAndPlugInsFolder = ProgramDataFolder + "\\" + "Components and Plug-Ins";
+        public static readonly string ComponentsAndPlugInsFolder = Path.Combine(ProgramDataFolder, "Components and Plug-Ins");
     }
 }

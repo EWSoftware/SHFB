@@ -9,8 +9,6 @@
 // 10/14/2012 - EFW - Added support for topic ID and message parameters in the message logging methods.
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
 
-using System;
-
 namespace Sandcastle.Core.BuildAssembler
 {
     /// <summary>

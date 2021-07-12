@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : App.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/13/2021
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/27/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the startup code for the Reflection Data Manager tool
 //
@@ -20,12 +19,12 @@
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 using Microsoft.Build.Locator;
 
-using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 using Sandcastle.Core.Reflection;
 
@@ -42,9 +41,9 @@ namespace ReflectionDataManager
         /// <summary>
         /// This is used to hide the console window on startup when running interactively
         /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="nCmdShow"></param>
-        /// <returns></returns>
+        /// <param name="hWnd">The window handle</param>
+        /// <param name="nCmdShow">How to show the window</param>
+        /// <returns>True if the window was visible, false if not</returns>
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
@@ -78,14 +77,23 @@ namespace ReflectionDataManager
             // If command line options are present, perform a build
             if(e.Args.Length != 0)
             {
-                ConsoleApplication.WriteBanner();
+                Assembly application = Assembly.GetCallingAssembly();
+                AssemblyName applicationData = application.GetName();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
+
+                Console.WriteLine("{0} (v{1})", applicationData.Name, fvi.ProductVersion);
+
+                object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+
+                foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes)
+                    Console.WriteLine(copyrightAttribute.Copyright);
 
                 // Specify options
                 OptionCollection options = new OptionCollection
                 {
                     new SwitchOption("?", "Show this help page."),
                     new StringOption("platform", "Specify the platform to use for the build", "platformName")
-                    { RequiredMessage = "A platform parameter value is required" },
+                        { RequiredMessage = "A platform parameter value is required" },
                     new StringOption("version", "Specify the version to use for the build.  If not " +
                         "specified, the most recent version for the specified platform is used.", "version"),
                     new ListOption("path", "Specify additional paths to search for reflection data set " +
@@ -181,7 +189,7 @@ namespace ReflectionDataManager
             catch(Exception ex)
             {
                 exitCode = 1;
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 Console.WriteLine("\r\n\r\nUnable to generate reflection data files: " + ex.Message + "\r\n");
             }
 

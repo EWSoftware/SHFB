@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FileItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a file that is part of the project (MAML/additional content, site
 // map, style sheet, etc.).
@@ -54,7 +53,8 @@ namespace SandcastleBuilder.Utils
         private bool copyToMedia;
         private int sortOrder;
 
-        private static Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
+        private static readonly Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
+
         #endregion
 
         #region Properties
@@ -69,7 +69,7 @@ namespace SandcastleBuilder.Utils
           RefreshProperties(RefreshProperties.All), TypeConverter(typeof(BuildActionEnumConverter))]
         public BuildAction BuildAction
         {
-            get { return buildAction; }
+            get => buildAction;
             set
             {
                 string baseName;
@@ -100,12 +100,12 @@ namespace SandcastleBuilder.Utils
         [Browsable(false)]
         public FilePath IncludePath
         {
-            get { return includePath; }
+            get => includePath;
             set
             {
                 if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
                     throw new ArgumentException("A file path must be specified and cannot contain wildcards " +
-                        "(* or ?)", "value");
+                        "(* or ?)", nameof(value));
 
                 this.Include = value.PersistablePath;
 
@@ -121,12 +121,12 @@ namespace SandcastleBuilder.Utils
         [Browsable(false)]
         public FilePath LinkPath
         {
-            get { return (linkPath == null) ? includePath : linkPath; }
+            get => linkPath ?? includePath;
             set
             {
                 if(value != null && value.Path.Length != 0 && value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
                     throw new ArgumentException("A file path must be specified and cannot contain wildcards " +
-                        "(* or ?)", "value");
+                        "(* or ?)", nameof(value));
 
                 if(value != null && value.Path.Length != 0)
                 {
@@ -147,10 +147,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get the full path to the item
         /// </summary>
         [Category("File"), Description("The full path to the file")]
-        public string FullPath
-        {
-            get { return includePath; }
-        }
+        public string FullPath => includePath;
 
         /// <summary>
         /// This is used to set or get the name of the item
@@ -240,7 +237,7 @@ namespace SandcastleBuilder.Utils
         [Category("Metadata"), Description("The ID for a conceptual content image"), DefaultValue(null)]
         public string ImageId
         {
-            get { return imageId; }
+            get => imageId;
             set
             {
                 if(value != null)
@@ -257,7 +254,7 @@ namespace SandcastleBuilder.Utils
         [Category("Metadata"), Description("Image alternate text"), DefaultValue(null)]
         public string AlternateText
         {
-            get { return altText; }
+            get => altText;
             set
             {
                 if(value != null)
@@ -277,7 +274,7 @@ namespace SandcastleBuilder.Utils
           "media folder.  If false, it is only copied if referenced in a topic."), DefaultValue(false)]
         public bool CopyToMedia
         {
-            get { return copyToMedia; }
+            get => copyToMedia;
             set
             {
                 this.SetMetadata(BuildItemMetadata.CopyToMedia, value.ToString(CultureInfo.InvariantCulture));
@@ -292,7 +289,7 @@ namespace SandcastleBuilder.Utils
           "order for merging them into the table of contents."), DefaultValue(0)]
         public int SortOrder
         {
-            get { return sortOrder; }
+            get => sortOrder;
             set
             {
                 this.SetMetadata(BuildItemMetadata.SortOrder, value.ToString(CultureInfo.InvariantCulture));
@@ -536,7 +533,7 @@ namespace SandcastleBuilder.Utils
                     break;
             }
 
-            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(new PropertyDescriptor[] { });
+            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(Array.Empty<PropertyDescriptor>());
 
             foreach(PropertyDescriptor pd in pdc)
                 if(removeProps.IndexOf(pd.Name) == -1)

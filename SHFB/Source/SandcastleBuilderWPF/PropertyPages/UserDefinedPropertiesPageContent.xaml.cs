@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : UserDefinedPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/26/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the User Defined category properties
 //
@@ -40,7 +39,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private BindingList<UserDefinedProperty> userDefinedProperties;
+        private readonly BindingList<UserDefinedProperty> userDefinedProperties;
         private bool isLoading;
 
         #endregion
@@ -206,9 +205,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
             if(this.CheckProjectIsEditable(false))
             {
-                UserDefinedProperty p = lbProperties.SelectedItem as UserDefinedProperty;
-
-                if(p != null)
+                if(lbProperties.SelectedItem is UserDefinedProperty p)
                 {
                     if(p.UnderlyingProperty != null)
                         this.Project.MSBuildProject.RemoveProperty(p.UnderlyingProperty);

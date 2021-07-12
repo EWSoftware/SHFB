@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2014
-// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to spell check files in the SHFB project
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -43,9 +42,9 @@ namespace SandcastleBuilder.Gui.Spelling
         private const string wordBreakChars = ",/<>?;:\"[]\\{}|-=+~!#$%^&*() \t\r\n";
 
         // Regular expressions used to find thinks that look like XML elements
-        private static Regex reXml = new Regex(@"<[A-Za-z/]+?.*?>");
+        private static readonly Regex reXml = new Regex(@"<[A-Za-z/]+?.*?>");
 
-        private GlobalDictionary dictionary;
+        private readonly GlobalDictionary dictionary;
         #endregion
 
         #region Events
@@ -64,10 +63,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnSpellCheckFileStarting(CancelEventArgs e)
         {
-            CancelEventHandler handler = SpellCheckFileStarting;
-
-            if(handler != null)
-                handler(this, e);
+            SpellCheckFileStarting?.Invoke(this, e);
         }
 
         /// <summary>
@@ -83,10 +79,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnSpellCheckTextStarting(CancelEventArgs e)
         {
-            CancelEventHandler handler = SpellCheckTextStarting;
-
-            if(handler != null)
-                handler(this, e);
+            SpellCheckTextStarting?.Invoke(this, e);
         }
 
         /// <summary>
@@ -99,10 +92,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnMisspelledWord(SpellingEventArgs e)
         {
-            EventHandler<SpellingEventArgs> handler = MisspelledWord;
-
-            if(handler != null)
-                handler(this, e);
+            MisspelledWord?.Invoke(this, e);
         }
 
         /// <summary>
@@ -115,10 +105,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnDoubledWord(SpellingEventArgs e)
         {
-            EventHandler<SpellingEventArgs> handler = DoubledWord;
-
-            if(handler != null)
-                handler(this, e);
+            DoubledWord?.Invoke(this, e);
         }
 
         /// <summary>
@@ -132,10 +119,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnSpellCheckTextCancelled(EventArgs e)
         {
-            EventHandler handler = SpellCheckTextCancelled;
-
-            if(handler != null)
-                handler(this, e);
+            SpellCheckTextCancelled?.Invoke(this, e);
         }
 
         /// <summary>
@@ -149,10 +133,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnSpellCheckTextCompleted(EventArgs e)
         {
-            EventHandler handler = SpellCheckTextCompleted;
-
-            if(handler != null)
-                handler(this, e);
+            SpellCheckTextCompleted?.Invoke(this, e);
         }
 
         /// <summary>
@@ -166,10 +147,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnSpellCheckFileCancelled(EventArgs e)
         {
-            EventHandler handler = SpellCheckFileCancelled;
-
-            if(handler != null)
-                handler(this, e);
+            SpellCheckFileCancelled?.Invoke(this, e);
         }
 
         /// <summary>
@@ -183,10 +161,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// </summary>
         protected virtual void OnSpellCheckFileCompleted(EventArgs e)
         {
-            EventHandler handler = SpellCheckFileCompleted;
-
-            if(handler != null)
-                handler(this, e);
+            SpellCheckFileCompleted?.Invoke(this, e);
         }
         #endregion
 
@@ -315,7 +290,8 @@ namespace SandcastleBuilder.Gui.Spelling
             if(String.IsNullOrWhiteSpace(text))
                 yield break;
 
-            for(int i = 0, end = 0; i < text.Length; i++)
+
+            for(int i = 0, end; i < text.Length; i++)
             {
                 // Skip escape sequences.  If not, they can end up as part of the word or cause words to be
                 // missed.  For example, "This\r\nis\ta\ttest \x22missing\x22" would incorrectly yield "nis",
@@ -348,7 +324,7 @@ namespace SandcastleBuilder.Gui.Spelling
 
                             case 'x':   // xh[h[h[h]]] or xhh[hh]
                                 while(++end < text.Length && (end - i) < 6 && (Char.IsDigit(text[end]) ||
-                                  (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                  (Char.ToLowerInvariant(text[end]) >= 'a' && Char.ToLowerInvariant(text[end]) <= 'f')))
                                     ;
 
                                 i = --end;
@@ -356,7 +332,7 @@ namespace SandcastleBuilder.Gui.Spelling
 
                             case 'u':   // uhhhh
                                 while(++end < text.Length && (end - i) < 6 && (Char.IsDigit(text[end]) ||
-                                  (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                  (Char.ToLowerInvariant(text[end]) >= 'a' && Char.ToLowerInvariant(text[end]) <= 'f')))
                                     ;
 
                                 if((--end - i) == 5)
@@ -365,7 +341,7 @@ namespace SandcastleBuilder.Gui.Spelling
 
                             case 'U':   // Uhhhhhhhh
                                 while(++end < text.Length && (end - i) < 10 && (Char.IsDigit(text[end]) ||
-                                  (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                                  (Char.ToLowerInvariant(text[end]) >= 'a' && Char.ToLowerInvariant(text[end]) <= 'f')))
                                     ;
 
                                 if((--end - i) == 9)
@@ -395,7 +371,7 @@ namespace SandcastleBuilder.Gui.Spelling
                         if(end < text.Length && text[end] == 'x')
                         {
                             while(++end < text.Length && (end - i) < 8 && (Char.IsDigit(text[end]) ||
-                              (Char.ToLower(text[end]) >= 'a' && Char.ToLower(text[end]) <= 'f')))
+                              (Char.ToLowerInvariant(text[end]) >= 'a' && Char.ToLowerInvariant(text[end]) <= 'f')))
                                 ;
                         }
 

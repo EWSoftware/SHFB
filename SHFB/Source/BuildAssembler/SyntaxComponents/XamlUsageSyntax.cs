@@ -16,12 +16,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools.SyntaxGenerators
 {
     /// <summary>
     /// This class generates usage syntax sections for XAML
@@ -39,18 +40,13 @@ namespace Microsoft.Ddue.Tools
         [SyntaxGeneratorExport("XAML Usage", LanguageName, StyleIdName, AlternateIds = "XamlUsage, xaml",
           SortOrder = 90, Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates XAML usage syntax sections",
-          DefaultConfiguration="<filter files=\"{@SHFBFolder}PresentationStyles\\Shared\\configuration\\xamlSyntax.config\" />\r\n" +
-			"{@XamlConfigFiles}")]
+          DefaultConfiguration = "<filter files=\"{@CoreComponentsFolder}Shared\\configuration\\xamlSyntax.config\" />\r\n" +
+            "{@XamlConfigFiles}")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public string ResourceItemFileLocation
-            {
-                get
-                {
-                    return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent");
-                }
-            }
+            public string ResourceItemFileLocation => Path.Combine(ComponentUtilities.AssemblyFolder(
+                Assembly.GetExecutingAssembly()), "SyntaxContent");
 
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
@@ -63,6 +59,9 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             base.Initialize(configuration);
 
             this.LoadConfigNode(configuration);
@@ -71,6 +70,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteStartBlock(this.Language, this.StyleId);
 
             // Check the list of assemblies for which to generate XAML syntax
@@ -104,12 +109,9 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteXamlXmlnsUri(string assemblyName, string namespaceName, SyntaxWriter writer)
         {
-            Dictionary<string, List<string>> clrNamespaces;
-
-            if(xamlAssemblies.TryGetValue(assemblyName, out clrNamespaces))
+            if(xamlAssemblies.TryGetValue(assemblyName, out Dictionary<string, List<string>> clrNamespaces))
             {
-                List<string> xmlnsUriList;
-                if(clrNamespaces.TryGetValue(namespaceName, out xmlnsUriList))
+                if(clrNamespaces.TryGetValue(namespaceName, out List<string> xmlnsUriList))
                 {
                     foreach(string xmlnsUri in xmlnsUriList)
                     {
@@ -123,11 +125,11 @@ namespace Microsoft.Ddue.Tools
         }
 
         // list of classes whose subclasses do NOT get XAML syntax
-        private List<string> excludedAncestorList = new List<string>();
+        private readonly List<string> excludedAncestorList = new List<string>();
 
         // List of assemblies whose members get XAML syntax.  The assembly name key is compared case-insensitively.
         // The nested dictionary is a list of assembly namespaces that have one or more xmlns URIs for xaml.
-        private Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies =
+        private readonly Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies =
             new Dictionary<string, Dictionary<string, List<string>>>(StringComparer.OrdinalIgnoreCase);
 
         private void LoadConfigNode(XPathNavigator configuration)
@@ -157,7 +159,7 @@ namespace Microsoft.Ddue.Tools
             // get the list of excluded ancestor classes
             foreach(XPathNavigator excludedClass in configuration.Select("xamlExcludedAncestors/class"))
             {
-                string apiId = excludedClass.GetAttribute("api", string.Empty);
+                string apiId = excludedClass.GetAttribute("api", String.Empty);
                 if(apiId.Length > 0 && !excludedAncestorList.Contains(apiId))
                     excludedAncestorList.Add(apiId);
             }
@@ -165,12 +167,12 @@ namespace Microsoft.Ddue.Tools
             // get the list of XAML assemblies; members in other assemblies get no xaml syntax, just 'not applicable' boilerplate
             foreach(XPathNavigator xamlAssembly in configuration.Select("xamlAssemblies/assembly"))
             {
-                string assemblyName = xamlAssembly.GetAttribute("name", string.Empty);
-                if(string.IsNullOrEmpty(assemblyName))
+                string assemblyName = xamlAssembly.GetAttribute("name", String.Empty);
+
+                if(String.IsNullOrEmpty(assemblyName))
                     continue; // should emit warning message
 
-                Dictionary<string, List<string>> clrNamespaces;
-                if(!xamlAssemblies.TryGetValue(assemblyName, out clrNamespaces))
+                if(!xamlAssemblies.TryGetValue(assemblyName, out Dictionary<string, List<string>> clrNamespaces))
                 {
                     clrNamespaces = new Dictionary<string, List<string>>();
                     xamlAssemblies.Add(assemblyName, clrNamespaces);
@@ -178,22 +180,24 @@ namespace Microsoft.Ddue.Tools
 
                 foreach(XPathNavigator xmlnsNode in xamlAssembly.Select("xmlns[@uri][clrNamespace]"))
                 {
-                    string xmlnsUri = xmlnsNode.GetAttribute("uri", string.Empty);
-                    if(string.IsNullOrEmpty(xmlnsUri))
+                    string xmlnsUri = xmlnsNode.GetAttribute("uri", String.Empty);
+
+                    if(String.IsNullOrEmpty(xmlnsUri))
                         continue; // should emit warning message
 
                     foreach(XPathNavigator clrNamespaceNode in xmlnsNode.Select("clrNamespace[@name]"))
                     {
-                        string namespaceName = clrNamespaceNode.GetAttribute("name", string.Empty);
-                        if(string.IsNullOrEmpty(namespaceName))
+                        string namespaceName = clrNamespaceNode.GetAttribute("name", String.Empty);
+
+                        if(String.IsNullOrEmpty(namespaceName))
                             continue; // should emit warning message
 
-                        List<string> xmlnsUriList;
-                        if(!clrNamespaces.TryGetValue(namespaceName, out xmlnsUriList))
+                        if(!clrNamespaces.TryGetValue(namespaceName, out List<string> xmlnsUriList))
                         {
                             xmlnsUriList = new List<string>();
                             clrNamespaces.Add(namespaceName, xmlnsUriList);
                         }
+
                         if(!xmlnsUriList.Contains(xmlnsUri))
                             xmlnsUriList.Add(xmlnsUri);
                     }
@@ -228,10 +232,13 @@ namespace Microsoft.Ddue.Tools
         {
             try
             {
-                XPathDocument document = new XPathDocument(file);
+                using(var xr = XmlReader.Create(file, new XmlReaderSettings()))
+                {
+                    XPathDocument document = new XPathDocument(xr);
 
-                XPathNavigator xamlSyntaxNode = document.CreateNavigator().SelectSingleNode("/*");
-                LoadConfiguration(xamlSyntaxNode);
+                    XPathNavigator xamlSyntaxNode = document.CreateNavigator().SelectSingleNode("/*");
+                    LoadConfiguration(xamlSyntaxNode);
+                }
             }
             catch(Exception e)
             {
@@ -254,7 +261,7 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteXamlBoilerplate(XamlBoilerplateID bpID, XPathNavigator typeReflection, SyntaxWriter writer)
         {
-            string xamlBlockId = System.Enum.GetName(typeof(XamlBoilerplateID), bpID);
+            string xamlBlockId = Enum.GetName(typeof(XamlBoilerplateID), bpID);
             if(xamlBlockId != null)
             {
                 writer.WriteStartSubBlock(xamlBlockId);
@@ -267,6 +274,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
 
@@ -298,7 +311,7 @@ namespace Microsoft.Ddue.Tools
         {
             string typeName = (string)reflection.Evaluate(apiNameExpression);
             bool isGeneric = (bool)reflection.Evaluate(apiIsGenericExpression);
-            string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlObjectElementUsageHeading);
+            string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlObjectElementUsageHeading);
 
             string contentPropertyId = (string)reflection.Evaluate(contentPropertyIdExpression);
 
@@ -367,6 +380,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             bool notWriteable = (bool)reflection.Evaluate(noSettablePropertiesExpression);
 
             if(notWriteable)
@@ -420,10 +439,17 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteAttachedPropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string propertyName = (string)reflection.Evaluate(apiNameExpression);
             string containingTypeName = (string)reflection.Evaluate(apiContainingTypeNameExpression);
             bool isSettable = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
             XPathNavigator returnType = reflection.SelectSingleNode(apiReturnTypeExpression);
+
             if(!isSettable)
             {
                 WriteXamlBoilerplate(XamlBoilerplateID.propertyXamlSyntax_readOnly, writer);
@@ -431,7 +457,8 @@ namespace Microsoft.Ddue.Tools
             else
             {
                 // xaml syntax block for attached property
-                string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
+                string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
+
                 writer.WriteStartSubBlock(xamlBlockId);
                 writer.WriteString("<");
                 writer.WriteParameter("object ");
@@ -446,6 +473,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             bool isSettable = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
             bool isSetterPublic = (bool)reflection.Evaluate(apiIsSetterPublicExpression);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
@@ -454,7 +487,7 @@ namespace Microsoft.Ddue.Tools
 
             XPathNavigator returnType = reflection.SelectSingleNode(apiReturnTypeExpression);
             bool notWriteableReturnType = (bool)returnType.Evaluate(noSettablePropertiesExpression);
-            string returnTypeId = returnType.GetAttribute("api", string.Empty);
+            string returnTypeId = returnType.GetAttribute("api", String.Empty);
             string returnTypeSubgroup = (string)returnType.Evaluate(apiSubgroupExpression);
             bool returnTypeIsAbstract = (bool)returnType.Evaluate(apiIsAbstractTypeExpression);
             bool returnTypeIsReadonlyStruct = (returnTypeSubgroup == "structure" && notWriteableReturnType &&
@@ -545,7 +578,7 @@ namespace Microsoft.Ddue.Tools
         //   </object>
         private void PropertyContentElementUsageSimple(XPathNavigator propertyReflection, SyntaxWriter writer)
         {
-            string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlContentElementUsageHeading);
+            string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlContentElementUsageHeading);
             XPathNavigator returnType = propertyReflection.SelectSingleNode(apiReturnTypeExpression);
 
             // start the syntax block
@@ -578,7 +611,7 @@ namespace Microsoft.Ddue.Tools
         //   </object>
         private void PropertyElementUsageGrande(XPathNavigator propertyReflection, SyntaxWriter writer)
         {
-            string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlPropertyElementUsageHeading);
+            string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlPropertyElementUsageHeading);
             string propertyName = (string)propertyReflection.Evaluate(apiNameExpression);
             XPathNavigator returnType = propertyReflection.SelectSingleNode(apiReturnTypeExpression);
 
@@ -620,7 +653,7 @@ namespace Microsoft.Ddue.Tools
         // An Attribute Usage block
         private void PropertyAttributeUsage(XPathNavigator propertyReflection, SyntaxWriter writer)
         {
-            string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
+            string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
             string propertyName = (string)propertyReflection.Evaluate(apiNameExpression);
             XPathNavigator returnType = propertyReflection.SelectSingleNode(apiReturnTypeExpression);
 
@@ -642,6 +675,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string eventName = (string)reflection.Evaluate(apiNameExpression);
             string eventVisibility = (string)reflection.Evaluate(apiVisibilityExpression);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
@@ -681,7 +720,7 @@ namespace Microsoft.Ddue.Tools
             else
             {
                 // start the syntax block
-                string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
+                string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
                 writer.WriteStartSubBlock(xamlBlockId);
 
                 // syntax looks like: 
@@ -700,12 +739,18 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteAttachedEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string eventName = (string)reflection.Evaluate(apiNameExpression);
             string containingTypeName = (string)reflection.Evaluate(apiContainingTypeNameExpression);
             XPathNavigator eventHandler = reflection.SelectSingleNode(apiHandlerOfEventExpression);
 
             // xaml syntax block for attached event
-            string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
+            string xamlBlockId = Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlAttributeUsageHeading);
             writer.WriteStartSubBlock(xamlBlockId);
 
             writer.WriteString("<");
@@ -729,6 +774,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
+            if(reference == null)
+                throw new ArgumentNullException(nameof(reference));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             switch(reference.LocalName)
             {
                 case "arrayOf":
@@ -836,7 +887,7 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator containingType = propertyReflection.SelectSingleNode(apiContainingTypeExpression);
             string containingTypeName = (string)containingType.Evaluate(apiNameExpression);
             string namespaceId = (string)propertyReflection.Evaluate(apiContainingNamespaceIdExpression);
-            string propertyId = string.Concat("P:", namespaceId.Substring(2), ".", string.Concat(containingTypeName, ".", propertyName));
+            string propertyId = String.Concat("P:", namespaceId.Substring(2), ".", String.Concat(containingTypeName, ".", propertyName));
             string contentPropertyId = (string)containingType.Evaluate(contentPropertyIdExpression);
             if(propertyId == contentPropertyId)
                 return true;
@@ -853,14 +904,14 @@ namespace Microsoft.Ddue.Tools
             XPathNodeIterator ancestors = (XPathNodeIterator)typeReflection.Evaluate(apiAncestorsExpression);
 
             // Check the type itself as well
-            string ancestorId = typeReflection.GetAttribute("api", string.Empty);
+            string ancestorId = typeReflection.GetAttribute("api", String.Empty);
 
             if(!String.IsNullOrWhiteSpace(ancestorId) && excludedAncestorList.Contains(ancestorId))
                 return true;
 
             foreach(XPathNavigator ancestor in ancestors)
             {
-                ancestorId = ancestor.GetAttribute("api", string.Empty);
+                ancestorId = ancestor.GetAttribute("api", String.Empty);
 
                 if(excludedAncestorList.Contains(ancestorId))
                     return true;
@@ -888,7 +939,7 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator returnType = memberReflection.SelectSingleNode(apiReturnTypeExpression);
             if(returnType != null)
             {
-                string returnTypeId = returnType.GetAttribute("api", string.Empty);
+                string returnTypeId = returnType.GetAttribute("api", String.Empty);
 
                 if(IsPrimitiveType(returnTypeId))
                     return true;
@@ -923,16 +974,18 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private XPathExpression hasTypeConverterAttributeExpression = XPathExpression.Compile("boolean(attributes/attribute/type[@api='T:System.ComponentModel.TypeConverterAttribute'])");
+        private readonly XPathExpression hasTypeConverterAttributeExpression = XPathExpression.Compile(
+            "boolean(attributes/attribute/type[@api='T:System.ComponentModel.TypeConverterAttribute'])");
 
-        private XPathExpression hasDefaultConstructorExpression = XPathExpression.Compile("boolean(typedata/@defaultConstructor)");
+        private readonly XPathExpression hasDefaultConstructorExpression = XPathExpression.Compile("boolean(typedata/@defaultConstructor)");
 
-        private XPathExpression contentPropertyIdExpression = XPathExpression.Compile("string(typedata/@contentProperty)");
-        private XPathExpression ancestorContentPropertyIdExpression = XPathExpression.Compile("string(family/ancestors/type/@contentProperty)");
+        private readonly XPathExpression contentPropertyIdExpression = XPathExpression.Compile("string(typedata/@contentProperty)");
+        private readonly XPathExpression ancestorContentPropertyIdExpression = XPathExpression.Compile("string(family/ancestors/type/@contentProperty)");
 
-        private XPathExpression noSettablePropertiesExpression = XPathExpression.Compile("boolean(typedata/@noSettableProperties)");
+        private readonly XPathExpression noSettablePropertiesExpression = XPathExpression.Compile("boolean(typedata/@noSettableProperties)");
 
-        private XPathExpression apiIsSetterPublicExpression = XPathExpression.Compile("boolean((memberdata[@visibility='public'] and not(propertydata[@set-visibility!='public'])) or propertydata[@set-visibility='public'])");
+        private readonly XPathExpression apiIsSetterPublicExpression = XPathExpression.Compile(
+            "boolean((memberdata[@visibility='public'] and not(propertydata[@set-visibility!='public'])) or propertydata[@set-visibility='public'])");
     }
 
     /// <summary>

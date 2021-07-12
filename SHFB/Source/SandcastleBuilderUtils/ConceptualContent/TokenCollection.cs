@@ -1,26 +1,23 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : TokenCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/26/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a collection class used to hold the conceptual content
-// token information from a token file.
+// This file contains a collection class used to hold the conceptual content token information from a token file
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.6.0.7  04/24/2008  EFW  Created the code
-// 1.8.0.0  07/25/2008  EFW  Reworked to support new MSBuild project format
-// 1.9.3.3  12/22/2011  EFW  Updated for use with the new token file editor
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/24/2008  EFW  Created the code
+// 07/25/2008  EFW  Reworked to support new MSBuild project format
+// 12/22/2011  EFW  Updated for use with the new token file editor
+//===============================================================================================================
 
 // Ignore Spelling: xlink
 
@@ -59,6 +56,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used to get or set the token file path
         /// </summary>
         public string TokenFilePath { get; set; }
+
         #endregion
 
         #region Sort and find methods
@@ -71,18 +69,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// are case-sensitive.</remarks>
         public void Sort()
         {
-            ((List<Token>)base.Items).Sort(
-                delegate(Token x, Token y)
-                {
-                    int result = String.Compare(x.TokenName, y.TokenName,
-                        StringComparison.CurrentCulture);
+            ((List<Token>)this.Items).Sort((x, y) =>
+            {
+                int result = String.Compare(x.TokenName, y.TokenName, StringComparison.Ordinal);
 
-                    if(result == 0)
-                        result = String.Compare(x.TokenValue, y.TokenValue,
-                            StringComparison.CurrentCulture);
+                if(result == 0)
+                    result = String.Compare(x.TokenValue, y.TokenValue, StringComparison.Ordinal);
 
-                    return result;
-                });
+                return result;
+            });
         }
 
         /// <summary>
@@ -92,6 +87,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>An enumerable list of all matches</returns>
         public IEnumerable<Token> Find(Predicate<Token> match)
         {
+            if(match == null)
+                throw new ArgumentNullException(nameof(match));
+
             foreach(var t in this)
                 if(match(t))
                     yield return t;
@@ -108,15 +106,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// be called to reload the collection if needed.</remarks>
         public void Load()
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            XmlReader xr = null;
+            this.Clear();
 
-            try
+            using(var xr = XmlReader.Create(this.TokenFilePath, new XmlReaderSettings { CloseInput = true }))
             {
-                this.Clear();
-                settings.CloseInput = true;
-
-                xr = XmlReader.Create(this.TokenFilePath, settings);
                 xr.MoveToContent();
 
                 while(!xr.EOF)
@@ -126,14 +119,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     xr.Read();
                 }
+            }
 
-                this.Sort();
-            }
-            finally
-            {
-                if(xr != null)
-                    xr.Close();
-            }
+            this.Sort();
         }
 
         /// <summary>
@@ -142,15 +130,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public void Save()
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
-
-            try
+            using(var writer = XmlWriter.Create(this.TokenFilePath, new XmlWriterSettings { Indent = true,
+              CloseOutput = true }))
             {
-                settings.Indent = true;
-                settings.CloseOutput = true;
-                writer = XmlWriter.Create(this.TokenFilePath, settings);
-
                 writer.WriteStartDocument();
                 writer.WriteStartElement("content");
                 writer.WriteAttributeString("xml", "space", null, "preserve");
@@ -172,11 +154,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 writer.WriteEndElement();   // </content>
                 writer.WriteEndDocument();
-            }
-            finally
-            {
-                if(writer != null)
-                    writer.Close();
             }
         }
         #endregion

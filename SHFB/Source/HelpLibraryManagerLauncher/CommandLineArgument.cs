@@ -1,23 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Help Library Manager Launcher
 // File    : CommandLineArgument.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2010
-// Note    : Copyright 2010, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a command line argument
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  07/03/2010  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/03/2010  EFW  Created the code
+//===============================================================================================================
 
 using System;
 
@@ -34,7 +32,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>
         /// This read-only property returns the argument value
         /// </summary>
-        public string Value { get; private set; }
+        public string Value { get; }
 
         /// <summary>
         /// This read-only property returns whether or not the value is a
@@ -42,7 +40,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// </summary>
         /// <value>This returns true if the value is prefixed with a slash
         /// or a dash.</value>
-        public bool IsSwitch { get; private set; }
+        public bool IsSwitch { get; }
+
         #endregion
 
         #region Constructor
@@ -72,14 +71,14 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <returns>True if this option matches the given name, False if not.</returns>
         public bool MatchesSwitch(string argumentName)
         {
-            return (this.IsSwitch && this.Value.Substring(1).Equals(argumentName, StringComparison.OrdinalIgnoreCase));
+            return this.IsSwitch && this.Value.Substring(1).Equals(argumentName, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
         /// Returns the value as a command line option
         /// </summary>
-        /// <returns>The value ready for use as a command line option.  If it
-        /// contains spaces, it will be enclosed in quotes.</returns>
+        /// <returns>The value ready for use as a command line option.  If it contains spaces, it will be
+        /// enclosed in quotes.</returns>
         public string ToCommandLineOption()
         {
             if(Value.IndexOf(' ') != -1)

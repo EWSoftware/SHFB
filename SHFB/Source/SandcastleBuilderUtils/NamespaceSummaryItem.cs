@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/18/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a namespace summary item that can be used to add comments to a
 // namespace in the help file or exclude it completely from the help file.
@@ -38,7 +37,8 @@ namespace SandcastleBuilder.Utils
         #region Private data members
         //=====================================================================
 
-        private string name, summary;
+        private readonly string name;
+        private string summary;
         private bool isDocumented;
 
         #endregion
@@ -49,22 +49,19 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This read-only property is used to get the namespace name
         /// </summary>
-        public string Name
-        {
-            get { return (name.Length == 0) ? "(global)" : name; }
-        }
+        public string Name => (name.Length == 0) ? "(global)" : name;
 
         /// <summary>
         /// This read-only property is used to check whether or not this is a namespace group
         /// </summary>
-        public Boolean IsGroup { get; private set; }
+        public Boolean IsGroup { get; }
 
         /// <summary>
         /// This is used to get or set whether or not the namespace is included in the help file
         /// </summary>
         public bool IsDocumented
         {
-            get { return isDocumented; }
+            get => isDocumented;
             set
             {
                 isDocumented = value;
@@ -77,7 +74,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         public string Summary
         {
-            get { return summary; }
+            get => summary;
             set
             {
                 summary = (value ?? String.Empty).Trim();

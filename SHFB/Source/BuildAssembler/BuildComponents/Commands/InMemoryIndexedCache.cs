@@ -21,9 +21,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Commands
+namespace Sandcastle.Tools.BuildComponents.Commands
 {
     /// <summary>
     /// This contains a collection of XPath navigators indexed by member ID stored in a simple
@@ -48,7 +46,8 @@ namespace Microsoft.Ddue.Tools.Commands
             //=====================================================================
 
             // The index that maps keys to XPath navigators containing the data
-            Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+            private readonly Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+
             #endregion
 
             #region Properties
@@ -59,10 +58,8 @@ namespace Microsoft.Ddue.Tools.Commands
             /// </summary>
             /// <param name="key">The key to look up</param>
             /// <returns>The XPath navigator associated with the key</returns>
-            public XPathNavigator this[string key]
-            {
-                get { return index[key].Clone(); }
-            }
+            public XPathNavigator this[string key] => index[key].Clone();
+
             #endregion
 
             #region Constructor
@@ -86,39 +83,34 @@ namespace Microsoft.Ddue.Tools.Commands
         //=====================================================================
 
         // An index mapping keys to the files that contain them
-        private ConcurrentDictionary<string, string> index = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string> index = new ConcurrentDictionary<string, string>();
 
         // A simple caching mechanism.
         // This cache keeps track of the order that files are loaded in and always unloads the oldest one.
         // This is better, but a document that is often accessed gets no "points" so it will eventually be
         // thrown out even if it is used regularly.
-        private int cacheSize;
-        private ConcurrentQueue<string> queue;
-        private ConcurrentDictionary<string, IndexedDocument> cache;
+        private readonly int cacheSize;
+        private readonly ConcurrentQueue<string> queue;
+        private readonly ConcurrentDictionary<string, IndexedDocument> cache;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <inheritdoc />
-        public override int Count
-        {
-            get { return index.Count; }
-        }
+        public override int Count => index.Count;
 
         /// <inheritdoc />
         public override XPathNavigator this[string key]
         {
             get
             {
-                IndexedDocument document;
-                string file;
-
                 // Look up the file corresponding to the key
-                if(index.TryGetValue(key, out file))
+                if(index.TryGetValue(key, out string file))
                 {
                     // Now look for that file in the cache
-                    if(!cache.TryGetValue(file, out document))
+                    if(!cache.TryGetValue(file, out IndexedDocument document))
                     {
                         // Not in the cache, so load it
                         document = new IndexedDocument(this, file);
@@ -126,11 +118,8 @@ namespace Microsoft.Ddue.Tools.Commands
                         // If the cache is full, remove a document
                         if(cache.Count >= cacheSize)
                         {
-                            IndexedDocument cacheDoc;
-                            string cacheFile;
-
-                            if(queue.TryDequeue(out cacheFile))
-                                cache.TryRemove(cacheFile, out cacheDoc);
+                            if(queue.TryDequeue(out string cacheFile))
+                                cache.TryRemove(cacheFile, out _);
                         }
 
                         // Add the new document to the cache
@@ -159,9 +148,8 @@ namespace Microsoft.Ddue.Tools.Commands
           XPathNavigator configuration) : base(component, context, configuration)
         {
             string cacheValue = configuration.GetAttribute("cache", String.Empty);
-            int size;
 
-            if(String.IsNullOrWhiteSpace(cacheValue) || !Int32.TryParse(cacheValue, out size) || size < 1)
+            if(String.IsNullOrWhiteSpace(cacheValue) || !Int32.TryParse(cacheValue, out int size) || size < 1)
                 size = 15;
 
             this.cacheSize = size;
@@ -178,10 +166,12 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <inheritdoc />
         public override void AddDocuments(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             HashSet<string> namespaceFileFilter = new HashSet<string>();
             string baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath, directoryPart,
                 filePart;
-            bool recurse, reportDuplicateIds;
 
             baseDirectory = configuration.GetAttribute("base", String.Empty);
 
@@ -198,14 +188,14 @@ namespace Microsoft.Ddue.Tools.Commands
 
             recurseValue = configuration.GetAttribute("recurse", String.Empty);
 
-            if(String.IsNullOrWhiteSpace(recurseValue) || !Boolean.TryParse(recurseValue, out recurse))
+            if(String.IsNullOrWhiteSpace(recurseValue) || !Boolean.TryParse(recurseValue, out bool recurse))
                 recurse = false;
 
             // Support suppression of duplicate ID warnings.  This can happen a lot when common classes appear in
             // multiple assemblies.
             dupWarning = configuration.GetAttribute("duplicateWarning", String.Empty);
 
-            if(String.IsNullOrWhiteSpace(dupWarning) || !Boolean.TryParse(dupWarning, out reportDuplicateIds))
+            if(String.IsNullOrWhiteSpace(dupWarning) || !Boolean.TryParse(dupWarning, out bool reportDuplicateIds))
                 reportDuplicateIds = true;
 
             if(String.IsNullOrEmpty(baseDirectory))

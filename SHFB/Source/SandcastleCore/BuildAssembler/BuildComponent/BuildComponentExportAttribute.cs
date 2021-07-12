@@ -2,15 +2,14 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BuildComponentExportAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2014
-// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/23/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a custom version of the ExportAttribute that contains metadata for the BuildAssembler
 // build components.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -37,7 +36,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// This read-only property is used to get the build component ID
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get; }
 
         /// <summary>
         /// This is used to get or set whether or not the component is visible to configuration tools
@@ -45,14 +44,6 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <remarks>Configuration tools can use this to exclude components that should not appear for the user
         /// to select.  It is false by default.</remarks>
         public bool IsVisible { get; set; }
-
-        /// <summary>
-        /// This is used to get or set whether or not the build component is configurable
-        /// </summary>
-        /// <value>If this returns true, the <see cref="BuildComponentFactory.ConfigureComponent"/> method can be
-        /// called to allow the user to configure the build component's settings when requested.  The default is
-        /// false.</value>
-        public bool IsConfigurable { get; set; }
 
         /// <summary>
         /// This is used to get or set a brief description of the build component
@@ -81,7 +72,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         public BuildComponentExportAttribute(string id) : base(typeof(BuildComponentFactory))
         {
             if(String.IsNullOrWhiteSpace(id))
-                throw new ArgumentException("An ID value is required", "id");
+                throw new ArgumentException("An ID value is required", nameof(id));
 
             this.Id = id;
         }

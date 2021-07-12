@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Microsoft.Ddue.Tools.Snippets
+namespace Sandcastle.Tools.BuildComponents.Snippets
 {
     /// <summary>
     /// This defines a colorization rule
@@ -22,18 +22,18 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <summary>
         /// This read-only property returns the regular expression used by the rule
         /// </summary>
-        public Regex Pattern { get; private set; }
+        public Regex Pattern { get; }
 
         /// <summary>
         /// This read-only property returns the optional region name used to limit the part of the match that
         /// is returned from the matches.
         /// </summary>
-        public string Region { get; private set; }
+        public string Region { get; }
 
         /// <summary>
         /// This read-only property returns the class name to use for the matched region
         /// </summary>
-        public string ClassName { get; private set; }
+        public string ClassName { get; }
 
         #endregion
 

@@ -23,7 +23,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// This read-only property returns a reference to the parent build component
         /// </summary>
-        protected BuildComponentCore ParentBuildComponent { get; private set; }
+        protected BuildComponentCore ParentBuildComponent { get; }
 
         /// <summary>
         /// Constructor

@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicIdCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to cache information about MAML topic IDs and their related files
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -73,7 +72,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
         private static TopicIdCache instance;
 
-        private ConcurrentDictionary<string, TopicInfo> topicInfo;
+        private readonly ConcurrentDictionary<string, TopicInfo> topicInfo;
 
         #endregion
 
@@ -164,9 +163,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         // Add or refresh the title information
                         foreach(var topic in doc.Descendants("Topic"))
                         {
-                            TopicInfo info;
-
-                            if(!topicInfo.TryGetValue(topic.Attribute("id").Value, out info))
+                            if(!topicInfo.TryGetValue(topic.Attribute("id").Value, out TopicInfo info))
                                 info = new TopicInfo
                                 {
                                     TopicId = topic.Attribute("id").Value,
@@ -203,9 +200,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <returns>True if the topic ID was found in the cache, false if not</returns>
         public bool GetTopicInfo(string id, out string title, out string filename, out string relativePath)
         {
-            TopicInfo info;
-
-            if(topicInfo.TryGetValue(id, out info))
+            if(topicInfo.TryGetValue(id, out TopicInfo info))
             {
                 title = info.Title;
                 filename = info.Filename;
@@ -237,8 +232,6 @@ namespace SandcastleBuilder.Package.GoToDefinition
         /// <param name="folders">The folders to search for MAML topic (.aml) files</param>
         private void IndexTopics(IEnumerable<string> folders)
         {
-            TopicInfo info;
-
             foreach(string folder in folders)
                 try
                 {
@@ -252,7 +245,7 @@ namespace SandcastleBuilder.Package.GoToDefinition
 
                             string id = (string)doc.Root.Attribute("id") ?? String.Empty;
 
-                            if(topicInfo.TryGetValue(id, out info))
+                            if(topicInfo.TryGetValue(id, out TopicInfo info))
                             {
                                 info.Filename = file;
                                 info.RelativePath = file.Substring(folder.Length + 1);

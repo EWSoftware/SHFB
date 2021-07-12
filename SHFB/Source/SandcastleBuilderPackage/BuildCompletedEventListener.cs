@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildCompletedEventListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to listen for build started events to flush pending property page changes
 // and for build completed events so that we can open the help file after successful builds if so requested.
@@ -80,9 +79,8 @@ namespace SandcastleBuilder.Package
 
             SandcastleBuilderProjectNode projectNode;
             SandcastleBuilderOptionsPage options;
-            ProjectConfig cfg = configProject as ProjectConfig;
 
-            if(cfg != null)
+            if(configProject is ProjectConfig cfg)
             {
                 if(cancel == 0 && success != 0)
                 {
@@ -95,35 +93,35 @@ namespace SandcastleBuilder.Package
                             SandcastleBuilderPackage.Instance.ViewBuiltHelpFile(projectNode);
                         else
                             if((action & (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_CLEAN) != 0)
+                        {
+                            if(cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0,
+                              false) is BuildLogToolWindow window)
                             {
-                                var window = cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
-                                    BuildLogToolWindow;
-
-                                if(window != null)
-                                    window.ClearLog();
+                                window.ClearLog();
                             }
+                        }
                 }
                 else
                     if(cancel == 0 && success == 0)
-                    {
-                        // Open the build log tool window on a failed build if so requested
-                        projectNode = cfg.ProjectMgr as SandcastleBuilderProjectNode;
-                        options = SandcastleBuilderPackage.Instance.GeneralOptions;
+                {
+                    // Open the build log tool window on a failed build if so requested
+                    projectNode = cfg.ProjectMgr as SandcastleBuilderProjectNode;
+                    options = SandcastleBuilderPackage.Instance.GeneralOptions;
 
-                        if(projectNode != null && options != null)
-                            if((action & (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD) != 0 && options.OpenLogViewerOnFailedBuild)
-                                projectNode.OpenBuildLogToolWindow(true);
-                            else
+                    if(projectNode != null && options != null)
+                        if((action & (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD) != 0 && options.OpenLogViewerOnFailedBuild)
+                            projectNode.OpenBuildLogToolWindow(true);
+                        else
+                        {
+                            // The user doesn't want it opened.  However, if it's already open, refresh the
+                            // log file reference so that it shows the correct file when it is displayed.
+                            if(cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0,
+                              false) is BuildLogToolWindow window && ((IVsWindowFrame)window.Frame).IsVisible() == VSConstants.S_OK)
                             {
-                                // The user doesn't want it opened.  However, if it's already open, refresh the
-                                // log file reference so that it shows the correct file when it is displayed.
-                                var window = cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
-                                    BuildLogToolWindow;
-
-                                if(window != null && ((IVsWindowFrame)window.Frame).IsVisible() == VSConstants.S_OK)
-                                    projectNode.OpenBuildLogToolWindow(false);
+                                projectNode.OpenBuildLogToolWindow(false);
                             }
-                    }
+                        }
+                }
             }
 
             return VSConstants.S_OK;

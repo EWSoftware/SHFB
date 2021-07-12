@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a specialized member with parameters reference
@@ -24,22 +24,23 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the prefix
         /// </summary>
-        public string Prefix { get ; private set; }
+        public string Prefix { get; }
 
         /// <summary>
         /// This read-only property returns the specialized type
         /// </summary>
-        public SpecializedTypeReference SpecializedType { get; private set; }
+        public SpecializedTypeReference SpecializedType { get; }
 
         /// <summary>
         /// This read-only property returns the member name
         /// </summary>
-        public string MemberName { get; private set; }
+        public string MemberName { get; }
 
         /// <summary>
         /// This read-only property returns the parameter types
         /// </summary>
-        public IList<TypeReference> ParameterTypes { get; private set; }
+        public IList<TypeReference> ParameterTypes { get; }
+
         #endregion
 
         #region Constructor
@@ -55,16 +56,10 @@ namespace Microsoft.Ddue.Tools.Targets
         public SpecializedMemberWithParametersReference(string prefix, SpecializedTypeReference specializedType,
           string memberName, IList<TypeReference> parameters)
         {
-            if(specializedType == null)
-                throw new ArgumentNullException("specializedType");
-
-            if(parameters == null)
-                throw new ArgumentNullException("parameters");
-
             this.Prefix = prefix;
-            this.SpecializedType = specializedType;
+            this.SpecializedType = specializedType ?? throw new ArgumentNullException(nameof(specializedType));
             this.MemberName = memberName;
-            this.ParameterTypes = parameters;
+            this.ParameterTypes = parameters ?? throw new ArgumentNullException(nameof(parameters));
         }
         #endregion
     }

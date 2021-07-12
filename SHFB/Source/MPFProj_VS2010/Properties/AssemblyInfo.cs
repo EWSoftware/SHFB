@@ -2,14 +2,13 @@
 // System  : Microsoft Managed Package Framework for Projects (MPFProj)
 // File    : AssemblyInfo.cs
 // Author  : Microsoft Corporation
-// Updated : 01/16/2014
-// Note    : Copyright 2009-2014, Microsoft Corporation, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2009-2021, Microsoft Corporation, All rights reserved
 //
 // Managed Package Framework for Projects assembly attributes.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://MPFProj10.CodePlex.com.  This
+// distributed with the code and can be found at the project website: http://MPFProj10.CodePlex.com.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -27,7 +26,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]
 
 // General assembly information
 [assembly: AssemblyProduct("Microsoft Managed Package Framework for Projects")]

@@ -2,20 +2,19 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NamedStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/12/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the named styles used in the converted flow document
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.4  01/02/2012  EFW  Created the code
+// 01/02/2012  EFW  Created the code
 //===============================================================================================================
 
 namespace SandcastleBuilder.WPF.Maml

@@ -9,6 +9,8 @@
 // from MRefBuilder.
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
 
+// Ignore Spelling: xxx aaa bbb
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,22 +39,18 @@ namespace Sandcastle.Core.BuildAssembler
         public static string GetExceptionMessage(this Exception exception)
         {
             if(exception == null)
-                throw new ArgumentNullException("exception");
+                throw new ArgumentNullException(nameof(exception));
 
             if(exception is AggregateException)
                 exception = exception.InnerException;
 
             string message = exception.Message;
 
-            XmlException xmlE = exception as XmlException;
-
-            if(xmlE != null)
+            if(exception is XmlException xmlE)
                 message = String.Format(CultureInfo.CurrentCulture, "{0} (Line Number: {1}; Line Position: " +
                     "{2}; Source URI: '{3}')", message, xmlE.LineNumber, xmlE.LinePosition, xmlE.SourceUri);
 
-            XsltException xslE = exception as XsltException;
-
-            if(xslE != null)
+            if(exception is XsltException xslE)
                 message = String.Format(CultureInfo.CurrentCulture, "{0} (Line Number: {1}; Line Position: " +
                     "{2}; Source URI: '{3}')", message, xslE.LineNumber, xslE.LinePosition, xslE.SourceUri);
 
@@ -73,14 +71,16 @@ namespace Sandcastle.Core.BuildAssembler
         public static string GetInnerXml(this XPathNavigator node)
         {
             if(node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             // Clone the node so that we don't change the input
             XPathNavigator current = node.Clone();
 
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-            settings.OmitXmlDeclaration = true;
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                OmitXmlDeclaration = true
+            };
 
             StringBuilder builder = new StringBuilder();
 
@@ -106,6 +106,9 @@ namespace Sandcastle.Core.BuildAssembler
         /// <returns>An array with the cloned nodes from the iterator</returns>
         public static XPathNavigator[] ToArray(this XPathNodeIterator iterator)
         {
+            if(iterator == null)
+                throw new ArgumentNullException(nameof(iterator));
+
             XPathNavigator[] result = new XPathNavigator[iterator.Count];
 
             for(int i = 0; i < result.Length; i++)
@@ -131,6 +134,12 @@ namespace Sandcastle.Core.BuildAssembler
         public static string EvalXPathExpr(this IXPathNavigable document, XPathExpression expression,
           CustomContext context)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if(expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
             XPathExpression t = expression.Clone();
             t.SetContext(context);
 
@@ -156,7 +165,7 @@ namespace Sandcastle.Core.BuildAssembler
           params string[] keyValuePairs)
         {
             if(keyValuePairs.Length % 2 != 0)
-                throw new ArgumentException("There must be a value for every key name specified", "keyValuePairs");
+                throw new ArgumentException("There must be a value for every key name specified", nameof(keyValuePairs));
 
             CustomContext cc = new CustomContext();
 
@@ -195,7 +204,7 @@ namespace Sandcastle.Core.BuildAssembler
 
                 // Strip common base path bits
                 while(pathParts.Count > 0 && basePathParts.Count > 0 &&
-                  pathParts[0].Equals(basePathParts[0], StringComparison.CurrentCultureIgnoreCase))
+                  pathParts[0].Equals(basePathParts[0], StringComparison.OrdinalIgnoreCase))
                 {
                     pathParts.RemoveAt(0);
                     basePathParts.RemoveAt(0);
@@ -211,7 +220,7 @@ namespace Sandcastle.Core.BuildAssembler
             return path;
         }
 
-        private static Regex reAllXmlChars = new Regex("[\x09\x0A\x0D\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
+        private static readonly Regex reAllXmlChars = new Regex("[\x09\x0A\x0D\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
 
         /// <summary>
         /// This is used to confirm that the specified text only contains legal XML characters

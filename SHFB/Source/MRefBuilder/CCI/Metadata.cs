@@ -545,7 +545,7 @@ namespace System.Compiler.Metadata
     unsafe internal class MetadataReader : IDisposable
     {
         private MemoryMappedFile memmap;
-        private MemoryCursor/*!*/ cursor;
+        private readonly MemoryCursor/*!*/ cursor;
         internal int entryPointToken;
         internal int fileAlignment;
         internal ModuleKind moduleKind;
@@ -864,16 +864,20 @@ namespace System.Compiler.Metadata
             blobLength = c.ReadCompressedInt();
             return new MemoryCursor(c);
         }
+        
         internal System.Guid GetGuid(int guidIndex)
         //^ requires this.guidHeap != null;
         {
             int guidOffset = guidIndex * 16;
+
             if (guidOffset < 16 || this.guidHeap.size < guidOffset)
-                throw new System.ArgumentOutOfRangeException("guidIndex", ExceptionStrings.BadGuidHeapIndex);
+                throw new ArgumentOutOfRangeException(nameof(guidIndex), ExceptionStrings.BadGuidHeapIndex);
+
             MemoryCursor c = this.cursor;
             c.Position = this.mdOffset + this.guidHeap.offset + guidOffset - 16;
-            return new System.Guid(c.ReadBytes(16));
+            return new Guid(c.ReadBytes(16));
         }
+        
         internal Identifier/*!*/ GetIdentifier(int stringHeapIndex)
         //^ requires this.identifierStringHeap != null;
         {
@@ -881,71 +885,88 @@ namespace System.Compiler.Metadata
             MemoryCursor c = this.cursor;
             return Identifier.For(c.GetBuffer(), position/*, c.KeepAlive*/);
         }
+
         internal byte GetMethodBodyHeaderByte(int RVA)
         {
             MemoryCursor c = this.cursor;
             c.Position = this.RvaToOffset(RVA);
             return c.ReadByte();
         }
+
         internal MemoryCursor/*!*/ GetNewCursor()
         {
             return new MemoryCursor(this.cursor);
         }
+
         internal MemoryCursor/*!*/ GetNewCursor(int RVA, out PESection targetSection)
         {
-            MemoryCursor c = new MemoryCursor(this.cursor);
-            c.Position = this.RvaToOffset(RVA, out targetSection);
+            MemoryCursor c = new MemoryCursor(this.cursor)
+            {
+                Position = this.RvaToOffset(RVA, out targetSection)
+            };
+
             return c;
         }
+
         internal byte GetByte()
         {
             MemoryCursor c = this.cursor;
             return c.ReadByte();
         }
+
         internal int GetCurrentPosition()
         {
             return this.cursor.Position;
         }
+
         internal int GetInt32()
         {
             MemoryCursor c = this.cursor;
             return c.ReadInt32();
         }
+
         internal short GetInt16()
         {
             MemoryCursor c = this.cursor;
             return c.ReadInt16();
         }
+
         internal ushort GetUInt16()
         {
             MemoryCursor c = this.cursor;
             return c.ReadUInt16();
         }
+
         internal int GetSignatureLength(int blobIndex)
         {
             MemoryCursor c = this.cursor;
             c.Position = this.PositionOfBlob(blobIndex);
             return c.ReadCompressedInt();
         }
+
         internal string/*!*/ GetString(int stringHeapIndex)
         //^ requires this.identifierStringHeap != null;
         {
             if (stringHeapIndex < 0 || this.identifierStringHeap.size <= stringHeapIndex)
-                throw new System.ArgumentOutOfRangeException("stringHeapIndex", ExceptionStrings.BadStringHeapIndex);
+                throw new ArgumentOutOfRangeException(nameof(stringHeapIndex), ExceptionStrings.BadStringHeapIndex);
+
             MemoryCursor c = this.cursor;
             c.Position = this.mdOffset + this.identifierStringHeap.offset + stringHeapIndex;
             return c.ReadUTF8();
         }
+
         internal string/*!*/ GetUserString(int stringHeapIndex)
         //^ requires this.generalStringHeap != null;
         {
             if (stringHeapIndex < 0 || this.generalStringHeap.size <= stringHeapIndex)
-                throw new System.ArgumentOutOfRangeException("stringHeapIndex", ExceptionStrings.BadUserStringHeapIndex);
+                throw new System.ArgumentOutOfRangeException(nameof(stringHeapIndex), ExceptionStrings.BadUserStringHeapIndex);
+
             MemoryCursor c = this.cursor;
             c.Position = this.mdOffset + this.generalStringHeap.offset + stringHeapIndex;
             int strLength = c.ReadCompressedInt();
             return c.ReadUTF16(strLength / 2);
         }
+
         internal string/*!*/ GetBlobString(int blobIndex)
         {
             MemoryCursor c = this.cursor;
@@ -953,6 +974,7 @@ namespace System.Compiler.Metadata
             int blobLength = c.ReadCompressedInt();
             return c.ReadUTF16(blobLength / 2);
         }
+
         internal object GetValueFromBlob(int type, int blobIndex)
         {
             MemoryCursor c = this.cursor;
@@ -977,19 +999,23 @@ namespace System.Compiler.Metadata
             }
             throw new InvalidMetadataException(ExceptionStrings.UnknownConstantType);
         }
+
         internal byte[] GetResourceData(int resourceOffset)
         {
             this.cursor.Position = this.resourcesOffset + resourceOffset;
             int length = this.cursor.ReadInt32();
             return this.cursor.ReadBytes(length);
         }
+
         private int PositionOfBlob(int blobIndex)
         //^ requires this.blobHeap != null;
         {
             if (blobIndex < 0 || this.blobHeap.size <= blobIndex)
-                throw new System.ArgumentOutOfRangeException("blobIndex", ExceptionStrings.BadBlobHeapIndex);
+                throw new ArgumentOutOfRangeException(nameof(blobIndex), ExceptionStrings.BadBlobHeapIndex);
+
             return this.mdOffset + this.blobHeap.offset + blobIndex;
         }
+
         private void ReadHeader()
         { //TODO: break up this method
             MemoryCursor c = this.cursor;
@@ -1065,7 +1091,7 @@ namespace System.Compiler.Metadata
 
             foreach (StreamHeader sheader in mdHeader.streamHeaders)
             {
-                //^ assume sheader != null;
+                ////^ assume sheader != null;
                 switch (sheader.name)
                 {
                     case "#Strings": this.identifierStringHeap = sheader; continue;
@@ -1104,7 +1130,9 @@ namespace System.Compiler.Metadata
               tableSize[(int)TableIndices.Param] < 0x4000 &&
               tableSize[(int)TableIndices.Field] < 0x4000 &&
               tableSize[(int)TableIndices.Property] < 0x4000 ? 2 : 4;
-            int customAttributeParentRefSize = 0;
+
+            int customAttributeParentRefSize;
+
             if (this.metadataFormatMajorVersion > 1 || this.metadataFormatMinorVersion > 0)
             {
                 customAttributeParentRefSize = this.customAttributeParentRefSize =
@@ -1152,6 +1180,7 @@ namespace System.Compiler.Metadata
                   tableSize[(int)TableIndices.ExportedType] < 0x0800 &&
                   tableSize[(int)TableIndices.ManifestResource] < 0x0800 ? 2 : 4;
             }
+
             int customAttributeConstructorRefSize = this.customAttributeConstructorRefSize =
               tableSize[(int)TableIndices.Method] < 0x2000 &&
               tableSize[(int)TableIndices.MemberRef] < 0x2000 ? 2 : 4;
@@ -1275,37 +1304,53 @@ namespace System.Compiler.Metadata
                 int TypeID = c.ReadInt32();
                 if (TypeID < 0)
                 {
-                    MemoryCursor nac = new MemoryCursor(c);
-                    nac.Position = startPos + (TypeID & 0x7FFFFFFF);
+                    MemoryCursor nac = new MemoryCursor(c)
+                    {
+                        Position = startPos + (TypeID & 0x7FFFFFFF)
+                    };
+
                     int strLength = nac.ReadUInt16();
                     TypeName = nac.ReadUTF16(strLength);
                 }
+                
                 int offset = c.ReadInt32();
+
                 if (offset >= 0)
                     rs.Add(this.ReadWin32ResourceDataEntry(c, startPos + offset, TypeName, TypeID, null, 0, 0));
                 else
                 {
-                    MemoryCursor nc = new MemoryCursor(c);
-                    nc.Position = startPos + (offset & 0x7FFFFFFF);
+                    MemoryCursor nc = new MemoryCursor(c)
+                    {
+                        Position = startPos + (offset & 0x7FFFFFFF)
+                    };
+
                     int sizeOfNameDirectory = ReadWin32ResourceDirectoryHeader(nc);
+
                     for (int j = 0; j < sizeOfNameDirectory; j++)
                     {
                         string Name = null;
                         int ID = nc.ReadInt32();
+
                         if (ID < 0)
                         {
                             MemoryCursor nac = new MemoryCursor(c);
                             int strLength = nac.ReadUInt16();
                             Name = nac.ReadUTF16(strLength);
                         }
+                        
                         offset = nc.ReadInt32();
+                        
                         if (offset >= 0)
                             rs.Add(this.ReadWin32ResourceDataEntry(c, startPos + offset, TypeName, TypeID, Name, ID, 0));
                         else
                         {
-                            MemoryCursor lc = new MemoryCursor(c);
-                            lc.Position = startPos + (offset & 0x7FFFFFFF);
+                            MemoryCursor lc = new MemoryCursor(c)
+                            {
+                                Position = startPos + (offset & 0x7FFFFFFF)
+                            };
+
                             int sizeOfLanguageDirectory = ReadWin32ResourceDirectoryHeader(lc);
+                            
                             for (int k = 0; k < sizeOfLanguageDirectory; k++)
                             {
                                 int LanguageID = lc.ReadInt32();
@@ -1318,26 +1363,36 @@ namespace System.Compiler.Metadata
             }
             return rs;
         }
+        
         private static int ReadWin32ResourceDirectoryHeader(MemoryCursor/*!*/ c)
         {
             c.ReadInt32(); //Characteristics
             c.ReadInt32(); //TimeDate stamp
             c.ReadInt32(); //Version
+
             int numberOfNamedEntries = c.ReadUInt16();
             int numberOfIdEntries = c.ReadUInt16();
+            
             return numberOfNamedEntries + numberOfIdEntries;
         }
+        
         private Win32Resource ReadWin32ResourceDataEntry(MemoryCursor/*!*/ c, int position,
           string TypeName, int TypeID, string Name, int ID, int LanguageID)
         {
-            Win32Resource rsrc = new Win32Resource();
-            rsrc.TypeName = TypeName;
-            rsrc.TypeId = TypeID;
-            rsrc.Name = Name;
-            rsrc.Id = ID;
-            rsrc.LanguageId = LanguageID;
-            c = new MemoryCursor(c);
-            c.Position = position;
+            Win32Resource rsrc = new Win32Resource
+            {
+                TypeName = TypeName,
+                TypeId = TypeID,
+                Name = Name,
+                Id = ID,
+                LanguageId = LanguageID
+            };
+
+            c = new MemoryCursor(c)
+            {
+                Position = position
+            };
+
             int dataRVA = c.ReadInt32();
             int dataSize = c.ReadInt32();
             rsrc.CodePage = c.ReadInt32();
@@ -1345,6 +1400,7 @@ namespace System.Compiler.Metadata
             rsrc.Data = c.ReadBytes(dataSize);
             return rsrc;
         }
+        
         private void ReadAssemblyTable()
         //^ requires this.tableSize != null;
         //^ requires this.tableOffset != null;
@@ -1369,6 +1425,7 @@ namespace System.Compiler.Metadata
                 result[i] = row;
             }
         }
+        
         private void ReadAssemblyRefTable()
         //^ requires this.tableSize != null;
         //^ requires this.tableOffset != null;
@@ -2107,6 +2164,7 @@ namespace System.Compiler.Metadata
                     return false;
             return true;
         }
+        
         private int RvaToOffset(int virtualAddress)
         {
             foreach (SectionHeader section in this.sectionHeaders)
@@ -2115,6 +2173,7 @@ namespace System.Compiler.Metadata
             throw new InvalidMetadataException(String.Format(CultureInfo.CurrentCulture,
               ExceptionStrings.UnknownVirtualAddress, virtualAddress));
         }
+        
         private int RvaToOffset(int virtualAddress, out PESection targetSection)
         {
             foreach (SectionHeader section in this.sectionHeaders)
@@ -2128,10 +2187,16 @@ namespace System.Compiler.Metadata
             throw new InvalidMetadataException(String.Format(
               CultureInfo.CurrentCulture, ExceptionStrings.UnknownVirtualAddress, +virtualAddress));
         }
+        
         private static CLIHeader/*!*/ ReadCLIHeader(MemoryCursor/*!*/ c)
         {
-            CLIHeader header = new CLIHeader();
-            header.cb = c.Int32(0); c.SkipInt32(1);
+            CLIHeader header = new CLIHeader
+            {
+                cb = c.Int32(0)
+            };
+
+            c.SkipInt32(1);
+            
             header.majorRuntimeVersion = c.UInt16(0);
             header.minorRuntimeVersion = c.UInt16(1); c.SkipUInt16(2);
             header.metaData = ReadDirectoryEntry(c);
@@ -2142,64 +2207,95 @@ namespace System.Compiler.Metadata
             header.codeManagerTable = ReadDirectoryEntry(c);
             header.vtableFixups = ReadDirectoryEntry(c);
             header.exportAddressTableJumps = ReadDirectoryEntry(c);
+            
             if (header.majorRuntimeVersion < 2)
                 throw new InvalidMetadataException(ExceptionStrings.BadCLIHeader);
+            
             return header;
         }
+        
         private static DirectoryEntry ReadDirectoryEntry(MemoryCursor/*!*/ c)
         {
-            DirectoryEntry entry = new DirectoryEntry();
-            entry.virtualAddress = c.Int32(0);
-            entry.size = c.Int32(1); c.SkipInt32(2);
+            DirectoryEntry entry = new DirectoryEntry
+            {
+                virtualAddress = c.Int32(0),
+                size = c.Int32(1)
+            };
+
+            c.SkipInt32(2);
+            
             return entry;
         }
+        
         internal static void ReadDOSHeader(MemoryCursor/*!*/ c)
         {
             c.Position = 0;
             int magicNumber = c.UInt16(0);
-            if (magicNumber != 0x5a4d) throw new InvalidMetadataException(ExceptionStrings.BadMagicNumber);
+
+            if (magicNumber != 0x5a4d)
+                throw new InvalidMetadataException(ExceptionStrings.BadMagicNumber);
+            
             c.Position = 0x3c;
+            
             int ntHeaderOffset = c.Int32(0);
             c.Position = ntHeaderOffset;
         }
+        
         private static MetadataHeader/*!*/ ReadMetadataHeader(MemoryCursor/*!*/ c)
         {
-            MetadataHeader header = new MetadataHeader();
-            header.signature = c.ReadInt32();
+            MetadataHeader header = new MetadataHeader
+            {
+                signature = c.ReadInt32()
+            };
+
             if (header.signature != 0x424a5342)
                 throw new InvalidMetadataException(ExceptionStrings.BadMetadataHeaderSignature);
+            
             header.majorVersion = c.ReadUInt16();
             header.minorVersion = c.ReadUInt16();
             header.reserved = c.ReadInt32();
+            
             int len = c.ReadInt32();
+            
             header.versionString = c.ReadASCII(len);
-            while (len++ % 4 != 0) c.ReadByte();
+            
+            while (len++ % 4 != 0)
+                c.ReadByte();
+            
             header.flags = c.ReadUInt16();
+            
             int n = c.ReadUInt16();
+            
             StreamHeader[] streamHeaders = header.streamHeaders = new StreamHeader[n];
+            
             for (int i = 0; i < n; i++)
                 streamHeaders[i] = ReadStreamHeader(c);
+            
             return header;
         }
+        
         internal static NTHeader/*!*/ ReadNTHeader(MemoryCursor/*!*/ c)
         {
-            NTHeader header = new NTHeader();
-            header.signature = c.ReadInt32();
-            header.machine = c.ReadUInt16();
-            header.numberOfSections = c.ReadUInt16();
-            header.timeDateStamp = c.ReadInt32();
-            header.pointerToSymbolTable = c.ReadInt32();
-            header.numberOfSymbols = c.ReadInt32();
-            header.sizeOfOptionalHeader = c.ReadUInt16();
-            header.characteristics = c.ReadUInt16();
-            header.magic = c.ReadUInt16();
-            header.majorLinkerVersion = c.ReadByte();
-            header.minorLinkerVersion = c.ReadByte();
-            header.sizeOfCode = c.ReadInt32();
-            header.sizeOfInitializedData = c.ReadInt32();
-            header.sizeOfUninitializedData = c.ReadInt32();
-            header.addressOfEntryPoint = c.ReadInt32();
-            header.baseOfCode = c.ReadInt32();
+            NTHeader header = new NTHeader
+            {
+                signature = c.ReadInt32(),
+                machine = c.ReadUInt16(),
+                numberOfSections = c.ReadUInt16(),
+                timeDateStamp = c.ReadInt32(),
+                pointerToSymbolTable = c.ReadInt32(),
+                numberOfSymbols = c.ReadInt32(),
+                sizeOfOptionalHeader = c.ReadUInt16(),
+                characteristics = c.ReadUInt16(),
+                magic = c.ReadUInt16(),
+                majorLinkerVersion = c.ReadByte(),
+                minorLinkerVersion = c.ReadByte(),
+                sizeOfCode = c.ReadInt32(),
+                sizeOfInitializedData = c.ReadInt32(),
+                sizeOfUninitializedData = c.ReadInt32(),
+                addressOfEntryPoint = c.ReadInt32(),
+                baseOfCode = c.ReadInt32()
+            };
+
             if (header.magic == 0x10B)
             {
                 header.baseOfData = c.ReadInt32();
@@ -2210,6 +2306,7 @@ namespace System.Compiler.Metadata
                 header.baseOfData = 0;
                 header.imageBase = c.ReadInt64();
             }
+
             header.sectionAlignment = c.ReadInt32();
             header.fileAlignment = c.ReadInt32();
             header.majorOperatingSystemVersion = c.ReadUInt16();
@@ -2224,6 +2321,7 @@ namespace System.Compiler.Metadata
             header.checkSum = c.ReadInt32();
             header.subsystem = c.ReadUInt16();
             header.dllCharacteristics = c.ReadUInt16();
+
             if (header.magic == 0x10B)
             {
                 header.sizeOfStackReserve = c.ReadInt32();
@@ -2238,12 +2336,14 @@ namespace System.Compiler.Metadata
                 header.sizeOfHeapReserve = c.ReadInt64();
                 header.sizeOfHeapCommit = c.ReadInt64();
             }
+            
             header.loaderFlags = c.ReadInt32();
             header.numberOfDataDirectories = c.ReadInt32();
 
             // Verify that the header signature and magic number are valid
             if (header.signature != 0x00004550 /* "PE\0\0" */)
                 throw new InvalidMetadataException(ExceptionStrings.BadCOFFHeaderSignature);
+            
             if (header.magic != 0x010B && header.magic != 0x020B)
                 throw new InvalidMetadataException(ExceptionStrings.BadPEHeaderMagicNumber);
 
@@ -2267,51 +2367,72 @@ namespace System.Compiler.Metadata
 
             return header;
         }
+
         internal static SectionHeader ReadSectionHeader(MemoryCursor/*!*/ c)
         {
-            SectionHeader header = new SectionHeader();
-            header.name = c.ReadASCII(8);
-            header.virtualSize = c.Int32(0);
-            header.virtualAddress = c.Int32(1);
-            header.sizeOfRawData = c.Int32(2);
-            header.pointerToRawData = c.Int32(3);
-            header.pointerToRelocations = c.Int32(4);
-            header.pointerToLinenumbers = c.Int32(5); c.SkipInt32(6);
+            SectionHeader header = new SectionHeader
+            {
+                name = c.ReadASCII(8),
+                virtualSize = c.Int32(0),
+                virtualAddress = c.Int32(1),
+                sizeOfRawData = c.Int32(2),
+                pointerToRawData = c.Int32(3),
+                pointerToRelocations = c.Int32(4),
+                pointerToLinenumbers = c.Int32(5)
+            };
+
+            c.SkipInt32(6);
+            
             header.numberOfRelocations = c.UInt16(0);
             header.numberOfLinenumbers = c.UInt16(1); c.SkipInt16(2);
             header.characteristics = c.Int32(0); c.SkipInt32(1);
+            
             return header;
         }
+        
         private static StreamHeader ReadStreamHeader(MemoryCursor/*!*/ c)
         {
-            StreamHeader header = new StreamHeader();
-            header.offset = c.ReadInt32();
-            header.size = c.ReadInt32();
-            header.name = c.ReadASCII();
+            StreamHeader header = new StreamHeader
+            {
+                offset = c.ReadInt32(),
+                size = c.ReadInt32(),
+                name = c.ReadASCII()
+            };
+
             int n = header.name.Length + 1;
+            
             c.Position += (4 - (n % 4)) % 4;
+            
             return header;
         }
+        
         private static TablesHeader/*!*/ ReadTablesHeader(MemoryCursor/*!*/ c)
         {
-            TablesHeader header = new TablesHeader();
-            header.reserved = c.ReadInt32(); // Must be zero
-            header.majorVersion = c.ReadByte();  // Must be one
-            header.minorVersion = c.ReadByte();  // Must be zero
-            header.heapSizes = c.ReadByte();  // Bits for heap sizes
-            header.rowId = c.ReadByte();  // log-base-2 of largest rowId
-            header.maskValid = c.ReadInt64(); // Present table counts
-            header.maskSorted = c.ReadInt64(); // Sorted tables
+            TablesHeader header = new TablesHeader
+            {
+                reserved = c.ReadInt32(), // Must be zero
+                majorVersion = c.ReadByte(),  // Must be one
+                minorVersion = c.ReadByte(),  // Must be zero
+                heapSizes = c.ReadByte(),  // Bits for heap sizes
+                rowId = c.ReadByte(),  // log-base-2 of largest rowId
+                maskValid = c.ReadInt64(), // Present table counts
+                maskSorted = c.ReadInt64() // Sorted tables
+            };
+
             int n = 0;
             ulong mask = (ulong)header.maskValid;
+            
             while (mask != 0)
             {
                 if (mask % 2 == 1) n++;
                 mask /= 2;
             }
+            
             int[] countArray = header.countArray = new int[n];
+            
             for (int i = 0; i < n; i++)
                 countArray[i] = c.ReadInt32();
+            
             return header;
         }
     }

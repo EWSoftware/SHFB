@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/27/2017
-// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/17/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
 //
@@ -19,7 +18,6 @@
 //===============================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -36,10 +34,7 @@ namespace Sandcastle.PresentationStyles
     public sealed class VisualStudio2013 : PresentationStyleSettings
     {
         /// <inheritdoc />
-        public override string Location
-        {
-            get { return ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()); }
-        }
+        public override string Location => ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly());
 
         /// <summary>
         /// Constructor
@@ -58,15 +53,8 @@ namespace Sandcastle.PresentationStyles
             this.ResourceItemsPath = "Content";
             this.ToolResourceItemsPath = "SHFBContent";
 
-            this.DocumentModelTransformation = new TransformationFile(
-                @"%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", new Dictionary<string, string>
-                {
-                    { "IncludeAllMembersTopic", "false" },
-                    { "project", "{@ProjectNodeIDOptional}" }
-                });
-
-            this.IntermediateTocTransformation = new TransformationFile(
-                @"%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl");
+            this.DocumentModelApplicator = new StandardDocumentModel();
+            this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
 
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 

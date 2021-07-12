@@ -8,9 +8,8 @@
 // 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
-using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents an indexed template type reference
@@ -24,12 +23,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the template ID
         /// </summary>
-        public string TemplateId { get; private set; }
+        public string TemplateId { get; }
 
         /// <summary>
         /// This read-only property returns the index
         /// </summary>
-        public int Index { get; private set; }
+        public int Index { get; }
 
         #endregion
 
@@ -43,13 +42,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="index">The index</param>
         public IndexedTemplateTypeReference(string templateId, int index)
         {
-            if(templateId == null)
-                throw new ArgumentNullException("templateId");
-
             if(index < 0)
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
 
-            this.TemplateId = templateId;
+            this.TemplateId = templateId ?? throw new ArgumentNullException(nameof(templateId));
             this.Index = index;
         }
         #endregion
@@ -73,9 +69,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>True if equal, false if not</returns>
         public override bool Equals(object obj)
         {
-            IndexedTemplateTypeReference other = obj as IndexedTemplateTypeReference;
-
-            return (other != null && this.Index == other.Index && this.TemplateId == other.TemplateId);
+            return obj is IndexedTemplateTypeReference other && this.Index == other.Index &&
+                this.TemplateId == other.TemplateId;
         }
         #endregion
     }

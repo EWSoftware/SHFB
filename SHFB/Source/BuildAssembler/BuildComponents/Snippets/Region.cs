@@ -6,37 +6,26 @@
 // Change History
 // 03/09/2013 - EFW - Moved the class into the Snippets namespace and made it public
 
-namespace Microsoft.Ddue.Tools.Snippets
+namespace Sandcastle.Tools.BuildComponents.Snippets
 {
     /// <summary>
     /// This defines a region of colorized code
     /// </summary>
     public struct Region
     {
-        #region Private data members
-        //=====================================================================
-
-        private string className, text;
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
         /// This read-only property returns the class name used to colorize the text
         /// </summary>
-        public string ClassName
-        {
-            get { return className; }
-        }
+        public string ClassName { get; }
 
         /// <summary>
         /// This read-only property returns the text in the region
         /// </summary>
-        public string Text
-        {
-            get { return text; }
-        }
+        public string Text { get; }
+
         #endregion
 
         #region Constructors
@@ -58,8 +47,8 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <param name="text">The text in the region</param>
         public Region(string className, string text)
         {
-            this.className = className;
-            this.text = text;
+            this.ClassName = className;
+            this.Text = text;
         }
         #endregion
     }

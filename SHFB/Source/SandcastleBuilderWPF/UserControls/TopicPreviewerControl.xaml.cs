@@ -2,16 +2,15 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/22/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to preview MAML topic files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB
-// This notice, the author's name, and all copyright notices must remain intact in all applications,
-// documentation, and source files.
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 //    Date     Who  Comments
 // ==============================================================================================================
@@ -38,6 +37,8 @@ using ColorizerLibrary;
 
 using Sandcastle.Core;
 
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -56,12 +57,13 @@ namespace SandcastleBuilder.WPF.UserControls
 
         private SandcastleProject currentProject;
         private TocEntryCollection tableOfContents;
-        private MamlToFlowDocumentConverter converter;
-        private List<Uri> browserHistory;
+        private readonly MamlToFlowDocumentConverter converter;
+        private readonly List<Uri> browserHistory;
         private int historyLocation;
         private bool isNavigating;
 
-        private static Regex reRemoveLineNumbers = new Regex(@"^\s*\d+\| ", RegexOptions.Multiline);
+        private static readonly Regex reRemoveLineNumbers = new Regex(@"^\s*\d+\| ", RegexOptions.Multiline);
+
         #endregion
 
         #region Properties
@@ -72,7 +74,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public SandcastleProject CurrentProject
         {
-            get { return currentProject; }
+            get => currentProject;
             set
             {
                 currentProject = value;
@@ -87,10 +89,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This read-only property returns the currently selected topic
         /// </summary>
-        public TocEntry CurrentTopic
-        {
-            get { return tvContent.SelectedItem as TocEntry; }
-        }
+        public TocEntry CurrentTopic => tvContent.SelectedItem as TocEntry;
+
         #endregion
 
         #region Routed events
@@ -142,8 +142,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(MamlToFlowDocumentConverter.CodeColorizer == null)
                 try
                 {
-                    string colorizerPath = Path.Combine(ComponentUtilities.ToolsFolder,
-                        @"PresentationStyles\Colorizer");
+                    string colorizerPath = Path.Combine(ComponentUtilities.CoreComponentsFolder, "Colorizer");
 
                     MamlToFlowDocumentConverter.CodeColorizer = new CodeColorizer(Path.Combine(colorizerPath,
                       "highlight.xml"), Path.Combine(colorizerPath, "highlight_flowDoc.xsl"))
@@ -221,8 +220,6 @@ namespace SandcastleBuilder.WPF.UserControls
         private void LoadTableOfContentsInfo()
         {
             List<ITableOfContents> tocFiles;
-            TopicCollection contentLayout;
-            TokenCollection tokens;
 
             tvContent.ItemsSource = null;
             tableOfContents = null;
@@ -241,7 +238,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
-            base.RaiseEvent(args);
+            this.RaiseEvent(args);
 
             lblCurrentProject.Text = currentProject.Filename;
             browserHistory.Clear();
@@ -273,7 +270,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 foreach(var file in currentProject.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.TokenFiles.TryGetValue(file.FullPath, out tokens))
+                    if(!args.TokenFiles.TryGetValue(file.FullPath, out TokenCollection tokens))
                     {
                         tokens = new TokenCollection(file.FullPath);
                         tokens.Load();
@@ -303,7 +300,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 foreach(var contentFile in currentProject.ContentFiles(BuildAction.ContentLayout))
                 {
                     // If open in an editor, use the edited values
-                    if(!args.ContentLayoutFiles.TryGetValue(contentFile.FullPath, out contentLayout))
+                    if(!args.ContentLayoutFiles.TryGetValue(contentFile.FullPath, out TopicCollection contentLayout))
                     {
                         contentLayout = new TopicCollection(contentFile);
                         contentLayout.Load();
@@ -359,14 +356,13 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         private void SetImportedCodeBasePath()
         {
-            BuildComponentConfiguration compConfig = null;
             string cfgPath, basePath = Path.GetDirectoryName(Path.GetFullPath(currentProject.Filename));
 
             try
             {
                 // If there is a code block component configuration, get the base path from it
-                if(currentProject.ComponentConfigurations.TryGetValue("Code Block Component", out compConfig) &&
-                  compConfig.Enabled)
+                if(currentProject.ComponentConfigurations.TryGetValue("Code Block Component",
+                  out BuildComponentConfiguration compConfig) && compConfig.Enabled)
                 {
                     var cfg = XElement.Parse(compConfig.Configuration);
                     var basePathCfg = cfg.Descendants("basePath").FirstOrDefault();
@@ -377,7 +373,7 @@ namespace SandcastleBuilder.WPF.UserControls
                             FolderPath.TerminatePath(basePath));
 
                         if(Directory.Exists(cfgPath))
-                            basePath = cfgPath; 
+                            basePath = cfgPath;
                     }
                 }
             }
@@ -517,17 +513,11 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 fe = fe.Parent as FrameworkElement;
 
-                var b = fe.Parent as BlockUIContainer;
-
-                if(b != null)
+                if(fe.Parent is BlockUIContainer b)
                 {
-                    var sec = b.NextBlock as Section;
-
-                    if(sec != null)
+                    if(b.NextBlock is Section sec)
                     {
-                        var para = sec.Blocks.FirstBlock as Paragraph;
-
-                        if(para != null)
+                        if(sec.Blocks.FirstBlock is Paragraph para)
                         {
                             TextRange r = new TextRange(para.ContentStart, para.ContentEnd);
 
@@ -568,9 +558,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem item = sender as TreeViewItem;
-
-            if(item != null)
+            if(sender is TreeViewItem item)
             {
                 item.IsSelected = true;
                 item.Focus();
@@ -585,12 +573,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_TreeViewItemMouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            TreeViewItem item = sender as TreeViewItem;
-
             // Only execute this if it's the selected node.  An odd side-effect of how we have to hook up
             // the event handler is that it fires for the selected item and all of its parents up to the
             // root of the tree even if the event is marked as handled.
-            if(item != null && item.IsSelected)
+            if(sender is TreeViewItem item && item.IsSelected)
                 EditorCommands.Edit.Execute(null, item);
         }
 
@@ -613,7 +599,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     var args = new TopicContentNeededEventArgs(TopicContentNeededEvent, this, t.SourceFile);
 
                     if(!String.IsNullOrEmpty(t.SourceFile))
-                        base.RaiseEvent(args);
+                        this.RaiseEvent(args);
 
                     txtTitle.Text = t.PreviewerTitle;
                     fdViewer.Document = converter.ToFlowDocument(t.SourceFile, args.TopicContent);
@@ -670,11 +656,9 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void fdViewer_LinkClicked(object sender, RoutedEventArgs e)
         {
-            Hyperlink link = e.OriginalSource as Hyperlink;
-            Uri absoluteUri;
             string path;
 
-            if(link == null)
+            if(!(e.OriginalSource is Hyperlink link))
                 return;
 
             // Convert relative URIs to absolute URIs
@@ -686,8 +670,10 @@ namespace SandcastleBuilder.WPF.UserControls
                     path = path.Substring(1);
 
                 if(!Uri.TryCreate(Path.Combine(Path.GetDirectoryName(currentProject.Filename), path),
-                  UriKind.RelativeOrAbsolute, out absoluteUri))
+                  UriKind.RelativeOrAbsolute, out Uri absoluteUri))
+                {
                     absoluteUri = new Uri("link://INVALID_LINK_URI");
+                }
 
                 link.NavigateUri = absoluteUri;
             }
@@ -695,7 +681,7 @@ namespace SandcastleBuilder.WPF.UserControls
             // If not a known ID, tell the user
             if(link.NavigateUri.Scheme.Equals("none", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show("Unknown link target: " + link.NavigateUri.Host, "Topic Previewer",
+                MessageBox.Show("Unknown link target: " + link.NavigateUri.Host, Constants.AppName,
                     MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
@@ -720,17 +706,15 @@ namespace SandcastleBuilder.WPF.UserControls
                         fdViewer.Focus();
                     }
                     else
-                        MessageBox.Show("Unknown link target: " + link.NavigateUri.Host +
-                            link.NavigateUri.Fragment, "Topic Previewer", MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation);
+                        MessageBox.Show("Unknown link target: " + link.NavigateUri.Host + link.NavigateUri.Fragment,
+                            Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
                 catch(Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex);
 
-                    MessageBox.Show("Unknown link target: " + link.NavigateUri.Host +
-                        link.NavigateUri.Fragment, "Topic Previewer", MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation);
+                    MessageBox.Show("Unknown link target: " + link.NavigateUri.Host + link.NavigateUri.Fragment,
+                        Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
                 finally
                 {
@@ -749,7 +733,7 @@ namespace SandcastleBuilder.WPF.UserControls
             catch(Exception ex)
             {
                 MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "Unable to launch URL: {0}\r\n\r\n" +
-                    "Reason: {1}", link.NavigateUri.Host, ex.Message), "Topic Previewer", MessageBoxButton.OK,
+                    "Reason: {1}", link.NavigateUri.Host, ex.Message), Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Exclamation);
             }
         }
@@ -875,7 +859,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdHelp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("d3c7584d-73c0-4725-87f8-51e4ad956694");
+            UiUtility.ShowHelpTopic("d3c7584d-73c0-4725-87f8-51e4ad956694");
         }
 
         /// <summary>

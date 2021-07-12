@@ -33,7 +33,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.sbStatusBarText = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.tvProjectFiles = new System.Windows.Forms.TreeView();
             this.ilImages = new System.Windows.Forms.ImageList(this.components);
-            this.pgProps = new SandcastleBuilder.Utils.Controls.CustomPropertyGrid();
+            this.pgProps = new SandcastleBuilder.Gui.Controls.CustomPropertyGrid();
             this.miAddDocSource = new System.Windows.Forms.ToolStripMenuItem();
             this.miRemoveDocSource = new System.Windows.Forms.ToolStripMenuItem();
             this.miAddReference = new System.Windows.Forms.ToolStripMenuItem();
@@ -452,7 +452,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private SandcastleBuilder.Utils.Controls.StatusBarTextProvider sbStatusBarText;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView tvProjectFiles;
-        private SandcastleBuilder.Utils.Controls.CustomPropertyGrid pgProps;
+        private SandcastleBuilder.Gui.Controls.CustomPropertyGrid pgProps;
         private System.Windows.Forms.ContextMenuStrip cmsDocSource;
         private System.Windows.Forms.ToolStripMenuItem miAddDocSource;
         private System.Windows.Forms.ToolStripMenuItem miRemoveDocSource;

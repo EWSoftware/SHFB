@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HtmlEncodingCommandTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2012-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a command target class that is used to handle the HTML encoding command
 //
@@ -37,7 +36,8 @@ namespace SandcastleBuilder.Package.Editors
         #region Private data members
         //=====================================================================
 
-        private IWpfTextView textView;
+        private readonly IWpfTextView textView;
+
         #endregion
 
         #region Properties

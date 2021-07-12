@@ -1,0 +1,111 @@
+﻿<Window x:Class="SandcastleBuilder.PlugIns.UI.CompletionNotificationConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
+	mc:Ignorable="d" Width="700" SizeToContent="Height" ResizeMode="NoResize" ShowInTaskbar="False"
+	Title="Configure Completion Notification Plug-In"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=txtSmtpServer}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="3*"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Content="_SMTP Server" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtSmtpServer}" />
+			<Grid Grid.Column="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="4*"/>
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<TextBox Grid.Column="0" Name="txtSmtpServer" Margin="3" />
+				<Label Grid.Column="1" Content="_Port" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=udcPort}" />
+				<xctk:IntegerUpDown Grid.Column="2" Name="udcPort" Margin="3" MinWidth="45" Minimum="1"
+          Maximum="99999" Increment="1" DefaultValue="25" ClipValueToMinMax="True"
+					DisplayDefaultValueOnEmptyText="True" HorizontalAlignment="Left" />
+			</Grid>
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<CheckBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="chkUseDefaultCredentials" Margin="3"
+					Content="Use _Default Credentials" Checked="chkUseDefaultCredentials_CheckedChanged"
+					Unchecked="chkUseDefaultCredentials_CheckedChanged"/>
+			<Label Grid.Row="1" Grid.Column="0" Content="_User Name" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtUserName}" />
+			<TextBox Grid.Row="1" Grid.Column="1" Name="txtUserName" Margin="3" />
+			<Label Grid.Row="1" Grid.Column="2" Content="Pass_word" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtPassword}" />
+			<TextBox Grid.Row="1" Grid.Column="3" Name="txtPassword" Margin="3" />
+		</Grid>
+		<Grid Grid.Row="2">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="3*"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" Content="_From E-Mail Address" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtFromEMail}" />
+			<TextBox Grid.Row="0" Grid.Column="1" Name="txtFromEMail" Margin="3" />
+			<Label Grid.Row="1" Grid.Column="0" Content="Success _E-Mail Address" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtSuccessEMail}" />
+			<TextBox Grid.Row="1" Grid.Column="1" Name="txtSuccessEMail" Margin="3" />
+			<Label Grid.Row="2" Grid.Column="0" Content="Failure E-Mail _Address" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtFailureEMail}" />
+			<TextBox Grid.Row="2" Grid.Column="1" Name="txtFailureEMail" Margin="3" />
+			<CheckBox Grid.Row="3" Grid.Column="1" Name="chkAttachLogFileOnSuccess" Margin="3"
+					Content="Attach _build log on successful build" />
+			<CheckBox Grid.Row="4" Grid.Column="1" Name="chkAttachLogFileOnFailure" Margin="3"
+					Content="A_ttach build log on failed build" IsChecked="True" />
+			<Label Grid.Row="5" Grid.Column="0" Content="_Optional XSL Transform" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtXSLTransform}" />
+			<TextBox Grid.Row="5" Grid.Column="1" Name="txtXSLTransform" Margin="3"
+				Text="{}{@SHFBRoot}Templates\TransformBuildLog.xsl" />
+		</Grid>
+		<Grid Grid.Row="3" Margin="3,10,3,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+				HorizontalAlignment="Left" ToolTip="Save settings"/>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+			</TextBlock>
+			<Button Grid.Column="2" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+				Click="btnHelp_Click"  ToolTip="View help for this component" />
+			<Button Grid.Column="3" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel"
+        HorizontalAlignment="Right" IsCancel="True" ToolTip="Cancel without saving changes" />
+		</Grid>
+	</Grid>
+</Window>

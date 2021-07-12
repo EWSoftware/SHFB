@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionDataManager", "ReflectionDataManager.csproj", "{1EC585CC-A7BA-4743-A54A-D1457546D03A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionDataManager", "ReflectionDataManager.csproj", "{1EC585CC-A7BA-4743-A54A-D1457546D03A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleCore", "..\SandcastleCore\SandcastleCore.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A44F7B8E-A3F4-4C41-8372-8714B471DAE9}"
-	ProjectSection(SolutionItems) = preProject
-		NuGet.config = NuGet.config
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,5 +26,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BB2DD7F-FBE2-4F9D-90F6-F59DBDA331FA}
 	EndGlobalSection
 EndGlobal

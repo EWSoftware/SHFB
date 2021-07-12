@@ -2,7 +2,7 @@
 // System  : Sandcastle Build Components
 // File    : JavaScriptDeclarationSyntaxGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2021
+// Updated : 04/09/2021
 // Note    : This is a slightly modified version of the Microsoft ScriptSharpDeclarationSyntaxGenerator
 //           (Copyright 2007-2021 Microsoft Corporation).  My changes are indicated by my initials "EFW" in a
 //           comment on the changes.
@@ -33,7 +33,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools.SyntaxGenerators
 {
     /// <summary>
     /// This is a JavaScript declaration syntax generator that is used to add a JavaScript Syntax section to
@@ -103,12 +103,11 @@ namespace Microsoft.Ddue.Tools
         private static bool HasAttribute(XPathNavigator reflection, string attributeName)
         {
             attributeName = "T:" + attributeName;
-            XPathNodeIterator iterator = (XPathNodeIterator)reflection.Evaluate(
-                SyntaxGeneratorTemplate.apiAttributesExpression);
+            XPathNodeIterator iterator = (XPathNodeIterator)reflection.Evaluate(apiAttributesExpression);
 
             foreach(XPathNavigator navigator in iterator)
             {
-                if(navigator.SelectSingleNode(SyntaxGeneratorTemplate.attributeTypeExpression).GetAttribute(
+                if(navigator.SelectSingleNode(attributeTypeExpression).GetAttribute(
                   "api", String.Empty) == attributeName)
                 {
                     return true;
@@ -127,8 +126,8 @@ namespace Microsoft.Ddue.Tools
         /// <returns>True if unsupported or false if it is supported</returns>
         private bool IsUnsupported(XPathNavigator reflection, SyntaxWriter writer)
         {
-            if(base.IsUnsupportedGeneric(reflection, writer) || base.IsUnsupportedExplicit(reflection, writer) ||
-              base.IsUnsupportedUnsafe(reflection, writer))
+            if(this.IsUnsupportedGeneric(reflection, writer) || this.IsUnsupportedExplicit(reflection, writer) ||
+              this.IsUnsupportedUnsafe(reflection, writer))
             {
                 return true;
             }
@@ -197,7 +196,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>The containing type name if found or null if not found</returns>
         private static string ReadContainingTypeName(XPathNavigator reflection)
         {
-            return (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiContainingTypeNameExpression);
+            return (string)reflection.Evaluate(apiContainingTypeNameExpression);
         }
 
         /// <summary>
@@ -246,7 +245,7 @@ namespace Microsoft.Ddue.Tools
         /// <c>System.PreserveCaseAttribute</c>.</remarks>
         private static string ReadMemberName(XPathNavigator reflection)
         {
-            string identifier = (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiNameExpression);
+            string identifier = (string)reflection.Evaluate(apiNameExpression);
 
             // EFW - Don't apply the rule if <scriptSharp /> isn't found
             // or the PreserveCaseAttribute is found.
@@ -266,7 +265,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>The namespace name</returns>
         private static string ReadNamespaceName(XPathNavigator reflection)
         {
-            return (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiContainingNamespaceNameExpression);
+            return (string)reflection.Evaluate(apiContainingNamespaceNameExpression);
         }
 
         /// <summary>
@@ -276,7 +275,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>The type name</returns>
         private static string ReadTypeName(XPathNavigator reflection)
         {
-            return (string)reflection.Evaluate(SyntaxGeneratorTemplate.apiNameExpression);
+            return (string)reflection.Evaluate(apiNameExpression);
         }
 
         /// <summary>
@@ -293,6 +292,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void WriteNormalTypeReference(string api, SyntaxWriter writer)
         {
+            if(api == null)
+                throw new ArgumentNullException(nameof(api));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             switch(api)
             {
                 case "T:System.Byte":
@@ -348,18 +353,18 @@ namespace Microsoft.Ddue.Tools
                     break;
 
                 default:
-                {
-                    string text = api.Substring(2);
-
-                    if(text.StartsWith("System.", StringComparison.Ordinal))
                     {
-                        int num = text.LastIndexOf('.');
-                        text = text.Substring(num + 1);
-                    }
+                        string text = api.Substring(2);
 
-                    writer.WriteReferenceLink(api, text);
-                    break;
-                }
+                        if(text.StartsWith("System.", StringComparison.Ordinal))
+                        {
+                            int num = text.LastIndexOf('.');
+                            text = text.Substring(num + 1);
+                        }
+
+                        writer.WriteReferenceLink(api, text);
+                        break;
+                    }
             }
         }
 
@@ -370,9 +375,9 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         private static void WriteParameter(XPathNavigator parameter, SyntaxWriter writer)
         {
-            string paramName = (string)parameter.Evaluate(SyntaxGeneratorTemplate.parameterNameExpression);
+            string paramName = (string)parameter.Evaluate(parameterNameExpression);
 
-            if((bool)parameter.Evaluate(SyntaxGeneratorTemplate.parameterIsParamArrayExpression))
+            if((bool)parameter.Evaluate(parameterIsParamArrayExpression))
             {
                 writer.WriteString("... ");
             }
@@ -387,7 +392,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         private static void WriteParameterList(XPathNavigator reflection, SyntaxWriter writer)
         {
-            XPathNodeIterator iterator = reflection.Select(SyntaxGeneratorTemplate.apiParametersExpression);
+            XPathNodeIterator iterator = reflection.Select(apiParametersExpression);
 
             writer.WriteString("(");
 
@@ -443,6 +448,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
+            if(reference == null)
+                throw new ArgumentNullException(nameof(reference));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             switch(reference.LocalName)
             {
                 case "arrayOf":
@@ -492,6 +503,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteAttachedPropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string containingTypeName = ReadContainingTypeName(reflection);
             string memberName = ReadMemberName(reflection);
             string fullName = String.Concat(containingTypeName, ".", memberName.Substring(3));
@@ -505,11 +522,11 @@ namespace Microsoft.Ddue.Tools
             }
             else
                 if(memberName.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
-                {
-                    writer.WriteString("obj['");
-                    writer.WriteString(fullName);
-                    writer.WriteString("'] = value;");
-                }
+            {
+                writer.WriteString("obj['");
+                writer.WriteString(fullName);
+                writer.WriteString("'] = value;");
+            }
         }
 
         /// <summary>
@@ -519,6 +536,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(this.IsUnsupported(reflection, writer))
                 return;
 
@@ -544,16 +567,16 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("'");
 
             bool hasBaseClass = false;
-            XPathNavigator reference = reflection.SelectSingleNode(SyntaxGeneratorTemplate.apiBaseClassExpression);
+            XPathNavigator reference = reflection.SelectSingleNode(apiBaseClassExpression);
 
-            if(!(reference == null || (bool)reference.Evaluate(SyntaxGeneratorTemplate.typeIsObjectExpression)))
+            if(!(reference == null || (bool)reference.Evaluate(typeIsObjectExpression)))
             {
                 WriteIndentedNewLine(writer);
                 this.WriteTypeReference(reference, writer);
                 hasBaseClass = true;
             }
 
-            XPathNodeIterator iterator = reflection.Select(SyntaxGeneratorTemplate.apiImplementedInterfacesExpression);
+            XPathNodeIterator iterator = reflection.Select(apiImplementedInterfacesExpression);
 
             if(iterator.Count != 0)
             {
@@ -585,6 +608,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(!this.IsUnsupported(reflection, writer))
             {
                 if((bool)reflection.Evaluate(typeIsRecordExpression))
@@ -609,6 +638,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteKeyword("function");
             WriteParameterList(reflection, writer);
             writer.WriteString(";");
@@ -621,6 +656,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string identifier = ReadFullTypeName(reflection);
 
             writer.WriteIdentifier(identifier);
@@ -643,9 +684,15 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(!this.IsUnsupported(reflection, writer))
             {
-                if(reflection.Select(SyntaxGeneratorTemplate.apiParametersExpression).Count > 0)
+                if(reflection.Select(apiParametersExpression).Count > 0)
                     writer.WriteMessage("UnsupportedIndex_" + this.Language);
                 else
                 {
@@ -675,6 +722,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(!this.IsUnsupported(reflection, writer))
             {
                 string identifier = ReadMemberName(reflection);
@@ -683,7 +736,7 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteKeyword("var");
                 writer.WriteString(" ");
 
-                if((bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsStaticExpression))
+                if((bool)reflection.Evaluate(apiIsStaticExpression))
                 {
                     writer.WriteIdentifier(ReadFullContainingTypeName(reflection));
                     writer.WriteString(".");
@@ -700,6 +753,9 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(!this.IsUnsupported(reflection, writer))
             {
                 string identifier = ReadFullTypeName(reflection);
@@ -723,7 +779,13 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            string identifier = reflection.Evaluate(SyntaxGeneratorTemplate.apiNameExpression).ToString();
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
+            string identifier = reflection.Evaluate(apiNameExpression).ToString();
 
             writer.WriteString("Type.createNamespace('");
             writer.WriteIdentifier(identifier);
@@ -737,6 +799,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(this.IsUnsupported(reflection, writer))
                 return;
 
@@ -747,7 +815,7 @@ namespace Microsoft.Ddue.Tools
             }
 
             string identifier = ReadMemberName(reflection);
-            bool isStatic = (bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsStaticExpression);
+            bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
             bool isGlobal = (bool)reflection.Evaluate(memberIsGlobalExpression);
 
             if(isStatic && !isGlobal)
@@ -776,6 +844,9 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteMessage("UnsupportedOperator_" + this.Language);
         }
 
@@ -786,6 +857,9 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteMessage("UnsupportedCast_" + this.Language);
         }
 
@@ -796,6 +870,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(this.IsUnsupported(reflection, writer))
                 return;
 
@@ -806,9 +886,9 @@ namespace Microsoft.Ddue.Tools
             }
 
             string identifier = ReadMemberName(reflection);
-            bool isStatic = (bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsStaticExpression);
-            bool isReadProp = (bool)reflection.Evaluate(SyntaxGeneratorTemplate.apiIsReadPropertyExpression);
-            bool isWriteProp = (bool) reflection.Evaluate(SyntaxGeneratorTemplate.apiIsWritePropertyExpression);
+            bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
+            bool isReadProp = (bool)reflection.Evaluate(apiIsReadPropertyExpression);
+            bool isWriteProp = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
 
             if(isReadProp)
             {
@@ -866,6 +946,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="writer">The syntax writer to which it is written</param>
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(!this.IsUnsupported(reflection, writer))
                 writer.WriteMessage("UnsupportedStructure_" + this.Language);
         }

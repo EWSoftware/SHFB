@@ -31,12 +31,12 @@ using System.Xml;
 
 using System.Compiler;
 
-using Microsoft.Ddue.Tools.Reflection;
+using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
 using System.Xml.Linq;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools
 {
     /// <summary>
     /// This class is used to write out information gained from managed reflection
@@ -130,6 +130,9 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void VisitNamespaces(NamespaceList spaces)
         {
+            if(spaces == null)
+                throw new ArgumentNullException(nameof(spaces));
+
             // Construct an assembly catalog
             foreach(AssemblyNode assembly in this.Assemblies)
                 assemblyNames.Add(assembly.StrongName);
@@ -188,6 +191,9 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void VisitType(TypeNode type)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             SourceContext typeSourceContext = new SourceContext(new Document(), -1, -1);
             bool typeSourceContextSet = false;
 
@@ -245,8 +251,8 @@ namespace Microsoft.Ddue.Tools
                     if(typeSourceContext.Document.Name == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Source code location not found for " + type.FullName);
-                        ConsoleApplication.WriteMessage(this.WarnOnMissingContext ? LogLevel.Warn : LogLevel.Info,
-                            "Source code location not found for {0}", type.FullName);
+                        this.MessageLogger(this.WarnOnMissingContext ? LogLevel.Warn : LogLevel.Info,
+                            $"Source code location not found for {type.FullName}");
                     }
                 }
 
@@ -1062,6 +1068,9 @@ namespace Microsoft.Ddue.Tools
         /// omit it.</param>
         public void WriteMember(Member member, bool includeSourceContext)
         {
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             this.WriteMember(member, member.DeclaringType, includeSourceContext);
         }
 
@@ -1192,7 +1201,7 @@ namespace Microsoft.Ddue.Tools
                     this.WriteStringAttribute("file", sourceFile);
 
                     if(sourceContext.StartPos != -1)
-                        writer.WriteAttributeString("startLine", sourceContext.StartLine.ToString());
+                        writer.WriteAttributeString("startLine", sourceContext.StartLine.ToString(CultureInfo.InvariantCulture));
 
                     writer.WriteEndElement();
                 }
@@ -1269,11 +1278,11 @@ namespace Microsoft.Ddue.Tools
         /// <param name="members">An enumerable list of implemented members</param>
         private void WriteImplementedMembers(IEnumerable<Member> members)
         {
-            if(members.Count() != 0)
+            if(members.Any())
             {
                 var exposedMembers = this.GetExposedImplementedMembers(members);
 
-                if(exposedMembers.Count() != 0)
+                if(exposedMembers.Any())
                 {
                     writer.WriteStartElement("implements");
 
@@ -1656,7 +1665,7 @@ namespace Microsoft.Ddue.Tools
         {
             var exposed = this.GetExposedAttributes(attributes, securityAttributes);
 
-            if(exposed.Count() != 0)
+            if(exposed.Any())
             {
                 writer.WriteStartElement("attributes");
 
@@ -1682,6 +1691,12 @@ namespace Microsoft.Ddue.Tools
         /// <param name="expression">The expression to write</param>
         protected void WriteExpression(TypeNode type, Expression expression)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            if(expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
             if(expression.NodeType == NodeType.Literal)
             {
                 writer.WriteStartElement("argument");
@@ -1801,7 +1816,7 @@ namespace Microsoft.Ddue.Tools
         {
             var implementedContracts = GetExposedInterfaces(contracts);
 
-            if(implementedContracts.Count() != 0)
+            if(implementedContracts.Any())
             {
                 writer.WriteStartElement("implements");
 
@@ -1925,7 +1940,7 @@ namespace Microsoft.Ddue.Tools
             if(parameter.Type.Name.Name == "Void")
             {
                 // This one may or may not be an error.  It could be a missing reference assembly that was ignored.
-                ConsoleApplication.WriteMessage(LogLevel.Warn, "Unexpected parameter type Void.  This may be " +
+                this.MessageLogger(LogLevel.Warn, "Unexpected parameter type Void.  This may be " +
                     "an issue (missing reference assembly?).  Declaring method: " + parameter.DeclaringMethod.FullName);
             }
 

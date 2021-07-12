@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ControlExtensions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class with WPF control extension methods.
 //
@@ -80,6 +79,9 @@ namespace SandcastleBuilder.WPF
         /// <param name="parent">The parent object</param>
         public static void CommitChanges(this DependencyObject parent)
         {
+            if(parent == null)
+                throw new ArgumentNullException(nameof(parent));
+
             var localValues = parent.GetLocalValueEnumerator();
 
             while(localValues.MoveNext())
@@ -112,6 +114,9 @@ namespace SandcastleBuilder.WPF
         /// <returns>A list of all document elements of the given type that match the predicate</returns>
         public static IEnumerable<T> Find<T>(this FlowDocument document, Predicate<T> predicate)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             return document.Blocks.SelectMany(b => b.Flatten()).OfType<T>().Where(e => predicate(e));
         }
 
@@ -123,8 +128,11 @@ namespace SandcastleBuilder.WPF
         /// <returns>An enumerable list of elements with the given name</returns>
         public static IEnumerable<TextElement> FindByName(this FlowDocument document, string name)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             return document.Blocks.SelectMany(b => b.Flatten()).Where(e => (name == null && e.Name == null) ||
-                (name != null && e.Name != null && name.Equals(e.Name)));
+                (name != null && e.Name != null && name.Equals(e.Name, StringComparison.Ordinal)));
         }
 
         /// <summary>
@@ -135,45 +143,29 @@ namespace SandcastleBuilder.WPF
         /// their children recursively.</returns>
         public static IEnumerable<TextElement> Flatten(this TextElement element)
         {
-            var table = element as Table;
-
-            if(table != null)
+            if(element is Table table)
                 return (new[] { table }).Concat(table.RowGroups.SelectMany(g => g.Rows).SelectMany(
                     r => r.Cells).SelectMany(c => c.Flatten()));
 
-            var tableCell = element as TableCell;
-
-            if(tableCell != null)
+            if(element is TableCell tableCell)
                 return (new[] { tableCell }).Concat(tableCell.Blocks.SelectMany(b => b.Flatten()));
 
-            var section = element as Section;
-
-            if(section != null)
+            if(element is Section section)
                 return (new[] { section }).Concat(section.Blocks.SelectMany(b => b.Flatten()));
 
-            var list = element as List;
-
-            if(list != null)
+            if(element is List list)
                 return (new[] { list }).Concat(list.ListItems.Concat(list.ListItems.SelectMany(i => i.Flatten())));
 
-            var listItem = element as ListItem;
-
-            if(listItem != null)
+            if(element is ListItem listItem)
                 return (new[] { listItem }).Concat(listItem.Blocks.SelectMany(b => b.Flatten()));
 
-            var para = element as Paragraph;
-
-            if(para != null)
+            if(element is Paragraph para)
                 return (new[] { element }).Concat(para.Inlines.SelectMany(i => i.Flatten()));
 
-            var anchoredBlock = element as AnchoredBlock;
-
-            if(anchoredBlock != null)
+            if(element is AnchoredBlock anchoredBlock)
                 return (new[] { anchoredBlock }).Concat(anchoredBlock.Blocks.SelectMany(b => b.Flatten()));
 
-            var span = element as Span;
-
-            if(span != null)
+            if(element is Span span)
                 return (new[] { span }).Concat(span.Inlines.SelectMany(i => i.Flatten()));
 
             return new[] { element };
@@ -194,6 +186,9 @@ namespace SandcastleBuilder.WPF
             int column, minWidth;
             double multiplier;
 
+            if(table == null)
+                throw new ArgumentNullException(nameof(table));
+
             var maxWidths = table.ColumnWidths().ToArray();
 
             // Add column definitions to the table if not there already
@@ -209,7 +204,7 @@ namespace SandcastleBuilder.WPF
             // column.  Again, very simplistic but it does fairly well in most cases.
             foreach(var c in table.Columns)
             {
-                multiplier = (double)maxWidths[column] / (double)minWidth;
+                multiplier = maxWidths[column] / (double)minWidth;
 
                 // Limit the width to a maximum of five times the smallest column so that we don't squash
                 // the smaller columns.

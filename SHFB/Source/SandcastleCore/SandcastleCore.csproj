@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>Sandcastle.Core</AssemblyName>
+		<RootNamespace>Sandcastle.Core</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build.Framework" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+	</ItemGroup>
+
+</Project>

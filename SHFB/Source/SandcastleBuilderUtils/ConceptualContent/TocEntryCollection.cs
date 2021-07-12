@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the table of contents entries for content layout and site
 // map files.
@@ -45,7 +44,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region Private data members
         //=====================================================================
 
-        private ContentFile siteMapFile;
+        private readonly ContentFile siteMapFile;
 
         #endregion
 
@@ -239,6 +238,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>An enumerable list of all matches</returns>
         public IEnumerable<TocEntry> Find(Predicate<TocEntry> match, bool expandParentIfFound)
         {
+            if(match == null)
+                throw new ArgumentNullException(nameof(match));
+
             foreach(var t in this)
             {
                 if(match(t))
@@ -366,7 +368,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 entry = new TocEntry(siteMapFile.BasePathProvider);
                 entry.LoadSiteMapNode(site);
-                base.Add(entry);
+                this.Add(entry);
             }
         }
 
@@ -460,6 +462,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// container node is created.</remarks>
         public void AddTopicsFromFolder(string folder, string basePath, SandcastleProject project)
         {
+            if(basePath == null)
+                throw new ArgumentNullException(nameof(project));
+
+            if(project == null)
+                throw new ArgumentNullException(nameof(project));
+
             TocEntry topic, removeTopic;
             string name, newPath, projectPath = Path.GetDirectoryName(project.Filename);
 
@@ -478,17 +486,20 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 // Add the file to the project
                 project.AddFileToProject(file, newPath);
-                topic = new TocEntry(project);
-                topic.SourceFile = new FilePath(newPath, project);
-                topic.Title = Path.GetFileNameWithoutExtension(newPath);
+
+                topic = new TocEntry(project)
+                {
+                    SourceFile = new FilePath(newPath, project),
+                    Title = Path.GetFileNameWithoutExtension(newPath)
+                };
+
                 this.Add(topic);
             }
 
             // Add folders recursively
             foreach(string folderName in Directory.EnumerateDirectories(folder))
             {
-                topic = new TocEntry(project);
-                topic.Title = name = Path.GetFileName(folderName);
+                topic = new TocEntry(project) { Title = name = Path.GetFileName(folderName) };
                 topic.Children.AddTopicsFromFolder(folderName, basePath, project);
 
                 // Ignore empty folders
@@ -525,6 +536,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <inheritdoc />
         protected override void InsertItem(int index, TocEntry item)
         {
+            if(item == null)
+                throw new ArgumentNullException(nameof(item));
+
             base.InsertItem(index, item);
             item.Parent = this;
         }
@@ -535,6 +549,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <inheritdoc />
         protected override void SetItem(int index, TocEntry item)
         {
+            if(item == null)
+                throw new ArgumentNullException(nameof(item));
+
             base.SetItem(index, item);
             item.Parent = this;
         }
@@ -554,16 +571,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <inheritdoc />
-        public ContentFile ContentLayoutFile
-        {
-            get { return siteMapFile; }
-        }
+        public ContentFile ContentLayoutFile => siteMapFile;
 
         /// <inheritdoc />
         /// <remarks>The <paramref name="includeInvisibleItems"/> parameter is ignored as site maps do not
         /// support them.</remarks>
         public void GenerateTableOfContents(TocEntryCollection toc, bool includeInvisibleItems)
         {
+            if(toc == null)
+                throw new ArgumentNullException(nameof(toc));
+
             foreach(TocEntry t in this)
                 toc.Add(t);
         }

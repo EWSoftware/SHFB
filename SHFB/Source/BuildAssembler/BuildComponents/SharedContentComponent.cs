@@ -18,12 +18,12 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Schema;
 
-using Microsoft.Ddue.Tools.Targets;
+using Sandcastle.Tools.BuildComponents.Targets;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to replace a given set of elements with the content of shared content items
@@ -75,25 +75,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"{@TokenFiles}
+            public override string DefaultConfiguration => @"{@TokenFiles}
 <replace elements=""/*//token"" item=""string(.)"" />";
-                }
-            }
 
             /// <inheritdoc />
             /// <remarks>Indicate a dependency on the missing documentation component as that's the best
             /// placement if the IntelliSense component is used too.</remarks>
-            public override IEnumerable<string> Dependencies
-            {
-                get
-                {
-                    return new List<string> { "Show Missing Documentation Component" };
-                }
-            }
+            public override IEnumerable<string> Dependencies => new List<string> { "Show Missing Documentation Component" };
         }
         #endregion
 
@@ -123,6 +111,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             // Get the context.  This will contain namespaces that prefix the elements to find.
             var context = new CustomContext();
 
@@ -217,6 +208,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <remarks>Shared content items are replaced recursively</remarks>
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             this.ResolveContent(key, document, document.CreateNavigator());
         }
         #endregion
@@ -336,9 +330,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                             parameters.Add(parameterNode.GetInnerXml());
 
                         // Find the content item and format the parameters into the value
-                        string contentValue = null;
-
-                        if(content.TryGetValue(item, out contentValue))
+                        if(content.TryGetValue(item, out string contentValue))
                         {
                             try
                             {

@@ -2,19 +2,18 @@
 // System  : Sandcastle Guided Installation
 // File    : MainForm.cs
 // Author  : Eric Woodruff
-// Updated : 12/28/2013
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
 //
 // This is the main form for the Sandcastle Guided Installer.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  02/05/2011  EFW  Created the code
-// 1.1.0.0  03/05/2012  EFW  Converted to use WPF
+// 02/05/2011  EFW  Created the code
+// 03/05/2012  EFW  Converted to use WPF
 //===============================================================================================================
 
 using System;
@@ -44,9 +43,10 @@ namespace Sandcastle.Installer
 
         private const string ApplicationTitle = "Sandcastle Guided Installation";
 
-        private Dictionary<string, Assembly> assemblies;
-        private List<IInstallerPage> allPages;
+        private readonly Dictionary<string, Assembly> assemblies;
+        private readonly List<IInstallerPage> allPages;
         private int lastPage, currentPage;
+
         #endregion
 
         #region Constructor
@@ -73,10 +73,8 @@ namespace Sandcastle.Installer
         //=====================================================================
 
         /// <inheritdoc />
-        public IEnumerable<IInstallerPage> AllPages
-        {
-            get { return allPages; }
-        }
+        public IEnumerable<IInstallerPage> AllPages => allPages;
+
         #endregion
 
         #region Helper methods
@@ -193,10 +191,12 @@ namespace Sandcastle.Installer
             pageInstance.Initialize(page);
             pageInstance.Control.Visibility = Visibility.Collapsed;
 
-            node = new TreeViewItem();
-            node.Header = pageInstance.PageTitle;
-            node.IsExpanded = true;
-            node.Name = String.Format(CultureInfo.InvariantCulture, "P_{0}", allPages.Count);
+            node = new TreeViewItem
+            {
+                Header = pageInstance.PageTitle,
+                IsExpanded = true,
+                Name = String.Format(CultureInfo.InvariantCulture, "P_{0}", allPages.Count)
+            };
 
             if(root == null)
                 tvPages.Items.Add(node);

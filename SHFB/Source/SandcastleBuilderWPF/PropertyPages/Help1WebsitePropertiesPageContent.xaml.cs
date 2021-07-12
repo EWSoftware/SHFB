@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff
 // Updated : 08/16/2019
 // Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help 1, Website, Open XML, and Markdown category properties
 //

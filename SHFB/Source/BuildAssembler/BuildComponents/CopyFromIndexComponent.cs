@@ -17,12 +17,12 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Commands;
+using Sandcastle.Tools.BuildComponents.Commands;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component copies elements from an indexed set of XML files into the target document based on
@@ -57,14 +57,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
 
         // List of copy components
-        private List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories;
-        private List<CopyComponentCore> components = new List<CopyComponentCore>();
+        private readonly List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories;
+        private readonly List<CopyComponentCore> components = new List<CopyComponentCore>();
 
         // What to copy
-        private List<CopyFromIndexCommand> copyCommands = new List<CopyFromIndexCommand>();
+        private readonly List<CopyFromIndexCommand> copyCommands = new List<CopyFromIndexCommand>();
 
         #endregion
 
@@ -114,6 +114,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             MessageLevel level;
             bool isAttribute, ignoreCase;
 

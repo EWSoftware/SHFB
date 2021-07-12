@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TransformArgumentsPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 12/21/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/26/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Transform Arguments category properties
 //
@@ -332,8 +331,10 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 // Get the transform component arguments defined in the project if any
                 if(!String.IsNullOrEmpty(projectSettings.TransformComponentArguments))
                 {
+                    // Use a reader to ignore namespaces
                     using(var xr = new XmlTextReader("<Args>" + projectSettings.TransformComponentArguments + "</Args>",
-                      XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve)))
+                      XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve))
+                      { Namespaces = false })
                     {
                         xr.Namespaces = false;
                         xr.MoveToContent();

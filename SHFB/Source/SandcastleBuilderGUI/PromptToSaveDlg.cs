@@ -1,27 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : PromptToSaveDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/24/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to prompt to save files before a build.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.1  10/24/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 10/24/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
@@ -45,30 +42,30 @@ namespace SandcastleBuilder.Gui
 
             InitializeComponent();
 
+            if(filesToSave == null)
+                throw new ArgumentNullException(nameof(filesToSave));
+
             foreach(BaseContentEditor editor in filesToSave)
             {
-                if(editor is ProjectPropertiesWindow)
+                if(editor is ProjectPropertiesWindow projectProperties)
                 {
                     if(!projectSeen)
                     {
-                        lbFiles.Items.Insert(0, Path.GetFileName(
-                            ((ProjectPropertiesWindow)editor).CurrentProject.Filename));
+                        lbFiles.Items.Insert(0, Path.GetFileName(projectProperties.CurrentProject.Filename));
                         projectSeen = true;
                     }
                 }
                 else
-                    if(editor is ProjectExplorerWindow)
+                    if(editor is ProjectExplorerWindow projectExplorer)
                     {
                         if(!projectSeen)
                         {
-                            lbFiles.Items.Insert(0, Path.GetFileName(
-                                ((ProjectExplorerWindow)editor).CurrentProject.Filename));
+                            lbFiles.Items.Insert(0, Path.GetFileName(projectExplorer.CurrentProject.Filename));
                             projectSeen = true;
                         }
                     }
                     else
-                        lbFiles.Items.Add(editor.TabText.Substring(0,
-                            editor.TabText.Length - 1));
+                        lbFiles.Items.Add(editor.TabText.Substring(0, editor.TabText.Length - 1));
             }
         }
     }

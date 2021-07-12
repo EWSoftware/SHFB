@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : PlugInPropertiesPageContent.cs
 // Author  : Eric Woodruff
-// Updated : 11/07/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Plug-Ins category properties
 //
@@ -25,6 +24,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 using Sandcastle.Core;
 
@@ -34,7 +34,7 @@ using SandcastleBuilder.Utils.BuildComponent;
 namespace SandcastleBuilder.WPF.PropertyPages
 {
     /// <summary>
-    /// Interaction logic for PlugInPropertiesPageContent.xaml
+    /// This user control is used to edit the Plug-Ins category properties
     /// </summary>
     public partial class PlugInPropertiesPageContent : UserControl
     {
@@ -62,7 +62,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         //=====================================================================
 
         private List<Lazy<IPlugIn, IPlugInMetadata>> availablePlugIns;
-        private PlugInConfigurationDictionary currentConfigs;
+        private List<Lazy<IPlugInConfigurationEditor, IPlugInConfigurationEditorMetadata>> availableConfigEditors;
         private ComponentCache componentCache;
 
         #endregion
@@ -78,7 +78,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This read-only property returns the selected plug-in configurations
         /// </summary>
-        public PlugInConfigurationDictionary SelectedPlugIns => currentConfigs;
+        public PlugInConfigurationDictionary SelectedPlugIns { get; private set; }
 
         #endregion
 
@@ -181,7 +181,22 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void lbProjectPlugIns_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            this.btnConfigure_Click(sender, e);
+            var config = (PlugInConfig)lbProjectPlugIns.SelectedItem;
+
+            if(config != null && availableConfigEditors.Any(ed => ed.Metadata.Id == config.Name))
+                this.btnConfigure_Click(sender, e);
+        }
+
+        /// <summary>
+        /// Update the state of the Configure button based on whether or not the selected component is editable
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void lbProjectPlugIns_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var config = (PlugInConfig)lbProjectPlugIns.SelectedItem;
+
+            btnConfigure.IsEnabled = config != null && availableConfigEditors.Any(ed => ed.Metadata.Id == config.Name);
         }
 
         /// <summary>
@@ -249,7 +264,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     {
                         try
                         {
-                            var c = currentConfigs.Add(key, true, null);
+                            var c = this.SelectedPlugIns.Add(key, true, null);
                             match = new PlugInConfig { Name = key, Configuration = c };
                         }
                         catch(Exception ex)
@@ -263,12 +278,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
 
                         lbProjectPlugIns.SelectedIndex = lbProjectPlugIns.Items.Add(match);
                         lbProjectPlugIns.Items.Refresh();
-                        btnConfigure.IsEnabled = btnDelete.IsEnabled = true;
+                        btnDelete.IsEnabled = true;
 
                         this.PlugInsModified?.Invoke(this, EventArgs.Empty);
 
                         // Open the configuration dialog to configure it when first added if needed
-                        btnConfigure_Click(sender, e);
+                        if(availableConfigEditors.Any(ed => ed.Metadata.Id == key))
+                            btnConfigure_Click(sender, e);
                     }
                 }
             }
@@ -281,35 +297,23 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnConfigure_Click(object sender, RoutedEventArgs e)
         {
-            string newConfig, currentConfig;
             var config = (PlugInConfig)lbProjectPlugIns.SelectedItem;
 
-            if(config != null && availablePlugIns != null)
+            if(config != null && availablePlugIns != null && availableConfigEditors != null)
             {
                 var plugIn = availablePlugIns.FirstOrDefault(p => p.Metadata.Id == config.Name);
+                var editor = availableConfigEditors.FirstOrDefault(ed => ed.Metadata.Id == config.Name);
 
-                if(plugIn != null)
+                if(plugIn != null && editor != null)
                 {
-                    if(!plugIn.Metadata.IsConfigurable)
-                    {
-                        if(sender == btnConfigure)
-                            MessageBox.Show("The selected plug-in contains no editable configuration information",
-                                Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Information);
-                        return;
-                    }
-
-                    currentConfig = config.Configuration.Configuration;
-
                     try
                     {
-                        // Plug-in instances are shared.  The container will dispose of the plug-in when it is
-                        // disposed of.
-                        newConfig = plugIn.Value.ConfigurePlugIn(this.Project, currentConfig);
+                        XElement currentConfig = XElement.Parse(config.Configuration.Configuration);
 
                         // Only store it if new or if it changed
-                        if(currentConfig != newConfig)
+                        if(editor.Value.EditConfiguration(this.Project, currentConfig))
                         {
-                            config.Configuration.Configuration = newConfig;
+                            config.Configuration.Configuration = currentConfig.ToString();
                             this.PlugInsModified?.Invoke(this, EventArgs.Empty);
                         }
                     }
@@ -337,9 +341,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             var config = (PlugInConfig)lbProjectPlugIns.SelectedItem;
 
-            if(config != null && currentConfigs.ContainsKey(config.Name))
+            if(config != null && this.SelectedPlugIns.ContainsKey(config.Name))
             {
-                currentConfigs.Remove(config.Name);
+                this.SelectedPlugIns.Remove(config.Name);
                 this.PlugInsModified?.Invoke(this, EventArgs.Empty);
 
                 int idx = lbProjectPlugIns.SelectedIndex;
@@ -403,6 +407,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 lbProjectPlugIns.Items.Clear();
 
                 availablePlugIns = componentCache.ComponentContainer.GetExports<IPlugIn, IPlugInMetadata>().ToList();
+                availableConfigEditors = componentCache.ComponentContainer.GetExports<IPlugInConfigurationEditor,
+                    IPlugInConfigurationEditorMetadata>().ToList();
 
                 // There may be duplicate component IDs across the assemblies found.  See
                 // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
@@ -442,16 +448,16 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     return;
                 }
 
-                currentConfigs = projectSettings.PlugIns;
+                this.SelectedPlugIns = projectSettings.PlugIns;
 
-                foreach(var kv in currentConfigs)
+                foreach(var kv in this.SelectedPlugIns)
                     lbProjectPlugIns.Items.Add(new PlugInConfig { Name = kv.Key, Configuration = kv.Value });
 
                 if(lbProjectPlugIns.Items.Count != 0)
                 {
                     lbProjectPlugIns.Items.Refresh();
                     lbProjectPlugIns.SelectedIndex = 0;
-                    btnConfigure.IsEnabled = btnDelete.IsEnabled = true;
+                    btnDelete.IsEnabled = true;
                 }
                 else
                     btnConfigure.IsEnabled = btnDelete.IsEnabled = false;

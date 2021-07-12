@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the content layout file editor control
 //
@@ -60,10 +59,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return contentLayoutFile.FullPath; }
-        }
+        public string Filename => contentLayoutFile.FullPath;
 
         /// <summary>
         /// This read-only property returns the current topic collection including any unsaved edits
@@ -114,7 +110,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <returns>The topic that was just added or null if unsuccessful</returns>
         private Topic AddTopicFile(string filename, bool addAsChild)
         {
-            Topic newTopic = null, currentTopic = base.UIControl.CurrentTopic;
+            Topic currentTopic = base.UIControl.CurrentTopic;
             string newPath = filename, projectPath = Path.GetDirectoryName(
                 contentLayoutFile.Project.Filename);
 
@@ -126,7 +122,7 @@ namespace SandcastleBuilder.Package.Editors
             FileItem newItem = contentLayoutFile.Project.AddFileToProject(filename, newPath);
 
             // Add the topic to the editor's collection
-            newTopic = new Topic
+            Topic newTopic = new Topic
             {
                 TopicFile = new TopicFile(newItem.ToContentFile())
             };
@@ -277,9 +273,7 @@ namespace SandcastleBuilder.Package.Editors
         {
             // If the sender is a topic, use that instead.  Due to the way the WPF tree view works, the
             // selected topic isn't always the one we just added when it's the first child of a parent topic.
-            Topic t = sender as Topic;
-
-            if(t == null)
+            if(!(sender is Topic t))
                 t = base.UIControl.CurrentTopic;
 
 #pragma warning disable VSTHRD010
@@ -309,7 +303,6 @@ namespace SandcastleBuilder.Package.Editors
             FileNode thisNode = this.FileNode, topicNode = null;
             IVsAddProjectItemDlg addItemDialog;
             string strFilter = String.Empty, strBrowseLocations;
-            int iDontShowAgain;
             uint uiFlags;
             IVsProject3 project;
             Guid projectGuid;
@@ -332,7 +325,7 @@ namespace SandcastleBuilder.Package.Editors
 
                 int hr = addItemDialog.AddProjectItemDlg((topicNode ?? thisNode).ID, ref projectGuid, project,
                     uiFlags, "Conceptual Content|Topics", "Conceptual", ref strBrowseLocations, ref strFilter,
-                    out iDontShowAgain);
+                    out _);
 
                 // If successful, get the current project item (the one just added) and add it as a topic
                 // to the collection.

@@ -176,7 +176,7 @@ memberProperties
 	special
 	literal
 	initonly
-	volitile
+	volatile
 	abstract
 	virtual
 	final

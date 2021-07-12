@@ -1,24 +1,20 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Guided Installation
 // File    : Help1CompilerPage.cs
 // Author  : Eric Woodruff
-// Updated : 03/06/2012
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
 //
-// This file contains a page used to help the user download and install the
-// HTML Help 1 compiler.
+// This file contains a page used to help the user download and install the HTML Help 1 compiler
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  02/06/2011  EFW  Created the code
-// 1.1.0.0  03/06/2012  EFW  Converted to use WPF
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 02/06/2011  EFW  Created the code
+// 03/06/2012  EFW  Converted to use WPF
+//===============================================================================================================
 
 using System;
 using System.Threading;
@@ -41,16 +37,14 @@ namespace Sandcastle.Installer.InstallerPages
         private bool searchPerformed;
 
         private Task<String> searchTask;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle
-        {
-            get { return "HTML Help 1 Compiler"; }
-        }
+        public override string PageTitle => "HTML Help 1 Compiler";
 
         /// <summary>
         /// This is overridden to confirm that the user wants to continue without installing the Help 1
@@ -157,10 +151,11 @@ namespace Sandcastle.Installer.InstallerPages
             imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
             btnSearchAgain.IsEnabled = true;
 
-            var para = new Paragraph(new Bold(new Run(
-                "An error occurred while searching for the Help 1 compiler:")));
+            var para = new Paragraph(new Bold(new Run("An error occurred while searching for the Help 1 compiler:")))
+            {
+                Foreground = new SolidColorBrush(Colors.Red)
+            };
 
-            para.Foreground = new SolidColorBrush(Colors.Red);
             para.Inlines.Add(new LineBreak());
 
             foreach(var innerEx in ex.InnerExceptions)
@@ -207,8 +202,7 @@ namespace Sandcastle.Installer.InstallerPages
             {
                 var ui = TaskScheduler.FromCurrentSynchronizationContext();
 
-                searchTask = Task.Factory.StartNew<String>(
-                    () => Utility.FindOnFixedDrives(@"\HTML Help Workshop"));
+                searchTask = Task.Run(() => Utility.FindOnFixedDrives(@"\HTML Help Workshop"));
 
                 searchTask.ContinueWith(t => this.SearchCompleted(t.Result),
                     CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, ui);

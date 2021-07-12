@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2018
-// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/15/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing an XML comment file and is used when searching for and adding missing
 // documentation tag information.
@@ -39,7 +38,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        private string sourcePath, invalidReason;
+        private readonly string sourcePath;
+        private string invalidReason;
         private Encoding enc;
         private XmlDocument comments;
         private XmlNode members;

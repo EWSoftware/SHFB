@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a property target
@@ -24,12 +24,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns an enumerable list of parameters if any
         /// </summary>
-        public IList<Parameter> Parameters { get; private set; }
+        public IList<Parameter> Parameters { get; }
 
         /// <summary>
         /// This read-only property returns the return type
         /// </summary>
-        public TypeReference ReturnType { get; private set; }
+        public TypeReference ReturnType { get; }
 
         #endregion
 

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : LaunchMSHelpViewDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2017
-// Note    : Copyright 2010-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
 //
 // This form is used to determine the state of the current MS Help Viewer content and offer options to install,
 // launch, or remove it.
@@ -70,10 +69,10 @@ namespace SandcastleBuilder.WPF.UI
         #region Private data members
         //=====================================================================
 
-        private SandcastleProject project;
+        private readonly SandcastleProject project;
         private string helpFilePath, setupFile, msHelpViewer, catalogName;
         private CancellationTokenSource cancellationTokenSource;
-        private IProgress<string> helpViewerProgress;
+        private readonly IProgress<string> helpViewerProgress;
         private Version viewerVersion;
 
         private static int lastVersionSelected = 4;
@@ -247,7 +246,7 @@ namespace SandcastleBuilder.WPF.UI
                 }
 
                 helpViewerProgress.Report("Opening help content...");
-                System.Diagnostics.Process.Start(msHelpViewer, arguments);
+                Process.Start(msHelpViewer, arguments);
             }
 
             cancellationTokenSource.Token.ThrowIfCancellationRequested();
@@ -402,7 +401,7 @@ namespace SandcastleBuilder.WPF.UI
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private async void btnOK_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void btnOK_Click(object sender, RoutedEventArgs e)
         {
             HelpViewerAction action;
 
@@ -444,7 +443,7 @@ namespace SandcastleBuilder.WPF.UI
                         else
                             action = HelpViewerAction.OpenContentManager;
 
-                await Task.Run(() => this.PerformHelpViewerAction(action), cancellationTokenSource.Token);
+                await Task.Run(() => this.PerformHelpViewerAction(action), cancellationTokenSource.Token).ConfigureAwait(true);
 
                 if(rbRemove.IsChecked ?? false)
                 {

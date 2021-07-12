@@ -2,23 +2,21 @@
 // System  : Sandcastle Help File Builder
 // File    : OutputWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to contain and view the build output
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.8.0.0  07/26/2008  EFW  Created the code
-// 1.8.0.3  12/30/2009  EFW  Added option to filter for warnings and errors
-// 1.9.3.4  01/07/2012  EFW  Replaced the web browser with a common user control shared by this and the
-//                           standalone GUI.
+// 07/26/2008  EFW  Created the code
+// 12/30/2009  EFW  Added option to filter for warnings and errors
+// 01/07/2012  EFW  Replaced the web browser with a common user control shared by this and the standalone GUI
 //===============================================================================================================
 
 using System;
@@ -45,7 +43,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public string LogFile
         {
-            get { return ucBuildLogViewer.LogFilename; }
+            get => ucBuildLogViewer.LogFilename;
             set
             {
                 if(value != null)
@@ -131,7 +129,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             // Odd error.  The web browser embedded in the user control fails randomly after being hidden and
             // reshown.  As such, just create a new instance of the control when hidden to work around it.
-            if(!base.Visible && !ehLogViewer.IsDisposed)
+            if(!this.Visible && !ehLogViewer.IsDisposed)
                 ehLogViewer.Child = ucBuildLogViewer = new BuildLogViewerControl();
         }
 
@@ -142,7 +140,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if(e.CloseReason == CloseReason.UserClosing && this.DockState == DockState.Document)
+            if(e != null && e.CloseReason == CloseReason.UserClosing && this.DockState == DockState.Document)
             {
                 this.Hide();
                 e.Cancel = true;

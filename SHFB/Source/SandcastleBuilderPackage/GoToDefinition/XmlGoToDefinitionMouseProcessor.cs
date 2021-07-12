@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : XmlGoToDefinitionMouseProcessor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2014-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that provides the mouse processor handling specific to MAML elements
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -165,17 +164,17 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     if(!entitySearcher.GotoDefinitionFor(id))
                     {
                         Guid clsid = Guid.Empty;
-                        int result;
-                        var uiShell = this.ServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
 
-                        if(uiShell != null)
+                        if(this.ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell uiShell)
+                        {
                             uiShell.ShowMessageBox(0, ref clsid, "Unable to navigate to code entity reference " +
                                 "definition.", String.Format(CultureInfo.CurrentCulture, "Member ID: {0}\r\n\r\n" +
                                 "If valid, the most likely cause is that it is not a member of a C# project " +
                                 "within the current solution.  Navigating to members in non-C# projects and " +
                                 ".NET Framework or reference assemblies is not supported.", id), String.Empty, 0,
                                 OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                                OLEMSGICON.OLEMSGICON_INFO, 0, out result);
+                                OLEMSGICON.OLEMSGICON_INFO, 0, out _);
+                        }
 
                         System.Diagnostics.Debug.WriteLine("Unable to go to declaration for member ID: " + id);
                     }
@@ -195,15 +194,15 @@ namespace SandcastleBuilder.Package.GoToDefinition
                     if(!projectFileSearcher.OpenFileFor(idType, id))
                     {
                         Guid clsid = Guid.Empty;
-                        int result;
-                        var uiShell = this.ServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
 
-                        if(uiShell != null)
+                        if(this.ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell uiShell)
+                        {
                             uiShell.ShowMessageBox(0, ref clsid, "Unable to open file for element target.",
                                 String.Format(CultureInfo.CurrentCulture, "Type: {0}\r\nID: {1}\r\n\r\nIf " +
                                 "valid, it may not be a part of a help file builder project within this " +
                                 "solution.", definitionType, id), String.Empty, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO, 0, out result);
+                                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO, 0, out _);
+                        }
 
                         System.Diagnostics.Debug.WriteLine("Unable to go to open file for ID '{0}' ({1}): ", id,
                             definitionType);

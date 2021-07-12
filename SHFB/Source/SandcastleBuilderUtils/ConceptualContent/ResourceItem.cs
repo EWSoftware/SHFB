@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ResourceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2009-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2009-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a Sandcastle transformation resource item that can be used to insert
 // a common item, value, or construct into generated topics.
@@ -34,8 +33,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region Private data members
         //=====================================================================
 
-        private string sourceFile, itemId, itemValue;
+        private string sourceFile, itemValue;
         private bool isSelected, isOverridden;
+
         #endregion
 
         #region Properties
@@ -46,7 +46,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public string SourceFile
         {
-            get { return sourceFile; }
+            get => sourceFile;
             set
             {
                 if(value != sourceFile)
@@ -60,10 +60,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This read-only property is used to get the item ID
         /// </summary>
-        public string Id
-        {
-            get { return itemId; }
-        }
+        public string Id { get; }
 
         /// <summary>
         /// This is used to get or set the item value
@@ -72,7 +69,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// time with the appropriate project value.</value>
         public string Value
         {
-            get { return itemValue; }
+            get => itemValue;
             set
             {
                 if(value != itemValue)
@@ -89,7 +86,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <remarks>Used by the editor for binding in the list box</remarks>
         public bool IsSelected
         {
-            get { return isSelected; }
+            get => isSelected;
             set
             {
                 if(value != isSelected)
@@ -106,7 +103,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public bool IsOverridden
         {
-            get { return isOverridden; }
+            get => isOverridden;
             set
             {
                 if(value != isOverridden)
@@ -130,7 +127,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="isOverride">True if this is an override, false if not</param>
         public ResourceItem(string file, string id, string value, bool isOverride)
         {
-            itemId = id;
+            this.Id = id;
             this.SourceFile = file;
             this.Value = value;
             this.IsOverridden = isOverride;
@@ -151,10 +148,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

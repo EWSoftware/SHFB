@@ -30,7 +30,7 @@
     </NamespaceSummaries>
     <HelpTitle>HTML to MAML Converter</HelpTitle>
     <CopyrightHref>https://GitHub.com/EWSoftware/SHFB</CopyrightHref>
-    <CopyrightText>Copyright \xA9 2008-2015, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>Copyright \xA9 2008-2021, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <SyntaxFilters>Standard</SyntaxFilters>
     <PlugInConfigurations>

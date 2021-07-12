@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : MemberIdFixUpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to fix up member IDs in the XML comments files due to quirks in
 // the various compilers that cause a mismatch between the member IDs in the XML comments and the reflection
@@ -22,12 +21,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml.XPath;
+using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -39,7 +35,7 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to fix up member IDs in the XML comments files due to quirks in the various
     /// compilers that cause a mismatch between the member IDs in the XML comments and the reflection data.
     /// </summary>
-    [HelpFileBuilderPlugInExport("Member ID Fix-Ups", IsConfigurable = true, RunsInPartialBuild = true,
+    [HelpFileBuilderPlugInExport("Member ID Fix-Ups", RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to fix up member IDs in the XML comments files due to quirks in " +
         "the various compilers that cause a mismatch between the member IDs in the XML comments and the " +
@@ -51,8 +47,8 @@ namespace SandcastleBuilder.PlugIns
 
         private List<ExecutionPoint> executionPoints;
         private BuildProcess builder;
-
         private List<MemberIdMatchExpression> expressions;
+
         #endregion
 
         #region IPlugIn implementation
@@ -78,31 +74,15 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(MemberIdFixUpPlugInConfigDlg dlg = new MemberIdFixUpPlugInConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             builder = buildProcess;
 
             var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
@@ -112,18 +92,19 @@ namespace SandcastleBuilder.PlugIns
 
             expressions = new List<MemberIdMatchExpression>();
 
-            foreach(XPathNavigator nav in configuration.Select("configuration/expressions/expression"))
+            foreach(var expr in configuration.Descendants("expression"))
                 expressions.Add(new MemberIdMatchExpression
                 {
-                    MatchExpression = nav.GetAttribute("matchExpression", String.Empty),
-                    ReplacementValue = nav.GetAttribute("replacementValue", String.Empty),
-                    MatchAsRegEx = Convert.ToBoolean(nav.GetAttribute("matchAsRegEx", String.Empty),
-                        CultureInfo.InvariantCulture)
+                    MatchExpression = expr.Attribute("matchExpression").Value,
+                    ReplacementValue = expr.Attribute("replacementValue").Value,
+                    MatchAsRegEx = (bool)expr.Attribute("matchAsRegEx")
                 });
 
             if(expressions.Count == 0)
+            {
                 throw new BuilderException("MNF0001", "No fix-up expressions have been defined for the Member " +
                     "Name Fix-Up plug-in");
+            }
         }
 
         /// <summary>

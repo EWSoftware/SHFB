@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : VisibleItems.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/27/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/05/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the optional visible items in the help file
 //

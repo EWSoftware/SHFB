@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : IndexedCommentsCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/18/2018
-// Note    : Copyright 2008-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 07/07/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to cache indexed XML comments files
 //
@@ -47,7 +46,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             //=====================================================================
 
             // The index that maps keys to XPath navigators containing the comments
-            private Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+            private readonly Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
 
             #endregion
 
@@ -59,10 +58,8 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             /// </summary>
             /// <param name="key">The key to look up</param>
             /// <returns>The XPath navigator associated with the key</returns>
-            public XPathNavigator this[string key]
-            {
-                get { return index[key].Clone(); }
-            }
+            public XPathNavigator this[string key] => index[key].Clone();
+
             #endregion
 
             #region Methods, etc.
@@ -85,13 +82,15 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         #region Private data members
         //=====================================================================
 
-        private XPathExpression memberListExpr;
-        private XPathExpression keyExpr;
+        private readonly XPathExpression memberListExpr;
+        private readonly XPathExpression keyExpr;
 
-        private ConcurrentDictionary<string, string> index;
-        private Queue<string> queue;
-        private Dictionary<string, IndexedCommentsFile> cache;
-        private int cacheSize, filesIndexed;
+        private readonly ConcurrentDictionary<string, string> index;
+        private readonly Queue<string> queue;
+        private readonly Dictionary<string, IndexedCommentsFile> cache;
+        private readonly int cacheSize;
+        private int filesIndexed;
+
         #endregion
 
         #region Properties
@@ -126,14 +125,11 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         {
             get
             {
-                IndexedCommentsFile document;
-                string file;
-
                 // Look up the file corresponding to the key
-                if(index.TryGetValue(key, out file))
+                if(index.TryGetValue(key, out string file))
                 {
                     // Now look for that file in the cache
-                    if(!cache.TryGetValue(file, out document))
+                    if(!cache.TryGetValue(file, out IndexedCommentsFile document))
                     {
                         // Not in the cache, so load it
                         document = new IndexedCommentsFile(this, file);
@@ -183,7 +179,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         public IndexedCommentsCache(int size)
         {
             if(size < 0)
-                throw new ArgumentOutOfRangeException("size");
+                throw new ArgumentOutOfRangeException(nameof(size));
 
             cacheSize = size;
             index = new ConcurrentDictionary<string, string>();
@@ -210,7 +206,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
 
             try
             {
-                document = new XPathDocument(filename);
+                document = new XPathDocument(XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }));
 
                 // Some versions of the framework redirect the comments files to a common location
                 var redirect = document.CreateNavigator().SelectSingleNode("doc/@redirect");
@@ -226,7 +222,12 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                         string programFiles = Environment.GetFolderPath(Environment.Is64BitProcess ?
                             Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles);
 
-                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + @"\");
+#if NET472_OR_GREATER || NETSTANDARD2_0
+                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + Path.DirectorySeparatorChar);
+#else
+                        path = path.Replace("%PROGRAMFILESDIR%", programFiles + Path.DirectorySeparatorChar,
+                            StringComparison.OrdinalIgnoreCase);
+#endif
                     }
 
                     if(!Path.IsPathRooted(path) || !File.Exists(path))
@@ -236,7 +237,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                         document = null;
                     }
                     else
-                        document = new XPathDocument(path);
+                        document = new XPathDocument(XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }));
                 }
             }
             catch(IOException e)

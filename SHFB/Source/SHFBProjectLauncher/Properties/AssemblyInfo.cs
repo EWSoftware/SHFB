@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2016
-// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // Sandcastle Help File Builder project launcher attributes.
 //

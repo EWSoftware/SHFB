@@ -1,25 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourceNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the class that represents a documentation source in a
-// Sandcastle Help File Builder project.
+// This file contains the class that represents a documentation source in a Sandcastle Help File Builder project
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  03/30/2011  EFW  Created the code
-// 1.9.3.3  11/19/2011  EFW  Added support for drag and drop from Explorer
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/30/2011  EFW  Created the code
+// 11/19/2011  EFW  Added support for drag and drop from Explorer
+//===============================================================================================================
 
 using System;
 using System.IO;
@@ -53,37 +50,26 @@ namespace SandcastleBuilder.Package.Nodes
         /// This is overridden to return the menu command ID for the node
         /// </summary>
         /// <remarks>This uses the same menu command ID as a Reference node</remarks>
-        public override int MenuCommandId
-        {
-            get { return VsMenus.IDM_VS_CTXT_REFERENCE; }
-        }
+        public override int MenuCommandId => VsMenus.IDM_VS_CTXT_REFERENCE;
 
         /// <summary>
         /// Get the URL for the documentation source
         /// </summary>
-        public override string Url
-        {
-            get { return this.DocumentationSource.Attribute("sourceFile").Value; }
-        }
+        public override string Url => this.DocumentationSource.Attribute("sourceFile").Value;
 
         /// <summary>
         /// Get the caption for the documentation source
         /// </summary>
-        public override string Caption
-        {
-            get { return Path.GetFileName(this.Url); }
-        }
+        public override string Caption => Path.GetFileName(this.Url);
 
         /// <summary>
         /// Get the item type GUID for the item
         /// </summary>
-        public override Guid ItemTypeGuid
-        {
-            get { return new Guid("9873897F-9B4E-433b-BEB9-C2678A729FFC"); }
-        }
+        public override Guid ItemTypeGuid => new Guid("9873897F-9B4E-433b-BEB9-C2678A729FFC");
+
         #endregion
 
-		#region Constructor
+        #region Constructor
         //=====================================================================
 
         /// <summary>

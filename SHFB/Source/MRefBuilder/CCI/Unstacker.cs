@@ -3,6 +3,8 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Ignore Spelling: dup
+
 // Change history:
 // 11/22/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
 
@@ -139,11 +141,11 @@ namespace System.Compiler
                 case NodeType.Arglist:
                     return expression;
                 case NodeType.Pop:
-                    UnaryExpression uex = expression as UnaryExpression;
-                    if (uex != null)
+                    if(expression is UnaryExpression uex)
                     {
                         Expression e = uex.Operand = this.VisitExpression(uex.Operand);
-                        if (e == null) return null;
+                        if(e == null)
+                            return null;
                         uex.Type = CoreSystemTypes.Void;
                         return uex;
                     }
@@ -161,10 +163,15 @@ namespace System.Compiler
         }
         public override Method VisitMethod(Method method)
         {
+            if(method == null)
+                return null;
+
             // body might not have been materialized, so make sure we do that first!
             Block body = method.Body;
 
-            if (method == null) return null;
+            if (body == null)
+                return null;
+
             BlockSorter blockSorter = new BlockSorter();
             BlockList sortedBlocks = blockSorter.SortedBlocks;
             this.SucessorBlock = blockSorter.SuccessorBlock;
@@ -189,8 +196,11 @@ namespace System.Compiler
                     lstack.exceptionHandlerType = CoreSystemTypes.Object;
                     if (ehandler.FilterExpression != null)
                     {
-                        lstack = new LocalsStack();
-                        lstack.exceptionHandlerType = CoreSystemTypes.Object;
+                        lstack = new LocalsStack
+                        {
+                            exceptionHandlerType = CoreSystemTypes.Object
+                        };
+
                         this.StackLocalsAtEntry[ehandler.FilterExpression.UniqueKey] = lstack;
                     }
                 }
@@ -275,7 +285,7 @@ namespace System.Compiler
             }
             internal AssignmentStatement Push(Expression/*!*/ expr)
             {
-                //Debug.Assert(expr != null && expr.Type != null);
+                ////Debug.Assert(expr != null && expr.Type != null);
                 int i = ++this.top;
                 Debug.Assert(i >= 0);
                 if (i >= this.elements.Length) this.Grow();
@@ -312,11 +322,12 @@ namespace System.Compiler
                 }
             }
         }
+
         private class BlockSorter : StandardVisitor
         {
-            private TrivialHashtable/*!*/ VisitedBlocks = new TrivialHashtable();
-            private TrivialHashtable/*!*/ BlocksThatDropThrough = new TrivialHashtable();
-            private bool lastBranchWasUnconditional = false;
+            private readonly TrivialHashtable/*!*/ VisitedBlocks = new TrivialHashtable();
+            private readonly TrivialHashtable/*!*/ BlocksThatDropThrough = new TrivialHashtable();
+            private bool lastBranchWasUnconditional;
             internal BlockList/*!*/ SortedBlocks = new BlockList();
             internal TrivialHashtable/*!*/ SuccessorBlock = new TrivialHashtable();
 
@@ -332,8 +343,12 @@ namespace System.Compiler
                 Block previousBlock = null;
                 for (int i = 0, n = statements.Count; i < n; i++)
                 {
-                    Block b = statements[i] as Block;
-                    if (b == null) { Debug.Assert(false); continue; }
+                    if(!(statements[i] is Block b))
+                    {
+                        Debug.Assert(false);
+                        continue;
+                    }
+
                     if (previousBlock != null && this.BlocksThatDropThrough[previousBlock.UniqueKey] != null)
                     {
                         this.SuccessorBlock[previousBlock.UniqueKey] = b;

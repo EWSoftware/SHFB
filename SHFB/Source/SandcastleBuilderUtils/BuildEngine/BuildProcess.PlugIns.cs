@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the methods that handle the plug-ins during the build process
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code and can found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -24,9 +23,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Xml;
+using System.Xml.Linq;
 
 using SandcastleBuilder.Utils.BuildComponent;
 
@@ -51,10 +51,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <value>The key is the plug in ID.  The value is a reference to an <see cref="IPlugIn"/> interface
         /// for the plug-in.</value>
         /// <remarks>This allows you to access other plug-ins to facilitate sharing of information between them</remarks>
-        public Dictionary<string, IPlugIn> LoadedPlugIns
-        {
-            get { return loadedPlugIns; }
-        }
+        public Dictionary<string, IPlugIn> LoadedPlugIns => loadedPlugIns;
+
         #endregion
 
         /// <summary>
@@ -65,7 +63,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Lazy<IPlugIn, IPlugInMetadata> plugIn;
             IPlugIn instance;
-            XmlDocument config;
             StringBuilder sb = new StringBuilder(256);
 
             this.ReportProgress("Loading and initializing plug-ins...");
@@ -100,8 +97,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(plugIn == null)
                     {
-                        sb.AppendFormat("Error: Unable to locate plug-in '{0}' in any of the component or " +
-                            "project folders and it cannot be used.\r\n", kv.Key);
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "Error: Unable to locate plug-in '{0}' " +
+                            "in any of the component or project folders and it cannot be used.\r\n", kv.Key);
                         continue;
                     }
 
@@ -111,23 +108,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // Plug-ins are singletons and will be disposed of by the composition container when it
                         // is disposed of.
                         instance = plugIn.Value;
-
-                        config = new XmlDocument();
-                        config.LoadXml(kv.Value);
-
-                        instance.Initialize(this, config.CreateNavigator());
+                        instance.Initialize(this, XElement.Parse(kv.Value));
 
                         loadedPlugIns.Add(kv.Key, instance);
                     }
                 }
                 catch(Exception ex)
                 {
-                    BuilderException bex  = ex as BuilderException;
-
-                    if(bex != null)
-                        sb.AppendFormat("{0}: {1}\r\n", bex.ErrorCode, bex.Message);
+                    if(ex is BuilderException bex)
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}\r\n", bex.ErrorCode, bex.Message);
                     else
-                        sb.AppendFormat("{0}: Unexpected error: {1}\r\n",
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "{0}: Unexpected error: {1}\r\n",
                             (plugIn != null) ? plugIn.Metadata.Id : kv.Key, ex.ToString());
                 }
             }
@@ -177,18 +168,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 try
                 {
-                    // Wrap plug-in output in an element so that it can be formatted differently
-                    swLog.WriteLine("<plugIn name=\"{0}\" behavior=\"{1}\" priority=\"{2}\">", metadata.Id,
-                        behavior, plugIn.ExecutionPoints.PriorityFor(step, behavior));
+                    // Wrap plug-in output in an element so that it can be formatted differently.  Ignore it if
+                    // the log is closed (plug-ins that run in the completion steps).
+                    if(swLog != null)
+                    {
+                        swLog.WriteLine("<plugIn name=\"{0}\" behavior=\"{1}\" priority=\"{2}\">", metadata.Id,
+                            behavior, plugIn.ExecutionPoints.PriorityFor(step, behavior));
+                    }
 
                     context.Executed = true;
                     plugIn.Execute(context);
 
-                    swLog.Write("</plugIn>");
+                    if(swLog != null)
+                        swLog.Write("</plugIn>");
                 }
                 catch(Exception ex)
                 {
-                    swLog.WriteLine("</plugIn>");
+                    if(swLog != null)
+                        swLog.WriteLine("</plugIn>");
 
                     throw new BuilderException("BE0029", "Unexpected error while executing plug-in '" +
                         metadata.Id + "': " + ex.ToString(), ex);

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProgressEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/15/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the event arguments class for the build progress event
 //
@@ -33,27 +32,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This read-only property is used to get the current build step of the build process
         /// </summary>
-        public BuildStep BuildStep { get; private set; }
+        public BuildStep BuildStep { get; }
 
         /// <summary>
         /// This read-only property is used to get whether or not the build step has changed
         /// </summary>
-        public bool StepChanged { get; private set; }
+        public bool StepChanged { get; }
 
         /// <summary>
         /// This read-only property is used to get whether or not the build has completed
         /// </summary>
         /// <remarks>The build may have succeeded, failed, or been canceled.  See <see cref="BuildStep"/> for the
         /// final disposition.</remarks>
-        public bool HasCompleted
-        {
-            get { return (this.BuildStep >= BuildStep.Completed); }
-        }
+        public bool HasCompleted => (this.BuildStep >= BuildStep.Completed);
 
         /// <summary>
         /// This read-only property is used to get the message associated with the progress report
         /// </summary>
-        public string Message { get; private set; }
+        public string Message { get; }
 
         #endregion
 

@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeSnippetGroup.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to track a group of related code snippets in the SyntaxComponent
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -21,9 +20,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Snippets
+namespace Sandcastle.Tools.BuildComponents.Snippets
 {
     /// <summary>
     /// This is used to track a group of related code snippets in the <see cref="SyntaxComponent"/>
@@ -38,12 +35,12 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// </summary>
         /// <remarks>This serves as a place holder during the grouping and sorting operations and it becomes the
         /// parent of the code snippets in the final topic.</remarks>
-        public XmlElement SnippetGroupElement { get; private set; }
+        public XmlElement SnippetGroupElement { get; }
 
         /// <summary>
         /// This read-only property is used to get the list of related code snippets
         /// </summary>
-        public List<CodeSnippet> CodeSnippets { get; private set; }
+        public List<CodeSnippet> CodeSnippets { get; }
 
         /// <summary>
         /// This is used to get or set whether or not the group is a single, standalone snippet

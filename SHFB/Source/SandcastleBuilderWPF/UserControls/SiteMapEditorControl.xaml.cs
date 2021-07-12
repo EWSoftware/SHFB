@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SiteMapEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit site map files
 //
@@ -27,6 +26,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
@@ -41,13 +43,13 @@ namespace SandcastleBuilder.WPF.UserControls
         #region Private data members
         //=====================================================================
 
-        private TocEntryCollection topics;
         private IEnumerator<TocEntry> matchEnumerator;
         private Point startDragPoint;
 
         // Topics are too complex to serialize to the clipboard.  As such, we'll use this as an internal
         // "clipboard" for cut items within the editor instance.
         private TocEntry clipboardTopic;
+
         #endregion
 
         #region Properties
@@ -56,10 +58,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This read-only property returns the current topic collection including any edits
         /// </summary>
-        public TocEntryCollection Topics
-        {
-            get { return topics; }
-        }
+        public TocEntryCollection Topics { get; private set; }
 
         /// <summary>
         /// This read-only property returns the current topic
@@ -142,21 +141,21 @@ namespace SandcastleBuilder.WPF.UserControls
         public void LoadSiteMapFile(FileItem siteMapFile)
         {
             if(siteMapFile == null)
-                throw new ArgumentNullException("siteMapFile", "A site map file item must be specified");
+                throw new ArgumentNullException(nameof(siteMapFile), "A site map file item must be specified");
 
-            topics = new TocEntryCollection(siteMapFile.ToContentFile());
-            topics.Load();
+            this.Topics = new TocEntryCollection(siteMapFile.ToContentFile());
+            this.Topics.Load();
 
             // This works around a legacy support issue related to object equality
-            foreach(var t in topics.All())
+            foreach(var t in this.Topics.All())
                 t.UniqueId = Guid.NewGuid();
 
-            topics.ListChanged += new ListChangedEventHandler(topics_ListChanged);
+            this.Topics.ListChanged += new ListChangedEventHandler(topics_ListChanged);
 
-            if(topics.Count != 0 && !topics.Find(t => t.IsSelected, false).Any())
-                topics[0].IsSelected = true;
+            if(this.Topics.Count != 0 && !this.Topics.Find(t => t.IsSelected, false).Any())
+                this.Topics[0].IsSelected = true;
 
-            tvContent.ItemsSource = topics;
+            tvContent.ItemsSource = this.Topics;
 
             this.topics_ListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, -1));
         }
@@ -187,7 +186,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        void topics_ListChanged(object sender, ListChangedEventArgs e)
+        private void topics_ListChanged(object sender, ListChangedEventArgs e)
         {
             TocEntry selectedTopic = tvContent.SelectedItem as TocEntry;
 
@@ -203,7 +202,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     case "ApiParentMode":
                         // There can be only one API content parent
                         if(selectedTopic != null && selectedTopic.ApiParentMode != ApiParentMode.None)
-                            foreach(var match in topics.Find(
+                            foreach(var match in this.Topics.Find(
                               t => t.ApiParentMode != ApiParentMode.None && t != selectedTopic, false))
                                 match.ApiParentMode = ApiParentMode.None;
                         break;
@@ -211,7 +210,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     case "IsDefaultTopic":
                         // There can be only one default topic
                         if(selectedTopic != null && selectedTopic.IsDefaultTopic)
-                            foreach(var match in topics.Find(t => t.IsDefaultTopic && t != selectedTopic, false))
+                            foreach(var match in this.Topics.Find(t => t.IsDefaultTopic && t != selectedTopic, false))
                                 match.IsDefaultTopic = false;
                         break;
 
@@ -220,10 +219,10 @@ namespace SandcastleBuilder.WPF.UserControls
                 }
 
             if(sender != this)
-                base.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
+                this.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
 
             // Update control state based on the collection content
-            tvContent.IsEnabled = expTopicProps.IsEnabled = (topics != null && topics.Count != 0);
+            tvContent.IsEnabled = expTopicProps.IsEnabled = (this.Topics != null && this.Topics.Count != 0);
 
             CommandManager.InvalidateRequerySuggested();
 
@@ -243,12 +242,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void AddChildTopic_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            ItemCollection items;
-
-            if(sender is MenuItem)
-                items = ((MenuItem)sender).Items;
-            else
-                items = ((ContextMenu)sender).Items;
+            ItemCollection items = sender is MenuItem item ? item.Items : ((ContextMenu)sender).Items;
 
             foreach(MenuItem mi in items.OfType<MenuItem>())
                 mi.CommandParameter = true;
@@ -261,7 +255,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void btnGo_Click(object sender, RoutedEventArgs e)
         {
-            if(topics == null || topics.Count == 0)
+            if(this.Topics == null || this.Topics.Count == 0)
                 return;
 
             if(txtFindID.Text.Trim().Length == 0)
@@ -279,7 +273,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // If this is the first time, get all matches
             if(matchEnumerator == null)
-                matchEnumerator = topics.Find(t =>
+                matchEnumerator = this.Topics.Find(t =>
                   (!String.IsNullOrEmpty(t.SourceFile.PersistablePath) &&
                     t.SourceFile.PersistablePath.IndexOf(txtFindID.Text,
                     StringComparison.CurrentCultureIgnoreCase) != -1) ||
@@ -297,7 +291,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     matchEnumerator = null;
                 }
 
-                MessageBox.Show("No more matches found", "Site Map Editor", MessageBoxButton.OK,
+                MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
         }
@@ -338,9 +332,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem item = sender as TreeViewItem;
-
-            if(item != null)
+            if(sender is TreeViewItem item)
             {
                 item.IsSelected = true;
                 item.Focus();
@@ -355,12 +347,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_TreeViewItemMouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            TreeViewItem item = sender as TreeViewItem;
-
             // Only execute this if it's the selected node.  An odd side-effect of how we have to hook up
             // the event handler is that it fires for the selected item and all of its parents up to the
             // root of the tree even if the event is marked as handled.
-            if(item != null && item.IsSelected)
+            if(sender is TreeViewItem item && item.IsSelected)
                 EditorCommands.Edit.Execute(null, item);
         }
         #endregion
@@ -376,7 +366,7 @@ namespace SandcastleBuilder.WPF.UserControls
         private void cmdAddItem_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             TocEntry currentTopic = this.CurrentTopic,
-                newTopic = new TocEntry(topics.ContentLayoutFile.BasePathProvider)
+                newTopic = new TocEntry(this.Topics.ContentLayoutFile.BasePathProvider)
                 {
                     Title = "Table of Contents Container",
                     UniqueId = Guid.NewGuid()
@@ -385,8 +375,8 @@ namespace SandcastleBuilder.WPF.UserControls
             // If the command parameter is null, add it as a sibling.  If not, add it as a child.
             if(e.Parameter == null || currentTopic == null)
             {
-                if(currentTopic == null || topics.Count == 0)
-                    topics.Add(newTopic);
+                if(currentTopic == null || this.Topics.Count == 0)
+                    this.Topics.Add(newTopic);
                 else
                     currentTopic.Parent.Insert(currentTopic.Parent.IndexOf(currentTopic) + 1, newTopic);
             }
@@ -406,7 +396,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdExpandCollapse_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (topics != null && topics.Count != 0 &&
+            e.CanExecute = (this.Topics != null && this.Topics.Count != 0 &&
                 ((e.Command != EditorCommands.CollapseCurrent && e.Command != EditorCommands.ExpandCurrent) ||
                 (this.CurrentTopic != null && this.CurrentTopic.Children.Count != 0)));
         }
@@ -420,8 +410,8 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             bool expand = (e.Command == EditorCommands.ExpandAll);
 
-            if(topics != null)
-                foreach(var topic in topics.Find(t => t.Children.Count != 0, false))
+            if(this.Topics != null)
+                foreach(var topic in this.Topics.Find(t => t.Children.Count != 0, false))
                     topic.IsExpanded = expand;
         }
 
@@ -564,9 +554,8 @@ namespace SandcastleBuilder.WPF.UserControls
             TocEntry t = tvContent.SelectedItem as TocEntry;
 
             if(t != null && MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Are you sure you " +
-              "want to delete the topic '{0}' and all of its sub-topics?", t.Title),
-              "Site Map Editor", MessageBoxButton.YesNo, MessageBoxImage.Question,
-              MessageBoxResult.No) == MessageBoxResult.Yes)
+              "want to delete the topic '{0}' and all of its sub-topics?", t.Title), Constants.AppName,
+              MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 t.Parent.Remove(t);
                 tvContent.Focus();
@@ -624,7 +613,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdPaste_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (topics != null && clipboardTopic != null);
+            e.CanExecute = (this.Topics != null && clipboardTopic != null);
         }
 
         /// <summary>
@@ -642,7 +631,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 clipboardTopic = null;
 
                 if(targetTopic == null)
-                    topics.Add(newTopic);
+                    this.Topics.Add(newTopic);
                 else
                 {
                     if(e.Command == EditorCommands.PasteAsChild)
@@ -666,7 +655,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdHelp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("3dd5fe3b-1bc3-42e5-8900-56165e3f9aed");
+            UiUtility.ShowHelpTopic("3dd5fe3b-1bc3-42e5-8900-56165e3f9aed");
         }
 
         /// <summary>
@@ -682,7 +671,7 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 // Let the caller prompt for the filename and add it to the project if necessary
                 RoutedEventArgs args = new RoutedEventArgs(AssociateTopicEvent, this);
-                base.RaiseEvent(args);
+                this.RaiseEvent(args);
 
                 // If associated, refresh the bindings
                 if(args.Handled)
@@ -704,7 +693,7 @@ namespace SandcastleBuilder.WPF.UserControls
             TocEntry t = tvContent.SelectedItem as TocEntry;
 
             if(t != null && MessageBox.Show("Do you want to clear the file associated with this topic?",
-              "Site Map Editor", MessageBoxButton.YesNo, MessageBoxImage.Question,
+              Constants.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question,
               MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 t.SourceFile = null;

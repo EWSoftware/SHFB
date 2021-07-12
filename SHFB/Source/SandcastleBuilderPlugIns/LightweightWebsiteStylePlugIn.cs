@@ -2,10 +2,9 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : LightweightWebsiteStylePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Sam Harwell
-// Updated : 02/05/2016
-// Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved.
-//           Portions Copyright 2014-2016, Sam Harwell, All rights reserved.
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved.
+//           Portions Copyright 2014-2021, Sam Harwell, All rights reserved.
 //
 // This file contains a plug-in that is used to add elements for the lightweight website style such as a search
 // box and a table of contents in the topics similar to the MSDN lightweight style.
@@ -29,12 +28,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
 
@@ -81,16 +78,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <inheritdoc />
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            MessageBox.Show("This plug-in has no configurable settings", "Lightweight Website Style Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <inheritdoc />
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -103,6 +91,9 @@ namespace SandcastleBuilder.PlugIns
         /// <inheritdoc />
         public void Execute(ExecutionContext context)
         {
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
+
             // Look up the resize tool tip in the shared content resource items file
             if(context.BuildStep == BuildStep.GenerateSharedContent)
             {

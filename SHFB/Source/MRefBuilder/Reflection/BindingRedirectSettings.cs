@@ -2,20 +2,21 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
 //
 // This file contains a class representing binding redirection settings for the MRefBuilder assembly resolver
 // class.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
 // 03/02/2012 - EFW - Added my code to the MRefBuilder project
 // 12/17/2013 - EFW - Updated regex to ignore anything after the public key token such as ", Retargetable=Yes".
 //===============================================================================================================
+
+// Ignore Spelling: microsoft
 
 using System;
 using System.Collections.ObjectModel;
@@ -24,7 +25,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This represents binding redirection settings for the <see cref="AssemblyResolver"/>.
@@ -34,12 +35,13 @@ namespace Microsoft.Ddue.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private static Regex reStrongName = new Regex(@"(?<Name>.*?),\s*" +
+        private static readonly Regex reStrongName = new Regex(@"(?<Name>.*?),\s*" +
             @"Version=(?<Version>.*?),\s*Culture=(?<Culture>.*?),\s*" +
             "PublicKeyToken=(?<PublicKeyToken>[^,]*)", RegexOptions.IgnoreCase);
 
         private string configFile, assemblyName, publicKeyToken, culture;
         private Version oldVersionFrom, oldVersionTo, newVersion;
+
         #endregion
 
         #region Properties
@@ -50,7 +52,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// </summary>
         public string AssemblyName
         {
-            get { return assemblyName; }
+            get => assemblyName;
             set
             {
                 if(String.IsNullOrEmpty(value))
@@ -66,8 +68,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>If omitted, "null" is assumed</value>
         public string PublicKeyToken
         {
-            get { return publicKeyToken; }
-            set { publicKeyToken = value; }
+            get => publicKeyToken;
+            set => publicKeyToken = value;
         }
 
         /// <summary>
@@ -76,8 +78,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>If omitted, "neutral" is assumed</value>
         public string Culture
         {
-            get { return culture; }
-            set { culture = value; }
+            get => culture;
+            set => culture = value;
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// </summary>
         public Version OldVersion
         {
-            get { return oldVersionFrom; }
+            get => oldVersionFrom;
             set
             {
                 if(value == null)
@@ -103,8 +105,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// version.</value>
         public Version OldVersionTo
         {
-            get { return oldVersionTo; }
-            set { oldVersionTo = value; }
+            get => oldVersionTo;
+            set => oldVersionTo = value;
         }
 
         /// <summary>
@@ -112,7 +114,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// </summary>
         public Version NewVersion
         {
-            get { return newVersion; }
+            get => newVersion;
             set
             {
                 if(value == null)
@@ -129,23 +131,18 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <value>If specified, the properties in the Binding Redirect category are ignored</value>
         public string ConfigurationFile
         {
-            get { return configFile; }
-            set { configFile = value; }
+            get => configFile;
+            set => configFile = value;
         }
 
         /// <summary>
         /// This returns the strong name for the redirect assembly
         /// </summary>
-        public string StrongName
-        {
-            get
-            {
-                return String.Format(CultureInfo.InvariantCulture,
-                    "{0}, Version={1}, Culture={2}, PublicKeyToken={3}",
-                    assemblyName, newVersion, String.IsNullOrEmpty(culture) ? "neutral" : culture,
-                    String.IsNullOrEmpty(publicKeyToken) ? "null" : publicKeyToken);
-            }
-        }
+        public string StrongName => String.Format(CultureInfo.InvariantCulture,
+            "{0}, Version={1}, Culture={2}, PublicKeyToken={3}", assemblyName, newVersion,
+            String.IsNullOrEmpty(culture) ? "neutral" : culture,
+            String.IsNullOrEmpty(publicKeyToken) ? "null" : publicKeyToken);
+
         #endregion
 
         #region Constructor
@@ -174,7 +171,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             string range;
 
             // Shouldn't happen, but just in case...
-            if(!String.IsNullOrEmpty(configFile))
+            if(!String.IsNullOrWhiteSpace(configFile))
                 return "!!! ERROR: Configuration file entry not imported !!!";
 
             if(oldVersionTo == null)

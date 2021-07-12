@@ -206,7 +206,7 @@ etc.</para>
 								<para>Script# Reflection File Fixer - Fixes up the reflection information file so that
 									<externalLink>
 										<linkText>Script#</linkText>
-										<linkUri>http://scriptsharp.com/</linkUri>
+										<linkUri>https://github.com/NikhilK/scriptsharp</linkUri>
 										<linkTarget>_blank</linkTarget>
 									</externalLink> assemblies are documented correctly.</para>
 							</listItem>

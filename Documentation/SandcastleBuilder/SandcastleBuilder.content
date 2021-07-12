@@ -1212,7 +1212,7 @@
       <HelpKeyword index="K" term="markdown content" />
     </HelpKeywords>
   </Topic>
-  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" title="Sandcastle Tools">
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isExpanded="true" isSelected="true" title="Sandcastle Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="sandcastle tools" />
     </HelpKeywords>
@@ -1240,16 +1240,6 @@
           <HelpKeyword index="K" term="tools, MRefBuilder configuration" />
         </HelpKeywords>
       </Topic>
-    </Topic>
-    <Topic id="36b6f77e-5662-4e1f-a075-bae885db0401" visible="True" title="XSL Transform Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, XslTransform.exe" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="66f0b914-3e4f-4fa5-bee7-67879a74a018" visible="True" title="Add Namespace Groups Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, AddNamespaceGroups.exe" />
-      </HelpKeywords>
     </Topic>
     <Topic id="cdac64ac-3d78-4d30-b528-ce1e9aacfb24" visible="True" title="Version Builder Tool">
       <HelpKeywords>
@@ -1294,11 +1284,6 @@
     <Topic id="032f1fab-6625-4ffb-9316-57fb3e4a03ff" visible="True" title="Reflection Data Manager Tool">
       <HelpKeywords>
         <HelpKeyword index="K" term="tools, ReflectionDataManager.exe" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="04f289d0-20bd-4873-9012-6c77a21c0f0a" visible="True" title="Segregate By Namespace Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, SegregateByNamespace.exe" />
       </HelpKeywords>
     </Topic>
     <Topic id="5f73b7b1-473c-4740-bdfc-e662192910fc" visible="True" title="Help Library Manager Launcher Utility">
@@ -1393,7 +1378,7 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" visible="True" isSelected="true" title="Version 2021.4.9.0">
+    <Topic id="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" visible="True" title="Version 2021.4.9.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2021.4.9.0" />
       </HelpKeywords>

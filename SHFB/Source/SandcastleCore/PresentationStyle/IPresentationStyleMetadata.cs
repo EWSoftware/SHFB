@@ -2,15 +2,14 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IPresentationStyleMetadata.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/01/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a presentation style metadata interface definition used to implement a presentation style
 // plug-in.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //

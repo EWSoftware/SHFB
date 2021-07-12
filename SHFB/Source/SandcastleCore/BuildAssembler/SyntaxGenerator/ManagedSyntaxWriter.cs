@@ -23,7 +23,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         #region Private data members
         //=====================================================================
 
-        private XPathNavigator location;
+        private readonly XPathNavigator location;
         private XmlWriter writer;
 
         // position along the line
@@ -35,10 +35,8 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         //=====================================================================
 
         /// <inheritdoc />
-        public override int Position
-        {
-            get { return position; }
-        }
+        public override int Position => position;
+
         #endregion
 
         #region Constructor
@@ -50,10 +48,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <param name="location">The location in which to write the output</param>
         public ManagedSyntaxWriter(XPathNavigator location)
         {
-            if(location == null)
-                throw new ArgumentNullException("location");
-
-            this.location = location;
+            this.location = location ?? throw new ArgumentNullException(nameof(location));
         }
         #endregion
 
@@ -103,6 +98,9 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <inheritdoc />
         public override void WriteString(string text)
         {
+            if(text == null)
+                throw new ArgumentNullException(nameof(text));
+
             writer.WriteString(text);
             position += text.Length;
         }
@@ -110,6 +108,9 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <inheritdoc />
         public override void WriteStringWithStyle(string text, string style)
         {
+            if(text == null)
+                throw new ArgumentNullException(nameof(text));
+
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", style);
             WriteString(text);
@@ -129,7 +130,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
 
             // Since we have no inner text, it will be up to the reference link component to render the link
             // accordingly.
-            if(!base.RenderReferenceLinks)
+            if(!this.RenderReferenceLinks)
                 writer.WriteAttributeString("renderAsLink", "false");
 
             writer.WriteEndElement();
@@ -139,7 +140,10 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <inheritdoc />
         public override void WriteReferenceLink(string reference, string text)
         {
-            if(base.RenderReferenceLinks)
+            if(text == null)
+                throw new ArgumentNullException(nameof(text));
+
+            if(this.RenderReferenceLinks)
             {
                 writer.WriteStartElement("referenceLink");
                 writer.WriteAttributeString("target", reference);

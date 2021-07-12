@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderPackage", "SandcastleBuilderPackage\SandcastleBuilderPackage.csproj", "{242129CC-9310-450C-AEE3-4B849ECFB67E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,13 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderPackage", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Project", "MPFProj_VS2010\Microsoft.VisualStudio.Project.csproj", "{CACB60A9-1E76-4F92-8831-B134A658C695}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderUtils", "SandcastleBuilderUtils\SandcastleBuilderUtils.csproj", "{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleBuilderUtils", "SandcastleBuilderUtils\SandcastleBuilderUtils.csproj", "{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorizerLibrary", "CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderWPF", "SandcastleBuilderWPF\SandcastleBuilderWPF.csproj", "{D3B06405-3435-4329-9233-2DF1BF5028AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleCore", "SandcastleCore\SandcastleCore.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87F7C3A5-F8CC-4DF0-9F82-E8F99E507E6C}"
 	ProjectSection(SolutionItems) = preProject
@@ -29,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6A4013
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastlePlatformWindows", "SandcastlePlatformWindows\SandcastlePlatformWindows.csproj", "{3464677B-467D-4A35-BAF4-543FB5FA9D66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleBuilderWPF", "SandcastleBuilderWPF\SandcastleBuilderWPF.csproj", "{1E9BE929-4CBA-4668-A141-0BBDB0AC9F0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,16 +54,23 @@ Global
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3B06405-3435-4329-9233-2DF1BF5028AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3464677B-467D-4A35-BAF4-543FB5FA9D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3464677B-467D-4A35-BAF4-543FB5FA9D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3464677B-467D-4A35-BAF4-543FB5FA9D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3464677B-467D-4A35-BAF4-543FB5FA9D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E9BE929-4CBA-4668-A141-0BBDB0AC9F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E9BE929-4CBA-4668-A141-0BBDB0AC9F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E9BE929-4CBA-4668-A141-0BBDB0AC9F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E9BE929-4CBA-4668-A141-0BBDB0AC9F0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BD2059C-4BA8-447F-B138-E59A562EC687}
 	EndGlobalSection
 EndGlobal

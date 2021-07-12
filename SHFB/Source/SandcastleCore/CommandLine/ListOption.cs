@@ -24,6 +24,7 @@ namespace Sandcastle.Core.CommandLine
         //=====================================================================
 
         private List<string> values;
+
         #endregion
 
         #region Properties
@@ -41,10 +42,7 @@ namespace Sandcastle.Core.CommandLine
 
                 return values.ToArray();
             }
-            protected set
-            {
-                throw new NotImplementedException();
-            }
+            protected set => throw new NotImplementedException();
         }
         #endregion
 
@@ -99,7 +97,7 @@ namespace Sandcastle.Core.CommandLine
         /// <inheritdoc />
         internal override void WriteTemplate(TextWriter writer)
         {
-            writer.WriteLine("/{0}:{1}[,{1},{1},...]", base.Name, base.Template);
+            writer.WriteLine("/{0}:{1}[,{1},{1},...]", this.Name, this.Template);
         }
         #endregion
     }

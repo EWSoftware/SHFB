@@ -23,7 +23,7 @@
     <HtmlHelpName>TestCaseProject</HtmlHelpName>
     <ProjectSummary>Test project summary! Updated on 04/09/2011 from within Visual Studio.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
-    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <WorkingPath>
@@ -50,7 +50,7 @@
           <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
           <allowMissingSource value="false" />
           <removeRegionMarkers value="false" />
-          <colorizer syntaxFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xml" styleFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}PresentationStyles\Colorizer\highlight.css" scriptFile="{@SHFBFolder}PresentationStyles\Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
+          <colorizer syntaxFile="{@CoreComponentsFolder}Colorizer\highlight.xml" styleFile="{@CoreComponentsFolder}Colorizer\highlight.xsl" stylesheet="{@CoreComponentsFolder}Colorizer\highlight.css" scriptFile="{@CoreComponentsFolder}Colorizer\highlight.js" disabled="{@DisableCodeBlockComponent}" language="cs" tabSize="0" numberLines="false" outlining="true" keepSeeTags="false" defaultTitle="true" />
         </component>
       </ComponentConfig>
       <ComponentConfig id="API Token Resolution" enabled="True">
@@ -59,12 +59,33 @@
       </ComponentConfig>
       <ComponentConfig id="IntelliSense Component" enabled="True">
         <component id="IntelliSense Component">
-          <!-- Output options (optional)
-  Attributes:
-    Include namespaces (false by default)
-    Namespaces comments filename ("Namespaces" if not specified or empty)
-    Output folder (current folder if not specified or empty) -->
-          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" boundedCapacity="0" />
+          <output includeNamespaces="true" namespacesFile="NamespacesTest" folder="{@OutputFolder}" boundedCapacity="0" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Syntax Component" enabled="False">
+        <component id="Syntax Component">
+          <syntax input="/document/reference" output="/document/syntax" renderReferenceLinks="true" />
+          <generators>
+    {@SyntaxFilters}
+</generators>
+          <containerElement name="codeSnippetGroup" addNoExampleTabs="true" includeOnSingleSnippets="true" groupingEnabled="{@CodeSnippetGrouping}" />
+          <configurations>
+            <generator id="Visual Basic">
+              <includeLineContinuation value="true" />
+            </generator>
+            <generator id="Visual Basic Usage">
+              <includeLineContinuation value="false" />
+            </generator>
+            <generator id="Managed C++" />
+            <generator id="C#" />
+            <generator id="F#" />
+            <generator id="J#" />
+            <generator id="JScript" />
+            <generator id="JavaScript" />
+            <generator id="XAML Usage" />
+            <generator id="ASP.NET" />
+            <generator id="X#" />
+          </configurations>
         </component>
       </ComponentConfig>
     </ComponentConfigurations>
@@ -104,67 +125,7 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
-        <configuration>
-          <expressions>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression>
-          </expressions>
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Bibliography Support" enabled="False">
-        <configuration>
-          <bibliography path="{@ProjectFolder}Bibliography.xml" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Completion Notification" enabled="False">
-        <configuration>
-          <smtpServer host="mail.somecompany.org" port="25" />
-          <userCredentials useDefault="true" userName="" password="" />
-          <fromEMail address="SHFB@SomeCompany.org" />
-          <successEMail address="EWoodruff@SomeCompany.org" attachLog="false" />
-          <failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" />
-          <xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
-        <configuration>
-          <sbAppLocale path="C:\Utils\SBAppLocale.exe" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Wildcard Assembly References" enabled="False">
-        <configuration>
-          <references>
-            <reference path="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" />
-            <reference path="..\..\SHFB\Deploy\" wildcard="*.dll" recurse="true" />
-          </references>
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Additional Reference Links" enabled="False">
-        <configuration />
-      </PlugInConfig>
-      <PlugInConfig id="IntelliSense Only" enabled="False">
-        <configuration />
-      </PlugInConfig>
-      <PlugInConfig id="Documented Entities Only" enabled="False">
-        <configuration />
-      </PlugInConfig>
-      <PlugInConfig id="Member ID Fix-Ups" enabled="True">
-        <configuration>
-          <expressions>
-            <expression matchExpression="!:O:" replacementValue="O:" matchAsRegEx="true" />
-            <expression matchExpression="`[0-9]+(\{)" replacementValue="$1" matchAsRegEx="true" />
-            <expression matchExpression="(member name=&quot;.*?System\.Collections\.Generic.*?)(\^)" replacementValue="$1" matchAsRegEx="true" />
-            <expression matchExpression="cref=&quot;!:([EFGMNPT]|Overload):" replacementValue="cref=&quot;$1:" matchAsRegEx="true" />
-            <expression matchExpression="cli\.interior_ptr{([^}]+?)}" replacementValue="$1@!System.Runtime.CompilerServices.IsExplicitlyDereferenced" matchAsRegEx="true" />
-          </expressions>
-        </configuration>
-      </PlugInConfig>
-    </PlugInConfigurations>
+<PlugInConfig id="Bibliography Support" enabled="False"><configuration><bibliography path="C:\GH\SHFB\TestCaseProject\Doc\Bibliography.xml" /></configuration></PlugInConfig></PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>

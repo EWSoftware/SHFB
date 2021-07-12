@@ -33,7 +33,7 @@ using System.Compiler;
 
 using Sandcastle.Core;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This class is used to implement the API filter which removes unwanted members from the output
@@ -779,7 +779,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             // C# 7.x generates a private attribute type if target framework does not support it.
             // We need to pass those attributes through and filter them later (ref struct, readonly struct)
-            if (attributeType.FullName .StartsWith("System.Runtime.CompilerServices"))
+            if(attributeType.FullName.StartsWith("System.Runtime.CompilerServices", StringComparison.Ordinal))
                 return attributeFilter.IsRequiredType(attributeType);
 
             if(!this.IsExposedType(attributeType))
@@ -805,6 +805,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>True if visible based on the current visibility settings, false if not</returns>
         public virtual bool IsVisible(Member member)
         {
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             // Handle types first as a limited set of options apply to them
             TypeNode type = member as TypeNode;
 
@@ -886,6 +889,12 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>True if the inherited base framework member is to be excluded, false to include it</returns>
         public bool IsExcludedFrameworkMember(TypeNode type, Member member)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+            
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             string memberNamespace = member.DeclaringType.Namespace.Name;
 
             if(type.Namespace.Name != memberNamespace && (memberNamespace == "System" ||

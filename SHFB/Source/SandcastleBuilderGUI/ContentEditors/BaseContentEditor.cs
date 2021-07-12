@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : BaseContentEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/17/2019
-// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the base content editor form.
 //
@@ -85,6 +84,18 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public BaseContentEditor()
+        {
+            this.InitializeComponent();
+        }
+        #endregion
+
         #region Methods
         //=====================================================================
 
@@ -105,8 +116,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             throw new NotImplementedException();
         }
-        #endregion
 
+        /// <summary>
+        /// Initialize the default properties
+        /// </summary>
         private void InitializeComponent()
         {
             this.SuspendLayout();
@@ -115,10 +128,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.ClientSize = new System.Drawing.Size(278, 244);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular,
-                System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                System.Drawing.GraphicsUnit.Point, 0);
             this.Name = "BaseContentEditor";
             this.ResumeLayout(false);
-
         }
+        #endregion
     }
 }

@@ -1,342 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SandcastleBuilder.Utils</RootNamespace>
-    <AssemblyName>SandcastleBuilder.Utils</AssemblyName>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\SandcastleBuilder.Utils.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\SandcastleBuilder.Utils.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotNetZip.Reduced.1.9.1.8\lib\net20\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.15.1.548\lib\net46\Microsoft.Build.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Engine, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Engine.15.1.548\lib\net46\Microsoft.Build.Engine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Framework.15.1.548\lib\net46\Microsoft.Build.Framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.1.548\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
-      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>Sandcastle.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
-      <Link>HelpLibraryManager\HelpLibraryManager.cs</Link>
-    </Compile>
-    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerException.cs">
-      <Link>HelpLibraryManager\HelpLibraryManagerException.cs</Link>
-    </Compile>
-    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerUnsafeNativeMethods.cs">
-      <Link>HelpLibraryManager\HelpLibraryManagerUnsafeNativeMethods.cs</Link>
-    </Compile>
-    <Compile Include="ApiEntryType.cs" />
-    <Compile Include="BuildAssemblerVerbosity.cs" />
-    <Compile Include="BuildComponent\BuildComponentConfiguration.cs" />
-    <Compile Include="BuildComponent\HelpFileBuilderPlugInExportAttribute.cs" />
-    <Compile Include="BuildComponent\IPlugInMetadata.cs" />
-    <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
-    <Compile Include="BuildEngine\PartialBuildType.cs" />
-    <Compile Include="BuildEngine\SubstitutionTagReplacement.cs" />
-    <Compile Include="BuildEngine\TaskRunner.cs" />
-    <Compile Include="BuildItemMetadata.cs" />
-    <Compile Include="ConceptualContent\ContentFile.cs" />
-    <Compile Include="ConceptualContent\IContentFileProvider.cs" />
-    <Compile Include="Design\FileDialogType.cs" />
-    <Compile Include="Design\SubstitutionTagAttribute.cs" />
-    <Compile Include="BuilderException.cs" />
-    <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
-    <Compile Include="BuildEngine\BuildProcess.Namespaces.cs" />
-    <Compile Include="BuildEngine\BuildProcess.PlugIns.cs" />
-    <Compile Include="BuildEngine\BuildProcess.ConfigFiles.cs" />
-    <Compile Include="BuildEngine\BuildProgressEventArgs.cs" />
-    <Compile Include="BuildEngine\BuildProcess.cs" />
-    <Compile Include="BuildEngine\BuildStep.cs" />
-    <Compile Include="BuildComponent\ComponentConfigurationDictionary.cs" />
-    <Compile Include="ConceptualContent\CodeEntityReference.cs" />
-    <Compile Include="ConceptualContent\CodeReference.cs" />
-    <Compile Include="ConceptualContent\ConceptualContentSettings.cs" />
-    <Compile Include="ConceptualContent\DocumentType.cs" />
-    <Compile Include="ConceptualContent\ImageReference.cs" />
-    <Compile Include="ConceptualContent\Token.cs" />
-    <Compile Include="ConceptualContent\TokenCollection.cs" />
-    <Compile Include="ConceptualContent\Topic.cs" />
-    <Compile Include="ConceptualContent\TopicCollection.cs" />
-    <Compile Include="ContentPlacement.cs" />
-    <Compile Include="Controls\CustomPropertyGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Design\EscapeValueAttribute.cs" />
-    <Compile Include="Design\FilePathObjectEditor.cs" />
-    <Compile Include="Design\FilePathTypeConverter.cs" />
-    <Compile Include="Design\FolderPathObjectEditor.cs" />
-    <Compile Include="Design\FolderPathTypeConverter.cs" />
-    <Compile Include="Design\VersionTypeConverter.cs" />
-    <Compile Include="FilePath.cs" />
-    <Compile Include="FolderPath.cs" />
-    <Compile Include="BuildEngine\FullTextIndex.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IBasePathProvider.cs" />
-    <Compile Include="InheritedDocumentation\CommentsCacheEventArgs.cs" />
-    <Compile Include="InheritedDocumentation\IndexedCommentsCache.cs" />
-    <Compile Include="InheritedDocumentation\InheritedDocsException.cs" />
-    <Compile Include="MSBuild\Build1xHelpFile.cs" />
-    <Compile Include="MSBuild\BuildHelp.cs" />
-    <Compile Include="MSBuild\CleanHelp.cs" />
-    <Compile Include="MSBuild\BuildOpenXmlFile.cs" />
-    <Compile Include="MSBuild\GenerateMarkdownContent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MSBuild\MSBuildProject.cs" />
-    <Compile Include="MSBuild\NumberingStyle.cs" />
-    <Compile Include="MSBuild\PackageReferenceResolver.cs" />
-    <Compile Include="ApiFilter.cs" />
-    <Compile Include="ApiFilterCollection.cs" />
-    <Compile Include="MSHelpKeyword.cs" />
-    <Compile Include="MSHelpKeywordCollection.cs" />
-    <Compile Include="BuildComponent\ExecutionContext.cs" />
-    <Compile Include="BuildComponent\ExecutionPoint.cs" />
-    <Compile Include="BuildComponent\ExecutionBehaviors.cs" />
-    <Compile Include="BuildComponent\IPlugIn.cs" />
-    <Compile Include="BuildComponent\PlugInConfiguration.cs" />
-    <Compile Include="BuildComponent\PlugInConfigurationDictionary.cs" />
-    <Compile Include="ProjectElement.cs" />
-    <Compile Include="Properties\AssemblyInfoShared.cs" />
-    <Compile Include="Utility.cs" />
-    <Compile Include="XPath\MatchesRegexFunction.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="NamingMethod.cs" />
-    <Compile Include="Controls\RefreshableItemListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Design\FileDialogAttribute.cs" />
-    <Compile Include="Design\FilePathStringEditor.cs" />
-    <Compile Include="Design\FolderDialogAttribute.cs" />
-    <Compile Include="Design\FolderPathStringEditor.cs" />
-    <Compile Include="Controls\DividerLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="DocumentationSource.cs" />
-    <Compile Include="DocumentationSourceCollection.cs" />
-    <Compile Include="MissingTags.cs" />
-    <Compile Include="NamespaceSummaryItem.cs" />
-    <Compile Include="NamespaceSummaryItemCollection.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SandcastleProject.cs" />
-    <Compile Include="ConceptualContent\TocEntry.cs" />
-    <Compile Include="ConceptualContent\TocEntryCollection.cs" />
-    <Compile Include="BuildEngine\XmlCommentsFile.cs" />
-    <Compile Include="BuildEngine\XmlCommentsFileCollection.cs" />
-    <Compile Include="XPath\ResolveNameFunction.cs" />
-    <Compile Include="XPath\XPathFunctionContext.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Templates\TransformBuildLog.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="SandcastleHelpFileBuilder.targets">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Build1xHelpFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\BuildHelpViewerFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\BuildOpenXmlFile.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\BuildTopics.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\ExtractHtmlInfo.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateInheritedDocs.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateInheritedDocs.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateIntermediateTOC.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateRefInfo.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Help1x.hhp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\HelpContentSetup.msha">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\HelpFileBuilderTokens.tokens">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\InstallMSHC.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\MRefBuilder.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\PlaceHolderNode.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\RemoveMSHC.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\TransformManifest.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\GenerateMarkdownContent.proj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Templates\Templates.vsspell" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\DividerLabel.bmp" />
-    <EmbeddedResource Include="Controls\CustomPropertyGrid.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\RefreshableItemListBox.bmp" />
-    <Compile Include="BuildAction.cs" />
-    <Compile Include="ConceptualContent\ApiParentMode.cs" />
-    <Compile Include="ConceptualContent\ITableOfContents.cs" />
-    <Compile Include="ConceptualContent\ResourceItem.cs" />
-    <Compile Include="ConceptualContent\TopicFile.cs" />
-    <Compile Include="Design\BuildActionEnumConverter.cs" />
-    <Compile Include="FileItem.cs" />
-    <Compile Include="HtmlSdkLinkType.cs" />
-    <Compile Include="MSBuild\BuildHelpViewerFile.cs" />
-    <Compile Include="MSHelpViewerSdkLinkType.cs" />
-    <Compile Include="ProjectFileConfiguration.cs" />
-    <Compile Include="SdkLinkTarget.cs" />
-    <None Include="Resources\ProjectTemplate.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>SandcastleBuilder.Utils</AssemblyName>
+		<RootNamespace>SandcastleBuilder.Utils</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs" Link="HelpLibraryManager\HelpLibraryManager.cs" />
+		<Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerException.cs" Link="HelpLibraryManager\HelpLibraryManagerException.cs" />
+		<Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerUnsafeNativeMethods.cs" Link="HelpLibraryManager\HelpLibraryManagerUnsafeNativeMethods.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Framework" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+		<PackageReference Include="System.Text.Json" Version="5.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
 </Project>

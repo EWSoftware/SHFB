@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NamespaceSummaryItemEditorDlg.xaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/17/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit namespace summaries and to indicate which namespaces should appear
 // in the help file.
@@ -37,9 +36,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
+
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
@@ -65,7 +67,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             /// <inheritdoc />
             int IComparer<string>.Compare(string x, string y)
             {
-                var retVal = String.Compare(x, y, StringComparison.CurrentCulture);
+                var retVal = String.Compare(x, y, StringComparison.Ordinal);
 
                 // Groups get special handling.  If matched with the suffix, invert the result.
                 if(retVal != 0 && (x == y + GroupSuffix || y == x + GroupSuffix))
@@ -80,9 +82,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         //=====================================================================
 
         private SandcastleProject tempProject;
-        private NamespaceSummaryItemCollection nsColl;
+        private readonly NamespaceSummaryItemCollection nsColl;
         private Dictionary<string, List<string>> namespaceInfo;
-        private SortedDictionary<string, NamespaceSummaryItem> namespaceItems;
+        private readonly SortedDictionary<string, NamespaceSummaryItem> namespaceItems;
         private BuildProcess buildProcess;
         private CancellationTokenSource cancellationTokenSource;
 
@@ -129,71 +131,73 @@ namespace SandcastleBuilder.WPF.PropertyPages
         {
             XPathDocument reflectionInfo;
             XPathNavigator navDoc, navNamespace, navLibrary;
-            List<string> assemblies;
             string nsName, asmName;
 
             namespaceInfo = new Dictionary<string, List<string>>();
 
-            reflectionInfo = new XPathDocument(reflectionFile);
-            navDoc = reflectionInfo.CreateNavigator();
-
-            // Namespace nodes don't contain assembly info so we'll have to look at all types and add all
-            // unique namespaces from their container info.
-            foreach(XPathNavigator container in navDoc.Select("reflection/apis/api[starts-with(@id, 'T:')]/containers"))
+            using(var reader = XmlReader.Create(reflectionFile, new XmlReaderSettings { CloseInput = true }))
             {
-                cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                reflectionInfo = new XPathDocument(reader);
 
-                navNamespace = container.SelectSingleNode("namespace");
-                navLibrary = container.SelectSingleNode("library");
+                navDoc = reflectionInfo.CreateNavigator();
 
-                if(navNamespace != null && navLibrary != null)
+                // Namespace nodes don't contain assembly info so we'll have to look at all types and add all
+                // unique namespaces from their container info.
+                foreach(XPathNavigator container in navDoc.Select("reflection/apis/api[starts-with(@id, 'T:')]/containers"))
                 {
-                    nsName = navNamespace.GetAttribute("api", String.Empty).Substring(2);
-                    asmName = navLibrary.GetAttribute("assembly", String.Empty);
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    if(namespaceInfo.TryGetValue(nsName, out assemblies))
+                    navNamespace = container.SelectSingleNode("namespace");
+                    navLibrary = container.SelectSingleNode("library");
+
+                    if(navNamespace != null && navLibrary != null)
                     {
-                        if(!assemblies.Contains(asmName))
-                            assemblies.Add(asmName);
+                        nsName = navNamespace.GetAttribute("api", String.Empty).Substring(2);
+                        asmName = navLibrary.GetAttribute("assembly", String.Empty);
+
+                        if(namespaceInfo.TryGetValue(nsName, out List<string> assemblies))
+                        {
+                            if(!assemblies.Contains(asmName))
+                                assemblies.Add(asmName);
+                        }
+                        else
+                            namespaceInfo.Add(nsName, new List<string>() { asmName });
                     }
-                    else
-                        namespaceInfo.Add(nsName, new List<string>() { asmName });
                 }
-            }
 
-            // The global namespace (N:) isn't always listed but we'll add it as it does show up in the
-            // reflection info anyway.
-            if(!namespaceInfo.ContainsKey(String.Empty))
-                namespaceInfo.Add(String.Empty, new List<string>());
+                // The global namespace (N:) isn't always listed but we'll add it as it does show up in the
+                // reflection info anyway.
+                if(!namespaceInfo.ContainsKey(String.Empty))
+                    namespaceInfo.Add(String.Empty, new List<string>());
 
-            // Add new namespaces to the list as temporary items.  They will get added to the project if
-            // modified.
-            foreach(string ns in namespaceInfo.Keys)
-            {
-                cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                // Add new namespaces to the list as temporary items.  They will get added to the project if
+                // modified.
+                foreach(string ns in namespaceInfo.Keys)
+                {
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                nsName = (ns.Length == 0) ? "(global)" : ns;
+                    nsName = (ns.Length == 0) ? "(global)" : ns;
 
-                if(!namespaceItems.ContainsKey(nsName))
-                    namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(ns, false));
+                    if(!namespaceItems.ContainsKey(nsName))
+                        namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(ns, false));
 
-                namespaceInfo[ns].Sort();
-            }
+                    namespaceInfo[ns].Sort();
+                }
 
-            // Add namespace group info, if present.  These are an abstract concept and aren't part of any
-            // assemblies.
-            foreach(XPathNavigator nsGroup in navDoc.Select("reflection/apis/api[starts-with(@id, 'G:') and " +
-              "not(topicdata/@group='rootGroup')]/apidata"))
-            {
-                cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                // Add namespace group info, if present.  These are an abstract concept and aren't part of any
+                // assemblies.
+                foreach(XPathNavigator nsGroup in navDoc.Select("reflection/apis/api[starts-with(@id, 'G:') and " +
+                  "not(topicdata/@group='rootGroup')]/apidata"))
+                {
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                nsName = nsGroup.GetAttribute("name", String.Empty);
-                nsName = nsName + NamespaceComparer.GroupSuffix;
+                    nsName = nsGroup.GetAttribute("name", String.Empty) + NamespaceComparer.GroupSuffix;
 
-                namespaceInfo.Add(nsName, new List<String>());
+                    namespaceInfo.Add(nsName, new List<String>());
 
-                if(!namespaceItems.ContainsKey(nsName))
-                    namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(nsName, true));
+                    if(!namespaceItems.ContainsKey(nsName))
+                        namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(nsName, true));
+                }
             }
         }
         #endregion
@@ -243,7 +247,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     CancellationToken = cancellationTokenSource.Token
                 };
 
-                await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token);
+                await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token).ConfigureAwait(true);
 
                 if(!cancellationTokenSource.IsCancellationRequested)
                 {
@@ -255,7 +259,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     {
                         lblProgress.Text = "Loading namespace information...";
 
-                        await Task.Run(() => this.LoadNamespaces(buildProcess.ReflectionInfoFilename), cancellationTokenSource.Token);
+                        await Task.Run(() => this.LoadNamespaces(buildProcess.ReflectionInfoFilename),
+                            cancellationTokenSource.Token).ConfigureAwait(true);
 
                         cboAssembly.Items.Clear();
 
@@ -364,7 +369,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd");
+            UiUtility.ShowHelpTopic("eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd");
         }
 
         /// <summary>
@@ -374,19 +379,18 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void lbNamespaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<string> assemblies;
-            string name;
-
             if(lbNamespaces.SelectedIndex != -1)
             {
                 var nsi = (NamespaceSummaryItem)lbNamespaces.SelectedItem;
+                
                 txtSummary.Text = nsi.Summary;
-                name = nsi.Name;
+                
+                string name = nsi.Name;
 
                 if(name[0] == '(')
                     name = String.Empty;
 
-                if(namespaceInfo.TryGetValue(name, out assemblies))
+                if(namespaceInfo.TryGetValue(name, out List<string> assemblies))
                     lbAppearsIn.ItemsSource = assemblies;
                 else
                     lbAppearsIn.ItemsSource = null;
@@ -452,11 +456,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnApplyFilter_Click(object sender, RoutedEventArgs e)
         {
-            NamespaceSummaryItem nsi;
-            List<string> assemblies;
             Regex reFilter = null;
             lbNamespaces.Items.Clear();
-            string name;
 
             txtSearchText.Text = txtSearchText.Text.Trim();
 
@@ -476,7 +477,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
             // Add the items to the list box in sorted order by name
             foreach(string key in namespaceItems.Keys)
             {
-                nsi = namespaceItems[key];
+                NamespaceSummaryItem nsi = namespaceItems[key];
 
                 // Always show groups
                 if(!nsi.IsGroup)
@@ -484,12 +485,12 @@ namespace SandcastleBuilder.WPF.PropertyPages
                     // Filter by assembly?
                     if(cboAssembly.SelectedIndex != 0)
                     {
-                        name = nsi.Name;
+                        string name = nsi.Name;
 
                         if(name[0] == '(')
                             name = String.Empty;
 
-                        if(namespaceInfo.TryGetValue(name, out assemblies))
+                        if(namespaceInfo.TryGetValue(name, out List<string> assemblies))
                             if(!assemblies.Contains(cboAssembly.Text))
                                 continue;
                     }

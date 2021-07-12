@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BuildComponentFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2017
-// Note    : Copyright 2013-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an abstract base class that defines the factory method for build components as well as
 // build tool interaction methods.
@@ -22,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 
 namespace Sandcastle.Core.BuildAssembler.BuildComponent
@@ -99,29 +97,6 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <returns>A new instance of a build component</returns>
         public abstract BuildComponentCore Create();
 
-        #endregion
-
-        #region Configuration tool interaction methods
-        //=====================================================================
-
-        /// <summary>
-        /// This method can be overridden to let configuration tools allow the user to edit the component
-        /// configuration.
-        /// </summary>
-        /// <param name="currentConfiguration">A string containing the current configuration XML fragment</param>
-        /// <param name="container">A composition container that holds all of the exported components found
-        /// by the build tool.  This can be used to locate and work with other components if necessary.</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The base implementation uses a generic editor dialog that edits the XML as text</remarks>
-        public virtual string ConfigureComponent(string currentConfiguration, CompositionContainer container)
-        {
-            var dlg = new ConfigurationEditorDlg() { Configuration = currentConfiguration };
-
-            if(dlg.ShowModalDialog() ?? false)
-                currentConfiguration = dlg.Configuration;
-
-            return currentConfiguration;
-        }
         #endregion
     }
 }

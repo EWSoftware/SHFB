@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : OASandcastleBuilderProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/12/2016
-// Note    : Copyright 2011-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used for project automation
 //
@@ -35,7 +34,7 @@ namespace SandcastleBuilder.Package.Automation
         #region Private data members
         //=====================================================================
 
-        private OAProperties properties;
+        private readonly OAProperties properties;
 
         #endregion
 
@@ -45,10 +44,8 @@ namespace SandcastleBuilder.Package.Automation
         /// <summary>
         /// This read-only property returns the project properties
         /// </summary>
-        public override EnvDTE.Properties Properties
-        {
-            get { return properties; }
-        }
+        public override EnvDTE.Properties Properties => properties;
+
         #endregion
 
         #region Constructor

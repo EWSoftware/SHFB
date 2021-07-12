@@ -1,25 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SupportAnimatedGIFBehavior.cs
 // Author  : Elad Malki
-// Updated : 03/06/2012
+// Updated : 04/21/2021
 // Source  : http://eladm.wordpress.com/2009/04/02/animated-gif-support-behavior/
-// Note    : Copyright 2009-2012, Elad Malki, All rights reserved
-// Compiler: Microsoft Visual C#
+// Note    : Copyright 2009-2021, Elad Malki, All rights reserved
 //
-// This file contains a class that exposes an attached behavior that can be
-// used to animate GIF images in image controls.
+// This file contains a class that exposes an attached behavior that can be used to animate GIF images in image
+// controls.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  03/06/2012  EFW  Added the code to the project
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/06/2012  EFW  Added the code to the project
+//===============================================================================================================
 
 // Ignore Spelling: Elad Malki
 
@@ -66,7 +64,7 @@ namespace Sandcastle.Installer.Behaviors
         [AttachedPropertyBrowsableForType(typeof(Image))]
         public static bool GetSupportAnimatedGif(Image image)
         {
-            return (bool)image.GetValue(SupportAnimatedGifProperty);
+            return image != null && (bool)image.GetValue(SupportAnimatedGifProperty);
         }
 
         /// <summary>
@@ -76,7 +74,7 @@ namespace Sandcastle.Installer.Behaviors
         /// <param name="value">The new value</param>
         public static void SetSupportAnimatedGif(Image image, bool value)
         {
-            image.SetValue(SupportAnimatedGifProperty, value);
+            image?.SetValue(SupportAnimatedGifProperty, value);
         }
 
         /// <summary>
@@ -105,21 +103,11 @@ namespace Sandcastle.Installer.Behaviors
             }
         }
 
-        private static DependencyPropertyDescriptor VisibilityDPDescriptor
-        {
-            get
-            {
-                return DependencyPropertyDescriptor.FromProperty(UIElement.VisibilityProperty, typeof(UIElement));
-            }
-        }
+        private static DependencyPropertyDescriptor VisibilityDPDescriptor =>
+            DependencyPropertyDescriptor.FromProperty(UIElement.VisibilityProperty, typeof(UIElement));
 
-        private static DependencyPropertyDescriptor ImageSourceDPDescriptor
-        {
-            get
-            {
-                return DependencyPropertyDescriptor.FromProperty(Image.SourceProperty, typeof(Image));
-            }
-        }
+        private static DependencyPropertyDescriptor ImageSourceDPDescriptor =>
+            DependencyPropertyDescriptor.FromProperty(Image.SourceProperty, typeof(Image));
 
         private static void UnRegisterForRelevantImagePropertyChanges(DependencyObject depObj)
         {
@@ -202,8 +190,7 @@ namespace Sandcastle.Installer.Behaviors
         /// <param name="image"></param>
         private static void StartFramesAnimation(this Image image)
         {
-            BitmapFrame bitmapFrame = image.Source as BitmapFrame;
-            if(bitmapFrame != null)
+            if(image.Source is BitmapFrame bitmapFrame)
             {
                 int framesCount = bitmapFrame.Decoder.Frames.Count;
 
@@ -214,9 +201,10 @@ namespace Sandcastle.Installer.Behaviors
                             0, // "From" value
                             framesCount - 1, // "To" value
                             new Duration(TimeSpan.FromMilliseconds(MILLISCONDS_PER_FRAME * framesCount))
-                        );
-
-                    gifAnimation.RepeatBehavior = RepeatBehavior.Forever;
+                        )
+                        {
+                            RepeatBehavior = RepeatBehavior.Forever
+                        };
 
                     image.BeginAnimation(CurrentFrameIndexProperty, gifAnimation, HandoffBehavior.SnapshotAndReplace);
                 }

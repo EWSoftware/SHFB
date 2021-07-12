@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : CustomCompletion.cs
 // Author  : Sam Harwell  (sam@tunnelvisionlabs.com)
-// Updated : 03/21/2014
-// Note    : Copyright 2014, Sam Harwell, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Sam Harwell, All rights reserved
 //
 // This file contains a custom completion with support for placing the caret after insertion
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -56,10 +55,7 @@ namespace SandcastleBuilder.Package.IntelliSense
           string description, ImageSource iconSource, string iconAutomationText) :
             base(displayText, insertionText, description, iconSource, iconAutomationText)
         {
-            if(session == null)
-                throw new ArgumentNullException("session");
-
-            this.session = session;
+            this.session = session ?? throw new ArgumentNullException(nameof(session));
         }
 
         /// <inheritdoc />

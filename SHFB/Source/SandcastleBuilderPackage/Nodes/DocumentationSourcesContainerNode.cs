@@ -2,15 +2,14 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the documentation sources container node in a Sandcastle Help
 // File Builder project.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -62,57 +61,43 @@ namespace SandcastleBuilder.Package.Nodes
         // stuffing them into a property.  I can't be bothered to rewrite everything to work that way
         // so we'll use an XDocument to manage the documentation sources.
         private XDocument documentationSources;
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
         //=====================================================================
 
         /// <summary>
         /// This is used to set the sort priority for the node
         /// </summary>
         /// <value>It will be sorted just above the References node</value>
-		public override int SortPriority
-		{
-			get { return DefaultSortOrderNode.ReferenceContainerNode - 1; }
-		}
+        public override int SortPriority => DefaultSortOrderNode.ReferenceContainerNode - 1;
 
-		/// <summary>
-		/// This is used to return the menu command ID for the node
-		/// </summary>
+        /// <summary>
+        /// This is used to return the menu command ID for the node
+        /// </summary>
         /// <remarks>This uses the References context menu but only our command
         /// shows up.</remarks>
-        public override int MenuCommandId
-		{
-            get { return Microsoft.VisualStudio.Project.VsMenus.IDM_VS_CTXT_REFERENCE; }
-		}
+        public override int MenuCommandId => Microsoft.VisualStudio.Project.VsMenus.IDM_VS_CTXT_REFERENCE;
 
         /// <summary>
         /// This is overridden to return the item type GUID
         /// </summary>
         /// <value>It returns the standard GUID for a virtual folder</value>
-		public override Guid ItemTypeGuid
-		{
-			get { return VSConstants.GUID_ItemType_VirtualFolder; }
-		}
+        public override Guid ItemTypeGuid => VSConstants.GUID_ItemType_VirtualFolder;
 
         /// <summary>
         /// This is overridden to return the URL for the node
         /// </summary>
         /// <value>It returns the virtual node name</value>
-		public override string Url
-		{
-			get { return base.VirtualNodeName; }
-		}
+        public override string Url => base.VirtualNodeName;
 
         /// <summary>
         /// This is overridden to return the caption for the node
         /// </summary>
         /// <value>This returns the localized "Documentation Sources" caption</value>
-		public override string Caption
-		{
-			get { return Resources.DocSourcesNodeCaption; }
-		}
-		#endregion
+        public override string Caption => Resources.DocSourcesNodeCaption;
+
+        #endregion
 
         #region Constructor
         //=====================================================================
@@ -156,7 +141,7 @@ namespace SandcastleBuilder.Package.Nodes
             ProjectProperty prop;
             string docSources = null;
 
-            prop = prop = this.ProjectMgr.BuildProject.GetProperty("DocumentationSources");
+            prop = this.ProjectMgr.BuildProject.GetProperty("DocumentationSources");
 
             if(prop != null)
                 docSources = prop.UnevaluatedValue;

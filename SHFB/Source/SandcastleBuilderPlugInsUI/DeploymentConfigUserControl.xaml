@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="SandcastleBuilder.PlugIns.UI.DeploymentConfigUserControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	mc:Ignorable="d" d:DesignWidth="600" MinWidth="400">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Margin="3">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0" Content="_Target Location" HorizontalAlignment="Right" Margin="3"
+				Target="{Binding ElementName=txtTargetLocation}" />
+			<TextBox Grid.Column="1" Name="txtTargetLocation" Margin="3" Grid.ColumnSpan="3" />
+		</Grid>
+		<GroupBox Grid.Row="1" Header="User Credentials">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<CheckBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="chkUseDefaultCredentials" Margin="3"
+					Content="Use _Default Credentials" Checked="chkUseDefaultCredentials_CheckedChanged"
+					Unchecked="chkUseDefaultCredentials_CheckedChanged"/>
+				<Label Grid.Row="1" Grid.Column="0" Content="_User Name" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtUserName}" />
+				<TextBox Grid.Row="1" Grid.Column="1" Name="txtUserName" Margin="3" />
+				<Label Grid.Row="1" Grid.Column="2" Content="Pass_word" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtPassword}" />
+				<TextBox Grid.Row="1" Grid.Column="3" Name="txtPassword" Margin="3" />
+			</Grid>
+		</GroupBox>
+		<GroupBox Grid.Row="2" Header="Proxy Credentials">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<CheckBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="chkUseProxyServer" Margin="3"
+					Content="Use Pr_oxy Server" Checked="chkUseProxyServer_CheckedChanged"
+					Unchecked="chkUseProxyServer_CheckedChanged"/>
+				<Label Grid.Row="1" Grid.Column="0" Content="Pro_xy Server" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtProxyServer}" />
+				<TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="txtProxyServer" Margin="3" />
+				<CheckBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name="chkUseProxyDefCreds" Margin="3"
+					Content="Use Default _Credentials" Checked="chkUseProxyDefCreds_CheckedChanged"
+					Unchecked="chkUseProxyDefCreds_CheckedChanged"/>
+				<Label Grid.Row="3" Grid.Column="0" Content="Us_er Name" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtProxyUserName}" />
+				<TextBox Grid.Row="3" Grid.Column="1" Name="txtProxyUserName" Margin="3" />
+				<Label Grid.Row="3" Grid.Column="2" Content="Pa_ssword" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtProxyPassword}" />
+				<TextBox Grid.Row="3" Grid.Column="3" Name="txtProxyPassword" Margin="3" />
+			</Grid>
+		</GroupBox>
+	</Grid>
+</UserControl>

@@ -1,0 +1,31 @@
+﻿<Window x:Class="Sandcastle.Platform.Windows.UI.ConfigurationEditorDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	Title="Component Configuration Editor" Width="800" Height="400" MinWidth="300" MinHeight="300"
+	WindowStartupLocation="CenterScreen" Icon="/Sandcastle.Platform.Windows;component/Resources/ConfigurationEditor.png"
+	ShowInTaskbar="False" FocusManager.FocusedElement="{Binding ElementName=txtConfiguration}">
+	<Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Margin="0,0,0,5" TextWrapping="Wrap">This component does not have a configuration
+editor.  Edit the XML configuration settings below.</TextBlock>
+    <TextBox Grid.Row="1" Name="txtConfiguration" AcceptsReturn="True" AcceptsTab="True" FontFamily="Courier New"
+      TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+    <Grid Grid.Row="2" Margin="0,5,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Name="btnOK" Padding="3" MinWidth="80" Content="OK" HorizontalAlignment="Left"
+        ToolTip="Save the configuration" Click="btnOK_Click" />
+      <Button Grid.Column="1" Name="btnCancel" Padding="3" MinWidth="80" Content="Cancel" HorizontalAlignment="Right"
+        ToolTip="Close without saving" IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

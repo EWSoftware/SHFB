@@ -2,15 +2,14 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ISyntaxGeneratorFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/01/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a custom version of the ExportAttribute that contains metadata for the BuildAssembler
 // syntax generators.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -37,13 +36,13 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <summary>
         /// This read-only property is used to get the syntax generator ID (typically the language name)
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get; }
 
         /// <summary>
         /// This read-only property is used to get the value used as the XML element name and in resource item
         /// IDs used during XSL transformation such as for label text.
         /// </summary>
-        public string LanguageElementName { get; private set; }
+        public string LanguageElementName { get; }
 
         /// <summary>
         /// This read-only property is used to get the keyword style parameter value used by the client side
@@ -52,7 +51,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <value>This will be one of the following: <c>cs</c> (C# or equivalent), <c>vb</c> (VB.NET
         /// or equivalent), <c>cpp</c> (C++ or equivalent), <c>fs</c> (F# or equivalent), or a value unique to
         /// the language.</value>
-        public string KeywordStyleParameter { get; private set; }
+        public string KeywordStyleParameter { get; }
 
         /// <summary>
         /// This is used to get or set whether or not the syntax generator is configurable
@@ -110,13 +109,13 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
           base(typeof(ISyntaxGeneratorFactory))
         {
             if(String.IsNullOrWhiteSpace(id))
-                throw new ArgumentException("An ID value is required", "id");
+                throw new ArgumentException("An ID value is required", nameof(id));
 
             if(String.IsNullOrWhiteSpace(languageElementName))
-                throw new ArgumentException("A language element name value is required", "languageElementName");
+                throw new ArgumentException("A language element name value is required", nameof(languageElementName));
 
             if(String.IsNullOrWhiteSpace(keywordStyleParameter))
-                throw new ArgumentException("A keyword style parameter value is required", "keywordStyleParameter");
+                throw new ArgumentException("A keyword style parameter value is required", nameof(keywordStyleParameter));
 
             this.Id = id;
             this.LanguageElementName = languageElementName;

@@ -29,7 +29,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private static Dictionary<string, object> data = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> data = new Dictionary<string, object>();
 
         #endregion
 
@@ -39,16 +39,13 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// This read-only property returns a reference to the build assembler instance using the component
         /// </summary>
-        public BuildAssemblerCore BuildAssembler { get; private set; }
+        public BuildAssemblerCore BuildAssembler { get; }
 
         /// <summary>
         /// This read-only property returns a static dictionary that can be used to store information shared
         /// between build components.
         /// </summary>
-        protected static IDictionary<string, object> Data
-        {
-            get { return data; }
-        }
+        protected static IDictionary<string, object> Data => data;
 
         /// <summary>
         /// This is used to set an optional group ID for use with component events
@@ -126,7 +123,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         //=====================================================================
 
         /// <summary>
-        /// This can be used to raise the <see cref="Sandcastle.Core.BuildAssembler.BuildAssemblerCore.ComponentEvent"/>
+        /// This can be used to raise the <see cref="BuildAssemblerCore.ComponentEvent"/>
         /// event with the specified event arguments.
         /// </summary>
         /// <param name="e">The event arguments.  This can be <see cref="EventArgs.Empty"/> or a derived event

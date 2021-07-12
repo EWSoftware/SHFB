@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2021
+// Updated : 04/23/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage the project items and files
@@ -62,13 +62,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// This folder is located under the <see cref="Environment.SpecialFolder">LocalApplicationData</see>
         /// folder and contains user-defined item templates that can be added to a project.
         /// </summary>
-        public const string ItemTemplates = Constants.ProgramDataFolder + "\\" + "Item Templates";
+        public static readonly string ItemTemplates = Path.Combine(Constants.ProgramDataFolder, "Item Templates");
 
         /// <summary>
         /// This folder is located under the <see cref="Environment.SpecialFolder">LocalApplicationData</see>
         /// folder and contains user-defined conceptual content topic templates that can be added to a project.
         /// </summary>
-        public const string ConceptualTemplates = Constants.ProgramDataFolder + "\\" + "Conceptual Templates";
+        public static readonly string ConceptualTemplates = Path.Combine(Constants.ProgramDataFolder, "Conceptual Templates");
 
         #endregion
 
@@ -83,7 +83,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         // This is used to search for a few common binary characters in the range \x00 to \x1F which should be
         // sufficient.  Note that \x1A (Ctrl+Z) is excluded as that's a common End of File marker.
-        private static Regex reBinary = new Regex(@"[\x00-\x08\x0C\x0E-\x19\x1B-\x1F]");
+        private static readonly Regex reBinary = new Regex(@"[\x00-\x08\x0C\x0E-\x19\x1B-\x1F]");
+
         #endregion
 
         #region Properties
@@ -94,7 +95,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public SandcastleProject CurrentProject
         {
-            get { return currentProject; }
+            get => currentProject;
             set
             {
                 currentProject = value;
@@ -137,7 +138,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <inheritdoc />
         public override bool IsDirty
         {
-            get { return currentProject != null && currentProject.IsDirty; }
+            get => currentProject != null && currentProject.IsDirty;
             set { /* Handled by the property page and main form */ }
         }
 
@@ -576,7 +577,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     source = new TreeNode(ds.SourceDescription)
                     {
                         Name = ds.SourceFile,
-                        Tag = new NodeData(BuildAction.DocumentationSource, ds)
+                        Tag = new NodeData(BuildAction.DocumentationSource, new DocumentationSourceWrapper(ds))
                     };
                     source.ImageIndex = source.SelectedImageIndex = (int)NodeIcon.DocSource;
                     root.Nodes.Add(source);
@@ -661,7 +662,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)
-                if(String.Compare(content.DockHandler.ToolTipText, fullName, true, CultureInfo.CurrentCulture) == 0)
+                if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     content.DockHandler.Activate();
                     return;
@@ -755,7 +756,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             switch(nodeData.BuildAction)
             {
                 case BuildAction.DocumentationSource:
-                    selectedNode.Text = ((DocumentationSource)nodeData.Item).SourceDescription;
+                    selectedNode.Text = ((DocumentationSourceWrapper)nodeData.Item).DocumentationSource.SourceDescription;
                     break;
 
                 case BuildAction.ReferenceItem:
@@ -1113,7 +1114,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void miRemoveDocSource_Click(object sender, EventArgs e)
         {
             NodeData nodeData = (NodeData)tvProjectFiles.SelectedNode.Tag;
-            DocumentationSource ds = (DocumentationSource)nodeData.Item;
+            DocumentationSource ds = ((DocumentationSourceWrapper)nodeData.Item).DocumentationSource;
 
             if(MessageBox.Show("Are you sure you want to remove '" + ds.SourceDescription + "' from the project?",
               Constants.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -1330,7 +1331,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)
-                if(String.Compare(content.DockHandler.ToolTipText, fullName, true, CultureInfo.CurrentCulture) == 0)
+                if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     content.DockHandler.Activate();
                     return;
@@ -1747,53 +1748,57 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         Cursor.Current = Cursors.WaitCursor;
 
                         var images = currentProject.ImagesReferences;
-                        media = new XPathDocument(dlg.FileName);
-                        navMedia = media.CreateNavigator();
 
-                        foreach(XPathNavigator item in navMedia.Select("//item"))
+                        using(var reader = XmlReader.Create(dlg.FileName, new XmlReaderSettings { CloseInput = true }))
                         {
-                            guid = null;
-                            file = altText = null;
-                            id = item.GetAttribute("id", String.Empty);
-                            file = item.SelectSingleNode("image/@file");
-                            altText = item.SelectSingleNode("image/altText");
+                            media = new XPathDocument(reader);
+                            navMedia = media.CreateNavigator();
 
-                            if(!String.IsNullOrEmpty(id))
-                                guid = id.Trim();
-
-                            if(!String.IsNullOrEmpty(guid) && !images.Any(img => img.Id.Equals(guid,
-                              StringComparison.OrdinalIgnoreCase)) && file != null &&
-                              !String.IsNullOrEmpty(file.Value))
+                            foreach(XPathNavigator item in navMedia.Select("//item"))
                             {
-                                path = newName = file.Value;
+                                guid = null;
+                                file = altText = null;
+                                id = item.GetAttribute("id", String.Empty);
+                                file = item.SelectSingleNode("image/@file");
+                                altText = item.SelectSingleNode("image/altText");
 
-                                // If relative, get the full path
-                                if(!Path.IsPathRooted(path))
-                                    path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dlg.FileName), path));
+                                if(!String.IsNullOrEmpty(id))
+                                    guid = id.Trim();
 
-                                // It's possible that two entries share the same file so we'll need to create a
-                                // new copy as in SHFB, the settings are managed via the project explorer and
-                                // each file is unique.
-                                uniqueId = 1;
-
-                                while(filesSeen.Contains(newName))
+                                if(!String.IsNullOrEmpty(guid) && !images.Any(img => img.Id.Equals(guid,
+                                  StringComparison.OrdinalIgnoreCase)) && file != null &&
+                                  !String.IsNullOrEmpty(file.Value))
                                 {
-                                    newName = Path.Combine(Path.GetDirectoryName(newName),
-                                        Path.GetFileNameWithoutExtension(newName) +
-                                        uniqueId.ToString(CultureInfo.InvariantCulture) +
-                                        Path.GetExtension(newName));
-                                    uniqueId++;
+                                    path = newName = file.Value;
+
+                                    // If relative, get the full path
+                                    if(!Path.IsPathRooted(path))
+                                        path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dlg.FileName), path));
+
+                                    // It's possible that two entries share the same file so we'll need to create a
+                                    // new copy as in SHFB, the settings are managed via the project explorer and
+                                    // each file is unique.
+                                    uniqueId = 1;
+
+                                    while(filesSeen.Contains(newName))
+                                    {
+                                        newName = Path.Combine(Path.GetDirectoryName(newName),
+                                            Path.GetFileNameWithoutExtension(newName) +
+                                            uniqueId.ToString(CultureInfo.InvariantCulture) +
+                                            Path.GetExtension(newName));
+                                        uniqueId++;
+                                    }
+
+                                    filesSeen.Add(newName);
+
+                                    fileItem = currentProject.AddFileToProject(path,
+                                        Path.Combine(destPath, Path.GetFileName(newName)));
+                                    fileItem.BuildAction = BuildAction.Image;
+                                    fileItem.ImageId = guid;
+
+                                    if(altText != null)
+                                        fileItem.AlternateText = altText.Value;
                                 }
-
-                                filesSeen.Add(newName);
-
-                                fileItem = currentProject.AddFileToProject(path,
-                                    Path.Combine(destPath, Path.GetFileName(newName)));
-                                fileItem.BuildAction = BuildAction.Image;
-                                fileItem.ImageId = guid;
-
-                                if(altText != null)
-                                    fileItem.AlternateText = altText.Value;
                             }
                         }
 
@@ -1880,7 +1885,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             try
                             {
                                 XmlDocument doc = new XmlDocument();
-                                doc.Load(fileItem.FullPath);
+
+                                using(var reader = XmlReader.Create(fileItem.FullPath,
+                                  new XmlReaderSettings { CloseInput = true }))
+                                {
+                                    doc.Load(reader);
+                                }
 
                                 XmlNode node = doc.SelectSingleNode("topic");
 
@@ -1889,8 +1899,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                                         "Unable to locate root topic node");
 
                                 if(node.Attributes["id"] == null)
-                                    throw new InvalidOperationException(
-                                        "Unable to locate 'id' attribute on root topic node");
+                                    throw new InvalidOperationException("Unable to locate 'id' attribute on root topic node");
 
                                 node.Attributes["id"].Value = guid.ToString();
                                 doc.Save(fileItem.FullPath);
@@ -1898,9 +1907,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             catch(Exception ex)
                             {
                                 System.Diagnostics.Debug.WriteLine(ex);
-                                MessageBox.Show("Unable to set topic ID.  Reason:" +
-                                    ex.Message, Constants.AppName, MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
+                                MessageBox.Show("Unable to set topic ID.  Reason:" + ex.Message, Constants.AppName,
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                     }
                     finally

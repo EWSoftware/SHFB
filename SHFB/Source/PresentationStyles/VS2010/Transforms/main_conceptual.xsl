@@ -8,7 +8,6 @@
 >
 	<!-- ======================================================================================== -->
 
-	<xsl:import href="xpathFunctions.xsl"/>
 	<xsl:import href="globalTemplates.xsl"/>
 	<xsl:import href="codeTemplates.xsl"/>
 	<xsl:import href="utilities_dduexml.xsl"/>

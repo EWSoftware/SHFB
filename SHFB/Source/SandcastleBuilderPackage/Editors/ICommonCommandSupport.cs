@@ -1,26 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ICommonCommandSupport.cs
 // Author  : Istvan Novak
-// Updated : 12/26/2011
+// Updated : 05/26/2021
 // Source  : http://learnvsxnow.codeplex.com/
-// Note    : Copyright 2008-2011, Istvan Novak, All rights reserved
-// Compiler: Microsoft Visual C#
+// Note    : Copyright 2008-2021, Istvan Novak, All rights reserved
 //
-// This file contains a class that defines an interface that allows editor pane
-// implementations or their hosted controls to declare and execute common
-// commands that they may support.
+// This file contains a class that defines an interface that allows editor pane implementations or their hosted
+// controls to declare and execute common commands that they may support.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/26/2011  EFW  Added the code to the project
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/26/2011  EFW  Added the code to the project
+//===============================================================================================================
 
 namespace SandcastleBuilder.Package.Editors
 {

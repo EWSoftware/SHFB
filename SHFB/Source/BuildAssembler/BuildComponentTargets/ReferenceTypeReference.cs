@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a reference type reference
@@ -23,7 +23,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the referred to type
         /// </summary>
-        public TypeReference ReferredToType { get; private set; }
+        public TypeReference ReferredToType { get; }
+
         #endregion
 
         #region Constructor
@@ -35,10 +36,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="referredToType">The referred to type</param>
         public ReferenceTypeReference(TypeReference referredToType)
         {
-            if(referredToType == null)
-                throw new ArgumentNullException("referredToType");
-
-            this.ReferredToType = referredToType;
+            this.ReferredToType = referredToType ?? throw new ArgumentNullException(nameof(referredToType));
         }
         #endregion
     }

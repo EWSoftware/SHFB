@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilterCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/15/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the API filter entries for MRefBuilder to remove.
 //
@@ -20,6 +19,7 @@
 // 04/07/2011  EFW  Made the constructor and from/to XML members public so that it can be used from the VSPackage
 //===============================================================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -147,7 +147,8 @@ namespace SandcastleBuilder.Utils
         /// tag exclusions.</remarks>
         public bool AddNamespaceChild(string fullName, string nameSpace, string typeName, string memberName)
         {
-            ApiFilter newEntry;
+            if(fullName == null)
+                throw new ArgumentNullException(nameof(fullName));
 
             // Find the namespace.  The entry is only added if the namespace is exposed.
             foreach(ApiFilter entry in this)
@@ -165,9 +166,9 @@ namespace SandcastleBuilder.Utils
                 }
 
             // New namespace
-            newEntry = new ApiFilter(ApiEntryType.Namespace, nameSpace, true) { IsProjectExclude = true };
+            ApiFilter newEntry = new ApiFilter(ApiEntryType.Namespace, nameSpace, true) { IsProjectExclude = true };
 
-            base.Add(newEntry);
+            this.Add(newEntry);
 
             newEntry.Children.AddTypeChild(fullName, typeName, memberName);
 
@@ -186,7 +187,8 @@ namespace SandcastleBuilder.Utils
         /// tag exclusions.</remarks>
         public bool AddTypeChild(string fullName, string typeName, string memberName)
         {
-            ApiFilter newEntry, childEntry;
+            if(fullName == null)
+                throw new ArgumentNullException(nameof(fullName));
 
             // Find the type
             foreach(ApiFilter entry in this)
@@ -201,14 +203,18 @@ namespace SandcastleBuilder.Utils
                 }
 
             // New type
-            newEntry = new ApiFilter(ApiEntryType.Class, typeName, (memberName != null)) { IsProjectExclude = true };
+            ApiFilter newEntry = new ApiFilter(ApiEntryType.Class, typeName, (memberName != null)) { IsProjectExclude = true };
 
-            base.Add(newEntry);
+            this.Add(newEntry);
 
             if(memberName != null)
             {
-                childEntry = new ApiFilter(ApiFilter.ApiEntryTypeFromLetter(fullName[0]), fullName.Substring(2), false);
-                childEntry.IsProjectExclude = true;
+                ApiFilter childEntry = new ApiFilter(ApiFilter.ApiEntryTypeFromLetter(fullName[0]),
+                  fullName.Substring(2), false)
+                {
+                    IsProjectExclude = true
+                };
+
                 newEntry.Children.Add(childEntry);
             }
 

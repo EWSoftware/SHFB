@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 07/09/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
 // plug-ins, syntax generators, and presentation styles.
@@ -55,9 +54,10 @@ namespace Sandcastle.Core
         #region Private data members
         //=====================================================================
 
-        private static string toolsFolder, componentsFolder;
+        private static string rootFolder, toolsFolder, coreComponentsFolder,
+            thirdPartyComponentsFolder, coreReflectionDataFolder;
 
-        private static Regex reSyntaxSplitter = new Regex(",\\s*");
+        private static readonly Regex reSyntaxSplitter = new Regex(",\\s*");
         private static List<CultureInfo> supportedLanguages;
 
         #endregion
@@ -66,7 +66,19 @@ namespace Sandcastle.Core
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the path to the Sandcastle Help File and Tools assemblies
+        /// This read-only property returns the path to the Sandcastle Help File Builder root folder
+        /// </summary>
+        public static string RootFolder
+        {
+            get
+            {
+                SetPaths();
+                return rootFolder;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the path to the Sandcastle Help File Builder tools folder
         /// </summary>
         public static string ToolsFolder
         {
@@ -78,17 +90,43 @@ namespace Sandcastle.Core
         }
 
         /// <summary>
+        /// This read-only property returns the core build components folder
+        /// </summary>
+        ///<remarks>These are the common components distributed with the Help File Builder</remarks>
+        public static string CoreComponentsFolder
+        {
+            get
+            {
+                SetPaths();
+                return coreComponentsFolder;
+            }
+        }
+
+        /// <summary>
         /// This read-only property returns the common application data build components folder
         /// </summary>
         ///<remarks>Third party components should be located in the <strong>EWSoftware\Sandcastle Help File
         /// Builder\Components and Plug-Ins</strong> folder or a subfolder beneath it in the common application
         /// data folder.</remarks>
-        public static string ComponentsFolder
+        public static string ThirdPartyComponentsFolder
         {
             get
             {
                 SetPaths();
-                return componentsFolder;
+                return thirdPartyComponentsFolder;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the core reflection data file folder
+        /// </summary>
+        ///<remarks>These are the common reflection data files distributed with the Help File Builder</remarks>
+        public static string CoreReflectionDataFolder
+        {
+            get
+            {
+                SetPaths();
+                return coreReflectionDataFolder;
             }
         }
 
@@ -111,11 +149,11 @@ namespace Sandcastle.Core
             {
                 if(supportedLanguages == null)
                 {
-                    string name = Path.Combine(ComponentUtilities.ToolsFolder, @"PresentationStyles\Shared\StopWordList");
+                    string stopWordListFolder = Path.Combine(CoreComponentsFolder, "Shared", "StopWordList");
 
                     try
                     {
-                        supportedLanguages = Directory.EnumerateFiles(name, "*.txt").Select(
+                        supportedLanguages = Directory.EnumerateFiles(stopWordListFolder, "*.txt").Select(
                             f => new CultureInfo(Path.GetFileNameWithoutExtension(f))).OrderBy(c => c.DisplayName).ToList();
                     }
                     catch
@@ -143,7 +181,7 @@ namespace Sandcastle.Core
         /// supporting files which will not be present in the shadow copied location.</returns>
         public static string AssemblyFolder(Assembly assembly)
         {
-            string location = null;
+            string location;
 
             try
             {
@@ -176,7 +214,7 @@ namespace Sandcastle.Core
         /// </summary>
         private static void SetPaths()
         {
-            if(toolsFolder == null)
+            if(rootFolder == null)
             {
                 // Special case for Visual Studio.  Try for SHFBROOT first since the VSPackage needs it as we
                 // will be running from the assembly in the extension's folder which does not contain all of the
@@ -188,29 +226,32 @@ namespace Sandcastle.Core
                   Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase) != -1 ||
                   assemblyLocation.IndexOf(@"\IDE\Extensions\", StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    toolsFolder = Environment.GetEnvironmentVariable("SHFBROOT");
+                    rootFolder = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT"), "net472");
                 }
 
                 // If not found, use the executing assembly's folder.  Builds and other stuff that relies on the
                 // true location will fail under Visual Studio.  The project system should have set SHFBROOT
                 // temporarily when it was initialized if it was found in the project.
-                if(String.IsNullOrWhiteSpace(toolsFolder))
-                    toolsFolder = assemblyLocation;
+                if(String.IsNullOrWhiteSpace(rootFolder))
+                    rootFolder = assemblyLocation;
 
-                if(toolsFolder[toolsFolder.Length - 1] != '\\')
-                    toolsFolder += @"\";
+                if(rootFolder[rootFolder.Length - 1] == Path.DirectorySeparatorChar)
+                    rootFolder = rootFolder.Substring(rootFolder.Length - 1);
 
-                componentsFolder = Path.Combine(Environment.GetFolderPath(
+                if(File.Exists(Path.Combine(rootFolder, "..", "SandcastleHelpFileBuilder.targets")))
+                    rootFolder = rootFolder.Substring(0, rootFolder.LastIndexOf(Path.DirectorySeparatorChar));
+
+                toolsFolder = Path.Combine(rootFolder, "Tools");
+                coreComponentsFolder = Path.Combine(rootFolder, "Components");
+                thirdPartyComponentsFolder = Path.Combine(Environment.GetFolderPath(
                     Environment.SpecialFolder.CommonApplicationData), Constants.ComponentsAndPlugInsFolder);
-
-                if(componentsFolder[componentsFolder.Length - 1] != '\\')
-                    componentsFolder += @"\";
+                coreReflectionDataFolder = Path.Combine(rootFolder, "Data");
             }
         }
 
         /// <summary>
         /// This is used to return a composition container filled with the available build components (SHFB
-        /// plug-ins, presentation styles, and BuildAssembler components and syntax generators).
+        /// plug-ins, presentation styles, BuildAssembler components, and syntax generators).
         /// </summary>
         /// <param name="folders">An enumerable list of additional folders to search recursively for components.</param>
         /// <param name="cancellationToken">An optional cancellation token or null if not supported by the caller.</param>
@@ -225,8 +266,8 @@ namespace Sandcastle.Core
         /// first and then the project's folder is searched.</item>
         ///     <item>Common application data folder - The help file builder's common application data folder
         /// where third-party build components are typically installed.</item>
-        ///     <item><c>SHFBROOT</c> - The root Sandcastle Help File Builder installation folder and its
-        /// subfolders.  This allows for XCOPY deployments that keep everything together.</item>
+        ///     <item><c>SHFBROOT</c> core components folder - The core Sandcastle Help File Builder components
+        /// folder and its subfolders.  This allows for XCOPY deployments that keep everything together.</item>
         /// </list>
         /// 
         /// All folders and their subfolders are search recursively for assemblies (*.dll).  There may be
@@ -236,17 +277,20 @@ namespace Sandcastle.Core
         public static CompositionContainer CreateComponentContainer(IEnumerable<string> folders,
           CancellationToken cancellationToken)
         {
+            if(folders == null)
+                throw new ArgumentNullException(nameof(folders));
+
             var catalog = new AggregateCatalog();
             HashSet<string> searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach(string folder in folders)
-                AddAssemblyCatalogs(catalog, folder, searchedFolders, true, cancellationToken);
+            using(var resolver = new ComponentAssemblyResolver())
+            {
+                foreach(string folder in folders)
+                    AddAssemblyCatalogs(catalog, folder, searchedFolders, true, resolver, cancellationToken);
 
-            AddAssemblyCatalogs(catalog, ComponentsFolder, searchedFolders, true, cancellationToken);
-
-            // As noted in the comments above, the root SHFB folder is always searched first due to how MEF
-            // uses directory catalogs.  This will add components from subfolders beneath it too.
-            AddAssemblyCatalogs(catalog, ToolsFolder, searchedFolders, true, cancellationToken);
+                AddAssemblyCatalogs(catalog, ThirdPartyComponentsFolder, searchedFolders, true, resolver, cancellationToken);
+                AddAssemblyCatalogs(catalog, CoreComponentsFolder, searchedFolders, true, resolver, cancellationToken);
+            }
 
             return new CompositionContainer(catalog);
         }
@@ -261,18 +305,23 @@ namespace Sandcastle.Core
         /// <param name="searchedFolders">A hash set of folders that have already been searched and added.</param>
         /// <param name="includeSubfolders">True to search subfolders recursively, false to only search the given
         /// folder.</param>
+        /// <param name="resolver">A component assembly resolver for finding dependency assemblies</param>
         /// <param name="cancellationToken">An optional cancellation token or null if not supported by the caller.</param>
         /// <remarks>It is done this way to prevent a single assembly that would normally be discovered via a
         /// directory catalog from preventing all assemblies from loading if it cannot be examined when the parts
         /// are composed (i.e. trying to load a Windows Store assembly on Windows 7).</remarks>
         private static void AddAssemblyCatalogs(AggregateCatalog catalog, string folder,
-          HashSet<string> searchedFolders, bool includeSubfolders, CancellationToken cancellationToken)
+          HashSet<string> searchedFolders, bool includeSubfolders, ComponentAssemblyResolver resolver,
+          CancellationToken cancellationToken)
         {
-            if(cancellationToken != null)
-                cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
             if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
             {
+                searchedFolders.Add(folder);
+
+                bool hadComponents = false;
+
                 foreach(var file in Directory.EnumerateFiles(folder, "*.dll"))
                 {
                     if(cancellationToken != CancellationToken.None)
@@ -287,7 +336,10 @@ namespace Sandcastle.Core
                         // the catalog.  Use Count() rather than Any() to ensure it touches all parts in case
                         // that makes a difference.
                         if(asmCat.Parts.Count() > 0)
+                        {
                             catalog.Catalogs.Add(asmCat);
+                            hadComponents = true;
+                        }
                         else
                             asmCat.Dispose();
 
@@ -339,12 +391,17 @@ namespace Sandcastle.Core
                     }
                 }
 
+                // Track folders with components so that we can search them for dependencies later if needed
+                if(hadComponents)
+                    resolver.AddFolder(folder);
+
                 // Enumerate subfolders separately so that we can skip future requests for the same folder
                 if(includeSubfolders)
+                {
                     try
                     {
                         foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                            AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false, cancellationToken);
+                            AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false, resolver, cancellationToken);
                     }
                     catch(IOException ex)
                     {
@@ -358,6 +415,7 @@ namespace Sandcastle.Core
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
+                }
             }
         }
         #endregion
@@ -417,6 +475,9 @@ namespace Sandcastle.Core
         {
             var filters = new List<ISyntaxGeneratorMetadata>();
             string syntaxId;
+
+            if(allFilters == null)
+                throw new ArgumentNullException(nameof(allFilters));
 
             if(filterIds == null)
                 filterIds = String.Empty;
@@ -491,11 +552,11 @@ namespace Sandcastle.Core
             foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
                 if(!String.IsNullOrWhiteSpace(generator.DefaultConfiguration))
                 {
-                    sb.AppendFormat("<generator id=\"{0}\">{1}</generator>\r\n", generator.Id,
-                        generator.DefaultConfiguration);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<generator id=\"{0}\">{1}</generator>\r\n",
+                        generator.Id, generator.DefaultConfiguration);
                 }
                 else
-                    sb.AppendFormat("<generator id=\"{0}\" />\r\n", generator.Id);
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<generator id=\"{0}\" />\r\n", generator.Id);
 
             return sb.ToString();
         }
@@ -513,7 +574,7 @@ namespace Sandcastle.Core
             StringBuilder sb = new StringBuilder(1024);
 
             foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
-                sb.AppendFormat("<language name=\"{0}\" style=\"{1}\" />\r\n",
+                sb.AppendFormat(CultureInfo.InvariantCulture, "<language name=\"{0}\" style=\"{1}\" />\r\n",
                     generator.LanguageElementName, generator.KeywordStyleParameter);
 
             return sb.ToString();
@@ -532,6 +593,9 @@ namespace Sandcastle.Core
           CompositionContainer componentContainer, CultureInfo language)
         {
             string resourceItemPath, path;
+
+            if(componentContainer == null)
+                throw new ArgumentNullException(nameof(componentContainer));
 
             foreach(var filter in componentContainer.GetExports<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>())
             {
@@ -591,10 +655,10 @@ namespace Sandcastle.Core
         /// </overloads>
         public static IEnumerable<XElement> XmlStreamAxis(string xmlFile, string elementName)
         {
-            using(XmlReader reader = XmlReader.Create(xmlFile))
+            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings()))
             {
                 while(reader.ReadToFollowing(elementName))
-                    yield return (XElement)XElement.ReadFrom(reader);
+                    yield return (XElement)XNode.ReadFrom(reader);
             }
         }
 
@@ -612,14 +676,14 @@ namespace Sandcastle.Core
         {
             HashSet<string> elements = new HashSet<string>(elementNames);
 
-            using(XmlReader reader = XmlReader.Create(xmlFile))
+            using(XmlReader reader = XmlReader.Create(xmlFile, new XmlReaderSettings()))
             {
                 reader.MoveToContent();
 
                 while(reader.Read())
                     if(reader.NodeType == XmlNodeType.Element && elementNames.Contains(reader.Name))
                     {
-                        var root = (XElement)XElement.ReadFrom(reader);
+                        var root = (XElement)XNode.ReadFrom(reader);
 
                         yield return root;
 
@@ -627,6 +691,71 @@ namespace Sandcastle.Core
                         foreach(var d in root.Descendants().Where(d => elements.Contains(d.Name.ToString())))
                             yield return d;
                     }
+            }
+        }
+        #endregion
+
+        #region Deterministic hash code method
+        //=====================================================================
+
+        /// <summary>
+        /// This returns a deterministic hash code that is the same in the full .NET Framework and in .NET Core
+        /// in every session given the same string to hash.
+        /// </summary>
+        /// <param name="hashString">The string to hash</param>
+        /// <returns>The deterministic hash code</returns>
+        /// <remarks>The hashing algorithm differs in .NET Core and returns different hash codes for each session.
+        /// This was done for security to prevent DoS attacks. For the help file builder, we're just using it to
+        /// generate a short filenames or other constant IDs.  As such, we need a deterministic hash code to keep
+        /// generating the same hash code for the same IDs in all sessions regardless of platform so that the
+        /// filenames and other IDs stay the same for backward compatibility.</remarks>
+        public static int GetHashCodeDeterministic(this string hashString)
+        {
+            if(hashString == null)
+                throw new ArgumentNullException(nameof(hashString));
+
+            // This is equivalent to the .NET Framework hashing algorithm but doesn't use unsafe code.  It
+            // will generate the same value as the .NET Framework version given the same string.
+            unchecked
+            {
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                int len = hashString.Length, i = 0, h1, h2;
+
+                while(len > 2)
+                {
+                    h1 = (hashString[i + 1] << 16) + hashString[i];
+                    h2 = 0;
+
+                    if(len >= 3)
+                    {
+                        if(len >= 4)
+                            h2 = hashString[i + 3] << 16;
+
+                        h2 += hashString[i + 2];
+                    }
+
+                    hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ h1;
+                    hash2 = ((hash2 << 5) + hash2 + (hash2 >> 27)) ^ h2;
+
+                    i += 4;
+                    len -= 4;
+                }
+
+                if(len > 0)
+                {
+                    h1 = 0;
+
+                    if(len >= 2)
+                        h1 = hashString[i + 1] << 16;
+
+                    h1 += hashString[i];
+
+                    hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ h1;
+                }
+
+                return hash1 + (hash2 * 1566083941);
             }
         }
         #endregion

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Guids.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains various GUIDs for the package
 //

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2021
+// Updated : 06/17/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -28,6 +28,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
@@ -82,7 +83,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="currentBuild">The current build for which to perform substitution tag replacement</param>
         public SubstitutionTagReplacement(BuildProcess currentBuild)
         {
-            this.currentBuild = currentBuild;
+            this.currentBuild = currentBuild ?? throw new ArgumentNullException(nameof(currentBuild));
 
             sandcastleProject = currentBuild.CurrentProject;
             msbuildProject = sandcastleProject.MSBuildProject;
@@ -114,7 +115,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string TransformText(string templateText, params object[] args)
         {
             if(String.IsNullOrWhiteSpace(templateText))
-                return (templateText ?? String.Empty);
+                return templateText ?? String.Empty;
 
             if(args.Length != 0)
                 templateText = String.Format(CultureInfo.InvariantCulture, templateText, args);
@@ -256,8 +257,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
         #endregion
 
-// All substitution tag members below are referenced indirectly, not through the code
+        // All substitution tag members below are referenced indirectly, not through the code
 #pragma warning disable IDE0051
+#pragma warning disable CA1822
 
         #region Project and build folder substitution tags
         //=====================================================================
@@ -290,23 +292,33 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The help file builder folder
+        /// The root Sandcastle Help File Builder folder
         /// </summary>
-        /// <returns>The help file builder folder</returns>
+        /// <returns>The root Sandcastle Help File Builder folder including the trailing directory separator</returns>
         [SubstitutionTag]
-        private string SHFBFolder()
+        private string SHFBRoot()
         {
-            return ComponentUtilities.ToolsFolder;
+            return ComponentUtilities.RootFolder + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
-        /// The components folder
+        /// The core components folder (those components distributed with the help file builder)
         /// </summary>
-        /// <returns>The components folder</returns>
+        /// <returns>The core components folder including the trailing directory separator</returns>
         [SubstitutionTag]
-        private string ComponentsFolder()
+        private string CoreComponentsFolder()
         {
-            return ComponentUtilities.ComponentsFolder;
+            return ComponentUtilities.CoreComponentsFolder + Path.DirectorySeparatorChar;
+        }
+
+        /// <summary>
+        /// The third-party components folder
+        /// </summary>
+        /// <returns>The third-party components folder including the trailing directory separator</returns>
+        [SubstitutionTag]
+        private string ThirdPartyComponentsFolder()
+        {
+            return ComponentUtilities.ThirdPartyComponentsFolder + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
@@ -352,7 +364,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// The current build's working folder
         /// </summary>
-        /// <returns>The current build's working folder</returns>
+        /// <returns>The current build's working folder including the trailing directory separator</returns>
         [SubstitutionTag]
         private string WorkingFolder()
         {
@@ -464,7 +476,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // Add one entry for each help file format being generated
             foreach(string baseFolder in currentBuild.HelpFormatOutputFolders)
-                replacementValue.AppendFormat("<path value=\"{0}\" />", baseFolder.Substring(currentBuild.WorkingFolder.Length));
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<path value=\"{0}\" />",
+                    baseFolder.Substring(currentBuild.WorkingFolder.Length));
 
             return replacementValue.ToString();
         }
@@ -498,48 +511,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The document model XSL transformation filename
-        /// </summary>
-        /// <returns>The document model XSL transformation filename</returns>
-        [SubstitutionTag]
-        private string DocModelTransformation()
-        {
-            return presentationStyle.ResolvePath(presentationStyle.DocumentModelTransformation.TransformationFilename);
-        }
-
-        /// <summary>
-        /// The document model XSL transformation parameters
-        /// </summary>
-        /// <returns>The document model XSL transformation parameters</returns>
-        [SubstitutionTag]
-        private string DocModelTransformationParameters()
-        {
-            return String.Join(";", presentationStyle.DocumentModelTransformation.Select(
-                p => String.Format(CultureInfo.InvariantCulture, "{0}={1}", p.Key, p.Value)));
-        }
-
-        /// <summary>
-        /// The intermediate TOC XSL transformation filename
-        /// </summary>
-        /// <returns>The intermediate TOC XSL transformation filename</returns>
-        [SubstitutionTag]
-        private string TocTransformation()
-        {
-            return presentationStyle.ResolvePath(presentationStyle.IntermediateTocTransformation.TransformationFilename);
-        }
-
-        /// <summary>
-        /// The intermediate TOC XSL transformation parameters
-        /// </summary>
-        /// <returns>The intermediate TOC XSL transformation parameters</returns>
-        [SubstitutionTag]
-        private string TocTransformParameters()
-        {
-            return String.Join(";", presentationStyle.IntermediateTocTransformation.Select(
-                p => String.Format(CultureInfo.InvariantCulture, "{0}={1}", p.Key, p.Value)));
-        }
-
-        /// <summary>
         /// The code snippet grouping option
         /// </summary>
         /// <returns>The intermediate TOC XSL transformation parameters</returns>
@@ -560,9 +531,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             foreach(var arg in sandcastleProject.TransformComponentArguments)
                 if(arg.Value != null)
-                    replacementValue.AppendFormat("<argument key=\"{0}\" value=\"{1}\" />\r\n", arg.Key, arg.Value);
+                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<argument key=\"{0}\" value=\"{1}\" />\r\n", arg.Key, arg.Value);
                 else
-                    replacementValue.AppendFormat("<argument key=\"{0}\">{1}</argument>\r\n", arg.Key, arg.Content);
+                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<argument key=\"{0}\">{1}</argument>\r\n", arg.Key, arg.Content);
 
             return replacementValue.ToString();
         }
@@ -736,23 +707,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             return String.IsNullOrWhiteSpace(sandcastleProject.RootNamespaceTitle) ?
                 "<include item=\"rootTopicTitleLocalized\"/>" : sandcastleProject.RootNamespaceTitle;
-        }
-
-        /// <summary>
-        /// The namespace grouping setting if supported
-        /// </summary>
-        /// <returns>The namespace grouping option enabled state</returns>
-        [SubstitutionTag]
-        private string NamespaceGrouping()
-        {
-            if(sandcastleProject.NamespaceGrouping && presentationStyle.SupportsNamespaceGrouping)
-                return "true";
-
-            if(sandcastleProject.NamespaceGrouping)
-                currentBuild.ReportWarning("BE0027", "Namespace grouping was requested but the selected " +
-                    "presentation style does not support it.  Option ignored.");
-
-            return "false";
         }
 
         /// <summary>
@@ -1154,10 +1108,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             // When reading the file, use the default encoding but detect the encoding if byte order marks are
             // present.
-            using(StringReader sr = new StringReader(Utility.ReadWithEncoding
-              (currentBuild.WorkingFolder + "WebTOC.xml", ref enc)))
+            using(StringReader sr = new StringReader(Utility.ReadWithEncoding(currentBuild.WorkingFolder +
+              "WebTOC.xml", ref enc)))
+            using(var reader = XmlReader.Create(sr, new XmlReaderSettings { CloseInput = true }))
             {
-                tocDoc = new XPathDocument(sr);
+                tocDoc = new XPathDocument(reader);
             }
 
             var navToc = tocDoc.CreateNavigator();
@@ -1295,7 +1250,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             replacementValue.Clear();
 
             foreach(var file in currentBuild.ConceptualContent.CodeSnippetFiles)
-                replacementValue.AppendFormat("<examples file=\"{0}\" />\r\n", file.FullPath);
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<examples file=\"{0}\" />\r\n", file.FullPath);
 
             return replacementValue.ToString();
         }
@@ -1310,7 +1265,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             replacementValue.Clear();
 
             foreach(string ns in currentBuild.ReferencedNamespaces)
-                replacementValue.AppendFormat("<namespace file=\"{0}.xml\" />\r\n", ns);
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<namespace file=\"{0}.xml\" />\r\n", ns);
 
             return replacementValue.ToString();
         }
@@ -1330,7 +1285,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             foreach(string itemFile in ComponentUtilities.SyntaxGeneratorResourceItemFiles(
               currentBuild.ComponentContainer, sandcastleProject.Language))
             {
-                replacementValue.AppendFormat("<content file=\"{0}\" />\r\n", Path.GetFileName(itemFile));
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
+                    Path.GetFileName(itemFile));
 
                 this.TransformTemplate(Path.GetFileName(itemFile), Path.GetDirectoryName(itemFile),
                     currentBuild.WorkingFolder);
@@ -1339,7 +1295,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Add project resource item files last so that they override all other files
             foreach(var file in sandcastleProject.ContentFiles(BuildAction.ResourceItems).OrderBy(f => f.LinkPath))
             {
-                replacementValue.AppendFormat("<content file=\"{0}\" />\r\n", Path.GetFileName(file.FullPath));
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
+                    Path.GetFileName(file.FullPath));
 
                 this.TransformTemplate(Path.GetFileName(file.FullPath),
                     Path.GetDirectoryName(file.FullPath), currentBuild.WorkingFolder);
@@ -1358,7 +1315,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             replacementValue.Clear();
 
             foreach(var file in currentBuild.ConceptualContent.TokenFiles)
-                replacementValue.AppendFormat("<content file=\"{0}\" />\r\n", Path.GetFileName(file.FullPath));
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<content file=\"{0}\" />\r\n",
+                    Path.GetFileName(file.FullPath));
 
             return replacementValue.ToString();
         }
@@ -1373,7 +1331,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             replacementValue.Clear();
 
             foreach(var file in sandcastleProject.ContentFiles(BuildAction.XamlConfiguration))
-                replacementValue.AppendFormat("<filter files=\"{0}\" />\r\n", file.FullPath);
+                replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<filter files=\"{0}\" />\r\n",
+                    file.FullPath);
 
             return replacementValue.ToString();
         }
@@ -1426,37 +1385,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// The project node name
-        /// </summary>
-        /// <returns>The project node name</returns>
-        [SubstitutionTag]
-        private string ProjectNodeName()
-        {
-            return "R:Project_" + sandcastleProject.HtmlHelpName.Replace(" ", "_");
-        }
-
-        /// <summary>
-        /// The optional project node ID
-        /// </summary>
-        /// <returns>The project node ID or an empty string if the Root Namespace Container is not enabled</returns>
-        [SubstitutionTag]
-        private string ProjectNodeIdOptional()
-        {
-            return !sandcastleProject.RootNamespaceContainer ? String.Empty :
-                "Project_" + sandcastleProject.HtmlHelpName.Replace(" ", "_").Replace("&", "_");
-        }
-
-        /// <summary>
-        /// The required project node ID
-        /// </summary>
-        /// <returns>The project node ID (always returns the ID)</returns>
-        [SubstitutionTag]
-        private string ProjectNodeIdRequired()
-        {
-            return "Project_" + sandcastleProject.HtmlHelpName.Replace(" ", "_").Replace("&", "_");
-        }
-
-        /// <summary>
         /// Unique ID
         /// </summary>
         /// <returns>A unique ID for the project and current user</returns>
@@ -1468,11 +1396,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(String.IsNullOrWhiteSpace(userName))
                 userName = "DefaultUser";
 
-            return (sandcastleProject.Filename + "_" + userName).GetHashCode().ToString("X", CultureInfo.InvariantCulture);
+            return (sandcastleProject.Filename + "_" + userName).GetHashCodeDeterministic().ToString("X", CultureInfo.InvariantCulture);
         }
         #endregion
 
 #pragma warning restore IDE0051
+#pragma warning restore CA1822
 
         #region Helper methods
         //=====================================================================
@@ -1503,7 +1432,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // caching components to identify the cache and its location.
                     replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
                         "recurse=\"false\" duplicateWarning=\"false\" groupId=\"{2}_{3}_{4:X}\" />\r\n",
-                        folder, wildcard, dataSet.Platform, dataSet.Version, location.GetHashCode());
+                        folder, wildcard, dataSet.Platform, dataSet.Version, location.GetHashCodeDeterministic());
                 }
                 else
                     replacementValue.AppendFormat(CultureInfo.InvariantCulture, "<import path=\"{0}\" file=\"{1}\" " +
@@ -1569,10 +1498,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         currentBuild.ReportWarning("BE0060", "The filename '{0}' contains a comma or '.h' " +
                             "which may cause the Help 1 compiler to fail.", filename);
 
-                    replacementValue.AppendFormat(itemFormat, filename);
+                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, itemFormat, filename);
                 }
                 else
-                    replacementValue.AppendFormat(itemFormat, WebUtility.HtmlEncode(name.Replace(folder, String.Empty)));
+                {
+                    replacementValue.AppendFormat(CultureInfo.InvariantCulture, itemFormat,
+                        WebUtility.HtmlEncode(name.Replace(folder, String.Empty)));
+                }
 
             return replacementValue.ToString();
         }
@@ -1601,7 +1533,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         target = String.Empty;
                     }
 
-                    tableOfContents.AppendFormat("<div class=\"TreeNode\">\r\n" +
+                    tableOfContents.AppendFormat(CultureInfo.InvariantCulture, "<div class=\"TreeNode\">\r\n" +
                         "<img class=\"TreeNodeImg\" onclick=\"javascript: Toggle(this);\" " +
                         "src=\"Collapsed.gif\"/><a class=\"UnselectedNode\" " +
                         "onclick=\"javascript: return Expand(this);\" href=\"{0}\"{1}>{2}</a>\r\n" +
@@ -1619,7 +1551,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(String.IsNullOrWhiteSpace(url))
                         url = "about:blank";
 
-                    tableOfContents.AppendFormat("<div class=\"TreeItem\">\r\n" +
+                    tableOfContents.AppendFormat(CultureInfo.InvariantCulture, "<div class=\"TreeItem\">\r\n" +
                         "<img src=\"Item.gif\"/>" +
                         "<a class=\"UnselectedNode\" onclick=\"javascript: return SelectNode(this);\" " +
                         "href=\"{0}\" target=\"TopicContent\">{1}</a>\r\n" +
@@ -1627,6 +1559,5 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
         }
         #endregion
-
     }
 }

@@ -4,7 +4,6 @@
 // Author  : Sam Harwell  (sam@tunnelvisionlabs.com)
 // Updated : 06/19/2019
 // Note    : Copyright 2014-2019, Sam Harwell, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a custom completion set that merges two separate instance into one
 //

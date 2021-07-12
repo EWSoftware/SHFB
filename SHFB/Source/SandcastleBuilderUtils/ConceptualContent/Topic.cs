@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a conceptual content topic.
 //
@@ -48,11 +47,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         private TopicFile topicFile;
-        private TopicCollection subtopics;
+        private readonly TopicCollection subtopics;
         private string contentId, title, tocTitle, linkText;
         private bool noFile, isSelected, isExpanded, isVisible, isDefaultTopic, isMSHVRoot;
         private ApiParentMode apiParentMode;
-        private MSHelpKeywordCollection keywords;
+        private readonly MSHelpKeywordCollection keywords;
+
         #endregion
 
         #region Properties
@@ -71,7 +71,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// content will be displayed for it when selected in the help file's table of contents.</value>
         public TopicFile TopicFile
         {
-            get { return topicFile; }
+            get => topicFile;
             set
             {
                 topicFile = value;
@@ -88,7 +88,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 }
 
                 // This may affect the display title property
-                this.OnPropertyChanged("DisplayTitle");
+                this.OnPropertyChanged(nameof(DisplayTitle));
             }
         }
 
@@ -96,20 +96,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This read-only property returns true if there is no associated topic file by choice rather than it
         /// not being found.
         /// </summary>
-        public bool NoTopicFile
-        {
-            get { return noFile; }
-        }
+        public bool NoTopicFile => noFile;
 
         /// <summary>
         /// This is used to get the content ID from the content layout file
         /// </summary>
         /// <remarks>This should match an ID from a project file.  If not, it will serve as an container node
         /// with no associated topic.</remarks>
-        public string ContentId
-        {
-            get { return contentId; }
-        }
+        public string ContentId => contentId;
 
         /// <summary>
         /// This is used to get the unique ID of the topic
@@ -161,10 +155,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This read-only property is used to get the document type
         /// </summary>
-        public DocumentType DocumentType
-        {
-            get { return topicFile.DocumentType; }
-        }
+        public DocumentType DocumentType => topicFile.DocumentType;
 
         /// <summary>
         /// This is used to get the required title that should be used for the topic
@@ -172,7 +163,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <value>If not set, the topic filename without a path or extension is used</value>
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 if(value != title)
@@ -182,7 +173,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     title = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("DisplayTitle");
+                    this.OnPropertyChanged(nameof(DisplayTitle));
                 }
             }
         }
@@ -194,7 +185,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// will be set to the <see cref="Title" /> value.</value>
         public string TocTitle
         {
-            get { return tocTitle; }
+            get => tocTitle;
             set
             {
                 if(value != tocTitle)
@@ -204,7 +195,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     tocTitle = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("DisplayTitle");
+                    this.OnPropertyChanged(nameof(DisplayTitle));
                 }
             }
         }
@@ -216,7 +207,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// not set, it will be set to the <see cref="Title" /> value.</value>
         public string LinkText
         {
-            get { return linkText; }
+            get => linkText;
             set
             {
                 if(value != linkText)
@@ -237,14 +228,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// it must appear in one of the other topics.</value>
         public bool Visible
         {
-            get { return isVisible; }
+            get => isVisible;
             set
             {
                 if(value != isVisible)
                 {
                     isVisible = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                    this.OnPropertyChanged(nameof(ToolTip));  // Affects tool tip too
 
                     // The default topic must be visible.  The MSHV root must not be visible.  A hidden topic
                     // cannot be the API insertion point.
@@ -262,10 +253,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get the index keywords that will be added to the MAML topic
         /// </summary>
-        public MSHelpKeywordCollection Keywords
-        {
-            get { return keywords; }
-        }
+        public MSHelpKeywordCollection Keywords => keywords;
 
         /// <summary>
         /// This read-only property is used to get a title for display (i.e. in the designer)
@@ -303,24 +291,21 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get the sub-topics beneath this topic
         /// </summary>
-        public TopicCollection Subtopics
-        {
-            get { return subtopics; }
-        }
+        public TopicCollection Subtopics => subtopics;
 
         /// <summary>
         /// This is used to when merging TOC files to determine the default topic
         /// </summary>
         public bool IsDefaultTopic
         {
-            get { return isDefaultTopic; }
+            get => isDefaultTopic;
             set
             {
                 if(value != isDefaultTopic)
                 {
                     isDefaultTopic = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                    this.OnPropertyChanged(nameof(ToolTip));  // Affects tool tip too
 
                     // The default topic must be visible and cannot be the MSHV root container
                     if(isDefaultTopic)
@@ -337,14 +322,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public ApiParentMode ApiParentMode
         {
-            get { return apiParentMode; }
+            get => apiParentMode;
             set
             {
                 if(value != apiParentMode)
                 {
                     apiParentMode = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                    this.OnPropertyChanged(nameof(ToolTip));  // Affects tool tip too
 
                     // The API parent node must be visible and cannot be the MSHV root container
                     if(value != ApiParentMode.None)
@@ -362,14 +347,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public bool IsMSHVRootContentContainer
         {
-            get { return isMSHVRoot; }
+            get => isMSHVRoot;
             set
             {
                 if(value != isMSHVRoot)
                 {
                     isMSHVRoot = value;
                     this.OnPropertyChanged();
-                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                    this.OnPropertyChanged(nameof(ToolTip));  // Affects tool tip too
 
                     // The MSHV root container must not be visible and cannot be the default topic or API
                     // insertion point.
@@ -391,7 +376,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// its state is remembered when reloaded.</remarks>
         public bool IsSelected
         {
-            get { return isSelected; }
+            get => isSelected;
             set
             {
                 if(value != isSelected)
@@ -409,7 +394,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// its state is remembered when reloaded.</remarks>
         public bool IsExpanded
         {
-            get { return isExpanded && this.Subtopics.Count != 0; }
+            get => isExpanded && this.Subtopics.Count != 0;
             set
             {
                 if(value != isExpanded)
@@ -419,7 +404,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 }
             }
         }
-        
+
         /// <summary>
         /// This returns a description of the topic that can be used as a tool tip
         /// </summary>
@@ -500,10 +485,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -534,7 +516,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             Topic newTopic;
             string guid, parentMode;
-            bool visible, attrValue;
 
             guid = xr.GetAttribute("id");
 
@@ -546,10 +527,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             if(!Boolean.TryParse(xr.GetAttribute("noFile"), out noFile))
                 noFile = false;
 
-            if(!Boolean.TryParse(xr.GetAttribute("visible"), out visible))
+            if(!Boolean.TryParse(xr.GetAttribute("visible"), out bool visible))
                 visible = true;
 
-            if(Boolean.TryParse(xr.GetAttribute("isDefault"), out attrValue))
+            if(Boolean.TryParse(xr.GetAttribute("isDefault"), out bool attrValue))
                 this.IsDefaultTopic = attrValue;
 
             if(Boolean.TryParse(xr.GetAttribute("isMSHVRoot"), out attrValue))

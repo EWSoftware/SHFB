@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildEventPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/05/2017
-// Note    : Copyright 2014-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build Events category properties
 //

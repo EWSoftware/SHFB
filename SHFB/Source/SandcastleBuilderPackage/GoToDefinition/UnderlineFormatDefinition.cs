@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 01/06/2016
 // Note    : Copyright 2014-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the class used to define the color for MAML and XML comments link underlines
 //

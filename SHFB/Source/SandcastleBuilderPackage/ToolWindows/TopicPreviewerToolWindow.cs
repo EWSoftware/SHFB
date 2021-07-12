@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2012-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to implement the Topic Previewer tool window
 //
@@ -49,7 +48,7 @@ namespace SandcastleBuilder.Package.ToolWindows
         #region Private data members
         //=====================================================================
 
-        private TopicPreviewerControl ucTopicPreviewer;
+        private readonly TopicPreviewerControl ucTopicPreviewer;
         private object scope;
         private uint selectionMonitorCookie;
 
@@ -108,8 +107,6 @@ namespace SandcastleBuilder.Package.ToolWindows
             ThreadHelper.ThrowIfNotOnUIThread();
 
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
-            uint pitemid;
-            IVsMultiItemSelect ppMIS;
 
             base.Initialize();
 
@@ -123,7 +120,7 @@ namespace SandcastleBuilder.Package.ToolWindows
                 try
                 {
                     // Get the current project if there is one and select it for use by the tool window
-                    ms.GetCurrentSelection(out ppHier, out pitemid, out ppMIS, out ppSC);
+                    ms.GetCurrentSelection(out ppHier, out uint pitemid, out IVsMultiItemSelect ppMIS, out ppSC);
 
                     if(pitemid != VSConstants.VSITEMID_NIL && ppHier != IntPtr.Zero)
                     {
@@ -259,7 +256,6 @@ namespace SandcastleBuilder.Package.ToolWindows
             ThreadHelper.ThrowIfNotOnUIThread();
 
             SandcastleProject shfbProject = null;
-            object project;
 
             if(pHierOld == null || !pHierOld.Equals(pHierNew))
             {
@@ -268,16 +264,11 @@ namespace SandcastleBuilder.Package.ToolWindows
                     if(pHierNew != null)
                     {
                         ErrorHandler.ThrowOnFailure(pHierNew.GetProperty(VSConstants.VSITEMID_ROOT,
-                            (int)__VSHPROPID.VSHPROPID_ExtObject, out project));
+                            (int)__VSHPROPID.VSHPROPID_ExtObject, out object project));
 
-                        EnvDTE.Project envDTEProject = project as EnvDTE.Project;
-
-                        if(envDTEProject != null)
+                        if(project is EnvDTE.Project envDTEProject)
                         {
-                            SandcastleBuilderProjectNode projectNode =
-                                envDTEProject.Object as SandcastleBuilderProjectNode;
-
-                            if(projectNode != null)
+                            if(envDTEProject.Object is SandcastleBuilderProjectNode projectNode)
                                 shfbProject = projectNode.SandcastleProject;
                         }
                     }
@@ -308,16 +299,15 @@ namespace SandcastleBuilder.Package.ToolWindows
             ThreadHelper.ThrowIfNotOnUIThread();
 
             IVsUIShell uiShell = Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true);
-            IEnumWindowFrames enumFrames;
             IVsWindowFrame[] frames = new IVsWindowFrame[1];
-            object docView;
-            uint frameCount;
             ContentLayoutEditorPane contentLayoutPane;
             TokenEditorPane tokenFilePane;
 
-            if(uiShell.GetDocumentWindowEnum(out enumFrames) == VSConstants.S_OK)
-                while(enumFrames.Next(1, frames, out frameCount) == VSConstants.S_OK && frameCount == 1)
-                    if(frames[0].GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out docView) == VSConstants.S_OK)
+            if(uiShell.GetDocumentWindowEnum(out IEnumWindowFrames enumFrames) == VSConstants.S_OK)
+            {
+                while(enumFrames.Next(1, frames, out uint frameCount) == VSConstants.S_OK && frameCount == 1)
+                {
+                    if(frames[0].GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out object docView) == VSConstants.S_OK)
                     {
                         contentLayoutPane = docView as ContentLayoutEditorPane;
 
@@ -331,6 +321,8 @@ namespace SandcastleBuilder.Package.ToolWindows
                                 e.TokenFiles.Add(tokenFilePane.Filename, tokenFilePane.Tokens);
                         }
                     }
+                }
+            }
         }
 
         /// <summary>
@@ -343,11 +335,10 @@ namespace SandcastleBuilder.Package.ToolWindows
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            IVsHierarchy hier;
             IVsPersistDocData persistDocData;
             IVsTextStream srpStream;
             IntPtr docData = IntPtr.Zero;
-            uint itemid, cookie = 0;
+            uint cookie = 0;
             int hr = VSConstants.E_FAIL;
 
             IVsRunningDocumentTable rdt = Utility.GetServiceFromPackage<IVsRunningDocumentTable,
@@ -359,8 +350,8 @@ namespace SandcastleBuilder.Package.ToolWindows
             try
             {
                 // Getting a read lock on the document.  This must be released later.
-                hr = rdt.FindAndLockDocument((uint)_VSRDTFLAGS.RDT_ReadLock, e.TopicFilename, out hier,
-                    out itemid, out docData, out cookie);
+                hr = rdt.FindAndLockDocument((uint)_VSRDTFLAGS.RDT_ReadLock, e.TopicFilename, out IVsHierarchy hier,
+                    out uint itemid, out docData, out cookie);
 
                 if(ErrorHandler.Failed(hr) || docData == IntPtr.Zero)
                     return;
@@ -373,9 +364,7 @@ namespace SandcastleBuilder.Package.ToolWindows
                 if(srpTextLines == null)
                 {
                     // Try getting a text buffer provider first
-                    IVsTextBufferProvider srpTextBufferProvider = persistDocData as IVsTextBufferProvider;
-
-                    if(srpTextBufferProvider != null)
+                    if(persistDocData is IVsTextBufferProvider srpTextBufferProvider)
                         hr = srpTextBufferProvider.GetTextBuffer(out srpTextLines);
                 }
 
@@ -385,13 +374,10 @@ namespace SandcastleBuilder.Package.ToolWindows
 
                     if(srpStream != null)
                     {
-                        IVsBatchUpdate srpBatchUpdate = srpStream as IVsBatchUpdate;
-
-                        if(srpBatchUpdate != null)
+                        if(srpStream is IVsBatchUpdate srpBatchUpdate)
                             ErrorHandler.ThrowOnFailure(srpBatchUpdate.FlushPendingUpdates(0));
 
-                        int lBufferSize = 0;
-                        hr = srpStream.GetSize(out lBufferSize);
+                        hr = srpStream.GetSize(out int lBufferSize);
 
                         if(ErrorHandler.Succeeded(hr))
                         {

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ITableOfContents.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an interface used to interact with project files that can generate table of contents
 // entries.

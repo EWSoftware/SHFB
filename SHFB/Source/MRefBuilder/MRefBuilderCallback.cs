@@ -5,7 +5,7 @@
 
 using System.Xml;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools
 {
     /// <summary>
     /// This delegate is used for MRefBuilder callback methods

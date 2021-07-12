@@ -22,12 +22,12 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Snippets;
+using Sandcastle.Tools.BuildComponents.Snippets;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to replace code references with snippets from a file
@@ -46,7 +46,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new ExampleComponent(base.BuildAssembler);
+                return new ExampleComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -55,15 +55,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         // The snippet store
-        private Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets =
+        private readonly Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets =
             new Dictionary<SnippetIdentifier, List<StoredSnippet>>();
 
         private XPathExpression selector;
 
-        private static Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
+        private static readonly Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
 
-        private Dictionary<string, List<ColorizationRule>> colorization =
+        private readonly Dictionary<string, List<ColorizationRule>> colorization =
             new Dictionary<string, List<ColorizationRule>>();
+
         #endregion
 
         #region Constructor
@@ -147,7 +148,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 {
                     reader.Close();
                 }
-
             }
             catch(IOException e)
             {
@@ -188,7 +188,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     var matches = rule.Apply(regionText);
 
                     // if no matches were found, continue to the next region
-                    if(matches.Count() == 0)
+                    if(!matches.Any())
                     {
                         node = node.Next;
                         continue;
@@ -330,6 +330,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             XPathNodeIterator contentNodes = configuration.Select("examples");
 
             foreach(XPathNavigator contentNode in contentNodes)
@@ -380,6 +383,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             foreach(XPathNavigator node in document.CreateNavigator().Select(selector).ToArray())
             {
                 string reference = node.Value;

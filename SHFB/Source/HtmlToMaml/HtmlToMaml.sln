@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlToMaml", "HtmlToMaml.csproj", "{BF2A51B4-6981-4E40-B971-14A26221DA85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmlToMaml", "HtmlToMaml.csproj", "{BF2A51B4-6981-4E40-B971-14A26221DA85}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "HtmlToMamlDocs", "Doc\HtmlToMamlDocs.shfbproj", "{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BF2A51B4-6981-4E40-B971-14A26221DA85} = {BF2A51B4-6981-4E40-B971-14A26221DA85}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3CC5971C-4F6E-44AD-9ED2-2A549D01BD43}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
 	EndProjectSection
 EndProject
 Global
@@ -26,5 +31,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB66CA45-B756-49D0-B91C-D3699F5E6C53}
 	EndGlobalSection
 EndGlobal

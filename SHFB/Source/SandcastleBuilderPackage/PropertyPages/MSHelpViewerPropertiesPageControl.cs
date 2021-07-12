@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/19/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the MS Help Viewer category properties
 //

@@ -37,10 +37,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <summary>
         /// The current position of the writer
         /// </summary>
-        public virtual int Position
-        {
-            get { return -1; }
-        }
+        public virtual int Position => -1;
 
         /// <summary>
         /// This is used to indicate whether or not the syntax writer should render reference links as actual

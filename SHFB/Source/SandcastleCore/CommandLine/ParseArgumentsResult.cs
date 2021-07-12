@@ -21,9 +21,8 @@ namespace Sandcastle.Core.CommandLine
         #region Private data members
         //=====================================================================
 
-        private OptionCollection options;
-        private Dictionary<string, ParseResult> errors;
-        private List<string> nonOptions;
+        private readonly Dictionary<string, ParseResult> errors;
+        private readonly List<string> nonOptions;
 
         #endregion
 
@@ -33,27 +32,19 @@ namespace Sandcastle.Core.CommandLine
         /// <summary>
         /// This read-only property is used to get the option collection related to the results
         /// </summary>
-        public OptionCollection Options
-        {
-            get { return options; }
-        }
+        public OptionCollection Options { get; }
 
         /// <summary>
         /// This read-only property is used to see if the options were parsed successfully
         /// </summary>
         /// <value>Returns true if successful, false if not</value>
-        public bool Success
-        {
-            get { return (errors.Count == 0); }
-        }
+        public bool Success => (errors.Count == 0);
 
         /// <summary>
         /// This read-only property returns a collection of the unused arguments
         /// </summary>
-        public ReadOnlyCollection<string> UnusedArguments
-        {
-            get { return new ReadOnlyCollection<string>(nonOptions); }
-        }
+        public ReadOnlyCollection<string> UnusedArguments => new ReadOnlyCollection<string>(nonOptions);
+
         #endregion
 
         #region Constructor
@@ -65,7 +56,7 @@ namespace Sandcastle.Core.CommandLine
         /// <param name="options">The option collection related to the results</param>
         internal ParseArgumentsResult(OptionCollection options)
         {
-            this.options = options;
+            this.Options = options;
 
             errors = new Dictionary<string, ParseResult>();
             nonOptions = new List<string>();
@@ -103,7 +94,7 @@ namespace Sandcastle.Core.CommandLine
             string message;
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             foreach(KeyValuePair<string, ParseResult> error in errors)
             {
@@ -119,7 +110,7 @@ namespace Sandcastle.Core.CommandLine
 
                     case ParseResult.MissingOption:
                         // Use the message from the option
-                        message = options[error.Key].RequiredMessage;
+                        message = this.Options[error.Key].RequiredMessage;
                         break;
 
                     case ParseResult.MultipleOccurence:

@@ -6762,12 +6762,15 @@ notfound:
                 GC.SuppressFinalize(this);
             }
         }
+
         private CachedRuntimeAssembly cachedRuntimeAssembly;
+        
         public System.Reflection.Assembly GetRuntimeAssembly()
         {
-            return this.GetRuntimeAssembly(null, null);
+            return this.GetRuntimeAssembly(/*null,*/ null);
         }
 
+        /* These do not appear to be used
         public System.Reflection.Assembly GetRuntimeAssembly(System.Security.Policy.Evidence evidence)
         {
             return this.GetRuntimeAssembly(evidence, null);
@@ -6776,19 +6779,17 @@ notfound:
         {
             return this.GetRuntimeAssembly(null, targetAppDomain);
         }
+        */
 
-        // TODO: Evidence is obsolete but I'm not sure if it can be removed yet as this can parse assemblies from
-        // prior framework versions that do use it so we'll just suppress the warning for now.
-#pragma warning disable 0618
-
-        public System.Reflection.Assembly GetRuntimeAssembly(System.Security.Policy.Evidence evidence, AppDomain targetAppDomain)
+        // Evidence does not appear to be used
+        public System.Reflection.Assembly GetRuntimeAssembly(/*System.Security.Policy.Evidence evidence,*/ AppDomain targetAppDomain)
         {
             System.Reflection.Assembly result = this.cachedRuntimeAssembly == null ? null : this.cachedRuntimeAssembly.Value;
-            if(result == null || evidence != null || targetAppDomain != null)
+            if(result == null || /*evidence != null ||*/ targetAppDomain != null)
             {
                 lock(this)
                 {
-                    if(this.cachedRuntimeAssembly != null && evidence == null && targetAppDomain == null)
+                    if(this.cachedRuntimeAssembly != null && /*evidence == null &&*/ targetAppDomain == null)
                         return this.cachedRuntimeAssembly.Value;
                     if(targetAppDomain == null)
                         targetAppDomain = AppDomain.CurrentDomain;
@@ -6810,14 +6811,14 @@ notfound:
                             }
                         if(result == null)
                         {
-                            if(evidence != null)
+                            /*if(evidence != null)
                                 result = targetAppDomain.Load(this.GetAssemblyName(), evidence);
-                            else
+                            else*/
                                 result = targetAppDomain.Load(this.GetAssemblyName());
                         }
                     }
 
-                    if(result != null && evidence == null && targetAppDomain == AppDomain.CurrentDomain)
+                    if(result != null && /*evidence == null &&*/ targetAppDomain == AppDomain.CurrentDomain)
                     {
                         this.AddCachedAssembly(result);
                         this.cachedRuntimeAssembly = new CachedRuntimeAssembly(result);
@@ -6826,7 +6827,6 @@ notfound:
             }
             return result;
         }
-#pragma warning restore 0618
 
         private void AddCachedAssembly(System.Reflection.Assembly/*!*/ runtimeAssembly)
         {
@@ -16139,7 +16139,7 @@ done:
             return null;
         }
 
-        protected System.Reflection.Emit.DynamicMethod dynamicMethod;
+        //protected System.Reflection.Emit.DynamicMethod dynamicMethod;
 
         protected System.Reflection.MethodInfo methodInfo;
 

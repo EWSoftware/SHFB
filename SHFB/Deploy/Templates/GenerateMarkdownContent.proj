@@ -1,0 +1,44 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Sandcastle Help File Builder Tasks.  https://GitHub.com/EWSoftware/SHFB -->
+	<PropertyGroup>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net472\</SHFBTaskFolder>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">netcoreapp3.1\</SHFBTaskFolder>
+	</PropertyGroup>
+	<UsingTask TaskName="SandcastleBuilder.MSBuild.GenerateMarkdownContent"
+    AssemblyFile="{@SHFBRoot}$(SHFBTaskFolder)SandcastleBuilder.MSBuild.dll" />
+
+	<!-- Task properties -->
+	<PropertyGroup>
+		<WorkingFolder>{@HtmlEncWorkingFolder}Output\Markdown</WorkingFolder>
+		<OutputFolder>{@HtmlEncOutputFolder}</OutputFolder>
+		<DefaultTopic>{@DefaultTopic}</DefaultTopic>
+		<AppendMarkdownFileExtensionsToUrls>{@AppendMarkdownFileExtensionsToUrls}</AppendMarkdownFileExtensionsToUrls>
+	</PropertyGroup>
+
+	<!-- This defines the dependencies for the Build target -->
+	<PropertyGroup>
+		<BuildDependsOn>
+			BeforeGenerateMarkdownContent;
+			GenerateMarkdownContent;
+			AfterGenerateMarkdownContent
+		</BuildDependsOn>
+	</PropertyGroup>
+
+	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+
+	<!-- The Generate Markdown Content file target -->
+	<Target Name="GenerateMarkdownContent">
+
+		<!-- Generate the markdown content -->
+		<SandcastleBuilder.MSBuild.GenerateMarkdownContent
+			WorkingFolder="$(WorkingFolder)"
+			OutputFolder="$(OutputFolder)"
+			DefaultTopic="$(DefaultTopic)"
+			AppendMarkdownFileExtensionsToUrls="$(AppendMarkdownFileExtensionsToUrls)" />
+
+	</Target>
+
+	<!-- The following targets may be overridden or replaced to perform additional processing. -->
+	<Target Name="BeforeGenerateMarkdownContent" />
+	<Target Name="AfterGenerateMarkdownContent" />
+</Project>

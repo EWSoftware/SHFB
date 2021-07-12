@@ -7,15 +7,14 @@
 // 01/18/2013 - EFW - Moved the class into the Commands namespace, made it public, and derived it from the new
 // CopyCommand base class.
 
+using System;
 using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Commands
+namespace Sandcastle.Tools.BuildComponents.Commands
 {
     /// <summary>
     /// This represents the copy command for the <see cref="CopyFromFileComponent"/>
@@ -28,7 +27,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <summary>
         /// This read-only property returns the source document from which to copy data
         /// </summary>
-        public XPathDocument SourceDocument { get; private set; }
+        public XPathDocument SourceDocument { get; }
 
         #endregion
 
@@ -59,6 +58,9 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <param name="context">The context to use</param>
         public override void Apply(XmlDocument targetDocument, IXmlNamespaceResolver context)
         {
+            if(targetDocument == null)
+                throw new ArgumentNullException(nameof(targetDocument));
+
             // Extract the target node
             XPathExpression targetXPath = this.Target.Clone();
             targetXPath.SetContext(context);

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ReferenceLinkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/23/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing reference link settings for the Additional Reference Links plug-in
 //
@@ -23,113 +22,146 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
-using System.Xml;
-using System.Xml.XPath;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This represents reference link settings for the
-    /// <see cref="AdditionalReferenceLinksPlugIn"/>.
+    /// This represents reference link settings for the <see cref="AdditionalReferenceLinksPlugIn"/>
     /// </summary>
-    [DefaultProperty("HelpFileProject")]
-    public class ReferenceLinkSettings
+    public class ReferenceLinkSettings : INotifyPropertyChanged
     {
         #region Private data members
         //=====================================================================
 
         private FilePath helpFileProject;
+        private HtmlSdkLinkType htmlSdkLinkType, websiteSdkLinkType;
+        private MSHelpViewerSdkLinkType msHelpViewerSdkLinkType;
+        private string referenceDescription, errorMessage;
+
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the location of the reflection file
-        /// at build time.
+        /// This is used to get or set the location of the reflection file at build time
         /// </summary>
         internal string ReflectionFilename { get; set; }
 
         /// <summary>
         /// This is used to get or set the HTML Help 1 SDK link type for the target
         /// </summary>
-        [Category("Link"), Description("The reference link type to use for HTML Help 1 files"),
-          DefaultValue(HtmlSdkLinkType.None)]
-        public HtmlSdkLinkType HtmlSdkLinkType { get; set; }
+        public HtmlSdkLinkType HtmlSdkLinkType
+        {
+            get => htmlSdkLinkType;
+            set
+            {
+                if(htmlSdkLinkType != value)
+                {
+                    htmlSdkLinkType = value;
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set the MS Help Viewer SDK link type for the target
         /// </summary>
-        [Category("Link"), Description("The reference link type to use for MS Help Viewer files"),
-          DefaultValue(MSHelpViewerSdkLinkType.Id)]
-        public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType { get; set; }
+        public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType
+        {
+            get => msHelpViewerSdkLinkType;
+            set
+            {
+                if(msHelpViewerSdkLinkType != value)
+                {
+                    msHelpViewerSdkLinkType = value;
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set the website SDK link type for the target
         /// </summary>
-        [Category("Link"), Description("The reference link type to use for website files"),
-          DefaultValue(HtmlSdkLinkType.None)]
-        public HtmlSdkLinkType WebsiteSdkLinkType { get; set; }
-
-        /// <summary>
-        /// This is used to get or set the path to the help file builder
-        /// project used to generate reference link information.
-        /// </summary>
-        /// <value>The help file builder project makes it simple to manage
-        /// settings for the other target's assemblies such as references,
-        /// API filter settings, etc.</value>
-        [Category("Link"), Description("The path to the help file builder project for the other reference links."),
-          Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-          RefreshProperties(RefreshProperties.All),
-          FileDialog("Select the help file builder project",
-            "Sandcastle Help File Builder Project Files " +
-            "(*.shfbproj)|*.shfbproj|All Files (*.*)|*.*", FileDialogType.FileOpen)]
-        public FilePath HelpFileProject
+        public HtmlSdkLinkType WebsiteSdkLinkType
         {
-            get { return helpFileProject; }
+            get => websiteSdkLinkType;
             set
             {
-                if(value == null || value.Path.Length == 0)
-                    throw new BuilderException("ARL0007", "The help file project cannot be blank");
+                if(websiteSdkLinkType != value)
+                {
+                    websiteSdkLinkType = value;
 
-                helpFileProject = value;
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
             }
         }
 
         /// <summary>
-        /// This returns a description of the entry suitable for display in a
-        /// bound list control.
+        /// This is used to get or set the path to the help file builder project used to generate reference link
+        /// information.
         /// </summary>
-        [Category("Link Info"), Description("List description")]
-        public string ListDescription
+        /// <value>The help file builder project makes it simple to manage settings for the other target's
+        /// assemblies such as references, API filter settings, etc.</value>
+        public FilePath HelpFileProject
         {
-            get
-            {   
-                return String.Format(CultureInfo.CurrentCulture, "{0} (HTML: {1}, MSHC: {2}, " +
-                    "Website/Markdown/Open XML: {3})", helpFileProject.PersistablePath, this.HtmlSdkLinkType,
-                    this.MSHelpViewerSdkLinkType, this.WebsiteSdkLinkType);
+            get => helpFileProject;
+            set
+            {
+                if(helpFileProject != value)
+                {
+                    if(helpFileProject != null)
+                        helpFileProject.PersistablePathChanged -= this.helpFileProject_PersistablePathChanged;
+
+                    if(value == null)
+                        value = new FilePath(helpFileProject.BasePathProvider);
+
+                    helpFileProject = value;
+                    helpFileProject.PersistablePathChanged += this.helpFileProject_PersistablePathChanged;
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
             }
         }
-        #endregion
-
-        #region Designer methods
-        //=====================================================================
 
         /// <summary>
-        /// This is used to see if the <see cref="HelpFileProject"/> property
-        /// should be serialized.
+        /// This read-only property returns an error message describing any issues with the settings
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.  This property cannot be reset
-        /// as it should always have a value.</returns>
-        private bool ShouldSerializeHelpFileProject()
+        public string ErrorMessage
         {
-            return (this.HelpFileProject.Path.Length != 0);
+            get => errorMessage;
+            private set
+            {
+                errorMessage = value;
+
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns a description of the settings
+        /// </summary>
+        public string ReferenceLinkDescription
+        {
+            get => referenceDescription;
+            private set
+            {
+                referenceDescription = value;
+
+                this.OnPropertyChanged();
+            }
         }
         #endregion
 
@@ -139,9 +171,58 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Constructor
         /// </summary>
-        public ReferenceLinkSettings()
+        /// <param name="provider">The base path provider</param>
+        public ReferenceLinkSettings(IBasePathProvider provider)
         {
+            this.HelpFileProject = new FilePath(provider);
             this.MSHelpViewerSdkLinkType = MSHelpViewerSdkLinkType.Id;
+        }
+        #endregion
+
+        #region INotifyPropertyChanged implementation
+        //=====================================================================
+
+        /// <summary>
+        /// The property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="PropertyChanged"/> event
+        /// </summary>
+        /// <param name="propertyName">The property name that changed</param>
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Update the display description when the help file project changes
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void helpFileProject_PersistablePathChanged(object sender, EventArgs e)
+        {
+            this.Validate();
+        }
+
+        /// <summary>
+        /// This is used to validate the settings
+        /// </summary>
+        private void Validate()
+        {
+            if(helpFileProject.Path.Length == 0)
+                this.ErrorMessage = "A help file project is required";
+            else
+                this.ErrorMessage = null;
+
+            this.ReferenceLinkDescription = String.Format(CultureInfo.CurrentCulture, "{0} (HTML: {1}, MSHC: {2}, " +
+                "Website/Markdown/Open XML: {3})", helpFileProject.PersistablePath, this.HtmlSdkLinkType,
+                this.MSHelpViewerSdkLinkType, this.WebsiteSdkLinkType);
         }
         #endregion
 
@@ -149,83 +230,52 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// Create a reference link settings instance from an XPath navigator
-        /// containing the settings.
+        /// Create a reference link settings instance from an XML element containing the settings
         /// </summary>
         /// <param name="pathProvider">The base path provider object</param>
-        /// <param name="navigator">The XPath navigator from which to
-        /// obtain the settings.</param>
-        /// <returns>A <see cref="ReferenceLinkSettings"/> object containing the
-        /// settings from the XPath navigator.</returns>
-        /// <remarks>It should contain an element called <c>target</c>
-        /// with two attributes (<c>linkType</c> and <c>helpFileProject</c>).
-        /// </remarks>
-        public static ReferenceLinkSettings FromXPathNavigator(
-          IBasePathProvider pathProvider, XPathNavigator navigator)
+        /// <param name="configuration">The XML element from which to obtain the settings.</param>
+        /// <returns>A <see cref="ReferenceLinkSettings"/> object containing the settings from the XML element</returns>
+        /// <remarks>It should contain an element called <c>target</c> with two attributes (<c>linkType</c> and
+        /// <c>helpFileProject</c>).</remarks>
+        public static ReferenceLinkSettings FromXml(IBasePathProvider pathProvider, XElement configuration)
         {
-            ReferenceLinkSettings rl = new ReferenceLinkSettings();
+            ReferenceLinkSettings rl = new ReferenceLinkSettings(pathProvider);
 
-            if(navigator != null)
+            if(configuration != null)
             {
                 // Ignore if it's the older style
-                if(navigator.GetAttribute("linkType", String.Empty).Length == 0)
+                if(configuration.Attribute("linkType") == null)
                 {
-                    rl.HtmlSdkLinkType = (HtmlSdkLinkType)Enum.Parse(typeof(HtmlSdkLinkType), navigator.GetAttribute(
-                        "htmlSdkLinkType", String.Empty).Trim(), true);
+                    rl.HtmlSdkLinkType = (HtmlSdkLinkType)Enum.Parse(typeof(HtmlSdkLinkType),
+                        configuration.Attribute("htmlSdkLinkType").Value, true);
                     rl.MSHelpViewerSdkLinkType = (MSHelpViewerSdkLinkType)Enum.Parse(typeof(MSHelpViewerSdkLinkType),
-                        navigator.GetAttribute("helpViewerSdkLinkType", String.Empty).Trim(), true);
-                    rl.WebsiteSdkLinkType = (HtmlSdkLinkType)Enum.Parse(typeof(HtmlSdkLinkType), navigator.GetAttribute(
-                        "websiteSdkLinkType", String.Empty).Trim(), true);
+                        configuration.Attribute("helpViewerSdkLinkType").Value, true);
+                    rl.WebsiteSdkLinkType = (HtmlSdkLinkType)Enum.Parse(typeof(HtmlSdkLinkType),
+                        configuration.Attribute("websiteSdkLinkType").Value, true);
                 }
 
-                rl.HelpFileProject = new FilePath(navigator.GetAttribute("helpFileProject", String.Empty).Trim(),
-                    pathProvider);
+                string path = configuration.Attribute("helpFileProject").Value;
+
+                rl.HelpFileProject = new FilePath(path, Path.IsPathRooted(path), pathProvider);
             }
 
             return rl;
         }
 
         /// <summary>
-        /// Store the reference link settings as a node in the given XML
-        /// document.
+        /// Store the reference link settings as an XML element
         /// </summary>
-        /// <param name="config">The XML document</param>
-        /// <param name="root">The node in which to store the element</param>
-        /// <returns>Returns the node that was added.</returns>
-        /// <remarks>The reference link settings are stored in an element
-        /// called <c>target</c> with two attributes (<c>linkType</c> and
-        /// <c>helpFileProject</c>).</remarks>
-        public XmlNode ToXml(XmlDocument config, XmlNode root)
+        /// <returns>Returns the XML element containing the settings</returns>
+        /// <remarks>The reference link settings are stored in an element called <c>target</c> with attributes
+        /// for each of the link types and the project name (<c>htmlSdkLinkType</c>, <c>helpViewerSdkLinkType</c>,
+        /// <c>websiteSdkLinkType</c>, and <c>helpFileProject</c>).</remarks>
+        public XElement ToXml()
         {
-            XmlNode node;
-            XmlAttribute attr;
-
-            if(config == null)
-                throw new ArgumentNullException("config");
-
-            if(root == null)
-                throw new ArgumentNullException("root");
-
-            node = config.CreateNode(XmlNodeType.Element, "target", null);
-            root.AppendChild(node);
-
-            attr = config.CreateAttribute("htmlSdkLinkType");
-            attr.Value = this.HtmlSdkLinkType.ToString();
-            node.Attributes.Append(attr);
-
-            attr = config.CreateAttribute("helpViewerSdkLinkType");
-            attr.Value = this.MSHelpViewerSdkLinkType.ToString();
-            node.Attributes.Append(attr);
-
-            attr = config.CreateAttribute("websiteSdkLinkType");
-            attr.Value = this.WebsiteSdkLinkType.ToString();
-            node.Attributes.Append(attr);
-
-            attr = config.CreateAttribute("helpFileProject");
-            attr.Value = helpFileProject.PersistablePath;
-            node.Attributes.Append(attr);
-
-            return node;
+            return new XElement("target",
+                new XAttribute("htmlSdkLinkType", this.HtmlSdkLinkType.ToString()),
+                new XAttribute("helpViewerSdkLinkType", this.MSHelpViewerSdkLinkType.ToString()),
+                new XAttribute("websiteSdkLinkType", this.WebsiteSdkLinkType.ToString()),
+                new XAttribute("helpFileProject", helpFileProject.PersistablePath));
         }
         #endregion
     }

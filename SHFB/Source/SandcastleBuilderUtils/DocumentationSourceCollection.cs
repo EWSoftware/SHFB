@@ -170,10 +170,10 @@ namespace SandcastleBuilder.Utils
 
             item = new DocumentationSource(filename, config, platform, targetFramework, subFolders, projectFile);
 
-            if(!base.Contains(item))
-                base.Add(item);
+            if(!this.Contains(item))
+                this.Add(item);
             else
-                item = base[base.IndexOf(item)];
+                item = base[this.IndexOf(item)];
 
             return item;
         }

@@ -1,0 +1,126 @@
+﻿<Window x:Class="SandcastleBuilder.PlugIns.UI.VersionBuilderConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:shfbWin="clr-namespace:Sandcastle.Platform.Windows.UserControls;assembly=Sandcastle.Platform.Windows"
+	mc:Ignorable="d" Width="800" Height="500" MinWidth="500" MinHeight="450" ShowInTaskbar="False"
+	Title="Configure Version Builder Plug-In" ResizeMode="CanResizeWithGrip"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=txtLabel}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<GroupBox Grid.Row="0" Header="Current Project" Margin="3">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="0.5*" />
+					<ColumnDefinition />
+					<ColumnDefinition Width="0.5*" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<Label Grid.Row="0" Grid.Column="0" Content="_Framework Label" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtLabel}" />
+				<TextBox Grid.Row="0" Grid.Column="1" Name="txtLabel" Margin="3" />
+				<Label Grid.Row="0" Grid.Column="2" Content="_Version" HorizontalAlignment="Right" Margin="3"
+					Target="{Binding ElementName=txtVersion}" />
+				<TextBox Grid.Row="0" Grid.Column="3" Name="txtVersion" Margin="3" />
+				<CheckBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name="chkRipOldAPIs" Margin="3"
+					Content="_Remove old APIs no longer in latest versions" IsChecked="True" />
+			</Grid>
+		</GroupBox>
+		<GroupBox Grid.Row="1" Header="_Other Versions" Margin="3">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="2*"/>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<ListBox Grid.Row="0" Name="lbVersionInfo" Margin="3" SelectionChanged="lbVersionInfo_SelectionChanged">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<TextBlock Grid.Row="0" Text="{Binding Path=VersionInfoDescription}" />
+								<TextBlock Grid.Row="1" Text="{Binding Path=ErrorMessage}"
+									Background="Firebrick" Foreground="White">
+									<TextBlock.Style>
+										<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+											<Style.Triggers>
+												<Trigger Property="TextBlock.Text" Value="">
+													<Setter Property="Visibility" Value="Collapsed"/>
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</TextBlock.Style>
+								</TextBlock>
+							</Grid>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+				<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+					<Button Name="btnAddProject" Margin="3" Padding="3" MinWidth="80" Content="_Add"
+							Click="btnAddProject_Click"  ToolTip="Add a one or more projects for version info"/>
+					<Button Name="btnDeleteProject" Margin="3" Padding="3" MinWidth="80" Content="_Delete"
+							Click="btnDeleteProject_Click"  ToolTip="Delete the selected version info project" />
+				</StackPanel>
+				<GroupBox Grid.Row="2" Name="grpVersionInfoProps" Header="Version Info Project Settings" Margin="3">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<Label Grid.Row="0" Grid.Column="0" Content="_Help File Project" HorizontalAlignment="Right" Margin="3"
+							Target="{Binding ElementName=fpHelpFileProject}" />
+						<shfbWin:FilePathUserControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="fpHelpFileProject"
+							Margin="3" Title="Select the help file builder project to use"
+							Filter="Sandcastle Help File Builder Project Files (*.shfbproj)|*.shfbproj|All Files (*.*)|*.*"
+							DataContext="{Binding ElementName=lbVersionInfo, Path=SelectedItem.HelpFileProject}" />
+						<Label Grid.Row="1" Grid.Column="0" Content="Framework _Label" HorizontalAlignment="Right" Margin="3"
+							Target="{Binding ElementName=txtLabel}" />
+						<TextBox Grid.Row="1" Grid.Column="1" Name="txtProjectLabel" Margin="3"
+							Text="{Binding ElementName=lbVersionInfo, Path=SelectedItem.FrameworkLabel}" />
+						<Label Grid.Row="2" Grid.Column="0" Content="Vers_ion" HorizontalAlignment="Right" Margin="3"
+							Target="{Binding ElementName=txtVersion}" />
+						<TextBox Grid.Row="2" Grid.Column="1" Name="txtProjectVersion" Margin="3"
+							Text="{Binding ElementName=lbVersionInfo, Path=SelectedItem.Version}" />
+					</Grid>
+				</GroupBox>
+			</Grid>
+		</GroupBox>
+		<Grid Grid.Row="2" Margin="3,3,3,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+				HorizontalAlignment="Left" ToolTip="Save settings"/>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+			</TextBlock>
+			<Button Grid.Column="2" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+				Click="btnHelp_Click"  ToolTip="View help for this component" />
+			<Button Grid.Column="3" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel"
+        HorizontalAlignment="Right" IsCancel="True" ToolTip="Cancel without saving changes" />
+		</Grid>
+	</Grid>
+</Window>

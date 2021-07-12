@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TokenFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to host the token file editor control
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -40,10 +39,7 @@ namespace SandcastleBuilder.Package.Editors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return base.UIControl.Tokens.TokenFilePath; }
-        }
+        public string Filename => base.UIControl.Tokens.TokenFilePath;
 
         /// <summary>
         /// This read-only property returns the current token collection including any unsaved edits

@@ -1,99 +1,95 @@
-//=============================================================================
+//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : HtmlToMaml.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/07/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/08/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to convert HTML files to MAML.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/12/2008  EFW  Created the code
-// 1.0.0.1  07/23/2010  EFW  Added code to handle invalid HREF paths
-// 1.0.0.2  08/07/2012  EFW  Incorporated various changes from Dany R
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/12/2008  EFW  Created the code
+// 07/23/2010  EFW  Added code to handle invalid HREF paths
+// 08/07/2012  EFW  Incorporated various changes from Dany R
+//===============================================================================================================
+
+// Ignore Spelling: Dany cref img href src utf xml xmlns ddue xlink apos lt nbsp mailto html
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
-using System.Web;
 
 using SandcastleBuilder.Utils;
 
 namespace HtmlToMamlConversion
 {
     /// <summary>
-    /// This class is used to convert a set of HTML file to their close
-    /// equivalent as conceptual MAML topic files.
+    /// This class is used to convert a set of HTML file to their close equivalent as conceptual MAML topic files
     /// </summary>
     public class HtmlToMaml : IBasePathProvider
     {
         #region Private data members
         //=====================================================================
 
-        private TopicCollection topics;
-        private ImageReferenceCollection images;
+        private readonly TopicCollection topics;
+        private readonly ImageReferenceCollection images;
         private Topic currentTopic;
-        private string sourcePath, destPath;
+        private readonly string sourcePath, destPath;
 
-        private Dictionary<FilePath, Topic> topicDictionary;
-        private Dictionary<FilePath, ImageReference> imageDictionary;
+        private readonly Dictionary<FilePath, Topic> topicDictionary;
+        private readonly Dictionary<FilePath, ImageReference> imageDictionary;
 
         private static HtmlToMaml pathProvider;
-        private Dictionary<string, string> entities, tokens;
-        private Dictionary<string, TagOptions> conversionRules;
-        private List<string> markupSections;
+        private readonly Dictionary<string, string> entities, tokens;
+        private readonly Dictionary<string, TagOptions> conversionRules;
+        private readonly List<string> markupSections;
         private int sectionCount;
-        private bool isFirstHeading, createCompanionFile, replaceIntro;
+        private bool isFirstHeading;
+        private readonly bool createCompanionFile, replaceIntro;
 
-        private Regex reMarkupWrapper, reRemoveTag, reReplaceTag,
-            reReplaceMarker;
-        private MatchEvaluator matchMarkupWrapper, matchReplace, matchMarker,
+        private readonly Regex reMarkupWrapper, reRemoveTag, reReplaceTag, reReplaceMarker;
+        private readonly MatchEvaluator matchMarkupWrapper, matchReplace, matchMarker,
             matchCode, matchSee, matchAnchor, matchImage, matchHeading,
             matchEntity, matchToken, matchIntroduction;
 
-        private static Regex reAllTags = new Regex(@"<\s*(?<Closing>/?)\s*" +
-            @"(?<Tag>[a-z0-9]*?)\s*?(?<Attributes>(\s|/)[^>]*?)?>",
+        private static readonly Regex reAllTags = new Regex(
+            @"<\s*(?<Closing>/?)\s*(?<Tag>[a-z0-9]*?)\s*?(?<Attributes>(\s|/)[^>]*?)?>",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reReplaceTokens = new Regex(
-            @"<@\s*(?<Value>(?<Name>\w+)[^>/]*?)(/)?\s*>",
+        private static readonly Regex reReplaceTokens = new Regex(
+            @"<@\s*(?<Value>(?<Name>\w+)[^>/]*?)(/)?\s*>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        private static readonly Regex reReplaceEntity = new Regex(@"&(\w+);");
+
+        private static readonly Regex reReplaceCode = new Regex(
+            @"<\s*(code)\s*?(?<Attributes>\s[^>]*?)?(/>|>(?<Code>.*?)<\s*/\s*(\1)[^>]?>)",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reReplaceEntity = new Regex(@"&(\w+);");
+        private static readonly Regex reReplaceSee = new Regex(
+            "(<\\s*(?<Tag>see)(?<PreAttrs>\\s+[^>]*)cref\\s*=\\s*\"(?<Link>.+?)\"(?<PostAttrs>.*?))(/>|(>(?<Content>.*?)" +
+            "<\\s*/see\\s*>))", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reReplaceCode = new Regex(@"<\s*(code)\s*?" +
-            @"(?<Attributes>\s[^>]*?)?(/>|>(?<Code>.*?)<\s*/\s*(\1)[^>]?>)",
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        private static Regex reReplaceSee = new Regex(
-            "(<\\s*(?<Tag>see)(?<PreAttrs>\\s+[^>]*)cref\\s*=" +
-            "\\s*\"(?<Link>.+?)\"(?<PostAttrs>.*?))(/>|(>(?<Content>.*?)" +
-            "<\\s*/see\\s*>))", RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
-
-        private static Regex reReplaceAnchor = new Regex(
+        private static readonly Regex reReplaceAnchor = new Regex(
             "<\\s*a\\s+[^>]*?>(?<LinkText>.*?)<\\s*/\\s*a[^>]?>",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reReplaceImage = new Regex("<\\s*img\\s+[^>]*?>",
+        private static readonly Regex reReplaceImage = new Regex("<\\s*img\\s+[^>]*?>",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reLinkOpts = new Regex(
+        private static readonly Regex reLinkOpts = new Regex(
             "(href\\s*=\\s*(\"|')(?<HRef>.*?)(\"|'))|(name\\s*=\\s*(\"|')" +
             "(?<Name>.*?)(\"|'))|(target\\s*=\\s*(\"|')(?<Target>.*?)" +
             "(\"|'))|(title\\s*=\\s*(\"|')(?<Title>.*?)(\"|'))|" +
@@ -101,25 +97,24 @@ namespace HtmlToMamlConversion
             "(?<Src>.*?)(\"|')|(align\\s*=\\s*(\"|')(?<Align>.*?)(\"|')))", RegexOptions.IgnoreCase |
             RegexOptions.Singleline);
 
-        private static Regex reReplaceHeading = new Regex(
+        private static readonly Regex reReplaceHeading = new Regex(
             "<\\s*(?<Level>h[1-6])\\s*>(<!-- TODO: Add named anchor: " +
             "(?<AnchorName>[^ ]+) -->)?(?<Title>.*?)<\\s*/\\s*\\k<Level>\\s*>",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reReplaceIntroduction = new Regex(
+        private static readonly Regex reReplaceIntroduction = new Regex(
             @"^\s*(?<Introduction>.*?)\s*(?(<\s*section[^>]*?>)(?=<\s*section[^>]*?>)|$)",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
         #endregion
 
         #region IBasePathProvider implementation
         //=====================================================================
+
         /// <summary>
         /// This returns the source path for use as the base path
         /// </summary>
-        public string BasePath
-        {
-            get { return sourcePath; }
-        }
+        public string BasePath => sourcePath;
+
         #endregion
 
         #region Properties
@@ -131,15 +126,12 @@ namespace HtmlToMamlConversion
         /// </summary>
         /// <returns>The <see cref="HtmlToMaml"/> object performing the
         /// conversion.</returns>
-        public static IBasePathProvider PathProvider
-        {
-            get { return pathProvider; }
-        }
+        public static IBasePathProvider PathProvider => pathProvider;
+
         #endregion
 
         #region Events
         //=====================================================================
-        // Events
 
         /// <summary>
         /// This event is raised to report progress information throughout
@@ -153,8 +145,7 @@ namespace HtmlToMamlConversion
         /// <param name="e">The event arguments</param>
         protected virtual void OnConversionProgress(ConversionProgressEventArgs e)
         {
-            if(ConversionProgress != null)
-                ConversionProgress(this, e);
+            ConversionProgress?.Invoke(this, e);
         }
         #endregion
 
@@ -205,15 +196,14 @@ namespace HtmlToMamlConversion
             tokens = new Dictionary<string, string>();
 
             // Load the conversion rules
-            rulesFile = new XPathDocument(Path.Combine(Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location), "ConversionRules.xml"));
+            rulesFile = new XPathDocument(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "ConversionRules.xml"));
             navRules = rulesFile.CreateNavigator();
 
             XPathNavigator bodyExpr = navRules.SelectSingleNode("//BodyExtract");
 
             if(bodyExpr != null)
-                FileParser.BodyExtractExpression = bodyExpr.GetAttribute(
-                    "expression", string.Empty);
+                FileParser.BodyExtractExpression = bodyExpr.GetAttribute("expression", String.Empty);
 
             // Add the tags we will handle internally
             conversionRules.Add("a", null);
@@ -231,16 +221,14 @@ namespace HtmlToMamlConversion
             sb = new StringBuilder();
 
             foreach(XPathNavigator nav in navRules.Select("//Entities/Entity"))
-                entities.Add(nav.GetAttribute("name", String.Empty),
-                    nav.GetAttribute("value", String.Empty));
+                entities.Add(nav.GetAttribute("name", String.Empty), nav.GetAttribute("value", String.Empty));
 
             foreach(XPathNavigator nav in navRules.Select("//MarkupWrapper/Tag"))
             {
                 if(sb.Length != 0)
-                    sb.Append("|");
+                    sb.Append('|');
 
-                name = nav.GetAttribute("name", String.Empty).ToLower(
-                    CultureInfo.InvariantCulture);
+                name = nav.GetAttribute("name", String.Empty).ToLowerInvariant();
                 conversionRules.Add(name, null);
                 sb.Append(name);
             }
@@ -250,8 +238,7 @@ namespace HtmlToMamlConversion
             sb.Append(@")[^>]*?>.*?<\s*/\s*(\1)[^>]*?>|<\s*(");
             sb.Append(name);
             sb.Append(@")\s*?((\s|/)[^>]*?)?>");
-            reMarkupWrapper = new Regex(sb.ToString(), RegexOptions.IgnoreCase |
-                RegexOptions.Singleline);
+            reMarkupWrapper = new Regex(sb.ToString(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
             reReplaceMarker= new Regex("\xFF");
             matchMarkupWrapper = new MatchEvaluator(OnMatchMarkupWrapper);
             matchMarker = new MatchEvaluator(OnMatchMarker);
@@ -260,35 +247,31 @@ namespace HtmlToMamlConversion
             foreach(XPathNavigator nav in navRules.Select("//Remove/Tag"))
             {
                 if(sb.Length != 0)
-                    sb.Append("|");
+                    sb.Append('|');
 
-                name = nav.GetAttribute("name", String.Empty).ToLower(
-                    CultureInfo.InvariantCulture);
+                name = nav.GetAttribute("name", String.Empty).ToLowerInvariant();
                 conversionRules.Add(name, null);
                 sb.Append(name);
             }
 
             sb.Insert(0, @"<\s*/?\s*(");
             sb.Append(@")\s*?((\s|/)[^>]*?)?>");
-            reRemoveTag = new Regex(sb.ToString(), RegexOptions.IgnoreCase |
-                RegexOptions.Singleline);
+            reRemoveTag = new Regex(sb.ToString(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
             sb.Remove(0, sb.Length);
 
             foreach(XPathNavigator nav in navRules.Select("//Replace/Tag"))
             {
                 if(sb.Length != 0)
-                    sb.Append("|");
+                    sb.Append('|');
 
-                name = nav.GetAttribute("name", String.Empty).ToLower(
-                    CultureInfo.InvariantCulture);
+                name = nav.GetAttribute("name", String.Empty).ToLowerInvariant();
                 conversionRules.Add(name, new TagOptions(nav));
                 sb.Append(name);
             }
 
             sb.Insert(0, @"<\s*(?<Closing>/?)\s*(?<Tag>");
             sb.Append(@")\s*(?<Attributes>(\s|/)[^>]*?)?>");
-            reReplaceTag = new Regex(sb.ToString(), RegexOptions.IgnoreCase |
-                RegexOptions.Singleline);
+            reReplaceTag = new Regex(sb.ToString(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
             matchReplace = new MatchEvaluator(OnMatchReplace);
 
             matchCode = new MatchEvaluator(OnMatchCode);
@@ -313,8 +296,7 @@ namespace HtmlToMamlConversion
             FileParser fileParser = new FileParser();
             string filename;
 
-            this.ReportProgress("Conversion started at {0:MM/dd/yyyy hh:mm tt}\r\n",
-                DateTime.Now);
+            this.ReportProgress("Conversion started at {0:MM/dd/yyyy hh:mm tt}\r\n", DateTime.Now);
 
             topics.AddTopicsFromFolder(sourcePath, topicDictionary);
             topics.ParseFiles(fileParser, imageDictionary);
@@ -349,19 +331,16 @@ namespace HtmlToMamlConversion
                     sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     sw.WriteLine("<content xml:space=\"preserve\" " +
                         "xmlns:ddue=\"http://ddue.schemas.microsoft.com/" +
-                        "authoring/2003/5\" xmlns:xlink=\"http://www.w3.org/" +
-                        "1999/xlink\">");
+                        "authoring/2003/5\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
 
                     foreach(string key in tokens.Keys)
-                        sw.WriteLine("  <item id=\"{0}\">{{@{1}}}</item>",
-                            key, HttpUtility.HtmlEncode(tokens[key]));
+                        sw.WriteLine("  <item id=\"{0}\">{{@{1}}}</item>", key, WebUtility.HtmlEncode(tokens[key]));
 
                     sw.WriteLine("</content>");
                 }
             }
 
-            this.ReportProgress("\r\nConversion finished successfully at " +
-                "{0:MM/dd/yyyy hh:mm tt}", DateTime.Now);
+            this.ReportProgress("\r\nConversion finished successfully at {0:MM/dd/yyyy hh:mm tt}", DateTime.Now);
         }
 
         /// <summary>
@@ -378,8 +357,7 @@ namespace HtmlToMamlConversion
             if(topic.SourceFile != null)
             {
                 // Save the topic to the destination folder
-                destFile = Path.Combine(destPath, topic.SourceFile.Path.Substring(
-                    sourcePath.Length + 1));
+                destFile = Path.Combine(destPath, topic.SourceFile.Path.Substring(sourcePath.Length + 1));
                 destFile = Path.ChangeExtension(destFile, ".aml");
 
                 if(!Directory.Exists(Path.GetDirectoryName(destFile)))
@@ -395,20 +373,17 @@ namespace HtmlToMamlConversion
 
                     foreach(Match m in reAllTags.Matches(body))
                     {
-                        tagName = m.Groups["Tag"].Value.ToLower(
-                            CultureInfo.InvariantCulture);
+                        tagName = m.Groups["Tag"].Value.ToLowerInvariant();
 
-                        if(!conversionRules.ContainsKey(tagName) &&
-                          extras.IndexOf(tagName) == -1)
+                        if(!conversionRules.ContainsKey(tagName) && extras.IndexOf(tagName) == -1)
                         {
                             if(sb.Length != 0)
-                                sb.Append("|");
+                                sb.Append('|');
 
                             sb.Append(tagName);
                             extras.Add(tagName);
 
-                            this.ReportProgress("    Warning: Found unknown tag " +
-                                "'{0}' which will be removed", tagName);
+                            this.ReportProgress("    Warning: Found unknown tag '{0}' which will be removed", tagName);
                         }
                     }
 
@@ -425,8 +400,7 @@ namespace HtmlToMamlConversion
                     {
                         sb.Insert(0, @"<\s*/?\s*(");
                         sb.Append(@")\s*?((\s|/)[^>]*?)?>");
-                        reRemoveExtra = new Regex(sb.ToString(),
-                            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        reRemoveExtra = new Regex(sb.ToString(), RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
                         body = reRemoveExtra.Replace(body, String.Empty);
                     }
@@ -497,8 +471,7 @@ namespace HtmlToMamlConversion
                     }
 
                     if(createCompanionFile)
-                        CreateCompanionFile(Path.ChangeExtension(destFile,
-                            ".cmp"), topic);
+                        CreateCompanionFile(Path.ChangeExtension(destFile, ".cmp"), topic);
                 }
             }
 
@@ -600,9 +573,9 @@ namespace HtmlToMamlConversion
         /// numeric equivalents.</remarks>
         private string OnMatchEntity(Match match)
         {
-            string value, entity = match.Groups[1].Value;
+            string entity = match.Groups[1].Value;
 
-            if(!entities.TryGetValue(entity, out value))
+            if(!entities.TryGetValue(entity, out string value))
             {
                 switch(entity)
                 {
@@ -615,8 +588,7 @@ namespace HtmlToMamlConversion
                         break;
 
                     default:
-                        this.ReportProgress("    Warning: Unknown entity " +
-                            "encountered: {0}", match.Value);
+                        this.ReportProgress("    Warning: Unknown entity encountered: {0}", match.Value);
                         break;
                 }
 
@@ -658,8 +630,7 @@ namespace HtmlToMamlConversion
                     {
                         do
                         {
-                            newKey = name + "_" + mod.ToString(
-                                CultureInfo.InvariantCulture);
+                            newKey = name + "_" + mod.ToString(CultureInfo.InvariantCulture);
                             mod++;
 
                         } while(tokens.ContainsKey(newKey));
@@ -708,17 +679,16 @@ namespace HtmlToMamlConversion
             TagOptions tagOpts;
             string tag;
 
-            tag = match.Groups["Tag"].Value.ToLower(CultureInfo.InvariantCulture);
+            tag = match.Groups["Tag"].Value.ToLowerInvariant();
             tagOpts = conversionRules[tag];
             tagOpts.Evaluate(match);
 
             // Return the replacement
-            if(String.IsNullOrEmpty(tagOpts.Tag) ||
-              tagOpts.Tag.IndexOfAny(new char[] { '<', '>' }) != -1)
+            if(String.IsNullOrEmpty(tagOpts.Tag) || tagOpts.Tag.IndexOfAny(new char[] { '<', '>' }) != -1)
                 return tagOpts.Tag;
 
-            return String.Format(CultureInfo.InvariantCulture,
-                "<{0}{1}{2}>", tagOpts.Closing, tagOpts.Tag, tagOpts.Attributes);
+            return String.Format(CultureInfo.InvariantCulture, "<{0}{1}{2}>", tagOpts.Closing, tagOpts.Tag,
+                tagOpts.Attributes);
         }
 
         /// <summary>
@@ -733,8 +703,7 @@ namespace HtmlToMamlConversion
             attrs = match.Groups["Attributes"].Value.Trim();
             code = match.Groups["Code"].Value;
 
-            if(!String.IsNullOrEmpty(attrs) || code.IndexOfAny(
-              new char[] { '\r', '\n' }) != -1)
+            if(!String.IsNullOrEmpty(attrs) || code.IndexOfAny(new[] { '\r', '\n' }) != -1)
             {
                 tag = "code";
 
@@ -742,11 +711,9 @@ namespace HtmlToMamlConversion
                     attrs = " " + attrs;
                 else
                 {
-                    // Special case:  If there are no attributes and there
-                    // is only one CR/LF pair, it's probably a codeInline
-                    // tag that spans a line.
-                    if(code.IndexOf('\r') == code.LastIndexOf('\r') &&
-                      code.IndexOf('\n') == code.LastIndexOf('\n'))
+                    // Special case:  If there are no attributes and there is only one CR/LF pair, it's probably
+                    // a codeInline tag that spans a line.
+                    if(code.IndexOf('\r') == code.LastIndexOf('\r') && code.IndexOf('\n') == code.LastIndexOf('\n'))
                         tag = "codeInline";
                 }
             }
@@ -757,14 +724,12 @@ namespace HtmlToMamlConversion
         }
 
         /// <summary>
-        /// This replaces <c>see</c> tags with a roughly equivalent
-        /// <c>codeEntityReference</c> tag.
+        /// This replaces <c>see</c> tags with a roughly equivalent <c>codeEntityReference</c> tag.
         /// </summary>
         /// <param name="match">The match to replace</param>
         /// <returns>The replacement text</returns>
-        /// <remarks><c>see</c> tags in HTML may not be fully qualified so
-        /// these may require review to fix up the references with fully
-        /// qualified names.</remarks>
+        /// <remarks><c>see</c> tags in HTML may not be fully qualified so these may require review to fix up the
+        /// references with fully qualified names.</remarks>
         private string OnMatchSee(Match match)
         {
             string link, autoUpgrade, notQualified = String.Empty;
@@ -774,19 +739,16 @@ namespace HtmlToMamlConversion
             if(link.Length > 2 && link[1] != ':')
             {
                 notQualified = "<!-- TODO: Reference not fully qualified -->";
-                this.ReportProgress("    Warning: Reference to code entity " +
-                    "'{0}' is not fully qualified", link);
+                this.ReportProgress("    Warning: Reference to code entity '{0}' is not fully qualified", link);
             }
 
-            // If it's a member, add the autoUpgrade attribute so that
-            // overloads are preferred if found.
+            // If it's a member, add the autoUpgrade attribute so that overloads are preferred if found
             if(link.StartsWith("M:", StringComparison.OrdinalIgnoreCase))
                 autoUpgrade = " autoUpgrade=\"true\"";
             else
                 autoUpgrade = String.Empty;
 
-            return String.Concat(notQualified,
-                "<codeEntityReference qualifyHint=\"false\"",
+            return String.Concat(notQualified, "<codeEntityReference qualifyHint=\"false\"",
                 autoUpgrade, ">", link, "</codeEntityReference>");
         }
 
@@ -795,16 +757,15 @@ namespace HtmlToMamlConversion
         /// </summary>
         /// <param name="match">The match to replace</param>
         /// <returns>The replacement text</returns>
-        /// <remarks>Named anchors are a bit of a problem since in MAML, they
-        /// equate to an address attribute on an element so they are just
-        /// marked for review.</remarks>
+        /// <remarks>Named anchors are a bit of a problem since in MAML, they equate to an address attribute on
+        /// an element so they are just marked for review.</remarks>
         private string OnMatchAnchor(Match match)
         {
             Topic topic;
             string href, name, target, linkText, title, inPageLink;
             int pos;
 
-            href = name = target = linkText = title = inPageLink = String.Empty;
+            href = name = target = title = inPageLink = String.Empty;
 
             foreach(Match opt in reLinkOpts.Matches(match.Value))
                 if(opt.Groups["HRef"].Value.Length != 0)
@@ -828,26 +789,22 @@ namespace HtmlToMamlConversion
             {
                 this.ReportProgress("    Warning: Named anchor '{0}' " +
                     "needs review", name);
-                return String.Concat("<!-- TODO: Add named anchor: ", name,
-                    " -->", linkText);
+                return String.Concat("<!-- TODO: Add named anchor: ", name, " -->", linkText);
             }
 
             if(!String.IsNullOrEmpty(target))
                 target = String.Concat("  <linkTarget>", target, "</linkTarget>\r\n");
 
             if(!String.IsNullOrEmpty(title))
-                title = String.Concat("  <linkAlternateText>", title,
-                    "</linkAlternateText>\r\n");
+                title = String.Concat("  <linkAlternateText>", title, "</linkAlternateText>\r\n");
 
-            // If it contains "://" or starts with "mailto:", it's
-            // automatically an external link
+            // If it contains "://" or starts with "mailto:", it's automatically an external link
             if(href.IndexOf("://", StringComparison.Ordinal) != -1 ||
               href.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase))
             {
-                href = HttpUtility.HtmlEncode(href);
-                return String.Concat("<externalLink>\r\n  <linkText>", linkText,
-                    "</linkText>\r\n", title, "  <linkUri>", href,
-                    "</linkUri>\r\n", target, "</externalLink>");
+                href = WebUtility.HtmlEncode(href);
+                return String.Concat("<externalLink>\r\n  <linkText>", linkText, "</linkText>\r\n", title,
+                    "  <linkUri>", href, "</linkUri>\r\n", target, "</externalLink>");
             }
 
             // Split off any in-page link part
@@ -857,8 +814,7 @@ namespace HtmlToMamlConversion
             {
                 // If it's just an in-page link, return that now
                 if(pos == 0)
-                    return String.Concat("<link xlink:href=\"", href,
-                        "\">", linkText, "</link>");
+                    return String.Concat("<link xlink:href=\"", href, "\">", linkText, "</link>");
 
                 inPageLink = href.Substring(pos);
                 href = href.Substring(0, pos);
@@ -871,9 +827,8 @@ namespace HtmlToMamlConversion
                 // Try to find it by the actual path first.  If not found, fully
                 // qualify it based on the current topic's base path.
                 if(!topicDictionary.TryGetValue(new FilePath(href, HtmlToMaml.PathProvider), out topic))
-                    if(!topicDictionary.TryGetValue(new FilePath(Path.GetFullPath(
-                      Path.Combine(Path.GetDirectoryName(currentTopic.SourceFile), href)),
-                      HtmlToMaml.PathProvider), out topic))
+                    if(!topicDictionary.TryGetValue(new FilePath(Path.GetFullPath(Path.Combine(
+                      Path.GetDirectoryName(currentTopic.SourceFile), href)), PathProvider), out topic))
                     {
                         this.ReportProgress("    Warning: Unable to resolve topic link to '{0}'", href);
                         return String.Concat("<!-- TODO: Unknown topic link: ", href, " -->", linkText);
@@ -893,30 +848,23 @@ namespace HtmlToMamlConversion
                     inPageLink, ".htm</linkUri>\r\n", target, "</externalLink>");
 
             // Only use the link text if it doesn't match the topic title
-            if(!String.IsNullOrEmpty(linkText) && String.Compare(
-              HttpUtility.HtmlDecode(linkText), topic.Title,
+            if(!String.IsNullOrEmpty(linkText) && String.Compare(WebUtility.HtmlDecode(linkText), topic.Title,
               StringComparison.OrdinalIgnoreCase) != 0)
-                return String.Concat("<link xlink:href=\"", topic.Id,
-                    inPageLink, "\">", linkText, "</link>");
+                return String.Concat("<link xlink:href=\"", topic.Id, inPageLink, "\">", linkText, "</link>");
 
-            return String.Concat("<link xlink:href=\"", topic.Id,
-                inPageLink, "\" />");
+            return String.Concat("<link xlink:href=\"", topic.Id, inPageLink, "\" />");
         }
 
         /// <summary>
-        /// This replaces <c>img</c> tags with their equivalent MAML media
-        /// link tag.
+        /// This replaces <c>img</c> tags with their equivalent MAML media link tag
         /// </summary>
         /// <param name="match">The match to replace</param>
         /// <returns>The replacement text</returns>
-        /// <remarks>Since we can't really tell whether to use <c>mediaLink</c>
-        /// or <c>mediaLinkInline</c>, we'll always use <c>mediaLink</c>.
-        /// Inline links will need to be updated during the review process.
-        /// If the link is in the form of a URL, it will be converted to an
-        /// <c>externalLink</c> element.</remarks>
+        /// <remarks>Since we can't really tell whether to use <c>mediaLink</c> or <c>mediaLinkInline</c>, we'll
+        /// always use <c>mediaLink</c>.  Inline links will need to be updated during the review process.  If the
+        /// link is in the form of a URL, it will be converted to an <c>externalLink</c> element.</remarks>
         private string OnMatchImage(Match match)
         {
-            ImageReference image;
             string src, altText, mediaFolder, mediaFile, missing = String.Empty;
             string placement = String.Empty;
 
@@ -928,9 +876,9 @@ namespace HtmlToMamlConversion
                 else
                     if(opt.Groups["AltText"].Value.Length != 0)
                         altText = opt.Groups["AltText"].Value;
-                else
-                    if(opt.Groups["Align"].Value.Length != 0)
-                        placement = opt.Groups["Align"].Value;
+                    else
+                        if(opt.Groups["Align"].Value.Length != 0)
+                            placement = opt.Groups["Align"].Value;
 
             if(!String.IsNullOrEmpty(placement))
                 if(placement.Equals("middle", StringComparison.OrdinalIgnoreCase))
@@ -944,38 +892,34 @@ namespace HtmlToMamlConversion
             // If it contains "://", it's automatically an external link
             if(src.IndexOf("://", StringComparison.Ordinal) != -1)
             {
-                src = HttpUtility.HtmlEncode(src);
+                src = WebUtility.HtmlEncode(src);
 
                 if(String.IsNullOrEmpty(altText))
                     altText = src;
 
-                return String.Concat("<externalLink>\r\n  <linkText>", altText,
-                    "</linkText>\r\n  <linkUri>", src, "</linkUri>\r\n</externalLink>");
+                return String.Concat("<externalLink>\r\n  <linkText>", altText, "</linkText>\r\n  <linkUri>",
+                    src, "</linkUri>\r\n</externalLink>");
             }
 
             // Fully qualify the path as it is most likely relative to the
             // topic file.
-            src = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(
-                currentTopic.SourceFile), src.Replace('/', '\\')));
+            src = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(currentTopic.SourceFile),
+                src.Replace('/', '\\')));
 
             // If not found, we'll assume it's a new image reference
-            if(!imageDictionary.TryGetValue(new FilePath(src,
-              HtmlToMaml.PathProvider), out image))
+            if(!imageDictionary.TryGetValue(new FilePath(src, PathProvider), out ImageReference image))
             {
-                image = new ImageReference(src);
-                image.AlternateText = altText;
+                image = new ImageReference(src) { AlternateText = altText };
                 images.Add(image);
                 imageDictionary.Add(image.SourceFile, image);
 
-                this.ReportProgress("    Info: Added new image reference: " +
-                    "{0}", image.SourceFile.PersistablePath);
+                this.ReportProgress("    Info: Added new image reference: {0}", image.SourceFile.PersistablePath);
 
                 // Copy it to the destination folder or add a note if missing
                 if(File.Exists(image.SourceFile))
                 {
                     mediaFolder = Path.Combine(destPath, "Media");
-                    mediaFile = Path.Combine(mediaFolder, Path.GetFileName(
-                        image.SourceFile));
+                    mediaFile = Path.Combine(mediaFolder, Path.GetFileName(image.SourceFile));
 
                     if(!Directory.Exists(mediaFolder))
                         Directory.CreateDirectory(mediaFolder);
@@ -985,15 +929,13 @@ namespace HtmlToMamlConversion
                 }
                 else
                 {
-                    missing = "<!-- TODO: Missing source image: " +
-                        image.SourceFile.PersistablePath + " -->";
-                    this.ReportProgress("    Warning: Image file '{0}' not found",
-                        image.SourceFile);
+                    missing = "<!-- TODO: Missing source image: " + image.SourceFile.PersistablePath + " -->";
+                    this.ReportProgress("    Warning: Image file '{0}' not found", image.SourceFile);
                 }
             }
 
-            return String.Concat(missing, "<mediaLink><image", placement, " xlink:href=\"",
-                image.Id, "\" /></mediaLink>");
+            return String.Concat(missing, "<mediaLink><image", placement, " xlink:href=\"", image.Id,
+                "\" /></mediaLink>");
         }
 
         /// <summary>
@@ -1001,12 +943,10 @@ namespace HtmlToMamlConversion
         /// </summary>
         /// <param name="match">The match to replace</param>
         /// <returns>The replacement text</returns>
-        /// <remarks>If a "named anchor" comment is found, the named anchor is
-        /// added as the section's <c>address</c> attribute.  Closing
-        /// <c>section</c> tags are added on subsequent matches.  The final
-        /// one is added after all of the matches are done.  The heading tag
-        /// is noted in a comment to aid in deciding how or if section nesting
-        /// is needed during the review.</remarks>
+        /// <remarks>If a "named anchor" comment is found, the named anchor is added as the section's
+        /// <c>address</c> attribute.  Closing <c>section</c> tags are added on subsequent matches.  The final
+        /// one is added after all of the matches are done.  The heading tag is noted in a comment to aid in
+        /// deciding how or if section nesting is needed during the review.</remarks>
         private string OnMatchHeading(Match match)
         {
             string level, anchorName, title, closeSection;

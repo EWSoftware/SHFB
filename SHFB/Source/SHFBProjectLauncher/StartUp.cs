@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/22/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This application provides a way for the user to choose which application is used to load help file builder
 // project files (.shfbproj).

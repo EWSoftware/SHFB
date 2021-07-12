@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/05/2021
+// Updated : 04/15/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -347,7 +347,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(this.TargetFrameworks.Any())
                 {
                     if(!String.IsNullOrWhiteSpace(this.RequestedTargetFramework) && this.TargetFrameworks.Any(t =>
-                      t.Equals(this.RequestedTargetFramework)))
+                      t.Equals(this.RequestedTargetFramework, StringComparison.OrdinalIgnoreCase)))
                     {
                         return this.RequestedTargetFramework;
                     }
@@ -468,7 +468,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(tf.StartsWith("netcoreapp", StringComparison.OrdinalIgnoreCase))
                     return (".NETCoreApp", tf.Substring(10));
 
-                if(tf.StartsWith("net") && tf.Length > 3 && Char.IsDigit(tf[3]))
+                if(tf.StartsWith("net", StringComparison.OrdinalIgnoreCase) && tf.Length > 3 && Char.IsDigit(tf[3]))
                 {
                     if(tf.Length > 5 && tf[4] == '.')
                     {
@@ -619,8 +619,8 @@ namespace SandcastleBuilder.Utils.MSBuild
         public void SetConfiguration(string configuration, string platform, string outDir,
           bool usesProjectSpecificOutput)
         {
-            // If we didn't load the project, we won't modify its settings.
-            // Typically, they already match in that case.
+            // If we didn't load the project, we won't modify its settings.  Typically, they already match in
+            // that case.
             if(removeProjectWhenDisposed)
             {
                 // .NET Standard projects use a different platform property name
@@ -629,13 +629,11 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(!this.ProjectFile.ConditionedProperties.ContainsKey(platformPropertyName))
                     platformPropertyName = "PlatformName";
 
-                if(platform.Equals("Any CPU", StringComparison.OrdinalIgnoreCase))
+                if(platform?.Equals("Any CPU", StringComparison.OrdinalIgnoreCase) ?? false)
                 {
-                    List<string> values = new List<string>(
-                        this.ProjectFile.ConditionedProperties[platformPropertyName]);
+                    List<string> values = new List<string>(this.ProjectFile.ConditionedProperties[platformPropertyName]);
 
-                    if(values.IndexOf(platform) == -1 &&
-                      values.IndexOf(SandcastleProject.DefaultPlatform) != -1)
+                    if(values.IndexOf(platform) == -1 && values.IndexOf(SandcastleProject.DefaultPlatform) != -1)
                         platform = SandcastleProject.DefaultPlatform;
                 }
 

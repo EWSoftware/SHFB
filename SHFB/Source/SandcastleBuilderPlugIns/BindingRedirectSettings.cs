@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2019
-// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing binding redirection settings for the Assembly Binding Redirection
 // Resolver plug-in.
@@ -20,27 +19,27 @@
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
-using System.Xml;
-using System.Xml.XPath;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
     /// This represents binding redirection settings for the <see cref="BindingRedirectResolverPlugIn"/>.
     /// </summary>
-    [DefaultProperty("AssemblyName")]
-    public class BindingRedirectSettings
+    public class BindingRedirectSettings : INotifyPropertyChanged
     {
         #region Private data members
         //=====================================================================
 
-        private string assemblyName, oldVersionFrom, oldVersionTo, newVersion;
+        private string assemblyName, publicKeyToken, culture, oldVersionFrom, oldVersionTo, newVersion,
+            errorMessage, description;
         private FilePath configFile;
 
         #endregion
@@ -51,16 +50,18 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This is used to get or set the assembly name (no extension)
         /// </summary>
-        [Category("Binding Redirect"), Description("The assembly name (no path or extension)")]
         public string AssemblyName
         {
             get => assemblyName;
             set
             {
-                if(String.IsNullOrWhiteSpace(value))
-                    value = "assemblyName";
+                if(assemblyName != value)
+                {
+                    assemblyName = value?.Trim();
 
-                assemblyName = value;
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
             }
         }
 
@@ -68,32 +69,55 @@ namespace SandcastleBuilder.PlugIns
         /// This is used to get or set the public key token for the assembly
         /// </summary>
         /// <value>If omitted, "null" is assumed</value>
-        [Category("Binding Redirect"), Description("The public key token of the assembly.  If omitted, " +
-          "\"null\" is assumed.")]
-        public string PublicKeyToken { get; set; }
+        public string PublicKeyToken
+        {
+            get => publicKeyToken;
+            set
+            {
+                if(publicKeyToken != value)
+                {
+                    publicKeyToken = value?.Trim();
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set the culture for the assembly
         /// </summary>
         /// <value>If omitted, "neutral" is assumed</value>
-        [Category("Binding Redirect"), Description("The culture of the assembly.  If omitted, " +
-          "\"neutral\" is assumed.")]
-        public string Culture { get; set; }
+        public string Culture
+        {
+            get => culture;
+            set
+            {
+                if(culture != value)
+                {
+                    culture = value?.Trim();
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set the old version number to redirect to the new version number
         /// </summary>
-        [Category("Binding Redirect"), Description("The old version number to redirect to the new " +
-          "version number."), DefaultValue("1.0.0.0")]
         public string OldVersion
         {
             get => oldVersionFrom;
             set
             {
-                if(value == null)
-                    value = "1.0.0.0";
+                if(oldVersionFrom != value)
+                {
+                    oldVersionFrom = value?.Trim();
 
-                oldVersionFrom = value;
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
             }
         }
 
@@ -103,25 +127,36 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <value>If not set, only <see cref="OldVersion" /> will be used to redirect a single
         /// version.</value>
-        [Category("Binding Redirect"), Description("The ending old version number range to redirect to " +
-          "the new version number.  If not set, only OldVersion will be used to redirect a single version."),
-          DefaultValue(null)]
-        public string OldVersionTo { get; set; }
+        public string OldVersionTo
+        {
+            get => oldVersionTo;
+            set
+            {
+                if(oldVersionTo != value)
+                {
+                    oldVersionTo = value?.Trim();
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set the new version number to which the old versions are redirected
         /// </summary>
-        [Category("Binding Redirect"), Description("The new version number to which the old versions " +
-          "are redirected."), DefaultValue("1.0.0.1")]
         public string NewVersion
         {
             get => newVersion;
             set
             {
-                if(value == null)
-                    value = "1.0.0.1";
+                if(newVersion != value)
+                {
+                    newVersion = value?.Trim();
 
-                newVersion = value;
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
             }
         }
 
@@ -130,21 +165,53 @@ namespace SandcastleBuilder.PlugIns
         /// imported.
         /// </summary>
         /// <value>If specified, the properties in the Binding Redirect category are ignored.</value>
-        [Category("Import"), Description("The path to configuration file from which to import settings.  " +
-          "If specified, all properties in the Binding Redirect category are ignored"),
-          Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-          RefreshProperties(RefreshProperties.All),
-          FileDialog("Select the configuration file to use",
-            "Configuration Files (*.config)|*.config|All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath ConfigurationFile
         {
             get => configFile;
             set
             {
-                if(value == null)
-                    value = new FilePath(configFile.BasePathProvider);
+                if(configFile != value)
+                {
+                    if(configFile != null)
+                        configFile.PersistablePathChanged -= this.configFile_PersistablePathChanged;
 
-                configFile = value;
+                    if(value == null)
+                        value = new FilePath(configFile.BasePathProvider);
+
+                    configFile = value;
+                    configFile.PersistablePathChanged += this.configFile_PersistablePathChanged;
+
+                    this.Validate();
+                    this.OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns an error message describing any issues with the settings
+        /// </summary>
+        public string ErrorMessage
+        {
+            get => errorMessage;
+            private set
+            {
+                errorMessage = value;
+
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns a description of the settings
+        /// </summary>
+        public string BindingRedirectDescription
+        {
+            get => description;
+            private set
+            {
+                description = value;
+
+                this.OnPropertyChanged();
             }
         }
         #endregion
@@ -158,36 +225,86 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="provider">The base path provider</param>
         public BindingRedirectSettings(IBasePathProvider provider)
         {
-            configFile = new FilePath(provider);
-            assemblyName = "assemblyName";
-            oldVersionFrom = "1.0.0.0";
-            newVersion = "1.0.0.1";
+            this.ConfigurationFile = new FilePath(provider);
         }
         #endregion
 
-        #region Method overrides
+        #region INotifyPropertyChanged implementation
         //=====================================================================
 
         /// <summary>
-        /// This returns a string representation of the item
+        /// The property changed event
         /// </summary>
-        /// <returns>The item value as a string</returns>
-        public override string ToString()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="PropertyChanged"/> event
+        /// </summary>
+        /// <param name="propertyName">The property name that changed</param>
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            string range;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Update the display description when the configuration file changes
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void configFile_PersistablePathChanged(object sender, EventArgs e)
+        {
+            this.Validate();
+        }
+
+        /// <summary>
+        /// This is used to validate the settings
+        /// </summary>
+        private void Validate()
+        {
+            List<string> problems = new List<string>();
+
+            if(String.IsNullOrWhiteSpace(assemblyName) && String.IsNullOrWhiteSpace(configFile))
+                problems.Add("An assembly name or configuration file is required");
+            else
+            {
+                if(!String.IsNullOrWhiteSpace(assemblyName) && !String.IsNullOrWhiteSpace(configFile))
+                    problems.Add("Specify an assembly name or configuration file but not both");
+            }
+
+            if(!String.IsNullOrWhiteSpace(assemblyName))
+            {
+                if(String.IsNullOrWhiteSpace(oldVersionFrom))
+                    problems.Add("An old version number is required");
+
+                if(String.IsNullOrWhiteSpace(newVersion))
+                    problems.Add("An new version number is required");
+            }
+
+            if(problems.Count != 0)
+                this.ErrorMessage = String.Join(" / ", problems);
+            else
+                this.ErrorMessage = null;
 
             if(configFile.Path.Length != 0)
-                return configFile.PersistablePath;
-
-            if(oldVersionTo == null)
-                range = oldVersionFrom.ToString();
+                this.BindingRedirectDescription = configFile.PersistablePath;
             else
-                range = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom, oldVersionTo);
+            {
+                string range;
 
-            return String.Format(CultureInfo.InvariantCulture, "{0}, Culture={1}, PublicKeyToken={2}, " +
-                "Version(s) {3} redirect to Version {4}", assemblyName,
-                String.IsNullOrWhiteSpace(this.Culture) ? "neutral" : this.Culture,
-                String.IsNullOrWhiteSpace(this.PublicKeyToken) ? "null" : this.PublicKeyToken, range, newVersion);
+                if(oldVersionTo == null)
+                    range = oldVersionFrom;
+                else
+                    range = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom, oldVersionTo);
+
+                this.BindingRedirectDescription = String.Format(CultureInfo.InvariantCulture,
+                    "{0}, Culture={1}, PublicKeyToken={2}, Version(s) {3} redirect to Version {4}",
+                    assemblyName ?? "(Undefined)", String.IsNullOrWhiteSpace(culture) ? "neutral" : culture,
+                    String.IsNullOrWhiteSpace(publicKeyToken) ? "null" : publicKeyToken, range, newVersion);
+            }
         }
         #endregion
 
@@ -195,47 +312,46 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// Create a binding redirect settings instance from an XPath navigator containing the settings
+        /// Create a binding redirect settings instance from an XML element containing the settings
         /// </summary>
         /// <param name="pathProvider">The base path provider object</param>
-        /// <param name="navigator">The XPath navigator from which to obtain the settings</param>
+        /// <param name="configuration">The XML element from which to obtain the settings</param>
         /// <returns>A <see cref="BindingRedirectSettings"/> object containing the settings from the XPath
         /// navigator.</returns>
         /// <remarks>It should contain an element called <c>dependentAssembly</c> with a <c>configFile</c>
         /// attribute or a nested <c>assemblyIdentity</c> and <c>bindingRedirect</c> element that define
         /// the settings.</remarks>
-        public static BindingRedirectSettings FromXPathNavigator(IBasePathProvider pathProvider,
-          XPathNavigator navigator)
+        public static BindingRedirectSettings FromXml(IBasePathProvider pathProvider, XElement configuration)
         {
             BindingRedirectSettings brs = new BindingRedirectSettings(pathProvider);
 
-            if(navigator != null)
+            if(configuration != null)
             {
-                string value = navigator.GetAttribute("importFrom", String.Empty).Trim();
+                string value = configuration.Attribute("importFrom")?.Value;
 
-                if(value.Length != 0)
-                    brs.ConfigurationFile = new FilePath(value, pathProvider);
+                if(!String.IsNullOrWhiteSpace(value))
+                    brs.ConfigurationFile = new FilePath(value, Path.IsPathRooted(value), pathProvider);
                 else
                 {
-                    XPathNavigator nav = navigator.SelectSingleNode("assemblyIdentity");
+                    var settings = configuration.Element("assemblyIdentity");
 
-                    if(nav != null)
+                    if(settings != null)
                     {
-                        brs.AssemblyName = nav.GetAttribute("name", String.Empty).Trim();
-                        brs.PublicKeyToken = nav.GetAttribute("publicKeyToken", String.Empty).Trim();
-                        brs.Culture = nav.GetAttribute("culture", String.Empty).Trim();
+                        brs.AssemblyName = settings.Attribute("name").Value;
+                        brs.PublicKeyToken = settings.Attribute("publicKeyToken")?.Value;
+                        brs.Culture = settings.Attribute("culture")?.Value;
                     }
 
-                    nav = navigator.SelectSingleNode("bindingRedirect");
+                    settings = configuration.Element("bindingRedirect");
 
-                    if(nav != null)
+                    if(settings != null)
                     {
-                        value = nav.GetAttribute("newVersion", String.Empty).Trim();
+                        value = settings.Attribute("newVersion").Value;
 
-                        if(value.Length != 0)
+                        if(!String.IsNullOrWhiteSpace(value))
                             brs.NewVersion = value;
 
-                        value = nav.GetAttribute("oldVersion", String.Empty).Trim();
+                        value = settings.Attribute("oldVersion").Value;
 
                         string[] versions = value.Split('-');
 
@@ -266,86 +382,50 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// Store the binding redirect settings as a node in the given XML document
+        /// Store the binding redirect settings in an XML element
         /// </summary>
-        /// <param name="config">The XML document</param>
-        /// <param name="root">The node in which to store the element</param>
         /// <param name="relativePath">True to allow a relative path on <c>importFrom</c> attributes, false to
         /// fully qualify the path.</param>
-        /// <returns>Returns the node that was added.</returns>
+        /// <returns>Returns the XML element</returns>
         /// <remarks>The settings are stored in an element called <c>dependentAssembly</c>.</remarks>
-        public XmlNode ToXml(XmlDocument config, XmlNode root, bool relativePath)
+        public XElement ToXml(bool relativePath)
         {
-            XmlAttribute attr;
-
-            if(config == null)
-                throw new ArgumentNullException(nameof(config));
-
-            if(root == null)
-                throw new ArgumentNullException(nameof(root));
-
-            XmlNode node = config.CreateNode(XmlNodeType.Element, "dependentAssembly", null);
-            root.AppendChild(node);
-
             if(configFile.Path.Length != 0)
             {
-                attr = config.CreateAttribute("importFrom");
-                attr.Value = relativePath ? configFile.PersistablePath : configFile.ToString();
-                node.Attributes.Append(attr);
-                return node;
+                return new XElement("dependentAssembly",
+                    new XAttribute("importFrom", relativePath ? configFile.PersistablePath : configFile.ToString()));
             }
 
-            XmlNode child = config.CreateNode(XmlNodeType.Element, "assemblyIdentity", null);
-            node.AppendChild(child);
+            var el = new XElement("dependentAssembly",
+                new XElement("assemblyIdentity",
+                    new XAttribute("name", this.AssemblyName),
+                    !String.IsNullOrWhiteSpace(this.PublicKeyToken) ? new XAttribute("publicKeyToken", this.PublicKeyToken) : null,
+                    !String.IsNullOrWhiteSpace(this.Culture) ? new XAttribute("culture", this.Culture) : null));
 
-            attr = config.CreateAttribute("name");
-            attr.Value = assemblyName;
-            child.Attributes.Append(attr);
+            var br = new XElement("bindingRedirect");
 
-            if(!String.IsNullOrWhiteSpace(this.PublicKeyToken))
+            el.Add(br);
+
+            var attr = new XAttribute("oldVersion", this.OldVersion);
+            br.Add(attr);
+
+            if(this.OldVersionTo != null)
             {
-                attr = config.CreateAttribute("publicKeyToken");
-                attr.Value = this.PublicKeyToken;
-                child.Attributes.Append(attr);
-            }
-
-            if(!String.IsNullOrWhiteSpace(this.Culture))
-            {
-                attr = config.CreateAttribute("culture");
-                attr.Value = this.Culture;
-                child.Attributes.Append(attr);
-            }
-
-            child = config.CreateNode(XmlNodeType.Element, "bindingRedirect", null);
-            node.AppendChild(child);
-
-            attr = config.CreateAttribute("oldVersion");
-            attr.Value = assemblyName;
-
-            if(oldVersionTo == null)
-                attr.Value = oldVersionFrom.ToString();
-            else
-            {
-                if(Version.TryParse(oldVersionFrom, out Version oldFrom) &&
-                  Version.TryParse(oldVersionTo, out Version oldTo) && oldFrom > oldTo)
+                if(Version.TryParse(this.OldVersion, out Version oldFrom) &&
+                  Version.TryParse(this.OldVersionTo, out Version oldTo) && oldFrom > oldTo)
                 {
                     Version tempVersion = oldFrom;
-                    oldVersionFrom = oldTo.ToString();
-                    oldVersionTo = tempVersion.ToString();
+                    this.OldVersion = oldTo.ToString();
+                    this.OldVersionTo = tempVersion.ToString();
                 }
 
-                attr.Value = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom,
-                    oldVersionTo);
-                child.Attributes.Append(attr);
+                attr.Value = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", this.OldVersion,
+                    this.OldVersionTo);
             }
 
-            child.Attributes.Append(attr);
+            br.Add(new XAttribute("newVersion", newVersion.ToString()));
 
-            attr = config.CreateAttribute("newVersion");
-            attr.Value = newVersion.ToString();
-            child.Attributes.Append(attr);
-
-            return node;
+            return el;
         }
         #endregion
     }

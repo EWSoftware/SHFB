@@ -4,7 +4,6 @@
 // Author  : blackspikeltd (https://github.com/blackspikeltd/Xaml-Spinners-WPF)
 // Updated : 11/14/2017
 // Note    : https://github.com/blackspikeltd/Xaml-Spinners-WPF/blob/master/LICENSE.md
-// Compiler: Microsoft Visual C#
 //
 // This file contains a user control that implements a wait spinner
 //

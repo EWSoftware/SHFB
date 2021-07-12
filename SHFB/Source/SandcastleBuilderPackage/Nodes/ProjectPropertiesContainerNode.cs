@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : ProjectPropertiesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the project properties container node in a Sandcastle Help File
 // Builder project.
@@ -50,57 +49,44 @@ namespace SandcastleBuilder.Package.Nodes
         //=====================================================================
 
         internal const string PropertiesNodeVirtualName = "SHFB_ProjectProperties";
-		#endregion
 
-		#region Properties
+        #endregion
+
+        #region Properties
         //=====================================================================
 
         /// <summary>
         /// This is used to set the sort priority for the node
         /// </summary>
         /// <value>It will be sorted just above the Documentation Sources node</value>
-		public override int SortPriority
-		{
-			get { return DefaultSortOrderNode.ReferenceContainerNode - 2; }
-		}
+        public override int SortPriority => DefaultSortOrderNode.ReferenceContainerNode - 2;
 
-		/// <summary>
-		/// This is used to return the menu command ID for the node
-		/// </summary>
+        /// <summary>
+        /// This is used to return the menu command ID for the node
+        /// </summary>
         /// <remarks>This uses the References context menu but only our command
         /// shows up.</remarks>
-        public override int MenuCommandId
-		{
-            get { return Microsoft.VisualStudio.Project.VsMenus.IDM_VS_CTXT_REFERENCE; }
-		}
+        public override int MenuCommandId => Microsoft.VisualStudio.Project.VsMenus.IDM_VS_CTXT_REFERENCE;
 
         /// <summary>
         /// This is overridden to return the item type GUID
         /// </summary>
         /// <value>It returns the standard GUID for a virtual folder</value>
-		public override Guid ItemTypeGuid
-		{
-			get { return VSConstants.GUID_ItemType_VirtualFolder; }
-		}
+        public override Guid ItemTypeGuid => VSConstants.GUID_ItemType_VirtualFolder;
 
         /// <summary>
         /// This is overridden to return the URL for the node
         /// </summary>
         /// <value>It returns the virtual node name</value>
-		public override string Url
-		{
-			get { return base.VirtualNodeName; }
-		}
+        public override string Url => base.VirtualNodeName;
 
         /// <summary>
         /// This is overridden to return the caption for the node
         /// </summary>
         /// <value>This returns the localized "Documentation Sources" caption</value>
-		public override string Caption
-		{
-			get { return Resources.PropertiesNodeCaption; }
-		}
-		#endregion
+        public override string Caption => Resources.PropertiesNodeCaption;
+
+        #endregion
 
         #region Constructor
         //=====================================================================
@@ -209,10 +195,9 @@ namespace SandcastleBuilder.Package.Nodes
               (cmdGroup == VsMenus.guidVSUISet && (WindowCommandIds)cmd == WindowCommandIds.UIHWCMDID_DoubleClick))
             {
                 IntPtr ip = (IntPtr)(-1);
-                IVsWindowFrame frame = null;
 
                 ((IVsProject2)this.ProjectMgr).ReopenItem(VSConstants.VSITEMID_ROOT,
-                    VSConstants.GUID_ProjectDesignerEditor, null, Guid.Empty, ip, out frame);
+                    VSConstants.GUID_ProjectDesignerEditor, null, Guid.Empty, ip, out _);
 
                 return VSConstants.S_OK;
             }

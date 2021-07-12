@@ -2,20 +2,19 @@
 // System  : Sandcastle Help File Builder Components
 // File    : InMemoryTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/20/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a target dictionary backed by a simple Dictionary<TKey, TValue> instance.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 2.7.3.0  12/31/2012  EFW  Created the code
+// 12/31/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -25,7 +24,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This contains a collection of targets indexed by member ID stored in a simple
@@ -45,7 +44,7 @@ namespace Microsoft.Ddue.Tools.Targets
         #region Private data members
         //=====================================================================
 
-        private ConcurrentDictionary<string, Target> index;
+        private readonly ConcurrentDictionary<string, Target> index;
 
         #endregion
 
@@ -86,10 +85,7 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public override ICollection<string> Keys
-        {
-            get { return index.Keys; }
-        }
+        public override ICollection<string> Keys => index.Keys;
 
         /// <inheritdoc />
         public override bool TryGetValue(string key, out Target value)
@@ -98,10 +94,7 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public override ICollection<Target> Values
-        {
-            get { return index.Values; }
-        }
+        public override ICollection<Target> Values => index.Values;
 
         /// <inheritdoc />
         /// <returns>If not found, this implementation returns null.</returns>
@@ -109,16 +102,11 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             get
             {
-                Target t;
-
-                index.TryGetValue(key, out t);
+                index.TryGetValue(key, out Target t);
 
                 return t;
             }
-            set
-            {
-                index[key] = value;
-            }
+            set => index[key] = value;
         }
 
         #endregion
@@ -152,10 +140,7 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public override int Count
-        {
-            get { return index.Count; }
-        }
+        public override int Count => index.Count;
 
         #endregion
 

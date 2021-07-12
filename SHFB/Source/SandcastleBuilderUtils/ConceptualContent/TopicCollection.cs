@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the conceptual content topics for a project.
 //
@@ -32,8 +31,6 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using Microsoft.Build.Evaluation;
-
 using Sandcastle.Core;
 
 using SandcastleBuilder.Utils.BuildEngine;
@@ -48,7 +45,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region Private data members
         //=====================================================================
 
-        private ContentFile contentLayoutFile;
+        private readonly ContentFile contentLayoutFile;
 
         #endregion
 
@@ -179,9 +176,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <remarks>Values are sorted by display title.  Comparisons are case-sensitive.</remarks>
         public void Sort()
         {
-            ((List<Topic>)base.Items).Sort((x, y) =>
+            ((List<Topic>)this.Items).Sort((x, y) =>
             {
-                return String.Compare(x.DisplayTitle, y.DisplayTitle, StringComparison.CurrentCulture);
+                return String.Compare(x.DisplayTitle, y.DisplayTitle, StringComparison.Ordinal);
             });
 
             this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
@@ -212,6 +209,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>An enumerable list of all matches</returns>
         public IEnumerable<Topic> Find(Predicate<Topic> match, bool expandParentIfFound)
         {
+            if(match == null)
+                throw new ArgumentNullException(nameof(match));
+
             foreach(var t in this)
             {
                 if(match(t))
@@ -242,17 +242,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// if needed.</remarks>
         public void Load()
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            XmlReader xr = null;
             string defTopicId, splitTopicId;
             Topic t;
 
-            try
-            {
-                this.Clear();
-                settings.CloseInput = true;
+            this.Clear();
 
-                xr = XmlReader.Create(contentLayoutFile.FullPath, settings);
+            using(var xr = XmlReader.Create(contentLayoutFile.FullPath, new XmlReaderSettings { CloseInput = true }))
+            {
                 xr.MoveToContent();
 
                 // These are old options from versions prior to 1.9.0.0
@@ -270,11 +266,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     xr.Read();
                 }
-            }
-            finally
-            {
-                if(xr != null)
-                    xr.Close();
             }
 
             // Set the default topic if defined from a prior version
@@ -326,15 +317,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         public void Save()
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
-
-            try
+            using(var writer = XmlWriter.Create(contentLayoutFile.FullPath, new XmlWriterSettings { Indent = true,
+              CloseOutput = true }))
             {
-                settings.Indent = true;
-                settings.CloseOutput = true;
-                writer = XmlWriter.Create(contentLayoutFile.FullPath, settings);
-
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Topics");
 
@@ -343,11 +328,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
-            }
-            finally
-            {
-                if(writer != null)
-                    writer.Close();
             }
         }
         #endregion
@@ -403,6 +383,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             Encoding enc;
             string destFile, templateText;
+
+            if(builder == null)
+                throw new ArgumentNullException(nameof(builder));
 
             foreach(Topic t in this)
             {
@@ -500,6 +483,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// with the container node.  If no such file exists, an empty container node is created.</remarks>
         public void AddTopicsFromFolder(string folder, string basePath, SandcastleProject project)
         {
+            if(basePath == null)
+                throw new ArgumentNullException(nameof(basePath));
+
+            if(project == null)
+                throw new ArgumentNullException(nameof(project));
+
             FileItem newItem;
             Topic topic, removeTopic;
             string name, newPath, projectPath = Path.GetDirectoryName(project.Filename);
@@ -520,8 +509,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     // Add the file to the project
                     newItem = project.AddFileToProject(file, newPath);
-                    topic = new Topic();
-                    topic.TopicFile = new TopicFile(newItem.ToContentFile());
+                    topic = new Topic { TopicFile = new TopicFile(newItem.ToContentFile()) };
 
                     if(topic.DocumentType > DocumentType.Invalid)
                         this.Add(topic);
@@ -535,8 +523,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             // Add folders recursively
             foreach(string folderName in Directory.EnumerateDirectories(folder))
             {
-                topic = new Topic();
-                topic.Title = name = Path.GetFileName(folderName);
+                topic = new Topic { Title = name = Path.GetFileName(folderName) };
                 topic.Subtopics.AddTopicsFromFolder(folderName, basePath, project);
 
                 // Ignore empty folders
@@ -573,6 +560,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <inheritdoc />
         protected override void InsertItem(int index, Topic item)
         {
+            if(item == null)
+                throw new ArgumentNullException(nameof(item));
+
             base.InsertItem(index, item);
             item.Parent = this;
         }
@@ -583,6 +573,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <inheritdoc />
         protected override void SetItem(int index, Topic item)
         {
+            if(item == null)
+                throw new ArgumentNullException(nameof(item));
+
             base.SetItem(index, item);
             item.Parent = this;
         }
@@ -602,20 +595,18 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <inheritdoc />
-        public ContentFile ContentLayoutFile
-        {
-            get { return contentLayoutFile; }
-        }
+        public ContentFile ContentLayoutFile => contentLayoutFile;
 
         /// <inheritdoc />
         public void GenerateTableOfContents(TocEntryCollection toc, bool includeInvisibleItems)
         {
-            TocEntry entry;
+            if(toc == null)
+                throw new ArgumentNullException(nameof(toc));
 
             foreach(Topic t in this)
                 if(t.Visible || includeInvisibleItems)
                 {
-                    entry = new TocEntry((t.TopicFile != null) ? t.TopicFile.ContentFile.BasePathProvider : null);
+                    TocEntry entry = new TocEntry(t.TopicFile?.ContentFile.BasePathProvider);
 
                     if(t.TopicFile != null)
                     {

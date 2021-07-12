@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2021
+// Updated : 05/16/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the reflection information file produced after running
@@ -29,12 +29,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
-
-using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -49,17 +45,16 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     [HelpFileBuilderPlugInExport("Script# Reflection File Fixer", RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nScript# is Copyright \xA9 " +
-      "2007-2021 Nikhil Kothari, All Rights Reserved",
+        "2007-2021 Nikhil Kothari, All Rights Reserved",
       Description = "This plug-in is used to modify the reflection information file produced after running " +
-      "MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing " +
-      "a help file.")]
+        "MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing " +
+        "a help file.")]
     public sealed class ScriptSharpPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
         private List<ExecutionPoint> executionPoints;
-
         private BuildProcess builder;
 
         #endregion
@@ -86,27 +81,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            MessageBox.Show("This plug-in has no configurable settings", "Script# Reflection File Fixer Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -122,6 +101,9 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
+
             if(context.Behavior == ExecutionBehaviors.Before)
                 this.ModifyMRefBuilderConfig();
             else
@@ -155,7 +137,7 @@ namespace SandcastleBuilder.PlugIns
             XmlAttribute attr;
             string configFile;
 
-            configFile = builder.WorkingFolder + "MRefBuilder.config";
+            configFile = Path.Combine(builder.WorkingFolder, "MRefBuilder.config");
 
             // If the configuration file doesn't exist we have nothing to do.  However, it could be that some
             // other plug-in has bypassed it so only issue a warning.

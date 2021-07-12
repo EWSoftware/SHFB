@@ -1,25 +1,22 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 11/21/2006
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
 //
-// This is used to cache regular expressions to improve performance.  The
-// original Code Project article by Jonathan can be found at:
-// http://www.codeproject.com/csharp/highlightcs.asp.
+// This is used to cache regular expressions to improve performance.  The original Code Project article by
+// Jonathan can be found at: http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con
 //
 // Modifications by Eric Woodruff (Eric@EWoodruff.us) 11/2006:
 //
-//      Removed the RegexOptions.Compiled option as it doesn't appear to
-//      improve performance all that much in average use.
+//      Removed the RegexOptions.Compiled option as it doesn't appear to improve performance all that much in
+//      average use.
 //
 //      Modified to use a generic Dictionary<string, Regex> for the collection.
 //
-//      Made the class internal and sealed as it serves no purpose outside of
-//      the colorizer.
+//      Made the class internal and sealed as it serves no purpose outside of the colorizer.
 //
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -31,25 +28,33 @@ namespace ColorizerLibrary
 	/// <summary>
 	///  Dictionary associating string to Regex
 	/// </summary>
-	/// <remarks>This implementation uses a
-    /// <see cref="Dictionary{TValue, KValue}" /> to store the Regex
-    /// objects.</remarks>
+	/// <remarks>This implementation uses a <see cref="Dictionary{TValue, KValue}" /> to store the Regex objects</remarks>
 	internal sealed class RegexDictionary
 	{
-        private Dictionary<string, Regex> dictionary;
+        #region Private data members
+        //=====================================================================
 
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		internal RegexDictionary()
+        private readonly Dictionary<string, Regex> dictionary;
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        internal RegexDictionary()
 		{
             dictionary = new Dictionary<string, Regex>();
 		}
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
+        //=====================================================================
+
         /// <summary>
-        /// This returns the key name based on the IDs of the two specified
-        /// nodes.
+        /// This returns the key name based on the IDs of the two specified nodes
         /// </summary>
         /// <param name="node1">The first node</param>
         /// <param name="node2">The second node</param>
@@ -59,10 +64,10 @@ namespace ColorizerLibrary
             XmlNode attr1, attr2;
 
             if(node1 == null)
-                throw new ArgumentNullException("node1");
+                throw new ArgumentNullException(nameof(node1));
 
             if(node2 == null)
-                throw new ArgumentNullException("node2");
+                throw new ArgumentNullException(nameof(node2));
 
             attr1 = node1.Attributes["id"];
             attr2 = node2.Attributes["id"];
@@ -77,25 +82,23 @@ namespace ColorizerLibrary
         }
 
         /// <summary>
-        /// This returns the key name based on the IDs of the three specified
-        /// nodes.
+        /// This returns the key name based on the IDs of the three specified nodes
         /// </summary>
         /// <param name="node1">The first node</param>
         /// <param name="node2">The second node</param>
         /// <param name="node3">The third node</param>
-        private static string KeyName(XmlNode node1, XmlNode node2,
-          XmlNode node3)
+        private static string KeyName(XmlNode node1, XmlNode node2, XmlNode node3)
         {
             XmlNode attr1, attr2, attr3;
 
             if(node1 == null)
-                throw new ArgumentNullException("node1");
+                throw new ArgumentNullException(nameof(node1));
 
             if(node2 == null)
-                throw new ArgumentNullException("node2");
+                throw new ArgumentNullException(nameof(node2));
 
             if(node3 == null)
-                throw new ArgumentNullException("node3");
+                throw new ArgumentNullException(nameof(node3));
 
             attr1 = node1.Attributes["id"];
             attr2 = node2.Attributes["id"];
@@ -133,30 +136,24 @@ namespace ColorizerLibrary
 		#endregion
 
 		#region Key add and retrieve methods
+        //=====================================================================
+
 		/// <summary>
 		/// Add a regex depending on two nodes
 		/// </summary>
         /// <param name="languageNode">The language node</param>
         /// <param name="subNode">The sub-node</param>
         /// <param name="sRegExp">The regular expression string</param>
-		/// <exception cref="ArgumentNullException">This is thrown if a node
-        /// parameter is null or the regular expression is null.</exception>
-		/// <exception cref="ArgumentException">This is thrown if a node
-        /// parameter does not have an 'id' attribute or if the regular
-        /// expression could not be created.</exception>
+		/// <exception cref="ArgumentNullException">This is thrown if a node parameter is null or the regular
+        /// expression is null.</exception>
+		/// <exception cref="ArgumentException">This is thrown if a node parameter does not have an 'id'
+        /// attribute or if the regular expression could not be created.</exception>
         /// <overloads>There are two overloads for this method</overloads>
-		internal void AddKey(XmlNode languageNode, XmlNode subNode,
-          string sRegExp)
+		internal void AddKey(XmlNode languageNode, XmlNode subNode, string sRegExp)
 		{
-			Regex regExp = new Regex(sRegExp,
-                RegexDictionary.GetRegexOptions(languageNode));
+			Regex regExp = new Regex(sRegExp, GetRegexOptions(languageNode));
 
-            if(regExp == null)
-				throw new ArgumentException(
-                    "Could not create regular expression");
-
-			dictionary.Add(RegexDictionary.KeyName(languageNode, subNode),
-                regExp);
+			dictionary.Add(KeyName(languageNode, subNode), regExp);
 		}
 
 		/// <summary>
@@ -166,23 +163,15 @@ namespace ColorizerLibrary
 		/// <param name="subNode">The first sub-node</param>
 		/// <param name="subNode2">The second sub-node</param>
 		/// <param name="sRegExp">The regular expression string</param>
-		/// <exception cref="ArgumentNullException">This is thrown if a node
-        /// parameter is null or the regular expression is null.</exception>
-		/// <exception cref="ArgumentException">This is thrown if a node
-        /// parameter does not have an 'id' attribute or if the regular
-        /// expression could not be created.</exception>
-		internal void AddKey(XmlNode languageNode, XmlNode subNode,
-          XmlNode subNode2, string sRegExp)
+		/// <exception cref="ArgumentNullException">This is thrown if a node parameter is null or the regular
+        /// expression is null.</exception>
+		/// <exception cref="ArgumentException">This is thrown if a node parameter does not have an 'id'
+        /// attribute or if the regular expression could not be created.</exception>
+		internal void AddKey(XmlNode languageNode, XmlNode subNode, XmlNode subNode2, string sRegExp)
 		{
-			Regex regExp = new Regex(sRegExp,
-                RegexDictionary.GetRegexOptions(languageNode));
+			Regex regExp = new Regex(sRegExp, GetRegexOptions(languageNode));
 
-			if(regExp == null)
-				throw new ArgumentException(
-                    "Could not create regular expression");
-
-			dictionary.Add(RegexDictionary.KeyName(languageNode, subNode,
-                subNode2), regExp);
+			dictionary.Add(KeyName(languageNode, subNode, subNode2), regExp);
 		}
 
 		/// <summary>
@@ -191,13 +180,13 @@ namespace ColorizerLibrary
         /// <param name="languageNode">The language node</param>
         /// <param name="subNode">The sub-node</param>
         /// <returns>The regular expression</returns>
-		/// <exception cref="ArgumentNullException">This is thrown if a node
-        /// parameter is null or the regular expression is null.</exception>
-		/// <exception cref="ArgumentException">This is thrown if a node
-        /// parameter does not have an 'id' attribute.</exception>
+		/// <exception cref="ArgumentNullException">This is thrown if a node parameter is null or the regular
+        /// expression is null.</exception>
+		/// <exception cref="ArgumentException">This is thrown if a node parameter does not have an 'id'
+        /// attribute.</exception>
 		internal Regex GetKey(XmlNode languageNode, XmlNode subNode)
 		{
-			return dictionary[RegexDictionary.KeyName(languageNode, subNode)];
+			return dictionary[KeyName(languageNode, subNode)];
 		}
 
 		/// <summary>
@@ -207,15 +196,13 @@ namespace ColorizerLibrary
 		/// <param name="subNode">The first sub-node</param>
 		/// <param name="subNode2">The second sub-node</param>
 		/// <returns>The regular expression</returns>
-		/// <exception cref="ArgumentNullException">This is thrown if a node
-        /// parameter is null or the regular expression is null.</exception>
-		/// <exception cref="ArgumentException">This is thrown if a node
-        /// parameter does not have an 'id' attribute.</exception>
-		internal Regex GetKey(XmlNode languageNode, XmlNode subNode,
-          XmlNode subNode2)
+		/// <exception cref="ArgumentNullException">This is thrown if a node parameter is null or the regular
+        /// expression is null.</exception>
+		/// <exception cref="ArgumentException">This is thrown if a node parameter does not have an 'id'
+        /// attribute.</exception>
+		internal Regex GetKey(XmlNode languageNode, XmlNode subNode, XmlNode subNode2)
 		{
-			return dictionary[RegexDictionary.KeyName(languageNode, subNode,
-                subNode2)];
+			return dictionary[KeyName(languageNode, subNode, subNode2)];
 		}
 		#endregion
 	}

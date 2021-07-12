@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/27/2020
-// Note    : Copyright 2006-2020, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This application provides a GUI that is used to edit configuration files that can be used to build HTML
 // documentation help files using Sandcastle.
@@ -39,7 +38,7 @@ namespace SandcastleBuilder.Gui
         /// </summary>
         /// <param name="args">Command line arguments</param>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             string projectToLoad = (args.Length == 0) ? null : args[0];
 

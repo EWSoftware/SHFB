@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2017
-// Note    : Copyright 2012-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the static data definitions used by the MAML to flow document converter class
 //
@@ -29,7 +28,7 @@ using System.Xml.Linq;
 namespace SandcastleBuilder.WPF.Maml
 {
     // This contains the static data definitions used by the MAML to flow document converter.
-    partial class MamlToFlowDocumentConverter
+    public partial class MamlToFlowDocumentConverter
     {
         #region XML namespaces
         //=====================================================================
@@ -37,6 +36,7 @@ namespace SandcastleBuilder.WPF.Maml
         // XML namespaces used by the parser
         internal static XNamespace ddue = "http://ddue.schemas.microsoft.com/authoring/2003/5";
         internal static XNamespace xlink = "http://www.w3.org/1999/xlink";
+
         #endregion
 
         #region See Also section topic ID GUIDs
@@ -75,19 +75,19 @@ namespace SandcastleBuilder.WPF.Maml
         //=====================================================================
 
         // Regular expressions used by the parser
-        private static Regex reCondenseWhitespace = new Regex(@"\s+");
-        private static Regex reRemoveNamespace = new Regex(" xmlns=\".+?\"");
+        private static readonly Regex reCondenseWhitespace = new Regex(@"\s+");
+        private static readonly Regex reRemoveNamespace = new Regex(" xmlns=\".+?\"");
 
         // Uh, yeah.  Don't ask me to explain this.  Just accept that it works (I hope :)).  It uses balancing
         // groups to extract #region to #endregion accounting for any nested regions within it.  If you want to
         // know all of the mind-bending details, Google for the terms: regex "balancing group".
-        private static Regex reMatchRegion = new Regex(
+        private static readonly Regex reMatchRegion = new Regex(
             @"\#(pragma\s+)?region\s+(.*?(((?<Open>\#(pragma\s+)?region\s+).*?)+" +
             @"((?<Close-Open>\#(pragma\s+)?end\s?region).*?)+)*(?(Open)(?!)))" +
             @"\#(pragma\s+)?end\s?region", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         // This is used to remove unwanted region markers from imported code
-        private static Regex reRemoveRegionMarkers = new Regex(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
+        private static readonly Regex reRemoveRegionMarkers = new Regex(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
             RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         #endregion
@@ -95,11 +95,16 @@ namespace SandcastleBuilder.WPF.Maml
         #region Alert class name to display title dictionary
         //=====================================================================
 
-        // This is used to map alert class names to titles.  We could use a case-insensitive comparer here but
-        // the XML is case-sensitive so we'll stay case sensitive too so that errors in the title value show up.
-        // These could be localized but we're not doing that for now.
-        private static Dictionary<string, string> alertTitles = new Dictionary<string, string>()
+        /// <summary>
+        /// This is used to map alert classes to their display titles
+        /// </summary>
+        /// <remarks>This is used to map alert class names to titles.  The key is the alert class and the value
+        /// is the display title.</remarks>
+        private static readonly Dictionary<string, string> alertTitles = new Dictionary<string, string>()
         {
+            // We could use a case-insensitive comparer here but the XML is case-sensitive so we'll stay case
+            // sensitive too so that errors in the title value show up.  These could be localized but we're not
+            // doing that for now.
             { "c#", "C# Note" },
             { "C#", "C# Note" },
             { "c++", "C++ Note" },
@@ -134,8 +139,12 @@ namespace SandcastleBuilder.WPF.Maml
         #region Alert class name to icon ID dictionary
         //=====================================================================
 
-        // This is used to map alert class names to icons
-        private static Dictionary<string, string> alertIcons = new Dictionary<string, string>()
+        /// <summary>
+        /// This is used to map alert classes to their icons
+        /// </summary>
+        /// <remarks>This is used to map alert class names to icons.  The key is the alert class and the value is
+        /// the icon name.</remarks>
+        private static readonly Dictionary<string, string> alertIcons = new Dictionary<string, string>()
         {
             { "c#", "AlertNote" },
             { "C#", "AlertNote" },
@@ -171,10 +180,14 @@ namespace SandcastleBuilder.WPF.Maml
         #region MAML named section to display title dictionary
         //=====================================================================
 
-        // This is used to map named section elements to display titles.
-        // These could be localized but we're not doing that for now.
-        private static Dictionary<string, string> namedSectionTitles = new Dictionary<string, string>()
+        /// <summary>
+        /// This is used to map named sections to their display titles
+        /// </summary>
+        /// <remarks>This is used to map named section elements to display titles.  The key is the element name
+        /// and the value is the display title.</remarks>
+        private static readonly Dictionary<string, string> namedSectionTitles = new Dictionary<string, string>()
         {
+            // These could be localized but we're not doing that for now
             { "appliesTo", "Applies To" },
             { "attributes", "Attributes" },
             { "attributesAndElements", "Attributes and Elements" },
@@ -209,7 +222,7 @@ namespace SandcastleBuilder.WPF.Maml
         //=====================================================================
 
         // This maps known element types to their respective handler methods
-        private static Dictionary<string, Action<ElementProperties>> elementHandlers =
+        private static readonly Dictionary<string, Action<ElementProperties>> elementHandlers =
           new Dictionary<string, Action<ElementProperties>>
         {
             #region Unsupported elements

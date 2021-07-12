@@ -16,9 +16,7 @@ using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Commands
+namespace Sandcastle.Tools.BuildComponents.Commands
 {
     /// <summary>
     /// This abstract base class is used to create indexed caches of information represented by XPathNavigators
@@ -32,23 +30,23 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <summary>
         /// This read-only property returns a reference to the <see cref="CopyFromIndexComponent"/> that owns it
         /// </summary>
-        public CopyFromIndexComponent Component { get; private set; }
+        public CopyFromIndexComponent Component { get; }
 
         /// <summary>
         /// This read-only property returns the name of the index cache
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to search for values in the XML files
         /// </summary>
-        public XPathExpression ValueExpression { get; private set; }
+        public XPathExpression ValueExpression { get; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to extract the key from values
         /// </summary>
         /// <value>The key expression is always relative to the index value node</value>
-        public XPathExpression KeyExpression { get; private set; }
+        public XPathExpression KeyExpression { get; }
 
         /// <summary>
         /// This read-only property can be used to determine whether or not the indexed cache has been disposed
@@ -81,10 +79,10 @@ namespace Microsoft.Ddue.Tools.Commands
         protected IndexedCache(CopyFromIndexComponent component, XmlNamespaceManager context,
           XPathNavigator configuration)
         {
-            if(component == null)
-                throw new ArgumentNullException("component");
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
-            this.Component = component;
+            this.Component = component ?? throw new ArgumentNullException(nameof(component));
 
             // Get the name of the index
             this.Name = configuration.GetAttribute("name", String.Empty);
@@ -181,7 +179,7 @@ namespace Microsoft.Ddue.Tools.Commands
 
             try
             {
-                document = new XPathDocument(filename);
+                document = new XPathDocument(XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }));
 
                 // For XML comments files, some versions of the framework redirect the comments files to a
                 // common location.
@@ -208,7 +206,7 @@ namespace Microsoft.Ddue.Tools.Commands
                         document = null;
                     }
                     else
-                        document = new XPathDocument(path);
+                        document = new XPathDocument(XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }));
                 }
             }
             catch(IOException e)

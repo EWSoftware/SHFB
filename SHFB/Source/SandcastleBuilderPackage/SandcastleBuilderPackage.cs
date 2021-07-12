@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
+// Updated : 05/10/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
 //
@@ -39,15 +39,17 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.PropertyPages;
 using SandcastleBuilder.Package.ToolWindows;
+
 using SandcastleBuilder.Utils;
+
 using SandcastleBuilder.WPF.PropertyPages;
 using SandcastleBuilder.WPF.UI;
-using SHFBUtility = SandcastleBuilder.Utils.Utility;
 
 namespace SandcastleBuilder.Package
 {
@@ -213,12 +215,12 @@ namespace SandcastleBuilder.Package
                 this.ToString()));
 
             // Ensure that the custom controls are known by the base property page class
-            if(!BasePropertyPage.CustomControls.ContainsKey("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl"))
+            if(!BasePropertyPage.CustomControls.ContainsKey("Sandcastle.Platform.Windows.UserControls.FilePathUserControl"))
             {
                 BasePropertyPage.CustomControls.Add("Xceed.Wpf.Toolkit.IntegerUpDown", "Value");
-                BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl",
+                BasePropertyPage.CustomControls.Add("Sandcastle.Platform.Windows.UserControls.FilePathUserControl",
                     "PersistablePath");
-                BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FolderPathUserControl",
+                BasePropertyPage.CustomControls.Add("Sandcastle.Platform.Windows.UserControls.FolderPathUserControl",
                     "PersistablePath");
             }
         }
@@ -348,7 +350,7 @@ namespace SandcastleBuilder.Package
                 try
                 {
                     // Set the owning window for WPF modal dialogs to the main Visual Studio window
-                    Sandcastle.Core.WpfHelpers.MainWindowHandle = new IntPtr(dte.MainWindow.HWnd);
+                    Sandcastle.Platform.Windows.WpfHelpers.MainWindowHandle = new IntPtr(dte.MainWindow.HWnd);
                 }
                 catch
                 {
@@ -820,7 +822,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void ViewFaqExecuteHandler(object sender, EventArgs e)
         {
-            SHFBUtility.ShowHelpTopic("1aea789d-b226-4b39-b534-4c97c256fac8");
+            UiUtility.ShowHelpTopic("1aea789d-b226-4b39-b534-4c97c256fac8");
         }
 
         /// <summary>
@@ -830,7 +832,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         private void ViewShfbHelpExecuteHandler(object sender, EventArgs e)
         {
-            SHFBUtility.ShowHelpTopic("bd1ddb51-1c4f-434f-bb1a-ce2135d3a909");
+            UiUtility.ShowHelpTopic("bd1ddb51-1c4f-434f-bb1a-ce2135d3a909");
         }
         #endregion
     }

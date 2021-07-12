@@ -21,8 +21,11 @@ miscellaneous element.</para>
             <para><link xlink:href="0f1bdf10-7968-4e17-aaf9-849091479df8" /></para>
           </listItem>
         </list>
+        
+        <para>Bibliography test: Sandcastle activity stats are available online<cite>sandcastle activity</cite>.</para>
       </content>
     </section>
+	<bibliography/>
     <relatedTopics />
   </developerConceptualDocument>
 </topic>

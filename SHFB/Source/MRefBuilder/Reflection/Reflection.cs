@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This class contains a set of utility and extension methods
@@ -44,6 +44,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>The namespace for the given type</returns>
         public static Namespace GetNamespace(this TypeNode type)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             if(type.DeclaringType != null)
                 return GetNamespace(type.DeclaringType);
 
@@ -58,7 +61,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public static TypeNode GetTemplateType(this TypeNode type)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // Only generic types have templates
             if(!type.IsGeneric)
@@ -137,6 +140,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>An enumerable list of implemented properties</returns>
         public static IEnumerable<Property> GetImplementedProperties(this Property property)
         {
+            if(property == null)
+                throw new ArgumentNullException(nameof(property));
+
             // Get an accessor
             Method accessor = property.Getter;
 
@@ -164,6 +170,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>An enumerable list of implemented events</returns>
         public static IEnumerable<Event> GetImplementedEvents(this Event trigger)
         {
+            if(trigger == null)
+                throw new ArgumentNullException(nameof(trigger));
+
             // Get interface methods corresponding to this adder and then get the events corresponding to the
             // implemented adders.
             foreach(Method implementedAdder in trigger.HandlerAdder.GetImplementedMethods())
@@ -182,6 +191,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>An enumerable list of implemented methods</returns>
         public static IEnumerable<Method> GetImplementedMethods(this Method method)
         {
+            if(method == null)
+                throw new ArgumentNullException(nameof(method));
+
             // Return explicit implementations first if any
             MethodList explicitImplementations = method.ImplementedInterfaceMethods;
 
@@ -206,7 +218,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public static Member GetTemplateMember(this Member member)
         {
             if(member == null)
-                throw new ArgumentNullException("member");
+                throw new ArgumentNullException(nameof(member));
 
             // If the containing type isn't generic, the member is the template member
             TypeNode type = member.DeclaringType;
@@ -333,7 +345,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         public static bool IsDefaultMember(this Member member)
         {
             if(member == null)
-                throw new ArgumentNullException("member");
+                throw new ArgumentNullException(nameof(member));
 
             return member.DeclaringType.DefaultMembers.Any(m => m == member);
         }
@@ -346,7 +358,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         private static Event GetEventFromAdder(this Method adder)
         {
             if(adder == null)
-                throw new ArgumentNullException("adder");
+                throw new ArgumentNullException(nameof(adder));
 
             return adder.DeclaringType.Members.FirstOrDefault(m => m.NodeType == NodeType.Event &&
                 ((Event)m).HandlerAdder == adder) as Event;
@@ -359,14 +371,10 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>An list of parameters</returns>
         private static ParameterList GetParameters(this Member member)
         {
-            Method method = member as Method;
-
-            if(method != null)
+            if(member is Method method)
                 return method.Parameters;
 
-            Property property = member as Property;
-
-            if(property != null)
+            if(member is Property property)
                 return property.Parameters;
 
             return new ParameterList();
@@ -380,7 +388,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         private static Property GetPropertyFromAccessor(this Method accessor)
         {
             if(accessor == null)
-                throw new ArgumentNullException("accessor");
+                throw new ArgumentNullException(nameof(accessor));
 
             return accessor.DeclaringType.Members.FirstOrDefault(m =>
             {
@@ -514,7 +522,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                             if(!type1.IsGeneric || !type2.IsGeneric || type1.Template == null || type2.Template == null ||
                               type1.Template.TemplateParameters.Count != type2.Template.TemplateParameters.Count ||
                               type1.Template.TemplateParameters.Select(t => t.Name.Name).Except(
-                              type2.Template.TemplateParameters.Select(t => t.Name.Name)).Count() != 0)
+                              type2.Template.TemplateParameters.Select(t => t.Name.Name)).Any())
                             {
                                 // If this is the last ditch attempt and were allowing mismatched array types,
                                 // we're pretty much screwed so carry on.  This can happen in some really
@@ -600,7 +608,7 @@ namespace Microsoft.Ddue.Tools.Reflection
         //=====================================================================
 
         // EFW - Submitted by ComponentOne.  These are used to prevent crashes caused by obfuscated member names
-        private static Regex reBadXmlChars = new Regex("[^\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
+        private static readonly Regex reBadXmlChars = new Regex("[^\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
 
         /// <summary>
         /// This is used to check for bad XML characters in a member name

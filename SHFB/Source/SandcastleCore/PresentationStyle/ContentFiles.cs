@@ -2,23 +2,22 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ContentFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2014
-// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain content files for a presentation style that are to be
 // embedded in the compiled help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.6.0  10/24/2012  EFW  Created the code
-// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
-// -------  01/04/2014  EFW  Moved the code into Sandcastle.Core
+// 10/24/2012  EFW  Created the code
+// 06/21/2013  EFW  Added support for format-specific help content files
+// 01/04/2014  EFW  Moved the code into Sandcastle.Core
 //===============================================================================================================
 
 using System;
@@ -40,29 +39,29 @@ namespace Sandcastle.Core.PresentationStyle
         /// <summary>
         /// This read-only property returns the help file formats to which these files apply
         /// </summary>
-        public HelpFileFormats HelpFileFormats { get; private set; }
+        public HelpFileFormats HelpFileFormats { get; }
 
         /// <summary>
         /// This read-only property returns the base path used for the source path files
         /// </summary>
         /// <value>If null, the presentation style base path is used</value>
-        public string BasePath { get; private set; }
+        public string BasePath { get; }
 
         /// <summary>
         /// This read-only property returns the source path wildcard used to copy files
         /// </summary>
-        public string SourcePathWildcard { get; private set; }
+        public string SourcePathWildcard { get; }
 
         /// <summary>
         /// This read-only property returns the destination folder of the content files in the compiled help file
         /// </summary>
-        public string DestinationFolder { get; private set; }
+        public string DestinationFolder { get; }
 
         /// <summary>
         /// This read-only property returns an enumerable list of file extensions that should be treated as
         /// template files that need substitution tags replaced at build time.
         /// </summary>
-        public IEnumerable<string> TemplateFileExtensions { get; private set; }
+        public IEnumerable<string> TemplateFileExtensions { get; }
         #endregion
 
         #region Constructor

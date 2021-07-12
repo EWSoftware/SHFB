@@ -2,8 +2,7 @@
 // System  : C# Code Colorizer Library
 // File    : MainWindow.xaml
 // Author  : Eric Woodruff
-// Updated : 12/18/2012
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
 //
 // Flow Document Colorizer Test assembly attributes
 //
@@ -14,18 +13,19 @@
 // This code is provided "as is" with no warranty either express or implied. The author accepts no liability for
 // any damage or loss of business that this product may cause.
 //
-// Version      Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 2.1.0.16  12/18/2012  EFW  Created the code
+// 12/18/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 // Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]
 
 //
 // General Information about an assembly is controlled through the following set of attributes.  Change these
@@ -36,21 +36,28 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("This is used to colorize blocks of code for output as a flow document.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2013, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2013-2021, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
+[assembly: ThemeInfo(
+    // Where theme specific resource dictionaries are located.  Used if a resource is not found in the page
+    // or application resource dictionaries.
+    ResourceDictionaryLocation.None,
+    // Where the generic resource dictionary is located.  Used if a resource is not found in the page, app,
+    // or any theme specific resource dictionaries.
+    ResourceDictionaryLocation.SourceAssembly
+)]
 
-[assembly: AssemblyVersion("2.1.0.16")]
+// Version information for an assembly consists of the following four values based on the current date:
+//
+//      Year of release     4 digit year
+//      Month of release    1 or 2 digit month
+//      Day of release      1 or 2 digit day
+//      Revision            Typically zero unless multiple releases are made on the same day.  In such cases,
+//                          increment the revision by one with each same day release.
+//
+[assembly: AssemblyVersion("2021.4.6.0")]
+[assembly: AssemblyFileVersion("2021.4.6.0")]

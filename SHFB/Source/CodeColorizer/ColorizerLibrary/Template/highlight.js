@@ -1,14 +1,15 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Color Syntax Highlighter
 // File    : Highlight.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/13/2007
-// Note    : Copyright 2006, Eric Woodruff, All rights reserved
+// Updated : 04/06/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
-// This contains the script to expand and collapse the regions in the
-// syntax highlighted code.
+// This contains the script to expand and collapse the regions in the syntax highlighted code
 //
-//=============================================================================
+//===============================================================================================================
+
+// Ignore Spelling: copycode lineno collapsebox endblock
 
 // Expand/collapse a region
 function HighlightExpandCollapse(showId, hideId)
@@ -23,24 +24,21 @@ function HighlightExpandCollapse(showId, hideId)
 // Copy the code if Enter or Space is hit with the image focused
 function CopyColorizedCodeCheckKey(titleDiv, eventObj)
 {
-    if(eventObj != undefined && (eventObj.keyCode == 13 ||
-      eventObj.keyCode == 32))
+    if(eventObj !== undefined && (eventObj.keyCode === 13 || eventObj.keyCode === 32))
         CopyColorizedCode(titleDiv);
 }
 
-// Change the icon as the mouse moves in and out of the Copy Code link
-// There should be an image with the same name but an "_h" suffix just
-// before the extension.
+// Change the icon as the mouse moves in and out of the Copy Code link.  There should be an image with the same
+// name but an "_h" suffix just before the extension.
 function CopyCodeChangeIcon(linkSpan)
 {
     var image = linkSpan.firstChild.src;
     var pos = image.lastIndexOf(".");
 
-    if(linkSpan.className == "highlight-copycode")
+    if(linkSpan.className === "highlight-copycode")
     {
         linkSpan.className = "highlight-copycode_h";
-        linkSpan.firstChild.src = image.substr(0, pos) + "_h" +
-            image.substr(pos);
+        linkSpan.firstChild.src = image.substr(0, pos) + "_h" + image.substr(pos);
     }
     else
     {
@@ -52,28 +50,26 @@ function CopyCodeChangeIcon(linkSpan)
 // Copy the code from a colorized code block to the clipboard.
 function CopyColorizedCode(titleDiv)
 {
-    var preTag, idx, line, block, htmlLines, lines, codeText, hasLineNos,
-        hasRegions, clip, trans, copyObject, clipID;
+    var idx, line, block, htmlLines, lines, codeText, hasLineNos, hasRegions, clip, trans, copyObject, clipID;
     var reLineNo = /^\s*\d{1,4}/;
     var reRegion = /^\s*\d{1,4}\+.*?\d{1,4}-/;
-    var reRegionText = /^\+.*?\-/;
+    var reRegionText = /^\+.*?-/;
 
-    // Find the <pre> tag containing the code.  It should be in the next
-    // element or one of its children.
+    // Find the <pre> tag containing the code.  It should be in the next element or one of its children.
     block = titleDiv.nextSibling;
 
-    while(block.nodeName == "#text")
+    while(block.nodeName === "#text")
         block = block.nextSibling;
 
-    while(block.tagName != "PRE")
+    while(block.tagName !== "PRE")
     {
         block = block.firstChild;
 
-        while(block.nodeName == "#text")
+        while(block.nodeName === "#text")
             block = block.nextSibling;
     }
 
-    if(block.innerText != undefined)
+    if(block.innerText !== undefined)
         codeText = block.innerText;
     else
         codeText = block.textContent;
@@ -84,7 +80,7 @@ function CopyColorizedCode(titleDiv)
     lines = codeText.split("\n");
 
     // Remove the line numbering and collapsible regions if present
-    if(hasLineNos != -1 || hasRegions != -1)
+    if(hasLineNos !== -1 || hasRegions !== -1)
     {
         codeText = "";
 
@@ -99,8 +95,7 @@ function CopyColorizedCode(titleDiv)
                 line = line.replace(reLineNo, "");
 
                 // Lines in expanded blocks have an extra space
-                if(htmlLines[idx].indexOf("highlight-expanded") != -1 ||
-                  htmlLines[idx].indexOf("highlight-endblock") != -1)
+                if(htmlLines[idx].indexOf("highlight-expanded") !== -1 || htmlLines[idx].indexOf("highlight-endblock") !== -1)
                     line = line.substr(1);
             }
 
@@ -110,7 +105,7 @@ function CopyColorizedCode(titleDiv)
             codeText += line;
 
             // Not all browsers keep the line feed when split
-            if(line[line.length - 1] != "\n")
+            if(line[line.length - 1] !== "\n")
                 codeText += "\n";
         }
     }
@@ -124,27 +119,22 @@ function CopyColorizedCode(titleDiv)
             // Give unrestricted access to browser APIs using XPConnect
             try
             {
-                netscape.security.PrivilegeManager.enablePrivilege(
-                    "UniversalXPConnect");
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             }
             catch(e)
             {
-                alert("Universal Connect was refused, cannot copy to " +
-                    "clipboard.  Go to about:config and set " +
-                    "signed.applets.codebase_principal_support to true to " +
-                    "enable clipboard support.");
+                alert("Universal Connect was refused, cannot copy to clipboard.  Go to about:config and set " +
+                    "signed.applets.codebase_principal_support to true to enable clipboard support.");
                 return;
             }
 
             // Creates an instance of nsIClipboard
-            clip = Components.classes[
-                "@mozilla.org/widget/clipboard;1"].createInstance(
+            clip = Components.classes["@mozilla.org/widget/clipboard;1"].createInstance(
                 Components.interfaces.nsIClipboard);
 
             // Creates an instance of nsITransferable
             if(clip)
-                trans = Components.classes[
-                    "@mozilla.org/widget/transferable;1"].createInstance(
+                trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(
                     Components.interfaces.nsITransferable);
 
             if(!trans)
@@ -160,16 +150,14 @@ function CopyColorizedCode(titleDiv)
             copyObject = new Object();
 
             // Creates an instance of nsISupportsString
-            copyObject = Components.classes[
-                "@mozilla.org/supports-string;1"].createInstance(
+            copyObject = Components.classes["@mozilla.org/supports-string;1"].createInstance(
                 Components.interfaces.nsISupportsString);
 
             // Assign the data to be copied
             copyObject.data = codeText;
 
             // Add data objects to transferable
-            trans.setTransferData("text/unicode", copyObject,
-                codeText.length * 2);
+            trans.setTransferData("text/unicode", copyObject, codeText.length * 2);
 
             clipID = Components.interfaces.nsIClipboard;
 

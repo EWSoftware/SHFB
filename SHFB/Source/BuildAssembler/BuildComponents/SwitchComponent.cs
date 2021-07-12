@@ -8,14 +8,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component executes a set of build components on the topic based on the result of an XPath
@@ -35,7 +34,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new SwitchComponent(base.BuildAssembler);
+                return new SwitchComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -44,7 +43,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         //=====================================================================
 
         private XPathExpression condition;
-        private Dictionary<string, IEnumerable<BuildComponentCore>> cases = new Dictionary<string, IEnumerable<BuildComponentCore>>();
+        private readonly Dictionary<string, IEnumerable<BuildComponentCore>> cases = new Dictionary<string, IEnumerable<BuildComponentCore>>();
 
         #endregion
 
@@ -67,7 +66,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <remarks>This sets a unique group ID for each branch</remarks>
         public override string GroupId
         {
-            get { return base.GroupId; }
+            get => base.GroupId;
             set
             {
                 base.GroupId = value;
@@ -85,16 +84,21 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             // Get the condition
             XPathNavigator conditionElement = configuration.SelectSingleNode("switch");
 
             if(conditionElement == null)
-                throw new ConfigurationErrorsException("You must specify a condition using the <switch> statement with a 'value' attribute.");
+                throw new ArgumentException("You must specify a condition using the <switch> statement with " +
+                    "a 'value' attribute.", nameof(configuration));
 
             string conditionValue = conditionElement.GetAttribute("value", String.Empty);
 
             if(String.IsNullOrEmpty(conditionValue))
-                throw new ConfigurationErrorsException("The switch statement must have a 'value' attribute, which is an xpath expression.");
+                throw new ArgumentException("The switch statement must have a 'value' attribute, which is " +
+                    "an xpath expression.", nameof(configuration));
 
             condition = XPathExpression.Compile(conditionValue);
 
@@ -117,13 +121,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             // Evaluate the condition
             string result = document.CreateNavigator().Evaluate(condition).ToString();
 
             // Get the corresponding component stack
-            IEnumerable<BuildComponentCore> components;
-
-            if(cases.TryGetValue(result, out components))
+            if(cases.TryGetValue(result, out IEnumerable<BuildComponentCore> components))
             {
                 // Apply it
                 foreach(BuildComponentCore component in components)

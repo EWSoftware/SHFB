@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2018
-// Note    : Copyright 2006-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/05/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
 // from the reflection information file.
@@ -37,20 +36,21 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.XPath;
 
 using Sandcastle.Core;
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
-    partial class BuildProcess
+    public partial class BuildProcess
     {
         #region Private data members
         //=====================================================================
 
         private XmlCommentsFileCollection commentsFiles;
 
-        private static Regex reStripWhitespace = new Regex(@"\s");
+        private static readonly Regex reStripWhitespace = new Regex(@"\s");
 
         #endregion
 
@@ -77,8 +77,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             string nsName = null, summaryText;
             bool isDocumented;
 
-            this.ReportProgress(BuildStep.GenerateNamespaceSummaries,
-                "Generating namespace summary information...");
+            this.ReportProgress(BuildStep.GenerateNamespaceSummaries, "Generating namespace summary information...");
 
             // Add a dummy file if there are no comments files specified.  This will contain the project and
             // namespace summaries.
@@ -240,6 +239,327 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         yield return ns;
                     }
                 }
+        }
+        #endregion
+
+        #region Namespace grouping methods
+        //=====================================================================
+
+        /// <summary>
+        /// This processes the namespaces in the reflection information file and adds the group entries
+        /// </summary>
+        /// <returns>True on success, false on failure</returns>
+        private void AddNamespaceGroupEntries()
+        {
+            List<string> namespaces = new List<string>();
+            XPathNavigator projectRoot = null;
+            int groupCount = 0;
+
+            this.ReportProgress(BuildStep.AddNamespaceGroups, "Adding namespace group entries...");
+
+            if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                return;
+
+            this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+            string ungroupedFilename = Path.ChangeExtension(reflectionFile, ".ungrouped");
+
+            File.Move(reflectionFile, ungroupedFilename);
+
+            using(var reader = XmlReader.Create(ungroupedFilename, new XmlReaderSettings { CloseInput = true }))
+            {
+                XPathDocument source = new XPathDocument(reader);
+
+                using(XmlWriter xw = XmlWriter.Create(reflectionFile, new XmlWriterSettings {
+                    Indent = true, CloseOutput = true }))
+                {
+                    // Copy the reflection element
+                    xw.WriteStartDocument();
+                    xw.WriteStartElement("reflection");
+
+                    var reflection = source.CreateNavigator().SelectSingleNode("reflection");
+
+                    // Copy assembly elements
+                    var assemblies = reflection.SelectSingleNode("assemblies");
+
+                    if(assemblies != null)
+                        assemblies.WriteSubtree(xw);
+
+                    // Copy the API elements and track all of the namespace elements
+                    xw.WriteStartElement("apis");
+
+                    foreach(XPathNavigator api in reflection.Select("apis/api"))
+                    {
+                        string id = (string)api.Evaluate("string(@id)");
+
+                        if(id != null && id.Length > 1 && id[1] == ':' && (id[0] == 'N' || id[0] == 'R'))
+                        {
+                            if(id.StartsWith("N:", StringComparison.Ordinal))
+                            {
+                                namespaces.Add(id);
+                                api.WriteSubtree(xw);
+                            }
+                            else
+                                projectRoot = api;      // Project root node gets replaced if present
+                        }
+                        else
+                            api.WriteSubtree(xw);
+                    }
+
+                    // Group namespaces and write out the group entries
+                    foreach(var group in GroupNamespaces(namespaces, (projectRoot != null)))
+                    {
+                        if(group.Namespace.Length == 0)
+                        {
+                            // If the namespace is blank, it's the root group.  If a project root element was
+                            // specified, replace its element list with the one from this group.  If no project
+                            // root element was found, write the root group out as a placeholder for the TOC
+                            // transformation so that it can determine the root level content.
+                            if(projectRoot != null)
+                            {
+                                xw.WriteStartElement("api");
+                                xw.WriteAttributeString("id", projectRoot.GetAttribute("id", String.Empty));
+
+                                projectRoot.MoveToChild("topicdata", String.Empty);
+                                projectRoot.WriteSubtree(xw);
+
+                                xw.WriteStartElement("elements");
+
+                                foreach(string child in group.Children.OrderBy(n => n.Substring(2)))
+                                {
+                                    xw.WriteStartElement("element");
+                                    xw.WriteAttributeString("api", child);
+                                    xw.WriteEndElement();
+                                }
+
+                                xw.WriteEndElement();   // elements
+                                xw.WriteEndElement();   // api
+                            }
+                            else
+                            {
+                                xw.WriteStartElement("api");
+                                xw.WriteAttributeString("id", "G:");
+
+                                xw.WriteStartElement("topicdata");
+                                xw.WriteAttributeString("group", "rootGroup");
+                                xw.WriteEndElement();
+
+                                xw.WriteStartElement("elements");
+
+                                foreach(string child in group.Children.OrderBy(n => n.Substring(2)))
+                                {
+                                    xw.WriteStartElement("element");
+                                    xw.WriteAttributeString("api", child);
+                                    xw.WriteEndElement();
+                                }
+
+                                xw.WriteEndElement();   // elements
+                                xw.WriteEndElement();   // api
+                            }
+                        }
+                        else
+                        {
+                            groupCount++;
+
+                            xw.WriteStartElement("api");
+                            xw.WriteAttributeString("id", group.Namespace);
+
+                            xw.WriteStartElement("topicdata");
+                            xw.WriteAttributeString("group", "api");
+                            xw.WriteEndElement();
+
+                            xw.WriteStartElement("apidata");
+                            xw.WriteAttributeString("name", group.Namespace.Substring(2));
+                            xw.WriteAttributeString("group", "namespaceGroup");
+                            xw.WriteEndElement();
+
+                            xw.WriteStartElement("elements");
+
+                            foreach(string child in group.Children.OrderBy(n => n.Substring(2)))
+                            {
+                                xw.WriteStartElement("element");
+                                xw.WriteAttributeString("api", child);
+                                xw.WriteEndElement();
+                            }
+
+                            xw.WriteEndElement();   // elements
+                            xw.WriteEndElement();   // api
+                        }
+                    }
+
+                    xw.WriteEndElement();   // apis
+                    xw.WriteEndElement();   // reflection
+                    xw.WriteEndDocument();
+                }
+            }
+
+            this.ReportProgress("Added {0} namespace group entries", groupCount);
+
+            this.ExecutePlugIns(ExecutionBehaviors.After);
+        }
+
+        /// <summary>
+        /// This is used to group the namespaces based on their common root
+        /// </summary>
+        /// <param name="namespaces">An enumerable list of namespaces to group.</param>
+        /// <param name="hasRootNamespaceContainer">True if the project has a root namespace container, false
+        /// if not.  This controls whether or not the root group is retained.</param>
+        /// <returns>An enumerable list of the grouped namespaces</returns>
+        private IEnumerable<NamespaceGroup> GroupNamespaces(IEnumerable<string> namespaces,
+          bool hasRootNamespaceContainer)
+        {
+            Dictionary<string, NamespaceGroup> groups = new Dictionary<string, NamespaceGroup>();
+            string[] parts;
+            string root;
+            int partCount;
+            int maxParts = this.CurrentProject.MaximumGroupParts;
+
+            // If the shortest namespace has more than one part, increase the maximum number of parts to account
+            // for the base length.
+            if(namespaces.Any())
+                maxParts += namespaces.Min(n => n.Split('.').Length) - 1;
+
+            // This serves as the root group.  If a project element is present in the reflection file, its
+            // list of elements will be replaced by the list in this group.  If not, this group is written to
+            // the file to serve as a place holder for the TOC XSL transformation.
+            groups.Add(String.Empty, new NamespaceGroup { Namespace = String.Empty });
+
+            // Iterate over the namespaces so that we can figure out the common root namespaces
+            foreach(string space in namespaces.Reverse())
+            {
+                parts = space.Split('.');
+                partCount = parts.Length >= maxParts ? maxParts : parts.Length - 1;
+
+                if(parts.Length - 1 <= partCount)
+                    root = String.Join(".", parts, 0, parts.Length - 1);
+                else
+                    root = String.Join(".", parts, 0, partCount);
+
+                // Create a new group to represent the namespace if there are child namespaces and it is not
+                // there already.  A group is only created if it will contain more than one namespace. Namespaces
+                // without any children will end up in their parent as a standard namespace entry.
+                if(root.Length > 2 && !groups.ContainsKey(root) && namespaces.Count(n => n.StartsWith(root,
+                  StringComparison.Ordinal)) > 1)
+                {
+                    groups.Add(root, new NamespaceGroup { Namespace = root });
+                }
+            }
+
+            // Now place the namespaces in the appropriate group.  Include the group keys as they may not be
+            // represented by an actual namespace.
+            foreach(string space in namespaces.Concat(groups.Keys.Where(k => k.Length != 0)).GroupBy(
+              n => n).Select(n => n.Key))
+            {
+                parts = space.Split('.');
+                partCount = parts.Length >= maxParts ? maxParts : parts.Length - 1;
+
+                while(partCount > -1)
+                {
+                    if(parts.Length - 1 <= partCount)
+                        root = String.Join(".", parts, 0, parts.Length - 1);
+                    else
+                        root = String.Join(".", parts, 0, partCount);
+
+                    if(groups.TryGetValue(root, out NamespaceGroup match))
+                    {
+                        match.Children.Add(space);
+                        break;
+                    }
+
+                    // If not found (group key with no namespace), remove the last part and try again.  If all
+                    // else fails, it'll end up in the root group.
+                    partCount--;
+                }
+            }
+
+            // Make a pass through the groups.  Convert each child that is a group key to a group reference.
+            foreach(var kv in groups)
+            {
+                var children = kv.Value.Children;
+
+                for(int idx = 0; idx < children.Count; idx++)
+                    if(groups.Keys.Contains(children[idx]))
+                        children[idx] = "G" + children[idx].Substring(1);
+            }
+
+            // If a group only contains one group entry, pull that sub-group up into the parent and remove
+            // the sub-group.  Don't do it for the root namespace container or if the namespace itself will
+            // appear with the group entry.
+            foreach(var group in groups.ToList())
+                if((group.Key.Length != 0 || hasRootNamespaceContainer) && group.Value.Children.Count == 1 &&
+                  group.Value.Children[0][0] == 'G' && !namespaces.Contains(group.Value.Namespace))
+                {
+                    root = "N" + group.Value.Children[0].Substring(1);
+
+                    // Ignore it if already removed
+                    if(groups.ContainsKey(group.Key))
+                    {
+                        if(namespaces.Contains(root))
+                            group.Value.Children.Add(root);
+
+                        group.Value.Children.RemoveAt(0);
+                        group.Value.Children.AddRange(groups[root].Children);
+                        groups.Remove(root);
+                    }
+                }
+
+            var rootGroup = groups[String.Empty];
+
+            if(rootGroup.Children.Count != 0)
+                root = "N" + rootGroup.Children[0].Substring(1);
+            else
+                root = "N:";
+
+            if(groups.Count > 1 && rootGroup.Children.Count == 1 && hasRootNamespaceContainer)
+            {
+                // Special case.  If we've got a root group with only one child and there is a root namespace
+                // container, pull the content for the group into the root and remove the child.
+                if(namespaces.Contains(root))
+                    rootGroup.Children.Add(root);
+
+                rootGroup.Children.RemoveAt(0);
+                rootGroup.Children.AddRange(groups[root].Children);
+                groups.Remove(root);
+            }
+            else
+            {
+                if(groups.Count > 1 && rootGroup.Children.Count == 1 && !namespaces.Contains(root))
+                {
+                    // Special case.  If the root group doesn't exist as a namespace and only has one child, pull
+                    // the content for the group into the root and remove the child.  However, if the group has
+                    // more than one namespace starting with the first namespace, keep the group and name it
+                    // after the first entry.
+                    var childGroup = groups[root];
+
+                    string name = childGroup.Children[0] + ".";
+
+                    if(!childGroup.Children.Skip(1).All(c => c.StartsWith(name, StringComparison.Ordinal)))
+                    {
+                        rootGroup.Children.RemoveAt(0);
+                        rootGroup.Children.AddRange(childGroup.Children);
+                        groups.Remove(root);
+                    }
+                    else
+                    {
+                        childGroup.Namespace = name.Substring(0, name.Length - 1);
+                        rootGroup.Children.RemoveAt(0);
+                        rootGroup.Children.Add("G" + childGroup.Namespace.Substring(1));
+                    }
+                }
+            }
+
+            // In the final pass, for each group key that is a namespace, add the namespace to its children.
+            // Also change the name of the namespace group.  Once done, return it to the caller.
+            foreach(var group in groups.Values)
+            {
+                if(namespaces.Contains(group.Namespace) && !group.Children.Contains(group.Namespace))
+                    group.Children.Add(group.Namespace);
+
+                if(group.Namespace.Length != 0)
+                    group.Namespace = "G" + group.Namespace.Substring(1);
+
+                yield return group;
+            }
         }
         #endregion
     }

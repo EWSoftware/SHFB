@@ -2,8 +2,7 @@
 // System  : C# Code Colorizer Library
 // File    : MainWindow.xaml
 // Author  : Eric Woodruff
-// Updated : 12/18/2012
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
 //
 // This is used to demonstrate colorizing code for insertion into a XAML flow document.
 //
@@ -14,9 +13,9 @@
 // This code is provided "as is" with no warranty either express or implied. The author accepts no liability for
 // any damage or loss of business that this product may cause.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  12/18/2012  EFW  Created the code
+// 12/18/2012  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -39,10 +38,11 @@ namespace FlowDocumentTest
         #region Private data members
         //=====================================================================
 
-        private CodeColorizer codeColorizer;
-        private string flowTemplate;
+        private readonly CodeColorizer codeColorizer;
+        private readonly string flowTemplate;
 
-        private static Regex reRemoveLineNumbers = new Regex(@"^\s*\d+\| ", RegexOptions.Multiline);
+        private static readonly Regex reRemoveLineNumbers = new Regex(@"^\s*\d+\| ", RegexOptions.Multiline);
+
         #endregion
 
         #region Constructor
@@ -56,14 +56,16 @@ namespace FlowDocumentTest
             InitializeComponent();
 
             cboLanguage.SelectedIndex = 4;
-            txtSampleText.Text = File.ReadAllText(@"..\..\MainWindow.xaml");
+            txtSampleText.Text = File.ReadAllText(@"..\..\..\MainWindow.xaml");
 
             // Load the template flow document
-            flowTemplate = File.ReadAllText(@"..\..\..\ColorizerLibrary\Template\DocumentTemplate.xaml");
+            flowTemplate = File.ReadAllText(@"DocumentTemplate.xaml");
 
             // Create the code colorizer
-            codeColorizer = new CodeColorizer();
-            codeColorizer.Init();
+            codeColorizer = new CodeColorizer("highlight.xml", "highlight_flowDoc.xsl")
+            {
+                OutputFormat = OutputFormat.FlowDocument
+            };
         }
         #endregion
 
@@ -77,17 +79,14 @@ namespace FlowDocumentTest
         /// <param name="e">The event arguments</param>
         private void btnColorize_Click(object sender, RoutedEventArgs e)
         {
-            string title;
-            int tabSize;
-
             // The flow document colorizer only supports line numbering.  It doesn't support outlining.
             codeColorizer.NumberLines = chkNumberLines.IsChecked.Value;
 
             // Use zero to indicate the default tab size if not specified or not valid
-            if(txtTabSize.Text.Trim().Length == 0 || !Int32.TryParse(txtTabSize.Text, out tabSize))
+            if(txtTabSize.Text.Trim().Length == 0 || !Int32.TryParse(txtTabSize.Text, out int tabSize))
                 tabSize = 0;
 
-            if(!codeColorizer.FriendlyNames.TryGetValue(cboLanguage.Text, out title))
+            if(!codeColorizer.FriendlyNames.TryGetValue(cboLanguage.Text, out string title))
                 title = cboLanguage.Text;
 
             lblTitle.Text = title;
@@ -102,13 +101,11 @@ namespace FlowDocumentTest
                     false, tabSize);
 
                 // Insert the colorized code into the flow document template
-                colorizedContent = flowTemplate.Replace("@CONTENT@", colorizedContent);
+                colorizedContent = flowTemplate.Replace("@CONTENT@", colorizedContent, StringComparison.Ordinal);
 
                 // The following steps can take a few seconds for large documents with complex coloring such
                 // as large XML files.
-                var fd = XamlReader.Parse(colorizedContent) as FlowDocument;
-
-                if(fd != null)
+                if(XamlReader.Parse(colorizedContent) is FlowDocument fd)
                     using(MemoryStream stream = new MemoryStream())
                     {
                         // Flow document elements are attached to their parent document.  To break the bond we
@@ -147,17 +144,11 @@ namespace FlowDocumentTest
 
             fe = fe.Parent as FrameworkElement;
 
-            var b = fe.Parent as BlockUIContainer;
-
-            if(b != null)
+            if(fe.Parent is BlockUIContainer b)
             {
-                var sec = b.NextBlock as Section;
-
-                if(sec != null)
+                if(b.NextBlock is Section sec)
                 {
-                    var para = sec.Blocks.FirstBlock as Paragraph;
-
-                    if(para != null)
+                    if(sec.Blocks.FirstBlock is Paragraph para)
                     {
                         TextRange r = new TextRange(para.ContentStart, para.ContentEnd);
 

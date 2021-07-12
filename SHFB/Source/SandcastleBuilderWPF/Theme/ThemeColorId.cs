@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/20/2019
 // Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains an enumerated type used to map theme color IDs to Visual Studio theme key elements
 //

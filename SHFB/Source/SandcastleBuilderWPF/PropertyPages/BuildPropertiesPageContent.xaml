@@ -5,6 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
 	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	xmlns:shfbWin="clr-namespace:Sandcastle.Platform.Windows.UserControls;assembly=Sandcastle.Platform.Windows"
 	xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
 	mc:Ignorable="d" d:DesignHeight="350" d:DesignWidth="730"
 	MinWidth="730" MinHeight="350" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
@@ -87,7 +88,7 @@
 					ToolTip="No valid reflection data sets found.  Do you need to install the NuGet packages for them?"/>
 				<Label Margin="0,0,3,0" Grid.Column="0" Grid.Row="3" Content="B_uild log filename"
 					HorizontalAlignment="Right" />
-				<shfbProps:FilePathUserControl Grid.Column="1" Grid.Row="3" x:Name="fpBuildLogFile" UseFileOpenDialog="False"
+				<shfbWin:FilePathUserControl Grid.Column="1" Grid.Row="3" x:Name="fpBuildLogFile" UseFileOpenDialog="False"
 					Title="Select the log file location" Filter="Log files (*.log)|*.log|All Files (*.*)|*.*"
 					MaxWidth="350" shfbProps:PropertyPageBinding.ProjectPropertyName="BuildLogFile" />
 				<StackPanel Grid.Column="1" Grid.Row="4" Margin="0,10,0,0">

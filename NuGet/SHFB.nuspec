@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE package [
 	<!ENTITY deploy "..\SHFB\Deploy">
-	<!ENTITY commonExcludes "&deploy;\**\.gitignore;&deploy;\**\*.pdb;&deploy;\**\*vshost*;&deploy;\**\*CodeAnalysis*">
 ]>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB</id>
-		<version>2021.4.9.0</version>
+		<version>2021.7.11.0</version>
 		<title>Sandcastle Help File Builder</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
@@ -22,11 +21,7 @@
 				 only need to install the packages that you actually need. -->
 	</metadata>
 	<files>
-		<file src="&deploy;\PresentationStyles\**\*.*" target="tools\PresentationStyles" exclude="&commonExcludes;" />
-		<file src="&deploy;\ProductionTransforms\**\*.*" target="tools\ProductionTransforms" exclude="&commonExcludes;" />
-		<file src="&deploy;\SyntaxContent\**\*.*" target="tools\SyntaxContent" exclude="&commonExcludes;" />
-		<file src="&deploy;\Templates\**\*.*" target="tools\Templates" exclude="&commonExcludes;" />
-		<file src="&deploy;\*.*" target="tools" exclude="&deploy;\ICSharpCode*;&deploy;\SandcastleBuilderGUI*;&deploy;\WeifenLuo*;&deploy;\ReflectionDataManager*.*;&deploy;\BuildComponents.xml;&deploy;\ColorizerLibrary.xml;&deploy;\Sandcastle*.xml;&deploy;\SyntaxComponents.xml;&deploy;\*Hunspell*;&deploy;\SHFBProjectLauncher*;&deploy;\ESent*.xml;&deploy;\GenerateInheritedDocs.xml;&deploy;\HelpLibraryManagerLauncher.xml;&deploy;\NHunSpell.xml;&deploy;\SandcastleBuilderGUI.xml;&deploy;\SandcastleHtmlExtract.xml;&deploy;\AddNamespaceGroups.xml;&deploy;\SegregateByNamespace.xml;&deploy;\XslTransform.xml;&deploy;\reflection.org;&commonExcludes;" />
+		<file src="..\SHFB\Deploy\**\*" target="tools" exclude="..\SHFB\Deploy\Data\**\*;..\SHFB\Deploy\Extras\**\*;..\SHFB\Deploy\Help\**\*;..\SHFB\Deploy\Schemas\**\*;..\SHFB\Deploy\Snippets\**\*;..\SHFB\Deploy\Tools\**\*;..\SHFB\Deploy\**\.gitignore;..\SHFB\Deploy\**\*.pdb" />
 		<file src="ReadMe.txt" target="ReadMe.txt" />
 		<file src="EWSoftware.SHFB.props" target="build" />
 		<file src="SHFB.png" target="SHFB.png" />

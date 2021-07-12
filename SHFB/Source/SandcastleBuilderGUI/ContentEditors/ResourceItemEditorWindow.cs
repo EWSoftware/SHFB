@@ -2,21 +2,20 @@
 // System  : Sandcastle Help File Builder
 // File    : ResourceItemEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2009-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2009-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the resource item files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
-// ==============================================================================================================
-// 1.8.0.3  12/04/2009  EFW  Created the code
-// 1.9.3.3  12/23/2011  EFW  Rewrote to use the shared WPF Resource Item Editor user control
+//    Date     Who  Comments
+//===============================================================================================================
+// 12/04/2009  EFW  Created the code
+// 12/23/2011  EFW  Rewrote to use the shared WPF Resource Item Editor user control
 //===============================================================================================================
 
 using System;
@@ -39,8 +38,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private FileItem resourceItemsFile;
+        private readonly FileItem resourceItemsFile;
         private string resourceItemsPath;
+
         #endregion
 
         #region Constructor
@@ -52,6 +52,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="fileItem">The project file item to edit</param>
         public ResourceItemEditorWindow(FileItem fileItem)
         {
+            if(fileItem == null)
+                throw new ArgumentNullException(nameof(fileItem));
+
             InitializeComponent();
 
             this.Text = Path.GetFileName(fileItem.FullPath);
@@ -76,6 +79,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
+            if(filename == null)
+                throw new ArgumentNullException(nameof(filename));
+
             string projectPath = Path.GetDirectoryName(resourceItemsFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
@@ -144,16 +150,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return true; }
-        }
+        public override bool CanSaveContent => true;
 
         /// <inheritdoc />
-        public override bool IsContentDocument
-        {
-            get { return true; }
-        }
+        public override bool IsContentDocument => true;
 
         /// <inheritdoc />
         public override bool Save()
@@ -208,6 +208,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            if(e == null)
+                throw new ArgumentNullException(nameof(e));
+
             e.Cancel = !this.CanClose;
             base.OnClosing(e);
         }

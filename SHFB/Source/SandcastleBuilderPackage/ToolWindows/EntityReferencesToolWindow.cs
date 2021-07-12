@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : EntityReferencesToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to implement the Entity References tool window
 //
@@ -80,8 +79,6 @@ namespace SandcastleBuilder.Package.ToolWindows
             ThreadHelper.ThrowIfNotOnUIThread();
 
             IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
-            uint pitemid;
-            IVsMultiItemSelect ppMIS;
 
             base.Initialize();
 
@@ -95,7 +92,7 @@ namespace SandcastleBuilder.Package.ToolWindows
                 try
                 {
                     // Get the current project if there is one and select it for use by the tool window
-                    ms.GetCurrentSelection(out ppHier, out pitemid, out ppMIS, out ppSC);
+                    ms.GetCurrentSelection(out ppHier, out uint pitemid, out IVsMultiItemSelect ppMIS, out ppSC);
 
                     if(pitemid != VSConstants.VSITEMID_NIL && ppHier != IntPtr.Zero)
                     {
@@ -232,7 +229,6 @@ namespace SandcastleBuilder.Package.ToolWindows
 
             SandcastleProject shfbProject = null;
             EntityReferencesControl ucEntityReferences;
-            object project;
 
             if(pHierOld == null || !pHierOld.Equals(pHierNew))
             {
@@ -243,16 +239,11 @@ namespace SandcastleBuilder.Package.ToolWindows
                     if(pHierNew != null)
                     {
                         ErrorHandler.ThrowOnFailure(pHierNew.GetProperty(VSConstants.VSITEMID_ROOT,
-                            (int)__VSHPROPID.VSHPROPID_ExtObject, out project));
+                            (int)__VSHPROPID.VSHPROPID_ExtObject, out object project));
 
-                        EnvDTE.Project envDTEProject = project as EnvDTE.Project;
-
-                        if(envDTEProject != null)
+                        if(project is EnvDTE.Project envDTEProject)
                         {
-                            SandcastleBuilderProjectNode projectNode =
-                                envDTEProject.Object as SandcastleBuilderProjectNode;
-
-                            if(projectNode != null)
+                            if(envDTEProject.Object is SandcastleBuilderProjectNode projectNode)
                                 shfbProject = projectNode.SandcastleProject;
                         }
                     }
@@ -283,17 +274,16 @@ namespace SandcastleBuilder.Package.ToolWindows
             ThreadHelper.ThrowIfNotOnUIThread();
 
             IVsUIShell uiShell = Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true);
-            IEnumWindowFrames enumFrames;
             IVsWindowFrame[] frames = new IVsWindowFrame[1];
-            object docView;
-            uint frameCount;
             ContentLayoutEditorPane contentLayoutPane;
             SiteMapEditorPane siteMapPane;
             TokenEditorPane tokenFilePane;
 
-            if(uiShell.GetDocumentWindowEnum(out enumFrames) == VSConstants.S_OK)
-                while(enumFrames.Next(1, frames, out frameCount) == VSConstants.S_OK && frameCount == 1)
-                    if(frames[0].GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out docView) == VSConstants.S_OK)
+            if(uiShell.GetDocumentWindowEnum(out IEnumWindowFrames enumFrames) == VSConstants.S_OK)
+            {
+                while(enumFrames.Next(1, frames, out uint frameCount) == VSConstants.S_OK && frameCount == 1)
+                {
+                    if(frames[0].GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out object docView) == VSConstants.S_OK)
                     {
                         contentLayoutPane = docView as ContentLayoutEditorPane;
 
@@ -314,6 +304,8 @@ namespace SandcastleBuilder.Package.ToolWindows
                             }
                         }
                     }
+                }
+            }
         }
         #endregion
     }

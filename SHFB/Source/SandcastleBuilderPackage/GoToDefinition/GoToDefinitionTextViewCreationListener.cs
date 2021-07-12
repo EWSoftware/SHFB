@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 06/19/2019
 // Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a class used to connect the Go To Definition command filter to the text view adapters
 //

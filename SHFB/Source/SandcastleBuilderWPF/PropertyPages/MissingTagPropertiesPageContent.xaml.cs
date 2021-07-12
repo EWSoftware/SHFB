@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff
 // Updated : 10/06/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Missing Tags category properties
 //

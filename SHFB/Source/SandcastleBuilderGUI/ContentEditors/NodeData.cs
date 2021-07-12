@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : NodeData.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to hold tree view node data for the project explorer
 //
@@ -28,32 +27,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     public class NodeData
     {
-        #region Private data members
-        //=====================================================================
-
-        private BuildAction buildAction;
-        private object nodeItem;
-
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
         /// The build action
         /// </summary>
-        public BuildAction BuildAction
-        {
-            get { return buildAction; }
-        }
+        public BuildAction BuildAction { get; }
 
         /// <summary>
         /// The build item for the node
         /// </summary>
-        public object Item
-        {
-            get { return nodeItem; }
-        }
+        public object Item { get; }
+
         #endregion
 
         #region Constructor
@@ -66,8 +52,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="item">The node item</param>
         public NodeData(BuildAction action, object item)
         {
-            buildAction = action;
-            nodeItem = item;
+            this.BuildAction = action;
+            this.Item = item;
         }
         #endregion
     }

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/11/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a reference item that can be used by MRefBuilder to locate assembly
 // dependencies for the assemblies being documented.
@@ -28,8 +27,9 @@ using System.Drawing.Design;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Platform.Windows.Design;
+
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Gui.MSBuild
 {
@@ -60,12 +60,12 @@ namespace SandcastleBuilder.Gui.MSBuild
             "All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public virtual FilePath HintPath
         {
-            get { return hintPath; }
+            get => hintPath;
             set
             {
                 if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
                     throw new ArgumentException("A hint path must be specified and cannot contain wildcards (* or ?)",
-                        "value");
+                        nameof(value));
 
                 this.SetMetadata(BuildItemMetadata.HintPath, value.PersistablePath);
                 hintPath = value;
@@ -76,16 +76,11 @@ namespace SandcastleBuilder.Gui.MSBuild
         /// <summary>
         /// This is used to get the reference description
         /// </summary>
+        /// <remarks>This will be the filename for file references, a GAC name for GAC references, or a COM
+        /// object name for COM references.</remarks>
         [Category("Reference"), Description("The reference name")]
-        public virtual string Reference
-        {
-            get
-            {
-                // This will be the filename for file references, a GAC name for GAC references, or a COM object
-                // name for COM references.
-                return this.Include;
-            }
-        }
+        public virtual string Reference => this.Include;
+
         #endregion
 
         #region Designer methods
@@ -274,7 +269,7 @@ namespace SandcastleBuilder.Gui.MSBuild
         /// <returns>The filtered property descriptor collection</returns>
         private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection pdc)
         {
-            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(new PropertyDescriptor[] { });
+            PropertyDescriptorCollection adjustedProps = new PropertyDescriptorCollection(Array.Empty<PropertyDescriptor>());
 
             foreach(PropertyDescriptor pd in pdc)
                 if(pd.Name != "HintPath")

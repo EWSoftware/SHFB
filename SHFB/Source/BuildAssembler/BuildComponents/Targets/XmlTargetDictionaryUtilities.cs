@@ -13,7 +13,7 @@ using System.Globalization;
 using System.Xml.Schema;
 using System.Xml.XPath;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// The logic to construct Target and Reference objects from XML reflection data.  Anything that depends on
@@ -24,38 +24,40 @@ namespace Microsoft.Ddue.Tools.Targets
         // XPath expressions for extracting data
 
         // Topic data
-        private static XPathExpression topicIdExpression = XPathExpression.Compile("string(@id)");
+        private static readonly XPathExpression topicIdExpression = XPathExpression.Compile("string(@id)");
         private static XPathExpression topicContainerExpression = XPathExpression.Compile("string(containers/library/@assembly)");
-        private static XPathExpression topicFileExpression = XPathExpression.Compile("string(file/@name)");
+        private static readonly XPathExpression topicFileExpression = XPathExpression.Compile("string(file/@name)");
 
         // API data
-        private static XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
-        private static XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
-        private static XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
+        private static readonly XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
+        private static readonly XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
+        private static readonly XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
 
         // Member data
-        private static XPathExpression apiOverloadIdExpression = XPathExpression.Compile("string(overload/@api | memberdata/@overload)");
+        private static readonly XPathExpression apiOverloadIdExpression = XPathExpression.Compile("string(overload/@api | memberdata/@overload)");
 
         // explicit implementation data
-        private static XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile("boolean(memberdata/@visibility='private' and proceduredata/@virtual='true' and boolean(implements/member))");
-        private static XPathExpression apiImplementedMembersExpression = XPathExpression.Compile("implements/member");
+        private static readonly XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile(
+            "boolean(memberdata/@visibility='private' and proceduredata/@virtual='true' and boolean(implements/member))");
+        private static readonly XPathExpression apiImplementedMembersExpression = XPathExpression.Compile("implements/member");
 
         // op_explicit and op_implicit data
-        private static XPathExpression apiIsConversionOperatorExpression = XPathExpression.Compile("boolean((apidata/@subsubgroup='operator') and (apidata/@name='Explicit' or apidata/@name='Implicit'))");
+        private static readonly XPathExpression apiIsConversionOperatorExpression = XPathExpression.Compile(
+            "boolean((apidata/@subsubgroup='operator') and (apidata/@name='Explicit' or apidata/@name='Implicit'))");
 
         // Container data
-        private static XPathExpression apiContainingNamespaceExpression = XPathExpression.Compile("(containers/namespace)[1]");
-        private static XPathExpression apiContainingTypeExpression = XPathExpression.Compile("(containers/type)[1]");
+        private static readonly XPathExpression apiContainingNamespaceExpression = XPathExpression.Compile("(containers/namespace)[1]");
+        private static readonly XPathExpression apiContainingTypeExpression = XPathExpression.Compile("(containers/type)[1]");
 
         // Reference data
-        private static XPathExpression referenceApiExpression = XPathExpression.Compile("string(@api)");
+        private static readonly XPathExpression referenceApiExpression = XPathExpression.Compile("string(@api)");
 
         // Template data
-        private static XPathExpression apiTemplatesExpression = XPathExpression.Compile("templates/template");
-        private static XPathExpression templateNameExpression = XPathExpression.Compile("string(@name)");
+        private static readonly XPathExpression apiTemplatesExpression = XPathExpression.Compile("templates/template");
+        private static readonly XPathExpression templateNameExpression = XPathExpression.Compile("string(@name)");
 
         // Extension method template data
-        private static XPathExpression methodTemplateArgsExpression = XPathExpression.Compile("templates/*");
+        private static readonly XPathExpression methodTemplateArgsExpression = XPathExpression.Compile("templates/*");
 
         // Change the container
 
@@ -64,14 +66,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// </summary>
         public static string ContainerExpression
         {
-            get
-            {
-                return topicContainerExpression.Expression;
-            }
-            set
-            {
-                topicContainerExpression = XPathExpression.Compile(value);
-            }
+            get => topicContainerExpression.Expression;
+            set => topicContainerExpression = XPathExpression.Compile(value);
         }
 
         // super factory method
@@ -83,6 +79,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>An enumerable list of targets</returns>
         public static IEnumerable<Target> EnumerateTargets(XPathNavigator topicsNode)
         {
+            if(topicsNode == null)
+                throw new ArgumentNullException(nameof(topicsNode));
+
             XPathNodeIterator topicNodes = topicsNode.Select("/*/apis/api[not(topicdata/@notopic)]");
 
             foreach(XPathNavigator topicNode in topicNodes)
@@ -104,7 +103,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public static Target CreateTarget(XPathNavigator topic)
         {
             if(topic == null)
-                throw new ArgumentNullException("topic");
+                throw new ArgumentNullException(nameof(topic));
 
             bool isApiTarget = (bool)topic.Evaluate("boolean(apidata)");
 
@@ -117,13 +116,13 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if(target == null)
                 throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
-                    "The target file '{0}' is not valid.", topic.BaseURI));
+                    "The target file '{0}' is not valid (unknown API target subgroup).", topic.BaseURI));
 
             target.Id = (string)topic.Evaluate(topicIdExpression);
 
             if(String.IsNullOrEmpty(target.Id))
                 throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
-                    "The target file '{0}' is not valid.", topic.BaseURI));
+                    "The target file '{0}' is not valid (no target ID specified).", topic.BaseURI));
 
             target.Container = (string)topic.Evaluate(topicContainerExpression);
 
@@ -131,7 +130,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if(String.IsNullOrEmpty(target.File))
                 throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
-                    "The target file '{0}' is not valid.", topic.BaseURI));
+                    "The target file '{0}' is not valid (no target file specified).", topic.BaseURI));
 
             return target;
         }
@@ -233,20 +232,18 @@ namespace Microsoft.Ddue.Tools.Targets
                     else
                     {
                         // If all else fails, get the name by parsing the identifier
-                        string arguments;
-                        string type;
-
-                        TextReferenceUtilities.DecomposeMemberIdentifier(memberId, out type, out memberName,
-                            out arguments);
+                        TextReferenceUtilities.DecomposeMemberIdentifier(memberId, out _, out memberName, out _);
                     }
                 }
 
-                MemberTarget member = new MemberTarget();
+                MemberTarget member = new MemberTarget
+                {
+                    Id = memberId,       // Get Id from element
+                    File = file,         // Get file from type file
+                    Name = memberName,   // Get name from element
+                    ContainingType = new SimpleTypeReference(typeId) // Get containing type from this type
+                };
 
-                member.Id = memberId;       // Get Id from element
-                member.File = file;         // Get file from type file
-                member.Name = memberName;   // Get name from element
-                member.ContainingType = new SimpleTypeReference(typeId); // Get containing type from this type
                 members.Add(member);
             }
 
@@ -260,6 +257,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>The member target</returns>
         public static MemberTarget CreateMemberTarget(XPathNavigator api)
         {
+            if(api == null)
+                throw new ArgumentNullException(nameof(api));
+
             string subgroup = (string)api.Evaluate(apiSubgroupExpression);
 
             MemberTarget target;
@@ -287,9 +287,10 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private static MethodTarget CreateMethodTarget(XPathNavigator api)
         {
-            MethodTarget target = new MethodTarget(CreateParameterList(api), CreateReturnType(api));
-
-            target.IsConversionOperator = (bool)api.Evaluate(apiIsConversionOperatorExpression);
+            MethodTarget target = new MethodTarget(CreateParameterList(api), CreateReturnType(api))
+            {
+                IsConversionOperator = (bool)api.Evaluate(apiIsConversionOperatorExpression)
+            };
 
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
                 target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
@@ -375,7 +376,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public static Reference CreateReference(XPathNavigator node)
         {
             if(node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             if(node.NodeType == XPathNodeType.Element)
             {
@@ -401,7 +402,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public static NamespaceReference CreateNamespaceReference(XPathNavigator namespaceElement)
         {
             if(namespaceElement == null)
-                throw new ArgumentNullException("namespaceElement");
+                throw new ArgumentNullException(nameof(namespaceElement));
 
             string api = (string)namespaceElement.Evaluate(referenceApiExpression);
 
@@ -416,7 +417,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public static TypeReference CreateTypeReference(XPathNavigator node)
         {
             if(node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             string tag = node.LocalName;
 
@@ -475,7 +476,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public static SimpleTypeReference CreateSimpleTypeReference(XPathNavigator node)
         {
             if(node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             string api = node.GetAttribute("api", String.Empty);
 
@@ -516,6 +517,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>The member reference</returns>
         public static MemberReference CreateMemberReference(XPathNavigator node)
         {
+            if(node == null)
+                throw new ArgumentNullException(nameof(node));
+
             string api = node.GetAttribute("api", String.Empty);
             SimpleMemberReference member = new SimpleMemberReference(api);
 
@@ -539,6 +543,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>The extension method reference</returns>
         public static ExtensionMethodReference CreateExtensionMethodReference(XPathNavigator node)
         {
+            if(node == null)
+                throw new ArgumentNullException(nameof(node));
+
             string methodName = (string)node.Evaluate(apiNameExpression);
             IList<Parameter> parameters = CreateParameterList(node);
             TypeReference[] templateArgumentReferences = null;

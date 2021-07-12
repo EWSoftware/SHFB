@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents and extension method reference
@@ -24,17 +24,18 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the extension method name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// This read-only property returns the extension method parameters
         /// </summary>
-        public IList<Parameter> Parameters { get; private set; }
+        public IList<Parameter> Parameters { get; }
 
         /// <summary>
         /// This read-only property returns the template arguments if any
         /// </summary>
-        public IList<TypeReference> TemplateArgs { get; private set; }
+        public IList<TypeReference> TemplateArgs { get; }
+
         #endregion
 
         #region Constructor
@@ -49,10 +50,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public ExtensionMethodReference(string methodName, IList<Parameter> parameters,
           IList<TypeReference> templateArgs)
         {
-            if(methodName == null)
-                throw new ArgumentNullException("methodName");
-
-            this.Name = methodName;
+            this.Name = methodName ?? throw new ArgumentNullException(nameof(methodName));
             this.Parameters = parameters;
             this.TemplateArgs = (templateArgs ?? new List<TypeReference>());
         }

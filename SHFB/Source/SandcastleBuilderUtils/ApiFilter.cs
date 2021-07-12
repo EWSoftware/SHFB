@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2019
-// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing an API entry that is to be removed from the reflection information
 // using MRefBuilder's namespace ripping feature.
@@ -123,7 +122,7 @@ namespace SandcastleBuilder.Utils
             }
 
             if(result == 0)
-                result = String.Compare(this.FullName, other.FullName, StringComparison.CurrentCulture);
+                result = String.Compare(this.FullName, other.FullName, StringComparison.Ordinal);
 
             return result;
         }
@@ -206,7 +205,7 @@ namespace SandcastleBuilder.Utils
 
                 sb.Append(HttpUtility.HtmlEncode(filterName));
 
-                sb.AppendFormat("\" expose=\"{0}\"", this.IsExposed.ToString().ToLowerInvariant());
+                sb.AppendFormat(CultureInfo.InvariantCulture, "\" expose=\"{0}\"", this.IsExposed.ToString().ToLowerInvariant());
 
                 if(this.Children.Count == 0)
                     sb.Append("/>\r\n");

@@ -2,8 +2,7 @@
 // System  : Code Colorizer Library
 // File    : XmlHelper.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 12/18/2012
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
 //
 // This file contains some XML node extension methods.
 //
@@ -21,8 +20,8 @@
 //
 //===============================================================================================================
 
-using System.Text.RegularExpressions;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace ColorizerLibrary
@@ -34,7 +33,7 @@ namespace ColorizerLibrary
     {
         // This is used to move trailing CR/LF's into their own code tag.  This keeps all tags within a single
         // line and we can more easily add line numbering and region folding to the end result.
-        private static Regex reTrailingCrLfs = new Regex("[^\r\n]([\r\n]+$)");
+        private static readonly Regex reTrailingCrLfs = new Regex("[^\r\n]([\r\n]+$)");
 
         /// <summary>
         /// Adds a CDATA child element
@@ -44,15 +43,14 @@ namespace ColorizerLibrary
         /// <param name="cdata">CDATA value</param>
         /// <exception>If could not create child node</exception>
         /// <exception>If could not create CDATA node</exception>
-        internal static void XmlAddChildCDATAElem(this XmlNode node, string nodeName, string cdata)
+        internal static void XmlAddChildCDATAElement(this XmlNode node, string nodeName, string cdata)
         {
             XmlNode newNode = node.OwnerDocument.CreateElement(nodeName);
 
             if(newNode == null)
                 return;
 
-            // Hack workaround to prevent stuff like blank line comments
-            // from consuming more than they should.
+            // Hack workaround to prevent stuff like blank line comments from consuming more than they should
             if(nodeName != "code" && cdata == "\r")
                 cdata = " \r";
 
@@ -64,8 +62,7 @@ namespace ColorizerLibrary
             if(m.Success)
                 cdata = cdata.Substring(0, m.Index + 1);
 
-            XmlNode newCDATANode = node.OwnerDocument.CreateCDataSection(
-                WebUtility.HtmlEncode(cdata));
+            XmlNode newCDATANode = node.OwnerDocument.CreateCDataSection(WebUtility.HtmlEncode(cdata));
 
             if(newCDATANode == null)
                 return;
@@ -74,7 +71,7 @@ namespace ColorizerLibrary
 
             // Add the node for the trailing CR/LFs if needed
             if(m.Success)
-                node.XmlAddChildCDATAElem("code", m.Groups[1].Value);
+                node.XmlAddChildCDATAElement("code", m.Groups[1].Value);
         }
 
         /// <summary>

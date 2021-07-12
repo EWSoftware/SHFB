@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TaskRunner.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 07/09/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to execute external tasks such as MSBuild
 //
@@ -18,7 +17,7 @@
 // 05/25/2015  EFW  Refactored the task execution code and moved it into its own class
 //===============================================================================================================
 
-// Ignore Spelling: hhc sbapplocale nologo clp
+// Ignore Spelling: hhc sbapplocale nologo clp msbuild
 
 using System;
 using System.Diagnostics;
@@ -26,6 +25,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+using Microsoft.Build.Evaluation;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -37,15 +38,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        private BuildProcess currentBuild;
+        private readonly BuildProcess currentBuild;
         private bool errorDetected;
 
-        private static Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
+        private static readonly Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
             @"Fatal Error|Unexpected error.*|HHC\d+: Error|(Fatal )?Error HXC\d+):|Process is terminated|" +
             @"Build FAILED|\w+\s*:\s*Error\s.*?:|\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase |
             RegexOptions.Multiline);
 
-        private static Regex reKillProcess = new Regex("hhc|sbapplocale", RegexOptions.IgnoreCase);
+        private static readonly Regex reKillProcess = new Regex("hhc|sbapplocale", RegexOptions.IgnoreCase);
+
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the path to MSBuild
+        /// </summary>
+        public string MSBuildExePath { get; }
+
+        /// <summary>
+        /// This read-only property returns true if this is a .NET core build (dotnet.exe rather than MSBuild.exe)
+        /// </summary>
+        public bool IsDotNetCoreBuild { get; }
 
         #endregion
 
@@ -59,6 +75,35 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public TaskRunner(BuildProcess currentBuild)
         {
             this.currentBuild = currentBuild;
+
+            // Use the latest version of MSBuild available rather than a specific version
+            string latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.FirstOrDefault(
+                t => t.ToolsVersion.Equals("Current", StringComparison.OrdinalIgnoreCase))?.ToolsVersion;
+
+            if(latestToolsVersion == null)
+            {
+                latestToolsVersion = ProjectCollection.GlobalProjectCollection.Toolsets.Max(
+                    t => Version.TryParse(t.ToolsVersion, out Version ver) ? ver : new Version()).ToString();
+            }
+
+            this.MSBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
+                t => t.ToolsVersion == latestToolsVersion).ToolsPath, "MSBuild.exe");
+
+            // If invoked using dotnet.exe, it works differently.  If MSBuild.exe doesn't exist, search up the
+            // folder tree looking for dotnet.exe.  If found, we know it's a .NET Core build and we'll use it
+            // instead.
+            while(!File.Exists(this.MSBuildExePath))
+            {
+                this.MSBuildExePath = Path.GetDirectoryName(Path.GetDirectoryName(this.MSBuildExePath));
+
+                // Shouldn't happen but...
+                if(this.MSBuildExePath.Length < 5)
+                    break;
+
+                this.MSBuildExePath = Path.Combine(this.MSBuildExePath, "dotnet.exe");
+            }
+
+            this.IsDotNetCoreBuild = this.MSBuildExePath.IndexOf("dotnet.exe", StringComparison.OrdinalIgnoreCase) != -1;
         }
         #endregion
 
@@ -66,7 +111,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// Run the specified MSBuild project
+        /// Run the specified MSBuild project using MSBuild.exe or dotnet.exe
         /// </summary>
         /// <param name="projectFile">The project file to run</param>
         /// <param name="minimalOutput">True for minimal output, false for normal output</param>
@@ -75,8 +120,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// systems.</remarks>
         public void RunProject(string projectFile, bool minimalOutput)
         {
-            this.Run(currentBuild.MSBuildExePath, projectFile, "/nologo /clp:NoSummary /v:" +
-                (minimalOutput ? "m" : "n"));
+            this.Run(this.MSBuildExePath, projectFile, (this.IsDotNetCoreBuild ? "msbuild " : String.Empty) +
+                "/nologo /clp:NoSummary /v:" + (minimalOutput ? "m" : "n"));
         }
 
         /// <summary>
@@ -90,9 +135,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// targets files correctly.</remarks>
         public void Run32BitProject(string projectFile, bool minimalOutput)
         {
+            // This is unlikely but check for it anyway
+            if(this.IsDotNetCoreBuild)
+                throw new InvalidOperationException("32-bit Silverlight builds are not supported when using dotnet.exe");
+
             // Check for both earlier versions of MSBuild which are in the framework folder as well as later
             // versions which are in Program Files.
-            string msBuild = currentBuild.MSBuildExePath.Replace("Framework64", "Framework").Replace(
+            string msBuild = this.MSBuildExePath.Replace("Framework64", "Framework").Replace(
                 "amd64\\", String.Empty);
 
             this.Run(msBuild, projectFile, "/nologo /clp:NoSummary /v:" + (minimalOutput ? "m" : "n"));
@@ -228,7 +277,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         if(reKillProcess.IsMatch(p.ProcessName) && !p.HasExited && p.StartTime > procStart)
                         {
-                            System.Diagnostics.Debug.WriteLine("Killing " + p.ProcessName);
+                            Debug.WriteLine("Killing " + p.ProcessName);
 
                             p.Kill();
                         }

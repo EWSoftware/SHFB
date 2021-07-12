@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/04/2021
+// Updated : 06/17/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to build the reflection data
@@ -38,6 +38,7 @@ using Microsoft.Build.Evaluation;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
+using Sandcastle.Core.PresentationStyle;
 
 namespace ReflectionDataManager
 {
@@ -135,7 +136,7 @@ namespace ReflectionDataManager
             catch(Exception ex)
             {
                 // Ignore errors but log them when debugging
-                System.Diagnostics.Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
 
             GC.SuppressFinalize(this);
@@ -157,7 +158,7 @@ namespace ReflectionDataManager
 
             content = content.Replace("{@Platform}", dataSet.Platform);
             content = content.Replace("{@Version}", dataSet.Version.ToString());
-            content = content.Replace("{@SHFBFolder}", ComponentUtilities.ToolsFolder);
+            content = content.Replace("{@SHFBRoot}", ComponentUtilities.RootFolder);
             content = content.Replace("{@IgnoreIfUnresolved}", dataSet.IgnoreIfUnresolvedConfiguration());
             content = content.Replace("{@BindingRedirections}", dataSet.BindingRedirectionConfiguration());
             content = content.Replace("{@IgnoredNamespaces}", dataSet.IgnoredNamespacesConfiguration());
@@ -173,7 +174,7 @@ namespace ReflectionDataManager
             configFile = Path.Combine(ComponentUtilities.ToolsFolder, @"Templates\BuildReflectionData.proj");
             content = File.ReadAllText(configFile);
 
-            content = content.Replace("{@SHFBFolder}", ComponentUtilities.ToolsFolder);
+            content = content.Replace("{@SHFBRoot}", ComponentUtilities.RootFolder);
             content = content.Replace("{@HtmlEncWorkingFolder}", WebUtility.HtmlEncode(workingFolder));
 
             content = content.Replace("{@Assemblies}", String.Join("\r\n", dataSet.IncludedAssemblies.Select(
@@ -183,6 +184,13 @@ namespace ReflectionDataManager
             File.WriteAllText(projectFile, content);
 
             this.Run(msBuildExePath, projectFile, "/nologo /clp:NoSummary /v:n");
+
+            this.ProgressProvider.Report("Applying standard document model");
+
+            var docModel = new StandardDocumentModel();
+
+            docModel.ApplyDocumentModel(Path.Combine(workingFolder, "reflection.org"),
+                Path.Combine(workingFolder, "reflection.xml"));
 
             this.ProgressProvider.Report("Segregating reflection data by namespace");
             this.SegregateByNamespace();
@@ -263,8 +271,7 @@ namespace ReflectionDataManager
 
                             // Some processes run for a while without reporting any progress.  This should allow
                             // for faster cancellation in those situations.
-                            if(!hasExited && this.CancellationToken != null &&
-                              this.CancellationToken.IsCancellationRequested)
+                            if(!hasExited && this.CancellationToken.IsCancellationRequested)
                             {
                                 TerminateProcess(currentProcess);
                                 throw new OperationCanceledException();
@@ -351,124 +358,127 @@ namespace ReflectionDataManager
         }
 
         /// <summary>
-        /// This is used to split the reflection data into separate file by namespace
+        /// This is used to split the reflection data into separate files by namespace
         /// </summary>
         private void SegregateByNamespace()
         {
             string reflectionDataFile = Path.Combine(workingFolder, "reflection.xml"),
                 outputPath = Path.Combine(workingFolder, "Segregated");
 
-            XPathDocument document = new XPathDocument(reflectionDataFile);
-
-            Dictionary<string, object> dictionary3;
-            XmlWriter writer;
-            string current;
-            char[] invalidChars = Path.GetInvalidFileNameChars();
-
-            Dictionary<string, Dictionary<string, object>> dictionary = new Dictionary<string, Dictionary<string, object>>();
-            Dictionary<string, XmlWriter> dictionary2 = new Dictionary<string, XmlWriter>();
-            XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
-
-            try
+            using(var reader = XmlReader.Create(reflectionDataFile, new XmlReaderSettings { CloseInput = true }))
             {
-                Directory.CreateDirectory(outputPath);
+                XPathDocument document = new XPathDocument(reader);
 
-                XPathNodeIterator iterator = document.CreateNavigator().Select(apiExpression);
+                Dictionary<string, object> dictionary3;
+                XmlWriter writer;
+                string current;
+                char[] invalidChars = Path.GetInvalidFileNameChars();
 
-                foreach(XPathNavigator navigator in iterator)
+                Dictionary<string, Dictionary<string, object>> dictionary = new Dictionary<string, Dictionary<string, object>>();
+                Dictionary<string, XmlWriter> dictionary2 = new Dictionary<string, XmlWriter>();
+                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+
+                try
                 {
-                    this.CancellationToken.ThrowIfCancellationRequested();
+                    Directory.CreateDirectory(outputPath);
 
-                    current = (string)navigator.Evaluate(apiNamespaceExpression);
+                    XPathNodeIterator iterator = document.CreateNavigator().Select(apiExpression);
 
-                    if(!String.IsNullOrEmpty(current))
-                    {
-                        String key = (string)navigator.Evaluate(assemblyNameExpression);
-
-                        if(!dictionary.TryGetValue(current, out dictionary3))
-                        {
-                            dictionary3 = new Dictionary<string, object>();
-                            dictionary.Add(current, dictionary3);
-                        }
-
-                        if(!dictionary3.ContainsKey(key))
-                            dictionary3.Add(key, null);
-                    }
-                }
-
-                foreach(string currentKey in dictionary.Keys)
-                {
-                    this.CancellationToken.ThrowIfCancellationRequested();
-
-                    string filename = currentKey.Substring(2) + ".xml";
-
-                    if(filename == ".xml")
-                        filename = "default_namespace.xml";
-                    else
-                    {
-                        if(filename.IndexOfAny(invalidChars) != -1)
-                            foreach(char c in invalidChars)
-                                filename = filename.Replace(c, '_');
-                    }
-
-                    filename = Path.Combine(outputPath, filename);
-
-                    writer = XmlWriter.Create(filename, settings);
-
-                    dictionary2.Add(currentKey, writer);
-
-                    writer.WriteStartElement("reflection");
-                    writer.WriteStartElement("assemblies");
-
-                    dictionary3 = dictionary[currentKey];
-
-                    foreach(string assemblyName in dictionary3.Keys)
+                    foreach(XPathNavigator navigator in iterator)
                     {
                         this.CancellationToken.ThrowIfCancellationRequested();
 
-                        XPathNavigator navigator2 = document.CreateNavigator().SelectSingleNode(
-                            "/*/assemblies/assembly[@name='" + assemblyName + "']");
+                        current = (string)navigator.Evaluate(apiNamespaceExpression);
 
-                        if(navigator2 != null)
-                            navigator2.WriteSubtree(writer);
-                        else
-                            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                                "Input file does not contain node for '{0}' assembly", assemblyName));
+                        if(!String.IsNullOrEmpty(current))
+                        {
+                            String key = (string)navigator.Evaluate(assemblyNameExpression);
+
+                            if(!dictionary.TryGetValue(current, out dictionary3))
+                            {
+                                dictionary3 = new Dictionary<string, object>();
+                                dictionary.Add(current, dictionary3);
+                            }
+
+                            if(!dictionary3.ContainsKey(key))
+                                dictionary3.Add(key, null);
+                        }
                     }
 
-                    writer.WriteEndElement();
-                    writer.WriteStartElement("apis");
-                }
+                    foreach(string currentKey in dictionary.Keys)
+                    {
+                        this.CancellationToken.ThrowIfCancellationRequested();
 
-                foreach(XPathNavigator navigator in iterator)
+                        string filename = currentKey.Substring(2) + ".xml";
+
+                        if(filename == ".xml")
+                            filename = "default_namespace.xml";
+                        else
+                        {
+                            if(filename.IndexOfAny(invalidChars) != -1)
+                                foreach(char c in invalidChars)
+                                    filename = filename.Replace(c, '_');
+                        }
+
+                        filename = Path.Combine(outputPath, filename);
+
+                        writer = XmlWriter.Create(filename, settings);
+
+                        dictionary2.Add(currentKey, writer);
+
+                        writer.WriteStartElement("reflection");
+                        writer.WriteStartElement("assemblies");
+
+                        dictionary3 = dictionary[currentKey];
+
+                        foreach(string assemblyName in dictionary3.Keys)
+                        {
+                            this.CancellationToken.ThrowIfCancellationRequested();
+
+                            XPathNavigator navigator2 = document.CreateNavigator().SelectSingleNode(
+                                "/*/assemblies/assembly[@name='" + assemblyName + "']");
+
+                            if(navigator2 != null)
+                                navigator2.WriteSubtree(writer);
+                            else
+                                this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
+                                    "Error: Input file does not contain node for '{0}' assembly", assemblyName));
+                        }
+
+                        writer.WriteEndElement();
+                        writer.WriteStartElement("apis");
+                    }
+
+                    foreach(XPathNavigator navigator in iterator)
+                    {
+                        this.CancellationToken.ThrowIfCancellationRequested();
+
+                        current = (string)navigator.Evaluate(apiNamespaceExpression);
+
+                        if(String.IsNullOrEmpty(current))
+                            current = (string)navigator.Evaluate(namespaceIdExpression);
+
+                        writer = dictionary2[current];
+                        navigator.WriteSubtree(writer);
+                    }
+
+                    foreach(XmlWriter w in dictionary2.Values)
+                    {
+                        this.CancellationToken.ThrowIfCancellationRequested();
+
+                        w.WriteEndElement();
+                        w.WriteEndElement();
+                        w.WriteEndDocument();
+                    }
+
+                    this.ProgressProvider.Report(String.Format(CultureInfo.InvariantCulture,
+                        "Info: Wrote information on {0} APIs to {1} files.", iterator.Count, dictionary2.Count));
+                }
+                finally
                 {
-                    this.CancellationToken.ThrowIfCancellationRequested();
-
-                    current = (string)navigator.Evaluate(apiNamespaceExpression);
-
-                    if(string.IsNullOrEmpty(current))
-                        current = (string)navigator.Evaluate(namespaceIdExpression);
-
-                    writer = dictionary2[current];
-                    navigator.WriteSubtree(writer);
+                    foreach(XmlWriter w in dictionary2.Values)
+                        w.Close();
                 }
-
-                foreach(XmlWriter w in dictionary2.Values)
-                {
-                    this.CancellationToken.ThrowIfCancellationRequested();
-
-                    w.WriteEndElement();
-                    w.WriteEndElement();
-                    w.WriteEndDocument();
-                }
-
-                ConsoleApplication.WriteMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
-                    "Wrote information on {0} APIs to {1} files.", iterator.Count, dictionary2.Count));
-            }
-            finally
-            {
-                foreach(XmlWriter w in dictionary2.Values)
-                    w.Close();
             }
         }
         #endregion

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MicrosoftDocsXRefServiceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2019
-// Note    : Copyright 2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/11/2021
+// Note    : Copyright 2019-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to perform lookups using the Microsoft Docs cross-reference service on .NET
 // Framework member IDs and return the URL for them.
@@ -23,13 +22,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Text.Json;
 using System.Threading;
 
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using Newtonsoft.Json.Linq;
-
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This is used to perform lookups using the Microsoft Docs cross-reference service on .NET Framework member
@@ -103,7 +101,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         public bool IsDisposed { get; private set; }
 
         /// <inheritdoc />
-        public bool IsDisabled => (client == null);
+        public bool IsDisabled => client == null;
 
         /// <inheritdoc />
         public string DisabledReason { get; private set; }
@@ -142,6 +140,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <returns>The URL for the member ID or null if not found</returns>
         public string ResolveUrlForId(string id)
         {
+            if(id == null)
+                throw new ArgumentNullException(id);
+
             string url = null;
             bool success = true;
 
@@ -163,10 +164,19 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     if(!String.IsNullOrWhiteSpace(result))
                     {
-                        var jsonData = JArray.Parse(result);
+                        var options = new JsonDocumentOptions { AllowTrailingCommas = true,
+                            CommentHandling = JsonCommentHandling.Skip };
 
-                        if(jsonData.Count != 0)
-                            url = (string)jsonData[0]["href"];
+                        using(JsonDocument document = JsonDocument.Parse(result, options))
+                        {
+                            var root = document.RootElement;
+
+                            if(root.ValueKind == JsonValueKind.Array && root.GetArrayLength() != 0 &&
+                              root[0].TryGetProperty("href", out JsonElement href))
+                            {
+                                url = href.GetString();
+                            }
+                        }
                     }
                 }
                 catch(Exception ex)

@@ -2,27 +2,25 @@
 // System  : Sandcastle Help File Builder
 // File    : PreviewTopicWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to preview a topic.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  05/27/2008  EFW  Created the code
-// 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
-// 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-// 1.9.3.4  01/18/2012  EFW  Rewrote to use the shared WPF Topic Previewer user control
+// 05/27/2008  EFW  Created the code
+// 07/26/2008  EFW  Reworked for use with the new project format
+// 06/07/2010  EFW  Added support for multi-format build output
+// 01/18/2012  EFW  Rewrote to use the shared WPF Topic Previewer user control
 //===============================================================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -47,7 +45,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private TopicPreviewerControl ucTopicPreviewer;
+        private readonly TopicPreviewerControl ucTopicPreviewer;
+
         #endregion
 
         #region Constructor
@@ -102,7 +101,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if(e.CloseReason == CloseReason.UserClosing && this.DockState == DockState.Document)
+            if(e != null && e.CloseReason == CloseReason.UserClosing && this.DockState == DockState.Document)
             {
                 this.Hide();
                 e.Cancel = true;
@@ -193,8 +192,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // If the document is already open, just activate it
                 foreach(IDockContent content in this.DockPanel.Documents)
-                    if(String.Compare(content.DockHandler.ToolTipText, fullName, true,
-                      CultureInfo.CurrentCulture) == 0)
+                    if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         content.DockHandler.Activate();
                         return;

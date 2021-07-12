@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeSnippet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2014
-// Note    : Copyright 2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to track a single code snippet in the SyntaxComponent
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -18,11 +17,10 @@
 // 04/27/2014  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Xml;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Snippets
+namespace Sandcastle.Tools.BuildComponents.Snippets
 {
     /// <summary>
     /// This is used to track a single code snippet in the <see cref="SyntaxComponent"/>
@@ -32,7 +30,8 @@ namespace Microsoft.Ddue.Tools.Snippets
         #region Private data members
         //=====================================================================
 
-        private XmlElement code;
+        private readonly XmlElement code;
+
         #endregion
 
         #region Properties
@@ -41,20 +40,17 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <summary>
         /// This read-only property returns the code element
         /// </summary>
-        public XmlElement CodeElement
-        {
-            get { return code; }
-        }
+        public XmlElement CodeElement => code;
 
         /// <summary>
         /// This read-only property returns the title for the snippet if one is defined
         /// </summary>
-        public string Title { get; private set; }
+        public string Title { get; }
 
         /// <summary>
         /// This read-only property returns the language for the snippet
         /// </summary>
-        public string Language { get; private set; }
+        public string Language { get; }
 
         /// <summary>
         /// This is used to get or set the language element name
@@ -81,7 +77,7 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <param name="code">The code element</param>
         public CodeSnippet(XmlElement code)
         {
-            this.code = code;
+            this.code = code ?? throw new ArgumentNullException(nameof(code));
 
             var attr = code.Attributes["title"];
 

@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a type target
@@ -40,6 +40,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// This is used to get or set the templates
         /// </summary>
         public IList<string> Templates { get; set; }
+
         #endregion
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 03/11/2021
+// Updated : 05/10/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used as the base class for standalone GUI property pages
@@ -29,6 +29,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms.Integration;
+
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
@@ -125,7 +127,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// // SandcastleBuilder.WPF.PropertyPages.FilePathUserControl.  This control is
         /// // not derived from a standard control so we need to add it manually.
         /// BasePropertyPage.CustomControls.Add(
-        ///     "SandcastleBuilder.WPF.PropertyPages.FilePathUserControl", "PersistablePath");
+        ///     "Sandcastle.Platform.Windows.UserControls.FilePathUserControl", "PersistablePath");
         /// </code>
         /// </example>
         public static Dictionary<string, string> CustomControls => customControls;
@@ -244,7 +246,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             if(!String.IsNullOrEmpty(this.HelpKeyword))
             {
-                Utility.ShowHelpTopic(this.HelpKeyword);
+                UiUtility.ShowHelpTopic(this.HelpKeyword);
                 return true;
             }
 
@@ -535,10 +537,13 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// than needed and this is called to set the minimum size on the host control based on the minimum size
         /// reported by the child WPF control.  The WPF control's minimum size is converted to pixels based on
         /// the current system's DPI.</remarks>
-        protected static System.Drawing.Size DetermineMinimumSize(System.Windows.Controls.Control c)
+        protected static System.Drawing.Size DetermineMinimumSize(Control c)
         {
-            double pixelWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / System.Windows.SystemParameters.WorkArea.Width,
-                pixelHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / System.Windows.SystemParameters.WorkArea.Height;
+            double pixelWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width / SystemParameters.WorkArea.Width,
+                pixelHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height / SystemParameters.WorkArea.Height;
+
+            if(c == null)
+                throw new ArgumentNullException(nameof(c));
 
             return new System.Drawing.Size((int)(c.MinWidth * pixelWidth), (int)(c.MinHeight * pixelHeight));
         }

@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a specialized type reference
@@ -24,7 +24,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the specializations
         /// </summary>
-        public IList<Specialization> Specializations { get; private set; }
+        public IList<Specialization> Specializations { get; }
 
         /// <summary>
         /// This read-only property is used to create and return a specialization dictionary
@@ -34,13 +34,14 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             get
             {
-                Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary =
-                    new Dictionary<IndexedTemplateTypeReference, TypeReference>();
+                var dictionary = new Dictionary<IndexedTemplateTypeReference, TypeReference>();
 
                 foreach(Specialization specialization in this.Specializations)
                     for(int index = 0; index < specialization.Arguments.Count; index++)
+                    {
                         dictionary.Add(new IndexedTemplateTypeReference(specialization.TemplateType.Id, index),
                             specialization.Arguments[index]);
+                    }
 
                 return dictionary;
             }
@@ -56,10 +57,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="specializations">The specializations</param>
         public SpecializedTypeReference(IList<Specialization> specializations)
         {
-            if(specializations == null)
-                throw new ArgumentNullException("specializations");
-
-            this.Specializations = specializations;
+            this.Specializations = specializations ?? throw new ArgumentNullException(nameof(specializations));
         }
         #endregion
     }

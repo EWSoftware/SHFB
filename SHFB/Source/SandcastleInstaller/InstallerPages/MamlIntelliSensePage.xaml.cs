@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 03/06/2020
+// Updated : 04/21/2021
 //
 // This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
 // Studio IntelliSense.
@@ -197,6 +197,9 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             if(configuration.Attribute("supportedVersions") == null)
                 throw new InvalidOperationException("A supportedVersions attribute value is required");
 

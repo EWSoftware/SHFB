@@ -5,7 +5,6 @@
 // Updated : 09/02/2018
 // Source  : http://learnvsxnow.codeplex.com/
 // Note    : Copyright 2008-2018, Istvan Novak, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a class that implements the core functionality for an editor factory
 //
@@ -108,7 +107,6 @@ namespace SandcastleBuilder.Package.Editors
                 }
             }
         }
-
         #endregion
 
         #region IVsEditorFactory Members

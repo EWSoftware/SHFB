@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : AboutDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/27/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the window class that shows description and version information for the application
 //
@@ -41,11 +40,11 @@ namespace ReflectionDataManager
 
             Assembly asm = Assembly.GetExecutingAssembly();
 
-            var titleAttr = (AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(asm,
+            var titleAttr = (AssemblyTitleAttribute)Attribute.GetCustomAttribute(asm,
                 typeof(AssemblyTitleAttribute));
-            var versionAttr = (AssemblyInformationalVersionAttribute)AssemblyInformationalVersionAttribute.GetCustomAttribute(
+            var versionAttr = (AssemblyInformationalVersionAttribute)Attribute.GetCustomAttribute(
                 asm, typeof(AssemblyInformationalVersionAttribute));
-            var descAttr = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(asm,
+            var descAttr = (AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(asm,
                 typeof(AssemblyDescriptionAttribute));
 
             // Set the labels
@@ -74,7 +73,7 @@ namespace ReflectionDataManager
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, "About",
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, "Reflection Data Manager",
                     MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }

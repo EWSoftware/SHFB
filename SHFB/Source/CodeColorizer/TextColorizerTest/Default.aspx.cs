@@ -1,27 +1,23 @@
-//=============================================================================
+//===============================================================================================================
 // System  : C# Code Colorizer Control Web Demo
 // File    : Default.aspx.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 03/08/2007
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
 //
-// This is used to demonstrate the C# code colorizer control.  The original
-// Code Project article by Jonathan can be found at:
-// http://www.codeproject.com/csharp/highlightcs.asp.
+// This is used to demonstrate the C# code colorizer control.  The original Code Project article by Jonathan can
+// be found at:  http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con
 //
 // Modifications by Eric Woodruff (Eric@EWoodruff.us) 11/2006-03/2007:
 //
 //      Reworked the demo to demonstrate the new features.
 //
-//=============================================================================
+//===============================================================================================================
 
 using System;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using ColorizerLibrary;
 
@@ -30,21 +26,22 @@ namespace TextColorizerTest
 	/// <summary>
 	/// Test page for the syntax highlighter
 	/// </summary>
-	public partial class WebForm1 : System.Web.UI.Page
+	public partial class WebForm1 : Page
     {
         private static CodeColorizer syntaxEngine;
 
         #region Page load handler
-        protected void Page_Load(object sender, System.EventArgs e)
+        //=====================================================================
+
+        protected void Page_Load(object sender, EventArgs e)
 		{
             if(!Page.IsPostBack)
             {
-                // In this case, we'll use a static instance to improve
-                // performance with repeated use.
-                syntaxEngine = new CodeColorizer();
-                syntaxEngine.Init();
+                // In this case, we'll use a static instance to improve performance with repeated use
+                syntaxEngine = new CodeColorizer(Server.MapPath(@"~\highlight.xml"), Server.MapPath(@"~\highlight.xsl"));
 
                 string demoSource = Server.MapPath("Default.aspx.cs");
+
                 using(StreamReader sr = new StreamReader(demoSource))
                 {
                     txtContent.Text = sr.ReadToEnd();
@@ -54,6 +51,8 @@ namespace TextColorizerTest
         #endregion
 
         #region Button click handler
+        //=====================================================================
+
         protected void btnProcess_Click(object sender, EventArgs e)
         {
             int tabSize;

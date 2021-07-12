@@ -2,15 +2,14 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentPlacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to define the placement of a build component within a BuildAssembler
 // configuration file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -34,7 +33,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// This read-only property returns the placement action value
         /// </summary>
-        public PlacementAction Placement { get; private set; }
+        public PlacementAction Placement { get; }
 
         /// <summary>
         /// This read-only property returns the ID of the component related to the <see cref="PlacementAction"/>
@@ -42,13 +41,13 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// </summary>
         /// <value>This only has meaning for the <c>Before</c>, <c>After</c>, and <c>Replace</c>
         /// <see cref="PlacementAction"/>.</value>
-        public string Id { get; private set; }
+        public string Id { get; }
 
         /// <summary>
         /// This read-only property returns the instance of the component to replace, insert before, or insert
         /// after.
         /// </summary>
-        public int Instance { get; private set; }
+        public int Instance { get; }
 
         /// <summary>
         /// This property is used to get or set the instance of the component to replace, insert before, or
@@ -83,13 +82,17 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         {
             if((placement == PlacementAction.Before || placement == PlacementAction.After ||
               placement == PlacementAction.Replace) && String.IsNullOrWhiteSpace(id))
+            {
                 throw new ArgumentException("An ID must be specified if Before, After, or Replace is used " +
-                    "for the placement action", "id");
+                    "for the placement action", nameof(id));
+            }
 
             if((placement == PlacementAction.None || placement == PlacementAction.Start ||
               placement == PlacementAction.End) && !String.IsNullOrWhiteSpace(id))
+            {
                 throw new ArgumentException("An ID cannot be specified if None, Start, or End is used " +
-                    "for the placement action", "id");
+                    "for the placement action", nameof(id));
+            }
 
             this.Placement = placement;
             this.Id = id;
@@ -108,7 +111,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         public ComponentPlacement(PlacementAction placement, string id, int instance) : this(placement, id)
         {
             if(instance < 1)
-                throw new ArgumentException("Instance must be greater than or equal to one", "instance");
+                throw new ArgumentException("Instance must be greater than or equal to one", nameof(instance));
 
             this.Instance = instance;
         }

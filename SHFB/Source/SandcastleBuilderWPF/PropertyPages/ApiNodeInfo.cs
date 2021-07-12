@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 08/16/2019
 // Note    : Copyright 2017-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the class used to associate additional information with each tree node to make it easier
 // to look stuff up.
@@ -31,7 +30,8 @@ using System.Windows.Media;
 using System.Xml;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.XPath;
+
+using SandcastleBuilder.WPF.XPath;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {
@@ -241,6 +241,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
             this.Id = apiId;
             this.ApiNode = apiNode;
 
+            if(text == null)
+                throw new ArgumentNullException(nameof(text));
+
             subMembers = new BindingList<ApiNodeInfo>();
 
             if(apiNode != null)
@@ -249,7 +252,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 this.EntryType = this.DetermineApiEntryTypeAndVisibility(out ApiVisibility visibility);
                 this.Visibility = visibility;
 
-                string fullName = apiId;
+                string fullName = apiId ?? String.Empty;
 
                 if(this.EntryType >= ApiEntryType.Class && this.EntryType <= ApiEntryType.Operator)
                 {

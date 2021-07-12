@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/27/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // Sandcastle reflection data manager assembly attributes
 //

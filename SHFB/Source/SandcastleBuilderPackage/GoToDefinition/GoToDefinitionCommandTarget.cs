@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GoToDefinitionCommandTarget.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2019
-// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to enable the Go To Definition context menu command in XML comments and MAML
 // files.
@@ -376,13 +375,15 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         Guid clsid = Guid.Empty;
 
                         if(provider.ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell uiShell)
+                        {
                             uiShell.ShowMessageBox(0, ref clsid, "Unable to navigate to XML comments member " +
                                 "definition.", String.Format(CultureInfo.CurrentCulture, "Member ID: {0}\r\n\r\n" +
                                 "If valid, the most likely cause is that it is not a member of a C# project " +
                                 "within the current solution.  Navigating to members in non-C# projects and " +
                                 ".NET Framework or reference assemblies is not supported.", id), String.Empty, 0,
                                 OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                                OLEMSGICON.OLEMSGICON_INFO, 0, out int result);
+                                OLEMSGICON.OLEMSGICON_INFO, 0, out _);
+                        }
 
                         System.Diagnostics.Debug.WriteLine("Unable to go to declaration for member ID: " + id);
                     }
@@ -408,11 +409,13 @@ namespace SandcastleBuilder.Package.GoToDefinition
                         Guid clsid = Guid.Empty;
 
                         if(provider.ServiceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell uiShell)
+                        {
                             uiShell.ShowMessageBox(0, ref clsid, "Unable to open file for element target.",
                                 String.Format(CultureInfo.CurrentCulture, "Type: {0}\r\nID: {1}\r\n\r\nIf " +
                                 "valid, it may not be a part of a help file builder project within this " +
                                 "solution.", definitionType, id), String.Empty, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO, 0, out int result);
+                                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO, 0, out _);
+                        }
 
                         System.Diagnostics.Debug.WriteLine("Unable to go to open file for ID '{0}' ({1}): ", id,
                             definitionType);

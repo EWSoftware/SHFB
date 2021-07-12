@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2021
+// Updated : 04/23/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a documentation source such as an assembly, an XML comments file, a
@@ -27,14 +27,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils
 {
@@ -133,17 +130,8 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>Wildcards are supported.  If used, all files matching the wildcard will be included as long as
         /// their extension is one of the following: .exe, .dll, .winmd, .*proj, .sln.</value>
-        [Category("File"), Description("The path to the documentation source file(s)"),
-          MergableProperty(false), Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-          RefreshProperties(RefreshProperties.All),
-          FileDialog("Select the documentation source",
-            "Documentation Sources (*.sln, *.*proj, *.dll, *.exe, *.winmd, *.xml)|*.sln;*.*proj;*.dll;*.exe;*.winmd;*.xml|" +
-            "Assemblies and Comments Files (*.dll, *.exe, *.winmd, *.xml)|*.dll;*.exe;*.winmd;*.xml|" +
-            "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
-            "XML Comments Files (*.xml)|*.xml|" +
-            "Visual Studio Solution Files (*.sln)|*.sln|" +
-            "Visual Studio Project Files (*.*proj)|*.*proj|" +
-            "All Files (*.*)|*.*", FileDialogType.FileOpen)]
+        [Category("File"), Description("The path to the documentation source file(s)"), MergableProperty(false),
+          RefreshProperties(RefreshProperties.All)]
         public FilePath SourceFile
         {
             get => sourceFile;
@@ -366,6 +354,12 @@ namespace SandcastleBuilder.Utils
             List<string> solutions = new List<string>();
             SearchOption searchOpt = SearchOption.TopDirectoryOnly;
             string dirName, wildcard = sourceFile;
+
+            if(configurationName == null)
+                throw new ArgumentNullException(nameof(configurationName));
+
+            if(platformName == null)
+                throw new ArgumentNullException(nameof(platformName));
 
             dirName = Path.GetDirectoryName(wildcard);
 

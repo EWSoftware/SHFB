@@ -6,7 +6,7 @@
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This abstract base class is used to generate API member names
@@ -20,14 +20,10 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>The name of the fully qualified API member name</returns>
         public virtual string GetApiName(Member api)
         {
-            Namespace space = api as Namespace;
-
-            if(space != null)
+            if(api is Namespace space)
                 return this.GetNamespaceName(space);
 
-            TypeNode type = api as TypeNode;
-
-            if(type != null)
+            if(api is TypeNode type)
                 return this.GetTypeName(type);
 
             return this.GetMemberName(api);

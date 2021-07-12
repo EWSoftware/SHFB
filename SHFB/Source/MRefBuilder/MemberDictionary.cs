@@ -18,17 +18,17 @@ using System.Collections.Generic;
 
 using System.Compiler;
 
-using Microsoft.Ddue.Tools.Reflection;
+using Sandcastle.Tools.Reflection;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools
 {
     public sealed class MemberDictionary : ICollection<Member>
     {
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, List<Member>> index;
-        private TypeNode type;
+        private readonly Dictionary<string, List<Member>> index;
+        private readonly TypeNode type;
 
         #endregion
 
@@ -42,7 +42,10 @@ namespace Microsoft.Ddue.Tools
         /// <param name="filter">The API filter used to exclude unwanted members</param>
         public MemberDictionary(TypeNode type, ApiFilter filter)
         {
-            this.type = type;
+            if(filter == null)
+                throw new ArgumentNullException(nameof(filter));
+
+            this.type = type ?? throw new ArgumentNullException(nameof(type));
 
             index = new Dictionary<string, List<Member>>();
 
@@ -204,10 +207,11 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public bool Contains(Member member)
         {
-            List<Member> candidates;
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
 
             // Get candidate members with the same name
-            if(!index.TryGetValue(member.Name.Name, out candidates))
+            if(!index.TryGetValue(member.Name.Name, out List<Member> candidates))
                 return false;
 
             // Iterate over the candidates looking for one of the same type with the same parameters
@@ -284,10 +288,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This always returns true
         /// </summary>
-        bool ICollection<Member>.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool ICollection<Member>.IsReadOnly => true;
 
         /// <summary>
         /// This member is not implemented and should not be called
@@ -325,15 +326,12 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This read-only property returns the type information
         /// </summary>
-        public TypeNode Type
-        {
-            get { return type; }
-        }
+        public TypeNode Type => type;
 
-       /// <summary>
-       /// This read-only property returns an enumerable list of all members in the dictionary
-       /// </summary>
-       /// <remarks>There may be multiple members for each member name in the dictionary</remarks>
+        /// <summary>
+        /// This read-only property returns an enumerable list of all members in the dictionary
+        /// </summary>
+        /// <remarks>There may be multiple members for each member name in the dictionary</remarks>
         public IEnumerable<Member> AllMembers
         {
             get
@@ -347,10 +345,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This read-only property returns an enumerable list of member names from the dictionary
         /// </summary>
-        public IEnumerable<string> MemberNames
-        {
-            get { return index.Keys; }
-        }
+        public IEnumerable<string> MemberNames => index.Keys;
 
         /// <summary>
         /// Item indexer.  This returns an enumerable list of all members for the matching name
@@ -362,8 +357,7 @@ namespace Microsoft.Ddue.Tools
         {
             get
             {
-                List<Member> members;
-                index.TryGetValue(name, out members);
+                index.TryGetValue(name, out List<Member> members);
 
                 if(members != null)
                     foreach(var m in members)
@@ -383,15 +377,11 @@ namespace Microsoft.Ddue.Tools
         private static ParameterList GetParameters(Member member)
         {
             // If the member is a method, get it's parameter list
-            Method method = member as Method;
-
-            if(method != null)
+            if(member is Method method)
                 return method.Parameters;
 
             // If the member is a property, get it's parameter list
-            Property property = member as Property;
-
-            if(property != null)
+            if(member is Property property)
                 return property.Parameters;
 
             // Member is neither a method nor a property
@@ -404,11 +394,10 @@ namespace Microsoft.Ddue.Tools
         /// <param name="member">The member to add</param>
         private void AddMember(Member member)
         {
-            List<Member> members;
             string name = member.Name.Name;
 
             // Look up the member list for the name
-            if(!index.TryGetValue(name, out members))
+            if(!index.TryGetValue(name, out List<Member> members))
             {
                 // If there isn't one already, make one
                 members = new List<Member>();

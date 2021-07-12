@@ -2,15 +2,14 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MamlLinkQuickInfoSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that determines whether or not quick info should be shown for specific MAML
 // elements and what is should contain.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -45,10 +44,11 @@ namespace SandcastleBuilder.Package.GoToDefinition
         #region Private data members
         //=====================================================================
 
-        private SVsServiceProvider serviceProvider;
-        private ITextBuffer textBuffer;
-        private MamlLinkQuickInfoSourceProvider provider;
-        private bool ctrlClickEnabled;
+        private readonly SVsServiceProvider serviceProvider;
+        private readonly ITextBuffer textBuffer;
+        private readonly MamlLinkQuickInfoSourceProvider provider;
+        private readonly bool ctrlClickEnabled;
+
         #endregion
 
         #region Constructor
@@ -222,12 +222,11 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 case "link":
                 case "topic":
                     var projectFileSearcher = new ProjectFileSearcher(serviceProvider, null);
-                    string title, filename, relativePath;
 
 #pragma warning disable VSTHRD010
                     bool found = projectFileSearcher.GetInfoFor(elementName == "image" ?
                         ProjectFileSearcher.IdType.Image : ProjectFileSearcher.IdType.Link, id,
-                        out title, out filename, out relativePath);
+                        out string title, out _, out string relativePath);
 #pragma warning restore VSTHRD010
 
                     textBlock.Inlines.AddRange(new Inline[] {

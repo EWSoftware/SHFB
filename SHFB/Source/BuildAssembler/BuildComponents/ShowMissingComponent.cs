@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/19/2016
-// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/12/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
 // returns, value, and remarks tags.  It can also add default summary documentation for constructors.
@@ -27,7 +26,6 @@
 //===============================================================================================================
 
 using System;
-using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
@@ -39,14 +37,14 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to add "missing" notes for missing summary, parameter, returns, value, and
     /// remarks tags.  It can also add default summary documentation for constructors.
     /// </summary>
     /// <example>
-    /// <code lang="xml" title="Example configuration">
+    /// <code language="xml" title="Example configuration">
     /// &lt;!-- Show missing documentation component configuration.  This must
     ///      appear before the TransformComponent. --&gt;
     /// &lt;component id="Show Missing Documentation Component"&gt;
@@ -100,14 +98,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// </summary>
             public Factory()
             {
-                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
-                    "XSL Transform Component");
+                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before, "XSL Transform Component");
             }
 
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new ShowMissingComponent(base.BuildAssembler);
+                return new ShowMissingComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -115,7 +112,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private static Regex reStripWhitespace = new Regex(@"\s");
+        private static readonly Regex reStripWhitespace = new Regex(@"\s");
 
         private bool autoDocConstructors, autoDocDispose, showMissingParams, showMissingTypeParams,
             showMissingRemarks, showMissingReturns, showMissingSummaries, showMissingValues,
@@ -140,17 +137,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
         /// <inheritdoc />
         /// <remarks>See the <see cref="ShowMissingComponent"/> class topic for an example of the configuration</remarks>
-        /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
-        /// configuration.</exception>
+        /// <exception cref="ArgumentException">This is thrown if an error is detected in the configuration.</exception>
         public override void Initialize(XPathNavigator configuration)
         {
-            XPathNavigator nav;
-            string value = null;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    Show Missing Documentation " +
+            this.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    Show Missing Documentation " +
                 "Component. Copyright \xA9 2006-2015, Eric Woodruff, All Rights Reserved\r\n" +
                 "    https://GitHub.com/EWSoftware/SHFB", fvi.ProductName, fvi.ProductVersion);
 
@@ -159,15 +155,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             autoDocConstructors = autoDocDispose = showMissingParams = showMissingTypeParams =
                 showMissingReturns = showMissingSummaries = showMissingNamespaces = true;
 
-            nav = configuration.SelectSingleNode("AutoDocumentConstructors");
+            XPathNavigator nav = configuration.SelectSingleNode("AutoDocumentConstructors");
 
+            string value;
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out autoDocConstructors))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<AutoDocumentConstructors> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<AutoDocumentConstructors> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("AutoDocumentDisposeMethods");
@@ -177,8 +174,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out autoDocDispose))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<AutoDocumentDisposeMethods> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<AutoDocumentDisposeMethods> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingParams");
@@ -188,8 +185,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingParams))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingParams> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingParams> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingTypeParams");
@@ -199,8 +196,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingTypeParams))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingTypeParams> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingTypeParams> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingRemarks");
@@ -210,8 +207,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingRemarks))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingRemarks> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingRemarks> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingReturns");
@@ -221,8 +218,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingReturns))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingReturns> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingReturns> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingSummaries");
@@ -232,8 +229,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingSummaries))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingSummaries> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingSummaries> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingValues");
@@ -243,8 +240,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingValues))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingValues> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingValues> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingNamespaces");
@@ -254,8 +251,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingNamespaces))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingNamespaces> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingNamespaces> 'value' attribute.", nameof(configuration));
             }
 
             nav = configuration.SelectSingleNode("ShowMissingIncludeTargets");
@@ -265,8 +262,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = nav.GetAttribute("value", String.Empty);
 
                 if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingIncludeTargets))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<ShowMissingIncludeTargets> 'value' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the " +
+                        "<ShowMissingIncludeTargets> 'value' attribute.", nameof(configuration));
             }
 
             isEnabled = (autoDocConstructors || autoDocDispose || showMissingParams || showMissingTypeParams ||
@@ -274,7 +271,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 showMissingNamespaces || showMissingIncludeTargets);
 
             if(!isEnabled)
-                base.WriteMessage(MessageLevel.Info, "  All Show Missing options are disabled.  The component " +
+                this.WriteMessage(MessageLevel.Info, "  All Show Missing options are disabled.  The component " +
                     "will do nothing.");
         }
 
@@ -288,6 +285,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XmlNodeList items;
             XmlNode comments, returnsNode;
             string apiKey, paramValue;
+
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if(key == null)
+                throw new ArgumentNullException(nameof(key));
 
             // Auto-document the constructor(s) on the type's list pages if necessary
             if(isEnabled && autoDocConstructors && (key[0] == 'T' ||

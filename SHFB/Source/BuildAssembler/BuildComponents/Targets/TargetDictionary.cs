@@ -20,10 +20,11 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     // The basic object model here is this:
     //  * Target objects represent files that can be targeted by a reference link
@@ -61,7 +62,8 @@ namespace Microsoft.Ddue.Tools.Targets
         #region Private data members
         //=====================================================================
 
-        private HashSet<string> namespaceFileFilter;
+        private readonly HashSet<string> namespaceFileFilter;
+
         #endregion
 
         #region Properties
@@ -71,7 +73,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// This read-only property returns the build component that owns the target dictionary
         /// </summary>
         /// <value>This is useful for logging information during initialization</value>
-        public BuildComponentCore BuildComponent { get; private set; }
+        public BuildComponentCore BuildComponent { get; }
 
         /// <summary>
         /// This is used to get or set the target dictionary's unique ID
@@ -97,16 +99,14 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns any optional namespace files used to filter what gets loaded
         /// </summary>
-        public HashSet<string> NamespaceFileFilter
-        {
-            get { return namespaceFileFilter; }
-        }
+        public HashSet<string> NamespaceFileFilter => namespaceFileFilter;
 
         /// <summary>
         /// This read-only property can be used to determine whether or not the target dictionary has been
         /// disposed.
         /// </summary>
         public bool IsDisposed { get; protected set; }
+
         #endregion
 
         #region Constructor
@@ -123,7 +123,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// instances allows sharing of the target dictionary data store.</remarks>
         protected TargetDictionary(BuildComponentCore component, XPathNavigator configuration)
         {
-            this.BuildComponent = component;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            this.BuildComponent = component ?? throw new ArgumentNullException(nameof(component));
 
             string id = configuration.GetAttribute("id", String.Empty);
 
@@ -135,7 +138,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if(String.IsNullOrEmpty(filesValue))
                 throw new ArgumentException("Each targets element must have a files attribute " +
-                    "specifying which target files to load.", "configuration");
+                    "specifying which target files to load.", nameof(configuration));
 
             // Determine whether to search recursively
             bool recurse = false;
@@ -143,7 +146,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if(!String.IsNullOrEmpty(recurseValue) && !Boolean.TryParse(recurseValue, out recurse))
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "On the targets " +
-                    "element, recurse='{0}' is not an allowed value.", recurseValue), "configuration");
+                    "element, recurse='{0}' is not an allowed value.", recurseValue), nameof(configuration));
 
             this.Recurse = recurse;
 
@@ -169,10 +172,10 @@ namespace Microsoft.Ddue.Tools.Targets
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "The targets " +
                     "directory '{0}' does not exist.  The configuration is most likely out of date.  Please " +
                     "delete this component from the project, add it back, and reconfigure it.",
-                    this.DirectoryPath), "configuration");
+                    this.DirectoryPath), nameof(configuration));
 
             if(String.IsNullOrWhiteSpace(id))
-                id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCode().ToString("X",
+                id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCodeDeterministic().ToString("X",
                     CultureInfo.InvariantCulture);
 
             this.DictionaryId = id;
@@ -244,11 +247,14 @@ namespace Microsoft.Ddue.Tools.Targets
 
                 try
                 {
-                    XPathDocument document = new XPathDocument(file);
+                    using(var reader = XmlReader.Create(file, new XmlReaderSettings { CloseInput = true }))
+                    {
+                        XPathDocument document = new XPathDocument(reader);
 
-                    // We use the Target.Add() method so that any of its dependencies are added too
-                    foreach(var t in XmlTargetDictionaryUtilities.EnumerateTargets(document.CreateNavigator()))
-                        t.Add(this);
+                        // We use the Target.Add() method so that any of its dependencies are added too
+                        foreach(var t in XmlTargetDictionaryUtilities.EnumerateTargets(document.CreateNavigator()))
+                            t.Add(this);
+                    }
                 }
                 catch(XmlSchemaException e)
                 {
@@ -334,10 +340,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
         /// <inheritdoc />
         /// <value>This always returns false</value>
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <inheritdoc />
         /// <remarks>This method is not implemented</remarks>

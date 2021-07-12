@@ -23,6 +23,7 @@ namespace Sandcastle.Core.CommandLine
         //=====================================================================
 
         private object optionValue;
+
         #endregion
 
         #region Properties
@@ -31,12 +32,12 @@ namespace Sandcastle.Core.CommandLine
         /// <summary>
         /// This read-only property returns the option name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// This read-only property returns the option description
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; }
 
         /// <summary>
         /// This is used to get or set a message to display if the option is missing
@@ -73,10 +74,8 @@ namespace Sandcastle.Core.CommandLine
         /// This read-only property is used to determine whether or not the option value was present on the
         /// command line.
         /// </summary>
-        public virtual bool IsPresent
-        {
-            get { return optionValue != null; }
-        }
+        public virtual bool IsPresent => optionValue != null;
+
         #endregion
 
         #region Constructors
@@ -92,10 +91,10 @@ namespace Sandcastle.Core.CommandLine
         protected BaseOption(string name, string description)
         {
             if(String.IsNullOrEmpty(name))
-                throw new ArgumentException("An option name is required", "name");
+                throw new ArgumentException("An option name is required", nameof(name));
 
             if(!name.ToCharArray().All(c => Char.IsLetter(c) || c == '?'))
-                throw new ArgumentException("Names must consist of letters", "name");
+                throw new ArgumentException("Names must consist of letters", nameof(name));
 
             this.Name = name;
             this.Description = String.IsNullOrEmpty(description) ? "No description" : description;

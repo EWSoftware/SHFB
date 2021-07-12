@@ -8,14 +8,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Xml;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used to conditionally execute a set of components based on an XPath condition
@@ -34,7 +33,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new IfThenComponent(base.BuildAssembler);
+                return new IfThenComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -44,7 +43,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
         private XPathExpression condition;
 
-        private Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
         private IEnumerable<BuildComponentCore> trueBranch = new List<BuildComponentCore>();
         private IEnumerable<BuildComponentCore> falseBranch = new List<BuildComponentCore>();
 
@@ -69,7 +68,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <remarks>This sets a unique group ID for each branch</remarks>
         public override string GroupId
         {
-            get { return base.GroupId; }
+            get => base.GroupId;
             set
             {
                 base.GroupId = value;
@@ -89,6 +88,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             // Get the context namespaces
             XPathNodeIterator contextNodes = configuration.Select("context");
 
@@ -100,12 +102,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XPathNavigator ifNode = configuration.SelectSingleNode("if");
 
             if(ifNode == null)
-                throw new ConfigurationErrorsException("You must specify a condition using the <if> element.");
+                throw new ArgumentException("You must specify a condition using the <if> element.", nameof(configuration));
 
             string conditionXPath = ifNode.GetAttribute("condition", String.Empty);
 
             if(String.IsNullOrEmpty(conditionXPath))
-                throw new ConfigurationErrorsException("You must define a condition attribute on the <if> element");
+                throw new ArgumentException("You must define a condition attribute on the <if> element", nameof(configuration));
 
             condition = XPathExpression.Compile(conditionXPath);
 
@@ -128,6 +130,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             // Set up the test
             CustomContext context = new CustomContext(contextNamespaces);
             context["key"] = key;

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GacApi.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a minimal implementation of the Fusion GAC API based on information found in the Microsoft
 // KB article KB317540.  It provides basic support for enumerating the GAC to provide support for the Sandcastle

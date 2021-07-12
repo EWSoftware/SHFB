@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2015
-// Note    : Copyright 2011-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
 //
@@ -34,6 +33,9 @@ using System.Xml;
 
 using Sandcastle.Core;
 using Sandcastle.Core.PresentationStyle;
+
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 
@@ -48,9 +50,10 @@ namespace SandcastleBuilder.WPF.UserControls
         //=====================================================================
 
         private BindingList<ResourceItem> resourceItems;
-        private SortedDictionary<string, ResourceItem> allItems, sandcastleItems;
+        private readonly SortedDictionary<string, ResourceItem> allItems, sandcastleItems;
         private IEnumerator<ResourceItem> matchEnumerator;
         private string resourceItemFilename;
+
         #endregion
 
         #region Routed events
@@ -103,7 +106,10 @@ namespace SandcastleBuilder.WPF.UserControls
             List<string> syntaxGeneratorFiles = new List<string>();
 
             if(resourceItemsFile == null)
-                throw new ArgumentNullException("resourceItemsFile", "A resource items file name must be specified");
+                throw new ArgumentNullException(nameof(resourceItemsFile));
+
+            if(project == null)
+                throw new ArgumentNullException(nameof(project));
 
             try
             {
@@ -127,7 +133,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     else
                     {
                         MessageBox.Show("Unable to locate the presentation style ID " + project.PresentationStyle,
-                            "Resource Item Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                            Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
@@ -175,7 +181,7 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 System.Diagnostics.Debug.WriteLine(ex);
 
-                MessageBox.Show("Unable to load resource item files: " + ex.Message, "Resource Item Editor",
+                MessageBox.Show("Unable to load resource item files: " + ex.Message, Constants.AppName,
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
@@ -224,7 +230,7 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 System.Diagnostics.Debug.WriteLine(ex);
 
-                MessageBox.Show("Unable to save resource item file: " + ex.Message, "Resource Item Editor",
+                MessageBox.Show("Unable to save resource item file: " + ex.Message, Constants.AppName,
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -283,7 +289,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        void resourceItems_ListChanged(object sender, ListChangedEventArgs e)
+        private void resourceItems_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(e.PropertyDescriptor != null)
                 switch(e.PropertyDescriptor.Name)
@@ -297,9 +303,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
                     case "Value":
                         // Mark the item as overridden if the value changes
-                        var r = lbResourceItems.SelectedItem as ResourceItem;
-
-                        if(r != null)
+                        if(lbResourceItems.SelectedItem is ResourceItem r)
                         {
                             r.SourceFile = resourceItemFilename;
                             r.IsOverridden = true;
@@ -311,7 +315,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 }
 
             if(sender != this)
-                base.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
+                this.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
 
             // Update control state based on the collection content
             lbResourceItems.IsEnabled = txtValue.IsEnabled = (resourceItems != null && resourceItems.Count != 0);
@@ -371,7 +375,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     matchEnumerator = null;
                 }
 
-                MessageBox.Show("No more matches found", "Resource Item Editor", MessageBoxButton.OK,
+                MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
         }
@@ -411,9 +415,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void chkLimitToOverridden_Click(object sender, RoutedEventArgs e)
         {
-            ResourceItem currentItem = lbResourceItems.SelectedItem as ResourceItem;
-
-            if(currentItem != null)
+            if(lbResourceItems.SelectedItem is ResourceItem currentItem)
                 currentItem.IsSelected = false;
 
             resourceItems.ListChanged -= resourceItems_ListChanged;
@@ -444,9 +446,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdUndo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            ResourceItem r = lbResourceItems.SelectedItem as ResourceItem;
-
-            e.CanExecute = (r != null && r.IsOverridden);
+            e.CanExecute = (lbResourceItems.SelectedItem is ResourceItem r && r.IsOverridden);
         }
 
         /// <summary>
@@ -456,13 +456,13 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdUndo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ResourceItem defaultItem, r = lbResourceItems.SelectedItem as ResourceItem;
+            ResourceItem r = lbResourceItems.SelectedItem as ResourceItem;
 
             if(MessageBox.Show("Do you want to revert the resource item '" + r.Id + "' to its default value?",
               Constants.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
               MessageBoxResult.Yes)
             {
-                if(sandcastleItems.TryGetValue(r.Id, out defaultItem))
+                if(sandcastleItems.TryGetValue(r.Id, out ResourceItem defaultItem))
                 {
                     r.SourceFile = defaultItem.SourceFile;
                     r.Value = defaultItem.Value;
@@ -480,7 +480,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdHelp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc");
+            UiUtility.ShowHelpTopic("fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc");
         }
         #endregion
     }

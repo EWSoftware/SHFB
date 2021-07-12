@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Xsl;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This class is used to contain information for an XSLT transformation
@@ -27,8 +27,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private XslCompiledTransform xslt = new XslCompiledTransform();
-        private Dictionary<string, object> arguments = new Dictionary<string, object>();
+        private readonly XslCompiledTransform xslt = new XslCompiledTransform();
+        private readonly Dictionary<string, object> arguments = new Dictionary<string, object>();
 
         #endregion
 
@@ -38,10 +38,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <summary>
         /// This read-only property returns the compiled XSL transformation
         /// </summary>
-        public XslCompiledTransform Xslt
-        {
-            get { return xslt; }
-        }
+        public XslCompiledTransform Xslt => xslt;
 
         /// <summary>
         /// This read-only property returns a dictionary containing the XSL transformation arguments list values
@@ -52,10 +49,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <note type="important">An argument called <c>key</c> is automatically added to the list when each
         /// topic is transformed.  It will contain the current topic's key.</note>
         /// </remarks>
-        public IDictionary<string, object> Arguments
-        {
-            get { return arguments; }
-        }
+        public IDictionary<string, object> Arguments => arguments;
+
         #endregion
 
         #region Constructor

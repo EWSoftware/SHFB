@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GacEnumerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2017
-// Note    : Copyright 2006-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to get a list of assemblies in the GAC
 //
@@ -50,8 +49,6 @@ namespace SandcastleBuilder.Gui.Gac
         {
             get
             {
-                IAssemblyEnum ae;
-                IAssemblyName an;
                 StringBuilder sb;
                 uint chars;
 
@@ -61,10 +58,10 @@ namespace SandcastleBuilder.Gui.Gac
 
                     try
                     {
-                        NativeMethods.CreateAssemblyEnum(out ae, IntPtr.Zero, null, ASM_CACHE_FLAGS.ASM_CACHE_GAC,
-                            IntPtr.Zero);
+                        NativeMethods.CreateAssemblyEnum(out IAssemblyEnum ae, IntPtr.Zero, null,
+                            ASM_CACHE_FLAGS.ASM_CACHE_GAC, IntPtr.Zero);
 
-                        while(ae.GetNextAssembly(IntPtr.Zero, out an, 0) == 0)
+                        while(ae.GetNextAssembly(IntPtr.Zero, out IAssemblyName an, 0) == 0)
                         {
                             chars = 0;
                             an.GetDisplayName(null, ref chars, ASM_DISPLAY_FLAGS.ALL);

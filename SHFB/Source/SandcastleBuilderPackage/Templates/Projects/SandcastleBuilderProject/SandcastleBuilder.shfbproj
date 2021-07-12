@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Import the common properties to support NuGet restore -->
+	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
 	<PropertyGroup>
+		<!-- A framework version is required for NuGet restore.  This can be any valid version -->
+		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+
 		<!-- The configuration and platform will be used to determine which assemblies to include from solution and
 				 project documentation sources -->
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -71,7 +76,7 @@
 	<!-- Uncomment this to use the NuGet packages when SHFB is not installed locally, e.g. in the CI build pipeline.
 			Update the package versions to the latest releases.
 	<ItemGroup>
-		<PackageReference Include="EWSoftware.SHFB" Version="2020.3.6" />
+		<PackageReference Include="EWSoftware.SHFB" Version="2021.4.9" />
 		<PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0" />
 	</ItemGroup>
 	-->

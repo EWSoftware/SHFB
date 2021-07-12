@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MissingTagPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Missing Tags category properties
 //
@@ -63,8 +62,6 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool BindControlValue(string propertyName)
         {
-            MissingTags tags;
-
 #if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
@@ -77,10 +74,12 @@ namespace SandcastleBuilder.Package.PropertyPages
             var projProp = this.CurrentProject.MSBuildProject.GetProperty("MissingTags");
 #endif
             // If not found or not valid, we'll ignore it and use the defaults
-            if(projProp == null || !Enum.TryParse<MissingTags>(projProp.UnevaluatedValue, out tags))
+            if(projProp == null || !Enum.TryParse(projProp.UnevaluatedValue, out MissingTags tags))
+            {
                 tags = MissingTags.Summary | MissingTags.Parameter | MissingTags.TypeParameter |
                     MissingTags.Returns | MissingTags.AutoDocumentCtors | MissingTags.Namespace |
                     MissingTags.AutoDocumentDispose;
+            }
 
             ucMissingTagPropertiesContent.MissingTags = tags;
 

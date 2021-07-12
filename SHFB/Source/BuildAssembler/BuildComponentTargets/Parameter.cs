@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a parameter
@@ -23,12 +23,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the parameter name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// This read-only property returns the parameter type
         /// </summary>
-        public TypeReference ParameterType { get; private set; }
+        public TypeReference ParameterType { get; }
 
         #endregion
 

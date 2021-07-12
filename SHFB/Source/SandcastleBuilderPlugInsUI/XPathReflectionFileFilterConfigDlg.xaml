@@ -1,0 +1,77 @@
+﻿<Window x:Class="SandcastleBuilder.PlugIns.UI.XPathReflectionFileFilterConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" Width="800" Height="500" MinWidth="500" MinHeight="300" ShowInTaskbar="False"
+	Title="Configure XPath Reflection File Filter Plug-In" ResizeMode="CanResizeWithGrip"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=lbXPathQueries}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="3*"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="2*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Label Grid.Row="0" Content="_XPath Queries" Margin="3,0"
+			Target="{Binding ElementName=lbXPathQueries}" />
+		<ListBox Grid.Row="1" Name="lbXPathQueries" Margin="3" SelectionChanged="lbXPathQueries_SelectionChanged">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<TextBlock Grid.Row="0" Text="{Binding Path=Expression}" />
+						<TextBlock Grid.Row="1" Text="{Binding Path=ErrorMessage}"
+							Background="Firebrick" Foreground="White">
+							<TextBlock.Style>
+								<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+									<Style.Triggers>
+										<Trigger Property="TextBlock.Text" Value="">
+											<Setter Property="Visibility" Value="Collapsed"/>
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						</TextBlock>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Name="btnAdd" Margin="3" Padding="3" MinWidth="80" Content="_Add" Click="btnAdd_Click"
+				ToolTip="Add a new XPath query"/>
+			<Button Name="btnDelete" Margin="3" Padding="3" MinWidth="80" Content="_Delete" Click="btnDelete_Click"
+				ToolTip="Delete the selected XPath query" />
+		</StackPanel>
+		<Label Grid.Row="3" Content="_Edit Query Expression" Margin="3,0"
+			Target="{Binding ElementName=txtExpression}" />
+		<TextBox Grid.Row="4" Name="txtExpression" AcceptsReturn="True" Margin="3" TextWrapping="Wrap"
+			VerticalScrollBarVisibility="Visible"
+			Text="{Binding ElementName=lbXPathQueries, Path=SelectedItem.Expression, Mode=TwoWay}"/>
+		<Grid Grid.Row="5" Margin="3,3,3,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+				HorizontalAlignment="Left" ToolTip="Save settings"/>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+			</TextBlock>
+			<Button Grid.Column="2" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+				Click="btnHelp_Click"  ToolTip="View help for this component" />
+			<Button Grid.Column="3" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel"
+        HorizontalAlignment="Right" IsCancel="True" ToolTip="Cancel without saving changes" />
+		</Grid>
+	</Grid>
+</Window>

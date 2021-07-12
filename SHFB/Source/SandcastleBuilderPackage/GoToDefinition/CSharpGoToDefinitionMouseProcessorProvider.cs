@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us) - Based on code originally written by Noah Richards
 // Updated : 06/19/2019
 // Note    : Copyright 2014-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains the class that creates the mouse processor specific to C# code
 //

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/26/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a utility class with extension and utility methods.
 //
@@ -46,13 +45,13 @@ namespace SandcastleBuilder.Package
         //=====================================================================
 
         // This is used to insert spaces for the Image project element alternate text
-        private static Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
+        private static readonly Regex reInsertSpaces = new Regex(@"((?<=[a-z0-9])[A-Z](?=[a-z0-9]))|((?<=[A-Za-z])\d+)");
 
         // Namespace and namespace group IDs are converted to NamespaceDoc and NamespaceGroupDoc type searches.
         // Overloads (O) are treated like member searches.
-        private static char[] cerTypes = new[] { 'N', 'G', 'T', 'F', 'P', 'E', 'M', 'O' };
+        private static readonly char[] cerTypes = new[] { 'N', 'G', 'T', 'F', 'P', 'E', 'M', 'O' };
 
-        private static Dictionary<string, string> cerOperatorToCodeOperator = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> cerOperatorToCodeOperator = new Dictionary<string, string>
         {
             { "op_Addition", "operator +" },
             { "op_BitwiseAnd", "operator &" },
@@ -143,9 +142,7 @@ namespace SandcastleBuilder.Package
         /// <returns>The converted operator as it appears in code or null if not recognized</returns>
         public static string ToCodeOperator(this string internalOperatorName)
         {
-            string name;
-
-            if(!cerOperatorToCodeOperator.TryGetValue(internalOperatorName, out name))
+            if(!cerOperatorToCodeOperator.TryGetValue(internalOperatorName, out string name))
                 name = null;
 
             return name;
@@ -186,18 +183,17 @@ namespace SandcastleBuilder.Package
             ThreadHelper.ThrowIfNotOnUIThread();
 
             Guid clsid = Guid.Empty;
-            int result;
 
             if(message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
-            IVsUIShell uiShell = MsVsShellPackage.GetGlobalService(typeof(SVsUIShell)) as IVsUIShell;
-
-            if(uiShell != null)
+            if(MsVsShellPackage.GetGlobalService(typeof(SVsUIShell)) is IVsUIShell uiShell)
+            {
                 ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(0, ref clsid,
                     Resources.PackageTitle, String.Format(CultureInfo.CurrentCulture, message, parameters),
                     String.Empty, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, icon, 0,
-                    out result));
+                    out _));
+            }
         }
 
         /// <summary>
@@ -208,8 +204,6 @@ namespace SandcastleBuilder.Package
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            IVsWindowFrame frame;
-            var webBrowsingService = MsVsShellPackage.GetGlobalService(typeof(SVsWebBrowsingService)) as IVsWebBrowsingService;
             bool useExternalBrowser = false;
 
             if(String.IsNullOrEmpty(url))
@@ -220,9 +214,9 @@ namespace SandcastleBuilder.Package
             if(options != null)
                 useExternalBrowser = options.UseExternalWebBrowser;
 
-            if(!useExternalBrowser && webBrowsingService != null)
+            if(!useExternalBrowser && MsVsShellPackage.GetGlobalService(typeof(SVsWebBrowsingService)) is IVsWebBrowsingService webBrowsingService)
             {
-                ErrorHandler.ThrowOnFailure(webBrowsingService.Navigate(url, 0, out frame));
+                ErrorHandler.ThrowOnFailure(webBrowsingService.Navigate(url, 0, out IVsWindowFrame frame));
 
                 if(frame != null)
                     frame.Show();

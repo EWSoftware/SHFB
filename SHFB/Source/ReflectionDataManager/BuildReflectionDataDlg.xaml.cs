@@ -2,7 +2,7 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : BuildReflectionDataDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/04/2021
+// Updated : 04/10/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the window class that is used to manage the build settings and build the reflection data
@@ -22,7 +22,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
 
 namespace ReflectionDataManager
@@ -87,9 +86,11 @@ namespace ReflectionDataManager
                     return;
 
                 if(MessageBox.Show("A build is currently taking place.  Do you want to abort it and exit?",
-                  Constants.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                  "Reflection Data Manager", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
                     if(cancellationTokenSource != null)
                         cancellationTokenSource.Cancel();
+                }
 
                 e.Cancel = true;
             }
@@ -104,10 +105,10 @@ namespace ReflectionDataManager
         {
             try
             {
-                btnBuild.IsEnabled = false;
-                pbProgress.Visibility = System.Windows.Visibility.Visible;
-
                 cancellationTokenSource = new CancellationTokenSource();
+
+                btnBuild.IsEnabled = false;
+                pbProgress.Visibility = Visibility.Visible;
 
                 using(var bp = new BuildProcess(dataSet)
                     {
@@ -115,7 +116,7 @@ namespace ReflectionDataManager
                         ProgressProvider = new Progress<string>(this.ReportProgress)
                     })
                 {
-                    await Task.Run(() => bp.Build(), cancellationTokenSource.Token);
+                    await Task.Run(() => bp.Build(), cancellationTokenSource.Token).ConfigureAwait(true);
                 }
             }
             catch(Exception ex)
@@ -128,16 +129,13 @@ namespace ReflectionDataManager
             finally
             {
                 btnBuild.IsEnabled = true;
-                pbProgress.Visibility = System.Windows.Visibility.Hidden;
+                pbProgress.Visibility = Visibility.Hidden;
 
-                if(cancellationTokenSource != null)
-                {
-                    if(cancellationTokenSource.IsCancellationRequested)
-                        this.Close();
+                if(cancellationTokenSource.IsCancellationRequested)
+                    this.Close();
 
-                    cancellationTokenSource.Dispose();
-                    cancellationTokenSource = null;
-                }
+                cancellationTokenSource.Dispose();
+                cancellationTokenSource = null;
             }
         }
         #endregion

@@ -5,6 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:shfb="clr-namespace:SandcastleBuilder.WPF"
 	xmlns:shfbProps="clr-namespace:SandcastleBuilder.WPF.PropertyPages"
+	xmlns:shfbWin="clr-namespace:Sandcastle.Platform.Windows.UserControls;assembly=Sandcastle.Platform.Windows"
 	mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="480"
 	MinWidth="500" MinHeight="480" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	<Grid Margin="3">
@@ -39,12 +40,12 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 			<Label Grid.Row="0" Grid.Column="0" Content="HTML Help 1 compiler path" HorizontalAlignment="Right" />
-			<shfbProps:FolderPathUserControl Grid.Row="0" Grid.Column="1" x:Name="fpHtmlHelp1xCompilerPath"
+			<shfbWin:FolderPathUserControl Grid.Row="0" Grid.Column="1" x:Name="fpHtmlHelp1xCompilerPath"
 				DefaultFolder="ProgramFiles" Title="Select the HTML Help 1 compiler installation location"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="HtmlHelp1xCompilerPath"/>
 			<Label Margin="20,0,0,0" Grid.Row="1" Grid.Column="0" Content="Project-specific components path"
 				HorizontalAlignment="Right" />
-			<shfbProps:FolderPathUserControl Grid.Row="1" Grid.Column="1" x:Name="fpComponentPath"
+			<shfbWin:FolderPathUserControl Grid.Row="1" Grid.Column="1" x:Name="fpComponentPath"
 				DefaultFolder="MyDocuments" Title="Select the folder containing project-specific build components"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="ComponentPath" />
 			<Image Grid.Row="1" Grid.Column="2" Width="12" Margin="4" Source="{x:Static shfb:SharedResources.InformationIcon}"
@@ -67,7 +68,7 @@ for each documented assembly.  Specify the local file system path here, not a UR
 				<RowDefinition />
 				<RowDefinition />
 			</Grid.RowDefinitions>
-			<shfbProps:FolderPathUserControl Grid.Row="0" x:Name="fpSourceCodeBasePath" DefaultFolder="MyDocuments"
+			<shfbWin:FolderPathUserControl Grid.Row="0" x:Name="fpSourceCodeBasePath" DefaultFolder="MyDocuments"
 				Title="Select the base folder containing source code for the documented assemblies" Margin="40,0,30,0"
 				shfbProps:PropertyPageBinding.ProjectPropertyName="SourceCodeBasePath" />
 			<CheckBox Grid.Row="1" Name="chkWarnOnMissingSourceContext" Margin="40,3,30,0"
@@ -94,7 +95,7 @@ for each documented assembly.  Specify the local file system path here, not a UR
 			</Grid.RowDefinitions>
 			<Label Grid.Row="0" Grid.Column="0" Margin="20,0,0,0" Content="Help content output path"
 				HorizontalAlignment="Right" />
-			<shfbProps:FolderPathUserControl Grid.Row="0" Grid.Column="1" x:Name="fpOutputPath"
+			<shfbWin:FolderPathUserControl Grid.Row="0" Grid.Column="1" x:Name="fpOutputPath"
 				DefaultFolder="MyDocuments" ShowFixedPathOption="False" ShowNewFolderButton="True"
 				PersistablePath="Help\" Title="Select the output location for the help file"
 				PersistablePathChanged="fpOutputPath_PersistablePathChanged"
@@ -108,7 +109,7 @@ folder will be erased without warning before copying the new&#10;content to it!"
 			</StackPanel>
 			<Label Margin="20,0,0,0" Grid.Row="1" Grid.Column="0" Content="Working files path"
 				HorizontalAlignment="Right" />
-			<shfbProps:FolderPathUserControl Grid.Row="1" Grid.Column="1" x:Name="fpWorkingPath"
+			<shfbWin:FolderPathUserControl Grid.Row="1" Grid.Column="1" x:Name="fpWorkingPath"
 					DefaultFolder="MyDocuments" ShowNewFolderButton="True" Title="Select the working files location"
 					shfbProps:PropertyPageBinding.ProjectPropertyName="WorkingPath" />
 			<StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">

@@ -1,23 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/07/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // Sandcastle Help File Builder attributes.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/12/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/12/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Reflection;
@@ -25,7 +23,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 // Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]
 
 //
 // General Information about an assembly is controlled through the following
@@ -38,7 +36,7 @@ using System.Runtime.InteropServices;
     "some supporting files.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2008-2012, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2008-2021, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

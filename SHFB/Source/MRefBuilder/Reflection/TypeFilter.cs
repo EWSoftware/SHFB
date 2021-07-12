@@ -14,17 +14,18 @@ using System.Xml;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     public class TypeFilter
     {
         #region Private data members
         //=====================================================================
 
-        private string name;
+        private readonly string name;
         private readonly bool exposed, required;
 
-        private List<MemberFilter> memberFilters;
+        private readonly List<MemberFilter> memberFilters;
+
         #endregion
 
         #region Constructor
@@ -36,6 +37,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="configuration">The XML reader from which to get the configuration</param>
         public TypeFilter(XmlReader configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             if(configuration.NodeType != XmlNodeType.Element || configuration.Name != "type")
                 throw new InvalidOperationException("The configuration element must be named 'type'");
 
@@ -73,6 +77,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <returns>True if the type has exposed members, false if not</returns>
         public bool HasExposedMembers(TypeNode type)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             return type.Members.Any(member => memberFilters.Any(filter => filter.IsExposedMember(member) == true));
         }
 
@@ -88,6 +95,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         public bool? IsRequiredType(TypeNode type)
         {
             bool? typeIsRequired = null;
+
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
 
             // See if the type matches or it's derived from a template and the template name matches
             if(type.DeclaringType == null && (type.Name.Name == name || (type.Template != null &&
@@ -133,6 +143,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             bool? typeIsExposed = null;
 
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             // See if the type matches or it's derived from a template and the template name matches
             if(type.DeclaringType == null && (type.Name.Name == name || (type.Template != null &&
               type.Template.Name.Name == name)))
@@ -172,6 +185,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// false if it is and it is not exposed.</returns>
         public bool? IsExposedMember(Member member)
         {
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             TypeNode type = member.DeclaringType.GetTemplateType();
 
             if(this.IsExposedType(type) != null)

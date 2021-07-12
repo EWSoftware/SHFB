@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2011-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 07/10/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
 // project.
@@ -66,7 +65,7 @@ namespace SandcastleBuilder.Package.Nodes
 
         // The index and the image list for the project node
         private static int imageIndex;
-        private static ImageList imageList = Utilities.GetImageList(
+        private static readonly ImageList imageList = Utilities.GetImageList(
             typeof(SandcastleBuilderProjectNode).Assembly.GetManifestResourceStream(
                 "SandcastleBuilder.Package.Resources.SandcastleBuilderProjectNode.bmp"));
 
@@ -235,8 +234,7 @@ namespace SandcastleBuilder.Package.Nodes
             {
                 ThreadHelper.ThrowIfNotOnUIThread();
 
-                string gui = Path.Combine(Environment.GetEnvironmentVariable("SHFBROOT") ?? String.Empty,
-                    "SandcastleBuilderGUI.exe");
+                string gui = Path.Combine(Sandcastle.Core.ComponentUtilities.ToolsFolder, "SandcastleBuilderGUI.exe");
 
                 if(File.Exists(gui))
                 {
@@ -266,7 +264,7 @@ namespace SandcastleBuilder.Package.Nodes
         {
             ProcessStartInfo psi;
             Utils.FilePath webServerPath = new Utils.FilePath(null);
-            string path, vPath = null, outputPath, defaultPage = "Index.aspx";
+            string path, outputPath, defaultPage = "Index.aspx";
             int serverPort = 12345, uniqueId;
 
             if(this.SandcastleProject == null)
@@ -279,7 +277,7 @@ namespace SandcastleBuilder.Package.Nodes
 
             // Use the project filename's hash code as a unique ID for the website
             uniqueId = this.SandcastleProject.Filename.GetHashCode();
-            vPath = $" /vpath:\"/SHFBOutput_{uniqueId}\"";
+            string vPath = $" /vpath:\"/SHFBOutput_{uniqueId}\"";
 
             // Make sure we start out in the project's output folder
             // in case the output folder is relative to it.
@@ -801,13 +799,8 @@ namespace SandcastleBuilder.Package.Nodes
 #pragma warning restore VSTHRD010
             }
 
-
-            if(!(this.FindChild(ProjectPropertiesContainerNode.PropertiesNodeVirtualName) is
-              ProjectPropertiesContainerNode projProps))
-            {
-                projProps = new ProjectPropertiesContainerNode(this);
-                this.AddChild(projProps);
-            }
+            if(!(this.FindChild(ProjectPropertiesContainerNode.PropertiesNodeVirtualName) is ProjectPropertiesContainerNode))
+                this.AddChild(new ProjectPropertiesContainerNode(this));
 
             if(!(this.FindChild(DocumentationSourcesContainerNode.DocSourcesNodeVirtualName) is
               DocumentationSourcesContainerNode docSources))
@@ -934,10 +927,8 @@ namespace SandcastleBuilder.Package.Nodes
 
             for(int cCount = 0; cCount < cComponents; cCount++)
             {
-                VSCOMPONENTSELECTORDATA selectorData = new VSCOMPONENTSELECTORDATA();
                 IntPtr ptr = rgpcsdComponents[cCount];
-                selectorData = (VSCOMPONENTSELECTORDATA)Marshal.PtrToStructure(ptr, typeof(VSCOMPONENTSELECTORDATA));
-
+                var selectorData = (VSCOMPONENTSELECTORDATA)Marshal.PtrToStructure(ptr, typeof(VSCOMPONENTSELECTORDATA));
                 var node = references.AddReferenceFromSelectorData(selectorData);
 
                 if(node == null)
@@ -973,8 +964,6 @@ namespace SandcastleBuilder.Package.Nodes
         /// <inheritdoc />
         public override int Drop(IOleDataObject pDataObject, uint grfKeyState, uint itemid, ref uint pdwEffect)
         {
-            DropDataType dropDataType = DropDataType.None;
-
             if(pDataObject == null)
                 return VSConstants.E_INVALIDARG;
 
@@ -993,7 +982,7 @@ namespace SandcastleBuilder.Package.Nodes
             targetNode = targetNode.GetDragTargetHandlerNode();
 
 #pragma warning disable VSTHRD010
-            dropDataType = this.HandleSelectionDataObject(pDataObject, targetNode);
+            DropDataType dropDataType = this.HandleSelectionDataObject(pDataObject, targetNode);
 #pragma warning restore VSTHRD010
 
             // Since we can get a mix of files that may not necessarily be moved into the project (i.e.
