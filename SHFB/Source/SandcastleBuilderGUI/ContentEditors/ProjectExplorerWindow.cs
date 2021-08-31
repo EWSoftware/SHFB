@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage the project items and files
@@ -47,6 +47,7 @@ using SandcastleBuilder.Gui.MSBuild;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.WPF.UI;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -297,6 +298,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         default:
                             break;
                     }
+
                     break;
 
                 case BuildAction.CodeSnippets:
@@ -324,6 +326,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                         editor = new TopicEditorWindow(fullName);
                     }
+
                     break;
 
                 case BuildAction.SiteMap:
@@ -346,6 +349,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                         editor = new TopicEditorWindow(fullName);
                     }
+
                     break;
 
                 default:    // No association, the caller may try to launch an external editor
@@ -596,19 +600,28 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <returns>The root reference item node</returns>
         private TreeNode LoadReferences(bool createRoot)
         {
-            TreeNode source, root = null;
+            TreeNode source, referenceRoot = null, packageRoot = null;
             TreeNode[] matches;
 
             if(createRoot)
             {
-                root = new TreeNode("References")
+                referenceRoot = new TreeNode("References")
                 {
                     Tag = new NodeData(BuildAction.ReferenceItem, null),
                     Name = "*References"
                 };
-                root.ImageIndex = root.SelectedImageIndex = (int)NodeIcon.ReferenceFolder;
 
-                tvProjectFiles.Nodes[0].Nodes.Add(root);
+                packageRoot = new TreeNode("Component Packages")
+                {
+                    Tag = new NodeData(BuildAction.PackageReferenceItem, null),
+                    Name = "*PackageReferences"
+                };
+
+                referenceRoot.ImageIndex = referenceRoot.SelectedImageIndex = (int)NodeIcon.ReferenceFolder;
+                packageRoot.ImageIndex = packageRoot.SelectedImageIndex = (int)NodeIcon.NuGetPackageFolder;
+
+                tvProjectFiles.Nodes[0].Nodes.Add(referenceRoot);
+                tvProjectFiles.Nodes[0].Nodes.Add(packageRoot);
 
                 projectReferences = new ReferenceItemCollection(currentProject);
                 projectReferences.ListChanged += referencesAndFiles_ListChanged;
@@ -618,12 +631,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 matches = tvProjectFiles.Nodes[0].Nodes.Find("*References", false);
 
                 if(matches.Length == 1)
-                    root = matches[0];
+                    referenceRoot = matches[0];
+
+                matches = tvProjectFiles.Nodes[0].Nodes.Find("*PackageReferences", false);
+
+                if(matches.Length == 1)
+                    packageRoot = matches[0];
             }
 
-            if(root != null && projectReferences != null)
+            if(referenceRoot != null && projectReferences != null)
             {
-                root.Nodes.Clear();
+                referenceRoot.Nodes.Clear();
 
                 foreach(ReferenceItem refItem in projectReferences.OrderBy(r => r.Reference))
                 {
@@ -633,13 +651,35 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         Tag = new NodeData(BuildAction.ReferenceItem, refItem)
                     };
                     source.ImageIndex = source.SelectedImageIndex = (int)NodeIcon.ReferenceItem;
-                    root.Nodes.Add(source);
+                    referenceRoot.Nodes.Add(source);
                 }
 
-                root.Expand();
+                referenceRoot.Expand();
             }
 
-            return root;
+            // Package references are for display only
+            if(packageRoot != null)
+            {
+                packageRoot.Nodes.Clear();
+
+                foreach(ProjectItem item in currentProject.MSBuildProject.GetItems(PackageReferenceItem.PackageReferenceItemType))
+                {
+                    var pr = new PackageReferenceItem(currentProject, item);
+
+                    source = new TreeNode(pr.Reference)
+                    {
+                        Name = pr.Reference,
+                        Tag = new NodeData(BuildAction.PackageReferenceItem, pr)
+                    };
+
+                    source.ImageIndex = source.SelectedImageIndex = (int)NodeIcon.NuGetPackageFolder;
+                    packageRoot.Nodes.Add(source);
+                }
+
+                packageRoot.Expand();
+            }
+
+            return referenceRoot;
         }
 
         /// <summary>
@@ -1265,6 +1305,20 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 }
             }
         }
+
+        /// <summary>
+        /// Manage NuGet package references in the project
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void miManageNuGetPackages_Click(object sender, EventArgs e)
+        {
+            if(this.Save())
+            {
+                var dlg = new NuGetPackageManagerDlg(currentProject.MSBuildProject);
+                dlg.ShowModalDialog();
+            }
+        }
         #endregion
 
         #region File context menu event handlers
@@ -1288,6 +1342,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     fileItem = (FileItem)nodeData.Item;
             }
 
+            miAddItem.Enabled = (nodeData != null && nodeData.BuildAction != BuildAction.PackageReferenceItem);
+            miManageNuGetPackagesProject.Visible = (nodeData != null &&
+                (nodeData.BuildAction == BuildAction.Project || nodeData.BuildAction == BuildAction.PackageReferenceItem));
             miOpen.Visible = miOpenSeparator.Visible = (nodeData != null &&
                 nodeData.BuildAction < BuildAction.Folder);
             miOpenWithTextEditor.Visible = miOpenWithSeparator.Visible = (nodeData != null &&

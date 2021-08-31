@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using System.Xml.XPath;
+using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
 
@@ -20,11 +18,6 @@ namespace $safeprojectname$
     /// plug-in.  Set the additional attribute values as needed:
     ///
     /// <list type="bullet">
-    ///     <item>
-    ///         <term>IsConfigurable</term>
-    ///         <description>Set this to true if your plug-in contains configurable settings.  The
-    /// <c>ConfigurePlugIn</c> method will be called to let the user change the settings.</description>
-    ///     </item>
     ///     <item>
     ///         <term>RunsInPartialBuild</term>
     ///         <description>Set this to true if your plug-in should run in partial builds used to generate
@@ -45,6 +38,7 @@ namespace $safeprojectname$
         private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
+
         #endregion
 
         #region IPlugIn implementation
@@ -71,29 +65,11 @@ namespace $safeprojectname$
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            // TODO: Add and invoke a configuration dialog if you need one.  You will also need to set the
-            // IsConfigurable property to true on the class's export attribute.
-            MessageBox.Show("This plug-in has no configurable settings", "Build Process Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 

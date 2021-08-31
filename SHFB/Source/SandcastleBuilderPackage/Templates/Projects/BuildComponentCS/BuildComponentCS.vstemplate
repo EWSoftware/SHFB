@@ -5,7 +5,6 @@
 		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="209" />
 		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
 		<ProjectType>CSharp</ProjectType>
-		<RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
 		<CreateNewFolder>true</CreateNewFolder>
 		<DefaultName>BuildComponent</DefaultName>
 		<SortOrder>1010</SortOrder>
@@ -15,12 +14,18 @@
 		<PlatformTag>windows</PlatformTag>
 		<ProjectTypeTag>Build Component</ProjectTypeTag>
 		<ProjectTypeTag>Documentation</ProjectTypeTag>
+		<CreateInPlace>true</CreateInPlace>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="BuildComponent.csproj" ReplaceParameters="true">
-			<ProjectItem TargetFileName="$projectname$Component.cs" ReplaceParameters="true" OpenInEditor="true">BuildComponent.cs</ProjectItem>
+			<ProjectItem TargetFileName="$safeprojectname$Component.cs" ReplaceParameters="true" OpenInEditor="true">BuildComponent.cs</ProjectItem>
+			<ProjectItem TargetFileName="GlobalSuppressions.cs" ReplaceParameters="true">GlobalSuppressions.cs</ProjectItem>
+			<Folder Name="build" TargetFolderName="build">
+				<ProjectItem TargetFileName="$safeprojectname$.props">BuildComponent.props</ProjectItem>
+			</Folder>
 			<Folder Name="Properties" TargetFolderName="Properties">
 				<ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+				<ProjectItem TargetFileName="launchSettings.json" ReplaceParameters="true">launchSettings.json</ProjectItem>
 			</Folder>
 		</Project>
 	</TemplateContent>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -582,8 +582,7 @@ namespace SandcastleBuilder.WPF.UserControls
             string lastSolution = null;
 
             // Index the framework comments based on the framework version in the project
-            var reflectionDataDictionary = new ReflectionDataSetDictionary(new[] { currentProject.ComponentPath,
-                    Path.GetDirectoryName(currentProject.Filename) });
+            var reflectionDataDictionary = new ReflectionDataSetDictionary(currentProject.ComponentSearchPaths);
             var frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(
                 currentProject.FrameworkVersion, true);
 

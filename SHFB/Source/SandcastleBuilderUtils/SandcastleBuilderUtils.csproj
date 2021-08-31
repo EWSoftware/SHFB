@@ -16,6 +16,20 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>SandcastleBuilder.Utils</AssemblyName>
 		<RootNamespace>SandcastleBuilder.Utils</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>EWSoftware.SandcastleBuilder.Utils</PackageId>
+		<Title>Sandcastle Help File Builder Utilities</Title>
+		<!-- This should match the strong name version in AssemblyInfoShared.cs -->
+		<Version>2021.7.11.0</Version>
+		<Authors>Eric Woodruff</Authors>
+		<Description>This contains the project, build engine, and Managed Extensibility Framework (MEF) classes used by the Sandcastle Help File Builder tool set and third-party tools.</Description>
+		<PackageIconUrl>https://github.com/EWSoftware/SHFB/raw/master/SHFB/Source/SandcastleLogo.png</PackageIconUrl>
+		<PackageIcon>SandcastleLogo.png</PackageIcon>
+		<RepositoryUrl>https://github.com/EWSoftware/SHFB</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>SHFB sandcastle help file builder utilities</PackageTags>
+		<PackageProjectUrl>https://github.com/EWSoftware/SHFB</PackageProjectUrl>
+		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -46,6 +60,7 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
+		<None Include="..\SandcastleLogo.png" Link="SandcastleLogo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>

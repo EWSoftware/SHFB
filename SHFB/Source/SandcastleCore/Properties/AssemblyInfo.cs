@@ -21,7 +21,5 @@ using System.Reflection;
 
 // General assembly information
 [assembly: AssemblyTitle("Sandcastle Tools Core Class Library")]
-[assembly: AssemblyDescription("This contains a set of core base classes and Managed Extensibility Framework " +
-    "(MEF) classes common to the other projects in the tool set.")]
 
 [assembly: CLSCompliant(true)]

@@ -1,7 +1,5 @@
-using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -28,13 +26,11 @@ namespace $safeprojectname$
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        /// <remarks>TODO: If not configurable, remove the <c>IsConfigurable</c> property or set it to false.
-        /// The <c>IsVisible</c> property is typically set to true so that the component can be exposed in
-        /// configuration tools such as the Sandcastle Help File Builder.  If set to false, the component will
-        /// be hidden but can be used if referenced in a configuration file or as a dependency.</remarks>
-        [BuildComponentExport("$safeprojectname$", IsVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-          Description = "$safeprojectname$ build component")]
+        /// <remarks>TODO: The <c>IsVisible</c> property is typically set to true so that the component can be
+        /// exposed in configuration tools such as the Sandcastle Help File Builder.  If set to false, the
+        /// component will be hidden but can be used if referenced in a configuration file or as a dependency.</remarks>
+        [BuildComponentExport("$safeprojectname$", IsVisible = true, Version = AssemblyInfo.ProductVersion,
+          Copyright = AssemblyInfo.Copyright, Description = "$safeprojectname$ build component")]
         public sealed class Factory : BuildComponentFactory
         {
             /// <summary>
@@ -46,43 +42,25 @@ namespace $safeprojectname$
                 // component into build configurations in projects to which it is added.
 
                 // TODO: Set placement for reference builds or remove if not used in reference builds
-                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                this.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
                     "XSL Transform Component");
 
                 // TODO: Set placement for conceptual builds or remove if not used in conceptual builds
-                base.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                this.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
                     "XSL Transform Component");
             }
 
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new $safeprojectname$Component(base.BuildAssembler);
+                return new $safeprojectname$Component(this.BuildAssembler);
             }
 
             /// <inheritdoc />
-            public override string DefaultConfiguration
-            {
-                get
-                {
-                    return @"<!-- TODO: Define your build component's default configuration here -->
+            public override string DefaultConfiguration => @"<!-- TODO: Define your build component's default configuration here -->
 <itemOne value=""Test #1"" />
 <itemTwo value=""Test #2"" />";
-                }
-            }
 
-            /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
-            {
-                // TODO: If your component is configurable, add a configuration dialog box and invoke it here
-                // to edit the given configuration XML fragment.  If not configurable, you may remove this
-                // method and the IsConfigurable property in the BuildComponentExport attribute above.
-                // If IsConfigurable is true and this method is not overridden to provide a custom editor, a
-                // default editor is used instead.
-                MessageBox.Show("TODO: Implement this method if necessary or remove it");
-
-                return currentConfiguration;
-            }
         }
         #endregion
 
@@ -110,10 +88,10 @@ namespace $safeprojectname$
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    $safeprojectname$ Component.  {2}",
+            this.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    $safeprojectname$ Component.  {2}",
                 fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright);
 
-            // TODO: Add your build component configuration code here
+            // TODO: Add your build component initialization code here
         }
 
         /// <summary>
@@ -125,7 +103,7 @@ namespace $safeprojectname$
         {
             // TODO: Add your document modification code here.
 
-            base.WriteMessage(MessageLevel.Diagnostic, "In $safeprojectname$Component Apply() method");
+            this.WriteMessage(MessageLevel.Diagnostic, "In $safeprojectname$Component Apply() method");
         }
         #endregion
     }

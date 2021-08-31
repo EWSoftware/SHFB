@@ -23,11 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SandcastleTools.ruleset = SandcastleTools.ruleset
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6A4013B3-FA87-443B-B692-F40FBF72EFFE}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastlePlatformWindows", "SandcastlePlatformWindows\SandcastlePlatformWindows.csproj", "{3464677B-467D-4A35-BAF4-543FB5FA9D66}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandcastleBuilderWPF", "SandcastleBuilderWPF\SandcastleBuilderWPF.csproj", "{1E9BE929-4CBA-4668-A141-0BBDB0AC9F0F}"

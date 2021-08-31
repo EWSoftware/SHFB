@@ -187,8 +187,9 @@ namespace Microsoft.VisualStudio.Project
             PFX = 50,
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SNK")]
             SNK = 51,
+            NuGet = 52,
 
-            ImageLast = 51
+            ImageLast = 52
         }
 
         /// <summary>
@@ -3787,6 +3788,7 @@ namespace Microsoft.VisualStudio.Project
             {
                 // Process References
                 ReferenceContainerNode referencesFolder = CreateReferenceContainerNode();
+
                 if (null == referencesFolder)
                 {
                     // This project type does not support references or there is a problem
@@ -3794,11 +3796,12 @@ namespace Microsoft.VisualStudio.Project
                     // In both cases there is no point to try to process references, so exit.
                     return;
                 }
+
                 this.AddChild(referencesFolder);
                 container = referencesFolder;
             }
 
-            // Load the referernces.
+            // Load the references.
             container.LoadReferencesFromBuildProject(buildProject);
         }
 

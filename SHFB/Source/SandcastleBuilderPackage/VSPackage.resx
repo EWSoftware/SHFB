@@ -358,19 +358,19 @@ https://GitHub.com/EWSoftware/SHFB</value>
     <value>BuildAssembler Build Component C#</value>
   </data>
   <data name="209" xml:space="preserve">
-    <value>Create a build component for use with BuildAssembler using C#</value>
+    <value>Create a build component for use with the Sandcastle BuildAssembler using C#</value>
   </data>
   <data name="210" xml:space="preserve">
     <value>Build Assembler Syntax Generator C#</value>
   </data>
   <data name="211" xml:space="preserve">
-    <value>Create a syntax generator for use with the SyntaxComponent in BuildAssembler in C#</value>
+    <value>Create a syntax generator for use with the SyntaxComponent in the Sandcastle BuildAssembler in C#</value>
   </data>
   <data name="212" xml:space="preserve">
     <value>BuildAssembler Build Component Visual Basic</value>
   </data>
   <data name="213" xml:space="preserve">
-    <value>Create a build component for use with BuildAssembler using Visual Basic</value>
+    <value>Create a build component for use with the Sandcastle BuildAssembler using Visual Basic</value>
   </data>
   <data name="214" xml:space="preserve">
     <value>Sandcastle Help File Builder Plug-In Visual Basic</value>
@@ -388,7 +388,19 @@ https://GitHub.com/EWSoftware/SHFB</value>
     <value>Build Assembler Syntax Generator Visual Basic</value>
   </data>
   <data name="219" xml:space="preserve">
-    <value>Create a syntax generator for use with the SyntaxComponent in BuildAssembler in Visual Basic</value>
+    <value>Create a syntax generator for use with the SyntaxComponent in the Sandcastle BuildAssembler in Visual Basic</value>
+  </data>
+  <data name="220" xml:space="preserve">
+    <value>Build Component/Plug-In Configuration Editor C#</value>
+  </data>
+  <data name="221" xml:space="preserve">
+    <value>Create a configuration editor form for a Sandcastle Help File Builder build component or plug-in</value>
+  </data>
+  <data name="222" xml:space="preserve">
+    <value>Build Component/Plug-In Configuration Editor Visual Basic</value>
+  </data>
+  <data name="223" xml:space="preserve">
+    <value>Create a configuration editor form for a Sandcastle Help File Builder build component or plug-in</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

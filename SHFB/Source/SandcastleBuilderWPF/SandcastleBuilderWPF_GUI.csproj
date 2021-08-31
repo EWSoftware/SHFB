@@ -54,6 +54,7 @@
 		<PackageReference Include="Microsoft.Build" Version="15.1.548">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
+		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 		<Reference Include="PresentationFramework.Aero">
 			<Private>False</Private>
 		</Reference>
@@ -67,13 +68,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Remove="binGUI\**" />
 		<Compile Remove="binVSP\**" />
+		<EmbeddedResource Remove="binGUI\**" />
 		<EmbeddedResource Remove="binVSP\**" />
+		<None Remove="binGUI\**" />
 		<None Remove="binVSP\**" />
+		<Page Remove="binGUI\**" />
 		<Page Remove="binVSP\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Remove="Theme\TeamFoundationColors.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="NuGet\" />
 	</ItemGroup>
 </Project>

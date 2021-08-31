@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/22/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -596,6 +596,32 @@ namespace SandcastleBuilder.Utils
                     value = new FolderPath(this);
 
                 workingPath = value;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of folders to search for additional build
+        /// components, plug-ins, presentation styles, and syntax generators.
+        /// </summary>
+        public IEnumerable<string> ComponentSearchPaths
+        {
+            get
+            {
+                // Components from NuGet packages should have set a SHFBComponentPath item so that we can find
+                // them.  These are always searched first.
+                foreach(var cp in msBuildProject.GetItems("SHFBComponentPath"))
+                    yield return cp.EvaluatedInclude;
+
+                // Components in the component path will override those if duplicates are found.  Only return it
+                // if it isn't the project path.
+                string projectPath = Path.GetDirectoryName(msBuildProject.FullPath);
+
+                if(!String.IsNullOrWhiteSpace(componentPath) && !projectPath.Equals(componentPath, StringComparison.OrdinalIgnoreCase))
+                    yield return componentPath;
+                    
+                // And finally, components in the current project path will override all of the above if
+                // duplicates are found.
+                yield return projectPath;
             }
         }
         #endregion

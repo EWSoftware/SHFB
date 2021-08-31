@@ -5,7 +5,6 @@
 		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="217" />
 		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
 		<ProjectType>VisualBasic</ProjectType>
-		<RequiredFrameworkVersion>4.5</RequiredFrameworkVersion>
 		<CreateNewFolder>true</CreateNewFolder>
 		<DefaultName>NewStyle</DefaultName>
 		<SortOrder>1030</SortOrder>
@@ -15,12 +14,17 @@
 		<PlatformTag>windows</PlatformTag>
 		<ProjectTypeTag>Presentation Style</ProjectTypeTag>
 		<ProjectTypeTag>Documentation</ProjectTypeTag>
+		<CreateInPlace>true</CreateInPlace>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="PresentationStyle.vbproj" ReplaceParameters="true">
 			<ProjectItem TargetFileName="$projectname$PresentationStyle.vb" ReplaceParameters="true" OpenInEditor="true">PresentationStyle.vb</ProjectItem>
+			<Folder Name="build" TargetFolderName="build">
+				<ProjectItem TargetFileName="$safeprojectname$.props">PresentationStyle.props</ProjectItem>
+			</Folder>
 			<Folder Name="My Project" TargetFolderName="My Project">
 				<ProjectItem TargetFileName="AssemblyInfo.vb" ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
+				<ProjectItem TargetFileName="launchSettings.json" ReplaceParameters="true">launchSettings.json</ProjectItem>
 			</Folder>
 			<Folder Name="Configuration" TargetFolderName="Configuration" />
 			<Folder Name="Content" TargetFolderName="Content" />

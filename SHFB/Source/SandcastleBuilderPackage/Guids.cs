@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : Guids.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 08/07/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains various GUIDs for the package
@@ -53,5 +53,8 @@ namespace SandcastleBuilder.Package
 
         /// <summary>Token editor factory GUID string</summary>
         public const string guidTokenEditorFactoryString = "D481FB70-9BF0-4868-9D4C-5DB33C6565E1";
+
+        /// <summary>NuGet package manager command set GUID</summary>
+        public static readonly Guid guidNuGetPackageManagerCmdSet = new Guid("25fd982b-8cae-4cbd-a440-e03ffccde106");
     };
 }

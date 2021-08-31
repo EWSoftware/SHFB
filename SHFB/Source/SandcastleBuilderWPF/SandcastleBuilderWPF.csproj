@@ -52,18 +52,19 @@
 		<PackageReference Include="Microsoft.Build" Version="15.1.548">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Shell.14.0" Version="14.3.25407">
+		<PackageReference Include="Microsoft.VisualStudio.Shell.14.0" Version="14.3.25407">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Shell.Immutable.14.0" Version="14.3.25407">
+		<PackageReference Include="Microsoft.VisualStudio.Shell.Immutable.14.0" Version="14.3.25407">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
+		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 		<Reference Include="PresentationFramework.Aero">
-            <Private>False</Private>
-        </Reference>
+			<Private>False</Private>
+		</Reference>
 		<Reference Include="PresentationFramework.Luna">
-            <Private>False</Private>
-        </Reference>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,9 +72,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="binGUI\**" />
-	  <EmbeddedResource Remove="binGUI\**" />
-	  <None Remove="binGUI\**" />
-	  <Page Remove="binGUI\**" />
+		<Compile Remove="binGUI\**" />
+		<Compile Remove="binVSP\**" />
+		<EmbeddedResource Remove="binGUI\**" />
+		<EmbeddedResource Remove="binVSP\**" />
+		<None Remove="binGUI\**" />
+		<None Remove="binVSP\**" />
+		<Page Remove="binGUI\**" />
+		<Page Remove="binVSP\**" />
 	</ItemGroup>
 </Project>

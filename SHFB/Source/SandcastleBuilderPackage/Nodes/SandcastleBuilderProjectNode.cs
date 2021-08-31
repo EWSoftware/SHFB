@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/10/2021
+// Updated : 08/21/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
@@ -44,9 +44,13 @@ using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
 using VsMenus = Microsoft.VisualStudio.Project.VsMenus;
 
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Package.PropertyPages;
+
+using SandcastleBuilder.WPF.UI;
 
 using SandcastleProject = SandcastleBuilder.Utils.SandcastleProject;
 using SandcastleBuildAction = SandcastleBuilder.Utils.BuildAction;
@@ -663,6 +667,24 @@ namespace SandcastleBuilder.Package.Nodes
             return new SandcastleBuilderReferenceContainerNode(this);
         }
 
+        /// <inheritdoc />
+        /// <remarks>This is overridden to add an extra child node for component packages</remarks>
+        protected internal override void ProcessReferences()
+        {
+            base.ProcessReferences();
+
+            if(!(this.FindChild(SandcastleBuilderComponentPackagesContainerNode.ComponentPackagesNodeVirtualName) is
+              SandcastleBuilderComponentPackagesContainerNode container))
+            {
+                container = new SandcastleBuilderComponentPackagesContainerNode(this);
+
+                this.AddChild(container);
+            }
+
+            // Load the component package info
+            container.LoadComponentPackagesFromBuildProject();
+        }
+
         /// <summary>
         /// This returns the automation object for the project
         /// </summary>
@@ -708,6 +730,16 @@ namespace SandcastleBuilder.Package.Nodes
                 Resources.ShfbProjectFileAssemblyFilter, "\0", "\0");
 
             return VSConstants.S_OK;
+        }
+
+        /// <inheritdoc />
+        /// <remarks>This is overridden to handle project capability checking for NuGet support</remarks>
+        public override object GetProperty(int propId)
+        {
+            if((__VSHPROPID8)propId == __VSHPROPID8.VSHPROPID_ProjectCapabilitiesChecker)
+                return new VsProjectCapabilitiesPresenceChecker();
+
+            return base.GetProperty(propId);
         }
 
         /// <summary>
@@ -856,6 +888,7 @@ namespace SandcastleBuilder.Package.Nodes
         {
 #pragma warning disable VSTHRD010
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet)
+            {
                 switch(cmd)
                 {
                     case PkgCmdIDList.OpenInStandaloneGUI:
@@ -869,6 +902,16 @@ namespace SandcastleBuilder.Package.Nodes
                     default:
                         break;
                 }
+            }
+
+            // Handle adding package references ourselves as Visual Studio doesn't currently support them in
+            // third-party project systems.
+            if(cmdGroup == GuidList.guidNuGetPackageManagerCmdSet && cmd == PkgCmdIDList.ManageNuGetPackages)
+            {
+                var dlg = new NuGetPackageManagerDlg(this.BuildProject);
+                dlg.ShowModalDialog();
+                return VSConstants.S_OK;
+            }
 #pragma warning restore VSTHRD010
 
             return base.ExecCommandOnNode(cmdGroup, cmd, nCmdexecopt, pvaIn, pvaOut);

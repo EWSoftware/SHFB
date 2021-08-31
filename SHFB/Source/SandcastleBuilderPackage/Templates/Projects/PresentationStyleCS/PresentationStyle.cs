@@ -14,7 +14,6 @@
 // Ignore Spelling: cpp fs
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 using Sandcastle.Core;
@@ -37,23 +36,20 @@ namespace $safeprojectname$
     public sealed class $safeprojectname$PresentationStyle : PresentationStyleSettings
     {
         /// <inheritdoc />
-        public override string Location
-        {
-            get { return ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()); }
-        }
+        public override string Location => ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly());
 
         /// <summary>
         /// Constructor
         /// </summary>
         public $safeprojectname$PresentationStyle()
         {
+            // TODO: Adjust these properties as needed
+
             // The base path of the presentation style files relative to the assembly's location.  If your
             // assembly will reside in the same folder as the presentation style content, you can remove this
             // property setting.  If adding multiple presentation styles to the assembly, set this to the name
             // of the subfolder that contains the presentation style content folders.
             this.BasePath = "$safeprojectname$";
-
-            // TODO: Adjust the rest of these properties as needed.
 
             this.SupportedFormats = HelpFileFormats.HtmlHelp1 | HelpFileFormats.MSHelpViewer |
                 HelpFileFormats.Website;
@@ -64,15 +60,8 @@ namespace $safeprojectname$
             this.ResourceItemsPath = "Content";
             this.ToolResourceItemsPath = "SHFBContent";
 
-            this.DocumentModelTransformation = new TransformationFile(
-                @"%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", new Dictionary<string, string>
-                {
-                    { "IncludeAllMembersTopic", "false" },
-                    { "project", "{@ProjectNodeIDOptional}" }
-                });
-
-            this.IntermediateTocTransformation = new TransformationFile(
-                @"%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl");
+            this.DocumentModelApplicator = new StandardDocumentModel();
+            this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
 
             this.BuildAssemblerConfiguration = @"Configuration\BuildAssembler.config";
 

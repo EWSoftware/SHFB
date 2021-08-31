@@ -2,16 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 		<id>EWSoftware.SHFB.NETFramework</id>
-		<version>4.8</version>
-		<title>Sandcastle Help File Builder .NETFramework/.NETCore/.NETStandard Reflection Data Set</title>
+		<version>4.8.0.1</version>
+		<title>Sandcastle Help File Builder .NET Framework Reflection Data Set</title>
 		<authors>Eric Woodruff</authors>
 		<owners>Eric Woodruff</owners>
-		<license type="expression">MS-PL</license>
-		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
-		<icon>SHFB.png</icon>
-		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>This package contains the .NETFramework/.NETCore/.NETStandard reflection information data set for use with the EWSoftware.SHFB package.</description>
+		<license type="expression">MS-PL</license>
+		<licenseUrl>https://licenses.nuget.org/MS-PL</licenseUrl>
+		<icon>SHFB.png</icon>
+		<projectUrl>https://github.com/EWSoftware/SHFB</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/EWSoftware/SHFB/master/NuGet/SHFB.png</iconUrl>
+		<description>This package contains the .NET Framework reflection information data set for use with the EWSoftware.SHFB package.</description>
 		<copyright>Eric Woodruff (c) 2006-2021</copyright>
 		<tags>SHFB sandcastle reflection information data set</tags>
 		<!-- A dependency on the EWSoftware.SHFB package would be good to have but unfortunately, adding one

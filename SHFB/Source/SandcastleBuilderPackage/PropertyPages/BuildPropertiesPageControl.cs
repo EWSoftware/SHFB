@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
+// Updated : 08/24/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
@@ -25,7 +25,6 @@
 //===============================================================================================================
 
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 using Microsoft.Build.Evaluation;
@@ -134,7 +133,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(propertyName == "SyntaxFilters")
             {
                 ucBuildPropertiesPageContent.LoadBuildFormatInfo(currentProject.Filename,
-                    new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                    currentProject.ComponentSearchPaths);
 
                 return true;
             }

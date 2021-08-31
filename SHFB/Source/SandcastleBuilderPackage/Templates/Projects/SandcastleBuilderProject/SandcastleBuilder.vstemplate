@@ -10,6 +10,7 @@
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<PlatformTag>windows</PlatformTag>
 		<ProjectTypeTag>Documentation</ProjectTypeTag>
+		<CreateInPlace>true</CreateInPlace>
 	</TemplateData>
 	<TemplateContent>
 		<Project File="SandcastleBuilder.shfbproj" ReplaceParameters="true">

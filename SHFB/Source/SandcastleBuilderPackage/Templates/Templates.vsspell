@@ -13,9 +13,9 @@
   <IgnoredWordsFile></IgnoredWordsFile>
   <IgnoredWords>
     <Ignore>ness</Ignore>
-    <Ignore>plugin</Ignore>
-    <Ignore>registeredorganization</Ignore>
-    <Ignore>xyz</Ignore>
     <Ignore>pdbonly</Ignore>
+    <Ignore>plugin</Ignore>
+    <Ignore>xyz</Ignore>
+    <Ignore>username</Ignore>
   </IgnoredWords>
 </SpellCheckerConfiguration>

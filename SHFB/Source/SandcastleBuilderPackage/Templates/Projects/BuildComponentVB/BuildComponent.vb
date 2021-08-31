@@ -1,7 +1,5 @@
-Imports System.ComponentModel.Composition.Hosting
 Imports System.Diagnostics
 Imports System.Reflection
-Imports System.Windows.Forms
 Imports System.Xml
 Imports System.Xml.XPath
 
@@ -29,13 +27,11 @@ Namespace $safeprojectname$
         ''' <summary>
         ''' This is used to create a new instance of the build component
         ''' </summary>
-        ''' <remarks>TODO: If not configurable, remove the <c>IsConfigurable</c> property or set it to false.
-        ''' The <c>IsVisible</c> property is typically set to true so that the component can be exposed in
-        ''' configuration tools such as the Sandcastle Help File Builder.  If set to false, the component will
+        ''' <remarks>The <c>IsVisible</c> property is typically set to true so that the component can be exposed
+        ''' in configuration tools such as the Sandcastle Help File Builder.  If set to false, the component will
         ''' be hidden but can be used if referenced in a configuration file or as a dependency.</remarks>
-        <BuildComponentExport("$safeprojectname$", IsVisible := true, IsConfigurable := true,
-          Version := AssemblyInfo.ProductVersion, Copyright := AssemblyInfo.Copyright,
-          Description := "$safeprojectname$ build component")>
+        <BuildComponentExport("$safeprojectname$", IsVisible := true, Version := AssemblyInfo.ProductVersion,
+          Copyright := AssemblyInfo.Copyright, Description := "$safeprojectname$ build component")>
         Public NotInheritable Class Factory
             Inherits BuildComponentFactory
 
@@ -47,17 +43,17 @@ Namespace $safeprojectname$
                 ' component into build configurations in projects to which it is added.
 
                 ' TODO: Set placement for reference builds or remove if not used in reference builds
-                MyBase.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                Me.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
                     "XSL Transform Component")
 
                 ' TODO: Set placement for conceptual builds or remove if not used in conceptual builds
-                MyBase.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                Me.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
                     "XSL Transform Component")
             End Sub
 
             ''' <inheritdoc />
             Public Overrides Function Create() As BuildComponentCore
-                Return New $safeprojectname$Component(MyBase.BuildAssembler)
+                Return New $safeprojectname$Component(Me.BuildAssembler)
             End Function
 
             ''' <inheritdoc />
@@ -68,20 +64,6 @@ Namespace $safeprojectname$
 "<itemTwo value=""Test #2"" />"
                 End Get
             End Property
-
-            ''' <inheritdoc />
-            Public Overrides Function ConfigureComponent(currentConfiguration As String,
-                container As CompositionContainer) As String
-
-                ' TODO: If your component is configurable, add a configuration dialog box and invoke it here
-                ' to edit the given configuration XML fragment.  If not configurable, you may remove this
-                ' method and the IsConfigurable property in the BuildComponentExport attribute above.
-                ' If IsConfigurable is true and this method is not overridden to provide a custom editor, a
-                ' default editor is used instead.
-                MessageBox.Show("TODO: Implement this method if necessary or remove it")
-
-                Return currentConfiguration
-            End Function
         End Class
 
         #End Region
@@ -110,7 +92,7 @@ Namespace $safeprojectname$
             Dim asm As Assembly = Assembly.GetExecutingAssembly()
             Dim fvi As FileVersionInfo = FileVersionInfo.GetVersionInfo(asm.Location)
 
-            MyBase.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    $safeprojectname$ Component.  {2}",
+            Me.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    $safeprojectname$ Component.  {2}",
                 fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright)
 
             ' TODO: Add your build component configuration code here
@@ -124,7 +106,7 @@ Namespace $safeprojectname$
         Public Overrides Sub Apply(document As XmlDocument, key As String)
             ' TODO: Add your document modification code here.
 
-            MyBase.WriteMessage(MessageLevel.Diagnostic, "In $safeprojectname$Component Apply() method")
+            Me.WriteMessage(MessageLevel.Diagnostic, "In $safeprojectname$Component Apply() method")
         End Sub
 
         #End Region

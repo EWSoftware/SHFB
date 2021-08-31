@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
+// Updated : 08/22/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -451,18 +451,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         [SubstitutionTag]
         private string ComponentLocations()
         {
-            string locations;
-
-            if(String.IsNullOrWhiteSpace(sandcastleProject.ComponentPath))
-                locations = String.Empty;
-            else
-                locations = String.Format(CultureInfo.InvariantCulture, "<location folder=\"{0}\" />\r\n",
-                    WebUtility.HtmlEncode(sandcastleProject.ComponentPath));
-
-            locations += String.Format(CultureInfo.InvariantCulture, "<location folder=\"{0}\" />",
-                WebUtility.HtmlEncode(Path.GetDirectoryName(sandcastleProject.Filename)));
-
-            return locations;
+            return String.Join("\r\n", sandcastleProject.ComponentSearchPaths.Select(p => $"<location folder=\"{p}\" />"));
         }
 
         /// <summary>

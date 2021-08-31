@@ -13,7 +13,6 @@
 ' Ignore Spelling: cpp fs
 
 Imports System
-Imports System.Collections.Generic
 Imports System.Reflection
 
 Imports Sandcastle.Core
@@ -47,13 +46,13 @@ Namespace $safeprojectname$
         ''' Constructor
         ''' </summary>
         Public Sub New()
+            ' TODO: Adjust these properties as needed
+
             ' The base path of the presentation style files relative to the assembly's location.  If your
             ' assembly will reside in the same folder as the presentation style content, you can remove this
             ' property setting.  If adding multiple presentation styles to the assembly, set this to the name
             ' of the subfolder that contains the presentation style content folders.
             Me.BasePath = "$safeprojectname$"
-
-            ' TODO: Adjust the rest of these properties as needed.
 
             Me.SupportedFormats = HelpFileFormats.HtmlHelp1 Or HelpFileFormats.MSHelpViewer Or
                 HelpFileFormats.Website
@@ -65,15 +64,8 @@ Namespace $safeprojectname$
             Me.ResourceItemsPath = "Content"
             Me.ToolResourceItemsPath = "SHFBContent"
 
-            Me.DocumentModelTransformation = New TransformationFile(
-                "%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", New Dictionary(Of String, String) From
-                {
-                    { "IncludeAllMembersTopic", "false" },
-                    { "project", "{@ProjectNodeIDOptional}" }
-                })
-
-            Me.IntermediateTocTransformation = New TransformationFile(
-                "%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl")
+            Me.DocumentModelApplicator = New StandardDocumentModel()
+            Me.ApiTableOfContentsGenerator = New StandardApiTocGenerator()
 
             Me.BuildAssemblerConfiguration = "Configuration\BuildAssembler.config"
 

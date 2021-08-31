@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PkgCmdID.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
+// Updated : 08/07/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains various command IDs for the package
 //
@@ -50,5 +50,8 @@ namespace SandcastleBuilder.Package
         public const uint HtmlEncode = 0x0032;
         /// <summary>View Open XML help output</summary>
         public const uint ViewDocxHelp = 0x0038;
+
+        /// <summary>This isn't one of ours.  It's the NuGet package manager Manage NuGet Packages command ID</summary>
+        public const uint ManageNuGetPackages = 0x0100;
     };
 }

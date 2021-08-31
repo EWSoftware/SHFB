@@ -70,6 +70,9 @@
       <HintPath>..\packages\EnvDTE80.8.0.0\lib\net10\EnvDTE80.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Build.15.1.548\lib\net46\Microsoft.Build.dll</HintPath>
       <Private>False</Private>
@@ -210,6 +213,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -217,7 +223,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -250,6 +278,9 @@
     <Compile Include="Editors\TokenEditorFactory.cs" />
     <Compile Include="Editors\TokenEditorPane.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Nodes\SandcastleBuilderPackageReferenceNode.cs" />
+    <Compile Include="Nodes\SandcastleBuilderComponentPackagesContainerNode.cs" />
+    <Compile Include="Nodes\VsProjectCapabilitiesPresenceChecker.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="GoToDefinition\CodeEntitySearcher.cs" />
     <Compile Include="GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
@@ -464,11 +495,19 @@
       <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
     <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
       <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\PresentationStyleCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\launchSettings.json">
       <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -480,11 +519,19 @@
       <RootPath>Templates\Projects\PlugInCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.props">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
     <ZipProject Include="Templates\Projects\PlugInCS\PlugInCS.vstemplate">
       <RootPath>Templates\Projects\PlugInCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\PlugInCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\launchSettings.json">
       <RootPath>Templates\Projects\PlugInCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -496,7 +543,15 @@
       <RootPath>Templates\Projects\BuildComponentCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.props">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
     <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\GlobalSuppressions.cs">
       <RootPath>Templates\Projects\BuildComponentCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -504,11 +559,23 @@
       <RootPath>Templates\Projects\BuildComponentCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\launchSettings.json">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\GlobalSuppressions.cs">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
     <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.cs">
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.csproj">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.props">
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
@@ -524,6 +591,18 @@
       <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\launchSettings.json">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.props">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
     <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
@@ -536,8 +615,16 @@
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\launchSettings.json">
       <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.props">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.vb">
@@ -552,8 +639,16 @@
       <RootPath>Templates\Projects\PlugInVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\AssemblyInfo.vb">
+    <ZipProject Include="Templates\Projects\PlugInVB\launchSettings.json">
       <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.props">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.vb">
@@ -568,8 +663,20 @@
       <RootPath>Templates\Projects\BuildComponentVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\AssemblyInfo.vb">
+    <ZipProject Include="Templates\Projects\BuildComponentVB\GlobalSuppressions.vb">
       <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\launchSettings.json">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\GlobalSuppressions.vb">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.props">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vb">
@@ -590,6 +697,90 @@
     </ZipProject>
     <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
       <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\launchSettings.json">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\ConfigEditor.csproj">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\ConfigEditorCS.vstemplate">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\GlobalSuppressions.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\launchSettings.json">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.Designer.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.resx">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\ConfigEditor.vbproj">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\ConfigEditorVB.vstemplate">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\GlobalSuppressions.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\launchSettings.json">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.Designer.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.resx">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
       <OutputSubPath>Documentation</OutputSubPath>
     </ZipProject>
     <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
@@ -888,6 +1079,7 @@
     <Analyzer Include="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\analyzers\cs\Microsoft.VisualStudio.SDK.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

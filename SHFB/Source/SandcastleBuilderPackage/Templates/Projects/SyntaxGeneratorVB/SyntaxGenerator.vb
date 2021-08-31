@@ -31,7 +31,7 @@ Namespace $safeprojectname$
         ' NOTE: If you change LanguageName, rename the SyntaxContent\$safeprojectname$.xml file to the same name
         '       and update the IDs of the content items in it with the new name.
         Private Const LanguageName As String = "$safeprojectname$"
-        Private Const StyleIdName As String = "xyz"
+        Private Const StyleIdName As String = "$safeprojectname$Style"
 
         ''' <summary>
         ''' This is used to create a new instance of the syntax generator
@@ -58,9 +58,9 @@ Namespace $safeprojectname$
         '''     </item>
         ''' </list>
         ''' </remarks>
-        <SyntaxGeneratorExport("$safeprojectname$", "$safeprojectname$", "cs", SortOrder := 500,
-          Version := AssemblyInfo.ProductVersion, Copyright := AssemblyInfo.Copyright,
-          Description := "Generates $safeprojectname$ declaration syntax sections")>
+        <SyntaxGeneratorExport("$safeprojectname$", LanguageName, StyleIdName, SortOrder:=500,
+          Version:=AssemblyInfo.ProductVersion, Copyright:=AssemblyInfo.Copyright,
+          Description:="Generates $safeprojectname$ declaration syntax sections")>
         Public NotInheritable Class Factory
             Implements ISyntaxGeneratorFactory
 
@@ -87,51 +87,131 @@ Namespace $safeprojectname$
 
         ''' <inheritdoc />
         Public Overrides Sub WriteClassSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteConstructorSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteDelegateSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteEnumerationSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteEventSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteFieldSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteInterfaceSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteNamespaceSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WritePropertySyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
 
         ''' <inheritdoc />
         Public Overrides Sub WriteStructureSyntax(reflection As XPathNavigator, writer As SyntaxWriter)
+            If reflection Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
+            If writer Is Nothing Then
+                Throw New ArgumentNullException(NameOf(reflection))
+            End If
+
             Throw New System.NotImplementedException()
         End Sub
         #End Region

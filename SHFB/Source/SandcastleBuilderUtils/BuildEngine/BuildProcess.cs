@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2021
+// Updated : 08/22/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -612,16 +612,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 this.ReportProgress("Locating components in the following folder(s):");
 
-                if(!String.IsNullOrEmpty(project.ComponentPath))
-                    this.ReportProgress("    {0}", project.ComponentPath);
+                foreach(string searchPath in project.ComponentSearchPaths)
+                    this.ReportProgress("    {0}", searchPath);
 
-                this.ReportProgress("    {0}", Path.GetDirectoryName(project.Filename));
                 this.ReportProgress("    {0}", ComponentUtilities.ThirdPartyComponentsFolder);
                 this.ReportProgress("    {0}", ComponentUtilities.CoreComponentsFolder);
 
                 // Get the framework reflection data settings to use for the build
-                reflectionDataDictionary = new ReflectionDataSetDictionary(new[] { project.ComponentPath,
-                    Path.GetDirectoryName(project.Filename) });
+                reflectionDataDictionary = new ReflectionDataSetDictionary(project.ComponentSearchPaths);
                 frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(project.FrameworkVersion, true);
 
                 if(frameworkReflectionData == null)
@@ -644,10 +642,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkReflectionData.Title);
 
-
                 // Get the composition container used to find build components in the rest of the build process
-                componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
-                    Path.GetDirectoryName(project.Filename) }, this.CancellationToken);
+                componentContainer = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
+                    this.CancellationToken);
 
                 syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Path category properties
@@ -22,7 +22,7 @@
 //===============================================================================================================
 
 using System;
-using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 #if !STANDALONEGUI
@@ -64,7 +64,6 @@ namespace SandcastleBuilder.Package.PropertyPages
             get
             {
                 SandcastleProject currentProject = null;
-                string[] searchFolders;
 
 #if !STANDALONEGUI
                 if(this.ProjectMgr != null)
@@ -79,7 +78,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                     FolderPath componentPath = new FolderPath(ucPathPropertiesPageContent.ComponentPath,
                         currentProject);
 
-                    searchFolders = new[] { componentPath.ToString(), Path.GetDirectoryName(currentProject.Filename) };
+                    var searchFolders = currentProject.ComponentSearchPaths.ToList();
+                    searchFolders.Add(componentPath);
 
                     var componentCache = ComponentCache.CreateComponentCache(currentProject.Filename);
 

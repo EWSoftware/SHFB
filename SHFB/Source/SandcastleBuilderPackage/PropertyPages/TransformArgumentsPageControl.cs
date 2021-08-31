@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TransformArgumentsPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Transform Arguments category properties
@@ -92,7 +92,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             else
             {
                 ucTransformArgumentsPageContent.LoadArgumentSettings(currentProject.Filename,
-                    new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                    currentProject.ComponentSearchPaths);
             }
 
             return true;

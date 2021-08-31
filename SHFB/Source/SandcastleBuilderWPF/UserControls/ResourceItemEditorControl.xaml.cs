@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit resource item files
@@ -117,8 +117,8 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 resourceItemFilename = resourceItemsFile;
 
-                using(var container = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
-                  Path.GetDirectoryName(project.Filename) }, CancellationToken.None))
+                using(var container = ComponentUtilities.CreateComponentContainer(project.ComponentSearchPaths,
+                  CancellationToken.None))
                 {
                     var presentationStyles = container.GetExports<PresentationStyleSettings, IPresentationStyleMetadata>();
                     var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(

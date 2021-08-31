@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/20/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Components category properties
@@ -89,7 +89,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             else
             {
                 ucComponentPropertiesPageContent.LoadComponentSettings(currentProject.Filename,
-                    new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                    currentProject.ComponentSearchPaths);
             }
 
             return true;

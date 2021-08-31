@@ -23,7 +23,5 @@ using System.Reflection;
 
 // General assembly info
 [assembly: AssemblyTitle("Sandcastle Help File Builder Utilities")]
-[assembly: AssemblyDescription("This assembly contains the project, build engine, and Managed Extensibility " +
-    "Framework (MEF) classes used by all of the other Sandcastle Help File Builder applications.")]
 
 [assembly: CLSCompliant(true)]

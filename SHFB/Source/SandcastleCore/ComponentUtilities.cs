@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2021
+// Updated : 08/31/2021
 // Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class containing properties and methods used to locate and work with build components,
@@ -261,9 +261,9 @@ namespace Sandcastle.Core
         /// 
         /// <list type="number">
         ///     <item>The enumerable list of additional folders - This is typically the current project's
-        /// <c>ComponentPath</c> folder and the current project's folder.  This allows for project-specific
-        /// build components.  If the project's <c>ComponentPath</c> property is set, that folder is searched
-        /// first and then the project's folder is searched.</item>
+        /// NuGet packages (package tool paths from the <c>SHFBComponentPath</c> item in their properties file),
+        /// the project's <c>ComponentPath</c> folder, and the current project's folder.  This allows for
+        /// project-specific build components.  Paths are searched in the order given above if specified.</item>
         ///     <item>Common application data folder - The help file builder's common application data folder
         /// where third-party build components are typically installed.</item>
         ///     <item><c>SHFBROOT</c> core components folder - The core Sandcastle Help File Builder components
@@ -319,6 +319,16 @@ namespace Sandcastle.Core
             if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
             {
                 searchedFolders.Add(folder);
+
+                // When debugging components, there may be a copy in the .\obj folder which tends to get found
+                // later so it is used rather than the one in the .\bin folder which is actually being debugged.
+                // If this is an .\obj folder and a .\bin folder has already been seen in the same location,
+                // ignore it.
+                if(folder.EndsWith("\\obj", StringComparison.OrdinalIgnoreCase) && searchedFolders.Contains(
+                  Path.Combine(Path.GetDirectoryName(folder), "bin")))
+                {
+                    return;
+                }
 
                 bool hadComponents = false;
 

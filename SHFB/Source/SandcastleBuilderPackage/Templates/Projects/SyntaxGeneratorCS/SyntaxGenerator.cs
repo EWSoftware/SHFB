@@ -29,7 +29,7 @@ namespace $safeprojectname$
         // TODO: Set the unique style ID name.
         // NOTE: If you change LanguageName, rename the SyntaxContent\$safeprojectname$.xml file to the same name
         //       and update the IDs of the content items in it with the new name.
-        private const string LanguageName = "$safeprojectname$", StyleIdName = "xyz";
+        private const string LanguageName = "$safeprojectname$", StyleIdName = "$safeprojectname$Style";
 
         /// <summary>
         /// This is used to create a new instance of the syntax generator
@@ -62,13 +62,8 @@ namespace $safeprojectname$
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public string ResourceItemFileLocation
-            {
-                get
-                {
-                    return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent");
-                }
-            }
+            public string ResourceItemFileLocation => Path.Combine(ComponentUtilities.AssemblyFolder(
+                Assembly.GetExecutingAssembly()), "SyntaxContent");
 
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
@@ -88,60 +83,120 @@ namespace $safeprojectname$
         /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             throw new System.NotImplementedException();
         }
         #endregion

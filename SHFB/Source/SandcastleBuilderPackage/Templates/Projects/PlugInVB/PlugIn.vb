@@ -1,10 +1,8 @@
 Imports System
 Imports System.Collections.Generic
 Imports System.Linq
-Imports System.Windows.Forms
-Imports System.Xml.XPath
+Imports System.Xml.Linq
 
-Imports SandcastleBuilder.Utils
 Imports SandcastleBuilder.Utils.BuildComponent
 Imports SandcastleBuilder.Utils.BuildEngine
 
@@ -21,18 +19,13 @@ Namespace $safeprojectname$
     '''
     ''' <list type="bullet">
     '''     <item>
-    '''         <term>IsConfigurable</term>
-    '''         <description>Set this to true if your plug-in contains configurable settings.  The
-    ''' <c>ConfigurePlugIn</c> method will be called to let the user change the settings.</description>
-    '''     </item>
-    '''     <item>
     '''         <term>RunsInPartialBuild</term>
     '''         <description>Set this to true if your plug-in should run in partial builds used to generate
     ''' reflection data for the API Filter editor dialog or namespace comments used for the Namespace Comments
     ''' editor dialog.  Typically, this is left set to false.</description>
     '''     </item>
     ''' </list>
-    ''' 
+    '''
     ''' Plug-ins are singletons in nature.  The composition container will create instances as needed and will
     ''' dispose of them when the container is disposed of.</remarks>
     <HelpFileBuilderPlugInExport("$safeprojectname$", Version := AssemblyInfo.ProductVersion,
@@ -72,28 +65,11 @@ Namespace $safeprojectname$
         End Property
 
         ''' <summary>
-        ''' This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        ''' configuration.
-        ''' </summary>
-        ''' <param name="project">A reference to the active project</param>
-        ''' <param name="currentConfig">The current configuration XML fragment</param>
-        ''' <returns>A string containing the new configuration XML fragment</returns>
-        ''' <remarks>The configuration data will be stored in the help file builder project</remarks>
-        Public Function ConfigurePlugIn(project As SandcastleProject, currentConfig As String) As String Implements IPlugIn.ConfigurePlugIn
-            ' TODO: Add and invoke a configuration dialog if you need one.  You will also need to set the
-            ' IsConfigurable property to true on the class's export attribute.
-            MessageBox.Show("This plug-in has no configurable settings", "Build Process Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-            Return currentConfig
-        End Function
-
-        ''' <summary>
         ''' This method is used to initialize the plug-in at the start of the build process
         ''' </summary>
         ''' <param name="buildProcess">A reference to the current build process</param>
         ''' <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        Public Sub Initialize(buildProcess As BuildProcess, configuration As XPathNavigator) Implements IPlugIn.Initialize
+        Public Sub Initialize(buildProcess As BuildProcess, configuration As XElement) Implements IPlugIn.Initialize
             builder = buildProcess
 
             Dim metadata As HelpFileBuilderPlugInExportAttribute = DirectCast(Enumerable.First(Of Object)(
