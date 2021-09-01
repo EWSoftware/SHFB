@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2021
+// Updated : 08/31/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
@@ -129,7 +129,6 @@ namespace SandcastleBuilder.Package
         //=====================================================================
 
         private BuildCompletedEventListener buildCompletedListener;
-        private SolutionEvents solutionEvents;
 
         #endregion
 
@@ -337,37 +336,20 @@ namespace SandcastleBuilder.Package
             buildCompletedListener = new BuildCompletedEventListener(this);
 
             // Register for solution events so that we can clear the component cache when necessary
-            if(Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) is DTE dte)
+            Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterCloseSolution += (s, e) => ComponentCache.Clear();
+
+            try
             {
-                if(dte.Events != null)
-                {
-                    solutionEvents = dte.Events.SolutionEvents;
-
-                    if(solutionEvents != null)
-                        solutionEvents.AfterClosing += solutionEvents_AfterClosing;
-                }
-
-                try
-                {
-                    // Set the owning window for WPF modal dialogs to the main Visual Studio window
-                    Sandcastle.Platform.Windows.WpfHelpers.MainWindowHandle = new IntPtr(dte.MainWindow.HWnd);
-                }
-                catch
-                {
-                    // Ignore exceptions.  There is no main window when invoked for a command line build.
-                    // It may also try to load the package before the main window is available if tool windows
-                    // were left open.  Worst case, modal dialogs may not appear over the main form on dual
-                    // monitor systems.
-                }
+                // Set the owning window for WPF modal dialogs to the main Visual Studio window
+                Sandcastle.Platform.Windows.WpfHelpers.MainWindowHandle = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
             }
-        }
-
-        /// <summary>
-        /// This is used to clear the component cache whenever a solution is closed
-        /// </summary>
-        private void solutionEvents_AfterClosing()
-        {
-            ComponentCache.Clear();
+            catch
+            {
+                // Ignore exceptions.  There is no main window when invoked for a command line build.
+                // It may also try to load the package before the main window is available if tool windows
+                // were left open.  Worst case, modal dialogs may not appear over the main form on dual
+                // monitor systems.
+            }
         }
         #endregion
 

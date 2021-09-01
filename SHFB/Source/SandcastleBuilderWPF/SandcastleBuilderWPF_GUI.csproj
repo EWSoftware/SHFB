@@ -68,6 +68,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Remove="Theme\TeamFoundationColors.cs" />
 		<Compile Remove="binGUI\**" />
 		<Compile Remove="binVSP\**" />
 		<EmbeddedResource Remove="binGUI\**" />
@@ -76,13 +77,5 @@
 		<None Remove="binVSP\**" />
 		<Page Remove="binGUI\**" />
 		<Page Remove="binVSP\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Remove="Theme\TeamFoundationColors.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="NuGet\" />
 	</ItemGroup>
 </Project>
