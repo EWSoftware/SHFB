@@ -52,11 +52,8 @@
 		<PackageReference Include="Microsoft.Build" Version="15.1.548">
 			<ExcludeAssets>Runtime</ExcludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Shell.14.0" Version="14.3.25407">
-			<ExcludeAssets>Runtime</ExcludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Shell.Immutable.14.0" Version="14.3.25407">
-			<ExcludeAssets>Runtime</ExcludeAssets>
+		<PackageReference Include="Microsoft.VisualStudio.SDK" Version="15.0.1" ExcludeAssets="runtime">
+			<IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 		<Reference Include="PresentationFramework.Aero">
@@ -74,11 +71,15 @@
 	<ItemGroup>
 		<Compile Remove="binGUI\**" />
 		<Compile Remove="binVSP\**" />
+		<Compile Remove="binVS2022\**" />
 		<EmbeddedResource Remove="binGUI\**" />
 		<EmbeddedResource Remove="binVSP\**" />
+		<EmbeddedResource Remove="binVS2022\**" />
 		<None Remove="binGUI\**" />
 		<None Remove="binVSP\**" />
+		<None Remove="binVS2022\**" />
 		<Page Remove="binGUI\**" />
 		<Page Remove="binVSP\**" />
+		<Page Remove="binVS2022\**" />
 	</ItemGroup>
 </Project>

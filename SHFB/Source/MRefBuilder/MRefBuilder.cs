@@ -2,7 +2,7 @@
 // System  : Sandcastle MRefBuilder Tool
 // File    : MRefBuilder.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2021
+// Updated : 08/31/2021
 //
 // This file contains the class used to make MRefBuilder callable from MSBuild projects.
 //
@@ -33,6 +33,7 @@ using Sandcastle.Tools.Reflection;
 
 using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
+using System.Diagnostics;
 
 namespace Sandcastle.Tools.MSBuild
 {
@@ -106,7 +107,16 @@ namespace Sandcastle.Tools.MSBuild
             string currentDirectory = null;
             bool success = false;
 
-            this.WriteBanner();
+            Assembly application = Assembly.GetCallingAssembly();
+            System.Reflection.AssemblyName applicationData = application.GetName();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
+
+            this.Log.LogMessage("{0} (v{1})", applicationData.Name, fvi.ProductVersion);
+
+            object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+
+            foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes)
+                this.Log.LogMessage(copyrightAttribute.Copyright);
 
             if(this.Assemblies == null || this.Assemblies.Length == 0)
             {
@@ -593,7 +603,7 @@ namespace Sandcastle.Tools.MSBuild
         }
         #endregion
 
-        #region Event handlers
+        #region Event handlers and helper methods
         //=====================================================================
 
         /// <summary>
@@ -613,7 +623,34 @@ namespace Sandcastle.Tools.MSBuild
 
             Environment.Exit(1);
         }
-        #endregion
 
+        /// <summary>
+        /// Write a formatted message to the task log with the given parameters
+        /// </summary>
+        /// <param name="level">The log level of the message</param>
+        /// <param name="format">The message format string</param>
+        /// <param name="args">The list of arguments to format into the message</param>
+        private void WriteMessage(LogLevel level, string format, params object[] args)
+        {
+            switch(level)
+            {
+                case LogLevel.Diagnostic:
+                    this.Log.LogMessage(MessageImportance.High, format, args);
+                    break;
+
+                case LogLevel.Warn:
+                    this.Log.LogWarning(null, null, null, this.GetType().Name, 0, 0, 0, 0, format, args);
+                    break;
+
+                case LogLevel.Error:
+                    this.Log.LogError(null, null, null, this.GetType().Name, 0, 0, 0, 0, format, args);
+                    break;
+
+                default:     // Info or unknown level
+                    this.Log.LogMessage(format, args);
+                    break;
+            }
+        }
+        #endregion
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle BuildAssembler Tool
 // File    : BuildAssembler.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/31/2021
+// Updated : 08/31/2021
 //
 // This file contains the class used to make BuildAssembler callable from MSBuild projects.
 //
@@ -17,7 +17,9 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -99,7 +101,16 @@ namespace Sandcastle.Tools.MSBuild
             // Allow loading of external URIs in XSL transformations
             AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
 #endif
-            this.WriteBanner();
+            Assembly application = Assembly.GetCallingAssembly();
+            AssemblyName applicationData = application.GetName();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(application.Location);
+
+            this.Log.LogMessage("{0} (v{1})", applicationData.Name, fvi.ProductVersion);
+
+            object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+
+            foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes)
+                this.Log.LogMessage(copyrightAttribute.Copyright);
 
             try
             {
@@ -126,17 +137,16 @@ namespace Sandcastle.Tools.MSBuild
 
             return success;
         }
-#endregion
+        #endregion
 
-#region Build topics method
+        #region Helper methods
         //=====================================================================
-
 
         /// <summary>
         /// This builds the topics based on the configuration and manifest
         /// </summary>
         /// <returns>True on success, false on failure</returns>
-        public bool BuildTopics()
+        private bool BuildTopics()
         {
             // Create a build assembler instance to do the work.  Messages are logged to the task log.
             this.BuildAssemblerInstance = new BuildAssemblerCore((lvl, msg) => this.WriteMessage(lvl, msg));
@@ -165,6 +175,34 @@ namespace Sandcastle.Tools.MSBuild
 
             return true;
         }
-#endregion
+
+        /// <summary>
+        /// Write a formatted message to the task log with the given parameters
+        /// </summary>
+        /// <param name="level">The log level of the message</param>
+        /// <param name="format">The message format string</param>
+        /// <param name="args">The list of arguments to format into the message</param>
+        private void WriteMessage(LogLevel level, string format, params object[] args)
+        {
+            switch(level)
+            {
+                case LogLevel.Diagnostic:
+                    this.Log.LogMessage(MessageImportance.High, format, args);
+                    break;
+
+                case LogLevel.Warn:
+                    this.Log.LogWarning(null, null, null, this.GetType().Name, 0, 0, 0, 0, format, args);
+                    break;
+
+                case LogLevel.Error:
+                    this.Log.LogError(null, null, null, this.GetType().Name, 0, 0, 0, 0, format, args);
+                    break;
+
+                default:     // Info or unknown level
+                    this.Log.LogMessage(format, args);
+                    break;
+            }
+        }
+        #endregion
     }
 }
