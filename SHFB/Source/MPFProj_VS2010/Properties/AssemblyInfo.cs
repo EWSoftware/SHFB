@@ -2,7 +2,7 @@
 // System  : Microsoft Managed Package Framework for Projects (MPFProj)
 // File    : AssemblyInfo.cs
 // Author  : Microsoft Corporation
-// Updated : 05/26/2021
+// Updated : 09/07/2021
 // Note    : Copyright 2009-2021, Microsoft Corporation, All rights reserved
 //
 // Managed Package Framework for Projects assembly attributes.
@@ -12,11 +12,13 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  03/20/2011  EFW  Merged project into SHFB project to create a package for Visual Studio integration
-// 1.1.0.0  03/06/2013  EFW  Merged changes from the MPF 2012 project into this one so that this version can run
-//                           under both VS 2010 and VS 2012.
+// 03/20/2011  EFW  Merged project into SHFB project to create a package for Visual Studio integration
+// 03/06/2013  EFW  Merged changes from the MPF 2012 project into this one so that this version can run
+//                  under both VS 2010 and VS 2012.
+// 09/07/2021  EFW  Moved code into a shared project to support building for VS2019 and earlier and VS 2022 and
+//                  later.
 //===============================================================================================================
 
 using System;
@@ -45,16 +47,16 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("084954ec-af04-4ea3-b166-b1fced604dc8")]
 
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("2021.9.7.0")]
+[assembly: AssemblyFileVersion("2021.9.7.0")]
 
-// Expose the internal members to the types in the SandcastleBuilder.Package assembly
-//
-// sn.exe -p SandcastleTools.snk PublicKey.key
-// sn.exe -tp PublicKey.key
-//
-// Cut and paste the public key below.
-//
+//// Expose the internal members to the types in the SandcastleBuilder.Package assembly
+////
+//// sn.exe -p SandcastleTools.snk PublicKey.key
+//// sn.exe -tp PublicKey.key
+////
+//// Cut and paste the public key below.
+////
 [assembly: InternalsVisibleTo("SandcastleBuilder.Package, PublicKey=" +
     "00240000048000009400000006020000002400005253413100040000010001002f5b57e5c28270" +
     "f49518ff41c8842759d9262f1cb9f50adf4d89a9fbcbffd17201be3da944edb7e8cf3bdc19b5fa" +
