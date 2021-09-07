@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.Project
         private ProjectConfig[] projectConfigs;
         private IVSMDPropertyGrid grid;
         private string name;
-        private static volatile object Mutex = new object();
+        private static readonly object Mutex = new object();
         private bool isDisposed;
         #endregion
 
@@ -89,37 +89,19 @@ namespace Microsoft.VisualStudio.Project
         [AutomationBrowsable(false)]
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-            set
-            {
-                this.name = value;
-            }
+            get => this.name;
+            set => this.name = value;
         }
 
         [Browsable(false)]
         [AutomationBrowsable(false)]
-        public ProjectNode ProjectMgr
-        {
-            get
-            {
-                return this.project;
-            }
-        }
+        public ProjectNode ProjectMgr => this.project;
 
-        protected IVSMDPropertyGrid Grid
-        {
-            get { return this.grid; }
-        }
+        protected IVSMDPropertyGrid Grid => this.grid;
 
         protected bool IsDirty
         {
-            get
-            {
-                return this.dirty;
-            }
+            get => this.dirty;
             set
             {
                 if(this.dirty != value)
@@ -130,13 +112,9 @@ namespace Microsoft.VisualStudio.Project
                 }
             }
         }
-        protected Panel ThePanel
-        {
-            get
-            {
-                return this.panel;
-            }
-        }
+
+        protected Panel ThePanel => this.panel;
+
         #endregion		
 
         #region abstract methods
@@ -148,7 +126,9 @@ namespace Microsoft.VisualStudio.Project
         public object GetTypedConfigProperty(string name, Type type)
         {
             string value = GetConfigProperty(name);
-            if(string.IsNullOrEmpty(value)) return null;
+            
+            if(String.IsNullOrEmpty(value))
+                return null;
 
             TypeConverter tc = TypeDescriptor.GetConverter(type);
             return tc.ConvertFromInvariantString(value);
@@ -157,7 +137,9 @@ namespace Microsoft.VisualStudio.Project
         public object GetTypedProperty(string name, Type type)
         {
             string value = GetProperty(name);
-            if(string.IsNullOrEmpty(value)) return null;
+
+            if(String.IsNullOrEmpty(value))
+                return null;
 
             TypeConverter tc = TypeDescriptor.GetConverter(type);
             return tc.ConvertFromInvariantString(value);
@@ -167,8 +149,7 @@ namespace Microsoft.VisualStudio.Project
         {
             if(this.ProjectMgr != null)
             {
-                string property;
-                bool found = this.ProjectMgr.BuildProject.GlobalProperties.TryGetValue(propertyName, out property);
+                bool found = this.ProjectMgr.BuildProject.GlobalProperties.TryGetValue(propertyName, out string property);
 
                 if(found)
                 {
@@ -247,13 +228,16 @@ namespace Microsoft.VisualStudio.Project
             {
                 if (pRect == null)
                 {
-                    throw new ArgumentNullException("pRect");
+                    throw new ArgumentNullException(nameof(pRect));
                 }
 
-                this.panel = new Panel();
-                this.panel.Size = new Size(pRect[0].right - pRect[0].left, pRect[0].bottom - pRect[0].top);
-                this.panel.Text = SR.GetString(SR.Settings, CultureInfo.CurrentUICulture);
-                this.panel.Visible = false;
+                this.panel = new Panel
+                {
+                    Size = new Size(pRect[0].right - pRect[0].left, pRect[0].bottom - pRect[0].top),
+                    Text = SR.GetString(SR.Settings, CultureInfo.CurrentUICulture),
+                    Visible = false
+                };
+
                 this.panel.Size = new Size(550, 300);
                 this.panel.CreateControl();
                 NativeMethods.SetParent(this.panel.Handle, parent);
@@ -270,15 +254,23 @@ namespace Microsoft.VisualStudio.Project
                 this.active = true;
 
 
+#if VS2022
+                Control cGrid = Control.FromHandle(this.grid.Handle);
+#else
                 Control cGrid = Control.FromHandle(new IntPtr(this.grid.Handle));
-
+#endif
                 cGrid.Parent = Control.FromHandle(parent);//this.panel;
                 cGrid.Size = new Size(544, 294);
                 cGrid.Location = new Point(3, 3);
                 cGrid.Visible = true;
                 this.grid.SetOption(_PROPERTYGRIDOPTION.PGOPT_TOOLBAR, false);
                 this.grid.GridSort = _PROPERTYGRIDSORT.PGSORT_CATEGORIZED | _PROPERTYGRIDSORT.PGSORT_ALPHABETICAL;
+
+#if VS2022
+                NativeMethods.SetParent(this.grid.Handle, this.panel.Handle);
+#else
                 NativeMethods.SetParent(new IntPtr(this.grid.Handle), this.panel.Handle);
+#endif
                 UpdateObjects();
             }
         }
@@ -306,18 +298,21 @@ namespace Microsoft.VisualStudio.Project
         {
             if (arrInfo == null)
             {
-                throw new ArgumentNullException("arrInfo");
+                throw new ArgumentNullException(nameof(arrInfo));
             }
 
-            PROPPAGEINFO info = new PROPPAGEINFO();
+            PROPPAGEINFO info = new PROPPAGEINFO
+            {
+                cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
+                dwHelpContext = 0,
+                pszDocString = null,
+                pszHelpFile = null,
+                pszTitle = this.name
+            };
 
-            info.cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO));
-            info.dwHelpContext = 0;
-            info.pszDocString = null;
-            info.pszHelpFile = null;
-            info.pszTitle = this.name;
             info.SIZE.cx = 550;
             info.SIZE.cy = 300;
+            
             arrInfo[0] = info;
         }
 
@@ -335,7 +330,7 @@ namespace Microsoft.VisualStudio.Project
         {
             if (arrRect == null)
             {
-                throw new ArgumentNullException("arrRect");
+                throw new ArgumentNullException(nameof(arrRect));
             }
             
             RECT r = arrRect[0];
@@ -383,8 +378,7 @@ namespace Microsoft.VisualStudio.Project
                     for(int i = 0; i < count; i++)
                     {
                         NodeProperties property = (NodeProperties)punk[i];
-                        IVsCfgProvider provider;
-                        ErrorHandler.ThrowOnFailure(property.Node.ProjectMgr.GetCfgProvider(out provider));
+                        ErrorHandler.ThrowOnFailure(property.Node.ProjectMgr.GetCfgProvider(out IVsCfgProvider provider));
                         uint[] expected = new uint[1];
                         ErrorHandler.ThrowOnFailure(provider.GetCfgs(0, null, expected, null));
                         if(expected[0] > 0)
@@ -440,7 +434,7 @@ namespace Microsoft.VisualStudio.Project
         {
             if (arrMsg == null)
             {
-                throw new ArgumentNullException("arrMsg");
+                throw new ArgumentNullException(nameof(arrMsg));
             }
 
             MSG msg = arrMsg[0];
@@ -473,8 +467,11 @@ namespace Microsoft.VisualStudio.Project
                 {
                     Marshal.WriteIntPtr(ppUnk, p);
                     this.BindProperties();
-                    // BUGBUG -- this is really bad casting a pointer to "int"...
+#if VS2022
+                    this.grid.SetSelectedObjects(1, new[] { ppUnk });
+#else
                     this.grid.SetSelectedObjects(1, ppUnk.ToInt32());
+#endif
                     this.grid.Refresh();
                 }
                 finally
@@ -503,9 +500,8 @@ namespace Microsoft.VisualStudio.Project
             GC.SuppressFinalize(this);
         }
 
-        #endregion
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if(!this.isDisposed)
             {
@@ -520,5 +516,6 @@ namespace Microsoft.VisualStudio.Project
                 }
             }
         }
+        #endregion
     }
 }

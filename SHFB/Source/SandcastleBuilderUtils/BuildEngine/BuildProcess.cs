@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/22/2021
+// Updated : 09/01/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -510,6 +510,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public void Build()
         {
+            ComponentAssemblyResolver resolver = null;
             Project msBuildProject = null;
             ProjectItem projectItem;
             string resolvedPath, helpFile, languageFile, scriptFile, hintPath;
@@ -520,6 +521,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             try
             {
+                // When running in Visual Studio it doesn't always find dependencies.  The component resolver
+                // helps it find them.
+                resolver = new ComponentAssemblyResolver();
+
                 taskRunner = new TaskRunner(this);
 
                 // If the project isn't using final values suitable for the build, create a copy of the
@@ -1544,6 +1549,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(this.CurrentBuildStep == BuildStep.Completed && !project.KeepLogFile)
                         File.Delete(this.LogFilename);
+
+                    if(resolver != null)
+                        resolver.Dispose();
                 }
             }
         }

@@ -30,6 +30,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
     /// <summary>
     /// This class creates the quick info source specific to XML comments elements
     /// </summary>
+// TODO: Type is obsolete.  Update to use IAsyncQuickInfoSourceProvider
+#pragma warning disable CS0618
     [Export(typeof(IQuickInfoSourceProvider))]
     [Name("XML Comments Link Quick Info Provider")]
     [Order(After = "Default Quick Info Presenter")]
@@ -54,4 +56,5 @@ namespace SandcastleBuilder.Package.GoToDefinition
                 options.EnableCtrlClickGoToDefinition);
         }
     }
+#pragma warning restore CS0618
 }

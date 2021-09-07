@@ -39,6 +39,8 @@ namespace SandcastleBuilder.Package.GoToDefinition
     /// This class is used to determine whether or not quick info should be shown for specific MAML elements and
     /// what it should contain.
     /// </summary>
+// TODO: Type is obsolete.  Update to use IAsyncQuickInfoSource
+#pragma warning disable CS0618
     internal sealed class MamlLinkQuickInfoSource : IQuickInfoSource
     {
         #region Private data members
@@ -267,4 +269,5 @@ namespace SandcastleBuilder.Package.GoToDefinition
         }
         #endregion
     }
+#pragma warning restore CS0618
 }

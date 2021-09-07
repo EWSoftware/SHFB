@@ -47,30 +47,27 @@ a particular purpose and non-infringement.
 ********************************************************************************************/
 
 using System;
-using System.Windows.Forms.Design;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using System.Windows.Forms.Design;
 using System.Windows.Threading;
+
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
+
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace Microsoft.VisualStudio.Project
 {
     /// <summary>
-    /// This class implements an MSBuild logger that output events to VS outputwindow and tasklist.
+    /// This class implements an MSBuild logger that output events to VS output window and task list.
     /// </summary>
-    [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IDE")]
     internal class IDEBuildLogger : Logger
     {
         #region fields
@@ -87,10 +84,10 @@ namespace Microsoft.VisualStudio.Project
         private IVsOutputWindowPane outputWindowPane;
         private string errorString = SR.GetString(SR.Error, CultureInfo.CurrentUICulture);
         private string warningString = SR.GetString(SR.Warning, CultureInfo.CurrentUICulture);
-        private TaskProvider taskProvider;
-        private IVsHierarchy hierarchy;
-        private IServiceProvider serviceProvider;
-        private Dispatcher dispatcher;
+        private readonly TaskProvider taskProvider;
+        private readonly IVsHierarchy hierarchy;
+        private readonly IServiceProvider serviceProvider;
+        private readonly Dispatcher dispatcher;
         private bool haveCachedVerbosity = false;
 
         // Queues to manage Tasks and Error output plus message logging
@@ -101,21 +98,18 @@ namespace Microsoft.VisualStudio.Project
 
         #region properties
 
-        public IServiceProvider ServiceProvider
-        {
-            get { return this.serviceProvider; }
-        }
+        public IServiceProvider ServiceProvider => this.serviceProvider;
 
         public string WarningString
         {
-            get { return this.warningString; }
-            set { this.warningString = value; }
+            get => this.warningString;
+            set => this.warningString = value;
         }
 
         public string ErrorString
         {
-            get { return this.errorString; }
-            set { this.errorString = value; }
+            get => this.errorString;
+            set => this.errorString = value;
         }
 
         /// <summary>
@@ -124,23 +118,17 @@ namespace Microsoft.VisualStudio.Project
         /// <remarks>
         /// The only known way to detect an interactive build is to check this.outputWindowPane for null.
         /// </remarks>
-        protected bool InteractiveBuild
-        {
-            get { return this.outputWindowPane != null; }
-        }
+        protected bool InteractiveBuild => this.outputWindowPane != null;
 
         /// <summary>
         /// When building from within VS, setting this will
-        /// enable the logger to retrive the verbosity from
+        /// enable the logger to retrieve the verbosity from
         /// the correct registry hive.
         /// </summary>
         internal string BuildVerbosityRegistryRoot
         {
-            get { return this.buildVerbosityRegistryRoot; }
-            set 
-            {
-                this.buildVerbosityRegistryRoot = value;
-            }
+            get => this.buildVerbosityRegistryRoot;
+            set => this.buildVerbosityRegistryRoot = value;
         }
 
         /// <summary>
@@ -148,30 +136,26 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         internal IVsOutputWindowPane OutputWindowPane
         {
-            get { return this.outputWindowPane; }
-            set { this.outputWindowPane = value; }
+            get => this.outputWindowPane;
+            set => this.outputWindowPane = value;
         }
-
         #endregion
 
-        #region ctors
+        #region Constructors
 
         /// <summary>
-        /// Constructor.  Inititialize member data.
+        /// Constructor.  Initialize member data.
         /// </summary>
         public IDEBuildLogger(IVsOutputWindowPane output, TaskProvider taskProvider, IVsHierarchy hierarchy)
         {
-            if (taskProvider == null)
-                throw new ArgumentNullException("taskProvider");
-            if (hierarchy == null)
-                throw new ArgumentNullException("hierarchy");
+            if(hierarchy == null)
+                throw new ArgumentNullException(nameof(hierarchy));
 
             Trace.WriteLineIf(Thread.CurrentThread.GetApartmentState() != ApartmentState.STA, "WARNING: IDEBuildLogger constructor running on the wrong thread.");
 
-            IOleServiceProvider site;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(hierarchy.GetSite(out site));
+            VisualStudio.ErrorHandler.ThrowOnFailure(hierarchy.GetSite(out IOleServiceProvider site));
 
-            this.taskProvider = taskProvider;
+            this.taskProvider = taskProvider ?? throw new ArgumentNullException(nameof(taskProvider));
             this.outputWindowPane = output;
             this.hierarchy = hierarchy;
             this.serviceProvider = new ServiceProvider(site);
@@ -188,9 +172,7 @@ namespace Microsoft.VisualStudio.Project
         public override void Initialize(IEventSource eventSource)
         {
             if (null == eventSource)
-            {
-                throw new ArgumentNullException("eventSource");
-            }
+                throw new ArgumentNullException(nameof(eventSource));
 
             this.taskQueue = new ConcurrentQueue<Func<ErrorTask>>();
             this.outputQueue = new ConcurrentQueue<string>();
@@ -348,7 +330,7 @@ namespace Microsoft.VisualStudio.Project
         protected void QueueOutputEvent(MessageImportance importance, BuildEventArgs buildEvent)
         {
             // NOTE: This may run on a background thread!
-            if (LogAtImportance(importance) && !string.IsNullOrEmpty(buildEvent.Message))
+            if (LogAtImportance(importance) && !String.IsNullOrEmpty(buildEvent.Message))
             {
                 StringBuilder message = new StringBuilder(this.currentIndent + buildEvent.Message.Length);
                 if (this.currentIndent > 0)
@@ -378,7 +360,7 @@ namespace Microsoft.VisualStudio.Project
                 // Enqueue the output text
                 this.outputQueue.Enqueue(text);
 
-                // We want to interactively report the output. But we dont want to dispatch
+                // We want to interactively report the output. But we don't want to dispatch
                 // more than one at a time, otherwise we might overflow the main thread's
                 // message queue. So, we only report the output if the queue was empty.
                 if (this.outputQueue.Count == 1)
@@ -404,15 +386,13 @@ namespace Microsoft.VisualStudio.Project
         {
             // NOTE: This may run on a background thread!
             // We need to output this on the main thread. We must use BeginInvoke because the main thread may not be pumping events yet.
-            BeginInvokeWithErrorMessage(this.serviceProvider, this.dispatcher, () =>
+            this.BeginInvokeWithErrorMessage(() =>
             {
                 if (this.OutputWindowPane != null)
                 {
-                    string outputString;
-
-                    while (this.outputQueue.TryDequeue(out outputString))
+                    while(this.outputQueue.TryDequeue(out string outputString))
                     {
-                        Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(this.OutputWindowPane.OutputString(outputString));
+                        VisualStudio.ErrorHandler.ThrowOnFailure(this.OutputWindowPane.OutputStringThreadSafe(outputString));
                     }
                 }
             });
@@ -434,18 +414,16 @@ namespace Microsoft.VisualStudio.Project
             {
                 ErrorTask task = new ErrorTask();
 
-                if (errorEvent is BuildErrorEventArgs)
+                if(errorEvent is BuildErrorEventArgs errorArgs)
                 {
-                    BuildErrorEventArgs errorArgs = (BuildErrorEventArgs)errorEvent;
                     task.Document = errorArgs.File;
                     task.ErrorCategory = TaskErrorCategory.Error;
                     task.Line = errorArgs.LineNumber - 1; // The task list does +1 before showing this number.
                     task.Column = errorArgs.ColumnNumber;
                     task.Priority = TaskPriority.High;
                 }
-                else if (errorEvent is BuildWarningEventArgs)
+                else if(errorEvent is BuildWarningEventArgs warningArgs)
                 {
-                    BuildWarningEventArgs warningArgs = (BuildWarningEventArgs)errorEvent;
                     task.Document = warningArgs.File;
                     task.ErrorCategory = TaskErrorCategory.Warning;
                     task.Line = warningArgs.LineNumber - 1; // The task list does +1 before showing this number.
@@ -460,7 +438,7 @@ namespace Microsoft.VisualStudio.Project
                 return task;
             });
 
-            // NOTE: Unlike output we dont want to interactively report the tasks. So we never queue
+            // NOTE: Unlike output we don't want to interactively report the tasks. So we never queue
             // call ReportQueuedTasks here. We do this when the build finishes.
         }
 
@@ -468,14 +446,13 @@ namespace Microsoft.VisualStudio.Project
         {
             // NOTE: This may run on a background thread!
             // We need to output this on the main thread. We must use BeginInvoke because the main thread may not be pumping events yet.
-            BeginInvokeWithErrorMessage(this.serviceProvider, this.dispatcher, () =>
+            this.BeginInvokeWithErrorMessage(() =>
             {
                 this.taskProvider.SuspendRefresh();
+
                 try
                 {
-                    Func<ErrorTask> taskFunc;
-
-                    while (this.taskQueue.TryDequeue(out taskFunc))
+                    while(this.taskQueue.TryDequeue(out Func<ErrorTask> taskFunc))
                     {
                         // Create the error task
                         ErrorTask task = taskFunc();
@@ -499,10 +476,7 @@ namespace Microsoft.VisualStudio.Project
             if (this.InteractiveBuild)
             {
                 // We need to clear this on the main thread. We must use BeginInvoke because the main thread may not be pumping events yet.
-                BeginInvokeWithErrorMessage(this.serviceProvider, this.dispatcher, () =>
-                {
-                    this.taskProvider.Tasks.Clear();
-                });
+                this.BeginInvokeWithErrorMessage(() => this.taskProvider.Tasks.Clear());
             }
         }
 
@@ -512,7 +486,7 @@ namespace Microsoft.VisualStudio.Project
 
         /// <summary>
         /// This method takes a MessageImportance and returns true if messages
-        /// at importance i should be loggeed.  Otherwise return false.
+        /// at importance i should be logged.  Otherwise return false.
         /// </summary>
         private bool LogAtImportance(MessageImportance importance)
         {
@@ -559,7 +533,7 @@ namespace Microsoft.VisualStudio.Project
             string errorCode = isWarning ? this.WarningString : this.ErrorString;
 
             StringBuilder message = new StringBuilder();
-            if (!string.IsNullOrEmpty(fileName))
+            if (!String.IsNullOrEmpty(fileName))
             {
                 message.AppendFormat(CultureInfo.CurrentCulture, "{0}({1},{2}):", fileName, line, column);
             }
@@ -602,57 +576,40 @@ namespace Microsoft.VisualStudio.Project
             this.haveCachedVerbosity = false;
         }
 
-        #endregion helpers
-
-        #region exception handling helpers
-
         /// <summary>
         /// Call Dispatcher.BeginInvoke, showing an error message if there was a non-critical exception.
         /// </summary>
-        /// <param name="serviceProvider">service provider</param>
-        /// <param name="dispatcher">dispatcher</param>
         /// <param name="action">action to invoke</param>
-        private static void BeginInvokeWithErrorMessage(IServiceProvider serviceProvider, Dispatcher dispatcher, Action action)
+        private void BeginInvokeWithErrorMessage(Action action)
         {
-            dispatcher.BeginInvoke(new Action(() => CallWithErrorMessage(serviceProvider, action)));
-        }
-
-        /// <summary>
-        /// Show error message if exception is caught when invoking a method
-        /// </summary>
-        /// <param name="serviceProvider">service provider</param>
-        /// <param name="action">action to invoke</param>
-        private static void CallWithErrorMessage(IServiceProvider serviceProvider, Action action)
-        {
-            try
+            // We must use BeginInvoke because the main thread may not be pumping events yet.  I haven't found a
+            // way to do this using JoinableTaskFactory that works so suppress the warnings for now.
+#pragma warning disable VSTHRD001
+#pragma warning disable VSTHRD110
+            dispatcher.BeginInvoke(new Action(() =>
             {
-                action();
-            }
-            catch (Exception ex)
-            {
-                if (Microsoft.VisualStudio.ErrorHandler.IsCriticalException(ex))
+                try
                 {
-                    throw;
+                    action();
                 }
+                catch(Exception ex)
+                {
+                    if(VisualStudio.ErrorHandler.IsCriticalException(ex))
+                    {
+                        throw;
+                    }
 
-                ShowErrorMessage(serviceProvider, ex);
-            }
+                    IUIService UIservice = (IUIService)serviceProvider.GetService(typeof(IUIService));
+
+                    if(UIservice != null)
+                    {
+                        UIservice.ShowError(ex);
+                    }
+                }
+            }));
+#pragma warning restore VSTHRD110
+#pragma warning restore VSTHRD001
         }
-
-        /// <summary>
-        /// Show error window about the exception
-        /// </summary>
-        /// <param name="serviceProvider">service provider</param>
-        /// <param name="exception">exception</param>
-        private static void ShowErrorMessage(IServiceProvider serviceProvider, Exception exception)
-        {
-            IUIService UIservice = (IUIService)serviceProvider.GetService(typeof(IUIService));
-            if (UIservice != null && exception != null)
-            {
-                UIservice.ShowError(exception);
-            }
-        }
-
-        #endregion exception handling helpers
+        #endregion helpers
     }
 }

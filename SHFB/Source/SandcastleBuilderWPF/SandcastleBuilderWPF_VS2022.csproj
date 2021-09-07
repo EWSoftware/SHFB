@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Classes in this assembly will only be used from the Visual Studio extension on the Windows platform
+				 so we will always target the .NET Framework. -->
+		<TargetFramework>net472</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWpf>true</UseWpf>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>SandcastleBuilder.WPF</AssemblyName>
+		<RootNamespace>SandcastleBuilder.WPF</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>binVS2022\Debug\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>binVS2022\Release\</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
+		<ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.97" />
+		<PackageReference Include="Microsoft.Build" Version="16.11.0">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-3-31605-261" ExcludeAssets="runtime">
+			<IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
+		<Reference Include="PresentationFramework.Aero">
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="PresentationFramework.Luna">
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Resources\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="binGUI\**" />
+		<Compile Remove="binVSP\**" />
+		<Compile Remove="binVS2022\**" />
+		<EmbeddedResource Remove="binGUI\**" />
+		<EmbeddedResource Remove="binVSP\**" />
+		<EmbeddedResource Remove="binVS2022\**" />
+		<None Remove="binGUI\**" />
+		<None Remove="binVSP\**" />
+		<None Remove="binVS2022\**" />
+		<Page Remove="binGUI\**" />
+		<Page Remove="binVSP\**" />
+		<Page Remove="binVS2022\**" />
+	</ItemGroup>
+</Project>

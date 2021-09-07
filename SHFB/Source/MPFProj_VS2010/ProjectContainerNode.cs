@@ -46,6 +46,8 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
+// Ignore Spelling: env msenv Init
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -83,7 +85,7 @@ namespace Microsoft.VisualStudio.Project
         private FileChangeManager nestedProjectNodeReloader;
         #endregion
 
-        #region ctors
+        #region Constructors
         protected ProjectContainerNode()
         {
         }
@@ -91,7 +93,7 @@ namespace Microsoft.VisualStudio.Project
 
         #region properties
         /// <summary>
-        /// Returns teh object that handles listening to file changes on the nested project files.
+        /// Returns the object that handles listening to file changes on the nested project files.
         /// </summary>
         internal FileChangeManager NestedProjectNodeReloader
         {
@@ -112,10 +114,7 @@ namespace Microsoft.VisualStudio.Project
         /// <summary>
         /// This is the object that will be returned by EnvDTE.Project.Object for this project
         /// </summary>
-        internal override object Object
-        {
-            get { return new OASolutionFolder<ProjectContainerNode>(this); }
-        }
+        internal override object Object => new OASolutionFolder<ProjectContainerNode>(this);
 
         #endregion
 
@@ -137,9 +136,7 @@ namespace Microsoft.VisualStudio.Project
             {
                 for(HierarchyNode n = this.FirstChild; n != null; n = n.NextSibling)
                 {
-                    NestedProjectNode p = n as NestedProjectNode;
-
-                    if(p != null && p.ID == itemId)
+                    if(n is NestedProjectNode p && p.ID == itemId)
                     {
                         if(p.NestedHierarchy != null)
                         {
@@ -213,21 +210,17 @@ namespace Microsoft.VisualStudio.Project
         /// Called to reload a project item. 
         /// Reloads a project and its nested project nodes.
         /// </summary>
-        /// <param name="itemId">Specifies itemid from VSITEMID.</param>
+        /// <param name="itemId">Specifies item ID from VSITEMID.</param>
         /// <param name="reserved">Reserved.</param>
         /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code. </returns>
         public override int ReloadItem(uint itemId, uint reserved)
         {
-            #region precondition
             if(this.IsClosed)
             {
                 return VSConstants.E_FAIL;
             }
-            #endregion
 
-            NestedProjectNode node = this.NodeFromItemId(itemId) as NestedProjectNode;
-
-            if(node != null)
+            if(this.NodeFromItemId(itemId) is NestedProjectNode node)
             {
                 object propertyAsObject = node.GetProperty((int)__VSHPROPID.VSHPROPID_HandlesOwnReload);
 
@@ -359,12 +352,12 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         public virtual bool BuildNestedProjectsOnBuild
         {
-            get { return this.buildNestedProjectsOnBuild; }
-            set { this.buildNestedProjectsOnBuild = value; }
+            get => this.buildNestedProjectsOnBuild;
+            set => this.buildNestedProjectsOnBuild = value;
         }
 
         /// <summary>
-        /// Enumerates the nested hierachies that should be added to the build dependency list.
+        /// Enumerates the nested hierarchies that should be added to the build dependency list.
         /// </summary>
         /// <returns></returns>
         public virtual IVsHierarchy[] EnumNestedHierachiesForBuildDependency()
@@ -373,8 +366,7 @@ namespace Microsoft.VisualStudio.Project
             // Add all nested project among projectContainer child nodes
             for(HierarchyNode child = this.FirstChild; child != null; child = child.NextSibling)
             {
-                NestedProjectNode nestedProjectNode = child as NestedProjectNode;
-                if(nestedProjectNode != null)
+                if(child is NestedProjectNode nestedProjectNode)
                 {
                     nestedProjectList.Add(nestedProjectNode.NestedHierarchy);
                 }
@@ -390,8 +382,7 @@ namespace Microsoft.VisualStudio.Project
         {
             for(HierarchyNode n = this.FirstChild; n != null; n = n.NextSibling)
             {
-                NestedProjectNode p = n as NestedProjectNode;
-                if(p != null)
+                if(n is NestedProjectNode p)
                 {
                     p.CloseNestedProjectNode();
                 }
@@ -411,7 +402,7 @@ namespace Microsoft.VisualStudio.Project
         {
             // 1. Create a ProjectElement with the found item and then Instantiate a new Nested project with this ProjectElement.
             // 2. Link into the hierarchy.			
-            // Read subprojects from from msbuildmodel
+            // Read subprojects from MSBuild model
             __VSCREATEPROJFLAGS creationFlags = __VSCREATEPROJFLAGS.CPF_NOTINSLNEXPLR | __VSCREATEPROJFLAGS.CPF_SILENT;
 
             if(this.IsNewProject)
@@ -435,7 +426,7 @@ namespace Microsoft.VisualStudio.Project
                     }
                     else
                     {
-                        // If we are creating the subproject from a vstemplate/vsz file
+                        // If we are creating the subproject from a VS template/VSZ file
                         bool isVsTemplate = Utilities.IsTemplateFile(GetProjectTemplatePath(null));
                         if(isVsTemplate)
                         {
@@ -459,11 +450,11 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         protected internal virtual NestedProjectNode AddExistingNestedProject(ProjectElement element, __VSCREATEPROJFLAGS creationFlags)
         {
-            ProjectElement elementToUse = (element == null) ? this.nestedProjectElement : element;
+            ProjectElement elementToUse = element ?? this.nestedProjectElement;
 
             if(elementToUse == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
 
             string filename = elementToUse.GetFullPathForElement();
@@ -483,22 +474,16 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         /// <param name="element">The project item to use as the base of the nested project.</param>
         /// <param name="silent">true if the wizard should run silently, otherwise false.</param>
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Vs")]
         protected internal void RunVsTemplateWizard(ProjectElement element, bool silent)
         {
-            ProjectElement elementToUse = (element == null) ? this.nestedProjectElement : element;
+            ProjectElement elementToUse = element ?? this.nestedProjectElement;
+            this.nestedProjectElement = elementToUse ?? throw new ArgumentNullException(nameof(element));
 
-            if(elementToUse == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-            this.nestedProjectElement = elementToUse;
-
-            Automation.OAProject oaProject = GetAutomationObject() as Automation.OAProject;
-            if(oaProject == null || oaProject.ProjectItems == null)
+            if(!(GetAutomationObject() is OAProject oaProject) || oaProject.ProjectItems == null)
                 throw new System.InvalidOperationException(SR.GetString(SR.InvalidAutomationObject, CultureInfo.CurrentUICulture));
+
             Debug.Assert(oaProject.Object != null, "The project automation object should have set the Object to the SolutionFolder");
-            Automation.OASolutionFolder<ProjectContainerNode> folder = oaProject.Object as Automation.OASolutionFolder<ProjectContainerNode>;
+            OASolutionFolder<ProjectContainerNode> folder = oaProject.Object as OASolutionFolder<ProjectContainerNode>;
 
             // Prepare the parameters to pass to RunWizardFile
             string destination = elementToUse.GetFullPathForElement();
@@ -510,7 +495,7 @@ namespace Microsoft.VisualStudio.Project
             wizParams[2] = oaProject.ProjectItems;
             wizParams[3] = Path.GetDirectoryName(destination);
             wizParams[4] = Path.GetFileNameWithoutExtension(destination);
-            wizParams[5] = Path.GetDirectoryName(folder.DTE.FullName); //VS install dir
+            wizParams[5] = Path.GetDirectoryName(folder.DTE.FullName); //VS install directory
             wizParams[6] = silent;
 
             IVsDetermineWizardTrust wizardTrust = this.GetService(typeof(SVsDetermineWizardTrust)) as IVsDetermineWizardTrust;
@@ -527,7 +512,12 @@ namespace Microsoft.VisualStudio.Project
                 // Make the call to execute the wizard. This should cause AddNestedProjectFromTemplate to be
                 // called back with the correct set of parameters.
                 EnvDTE.IVsExtensibility extensibilityService = (EnvDTE.IVsExtensibility)GetService(typeof(EnvDTE.IVsExtensibility));
+
+#if VS2022
+                EnvDTE.wizardResult result = extensibilityService.RunWizardFile(template, IntPtr.Zero, ref wizParams);
+#else                
                 EnvDTE.wizardResult result = extensibilityService.RunWizardFile(template, 0, ref wizParams);
+#endif                
                 if(result == EnvDTE.wizardResult.wizardResultFailure)
                     throw new COMException();
             }
@@ -544,15 +534,15 @@ namespace Microsoft.VisualStudio.Project
         /// This will clone a template project file and add it as a
         /// subproject to our hierarchy.
         /// If you want to create a project for which there exist a
-        /// vstemplate, consider using RunVsTemplateWizard instead.
+        /// VS template, consider using RunVsTemplateWizard instead.
         /// </summary>
         protected internal virtual NestedProjectNode AddNestedProjectFromTemplate(ProjectElement element, __VSCREATEPROJFLAGS creationFlags)
         {
-            ProjectElement elementToUse = (element == null) ? this.nestedProjectElement : element;
+            ProjectElement elementToUse = element ?? this.nestedProjectElement;
 
             if(elementToUse == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
             string destination = elementToUse.GetFullPathForElement();
             string template = this.GetProjectTemplatePath(elementToUse);
@@ -565,12 +555,12 @@ namespace Microsoft.VisualStudio.Project
         /// This will clone a template project file and add it as a
         /// subproject to our hierarchy.
         /// If you want to create a project for which there exist a
-        /// vstemplate, consider using RunVsTemplateWizard instead.
+        /// VS template, consider using RunVsTemplateWizard instead.
         /// </summary>
         protected internal virtual NestedProjectNode AddNestedProjectFromTemplate(string fileName, string destination, string projectName, ProjectElement element, __VSCREATEPROJFLAGS creationFlags)
         {
             // If this is project creation and the template specified a subproject in its project file, this.nestedProjectElement will be used 
-            ProjectElement elementToUse = (element == null) ? this.nestedProjectElement : element;
+            ProjectElement elementToUse = element ?? this.nestedProjectElement;
 
             if(elementToUse == null)
             {
@@ -582,7 +572,7 @@ namespace Microsoft.VisualStudio.Project
             node.Init(fileName, destination, projectName, creationFlags);
 
             // In case that with did not have an existing element, or the nestedProjectelement was null 
-            //  and since Init computes the final path, set the MSBuild item to that path
+            // and since Init computes the final path, set the MSBuild item to that path
             if(this.nestedProjectElement == null)
             {
                 string relativePath = node.Url;
@@ -614,14 +604,13 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
-        /// Links the nested project nodes to the solution. The default implementation parses all nested project nodes and calles AddVirtualProjectEx on them.
+        /// Links the nested project nodes to the solution. The default implementation parses all nested project nodes and calls AddVirtualProjectEx on them.
         /// </summary>
         protected virtual void AddVirtualProjects()
         {
             for(HierarchyNode child = this.FirstChild; child != null; child = child.NextSibling)
             {
-                NestedProjectNode nestedProjectNode = child as NestedProjectNode;
-                if(nestedProjectNode != null)
+                if(child is NestedProjectNode nestedProjectNode)
                 {
                     nestedProjectNode.AddVirtualProject();
                 }
@@ -638,11 +627,11 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         protected virtual string GetProjectTemplatePath(ProjectElement element)
         {
-            ProjectElement elementToUse = (element == null) ? this.nestedProjectElement : element;
+            ProjectElement elementToUse = element ?? this.nestedProjectElement;
 
             if(elementToUse == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
 
             string templateFile = elementToUse.GetMetadata(ProjectFileConstants.Template);
@@ -674,11 +663,11 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         private RegisteredProjectType GetRegisteredProject(ProjectElement element)
         {
-            ProjectElement elementToUse = (element == null) ? this.nestedProjectElement : element;
+            ProjectElement elementToUse = element ?? this.nestedProjectElement;
 
             if(elementToUse == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
 
             // Get the project type guid from project elementToUse				
@@ -701,19 +690,17 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
-        /// Reloads a nested project node by deleting it and readding it.
+        /// Reloads a nested project node by deleting it and reading it.
         /// </summary>
         /// <param name="node">The node to reload.</param>
         protected virtual void ReloadNestedProjectNode(NestedProjectNode node)
         {
             if(node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
-            IVsSolution solution = this.GetService(typeof(IVsSolution)) as IVsSolution;
-
-            if(solution == null)
+            if(!(this.GetService(typeof(IVsSolution)) is IVsSolution solution))
             {
                 throw new InvalidOperationException();
             }
@@ -726,19 +713,16 @@ namespace Microsoft.VisualStudio.Project
                 this.EventTriggeringFlag = ProjectNode.EventTriggering.DoNotTriggerTrackerEvents;
 
                 // notify SolutionEvents listeners that we are about to add children
-                IVsFireSolutionEvents fireSolutionEvents = solution as IVsFireSolutionEvents;
-
-                if(fireSolutionEvents == null)
+                if(!(solution is IVsFireSolutionEvents fireSolutionEvents))
                 {
                     throw new InvalidOperationException();
                 }
 
                 ErrorHandler.ThrowOnFailure(fireSolutionEvents.FireOnBeforeUnloadProject(node.NestedHierarchy));
 
-                int isDirtyAsInt = 0;
-                this.IsDirty(out isDirtyAsInt);
+                this.IsDirty(out int isDirtyAsInt);
 
-                bool isDirty = (isDirtyAsInt == 0) ? false : true;
+                bool isDirty = isDirtyAsInt != 0;
 
                 ProjectElement element = node.ItemNode;
                 node.CloseNestedProjectNode();
@@ -746,7 +730,7 @@ namespace Microsoft.VisualStudio.Project
                 // Remove from the solution
                 this.RemoveChild(node);
 
-                // Now readd it                
+                // Now read it                
                 try
                 {
                     __VSCREATEPROJFLAGS flags = __VSCREATEPROJFLAGS.CPF_NOTINSLNEXPLR | __VSCREATEPROJFLAGS.CPF_SILENT | __VSCREATEPROJFLAGS.CPF_OPENFILE;
@@ -760,21 +744,20 @@ namespace Microsoft.VisualStudio.Project
                     if(!Utilities.IsInAutomationFunction(this.Site))
                     {
                         string message = (String.IsNullOrEmpty(e.Message)) ? SR.GetString(SR.NestedProjectFailedToReload, CultureInfo.CurrentUICulture) : e.Message;
-                        string title = string.Empty;
+                        string title = String.Empty;
                         OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
                         OLEMSGBUTTON buttons = OLEMSGBUTTON.OLEMSGBUTTON_OK;
                         OLEMSGDEFBUTTON defaultButton = OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST;
                         VsShellUtilities.ShowMessageBox(this.Site, title, message, icon, buttons, defaultButton);
                     }
 
-                    // Do not digest exception. let the caller handle it. If in a later stage this exception is not digested then the above messagebox is not needed.
+                    // Do not digest exception. let the caller handle it. If in a later stage this exception is not digested then the above message box is not needed.
                     throw;
                 }
 
 #if DEBUG
-                IVsHierarchy nestedHierarchy;
-                ErrorHandler.ThrowOnFailure(solution.GetProjectOfUniqueName(newNode.GetMkDocument(), out nestedHierarchy));
-                Debug.Assert(nestedHierarchy != null && Utilities.IsSameComObject(nestedHierarchy, newNode.NestedHierarchy), "The nested hierrachy was not reloaded correctly.");
+                ErrorHandler.ThrowOnFailure(solution.GetProjectOfUniqueName(newNode.GetMkDocument(), out IVsHierarchy nestedHierarchy));
+                Debug.Assert(nestedHierarchy != null && Utilities.IsSameComObject(nestedHierarchy, newNode.NestedHierarchy), "The nested hierarchy was not reloaded correctly.");
 #endif
                 this.SetProjectFileDirty(isDirty);
 
@@ -813,8 +796,7 @@ namespace Microsoft.VisualStudio.Project
             }
 
             // test if we actually have a document for this id.
-            string moniker;
-            this.GetMkDocument(e.ItemID, out moniker);
+            this.GetMkDocument(e.ItemID, out string moniker);
             Debug.Assert(NativeMethods.IsSamePath(moniker, e.FileName), " The file + " + e.FileName + " has changed but we could not retrieve the path for the item id associated to the path.");
             #endregion
 
@@ -823,7 +805,7 @@ namespace Microsoft.VisualStudio.Project
             {
                 // Prompt to reload the nested project file. We use the moniker here since the filename from the event arg is canonicalized.
                 string message = String.Format(CultureInfo.CurrentCulture, SR.GetString(SR.QueryReloadNestedProject, CultureInfo.CurrentUICulture), moniker);
-                string title = string.Empty;
+                string title = String.Empty;
                 OLEMSGICON icon = OLEMSGICON.OLEMSGICON_INFO;
                 OLEMSGBUTTON buttons = OLEMSGBUTTON.OLEMSGBUTTON_YESNO;
                 OLEMSGDEFBUTTON defaultButton = OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST;
@@ -833,7 +815,7 @@ namespace Microsoft.VisualStudio.Project
             if(reload)
             {
                 // We have to use here the interface method call, since it might be that specialized project nodes like the project container item
-                // is owerwriting the default functionality.
+                // is overwriting the default functionality.
                 this.ReloadItem(e.ItemID, 0);
             }
         }
