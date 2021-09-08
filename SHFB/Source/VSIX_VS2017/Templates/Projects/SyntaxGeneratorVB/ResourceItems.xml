@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+	<!-- Syntax section and code example title.  Add one for the primary ID and one for each alternate ID (if any).
+			 Prefix each ID with "devlang_". -->
+	<item id="devlang_$safeprojectname$">$safeprojectname$</item>
+
+	<!-- Development language metadata values.  Add one for the primary ID and one for each alternate ID (if any).
+			 Prefix each ID with "metaLang_". -->
+	<item id="metaLang_$safeprojectname$">$safeprojectname$</item>
+
+	<!-- Syntax section messages.  Add any custom messages IDs written out with the WriteMessage() method here.
+			 These are typically suffixed with an underscore and the language name as shown in these examples. -->
+	<item id="UnsupportedOperator_$safeprojectname$">$safeprojectname$ does not support this operator.</item>
+	<item id="UnsupportedVarargs_$safeprojectname$">$safeprojectname$ does not support methods that use variable
+length arguments (<span class="code">varargs</span>).  The compiler automatically resolves calls to this method
+to the same method that uses a parameter array.</item>
+
+</content>

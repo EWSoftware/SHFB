@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{242129CC-9310-450C-AEE3-4B849ECFB67E}</ProjectGuid>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.Package</RootNamespace>
+    <AssemblyName>SandcastleBuilder.Package</AssemblyName>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseCodebase>true</UseCodebase>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Common debugging support -->
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DevEnvDir)\devenv.exe</StartProgram>
+    <StartArguments>/rootSuffix Exp</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilder.Package.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DocumentationFile>bin\Release\SandcastleBuilder.Package.xml</DocumentationFile>
+    <CreateVsixContainer>True</CreateVsixContainer>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DeployExtension>False</DeployExtension>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\VSIX_VS2017\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <EmbeddedResource Include="..\VSIX_VS2017\Properties\Resources.resx" Link="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="..\VSIX_VS2017\Properties\Resources.Designer.cs" Link="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="..\VSIX_VS2017\Resources\SandcastleBuilderProjectNode.bmp" Link="Resources\SandcastleBuilderProjectNode.bmp" />
+    <Resource Include="..\VSIX_VS2017\Resources\AspNetWebsite.png" Link="Resources\AspNetWebsite.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\CodeSnippets.ico" Link="Resources\CodeSnippets.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\Component.ico" Link="Resources\Component.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\Docx.png" Link="Resources\Docx.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\EntityReferences.png" Link="Resources\EntityReferences.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\FAQ.png" Link="Resources\FAQ.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\HtmlEncode.png" Link="Resources\HtmlEncode.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\HtmlHelp.png" Link="Resources\HtmlHelp.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\HtmlPage.ico" Link="Resources\HtmlPage.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\ImageFile.ico" Link="Resources\ImageFile.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\JScriptFile.ico" Link="Resources\JScriptFile.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\LogFile.png" Link="Resources\LogFile.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\MSHelpViewer.png" Link="Resources\MSHelpViewer.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\MamlTopic.ico" Link="Resources\MamlTopic.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\Package.ico" Link="Resources\Package.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\ResourceItemFile.ico" Link="Resources\ResourceItemFile.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\ShowHelp.png" Link="Resources\ShowHelp.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\SiteMap.ico" Link="Resources\SiteMap.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\StyleSheet.ico" Link="Resources\StyleSheet.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\Text.ico" Link="Resources\Text.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\TokenFile.ico" Link="Resources\TokenFile.ico" />
+    <Resource Include="..\VSIX_VS2017\Resources\TopicPreview.png" Link="Resources\TopicPreview.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\ViewHelpFile.png" Link="Resources\ViewHelpFile.png" />
+    <Resource Include="..\VSIX_VS2017\Resources\XmlFile.ico" Link="Resources\XmlFile.ico" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Content Include="..\License.rtf">
+      <Link>License.rtf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <VSCTCompile Include="..\VSIX_VS2017\SandcastleBuilderPackage.vsct" Link="SandcastleBuilderPackage.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="..\VSIX_VS2017\VSIXPackage.jpg" Link="VSIXPackage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\VSIX_VS2017\VSIXPreview.png" Link="VSIXPreview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <EmbeddedResource Include="..\VSIX_VS2017\VSPackage.resx" Link="VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\ReadMe.txt" />
+    <None Include="Templates\Templates.vsspell" />
+    <!-- Each ZipProject must contain a RootPath element to define the root path used to group the project files
+         into the same template archive. -->
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.shfbproj">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.vstemplate">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\v1.0.0.0.aml">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\VersionHistory.aml">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\Welcome.aml">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\Help.png">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\ContentLayout.content">
+      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.cs">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.csproj">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleCS\launchSettings.json">
+      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.cs">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.csproj">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.props">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\PlugInCS.vstemplate">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInCS\launchSettings.json">
+      <RootPath>Templates\Projects\PlugInCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.cs">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.csproj">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.props">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\GlobalSuppressions.cs">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentCS\launchSettings.json">
+      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\GlobalSuppressions.cs">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.cs">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.csproj">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.props">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGeneratorCS.vstemplate">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\launchSettings.json">
+      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.props">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vbproj">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PresentationStyleVB\launchSettings.json">
+      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.props">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.vb">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.vbproj">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\PlugInVB.vstemplate">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\PlugInVB\launchSettings.json">
+      <RootPath>Templates\Projects\PlugInVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.props">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.vb">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.vbproj">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponentVB.vstemplate">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\GlobalSuppressions.vb">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\BuildComponentVB\launchSettings.json">
+      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\GlobalSuppressions.vb">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.props">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vb">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vbproj">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGeneratorVB.vstemplate">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\launchSettings.json">
+      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\AssemblyInfo.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\ConfigEditor.csproj">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\ConfigEditorCS.vstemplate">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\GlobalSuppressions.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\launchSettings.json">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.Designer.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.resx">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml.cs">
+      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\AssemblyInfo.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\ConfigEditor.vbproj">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\ConfigEditorVB.vstemplate">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\GlobalSuppressions.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\launchSettings.json">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.Designer.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.resx">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml.vb">
+      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
+      <OutputSubPath>Documentation</OutputSubPath>
+    </ZipProject>
+    <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
+         in the Add New Item dialog box. -->
+    <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.html">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.js">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.sitemap">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.css">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.txt">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.xml">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.xamlcfg">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.vstemplate">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.snippets">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.content">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.vstemplate">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.vstemplate">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.items">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.tokens">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.vstemplate">
+      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.aml">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.vstemplate">
+      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
+    </ZipItem>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
+      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
+      <Name>ColorizerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPFProj_VS2022\Microsoft.VisualStudio.Project_VS2022.csproj">
+      <Project>{cacb60a9-1e76-4f92-8831-b134a658c695}</Project>
+      <Name>Microsoft.VisualStudio.Project_VS2022</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
+      <Name>SandcastleBuilderUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF_VS2022.csproj">
+      <Project>{ae0de2ce-2185-4740-b834-4923a375f591}</Project>
+      <Name>SandcastleBuilderWPF_VS2022</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">
+      <Project>{3464677b-467d-4a35-baf4-543fb5fa9d66}</Project>
+      <Name>SandcastlePlatformWindows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit">
+      <Version>4.6.97</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK">
+      <Version>17.0.0-previews-3-31605-261</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="..\VSIX_Shared\SandcastleBuilderPackage.Shared.projitems" Label="Shared" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <!-- These are needed to properly build the project and item templates and include them in the VSIX
+         container ready for installation.  Deployment is suppressed since we are using VSTemplate files. -->
+    <VsTemplateLanguage>SHFBProject</VsTemplateLanguage>
+    <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);GetVsixTemplateItems</GetVsixSourceItemsDependsOn>
+    <DeployVSTemplates>false</DeployVSTemplates>
+  </PropertyGroup>
+  <!-- This target is needed to include the project and item templates in the VSIX container. -->
+  <Target Name="GetVsixTemplateItems" DependsOnTargets="ZipProjects;ZipItems">
+    <ItemGroup>
+      <VSIXSourceItem Include="@(IntermediateZipItem)">
+        <VSIXSubPath>ItemTemplates\%(IntermediateZipItem.Language)\%(IntermediateZipItem.OutputSubPath)\%(IntermediateZipItem.Culture)</VSIXSubPath>
+      </VSIXSourceItem>
+      <VSIXSourceItem Include="@(IntermediateZipProject)">
+        <VSIXSubPath>ProjectTemplates\%(IntermediateZipProject.Language)\%(IntermediateZipProject.OutputSubPath)\%(IntermediateZipProject.Culture)</VSIXSubPath>
+      </VSIXSourceItem>
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>IF "$(ConfigurationName)"=="Debug" Goto Exit
+
+IF NOT EXIST "$(SolutionDir)..\..\Deployment\InstallResources" MD "$(SolutionDir)..\..\Deployment\InstallResources"
+
+Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2017AndLater.vsix"
+
+:Exit
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

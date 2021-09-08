@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<RootNamespace>$safeprojectname$</RootNamespace>
+		<AssemblyName>$safeprojectname$</AssemblyName>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Product>$safeprojectname$</Product>
+		<Title>$safeprojectname$ Presentation Style</Title>
+		<Description>A Sandcastle Help File Builder presentation style</Description>
+		<Version>1.0.0.0</Version>
+		<Authors>$username$</Authors>
+		<Company>$username$</Company>
+		<PackageIconUrl></PackageIconUrl>
+		<PackageIcon></PackageIcon>
+		<RepositoryUrl></RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>$safeprojectname$ SHFB sandcastle presentation style</PackageTags>
+		<PackageProjectUrl></PackageProjectUrl>
+		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<IsTool>true</IsTool>
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+		<ContentTargetFolders>tools\</ContentTargetFolders>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="build\$safeprojectname$.props">
+			<Pack>true</Pack>
+			<PackagePath>build\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Content\" />
+		<Folder Include="Data\" />
+		<Folder Include="icons\" />
+		<Folder Include="scripts\" />
+		<Folder Include="SHFBContent\" />
+		<Folder Include="styles\" />
+		<Folder Include="Transforms\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2021.7.11" />
+	</ItemGroup>
+</Project>

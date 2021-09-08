@@ -48,7 +48,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)FileDocumentManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FolderNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HierarchyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDEBuildLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImageHandler.cs" />
@@ -101,5 +100,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VsCommands.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VSShellUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.Project.Shared.shproj.vsspell" />
   </ItemGroup>
 </Project>

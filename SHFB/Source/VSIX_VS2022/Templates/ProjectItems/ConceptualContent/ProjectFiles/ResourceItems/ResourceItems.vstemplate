@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="133"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="134"/>
+    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="409" />
+    <ProjectType>SHFBProject</ProjectType>
+    <DefaultName>Resource Items.items</DefaultName>
+    <SortOrder>40</SortOrder>
+    <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem>ResourceItems.items</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

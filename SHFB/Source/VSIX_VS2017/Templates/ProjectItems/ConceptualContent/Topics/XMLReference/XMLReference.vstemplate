@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="173"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="174"/>
+    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="407" />
+    <ProjectType>SHFBProject</ProjectType>
+    <DefaultName>XML Reference.aml</DefaultName>
+    <SortOrder>300</SortOrder>
+    <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="true">XMLReference.aml</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="204" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="205" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
+		<ProjectType>CSharp</ProjectType>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>NewStyle</DefaultName>
+		<SortOrder>1030</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+		<LanguageTag>csharp</LanguageTag>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Presentation Style</ProjectTypeTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
+		<CreateInPlace>true</CreateInPlace>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="PresentationStyle.csproj" ReplaceParameters="true">
+			<ProjectItem TargetFileName="$safeprojectname$PresentationStyle.cs" ReplaceParameters="true" OpenInEditor="true">PresentationStyle.cs</ProjectItem>
+			<Folder Name="build" TargetFolderName="build">
+				<ProjectItem TargetFileName="$safeprojectname$.props">PresentationStyle.props</ProjectItem>
+			</Folder>
+			<Folder Name="Properties" TargetFolderName="Properties">
+				<ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+				<ProjectItem TargetFileName="launchSettings.json" ReplaceParameters="true">launchSettings.json</ProjectItem>
+			</Folder>
+			<Folder Name="Configuration" TargetFolderName="Configuration" />
+			<Folder Name="Content" TargetFolderName="Content" />
+			<Folder Name="Data" TargetFolderName="Data" />
+			<Folder Name="icons" TargetFolderName="icons" />
+			<Folder Name="scripts" TargetFolderName="scripts" />
+			<Folder Name="SHFBContent" TargetFolderName="SHFBContent" />
+			<Folder Name="styles" TargetFolderName="styles" />
+			<Folder Name="Transforms" TargetFolderName="Transforms" />
+		</Project>
+	</TemplateContent>
+</VSTemplate>

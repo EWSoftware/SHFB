@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- Classes in this assembly will only be used from the standalone GUI and Visual Studio extension
+				 on the Windows platform so we will always target the .NET Framework. -->
+		<TargetFramework>net472</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWpf>true</UseWpf>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>$safeprojectname$</AssemblyName>
+		<RootNamespace>$safeprojectname$</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- TODO: You may need to add a reference to the component project if you reference classes from it such
+							 as configuration types etc.
+		<ProjectReference Include="..\ComponentPlugInName\ComponentPlugInName.csproj" />
+		-->
+		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2021.7.11" />
+		<PackageReference Include="EWSoftware.SandcastleBuilder.Utils" Version="2021.7.11" />
+	</ItemGroup>
+</Project>

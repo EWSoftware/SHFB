@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="212" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="213" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
+		<ProjectType>VisualBasic</ProjectType>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>BuildComponent</DefaultName>
+		<SortOrder>1010</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+		<LanguageTag>visualbasic</LanguageTag>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Build Component</ProjectTypeTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
+		<CreateInPlace>true</CreateInPlace>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="BuildComponent.vbproj" ReplaceParameters="true">
+			<ProjectItem TargetFileName="$safeprojectname$Component.vb" ReplaceParameters="true" OpenInEditor="true">BuildComponent.vb</ProjectItem>
+			<ProjectItem TargetFileName="GlobalSuppressions.vb" ReplaceParameters="true">GlobalSuppressions.vb</ProjectItem>
+			<Folder Name="build" TargetFolderName="build">
+				<ProjectItem TargetFileName="$safeprojectname$.props">BuildComponent.props</ProjectItem>
+			</Folder>
+			<Folder Name="My Project" TargetFolderName="My Project">
+				<ProjectItem TargetFileName="AssemblyInfo.vb" ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
+				<ProjectItem TargetFileName="launchSettings.json" ReplaceParameters="true">launchSettings.json</ProjectItem>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>
