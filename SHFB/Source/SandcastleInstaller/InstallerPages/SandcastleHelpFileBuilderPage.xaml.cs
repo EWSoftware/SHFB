@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SandcastleHelpFileBuilderPage.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 09/08/2021
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder
 //
@@ -90,7 +90,7 @@ namespace Sandcastle.Installer.InstallerPages
                         {
                             try
                             {
-                                System.Diagnostics.Process.Start("https://ewsoftware.github.io/SHFB/index.html");
+                                Process.Start("https://ewsoftware.github.io/SHFB/index.html");
                             }
                             catch(Exception ex)
                             {
@@ -102,12 +102,6 @@ namespace Sandcastle.Installer.InstallerPages
                 }
             }
         }
-
-        /// <summary>
-        /// This is used to retrieve the help file builder version
-        /// </summary>
-        public Version HelpFileBuilderVersion { get; private set; }
-
         #endregion
 
         #region Constructor
@@ -136,13 +130,9 @@ namespace Sandcastle.Installer.InstallerPages
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            if(configuration.Attribute("shfbVersion") == null)
-                throw new InvalidOperationException("A shfbVersion attribute value is required");
-
             if(configuration.Attribute("installerName") == null)
                 throw new InvalidOperationException("An installer attribute value is required");
 
-            this.HelpFileBuilderVersion = new Version(configuration.Attribute("shfbVersion").Value);
             installerName = configuration.Attribute("installerName").Value;
 
             base.Initialize(configuration);
@@ -173,24 +163,24 @@ namespace Sandcastle.Installer.InstallerPages
                 if(!String.IsNullOrEmpty(shfbFolder))
                 {
                     // If there is an installed version, make sure it is older than what we expect
-                    if(!Directory.Exists(shfbFolder) || !File.Exists(Path.Combine(shfbFolder, "SHFBProjectLauncher.exe")))
+                    if(!Directory.Exists(shfbFolder) || !File.Exists(Path.Combine(shfbFolder, "Tools", "SHFBProjectLauncher.exe")))
                         installedVersion = new Version(0, 0, 0, 0);
                     else
                     {
-                        fvi = FileVersionInfo.GetVersionInfo(Path.Combine(shfbFolder, "SHFBProjectLauncher.exe"));
+                        fvi = FileVersionInfo.GetVersionInfo(Path.Combine(shfbFolder, "Tools", "SHFBProjectLauncher.exe"));
 
                         // The file version is missing the century to satisfy the MSI rule for the major version
                         // value so we'll add the century back from the SHFB version to get a match.
-                        installedVersion = new Version(fvi.FileMajorPart + (this.HelpFileBuilderVersion.Major / 100 * 100),
+                        installedVersion = new Version(fvi.FileMajorPart + (this.Installer.ToolsVersion.Major / 100 * 100),
                             fvi.FileMinorPart, fvi.FileBuildPart, fvi.FilePrivatePart);
                     }
 
-                    if(installedVersion < this.HelpFileBuilderVersion)
+                    if(installedVersion < this.Installer.ToolsVersion)
                         shfbFolder = null;
                     else
                     {
                         // If the version is greater, we can't go on as this package is out of date
-                        if(installedVersion > this.HelpFileBuilderVersion)
+                        if(installedVersion > this.Installer.ToolsVersion)
                         {
                             shfbFolder = null;
                             pnlControls.Visibility = Visibility.Collapsed;
@@ -212,7 +202,7 @@ namespace Sandcastle.Installer.InstallerPages
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
 
                 imgSpinner.Visibility = lblPleaseWait.Visibility = Visibility.Collapsed;
 

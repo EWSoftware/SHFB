@@ -11,8 +11,8 @@
       <Paragraph><Bold FontSize="16">Welcome to the Sandcastle Guided Installation</Bold></Paragraph>
       <Paragraph>Sandcastle, created by Microsoft, is a set of tools used to create documentation from .NET
 assemblies and their associated XML comments files.  Depending on the type of help file that you want to produce,
-one or more additional tools may be required.  In addition, there are community patches and third-party build
-tools and components that you may find useful.</Paragraph>
+one or more additional tools may be required.  In addition, there are third-party tools and components that you
+may find useful.</Paragraph>
 
       <Paragraph>This application will guide you through the process needed to create a working
 installation so that you can start producing help files with Sandcastle.  Some of the additional tools,
@@ -20,13 +20,9 @@ such as the help compilers, are not open source and thus are not included with t
 package.  This application will search for the required tools and give you instructions on how to download
 and install them if they are not found.</Paragraph>
 
-      <Paragraph>This installer comes with the version of
-<Hyperlink NavigateUri="https://GitHub.com/EWSoftware/SHFB">Sandcastle</Hyperlink> displayed in the main title
-above.</Paragraph>
-
-      <Paragraph>Third-party build tool and component providers may also use this installer with their
-product.  In such cases, their tools and components will be installed after Sandcastle and the related tools
-noted above.</Paragraph>
+      <Paragraph>This installer comes with the version of the
+<Hyperlink NavigateUri="https://GitHub.com/EWSoftware/SHFB">Sandcastle Help File Builder and Tools</Hyperlink>
+displayed in the main title above.</Paragraph>
 
       <Paragraph>Click the <Bold>Next</Bold> button to continue.</Paragraph>
     </FlowDocument>

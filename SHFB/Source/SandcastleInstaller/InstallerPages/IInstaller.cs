@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : IInstaller.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 09/08/2021
 //
 // This file contains an interface definition used to implement an installer
 //
@@ -15,6 +15,7 @@
 // 02/05/2011  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Collections.Generic;
 
 namespace Sandcastle.Installer.InstallerPages
@@ -26,6 +27,11 @@ namespace Sandcastle.Installer.InstallerPages
     {
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the tools version
+        /// </summary>
+        Version ToolsVersion { get; }
 
         /// <summary>
         /// This returns an enumerable list of all of the current installer pages

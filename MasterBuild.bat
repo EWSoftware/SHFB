@@ -11,6 +11,8 @@ IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Cur
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Professional\MSBuild\Current" SET "MSBUILD=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Professional\MSBuild\Current\bin\MSBuild.exe"
 IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current" SET "MSBUILD=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\bin\MSBuild.exe"
 
+IF EXIST "%ProgramFiles%\Microsoft Visual Studio\2022\Preview\MSBuild\Current" SET "MSBUILD2022=%ProgramFiles%\Microsoft Visual Studio\2022\Preview\MSBuild\Current\bin\MSBuild.exe"
+
 SET SHFBROOT=%CD%\SHFB\Deploy\
 SET BuildConfig=%1
 
@@ -30,7 +32,14 @@ ECHO *
 ECHO * VS2017 and later package
 ECHO *
 
-"%MSBUILD%" /r /nologo /v:m /m "SandcastleBuilderPackage.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /r /nologo /v:m /m "VSIX_VS2017.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+IF ERRORLEVEL 1 GOTO End
+
+ECHO *
+ECHO * VS2022 and later package
+ECHO *
+
+IF NOT "%MSBUILD2022%"=="%%MSBUILD2022%%" "%MSBUILD2022%" /r /nologo /v:m /m "VSIX_VS2022.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 :BuildDocs

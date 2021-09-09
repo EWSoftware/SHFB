@@ -153,6 +153,152 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Deploy\Schemas\Authoring\SandcastleMAML.xml">
+      <!-- This must be in the root to install in the root schemas folder -->
+      <Link>SandcastleMAML.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\base.xsd">
+      <Link>SandcastleMAML\base.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\baseConditional.xsd">
+      <Link>SandcastleMAML\baseConditional.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\block.xsd">
+      <Link>SandcastleMAML\block.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\blockCommon.xsd">
+      <Link>SandcastleMAML\blockCommon.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\blockSoftware.xsd">
+      <Link>SandcastleMAML\blockSoftware.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\conditionSet.xsd">
+      <Link>SandcastleMAML\conditionSet.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\developer.xsd">
+      <Link>SandcastleMAML\developer.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\developerReference.xsd">
+      <Link>SandcastleMAML\developerReference.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\developerStructure.xsd">
+      <Link>SandcastleMAML\developerStructure.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\glossary.xsd">
+      <Link>SandcastleMAML\glossary.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\hierarchy.xsd">
+      <Link>SandcastleMAML\hierarchy.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inline.xsd">
+      <Link>SandcastleMAML\inline.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineCommon.xsd">
+      <Link>SandcastleMAML\inlineCommon.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineLinking.xsd">
+      <Link>SandcastleMAML\inlineLinking.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineSoftware.xsd">
+      <Link>SandcastleMAML\inlineSoftware.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineUi.xsd">
+      <Link>SandcastleMAML\inlineUi.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\standardCodes.xsd">
+      <Link>SandcastleMAML\standardCodes.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structure.xsd">
+      <Link>SandcastleMAML\structure.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureList.xsd">
+      <Link>SandcastleMAML\structureList.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureMedia.xsd">
+      <Link>SandcastleMAML\structureMedia.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureProcedure.xsd">
+      <Link>SandcastleMAML\structureProcedure.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureTable.xsd">
+      <Link>SandcastleMAML\structureTable.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\__internal.xsd">
+      <Link>SandcastleMAML\__internal.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Templates\ReadMe.txt" />
     <None Include="Templates\Templates.vsspell" />
     <!-- Each ZipProject must contain a RootPath element to define the root path used to group the project files
@@ -671,6 +817,7 @@
     <ProjectReference Include="..\MPFProj_VS2022\Microsoft.VisualStudio.Project_VS2022.csproj">
       <Project>{cacb60a9-1e76-4f92-8831-b134a658c695}</Project>
       <Name>Microsoft.VisualStudio.Project_VS2022</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
@@ -730,7 +877,7 @@
 
 IF NOT EXIST "$(SolutionDir)..\..\Deployment\InstallResources" MD "$(SolutionDir)..\..\Deployment\InstallResources"
 
-Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2017AndLater.vsix"
+Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2022AndLater.vsix"
 
 :Exit
 </PostBuildEvent>

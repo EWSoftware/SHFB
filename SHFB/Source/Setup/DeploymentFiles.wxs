@@ -4605,7 +4605,7 @@
             <File Id="filEB4075FAC6F2E0D18DDA8866C12DF798" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\blockSoftware.xsd" />
           </Component>
           <Component Id="cmpC3909186F49FB6DCAE8C4921D9C62A06" Guid="{7AE401A1-771C-48CD-BF03-8F06916466EF}">
-            <File Id="filAFB214477A504758E70A88FD25FE46A7" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\catalog.xml" />
+            <File Id="filAFB214477A504758E70A88FD25FE46A7" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\SandcastleMAML.xml" />
           </Component>
           <Component Id="cmp22A150525C429D4C6A022A6A5D0EB987" Guid="{6BB01371-CECB-4CB2-AFD5-5DA705669CCD}">
             <File Id="filAA7300C46B461D44ED6ACD9823246DEF" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\conditionSet.xsd" />

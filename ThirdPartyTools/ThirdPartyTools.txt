@@ -1,0 +1,9 @@
+This folder contains third-party tools that may be used with the help file builder.
+
+HTMLHelp.exe
+Microsoft HTML Help Workshop installer.  Use this if you need to install the HTML help workshop tool to build
+Help 1 (CHM files).  The official Microsoft download link tends to fail so it is offered here as a backup location.
+
+SBAppLocale_ENG.zip
+SB App Local tool installer.  This is used by the DBCS Fix Plug-In.  This is provided here as a backup location
+in case the official download link in the plug-in's configuration form ever goes away.

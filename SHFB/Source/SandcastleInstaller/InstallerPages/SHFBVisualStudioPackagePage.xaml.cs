@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SHFBVisualStudioPackagePage.cs
 // Author  : Eric Woodruff
-// Updated : 04/21/2021
+// Updated : 09/08/2021
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder Visual Studio package
 //
@@ -51,6 +51,11 @@ namespace Sandcastle.Installer.InstallerPages
             public string PackageName { get; set; }
 
             /// <summary>
+            /// The VSIX package ID
+            /// </summary>
+            public string PackageId { get; set; }
+
+            /// <summary>
             /// A list of the installed version descriptions
             /// </summary>
             public IList<string> InstalledVersionDescriptions { get; } = new List<string>();
@@ -76,7 +81,6 @@ namespace Sandcastle.Installer.InstallerPages
         private readonly List<VisualStudioInstallerPackage> vsixPackages;
 
         private bool searchPerformed, installerExecuted;
-        private Guid packageGuid;
 
         #endregion
 
@@ -139,15 +143,14 @@ namespace Sandcastle.Installer.InstallerPages
             if(configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            if(configuration.Attribute("packageGuid") == null)
-                throw new InvalidOperationException("A packageGuid attribute value is required");
-
-            packageGuid = new Guid(configuration.Attribute("packageGuid").Value);
-
             // Load the Visual Studio package versions
             foreach(var package in configuration.Elements("package"))
             {
-                var vsix = new VisualStudioInstallerPackage { PackageName = package.Attribute("name").Value };
+                var vsix = new VisualStudioInstallerPackage
+                {
+                    PackageName = package.Attribute("name").Value,
+                    PackageId = package.Attribute("id").Value
+                };
 
                 vsixPackages.Add(vsix);
 
@@ -333,7 +336,7 @@ namespace Sandcastle.Installer.InstallerPages
                         if(package.InstalledLocations.Count != 0)
                         {
                             // Try uninstalling any prior version before installing the latest release.
-                            exitCode = Utility.RunInstaller(package.VsixInstallerPath, "/u:" + packageGuid);
+                            exitCode = Utility.RunInstaller(package.VsixInstallerPath, "/u:" + package.PackageId);
 
                             // The VSIX installer that comes with VS2017 and later requires that all instances
                             // of Visual Studio and its subtasks be shut down before removal or installation.
