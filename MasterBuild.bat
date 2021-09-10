@@ -24,22 +24,21 @@ ECHO *
 ECHO * Core tools
 ECHO *
 
-"%MSBUILD%" /r /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
-
+"%MSBUILD%" /nr:false /r /nologo /v:m /m "SandcastleTools.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 ECHO *
 ECHO * VS2017 and later package
 ECHO *
 
-"%MSBUILD%" /r /nologo /v:m /m "VSIX_VS2017.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /r /nologo /v:m /m "VSIX_VS2017.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 ECHO *
 ECHO * VS2022 and later package
 ECHO *
 
-IF NOT "%MSBUILD2022%"=="%%MSBUILD2022%%" "%MSBUILD2022%" /r /nologo /v:m /m "VSIX_VS2022.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+IF NOT "%MSBUILD2022%"=="%%MSBUILD2022%%" "%MSBUILD2022%" /nr:false /r /nologo /v:m /m "VSIX_VS2022.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 :BuildDocs
@@ -71,13 +70,13 @@ ECHO *
 ECHO * Documentation
 ECHO *
 
-"%MSBUILD%" /nologo /v:m /m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /nologo /v:m /m "AllDocumentation.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 
 CD ..\SHFB\Source
 
-"%MSBUILD%" /nologo /v:m /m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+"%MSBUILD%" /nr:false /nologo /v:m /m "SHFBSetup.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 
 IF ERRORLEVEL 1 GOTO End
 

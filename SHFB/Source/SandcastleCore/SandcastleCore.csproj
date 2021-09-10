@@ -20,7 +20,7 @@
 		<PackageId>EWSoftware.Sandcastle.Core</PackageId>
 		<Title>Sandcastle Tools Core Class Library</Title>
 		<!-- This should match the strong name version in AssemblyInfoShared.cs -->
-		<Version>2021.7.11.0</Version>
+		<Version>2021.9.9.0</Version>
 		<Authors>Eric Woodruff</Authors>
 		<Description>This contains a set of core base classes and Managed Extensibility Framework (MEF) classes common to the Sandcastle Help File Builder tool set and third-party tools.</Description>
 		<PackageIconUrl>https://github.com/EWSoftware/SHFB/raw/master/SHFB/Source/SandcastleLogo.png</PackageIconUrl>
@@ -40,4 +40,7 @@
 		<None Include="..\SandcastleLogo.png" Link="SandcastleLogo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
+	<Target Name="CopyPackage" AfterTargets="Pack">
+		<Exec Command="IF &quot;$(ConfigurationName)&quot;==&quot;Debug&quot; Goto Exit&#xD;&#xA;&#xD;&#xA;IF NOT EXIST &quot;$(SolutionDir)..\..\Deployment\NuGet&quot; MD &quot;$(SolutionDir)..\..\Deployment\NuGet&quot;&#xD;&#xA;&#xD;&#xA;Copy &quot;$(TargetDir)..\*.nupkg&quot; &quot;$(SolutionDir)..\..\Deployment\NuGet&quot;&#xD;&#xA;&#xD;&#xA;:Exit&#xD;&#xA;" />
+	</Target>
 </Project>

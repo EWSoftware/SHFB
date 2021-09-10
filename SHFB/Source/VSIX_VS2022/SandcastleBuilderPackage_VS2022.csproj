@@ -840,8 +840,8 @@
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit">
       <Version>4.6.97</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK">
-      <Version>17.0.0-previews-3-31605-261</Version>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-3-31605-261" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\VSIX_Shared\SandcastleBuilderPackage.Shared.projitems" Label="Shared" />

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetPackageManagerDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/21/2021
+// Updated : 09/09/2021
 // Note    : Copyright 2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage NuGet packages in a help file builder project
@@ -33,6 +33,7 @@ using System.Diagnostics;
 
 using Microsoft.Build.Evaluation;
 using System.IO;
+using System.Xml.Linq;
 
 namespace SandcastleBuilder.WPF.UI
 {
@@ -398,6 +399,42 @@ namespace SandcastleBuilder.WPF.UI
         {
             if(lbPackages.SelectedItem is NuGetPackage selectedPackage)
             {
+                XNamespace msbuild = "http://schemas.microsoft.com/developer/msbuild/2003";
+                XDocument projectXml = XDocument.Parse(project.Xml.RawXml);
+
+                // Ensure that the elements required to support package references are present in the project.
+                // If not, add them.  Search the raw XML rather than using the API as it may have the targets
+                // we are looking for already imported but not by the actual project.
+                if(!projectXml.Root.Elements(msbuild + "Import").Any(i => i.Attribute("Project").Value.IndexOf(
+                  "Microsoft.Common.props", StringComparison.OrdinalIgnoreCase) != -1))
+                {
+                    // Use the API to add the elements
+                    var import = project.Xml.AddImport(@"$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props");
+                    import.Condition = @"Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')";
+
+                    // The import may not be at the start were it needs to be so move it
+                    import.Parent.RemoveChild(import);
+                    project.Xml.InsertBeforeChild(import, project.Xml.FirstChild);
+                }
+
+                if(!projectXml.Root.Elements(msbuild + "Import").Any(i => i.Attribute("Project").Value.IndexOf(
+                  "Microsoft.Common.targets", StringComparison.OrdinalIgnoreCase) != -1))
+                {
+                    var import = project.Xml.AddImport(@"$(MSBuildToolsPath)\Microsoft.Common.targets");
+                    import.Condition = "'$(MSBuildRestoreSessionId)' != ''";
+
+                    // This import needs to appear right before the SandcastleHelpFileBuilder.targets import.
+                    // For it, we can use the API to find it as it will be in the project.
+                    var shfbTargets = project.Imports.First(i => i.ImportingElement.Project.IndexOf(
+                        "SandcastleHelpFileBuilder.targets", StringComparison.OrdinalIgnoreCase) != -1);
+
+                    if(String.IsNullOrWhiteSpace(shfbTargets.ImportingElement.Condition))
+                        shfbTargets.ImportingElement.Condition = "'$(MSBuildRestoreSessionId)' == ''";
+
+                    import.Parent.RemoveChild(import);
+                    project.Xml.InsertBeforeChild(import, shfbTargets.ImportingElement);
+                }
+
                 string version = (string)cboVersion.SelectedItem;
 
                 var item = project.GetItems("PackageReference").FirstOrDefault(

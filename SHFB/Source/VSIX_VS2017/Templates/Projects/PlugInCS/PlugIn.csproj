@@ -38,8 +38,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
-		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2021.7.11" />
-		<PackageReference Include="EWSoftware.SandcastleBuilder.Utils" Version="2021.7.11" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2021.9.9" />
+		<PackageReference Include="EWSoftware.SandcastleBuilder.Utils" Version="2021.9.9" />
 	</ItemGroup>
 
 	<!-- TODO: If you have a project with configuration forms, you can include it in this package by
