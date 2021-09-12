@@ -654,7 +654,7 @@ namespace SandcastleBuilder.Package.Nodes
             if(!Directory.Exists(fullPath))
                 Directory.CreateDirectory(fullPath);
 
-            return base.CreateFolderNode(path, element);
+            return new SandcastleBuilderFolderNode(this, path, element);
         }
 
         /// <summary>

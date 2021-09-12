@@ -15,6 +15,7 @@
     <Ignore>ctor</Ignore>
     <Ignore>ddue</Ignore>
     <Ignore>de</Ignore>
+    <Ignore>dotnet</Ignore>
     <Ignore>endregion</Ignore>
     <Ignore>filterpriority</Ignore>
     <Ignore>inheritdoc</Ignore>
@@ -32,4 +33,5 @@
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
+  <IgnoredWordsFile></IgnoredWordsFile>
 </SpellCheckerConfiguration>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2021
+// Updated : 09/11/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
@@ -780,8 +780,10 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 var bm = new BitmapImage();
 
-                // Cache on load to prevent it locking the image
+                // Cache on load to prevent it locking the image and ignore the cache so that changes to the
+                // image are reflected in the topic when reloaded.
                 bm.BeginInit();
+                bm.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bm.CacheOption = BitmapCacheOption.OnLoad;
                 bm.UriSource = new Uri(imageInfo.Key);
                 bm.EndInit();
@@ -873,8 +875,10 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 var bm = new BitmapImage();
 
-                // Cache on load to prevent it locking the image
+                // Cache on load to prevent it locking the image and ignore the cache so that changes to the
+                // image are reflected in the topic when reloaded.
                 bm.BeginInit();
+                bm.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bm.CacheOption = BitmapCacheOption.OnLoad;
                 bm.UriSource = new Uri(imageInfo.Key);
                 bm.EndInit();

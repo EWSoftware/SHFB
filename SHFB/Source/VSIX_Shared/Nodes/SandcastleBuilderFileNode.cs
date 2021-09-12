@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderFileNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 09/11/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a file node in a Sandcastle Help File Builder Visual Studio
@@ -24,7 +24,12 @@ using System.IO;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
+
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
+
+using Sandcastle.Platform.Windows;
+
+using SandcastleBuilder.WPF.UI;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -131,6 +136,21 @@ namespace SandcastleBuilder.Package.Nodes
             }
 
             return base.QueryStatusOnNode(cmdGroup, cmd, pCmdText, ref result);
+        }
+
+        /// <inheritdoc />
+        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+        {
+            // Handle adding package references ourselves as Visual Studio doesn't currently support them in
+            // third-party project systems.
+            if(cmdGroup == GuidList.guidNuGetPackageManagerCmdSet && cmd == PkgCmdIDList.ManageNuGetPackages)
+            {
+                var dlg = new NuGetPackageManagerDlg(this.ProjectMgr.BuildProject);
+                dlg.ShowModalDialog();
+                return VSConstants.S_OK;
+            }
+
+            return base.ExecCommandOnNode(cmdGroup, cmd, nCmdexecopt, pvaIn, pvaOut);
         }
         #endregion
     }

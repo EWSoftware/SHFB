@@ -30,9 +30,8 @@ not included in the guided installation that you may find useful.</para>
 
 				<para>The help file builder tools and the Visual Studio package can be installed manually by running the
 MSI and VSIX installers found in the <localUri>.\InstallResources</localUri> folder extracted from the guided
-installer download.  If installing the tools manually, the optional components such as the XML schemas and
-snippets will not be installed.  You will also need to ensure the requirements noted below are also present if
-needed.</para>
+installer download.  If installing the tools manually, the optional components such as the snippets will not be
+installed.  You will also need to ensure the requirements noted below are also present if needed.</para>
 			</content>
 		</section>
 
@@ -55,7 +54,7 @@ needed.</para>
 					<listItem>
 						<para>If you are using the standalone GUI to build help file projects, you will need to install the
 <externalLink>
-	<linkText>Microsoft Build Tools <token>VisualStudioMinVersion</token> or later</linkText>
+	<linkText>Microsoft Build Tools for <token>VisualStudioMinVersion</token> or later</linkText>
 	<linkUri>https://visualstudio.microsoft.com/downloads</linkUri>
 	<linkTarget>_blank</linkTarget>
 </externalLink>.  If you are using <token>VisualStudioMinVersion</token> or later to build help file projects,

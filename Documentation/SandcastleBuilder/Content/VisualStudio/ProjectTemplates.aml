@@ -25,6 +25,14 @@ generated.</para>
 					</listItem>
 
 					<listItem>
+						<para><legacyBold>Build Component/Plug-In Configuration Editor</legacyBold> - Create a configuration
+editor for a build component or plug-in.  This allows you to configure the component or plug-in interactively
+from within the standalone GUI or Visual Studio.  The configuration editor is separate from the component or
+plug-in as the editors are specific to the Windows platform.  This allows the components to remain
+platform-agnostic.</para>
+					</listItem>
+
+					<listItem>
 						<para><legacyBold>BuildAssembler Syntax Generator</legacyBold> - Create a syntax generator for use
 with the <application>BuildAssembler</application>&#160;<codeInline>SyntaxComponent</codeInline> used to create
 declaration or usage syntax sections within topics.</para>
@@ -38,12 +46,17 @@ you can copy the content files from an existing presentation style or start from
 				</list>
 
 				<para>Once the project has been created, see the comments in the template source code file for things
-to do to implement the given component.</para>
+to do to implement the given component.  The related topics noted below also provide more information on creating
+the components.</para>
 			</content>
 		</section>
 
 		<relatedTopics>
 			<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+			<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" />
+			<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" />
+			<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" />
+			<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

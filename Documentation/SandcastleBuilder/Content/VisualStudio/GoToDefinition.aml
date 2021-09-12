@@ -61,7 +61,7 @@ of C# projects within the current solution.  It is not possible to navigate to m
 members of base framework or reference assemblies.</para>
 
 						<para>Since code entity references must be fully qualified, there is an excellent probability that
-the target ID's member will be found and displayed provided it is with the current solution as noted above.
+the target ID's member will be found and displayed provided it is within the current solution as noted above.
 However, since the ID must be parsed and searched for as text, there is a chance that an incorrect match will be
 made or no match will be found.  As such, check to be sure that you ended up where you expected before making any
 changes.  In the event it cannot find a match, check the ID to ensure that it is correct.  The

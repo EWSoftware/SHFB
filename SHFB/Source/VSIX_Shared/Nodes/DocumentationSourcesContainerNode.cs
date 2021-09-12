@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 09/11/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the documentation sources container node in a Sandcastle Help
@@ -37,6 +37,8 @@ using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
 
 using Microsoft.VisualStudio;
+
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
@@ -367,6 +369,15 @@ namespace SandcastleBuilder.Package.Nodes
         protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn,
           IntPtr pvaOut)
 		{
+            // Handle adding package references ourselves as Visual Studio doesn't currently support them in
+            // third-party project systems.
+            if(cmdGroup == GuidList.guidNuGetPackageManagerCmdSet && cmd == PkgCmdIDList.ManageNuGetPackages)
+            {
+                var dlg = new NuGetPackageManagerDlg(this.ProjectMgr.BuildProject);
+                dlg.ShowModalDialog();
+                return VSConstants.S_OK;
+            }
+
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet && (int)cmd == PkgCmdIDList.AddDocSource)
             {
                 this.AddDocumentationSources();

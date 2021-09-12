@@ -6,8 +6,8 @@
 
 		<introduction>
 			<para>Starting with version 1.8.0.0 of the help file builder, the project file uses a standard MSBuild file
-format.  Projects can be built from the command line using the MSBuild executable.  As such, the console mode
-executable used in prior versions of the help file builder has been removed.</para>
+format.  Projects can be built from the command line using the <localUri>MSBuild</localUri> executable.  Starting
+with version 2021.9.9.0, the <localUri>dotnet build</localUri> tool is also supported.</para>
 
 			<autoOutline />
 		</introduction>
@@ -15,15 +15,15 @@ executable used in prior versions of the help file builder has been removed.</pa
 		<section address="Options">
 			<title>Building From the Command Line</title>
 			<content>
-				<para>Use <localUri>MSBuild.exe</localUri> to build help file builder projects from the command line.  It
-can typically be found in the <localUri>%ProgramFiles(x86)%\MSBuild\[version]\bin</localUri> folder where
-"[version]" is the most recent version of MSBuild (14.0 for example).  All of the usual MSBuild command line
-options can be used.  You can use the <system>/property:n=v</system> option (short form: <system>/p:n=v</system>)
-to override project property values where "n" is a property name and "v" is the value to use.  Below are some
-common command line option and property overrides not directly represented by a matching help file builder
-project property.  For a full list of MSBuild command line options, see the <externalLink>
+				<para>Use <localUri>MSBuild.exe</localUri> or <localUri>dotnet.exe</localUri> with the <system>build</system>
+command line option to build help file builder projects from the command line.  All of the usual MSBuild command
+line options can be used.  You can use the <system>/property:name=value</system> option (short form:
+<system>/p:name=value</system>) to override project property values where "name" is a property name and "value"
+is the value to use.  Below are some common command line option and property overrides not directly represented
+by a matching help file builder project property.  For a full list of MSBuild command line options, see the
+					<externalLink>
 						<linkText>MSBuild Command Line Reference</linkText>
-						<linkUri>https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference</linkUri>
+						<linkUri>https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference</linkUri>
 						<linkTarget>_blank</linkTarget>
 					</externalLink>
 				</para>
@@ -113,7 +113,7 @@ command line parameter in double quotes.</para>
 
 				<alert class="note">
 					<para>Regardless of any verbosity level setting, full output from the build is always saved to the log
-file.  As with the GUI builder, the help file and the log file can be found in the folder specified in the
+file.  As with the standalone GUI, the help file and the log file can be found in the folder specified in the
 project's <codeInline>OutputPath</codeInline> property after a build.</para>
 				</alert>
 

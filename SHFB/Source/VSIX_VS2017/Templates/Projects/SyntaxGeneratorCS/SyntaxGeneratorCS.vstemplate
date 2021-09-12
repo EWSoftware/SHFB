@@ -7,7 +7,7 @@
 		<ProjectType>CSharp</ProjectType>
 		<CreateNewFolder>true</CreateNewFolder>
 		<DefaultName>Language</DefaultName>
-		<SortOrder>1020</SortOrder>
+		<SortOrder>60</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
 		<LanguageTag>csharp</LanguageTag>

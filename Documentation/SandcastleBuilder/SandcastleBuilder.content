@@ -161,9 +161,10 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Project Explorer Window">
+  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" isExpanded="true" isSelected="true" title="Solution/Project Explorer Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="Project Explorer, overview" />
+      <HelpKeyword index="K" term="Solution Explorer, overview" />
     </HelpKeywords>
     <Topic id="64f0576f-51b3-4dae-aaac-06568c6c2f68" visible="True" title="Documentation Sources">
       <HelpKeywords>
@@ -173,6 +174,12 @@
     <Topic id="9309b01b-87bf-4d68-b035-c10ac77d1522" visible="True">
       <HelpKeywords>
         <HelpKeyword index="K" term="references" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="273dcaf1-1e51-475d-a622-732dd3afc212" visible="True" title="Component Packages">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="component packages" />
+        <HelpKeyword index="K" term="NuGet" />
       </HelpKeywords>
     </Topic>
     <Topic id="0a9d6da4-cff6-4664-8b64-b7df04c8a37d" visible="True" title="Folder and File Items">
@@ -1212,7 +1219,7 @@
       <HelpKeyword index="K" term="markdown content" />
     </HelpKeywords>
   </Topic>
-  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isExpanded="true" isSelected="true" title="Sandcastle Tools">
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" title="Sandcastle Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="sandcastle tools" />
     </HelpKeywords>

@@ -260,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
+    <None Include="Content\ProjectExplorer\ComponentPackages.aml" />
     <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.10.10.0.aml" />
     <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.7.25.0.aml" />
     <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.7.25.0tov2019.11.17.0.aml" />
@@ -602,6 +603,10 @@
     <Image Include="media\Namespaces.png">
       <ImageId>Namespaces</ImageId>
       <AlternateText>Namespace Summaries</AlternateText>
+    </Image>
+    <Image Include="media\NuGetManager.png">
+      <ImageId>NuGetManager</ImageId>
+      <AlternateText>Manage NuGet Packages</AlternateText>
     </Image>
     <Image Include="media\PlugInConfig.png">
       <ImageId>PlugInConfig</ImageId>

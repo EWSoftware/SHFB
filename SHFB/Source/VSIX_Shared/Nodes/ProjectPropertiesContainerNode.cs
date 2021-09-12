@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : ProjectPropertiesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 09/11/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents the project properties container node in a Sandcastle Help File
@@ -30,8 +30,10 @@ using WindowCommandIds = Microsoft.VisualStudio.VSConstants.VsUIHierarchyWindowC
 
 using Microsoft.VisualStudio;
 
-using SandcastleBuilder.Package.Automation;
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Package.Properties;
+using SandcastleBuilder.WPF.UI;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -189,6 +191,15 @@ namespace SandcastleBuilder.Package.Nodes
           IntPtr pvaOut)
 		{
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+
+            // Handle adding package references ourselves as Visual Studio doesn't currently support them in
+            // third-party project systems.
+            if(cmdGroup == GuidList.guidNuGetPackageManagerCmdSet && cmd == PkgCmdIDList.ManageNuGetPackages)
+            {
+                var dlg = new NuGetPackageManagerDlg(this.ProjectMgr.BuildProject);
+                dlg.ShowModalDialog();
+                return VSConstants.S_OK;
+            }
 
             // Open the Project Properties window when double-clicked or Properties is selected
             if((cmdGroup == VsMenus.guidStandardCommandSet97 && (VsCommands)cmd == VsCommands.PropSheetOrProperties) ||

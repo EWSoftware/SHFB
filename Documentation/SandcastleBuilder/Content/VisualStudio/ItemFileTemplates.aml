@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="ece3a395-589f-45c3-9f0e-2a25b8b6c537" revisionNumber="1">
+	<!-- Ignore Spelling: xlink utf -->
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>Item file templates are supplied for each of the common file types within a help file builder project.
@@ -61,15 +62,15 @@ This will cause Visual Studio to automatically insert a new GUID value in the to
       &lt;para&gt;Required introduction&lt;/para&gt;
     &lt;/introduction&gt;
 
-&lt;section address="Section1"&gt;
-  &lt;title&gt;Optional section title&lt;/title&gt;
-  &lt;content&gt;
-    &lt;para&gt;Add one or more sections with content&lt;/para&gt;
-  &lt;/content&gt;
-&lt;/section&gt;
+    &lt;section address="Section1"&gt;
+      &lt;title&gt;Optional section title&lt;/title&gt;
+      &lt;content&gt;
+        &lt;para&gt;Add one or more sections with content&lt;/para&gt;
+      &lt;/content&gt;
+    &lt;/section&gt;
 
     &lt;relatedTopics&gt;
-    &lt;!-- Add related topics --&gt;
+      &lt;!-- Add related topics --&gt;
     &lt;/relatedTopics&gt;
   &lt;/developerConceptualDocument&gt;
 &lt;/topic&gt;
@@ -128,7 +129,7 @@ for the <localUri>BlankTopic.aml</localUri> template file).  An example is shown
 &lt;/VSTemplate&gt;
 </code>
 
-				<para>For the <codeInline>Icon</codeInline> element, you can use the one shown in the
+				<para>For the <codeInline>Icon</codeInline> element, you can replace the ID shown in the
 example above with one of the following ID numbers to use one of the built-in file type icons.  If you
 want to use your own icon, use an element like the commented out example to specify the icon filename.
 The icon file should be placed in the same folder as the template file and the VSTemplate file.</para>

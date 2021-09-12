@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourceNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/26/2021
+// Updated : 09/11/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that represents a documentation source in a Sandcastle Help File Builder project
@@ -23,11 +23,15 @@ using System.IO;
 using System.Text;
 using System.Xml.Linq;
 
+using Microsoft.VisualStudio;
 using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Package.Automation;
+using SandcastleBuilder.WPF.UI;
 
 namespace SandcastleBuilder.Package.Nodes
 {
@@ -180,6 +184,21 @@ namespace SandcastleBuilder.Package.Nodes
         protected internal override HierarchyNode GetDragTargetHandlerNode()
         {
             return this.Parent;
+        }
+
+        /// <inheritdoc />
+        protected override int ExecCommandOnNode(Guid cmdGroup, uint cmd, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+        {
+            // Handle adding package references ourselves as Visual Studio doesn't currently support them in
+            // third-party project systems.
+            if(cmdGroup == GuidList.guidNuGetPackageManagerCmdSet && cmd == PkgCmdIDList.ManageNuGetPackages)
+            {
+                var dlg = new NuGetPackageManagerDlg(this.ProjectMgr.BuildProject);
+                dlg.ShowModalDialog();
+                return VSConstants.S_OK;
+            }
+
+            return base.ExecCommandOnNode(cmdGroup, cmd, nCmdexecopt, pvaIn, pvaOut);
         }
         #endregion
     }

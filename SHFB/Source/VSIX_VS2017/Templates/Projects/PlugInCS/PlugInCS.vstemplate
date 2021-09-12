@@ -7,7 +7,7 @@
 		<ProjectType>CSharp</ProjectType>
 		<CreateNewFolder>true</CreateNewFolder>
 		<DefaultName>PlugIn</DefaultName>
-		<SortOrder>1000</SortOrder>
+		<SortOrder>20</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
 		<LanguageTag>csharp</LanguageTag>

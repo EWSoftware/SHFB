@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="273dcaf1-1e51-475d-a622-732dd3afc212" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This node is used to specify third-party NuGet packages that can be used to add additional build
+components, plug-ins, presentation styles, and syntax generators for use by the help file project.  If the
+project will be built on a build server, you can also add the tools and reflection data NuGet packages here so
+that the help file builder does not need to be installed on the build server.  Unlike package references in a
+solution or project documentation source, these only contribute components used during the build and do not add
+any supplemental API information to the resulting help file for the documentation sources.</para>
+		</introduction>
+
+		<section address="KnownIssues">
+			<title>Known Issues</title>
+			<content>
+				<para>Due to a lack of support in Visual Studio for adding package references in third-party project
+systems, the help file builder project system must handle all aspects of adding and removing them.  As such,
+there are some issues that will occur when adding them to help file builder projects.  The standalone GUI
+also has similar issues.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>If prompted to reload the project because external changes were detected, do so in
+order to see those changes.</para>
+					</listItem>
+					<listItem>
+						<para>You may need to close and reopen the Project Properties tool window to see changes
+to the components.</para>
+					</listItem>
+					<listItem>
+						<para>You may need to close and reopen the project or restart the IDE to see changes to the
+components.</para>
+					</listItem>
+					<listItem>
+						<para>When closing Visual Studio you may be warned about a task blocking user input.
+Ignore the warning and close Visual Studio anyway.</para>
+					</listItem>
+				</list>
+
+				<para>These issues will only occur when adding or removing the component package references.  Once
+added and recognized by the project system, they will function without issue.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Managing Component Packages</title>
+			<content>
+				<para>To add, remove, or update component packages in a help file builder project, right click on
+the <ui>Component Packages</ui> project node and select the <ui>Manage NuGet Packages</ui> option.</para>
+
+				<mediaLink>
+					<image xlink:href="NuGetManager" placement="center" />
+				</mediaLink>
+
+				<para>TODO: Finish this topic</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+			<link xlink:href="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

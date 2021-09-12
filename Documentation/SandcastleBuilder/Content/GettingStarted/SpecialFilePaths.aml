@@ -18,6 +18,9 @@ builder if referenced by a build component or a plug-in configuration.</para>
 supported.  To utilize project-specific components either place the components in the project folder or a
 subfolder beneath it or point to the component location using the project's <codeInline>Component Path</codeInline>
 property.</para>
+
+				<para>If third-party components are available as NuGet packages, they can be added to the project using
+the <link xlink:href="273dcaf1-1e51-475d-a622-732dd3afc212" /> node in the project explorer tool window.</para>
 			</alert>
 
 		</introduction>

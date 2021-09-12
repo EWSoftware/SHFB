@@ -7,7 +7,7 @@
 		<ProjectType>VisualBasic</ProjectType>
 		<CreateNewFolder>true</CreateNewFolder>
 		<DefaultName>NewStyle</DefaultName>
-		<SortOrder>1030</SortOrder>
+		<SortOrder>55</SortOrder>
 		<ProvideDefaultName>true</ProvideDefaultName>
 		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
 		<LanguageTag>visualbasic</LanguageTag>

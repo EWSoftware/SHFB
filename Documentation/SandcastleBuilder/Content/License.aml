@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" revisionNumber="1">
+	<!-- Ignore Spelling: Maierhofer -->
 	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -104,58 +105,54 @@ implied warranties of merchantability, fitness for a particular purpose and non-
 			<content>
 				<para>The <externalLink>
 						<linkText>ICSharpCode.TextEditor</linkText>
-						<linkUri>http://www.icsharpcode.net/OpenSource/SD/</linkUri>
+						<linkUri>https://github.com/icsharpcode</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2000-2015, IC#Code, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2000-2021, IC#Code, All Rights Reserved.</para>
 
 				<para>The <externalLink>
 						<linkText>Weifen Luo DockPanel Suite</linkText>
-						<linkUri>http://sourceforge.net/projects/dockpanelsuite/</linkUri>
+						<linkUri>https://sourceforge.net/projects/dockpanelsuite/</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2007-2015, Weifen Luo, All Rights Reserved. </para>
-
-				<para>The <externalLink>
-						<linkText>Ionic.Zip Library</linkText>
-						<linkUri>http://DotNetZip.CodePlex.com</linkUri>
-						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2009-2015, Dino Chiesa, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2007-2021, Weifen Luo, All Rights Reserved. </para>
 
 				<para>The <externalLink>
 						<linkText>Managed ESENT Library</linkText>
-						<linkUri>http://ManagedESent.CodePlex.com</linkUri>
+						<linkUri>https://github.com/microsoft/managedesent</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2008-2015, Microsoft Corporation, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2008-2021, Microsoft Corporation, All Rights Reserved.</para>
 
 				<para>
 					<externalLink>
 						<linkText>AjaxDoc</linkText>
-						<linkUri>http://AjaxDoc.codeplex.com</linkUri>
+						<linkUri>https://github.com/bleroy/ajaxdoc</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2006-2015, Bertrand Le Roy, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2006-2021, Bertrand Le Roy, All Rights Reserved.</para>
+
+				<para>NHunSpell is Copyright &#169; 2009-2021 Maierhofer Software, All Rights Reserved</para>
 
 				<para>
 					<externalLink>
 						<linkText>Script#</linkText>
-						<linkUri>http://projects.nikhilk.net/ScriptSharp</linkUri>
+						<linkUri>https://github.com/NikhilK/scriptsharp</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2007-2015, Nikhil Kothari, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2007-2021, Nikhil Kothari, All Rights Reserved.</para>
 
 				<para>
 					<externalLink>
 						<linkText>SBAppLocale</linkText>
 						<linkUri>http://www.SteelBytes.com/?mid=45</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2005-2015, Steel Bytes, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2005-2021, Steel Bytes, All Rights Reserved.</para>
 
 				<para>The <externalLink>
 						<linkText>code colorizer library</linkText>
-						<linkUri>http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con</linkUri>
+						<linkUri>https://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con</linkUri>
 						<linkTarget>_blank</linkTarget>
-					</externalLink> is Copyright &#169; 2003-2015, Jonathan de Halleux, All Rights Reserved.</para>
+					</externalLink> is Copyright &#169; 2003-2021, Jonathan de Halleux, All Rights Reserved.</para>
 
-				<para>All other code is Copyright &#169; 2006-2015, <externalLink>
+				<para>All other code is Copyright &#169; 2006-2021, <externalLink>
 						<linkText>Eric Woodruff</linkText>
-						<linkUri>http://www.ewoodruff.us</linkUri>
+						<linkUri>https://github.com/EWSoftware/SHFB</linkUri>
 						<linkTarget>_blank</linkTarget>
 					</externalLink>, All Rights Reserved.</para>
 

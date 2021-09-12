@@ -6,7 +6,7 @@
     <SharedGUID>8cf3b55a-1d94-4dfa-8fa8-ff7de35e0cdd</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>SandcastleBuilderPackage.Shared</Import_RootNamespace>
+    <Import_RootNamespace>SandcastleBuilder.Package</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Automation\OADocumentationSourceItem.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderComReferenceNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderFileNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderFileNodeProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderFolderNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderPackageReferenceNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderProjectNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderProjectNodeProperties.cs" />
