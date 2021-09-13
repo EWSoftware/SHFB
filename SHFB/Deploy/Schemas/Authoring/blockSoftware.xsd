@@ -46,7 +46,7 @@
 						</appinfo>
 					</annotation>
 				</element>
-        <!-- Sandcastle extention element -->
+        <!-- Sandcastle extension element -->
         <element ref="maml:code"/>
 			</choice>
 			<attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
@@ -54,11 +54,11 @@
 				<annotation>
 					<documentation>
 						The language attribute describes the programming language used in a code sample or
-						some other programattic structure.
+						some other programmatic structure.
 					</documentation>
 				</annotation>
 			</attribute>
-			<!-- Sandcastle extention attribute -->
+			<!-- Sandcastle extension attribute -->
 			<attribute name="title" type="string">
 				<annotation>
 					<documentation>
@@ -66,7 +66,7 @@
 					</documentation>
 				</annotation>
 			</attribute>
-			<!-- Sandcastle extention attribute -->
+			<!-- Sandcastle extension attribute -->
 			<attribute name="source" type="string">
 				<annotation>
 					<documentation>
@@ -74,7 +74,7 @@
 					</documentation>
 				</annotation>
 			</attribute>
-			<!-- Sandcastle extention attribute -->
+			<!-- Sandcastle extension attribute -->
 			<attribute name="region" type="string">
 				<annotation>
 					<documentation>
@@ -83,7 +83,7 @@ from the file identified by the source attribute.
 					</documentation>
 				</annotation>
 			</attribute>
-      <!-- Sandcastle extention attribute -->
+      <!-- Sandcastle extension attribute -->
       <attribute name="removeRegionMarkers" type="boolean">
         <annotation>
           <documentation>
@@ -92,7 +92,7 @@ from the file identified by the source attribute.
           </documentation>
         </annotation>
       </attribute>
-      <!-- Sandcastle extention attribute -->
+      <!-- Sandcastle extension attribute -->
       <attribute name="tabSize" type="int">
         <annotation>
           <documentation>
@@ -101,7 +101,7 @@ from the file identified by the source attribute.
           </documentation>
         </annotation>
       </attribute>
-      <!-- Sandcastle extention attribute -->
+      <!-- Sandcastle extension attribute -->
       <attribute name="numberLines" type="boolean">
         <annotation>
           <documentation>
@@ -110,7 +110,7 @@ from the file identified by the source attribute.
           </documentation>
         </annotation>
       </attribute>
-      <!-- Sandcastle extention attribute -->
+      <!-- Sandcastle extension attribute -->
       <attribute name="outlining" type="boolean">
         <annotation>
           <documentation>
@@ -119,7 +119,7 @@ from the file identified by the source attribute.
           </documentation>
         </annotation>
       </attribute>
-      <!-- Sandcastle extention attribute -->
+      <!-- Sandcastle extension attribute -->
       <attribute name="keepSeeTags" type="boolean">
         <annotation>
           <documentation>

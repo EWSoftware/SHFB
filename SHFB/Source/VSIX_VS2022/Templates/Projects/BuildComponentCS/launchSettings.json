@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "$safeprojectname$": {
-      "commandName": "Executable",
-      "executablePath": "$(SHFBROOT)\\Tools\\SandcastleBuilderGUI.exe"
-    }
-  }
-}

@@ -125,7 +125,7 @@
 						</appinfo>
 					</annotation>
 					<attributeGroup ref="maml:linkingGroup" />
-					<!-- Sandcastle extention attribute -->
+					<!-- Sandcastle extension attribute -->
 					<attribute name="placement" type="maml:imagePlacementType">
 						<annotation>
 							<documentation>
@@ -408,7 +408,7 @@
 						</appinfo>
 					</annotation>
 				</element>
-				<!-- Sandcastle extention attribute -->
+				<!-- Sandcastle extension attribute -->
 				<element name="linkTarget" type="maml:textType" minOccurs="0">
 					<annotation>
 						<documentation>

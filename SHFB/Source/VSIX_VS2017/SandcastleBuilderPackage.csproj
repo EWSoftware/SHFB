@@ -471,515 +471,581 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Templates\.gitignore" />
     <None Include="Templates\ReadMe.txt" />
     <None Include="Templates\Templates.vsspell" />
-    <!-- Each ZipProject must contain a RootPath element to define the root path used to group the project files
-         into the same template archive. -->
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.shfbproj">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.vstemplate">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\v1.0.0.0.aml">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\VersionHistory.aml">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\Welcome.aml">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\Help.png">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\ContentLayout.content">
-      <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.cs">
-      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.csproj">
-      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
-      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
-      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\AssemblyInfo.cs">
-      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleCS\launchSettings.json">
-      <RootPath>Templates\Projects\PresentationStyleCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.cs">
-      <RootPath>Templates\Projects\PlugInCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.csproj">
-      <RootPath>Templates\Projects\PlugInCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\PlugIn.props">
-      <RootPath>Templates\Projects\PlugInCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\PlugInCS.vstemplate">
-      <RootPath>Templates\Projects\PlugInCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\AssemblyInfo.cs">
-      <RootPath>Templates\Projects\PlugInCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInCS\launchSettings.json">
-      <RootPath>Templates\Projects\PlugInCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.cs">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.csproj">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponent.props">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\GlobalSuppressions.cs">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\AssemblyInfo.cs">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentCS\launchSettings.json">
-      <RootPath>Templates\Projects\BuildComponentCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\GlobalSuppressions.cs">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.cs">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.csproj">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.props">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGeneratorCS.vstemplate">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorCS\launchSettings.json">
-      <RootPath>Templates\Projects\SyntaxGeneratorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
-      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.props">
-      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
-      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vbproj">
-      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate">
-      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PresentationStyleVB\launchSettings.json">
-      <RootPath>Templates\Projects\PresentationStyleVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\AssemblyInfo.vb">
-      <RootPath>Templates\Projects\PlugInVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.props">
-      <RootPath>Templates\Projects\PlugInVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.vb">
-      <RootPath>Templates\Projects\PlugInVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\PlugIn.vbproj">
-      <RootPath>Templates\Projects\PlugInVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\PlugInVB.vstemplate">
-      <RootPath>Templates\Projects\PlugInVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\PlugInVB\launchSettings.json">
-      <RootPath>Templates\Projects\PlugInVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\AssemblyInfo.vb">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.props">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.vb">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponent.vbproj">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\BuildComponentVB.vstemplate">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\GlobalSuppressions.vb">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\BuildComponentVB\launchSettings.json">
-      <RootPath>Templates\Projects\BuildComponentVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\GlobalSuppressions.vb">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.props">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vb">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vbproj">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGeneratorVB.vstemplate">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\AssemblyInfo.vb">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\SyntaxGeneratorVB\launchSettings.json">
-      <RootPath>Templates\Projects\SyntaxGeneratorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\AssemblyInfo.cs">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\ConfigEditor.csproj">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\ConfigEditorCS.vstemplate">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\GlobalSuppressions.cs">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\launchSettings.json">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.cs">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.Designer.cs">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.resx">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml.cs">
-      <RootPath>Templates\Projects\ConfigEditorCS</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\AssemblyInfo.vb">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\ConfigEditor.vbproj">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\ConfigEditorVB.vstemplate">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\GlobalSuppressions.vb">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\launchSettings.json">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.vb">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.Designer.vb">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.resx">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <ZipProject Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml.vb">
-      <RootPath>Templates\Projects\ConfigEditorVB</RootPath>
-      <OutputSubPath>Documentation</OutputSubPath>
-    </ZipProject>
-    <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
-         in the Add New Item dialog box. -->
-    <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.html">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.js">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.sitemap">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.css">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.txt">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.xml">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.xamlcfg">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.vstemplate">
-      <OutputSubPath>Other Content</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.vstemplate">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.snippets">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.content">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.vstemplate">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.vstemplate">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.items">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.tokens">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.vstemplate">
-      <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.aml">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.vstemplate">
-      <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
-    </ZipItem>
+    <Content Include="Templates\Projects\BuildComponentCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\GlobalSuppressions.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\GlobalSuppressions.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.Designer.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugIn.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyle.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\GlobalSuppressions.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.snippets">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\CodeSnippets</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.content">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ContentLayout</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.items">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ResourceItems</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.tokens">
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\TokenFile</VSIXSubPath>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Conceptual</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\ErrorMessage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\HowTo</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Orientation</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Reference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefNoSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefWithSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Sample</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechArch</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechCodeDir</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechOrient</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechScen</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechSum</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Troubleshooting</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\UIReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Whitepaper</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\XMLReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\ConfigEditor.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\ConfigEditor.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugIn.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugIn.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugIn.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugIn.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyle.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyle.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.sitemap">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\SiteMap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.xamlcfg">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XamlSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\ContentLayout.content">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\v1.0.0.0.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\VersionHistory.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\Welcome.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\CodeSnippets</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ContentLayout</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ResourceItems</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.vstemplate">
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\TokenFile</VSIXSubPath>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Conceptual</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\ErrorMessage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\HowTo</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Orientation</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Reference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefNoSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefWithSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Sample</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechArch</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechCodeDir</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechOrient</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechScen</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechSum</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Troubleshooting</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\UIReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Whitepaper</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\XMLReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponentVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\GlobalSuppressions.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\ConfigEditorCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\ConfigEditorVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\GlobalSuppressions.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.Designer.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugInCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugIn.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugInVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGeneratorCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\GlobalSuppressions.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGeneratorVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bitmap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bitmap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.html">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\HtmlPage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\HtmlPage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\ScriptFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\ScriptFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\SiteMap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.css">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\StyleSheet</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\StyleSheet</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\TextFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\TextFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XamlSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XmlFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XmlFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\Help.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.shfbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.resx">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.resx">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
@@ -1022,24 +1088,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <!-- These are needed to properly build the project and item templates and include them in the VSIX
-         container ready for installation.  Deployment is suppressed since we are using VSTemplate files. -->
-    <VsTemplateLanguage>SHFBProject</VsTemplateLanguage>
-    <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);GetVsixTemplateItems</GetVsixSourceItemsDependsOn>
-    <DeployVSTemplates>false</DeployVSTemplates>
-  </PropertyGroup>
-  <!-- This target is needed to include the project and item templates in the VSIX container. -->
-  <Target Name="GetVsixTemplateItems" DependsOnTargets="ZipProjects;ZipItems">
-    <ItemGroup>
-      <VSIXSourceItem Include="@(IntermediateZipItem)">
-        <VSIXSubPath>ItemTemplates\%(IntermediateZipItem.Language)\%(IntermediateZipItem.OutputSubPath)\%(IntermediateZipItem.Culture)</VSIXSubPath>
-      </VSIXSourceItem>
-      <VSIXSourceItem Include="@(IntermediateZipProject)">
-        <VSIXSubPath>ProjectTemplates\%(IntermediateZipProject.Language)\%(IntermediateZipProject.OutputSubPath)\%(IntermediateZipProject.Culture)</VSIXSubPath>
-      </VSIXSourceItem>
-    </ItemGroup>
-  </Target>
   <PropertyGroup>
     <PostBuildEvent>IF "$(ConfigurationName)"=="Debug" Goto Exit
 

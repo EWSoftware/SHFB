@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/31/2021
+// Updated : 09/12/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
@@ -119,6 +119,14 @@ namespace SandcastleBuilder.Package
       TemplateDir = @".\NullPath")]
     [ProvideEditorExtension(typeof(TokenEditorFactory), ".tokens", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 135,
+      TemplateDir = @".\NullPath")]
+    // Odd bug.  VS2017 shows the item template groups in the root of the Add New Item dialog.  VS2019 and later
+    // show them under a separate root node.  I assume the title of that root node should be that of the project
+    // system but for some reason it shows the title for the token file editor.  This hack works around that bug
+    // so that it shows something more appropriate for the category (Documentation).  Use an unlikely extension
+    // that sorts alphabetically last or it won't choose it as the resource ID to use.
+    [ProvideEditorExtension(typeof(TokenEditorFactory), ".zzzz_12345_NoFile", 999,
+      ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 224,
       TemplateDir = @".\NullPath")]
     // Register a path that should be probed for candidate assemblies at assembly load time.  This lets the
     // package find its dependency assemblies.
