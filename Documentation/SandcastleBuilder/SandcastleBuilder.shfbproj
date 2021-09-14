@@ -231,6 +231,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Content\FAQ" />
+    <Folder Include="Content\CustomComponents" />
     <Folder Include="Content\SandcastleTools" />
     <Folder Include="Content\SandcastleTools\BuildAssembler\" />
     <Folder Include="Content\SandcastleTools\MRefBuilder\" />
@@ -259,6 +260,11 @@
     <Folder Include="media\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\CustomComponents\CreateBuildComponent.aml" />
+    <None Include="Content\CustomComponents\CreatePlugIns.aml" />
+    <None Include="Content\CustomComponents\CreateSyntaxFilter.aml" />
+    <None Include="Content\CustomComponents\CreatingCustomComponents.aml" />
+    <None Include="Content\CustomComponents\CustomPresentationStyle.aml" />
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
     <None Include="Content\ProjectExplorer\ComponentPackages.aml" />
     <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.10.10.0.aml" />
@@ -284,12 +290,9 @@
     <None Include="Content\AddConceptContent\SiteMapEditor.aml" />
     <None Include="Content\BenefitsAndFeatures.aml" />
     <None Include="Content\CompConfig\APITokenResolution.aml" />
-    <None Include="Content\CompConfig\CreateBuildComponent.aml" />
-    <None Include="Content\CompConfig\CreateSyntaxFilter.aml" />
     <None Include="Content\CompConfig\ESentCachingComponents.aml" />
     <None Include="Content\CompConfig\SQLCachingComponents.aml" />
     <None Include="Content\CompConfig\SyntaxComponent.aml" />
-    <None Include="Content\CustomPresentationStyle.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0004.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0031.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0035.aml" />
@@ -351,7 +354,6 @@
     <None Include="Content\SandcastleTools\SandcastleHtmlExtract.aml" />
     <None Include="Content\SandcastleTools\SandcastleTools.aml" />
     <None Include="Content\SandcastleTools\SHFBBuildEngine.aml" />
-    <None Include="Content\SandcastleTools\VersionBuilder.aml" />
     <None Include="Content\TopicPreviewerWindow.aml" />
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.8.0.0.aml" />
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.8.0.1.aml" />
@@ -384,7 +386,6 @@
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
-    <None Include="Content\VisualStudio\ProjectTemplates.aml" />
     <None Include="Content\VisualStudio\VisualStudioTextEditor.aml" />
     <None Include="Content\VisualStudio\VisualStudioPackage.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0070.aml" />
@@ -538,7 +539,6 @@
     <None Include="Content\PlugIns\AddRefLinksPlugIn.aml" />
     <None Include="Content\PlugIns\AjaxDocPlugIn.aml" />
     <None Include="Content\PlugIns\CompNotifyPlugIn.aml" />
-    <None Include="Content\PlugIns\CreatePlugIns.aml" />
     <None Include="Content\PlugIns\DBCSFixPlugIn.aml" />
     <None Include="Content\PlugIns\DeployPlugIn.aml" />
     <None Include="Content\PlugIns\PlugIns.aml" />

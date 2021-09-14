@@ -26,17 +26,17 @@ it such as source control, IntelliSense within the file editors, etc.</para>
 					</listItem>
 					<listItem>
 						<para>
-							<link xlink:href="c8258d52-6664-4e96-86cd-6f75a854a69c" />
-						</para>
-					</listItem>
-					<listItem>
-						<para>
 							<link xlink:href="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" />
 						</para>
 					</listItem>
 					<listItem>
 						<para>
 							<link xlink:href="ba11d6d5-2f99-4b26-b384-21324ef1b49a" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="c8258d52-6664-4e96-86cd-6f75a854a69c">Custom Component Project Templates</link>
 						</para>
 					</listItem>
 				</list>

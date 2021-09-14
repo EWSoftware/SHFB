@@ -142,11 +142,6 @@
         <HelpKeyword index="K" term="Visual Studio, item file templates" />
       </HelpKeywords>
     </Topic>
-    <Topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" visible="True" title="Component Project Templates">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Visual Studio, component project templates" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" title="Visual Studio Text Editor">
       <HelpKeywords>
         <HelpKeyword index="K" term="Visual Studio, text editor" />
@@ -161,7 +156,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" isExpanded="true" isSelected="true" title="Solution/Project Explorer Window">
+  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Solution/Project Explorer Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="Project Explorer, overview" />
       <HelpKeyword index="K" term="Solution Explorer, overview" />
@@ -546,14 +541,6 @@
         <HelpKeyword index="K" term="XPathReflectionFileFilterPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating Build Process Plug-Ins">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
-        <HelpKeyword index="K" term="plug-ins, execution notes" />
-        <HelpKeyword index="K" term="plug-ins, plug-in documentation" />
-        <HelpKeyword index="K" term="plug-ins, template class" />
-      </HelpKeywords>
-    </Topic>
   </Topic>
   <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="BuildAssembler Components">
     <HelpKeywords>
@@ -610,10 +597,29 @@
         </HelpKeywords>
       </Topic>
     </Topic>
+  </Topic>
+  <Topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" visible="True" title="Creating Custom Components">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="custom components" />
+    </HelpKeywords>
+    <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating a Build Process Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
+        <HelpKeyword index="K" term="plug-ins, execution notes" />
+        <HelpKeyword index="K" term="plug-ins, plug-in documentation" />
+        <HelpKeyword index="K" term="plug-ins, template class" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a BuildAssembler Build Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, creating a build component" />
         <HelpKeyword index="K" term="build components, build component template class" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Creating a Presentation Style Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, creating a presentation style" />
+        <HelpKeyword index="K" term="build components, presentation style template class" />
       </HelpKeywords>
     </Topic>
     <Topic id="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" visible="True" title="Creating a Syntax Filter Generator Component">
@@ -1203,12 +1209,6 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
-  <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Creating a Presentation Style Component">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="build components, creating a presentation style" />
-      <HelpKeyword index="K" term="build components, presentation style template class" />
-    </HelpKeywords>
-  </Topic>
   <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" title="Open XML Document Help File Format">
     <HelpKeywords>
       <HelpKeyword index="K" term="open XML" />
@@ -1219,7 +1219,7 @@
       <HelpKeyword index="K" term="markdown content" />
     </HelpKeywords>
   </Topic>
-  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" title="Sandcastle Tools">
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isExpanded="true" isSelected="true" title="Sandcastle Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="sandcastle tools" />
     </HelpKeywords>
@@ -1247,11 +1247,6 @@
           <HelpKeyword index="K" term="tools, MRefBuilder configuration" />
         </HelpKeywords>
       </Topic>
-    </Topic>
-    <Topic id="cdac64ac-3d78-4d30-b528-ce1e9aacfb24" visible="True" title="Version Builder Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, VersionBuilder.exe" />
-      </HelpKeywords>
     </Topic>
     <Topic id="e3a49da5-e80c-4878-b904-72f902c31709" visible="True" title="Generate Inherited Documentation Tool">
       <HelpKeywords>

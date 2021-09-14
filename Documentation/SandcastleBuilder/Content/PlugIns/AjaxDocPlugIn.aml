@@ -5,6 +5,13 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
 		<introduction>
+			<alert class="warning">
+				<para><legacyBold>DEPRECATED:</legacyBold> AjaxDoc is considered obsolete and has been replaced by JsDoc.
+In addition, this plug-in will only work on Windows using the full .NET Framework and
+<application>MSBuild</application>.  It will not work if the project is built with
+<application>dotnet build</application>.</para>
+			</alert>
+			
 			<para>This plug-in is used to generate XML comments and reflection information for Atlas client script
 libraries using <externalLink>
 <linkText>AjaxDoc</linkText>

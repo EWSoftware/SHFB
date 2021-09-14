@@ -45,8 +45,9 @@ set to true, the code colorization features of the component will be disabled.</
 <application>BuildAssembler</application> Managed Extensibility Framework (MEF) component.  Copy the
 build component's assembly and any supporting files to the <localUri>.\Components and Plug-Ins</localUri>
 folder or a subfolder beneath it in the help file builder's <legacyBold>Common Application Data</legacyBold>
-folder.  If project specific, the components can be located in the help file builder project's folder or in a
-folder referred to in its <codeInline>Component Path</codeInline> property.  See the
+folder.  If available as a NuGet package, add it to the project's Component Packages node.  If project specific,
+the components can be located in the help file builder project's folder or in a folder referred to in its
+<codeInline>Component Path</codeInline> property.  See the
 <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more information.  Refer to
 the build component's documentation for information about its features and configuration options.  See the
 <link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic for information on creating a third-party
@@ -57,6 +58,7 @@ build component.  For a list of current third-party build components, see the
 		</section>
 
 		<relatedTopics>
+			<link xlink:href="c8258d52-6664-4e96-86cd-6f75a854a69c" />
 			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
 		</relatedTopics>
   </developerConceptualDocument>

@@ -89,11 +89,12 @@ order of the languages in the syntax sections and code examples.</para>
 <codeInline>Syntax Filters</codeInline> property by creating a syntax filter generator Managed Extensibility
 Framework (MEF) component.  Copy the syntax filter generator's assembly and any supporting files to the
 <localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it in the help file builder's
-<legacyBold>Common Application Data</legacyBold> folder.  If project specific, the components can be located in
-the help file builder project's folder or in a folder referred to in its <codeInline>Component Path</codeInline>
-property.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more
-information.  Refer to the component's documentation for information about its features and configuration
-options.  See the <link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic for information on creating a
+<legacyBold>Common Application Data</legacyBold> folder.  If available as a NuGet package, add it to the
+project's Component Packages node.  If project specific, the components can be located in the help file builder
+project's folder or in a folder referred to in its <codeInline>Component Path</codeInline> property.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more information.  Refer to
+the component's documentation for information about its features and configuration options.  See the
+<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic for information on creating a
 third-party syntax generator.  For a list of current third-party build components, see the
 <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
 
@@ -121,8 +122,9 @@ file builder installation folder.</para>
 property by creating a presentation style Managed Extensibility Framework (MEF) component.  Copy the
 presentation style's assembly and all supporting files to the <localUri>.\Components and Plug-Ins</localUri>
 folder or a subfolder beneath it in the help file builder's <legacyBold>Common Application Data</legacyBold>
-folder.  If project specific, the components can be located in the help file builder project's folder or in a
-folder referred to in its <codeInline>Component Path</codeInline> property.  See the
+folder.  If available as a NuGet package, add it to the project's Component Packages node.  If project specific,
+the components can be located in the help file builder project's folder or in a folder referred to in its
+<codeInline>Component Path</codeInline> property.  See the
 <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PresentationStyles" /> topic for more information.  Refer
 to the presentation style's documentation for information about its features and configuration options.  See the
 <link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic for information on creating a third-party

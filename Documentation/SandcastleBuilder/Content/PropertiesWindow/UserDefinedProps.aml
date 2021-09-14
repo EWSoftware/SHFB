@@ -8,7 +8,7 @@ file builder project properties.
 			</para>
 		</introduction>
 
-		<section address="Section1">
+		<section>
 			<content>
 				<mediaLink><image xlink:href="UserDefinedProps" placement="center" /></mediaLink>
 				

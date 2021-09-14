@@ -8,6 +8,8 @@ project will be built on a build server, you can also add the tools and reflecti
 that the help file builder does not need to be installed on the build server.  Unlike package references in a
 solution or project documentation source, these only contribute components used during the build and do not add
 any supplemental API information to the resulting help file for the documentation sources.</para>
+
+			<autoOutline excludeRelatedTopics="true" />
 		</introduction>
 
 		<section address="KnownIssues">
@@ -15,8 +17,7 @@ any supplemental API information to the resulting help file for the documentatio
 			<content>
 				<para>Due to a lack of support in Visual Studio for adding package references in third-party project
 systems, the help file builder project system must handle all aspects of adding and removing them.  As such,
-there are some issues that will occur when adding them to help file builder projects.  The standalone GUI
-also has similar issues.</para>
+there are some issues that will occur.  The standalone GUI also has similar issues.</para>
 
 				<list class="bullet">
 					<listItem>
@@ -25,11 +26,11 @@ order to see those changes.</para>
 					</listItem>
 					<listItem>
 						<para>You may need to close and reopen the Project Properties tool window to see changes
-to the components.</para>
+to the available components in the property pages.</para>
 					</listItem>
 					<listItem>
 						<para>You may need to close and reopen the project or restart the IDE to see changes to the
-components.</para>
+available components in the property pages.</para>
 					</listItem>
 					<listItem>
 						<para>When closing Visual Studio you may be warned about a task blocking user input.
@@ -39,10 +40,17 @@ Ignore the warning and close Visual Studio anyway.</para>
 
 				<para>These issues will only occur when adding or removing the component package references.  Once
 added and recognized by the project system, they will function without issue.</para>
+
+				<alert class="important">
+					<para>Only component packages created for help file builder version 2021.9.9.0 or later are supported.
+You may find packages for earlier versions in the NuGet.org package source.  If installed in the project, these
+will not appear in the project property pages or may cause the build to fail.  Check the package's NuGet.org page
+to see when it was published to see if it may be compatible with the latest version of the help file builder.</para>
+				</alert>
 			</content>
 		</section>
 
-		<section>
+		<section address="Management">
 			<title>Managing Component Packages</title>
 			<content>
 				<para>To add, remove, or update component packages in a help file builder project, right click on
@@ -52,7 +60,57 @@ the <ui>Component Packages</ui> project node and select the <ui>Manage NuGet Pac
 					<image xlink:href="NuGetManager" placement="center" />
 				</mediaLink>
 
-				<para>TODO: Finish this topic</para>
+				<para>Search options can be changed at the top of the dialog to select the package source, specify
+keywords used to search for component packages, and whether or not pre-release versions are included in the
+results.  The radio button option can be changed to search package sources or just display packages currently
+installed in the project.  Search keywords are ignored when viewing installed packages.</para>
+
+				<para>Packages search results are shown on the left side of the dialog box with details about the
+selected package show on the right.  The links on the right-hand side can be clicked to go to the package page
+on NuGet.org or view the license and/or project site.  Icons will appear in the list box indicating the state
+and options available for the selected package.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>A blue down arrow will appear to the right of the package entry if the package is not
+installed in the project.  Clicking the down arrow or the <ui>Install</ui> button will install the selected
+package in the project.</para>
+					</listItem>
+
+					<listItem>
+						<para>A green checkmark will appear to the left of the package entry if it is installed in the
+project.</para>
+					</listItem>
+
+					<listItem>
+						<para>If the package is installed in the project, a red "X" icon will appear to the right side of the
+package entry.  Clicking it will remove the package from the project.</para>
+					</listItem>
+
+					<listItem>
+						<para>If the package is installed in the project but is not the latest release, a blue up arrow will
+appear to the right of the package entry.  Clicking the up arrow or the <ui>Install</ui> button will install the
+selected updated version of the package in the project.</para>
+					</listItem>
+				</list>
+
+				<para>By default, the latest version of the package is always selected.  You can change the version
+installed using the combo box in the package details area.  When a package is installed or removed, the project
+is updated and a restore operation is performed to apply the changes to the project.  The results of the restore
+operation are shown in the textbox below the package list and details.</para>
+			</content>
+		</section>
+
+		<section address="PackageSources">
+			<title>Package Sources</title>
+			<content>
+				<para>The package sources used by the dialog box are the ones defined in the global NuGet.org
+configuration file.  These can be managed from within Visual Studio by selecting <ui>Tools</ui>, <ui>Options</ui>,
+expanding the <ui>NuGet Package Manager</ui> category, and selecting the <ui>Package Sources</ui> subcategory.
+If you have component packages of your own that you do not want published to NuGet.org, you can use this option
+to define a local package source on your hard drive or a network share.  Your component packages can be copied to
+this folder for use by your projects alone.  This is also useful for testing packages that you have created
+before publishing them to NuGet.org.</para>
 			</content>
 		</section>
 
