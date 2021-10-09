@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SubstitutionTagReplacement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/22/2021
+// Updated : 10/01/2021
 // Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to handle substitution tag replacement in build template files
@@ -1040,10 +1040,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Ensure that the ID is valid and visible in the TOC
                 if(!currentBuild.ConceptualContent.Topics.Any(t => t[currentBuild.ApiTocParentId] != null &&
                   t[currentBuild.ApiTocParentId].Visible))
-                    throw new BuilderException("BE0022", String.Format(CultureInfo.CurrentCulture,
-                        "The project's ApiTocParent property value '{0}' must be associated with a topic in " +
-                        "your project's conceptual content and must have its Visible property set to True in " +
-                        "the content layout file.", currentBuild.ApiTocParentId));
+                {
+                    // If there are no conceptual content topics, it's probably parented to a topic in an old
+                    // site map file so let it pass through.
+                    if(currentBuild.ConceptualContent.Topics.Count != 0)
+                    {
+                        throw new BuilderException("BE0022", String.Format(CultureInfo.CurrentCulture,
+                            "The project's ApiTocParent property value '{0}' must be associated with a topic in " +
+                            "your project's conceptual content and must have its Visible property set to True in " +
+                            "the content layout file.", currentBuild.ApiTocParentId));
+                    }
+                }
 
                 return WebUtility.HtmlEncode(currentBuild.ApiTocParentId);
             }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2021
+// Updated : 10/05/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -1463,6 +1463,12 @@ namespace SandcastleBuilder.Utils
         /// <see cref="BrowsableAttribute"/> set to <c>False</c> are documented.
         /// </summary>
         public bool DocumentNonBrowsable => (this.VisibleItems & VisibleItems.NonBrowsable) != 0;
+
+        /// <summary>
+        /// This read-only property is used to get whether or not internal members of base types in other
+        /// assemblies and private members in base types are documented.
+        /// </summary>
+        public bool DocumentInternalAndPrivateIfExternal => (this.VisibleItems & VisibleItems.InternalAndPrivateIfExternal) != 0;
 
         /// <summary>
         /// This read-only property is used to get the API filter

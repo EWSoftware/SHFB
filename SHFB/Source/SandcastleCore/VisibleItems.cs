@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : VisibleItems.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/05/2021
+// Updated : 10/05/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the optional visible items in the help file
@@ -71,6 +71,11 @@ namespace Sandcastle.Core
         EditorBrowsableNever              = 0x4000,
         /// <summary>Document members marked with a <see cref="System.ComponentModel.BrowsableAttribute"/>
         /// set to <c>False</c>.</summary>
-        NonBrowsable                      = 0x8000
+        NonBrowsable                      = 0x8000,
+        /// <summary>Include internal members from other assemblies and private members from base types.  For
+        /// this to work, the internal and/or private member options must also be enabled.  Inherited internal
+        /// and private framework members are not affected by this as they are controlled by the other related
+        /// options.</summary>
+        InternalAndPrivateIfExternal      = 0x00010000
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/12/2021
+// Updated : 10/01/2021
 // Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
@@ -284,7 +284,7 @@ namespace Sandcastle.Tools.BuildComponents
         {
             XmlNodeList items;
             XmlNode comments, returnsNode;
-            string apiKey, paramValue;
+            string apiKey;
 
             if(document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -307,16 +307,8 @@ namespace Sandcastle.Tools.BuildComponents
                 else
                     apiKey = apiKey.Replace("..ctor", ".#ctor");
 
-                // On very rare occasions, there can be an apostrophe in a type ID.  If so, use double quotes
-                // around the expression's parameter value.  It could just hard code them below but I can't say
-                // for sure we'd never see a double quote in an ID either.  This plays it safe.
-                if(apiKey.IndexOf('\'') != -1)
-                    paramValue = "\"" + apiKey + "\"";
-                else
-                    paramValue = "\'" + apiKey + "\'";
-
                 foreach(XmlNode element in document.SelectNodes(
-                  "document/reference/elements//element[starts-with(@api, " + paramValue + ")]"))
+                  "document/reference/elements//element[starts-with(@api, " + QuotedMemberId(apiKey) + ")]"))
                     this.CheckForMissingText(element, apiKey, "summary");
             }
 
@@ -331,27 +323,16 @@ namespace Sandcastle.Tools.BuildComponents
                 if(!key.EndsWith(".Dispose", StringComparison.Ordinal))
                     apiKey += ".Dispose";
 
-                // As above
-                if(apiKey.IndexOf('\'') != -1)
-                    paramValue = "\"" + apiKey + "\"";
-                else
-                    paramValue = "\'" + apiKey + "\'";
-
                 // Handle IDisposable.Dispose()
                 foreach(XmlNode element in document.SelectNodes(
-                  "document/reference/elements//element[@api = " + paramValue + "]"))
+                  "document/reference/elements//element[@api = " + QuotedMemberId(apiKey) + "]"))
                     this.CheckForMissingText(element, apiKey, "summary");
 
                 // Handle the Boolean overload if present
                 apiKey += "(System.Boolean)";
 
-                if(apiKey.IndexOf('\'') != -1)
-                    paramValue = "\"" + apiKey + "\"";
-                else
-                    paramValue = "\'" + apiKey + "\'";
-
                 foreach(XmlNode element in document.SelectNodes(
-                  "document/reference/elements//element[@api = " + paramValue + "]"))
+                  "document/reference/elements//element[@api = " + QuotedMemberId(apiKey) + "]"))
                     this.CheckForMissingText(element, apiKey, "summary");
             }
 
@@ -417,7 +398,7 @@ namespace Sandcastle.Tools.BuildComponents
             }
             catch(Exception ex)
             {
-                base.WriteMessage(key, MessageLevel.Error, "Error adding missing documentation tags: " +
+                this.WriteMessage(key, MessageLevel.Error, "Error adding missing documentation tags: " +
                     ex.Message);
             }
         }
@@ -425,6 +406,21 @@ namespace Sandcastle.Tools.BuildComponents
 
         #region Helper methods
         //=====================================================================
+
+        /// <summary>
+        /// On very rare occasions, there can be an apostrophe in an type or member ID.  If so, use double quotes
+        /// around the expression's parameter value.  It could just hard code them below but I can't say for sure
+        /// we'd never see a double quote in an ID either.  This plays it safe.
+        /// </summary>
+        /// <param name="memberId">The member ID</param>
+        /// <returns>The member ID in single or double quotes as needed</returns>
+        private static string QuotedMemberId(string memberId)
+        {
+            if(memberId.IndexOf('\'') != -1)
+                return "\"" + memberId + "\"";
+
+            return "\'" + memberId + "\'";
+        }
 
         /// <summary>
         /// Check for missing text in the specified documentation tag and, if it doesn't exist or the text is
@@ -522,7 +518,7 @@ namespace Sandcastle.Tools.BuildComponents
             bool hasElements = false;
             string text;
             XmlAttribute name;
-            XmlNode tag = comments.SelectSingleNode(tagName + "[@name='" + paramName + "']");
+            XmlNode tag = comments.SelectSingleNode(tagName + "[@name=" + QuotedMemberId(paramName) + "]");
 
             if(tag == null)
             {

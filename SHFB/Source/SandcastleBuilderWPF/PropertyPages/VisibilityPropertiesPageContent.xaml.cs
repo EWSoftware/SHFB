@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : VisibilityPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2021
+// Updated : 10/05/2021
 // Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Visibility category properties
@@ -102,6 +102,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(chkNonBrowsable.IsChecked ?? false)
                     items |= VisibleItems.NonBrowsable;
 
+                if(chkInternalAndPrivateIfExternal.IsChecked ?? false)
+                    items |= VisibleItems.InternalAndPrivateIfExternal;
+
                 return items;
             }
             set
@@ -122,6 +125,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 chkPublicCompilerGenerated.IsChecked = ((value & VisibleItems.PublicCompilerGenerated) != 0);
                 chkEditorBrowsableNever.IsChecked = ((value & VisibleItems.EditorBrowsableNever) != 0);
                 chkNonBrowsable.IsChecked = ((value & VisibleItems.NonBrowsable) != 0);
+                chkInternalAndPrivateIfExternal.IsChecked = ((value & VisibleItems.InternalAndPrivateIfExternal) != 0);
             }
         }
 

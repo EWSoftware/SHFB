@@ -19,6 +19,7 @@
 	<xsl:param name="logoAltText" />
 	<xsl:param name="logoPlacement" />
 	<xsl:param name="logoAlignment" />
+	<xsl:param name="logoUrl" />
 
 	<!-- Default language parameter -->
 	<xsl:param name="defaultLanguage" select="string('cs')" />
@@ -397,28 +398,61 @@
 	</xsl:template>
 
 	<xsl:template name="logoImage">
-		<img>
-			<xsl:if test="normalize-space($logoAltText)">
-				<xsl:attribute name="alt">
-					<xsl:value-of select="$logoAltText" />
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:if test="normalize-space($logoWidth) and $logoWidth != '0'">
-				<xsl:attribute name="width">
-					<xsl:value-of select="$logoWidth" />
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:if test="normalize-space($logoHeight) and $logoHeight != '0'">
-				<xsl:attribute name="height">
-					<xsl:value-of select="$logoHeight" />
-				</xsl:attribute>
-			</xsl:if>
-			<includeAttribute name='src' item='iconPath'>
-				<parameter>
-					<xsl:value-of select="$logoFile"/>
-				</parameter>
-			</includeAttribute>
-		</img>
+		<xsl:choose>
+			<xsl:when test="normalize-space($logoUrl)">
+				<a target="_blank" rel="noopener noreferrer">
+					<xsl:attribute name="href">
+						<xsl:value-of select="$logoUrl"/>
+					</xsl:attribute>
+					<img>
+						<xsl:if test="normalize-space($logoAltText)">
+							<xsl:attribute name="alt">
+								<xsl:value-of select="$logoAltText" />
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:if test="normalize-space($logoWidth) and $logoWidth != '0'">
+							<xsl:attribute name="width">
+								<xsl:value-of select="$logoWidth" />
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:if test="normalize-space($logoHeight) and $logoHeight != '0'">
+							<xsl:attribute name="height">
+								<xsl:value-of select="$logoHeight" />
+							</xsl:attribute>
+						</xsl:if>
+						<includeAttribute name='src' item='iconPath'>
+							<parameter>
+								<xsl:value-of select="$logoFile"/>
+							</parameter>
+						</includeAttribute>
+					</img>
+				</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<img>
+					<xsl:if test="normalize-space($logoAltText)">
+						<xsl:attribute name="alt">
+							<xsl:value-of select="$logoAltText" />
+						</xsl:attribute>
+					</xsl:if>
+					<xsl:if test="normalize-space($logoWidth) and $logoWidth != '0'">
+						<xsl:attribute name="width">
+							<xsl:value-of select="$logoWidth" />
+						</xsl:attribute>
+					</xsl:if>
+					<xsl:if test="normalize-space($logoHeight) and $logoHeight != '0'">
+						<xsl:attribute name="height">
+							<xsl:value-of select="$logoHeight" />
+						</xsl:attribute>
+					</xsl:if>
+					<includeAttribute name='src' item='iconPath'>
+						<parameter>
+							<xsl:value-of select="$logoFile"/>
+						</parameter>
+					</includeAttribute>
+				</img>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- ============================================================================================

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2021
+// Updated : 10/04/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
@@ -149,6 +149,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             else
                             {
                                 this.ApiTocParentId = parentTopic.Id;
+
+                                // If null or blank, it's probably parented to a topic in an old site map file
+                                if(String.IsNullOrWhiteSpace(this.ApiTocParentId))
+                                {
+                                    this.ApiTocParentId = Path.GetFileNameWithoutExtension(parentTopic.SourceFile);
+                                    parentTopic.Id = this.ApiTocParentId;
+                                }
 
                                 if(this.ApiTocOrder < parentCollection.Count)
                                     parentCollection[this.ApiTocOrder].SortOrder = this.ApiTocOrder + topics.Count;

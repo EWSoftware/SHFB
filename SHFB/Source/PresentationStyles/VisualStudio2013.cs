@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudio2013.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/17/2021
+// Updated : 10/04/2021
 // Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the presentation style definition for the Visual Studio 2013 presentation style.
@@ -88,6 +88,8 @@ namespace Sandcastle.PresentationStyles
             this.TransformComponentArguments.Add(new TransformComponentArgument("logoAlignment", true, true,
                 "left", "An optional logo alignment when using the 'above' placement option.  Specify left, " +
                 "right, or center.  If not specified, the default is left."));
+            this.TransformComponentArguments.Add(new TransformComponentArgument("logoUrl", true, true, null,
+                "An optional logo URL to navigate to when the logo is clicked."));
             this.TransformComponentArguments.Add(new TransformComponentArgument("maxVersionParts", false, true,
                 null, "The maximum number of assembly version parts to show in API member topics.  Set to 2, " +
                 "3, or 4 to limit it to 2, 3, or 4 parts or leave it blank for all parts including the " +

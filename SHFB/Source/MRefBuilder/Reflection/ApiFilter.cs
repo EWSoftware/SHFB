@@ -22,6 +22,8 @@
 // 06/19/2015 - EFW - Added support for including public compiler generated types/members
 // 09/21/2017 - EFW - Added support for excluding members based on the presence of an EditorBrowsableAttribute
 // and/or a BrowsableAttribute.
+// 10/05/2021 - EFW - Added support for excluding internal members inherited from base types in other assemblies
+// and private members from base types.
 
 using System;
 using System.Collections.Generic;
@@ -343,6 +345,24 @@ namespace Sandcastle.Tools.Reflection
                     visibleItems &= ~VisibleItems.NonBrowsable;
             }
         }
+
+        /// <summary>
+        /// This is used to get or set whether or not internal members inherited from base type in other
+        /// assemblies and private members inherited from based types are included in the output.
+        /// </summary>
+        /// <value>Set to true to include internal member outside of the assembly and private members from base
+        /// types or false to hide them</value>
+        public bool InternalAndPrivateIfExternal
+        {
+            get => ((visibleItems & VisibleItems.InternalAndPrivateIfExternal) != 0);
+            set
+            {
+                if(value)
+                    visibleItems |= VisibleItems.InternalAndPrivateIfExternal;
+                else
+                    visibleItems &= ~VisibleItems.InternalAndPrivateIfExternal;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -377,6 +397,7 @@ namespace Sandcastle.Tools.Reflection
             this.IncludePublicCompilerGenerated = (bool)configuration.Evaluate("boolean(visibility/publicCompilerGenerated[@expose='true'])");
             this.IncludeEditorBrowsableNever = (bool)configuration.Evaluate("boolean(visibility/editorBrowsableNever[@expose='true'])");
             this.IncludeNonBrowsable = (bool)configuration.Evaluate("boolean(visibility/nonBrowsable[@expose='true'])");
+            this.InternalAndPrivateIfExternal = (bool)configuration.Evaluate("boolean(visibility/internalAndPrivateIfExternal[@expose='true'])");
 
             // API filter
             XPathNavigator apiFilterNode = configuration.SelectSingleNode("apiFilter");

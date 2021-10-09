@@ -11,6 +11,8 @@
 // 11/18/2014 - EFW - Added a hack to work around a unique case using "new" to re-implement interface methods
 // 08/28/2017 - EFW - Updated the constructor to remove virtual/overridden members from base types when an
 // overridden member is excluded via the API filter.
+// 10/05/2021 - EFW - Added support for excluding internal members inherited from base types in other assemblies
+// and private members from base types.
 
 using System;
 using System.Collections;
@@ -176,6 +178,24 @@ namespace Sandcastle.Tools
                             excludedOverriddenMembers.Add(parentMember.OverriddenMember);
 
                         continue;
+                    }
+
+                    // If not wanted, exclude internal members inherited from types in other assemblies and
+                    // private members of base classes.  Inherited framework internal/private members are still
+                    // included as they are controlled by other visibility settings.
+                    if(((parentMember.IsAssembly || parentMember.IsFamilyAndAssembly) &&
+                      parentMember.DeclaringType.DeclaringModule.Name != type.DeclaringModule.Name) ||
+                      (parentMember.IsPrivate && parentMember.DeclaringType.Name.Name != type.Name.Name))
+                    {
+                        string memberNamespace = parentMember.DeclaringType.Namespace.Name;
+
+                        if(!filter.InternalAndPrivateIfExternal &&
+                          memberNamespace != "System" && memberNamespace != "Microsoft" &&
+                          !memberNamespace.StartsWith("System.", StringComparison.Ordinal) &&
+                          !memberNamespace.StartsWith("Microsoft.", StringComparison.Ordinal))
+                        {
+                            continue;
+                        }
                     }
 
                     // Otherwise, add the member 

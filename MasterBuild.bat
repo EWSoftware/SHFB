@@ -38,7 +38,7 @@ ECHO *
 ECHO * VS2022 and later package
 ECHO *
 
-IF NOT "%MSBUILD2022%"=="%%MSBUILD2022%%" "%MSBUILD2022%" /nr:false /r /nologo /v:m /m "VSIX_VS2022.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
+IF NOT "%MSBUILD2022%"=="" "%MSBUILD2022%" /nr:false /r /nologo /v:m /m "VSIX_VS2022.sln" /t:Clean;Build "/p:Configuration=%BuildConfig%;Platform=Any CPU"
 IF ERRORLEVEL 1 GOTO End
 
 :BuildDocs

@@ -23,7 +23,7 @@
     <HtmlHelpName>TestCaseProject</HtmlHelpName>
     <ProjectSummary>Test project summary! Updated on 04/09/2011 from within Visual Studio.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
-    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <WorkingPath>
@@ -125,7 +125,15 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="Bibliography Support" enabled="False"><configuration><bibliography path="C:\GH\SHFB\TestCaseProject\Doc\Bibliography.xml" /></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="Bibliography Support" enabled="False">
+        <configuration>
+          <bibliography path="C:\GH\SHFB\TestCaseProject\Doc\Bibliography.xml" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
@@ -160,6 +168,7 @@
       <Argument Key="logoAltText" Value="Test logo" />
       <Argument Key="logoPlacement" Value="left" />
       <Argument Key="logoAlignment" Value="left" />
+      <Argument Key="logoUrl" Value="https://github.com/EWSoftware/SHFB" />
       <Argument Key="maxVersionParts" Value="" />
       <Argument Key="defaultLanguage" Value="cs" />
       <Argument Key="includeEnumValues" Value="true" />
@@ -378,6 +387,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceItems Include="ResourceItems.items" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Site Map.sitemap" />
   </ItemGroup>
   <!-- Uncomment this to use the nuget packages when SHFB is not installed locally, e.g. in the CI build pipeline.
        Update the package versions as required.
