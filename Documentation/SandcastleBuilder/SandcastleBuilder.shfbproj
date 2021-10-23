@@ -33,7 +33,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2013</PresentationStyle>
     <SyntaxFilters>Standard</SyntaxFilters>
-    <HelpFileVersion>2021.9.9.0</HelpFileVersion>
+    <HelpFileVersion>2021.10.23.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -235,7 +235,7 @@
     <Folder Include="Content\SandcastleTools" />
     <Folder Include="Content\SandcastleTools\BuildAssembler\" />
     <Folder Include="Content\SandcastleTools\MRefBuilder\" />
-    <Folder Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0" />
+    <Folder Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0" />
     <Folder Include="Content\VersionHistory\v2014.1.26tov2015.5.2" />
     <Folder Include="Content\VersionHistory\v1.8tov1.9.8.0" />
     <Folder Include="Content\VisualStudio" />
@@ -261,31 +261,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\CustomComponents\CreateBuildComponent.aml" />
+    <None Include="Content\CustomComponents\CreateConfigUIProject.aml" />
     <None Include="Content\CustomComponents\CreatePlugIns.aml" />
     <None Include="Content\CustomComponents\CreateSyntaxFilter.aml" />
     <None Include="Content\CustomComponents\CreatingCustomComponents.aml" />
     <None Include="Content\CustomComponents\CustomPresentationStyle.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0011.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0027.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0036.aml" />
     <None Include="Content\ErrorsAndWarnings\InheritedDocs\GID0010.aml" />
     <None Include="Content\ProjectExplorer\ComponentPackages.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.10.10.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.7.25.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2015.7.25.0tov2019.11.17.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2016.4.9.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2016.5.28.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2016.9.17.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2017.1.28.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2017.12.30.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2017.12.30.2.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2017.5.15.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2018.12.10.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2018.5.14.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2018.5.29.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2018.7.8.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2019.11.17.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2019.4.14.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2019.6.24.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2019.8.24.0.aml" />
-    <None Include="Content\VersionHistory\v2015.7.26.0tov2019.11.17.0\v2019.9.15.0.aml" />
+    <None Include="Content\VersionHistory\MigrationSupport.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2015.10.10.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2015.7.25.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2015.7.25.0tov2021.4.9.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2016.4.9.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2016.5.28.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2016.9.17.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2017.1.28.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2017.12.30.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2017.12.30.2.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2017.5.15.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2018.12.10.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2018.5.14.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2018.5.29.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2018.7.8.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2019.11.17.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2019.4.14.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2019.6.24.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2019.8.24.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2019.9.15.0.aml" />
     <None Include="Content\AddConceptContent\AddContent.aml" />
     <None Include="Content\AddConceptContent\SiteMapEditor.aml" />
     <None Include="Content\BenefitsAndFeatures.aml" />
@@ -380,9 +385,10 @@
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2014.5.31.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.1.12.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26tov2015.5.2\v2015.5.2.0.aml" />
-    <None Include="Content\VersionHistory\v2020.3.6.0.aml" />
-    <None Include="Content\VersionHistory\v2021.3.29.0.aml" />
-    <None Include="Content\VersionHistory\v2021.4.9.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2020.3.6.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2021.3.29.0.aml" />
+    <None Include="Content\VersionHistory\v2015.7.26.0tov2021.4.9.0\v2021.4.9.0.aml" />
+    <None Include="Content\VersionHistory\v2021.10.23.0.aml" />
     <None Include="Content\VisualStudio\GoToDefinition.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />

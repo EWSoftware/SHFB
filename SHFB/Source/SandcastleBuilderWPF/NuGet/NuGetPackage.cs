@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/24/2021
+// Updated : 10/20/2021
 // Note    : Copyright 2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain the details about a NuGet package
@@ -249,6 +249,23 @@ namespace SandcastleBuilder.WPF.NuGet
             this.IconUrl = package.IconUrl;
             this.LicenseUrl = package.LicenseUrl;
             this.Tags = new HashSet<string>(package.Tags, StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// This is used to create a dummy entry for an installed package that no longer exists in any of the
+        /// package sources.
+        /// </summary>
+        /// <param name="id">The ID of the package</param>
+        /// <param name="version">The package version</param>
+        public NuGetPackage(string id, string version)
+        {
+            if(id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            this.Id = this.Description = id;
+            this.LatestVersion = version;
+            this.Title = this.Authors = "(Package not found)";
+            this.Versions = new List<string> { version };
         }
         #endregion
 

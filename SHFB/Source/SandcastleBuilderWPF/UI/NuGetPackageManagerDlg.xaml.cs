@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NuGetPackageManagerDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/09/2021
+// Updated : 10/20/2021
 // Note    : Copyright 2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to manage NuGet packages in a help file builder project
@@ -113,7 +113,14 @@ namespace SandcastleBuilder.WPF.UI
                         packages.AddRange(s.SearchForPackages(searchKeywords, startNewSearch, includePreRelease));
 
                     if(installedOnly)
+                    {
+                        // If any installed packages are not found, add a dummy entry so that it can be removed
+                        foreach(var kv in projectPackages)
+                            if(!packages.Any(p => p.Id == kv.Key))
+                                packages.Add(new NuGetPackage(kv.Key, kv.Value));
+
                         return packages.Where(p => projectPackages.ContainsKey(p.Id)).ToList();
+                    }
 
                     return packages;
 

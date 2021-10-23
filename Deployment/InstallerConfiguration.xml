@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the tools version with which this installer is associated.-->
-	<tools version="2021.9.9.0" />
+	<tools version="2021.10.23.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -13,10 +13,10 @@
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="https://EWSoftware.github.io/SHFB/html/?????.htm"
-				description="Important information for users of version 2021.4.9.0 and earlier" />
 			<whatsNew url="https://EWSoftware.github.io/SHFB/html/52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332.htm"
 				description="Current Version Release Notes" />
+			<whatsNew url="https://EWSoftware.github.io/SHFB/html/bc933f8f-e792-45bf-afec-62aa2c46aa3b.htm"
+				description="Third-Party Component Migration Support" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">

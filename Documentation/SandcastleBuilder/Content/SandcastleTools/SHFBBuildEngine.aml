@@ -6,16 +6,88 @@
 MSBuild project (<localUri>.shfbproj</localUri>) to compile a help file.  The
 <localUri>SandcastleHelpFileBuilder.targets</localUri> file defines the various targets and tasks used to control
 the build process.</para>
+
+			<!-- TODO: Add other section and/or topics as needed to describe the build engine parts. -->
 		</introduction>
+
+		<section address="FolderStructure">
+			<title>Folder Layout</title>
+			<content>
+				<para>All help file builder related tools and supporting files are located in a folder identified by the
+<environmentVariable>SHFBROOT</environmentVariable> environment variable.  The content of the folder is
+described below.  The same folder structure is used for the tools in the NuGet package but the extras,
+help, schemas, snippets, and platform-specific tools folders are omitted from the package as they are not
+relevant when used from it.  The data folder is also omitted from the tools NuGet package.  Reflection data files
+are supplied in separate packages that can be added to the project based on the framework version of the projects
+being documented.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>The root folder contains the Sandcastle Help File Builder MSBuild targets file.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Components</localUri> - This folder contains the standard build components, plug-ins,
+presentation styles, and their supporting files.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Data</localUri> - This folder contains the framework reflection information files.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Extras</localUri> - This folder contains optional tools that are not part of the help
+file builder such as the HTML to MAML converter and the web project code providers.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Help</localUri> - This folder contains the Help 1 (CHM) help files for the tools and
+extras.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>net472</localUri> - This folder contains the .NET Framework build tools for
+<localUri>MSBuild.exe</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>netcoreapp3.1</localUri> - This folder contains the .NET Core build tools for
+<localUri>dotnet.exe</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Schemas</localUri> - This folder contains the XML schemas for the reflection data
+file and the MAML topic files.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Snippets</localUri> - This folder contains Visual Studio snippet files used to insert
+common block and inline MAML elements into topic files while editing them within Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Templates</localUri> - This folder contains template project files used by the build
+engine.</para>
+					</listItem>
+
+					<listItem>
+						<para><localUri>Tools</localUri> - This folder contains the Windows platform-specific tools
+(standalone GUI, reflection data manager, help file builder project launcher, and help library manager launcher).</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
 
 		<section>
 			<content>
-				<para>TODO: Add one or more sections with content</para>
+				<para>Other information about the build engine will be added at a later date.</para>
 			</content>
 		</section>
 
 		<relatedTopics>
 			<link xlink:href="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" />
+			<link xlink:href="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

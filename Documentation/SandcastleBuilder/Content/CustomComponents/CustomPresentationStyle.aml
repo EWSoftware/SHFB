@@ -38,6 +38,11 @@ fit.</para>
 						</step>
 						<step>
 							<content>
+								<para>In the <ui>Package</ui> tab, set the NuGet package properties.</para>
+							</content>
+						</step>
+						<step>
+							<content>
 								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
 enter the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program.  If you installed the help file
 builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
@@ -283,42 +288,36 @@ to be named using the language they represent plus a <localUri>.xml</localUri> e
 					</content>
 				</section>
 
-				<section address="DocumentModelTransformation">
-					<title>DocumentModelTransformation</title>
+				<section address="DocumentModelApplicator">
+					<title>DocumentModelApplicator</title>
 					<content>
-						<para>This defines the document model XSL transformation to use on the reflection data to prepare it
-for use with <application>BuildAssembler</application> in order to generate topics.  The first parameter
-specifies the path to the XSL transformation.</para>
+						<para>This defines the document model applicator to use on the reflection data to prepare it for use
+with <application>BuildAssembler</application> in order to generate topics.  By default, the
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.PresentationStyle.StandardDocumentModel</codeEntityReference>
+is used.  See the class documentation for its supported features and behavior when transforming the reflection
+data.  If you want to change how the reflection data is updated, add or remove topic types, etc., you can
+implement your own document model applicator and assign it to this property.</para>
 
-						<para>The document model XSL transformation typically has parameters that can be passed to it to
-modify how it works.  You can define these parameters with appropriate defaults or substitution tags that will be
-filled in at build time using the optional second constructor parameter.  The parameters are in the form of a
-dictionary containing key/value pairs.</para>
 					</content>
 				</section>
 
-				<section address="IntermediateTocTransformation">
-					<title>IntermediateTocTransformation</title>
+				<section address="ApiTableOfContentsGenerator">
+					<title>ApiTableOfContentsGenerator</title>
 					<content>
-						<para>This defines the XSL transformation to use on the reflection data to generate the intermediate
-table of contents XML file used by help formats that require a table of contents.  As above, parameters can be
-specified if necessary to define any parameters required by the transformation file.</para>
+						<para>This defines the handler used to generate the intermediate table of contents XML file used by
+help formats that require a table of contents.  By default, the
+<codeEntityReference qualifyHint="false">T:Sandcastle.Core.PresentationStyle.StandardApiTocGenerator</codeEntityReference>
+is used.  See the class documentation for its supported features and behavior when generating the table of
+contents.  If you want to change how the table of contents is generated, you can implement your own table of
+contents generator and assign it to this property.</para>
 					</content>
 				</section>
 
-				<section address="ConceptualBuildConfiguration">
-					<title>ConceptualBuildConfiguration</title>
+				<section address="BuildAssemblerConfiguration">
+					<title>BuildAssemblerConfiguration</title>
 					<content>
-						<para>This defines the <application>BuildAssembler</application> configuration file to use for
-conceptual content builds.</para>
-					</content>
-				</section>
-
-				<section address="ReferenceBuildConfiguration">
-					<title>ReferenceBuildConfiguration</title>
-					<content>
-						<para>This defines the <application>BuildAssembler</application> configuration file to use for
-reference content (API) builds.</para>
+						<para>This defines the <application>BuildAssembler</application> configuration file to use when
+generating help file topics.</para>
 					</content>
 				</section>
 

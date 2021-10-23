@@ -3,13 +3,28 @@
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
 			<para>The topics in this section describe the various changes made to the Sandcastle Help File Builder for
-versions 2015.7.25.0 Beta through 2019.11.17.0.  Select a version below to see a description of its changes.
+versions 2015.7.25.0 Beta through 2021.4.9.0.  Select a version below to see a description of its changes.
 			</para>
 		</introduction>
 
 		<section>
 			<content>
 				<list class="bullet">
+					<listItem>
+						<para>
+							<link xlink:href="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="70b704dc-03c8-4934-b83e-e84d4d7f927a" />
+						</para>
+					</listItem>
+					<listItem>
+						<para>
+							<link xlink:href="fa3bd7c8-2b1d-4e66-9278-e36f57e098a6" />
+						</para>
+					</listItem>
 					<listItem>
 						<para>
 							<link xlink:href="f8d393f6-a081-43ad-9a84-e8d379f2de56" />

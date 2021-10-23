@@ -58,18 +58,20 @@ Once it has been created, right click on the project and select <ui>Properties</
 						</step>
 						<step>
 							<content>
-								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
-enter the path to the <localUri>BuildAssembler.exe</localUri> program.  If you installed the help file
-builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
-Builder\</localUri>.  If not, substitute your path as appropriate.  Set the working directory to the working
-folder of a project that contains the build component.  Note that you will need to perform one build of the
-project with the <ui>Clean intermediate files</ui> option turned off so that you can test the build component
-using the temporary build files.</para>
+								<para>In the <ui>Package</ui> tab, set the NuGet package properties.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
+which will help you see if the component can be located and also that the configuration form is working if you
+created one for the component.  To debug the actual component and allow stepping through its code, you will need
+to change the executable used to run it.</para>
 
 								<alert class="tip">
-									<para>Using the BuildAssembler tool as the host is easier than using Visual Studio as the
-package locks the assemblies once the help file builder project has loaded them for use and you will not be able
-to rebuild them.  Shutting down BuildAssembler frees the assemblies so that you can rebuild them and start a
+									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
+locks the assemblies once the help file builder project has loaded them for use and you will not be able to
+rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a
 new debugging session.</para>
 
 									<para>In the help file builder project that you use to test your build component, set the
@@ -77,6 +79,15 @@ project's <codeInline>Component Path</codeInline> property to the folder contain
 assembly.  If you have opened the project's <ui>Components</ui> property page before setting the component path,
 you may need to close and reopen the project in order for it to discover your build component assembly.</para>
 								</alert>
+								
+								<para>On the <ui>Debug</ui> tab, set the <ui>Launch</ui> option to "Executable" and
+enter the path to the most recent version of <localUri>MSBuild.exe</localUri>.  This can typically be found in
+the Visual Studio folder for the version that you are using (e.g. C:\Program Files (x86)\Microsoft Visual
+Studio\2019\Community\MSBuild\Current\Bin).  Set the working directory to the working folder of a project that
+contains the build component.  Note that you will need to perform one build of the project with the <ui>Clean
+intermediate files</ui> option turned off so that you can test the build component using the temporary build
+files.  Set the <ui>Application arguments</ui> option to <localUri>BuildTopics.proj</localUri>.</para>
+
 							</content>
 						</step>
 						<step>
@@ -160,16 +171,6 @@ the project.  It will only be included in a project if referenced as a dependenc
 					</content>
 				</section>
 
-				<section address="MetadataIsConfigurable">
-					<title>IsConfigurable</title>
-					<content>
-						<para>The <codeInline>IsConfigurable</codeInline> property is optional and allows you to define
-whether or not the build component supports interactive editing of its configuration.  If false, the default, the
-build component will not be configurable from the property page.  If true, the property page will call the
-<codeInline>ConfigureComponent</codeInline> method on the factory class so that it can invoke a dialog box to
-edit the configuration.</para>
-					</content>
-				</section>
 			</sections>
 		</section>
 
@@ -281,20 +282,6 @@ replaced at build time with the appropriate project values.  The default if not 
 					<content>
 						<para>This method must be implemented to create an instance of the build component.  Simply create
 the component instance and return it.</para>
-
-					</content>
-				</section>
-
-				<section address="ConfigureComponent">
-					<title>ConfigureComponent</title>
-					<content>
-						<para>If the <codeInline>IsConfigurable</codeInline> export attribute is set to true, override this
-method to invoke the configuration dialog and return the edited configuration.  The current configuration is
-passed to the method as an XML fragment in a string.  If not overridden, a default editor dialog is used that
-allows the user to modify the XML fragment in a text box.  A MEF composition container is also passed to the
-method so that the dialog can locate other components if necessary.  For example, the
-<codeInline>SyntaxComponent</codeInline>'s configuration dialog uses it to locate the syntax generators so that
-their configurations can be edited.</para>
 
 					</content>
 				</section>

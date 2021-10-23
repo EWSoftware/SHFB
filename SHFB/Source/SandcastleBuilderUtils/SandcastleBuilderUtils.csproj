@@ -20,7 +20,7 @@
 		<PackageId>EWSoftware.SandcastleBuilder.Utils</PackageId>
 		<Title>Sandcastle Help File Builder Utilities</Title>
 		<!-- This should match the strong name version in AssemblyInfoShared.cs -->
-		<Version>2021.9.9.0</Version>
+		<Version>2021.10.23.0</Version>
 		<Authors>Eric Woodruff</Authors>
 		<Description>This contains the project, build engine, and Managed Extensibility Framework (MEF) classes used by the Sandcastle Help File Builder tool set and third-party tools.</Description>
 		<PackageIconUrl>https://github.com/EWSoftware/SHFB/raw/master/SHFB/Source/SandcastleLogo.png</PackageIconUrl>

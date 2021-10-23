@@ -56,6 +56,11 @@ fit.</para>
 						</step>
 						<step>
 							<content>
+								<para>In the <ui>Package</ui> tab, set the NuGet package properties.</para>
+							</content>
+						</step>
+						<step>
+							<content>
 								<para>On the <ui>Debug</ui> tab, do the following:</para>
 
 								<list class="bullet">

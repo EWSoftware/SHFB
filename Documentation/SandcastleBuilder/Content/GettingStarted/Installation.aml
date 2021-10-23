@@ -43,12 +43,19 @@ installed.  You will also need to ensure the requirements noted below are also p
 
 				<list class="bullet">
 					<listItem>
-						<para>The
-<externalLink>
+						<para><externalLink>
 	<linkText>.NET Framework 4.7.2</linkText>
 	<linkUri>https://www.microsoft.com/net</linkUri>
 	<linkTarget>_blank</linkTarget>
-</externalLink> or later is required to run the tools.</para>
+</externalLink> or later is required to run the desktop tools and build projects with MSBuild.</para>
+					</listItem>
+
+					<listItem>
+						<para><externalLink>
+	<linkText>.NET Core 3.1</linkText>
+	<linkUri>https://www.microsoft.com/net</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> or later is required to build projects with <localUri>dotnet.exe</localUri>.</para>
 					</listItem>
 
 					<listItem>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="cd48f4ce-100e-441e-b23b-fd534d40c65c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Warning BE0027: Namespace grouping was requested but the selected presentation style does not support it.  Option ignored.</para>
+		</introduction>
+
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>The warning indicates that the namespace grouping option was enabled in the project but the
+selected presentation style does not support it.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>Turn off the namespace grouping option or select a presentation style that does support it.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20e87b11-21a3-493c-8dd6-16ce7694952b" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

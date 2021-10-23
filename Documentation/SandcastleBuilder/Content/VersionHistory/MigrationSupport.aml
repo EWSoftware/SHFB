@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="bc933f8f-e792-45bf-afec-62aa2c46aa3b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic provides information on migrating build components, plug-ins, presentation styles, and
+syntax generators built against v2021.4.9.0 and earlier to the latest release that supports .NET Core and
+deploying the components as NuGet packages.</para>
+
+			<autoOutline excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="GeneralInfo">
+			<title>General Information</title>
+			<content>
+				<para>Starting with version <token>SandcastleVersion</token>, all component projects use an SDK format
+project and contain the necessary properties to generate a NuGet package when built.  This allows them to be
+shared publicly on NuGet.org or privately with a local repository.  So that they are platform independent and
+work with both MSBuild and the dotnet tool, the projects target .NET Standard 2.0.  Support for configuration has
+also been separated from the component assemblies.  If your component supports configuration within the IDE,
+create a new project to host the configuration forms.</para>
+
+				<para>It is recommended that you create a new project and import your existing code into the new project
+rather than modifying the old project file.  That way, all of the necessary NuGet properties and the build
+property file are present and ready to update.  The following sections provide more information on
+changes that need to be made to the various component project types.</para>
+
+				<alert class="important">
+					<para>If, after creating a project, you rename the project, be sure to rename the project's
+<localUri>.props</localUri> file found in the <localUri>.\build</localUri> folder to match the new project name.
+This is required so that the build properties can be found when added to a help file builder project using NuGet.</para>
+				</alert>
+			</content>
+		</section>
+
+		<section address="BuildComponents">
+			<title>Migrating Build Component Projects</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Create a new project and edit the properties on the project file's Package properties page that
+are used to generate the NuGet package for the component.</para>
+					</listItem>
+
+					<listItem>
+						<para>Import your component's code into the new project to replace the example component.</para>
+					</listItem>
+					
+					<listItem>
+						<para>In the MEF component factory class, remove the <codeInline>IsConfigurable</codeInline> property
+from the attribute metadata.</para>
+					</listItem>
+
+					<listItem>
+						<para>If the component is configurable, remove the <codeInline>ConfigureComponent</codeInline>
+method.  To support configuration, you will need to create a new project using the <ui>Build Component/Plug-In
+Configuration Editor</ui> template project.  See the <link xlink:href="9ec616aa-59df-4c5c-a128-e540e6bb479c" />
+topic for more information.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PlugIns">
+			<title>Migrating Help File Builder Plug-In Projects</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Create a new project and edit the properties on the project file's Package properties page that
+are used to generate the NuGet package for the plug-in.</para>
+					</listItem>
+
+					<listItem>
+						<para>Import your plug-in's code into the new project to replace the example plug-in.</para>
+					</listItem>
+					
+					<listItem>
+						<para>In the MEF component factory class, remove the <codeInline>IsConfigurable</codeInline> property
+from the attribute metadata.</para>
+					</listItem>
+
+					<listItem>
+						<para>If the component is configurable, remove the <codeInline>ConfigureComponent</codeInline>
+method.  To support configuration, you will need to create a new project using the <ui>Build Component/Plug-In
+Configuration Editor</ui> template project.  See the <link xlink:href="9ec616aa-59df-4c5c-a128-e540e6bb479c" />
+topic for more information.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Migrating Presentation Style Projects</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Create a new project and edit the properties on the project file's Package properties page that
+are used to generate the NuGet package for the presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Import your presentation style's code and other supporting files into the new project to
+replace the example presentation style.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Replace the <codeInline>DocumentModelTransformation</codeInline> and
+<codeInline>IntermediateTocTransformation</codeInline> property assignments with the code below to use the
+standard document model applicator and table of contents generator.</para>
+
+						<code language="cs">
+this.DocumentModelApplicator = new StandardDocumentModel();
+this.ApiTableOfContentsGenerator = new StandardApiTocGenerator();
+						</code>
+
+						<para>If you have created your own document model and/or table of content XSL transformations, you
+will need to convert them to code-based equivalents.  You can use the standard types noted above as a starting
+point to see how this can be accomplished.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="SyntaxGenerators">
+			<title>Migrating Syntax Generator Projects</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Create a new project and edit the properties on the project file's Package properties page that
+are used to generate the NuGet package for the syntax generator.</para>
+					</listItem>
+
+					<listItem>
+						<para>Import your syntax generator's code and other supporting files into the new project to
+replace the example syntax generator.  Note that the syntax generator's <codeInline>IsConfigurable</codeInline>
+property is still supported and should be left alone if set as it is used by the syntax component's configuration
+dialog rather than a configuration form defined within this project.</para>
+					</listItem>
+			
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

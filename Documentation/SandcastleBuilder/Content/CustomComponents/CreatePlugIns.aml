@@ -83,21 +83,25 @@ Once it has been created, right click on the project and select <ui>Properties</
 						</step>
 						<step>
 							<content>
-								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
-enter the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program.  If you installed the help file
-builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
-Builder\</localUri>.  If not, substitute your path as appropriate.</para>
+								<para>In the <ui>Package</ui> tab, set the NuGet package properties.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
+which will help you see if the component can be located, that the configuration form is working if you created
+one for the component, and that it is working within the build as expected.</para>
 
 								<alert class="tip">
 									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
 locks the assemblies once the help file builder project has loaded them for use and you will not be able to
-rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a new
-debugging session.</para>
+rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a
+new debugging session.</para>
 
 									<para>In the help file builder project that you use to test your plug-in, set the project's
-<codeInline>Component Path</codeInline> property to the folder containing your plug-in's assembly.  If you have
-opened the project's <ui>Plug-Ins</ui> property page before setting the component path, you may need to close and
-reopen the project in order for it to discover your plug-in assembly.</para>
+<codeInline>Component Path</codeInline> property to the folder containing your build component's assembly.  If
+you have opened the project's <ui>Components</ui> property page before setting the component path, you may need
+to close and reopen the project in order for it to discover your build component assembly.</para>
 								</alert>
 							</content>
 						</step>
@@ -188,16 +192,6 @@ if your plug-in adds information needed for the reflection data or namespace com
 					</content>
 				</section>
 
-				<section address="MetadataIsConfigurable">
-					<title>IsConfigurable</title>
-					<content>
-						<para>The <codeInline>IsConfigurable</codeInline> property is optional and allows you to define
-whether or not the plug-in supports interactive editing of its configuration.  If false, the default, the
-plug-in will not be configurable from the property page.  If true, the property page will call the
-<codeInline>ConfigurePlugIn</codeInline> method so that it can invoke a dialog box to edit the configuration.</para>
-					</content>
-				</section>
-
 				<section address="MetadataIsHidden">
 					<title>IsHidden</title>
 					<content>
@@ -234,16 +228,6 @@ enumeration for a list of the defined build steps.</para>
 the order in which the plug-ins will be executed.  Those with a higher priority value will be executed before
 those with a lower value.  Those with an identical priority may be executed in any order within their group.  If
 not specified, a default priority of 1,000 is used.</para>
-
-					</content>
-				</section>
-
-				<section address="ConfigurePlugIn">
-					<title>ConfigurePlugIn</title>
-					<content>
-						<para>The <codeInline>ConfigurePlugIn</codeInline> method is used to configure the plug-in
-interactively from within the help file builder.  The method is passed a string containing the XML fragment that
-defines the current configuration. It should return a copy of the edited configuration.</para>
 
 					</content>
 				</section>
