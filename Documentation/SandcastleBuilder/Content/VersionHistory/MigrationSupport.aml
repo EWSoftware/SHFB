@@ -1,16 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="bc933f8f-e792-45bf-afec-62aa2c46aa3b" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!-- Ignore Spelling: bool dlg -->
 		<introduction>
 			<para>This topic provides information on migrating build components, plug-ins, presentation styles, and
 syntax generators built against v2021.4.9.0 and earlier to the latest release that supports .NET Core and
 deploying the components as NuGet packages.</para>
 
-			<autoOutline excludeRelatedTopics="true" />
+			<autoOutline excludeRelatedTopics="true" lead="none" />
 		</introduction>
 
-		<section address="GeneralInfo">
-			<title>General Information</title>
+		<section address="QuickUpdate">
+			<title>Quick Updates for MSBuild Support Only</title>
+			<content>
+				<para>Some quick updates can be made to get an existing component working with the new release without
+having to recreate the project with the restriction that they will only work with MSBuild.  For .NET Core builds,
+the projects will need to be recreated as described in the sections below.  Make the following changes as needed
+based on the project type:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Remove any references to <localUri>Sandcastle.Core</localUri> and
+<localUri>SandcastleBuilder.Utils</localUri> and replace them with NuGet package references to
+<localUri>EWSoftware.Sandcastle.Core</localUri> and/or <localUri>EWSoftware.SandcastleBuilder.Utils</localUri> as
+needed.  Use the latest release available for each.  Note that the version may not match the latest release of
+the help file builder as the package version for these only changes when there are breaking changes to the API.</para>
+					</listItem>
+
+					<listItem>
+						<para>For presentation styles, refer to the section below for additional changes that are required
+due to change in the API.</para>
+					</listItem>
+
+					<listItem>
+						<para>Remove the <codeInline>IsConfigurable</codeInline> property from the build component and
+plug-in export attributes.</para>
+					</listItem>
+
+					<listItem>
+						<para>If configurable, remove the <codeInline>ConfigureComponent</codeInline> method from build
+components and the <codeInline>ConfigurePlugIn</codeInline> method from plug-ins.  Save the code though as you
+will need to move it to the configuration forms when you add a new MEF editor factory class below.</para>
+					</listItem>
+
+					<listItem>
+						<para>For plug-ins, change the type on the <codeInline>Initialize</codeInline> method's
+<parameterReference>configuration</parameterReference> parameter from <codeInline>XPathNavigator</codeInline>
+to <codeInline>XElement</codeInline>.  It will be necessary to rework the initialization code to work with the
+new parameter type.</para>
+					</listItem>
+
+					<listItem>
+						<para>For configurable build components and plug-ins, add an editor factory class to the
+configuration editor form similar to the following examples.  The first is for a plug-in, the second is for a
+build component.</para>
+
+						<alert class="important">
+							<para>It is essential that the ID specified in the export attribute matches the ID on the component
+or plug-in's export attribute exactly.  This is how the IDEs will match the editor component to the related
+build component or plug-in.</para>
+
+							<para>Also note that the <codeInline>EditConfiguration</codeInline> methods now return true if the
+configuration was edited or false if it was not rather than the new configuration.  If changes are made to the
+configuration, they should be made directly to the passed in XML element.</para>
+						</alert>
+						
+						<code language="cs">
+using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
+
+#region Plug-in configuration editor factory for MEF
+//=====================================================================
+
+/// &lt;summary&gt;
+/// This allows editing of the plug-in configuration
+/// &lt;/summary&gt;
+[PlugInConfigurationEditorExport("TODO: Put your plug-in ID here")]
+public sealed class PlugInEditorFactory : IPlugInConfigurationEditor
+{
+    /// &lt;inheritdoc /&gt;
+    public bool EditConfiguration(SandcastleProject project, XElement configuration)
+    {
+        // TODO: Add code to invoke the editor dialog.
+        //using (var dlg = new WindowsFormsExampleConfigDlg(configuration))
+        //{
+        //    return dlg.ShowDialog() == DialogResult.OK;
+        //}
+    }
+}
+#endregion
+
+#region Build component configuration editor factory for MEF
+//=====================================================================
+
+/// &lt;summary&gt;
+/// This allows editing of the build component configuration
+/// &lt;/summary&gt;
+[ConfigurationEditorExport("TODO: Put your build component ID here")]
+public sealed class BuildComponentEditorFactory : IConfigurationEditor
+{
+    /// &lt;inheritdoc /&gt;
+    public bool EditConfiguration(XElement configuration, CompositionContainer container)
+    {
+        // TODO: Add code to invoke the editor dialog.
+        //using (var dlg = new WindowsFormsExampleConfigDlg(configuration))
+        //{
+        //    return dlg.ShowDialog() == DialogResult.OK;
+        //}
+    }
+}
+#endregion
+						</code>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="RecreateProjects">
+			<title>Support for MSBuild and .NET Core Builds</title>
 			<content>
 				<para>Starting with version <token>SandcastleVersion</token>, all component projects use an SDK format
 project and contain the necessary properties to generate a NuGet package when built.  This allows them to be
@@ -25,9 +133,10 @@ property file are present and ready to update.  The following sections provide m
 changes that need to be made to the various component project types.</para>
 
 				<alert class="important">
-					<para>If, after creating a project, you rename the project, be sure to rename the project's
-<localUri>.props</localUri> file found in the <localUri>.\build</localUri> folder to match the new project name.
-This is required so that the build properties can be found when added to a help file builder project using NuGet.</para>
+					<para>If, after creating a project, you rename the assembly created by the project, be sure to rename
+the project's <localUri>.props</localUri> file found in the <localUri>.\build</localUri> folder to match the new
+assembly name.  This is required so that the build properties can be found when added to a help file builder
+project using NuGet.</para>
 				</alert>
 			</content>
 		</section>
@@ -42,7 +151,9 @@ are used to generate the NuGet package for the component.</para>
 					</listItem>
 
 					<listItem>
-						<para>Import your component's code into the new project to replace the example component.</para>
+						<para>Import your component's code into the new project to replace the example component.  Some of
+the attribute values in the <localUri>AssemblyInfo.cs</localUri> file can be put in the project's package
+properties instead (title, description, company).</para>
 					</listItem>
 					
 					<listItem>
@@ -71,7 +182,9 @@ are used to generate the NuGet package for the plug-in.</para>
 					</listItem>
 
 					<listItem>
-						<para>Import your plug-in's code into the new project to replace the example plug-in.</para>
+						<para>Import your plug-in's code into the new project to replace the example plug-in.  Some of
+the attribute values in the <localUri>AssemblyInfo.cs</localUri> file can be put in the project's package
+properties instead (title, description, company).</para>
 					</listItem>
 					
 					<listItem>
@@ -86,6 +199,12 @@ Configuration Editor</ui> template project.  See the <link xlink:href="9ec616aa-
 topic for more information.</para>
 					</listItem>
 
+					<listItem>
+						<para>In the plug-in's <codeInline>Initialize</codeInline> method, change the type on the
+<parameterReference>configuration</parameterReference> parameter from <codeInline>XPathNavigator</codeInline>
+to <codeInline>XElement</codeInline>.  It will be necessary to rework the initialization code to work with the
+new parameter type.</para>
+					</listItem>
 				</list>
 			</content>
 		</section>
@@ -101,7 +220,8 @@ are used to generate the NuGet package for the presentation style.</para>
 
 					<listItem>
 						<para>Import your presentation style's code and other supporting files into the new project to
-replace the example presentation style.</para>
+replace the example presentation style.  Some of the attribute values in the <localUri>AssemblyInfo.cs</localUri>
+file can be put in the project's package properties instead (title, description, company).</para>
 					</listItem>
 					
 					<listItem>
@@ -134,9 +254,12 @@ are used to generate the NuGet package for the syntax generator.</para>
 
 					<listItem>
 						<para>Import your syntax generator's code and other supporting files into the new project to
-replace the example syntax generator.  Note that the syntax generator's <codeInline>IsConfigurable</codeInline>
-property is still supported and should be left alone if set as it is used by the syntax component's configuration
-dialog rather than a configuration form defined within this project.</para>
+replace the example syntax generator.  Some of the attribute values in the <localUri>AssemblyInfo.cs</localUri>
+file can be put in the project's package properties instead (title, description, company).</para>
+
+						<para>Note that the syntax generator's <codeInline>IsConfigurable</codeInline> property is still
+supported and should be left alone if set as it is used by the syntax component's configuration dialog rather
+than a configuration form defined within this project.</para>
 					</listItem>
 			
 				</list>

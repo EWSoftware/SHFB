@@ -8,7 +8,7 @@ Visual Studio.  The configuration editor is placed in a separate assembly from t
 editors are specific to the Windows platform.  This allows the components to remain platform-neutral and usable
 with either <application>MSBuild</application> or <application>dotnet build</application>.</para>
 
-			<autoOutline lead=" " excludeRelatedTopics="true" />
+			<autoOutline lead="none" excludeRelatedTopics="true" />
 		</introduction>
 
 		<section address="CreateProject">
