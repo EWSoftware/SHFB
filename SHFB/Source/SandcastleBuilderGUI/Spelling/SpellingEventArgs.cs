@@ -2,20 +2,19 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellingEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/11/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain spell checking event arguments
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.8.0  05/11/2013  EFW  Created the code
+// 05/11/2013  EFW  Created the code
 //===============================================================================================================
 
 using System.ComponentModel;
@@ -34,12 +33,13 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <summary>
         /// The word that caused the event
         /// </summary>
-        public string Word { get; private set; }
+        public string Word { get; }
 
         /// <summary>
         /// The line and column at which the word being spell checked appears
         /// </summary>
-        public Point Position { get; private set; }
+        public Point Position { get; }
+
         #endregion
 
         #region Constructor

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.ConfigFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/14/2016
-// Note    : Copyright 2006-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/05/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to transform and modify configuration files for the build
 //
@@ -20,19 +19,23 @@
 // 12/01/2015  EFW  Merged conceptual and reference topic build steps
 //===============================================================================================================
 
+// Ignore Spelling: notopic
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
-    partial class BuildProcess
+    public partial class BuildProcess
     {
         #region Generate API filter
         //=====================================================================
@@ -111,7 +114,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     yType = ApiFilter.ApiEntryTypeFromLetter(y[0]);
 
                 if(xType == yType)
-                    return String.Compare(x, y, false, CultureInfo.CurrentCulture);
+                    return String.Compare(x, y, StringComparison.Ordinal);
 
                 return (int)xType - (int)yType;
             });
@@ -313,7 +316,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private void MergeConfigurations(XmlDocument config, bool isConceptualConfig)
         {
             Dictionary<string, XmlNode> outputNodes = new Dictionary<string, XmlNode>();
-            BuildComponentFactory factory;
             BuildComponentConfiguration projectComp;
             XmlNode rootNode, configNode, clone;
             XmlNodeList outputFormats;
@@ -327,7 +329,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 projectComp = project.ComponentConfigurations[id];
 
-                if(!buildComponents.TryGetValue(id, out factory))
+                if(!buildComponents.TryGetValue(id, out BuildComponentFactory factory))
                     throw new BuilderException("BE0021", String.Format(CultureInfo.CurrentCulture,
                         "The project contains a reference to a custom build component '{0}' that could not " +
                         "be found.", id));
@@ -383,9 +385,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             {
                                 // Some presentation styles only support one help format.  In those cases, get
                                 // the configuration for that format and use it alone.
-                                XmlNode format;
-
-                                if(outputNodes.TryGetValue(project.HelpFileFormat.ToString(), out format))
+                                if(outputNodes.TryGetValue(project.HelpFileFormat.ToString(), out XmlNode format))
                                 {
                                     configNode.FirstChild.InnerXml += format.InnerXml;
                                     this.MergeComponent(id, factory, rootNode, configNode, isConceptualConfig, null);
@@ -416,7 +416,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private void MergeComponent(string id, BuildComponentFactory factory, XmlNode rootNode, XmlNode configNode,
           bool isConceptualConfig, Stack<string> mergeStack)
         {
-            BuildComponentFactory dependencyFactory;
             ComponentPlacement position;
             XmlNodeList matchingNodes;
             XmlNode node;
@@ -437,7 +436,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         continue;
 
                     // Add the dependency with a default configuration
-                    if(!buildComponents.TryGetValue(dependency, out dependencyFactory))
+                    if(!buildComponents.TryGetValue(dependency, out BuildComponentFactory dependencyFactory))
                         throw new BuilderException("BE0023", String.Format(CultureInfo.CurrentCulture,
                             "The project contains a reference to a custom build component '{0}' that has a " +
                             "dependency '{1}' that could not be found.", id, dependency));
@@ -547,6 +546,46 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             id, replaceId, position.AdjustedInstance);
                     }
                     break;
+            }
+        }
+        #endregion
+
+        #region Generate the API topic manifest file
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to generate the API topic manifest
+        /// </summary>
+        private void GenerateApiTopicManifest()
+        {
+            this.ReportProgress(BuildStep.GenerateApiTopicManifest, "Generating API topic manifest...");
+
+            if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+            {
+                this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                using(XmlWriter writer = XmlWriter.Create(Path.Combine(this.WorkingFolder, "manifest.xml"),
+                  new XmlWriterSettings { Indent = true }))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("topics");
+
+                    foreach(var api in ComponentUtilities.XmlStreamAxis(reflectionFile, "api"))
+                    {
+                        // Skip elements that should not have a topic generated (enumerated type fields for example)
+                        if(api.Element("topicdata")?.Attribute("notopic") == null)
+                        {
+                            writer.WriteStartElement("topic");
+                            writer.WriteAttributeString("id", api.Attribute("id").Value);
+                            writer.WriteAttributeString("type", "API");
+                            writer.WriteEndElement();
+                        }
+                    }
+
+                    writer.WriteEndElement();
+                }
+
+                this.ExecutePlugIns(ExecutionBehaviors.After);
             }
         }
         #endregion

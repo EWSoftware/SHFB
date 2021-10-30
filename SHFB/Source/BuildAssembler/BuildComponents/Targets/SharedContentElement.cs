@@ -10,7 +10,7 @@
 using System.Xml;
 using System.Xml.XPath;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This class holds the properties of a shared content element that needs to be replaced in a topic
@@ -23,30 +23,30 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the XPath expression used to find elements to be replaced
         /// </summary>
-        public XPathExpression Path { get; private set; }
+        public XPathExpression Path { get; }
 
         /// <summary>
         /// This read-only property returns the item XPath expression used to get the name of the content item
         /// that will replace the element.
         /// </summary>
-        public XPathExpression Item { get; private set; }
+        public XPathExpression Item { get; }
 
         /// <summary>
         /// This read-only property returns the item XPath expression used to get the value used to replace the
         /// item if the named item is not found.
         /// </summary>
-        public XPathExpression Undefined { get; private set; }
+        public XPathExpression Undefined { get; }
 
         /// <summary>
         /// This read-only property returns the XPth expression used to select parameter elements
         /// </summary>
-        public XPathExpression Parameters { get; private set; }
+        public XPathExpression Parameters { get; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to get an attribute name if the content
         /// value is to be added as an attribute.
         /// </summary>
-        public XPathExpression Attribute { get; private set; }
+        public XPathExpression Attribute { get; }
 
         #endregion
 

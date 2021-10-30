@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : VersionConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/28/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a value converter that converts between Version and String
 //
@@ -41,9 +40,7 @@ namespace ReflectionDataManager
         /// <inheritdoc />
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Version version;
-
-            if(value == null || !Version.TryParse((string)value, out version))
+            if(value == null || !Version.TryParse((string)value, out Version version))
                 version = new Version();
 
             return version;

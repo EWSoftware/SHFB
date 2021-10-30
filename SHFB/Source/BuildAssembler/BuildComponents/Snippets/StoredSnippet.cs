@@ -6,7 +6,7 @@
 // Change History
 // 03/09/2013 - EFW - Moved the class into the Snippets namespace and made it public
 
-namespace Microsoft.Ddue.Tools.Snippets
+namespace Sandcastle.Tools.BuildComponents.Snippets
 {
     /// <summary>
     /// This represents a stored snippet
@@ -19,12 +19,13 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <summary>
         /// This read-only property returns the snippet text
         /// </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /// <summary>
         /// This read-only property returns the snippet language
         /// </summary>
-        public string Language { get; private set; }
+        public string Language { get; }
+
         #endregion
 
         #region Constructor

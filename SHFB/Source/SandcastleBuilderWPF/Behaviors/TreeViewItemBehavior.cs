@@ -1,24 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TreeViewItemBehavior.cs
 // Author  : Josh Smith
-// Updated : 01/27/2012
-// Source  : http://www.codeproject.com/KB/WPF/AttachedBehaviors.aspx
-// Note    : Copyright 2008-2012, Josh Smith, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Source  : https://www.codeproject.com/Articles/28959/Introduction-to-Attached-Behaviors-in-WPF
+// Note    : Copyright 2008-2021, Josh Smith, All rights reserved
 //
-// This file contains a class that exposes attached behaviors that can be
-// applied to TreeViewItem objects.
+// This file contains a class that exposes attached behaviors that can be applied to TreeViewItem objects
 //
-// This code is published under the Code Project Open License (CPOL).  A copy
-// of the license can be found at http://www.codeproject.com/info/cpol10.aspx.
-// This notice, the author's name, and all copyright notices must remain intact
-// in all applications, documentation, and source files.
+// This code is published under the Code Project Open License (CPOL).  A copy of the license can be found at
+// http://www.codeproject.com/info/cpol10.aspx.  This notice, the author's name, and all copyright notices must
+// remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.3  12/04/2011  EFW  Added the code to the project
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/04/2011  EFW  Added the code to the project
+//===============================================================================================================
 
 using System;
 using System.Windows;
@@ -31,8 +28,6 @@ namespace SandcastleBuilder.WPF.Behaviors
     /// </summary>
     public static class TreeViewItemBehavior
     {
-        #region IsBroughtIntoViewWhenSelected
-
         /// <summary>
         /// This defines the <see cref="P:SandcastleBuilder.WPF.Behaviors.TreeViewItemBehavior.IsBroughtIntoViewWhenSelected"/>
         /// attached property.
@@ -54,6 +49,9 @@ namespace SandcastleBuilder.WPF.Behaviors
         /// <returns>The property value</returns>
         public static bool GetIsBroughtIntoViewWhenSelected(TreeViewItem treeViewItem)
         {
+            if(treeViewItem == null)
+                throw new ArgumentNullException(nameof(treeViewItem));
+
             return (bool)treeViewItem.GetValue(IsBroughtIntoViewWhenSelectedProperty);
         }
 
@@ -65,6 +63,9 @@ namespace SandcastleBuilder.WPF.Behaviors
         public static void SetIsBroughtIntoViewWhenSelected(
           TreeViewItem treeViewItem, bool value)
         {
+            if(treeViewItem == null)
+                throw new ArgumentNullException(nameof(treeViewItem));
+
             treeViewItem.SetValue(IsBroughtIntoViewWhenSelectedProperty, value);
         }
 
@@ -76,9 +77,7 @@ namespace SandcastleBuilder.WPF.Behaviors
         private static void OnIsBroughtIntoViewWhenSelectedChanged(
           DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
-            TreeViewItem item = depObj as TreeViewItem;
-
-            if(item == null)
+            if(!(depObj is TreeViewItem item))
                 return;
 
             if(!(e.NewValue is bool))
@@ -100,15 +99,11 @@ namespace SandcastleBuilder.WPF.Behaviors
             // Only react to the Selected event raised by the TreeViewItem
             // whose IsSelected property was modified. Ignore all ancestors
             // who are merely reporting that a descendant's Selected fired.
-            if(!Object.ReferenceEquals(sender, e.OriginalSource))
+            if(!ReferenceEquals(sender, e.OriginalSource))
                 return;
 
-            TreeViewItem item = e.OriginalSource as TreeViewItem;
-
-            if(item != null)
+            if(e.OriginalSource is TreeViewItem item)
                 item.BringIntoView();
         }
-
-        #endregion // IsBroughtIntoViewWhenSelected
     }
 }

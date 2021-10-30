@@ -20,7 +20,7 @@ using System.Xml.Xsl;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to transform the intermediate topic to its final form such as an HTML
@@ -48,7 +48,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private List<Transform> transforms = new List<Transform>();
+        private readonly List<Transform> transforms = new List<Transform>();
 
         #endregion
 
@@ -59,10 +59,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// This read-only property returns an enumerable list of XSL transformations that will be applied to
         /// the topics.
         /// </summary>
-        protected IEnumerable<Transform> Transformations
-        {
-            get { return transforms; }
-        }
+        protected IEnumerable<Transform> Transformations => transforms;
+
         #endregion
 
         #region Constructor
@@ -83,6 +81,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             // Load the transforms
             XPathNodeIterator transformNodes = configuration.Select("transform");
 
@@ -138,8 +139,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     // Set "expand-value" attribute to true to expand environment variables embedded in "value".
                     string expandAttr = argumentNode.GetAttribute("expand-value", String.Empty);
-                    bool expandValue = String.IsNullOrEmpty(expandAttr) ? false :
-                        Convert.ToBoolean(expandAttr, CultureInfo.InvariantCulture);
+                    bool expandValue = !String.IsNullOrEmpty(expandAttr) && Convert.ToBoolean(expandAttr, CultureInfo.InvariantCulture);
 
                     // If a value attribute is supplied, use that.  If not, use the argument node itself
                     string value = argumentNode.GetAttribute("value", String.Empty);
@@ -161,6 +161,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// list when each topic is transformed.  It will contain the current topic's key.</note></remarks>
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             // Raise a component event to signal that the topic is about to be transformed
             this.OnComponentEvent(new TransformingTopicEventArgs(key, document));
 
@@ -209,29 +212,27 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
                     // Some settings to ensure that we don't try to go get, parse, and validate using any
                     // referenced schemas or DTDs
-                    XmlReaderSettings readerSettings = new XmlReaderSettings();
-
-                    //!EFW - Update. Uses DtdProcessing property now rather than the obsolete ProhibitDtd property.
-                    // The old property value was false which translates to Parse for the new property.
-                    readerSettings.DtdProcessing = DtdProcessing.Parse;
-                    readerSettings.XmlResolver = null;
-
-                    XmlReader reader = XmlReader.Create(buffer, readerSettings);
-
-                    try
+                    XmlReaderSettings readerSettings = new XmlReaderSettings
                     {
-                        document.Load(reader);
-                    }
-                    catch(XmlException e)
+                        //!EFW - Update. Uses DtdProcessing property now rather than the obsolete ProhibitDtd property.
+                        // The old property value was false which translates to Parse for the new property.
+                        DtdProcessing = DtdProcessing.Parse,
+                        XmlResolver = null
+                    };
+
+                    using(XmlReader reader = XmlReader.Create(buffer, readerSettings))
                     {
-                        this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
-                            "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
-                            e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
-                            e.InnerException.Message);
-                    }
-                    finally
-                    {
-                        reader.Close();
+                        try
+                        {
+                            document.Load(reader);
+                        }
+                        catch(XmlException e)
+                        {
+                            this.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
+                                "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
+                                e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
+                                e.InnerException.Message);
+                        }
                     }
                 }
             }

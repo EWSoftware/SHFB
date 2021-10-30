@@ -53,9 +53,9 @@ namespace Sandcastle.Core.BuildAssembler
         private readonly BlockingCollection<(LogLevel Level, string Message)> messageLog =
             new BlockingCollection<(LogLevel Level, string Message)>();
 
+        private readonly ComponentAssemblyResolver resolver;
         private CompositionContainer componentContainer;
         private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> allBuildComponents;
-        private HashSet<string> componentFolders;
 
         private MessageLevel verbosityLevel;
         private readonly Action<LogLevel, string> messageLogger;
@@ -114,9 +114,8 @@ namespace Sandcastle.Core.BuildAssembler
 
             tokenSource = new CancellationTokenSource();
 
-            // When ran as an MSBuild task, it won't always find dependent assemblies so we must find them
-            // manually.
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            // We need to keep this around as dependencies may not load until the build is under way
+            resolver = new ComponentAssemblyResolver();
         }
         #endregion
 
@@ -139,8 +138,6 @@ namespace Sandcastle.Core.BuildAssembler
         {
             if(disposing)
             {
-                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-
                 this.ClearComponents();
 
                 if(messageLog != null)
@@ -148,6 +145,9 @@ namespace Sandcastle.Core.BuildAssembler
 
                 if(componentContainer != null)
                     componentContainer.Dispose();
+
+                if(resolver != null)
+                    resolver.Dispose();
 
                 if(tokenSource != null)
                     tokenSource.Dispose();
@@ -193,62 +193,68 @@ namespace Sandcastle.Core.BuildAssembler
         /// This is used to execute the build assembler instance using the specified configuration file and
         /// manifest file.
         /// </summary>
-        /// <param name="configuration">The build assembler configuration</param>
+        /// <param name="configurationFile">The build assembler configuration file</param>
         /// <param name="manifest">The manifest file</param>
-        public virtual void Execute(XPathDocument configuration, string manifest)
+        public virtual void Execute(string configurationFile, string manifest)
         {
             Task builder = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    XPathNavigator configNav = configuration.CreateNavigator();
+                    using(var reader = XmlReader.Create(configurationFile,
+                      new XmlReaderSettings { CloseInput = true }))
+                    {
+                        var configuration = new XPathDocument(reader);
 
-                    // See if a verbosity level has been specified.  If so, set it.
-                    var verbosity = configNav.SelectSingleNode("/configuration/@verbosity");
+                        XPathNavigator configNav = configuration.CreateNavigator();
 
-                    if(verbosity == null || !Enum.TryParse<MessageLevel>(verbosity.Value, out MessageLevel level))
-                        level = MessageLevel.Info;
+                        // See if a verbosity level has been specified.  If so, set it.
+                        var verbosity = configNav.SelectSingleNode("/configuration/@verbosity");
 
-                    this.VerbosityLevel = level;
+                        if(verbosity == null || !Enum.TryParse(verbosity.Value, out MessageLevel level))
+                            level = MessageLevel.Info;
 
-                    if(level > MessageLevel.Info)
-                        messageLog.Add((LogLevel.Info, "Loading configuration..."));
+                        this.VerbosityLevel = level;
 
-                    // Find all available build components
-                    this.CreateComponentContainer(configNav.SelectSingleNode(
-                        "/configuration/dduetools/builder/componentLocations"));
+                        if(level > MessageLevel.Info)
+                            messageLog.Add((LogLevel.Info, "Loading configuration..."));
 
-                    // Load the build components
-                    XPathNavigator componentsNode = configNav.SelectSingleNode(
-                        "/configuration/dduetools/builder/components");
+                        // Find all available build components
+                        this.CreateComponentContainer(configNav.SelectSingleNode(
+                            "/configuration/dduetools/builder/componentLocations"));
 
-                    if(componentsNode != null)
-                        this.AddComponents(componentsNode);
+                        // Load the build components
+                        XPathNavigator componentsNode = configNav.SelectSingleNode(
+                            "/configuration/dduetools/builder/components");
 
-                    // Proceed through the build manifest, processing all topics named there
-                    if(level > MessageLevel.Info)
-                        messageLog.Add((LogLevel.Info, "Processing topics..."));
+                        if(componentsNode != null)
+                            this.AddComponents(componentsNode);
 
-                    int count = this.Apply(manifest);
+                        // Proceed through the build manifest, processing all topics named there
+                        if(level > MessageLevel.Info)
+                            messageLog.Add((LogLevel.Info, "Processing topics..."));
 
-                    messageLog.Add((LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
-                        "Processed {0} topic(s)", count)));
+                        int count = this.Apply(manifest);
 
-                    if(warningCount != 0)
                         messageLog.Add((LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
-                            "{0} warning(s)", warningCount)));
+                            "Processed {0} topic(s)", count)));
+
+                        if(warningCount != 0)
+                            messageLog.Add((LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
+                                "{0} warning(s)", warningCount)));
+                    }
                 }
                 finally
                 {
                     messageLog.CompleteAdding();
                 }
-            }, tokenSource.Token);
+            }, tokenSource.Token, TaskCreationOptions.None, TaskScheduler.Default);
 
             Task logger = Task.Factory.StartNew(() =>
             {
                 foreach(var msg in messageLog.GetConsumingEnumerable())
                     messageLogger(msg.Level, msg.Message);
-            }, tokenSource.Token);
+            }, tokenSource.Token, TaskCreationOptions.None, TaskScheduler.Default);
 
             Task.WaitAll(new[] { builder, logger}, tokenSource.Token);
         }
@@ -258,11 +264,11 @@ namespace Sandcastle.Core.BuildAssembler
         /// </summary>
         /// <param name="manifest">The manifest file to read</param>
         /// <returns>An enumerable list of topic IDs</returns>
-        private IEnumerable<ManifestTopic> ReadManifest(string manifest)
+        private static IEnumerable<ManifestTopic> ReadManifest(string manifest)
         {
             string id, type;
 
-            using(var reader = XmlReader.Create(manifest))
+            using(var reader = XmlReader.Create(manifest, new XmlReaderSettings()))
             {
                 reader.MoveToContent();
 
@@ -293,7 +299,7 @@ namespace Sandcastle.Core.BuildAssembler
         /// <overloads>There are two overloads for this method</overloads>
         protected int Apply(string manifestFile)
         {
-            return this.Apply(this.ReadManifest(manifestFile));
+            return this.Apply(ReadManifest(manifestFile));
         }
 
         /// <summary>
@@ -304,6 +310,9 @@ namespace Sandcastle.Core.BuildAssembler
         protected int Apply(IEnumerable<ManifestTopic> topics)
         {
             int count = 0;
+
+            if(topics == null)
+                throw new ArgumentNullException(nameof(topics));
 
             foreach(var topic in topics)
             {
@@ -339,37 +348,6 @@ namespace Sandcastle.Core.BuildAssembler
         //=====================================================================
 
         /// <summary>
-        /// This is handled to resolve dependent assemblies and load them when necessary
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="args">The event arguments</param>
-        /// <returns>The loaded assembly or null if not found</returns>
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string[] nameInfo = args.Name.Split(new char[] { ',' });
-            string resolveName = nameInfo[0];
-
-            // See if it has already been loaded
-            Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
-
-            // If not already loaded, check for dependency assemblies in the component folders
-            if(asm == null)
-                foreach(string folder in componentFolders)
-                {
-                    resolveName = Directory.EnumerateFiles(folder, "*.dll").FirstOrDefault(
-                        f => resolveName == Path.GetFileNameWithoutExtension(f));
-
-                    if(resolveName != null)
-                    {
-                        asm = Assembly.LoadFile(resolveName);
-                        break;
-                    }
-                }
-
-            return asm;
-        }
-
-        /// <summary>
         /// Add a set of components based on the given configuration
         /// </summary>
         /// <param name="configuration">The configuration containing the component definitions</param>
@@ -396,6 +374,9 @@ namespace Sandcastle.Core.BuildAssembler
         /// <returns>An enumerable list of components created based on the configuration information</returns>
         public IEnumerable<BuildComponentCore> LoadComponents(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             XPathNodeIterator componentNodes = configuration.Select("component");
             List<BuildComponentCore> loadedComponents = new List<BuildComponentCore>();
 
@@ -467,7 +448,7 @@ namespace Sandcastle.Core.BuildAssembler
                 allBuildComponents = null;
             }
 
-            componentFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             // Create an aggregate catalog that combines assembly catalogs for all of the possible component
             // locations.
@@ -476,11 +457,11 @@ namespace Sandcastle.Core.BuildAssembler
             if(componentLocations != null)
                 foreach(XPathNavigator location in componentLocations.Select("location/@folder"))
                     if(!String.IsNullOrWhiteSpace(location.Value) && Directory.Exists(location.Value))
-                        AddAssemblyCatalogs(catalog, location.Value, componentFolders, true);
+                        AddAssemblyCatalogs(catalog, location.Value, searchedFolders, true);
 
-            // Always include the custom components and the tools folders
-            AddAssemblyCatalogs(catalog, ComponentUtilities.ComponentsFolder, componentFolders, true);
-            AddAssemblyCatalogs(catalog, ComponentUtilities.ToolsFolder, componentFolders, true);
+            // Always include the custom components and the core components folders
+            AddAssemblyCatalogs(catalog, ComponentUtilities.ThirdPartyComponentsFolder, searchedFolders, true);
+            AddAssemblyCatalogs(catalog, ComponentUtilities.CoreComponentsFolder, searchedFolders, true);
 
             componentContainer = new CompositionContainer(catalog);
 
@@ -503,11 +484,15 @@ namespace Sandcastle.Core.BuildAssembler
         /// <remarks>It is done this way to prevent a single assembly that would normally be discovered via a
         /// directory catalog from preventing all assemblies from loading if it cannot be examined when the parts
         /// are composed (i.e. trying to load a Windows Store assembly on Windows 7).</remarks>
-        private static void AddAssemblyCatalogs(AggregateCatalog catalog, string folder,
-          HashSet<string> searchedFolders, bool includeSubfolders)
+        private void AddAssemblyCatalogs(AggregateCatalog catalog, string folder, HashSet<string> searchedFolders,
+          bool includeSubfolders)
         {
             if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
             {
+                searchedFolders.Add(folder);
+
+                bool hadComponents = false;
+
                 foreach(var file in Directory.EnumerateFiles(folder, "*.dll"))
                 {
                     try
@@ -519,7 +504,10 @@ namespace Sandcastle.Core.BuildAssembler
                         // the catalog.  Use Count() rather than Any() to ensure it touches all parts in case
                         // that makes a difference.
                         if(asmCat.Parts.Count() > 0)
+                        {
                             catalog.Catalogs.Add(asmCat);
+                            hadComponents = true;
+                        }
                         else
                             asmCat.Dispose();
 
@@ -571,8 +559,13 @@ namespace Sandcastle.Core.BuildAssembler
                     }
                 }
 
+                // Track folders with components so that we can search them for dependencies later if needed
+                if(hadComponents)
+                    resolver.AddFolder(folder);
+
                 // Enumerate subfolders separately so that we can skip future requests for the same folder
                 if(includeSubfolders)
+                {
                     try
                     {
                         foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
@@ -590,6 +583,7 @@ namespace Sandcastle.Core.BuildAssembler
                     {
                         System.Diagnostics.Debug.WriteLine(ex);
                     }
+                }
             }
         }
         #endregion
@@ -653,6 +647,9 @@ namespace Sandcastle.Core.BuildAssembler
         public void WriteMessage(Type type, MessageLevel level, string key, string message)
         {
             string text;
+
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
 
             if(level >= this.VerbosityLevel)
             {

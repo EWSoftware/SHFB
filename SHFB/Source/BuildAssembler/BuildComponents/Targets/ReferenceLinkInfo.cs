@@ -1,13 +1,13 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ReferenceLinkInfo.cs
-// Note    : Copyright 2010-2012 Microsoft Corporation
+// Note    : Copyright 2010-2021 Microsoft Corporation
 //
 // This file contains the ReferenceLinkInfo class used to hold reference link information used by the
 // ResolveReferenceLinksComponent.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -19,9 +19,7 @@
 using System;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This class is used to hold reference link information used by the
@@ -33,25 +31,26 @@ namespace Microsoft.Ddue.Tools.Targets
         //=====================================================================
 
         /// <summary>This read-only property returns the target of the link</summary>
-        public string Target { get; private set; }
+        public string Target { get; }
 
         /// <summary>This read-only property returns the display target of the link</summary>
         public string DisplayTarget { get; internal set; }
 
         /// <summary>This read-only property returns the display options for the link</summary>
-        public DisplayOptions DisplayOptions { get; private set; }
+        public DisplayOptions DisplayOptions { get; }
 
         /// <summary>This read-only property indicates whether or not to prefer the overload topic</summary>
-        public bool PreferOverload { get; private set; }
+        public bool PreferOverload { get; }
 
         /// <summary>
         /// This read-only property indicates whether or not to render the element as an actual link
         /// </summary>
         /// <value>If true, it is rendered as a link.  If false, it will be rendered as an identifier.</value>
-        public bool RenderAsLink { get; private set; }
+        public bool RenderAsLink { get; }
 
         /// <summary>This read-only property returns the contents of the link</summary>
         public XPathNavigator Contents { get; internal set; }
+
         #endregion
 
         #region Methods, etc.
@@ -69,7 +68,7 @@ namespace Microsoft.Ddue.Tools.Targets
             bool attrValue;
 
             if(element == null)
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
 
             this.DisplayOptions = DisplayOptions.Default;
             this.Target = element.GetAttribute("target", String.Empty);

@@ -197,6 +197,17 @@ window in Visual Studio.</para>
 			</content>
 		</section>
 
+		<section address="InternalAndPrivateIfExternal">
+			<title>Internal members in other assemblies and private members of base types (DocumentInternalAndPrivateIfExternal)</title>
+			<content>
+				<para>When set to false, the default, the help file builder will exclude internal members from base types
+in other assemblies and private members from base types.  If set to true, those members are included if the related
+internal and private member options are also enabled.  This does not affect internal and private members inherited
+from base framework types.  Those are included or excluded based on the related options described above.</para>
+
+			</content>
+		</section>
+
 		<section address="DocProtInt">
 			<title>Document "protected internal" members as "protected" instead (DocumentProtectedInternalAsProtected)</title>
 			<content>

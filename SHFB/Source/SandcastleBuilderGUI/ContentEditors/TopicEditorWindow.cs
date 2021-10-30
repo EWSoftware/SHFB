@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the conceptual topic files.
 //
@@ -13,19 +12,17 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  05/10/2008  EFW  Created the code
-// 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
-// 1.9.3.3  12/11/2011  EFW  Simplified the drag and drop code to work with the new Entity References WPF user
-//                           control.
-// 1.9.3.4  01/20/2012  EFW  Added property to allow retrieval of the text
-// 1.9.8.0  05/11/2013  EFW  Added support for spell checking
+// 05/10/2008  EFW  Created the code
+// 07/26/2008  EFW  Reworked for use with the new project format
+// 12/11/2011  EFW  Simplified the drag and drop code to work with the new Entity References WPF user control
+// 01/20/2012  EFW  Added property to allow retrieval of the text
+// 05/11/2013  EFW  Added support for spell checking
 //===============================================================================================================
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -50,6 +47,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         private ToolStripMenuItem lastAction;
+
         #endregion
 
         #region Properties
@@ -58,18 +56,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return this.ToolTipText; }
-        }
+        public string Filename => this.ToolTipText;
 
         /// <summary>
         /// This read-only property returns the current file content
         /// </summary>
-        public string FileContent
-        {
-            get { return editor.Document.TextContent; }
-        }
+        public string FileContent => editor.Document.TextContent;
+
         #endregion
 
         #region Constructor
@@ -177,16 +170,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return true; }
-        }
+        public override bool CanSaveContent => true;
 
         /// <inheritdoc />
-        public override bool IsContentDocument
-        {
-            get { return true; }
-        }
+        public override bool IsContentDocument => true;
 
         /// <inheritdoc />
         public override bool Save()
@@ -380,6 +367,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             int endPos, offset = textArea.Document.PositionToOffset(start);
             string currentText = " ";
 
+            if(text == null)
+                throw new ArgumentNullException(nameof(text));
+
             // If deleting the text, delete trailing spaces as well
             if(text.Length == 0 && offset + length + 1 < textArea.Document.TextLength)
             {
@@ -426,6 +416,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            if(e == null)
+                throw new ArgumentNullException(nameof(e));
+
             e.Cancel = !this.CanClose;
             base.OnClosing(e);
         }
@@ -456,12 +449,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void editor_DragDrop(object sender, DragEventArgs e)
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-            DataObject data = e.Data as DataObject;
             Topic topic;
             TocEntry tocEntry;
-            string extension = Path.GetExtension(this.ToolTipText).ToLower(CultureInfo.InvariantCulture);
+            string extension = Path.GetExtension(this.ToolTipText).ToLowerInvariant();
 
-            if(data == null)
+            if(!(e.Data is DataObject data))
                 return;
 
             if(data.GetDataPresent(typeof(Topic)))

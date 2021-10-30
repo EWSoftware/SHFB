@@ -1,0 +1,73 @@
+﻿<Window x:Class="Sandcastle.Tools.BuildComponents.UI.SyntaxComponentConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d" Width="800" Height="500" ResizeMode="NoResize" ShowInTaskbar="False"
+	Title="Syntax Component Configuration"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=chkRenderReferenceLinks}">
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <CheckBox Grid.Row="0" Name="chkRenderReferenceLinks" Margin="0,0,0,3"
+      Content="_Render reference links to online content (not supported by MS Help Viewer)" />
+    <CheckBox Grid.Row="1" Name="chkAddNoExampleTabs" Margin="0,3,0,3" IsChecked="True"
+      Click="chkAddNoExampleTabs_Click"
+      Content="_Add &quot;No example&quot; tabs in presentation styles that support code snippet grouping" />
+    <CheckBox Grid.Row="2" Name="chkIncludeOnSingleSnippets" Margin="20,3,0,10"
+      Content="_Include on standalone snippets too" />
+    <Grid Grid.Row="3">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="3*"/>
+      </Grid.ColumnDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="_Syntax Generators"
+        Target="{Binding ElementName=lbGenerators}"/>
+      <Label Grid.Row="0" Grid.Column="1" Content="Edit _Configuration"
+        Target="{Binding ElementName=txtConfiguration}"/>
+      <ListBox Grid.Row="1" Grid.Column="0" Name="lbGenerators" Margin="0,0,3,3" DisplayMemberPath="Id"
+        SelectionChanged="lbGenerators_SelectionChanged" />
+      <TextBox Grid.Row="1" Grid.Column="1" Name="txtConfiguration" Margin="3,0,0,3"
+        AcceptsReturn="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"/>
+      <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+        <Button Name="btnMoveUp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="_Up" Click="btnMoveUp_Click"
+					ToolTip="Move the selected syntax generator up the list" />
+        <Button Name="btnMoveDown" Margin="3,3,0,3" Padding="3" MinWidth="80" Content="_Down" Click="btnMoveDown_Click"
+					ToolTip="Move the selected syntax generator down the list"/>
+      </StackPanel>
+      <Grid Grid.Row="2" Grid.Column="1">
+        <Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+				<Button Grid.Column="0" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+					Click="btnHelp_Click" ToolTip="View help for this component" />
+				<Button Grid.Column="1" Name="btnReset" Margin="3,3,0,3" Padding="3" MinWidth="80" Content="R_eset"
+          Click="btnReset_Click" ToolTip="Reset the configuration to the default settings" />
+        <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+						RequestNavigate="lnkProjectSite_RequestNavigate" ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+        </TextBlock>
+        <StackPanel Grid.Column="3" Orientation="Horizontal">
+          <Button Name="btnOK" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+						ToolTip="Save the changes" />
+          <Button Name="btnCancel" Margin="3,3,0,3" Padding="3" MinWidth="80" Content="Cancel"
+            IsCancel="True" ToolTip="Close without saving changes" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

@@ -18,7 +18,7 @@ using System.Linq;
 using System.Compiler;
 using Sandcastle.Core;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     public class ApiVisitor : IDisposable
     {
@@ -59,20 +59,25 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// This read-only property returns the base path for source code related to the assemblies
         /// </summary>
         /// <value>If set, source code context information will be included in the reflection data when possible</value>
-        public string SourceCodeBasePath { get; private set; }
+        public string SourceCodeBasePath { get; }
 
         /// <summary>
         /// This read-only property returns whether or not to report missing type source context issues as
         /// warnings.
         /// </summary>
         /// <value>If set to false, such issues are only reported as informational messages</value>
-        public bool WarnOnMissingContext { get; private set; }
+        public bool WarnOnMissingContext { get; }
 
         /// <summary>
         /// This is used to get or set the canceled state of the build
         /// </summary>
         /// <value>If set to true, the reflection process stops once the current type has been visited</value>
         public bool Canceled { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the message logger to use to report issues
+        /// </summary>
+        public Action<LogLevel, string> MessageLogger { get; set; }
 
         #endregion
 
@@ -230,13 +235,12 @@ namespace Microsoft.Ddue.Tools.Reflection
                 {
                     if(!assembly.reader.PdbExists)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Warn, "The program database (PDB) file " +
-                            "associated with '{0}' does not exist or could not be loaded.  Source context " +
-                            "information is unavailable.", filePath);
+                        this.MessageLogger(LogLevel.Warn, "The program database (PDB) file associated with " +
+                            $"'{filePath}' does not exist or could not be loaded.  Source context information " +
+                            "is unavailable.");
                     }
                     else
-                        ConsoleApplication.WriteMessage(LogLevel.Info, "Found a current program database " +
-                            "(PDB) file for '{0}'.", filePath);
+                        this.MessageLogger(LogLevel.Info, $"Found a current program database (PDB) file for '{filePath}'.");
                 }
             }
         }
@@ -379,6 +383,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="space">The namespace to visit</param>
         protected virtual void VisitNamespace(Namespace space)
         {
+            if(space == null)
+                throw new ArgumentNullException(nameof(space));
+
             this.VisitEntity(space);
             this.VisitTypes(space.Types);
         }
@@ -406,6 +413,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="type">The type to visit</param>
         protected virtual void VisitType(TypeNode type)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             this.VisitEntity(type);
             this.VisitMembers(type.Members);
         }

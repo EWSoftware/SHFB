@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SummaryPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 11/14/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Summaries category properties
 //
@@ -23,7 +22,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Utils;
 
@@ -49,7 +48,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         public NamespaceSummaryItemCollection NamespaceSummaries
         {
-            get { return namespaceSummaries; }
+            get => namespaceSummaries;
             set
             {
                 namespaceSummaries = value;

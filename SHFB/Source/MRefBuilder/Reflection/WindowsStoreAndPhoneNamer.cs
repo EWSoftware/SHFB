@@ -4,13 +4,12 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 12/11/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a modified version of the original OrcasNamer that renames certain core framework types in
 // assemblies compiled against the Windows Store or Windows Phone frameworks.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 //    Date     Who  Comments
@@ -24,7 +23,7 @@ using System.Text;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This is the API member namer for assemblies built against the Windows Store or Windows Phone frameworks
@@ -40,12 +39,18 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <inheritdoc />
         public override string GetNamespaceName(Namespace space)
         {
+            if(space == null)
+                throw new ArgumentNullException(nameof(space));
+
             return "N:" + space.Name;
         }
 
         /// <inheritdoc />
         public override string GetTypeName(TypeNode type)
         {
+            if(type == null)
+                throw new ArgumentNullException(nameof(type));
+
             StringBuilder sb = new StringBuilder("T:");
 
             WriteType(type, sb);
@@ -56,6 +61,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <inheritdoc />
         public override string GetMemberName(Member member)
         {
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             StringBuilder sb = new StringBuilder();
 
             switch(member.NodeType)
@@ -111,43 +119,43 @@ namespace Microsoft.Ddue.Tools.Reflection
                     ArrayType array = (ArrayType)type;
                     WriteType(array.ElementType, sb);
 
-                    sb.Append("[");
+                    sb.Append('[');
 
                     if(array.Rank > 1)
                         for(int i = 0; i < array.Rank; i++)
                         {
                             if(i > 0)
-                                sb.Append(",");
+                                sb.Append(',');
 
                             sb.Append("0:");
                         }
 
-                    sb.Append("]");
+                    sb.Append(']');
                     break;
 
                 case NodeType.Reference:
                     Reference reference = (Reference)type;
                     WriteType(reference.ElementType, sb);
-                    sb.Append("@");
+                    sb.Append('@');
                     break;
 
                 case NodeType.Pointer:
                     Pointer pointer = (Pointer)type;
                     WriteType(pointer.ElementType, sb);
-                    sb.Append("*");
+                    sb.Append('*');
                     break;
 
                 case NodeType.OptionalModifier:
                     TypeModifier optionalModifierClause = (TypeModifier)type;
                     WriteType(optionalModifierClause.ModifiedType, sb);
-                    sb.Append("!");
+                    sb.Append('!');
                     WriteType(optionalModifierClause.Modifier, sb);
                     break;
 
                 case NodeType.RequiredModifier:
                     TypeModifier requiredModifierClause = (TypeModifier)type;
                     WriteType(requiredModifierClause.ModifiedType, sb);
-                    sb.Append("|");
+                    sb.Append('|');
                     WriteType(requiredModifierClause.Modifier, sb);
                     break;
 
@@ -157,7 +165,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                         ITypeParameter gtp = (ITypeParameter)type;
 
                         if(gtp.DeclaringMember is TypeNode)
-                            sb.Append("`");
+                            sb.Append('`');
                         else
                             if(gtp.DeclaringMember is Method)
                                 sb.Append("``");
@@ -175,7 +183,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                         {
                             // Names of nested types begin with outer type name
                             WriteType(declaringType, sb);
-                            sb.Append(".");
+                            sb.Append('.');
                         }
                         else
                         {
@@ -185,7 +193,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                             if(space != null && !String.IsNullOrEmpty(space.Name))
                             {
                                 sb.Append(space.Name);
-                                sb.Append(".");
+                                sb.Append('.');
                             }
                         }
 
@@ -211,17 +219,17 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                             if(arguments != null && arguments.Count > 0)
                             {
-                                sb.Append("{");
+                                sb.Append('{');
 
                                 for(int i = 0; i < arguments.Count; i++)
                                 {
                                     if(i > 0)
-                                        sb.Append(",");
+                                        sb.Append(',');
 
                                     WriteType(arguments[i], sb);
                                 }
 
-                                sb.Append("}");
+                                sb.Append('}');
                             }
                         }
                     }
@@ -328,7 +336,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                 if(eiiType != null)
                     if(eiiType.Template != null)
                     {
-                        sb.Append(".");
+                        sb.Append('.');
                         WriteTemplate(eiiType, sb);
                     }
                     else
@@ -336,11 +344,11 @@ namespace Microsoft.Ddue.Tools.Reflection
                         StringBuilder eiiName = new StringBuilder();
 
                         WriteType(eiiType, eiiName);
-                        sb.Append(".");
+                        sb.Append('.');
                         sb.Append(eiiName.ToString().Replace('.', '#'));
                     }
 
-                sb.Append("#");
+                sb.Append('#');
                 sb.Append(eiiProperty.Name.Name);
             }
             else
@@ -373,7 +381,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                 if(eiiType != null)
                     if(eiiType.Template != null)
                     {
-                        sb.Append(".");
+                        sb.Append('.');
                         WriteTemplate(eiiType, sb);
                     }
                     else
@@ -381,11 +389,11 @@ namespace Microsoft.Ddue.Tools.Reflection
                         StringBuilder eiiName = new StringBuilder();
 
                         WriteType(eiiType, eiiName);
-                        sb.Append(".");
+                        sb.Append('.');
                         sb.Append(eiiName.ToString().Replace('.', '#'));
                     }
 
-                sb.Append("#");
+                sb.Append('#');
                 sb.Append(eiiTrigger.Name.Name);
             }
             else
@@ -442,7 +450,7 @@ namespace Microsoft.Ddue.Tools.Reflection
                 if(eiiType != null)
                     if(eiiType.Template != null)
                     {
-                        sb.Append(".");
+                        sb.Append('.');
                         WriteTemplate(eiiType, sb);
                     }
                     else
@@ -450,11 +458,11 @@ namespace Microsoft.Ddue.Tools.Reflection
                         StringBuilder eiiName = new StringBuilder();
 
                         WriteType(eiiType, eiiName);
-                        sb.Append(".");
+                        sb.Append('.');
                         sb.Append(eiiName.ToString().Replace('.', '#'));
                     }
 
-                sb.Append("#");
+                sb.Append('#');
                 sb.Append(eiiMethod.Name.Name);
             }
             else
@@ -479,7 +487,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             // Add ~ for conversion operators
             if(name == "op_Implicit" || name == "op_Explicit")
             {
-                sb.Append("~");
+                sb.Append('~');
                 WriteType(method.ReturnType, sb);
             }
         }
@@ -514,17 +522,17 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             if(parameters != null && parameters.Count != 0)
             {
-                sb.Append("(");
+                sb.Append('(');
 
                 for(int i = 0; i < parameters.Count; i++)
                 {
                     if(i > 0)
-                        sb.Append(",");
+                        sb.Append(',');
 
                     WriteType(parameters[i].Type, sb);
                 }
 
-                sb.Append(")");
+                sb.Append(')');
             }
         }
         #endregion

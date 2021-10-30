@@ -11,7 +11,7 @@ using System.Xml;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     /// <summary>
     /// This class implements the namespace filter
@@ -21,10 +21,11 @@ namespace Microsoft.Ddue.Tools.Reflection
         #region Private data members
         //=====================================================================
 
-        private string name;
-        private bool exposed;
+        private readonly string name;
+        private readonly bool exposed;
 
-        private List<TypeFilter> typeFilters;
+        private readonly List<TypeFilter> typeFilters;
+
         #endregion
 
         #region Constructor
@@ -36,6 +37,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="configuration">The XML reader from which to get the configuration information</param>
         public NamespaceFilter(XmlReader configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             if(configuration.Name != "namespace")
                 throw new InvalidOperationException("The configuration element must be named 'namespace'");
 
@@ -108,6 +112,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// false if it is and it is not exposed.</returns>
         public bool? IsExposedNamespace(Namespace space)
         {
+            if(space == null)
+                throw new ArgumentNullException(nameof(space));
+
             return (space.Name != null && space.Name.Name == name) ? exposed : (bool?)null;
         }
 
@@ -157,6 +164,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// is exposed or false if it is and it is not exposed.</returns>
         public bool? IsExposedMember(Member member)
         {
+            if(member == null)
+                throw new ArgumentNullException(nameof(member));
+
             TypeNode type = member.DeclaringType.GetTemplateType();
 
             if(this.IsExposedNamespace(type.GetNamespace()) != null)

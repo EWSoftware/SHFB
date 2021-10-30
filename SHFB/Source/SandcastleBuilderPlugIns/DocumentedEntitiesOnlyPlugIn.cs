@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DocumentedEntitiesOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2021
+// Updated : 05/16/2021
 // Note    : Copyright 2016-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to automatically generate an API filter based on the XML
@@ -22,12 +22,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
 
@@ -247,27 +245,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            MessageBox.Show("This plug-in has no configurable settings", "Build Process Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -286,6 +268,9 @@ namespace SandcastleBuilder.PlugIns
             XDocument config;
             XElement currentFilter;
 
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
+
             if(context.Behavior == ExecutionBehaviors.Before)
             {
                 // Having an API filter in the SHFB project is counterproductive.  Either use the API filter or
@@ -294,14 +279,15 @@ namespace SandcastleBuilder.PlugIns
                 // absence of the XML comments alone produces consistent results and avoids unexpected results.
                 builder.ReportProgress("Removing any API filter defined in the project...");
 
-                config = XDocument.Load(builder.WorkingFolder + "MRefBuilder.config");
+                string configFile = Path.Combine(builder.WorkingFolder, "MRefBuilder.config");
 
+                config = XDocument.Load(configFile);
                 currentFilter = config.Root.Descendants("apiFilter").FirstOrDefault();
 
                 if(currentFilter != null)
                     currentFilter.RemoveNodes();
 
-                config.Save(builder.WorkingFolder + "MRefBuilder.config");
+                config.Save(configFile);
 
                 return;
             }
@@ -316,15 +302,18 @@ namespace SandcastleBuilder.PlugIns
 
             // To get everything documented correctly, we need to get a list of all assembly member IDs and then
             // match them up to documentation member IDs.
-            var reflectionInfo = new XPathDocument(builder.ReflectionInfoFilename);
-            var fileNav = reflectionInfo.CreateNavigator();
-
-            foreach(XPathNavigator member in fileNav.Select("reflection/apis/api"))
+            using(var reader = XmlReader.Create(builder.ReflectionInfoFilename, new XmlReaderSettings { CloseInput = true }))
             {
-                docState = DocumentationState.FromApiMember(member);
+                var reflectionInfo = new XPathDocument(reader);
+                var fileNav = reflectionInfo.CreateNavigator();
 
-                if(docState.NamespaceName != null)
-                    memberDocState[docState.MemberId] = docState;
+                foreach(XPathNavigator member in fileNav.Select("reflection/apis/api"))
+                {
+                    docState = DocumentationState.FromApiMember(member);
+
+                    if(docState.NamespaceName != null)
+                        memberDocState[docState.MemberId] = docState;
+                }
             }
 
             foreach(var file in builder.CommentsFiles)
@@ -485,7 +474,7 @@ namespace SandcastleBuilder.PlugIns
                             // constructors and dispose methods.  In that case, exclude the type unless the
                             // type has documentation as indicated by the original state.
                             if(!originalTypeDocState && typeDoc.IsDocumented &&
-                              (typeDoc.Members.Count(m => !m.IsAutoDocumented) != 0 ||
+                              (typeDoc.Members.Any(m => !m.IsAutoDocumented) ||
                               typeDoc.Members.All(m => m.IsAutoDocumented)) &&
                               !typeDoc.Members.Any(m => !m.IsAutoDocumented && m.IsDocumented))
                             {
@@ -540,7 +529,7 @@ namespace SandcastleBuilder.PlugIns
                     }
             }
 
-            config = XDocument.Load(builder.WorkingFolder + "MRefBuilder.config");
+            config = XDocument.Load(Path.Combine(builder.WorkingFolder, "MRefBuilder.config"));
 
             currentFilter = config.Root.Descendants("apiFilter").FirstOrDefault();
 
@@ -549,7 +538,7 @@ namespace SandcastleBuilder.PlugIns
             else
                 config.Root.Element("dduetools").Add(apiFilter);
 
-            config.Save(builder.WorkingFolder + "MRefBuilder.config");
+            config.Save(Path.Combine(builder.WorkingFolder, "MRefBuilder.config"));
 
             builder.ReportProgress("Regenerating reflection information based on the documented members API filter...");
 

@@ -1,28 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : MissingTags.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2009
-// Note    : Copyright 2006-2009, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the enumerated type that defines the missing
-// documentation tags for which to search.
+// This file contains the enumerated type that defines the missing documentation tags for which to search
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.3.1.0  09/26/2006  EFW  Created the code
-// 1.4.0.2  05/11/2007  EFW  Missing namespace messages are now optional
-// 1.6.0.7  03/23/2008  EFW  Added TypeParameter option
-// 1.8.0.1  01/16/2009  EFW  Added IncludeTargets option
-// 1.8.0.3  11/19/2009  EFW  Added AutoDocumentDipose option
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/26/2006  EFW  Created the code
+// 05/11/2007  EFW  Missing namespace messages are now optional
+// 03/23/2008  EFW  Added TypeParameter option
+// 01/16/2009  EFW  Added IncludeTargets option
+// 11/19/2009  EFW  Added AutoDocumentDipose option
+//===============================================================================================================
 
 // Ignore Spelling: typeparam
 

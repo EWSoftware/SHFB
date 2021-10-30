@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : COMReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a COM reference item that can be used by MRefBuilder to locate
 // assembly dependencies for the assemblies being documented.
@@ -60,7 +59,7 @@ namespace SandcastleBuilder.Gui.MSBuild
         [Browsable(false)]
         public override FilePath HintPath
         {
-            get { return base.HintPath; }
+            get => base.HintPath;
             set { }
         }
 
@@ -68,49 +67,26 @@ namespace SandcastleBuilder.Gui.MSBuild
         /// This is used to get the COM reference's GUID
         /// </summary>
         [Category("Metadata"), Description("The COM object's GUID")]
-        public string Guid
-        {
-            get
-            {
-                return this.GetMetadata(GuidMetadata);
-            }
-        }
+        public string Guid => this.GetMetadata(GuidMetadata);
 
         /// <summary>
         /// This is used to get the major version number
         /// </summary>
         [Category("Metadata"), Description("The major version number")]
-        public string VersionMajor
-        {
-            get
-            {
-                return this.GetMetadata(VersionMajorMetadata);
-            }
-        }
+        public string VersionMajor => this.GetMetadata(VersionMajorMetadata);
 
         /// <summary>
         /// This is used to get the minor version number
         /// </summary>
         [Category("Metadata"), Description("The minor version number")]
-        public string VersionMinor
-        {
-            get
-            {
-                return this.GetMetadata(VersionMinorMetadata);
-            }
-        }
+        public string VersionMinor => this.GetMetadata(VersionMinorMetadata);
 
         /// <summary>
         /// This is used to get the wrapper tool
         /// </summary>
         [Category("Metadata"), Description("The wrapper tool")]
-        public string WrapperTool
-        {
-            get
-            {
-                return this.GetMetadata(WrapperToolMetadata);
-            }
-        }
+        public string WrapperTool => this.GetMetadata(WrapperToolMetadata);
+
         #endregion
 
         #region Constructor

@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyDetails.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/20/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings for an assembly.
 //
@@ -79,7 +78,7 @@ namespace Sandcastle.Core.Reflection
         /// be set to false to exclude them from being processed.</remarks>
         public bool IsIncluded
         {
-            get { return isIncluded; }
+            get => isIncluded;
             set
             {
                 if(isIncluded != value)
@@ -123,10 +122,7 @@ namespace Sandcastle.Core.Reflection
         /// <param name="propertyName">The property name that changed</param>
         private void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

@@ -11,16 +11,17 @@ using System.Xml;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection
+namespace Sandcastle.Tools.Reflection
 {
     public class RootFilter
     {
         #region Private data members
         //=====================================================================
 
-        private bool exposed;
+        private readonly bool exposed;
 
-        private List<NamespaceFilter> namespaceFilters;
+        private readonly List<NamespaceFilter> namespaceFilters;
+
         #endregion
 
         #region Properties
@@ -29,10 +30,8 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <summary>
         /// This read-only property gets the number of namespace filters
         /// </summary>
-        public int NamespaceFilterCount
-        {
-            get { return namespaceFilters.Count; }
-        }
+        public int NamespaceFilterCount => namespaceFilters.Count;
+
         #endregion
 
         #region Constructors
@@ -54,6 +53,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// <param name="configuration">The XML reader from which to get the configuration</param>
         public RootFilter(XmlReader configuration) : this()
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             exposed = Convert.ToBoolean(configuration.GetAttribute("expose"), CultureInfo.InvariantCulture);
             XmlReader subtree = configuration.ReadSubtree();
 

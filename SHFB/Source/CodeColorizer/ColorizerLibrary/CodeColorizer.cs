@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : CodeColorizer.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 05/17/2020
+// Updated : 04/06/2021
 //
 // This is used to colorize blocks of code for output as HTML.  The original Code Project article by Jonathan
 // can be found at: http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con.
@@ -87,10 +87,11 @@
 #endregion
 //===============================================================================================================
 
+// Ignore Spelling: Golo Roden uage collapsebox onclick lnborder keywordlist keywordlists regexp detectchar
+// Ignore Spelling: linecontinue parsedcode copycode onmouseover onmouseout onkeypress
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -122,54 +123,35 @@ namespace ColorizerLibrary
         /// </summary>
         private sealed class CollapsibleRegion
         {
-            private int lineNo, nestingLevel;
-            private string regionType, description;
-            private bool isStart;
-
             #region Properties
             //=================================================================
 
             /// <summary>
             /// The line number on which the region part occurs
             /// </summary>
-            internal int LineNumber
-            {
-                get { return lineNo; }
-                set { lineNo = value; }
-            }
+            internal int LineNumber { get; set; }
 
             /// <summary>
             /// This returns the nesting level for the entry
             /// </summary>
-            internal int NestingLevel
-            {
-                get { return nestingLevel; }
-            }
+            internal int NestingLevel { get; }
 
             /// <summary>
             /// The region type
             /// </summary>
-            internal string RegionType
-            {
-                get { return regionType; }
-            }
+            internal string RegionType { get; }
 
             /// <summary>
             /// The description for the collapsed text
             /// </summary>
-            internal string Description
-            {
-                get { return description; }
-            }
+            internal string Description { get; }
 
             /// <summary>
             /// This returns true if this entry represents the start of a
             /// region.
             /// </summary>
-            internal bool IsStart
-            {
-                get { return isStart; }
-            }
+            internal bool IsStart { get; }
+
             #endregion
 
             #region Constructors
@@ -178,60 +160,58 @@ namespace ColorizerLibrary
             /// <summary>
             /// Constructor
             /// </summary>
-            /// <param name="line">The line number</param>
+            /// <param name="lineNumber">The line number</param>
             /// <param name="match">The match</param>
-            /// <param name="nesting">The nesting level</param>
-            internal CollapsibleRegion(int line, Match match, int nesting)
+            /// <param name="nestingLevel">The nesting level</param>
+            internal CollapsibleRegion(int lineNumber, Match match, int nestingLevel)
             {
-                int idx;
-
-                lineNo = line;
-                regionType = match.Groups[1].Value.ToLowerInvariant();
-                nestingLevel = nesting;
+                this.LineNumber = lineNumber;
+                this.RegionType = match.Groups[1].Value.ToLowerInvariant();
+                this.NestingLevel = nestingLevel;
 
                 // Remove spaces from VB.NET style end statements
-                if(regionType.StartsWith("#end ", StringComparison.Ordinal))
-                    regionType = regionType.Replace(" ", String.Empty);
+                if(this.RegionType.StartsWith("#end ", StringComparison.Ordinal))
+                    this.RegionType = this.RegionType.Replace(" ", String.Empty);
                 else
                 {
                     // Remove name or condition
-                    idx = regionType.IndexOf(' ');
+                    int idx = this.RegionType.IndexOf(' ');
 
                     if(idx != -1)
-                        regionType = regionType.Substring(0, idx);
+                        this.RegionType = this.RegionType.Substring(0, idx);
                 }
 
                 // Certain collapsed blocks have a description.  Also, certain blocks start or end on the
                 // previous or next line.
-                switch(regionType)
+                switch(this.RegionType)
                 {
                     case "#region":
-                        description = WebUtility.HtmlEncode(match.Groups[2].Value.Trim());
+                        this.Description = WebUtility.HtmlEncode(match.Groups[2].Value.Trim());
 
-                        if(description.Length == 0)
-                            description = "...";
+                        if(this.Description.Length == 0)
+                            this.Description = "...";
 
-                        nestingLevel++;
-                        isStart = true;
+                        this.NestingLevel++;
+                        this.IsStart = true;
                         break;
 
                     case "#if":
-                        lineNo++;
-                        description = "...";
-                        nestingLevel++;
-                        isStart = true;
+                        this.LineNumber++;
+                        this.Description = "...";
+                        this.NestingLevel++;
+                        this.IsStart = true;
                         break;
 
                     case "#else":
-                        lineNo++;
-                        description = "...";
-                        nestingLevel++;
-                        isStart = true;
+                        this.LineNumber++;
+                        this.Description = "...";
+                        this.NestingLevel++;
+                        this.IsStart = true;
                         break;
 
                     case "#endif":
-                        lineNo--;
-                        nestingLevel--;
+                        this.LineNumber--;
+                        this.NestingLevel--;
                         break;
                 }
             }
@@ -239,13 +219,13 @@ namespace ColorizerLibrary
             /// <summary>
             /// Constructor.  This version assumes it's an #endif
             /// </summary>
-            /// <param name="line">The line number</param>
-            /// <param name="nesting">The nesting level</param>
-            internal CollapsibleRegion(int line, int nesting)
+            /// <param name="lineNumber">The line number</param>
+            /// <param name="nestingLevel">The nesting level</param>
+            internal CollapsibleRegion(int lineNumber, int nestingLevel)
             {
-                lineNo = line - 1;
-                regionType = "#endif";
-                nestingLevel = nesting - 1;
+                this.LineNumber = lineNumber - 1;
+                this.RegionType = "#endif";
+                this.NestingLevel = nestingLevel - 1;
             }
             #endregion
         }
@@ -255,12 +235,12 @@ namespace ColorizerLibrary
         //=====================================================================
 
         // This regular expression is used to search for and colorize the code blocks
-        private static Regex reColorize = new Regex("<\\s*(pre|code)\\s+([^>]*?)(lang(?:uage)?\\s*=\\s*(\"|')?" +
+        private static readonly Regex reColorize = new Regex("<\\s*(pre|code)\\s+([^>]*?)(lang(?:uage)?\\s*=\\s*(\"|')?" +
             "([a-z0-9\\-+#]+)(\"|')?)([^>]*?)>((.|\\n)*?)<\\s*/\\s*(pre|code)\\s*>", RegexOptions.IgnoreCase |
             RegexOptions.Singleline);
 
         // This is used to find option overrides
-        private static Regex reOptOverrides = new Regex("((numberLines\\s*=\\s*(\"|')?(true|false)(\"|')?))|" +
+        private static readonly Regex reOptOverrides = new Regex("((numberLines\\s*=\\s*(\"|')?(true|false)(\"|')?))|" +
             "((outlining\\s*=\\s*(\"|')?(true|false)(\"|')?))|" +
             "((tabSize\\s*=\\s*(\"|')?([0-9]+)(\"|')?))|" +
             "((title\\s*=\\s*(\"([^\"]+)\"|\\'([^\\']+)\\')))|" +
@@ -268,45 +248,34 @@ namespace ColorizerLibrary
             "((disabled\\s*=\\s*(\"|')?(true|false)(\"|')?))", RegexOptions.IgnoreCase);
 
         // These are used to preserve <see> tags so that they aren't colorized
-        private static Regex reExtractSeeTags = new Regex("(<\\s*see(?<PreAttrs>\\s+[^>]*)[a-z]ref\\s*=" +
+        private static readonly Regex reExtractSeeTags = new Regex("(<\\s*see(?<PreAttrs>\\s+[^>]*)[a-z]ref\\s*=" +
             "\\s*\"(?<Link>.+?)\"(?<PostAttrs>.*?))(/>|(>(?<Content>.*?)<\\s*/\\s*see\\s*>))",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         // The marker is HTML encoded after colorization
-        private static Regex reReplaceMarker = new Regex("&#255;");
+        private static readonly Regex reReplaceMarker = new Regex("&#255;");
 
         // This is used to find the collapsible region boundaries
-        private static Regex reCollapseMarkers = new Regex(
+        private static readonly Regex reCollapseMarkers = new Regex(
             @"^\s*(#region\s(.*)|#if\s(.*)|#else|#end\s?if|#end\s?region)", RegexOptions.IgnoreCase);
 
         private static int uniqueRegionId;
 
         // Syntax description file, friendly name dictionary, and alternate IDs dictionary
-        private XmlDocument languageSyntax;
+        private readonly XmlDocument languageSyntax;
         private XmlNode languages, keywordLists;
-        private Dictionary<string, string> friendlyNames, alternateIds;
+        private readonly Dictionary<string, string> friendlyNames, alternateIds;
 
         // Code style sheet
-        private XslCompiledTransform languageStyle;
+        private readonly XslCompiledTransform languageStyle;
 
         // Delegate for Regex.Replace
-        private MatchEvaluator replaceByCodeDelegate;
-
-        private bool numberLines,       // Line numbering flag
-                     outlining,         // Outlining flag
-                     useDefaultTitle,   // Use default title
-                     keepSeeTags;       // Keep <see> tags in the code
+        private readonly MatchEvaluator replaceByCodeDelegate;
 
         private int defaultTabSize;    // Tab size override
 
-        // Text of the Copy link and the location of the image file
-        private string copyText, copyImageUrl;
-
         // Regular expressions cache
-        private RegexDictionary rxDic;
-
-        // Language syntax filename and style filename
-        private string languageSyntaxFileName, languageStyleFileName;
+        private readonly RegexDictionary rxDic;
 
         #endregion
 
@@ -323,43 +292,19 @@ namespace ColorizerLibrary
         /// <summary>
         /// The syntax file name
         /// </summary>
-        public string LanguageSyntaxFileName
-        {
-            get
-            {
-                if(languageSyntaxFileName == null)
-                    this.LoadDefaultConfigFiles();
-
-                return languageSyntaxFileName;
-            }
-            set { languageSyntaxFileName = value; }
-        }
+        public string LanguageSyntaxFileName { get; }
 
         /// <summary>
         /// The style file name
         /// </summary>
-        public string LanguageStyleFileName
-        {
-            get
-            {
-                if(languageStyleFileName == null)
-                    this.LoadDefaultConfigFiles();
-
-                return languageStyleFileName;
-            }
-            set { languageStyleFileName = value; }
-        }
+        public string LanguageStyleFileName { get; }
 
         /// <summary>
         /// This is used to set or get whether or not lines will be numbered in code blocks without a
         /// <b>numberLines</b> attribute.
         /// </summary>
         /// <value>The default is false</value>
-        public bool NumberLines
-        {
-            get { return numberLines; }
-            set { numberLines = value; }
-        }
+        public bool NumberLines { get; set; }
 
         /// <summary>
         /// This is used to set or get whether or not outlining of #region and #if/#else#/endif blocks is
@@ -367,11 +312,7 @@ namespace ColorizerLibrary
         /// </summary>
         /// <value>The default is false.  Note that if enabled, space for the outline markers will only be
         /// reserved if the code contains any collapsible regions.</value>
-        public bool OutliningEnabled
-        {
-            get { return outlining; }
-            set { outlining = value; }
-        }
+        public bool OutliningEnabled { get; set; }
 
         /// <summary>
         /// This is used to set or get whether or not <c>&lt;see&gt;</c> tags are preserved within the code.
@@ -380,22 +321,14 @@ namespace ColorizerLibrary
         /// <c>&lt;see&gt;</c> tags are preserved so that they may be processed as normal HTML tags.  This is
         /// useful when using the code colorizer in conjunction with a documentation tool such as the
         /// <see href="https://GitHub.com/EWSoftware/SHFB">Sandcastle Help File Builder</see>.</value>
-        public bool KeepSeeTags
-        {
-            get { return keepSeeTags; }
-            set { keepSeeTags = value; }
-        }
+        public bool KeepSeeTags { get; set; }
 
         /// <summary>
         /// This is used to set or get whether or not to use a default title based on the language name if a
         /// title is not specified.
         /// </summary>
         /// <value>The default is true.  If set to false, no title will appear if one is not specified.</value>
-        public bool UseDefaultTitle
-        {
-            get { return useDefaultTitle; }
-            set { useDefaultTitle = value; }
-        }
+        public bool UseDefaultTitle { get; set; }
 
         /// <summary>
         /// This is used to set or get the tab size override for the colorizer for code blocks without a
@@ -404,7 +337,7 @@ namespace ColorizerLibrary
         /// <value>The default is eight.</value>
         public int TabSize
         {
-            get { return defaultTabSize; }
+            get => defaultTabSize;
             set
             {
                 if(value > 0)
@@ -418,22 +351,14 @@ namespace ColorizerLibrary
         /// This is used to set or get the text for the Copy link
         /// </summary>
         /// <value>The default is "Copy".</value>
-        public string CopyText
-        {
-            get { return copyText; }
-            set { copyText = value; }
-        }
+        public string CopyText { get; set; }
 
         /// <summary>
         /// This is used to set or get the image URL for the Copy link.
         /// </summary>
         /// <value>The default is "CopyCode.gif".  A copy of this file with the same name suffixed with "_h"
         /// should exist to use as the image when the link is highlighted (i.e. CopyCode_h.gif).</value>
-        public string CopyImageUrl
-        {
-            get { return copyImageUrl; }
-            set { copyImageUrl = value; }
-        }
+        public string CopyImageUrl { get; set; }
 
         /// <summary>
         /// This is used to return a read-only dictionary that maps the language IDs to friendly names.
@@ -458,26 +383,18 @@ namespace ColorizerLibrary
         /// <summary>
         /// Returns the computation time of the last call
         /// </summary>
-        public double BenchmarkSec
-        {
-            get { return new TimeSpan(lastRun).TotalSeconds; }
-        }
+        public double BenchmarkSec => new TimeSpan(lastRun).TotalSeconds;
 
         /// <summary>
         /// Returns the computation time per character overall
         /// </summary>
-        public double BenchmarkSecPerChar
-        {
-            get { return (new TimeSpan(totalTime)).TotalSeconds / totalBytes; }
-        }
+        public double BenchmarkSecPerChar => (new TimeSpan(totalTime)).TotalSeconds / totalBytes;
 
         /// <summary>
         /// Returns the average computation time overall
         /// </summary>
-        public double BenchmarkAvgSec
-        {
-            get { return (new TimeSpan(totalTime)).TotalSeconds / runCount; }
-        }
+        public double BenchmarkAvgSec => (new TimeSpan(totalTime)).TotalSeconds / runCount;
+
         #endregion
 #endif
 
@@ -485,33 +402,45 @@ namespace ColorizerLibrary
         //=====================================================================
 
         /// <summary>
-        /// Default constructor
+        /// Constructor
         /// </summary>
-        /// <remarks>Unless specified via the properties, the default language and style files will be retrieved
-        /// from the application configuration file on first use.</remarks>
-        /// <overloads>There are two overloads for the constructor.</overloads>
-        public CodeColorizer()
+        /// <param name="languageSyntaxFilename">The XML syntax file name</param>
+        /// <param name="languageStyleFilename">The XSL style file name</param>
+        public CodeColorizer(string languageSyntaxFilename, string languageStyleFilename)
         {
+            if(String.IsNullOrWhiteSpace(languageSyntaxFilename))
+                throw new ArgumentException("A language syntax filename must be specified", nameof(languageSyntaxFilename));
+
+            if(String.IsNullOrWhiteSpace(languageStyleFilename))
+                throw new ArgumentException("A language style filename must be specified", nameof(languageStyleFilename));
+
+            this.LanguageSyntaxFileName = languageSyntaxFilename;
+            this.LanguageStyleFileName = languageStyleFilename;
+
             // Replace function delegate
             replaceByCodeDelegate = new MatchEvaluator(ReplaceByCode);
 
             // Friendly name dictionary
             friendlyNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             alternateIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="languageSyntax">XML syntax file name</param>
-        /// <param name="languageStyle">XSL style file name</param>
-        public CodeColorizer(string languageSyntax, string languageStyle) : this()
-        {
-            this.LanguageSyntaxFileName = languageSyntax;
-            this.LanguageStyleFileName = languageStyle;
+            this.UseDefaultTitle = true;
+            defaultTabSize = 8;
+            this.CopyText = "Copy";
+            this.CopyImageUrl = "CopyCode.gif";
 
-            // Load the language file
-            this.Init();
+            rxDic = new RegexDictionary();
+
+            // Load and preprocess language data
+            languageSyntax = new XmlDocument();
+            friendlyNames.Clear();
+            alternateIds.Clear();
+
+            this.BuildSyntax();
+
+            // Load XSL
+            languageStyle = new XslCompiledTransform();
+            languageStyle.Load(this.LanguageStyleFileName);
         }
         #endregion
 
@@ -533,40 +462,6 @@ namespace ColorizerLibrary
         //=====================================================================
 
         /// <summary>
-        /// Load the language file and preprocess it. Also loads the XSL file.
-        /// </summary>
-        /// <remarks>Call this method to reload the language files and reset the colorizer to its default
-        /// state.</remarks>
-        public void Init()
-        {
-            if(languageSyntaxFileName == null)
-            {
-                this.LoadDefaultConfigFiles();
-
-                // This gets called again when loading the default configuration files so we can just return here
-                return;
-            }
-
-            numberLines = outlining = false;
-            useDefaultTitle = true;
-            defaultTabSize = 8;
-            copyText = "Copy";
-            copyImageUrl = "CopyCode.gif";
-
-            rxDic = new RegexDictionary();
-
-            // Load and preprocess language data
-            languageSyntax = new XmlDocument();
-            friendlyNames.Clear();
-            alternateIds.Clear();
-            this.BuildSyntax();
-
-            // Load XSL
-            languageStyle = new XslCompiledTransform();
-            languageStyle.Load(this.LanguageStyleFileName);
-        }
-
-        /// <summary>
         /// Processes HTML and highlight code in <c>&lt;code&gt;...&lt;/code&gt;</c> and
         /// <c>&lt;pre&gt;...&lt;/pre&gt;</c> tags.
         /// </summary>
@@ -577,9 +472,9 @@ namespace ColorizerLibrary
         {
             if(String.IsNullOrEmpty(htmlText))
                 return htmlText;
-
+            
             if(languageSyntax == null)
-                throw new InvalidOperationException("Call Init() to load the defaults before attempting " +
+                throw new InvalidOperationException("Call Initialize() to load the defaults before attempting " +
                     "to colorize code");
 
 #if DEBUG && BENCHMARK
@@ -616,11 +511,10 @@ namespace ColorizerLibrary
             IList<CollapsibleRegion> regions;
             XmlNode languageNode;
             bool tabSizeOverridden = false;
-            string altLanguage;
             int seeTagIndex;
 
             if(languageSyntax == null)
-                throw new InvalidOperationException("Call Init() to load the defaults before attempting " +
+                throw new InvalidOperationException("Call Initialize() to load the defaults before attempting " +
                     "to colorize code");
 
             if(tabSize == null || tabSize < 1)
@@ -642,7 +536,7 @@ namespace ColorizerLibrary
                     language + "\"]");
 
                 // Try to map it to an ID if not found
-                if(languageNode == null && alternateIds.TryGetValue(language, out altLanguage))
+                if(languageNode == null && alternateIds.TryGetValue(language, out string altLanguage))
                 {
                     language = altLanguage;
                     languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\"]");
@@ -659,8 +553,8 @@ namespace ColorizerLibrary
                         CultureInfo.InvariantCulture);
 
                 // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
-                plainText = WebUtility.HtmlEncode(StripLeadingWhitespace(plainText, tabSize.Value, outlining,
-                    out regions));
+                plainText = WebUtility.HtmlEncode(StripLeadingWhitespace(plainText, tabSize.Value,
+                    this.OutliningEnabled, out regions));
             }
             else
             {
@@ -671,11 +565,11 @@ namespace ColorizerLibrary
                         CultureInfo.InvariantCulture);
 
                 // Tidy up the block by stripping any common leading whitespace and converting tabs to spaces
-                plainText = StripLeadingWhitespace(plainText, tabSize.Value, outlining, out regions);
+                plainText = StripLeadingWhitespace(plainText, tabSize.Value, this.OutliningEnabled, out regions);
 
                 // If keeping see tags and it is supported, replace them with a marker character so that they
                 // aren't colorized.
-                if(keepSeeTags && this.OutputFormat == OutputFormat.Html)
+                if(this.KeepSeeTags && this.OutputFormat == OutputFormat.Html)
                 {
                     seeTags = new List<string>();
 
@@ -702,7 +596,7 @@ namespace ColorizerLibrary
                 }
 
                 // Replace the markers with the see tags if they were kept
-                if(keepSeeTags && seeTags.Count != 0)
+                if(this.KeepSeeTags && seeTags.Count != 0)
                 {
                     seeTagIndex = 0;
 
@@ -717,10 +611,10 @@ namespace ColorizerLibrary
             }
 
             // If supported and wanted, add line numbering and/or outlining
-            if((numberLines || outlining) && this.OutputFormat == OutputFormat.Html)
-                plainText = NumberAndOutlineHtml(plainText, numberLines, outlining, regions);
+            if((this.NumberLines || this.OutliningEnabled) && this.OutputFormat == OutputFormat.Html)
+                plainText = NumberAndOutlineHtml(plainText, this.NumberLines, this.OutliningEnabled, regions);
             else
-                if(numberLines && this.OutputFormat == OutputFormat.FlowDocument)
+                if(this.NumberLines && this.OutputFormat == OutputFormat.FlowDocument)
                     plainText = NumberFlowDocument(plainText);
 
             return plainText;
@@ -729,47 +623,6 @@ namespace ColorizerLibrary
 
         #region Private class methods
         //=====================================================================
-
-        /// <summary>
-        /// Loads the configuration from the App.config/Web.config and create a CodeColorizer.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">This is thrown if the configuration file could not be
-        /// loaded, if the <c>ColorizerLibrary/syntax</c> node is not found, or if the
-        /// <c>ColorizerLibrary/style</c> node is not found.</exception>
-        private void LoadDefaultConfigFiles()
-        {
-            Hashtable config = (Hashtable)ConfigurationManager.GetSection("ColorizerLibrary");
-
-            if(config == null)
-                throw new InvalidOperationException("Could not load configuration file section");
-
-            // These are required
-            if(config["syntax"] == null)
-                throw new InvalidOperationException("Could not find <syntax> parameter in configuration file");
-
-            if(config["style"] == null)
-                throw new InvalidOperationException("Could not find <style> parameter in configuration file");
-
-            // Format is optional.  If not specified, assume HTML output.
-            if(config["format"] == null)
-                this.OutputFormat = OutputFormat.Html;
-            else
-                this.OutputFormat = (OutputFormat)Enum.Parse(typeof(OutputFormat), (string)config["format"], true);
-
-            this.LanguageSyntaxFileName = (string)config["syntax"];
-            this.LanguageStyleFileName = (string)config["style"];
-            this.Init();
-
-            // These are optional
-            if(config["numberLines"] != null)
-                this.NumberLines = Convert.ToBoolean(config["numberLines"], CultureInfo.InvariantCulture);
-
-            if(config["outliningEnabled"] != null)
-                this.OutliningEnabled = Convert.ToBoolean(config["outliningEnabled"], CultureInfo.InvariantCulture);
-
-            if(config["tabSize"] != null)
-                this.TabSize = Convert.ToInt32(config["tabSize"], CultureInfo.InvariantCulture);
-        }
 
         /// <summary>
         /// This is used to strip a common amount of leading whitespace on all lines of code in the block to
@@ -1090,7 +943,7 @@ namespace ColorizerLibrary
         /// Build the keyword family regular expressions.
         /// </summary>
         /// <remarks>This method creates regular expression that match a whole keyword family and adds it as a
-        /// parameter "regexp" to the keywordlist node.</remarks>
+        /// parameter <c>regexp</c> to the <c>keywordlist</c> node.</remarks>
         private void BuildKeywordRegExp()
         {
             XmlNodeList keywords;
@@ -1156,7 +1009,7 @@ namespace ColorizerLibrary
         /// <param name="languageNode">The language node.</param>
         /// <param name="contextNode">The context node.</param>
         /// <remarks>This method creates regular expressions that match all the context rules and adds it as a
-        /// parameter "regexp" to the context node.</remarks>
+        /// parameter <c>regexp</c> to the context node.</remarks>
         /// <returns>The regular expression string for the context node.</returns>
         /// <exception cref="InvalidOperationException">This is thrown if the regular expression rule is missing
         /// the expression attribute, if the keyword list could not be found, or if the keyword list family or
@@ -1268,7 +1121,10 @@ namespace ColorizerLibrary
         {
             XmlNode needBuildNode, highlightNode;
 
-            languageSyntax.Load(this.LanguageSyntaxFileName);
+            using(var reader = XmlReader.Create(this.LanguageSyntaxFileName, new XmlReaderSettings()))
+            {
+                languageSyntax.Load(reader);
+            }
 
             // Check to see if a build is needed
             highlightNode = languageSyntax.SelectSingleNode("highlight");
@@ -1278,7 +1134,7 @@ namespace ColorizerLibrary
 
             languages = highlightNode.SelectSingleNode("languages");
 
-            if(highlightNode == null)
+            if(languages == null)
                 throw new InvalidOperationException("Could not find languages node");
 
             keywordLists = highlightNode.SelectSingleNode("keywordlists");
@@ -1408,7 +1264,7 @@ namespace ColorizerLibrary
 
                 if(!m.Success)
                 {
-                    parsedCodeNode.XmlAddChildCDATAElem(contextNode.Attributes["attribute"].Value, code);
+                    parsedCodeNode.XmlAddChildCDATAElement(contextNode.Attributes["attribute"].Value, code);
 
                     // Finished parsing
                     break;
@@ -1420,7 +1276,7 @@ namespace ColorizerLibrary
                     attributeNode = contextNode.Attributes["attribute"];
 
                     if(attributeNode != null && attributeNode.Value != "hidden")
-                        parsedCodeNode.XmlAddChildCDATAElem(attributeNode.Value, code.Substring(0, m.Index));
+                        parsedCodeNode.XmlAddChildCDATAElement(attributeNode.Value, code.Substring(0, m.Index));
                 }
 
                 // Find the rule that caused the match
@@ -1434,7 +1290,7 @@ namespace ColorizerLibrary
                 attributeNode = ruleNode.Attributes["attribute"];
 
                 if(attributeNode != null && attributeNode.Value != "hidden")
-                    parsedCodeNode.XmlAddChildCDATAElem(attributeNode.Value, m.Value);
+                    parsedCodeNode.XmlAddChildCDATAElement(attributeNode.Value, m.Value);
 
                 // Update the context if necessary
                 if(contextNode.Attributes["id"].Value != ruleNode.Attributes["context"].Value)
@@ -1526,9 +1382,9 @@ namespace ColorizerLibrary
             IList<CollapsibleRegion> regions;
 
             int seeTagIndex, tabSize = defaultTabSize;
-            bool numberLinesLocal = numberLines, outliningLocal = outlining, tabSizeOverridden = false,
-                keepSeeTagsLocal = keepSeeTags, isDisabled = false, inBox = false;
-            string altLanguage, title = null;
+            bool numberLinesLocal = this.NumberLines, outliningLocal = this.OutliningEnabled,
+                tabSizeOverridden = false, keepSeeTagsLocal = this.KeepSeeTags, isDisabled = false, inBox = false;
+            string title = null;
 
             // See if the other options have been specified
             otherOpts = reOptOverrides.Matches(match.Groups[2].Value + " " + match.Groups[7].Value);
@@ -1580,7 +1436,7 @@ namespace ColorizerLibrary
                     language + "\"]");
 
                 // Try to map it to an ID if not found
-                if(languageNode == null && alternateIds.TryGetValue(language, out altLanguage))
+                if(languageNode == null && alternateIds.TryGetValue(language, out string altLanguage))
                 {
                     language = altLanguage;
                     languageNode = languages.SelectSingleNode("language[@id=\"" + language + "\"]");
@@ -1670,7 +1526,7 @@ namespace ColorizerLibrary
                 // Use a default title if necessary
                 if(String.IsNullOrEmpty(title))
                 {
-                    if(useDefaultTitle && !friendlyNames.TryGetValue(language, out title) && languageNode != null)
+                    if(this.UseDefaultTitle && !friendlyNames.TryGetValue(language, out title) && languageNode != null)
                         title = languageNode.Attributes["name"].Value;
 
                     if(String.IsNullOrEmpty(title))
@@ -1684,8 +1540,8 @@ namespace ColorizerLibrary
                     "onmouseover=\"CopyCodeChangeIcon(this)\" " +
                     "onmouseout=\"CopyCodeChangeIcon(this)\" " +
                     "onclick=\"javascript:CopyColorizedCode(this.parentNode);\"><img src=\"{0}\" " +
-                    "style=\"margin-right: 5px;\" />{1}</span>{2}</div>{3}", copyImageUrl, copyText, title,
-                    matchText);
+                    "style=\"margin-right: 5px;\" />{1}</span>{2}</div>{3}", this.CopyImageUrl, this.CopyText,
+                    title, matchText);
             }
 
             return matchText;

@@ -14,7 +14,7 @@ using System.Xml.XPath;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools
 {
     /// <summary>
     /// This add-in is used to add information to the reflection data about XAML attached properties and
@@ -25,13 +25,13 @@ namespace Microsoft.Ddue.Tools
         #region Private data members
         //=====================================================================
 
-        private Dictionary<Object, Field> attachedMembers;
-        private ManagedReflectionWriter mrw;
+        private readonly Dictionary<Object, Field> attachedMembers;
+        private readonly ManagedReflectionWriter mrw;
 
-        private string dependencyPropertyTypeName;
-        private string dependencyPropertySuffix;
-        private string routedEventTypeName;
-        private string routedEventSuffix;
+        private readonly string dependencyPropertyTypeName;
+        private readonly string dependencyPropertySuffix;
+        private readonly string routedEventTypeName;
+        private readonly string routedEventSuffix;
 
         #endregion
 
@@ -46,10 +46,13 @@ namespace Microsoft.Ddue.Tools
         public XamlAttachedMembersAddIn(ManagedReflectionWriter writer, XPathNavigator configuration) :
           base(writer, configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             attachedMembers = new Dictionary<Object, Field>();
 
             // Keep track of the writer
-            mrw = writer;
+            mrw = writer ?? throw new ArgumentNullException(nameof(writer));
 
             // Register processors as callbacks
             writer.RegisterStartTagCallback("apis", AddAttachedMembers);
@@ -57,7 +60,7 @@ namespace Microsoft.Ddue.Tools
             writer.RegisterEndTagCallback("api", WriteAttachmentData);
 
             // Determine the type names and suffixes of our relevant fields
-            dependencyPropertyTypeName = 
+            dependencyPropertyTypeName =
                 GetConfigurationValue(configuration, "dependencyPropertyTypeName") ?? 
                 "System.Windows.DependencyProperty";
 
@@ -140,16 +143,18 @@ namespace Microsoft.Ddue.Tools
                             continue;
 
                         // Make sure there isn't already such a property
-                        Property existingProperty = type.GetProperty(new Identifier(name), new TypeNode[0]);
+                        Property existingProperty = type.GetProperty(new Identifier(name), Array.Empty<TypeNode>());
 
                         if(existingProperty != null && existingProperty.IsVisibleOutsideAssembly)
                             continue;
 
                         // Okay, this really is an indication of an attached property, so create one
-                        Property attachedProperty = new Property(type, null, PropertyFlags.None, new Identifier(name), getter, setter);
-
-                        // Attached properties have no parameters
-                        attachedProperty.Parameters = ParameterList.Empty;
+                        Property attachedProperty = new Property(type, null, PropertyFlags.None,
+                          new Identifier(name), getter, setter)
+                        {
+                            // Attached properties have no parameters
+                            Parameters = ParameterList.Empty
+                        };
 
                         // Attached properties are instance properties
                         type.Members.Add(attachedProperty);
@@ -207,8 +212,11 @@ namespace Microsoft.Ddue.Tools
                         // Okay, this really is an indication of an attached event, so create one
                         TypeNode handler = adder.Parameters[1].Type;
 
-                        Event attachedEvent = new Event(type, null, EventFlags.None, new Identifier(name), adder, null, remover, handler);
-                        attachedEvent.HandlerFlags = adder.Flags;
+                        Event attachedEvent = new Event(type, null, EventFlags.None, new Identifier(name), adder,
+                          null, remover, handler)
+                        {
+                            HandlerFlags = adder.Flags
+                        };
 
                         type.Members.Add(attachedEvent);
 
@@ -313,13 +321,13 @@ namespace Microsoft.Ddue.Tools
         #endregion
 
         #region Helper methods
-        private string GetConfigurationValue(XPathNavigator configuration, string name)
+
+        private static string GetConfigurationValue(XPathNavigator configuration, string name)
         {
             var node = configuration.SelectSingleNode(name);
+
             if (node == null)
-            {
                 return null;
-            }
 
             return String.IsNullOrWhiteSpace(node.Value) ? null : node.Value;
         }

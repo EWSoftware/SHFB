@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ContentFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/17/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a content file such as a token file, code snippet file, image, etc.
 //
@@ -31,7 +30,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         #region Private data members
         //=====================================================================
 
-        private FilePath filePath;
+        private readonly FilePath filePath;
         private string linkPath;
 
         #endregion
@@ -42,37 +41,25 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This read-only property is used to get the base path provider
         /// </summary>
-        public IBasePathProvider BasePathProvider
-        {
-            get { return filePath.BasePathProvider; }
-        }
+        public IBasePathProvider BasePathProvider => filePath.BasePathProvider;
 
         /// <summary>
         /// This read-only property is used to get the content filename without the path
         /// </summary>
-        public string Filename
-        {
-            get { return Path.GetFileName(filePath); }
-        }
+        public string Filename => Path.GetFileName(filePath);
 
         /// <summary>
         /// This is used to get or set the full path to the content file
         /// </summary>
         /// <remarks>This returns the path to the file's true location.  For linked items, this path will differ
         /// from the <see cref="LinkPath"/> which returns the project-relative location.</remarks>
-        public string FullPath
-        {
-            get { return filePath; }
-        }
+        public string FullPath => filePath;
 
         /// <summary>
         /// This read-only property is used to get the persistable path to the content item (the path relative
         /// to the project folder)
         /// </summary>
-        public string PersistablePath
-        {
-            get { return filePath.PersistablePath; }
-        }
+        public string PersistablePath => filePath.PersistablePath;
 
         /// <summary>
         /// This is used to get or set the link path to the content file (the project-relative location)
@@ -88,7 +75,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 return linkPath;
             }
-            set { linkPath = value; }
+            set => linkPath = value;
         }
 
         /// <summary>
@@ -115,7 +102,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public ContentFile(FilePath filePath)
         {
             if(filePath == null || filePath.Path.Length == 0)
-                throw new ArgumentException("A full path to the content file is required", "filePath");
+                throw new ArgumentException("A full path to the content file is required", nameof(filePath));
 
             this.filePath = filePath;
         }

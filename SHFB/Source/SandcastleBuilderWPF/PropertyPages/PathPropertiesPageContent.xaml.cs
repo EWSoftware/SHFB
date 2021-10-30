@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : PathPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 10/31/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Path category properties
 //
@@ -36,10 +35,8 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <summary>
         /// This read-only property is used to get the current component path
         /// </summary>
-        public string ComponentPath
-        {
-            get { return fpComponentPath.PersistablePath; }
-        }
+        public string ComponentPath => fpComponentPath.PersistablePath;
+
         #endregion
 
         #region Constructor
@@ -63,11 +60,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="project">The current Sandcastle project</param>
         public void SetCurrentProject(SandcastleProject project)
         {
-            fpHtmlHelp1xCompilerPath.Folder = new FolderPath(project);
-            fpComponentPath.Folder = new FolderPath(project);
-            fpSourceCodeBasePath.Folder = new FolderPath(project);
-            fpOutputPath.Folder = new FolderPath(project);
-            fpWorkingPath.Folder = new FolderPath(project);
+            fpHtmlHelp1xCompilerPath.DataContext = new FolderPath(project);
+            fpComponentPath.DataContext = new FolderPath(project);
+            fpSourceCodeBasePath.DataContext = new FolderPath(project);
+            fpOutputPath.DataContext = new FolderPath(project);
+            fpWorkingPath.DataContext = new FolderPath(project);
         }
         #endregion
 

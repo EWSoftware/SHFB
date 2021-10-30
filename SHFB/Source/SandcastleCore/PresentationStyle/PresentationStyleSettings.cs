@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2015
-// Note    : Copyright 2012-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/17/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
 //
@@ -42,9 +41,9 @@ namespace Sandcastle.Core.PresentationStyle
         #region Private data members
         //=====================================================================
 
-        private List<ContentFiles> contentFiles;
-        private List<TransformComponentArgument> transformComponentArgs;
-        private List<PlugInDependency> plugInDependencies;
+        private readonly List<ContentFiles> contentFiles;
+        private readonly List<TransformComponentArgument> transformComponentArgs;
+        private readonly List<PlugInDependency> plugInDependencies;
 
         #endregion
 
@@ -88,10 +87,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// <summary>
         /// This read-only property returns the list of help content file locations
         /// </summary>
-        public IList<ContentFiles> ContentFiles
-        {
-            get { return contentFiles; }
-        }
+        public IList<ContentFiles> ContentFiles => contentFiles;
 
         /// <summary>
         /// This is used to get or set the path in which BuildAssembler resource item files are stored
@@ -104,14 +100,14 @@ namespace Sandcastle.Core.PresentationStyle
         public string ToolResourceItemsPath { get; protected set; }
 
         /// <summary>
-        /// This is used to get or set the document model transformation file and its parameters
+        /// This is used to get or set the document model applicator
         /// </summary>
-        public TransformationFile DocumentModelTransformation { get; protected set; }
+        public IApplyDocumentModel DocumentModelApplicator { get; protected set; }
 
         /// <summary>
-        /// This is used to get or set the intermediate TOC transformation file and its parameters
+        /// This is used to get or set the table of content generator for API content
         /// </summary>
-        public TransformationFile IntermediateTocTransformation { get; protected set; }
+        public IApiTocGenerator ApiTableOfContentsGenerator { get; set; }
 
         /// <summary>
         /// This is used to get or set the BuildAssembler configuration filename
@@ -121,10 +117,7 @@ namespace Sandcastle.Core.PresentationStyle
         /// <summary>
         /// This read-only property returns the transform component arguments if any
         /// </summary>
-        public IList<TransformComponentArgument> TransformComponentArguments
-        {
-            get { return transformComponentArgs; }
-        }
+        public IList<TransformComponentArgument> TransformComponentArguments => transformComponentArgs;
 
         /// <summary>
         /// This read-only property returns any plug-in dependencies required by the presentation style
@@ -132,10 +125,8 @@ namespace Sandcastle.Core.PresentationStyle
         /// <remarks>This is used to ensure that any dependent plug-ins are added to the build.  If any of the
         /// plug-ins are visible to the user and have been added to the project, the project configuration will
         /// override the default configuration supplied here.</remarks>
-        public IList<PlugInDependency> PlugInDependencies
-        {
-            get { return plugInDependencies; }
-        }
+        public IList<PlugInDependency> PlugInDependencies => plugInDependencies;
+
         #endregion
 
         #region Constructor
@@ -163,25 +154,23 @@ namespace Sandcastle.Core.PresentationStyle
         {
             List<string> errors = new List<string>();
 
-            if((int)this.SupportedFormats == 0)
-                errors.Add("SupportedFormats has not been specified");
+            if(this.SupportedFormats == 0)
+                errors.Add(nameof(SupportedFormats) + " has not been specified");
 
             if(this.ResourceItemsPath == null)
-                errors.Add("ResourceItemPath has not been specified");
+                errors.Add(nameof(ResourceItemsPath) + " has not been specified");
 
             if(this.ToolResourceItemsPath == null)
-                errors.Add("ToolResourceItemsPath path has not been specified");
+                errors.Add(nameof(ToolResourceItemsPath) + " path has not been specified");
 
-            if(this.DocumentModelTransformation == null || String.IsNullOrWhiteSpace(
-              this.DocumentModelTransformation.TransformationFilename))
-                errors.Add("DocumentModelTransformation or its filename has not been specified");
+            if(this.DocumentModelApplicator == null)
+                errors.Add(nameof(DocumentModelApplicator) + " has not been specified");
 
-            if(this.IntermediateTocTransformation == null || String.IsNullOrWhiteSpace(
-              this.IntermediateTocTransformation.TransformationFilename))
-                errors.Add("IntermediateTocTransformation or its filename has not been specified");
+            if(this.ApiTableOfContentsGenerator == null)
+                errors.Add(nameof(ApiTableOfContentsGenerator) + " has not been specified");
 
             if(String.IsNullOrWhiteSpace(this.BuildAssemblerConfiguration))
-                errors.Add("BuildAssemblerConfiguration has not been specified");
+                errors.Add(nameof(BuildAssemblerConfiguration) + " has not been specified");
 
             return errors;
         }
@@ -228,7 +217,7 @@ namespace Sandcastle.Core.PresentationStyle
                 path = Environment.ExpandEnvironmentVariables(path);
 
                 if(path.IndexOf("%SHFBROOT%", StringComparison.Ordinal) != -1)
-                    path = path.Replace("%SHFBROOT%", ComponentUtilities.ToolsFolder);
+                    path = path.Replace("%SHFBROOT%", ComponentUtilities.RootFolder + Path.DirectorySeparatorChar);
             }
 
             return path;
@@ -246,6 +235,9 @@ namespace Sandcastle.Core.PresentationStyle
           Action<string, object[]> progressReporter, Action<string, string, string> transformTemplate)
         {
             string sourcePath, destPath;
+
+            if(transformTemplate == null)
+                throw new ArgumentNullException(nameof(transformTemplate));
 
             foreach(var content in contentFiles)
             {
@@ -288,10 +280,10 @@ namespace Sandcastle.Core.PresentationStyle
           Action<string, string, string> transformTemplate)
         {
             if(sourcePath == null)
-                throw new ArgumentNullException("sourcePath");
+                throw new ArgumentNullException(nameof(sourcePath));
 
             if(destPath == null)
-                throw new ArgumentNullException("destPath");
+                throw new ArgumentNullException(nameof(destPath));
 
             int idx = sourcePath.LastIndexOf('\\');
 
@@ -312,7 +304,7 @@ namespace Sandcastle.Core.PresentationStyle
                         Directory.CreateDirectory(destPath);
 
                     // Copy as-is or perform tag substitution
-                    if(templateFileExtensions.Any(e => e.Equals(Path.GetExtension(name))))
+                    if(templateFileExtensions.Any(e => e.Equals(Path.GetExtension(name), StringComparison.OrdinalIgnoreCase)))
                         transformTemplate(Path.GetFileName(name), Path.GetDirectoryName(name), destPath);
                     else
                     {
@@ -322,8 +314,7 @@ namespace Sandcastle.Core.PresentationStyle
                         File.SetAttributes(filename, FileAttributes.Normal);
                     }
 
-                    if(progressReporter != null)
-                        progressReporter("{0} -> {1}", new[] { name, filename });
+                    progressReporter?.Invoke("{0} -> {1}", new[] { name, filename });
                 }
             }
 

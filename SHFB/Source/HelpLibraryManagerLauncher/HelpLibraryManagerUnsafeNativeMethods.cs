@@ -2,9 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerUnsafeNativeMethods.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/29/2017
-// Note    : Copyright 2010-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an internal class used to call some Win32 API functions
 //
@@ -45,10 +44,11 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "RegQueryValueExW", SetLastError = true)]
         private static extern int RegQueryValueEx(UIntPtr hKey, string lpValueName, IntPtr lpReserved, out uint lpType,
-            System.Text.StringBuilder lpData, ref uint lpcbData);
+            StringBuilder lpData, ref uint lpcbData);
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern int RegCloseKey(UIntPtr hKey);
+
         #endregion
 
         #region Registry helper method
@@ -72,10 +72,10 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             StringBuilder keyBuffer = new StringBuilder((int)size);
 
             if(String.IsNullOrEmpty(registryKeyPath))
-                throw new ArgumentNullException("registryKeyPath", "registryKeyPath cannot be null or empty");
+                throw new ArgumentNullException(nameof(registryKeyPath), "registryKeyPath cannot be null or empty");
 
             if(String.IsNullOrEmpty(valueName))
-                throw new ArgumentNullException("valueName", "valueName cannot be null or empty");
+                throw new ArgumentNullException(nameof(valueName), "valueName cannot be null or empty");
 
             try
             {
@@ -105,10 +105,10 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             finally
             {
                 if(regKeyHandle64 != UIntPtr.Zero)
-                    RegCloseKey(regKeyHandle64);
+                    _ = RegCloseKey(regKeyHandle64);
 
                 if(regKeyHandle32 != UIntPtr.Zero)
-                    RegCloseKey(regKeyHandle32);
+                    _ = RegCloseKey(regKeyHandle32);
             }
 
             return value;

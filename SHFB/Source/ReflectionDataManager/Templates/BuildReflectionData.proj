@@ -1,9 +1,7 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- Sandcastle Tools MSBuild Tasks.  https://GitHub.com/EWSoftware/SHFB -->
-	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.MRefBuilder"
-		AssemblyFile="{@SHFBFolder}\MRefBuilder.exe" />
-	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
-		AssemblyFile="{@SHFBFolder}\XslTransform.exe" />
+	<UsingTask TaskName="Sandcastle.Tools.MSBuild.MRefBuilder"
+		AssemblyFile="{@SHFBRoot}\net472\MRefBuilder.dll" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
@@ -13,19 +11,11 @@
 	<!-- The build target -->
 	<Target Name="Build">
 		<!-- Run MRefBuilder -->
-		<Microsoft.Ddue.Tools.MSBuild.MRefBuilder
+		<Sandcastle.Tools.MSBuild.MRefBuilder
 			WorkingFolder="$(WorkingFolder)"
 			ConfigurationFile="BuildReflectionData.config"
 			ReflectionFilename="reflection.org"
 			Assemblies="@(Assembly)" />
-
-		<!-- Apply the document model transformation and add filenames -->
-		<Microsoft.Ddue.Tools.MSBuild.XslTransform
-			WorkingFolder="$(WorkingFolder)"
-			Transformations="~\ProductionTransforms\ApplyVSDocModel.xsl;~\ProductionTransforms\AddFilenames.xsl"
-			Arguments="IncludeAllMembersTopic=false"
-			InputFile="reflection.org"
-			OutputFile="reflection.xml" />
 
 	</Target>
 

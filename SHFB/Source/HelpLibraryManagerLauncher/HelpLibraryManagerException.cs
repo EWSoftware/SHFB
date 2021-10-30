@@ -2,21 +2,20 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerException.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
-// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an exception class used to report problems with the Help Library Manager operation.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  07/03/2010  EFW  Created the code
-// 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
+// 07/03/2010  EFW  Created the code
+// 10/05/2012  EFW  Added support for Help Viewer 2.0
 //===============================================================================================================
 
 using System;
@@ -164,12 +163,13 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>
         /// This read-only property returns the help viewer version to which the error code applies
         /// </summary>
-        public Version Version { get; private set; }
+        public Version Version { get; }
 
         /// <summary>
         /// This read-only property returns the error code
         /// </summary>
-        public int ErrorCode { get; private set; }
+        public int ErrorCode { get; }
+
         #endregion
 
         #region Constructors

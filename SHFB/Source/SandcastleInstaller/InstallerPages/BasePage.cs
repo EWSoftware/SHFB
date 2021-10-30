@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : BasePage.cs
 // Author  : Eric Woodruff
-// Updated : 11/07/2019
+// Updated : 09/08/2021
 //
 // This file contains a simple base page for displaying HTML content with a panel for additional controls
 //
@@ -39,10 +39,6 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         [Browsable(false)]
         public virtual string PageTitle => "Installer Page";
-
-        /// <inheritdoc />
-        [Browsable(false)]
-        public virtual string SandcastleVersion { get; set; }
 
         /// <inheritdoc />
         /// <remarks>The default implementation always returns true</remarks>

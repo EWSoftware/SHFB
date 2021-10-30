@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSet.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2021
+// Updated : 04/06/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain information used to obtain reflection data and comments for a
@@ -126,6 +126,9 @@ namespace Sandcastle.Core.Reflection
             /// <returns>The binding redirection settings created from the XML element</returns>
             public static BindingRedirection FromXml(XElement redirection)
             {
+                if(redirection == null)
+                    throw new ArgumentNullException(nameof(redirection));
+
                 var br = new BindingRedirection
                 {
                     Name = redirection.Attribute("Name").Value,
@@ -384,7 +387,7 @@ namespace Sandcastle.Core.Reflection
         /// <param name="filename">The filename from which to load the reflection data set information</param>
         public ReflectionDataSet(string filename) : this()
         {
-            this.Filename = filename;
+            this.Filename = filename ?? throw new ArgumentNullException(nameof(filename));
 
             XDocument doc = XDocument.Load(filename);
             XElement dataSet = doc.Root;
@@ -554,8 +557,8 @@ namespace Sandcastle.Core.Reflection
                     // outside of the standard assembly folder.  If they're not in the usual place look there.
                     if(path == null && platform == PlatformType.DotNetFramework)
                     {
-                        string externalPath = String.Format("{0}\\v{1}.X", Path.GetDirectoryName(l.Path),
-                            this.Version.Major);
+                        string externalPath = String.Format(CultureInfo.InvariantCulture, "{0}\\v{1}.X",
+                            Path.GetDirectoryName(l.Path), this.Version.Major);
 
                         if(Directory.Exists(externalPath) && Directory.EnumerateFiles(externalPath, "*.xml").Any())
                         {
@@ -646,6 +649,9 @@ namespace Sandcastle.Core.Reflection
         /// <returns>True if the framework contains the named assembly, false if not.</returns>
         public bool ContainsAssembly(string assemblyName)
         {
+            if(assemblyName == null)
+                throw new ArgumentNullException(nameof(assemblyName));
+
             if(assemblyName.IndexOf(',') != -1)
                 return assemblyLocations.Any(al => al.IncludedAssemblies.Any(a => assemblyName.StartsWith(
                     a.Description, StringComparison.OrdinalIgnoreCase) && File.Exists(a.Filename)));
@@ -665,6 +671,9 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The assembly if found or null if not found</returns>
         public AssemblyDetails FindAssembly(string assemblyName)
         {
+            if(assemblyName == null)
+                throw new ArgumentNullException(nameof(assemblyName));
+
             AssemblyDetails ad = null;
             bool strongName = (assemblyName.IndexOf(',') != -1);
 

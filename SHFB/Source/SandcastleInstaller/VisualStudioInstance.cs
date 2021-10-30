@@ -2,9 +2,8 @@
 // System  : Sandcastle Guided Installation
 // File    : VisualStudioInstance.cs
 // Author  : Eric Woodruff
-// Updated : 03/22/2019
-// Note    : Copyright 2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
+// Note    : Copyright 2019-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to get a description and installation path for all installed version of
 // Visual Studio.
@@ -193,7 +192,7 @@ namespace Sandcastle.Installer
 
                             if(instance2 is ISetupInstanceCatalog instanceCatalog)
                             {
-                                var catalogProps = instanceCatalog?.GetCatalogInfo();
+                                var catalogProps = instanceCatalog.GetCatalogInfo();
 
                                 if(catalogProps != null)
                                 {
@@ -201,8 +200,8 @@ namespace Sandcastle.Installer
 
                                     if(propNames.Contains("productName") && propNames.Contains("productLineVersion"))
                                     {
-                                        string productName = catalogProps.GetValue("productName"),
-                                            productLineVersion = catalogProps.GetValue("productLineVersion");
+                                        string productName = (string)catalogProps.GetValue("productName"),
+                                            productLineVersion = (string)catalogProps.GetValue("productLineVersion");
 
                                         userTemplatesFolder = $"{productName} {productLineVersion}";
                                     }

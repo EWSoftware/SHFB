@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/13/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to hold a build component's configuration and enabled state
 //
@@ -18,8 +17,6 @@
 // 11/01/2007  EFW  Created the code
 // 07/01/2008  EFW  Reworked to support MSBuild project format
 //===============================================================================================================
-
-using System;
 
 namespace SandcastleBuilder.Utils.BuildComponent
 {

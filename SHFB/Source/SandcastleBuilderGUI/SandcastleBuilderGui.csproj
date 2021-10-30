@@ -1,773 +1,279 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.props" Condition="Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F5362C80-44E3-47E4-AAFD-49050B22B550}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SandcastleBuilder.Gui</RootNamespace>
-    <AssemblyName>SandcastleBuilderGUI</AssemblyName>
-    <ApplicationIcon>Images\SandcastleBuilder.ico</ApplicationIcon>
-    <StartupObject>SandcastleBuilder.Gui.StartUp</StartupObject>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Deploy\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;STANDALONEGUI</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Deploy\SandcastleBuilderGUI.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Deploy\</OutputPath>
-    <DefineConstants>TRACE;STANDALONEGUI</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Deploy\SandcastleBuilderGUI.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
-      <HintPath>..\packages\ICSharpCode.TextEditor.3.2.1.6466\lib\Net20\ICSharpCode.TextEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.15.1.548\lib\net46\Microsoft.Build.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Engine, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Engine.15.1.548\lib\net46\Microsoft.Build.Engine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Framework.15.1.548\lib\net46\Microsoft.Build.Framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Locator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9dff12846e04bfbd, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Locator.1.4.1\lib\net46\Microsoft.Build.Locator.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.1.548\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="NHunspell, Version=1.2.5554.16953, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHunspell.1.2.5554.16953\lib\net\NHunspell.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.8.0.1, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.cs">
-      <Link>PropertyPages\BuildEventPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\BuildEventPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.cs">
-      <Link>PropertyPages\BuildPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\BuildPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.cs">
-      <Link>PropertyPages\ComponentPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\ComponentPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\Help1WebsitePropertiesPageControl.cs">
-      <Link>PropertyPages\Help1WebsitePropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\Help1WebsitePropertiesPageControl.designer.cs">
-      <Link>PropertyPages\Help1WebsitePropertiesPageControl.designer.cs</Link>
-      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.cs">
-      <Link>PropertyPages\HelpFilePropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.Designer.cs">
-      <Link>PropertyPages\HelpFilePropertiesPageControl.Designer.cs</Link>
-      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.cs">
-      <Link>PropertyPages\MissingTagPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\MissingTagPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.cs">
-      <Link>PropertyPages\MSHelpViewerPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\MSHelpViewerPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PathPropertiesPageControl.cs">
-      <Link>PropertyPages\PathPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PathPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\PathPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PlugInPropertiesPageControl.cs">
-      <Link>PropertyPages\PlugInPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PlugInPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\PlugInPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.cs">
-      <Link>PropertyPages\SummaryPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\SummaryPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\TransformArgumentsPageControl.cs">
-      <Link>PropertyPages\TransformArgumentsPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\TransformArgumentsPageControl.designer.cs">
-      <Link>PropertyPages\TransformArgumentsPageControl.designer.cs</Link>
-      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.cs">
-      <Link>PropertyPages\UserDefinedPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\UserDefinedPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.cs">
-      <Link>PropertyPages\VisibilityPropertiesPageControl.cs</Link>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.designer.cs">
-      <Link>PropertyPages\VisibilityPropertiesPageControl.designer.cs</Link>
-      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="AboutDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutDlg.Designer.cs">
-      <DependentUpon>AboutDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BeforeBuildAction.cs" />
-    <Compile Include="ContentEditors\BaseContentEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\ContentFileEditor.cs" />
-    <Compile Include="ContentEditors\ContentFileEditorCollection.cs" />
-    <Compile Include="ContentEditors\EntityReferenceWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\EntityReferenceWindow.Designer.cs">
-      <DependentUpon>EntityReferenceWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\ContentLayoutWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\ContentLayoutWindow.Designer.cs">
-      <DependentUpon>ContentLayoutWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\ContentEditorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\EditorActions.cs" />
-    <Compile Include="ContentEditors\FileTree.cs" />
-    <Compile Include="ContentEditors\FindAndReplaceWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\FindAndReplaceWindow.Designer.cs">
-      <DependentUpon>FindAndReplaceWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\GotoLineDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\GotoLineDlg.Designer.cs">
-      <DependentUpon>GotoLineDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\ScrollablePanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\NodeData.cs" />
-    <Compile Include="ContentEditors\NodeIcon.cs" />
-    <Compile Include="ContentEditors\OutputWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\OutputWindow.Designer.cs">
-      <DependentUpon>OutputWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\PreviewTopicWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\PreviewTopicWindow.Designer.cs">
-      <DependentUpon>PreviewTopicWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\ProjectExplorerWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\ProjectExplorerWindow.Designer.cs">
-      <DependentUpon>ProjectExplorerWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\ProjectPropertiesWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\ProjectPropertiesWindow.Designer.cs">
-      <DependentUpon>ProjectPropertiesWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\ResourceItemEditorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\ResourceItemEditorWindow.Designer.cs">
-      <DependentUpon>ResourceItemEditorWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\SelectFileTemplateDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\SelectFileTemplateDlg.Designer.cs">
-      <DependentUpon>SelectFileTemplateDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\SelectGacEntriesDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\SelectGacEntriesDlg.Designer.cs">
-      <DependentUpon>SelectGacEntriesDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\SiteMapEditorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\SiteMapEditorWindow.Designer.cs">
-      <DependentUpon>SiteMapEditorWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\SpellCheckWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\SpellCheckWindow.Designer.cs">
-      <DependentUpon>SpellCheckWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\TokenEditorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\TokenEditorWindow.Designer.cs">
-      <DependentUpon>TokenEditorWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContentEditors\TopicEditorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContentEditors\TopicEditorWindow.Designer.cs">
-      <DependentUpon>TopicEditorWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gac\GacApi.cs" />
-    <Compile Include="Gac\GacEnumerator.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MSBuild\COMReferenceItem.cs" />
-    <Compile Include="MSBuild\ProjectReferenceItem.cs" />
-    <Compile Include="MSBuild\ReferenceItem.cs" />
-    <Compile Include="MSBuild\ReferenceItemCollection.cs" />
-    <Compile Include="PromptToSaveDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PromptToSaveDlg.Designer.cs">
-      <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\BasePropertyPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyPages\BasePropertyPage.designer.cs">
-      <DependentUpon>BasePropertyPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Spelling\FileSpellChecker.cs" />
-    <Compile Include="Spelling\GlobalDictionary.cs" />
-    <Compile Include="Spelling\SpellCheckerConfiguration.cs" />
-    <Compile Include="Spelling\SpellingEventArgs.cs" />
-    <Compile Include="Spelling\TextLocation.cs" />
-    <Compile Include="StartUp.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildEventPropertiesPageControl.resx">
-      <Link>PropertyPages\BuildEventPropertiesPageControl.resx</Link>
-      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.resx">
-      <Link>PropertyPages\BuildPropertiesPageControl.resx</Link>
-      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.resx">
-      <Link>PropertyPages\ComponentPropertiesPageControl.resx</Link>
-      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\Help1WebsitePropertiesPageControl.resx">
-      <Link>PropertyPages\Help1WebsitePropertiesPageControl.resx</Link>
-      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.resx">
-      <Link>PropertyPages\HelpFilePropertiesPageControl.resx</Link>
-      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.resx">
-      <Link>PropertyPages\MissingTagPropertiesPageControl.resx</Link>
-      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.resx">
-      <Link>PropertyPages\MSHelpViewerPropertiesPageControl.resx</Link>
-      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\PathPropertiesPageControl.resx">
-      <Link>PropertyPages\PathPropertiesPageControl.resx</Link>
-      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\PlugInPropertiesPageControl.resx">
-      <Link>PropertyPages\PlugInPropertiesPageControl.resx</Link>
-      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.resx">
-      <Link>PropertyPages\SummaryPropertiesPageControl.resx</Link>
-      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\TransformArgumentsPageControl.resx">
-      <Link>PropertyPages\TransformArgumentsPageControl.resx</Link>
-      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.resx">
-      <Link>PropertyPages\UserDefinedPropertiesPageControl.resx</Link>
-      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.resx">
-      <Link>PropertyPages\VisibilityPropertiesPageControl.resx</Link>
-      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AboutDlg.resx">
-      <DependentUpon>AboutDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\BaseContentEditor.resx">
-      <DependentUpon>BaseContentEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\EntityReferenceWindow.resx">
-      <DependentUpon>EntityReferenceWindow.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\ContentLayoutWindow.resx">
-      <DependentUpon>ContentLayoutWindow.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\FindAndReplaceWindow.resx">
-      <DependentUpon>FindAndReplaceWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\GotoLineDlg.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>GotoLineDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\OutputWindow.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OutputWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\PreviewTopicWindow.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>PreviewTopicWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\ProjectExplorerWindow.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ProjectExplorerWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\ProjectPropertiesWindow.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ProjectPropertiesWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\ResourceItemEditorWindow.resx">
-      <DependentUpon>ResourceItemEditorWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\SelectFileTemplateDlg.resx">
-      <DependentUpon>SelectFileTemplateDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\SelectGacEntriesDlg.resx">
-      <DependentUpon>SelectGacEntriesDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\SiteMapEditorWindow.resx">
-      <DependentUpon>SiteMapEditorWindow.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\SpellCheckWindow.resx">
-      <DependentUpon>SpellCheckWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\TokenEditorWindow.resx">
-      <DependentUpon>TokenEditorWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentEditors\TopicEditorWindow.resx">
-      <DependentUpon>TopicEditorWindow.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PromptToSaveDlg.resx">
-      <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyPages\BasePropertyPage.resx">
-      <DependentUpon>BasePropertyPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserPreferencesDlg.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>UserPreferencesDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="app.manifest" />
-    <None Include="Images\HtmlEncode.png" />
-    <Content Include="Hunspellx64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Hunspellx86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\SpellCheck.ico" />
-    <Content Include="ItemTemplates\XAML Syntax.xamlcfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="ItemTemplates\ItemTemplates.vsspell" />
-    <None Include="Resources\SpellCheck.png" />
-    <None Include="Resources\Spinner.gif" />
-    <Content Include="Spelling\en_US.aff">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Spelling\en_US.dic">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="StatusBarTextProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UnsafeNativeMethods.cs" />
-    <Compile Include="UserPreferencesDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserPreferencesDlg.Designer.cs">
-      <DependentUpon>UserPreferencesDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WindowPlacement.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Images\SandcastleBuilder.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
-      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
-      <Name>SandcastleBuilderUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF_GUI.csproj">
-      <Project>{d3b06405-3435-4329-9233-2df1bf5028aa}</Project>
-      <Name>SandcastleBuilderWPF_GUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
-      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>Sandcastle.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Images\About.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Images\Sandcastle.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Images\BuildProject.bmp" />
-    <None Include="Images\NewProject.bmp" />
-    <None Include="Images\OpenProject.bmp" />
-    <None Include="Images\SaveProject.bmp" />
-    <None Include="Images\ViewHelpFile.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Images\CancelBuild.bmp" />
-    <None Include="Images\ViewLog.bmp" />
-    <None Include="Images\ViewLog.ico" />
-    <None Include="Images\Help.ico" />
-    <None Include="Images\FAQ.bmp" />
-    <None Include="Images\Content.ico" />
-    <None Include="Images\AddItem.bmp" />
-    <None Include="Images\CodeFile.bmp" />
-    <None Include="Images\Copy.bmp" />
-    <None Include="Images\Cut.bmp" />
-    <None Include="Images\Delete.bmp" />
-    <None Include="Images\Paste.bmp" />
-    <None Include="Images\SaveAll.bmp" />
-    <None Include="Images\Table.bmp" />
-    <None Include="Images\Bold.bmp" />
-    <None Include="Images\ExternalLink.bmp" />
-    <None Include="Images\Italic.bmp" />
-    <None Include="Images\List_Bullets.bmp" />
-    <None Include="Images\List_Numbered.bmp" />
-    <None Include="Images\LocalLink.bmp" />
-    <None Include="Images\Underline.bmp" />
-    <None Include="Images\Redo.png" />
-    <None Include="Images\Undo.png" />
-    <None Include="Images\TokenFile.ico" />
-    <None Include="Images\ResourceItemFile.ico" />
-    <Content Include="ItemTemplates\Site Map.sitemap">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Content Layout.content">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Code Snippets.snippets">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Token File.tokens">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Resource Item File.items">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Resources\Properties.bmp" />
-    <None Include="Resources\Print.bmp" />
-    <None Include="Images\Properties.ico" />
-    <None Include="Images\ImageFile.bmp" />
-    <None Include="Images\SnippetsFile.bmp" />
-    <None Include="Images\TokenFile.bmp" />
-    <None Include="Images\Html.bmp" />
-    <None Include="Images\SiteMap.png" />
-    <None Include="Images\Xml.bmp" />
-    <None Include="Images\DocSource.png" />
-    <None Include="Images\DocSourcesFolder.bmp" />
-    <None Include="Images\Document.bmp" />
-    <None Include="Images\Folder.bmp" />
-    <None Include="Images\ReferenceItem.bmp" />
-    <None Include="Images\ReferencesFolder.bmp" />
-    <Content Include="ItemTemplates\Bitmap.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Html Page.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Script File.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Style Sheet.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\Text File.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\XML File.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ItemTemplates\XSLT File.xslt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Resources\Explorer.bmp" />
-    <None Include="Resources\TopicPreview.bmp" />
-    <None Include="Resources\Filter2.bmp" />
-    <Content Include="ConceptualTemplates\Conceptual.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Error Message.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Glossary.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\How To.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Orientation.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Reference With Syntax.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Reference Without Syntax.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Reference.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Sample.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\SDK Technology Architecture.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\SDK Technology Code Directory.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\SDK Technology Orientation.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\SDK Technology Scenarios.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\SDK Technology Summary.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Troubleshooting.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\User Interface Reference.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Walkthrough.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\Whitepaper.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ConceptualTemplates\XML Reference.aml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets'))" />
-  </Target>
-  <Import Project="..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets" Condition="Exists('..\packages\Microsoft.Build.Locator.1.4.1\build\Microsoft.Build.Locator.targets')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<!-- NOTE: This is an interactive utility so we'll only target the .NET Framework. -->
+		<TargetFramework>net472</TargetFramework>
+		<UseWPF>True</UseWPF>
+		<UseWindowsForms>True</UseWindowsForms>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>SandcastleBuilderGUI</AssemblyName>
+		<RootNamespace>SandcastleBuilder.Gui</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Resources\SandcastleBuilder.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DefineConstants>TRACE;STANDALONEGUI</DefineConstants>
+		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+		<OutputPath>..\..\Deploy\Tools\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DefineConstants>TRACE;STANDALONEGUI</DefineConstants>
+		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+	  <OutputPath>..\..\Deploy\Tools\</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="ConceptualTemplates\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="ItemTemplates\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="en_US.aff">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="en_US.dic">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Hunspellx64.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Hunspellx86.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="Properties\Settings.Designer.cs">
+		  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="ICSharpCode.TextEditor" Version="3.2.1.6466" />
+		<PackageReference Include="NHunspell" Version="1.2.5554.16953" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
+		<ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF_GUI.csproj" />
+		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj" />
+		<ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\VSIX_Shared\PropertyPages\BuildEventPropertiesPageControl.cs">
+			<Link>PropertyPages\BuildEventPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\BuildEventPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\BuildEventPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\BuildPropertiesPageControl.cs">
+			<Link>PropertyPages\BuildPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\BuildPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\BuildPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\ComponentPropertiesPageControl.cs">
+			<Link>PropertyPages\ComponentPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\ComponentPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\ComponentPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\Help1WebsitePropertiesPageControl.cs">
+			<Link>PropertyPages\Help1WebsitePropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\Help1WebsitePropertiesPageControl.designer.cs">
+			<Link>PropertyPages\Help1WebsitePropertiesPageControl.designer.cs</Link>
+			<DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\HelpFilePropertiesPageControl.cs">
+			<Link>PropertyPages\HelpFilePropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\HelpFilePropertiesPageControl.Designer.cs">
+			<Link>PropertyPages\HelpFilePropertiesPageControl.Designer.cs</Link>
+			<DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\MissingTagPropertiesPageControl.cs">
+			<Link>PropertyPages\MissingTagPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\MissingTagPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\MissingTagPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\MSHelpViewerPropertiesPageControl.cs">
+			<Link>PropertyPages\MSHelpViewerPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\MSHelpViewerPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\MSHelpViewerPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\PathPropertiesPageControl.cs">
+			<Link>PropertyPages\PathPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\PathPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\PathPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\PlugInPropertiesPageControl.cs">
+			<Link>PropertyPages\PlugInPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\PlugInPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\PlugInPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\SummaryPropertiesPageControl.cs">
+			<Link>PropertyPages\SummaryPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\SummaryPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\SummaryPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\TransformArgumentsPageControl.cs">
+			<Link>PropertyPages\TransformArgumentsPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\TransformArgumentsPageControl.designer.cs">
+			<Link>PropertyPages\TransformArgumentsPageControl.designer.cs</Link>
+			<DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\UserDefinedPropertiesPageControl.cs">
+			<Link>PropertyPages\UserDefinedPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\UserDefinedPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\UserDefinedPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\VisibilityPropertiesPageControl.cs">
+			<Link>PropertyPages\VisibilityPropertiesPageControl.cs</Link>
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Include="..\VSIX_Shared\PropertyPages\VisibilityPropertiesPageControl.designer.cs">
+			<Link>PropertyPages\VisibilityPropertiesPageControl.designer.cs</Link>
+			<DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+		</Compile>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\BuildEventPropertiesPageControl.resx">
+			<Link>PropertyPages\BuildEventPropertiesPageControl.resx</Link>
+			<DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\BuildPropertiesPageControl.resx">
+			<Link>PropertyPages\BuildPropertiesPageControl.resx</Link>
+			<DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\ComponentPropertiesPageControl.resx">
+			<Link>PropertyPages\ComponentPropertiesPageControl.resx</Link>
+			<DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\Help1WebsitePropertiesPageControl.resx">
+			<Link>PropertyPages\Help1WebsitePropertiesPageControl.resx</Link>
+			<DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\HelpFilePropertiesPageControl.resx">
+			<Link>PropertyPages\HelpFilePropertiesPageControl.resx</Link>
+			<DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+			<SubType>Designer</SubType>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\MissingTagPropertiesPageControl.resx">
+			<Link>PropertyPages\MissingTagPropertiesPageControl.resx</Link>
+			<DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\MSHelpViewerPropertiesPageControl.resx">
+			<Link>PropertyPages\MSHelpViewerPropertiesPageControl.resx</Link>
+			<DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\PathPropertiesPageControl.resx">
+			<Link>PropertyPages\PathPropertiesPageControl.resx</Link>
+			<DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\PlugInPropertiesPageControl.resx">
+			<Link>PropertyPages\PlugInPropertiesPageControl.resx</Link>
+			<DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\SummaryPropertiesPageControl.resx">
+			<Link>PropertyPages\SummaryPropertiesPageControl.resx</Link>
+			<DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\TransformArgumentsPageControl.resx">
+			<Link>PropertyPages\TransformArgumentsPageControl.resx</Link>
+			<DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\UserDefinedPropertiesPageControl.resx">
+			<Link>PropertyPages\UserDefinedPropertiesPageControl.resx</Link>
+			<DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Include="..\VSIX_Shared\PropertyPages\VisibilityPropertiesPageControl.resx">
+			<Link>PropertyPages\VisibilityPropertiesPageControl.resx</Link>
+			<DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.97" />
+		<Reference Include="PresentationFramework.Aero">
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="PresentationFramework.Luna">
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="WeifenLuo.WinFormsUI.Docking">
+	    <HintPath>..\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 </Project>

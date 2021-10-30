@@ -1,29 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicContentNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/20/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the class used for the TopicPreviewerControl
-// TopicContentNeeded event.
+// This file contains the class used for the TopicPreviewerControl TopicContentNeeded event
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.4  01/20/2012  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 01/20/2012  EFW  Created the code
+//===============================================================================================================
 
-using System.Collections.Generic;
 using System.Windows;
-
-using SandcastleBuilder.Utils.ConceptualContent;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -39,7 +33,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This read-only property returns the topic filename that the previewer wants
         /// </summary>
-        public string TopicFilename { get; private set; }
+        public string TopicFilename { get; }
 
         /// <summary>
         /// This is used to get or set the topic file content if it is found

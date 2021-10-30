@@ -1,23 +1,21 @@
-//=============================================================================
+//===============================================================================================================
 // System  : HTML to MAML Converter
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/17/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/08/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to contain a collection of topics.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  09/12/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 09/12/2008  EFW  Created the code
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -63,12 +61,10 @@ namespace HtmlToMamlConversion
         }
 
         /// <summary>
-        /// This is used to get the topic at which the table of content is
-        /// split by the API content.
+        /// This is used to get the topic at which the table of content is split by the API content
         /// </summary>
-        /// <value>This will only be valid if it refers to a root level
-        /// topic.  It will return null if a split location has not been
-        /// set at the root level.</value>
+        /// <value>This will only be valid if it refers to a root level topic.  It will return null if a split
+        /// location has not been set at the root level.</value>
         public Topic SplitTocAtTopic
         {
             get
@@ -86,15 +82,12 @@ namespace HtmlToMamlConversion
         //=====================================================================
 
         /// <summary>
-        /// Add all topics from the specified folder recursively to the
-        /// topic collection.
+        /// Add all topics from the specified folder recursively to the topic collection
         /// </summary>
         /// <param name="folder">The folder from which to get the files</param>
-        /// <param name="topicDictionary">A dictionary used to contain the list
-        /// of files index by name.</param>
+        /// <param name="topicDictionary">A dictionary used to contain the list of files index by name</param>
         /// <remarks>Only files with a .htm? or .topic extension are added</remarks>
-        public void AddTopicsFromFolder(string folder,
-          Dictionary<FilePath, Topic> topicDictionary)
+        public void AddTopicsFromFolder(string folder, Dictionary<FilePath, Topic> topicDictionary)
         {
             Topic topic, removeTopic;
             FilePath topicPath;
@@ -115,8 +108,8 @@ namespace HtmlToMamlConversion
             {
                 topic = new Topic(file);
                 this.Add(topic);
-                topicPath = new FilePath(Path.ChangeExtension(
-                  topic.SourceFile.Path, ".html"), topic.SourceFile.BasePathProvider);
+                topicPath = new FilePath(Path.ChangeExtension(topic.SourceFile.Path, ".html"),
+                    topic.SourceFile.BasePathProvider);
                 topicDictionary.Add(topicPath, topic);
             }
 
@@ -125,8 +118,7 @@ namespace HtmlToMamlConversion
 
             foreach(string folderName in files)
             {
-                topic = new Topic(null);
-                topic.Title = name = Path.GetFileName(folderName);
+                topic = new Topic(null) { Title = name = Path.GetFileName(folderName) };
                 topic.Subtopics.AddTopicsFromFolder(folderName, topicDictionary);
 
                 // Ignore empty folders
@@ -139,8 +131,7 @@ namespace HtmlToMamlConversion
                 removeTopic = null;
 
                 foreach(Topic t in topic.Subtopics)
-                    if(t.SourceFile != null && Path.GetFileNameWithoutExtension(
-                      t.SourceFile) == name)
+                    if(t.SourceFile != null && Path.GetFileNameWithoutExtension(t.SourceFile) == name)
                     {
                         // If found, remove it as it represents the container node
                         topic.Title = null;
@@ -157,13 +148,11 @@ namespace HtmlToMamlConversion
         }
 
         /// <summary>
-        /// Parse all files in the collection to extract the information for
-        /// conversion.
+        /// Parse all files in the collection to extract the information for conversion
         /// </summary>
         /// <param name="fileParser">The file parser</param>
         /// <param name="imageDictionary">The image dictionary</param>
-        public void ParseFiles(FileParser fileParser,
-          Dictionary<FilePath, ImageReference> imageDictionary)
+        public void ParseFiles(FileParser fileParser, Dictionary<FilePath, ImageReference> imageDictionary)
         {
             foreach(Topic t in this)
                 t.ParseFile(fileParser, imageDictionary);
@@ -176,8 +165,7 @@ namespace HtmlToMamlConversion
         /// <summary>
         /// Save the topic collection to the named content layout file
         /// </summary>
-        /// <param name="filename">The filename to which the content layout
-        /// is saved.</param>
+        /// <param name="filename">The filename to which the content layout is saved</param>
         public void Save(string filename)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -196,12 +184,10 @@ namespace HtmlToMamlConversion
                 writer.WriteStartElement("Topics");
 
                 if(defaultTopic != null)
-                    writer.WriteAttributeString("defaultTopic",
-                        defaultTopic.Id.ToString());
+                    writer.WriteAttributeString("defaultTopic", defaultTopic.Id.ToString());
 
                 if(splitToc != null)
-                    writer.WriteAttributeString("splitTOCTopic",
-                        splitToc.Id.ToString());
+                    writer.WriteAttributeString("splitTOCTopic", splitToc.Id.ToString());
 
                 foreach(Topic t in this)
                     t.WriteXml(writer);
@@ -236,8 +222,7 @@ namespace HtmlToMamlConversion
                     if(x.SortOrder > y.SortOrder)
                         return 1;
 
-                    return String.Compare(x.Title, y.Title,
-                        StringComparison.CurrentCultureIgnoreCase);
+                    return String.Compare(x.Title, y.Title, StringComparison.OrdinalIgnoreCase);
                 });
 
             foreach(Topic t in this)

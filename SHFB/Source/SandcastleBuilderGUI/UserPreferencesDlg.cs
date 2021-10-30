@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : UserPreferencesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This form is used to allow the user to modify help file builder preferences unrelated to projects
 //

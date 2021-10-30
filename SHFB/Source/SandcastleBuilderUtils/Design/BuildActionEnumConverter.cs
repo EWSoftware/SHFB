@@ -1,25 +1,22 @@
-//=============================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+//===============================================================================================================
+// System  : Sandcastle Help File Builder Utilities
 // File    : BuildActionEnumConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/13/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a type converter used to limit the available build
-// actions in the project explorer.
+// This file contains a type converter used to limit the available build actions in the project explorer.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.0  08/01/2008  EFW  Created the code
-// 1.9.3.0  04/06/2011  EFW  Made the class public for use in the VSPackage
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 08/01/2008  EFW  Created the code
+// 04/06/2011  EFW  Made the class public for use in the VSPackage
+//===============================================================================================================
 
 using System.Collections;
 using System.ComponentModel;
@@ -36,6 +33,7 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         private StandardValuesCollection values;
+
         #endregion
 
         #region Constructor
@@ -57,13 +55,10 @@ namespace SandcastleBuilder.Utils.Design
         /// are removed.</remarks>
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            StandardValuesCollection baseValues;
-            ArrayList list;
-            
             if(values == null)
             {
-                baseValues = base.GetStandardValues(context);
-                list = new ArrayList();
+                var baseValues = base.GetStandardValues(context);
+                var list = new ArrayList();
 
                 foreach(BuildAction v in baseValues)
                     if(v < BuildAction.Folder)

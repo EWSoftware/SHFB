@@ -2,9 +2,8 @@
 // System  : EWSoftware Custom Code Providers
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/07/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // EWSoftware custom code providers assembly attributes.
 //
@@ -25,7 +24,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 // Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]
 
 //
 // General Information about an assembly is controlled through the following
@@ -38,7 +37,7 @@ using System.Runtime.InteropServices;
     "comments files for all code in the project.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2008-2015, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2008-2021, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

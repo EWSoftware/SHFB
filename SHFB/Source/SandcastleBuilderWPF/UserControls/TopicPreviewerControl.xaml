@@ -168,7 +168,23 @@
       </Border>
 			<FlowDocumentScrollViewer Name="fdViewer" Hyperlink.Click="fdViewer_LinkClicked"
 				SizeChanged="fdViewer_SizeChanged">
-      </FlowDocumentScrollViewer>
+				<FlowDocumentScrollViewer.Resources>
+					<!-- Override the hyperlink style or the Visual Studio theme is used which isn't appropriate here -->
+					<Style x:Key="{x:Type Hyperlink}" TargetType="{x:Type Hyperlink}">
+						<Setter Property="Foreground" Value="Blue"/>
+						<Setter Property="TextDecorations" Value="None"/>
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Foreground" Value="Blue"/>
+								<Setter Property="TextDecorations" Value="Underline" />
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="True">
+								<Setter Property="Cursor" Value="Hand"/>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</FlowDocumentScrollViewer.Resources>
+			</FlowDocumentScrollViewer>
     </DockPanel>
   </Grid>
 </UserControl>

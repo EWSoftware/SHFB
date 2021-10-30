@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0">
+  <siteMapNode title="Placeholder #1" url="AboutPageIcon.html" isDefault="true" isExpanded="true">
+    <siteMapNode title="Placeholder #2" url="AboutPageInfo.html" isSelected="true" splitToc="true" />
+  </siteMapNode>
+</siteMap>

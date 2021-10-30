@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ManifestTopic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to hold the topic ID and type for a BuildAssembler manifest file entry
 //
@@ -28,12 +27,12 @@ namespace Sandcastle.Core.BuildAssembler
         /// <summary>
         /// This read-only property is used to get the topic ID
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get; }
 
         /// <summary>
         /// This read-only property is used to get the topic type
         /// </summary>
-        public string TopicType { get; private set; }
+        public string TopicType { get; }
 
         /// <summary>
         /// Constructor

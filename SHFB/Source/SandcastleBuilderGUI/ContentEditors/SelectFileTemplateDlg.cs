@@ -2,20 +2,19 @@
 // System  : Sandcastle Help File Builder
 // File    : SelectFileTemplateDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2014
-// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to select a template file to use as a new topic
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.3.3  12/24/2011  EFW  Created the code
+// 12/24/2011  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -37,7 +36,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private string filePath;
+        private readonly string filePath;
+
         #endregion
 
         #region Properties
@@ -46,10 +46,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This returns the new filename if the topic file is created
         /// </summary>
-        public string NewFilename
-        {
-            get { return Path.Combine(filePath, txtNewFilename.Text.Trim() + lblExtension.Text); }
-        }
+        public string NewFilename => Path.Combine(filePath, txtNewFilename.Text.Trim() + lblExtension.Text);
+
         #endregion
 
         #region Constructor
@@ -239,7 +237,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 {
                     // Set a unique ID in new MAML topics
                     XmlDocument doc = new XmlDocument();
-                    doc.Load(newFilename);
+
+                    using(var reader = XmlReader.Create(newFilename, new XmlReaderSettings { CloseInput = true }))
+                    {
+                        doc.Load(reader);
+                    }
 
                     XmlNode node = doc.SelectSingleNode("topic");
 

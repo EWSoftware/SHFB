@@ -1,30 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpAttrCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/16/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/08/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a collection class used to hold the help attribute
-// information.
+// This file contains a collection class used to hold the help attribute information.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.6.0.7  03/25/2008  EFW  Created the code
-// 1.8.0.0  07/03/2008  EFW  Rewrote to support MSBuild project format
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 03/25/2008  EFW  Created the code
+// 07/03/2008  EFW  Rewrote to support MSBuild project format
+//===============================================================================================================
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
+using System.Globalization;
 using System.Text;
 using System.Xml;
 
@@ -40,6 +36,7 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         private bool isDirty;
+
         #endregion
 
         #region Properties
@@ -105,8 +102,8 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="xw">The XML text writer to which the information
         /// is written.</param>
-        /// <param name="includeContainer">True to write out the containing
-        /// <b>HelpAttributes</b> element, false to exclude it.</param>
+        /// <param name="includeContainer">True to write out the containing <b>HelpAttributes</b> element, false
+        /// to exclude it.</param>
         public void WriteXml(XmlWriter xw, bool includeContainer)
         {
             if(includeContainer)
@@ -133,12 +130,10 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="name">The attribute name</param>
         /// <param name="value">The attribute value</param>
-        /// <returns>The <see cref="MSHelpAttr" /> added to the project.  If
-        /// If the item already exists in the collection, the existing item is
-        /// returned.</returns>
-        /// <remarks>The <see cref="MSHelpAttr" /> constructor is internal so
-        /// that we control creation of the items and can associate them with
-        /// the project.</remarks>
+        /// <returns>The <see cref="MSHelpAttr" /> added to the project.  If the item already exists in the
+        /// collection, the existing item is returned.</returns>
+        /// <remarks>The <see cref="MSHelpAttr" /> constructor is internal so that we control creation of the
+        /// items and can associate them with the project.</remarks>
         public MSHelpAttr Add(string name, string value)
         {
             MSHelpAttr item = new MSHelpAttr(name, value);
@@ -154,17 +149,16 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// Convert the collection to its string form for use in the
-        /// <b>sandcastle.config</b> file.
+        /// Convert the collection to its string form for use in the <b>sandcastle.config</b> file.
         /// </summary>
-        /// <returns>The help attribute collection in string form ready for
-        /// use in the Sandcastle BuildAssembler configuration file.</returns>
+        /// <returns>The help attribute collection in string form ready for use in the Sandcastle BuildAssembler
+        /// configuration file.</returns>
         public string ToConfigurationString()
         {
             StringBuilder sb = new StringBuilder("<attributes>\r\n", 1024);
 
             foreach(MSHelpAttr ha in this)
-                sb.AppendFormat("  <attribute name=\"{0}\" value=\"{1}\" />",
+                sb.AppendFormat(CultureInfo.InvariantCulture, "  <attribute name=\"{0}\" value=\"{1}\" />",
                     ha.AttributeName, ha.AttributeValue);
 
             sb.Append("</attributes>\r\n");
@@ -177,14 +171,12 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to mark the collection as changed when there is no
-        /// associated project.
+        /// This is used to mark the collection as changed when there is no associated project.
         /// </summary>
         public void MarkAsDirty()
         {
             isDirty = true;
-            this.OnListChanged(new ListChangedEventArgs(
-                ListChangedType.ItemChanged, -1));
+            this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, -1));
         }
 
         /// <summary>

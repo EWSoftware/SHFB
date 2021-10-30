@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SiteMapEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/08/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit site map files that defines the table of contents layout for
 // additional content items.
@@ -23,7 +22,6 @@
 //===============================================================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -53,8 +51,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data Members
         //=====================================================================
 
-        private FileItem siteMapFile;
-        private SiteMapEditorControl ucSiteMapEditor;
+        private readonly FileItem siteMapFile;
+        private readonly SiteMapEditorControl ucSiteMapEditor;
 
         //=====================================================================
         #endregion
@@ -65,10 +63,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return siteMapFile.FullPath; }
-        }
+        public string Filename => siteMapFile.FullPath;
 
         /// <summary>
         /// This read-only property returns the current topic collection including any unsaved edits
@@ -92,6 +87,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="fileItem">The project file item to edit</param>
         public SiteMapEditorWindow(FileItem fileItem)
         {
+            if(fileItem == null)
+                throw new ArgumentNullException(nameof(fileItem));
+
             InitializeComponent();
 
             this.Text = Path.GetFileName(fileItem.FullPath);
@@ -131,6 +129,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
+            if(filename == null)
+                throw new ArgumentNullException(nameof(filename));
+
             string projectPath = Path.GetDirectoryName(siteMapFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
@@ -242,16 +243,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return true; }
-        }
+        public override bool CanSaveContent => true;
 
         /// <inheritdoc />
-        public override bool IsContentDocument
-        {
-            get { return true; }
-        }
+        public override bool IsContentDocument => true;
 
         /// <inheritdoc />
         public override bool Save()
@@ -319,7 +314,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void ucSiteMapEditor_ContentModified(object sender, System.Windows.RoutedEventArgs e)
+        private void ucSiteMapEditor_ContentModified(object sender, RoutedEventArgs e)
         {
             if(!this.IsDirty)
             {
@@ -405,8 +400,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // If the document is already open, just activate it
                 foreach(IDockContent content in this.DockPanel.Documents)
-                    if(String.Compare(content.DockHandler.ToolTipText, fullName, true,
-                      CultureInfo.CurrentCulture) == 0)
+                    if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         content.DockHandler.Activate();
                         return;

@@ -7,8 +7,8 @@
 		<introduction>
 			<para>The Sandcastle Help File Builder standalone GUI provides an environment in which you can edit the
 properties that control the features and appearance of the compiled help file.  In addition, it lets you manage
-various files associated with the help project.
-			</para>
+various files associated with the help project.  A Visual Studio package is also available.  For a comparison
+of features and where to find them, see the <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topics.</para>
 		</introduction>
 
 		<section>

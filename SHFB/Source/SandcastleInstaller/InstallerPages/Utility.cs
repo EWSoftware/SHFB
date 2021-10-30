@@ -2,8 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : Utility.cs
 // Author  : Eric Woodruff
-// Updated : 12/26/2016
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
 //
 // This file contains a class with utility and extension methods.
 //
@@ -44,10 +43,7 @@ namespace Sandcastle.Installer.InstallerPages
         /// <summary>
         /// This read-only property returns the base path from which the installer is running
         /// </summary>
-        public static string BasePath
-        {
-            get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }
-        }
+        public static string BasePath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         /// <summary>
         /// For testing, this returns a relative path offset to the install resource files
@@ -223,7 +219,7 @@ namespace Sandcastle.Installer.InstallerPages
             }
             catch(Exception ex)
             {
-                MessageBox.Show(String.Format(CultureInfo.CurrentUICulture, "Unable to open/run file '{0}'.  " +
+                MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Unable to open/run file '{0}'.  " +
                     "Reason: {1}", filename, ex.Message), "Open/Run", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -239,11 +235,12 @@ namespace Sandcastle.Installer.InstallerPages
         /// <param name="e">The event arguments</param>
         public static void HyperlinkClick(object sender, RoutedEventArgs e)
         {
-            Hyperlink link = e.OriginalSource as Hyperlink;
-            Uri absoluteUri;
+            if(e == null)
+                throw new ArgumentNullException(nameof(e));
+
             string path;
 
-            if(link == null)
+            if(!(e.OriginalSource is Hyperlink link))
                 return;
 
             // Convert relative URIs to absolute URIs
@@ -254,8 +251,8 @@ namespace Sandcastle.Installer.InstallerPages
                 if(path.Length > 1 && path[0] == '/')
                     path = path.Substring(1);
 
-                if(!Uri.TryCreate(Path.Combine(Environment.CurrentDirectory, path),
-                  UriKind.RelativeOrAbsolute, out absoluteUri))
+                if(!Uri.TryCreate(Path.Combine(Environment.CurrentDirectory, path), UriKind.RelativeOrAbsolute,
+                  out Uri absoluteUri))
                 {
                     MessageBox.Show("Invalid link: " + link.NavigateUri.OriginalString, "Install",
                         MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -268,11 +265,11 @@ namespace Sandcastle.Installer.InstallerPages
             // will always be launched in an external window.
             try
             {
-                System.Diagnostics.Process.Start(link.NavigateUri.AbsoluteUri);
+                Process.Start(link.NavigateUri.AbsoluteUri);
             }
             catch(Exception ex)
             {
-                MessageBox.Show(String.Format(CultureInfo.CurrentUICulture, "Unable to launch URL: {0}\r\n\r\n" +
+                MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Unable to launch URL: {0}\r\n\r\n" +
                     "Reason: {1}", link.NavigateUri.Host, ex.Message), "Install", MessageBoxButton.OK,
                     MessageBoxImage.Exclamation);
             }
@@ -290,6 +287,9 @@ namespace Sandcastle.Installer.InstallerPages
         /// <param name="resourceName">The fully qualified name of the flow document resource</param>
         public static void AppendFrom(this BlockCollection blocks, string resourceName)
         {
+            if(blocks == null)
+                throw new ArgumentNullException(nameof(blocks));
+
             try
             {
                 using(Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
@@ -305,7 +305,7 @@ namespace Sandcastle.Installer.InstallerPages
             }
             catch(Exception ex)
             {
-                MessageBox.Show(String.Format(CultureInfo.CurrentUICulture, "Unable to load flow document " +
+                MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Unable to load flow document " +
                     "resource '{0}'.\r\n\r\nReason: {1}", resourceName, ex.Message), "Installer",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : IntelliSenseOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/17/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to build an IntelliSense XML comments file without a related
 // help file.
@@ -21,9 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
@@ -37,16 +37,16 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     [HelpFileBuilderPlugInExport("IntelliSense Only", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This plug-in can be used to build IntelliSense XML " +
-      "comments files without a related help file.  This results in a faster build for support projects that " +
-      "do not need a separate help file but do need IntelliSense XML comments files.")]
+        "comments files without a related help file.  This results in a faster build for support projects that " +
+        "do not need a separate help file but do need IntelliSense XML comments files.")]
     public sealed class IntelliSenseOnlyPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
         private List<ExecutionPoint> executionPoints;
-
         private BuildProcess builder;
+
         #endregion
 
         #region IPlugIn implementation
@@ -69,8 +69,6 @@ namespace SandcastleBuilder.PlugIns
                         new ExecutionPoint(BuildStep.CombiningIntermediateTocFiles, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.CopyStandardHelpContent, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateHelpFormatTableOfContents, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateHelpFileIndex, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateHelpProject, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateFullTextIndex, ExecutionBehaviors.InsteadOf),
@@ -82,27 +80,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            MessageBox.Show("This plug-in has no configurable settings", "IntelliSense Only Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -119,25 +101,29 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            XmlDocument config;
-            XPathNavigator navConfig, item, deleteItem;
-            bool moreItems = true;
-            string id, topicType;
+            XPathNavigator deleteItem;
+
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
 
             if(context.BuildStep == BuildStep.MergeCustomConfigs)
             {
                 builder.ReportProgress("Removing non-member topics from the build manifest...");
 
-                config = new XmlDocument();
-                config.Load(builder.WorkingFolder + "manifest.xml");
-                navConfig = config.CreateNavigator();
+                XmlDocument config = new XmlDocument();
+                string configFile = Path.Combine(builder.WorkingFolder, "manifest.xml");
 
-                item = navConfig.SelectSingleNode("topics/topic");
+                config.Load(configFile);
+
+                XPathNavigator navConfig = config.CreateNavigator();
+                XPathNavigator item = navConfig.SelectSingleNode("topics/topic");
+
+                bool moreItems = true;
 
                 while(item != null && moreItems)
                 {
-                    id = item.GetAttribute("id", String.Empty);
-                    topicType = item.GetAttribute("type", String.Empty);
+                    string id = item.GetAttribute("id", String.Empty);
+                    string topicType = item.GetAttribute("type", String.Empty);
 
                     if(topicType != "API" || id.Length < 2 || id[1] != ':' || id[0] == 'G' || id[0] == 'N' ||
                       id[0] == 'R')
@@ -150,11 +136,13 @@ namespace SandcastleBuilder.PlugIns
                         moreItems = item.MoveToNext();
                 }
 
-                config.Save(builder.WorkingFolder + "manifest.xml");
+                config.Save(configFile);
 
                 builder.ReportProgress("Removing irrelevant build components from the configuration file...");
+
+                configFile = Path.Combine(builder.WorkingFolder, "sandcastle.config");
                 config = new XmlDocument();
-                config.Load(builder.WorkingFolder + "sandcastle.config");
+                config.Load(configFile);
                 navConfig = config.CreateNavigator();
 
                 // Delete the MAML configuration component set if present
@@ -193,7 +181,7 @@ namespace SandcastleBuilder.PlugIns
                     deleteItem.DeleteSelf();
                 }
 
-                config.Save(builder.WorkingFolder + "sandcastle.config");
+                config.Save(configFile);
             }
 
             // Ignore all other the steps

@@ -2,8 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/22/2019
-// Compiler: Microsoft Visual C#
+// Updated : 09/08/2021
 //
 // Sandcastle Guided Installation application attributes.
 //
@@ -37,7 +36,7 @@ using System.Runtime.InteropServices;
     "tools needed to create a working setup to build help files with the Sandcastle Help File Builder and Tools.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2011-2019, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2011-2021, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 
@@ -55,4 +54,4 @@ using System.Runtime.InteropServices;
 // This versioning scheme allows build component and plug-in developers to use the same major, minor, and build
 // numbers as the Sandcastle Help File Builder to indicate with which version their components are compatible.
 //
-[assembly: AssemblyVersion("2019.3.22.0")]  // NOTE: Update app.manifest with this version number when it changes
+[assembly: AssemblyVersion("2021.9.8.0")]  // NOTE: Update app.manifest with this version number when it changes

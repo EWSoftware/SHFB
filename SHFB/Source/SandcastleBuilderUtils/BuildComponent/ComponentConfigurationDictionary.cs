@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ComponentConfigurationDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/13/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a dictionary class used to hold the configurations for third party build components such
 // as the Code Block Component.
@@ -121,15 +120,13 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// exists in the collection, the existing item is returned.</returns>
         public BuildComponentConfiguration Add(string id, bool enabled, string config)
         {
-            BuildComponentConfiguration item;
-
-            if(!this.TryGetValue(id, out item))
+            if(!this.TryGetValue(id, out BuildComponentConfiguration item))
             {
                 if(String.IsNullOrWhiteSpace(config))
                     config = String.Format(CultureInfo.InvariantCulture, "<component id=\"{0}\" />", id);
 
                 item = new BuildComponentConfiguration(enabled, config);
-                base.Add(id, item);
+                this.Add(id, item);
             }
 
             return item;

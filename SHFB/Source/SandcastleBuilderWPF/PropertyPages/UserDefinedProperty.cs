@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : UserDefinedProperty.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
-// Note    : Copyright 2019, Eric Woodruff, All rights reserved
+// Updated : 04/17/2021
+// Note    : Copyright 2019-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to edit user-defined project properties
 //
@@ -35,7 +35,6 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private ProjectProperty projProp;
         private string name, condition, propValue;
 
         #endregion
@@ -54,7 +53,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// </summary>
         /// <value>This returns null for new properties</value>
         [Browsable(false)]
-        public ProjectProperty UnderlyingProperty => projProp;
+        public ProjectProperty UnderlyingProperty { get; }
 
         /// <summary>
         /// This read-only property indicates whether or not the project property was modified
@@ -70,7 +69,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         [Category("Name"), Description("The property name")]
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 this.Owner.CheckProjectIsEditable(true);
@@ -78,7 +77,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 if(String.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Name cannot be null or blank");
 
-                if(projProp == null)
+                if(this.UnderlyingProperty == null)
                 {
                     value = value.Trim();
 
@@ -105,7 +104,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
           "is defined"), Editor(typeof(LargeTextBoxEditor), typeof(LargeTextBoxEditor))]
         public string Condition
         {
-            get { return condition; }
+            get => condition;
             set
             {
                 this.Owner.CheckProjectIsEditable(true);
@@ -121,7 +120,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
           typeof(LargeTextBoxEditor))]
         public string Value
         {
-            get { return propValue; }
+            get => propValue;
             set
             {
                 this.Owner.CheckProjectIsEditable(true);
@@ -145,13 +144,13 @@ namespace SandcastleBuilder.WPF.PropertyPages
             int idx = 1;
 
             this.Owner = owner;
-            projProp = buildProperty;
+            this.UnderlyingProperty = buildProperty;
 
-            if(projProp != null)
+            if(this.UnderlyingProperty != null)
             {
-                name = projProp.Name;
-                condition = projProp.Xml.Condition;
-                propValue = projProp.UnevaluatedValue;
+                name = this.UnderlyingProperty.Name;
+                condition = this.UnderlyingProperty.Xml.Condition;
+                propValue = this.UnderlyingProperty.UnevaluatedValue;
             }
             else
             {

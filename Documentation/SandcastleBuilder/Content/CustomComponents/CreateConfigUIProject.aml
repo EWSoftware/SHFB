@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="9ec616aa-59df-4c5c-a128-e540e6bb479c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic will walk you through creating a configuration UI project for a build component or
+plug-in.  This allows you to configure the component or plug-in interactively from within the standalone GUI or
+Visual Studio.  The configuration editor is placed in a separate assembly from the component or plug-in as the
+editors are specific to the Windows platform.  This allows the components to remain platform-neutral and usable
+with either <application>MSBuild</application> or <application>dotnet build</application>.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="CreateProject">
+			<title>Creating the Project</title>
+			<content>
+				<para>This section describes how to create and configure the build process plug-in project.  It will
+describe the process for a C# project but the steps should be fairly similar for a VB.NET project with a few
+differences in the configuration option titles.</para>
+
+				<procedure>
+					<title>Create the Plug-In Project</title>
+					<steps class="ordered">
+						<step>
+							<content>
+								<para>In Visual Studio, select the <ui>New Project</ui> option.  In the <ui>New Project</ui>
+dialog box, select the C# or VB.NET language, and then select the <ui>Documentation</ui> subcategory.  Select
+the <ui>Build Component/Plug-In Configuration Editor</ui> template, give it a name and click <ui>OK</ui> to
+create it.  Once it has been created, right click on the project and select <ui>Properties</ui>.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>In the <ui>Application</ui> tab, set the assembly name and default namespace as you see
+fit.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>By default, the Debug project properties are set to use the standalone GUI for debugging
+which will help you see if the component can be located, that the configuration form is working if you created
+one for the component, and that it is working within the build as expected.</para>
+
+								<alert class="tip">
+									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
+locks the assemblies once the help file builder project has loaded them for use and you will not be able to
+rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a
+new debugging session.</para>
+
+									<para>In the help file builder project that you use to test your plug-in, set the project's
+<codeInline>Component Path</codeInline> property to the folder containing your build component's assembly.  If
+you have opened the project's <ui>Components</ui> property page before setting the component path, you may need
+to close and reopen the project in order for it to discover your build component assembly.</para>
+								</alert>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>Optionally, select the <ui>Signing</ui> tab and check the "Sign the assembly" checkbox.
+Select "&lt;New...&gt;" from the "Choose a strong name key file" dropdown, enter a filename, and click OK to
+create the key file.  You can protect the key file with a password if you like or uncheck the option to create
+one without a password.</para>
+							</content>
+						</step>
+					</steps>
+				</procedure>
+
+			</content>
+		</section>
+
+		<section address="ConfigForm">
+			<title>Create the Configuration Form</title>
+			<content>
+				<para>The template project comes with an example Windows Forms form and a WPF form.  Select the one you
+want to use based on your preference and delete the other.  Open the code for the form and search for
+<codeInline>TODO</codeInline> comments to find sections that need to be updated.</para>
+
+				<para>Unlike a build component or plug-in, this assembly will not be distributed as a NuGet package.
+Instead, it will be added as a package item in the build component or plug-in project.  That way, it is
+distributed with the component or plug-in but does not have to be added to the help file builder project
+separately.  See the <codeInline>TODO</codeInline> comments within the sample editor forms for instructions on
+how to do this.  The same instructions can be found in comments within the build component and plug-in project
+files as well.</para>
+
+				<para>The key to making this work is the MEF editor factory class found within the editor form.  Within
+the sample editor form, you will find two factory classes: one for a plug-in and one for a build component.  Keep
+the appropriate one based on what you are creating and delete the other.  Specify your component or plug-in's ID
+as the parameter passed to the export attribute on the factory class.  The ID must match that of the related
+component or plug-in for it to be matched properly within the IDE for editing.</para>
+
+				<para>Add controls to the form and implement the code in the constructor and save button event handler to
+finish the form.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="c8258d52-6664-4e96-86cd-6f75a854a69c" />
+			<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" />
+			<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : NodeIcon.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 08/20/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the node icon index values for the project explorer
 //
@@ -56,6 +55,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>General content file (MAML, HTML, style sheet, etc.)</summary>
         Content,
         /// <summary>Resource item file</summary>
-        ResourceItemFile
+        ResourceItemFile,
+        /// <summary>NuGet package (component) references folder</summary>
+        NuGetPackageFolder
     }
 }

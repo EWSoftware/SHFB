@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/15/2019
-// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/11/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a target type dictionary used to contain common target dictionaries with their associated
 // link type.
@@ -27,7 +26,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This is a dictionary used to contain common target dictionaries with their associated link type
@@ -41,7 +40,7 @@ namespace Microsoft.Ddue.Tools.Targets
         #region Private data members
         //=====================================================================
 
-        private List<KeyValuePair<ReferenceLinkType, TargetDictionary>> targetDictionaries;
+        private readonly List<KeyValuePair<ReferenceLinkType, TargetDictionary>> targetDictionaries;
 
         #endregion
 

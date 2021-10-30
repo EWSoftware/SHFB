@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>SandcastleBuilder.MSBuild</AssemblyName>
+		<RootNamespace>SandcastleBuilder.MSBuild</RootNamespace>
+		<!-- For this, we want all of the dependency assemblies so that the dotnet tool can find them (NetCore builds) -->
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\..\Deploy\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>..\..\Deploy\</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Framework" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj" />
+		<ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SandcastleCore\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\Deploy\SandcastleHelpFileBuilder.targets" Link="SandcastleHelpFileBuilder.targets" />
+		<None Include="..\..\Deploy\Templates\Build1xHelpFile.proj" Link="Templates\Build1xHelpFile.proj" />
+		<None Include="..\..\Deploy\Templates\BuildHelpViewerFile.proj" Link="Templates\BuildHelpViewerFile.proj" />
+		<None Include="..\..\Deploy\Templates\BuildOpenXmlFile.proj" Link="Templates\BuildOpenXmlFile.proj" />
+		<None Include="..\..\Deploy\Templates\BuildTopics.proj" Link="Templates\BuildTopics.proj" />
+		<None Include="..\..\Deploy\Templates\ExtractHtmlInfo.proj" Link="Templates\ExtractHtmlInfo.proj" />
+		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.config" Link="Templates\GenerateInheritedDocs.config" />
+		<None Include="..\..\Deploy\Templates\GenerateInheritedDocs.proj" Link="Templates\GenerateInheritedDocs.proj" />
+		<None Include="..\..\Deploy\Templates\GenerateMarkdownContent.proj" Link="Templates\GenerateMarkdownContent.proj" />
+		<None Include="..\..\Deploy\Templates\GenerateRefInfo.proj" Link="Templates\GenerateRefInfo.proj" />
+		<None Include="..\..\Deploy\Templates\Help1x.hhp" Link="Templates\Help1x.hhp" />
+		<None Include="..\..\Deploy\Templates\HelpContentSetup.msha" Link="Templates\HelpContentSetup.msha" />
+		<None Include="..\..\Deploy\Templates\HelpFileBuilderTokens.tokens" Link="Templates\HelpFileBuilderTokens.tokens" />
+		<None Include="..\..\Deploy\Templates\InstallMSHC.bat" Link="Templates\InstallMSHC.bat" />
+		<None Include="..\..\Deploy\Templates\MRefBuilder.config" Link="Templates\MRefBuilder.config" />
+		<None Include="..\..\Deploy\Templates\PlaceHolderNode.aml" Link="Templates\PlaceHolderNode.aml" />
+		<None Include="..\..\Deploy\Templates\RemoveMSHC.bat" Link="Templates\RemoveMSHC.bat" />
+		<None Include="..\..\Deploy\Templates\TransformBuildLog.xsl" Link="Templates\TransformBuildLog.xsl" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+</Project>

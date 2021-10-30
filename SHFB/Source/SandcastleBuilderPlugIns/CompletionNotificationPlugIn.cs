@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
-// Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to run after the build completes to send notification of the completion
 // status via e-mail.  The log file can be sent as an attachment.
@@ -29,10 +28,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Web;
-using System.Windows.Forms;
 using System.Xml;
-using System.Xml.XPath;
+using System.Xml.Linq;
 using System.Xml.Xsl;
 
 using SandcastleBuilder.Utils;
@@ -45,10 +42,9 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is designed to run after the build completes to send notification of the completion
     /// status via e-mail.  The log file can be sent as an attachment.
     /// </summary>
-    [HelpFileBuilderPlugInExport("Completion Notification", IsConfigurable = true,
-      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-      Description = "This plug-in is used to send notification of the build completion status via e-mail.  " +
-        "The log file can be sent as an attachment.")]
+    [HelpFileBuilderPlugInExport("Completion Notification", Version = AssemblyInfo.ProductVersion,
+      Copyright = AssemblyInfo.Copyright, Description = "This plug-in is used to send notification of the " +
+        "build completion status via e-mail.  The log file can be sent as an attachment.")]
     public sealed class CompletionNotificationPlugIn : IPlugIn
     {
         #region Private data members
@@ -88,34 +84,15 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(CompletionNotificationConfigDlg dlg = new CompletionNotificationConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
-            XPathNavigator root, node;
-            string value;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             builder = buildProcess;
             attachLogOnSuccess = false;
@@ -129,58 +106,53 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            root = configuration.SelectSingleNode("configuration");
-
-            if(root.IsEmptyElement)
+            if(configuration.IsEmpty)
+            {
                 throw new BuilderException("CNP0001", "The Completion Notification plug-in has not been " +
                     "configured yet");
+            }
 
-            node = root.SelectSingleNode("smtpServer");
+            var node = configuration.Element("smtpServer");
 
             if(node != null)
             {
-                smtpServer = node.GetAttribute("host", String.Empty).Trim();
-                value = node.GetAttribute("port", String.Empty);
-
-                if(!Int32.TryParse(value, out smtpPort))
-                    smtpPort = 25;
+                smtpServer = node.Attribute("host").Value;
+                smtpPort = (int)node.Attribute("port");
             }
 
-            credentials = UserCredentials.FromXPathNavigator(root);
+            credentials = UserCredentials.FromXml(configuration);
 
-            node = root.SelectSingleNode("fromEMail");
+            node = configuration.Element("fromEMail");
 
             if(node != null)
-                fromEMailAddress = node.GetAttribute("address", String.Empty).Trim();
+                fromEMailAddress = node.Attribute("address").Value;
 
-            node = root.SelectSingleNode("successEMail");
+            node = configuration.Element("successEMail");
 
             if(node != null)
             {
-                successEMailAddress = node.GetAttribute("address", String.Empty).Trim();
-                attachLogOnSuccess = Convert.ToBoolean(node.GetAttribute("attachLog", String.Empty),
-                    CultureInfo.InvariantCulture);
+                successEMailAddress = node.Attribute("address").Value;
+                attachLogOnSuccess = (bool)node.Attribute("attachLog");
             }
 
-            node = root.SelectSingleNode("failureEMail");
+            node = configuration.Element("failureEMail");
 
             if(node != null)
             {
-                failureEMailAddress = node.GetAttribute("address", String.Empty).Trim();
-                attachLogOnFailure = Convert.ToBoolean(node.GetAttribute("attachLog", String.Empty),
-                    CultureInfo.InvariantCulture);
+                failureEMailAddress = node.Attribute("address").Value;
+                attachLogOnFailure = (bool)node.Attribute("attachLog");
             }
 
-            node = root.SelectSingleNode("xslTransform");
+            node = configuration.Element("xslTransform");
 
             if(node != null)
-                xslTransformFile = builder.SubstitutionTags.TransformText(node.GetAttribute("filename",
-                    String.Empty).Trim());
+                xslTransformFile = builder.SubstitutionTags.TransformText(node.Attribute("filename").Value);
 
             if((!credentials.UseDefaultCredentials && (credentials.UserName.Length == 0 ||
               credentials.Password.Length == 0)) || failureEMailAddress.Length == 0)
-                throw new BuilderException("CNP0002", "The Completion Notification plug-in has an invalid " +
-                    "configuration");
+            {
+                throw new BuilderException("CNP0002", "The Completion Notification plug-in has an invalid configuration");
+            }
         }
 
         /// <summary>
@@ -191,8 +163,10 @@ namespace SandcastleBuilder.PlugIns
         /// messages reported here will not appear in it, just in the output window on the main form.</remarks>
         public void Execute(ExecutionContext context)
         {
-            MailMessage msg = null;
-            string logFilename = null;
+            string logFilename = null, messageTo = "(Not set)";
+
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
 
             // There is nothing to do on completion if there is no success e-mail address
             if(context.BuildStep == BuildStep.Completed && successEMailAddress.Length == 0)
@@ -209,60 +183,64 @@ namespace SandcastleBuilder.PlugIns
                 if(!String.IsNullOrEmpty(xslTransformFile) && File.Exists(logFilename))
                     logFilename = this.TransformLogFile();
 
-                msg = new MailMessage();
-
-                msg.IsBodyHtml = false;
-                msg.Subject = String.Format(CultureInfo.InvariantCulture, "Build {0}: {1}", context.BuildStep,
-                    builder.ProjectFilename);
-
-                if(fromEMailAddress.Length != 0)
-                    msg.From = new MailAddress(fromEMailAddress);
-                else
-                    msg.From = new MailAddress("noreply@noreply.com");
-
-                if(context.BuildStep == BuildStep.Completed)
+                using(var msg = new MailMessage
                 {
-                    msg.To.Add(successEMailAddress);
-
-                    if(attachLogOnSuccess && File.Exists(logFilename))
-                        msg.Attachments.Add(new Attachment(logFilename));
-                }
-                else
+                    IsBodyHtml = false,
+                    Subject = String.Format(CultureInfo.InvariantCulture, "Build {0}: {1}", context.BuildStep,
+                    builder.ProjectFilename)
+                })
                 {
-                    msg.To.Add(failureEMailAddress);
+                    if(fromEMailAddress.Length != 0)
+                        msg.From = new MailAddress(fromEMailAddress);
+                    else
+                        msg.From = new MailAddress("noreply@noreply.com");
 
-                    if(attachLogOnFailure && File.Exists(logFilename))
-                        msg.Attachments.Add(new Attachment(logFilename));
-                }
-
-                msg.Body = String.Format(CultureInfo.InvariantCulture,
-                    "Build {0}: {1}{2}\r\nBuild output is located at {3}\r\n", context.BuildStep,
-                    builder.ProjectFolder, builder.ProjectFilename, builder.OutputFolder);
-
-                if(context.BuildStep != BuildStep.Completed || builder.CurrentProject.KeepLogFile)
-                    msg.Body += "Build details can be found in the log file " + builder.LogFilename + "\r\n";
-
-                using(SmtpClient smtp = new SmtpClient())
-                {
-                    if(smtpServer.Length != 0)
+                    if(context.BuildStep == BuildStep.Completed)
                     {
-                        smtp.Host = smtpServer;
-                        smtp.Port = smtpPort;
+                        msg.To.Add(successEMailAddress);
+
+                        if(attachLogOnSuccess && File.Exists(logFilename))
+                            msg.Attachments.Add(new Attachment(logFilename));
+                    }
+                    else
+                    {
+                        msg.To.Add(failureEMailAddress);
+
+                        if(attachLogOnFailure && File.Exists(logFilename))
+                            msg.Attachments.Add(new Attachment(logFilename));
                     }
 
-                    if(!credentials.UseDefaultCredentials)
-                        smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
+                    messageTo = msg.To[0].Address;
 
-                    smtp.Send(msg);
+                    msg.Body = String.Format(CultureInfo.InvariantCulture,
+                        "Build {0}: {1}{2}\r\nBuild output is located at {3}\r\n", context.BuildStep,
+                        builder.ProjectFolder, builder.ProjectFilename, builder.OutputFolder);
+
+                    if(context.BuildStep != BuildStep.Completed || builder.CurrentProject.KeepLogFile)
+                        msg.Body += "Build details can be found in the log file " + builder.LogFilename + "\r\n";
+
+                    using(SmtpClient smtp = new SmtpClient())
+                    {
+                        if(smtpServer.Length != 0)
+                        {
+                            smtp.Host = smtpServer;
+                            smtp.Port = smtpPort;
+                        }
+
+                        if(!credentials.UseDefaultCredentials)
+                            smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
+
+                        smtp.Send(msg);
+                    }
+
+                    builder.ReportProgress("The build notification e-mail was sent successfully to {0}",
+                        msg.To[0].Address);
                 }
-
-                builder.ReportProgress("The build notification e-mail was sent successfully to {0}",
-                    msg.To[0].Address);
             }
             catch(FormatException)
             {
                 builder.ReportProgress("Failed to send build notification e-mail!  The e-mail addresses " +
-                    "'{0}' appears to be invalid.", msg.To[0]);
+                    "'{0}' appears to be invalid.", messageTo);
             }
             catch(SmtpFailedRecipientException recipEx)
             {
@@ -278,12 +256,8 @@ namespace SandcastleBuilder.PlugIns
             }
             finally
             {
-                if(msg != null)
-                    msg.Dispose();
-
                 // Delete the transformed log file if it exists
-                if(!String.IsNullOrEmpty(logFilename) && logFilename.EndsWith(".html",
-                  StringComparison.OrdinalIgnoreCase))
+                if(!String.IsNullOrEmpty(logFilename) && logFilename.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
                     File.Delete(logFilename);
             }
         }
@@ -327,8 +301,7 @@ namespace SandcastleBuilder.PlugIns
                 }
 
                 // Transform the log into something more readable
-                readerSettings = new XmlReaderSettings();
-                readerSettings.CloseInput = true;
+                readerSettings = new XmlReaderSettings { CloseInput = true };
 
                 xslTransform = new XslCompiledTransform();
                 settings = new XsltSettings(true, true);
@@ -338,20 +311,18 @@ namespace SandcastleBuilder.PlugIns
                     xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 
                     using(var sr = new StringReader(html))
+                    using(var reader = XmlReader.Create(sr, readerSettings))
                     {
-                        using(var reader = XmlReader.Create(sr, readerSettings))
+                        writerSettings = xslTransform.OutputSettings.Clone();
+                        writerSettings.CloseOutput = true;
+                        writerSettings.Indent = false;
+
+                        sb = new StringBuilder(10240);
+
+                        using(var writer = XmlWriter.Create(sb, writerSettings))
                         {
-                            writerSettings = xslTransform.OutputSettings.Clone();
-                            writerSettings.CloseOutput = true;
-                            writerSettings.Indent = false;
-
-                            sb = new StringBuilder(10240);
-
-                            using(var writer = XmlWriter.Create(sb, writerSettings))
-                            {
-                                xslTransform.Transform(reader, writer);
-                                writer.Flush();
-                            }
+                            xslTransform.Transform(reader, writer);
+                            writer.Flush();
                         }
                     }
                 }
@@ -365,7 +336,7 @@ namespace SandcastleBuilder.PlugIns
                 // Just use the raw data prefixed with the error message
                 html = String.Format(CultureInfo.CurrentCulture, "<pre><b>An error occurred trying to " +
                     "transform the log file '{0}'</b>:\r\n{1}\r\n\r\n<b>Log Content:</b>\r\n{2}</pre>",
-                    builder.LogFilename, ex.Message, HttpUtility.HtmlEncode(html));
+                    builder.LogFilename, ex.Message, WebUtility.HtmlEncode(html));
             }
 
             using(StreamWriter sw = new StreamWriter(logFile, false, Encoding.UTF8))

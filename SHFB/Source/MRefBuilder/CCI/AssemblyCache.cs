@@ -35,22 +35,18 @@ namespace System.Compiler
                 {
                     GlobalAssemblyCache.FusionLoaded = true;
                     System.Reflection.Assembly systemAssembly = typeof(object).Assembly;
-                    //^ assume systemAssembly != null && systemAssembly.Location != null;
+                    ////^ assume systemAssembly != null && systemAssembly.Location != null;
                     string dir = Path.GetDirectoryName(systemAssembly.Location);
-                    //^ assume dir != null;
+                    ////^ assume dir != null;
                     GlobalAssemblyCache.LoadLibrary(Path.Combine(dir, "fusion.dll"));
                 }
 
-                IAssemblyEnum assemblyEnum;
-                int rc = GlobalAssemblyCache.CreateAssemblyEnum(out assemblyEnum, null, null, GAC, 0);
+                int rc = GlobalAssemblyCache.CreateAssemblyEnum(out IAssemblyEnum assemblyEnum, null, null, GAC, 0);
 
                 if(rc < 0 || assemblyEnum == null)
                     return false;
 
-                IApplicationContext applicationContext;
-                IAssemblyName currentName;
-
-                while(assemblyEnum.GetNextAssembly(out applicationContext, out currentName, 0) == 0)
+                while(assemblyEnum.GetNextAssembly(out IApplicationContext applicationContext, out IAssemblyName currentName, 0) == 0)
                 {
                     //^ assume currentName != null;
                     AssemblyName assemblyName = new AssemblyName(currentName);
@@ -92,22 +88,18 @@ namespace System.Compiler
                 {
                     GlobalAssemblyCache.FusionLoaded = true;
                     System.Reflection.Assembly systemAssembly = typeof(object).Assembly;
-                    //^ assume systemAssembly != null && systemAssembly.Location != null;
+                    ////^ assume systemAssembly != null && systemAssembly.Location != null;
                     string dir = Path.GetDirectoryName(systemAssembly.Location);
-                    //^ assume dir != null;
+                    ////^ assume dir != null;
                     GlobalAssemblyCache.LoadLibrary(Path.Combine(dir, "fusion.dll"));
                 }
 
-                IAssemblyEnum assemblyEnum;
-                CreateAssemblyEnum(out assemblyEnum, null, null, GAC, 0);
+                CreateAssemblyEnum(out IAssemblyEnum assemblyEnum, null, null, GAC, 0);
 
                 if(assemblyEnum == null)
                     return null;
 
-                IApplicationContext applicationContext;
-                IAssemblyName currentName;
-
-                while(assemblyEnum.GetNextAssembly(out applicationContext, out currentName, 0) == 0)
+                while(assemblyEnum.GetNextAssembly(out IApplicationContext applicationContext, out IAssemblyName currentName, 0) == 0)
                 {
                     //^ assume currentName != null;
                     AssemblyName aName = new AssemblyName(currentName);
@@ -137,17 +129,14 @@ namespace System.Compiler
 
     internal class AssemblyName
     {
-        IAssemblyName/*!*/ assemblyName;
+        private readonly IAssemblyName/*!*/ assemblyName;
 
         internal AssemblyName(IAssemblyName/*!*/ assemblyName)
         {
             this.assemblyName = assemblyName;
         }
 
-        internal string/*!*/ Name
-        {
-            get { return this.ReadString(ASM_NAME.NAME); }
-        }
+        internal string/*!*/ Name => this.ReadString(ASM_NAME.NAME);
 
         internal Version Version
         {
@@ -161,16 +150,9 @@ namespace System.Compiler
             }
         }
 
-        internal string/*!*/ Culture
-        {
-            get { return this.ReadString(ASM_NAME.CULTURE); }
-        }
+        internal string/*!*/ Culture => this.ReadString(ASM_NAME.CULTURE);
 
-        internal byte[]/*!*/ PublicKeyToken
-        {
-            //set {this.WriteBytes(ASM_NAME.PUBLIC_KEY_TOKEN, value); }
-            get { return this.ReadBytes(ASM_NAME.PUBLIC_KEY_TOKEN); }
-        }
+        internal byte[]/*!*/ PublicKeyToken => this.ReadBytes(ASM_NAME.PUBLIC_KEY_TOKEN);
 
         internal string StrongName
         {
@@ -186,11 +168,7 @@ namespace System.Compiler
             }
         }
 
-        internal string/*!*/ CodeBase
-        {
-            //set {this.WriteString(ASM_NAME.CODEBASE_URL, value);}
-            get { return this.ReadString(ASM_NAME.CODEBASE_URL); }
-        }
+        internal string/*!*/ CodeBase => this.ReadString(ASM_NAME.CODEBASE_URL);
 
         public override string ToString()
         {
@@ -199,18 +177,25 @@ namespace System.Compiler
 
         internal string GetLocation()
         {
-            IAssemblyCache assemblyCache;
-            CreateAssemblyCache(out assemblyCache, 0);
+            CreateAssemblyCache(out IAssemblyCache assemblyCache, 0);
+
             if(assemblyCache == null)
                 return null;
-            ASSEMBLY_INFO assemblyInfo = new ASSEMBLY_INFO();
-            assemblyInfo.cbAssemblyInfo = (uint)Marshal.SizeOf(typeof(ASSEMBLY_INFO));
+
+            ASSEMBLY_INFO assemblyInfo = new ASSEMBLY_INFO
+            {
+                cbAssemblyInfo = (uint)Marshal.SizeOf(typeof(ASSEMBLY_INFO))
+            };
+
             assemblyCache.QueryAssemblyInfo(ASSEMBLYINFO_FLAG.VALIDATE | ASSEMBLYINFO_FLAG.GETSIZE, this.StrongName, ref assemblyInfo);
+            
             if(assemblyInfo.cbAssemblyInfo == 0)
                 return null;
+            
             assemblyInfo.pszCurrentAssemblyPathBuf = new string(new char[assemblyInfo.cchBuf]);
             assemblyCache.QueryAssemblyInfo(ASSEMBLYINFO_FLAG.VALIDATE | ASSEMBLYINFO_FLAG.GETSIZE, this.StrongName, ref assemblyInfo);
             String value = assemblyInfo.pszCurrentAssemblyPathBuf;
+            
             return value;
         }
 
@@ -223,7 +208,7 @@ namespace System.Compiler
             IntPtr ptr = Marshal.AllocHGlobal((int)size);
             this.assemblyName.GetProperty(assemblyNameProperty, ptr, ref size);
             String str = Marshal.PtrToStringUni(ptr);
-            //^ assume str != null;
+            ////^ assume str != null;
             Marshal.FreeHGlobal(ptr);
             return str;
         }

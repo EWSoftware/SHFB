@@ -1,31 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : FolderPath.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2009
-// Note    : Copyright 2006-2009, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/26/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
-// This file contains a class used to represent a folder path.  Support is
-// included for treating the path as fixed or relative and for expanding
-// environment variables in the path name.
+// This file contains a class used to represent a folder path.  Support is included for treating the path as
+// fixed or relative and for expanding environment variables in the path name.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.3.4.0  12/29/2006  EFW  Created the code
-// 1.8.0.0  06/23/2008  EFW  Reworked BasePath support to make it usable in
-//                           a multi-project environment like Visual Studio.
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/29/2006  EFW  Created the code
+// 06/23/2008  EFW  Reworked BasePath support to make it usable in a multi-project environment like Visual Studio
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -36,28 +31,23 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This class is used to represent a folder path.  Support is included for
-    /// treating the path as fixed or relative and for expanding environment
-    /// variables in the path name.
+    /// This class is used to represent a folder path.  Support is included for treating the path as fixed or
+    /// relative and for expanding environment variables in the path name.
     /// </summary>
-    [Serializable, Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-      TypeConverter(typeof(FolderPathTypeConverter))]
+    [Serializable, TypeConverter(typeof(FolderPathTypeConverter))]
     public class FolderPath : FilePath
     {
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
         /// This is used to get or set the path.
         /// </summary>
-        /// <value>When set, if the path is not rooted (a relative path),
-        /// <see cref="FilePath.IsFixedPath"/> is set to false.  If rooted (an
-        /// absolute path), it is not changed.  This property always returns a
-        /// fully qualified path but without any environment variable
-        /// expansions and terminated with a trailing backslash if needed.
-        /// <p/>If set to a null or empty string, the folder path is cleared
-        /// and is considered to be undefined.</value>
+        /// <value>When set, if the path is not rooted (a relative path), <see cref="FilePath.IsFixedPath"/> is
+        /// set to false.  If rooted (an absolute path), it is not changed.  This property always returns a
+        /// fully qualified path but without any environment variable expansions and terminated with a trailing
+        /// directory separator if needed.
+        /// <p/>If set to a null or empty string, the folder path is cleared and is considered to be undefined.</value>
         /// <example>
         /// <code language="cs">
         /// FolderPath path = new FolderPath();
@@ -87,38 +77,29 @@ namespace SandcastleBuilder.Utils
         [XmlIgnore, RefreshProperties(RefreshProperties.Repaint)]
         public override string Path
         {
-            get { return base.Path; }
+            get => base.Path;
             set
             {
                 base.Path = value;
 
-                if(base.Path.Length != 0 &&
-                  !FolderPath.IsPathTerminated(this.ToString()))
-                    base.Path += IOPath.DirectorySeparatorChar.ToString();
+                if(base.Path.Length != 0 && !IsPathTerminated(this.ToString()))
+                    base.Path += IOPath.DirectorySeparatorChar;
             }
         }
 
         /// <summary>
-        /// This read-only property can be used to determine whether or not
-        /// the folder path exists.
+        /// This read-only property can be used to determine whether or not the folder path exists
         /// </summary>
         [Description("This indicates whether or not the folder path exists")]
-        public override bool Exists
-        {
-            get
-            {
-                return Directory.Exists(this.ToString());
-            }
-        }
+        public override bool Exists => Directory.Exists(this.ToString());
+
         #endregion
 
         #region Static helper methods
         //=====================================================================
-        // Static helper methods
 
         /// <summary>
-        /// This can be used to find out if a path is terminated with a
-        /// trailing backslash.
+        /// This can be used to find out if a path is terminated with a trailing directory separator.
         /// </summary>
         /// <param name="path">The path to check</param>
         /// <returns>Returns true if it is, false if it is not.</returns>
@@ -134,23 +115,22 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This can be used to ensure that a path is terminated with a
-        /// trailing backslash.
+        /// This can be used to ensure that a path is terminated with a trailing directory separator.
         /// </summary>
         /// <param name="path">The path to check</param>
-        /// <returns>The path with a trailing backslash added if necessary.</returns>
+        /// <returns>The path with a trailing directory separator added if necessary.</returns>
         public static string TerminatePath(string path)
         {
             if(String.IsNullOrEmpty(path))
-                return ".\\";
+                return "." + IOPath.DirectorySeparatorChar;
 
             string expandedPath = Environment.ExpandEnvironmentVariables(path);
 
-            if(expandedPath[expandedPath.Length - 1] !=
-              IOPath.DirectorySeparatorChar &&
-              expandedPath[expandedPath.Length - 1] !=
-              IOPath.AltDirectorySeparatorChar)
+            if(expandedPath[expandedPath.Length - 1] != IOPath.DirectorySeparatorChar &&
+              expandedPath[expandedPath.Length - 1] != IOPath.AltDirectorySeparatorChar)
+            {
                 path += IOPath.DirectorySeparatorChar.ToString();
+            }
 
             return path;
         }
@@ -158,16 +138,13 @@ namespace SandcastleBuilder.Utils
 
         #region Private designer methods
         //=====================================================================
-        // Private designer methods
 
         /// <summary>
-        /// This is used to prevent the Path property from showing as modified
-        /// in the designer.
+        /// This is used to prevent the Path property from showing as modified in the designer.
         /// </summary>
         /// <returns>Always returns false</returns>
-        /// <remarks>The <see cref="Path"/> property is mainly for display
-        /// purposes in the designer but can be used for making changes to
-        /// the expanded path if needed.  The <see cref="FilePath.PersistablePath"/>
+        /// <remarks>The <see cref="Path"/> property is mainly for display purposes in the designer but can be
+        /// used for making changes to the expanded path if needed.  The <see cref="FilePath.PersistablePath"/>
         /// property is used as the display value in the designer.</remarks>
         private bool ShouldSerializePath()
         {
@@ -192,8 +169,8 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="path">A relative or absolute path.</param>
         /// <param name="provider">The base path provider</param>
-        /// <remarks>Unless <see cref="FilePath.IsFixedPath"/> is set to true,
-        /// the path is always treated as a relative path.</remarks>
+        /// <remarks>Unless <see cref="FilePath.IsFixedPath"/> is set to true, the path is always treated as a
+        /// relative path.</remarks>
         public FolderPath(string path, IBasePathProvider provider) :
           base(path, provider)
         {
@@ -203,8 +180,7 @@ namespace SandcastleBuilder.Utils
         /// Constructor.  Assign the specified path and fixed setting.
         /// </summary>
         /// <param name="path">A relative or absolute path.</param>
-        /// <param name="isFixed">True to treat the path as fixed, false
-        /// to treat it as a relative path.</param>
+        /// <param name="isFixed">True to treat the path as fixed, false to treat it as a relative path.</param>
         /// <param name="provider">The base path provider</param>
         public FolderPath(string path, bool isFixed, IBasePathProvider provider) :
           base(path, isFixed, provider)

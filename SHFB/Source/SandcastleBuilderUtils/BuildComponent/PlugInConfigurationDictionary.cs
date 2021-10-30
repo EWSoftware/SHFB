@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 05/16/2015
 // Note    : Copyright 2007-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This file contains a dictionary class used to hold the configurations for third party build process plug-ins
 // such as the AjaxDoc plug-in.
@@ -120,12 +119,10 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// the collection, the existing item is returned.</returns>
         public PlugInConfiguration Add(string id, bool enabled, string config)
         {
-            PlugInConfiguration item;
-
-            if(!this.TryGetValue(id, out item))
+            if(!this.TryGetValue(id, out PlugInConfiguration item))
             {
                 item = new PlugInConfiguration(enabled, config);
-                base.Add(id, item);
+                this.Add(id, item);
             }
 
             return item;

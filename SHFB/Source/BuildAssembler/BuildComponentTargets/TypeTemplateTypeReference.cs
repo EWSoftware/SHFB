@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a type template type reference
@@ -23,12 +23,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the template type
         /// </summary>
-        public SimpleTypeReference TemplateType { get; private set; }
+        public SimpleTypeReference TemplateType { get; }
 
         /// <summary>
         /// This read-only property returns the position
         /// </summary>
-        public int Position { get; private set; }
+        public int Position { get; }
 
         #endregion
 
@@ -42,13 +42,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="position">The position</param>
         public TypeTemplateTypeReference(SimpleTypeReference templateType, int position)
         {
-            if(templateType == null)
-                throw new ArgumentNullException("templateType");
-
             if(position < 0)
-                throw new ArgumentOutOfRangeException("position");
+                throw new ArgumentOutOfRangeException(nameof(position));
 
-            this.TemplateType = templateType;
+            this.TemplateType = templateType ?? throw new ArgumentNullException(nameof(templateType));
             this.Position = position;
         }
         #endregion

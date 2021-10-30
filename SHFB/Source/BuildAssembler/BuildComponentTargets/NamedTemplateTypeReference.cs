@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a named template type reference
@@ -23,7 +23,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
+
         #endregion
 
         #region Constructor

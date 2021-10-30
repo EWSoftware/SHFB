@@ -10,37 +10,26 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Microsoft.Ddue.Tools.Snippets
+namespace Sandcastle.Tools.BuildComponents.Snippets
 {
     /// <summary>
     /// This represents a snippet identifier
     /// </summary>
     public struct SnippetIdentifier
     {
-        #region Private data members
-        //=====================================================================
-
-        private string exampleId, snippetId;
-        #endregion
-
         #region Properties
         //=====================================================================
 
         /// <summary>
         /// This read-only property returns the example ID
         /// </summary>
-        public string ExampleId
-        {
-            get { return exampleId; }
-        }
+        public string ExampleId { get; }
 
         /// <summary>
         /// This read-only property returns the snippet ID
         /// </summary>
-        public string SnippetId
-        {
-            get { return snippetId; }
-        }
+        public string SnippetId { get; }
+
         #endregion
 
         #region Constructors
@@ -54,8 +43,14 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <overloads>There are two overloads for the constructor</overloads>
         public SnippetIdentifier(string exampleId, string snippetId)
         {
-            this.exampleId = exampleId.ToLowerInvariant();
-            this.snippetId = snippetId.ToLowerInvariant();
+            if(exampleId == null)
+                throw new ArgumentNullException(nameof(exampleId));
+
+            if(snippetId == null)
+                throw new ArgumentNullException(nameof(snippetId));
+
+            this.ExampleId = exampleId.ToLowerInvariant();
+            this.SnippetId = snippetId.ToLowerInvariant();
         }
 
         /// <summary>
@@ -65,10 +60,13 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// snippet ID in that order separated by a hash character (#).</param>
         public SnippetIdentifier(string identifier)
         {
+            if(identifier == null)
+                throw new ArgumentNullException(nameof(identifier));
+
             int index = identifier.LastIndexOf('#');
 
-            this.exampleId = identifier.Substring(0, index).ToLowerInvariant();
-            this.snippetId = identifier.Substring(index + 1).ToLowerInvariant();
+            this.ExampleId = identifier.Substring(0, index).ToLowerInvariant();
+            this.SnippetId = identifier.Substring(index + 1).ToLowerInvariant();
         }
         #endregion
 
@@ -81,7 +79,7 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <returns>The example ID and snippet ID separated by a hash character (#)</returns>
         public override string ToString()
         {
-            return String.Format(CultureInfo.InvariantCulture, "{0}#{1}", exampleId, snippetId);
+            return String.Format(CultureInfo.InvariantCulture, "{0}#{1}", this.ExampleId, this.SnippetId);
         }
         #endregion
 
@@ -96,6 +94,9 @@ namespace Microsoft.Ddue.Tools.Snippets
         /// <returns>An enumerable list of snippet identifiers</returns>
         public static IEnumerable<SnippetIdentifier> ParseReference(string reference)
         {
+            if(reference == null)
+                throw new ArgumentNullException(nameof(reference));
+
             int index = reference.IndexOf('#');
 
             if(index > -1)

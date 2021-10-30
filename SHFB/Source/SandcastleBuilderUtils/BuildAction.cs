@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildAction.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/03/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 08/20/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the enumerated type that defines the build action (item name) for build items in a project
 //
@@ -63,6 +62,9 @@ namespace SandcastleBuilder.Utils
         DocumentationSource,
         /// <summary>A reference item (project explorer designation only, not a
         /// build action)</summary>
-        ReferenceItem
+        ReferenceItem,
+        /// <summary>A package reference item (project explorer designation only, not a
+        /// build action)</summary>
+        PackageReferenceItem
     }
 }

@@ -31,14 +31,15 @@ preference options, see the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b30
 			</listItem>
 
 			<listItem>
-				<para>In the <ui>New Project</ui> dialog, select the <ui>Installed Templates</ui> category and
-then the <ui>Documentation</ui> sub-category in the list on the left side of the dialog box.</para>
+				<para>In the <ui>New Project</ui> dialog, select the <ui>Documentation</ui> sub-category.  If you cannot
+see the help file build project template, ensure that you have selected the "All Languages" and "All Platforms"
+options as well rather than a specific language or platform.</para>
 			</listItem>
 
 			<listItem>
-				<para>The <ui>Sandcastle Help File Builder Project</ui> template will create a new, blank project.  Enter
-a new project name, the folder in which to place it, and any other options, and then click the <ui>OK</ui> button
-to create it.</para>
+				<para>Select the <ui>Sandcastle Help File Builder Project</ui> template to create a new, blank project.
+Enter a new project name, the folder in which to place it, and any other options, and then click the <ui>Create</ui>
+button to create it.</para>
 
 			</listItem>
 		</list>
@@ -47,20 +48,6 @@ to create it.</para>
 			<image xlink:href="VSNewProjectDlg" placement="center" />
 		</mediaLink>
 		
-		<alert class="note">
-		  <para>The <ui>.NET Framework</ui> selector combo box at the top of the dialog has no bearing on the
-help file builder project.  As such, you can ignore it.  The framework version used by the project is set
-using the <ui>Build</ui> category <ui>Framework Version</ui> project property.</para>
-		</alert>
-
-		<alert class="important">
-			<para>The New Project dialog box in Visual Studio 2019 and later is significantly different.  It uses
-as search text box and filtering options to find project templates.  Unfortunately, Microsoft has not opened
-up the filtering options to third-party templates.  As such, make sure you clear any current filters and search
-for help file builder templates using some common keywords such as "sandcastle", "build component", "plug-in",
-and "presentation style".  Using those, you should be able to find all of the help file builder related project
-types.</para>
-		</alert>
 	</content>
 </section>
 	  
@@ -91,13 +78,9 @@ manage help file builder projects under source control much more easily.</para>
 
 		  <listItem>
 			  <para>Visual Studio provides better editors for all of the common file types.  In addition, you gain
-access to extra features when editing files such as IntelliSense.</para>
+access to extra features when editing files such as IntelliSense.  The package installs schemas for Microsoft
+Assistance Markup Language (MAML) topic files to make editing them easier.</para>
 
-			  <alert class="tip">
-				  <para>The help file builder guided installer offers an option to enable IntelliSense for MAML
-topics within Visual Studio.  It is highly recommended that you let it install the necessary schemas to enable
-this option.</para>
-			  </alert>
 		  </listItem>
 
 		  <listItem>

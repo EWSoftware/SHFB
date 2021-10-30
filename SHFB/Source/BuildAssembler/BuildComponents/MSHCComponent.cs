@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : MSHCComponent.cs
-// Note    : Copyright 2010-2015 Microsoft Corporation
+// Note    : Copyright 2010-2021 Microsoft Corporation
 //
 // This file contains a modified version of the original MSHCComponent that allows the inclusion of a sortOrder
 // attribute on the table of contents file elements.  This allows the sort order of the elements to be defined
@@ -21,6 +21,9 @@
 // 12/24/2015 - EFW - Updated to be thread safe
 //===============================================================================================================
 
+// TODO: The Help 2 format (.HxS) is obsolete and is no longer supported.  The presentation styles should write
+// out the Help 2 elements in the MSHC format for themselves.  Once that is done, this component can be removed.
+
 // Ignore Spelling: Fehr
 
 using System;
@@ -33,7 +36,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This class is a modified version of the original <c>MSHCComponent</c> that is used to add MS Help Viewer
@@ -47,14 +50,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
     /// associated topic and increments by one for all subsequent topics until another <c>sortOrder</c> attribute
     /// is encountered or the end of the group is reached.</remarks>
     /// <example>
-    /// <code lang="xml" title="Example Component Configuration">
+    /// <code language="xml" title="Example Component Configuration">
     /// &lt;component id="Microsoft Help Viewer Metadata Component"&gt;
     ///   &lt;data self-branded="true" topic-version="100" toc-file="toc.xml"
     ///   toc-parent="" toc-parent-version="100" locale="en-US" /&gt;
     /// &lt;/component&gt;
     /// </code>
     ///
-    /// <code lang="xml" title="Example toc.xml File">
+    /// <code language="xml" title="Example toc.xml File">
     /// &lt;?xml version="1.0" encoding="utf-8"?&gt;
     /// &lt;topics&gt;
     ///   &lt;!-- Sort our content below that of the parent node's existing sub-topics --&gt;
@@ -85,7 +88,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new MSHCComponent(base.BuildAssembler);
+                return new MSHCComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -236,7 +239,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private string _topicVersion = MHSDefault.TopicVersion;
         private string _tocParent = MHSDefault.TocParent;
         private string _tocParentVersion = MHSDefault.TocParentVersion;
-        private Dictionary<string, TocInfo> _toc = new Dictionary<string, TocInfo>();
+        private readonly Dictionary<string, TocInfo> _toc = new Dictionary<string, TocInfo>();
 
         #endregion
 
@@ -258,6 +261,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             string tocFile = MHSDefault.TocFile;
             XPathNavigator data = configuration.SelectSingleNode(ConfigurationTag.Data);
 
@@ -271,7 +277,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 value = data.GetAttribute(ConfigurationAttr.SelfBranded, String.Empty);
 
                 if(!String.IsNullOrEmpty(value))
-                    _selfBranded = bool.Parse(value);
+                    _selfBranded = Boolean.Parse(value);
 
                 value = data.GetAttribute(ConfigurationAttr.TopicVersion, String.Empty);
 
@@ -294,14 +300,21 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     tocFile = value;
             }
 
-            XPathDocument document = new XPathDocument(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)));
-            XPathNavigator navigator = document.CreateNavigator();
-            LoadToc(navigator.SelectSingleNode(TocXPath.Topics), _tocParent, _tocParentVersion);
+            using(var reader = XmlReader.Create(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)),
+              new XmlReaderSettings { CloseInput = true }))
+            {
+                XPathDocument document = new XPathDocument(reader);
+                XPathNavigator navigator = document.CreateNavigator();
+                LoadToc(navigator.SelectSingleNode(TocXPath.Topics), _tocParent, _tocParentVersion);
+            }
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             XmlElement html = document.DocumentElement;
             XmlNode head = html.SelectSingleNode(Help2XPath.Head);
 

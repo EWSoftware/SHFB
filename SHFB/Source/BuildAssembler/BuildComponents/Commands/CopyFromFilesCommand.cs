@@ -7,6 +7,7 @@
 // 01/18/2013 - EFW - Moved the class into the Commands namespace, made it public, and derived it from the new
 // CopyCommand base class.
 
+using System;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
@@ -14,9 +15,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Commands
+namespace Sandcastle.Tools.BuildComponents.Commands
 {
     /// <summary>
     /// This represents the copy command for the <see cref="CopyFromFilesComponent"/>
@@ -29,12 +28,12 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <summary>
         /// This read-only property returns the base path containing the source files
         /// </summary>
-        public string BasePath { get; private set; }
+        public string BasePath { get; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to get the file from which to copy elements
         /// </summary>
-        public XPathExpression SourceFile { get; private set; }
+        public XPathExpression SourceFile { get; }
 
         #endregion
 
@@ -67,6 +66,9 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <param name="context">The context to use</param>
         public override void Apply(XmlDocument targetDocument, IXmlNamespaceResolver context)
         {
+            if(targetDocument == null)
+                throw new ArgumentNullException(nameof(targetDocument));
+
             XPathExpression fileExpr = this.SourceFile.Clone();
             fileExpr.SetContext(context);
 
@@ -75,8 +77,6 @@ namespace Microsoft.Ddue.Tools.Commands
 
             if(File.Exists(filePath))
             {
-                XPathDocument sourceDocument = new XPathDocument(filePath);
-
                 XPathExpression targetExpr = this.Target.Clone();
                 targetExpr.SetContext(context);
 
@@ -87,10 +87,14 @@ namespace Microsoft.Ddue.Tools.Commands
                     XPathExpression sourceExpr = this.Source.Clone();
                     sourceExpr.SetContext(context);
 
-                    XPathNodeIterator sourceNodes = sourceDocument.CreateNavigator().Select(sourceExpr);
+                    using(var reader = XmlReader.Create(filePath, new XmlReaderSettings { CloseInput = true }))
+                    {
+                        XPathDocument sourceDocument = new XPathDocument(reader);
+                        XPathNodeIterator sourceNodes = sourceDocument.CreateNavigator().Select(sourceExpr);
 
-                    foreach(XPathNavigator sourceNode in sourceNodes)
-                        targetNode.AppendChild(sourceNode);
+                        foreach(XPathNavigator sourceNode in sourceNodes)
+                            targetNode.AppendChild(sourceNode);
+                    }
 
                     // Don't warn or generate an error if no source nodes are found, that may be the case
                 }

@@ -17,9 +17,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Commands
+namespace Sandcastle.Tools.BuildComponents.Commands
 {
     /// <summary>
     /// This represents the copy command for the <see cref="CopyFromIndexComponent"/>
@@ -30,8 +28,8 @@ namespace Microsoft.Ddue.Tools.Commands
         //=====================================================================
 
         // These are used to match and try broken EII member IDs
-        private static Regex reDictionaryEII = new Regex(@"#I(\w*Dictionary){.*?}#");
-        private static Regex reGenericEII = new Regex(@"#I(\w*){.*?}#");
+        private static readonly Regex reDictionaryEII = new Regex(@"#I(\w*Dictionary){.*?}#");
+        private static readonly Regex reGenericEII = new Regex(@"#I(\w*){.*?}#");
 
         #endregion
 
@@ -41,23 +39,23 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <summary>
         /// This read-only property returns the source index
         /// </summary>
-        public IndexedCache SourceIndex { get; private set; }
+        public IndexedCache SourceIndex { get; }
 
         /// <summary>
         /// This read-only property returns the key XPath expression
         /// </summary>
-        public XPathExpression Key { get; private set; }
+        public XPathExpression Key { get; }
 
         /// <summary>
         /// This read-only property determines if the source nodes are added to the target as attributes or
         /// as child elements.
         /// </summary>
-        public bool IsAttribute { get; private set; }
+        public bool IsAttribute { get; }
 
         /// <summary>
         /// This read-only property determines whether to search for index keys case-insensitively
         /// </summary>
-        public bool IgnoreCase { get; private set; }
+        public bool IgnoreCase { get; }
 
         /// <summary>
         /// This is used to get or set the message level for missing index entries
@@ -109,6 +107,9 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <inheritdoc />
         public override void Apply(XmlDocument targetDocument, IXmlNamespaceResolver context)
         {
+            if(targetDocument == null)
+                throw new ArgumentNullException(nameof(targetDocument));
+
             // Get the index entry content
             XPathExpression keyExpr = this.Key.Clone();
             keyExpr.SetContext(context);
@@ -184,7 +185,7 @@ namespace Microsoft.Ddue.Tools.Commands
                         string attrValue = target.GetAttribute(String.Format(CultureInfo.InvariantCulture,
                             "{0}_{1}", sourceName, source.Name), String.Empty);
 
-                        if(string.IsNullOrEmpty(attrValue))
+                        if(String.IsNullOrEmpty(attrValue))
                             attributes.WriteAttributeString(String.Format(CultureInfo.InvariantCulture,
                                 "{0}_{1}", sourceName, source.Name), source.Value);
 

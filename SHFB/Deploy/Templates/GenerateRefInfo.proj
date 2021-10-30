@@ -1,0 +1,58 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Sandcastle Tools MSBuild Tasks.  https://GitHub.com/EWSoftware/SHFB -->
+	<PropertyGroup>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net472\</SHFBTaskFolder>
+		<SHFBTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">netcoreapp3.1\</SHFBTaskFolder>
+	</PropertyGroup>
+	<UsingTask TaskName="Sandcastle.Tools.MSBuild.MRefBuilder"
+    AssemblyFile="{@SHFBRoot}$(SHFBTaskFolder)MRefBuilder.dll" />
+
+	<!-- Task properties -->
+	<PropertyGroup>
+		<TargetFrameworkIdentifier>{@TargetFrameworkIdentifier}</TargetFrameworkIdentifier>
+		<TargetFrameworkVersion>v{@FrameworkVersionShort}</TargetFrameworkVersion>
+		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
+		<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+		<UseTargetPlatformAsNuGetTargetMoniker>false</UseTargetPlatformAsNuGetTargetMoniker>
+	</PropertyGroup>
+
+	<!-- The common targets require OutputPath to be valid -->
+	<PropertyGroup>
+		<OutputPath>.\</OutputPath>
+	</PropertyGroup>
+
+	<!-- Import the common targets -->
+	<Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+
+	<!-- This defines the dependencies for the Generate target -->
+	<PropertyGroup>
+		<GenerateDependsOn>
+			ResolveReferences;
+			BeforeGenerateRefInfo;
+			GenerateRefInfo;
+			AfterGenerateRefInfo
+		</GenerateDependsOn>
+	</PropertyGroup>
+
+	<Target Name="Generate" DependsOnTargets="$(GenerateDependsOn)" />
+
+	<!-- The Generate Ref Info target -->
+	<Target Name="GenerateRefInfo">
+		<!-- Run MRefBuilder.  Reference build items are added to this template by the build process.  The
+				 ResolveReferences dependency target will resolve them to absolute paths that can be passed to
+				 MRefBuilder using the /dep command line option.  Assembly build items are added by the build
+				 process to define the assemblies to reflect. -->
+		<Sandcastle.Tools.MSBuild.MRefBuilder
+      WorkingFolder="$(WorkingFolder)"
+			ConfigurationFile="MRefBuilder.config"
+			ReflectionFilename="reflection.org"
+      Assemblies="@(Assembly)"
+      References="@(ReferencePath)"/>
+
+	</Target>
+
+	<!-- The following targets may be overridden or replaced to perform additional processing. -->
+	<Target Name="BeforeGenerateRefInfo" />
+	<Target Name="AfterGenerateRefInfo" />
+</Project>

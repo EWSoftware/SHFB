@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to add bibliography support to the topics
 //
@@ -23,8 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Sandcastle.Core;
@@ -38,10 +36,10 @@ namespace SandcastleBuilder.PlugIns
     /// <summary>
     /// This plug-in class is used to add bibliography support to the topics
     /// </summary>
-    [HelpFileBuilderPlugInExport("Bibliography Support", IsConfigurable = true,
-      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-      Description = "This plug-in is used to add bibliography support to the help file topics.")]
-    public sealed class BibliographySupportPlugIn : SandcastleBuilder.Utils.BuildComponent.IPlugIn
+    [HelpFileBuilderPlugInExport("Bibliography Support", Version = AssemblyInfo.ProductVersion,
+      Copyright = AssemblyInfo.Copyright, Description = "This plug-in is used to add bibliography support to " +
+        "the help file topics.")]
+    public sealed class BibliographySupportPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
@@ -50,6 +48,7 @@ namespace SandcastleBuilder.PlugIns
         private BuildProcess builder;
 
         private string bibliographyFile;
+
         #endregion
 
         #region IPlugIn implementation
@@ -74,32 +73,14 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project.</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(BibliographySupportConfigDlg dlg = new BibliographySupportConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
-            XPathNavigator root, node;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             builder = buildProcess;
 
@@ -117,18 +98,15 @@ namespace SandcastleBuilder.PlugIns
                 return;
             }
 
-            root = configuration.SelectSingleNode("configuration");
+            if(configuration.IsEmpty)
+                throw new BuilderException("BIP0001", "The Bibliography support plug-in has not been configured yet");
 
-            if(root.IsEmptyElement)
-                throw new BuilderException("BIP0001", "The Bibliography support plug-in has not been " +
-                    "configured yet");
-
-            node = root.SelectSingleNode("bibliography");
+            var node = configuration.Element("bibliography");
 
             if(node != null)
-                bibliographyFile = node.GetAttribute("path", String.Empty).Trim();
+                bibliographyFile = node.Attribute("path").Value;
 
-            if(String.IsNullOrEmpty(bibliographyFile))
+            if(String.IsNullOrWhiteSpace(bibliographyFile))
                 throw new BuilderException("BIP0002", "A path to the bibliography file is required");
 
             // If relative, the path is relative to the project folder
@@ -145,39 +123,30 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            XmlDocument configFile;
-            XmlAttribute attr;
-            XmlNode argument;
-            string configFilename = builder.WorkingFolder + "sandcastle.config";
+            string configFilename = Path.Combine(builder.WorkingFolder, "sandcastle.config");
 
             if(!File.Exists(configFilename))
                 return;
 
             builder.ReportProgress("\r\nAdding bibliography parameter to {0}...", configFilename);
-            configFile = new XmlDocument();
-            configFile.Load(configFilename);
+
+            var configFile = XDocument.Load(configFilename);
 
             // Find the XSL Transform Components in the configuration file and add a new argument to them:
             // <argument key="bibliographyData" value="C:\Path\To\bibliography.xml" />
-            XmlNodeList components = configFile.SelectNodes("//component[@id='XSL Transform Component']/transform");
+            var components = configFile.XPathSelectElements("//component[@id='XSL Transform Component']/transform").ToList();
 
             if(components.Count == 0)
+            {
                 throw new BuilderException("BIP0004", "Unable to locate XSL Transform Component configuration in " +
                     configFilename);
+            }
 
-            foreach(XmlNode transform in components)
+            foreach(var transform in components)
             {
-                argument = configFile.CreateElement("argument");
-
-                attr = configFile.CreateAttribute("key");
-                attr.Value = "bibliographyData";
-                argument.Attributes.Append(attr);
-
-                attr = configFile.CreateAttribute("value");
-                attr.Value = bibliographyFile;
-                argument.Attributes.Append(attr);
-
-                transform.AppendChild(argument);
+                transform.Add(new XElement("argument",
+                    new XAttribute("key", "bibliographyData"),
+                    new XAttribute("value", bibliographyFile)));
             }
 
             configFile.Save(configFilename);

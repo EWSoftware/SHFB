@@ -2,22 +2,21 @@
 // System  : Sandcastle Help File Builder
 // File    : EditorActions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/11/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains various custom actions for the topic editor
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  05/24/2008  EFW  Created the code
-// 1.9.6.0  11/23/2012  EFW  Changed HTML encoding action so that it doesn't encode single and double quotes
-// 1.9.8.0  05/11/2013  EFW  Added support for spell checking
+// 05/24/2008  EFW  Created the code
+// 11/23/2012  EFW  Changed HTML encoding action so that it doesn't encode single and double quotes
+// 05/11/2013  EFW  Added support for spell checking
 //===============================================================================================================
 
 using System;
@@ -63,7 +62,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     internal sealed class FindText : AbstractEditAction
     {
-        private ContentEditorControl editor;
+        private readonly ContentEditorControl editor;
 
         /// <summary>
         /// Constructor
@@ -94,7 +93,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     internal sealed class ReplaceText : AbstractEditAction
     {
-        private ContentEditorControl editor;
+        private readonly ContentEditorControl editor;
 
         /// <summary>
         /// Constructor
@@ -125,7 +124,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     internal sealed class SpellCheck : AbstractEditAction
     {
-        private ContentEditorControl editor;
+        private readonly ContentEditorControl editor;
 
         /// <summary>
         /// Constructor
@@ -156,7 +155,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     internal sealed class PasteSpecial : Paste
     {
-        private ContentEditorControl editor;
+        private readonly ContentEditorControl editor;
 
         /// <summary>
         /// Constructor
@@ -238,7 +237,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// includes a pop-up with available options.</remarks>
     internal sealed class InsertClosingElement : AbstractEditAction
     {
-        private IEditAction defaultAction;
+        private readonly IEditAction defaultAction;
 
         /// <summary>
         /// Constructor
@@ -330,7 +329,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     internal sealed class InsertElement : AbstractEditAction
     {
-        string elementName;
+        private readonly string elementName;
 
         /// <summary>
         /// Constructor
@@ -339,8 +338,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public InsertElement(string element)
         {
             if(String.IsNullOrEmpty(element))
-                throw new ArgumentException("An element name must be specified",
-                    "element");
+                throw new ArgumentException("An element name must be specified", nameof(element));
 
             elementName = element;
         }
@@ -378,7 +376,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     internal sealed class InsertMatchingCharacter : AbstractEditAction
     {
-        string matchedChars;
+        private readonly string matchedChars;
 
         /// <summary>
         /// Constructor
@@ -387,8 +385,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public InsertMatchingCharacter(string match)
         {
             if(String.IsNullOrEmpty(match))
-                throw new ArgumentException("Character(s) to insert cannot " +
-                    "be null or empty", "match");
+                throw new ArgumentException("Character(s) to insert cannot be null or empty", nameof(match));
 
             matchedChars = match;
         }

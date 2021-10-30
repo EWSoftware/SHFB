@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ComponentCache.cs
 // Author  : Eric Woodruff
-// Updated : 08/17/2019
-// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This is used to create shared instances of a composition container used to access help file builder
 // components within the project property pages.
@@ -42,11 +41,11 @@ namespace SandcastleBuilder.WPF.PropertyPages
         #region Private data members
         //=====================================================================
 
-        private static ConcurrentDictionary<string, ComponentCache> instances =
+        private static readonly ConcurrentDictionary<string, ComponentCache> instances =
             new ConcurrentDictionary<string, ComponentCache>();
 
-        private object syncRoot;
-        private HashSet<string> lastSearchFolders;
+        private readonly object syncRoot;
+        private readonly HashSet<string> lastSearchFolders;
         private CompositionContainer componentContainer;
         private CancellationTokenSource cancellationTokenSource;
 
@@ -198,7 +197,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 cancellationTokenSource = new CancellationTokenSource();
 
                 var result = await Task.Run(() => ComponentUtilities.CreateComponentContainer(searchFolders,
-                    cancellationTokenSource.Token), cancellationTokenSource.Token);
+                    cancellationTokenSource.Token), cancellationTokenSource.Token).ConfigureAwait(true);
 
                 lock(syncRoot)
                 {

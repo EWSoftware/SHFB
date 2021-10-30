@@ -1,88 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Ddue.Tools.Targets</RootNamespace>
-    <AssemblyName>BuildComponents.Targets</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../SandcastleTools.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ASSEMBLYSPECIFICVERSION</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ASSEMBLYSPECIFICVERSION</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\SandcastleCore\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="ArrayTypeReference.cs" />
-    <Compile Include="ConstructorTarget.cs" />
-    <Compile Include="EnumerationTarget.cs" />
-    <Compile Include="EventTarget.cs" />
-    <Compile Include="ExtensionMethodReference.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IndexedTemplateTypeReference.cs" />
-    <Compile Include="InvalidReference.cs" />
-    <Compile Include="MemberReference.cs" />
-    <Compile Include="MemberTarget.cs" />
-    <Compile Include="MethodTarget.cs" />
-    <Compile Include="MethodTemplateTypeReference.cs" />
-    <Compile Include="NamedTemplateTypeReference.cs" />
-    <Compile Include="NamespaceReference.cs" />
-    <Compile Include="NamespaceTarget.cs" />
-    <Compile Include="Parameter.cs" />
-    <Compile Include="PointerTypeReference.cs" />
-    <Compile Include="ProcedureTarget.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyTarget.cs" />
-    <Compile Include="Reference.cs" />
-    <Compile Include="ReferenceTypeReference.cs" />
-    <Compile Include="SimpleMemberReference.cs" />
-    <Compile Include="SimpleTypeReference.cs" />
-    <Compile Include="Specialization.cs" />
-    <Compile Include="SpecializedMemberReference.cs" />
-    <Compile Include="SpecializedMemberWithParametersReference.cs" />
-    <Compile Include="SpecializedTypeReference.cs" />
-    <Compile Include="Target.cs" />
-    <Compile Include="TemplateTypeReference.cs" />
-    <Compile Include="TypeReference.cs" />
-    <Compile Include="TypeTarget.cs" />
-    <Compile Include="TypeTemplateTypeReference.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>Sandcastle.Tools.BuildComponents.Targets</AssemblyName>
+		<RootNamespace>Sandcastle.Tools.BuildComponents.Targets</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE;ASSEMBLYSPECIFICVERSION</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE;ASSEMBLYSPECIFICVERSION</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\SandcastleCore\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+	</ItemGroup>
 </Project>

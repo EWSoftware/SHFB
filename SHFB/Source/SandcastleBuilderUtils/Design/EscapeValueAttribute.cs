@@ -1,10 +1,9 @@
 //===============================================================================================================
-// System  : EWSoftware Design Time Attributes and Editors
+// System  : Sandcastle Help File Builder Utilities
 // File    : EscapeValueAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/10/2017
-// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/13/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an attribute used to mark properties that need their value escaped when stored in an
 // MSBuild project file.
@@ -23,7 +22,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Web;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 namespace SandcastleBuilder.Utils.Design
 {
@@ -40,9 +39,9 @@ namespace SandcastleBuilder.Utils.Design
         #region Private data members
         //=====================================================================
 
-        private static Regex reUnescape = new Regex("%[0-9a-f]{2}", RegexOptions.IgnoreCase);
+        private static readonly Regex reUnescape = new Regex("%[0-9a-f]{2}", RegexOptions.IgnoreCase);
 
-        private static MatchEvaluator onEscapeMatch = new MatchEvaluator(OnEscapeMatch);
+        private static readonly MatchEvaluator onEscapeMatch = new MatchEvaluator(OnEscapeMatch);
 
         #endregion
 
@@ -57,7 +56,7 @@ namespace SandcastleBuilder.Utils.Design
         public static string Escape(string unescapedValue)
         {
             string escaped = HttpUtility.HtmlEncode(unescapedValue ?? String.Empty);
-            return Utilities.Escape(escaped);
+            return ProjectCollection.Escape(escaped);
         }
 
         /// <summary>

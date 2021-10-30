@@ -1,5 +1,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ComponentPath Condition="$(ComponentPath) == ''">$(MSBuildThisFileDirectory)..\Tools\</ComponentPath>
+    <!-- For backward compatibility with SHFB 2021.4.9 and earlier -->
+    <ComponentPath Condition="$(ComponentPath) == ''">$(MSBuildThisFileDirectory)..\tools\</ComponentPath>
+    <!-- For all SHFB versions after 2021.4.9 -->
+    <SHFBComponentPath Include="$(MSBuildThisFileDirectory)..\tools\" />
   </PropertyGroup>
 </Project>

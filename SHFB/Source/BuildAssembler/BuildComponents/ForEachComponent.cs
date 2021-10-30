@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
@@ -16,7 +15,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used to execute a set of components on the topic
@@ -35,7 +34,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new ForEachComponent(base.BuildAssembler);
+                return new ForEachComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -45,7 +44,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 
         private XPathExpression xPath;
 
-        private Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> contextNamespaces = new Dictionary<string, string>();
         private IEnumerable<BuildComponentCore> components;
 
         #endregion
@@ -69,7 +68,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <remarks>This sets the group ID for each subcomponent</remarks>
         public override string GroupId
         {
-            get { return base.GroupId; }
+            get => base.GroupId;
             set
             {
                 base.GroupId = value;
@@ -82,6 +81,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             // Get the context namespaces
             XPathNodeIterator contextNodes = configuration.Select("context");
 
@@ -93,14 +95,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XPathNavigator variableNode = configuration.SelectSingleNode("variable");
 
             if(variableNode == null)
-                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
-                    "specify a variable using the <variable> element.");
+                throw new ArgumentException("When instantiating a ForEach component, you must " +
+                    "specify a variable using the <variable> element.", nameof(configuration));
 
             string xpathFormat = variableNode.GetAttribute("expression", String.Empty);
 
             if(String.IsNullOrWhiteSpace(xpathFormat))
-                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
-                    "specify a variable expression using the expression attribute");
+                throw new ArgumentException("When instantiating a ForEach component, you must " +
+                    "specify a variable expression using the expression attribute", nameof(configuration));
 
             xPath = XPathExpression.Compile(xpathFormat);
 
@@ -109,8 +111,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XPathNavigator componentsNode = configuration.SelectSingleNode("components");
 
             if(componentsNode == null)
-                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
-                    "specify subcomponents using the <components> element.");
+                throw new ArgumentException("When instantiating a ForEach component, you must " +
+                    "specify subcomponents using the <components> element.", nameof(configuration));
 
             components = BuildAssembler.LoadComponents(componentsNode);
 
@@ -120,6 +122,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             // Set the context
             CustomContext context = new CustomContext(contextNamespaces);
             context["key"] = key;
@@ -131,9 +136,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             object result = document.CreateNavigator().Evaluate(xPathLocal);
 
             // Try to interpret the result as a node set
-            XPathNodeIterator resultNodeIterator = result as XPathNodeIterator;
-
-            if(resultNodeIterator != null)
+            if(result is XPathNodeIterator resultNodeIterator)
             {
                 // If it is, apply the child components to each node value
                 foreach(XPathNavigator resultNode in resultNodeIterator.ToArray())

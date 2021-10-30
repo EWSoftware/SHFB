@@ -2,9 +2,8 @@
 // System  : Visual Studio Spell Checker Package
 // File    : ThemeColors.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/20/2019
-// Note    : Copyright 2015-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to provide Visual Studio theme colors in a version independent manner
 //
@@ -33,7 +32,11 @@ namespace SandcastleBuilder.WPF.Theme
     /// <summary>
     /// This class is used to provide Visual Studio Theme colors in a version independent manner
     /// </summary>
+#if !STANDALONEGUI
     public class ThemeColors : INotifyPropertyChanged
+#else
+    public class ThemeColors
+#endif
     {
         #region Private data members
         //=====================================================================
@@ -49,6 +52,8 @@ namespace SandcastleBuilder.WPF.Theme
         /// This read-only property returns the theme color instance
         /// </summary>
         public static ThemeColors Instance => instance ?? (instance = new ThemeColors());
+
+#pragma warning disable CA1822
 
         /// <summary>
         /// Button background color
@@ -290,6 +295,8 @@ namespace SandcastleBuilder.WPF.Theme
         /// </summary>
         public Color TreeViewHoverGlyphColor => GetColor(ThemeColorId.TreeViewHoverGlyphColor);
 
+#pragma warning restore CA1822
+
         #endregion
 
         #region Constructor
@@ -306,6 +313,7 @@ namespace SandcastleBuilder.WPF.Theme
         }
         #endregion
 
+#if !STANDALONEGUI
         #region INotifyPropertyChanged implementation
         //=====================================================================
 
@@ -323,7 +331,6 @@ namespace SandcastleBuilder.WPF.Theme
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-#if !STANDALONEGUI
         /// <summary>
         /// This event handler is called when the Visual Studio theme changes and raise the property change
         /// notification so that the colors are updated in any controls that use them.
@@ -333,8 +340,8 @@ namespace SandcastleBuilder.WPF.Theme
         {
             this.OnPropertyChanged(null);
         }
-#endif
         #endregion
+#endif
 
         #region Helper Methods
         //=====================================================================
@@ -613,6 +620,6 @@ namespace SandcastleBuilder.WPF.Theme
             return null;
         }
 #endif
-        #endregion
+#endregion
     }
 }

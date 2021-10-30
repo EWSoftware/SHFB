@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : UnsafeNativeMethods.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2007-2019, Eric Woodruff, All rights reserved
+// Updated : 04/20/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains an internal class used to call some Win32 API functions.
 //

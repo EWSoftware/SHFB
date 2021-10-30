@@ -15,7 +15,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools.SyntaxGenerators
 {
     /// <summary>
     /// This class generates declaration syntax sections for ASP.NET
@@ -36,13 +36,8 @@ namespace Microsoft.Ddue.Tools
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public string ResourceItemFileLocation
-            {
-                get
-                {
-                    return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent");
-                }
-            }
+            public string ResourceItemFileLocation => Path.Combine(ComponentUtilities.AssemblyFolder(
+                Assembly.GetExecutingAssembly()), "SyntaxContent");
 
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
@@ -55,21 +50,23 @@ namespace Microsoft.Ddue.Tools
         #region Private data members
         //=====================================================================
 
-        private static XPathExpression nameExpression = XPathExpression.Compile("string(apidata/@name)");
-        private static XPathExpression groupExpression = XPathExpression.Compile("string(apidata/@group)");
-        private static XPathExpression subgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
+        private static readonly XPathExpression nameExpression = XPathExpression.Compile("string(apidata/@name)");
+        private static readonly XPathExpression groupExpression = XPathExpression.Compile("string(apidata/@group)");
+        private static readonly XPathExpression subgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
 
-        private static XPathExpression containingTypeExpression = XPathExpression.Compile("containers/type");
-        private static XPathExpression declaringTypeExpression = XPathExpression.Compile("string(containers/type/@api)");
-        private static XPathExpression propertyTypeExpression = XPathExpression.Compile("string(returns/type/@api)");
-        private static XPathExpression propertyIsSettable = XPathExpression.Compile("boolean(propertydata/@set='true')");
-        private static XPathExpression eventHandlerTypeExpression = XPathExpression.Compile("string(eventhandler/type/@api)");
+        private static readonly XPathExpression containingTypeExpression = XPathExpression.Compile("containers/type");
+        private static readonly XPathExpression declaringTypeExpression = XPathExpression.Compile("string(containers/type/@api)");
+        private static readonly XPathExpression propertyTypeExpression = XPathExpression.Compile("string(returns/type/@api)");
+        private static readonly XPathExpression propertyIsSettable = XPathExpression.Compile("boolean(propertydata/@set='true')");
+        private static readonly XPathExpression eventHandlerTypeExpression = XPathExpression.Compile("string(eventhandler/type/@api)");
 
-        private static XPathExpression typeIsWebControl = XPathExpression.Compile("boolean(family/ancestors/type[@api='T:System.Web.UI.Control'])");
+        private static readonly XPathExpression typeIsWebControl = XPathExpression.Compile(
+            "boolean(family/ancestors/type[@api='T:System.Web.UI.Control'])");
 
-        private static XPathExpression propertyIsInnerProperty = XPathExpression.Compile("boolean(attributes/attribute[type/@api='T:System.Web.UI.PersistenceModeAttribute' and argument/enumValue/field/@name='InnerProperty'])");
+        private static readonly XPathExpression propertyIsInnerProperty = XPathExpression.Compile(
+            "boolean(attributes/attribute[type/@api='T:System.Web.UI.PersistenceModeAttribute' and argument/enumValue/field/@name='InnerProperty'])");
 
-        private static XPathExpression containingNamespaceExpression = XPathExpression.Compile("string(containers/namespace/@api)");
+        private static readonly XPathExpression containingNamespaceExpression = XPathExpression.Compile("string(containers/namespace/@api)");
 
         #endregion
 
@@ -88,6 +85,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string group = (string)reflection.Evaluate(groupExpression);
             string subgroup = (string)reflection.Evaluate(subgroupExpression);
 
@@ -112,7 +115,7 @@ namespace Microsoft.Ddue.Tools
                         WritePropertySyntax(reflection, writer, prefix);
                     else
                         if(subgroup == "event")
-                            WriteEventSyntax(reflection, writer, prefix);
+                        WriteEventSyntax(reflection, writer, prefix);
             }
         }
 
@@ -202,9 +205,9 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteParameter("value");
                 else
                     if(propertyType == "T:System.Boolean")
-                        writer.WriteString("True|False");
-                    else
-                        writer.WriteReferenceLink(propertyType);
+                    writer.WriteString("True|False");
+                else
+                    writer.WriteReferenceLink(propertyType);
 
                 writer.WriteString("</");
                 writer.WriteString(name);
@@ -233,9 +236,9 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteParameter("value");
                 else
                     if(propertyType == "T:System.Boolean")
-                        writer.WriteString("True|False");
-                    else
-                        writer.WriteReferenceLink(propertyType);
+                    writer.WriteString("True|False");
+                else
+                    writer.WriteReferenceLink(propertyType);
 
                 writer.WriteString("\" />");
             }

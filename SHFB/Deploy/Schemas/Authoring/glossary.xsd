@@ -83,7 +83,7 @@
 
 	<element name="terms">
 		<annotation>
-			<documentation>The various terms that are associated with this entry. Each term has attributes to specify its use and other idenitfying attributes</documentation>
+			<documentation>The various terms that are associated with this entry. Each term has attributes to specify its use and other identifying attributes</documentation>
 			<appinfo><doc:localizable>n/a</doc:localizable></appinfo>
 		</annotation>
 		<complexType>

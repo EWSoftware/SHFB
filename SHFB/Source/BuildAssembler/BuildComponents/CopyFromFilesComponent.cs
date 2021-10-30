@@ -12,12 +12,12 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Commands;
+using Sandcastle.Tools.BuildComponents.Commands;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component copies elements from one or more XML files determined using an XPath query into the
@@ -45,7 +45,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private List<CopyFromFilesCommand> copyCommands = new List<CopyFromFilesCommand>();
+        private readonly List<CopyFromFilesCommand> copyCommands = new List<CopyFromFilesCommand>();
 
         #endregion
 
@@ -67,6 +67,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             XPathNodeIterator copyNodes = configuration.Select("copy");
 
             foreach(XPathNavigator copyNode in copyNodes)

@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IMemberIdUrlResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/15/2019
-// Note    : Copyright 2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2019-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that defines an interface used to resolve an API member ID to an online help
 // website URL.

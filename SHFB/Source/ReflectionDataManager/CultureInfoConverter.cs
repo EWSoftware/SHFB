@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : CultureInfoConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/28/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a value converter that converts between CultureInfo and String
 //

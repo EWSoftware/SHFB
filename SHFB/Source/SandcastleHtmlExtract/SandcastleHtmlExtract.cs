@@ -2,10 +2,12 @@
 // System  : Sandcastle Help File Builder
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/13/2021
+// Updated : 07/07/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the MSBuild task implementation for extracting HTML info from help topics
+// This file contains the console mode application used to extract title and keyword information from HTML files
+// for use in creating the CHM table of contents and keyword index files.  It can also optionally convert the
+// files to a different encoding in order to build HTML Help 1 (.chm) files that use a different language.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
@@ -14,14 +16,41 @@
 //
 //    Date     Who  Comments
 // ==============================================================================================================
-// 03/13/2021  EFW  Split task out into a separate class to allow for dynamic loading of MSBuild assemblies
+// 02/02/2008  EFW  Created the code
+// 04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a website keyword index
+// 06/14/2008  EFW  Fixed bug in handling of TOC nodes without a file
+// 07/14/2008  EFW  Added support for running as an MSBuild task
+// 06/12/2010  EFW  Added support for multi-format build output
+// 07/26/2012  EFW  Added code to remove Help 2 constructs
+// 03/02/2013  EFW  Updated how the keyword index files were created so that each entry has a unique title when
+//                  grouped under a common keyword.  Updated to process the files in parallel to improve the
+//                  performance.
+// 07/31/2014  EFW  Applied fix from Kalyan00 to correctly save files in the localized and original locations
+//                  with the proper encodings.
+// 09/05/2014  EFW  Added support for setting the maximum degree of parallelism used
 //===============================================================================================================
 
+// TODO: Does this need to be an MSBuild task?  Merge into the build engine?
+
+// Ignore Spelling: Prantl
+
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.XPath;
 
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
 namespace SandcastleBuilder.HtmlExtract
 {
@@ -29,8 +58,87 @@ namespace SandcastleBuilder.HtmlExtract
     /// This is the MSBuild task used to extract title and keyword information from HTML files for use in
     /// creating the CHM table of contents and keyword index files.
     /// </summary>
-    public class SandcastleHtmlExtract : Task
+    public class SandcastleHtmlExtract : Microsoft.Build.Utilities.Task
     {
+        #region Title information structure
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to hold title information
+        /// </summary>
+        private struct TitleInfo
+        {
+            /// <summary>The topic title</summary>
+            public string TopicTitle { get; set; }
+            /// <summary>The TOC title</summary>
+            public string TocTitle { get; set; }
+            /// <summary>The file in which it occurs</summary>
+            public string File { get; set; }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="topicTitle">The topic title</param>
+            /// <param name="tocTitle">The TOC title</param>
+            /// <param name="filename">The filename</param>
+            public TitleInfo(string topicTitle, string tocTitle, string filename) : this()
+            {
+                this.TopicTitle = topicTitle;
+                this.TocTitle = String.IsNullOrWhiteSpace(tocTitle) ? topicTitle : tocTitle;
+                this.File = filename;
+            }
+        }
+        #endregion
+
+        #region Keyword information structure
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to hold keyword information
+        /// </summary>
+        private struct KeywordInfo
+        {
+            /// <summary>The main entry</summary>
+            public string MainEntry { get; set; }
+            /// <summary>An optional sub-entry</summary>
+            public string SubEntry { get; set; }
+            /// <summary>The file in which it occurs</summary>
+            public string File { get; set; }
+        }
+        #endregion
+
+        #region Private data members
+        //=====================================================================
+
+        // Options
+        private string encodingName;
+        private int codePage;
+
+        // Extracted keyword and title information
+        private List<KeywordInfo> keywords;
+        private ConcurrentBag<KeywordInfo> keywordBag;
+        private ConcurrentDictionary<string, TitleInfo> titles;
+
+        // Regular expressions used for title and keyword extraction and element removal
+        private static readonly Regex reTitle = new Regex(@"<title>(.*)</title>", RegexOptions.IgnoreCase);
+        private static readonly Regex reTocTitle = new Regex("<mshelp:toctitle\\s+title=\"([^\"]+)\"[^>]+>",
+            RegexOptions.IgnoreCase);
+        private static readonly Regex reKKeyword = new Regex("<mshelp:keyword\\s+index=\"k\"\\s+term=\"([^\"]+)\"[^>]+>",
+            RegexOptions.IgnoreCase);
+        private static readonly Regex reSubEntry = new Regex(@",([^\)\>]+|([^\<\>]*" +
+            @"\<[^\<\>]*\>[^\<\>]*)?|([^\(\)]*\([^\(\)]*\)[^\(\)]*)?)$");
+        private static readonly Regex reXmlIsland = new Regex("<xml>.*?</xml>", RegexOptions.Singleline);
+        private static readonly Regex reHxLinkCss = new Regex("<link[^>]*?href=\"ms-help://Hx/HxRuntime/HxLink\\.css\".*?/?>",
+            RegexOptions.IgnoreCase);
+        private static readonly Regex reHtmlElement = new Regex("\\<html.*?\\>");
+        private static readonly Regex reUnusedNamespaces = new Regex("\\s*?xmlns:(MSHelp|mshelp|ddue|xlink|msxsl|xhtml)=\".*?\"");
+
+        // Localization support members
+        private Dictionary<Regex, string> patterns;
+        private Encoding destEncoding;
+
+        #endregion
+
         #region MSBuild task interface
         //=====================================================================
 
@@ -91,37 +199,766 @@ namespace SandcastleBuilder.HtmlExtract
         /// <returns>True on success or false on failure.</returns>
         public override bool Execute()
         {
-            List<string> parameters = new List<string>();
+            if(this.MaxDegreeOfParallelism == 0)
+                this.MaxDegreeOfParallelism = Environment.ProcessorCount * 20;
+            else
+            {
+                if(this.MaxDegreeOfParallelism < 0)
+                    this.MaxDegreeOfParallelism = -1;
+            }
 
-            if(!String.IsNullOrWhiteSpace(this.Help1Folder))
-                parameters.Add("-help1Folder=" + this.Help1Folder);
+            if(String.IsNullOrWhiteSpace(this.OutputFolder))
+                this.OutputFolder = ".";
 
-            if(!String.IsNullOrWhiteSpace(this.WebsiteFolder))
-                parameters.Add("-websiteFolder=" + this.WebsiteFolder);
+            if(String.IsNullOrWhiteSpace(this.TocFile))
+                this.TocFile = "toc.xml";
 
-            if(!String.IsNullOrWhiteSpace(this.OutputFolder))
-                parameters.Add("-outputFolder=" + this.OutputFolder);
+            if(this.LanguageId < 1)
+                this.LanguageId = 1033;
 
-            if(!String.IsNullOrWhiteSpace(this.LocalizedFolder))
-                parameters.Add("-localizedFolder=" + this.LocalizedFolder);
-
-            if(this.LanguageId > 0)
-                parameters.Add($"-lcid={this.LanguageId}");
-
-            if(!String.IsNullOrWhiteSpace(this.ProjectName))
-                parameters.Add("-projectName=" + this.ProjectName);
-
-            if(!String.IsNullOrWhiteSpace(this.TocFile))
-                parameters.Add("-tocFile=" + this.TocFile);
-
-            if(this.MaxDegreeOfParallelism != 0)
-                parameters.Add($"-maxDegreeOfParallelism={this.MaxDegreeOfParallelism}");
-
-            SandcastleHtmlExtractCore.IsMSBuildTask = true;
-
-            return SandcastleHtmlExtractCore.MainEntryPoint(parameters.ToArray()) == 0;
+            return this.ExtractHtmlInfo();
         }
         #endregion
+
+        #region HTML extract method
+        //=====================================================================
+
+
+        #endregion
+
+        #region Main program entry point
+        //=====================================================================
+
+        /// <summary>
+        /// This extracts the information from the HTML files
+        /// </summary>
+        /// <returns>True on success or false on failure</returns>
+        public bool ExtractHtmlInfo()
+        {
+            XPathDocument config;
+            XPathNavigator nav;
+            CultureInfo ci;
+            Encoding enc;
+            bool success = false;
+
+            keywords = new List<KeywordInfo>();
+            keywordBag = new ConcurrentBag<KeywordInfo>();
+            titles = new ConcurrentDictionary<string, TitleInfo>();
+
+            Assembly asm = Assembly.GetExecutingAssembly();
+
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
+            this.Log.LogMessage("{0}, version {1}\r\n{2}\r\nE-Mail: Eric@EWoodruff.us\r\n", fvi.ProductName,
+                fvi.ProductVersion, fvi.LegalCopyright);
+
+            try
+            {
+                if(!String.IsNullOrWhiteSpace(this.Help1Folder) && !Directory.Exists(this.Help1Folder))
+                    throw new ArgumentException("The HTML Help 1 folder could not be found");
+
+                if(!String.IsNullOrWhiteSpace(this.WebsiteFolder) && !Directory.Exists(this.WebsiteFolder))
+                    throw new ArgumentException("The website folder could not be found");
+
+                // Help 1 folder or website folder must be specified
+                if(String.IsNullOrWhiteSpace(this.Help1Folder) && String.IsNullOrWhiteSpace(this.WebsiteFolder))
+                    throw new InvalidOperationException("The Help1Folder and/or WebsiteFolder property must be specified");
+
+                // The project filename must be specified
+                if(String.IsNullOrEmpty(this.ProjectName))
+                    throw new InvalidOperationException("A project name must be specified using the ProjectName property");
+
+                // The TOC file must exist
+                if(!File.Exists(this.TocFile))
+                    throw new ArgumentException("TOC file not found");
+
+                this.OutputFolder = Path.GetFullPath(this.OutputFolder);
+
+                if(this.OutputFolder.Length != 0 && this.OutputFolder[this.OutputFolder.Length - 1] == '\\')
+                    this.OutputFolder = this.OutputFolder.Substring(0, this.OutputFolder.Length - 1);
+
+                if(!Directory.Exists(this.OutputFolder))
+                    Directory.CreateDirectory(this.OutputFolder);
+
+                // Get the code page to use based on the locale ID
+                config = new XPathDocument(XmlReader.Create(Path.Combine(Path.GetDirectoryName(asm.Location),
+                    "SandcastleHtmlExtract.config"), new XmlReaderSettings { CloseInput = true }));
+
+                nav = config.CreateNavigator().SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
+                    "/configuration/languages/language[@id='{0}']", this.LanguageId));
+
+                // If not found, default to the one for the ANSI code page
+                // based on the specified locale ID.
+                if(nav == null)
+                {
+                    ci = new CultureInfo(this.LanguageId);
+                    codePage = ci.TextInfo.ANSICodePage;
+                    enc = Encoding.GetEncoding(codePage);
+                    encodingName = enc.WebName;
+
+                    this.Log.LogWarning(null, "SHE0001", null, null, 0, 0, 0, 0, "LCID '{0}' not found in " +
+                        "configuration file.  Defaulting to ANSI code page value of '{1}', encoding charset '{2}'.",
+                        this.LanguageId, codePage, encodingName);
+                }
+                else
+                {
+                    codePage = Convert.ToInt32(nav.GetAttribute("codepage", String.Empty), CultureInfo.InvariantCulture);
+                    encodingName = nav.GetAttribute("charset", String.Empty);
+
+                    this.Log.LogMessage("Using LCID '{0}', code page '{1}', encoding charset '{2}'.", this.LanguageId,
+                        codePage, encodingName);
+                }
+
+                // Parse the HTML Help 1 files and save the keyword index and table of contents
+                if(!String.IsNullOrEmpty(this.Help1Folder))
+                {
+                    this.Help1Folder = Path.GetFullPath(this.Help1Folder);
+                    this.Log.LogMessage("Processing Help 1 files in " + this.Help1Folder);
+
+                    // If localizing, validate the folder and create the regex patterns that
+                    // will do the conversions.
+                    if(this.LocalizedFolder != null)
+                    {
+                        this.LocalizedFolder = Path.GetFullPath(this.LocalizedFolder);
+
+                        if(this.LocalizedFolder.Length > 0 && this.LocalizedFolder[this.LocalizedFolder.Length - 1] == '\\')
+                            this.LocalizedFolder = this.LocalizedFolder.Substring(0, this.LocalizedFolder.Length - 1);
+
+                        if(!Directory.Exists(this.LocalizedFolder))
+                            Directory.CreateDirectory(this.LocalizedFolder);
+
+                        patterns = new Dictionary<Regex, string>();
+                        destEncoding = Encoding.GetEncoding(encodingName);
+
+                        // Convert unsupported high-order characters to 7-bit ASCII equivalents
+                        patterns.Add(new Regex(@"\u2018|\u2019"), "'");
+                        patterns.Add(new Regex(@"\u201C|\u201D"), "\"");
+                        patterns.Add(new Regex(@"\u2026"), "...");
+
+                        if(this.LanguageId != 1041)
+                            patterns.Add(new Regex(@"\u00A0"), "&nbsp;");
+                        else
+                            patterns.Add(new Regex(@"\u00A0"), " ");
+
+                        if(encodingName != "Windows-1252")
+                            patterns.Add(new Regex(@"\u2011|\u2013"), "-");
+                        else
+                            patterns.Add(new Regex(@"\u2011|\u2013|\u2014"), "-");
+
+                        // Convert other unsupported high-order characters to named entities
+                        patterns.Add(new Regex(@"\u00A9"), "&copy;");
+                        patterns.Add(new Regex(@"\u00AE"), "&reg;");
+                        patterns.Add(new Regex(@"\u2014"), "&mdash;");
+                        patterns.Add(new Regex(@"\u2122"), "&trade;");
+
+                        // Replace the charset declaration
+                        patterns.Add(new Regex("CHARSET=UTF-8",
+                            RegexOptions.IgnoreCase), "CHARSET=" + encodingName);
+
+                        this.Log.LogMessage("Localized content will be written to '{0}'", this.LocalizedFolder);
+                    }
+
+                    ParseFiles(this.Help1Folder, this.LocalizedFolder);
+                    WriteHelp1xKeywordIndex();
+                    WriteHelp1xTableOfContents();
+                }
+
+                // Parse the website files and save the keyword index and table of contents
+                if(!String.IsNullOrEmpty(this.WebsiteFolder))
+                {
+                    this.WebsiteFolder = Path.GetFullPath(this.WebsiteFolder);
+                    this.Log.LogMessage("Processing website files in " + this.WebsiteFolder);
+
+                    ParseFiles(this.WebsiteFolder, null);
+                    WriteWebsiteKeywordIndex();
+                    WriteWebsiteTableOfContents();
+                }
+
+                success = true;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+
+                this.Log.LogError(null, "SHE0002", null, null, 0, 0, 0, 0, "Unexpected error: {0}", ex);
+            }
+
+            return success;
+        }
+        #endregion
+
+        #region File parsing methods
+        //=====================================================================
+
+        /// <summary>
+        /// Parse the given set of files to generate title and keyword info
+        /// and localize the files if necessary.
+        /// </summary>
+        /// <param name="fileFolder">The folder containing the files to parse</param>
+        /// <param name="localizedOutputFolder">The folder in which to store localized
+        /// output or null for no localized output.</param>
+        private void ParseFiles(string fileFolder, string localizedOutputFolder)
+        {
+            string mainEntry = String.Empty;
+            int htmlFiles = 0;
+
+            keywords.Clear();
+            keywordBag = new ConcurrentBag<KeywordInfo>();
+            titles.Clear();
+
+            if(fileFolder.Length != 0 && fileFolder[fileFolder.Length - 1] == '\\')
+                fileFolder = fileFolder.Substring(0, fileFolder.Length - 1);
+
+            // Process all *.htm and *.html files in the given folder and all of its subfolders.
+            Parallel.ForEach(Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories),
+              new ParallelOptions { MaxDegreeOfParallelism = this.MaxDegreeOfParallelism }, file =>
+              {
+                  string ext = Path.GetExtension(file).ToLowerInvariant();
+
+                  if(ext == ".htm" || ext == ".html")
+                  {
+                      ProcessFile(fileFolder, file, localizedOutputFolder);
+                      Interlocked.Add(ref htmlFiles, 1);
+                  }
+                  else
+                      if(localizedOutputFolder != null)
+                  {
+                      // Copy supporting files only if localizing
+                      string destFile = Path.Combine(localizedOutputFolder, file.Substring(fileFolder.Length + 1));
+                      string folder = Path.GetDirectoryName(destFile);
+
+                      if(!Directory.Exists(folder))
+                          Directory.CreateDirectory(folder);
+
+                      File.Copy(file, destFile, true);
+                  }
+              });
+
+            this.Log.LogMessage("Processed {0} HTML files.  Sorting keywords and generating See Also indices.", htmlFiles);
+
+            // Sort the keywords
+            keywords.AddRange(keywordBag);
+            keywords.Sort((x, y) =>
+            {
+                string subX, subY;
+
+                if(x.MainEntry != y.MainEntry)
+                    return String.Compare(x.MainEntry, y.MainEntry, StringComparison.OrdinalIgnoreCase);
+
+                subX = x.SubEntry;
+                subY = y.SubEntry;
+
+                if(subX == null)
+                    subX = String.Empty;
+
+                if(subY == null)
+                    subY = String.Empty;
+
+                if(subX != subY)
+                    return String.Compare(subX, subY, StringComparison.OrdinalIgnoreCase);
+
+                subX = titles[Path.GetFileNameWithoutExtension(x.File)].TopicTitle;
+                subY = titles[Path.GetFileNameWithoutExtension(y.File)].TopicTitle;
+
+                return String.Compare(subX, subY, StringComparison.OrdinalIgnoreCase);
+            });
+
+            // Insert the See Also indices for each sub-entry
+            for(int idx = 0; idx < keywords.Count; idx++)
+                if(!String.IsNullOrEmpty(keywords[idx].SubEntry))
+                {
+                    if(idx > 0)
+                        mainEntry = keywords[idx - 1].MainEntry;
+
+                    if(mainEntry != keywords[idx].MainEntry)
+                        keywords.Insert(idx, new KeywordInfo { MainEntry = keywords[idx].MainEntry });
+                }
+        }
+
+        /// <summary>
+        /// Parse each file looking for the title and index keywords and remove the unnecessary Help 2 constructs
+        /// that cause issues in Internet Explorer 10.
+        /// </summary>
+        /// <param name="basePath">The base folder path</param>
+        /// <param name="sourceFile">The file to parse</param>
+        /// <param name="localizedOutputFolder">The folder in which to store localized output or null for no
+        /// localized output.</param>
+        private void ProcessFile(string basePath, string sourceFile, string localizedOutputFolder)
+        {
+            Encoding currentEncoding = Encoding.Default;
+            MatchCollection matches;
+            Match match;
+            KeywordInfo keyword;
+            string content, topicTitle, tocTitle, term, folder, key, destFile;
+            byte[] currentBytes, convertedBytes;
+
+            // Read the file in using the proper encoding
+            using(StreamReader sr = new StreamReader(sourceFile, currentEncoding, true))
+            {
+                content = sr.ReadToEnd();
+                currentEncoding = sr.CurrentEncoding;
+            }
+
+            topicTitle = tocTitle = String.Empty;
+
+            // Extract the topic title
+            match = reTitle.Match(content);
+
+            if(match.Success)
+                topicTitle = match.Groups[1].Value;
+
+            // If a TOC title entry is present, get that too
+            match = reTocTitle.Match(content);
+
+            if(match.Success)
+                tocTitle = match.Groups[1].Value;
+
+            key = Path.GetFileNameWithoutExtension(sourceFile);
+
+            if(!titles.TryAdd(key, new TitleInfo(WebUtility.HtmlDecode(topicTitle),
+              WebUtility.HtmlDecode(tocTitle), sourceFile)))
+            {
+                this.Log.LogWarning(null, "SHE0004", null, null, 0, 0, 0, 0, "The key '{0}' used for '{1}' is " +
+                    "already in use by '{2}'.  '{1}' will be ignored.", key, sourceFile, titles[key].File);
+            }
+
+            // Extract K index keywords
+            matches = reKKeyword.Matches(content);
+
+            foreach(Match m in matches)
+            {
+                keyword = new KeywordInfo();
+                term = m.Groups[1].Value;
+
+                if(!String.IsNullOrEmpty(term))
+                {
+#if NET472_OR_GREATER
+                    term = WebUtility.HtmlDecode(term.Replace("%3C", "<").Replace("%3E", ">").Replace("%2C", ","));
+#else
+                    term = WebUtility.HtmlDecode(term.Replace("%3C", "<", StringComparison.Ordinal).Replace(
+                        "%3E", ">", StringComparison.Ordinal).Replace("%2C", ",", StringComparison.Ordinal));
+#endif
+
+                    // See if there is a sub-entry
+                    match = reSubEntry.Match(term);
+
+                    if(match.Success)
+                    {
+                        keyword.MainEntry = term.Substring(0, match.Index);
+                        keyword.SubEntry = term.Substring(match.Index + 1).TrimStart(new char[] { ' ' });
+                    }
+                    else
+                        keyword.MainEntry = term;
+
+                    keyword.File = sourceFile;
+                    keywordBag.Add(keyword);
+                }
+            }
+
+            // Remove the XML data island, the MS Help CSS link, and the unused namespaces
+            content = reXmlIsland.Replace(content, String.Empty);
+            content = reHxLinkCss.Replace(content, String.Empty);
+
+            Match htmlMatch = reHtmlElement.Match(content);
+            string htmlElement = reUnusedNamespaces.Replace(htmlMatch.Value, String.Empty);
+
+            content = reHtmlElement.Replace(content, htmlElement, 1);
+
+            // If localizing, perform the substitutions, convert the encoding, and save the file to the
+            // localized folder using the appropriate encoding.
+            if(localizedOutputFolder != null)
+            {
+                foreach(KeyValuePair<Regex, string> pair in patterns)
+                    content = pair.Key.Replace(content, pair.Value);
+
+                currentBytes = currentEncoding.GetBytes(content);
+                convertedBytes = Encoding.Convert(currentEncoding, destEncoding, currentBytes);
+
+                destFile = Path.Combine(localizedOutputFolder, sourceFile.Substring(basePath.Length + 1));
+                folder = Path.GetDirectoryName(destFile);
+
+                if(!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                using(StreamWriter writer = new StreamWriter(destFile, false, destEncoding))
+                {
+                    writer.Write(destEncoding.GetString(convertedBytes));
+                }
+            }
+
+            // Save the file to its original location without the Help 2 elements using the original encoding
+            using(StreamWriter writer = new StreamWriter(sourceFile, false, currentEncoding))
+            {
+                writer.Write(content);
+            }
+        }
+#endregion
+
+#region Write out the HTML Help 1 table of contents
+        //=====================================================================
+
+        /// <summary>
+        /// Write out the HTML Help 1 table of contents
+        /// </summary>
+        private void WriteHelp1xTableOfContents()
+        {
+            XmlReaderSettings settings;
+            TitleInfo titleInfo;
+            string key, title, htmlFile;
+            int indentCount, baseFolderLength = this.Help1Folder.Length + 1;
+
+            this.Log.LogMessage(@"Saving HTML Help 1 table of contents to {0}\{1}.hhc", this.OutputFolder, this.ProjectName);
+
+            settings = new XmlReaderSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                IgnoreWhitespace = true,
+                IgnoreComments = true
+            };
+
+            using(var reader = XmlReader.Create(this.TocFile, settings))
+            {
+                // Write the table of contents using the appropriate encoding
+                using(StreamWriter writer = new StreamWriter(Path.Combine(this.OutputFolder, this.ProjectName + ".hhc"), false,
+                  Encoding.GetEncoding(codePage)))
+                {
+                    writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML//EN\">\r\n");
+                    writer.WriteLine("<HTML>");
+                    writer.WriteLine("  <BODY>");
+
+                    while(reader.Read())
+                        switch(reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if(reader.Name == "topic")
+                                {
+                                    key = reader.GetAttribute("file");
+
+                                    // Remove any sub-folder if present as the titles are keyed on the name alone
+                                    int dirSep = key.IndexOfAny(new[] { '/', '\\' });
+
+                                    if(dirSep != -1)
+                                        key = key.Substring(dirSep + 1);
+
+                                    if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                                    {
+                                        titleInfo = titles[key];
+                                        title = titleInfo.TocTitle;
+                                        htmlFile = titleInfo.File.Substring(baseFolderLength);
+                                    }
+                                    else
+                                    {
+                                        // Container only topic or unknown element, just use the title or ID attribute
+                                        htmlFile = null;
+                                        title = reader.GetAttribute("title");
+
+                                        if(String.IsNullOrEmpty(title))
+                                            title = reader.GetAttribute("id");
+
+                                        if(String.IsNullOrEmpty(title))
+                                            title = key;
+                                    }
+
+                                    indentCount = reader.Depth;
+
+                                    WriteContentLine(writer, indentCount, "<UL>");
+                                    WriteContentLine(writer, indentCount, "  <LI><OBJECT type=\"text/sitemap\">");
+                                    WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                        "    <param name=\"Name\" value=\"{0}\">", WebUtility.HtmlEncode(title)));
+
+                                    if(htmlFile != null)
+                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                            "    <param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(htmlFile)));
+
+                                    WriteContentLine(writer, indentCount, "  </OBJECT></LI>");
+
+                                    if(reader.IsEmptyElement)
+                                        WriteContentLine(writer, indentCount, "</UL>");
+                                }
+                                break;
+
+                            case XmlNodeType.EndElement:
+                                if(reader.Name == "topic")
+                                    WriteContentLine(writer, reader.Depth, "</UL>");
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                    writer.WriteLine();
+                    writer.WriteLine("  </BODY>");
+                    writer.WriteLine("</HTML>");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Write out a table of contents line with indentation
+        /// </summary>
+        /// <param name="writer">The writer to which the line is saved</param>
+        /// <param name="indentCount">The amount of indent to use</param>
+        /// <param name="value">The value to write</param>
+        private static void WriteContentLine(TextWriter writer, int indentCount, string value)
+        {
+            writer.WriteLine();
+
+            for(int idx = 0; idx < indentCount; idx++)
+                writer.Write("  ");
+
+            writer.Write(value);
+        }
+#endregion
+
+#region Write out the HTML Help 1 keyword index
+        //=====================================================================
+
+        /// <summary>
+        /// Write out the HTML Help 1 keyword index
+        /// </summary>
+        private void WriteHelp1xKeywordIndex()
+        {
+            KeywordInfo kw;
+            string title;
+            int baseFolderLength = this.Help1Folder.Length + 1;
+
+            this.Log.LogMessage(@"Saving HTML Help 1 keyword index to {0}\{1}.hhk", this.OutputFolder, this.ProjectName);
+
+            // Write the keyword index using the appropriate encoding
+            using(StreamWriter writer = new StreamWriter(Path.Combine(this.OutputFolder, this.ProjectName + ".hhk"), false,
+              Encoding.GetEncoding(codePage)))
+            {
+                writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML//EN\">");
+                writer.WriteLine("<HTML>");
+                writer.WriteLine("  <BODY>");
+                writer.Write("    <UL>");
+
+                foreach(var group in keywords.Where(k => !String.IsNullOrEmpty(k.MainEntry)).GroupBy(k => k.MainEntry))
+                    if(group.Count() == 1)
+                    {
+                        kw = group.First();
+
+                        if(!String.IsNullOrEmpty(kw.File))
+                            WriteHelp1IndexEntry(kw.MainEntry, kw.File.Substring(baseFolderLength).Replace(
+                                '\\', '/'), writer, 3);
+                    }
+                    else
+                    {
+                        kw = group.First();
+                        WriteHelp1IndexEntry(kw.MainEntry, null, writer, 3);
+
+                        WriteContentLine(writer, 3, "<UL>");
+
+                        foreach(var k in group)
+                            if(!String.IsNullOrEmpty(k.File))
+                                if(String.IsNullOrEmpty(k.SubEntry))
+                                {
+                                    // Use the target page's title as the entry's title as it will be fully
+                                    // qualified if necessary.
+                                    title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
+
+                                    WriteHelp1IndexEntry(title, k.File.Substring(baseFolderLength).Replace(
+                                        '\\', '/'), writer, 4);
+                                }
+                                else
+                                    WriteHelp1IndexEntry(k.SubEntry, k.File.Substring(baseFolderLength).Replace(
+                                        '\\', '/'), writer, 4);
+
+                        WriteContentLine(writer, 3, "</UL>");
+                    }
+
+                writer.WriteLine();
+                writer.WriteLine("    </UL>");
+                writer.WriteLine("  </BODY>");
+                writer.WriteLine("</HTML>");
+            }
+        }
+
+        /// <summary>
+        /// This is used to write out a Help 1 index entry
+        /// </summary>
+        /// <param name="title">The topic title</param>
+        /// <param name="file">The target filename</param>
+        /// <param name="writer">The stream writer to use</param>
+        /// <param name="indent">The indent level</param>
+        private static void WriteHelp1IndexEntry(string title, string file, StreamWriter writer, int indent)
+        {
+            title = WebUtility.HtmlEncode(title);
+
+            WriteContentLine(writer, indent, "<LI><OBJECT type=\"text/sitemap\">");
+            WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
+                "<param name=\"Name\" value=\"{0}\">", title));
+
+            if(String.IsNullOrEmpty(file))
+                WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
+                    "<param name=\"See Also\" value=\"{0}\">", title));
+            else
+                WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
+                    "<param name=\"Local\" value=\"{0}\">", WebUtility.HtmlEncode(file)));
+
+            WriteContentLine(writer, indent, "</OBJECT></LI>");
+        }
+#endregion
+
+#region Write out the website table of contents
+        //=====================================================================
+
+        /// <summary>
+        /// Write out the website table of contents
+        /// </summary>
+        private void WriteWebsiteTableOfContents()
+        {
+            XmlReaderSettings settings;
+            TitleInfo titleInfo;
+            string key, title, htmlFile;
+            int indentCount, baseFolderLength = this.WebsiteFolder.Length + 1;
+
+            this.Log.LogMessage(@"Saving website table of contents to {0}\WebTOC.xml", this.OutputFolder);
+
+            settings = new XmlReaderSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                IgnoreWhitespace = true,
+                IgnoreComments = true
+            };
+
+            using(var reader = XmlReader.Create(this.TocFile, settings))
+            {
+                // Write the table of contents with UTF-8 encoding
+                using(StreamWriter writer = new StreamWriter(Path.Combine(this.OutputFolder, "WebTOC.xml"), false,
+                  Encoding.UTF8))
+                {
+                    writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                    writer.WriteLine("<HelpTOC>");
+
+                    while(reader.Read())
+                        switch(reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if(reader.Name == "topic")
+                                {
+                                    key = reader.GetAttribute("file");
+
+                                    // Remove any sub-folder if present as the titles are keyed on the name alone
+                                    int dirSep = key.IndexOfAny(new[] { '/', '\\' });
+
+                                    if(dirSep != -1)
+                                        key = key.Substring(dirSep + 1);
+
+                                    if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                                    {
+                                        titleInfo = titles[key];
+                                        title = titleInfo.TocTitle;
+                                        htmlFile = titleInfo.File.Substring(baseFolderLength).Replace('\\', '/');
+                                    }
+                                    else
+                                    {
+                                        // Container only topic or unknown element, just use the title or ID attribute
+                                        htmlFile = null;
+                                        title = reader.GetAttribute("title");
+
+                                        if(String.IsNullOrEmpty(title))
+                                            title = reader.GetAttribute("id");
+
+                                        if(String.IsNullOrEmpty(title))
+                                            title = key;
+                                    }
+
+                                    indentCount = reader.Depth;
+                                    title = WebUtility.HtmlEncode(title);
+                                    htmlFile = WebUtility.HtmlEncode(htmlFile);
+
+                                    if(reader.IsEmptyElement)
+                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                            "<HelpTOCNode Title=\"{0}\" Url=\"{1}\" />", title, htmlFile));
+                                    else
+                                        if(htmlFile != null)
+                                    {
+                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\" Url=\"{2}\">", Guid.NewGuid(),
+                                            title, htmlFile));
+                                    }
+                                    else
+                                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
+                                            "<HelpTOCNode Id=\"{0}\" Title=\"{1}\">", Guid.NewGuid(), title));
+                                }
+                                break;
+
+                            case XmlNodeType.EndElement:
+                                if(reader.Name == "topic")
+                                    WriteContentLine(writer, reader.Depth, "</HelpTOCNode>");
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                    writer.WriteLine();
+                    writer.WriteLine("</HelpTOC>");
+                }
+            }
+        }
+#endregion
+
+#region Write out the website keyword index
+        //=====================================================================
+
+        /// <summary>
+        /// Write out the website keyword index
+        /// </summary>
+        private void WriteWebsiteKeywordIndex()
+        {
+            KeywordInfo kw;
+            string title;
+            int baseFolderLength = this.WebsiteFolder.Length + 1;
+
+            this.Log.LogMessage(@"Saving website keyword index to {0}\WebKI.xml", this.OutputFolder);
+
+            // Write the keyword index with UTF-8 encoding
+            using(StreamWriter writer = new StreamWriter(Path.Combine(this.OutputFolder, "WebKI.xml"), false,
+              Encoding.UTF8))
+            {
+                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                writer.Write("<HelpKI>");
+
+                foreach(var group in keywords.Where(k => !String.IsNullOrEmpty(k.MainEntry)).GroupBy(k => k.MainEntry))
+                    if(group.Count() == 1)
+                    {
+                        kw = group.First();
+
+                        if(!String.IsNullOrEmpty(kw.File))
+                            WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
+                                "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(kw.MainEntry),
+                                WebUtility.HtmlEncode(kw.File.Substring(baseFolderLength)).Replace('\\', '/')));
+                    }
+                    else
+                    {
+                        WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
+                             "<HelpKINode Title=\"{0}\">", WebUtility.HtmlEncode(group.Key)));
+
+                        foreach(var k in group)
+                            if(!String.IsNullOrEmpty(k.File))
+                                if(String.IsNullOrEmpty(k.SubEntry))
+                                {
+                                    // Use the target page's title as the entry's title as it will be fully
+                                    // qualified if necessary.
+                                    title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
+
+                                    WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
+                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(title),
+                                        WebUtility.HtmlEncode(k.File.Substring(baseFolderLength)).Replace('\\', '/')));
+                                }
+                                else
+                                    WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
+                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", WebUtility.HtmlEncode(k.SubEntry),
+                                        WebUtility.HtmlEncode(k.File.Substring(baseFolderLength)).Replace('\\', '/')));
+
+                        WriteContentLine(writer, 1, "</HelpKINode>");
+                    }
+
+                writer.WriteLine();
+                writer.WriteLine("</HelpKI>");
+            }
+        }
+#endregion
     }
 }
-

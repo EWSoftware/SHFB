@@ -117,6 +117,15 @@ are optional.  If omitted, no comments will be associated with the given assembl
 			</content>
 		</section>
 
+		<section>
+			<title>Version Builder Implementation</title>
+			<content>
+				<para>https://web.archive.org/web/20160106225519/http://blogs.msdn.com/b/sandcastle/archive/2007/10/03/sandcastle-september-2007-release-versionbuilder.aspx</para>
+
+				<para>https://web.archive.org/web/20160107020150/http://blogs.msdn.com/b/sandcastle/archive/2007/10/24/part-2-version-builder.aspx</para>
+			</content>
+		</section>
+
 		<relatedTopics>
 			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
 		</relatedTopics>

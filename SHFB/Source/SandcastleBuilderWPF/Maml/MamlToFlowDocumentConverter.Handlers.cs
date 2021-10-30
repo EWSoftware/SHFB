@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
+// Updated : 09/11/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the element handler methods for the MAML to flow document converter class
 //
@@ -39,7 +39,7 @@ using System.Xml.Linq;
 namespace SandcastleBuilder.WPF.Maml
 {
     // This contains the element handlers for the MAML to flow document converter
-    partial class MamlToFlowDocumentConverter
+    public partial class MamlToFlowDocumentConverter
 	{
         #region Helper methods
         //=====================================================================
@@ -269,10 +269,10 @@ namespace SandcastleBuilder.WPF.Maml
             // Map the class name to a title
             attribute = props.Element.Attribute("class");
 
-            if(attribute == null || !AlertTitles.TryGetValue(attribute.Value, out string title))
+            if(attribute == null || !alertTitles.TryGetValue(attribute.Value, out string title))
                 title = "Note";
 
-            if(attribute == null || !AlertIcons.TryGetValue(attribute.Value, out string icon))
+            if(attribute == null || !alertIcons.TryGetValue(attribute.Value, out string icon))
                 icon = "AlertNote";
 
             Section alert = new Section();
@@ -295,7 +295,7 @@ namespace SandcastleBuilder.WPF.Maml
             }));
 
             p.Inlines.Add(new Run(title));
-            p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.AlertTitle);
+            p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.AlertTitle);
 
             Section alertBody = new Section();
             alert.Blocks.Add(alertBody);
@@ -303,7 +303,7 @@ namespace SandcastleBuilder.WPF.Maml
             // We want the body section to be the current parent here rather than the containing section
             props.Converter.CurrentBlockElement = alertBody;
 
-            alertBody.SetResourceReference(Section.StyleProperty, NamedStyle.AlertBody);
+            alertBody.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.AlertBody);
         }
 
         /// <summary>
@@ -400,7 +400,7 @@ namespace SandcastleBuilder.WPF.Maml
             // Create the section that will hold the code block
             Section codeBlock = new Section();
             code.Blocks.Add(codeBlock);
-            codeBlock.SetResourceReference(Section.StyleProperty, NamedStyle.CodeBlock);
+            codeBlock.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.CodeBlock);
 
             Paragraph p = new Paragraph();
             codeBlock.Blocks.Add(p);
@@ -464,7 +464,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             Paragraph p = new Paragraph();
             props.Converter.AddToBlockContainer(p);
-            p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.Quote);
+            p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Quote);
         }
 
         /// <summary>
@@ -479,11 +479,11 @@ namespace SandcastleBuilder.WPF.Maml
                 Section s = new Section();
 
                 // If this is a named section, add the standard title
-                if(NamedSectionTitles.TryGetValue(props.Element.Name.LocalName, out string title))
+                if(namedSectionTitles.TryGetValue(props.Element.Name.LocalName, out string title))
                 {
                     Paragraph p = new Paragraph(new Run(title));
                     s.Blocks.Add(p);
-                    p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.Title);
+                    p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Title);
                 }
 
                 props.Converter.AddToBlockContainer(s);
@@ -525,7 +525,7 @@ namespace SandcastleBuilder.WPF.Maml
                 Paragraph p = new Paragraph(new Run(reCondenseWhitespace.Replace(
                     props.Element.Value.Trim(), " ")));
                 props.Converter.AddToBlockContainer(p);
-                p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.Title);
+                p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Title);
             }
 
             props.ParseChildren = false;
@@ -543,7 +543,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             Paragraph p = new Paragraph();
             props.Converter.AddToBlockContainer(p);
-            p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.DefinedTerm);
+            p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.DefinedTerm);
         }
 
         /// <summary>
@@ -554,7 +554,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             Section s = new Section();
             props.Converter.AddToBlockContainer(s);
-            s.SetResourceReference(Section.StyleProperty, NamedStyle.Definition);
+            s.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Definition);
         }
 
         /// <summary>
@@ -620,9 +620,9 @@ namespace SandcastleBuilder.WPF.Maml
             props.Converter.AddToBlockContainer(s);
 
             // Add the section title
-            Paragraph p = new Paragraph(new Run(NamedSectionTitles[props.Element.Name.LocalName]));
+            Paragraph p = new Paragraph(new Run(namedSectionTitles[props.Element.Name.LocalName]));
             s.Blocks.Add(p);
-            p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.Title);
+            p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Title);
 
             // Expand tokens first
             foreach(var link in props.Element.Nodes().OfType<XElement>().Where(n => n.Name.LocalName == "token"))
@@ -696,11 +696,11 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 p = new Paragraph(new Run(sectionTitle));
                 s.Blocks.Add(p);
-                p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.RelatedTopicTitle);
+                p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.RelatedTopicTitle);
 
                 p = new Paragraph();
                 s.Blocks.Add(p);
-                p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.NoTopMargin);
+                p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.NoTopMargin);
 
                 foreach(var link in links)
                 {
@@ -780,8 +780,10 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 var bm = new BitmapImage();
 
-                // Cache on load to prevent it locking the image
+                // Cache on load to prevent it locking the image and ignore the cache so that changes to the
+                // image are reflected in the topic when reloaded.
                 bm.BeginInit();
+                bm.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bm.CacheOption = BitmapCacheOption.OnLoad;
                 bm.UriSource = new Uri(imageInfo.Key);
                 bm.EndInit();
@@ -873,8 +875,10 @@ namespace SandcastleBuilder.WPF.Maml
             {
                 var bm = new BitmapImage();
 
-                // Cache on load to prevent it locking the image
+                // Cache on load to prevent it locking the image and ignore the cache so that changes to the
+                // image are reflected in the topic when reloaded.
                 bm.BeginInit();
+                bm.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bm.CacheOption = BitmapCacheOption.OnLoad;
                 bm.UriSource = new Uri(imageInfo.Key);
                 bm.EndInit();
@@ -921,7 +925,7 @@ namespace SandcastleBuilder.WPF.Maml
                 Paragraph p = new Paragraph(new Run(reCondenseWhitespace.Replace(title.Value.Trim(), " ")));
                 props.Converter.AddNonParentToBlockContainer(p);
 
-                p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.TableTitle);
+                p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.TableTitle);
             }
 
             props.Converter.AddToBlockContainer(new Table());
@@ -935,7 +939,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             var g = new TableRowGroup();
             props.Converter.AddToBlockContainer(g);
-            g.SetResourceReference(TableRowGroup.StyleProperty, NamedStyle.TableHeaderRow);
+            g.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.TableHeaderRow);
         }
 
         /// <summary>
@@ -988,7 +992,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             Span s = new Span();
             props.Converter.AddInlineToContainer(s);
-            s.SetResourceReference(Run.StyleProperty, NamedStyle.CodeInline);
+            s.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.CodeInline);
         }
 
         /// <summary>
@@ -1019,7 +1023,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             Span s = new Span();
             props.Converter.AddInlineToContainer(s);
-            s.SetResourceReference(Span.StyleProperty, NamedStyle.Literal);
+            s.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Literal);
         }
 
         /// <summary>
@@ -1030,7 +1034,7 @@ namespace SandcastleBuilder.WPF.Maml
         {
             Italic i = new Italic();
             props.Converter.AddInlineToContainer(i);
-            i.SetResourceReference(Italic.StyleProperty, NamedStyle.Math);
+            i.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Math);
         }
 
         /// <summary>
@@ -1194,11 +1198,9 @@ namespace SandcastleBuilder.WPF.Maml
         /// <param name="props">The element properties</param>
         private static void LinkElement(ElementProperties props)
         {
-            XAttribute href;
-            string id, title;
-            int pos;
+            string id;
 
-            href = props.Element.Attribute(xlink + "href");
+            XAttribute href = props.Element.Attribute(xlink + "href");
 
             if(href != null)
                 id = href.Value;
@@ -1210,12 +1212,12 @@ namespace SandcastleBuilder.WPF.Maml
             // Add the topic title as the link text if there is no inner text
             if(!props.ParseChildren)
             {
-                pos = id.IndexOf('#');
+                int pos = id.IndexOf('#');
 
                 if(pos != -1)
                     id = id.Substring(0, pos);
 
-                if(!props.Converter.TopicTitles.TryGetValue(id, out title))
+                if(!props.Converter.TopicTitles.TryGetValue(id, out string title))
                     title = "[UNKNOWN TOPIC ID: " + id + "]";
 
                 props.Converter.AddInlineToContainer(new Run(title));
@@ -1239,15 +1241,12 @@ namespace SandcastleBuilder.WPF.Maml
         private static void AutoOutlineElement(ElementProperties props)
         {
             XElement parent;
-            XAttribute attribute;
-            List list;
             string leadText = String.Empty;
             bool excludeRelatedTopics, isInIntro = (props.Element.Parent.Name.LocalName == "introduction");
-            int maxDepth;
 
             props.ParseChildren = props.ReturnToParent = false;
 
-            attribute = props.Element.Attribute("lead");
+            XAttribute attribute = props.Element.Attribute("lead");
 
             if(attribute != null)
             {
@@ -1285,7 +1284,7 @@ namespace SandcastleBuilder.WPF.Maml
                 excludeRelatedTopics = true;
             }
 
-            if(String.IsNullOrEmpty(props.Element.Value) || !Int32.TryParse(props.Element.Value, out maxDepth))
+            if(String.IsNullOrEmpty(props.Element.Value) || !Int32.TryParse(props.Element.Value, out int maxDepth))
                 maxDepth = 0;
 
             Section s = new Section();
@@ -1300,7 +1299,7 @@ namespace SandcastleBuilder.WPF.Maml
 
             if(parent != null)
             {
-                list = InsertAutoOutline(parent, 0, maxDepth);
+                List list = InsertAutoOutline(parent, 0, maxDepth);
 
                 if(list != null)
                 {
@@ -1403,9 +1402,7 @@ namespace SandcastleBuilder.WPF.Maml
                 props.Element.Nodes().Aggregate("", (c, node) => c += node.ToString()), String.Empty);
 
             // This can be a block or inline element depending on the parent element
-            Span span = props.Converter.CurrentSpanElement as Span;
-
-            if(span != null)
+            if(props.Converter.CurrentSpanElement is Span span)
             {
                 Run r = new Run
                 {
@@ -1418,9 +1415,7 @@ namespace SandcastleBuilder.WPF.Maml
             }
             else
             {
-                Paragraph p = props.Converter.CurrentBlockElement as Paragraph;
-
-                if(p != null)
+                if(props.Converter.CurrentBlockElement is Paragraph p)
                 {
                     Run r = new Run
                     {
@@ -1440,7 +1435,7 @@ namespace SandcastleBuilder.WPF.Maml
                     s.Blocks.Add(p);
                     p.Inlines.Add(new Run(StripLeadingWhitespace(content, 4)));
 
-                    s.SetResourceReference(Section.StyleProperty, NamedStyle.CodeBlock);
+                    s.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.CodeBlock);
                 }
             }
 
@@ -1453,9 +1448,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// <param name="props">The element properties</param>
         private static void TokenElement(ElementProperties props)
         {
-            XElement token;
-
-            if(props.Converter.Tokens.TryGetValue(props.Element.Value.Trim(), out token))
+            if(props.Converter.Tokens.TryGetValue(props.Element.Value.Trim(), out XElement token))
             {
                 props.Converter.ParseChildren(token.Nodes());
 
@@ -1464,7 +1457,7 @@ namespace SandcastleBuilder.WPF.Maml
             }
             else
             {
-                props.Converter.AddInlineToContainer(new Bold(new Run(String.Format(CultureInfo.InvariantCulture, 
+                props.Converter.AddInlineToContainer(new Bold(new Run(String.Format(CultureInfo.InvariantCulture,
                     "[MISSING TOKEN: {0}]", props.Element.Value.Trim()))));
 
                 // We just added a bold span so it will need to go back to the last parent
@@ -1507,7 +1500,7 @@ namespace SandcastleBuilder.WPF.Maml
                 p = new Paragraph(new Run(reCondenseWhitespace.Replace(titleElement.Value.Trim(), " ")));
                 glossary.Blocks.Add(p);
 
-                p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.Title);
+                p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.Title);
             }
 
             // See if there are divisions.  If so, add one section for each division.  If not, lump all entries
@@ -1565,8 +1558,7 @@ namespace SandcastleBuilder.WPF.Maml
 
             // Extract all glossary entries for use in creating the divisions.  Entries may refer to related
             // entries in other divisions so we need to get them all up front.
-            entries.AddRange(props.Element.Descendants(
-                MamlToFlowDocumentConverter.ddue + "glossaryEntry").Select(g => new GlossaryEntry(g)));
+            entries.AddRange(props.Element.Descendants(ddue + "glossaryEntry").Select(g => new GlossaryEntry(g)));
 
             // Render each division
             foreach(var d in divisions)
@@ -1579,7 +1571,7 @@ namespace SandcastleBuilder.WPF.Maml
                     id = titleAndId.Id;
                     p = new Paragraph(new Run(titleAndId.Title)) { Name = id };
                     glossary.Blocks.Add(p);
-                    p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.GlossaryDivisionTitle);
+                    p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.GlossaryDivisionTitle);
                 }
                 else
                 {
@@ -1630,7 +1622,7 @@ namespace SandcastleBuilder.WPF.Maml
             }
 
             converter.AddNonParentToBlockContainer(p);
-            p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.GlossaryLetterBar);
+            p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.GlossaryLetterBar);
 
             foreach(var g in groupLetters)
             {
@@ -1640,14 +1632,14 @@ namespace SandcastleBuilder.WPF.Maml
                 });
 
                 converter.AddNonParentToBlockContainer(p);
-                p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.GlossaryLetterTitle);
+                p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.GlossaryLetterTitle);
 
                 foreach(var entry in g)
                 {
                     s = new Section();
 
                     converter.AddNonParentToBlockContainer(s);
-                    s.SetResourceReference(Section.StyleProperty, NamedStyle.GlossaryDefinition);
+                    s.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.GlossaryDefinition);
 
                     p = new Paragraph();
                     isFirst = true;
@@ -1666,7 +1658,7 @@ namespace SandcastleBuilder.WPF.Maml
                     }
 
                     s.Blocks.Add(p);
-                    p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.NoMargin);
+                    p.SetResourceReference(FrameworkContentElement.StyleProperty, NamedStyle.NoMargin);
 
                     converter.ParseChildren(s, entry.Definition.Nodes());
 

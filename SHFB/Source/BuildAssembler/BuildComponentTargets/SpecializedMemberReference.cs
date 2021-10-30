@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a specialized member reference
@@ -23,12 +23,13 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the template member
         /// </summary>
-        public SimpleMemberReference TemplateMember { get; private set; }
+        public SimpleMemberReference TemplateMember { get; }
 
         /// <summary>
         /// This read-only property returns the specialized type
         /// </summary>
-        public SpecializedTypeReference SpecializedType { get; private set; }
+        public SpecializedTypeReference SpecializedType { get; }
+
         #endregion
 
         #region Constructor
@@ -37,19 +38,13 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="templateMember"></param>
-        /// <param name="specializedType"></param>
+        /// <param name="templateMember">The template member</param>
+        /// <param name="specializedType">The specialized type</param>
         public SpecializedMemberReference(SimpleMemberReference templateMember,
           SpecializedTypeReference specializedType)
         {
-            if(templateMember == null)
-                throw new ArgumentNullException("templateMember");
-
-            if(specializedType == null)
-                throw new ArgumentNullException("specializedType");
-
-            this.TemplateMember = templateMember;
-            this.SpecializedType = specializedType;
+            this.TemplateMember = templateMember ?? throw new ArgumentNullException(nameof(templateMember));
+            this.SpecializedType = specializedType ?? throw new ArgumentNullException(nameof(specializedType));
         }
         #endregion
     }

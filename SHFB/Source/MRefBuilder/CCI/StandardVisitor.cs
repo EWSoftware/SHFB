@@ -527,6 +527,7 @@ namespace System.Compiler
             aliasDefinition.AliasedType = this.VisitTypeReference(aliasDefinition.AliasedType);
             return aliasDefinition;
         }
+
         public virtual AliasDefinitionList VisitAliasDefinitionList(AliasDefinitionList aliasDefinitions)
         {
             if (aliasDefinitions == null) return null;
@@ -534,6 +535,7 @@ namespace System.Compiler
                 aliasDefinitions[i] = this.VisitAliasDefinition(aliasDefinitions[i]);
             return aliasDefinitions;
         }
+
         public virtual Expression VisitAnonymousNestedFunction(AnonymousNestedFunction func)
         {
             if (func == null) return null;
@@ -541,6 +543,7 @@ namespace System.Compiler
             func.Body = this.VisitBlock(func.Body);
             return func;
         }
+
         public virtual Expression VisitApplyToAll(ApplyToAll applyToAll)
         {
             if (applyToAll == null) return null;
@@ -548,11 +551,13 @@ namespace System.Compiler
             applyToAll.Operand2 = this.VisitExpression(applyToAll.Operand2);
             return applyToAll;
         }
+
+        /*
         public ArrayType VisitArrayType(ArrayType array)
         {
             Debug.Assert(false, "An array type exists only at runtime. It should be referred to, but never visited.");
             return null;
-        }
+        }*/
 
         public virtual AssemblyNode VisitAssembly(AssemblyNode assembly)
         {
@@ -688,13 +693,17 @@ namespace System.Compiler
         }
         public virtual Compilation VisitCompilation(Compilation compilation)
         {
-            if (compilation == null) return null;
+            if (compilation == null)
+                return null;
+            
             Module module = compilation.TargetModule;
+            
             if (module != null)
                 module.Attributes = this.VisitAttributeList(module.Attributes);
-            AssemblyNode assem = module as AssemblyNode;
-            if (assem != null)
+            
+            if(module is AssemblyNode assem)
                 assem.ModuleAttributes = this.VisitAttributeList(assem.ModuleAttributes);
+            
             compilation.CompilationUnits = this.VisitCompilationUnitList(compilation.CompilationUnits);
             return compilation;
         }
@@ -850,8 +859,7 @@ namespace System.Compiler
                 case NodeType.Arglist:
                     return expression;
                 case NodeType.Pop:
-                    UnaryExpression uex = expression as UnaryExpression;
-                    if (uex != null)
+                    if(expression is UnaryExpression uex)
                     {
                         uex.Operand = this.VisitExpression(uex.Operand);
                         return uex;
@@ -1058,14 +1066,14 @@ namespace System.Compiler
         }
         public virtual Expression VisitLocal(Local local)
         {
-            if (local == null) return null;
+            if (local == null)
+                return null;
+            
             local.Type = this.VisitTypeReference(local.Type);
 
-            LocalBinding lb = local as LocalBinding;
-            if (lb != null)
+            if(local is LocalBinding lb)
             {
-                Local loc = this.VisitLocal(lb.BoundLocal) as Local;
-                if (loc != null)
+                if(this.VisitLocal(lb.BoundLocal) is Local loc)
                     lb.BoundLocal = loc;
             }
 
@@ -1219,16 +1227,16 @@ namespace System.Compiler
 
         public virtual Expression VisitParameter(Parameter parameter)
         {
-            if (parameter == null) return null;
+            if (parameter == null)
+                return null;
+            
             parameter.Attributes = this.VisitAttributeList(parameter.Attributes);
             parameter.Type = this.VisitTypeReference(parameter.Type);
             parameter.DefaultValue = this.VisitExpression(parameter.DefaultValue);
-            ParameterBinding pb = parameter as ParameterBinding;
 
-            if (pb != null)
+            if(parameter is ParameterBinding pb)
             {
-                Parameter par = this.VisitParameter(pb.BoundParameter) as Parameter;
-                if (par != null)
+                if(this.VisitParameter(pb.BoundParameter) is Parameter par)
                     pb.BoundParameter = par;
             }
 
@@ -1435,26 +1443,29 @@ namespace System.Compiler
         {
             return this.VisitExpression(expression);
         }
+        
         public virtual Expression VisitTernaryExpression(TernaryExpression expression)
         {
-            if (expression == null) return null;
+            if (expression == null)
+                return null;
+            
             expression.Operand1 = this.VisitExpression(expression.Operand1);
             expression.Operand2 = this.VisitExpression(expression.Operand2);
             expression.Operand3 = this.VisitExpression(expression.Operand3);
+            
             return expression;
         }
+        
         public virtual Expression VisitThis(This This)
         {
             if(This == null)
                 return null;
 
             This.Type = this.VisitTypeReference(This.Type);
-            ThisBinding tb = This as ThisBinding;
 
-            if (tb != null)
+            if(This is ThisBinding tb)
             {
-                This boundThis = this.VisitThis(tb.BoundThis) as This;
-                if (boundThis != null)
+                if(this.VisitThis(tb.BoundThis) is This boundThis)
                     tb.BoundThis = boundThis;
             }
 
@@ -1600,13 +1611,8 @@ namespace System.Compiler
         /// that allow extensions and differing views of types.]
         /// null can be returned to represent an identity-function type viewer.
         /// </summary>
-        public virtual TypeViewer TypeViewer
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual TypeViewer TypeViewer => null;
+
         /// <summary>
         /// Return the current scope's view of the argument type, by asking the current scope's type viewer.
         /// </summary>

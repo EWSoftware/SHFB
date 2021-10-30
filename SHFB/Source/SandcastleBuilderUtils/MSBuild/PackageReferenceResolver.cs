@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : PackageReferenceResolver.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/21/2021
+// Updated : 04/30/2021
 // Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to resolve PackageReference elements in MSBuild project files
@@ -21,9 +21,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 using Microsoft.Build.Evaluation;
-using Newtonsoft.Json.Linq;
+
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.MSBuild
@@ -42,7 +43,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
         private readonly BuildProcess buildProcess;
         private readonly HashSet<string> resolvedDependencies, packageReferences, implicitPackageFolders;
-        private JToken packages;
+        private JsonProperty? packages;
         private string projectFilename;
         private string[] nugetPackageFolders;
 
@@ -59,7 +60,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         {
             get
             {
-                if(packages != null || packageReferences.Count != 0 && nugetPackageFolders != null)
+                if(packages != null && packageReferences.Count != 0 && nugetPackageFolders != null)
                 {
                     foreach(string assembly in this.ResolvePackageReferencesInternal(packageReferences))
                         foreach(string folder in nugetPackageFolders)
@@ -106,6 +107,12 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <returns>True if package reference info was loaded, false if not</returns>
         public bool LoadPackageReferenceInfo(Project project, string targetFramework)
         {
+            if(project == null)
+                throw new ArgumentNullException(nameof(project));
+
+            if(targetFramework == null)
+                throw new ArgumentNullException(nameof(targetFramework));
+
             packages = null;
             resolvedDependencies.Clear();
             packageReferences.Clear();
@@ -129,12 +136,18 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     if(!String.IsNullOrWhiteSpace(assetFile) && File.Exists(assetFile))
                     {
-                        var packageInfo = JObject.Parse(File.ReadAllText(assetFile));
-                        var targets = packageInfo["targets"];
+                        JsonElement root;
 
-                        if(targets != null)
+                        using(JsonDocument packageInfo = JsonDocument.Parse(File.ReadAllText(assetFile),
+                          new JsonDocumentOptions { AllowTrailingCommas = true,
+                            CommentHandling = JsonCommentHandling.Skip }))
                         {
-                            packages = ((JProperty)targets.First()).Value;
+                            root = packageInfo.RootElement.Clone();
+                        }
+
+                        if(root.TryGetProperty("targets", out JsonElement targets))
+                        {
+                            packages = targets.EnumerateObject().First();
 
                             string folders = project.GetPropertyValue("NuGetPackageFolders");
 
@@ -160,51 +173,49 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                         // See if there's a frameworks element.  If so, get the package names from it to use
                         // with the implicit package references below.
-                        JToken frameworks = null;
-
-                        var projectNode = packageInfo["project"];
-
-                        if(projectNode != null)
-                            frameworks = projectNode["frameworks"];
-
-                        if(frameworks != null && frameworks.Count() != 0)
+                        if(root.TryGetProperty("project", out JsonElement projectNode))
                         {
-                            var references = (JObject)frameworks[((JObject)frameworks).Properties().First().Name]["frameworkReferences"];
-
-                            if(references != null)
+                            if(projectNode.TryGetProperty("frameworks", out JsonElement frameworks) &&
+                              frameworks.EnumerateObject().Any())
                             {
-                                foreach(JProperty prop in references.Properties())
+                                var f = frameworks.EnumerateObject().First();
+
+                                if(f.Value.TryGetProperty("frameworkReferences", out JsonElement references))
                                 {
-                                    string rootPath = Path.Combine(targetingPackRoot, prop.Name);
-
-                                    // Most exist with a ".Ref" suffix
-                                    if(!Directory.Exists(rootPath))
+                                    foreach(var prop in references.EnumerateObject())
                                     {
-                                        rootPath += ".Ref";
+                                        string rootPath = Path.Combine(targetingPackRoot, prop.Name);
 
-                                        // We may need to strip off the last part of the identifier (i.e. ".Windows")
+                                        // Most exist with a ".Ref" suffix
                                         if(!Directory.Exists(rootPath))
                                         {
-                                            rootPath = rootPath.Substring(0, rootPath.Length - 4);
+                                            rootPath += ".Ref";
 
-                                            int dot = rootPath.LastIndexOf('.');
-
-                                            if(dot != -1)
+                                            // We may need to strip off the last part of the identifier (i.e. ".Windows")
+                                            if(!Directory.Exists(rootPath))
                                             {
-                                                rootPath = rootPath.Substring(0, dot);
+                                                rootPath = rootPath.Substring(0, rootPath.Length - 4);
 
-                                                if(!Directory.Exists(rootPath))
-                                                    rootPath += ".Ref";
+                                                int dot = rootPath.LastIndexOf('.');
+
+                                                if(dot != -1)
+                                                {
+                                                    rootPath = rootPath.Substring(0, dot);
+
+                                                    if(!Directory.Exists(rootPath))
+                                                        rootPath += ".Ref";
+                                                }
                                             }
+                                        }
+
+                                        if(Directory.Exists(rootPath))
+                                        {
+                                            foreach(string path in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories))
+                                                if(path.EndsWith(targetFramework, StringComparison.OrdinalIgnoreCase))
+                                                    implicitPackageFolders.Add(path);
                                         }
                                     }
 
-                                    if(Directory.Exists(rootPath))
-                                    {
-                                        foreach(string path in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories))
-                                            if(path.EndsWith(targetFramework, StringComparison.OrdinalIgnoreCase))
-                                                implicitPackageFolders.Add(path);
-                                    }
                                 }
                             }
                         }
@@ -267,7 +278,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     }
                 }
             }
-
+            
             return (packages != null && packageReferences.Count != 0) || implicitPackageFolders.Count != 0;
         }
 
@@ -285,54 +296,61 @@ namespace SandcastleBuilder.Utils.MSBuild
             foreach(var p in referencesToResolve)
                 try
                 {
+                    JsonElement? match = null;
                     string packageName = p;
 
                     resolvedDependencies.Add(packageName);
 
-                    var match = packages[packageName];
-
                     // If we don't get a match, try it with ".0" on the end.  Sometimes the reference version
                     // leaves it off.
-                    if(match == null)
+                    if(!packages.Value.Value.TryGetProperty(packageName, out JsonElement m))
                     {
                         packageName += ".0";
-                        match = packages[packageName];
 
-                        if(match != null)
+                        if(packages.Value.Value.TryGetProperty(packageName, out m))
+                        {
                             resolvedDependencies.Add(packageName);
+                            match = m;
+                        }
                     }
+                    else
+                        match = m;
 
                     if(match != null)
                     {
-                        var assemblyInfo = match["compile"] ?? match["runtime"];
+                        JsonElement? assemblyInfo = null;
+
+                        if(match.Value.TryGetProperty("compile", out JsonElement c))
+                            assemblyInfo = c;
+                        else
+                        {
+                            if(match.Value.TryGetProperty("runtime", out JsonElement r))
+                                assemblyInfo = r;
+                        }
 
                         if(assemblyInfo != null)
                         {
-                            foreach(string assemblyName in assemblyInfo.Select(a => ((JProperty)a).Name))
+                            foreach(var assemblyName in assemblyInfo.Value.EnumerateObject())
                             {
                                 // Ignore mscorlib.dll as it's types will have been redirected elsewhere so we
                                 // don't need it.  "_._" occurs in the framework SDK packages and we can ignore
                                 // it too.
-                                if(!assemblyName.EndsWith("/mscorlib.dll", StringComparison.OrdinalIgnoreCase) &&
-                                  !assemblyName.EndsWith("_._", StringComparison.Ordinal))
+                                if(!assemblyName.Name.EndsWith("/mscorlib.dll", StringComparison.OrdinalIgnoreCase) &&
+                                  !assemblyName.Name.EndsWith("_._", StringComparison.Ordinal))
                                 {
-                                    references.Add(Path.Combine(packageName, assemblyName));
+                                    references.Add(Path.Combine(packageName, assemblyName.Name));
                                 }
                             }
                         }
 
-                        var dependencies = match["dependencies"];
-
-                        if(dependencies != null)
+                        if(match.Value.TryGetProperty("dependencies", out JsonElement dependencies))
                         {
-                            var deps = dependencies.Cast<JProperty>().Select(
-                                t => t.Name + "/" + t.ToObject<string>()).Where(
-                                    d => !resolvedDependencies.Contains(d)).ToList();
+                            var deps = dependencies.EnumerateObject().Select(t => t.Name + "/" + t.Value).Where(
+                                d => !resolvedDependencies.Contains(d)).ToList();
 
                             if(deps.Count != 0)
                             {
-                                // Track the ones we've seen to prevent getting stuck due to circular
-                                // references.
+                                // Track the ones we've seen to prevent getting stuck due to circular references
                                 resolvedDependencies.UnionWith(deps);
                                 references.UnionWith(this.ResolvePackageReferencesInternal(deps));
                             }

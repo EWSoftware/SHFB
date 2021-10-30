@@ -21,7 +21,7 @@ namespace Sandcastle.Core.BuildAssembler
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, IXsltContextVariable> variables = new Dictionary<string, IXsltContextVariable>();
+        private readonly Dictionary<string, IXsltContextVariable> variables = new Dictionary<string, IXsltContextVariable>();
 
         #endregion
 
@@ -59,14 +59,8 @@ namespace Sandcastle.Core.BuildAssembler
         /// <returns>The variable value as a string</returns>
         public string this[string variable]
         {
-            get
-            {
-                return variables[variable].Evaluate(this).ToString();
-            }
-            set
-            {
-                variables[variable] = new CustomVariable(value);
-            }
+            get => variables[variable].Evaluate(this).ToString();
+            set => variables[variable] = new CustomVariable(value);
         }
 
         /// <summary>
@@ -124,10 +118,7 @@ namespace Sandcastle.Core.BuildAssembler
 
         /// <inheritdoc />
         /// <value>This implementation always returns true</value>
-        public override bool Whitespace
-        {
-            get { return true; }
-        }
+        public override bool Whitespace => true;
 
         /// <inheritdoc />
         /// <remarks>This implementation always returns true</remarks>

@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a pointer type reference
@@ -23,7 +23,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the pointed to type
         /// </summary>
-        public TypeReference PointedToType { get; private set; }
+        public TypeReference PointedToType { get; }
+
         #endregion
 
         #region Constructor
@@ -35,10 +36,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="pointedToType">The pointed to type</param>
         public PointerTypeReference(TypeReference pointedToType)
         {
-            if(pointedToType == null)
-                throw new ArgumentNullException("pointedToType");
-
-            this.PointedToType = pointedToType;
+            this.PointedToType = pointedToType ?? throw new ArgumentNullException(nameof(pointedToType));
         }
         #endregion
     }

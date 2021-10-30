@@ -11,18 +11,16 @@ package.</para>
 		</introduction>
 
 		<section address="StandardFeatures">
-			<title>IntelliSense for the MAML Schema</title>
+			<title>IntelliSense for the MAML Schemas</title>
 			<content>
 				<para>When editing MAML topics, you can take advantage of IntelliSense to help you enter the MAML
-elements, their attributes, and attribute values.  In order to do this, use the option in the guided installer
-to install the MAML schemas in the Visual Studio IntelliSense cache.  If you did not do it when you first
-installed the tools, you can re-run the installer and skip down to the step that installs them.</para>
-
-				<alert class="note">
-					<para>Updates to Visual Studio may reset the global schema cache undoing the changes made by the guided
-installer.  If that happens and you no longer see IntelliSense for MAML files, simply rerun the guided installer
-and apply the changes again.</para>
-				</alert>
+elements, their attributes, and attribute values.  The MAML schemas are installed in the Visual Studio schema
+cache by the package.  In addition, hovering the mouse over a link or image target ID will show you information
+about the target file (title, filename, etc.).  This is useful as most items are identified by a GUID and the
+quick info tooltip can provide a better idea of what the link will go to.  If you Ctrl+Click on the link target,
+the item will be opened in the related text or image editor.  This feature (Go to Definition) is available in
+both MAML topic files as well as XML comments elements in source code.  Note that the Go to Definition feature
+must be enabled in the help file builder options in order to work.</para>
 			</content>
 		</section>
 
@@ -58,8 +56,8 @@ it rather than editing the text by hand to encode the special characters.</para>
 MAML elements.  This is useful if you are not yet familiar with the various common MAML elements or for quickly
 inserting block elements that have several parts like the <codeInline>externalLink</codeInline> element.  In
 order to do this, use the option in the guided installer to install the MAML snippets in the Visual Studio
-snippet cache.  If you did not do it when you first installed the tools, you can re-run the installer and skip
-down to the step that installs them.</para>
+snippet cache.  If you did not do it when you first installed the tools, you can re-run the guided installer and
+skip down to the step that installs them.</para>
 
 				<para>To take advantage of the MAML snippets, use one of the following snippet insertion commands:</para>
 

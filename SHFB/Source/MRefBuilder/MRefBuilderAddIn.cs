@@ -5,7 +5,7 @@
 
 using System.Xml.XPath;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools
 {
     /// <summary>
     /// This serves as the base class for MRefBuilder add-ins

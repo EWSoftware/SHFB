@@ -2,9 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2019
-// Note    : Copyright 2012-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/06/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class that is used to contain information about a location and the assemblies for a
 // specific location.
@@ -45,7 +44,7 @@ namespace Sandcastle.Core.Reflection
 
         private string storedPath;
 
-        private BindingList<AssemblyDetails> assemblyDetails;
+        private readonly BindingList<AssemblyDetails> assemblyDetails;
 
         #endregion
 

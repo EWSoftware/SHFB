@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ProjectElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/24/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a wrapper class for build items in the project
 //
@@ -37,6 +36,7 @@ namespace SandcastleBuilder.Utils
 
         private SandcastleProject projectFile;
         private ProjectItem item;
+
         #endregion
 
         #region Properties
@@ -48,7 +48,7 @@ namespace SandcastleBuilder.Utils
         [Browsable(false)]
         protected internal string ItemType
         {
-            get { return item.ItemType; }
+            get => item.ItemType;
             set
             {
                 if(item.ItemType != value)
@@ -65,7 +65,7 @@ namespace SandcastleBuilder.Utils
         [Browsable(false)]
         public string Include
         {
-            get { return item.UnevaluatedInclude; }
+            get => item.UnevaluatedInclude;
             set
             {
                 if(item.UnevaluatedInclude != value)
@@ -74,7 +74,7 @@ namespace SandcastleBuilder.Utils
                         throw new ArgumentException("The filename cannot be blank and cannot contain wildcards (* or ?)");
 
                     // Folder items must end in a backslash
-                    if(item.ItemType == Utils.BuildAction.Folder.ToString() && value[value.Length - 1] != '\\')
+                    if(item.ItemType == BuildAction.Folder.ToString() && value[value.Length - 1] != '\\')
                         value += @"\";
 
                     item.UnevaluatedInclude = value;
@@ -87,10 +87,8 @@ namespace SandcastleBuilder.Utils
         /// This read-only property is used to get the containing project
         /// </summary>
         [Browsable(false)]
-        public SandcastleProject Project
-        {
-            get { return projectFile; }
-        }
+        public SandcastleProject Project => projectFile;
+
         #endregion
 
         #region Constructors
@@ -104,14 +102,8 @@ namespace SandcastleBuilder.Utils
         /// <overloads>There are two overloads for the constructor</overloads>
         protected ProjectElement(SandcastleProject project, ProjectItem existingItem)
         {
-            if(project == null)
-                throw new ArgumentNullException("project");
-
-            if(existingItem == null)
-                throw new ArgumentNullException("existingItem");
-
-            projectFile = project;
-            item = existingItem;
+            projectFile = project ?? throw new ArgumentNullException(nameof(project));
+            item = existingItem ?? throw new ArgumentNullException(nameof(existingItem));
         }
 
         /// <summary>
@@ -123,18 +115,15 @@ namespace SandcastleBuilder.Utils
         /// variable references.</param>
         protected ProjectElement(SandcastleProject project, string itemType, string itemPath)
         {
-            if(project == null)
-                throw new ArgumentNullException("project");
-
             if(String.IsNullOrEmpty(itemPath))
-                throw new ArgumentException("Cannot be null or empty", "itemPath");
+                throw new ArgumentException("Cannot be null or empty", nameof(itemPath));
 
             if(String.IsNullOrEmpty(itemType))
-                throw new ArgumentException("Cannot be null or empty", "itemType");
+                throw new ArgumentException("Cannot be null or empty", nameof(itemType));
 
-            projectFile = project;
+            projectFile = project ?? throw new ArgumentNullException(nameof(project));
 
-            if(itemType == Utils.BuildAction.Folder.ToString() && itemPath[itemPath.Length - 1] != '\\')
+            if(itemType == BuildAction.Folder.ToString() && itemPath[itemPath.Length - 1] != '\\')
                 itemPath += @"\";
 
             item = project.MSBuildProject.AddItem(itemType, itemPath)[0];
@@ -156,10 +145,7 @@ namespace SandcastleBuilder.Utils
         /// <param name="propertyName">The property name that changed</param>
         protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            var handler = PropertyChanged;
-
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -255,11 +241,11 @@ namespace SandcastleBuilder.Utils
         public static bool operator == (ProjectElement element1, ProjectElement element2)
         {
             // Do they reference the same element?
-            if(Object.ReferenceEquals(element1, element2))
+            if(ReferenceEquals(element1, element2))
                 return true;
 
-            // Check null reference first (cast to object first to avoid stack overflow)
-            if(element1 as object == null || element2 as object == null)
+            // Check null reference first
+            if(element1 is null || element2 is null)
                 return false;
 
             // Do they reference the same project?
@@ -267,7 +253,7 @@ namespace SandcastleBuilder.Utils
                 return false;
 
             return String.Equals(element1.GetMetadata(BuildItemMetadata.IncludePath),
-                element2.GetMetadata(BuildItemMetadata.IncludePath), StringComparison.CurrentCultureIgnoreCase);
+                element2.GetMetadata(BuildItemMetadata.IncludePath), StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

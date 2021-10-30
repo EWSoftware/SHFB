@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/11/2021
+// Updated : 10/05/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the project class.
@@ -122,13 +122,6 @@ namespace SandcastleBuilder.Utils
         /// <summary>The default platform</summary>
         public const string DefaultPlatform = "AnyCPU";
 
-        // Restricted property names that cannot be used for user-defined property names
-        internal static HashSet<string> restrictedProps = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
-            "AssemblyName", "Configuration", "CustomAfterSHFBTargets", "CustomBeforeSHFBTargets",
-            "DumpLogOnFailure", "Name", "Platform", "PostBuildEvent", "PreBuildEvent", "ProjectGuid",
-            "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName", "SccProvider",
-            "SchemaVersion", "SHFBSchemaVersion", "TransformComponentArguments", "Verbose" };
-
         #endregion
 
         #region Private data members
@@ -178,6 +171,17 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
+        /// This returns a collection of restricted property names that cannot be used for user-defined property
+        /// names.
+        /// </summary>
+        public static IReadOnlyCollection<string> RestrictedProperties { get; } =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+                "AssemblyName", "Configuration", "CustomAfterSHFBTargets", "CustomBeforeSHFBTargets",
+                "DumpLogOnFailure", "Name", "Platform", "PostBuildEvent", "PreBuildEvent", "ProjectGuid",
+                "RootNamespace", "RunPostBuildEvent", "SccAuxPath", "SccLocalPath", "SccProjectName",
+                "SccProvider", "SchemaVersion", "SHFBSchemaVersion", "TransformComponentArguments", "Verbose" };
+
+        /// <summary>
         /// This read-only property returns the MSBuild project property cache
         /// </summary>
         private Dictionary<string, ProjectProperty> ProjectPropertyCache
@@ -207,7 +211,7 @@ namespace SandcastleBuilder.Utils
         /// <value>If true, final values (i.e. evaluated values used at build time) are being returned by the
         /// properties in this instance.</value>
         [XmlIgnore]
-        public bool UsingFinalValues { get; private set; }
+        public bool UsingFinalValues { get; }
 
         /// <summary>
         /// This read-only property is used to get the filename for the project
@@ -417,6 +421,7 @@ namespace SandcastleBuilder.Utils
 
                 if(argsProp != null && !String.IsNullOrEmpty(argsProp.UnevaluatedValue))
                 {
+                    // Use a reader to ignore namespaces
                     using(var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
                       XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve))
                       { Namespaces = false })
@@ -444,7 +449,7 @@ namespace SandcastleBuilder.Utils
                     {
                         if(!prop.IsEnvironmentProperty && !prop.IsGlobalProperty && !prop.IsImported &&
                           !prop.IsReservedProperty && !propertyCache.ContainsKey(prop.Name) &&
-                          !restrictedProps.Contains(prop.Name))
+                          !RestrictedProperties.Contains(prop.Name))
                         {
                             yield return prop;
                         }
@@ -591,6 +596,32 @@ namespace SandcastleBuilder.Utils
                     value = new FolderPath(this);
 
                 workingPath = value;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of folders to search for additional build
+        /// components, plug-ins, presentation styles, and syntax generators.
+        /// </summary>
+        public IEnumerable<string> ComponentSearchPaths
+        {
+            get
+            {
+                // Components from NuGet packages should have set a SHFBComponentPath item so that we can find
+                // them.  These are always searched first.
+                foreach(var cp in msBuildProject.GetItems("SHFBComponentPath"))
+                    yield return cp.EvaluatedInclude;
+
+                // Components in the component path will override those if duplicates are found.  Only return it
+                // if it isn't the project path.
+                string projectPath = Path.GetDirectoryName(msBuildProject.FullPath);
+
+                if(!String.IsNullOrWhiteSpace(componentPath) && !projectPath.Equals(componentPath, StringComparison.OrdinalIgnoreCase))
+                    yield return componentPath;
+                    
+                // And finally, components in the current project path will override all of the above if
+                // duplicates are found.
+                yield return projectPath;
             }
         }
         #endregion
@@ -1423,15 +1454,21 @@ namespace SandcastleBuilder.Utils
 
         /// <summary>
         /// This read-only property is used to get whether or not members marked with an
-        /// <see cref="System.ComponentModel.EditorBrowsableAttribute"/> set to <c>Never</c> are documented.
+        /// <see cref="EditorBrowsableAttribute"/> set to <c>Never</c> are documented.
         /// </summary>
         public bool DocumentEditorBrowsableNever => (this.VisibleItems & VisibleItems.EditorBrowsableNever) != 0;
 
         /// <summary>
         /// This read-only property is used to get whether or not members marked with a
-        /// <see cref="System.ComponentModel.BrowsableAttribute"/> set to <c>False</c> are documented.
+        /// <see cref="BrowsableAttribute"/> set to <c>False</c> are documented.
         /// </summary>
         public bool DocumentNonBrowsable => (this.VisibleItems & VisibleItems.NonBrowsable) != 0;
+
+        /// <summary>
+        /// This read-only property is used to get whether or not internal members of base types in other
+        /// assemblies and private members in base types are documented.
+        /// </summary>
+        public bool DocumentInternalAndPrivateIfExternal => (this.VisibleItems & VisibleItems.InternalAndPrivateIfExternal) != 0;
 
         /// <summary>
         /// This read-only property is used to get the API filter
@@ -1581,11 +1618,9 @@ namespace SandcastleBuilder.Utils
                 template = template.Replace("$safeprojectname$", "Documentation");
 
                 using(StringReader sr = new StringReader(template))
+                using(XmlReader xr = XmlReader.Create(sr))
                 {
-                    using(XmlReader xr = XmlReader.Create(sr))
-                    {
-                        msBuildProject = new Project(xr);
-                    }
+                    msBuildProject = new Project(xr);
                 }
 
                 msBuildProject.FullPath = filename;
@@ -1743,7 +1778,7 @@ namespace SandcastleBuilder.Utils
 
                 schemaVersion = new Version(property.EvaluatedValue);
 
-                if(schemaVersion > SandcastleProject.SchemaVersion)
+                if(schemaVersion > SchemaVersion)
                     throw new BuilderException("PRJ0002", "The selected file is for a more recent version of " +
                         "the help file builder.  Please upgrade your copy to load the file.");
 
@@ -2063,7 +2098,7 @@ namespace SandcastleBuilder.Utils
         /// <returns>True if it can be used, false if it cannot be used</returns>
         public bool IsValidUserDefinedPropertyName(string name)
         {
-            if(msBuildProject == null || propertyCache.ContainsKey(name) || restrictedProps.Contains(name))
+            if(msBuildProject == null || propertyCache.ContainsKey(name) || RestrictedProperties.Contains(name))
                 return false;
 
             if(this.ProjectPropertyCache.TryGetValue(name, out ProjectProperty prop))
@@ -2087,6 +2122,9 @@ namespace SandcastleBuilder.Utils
             FileItem newFileItem = null;
             string folderAction = BuildAction.Folder.ToString(),
                 rootPath = Path.GetDirectoryName(msBuildProject.FullPath);
+
+            if(folder == null)
+                throw new ArgumentNullException(nameof(folder));
 
             if(folder.Length != 0 && folder[folder.Length - 1] == '\\')
                 folder = folder.Substring(0, folder.Length - 1);
@@ -2270,8 +2308,8 @@ namespace SandcastleBuilder.Utils
                 if(property == null || !Version.TryParse(property.EvaluatedValue, out Version schemaVersion))
                     schemaVersion = new Version(1, 0, 0, 0);
 
-                if(schemaVersion != SandcastleProject.SchemaVersion)
-                    msBuildProject.SetProperty("SHFBSchemaVersion", SandcastleProject.SchemaVersion.ToString(4));
+                if(schemaVersion != SchemaVersion)
+                    msBuildProject.SetProperty("SHFBSchemaVersion", SchemaVersion.ToString(4));
 
                 msBuildProject.Save(filename);
             }
@@ -2305,14 +2343,14 @@ namespace SandcastleBuilder.Utils
         {
             bool htmlEncode = false;
 
+            if(String.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
             if(name.StartsWith("HtmlEnc", StringComparison.OrdinalIgnoreCase))
             {
                 htmlEncode = true;
                 name = name.Substring(7);
             }
-
-            if(String.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name));
 
             if(!propertyCache.TryGetValue(name, out PropertyInfo property))
                 return null;

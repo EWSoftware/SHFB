@@ -1,13 +1,13 @@
 //===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ConceptualLinkInfo.cs
-// Note    : Copyright 2010-2012 Microsoft Corporation
+// Note    : Copyright 2010-2021 Microsoft Corporation
 //
 // This file contains the ConceptualLinkInfo class used to hold conceptual link information used by the
 // ResolveConceptualLinksComponent.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -19,9 +19,7 @@
 using System;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This class is used to hold conceptual link information used by the
@@ -35,18 +33,18 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the target of the link
         /// </summary>
-        public string Target { get; private set; }
+        public string Target { get; }
 
         // EFW - Added support for an anchor name
         /// <summary>
         /// This read-only property returns the optional anchor name within the target
         /// </summary>
-        public string Anchor { get; private set; }
+        public string Anchor { get; }
 
         /// <summary>
         /// This read-only property returns the text to show for the link
         /// </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         #endregion
 
@@ -64,9 +62,9 @@ namespace Microsoft.Ddue.Tools.Targets
             int pos;
 
             if(node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
-            target = node.GetAttribute("target", string.Empty);
+            target = node.GetAttribute("target", String.Empty);
 
             // EFW - Added support for an optional anchor name in the target
             pos = target.IndexOf('#');

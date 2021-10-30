@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpKeywordCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the help index keyword information
 //
@@ -18,6 +17,7 @@
 // 03/25/2008  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Xml;
@@ -54,7 +54,10 @@ namespace SandcastleBuilder.Utils
         /// <param name="xw">The XML text writer to which the information is written</param>
         public void WriteXml(XmlWriter xw)
         {
-            if(base.Count > 0)
+            if(xw == null)
+                throw new ArgumentNullException(nameof(xw));
+
+            if(this.Count > 0)
             {
                 xw.WriteStartElement("HelpKeywords");
 

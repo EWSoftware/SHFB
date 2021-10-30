@@ -4,53 +4,18 @@
 <SpellCheckerConfiguration Format="2018.8.16.0">
   <InheritAdditionalDictionaryFolders>True</InheritAdditionalDictionaryFolders>
   <SelectedLanguages />
-  <InheritIgnoredWords>True</InheritIgnoredWords>
-  <InheritXmlSettings>True</InheritXmlSettings>
-  <IgnoredXmlElements>
-    <Ignore>kw</Ignore>
-  </IgnoredXmlElements>
-  <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritIgnoredClassifications>True</InheritIgnoredClassifications>
   <IgnoredClassifications />
-  <InheritExclusionExpressions>True</InheritExclusionExpressions>
-  <ExclusionExpressions>
-    <Expression Match="de.Halleux" />
-  </ExclusionExpressions>
+  <InheritIgnoredWords>True</InheritIgnoredWords>
   <IgnoredWords>
-    <Ignore>blockcomment</Ignore>
-    <Ignore>cdata</Ignore>
-    <Ignore>cmdlets</Ignore>
-    <Ignore>copycode</Ignore>
-    <Ignore>detectchar</Ignore>
-    <Ignore>doctype</Ignore>
-    <Ignore>endif</Ignore>
-    <Ignore>Golo</Ignore>
-    <Ignore>img</Ignore>
-    <Ignore>Init</Ignore>
-    <Ignore>javascript</Ignore>
-    <Ignore>keywordlists</Ignore>
-    <Ignore>lang</Ignore>
-    <Ignore>linecontinue</Ignore>
-    <Ignore>onclick</Ignore>
-    <Ignore>onkeypress</Ignore>
-    <Ignore>onmouseout</Ignore>
-    <Ignore>onmouseover</Ignore>
-    <Ignore>pshell</Ignore>
-    <Ignore>regex</Ignore>
-    <Ignore>Roden</Ignore>
-    <Ignore>src</Ignore>
-    <Ignore>uage</Ignore>
-    <Ignore>xml</Ignore>
-    <Ignore>collapsebox</Ignore>
-    <Ignore>endregion</Ignore>
-    <Ignore>lnborder</Ignore>
-    <Ignore>regexp</Ignore>
-    <Ignore>keywordlist</Ignore>
-    <Ignore>parsedcode</Ignore>
-    <Ignore>lineno</Ignore>
-    <Ignore>endblock</Ignore>
-    <Ignore>unicode</Ignore>
-    <Ignore>stl</Ignore>
-    <Ignore>runat</Ignore>
+    <Ignore>de</Ignore>
+    <Ignore>Halleux</Ignore>
   </IgnoredWords>
+  <IgnoredWordsFile></IgnoredWordsFile>
+  <InheritExclusionExpressions>True</InheritExclusionExpressions>
+  <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
+  <InheritXmlSettings>True</InheritXmlSettings>
+  <IgnoredFilePatterns>
+    <FilePattern>highlight.xml</FilePattern>
+  </IgnoredFilePatterns>
 </SpellCheckerConfiguration>

@@ -56,8 +56,10 @@ namespace System.Compiler
         public override void TransferStateTo(Visitor targetVisitor)
         {
             base.TransferStateTo(targetVisitor);
-            Specializer target = targetVisitor as Specializer;
-            if (target == null) return;
+
+            if(!(targetVisitor is Specializer target))
+                return;
+            
             target.args = this.args;
             target.pars = this.pars;
             target.CurrentMethod = this.CurrentMethod;
@@ -263,16 +265,18 @@ namespace System.Compiler
         {
             TypeNodeList pars = this.pars;
             TypeNodeList args = this.args;
-            Identifier id = expr as Identifier;
-            if (id != null)
+            
+            if(expr is Identifier id)
             {
                 int key = id.UniqueIdKey;
-                for (int i = 0, n = pars == null ? 0 : pars.Count, m = args == null ? 0 : args.Count; i < n && i < m; i++)
+                for(int i = 0, n = pars == null ? 0 : pars.Count, m = args == null ? 0 : args.Count; i < n && i < m; i++)
                 {
                     //^ assert pars != null && args != null;
                     TypeNode par = pars[i];
-                    if (par == null || par.Name == null) continue;
-                    if (par.Name.UniqueIdKey == key) return new Literal(args[i], CoreSystemTypes.Type);
+                    if(par == null || par.Name == null)
+                        continue;
+                    if(par.Name.UniqueIdKey == key)
+                        return new Literal(args[i], CoreSystemTypes.Type);
                 }
                 return id;
             }
@@ -310,20 +314,24 @@ namespace System.Compiler
             }
             else if (typeParameter is TypeParameter)
             {
-                result = new ClassParameter();
-                result.DeclaringType = typeParameter.DeclaringType;
+                result = new ClassParameter
+                {
+                    DeclaringType = typeParameter.DeclaringType
+                };
             }
             else
                 return typeParameter; //give up
+
             result.SourceContext = typeParameter.SourceContext;
             result.TypeParameterFlags = ((ITypeParameter)typeParameter).TypeParameterFlags;
 
             result.Name = typeParameter.Name;
             result.Namespace = StandardIds.ClassParameter;
-            result.BaseClass = baseType is Class ? (Class)baseType : CoreSystemTypes.Object;
+            result.BaseClass = baseType is Class c ? c : CoreSystemTypes.Object;
             result.DeclaringMember = ((ITypeParameter)typeParameter).DeclaringMember;
             result.DeclaringModule = typeParameter.DeclaringModule;
             result.Flags = typeParameter.Flags & ~TypeFlags.Interface;
+
             //InterfaceList constraints = result.Interfaces = new InterfaceList();
             InterfaceList interfaces = typeParameter.Interfaces;
             for (int i = 1, n = interfaces == null ? 0 : interfaces.Count; i < n; i++)
@@ -378,8 +386,11 @@ namespace System.Compiler
                     {
                         ClassExpression cExpr = (ClassExpression)type;
                         cExpr.Expression = this.VisitTypeExpression(cExpr.Expression);
-                        Literal lit = cExpr.Expression as Literal; //Could happen if the expression is a template parameter
-                        if (lit != null) return lit.Value as TypeNode;
+                        
+                        //Could happen if the expression is a template parameter
+                        if(cExpr.Expression is Literal lit)
+                            return lit.Value as TypeNode;
+                        
                         cExpr.TemplateArguments = this.VisitTypeReferenceList(cExpr.TemplateArguments);
                         return cExpr;
                     }
@@ -540,18 +551,15 @@ namespace System.Compiler
                             for(int i = 0; i < numArgs; i++)
                             {
                                 TypeNode targ = targs[i];
-                                ITypeParameter tparg = targ as ITypeParameter;
 
-                                if(tparg != null)
+                                if(targ is ITypeParameter tparg)
                                 {
                                     for(int j = 0, np = pars == null ? 0 : pars.Count, m = args == null ? 0 : args.Count; j < np && j < m; j++)
                                     {
                                         //^ assert pars != null && args != null;
                                         if(TargetPlatform.UseGenerics)
                                         {
-                                            ITypeParameter par = pars[j] as ITypeParameter;
-
-                                            if(par == null)
+                                            if(!(pars[j] is ITypeParameter par))
                                                 continue;
 
                                             if(tparg == par || (tparg.ParameterListIndex == par.ParameterListIndex && tparg.DeclaringMember == par.DeclaringMember))

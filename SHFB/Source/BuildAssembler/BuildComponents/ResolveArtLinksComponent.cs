@@ -16,12 +16,12 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Targets;
+using Sandcastle.Tools.BuildComponents.Targets;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used to resolve links to media files (i.e images)
@@ -48,13 +48,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private static XPathExpression artLinkExpression = XPathExpression.Compile("//artLink");
+        private static readonly XPathExpression artLinkExpression = XPathExpression.Compile("//artLink");
 
         // IDs are compared case insensitively
-        private Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>(
+        private readonly Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>(
             StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, ArtTarget> filesUsed = new Dictionary<string, ArtTarget>(
+        private readonly Dictionary<string, ArtTarget> filesUsed = new Dictionary<string, ArtTarget>(
             StringComparer.OrdinalIgnoreCase);
 
         #endregion
@@ -77,6 +77,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             XPathExpression artIdExpression = XPathExpression.Compile("string(@id)"),
                 artFileExpression = XPathExpression.Compile("string(image/@file)"),
                 artTextExpression = XPathExpression.Compile("string(image/altText)");
@@ -103,9 +106,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 if(!String.IsNullOrEmpty(baseOutputPath))
                     baseOutputPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseOutputPath));
 
-                string outputPathValue = targetsNode.GetAttribute("outputPath", string.Empty);
+                string outputPathValue = targetsNode.GetAttribute("outputPath", String.Empty);
 
-                if(string.IsNullOrEmpty(outputPathValue))
+                if(String.IsNullOrEmpty(outputPathValue))
                     this.WriteMessage(MessageLevel.Error, "Each targets element must have an output attribute " +
                         "specifying a directory in which to place referenced art files.");
 
@@ -138,28 +141,31 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     XPathExpression.Compile(relativeTo);
 
                 // Load the content of the media map file
-                XPathDocument mediaMap = new XPathDocument(map);
-                XPathNodeIterator items = mediaMap.CreateNavigator().Select("/*/item");
-
-                foreach(XPathNavigator item in items)
+                using(var reader = XmlReader.Create(map, new XmlReaderSettings { CloseInput = true }))
                 {
-                    string id = (string)item.Evaluate(artIdExpression);
-                    string file = (string)item.Evaluate(artFileExpression);
-                    string text = (string)item.Evaluate(artTextExpression);
-                    string name = Path.GetFileName(file);
+                    XPathDocument mediaMap = new XPathDocument(reader);
+                    XPathNodeIterator items = mediaMap.CreateNavigator().Select("/*/item");
 
-                    targets[id] = new ArtTarget
+                    foreach(XPathNavigator item in items)
                     {
-                        Id = id,
-                        InputPath = Path.Combine(inputPath, file),
-                        BaseOutputPath = baseOutputPath,
-                        OutputXPath = outputXPath,
-                        LinkPath = String.IsNullOrEmpty(name) ? linkPath : String.Concat(linkPath, "/", name),
-                        Text = text,
-                        Name = name,
-                        FormatXPath = formatXPath,
-                        RelativeToXPath = relativeToXPath
-                    };
+                        string id = (string)item.Evaluate(artIdExpression);
+                        string file = (string)item.Evaluate(artFileExpression);
+                        string text = (string)item.Evaluate(artTextExpression);
+                        string name = Path.GetFileName(file);
+
+                        targets[id] = new ArtTarget
+                        {
+                            Id = id,
+                            InputPath = Path.Combine(inputPath, file),
+                            BaseOutputPath = baseOutputPath,
+                            OutputXPath = outputXPath,
+                            LinkPath = String.IsNullOrEmpty(name) ? linkPath : String.Concat(linkPath, "/", name),
+                            Text = text,
+                            Name = name,
+                            FormatXPath = formatXPath,
+                            RelativeToXPath = relativeToXPath
+                        };
+                    }
                 }
             }
 
@@ -169,13 +175,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            ArtTarget target;
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
 
             foreach(XPathNavigator artLink in document.CreateNavigator().Select(artLinkExpression).ToArray())
             {
                 string name = artLink.GetAttribute("target", String.Empty);
 
-                if(targets.TryGetValue(name, out target))
+                if(targets.TryGetValue(name, out ArtTarget target))
                 {
                     // Evaluate the path
                     string path = document.CreateNavigator().Evaluate(target.OutputXPath).ToString();

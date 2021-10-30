@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2021
+// Updated : 10/23/2021
 // Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // Sandcastle Help File Builder common assembly attributes.
@@ -53,7 +53,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguageAttribute("en")]
+[assembly: NeutralResourcesLanguage("en")]
 
 // Version numbers.  See comments below.
 
@@ -84,19 +84,19 @@ internal static partial class AssemblyInfo
     // This is used to set the assembly version in the strong name.  This should remain unchanged to maintain
     // binary compatibility with prior releases.  It should only be changed if a breaking change is made that
     // requires assemblies that reference older versions to be recompiled against the newer version.
-    public const string StrongNameVersion = "2019.8.24.0";
+    public const string StrongNameVersion = "2021.10.23.0";
 
     // Common assembly file version
     //
     // This is used to set the assembly file version.  This will change with each new release.  MSIs only
     // support a Major value between 0 and 255 so we drop the century from the year on this one.
-    public const string FileVersion = "21.4.9.0";
+    public const string FileVersion = "21.10.23.0";
 
     // Common product version
     //
     // This may contain additional text to indicate Alpha or Beta states.  The version number will always match
     // the file version above but includes the century on the year.
-    public const string ProductVersion = "2021.4.9.0";
+    public const string ProductVersion = "2021.10.23.0";
 
     // Assembly copyright information
     public const string Copyright = "Copyright \xA9 2006-2021, Eric Woodruff, All Rights Reserved";

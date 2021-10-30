@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/14/2016
-// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/02/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to build a help file consisting of nothing but additional
 // content items.  It is also useful for proofreading your additional content without having to build all the
@@ -31,8 +30,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
@@ -47,16 +45,16 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     [HelpFileBuilderPlugInExport("Additional Content Only", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This plug-in can be used to build a help file " +
-      "consisting of nothing but conceptual content and/or additional content items.  It is also useful for " +
-      "proofreading your conceptual and/or additional content without having to build all the API topics.")]
+        "consisting of nothing but conceptual content and/or additional content items.  It is also useful for " +
+        "proofreading your conceptual and/or additional content without having to build all the API topics.")]
     public sealed class AdditionalContentOnlyPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
         private List<ExecutionPoint> executionPoints;
-
         private BuildProcess builder;
+
         #endregion
 
         #region IPlugIn implementation
@@ -76,8 +74,11 @@ namespace SandcastleBuilder.PlugIns
                         new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateApiFilter, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.AddNamespaceGroups, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.AddApiTopicFilenames, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.GenerateApiTopicManifest, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
                     };
@@ -87,27 +88,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            MessageBox.Show("This plug-in has no configurable settings", "Additional Content Only Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 
@@ -120,8 +105,10 @@ namespace SandcastleBuilder.PlugIns
             if(!builder.CurrentProject.HasItems(BuildAction.ContentLayout) &&
               !builder.CurrentProject.HasItems(BuildAction.SiteMap) &&
               !builder.CurrentProject.HasItems(BuildAction.Content))
+            {
                 throw new BuilderException("ACP0001", "The Additional Content Only plug-in requires a " +
                     "conceptual content layout file, a site map file, or content items in the project.");
+            }
         }
 
         /// <summary>
@@ -130,9 +117,8 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            XmlDocument config;
-            XPathNavigator navConfig;
-            List<XPathNavigator> deleteTargets = new List<XPathNavigator>();
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
 
             // Create a dummy reflection.org and reflection.xml file
             if(context.BuildStep == BuildStep.GenerateReflectionInfo)
@@ -158,30 +144,28 @@ namespace SandcastleBuilder.PlugIns
                 builder.ExecuteAfterStepPlugIns();
             }
             else
+            {
                 if(context.BuildStep == BuildStep.MergeCustomConfigs &&
                   builder.CurrentProject.HasItems(BuildAction.ContentLayout))
                 {
-                    config = new XmlDocument();
-                    config.Load(builder.WorkingFolder + "sandcastle.config");
-                    navConfig = config.CreateNavigator();
+                    string configFile = Path.Combine(builder.WorkingFolder, "sandcastle.config");
+                    var config = XDocument.Load(configFile);
 
                     // Delete the reference configuration component set if present
-                    var item = navConfig.SelectSingleNode("//component[@id='Switch Component']/case[@value='API']");
+                    var item = config.XPathSelectElement("//component[@id='Switch Component']/case[@value='API']");
 
                     if(item != null)
-                        item.DeleteSelf();
+                        item.Remove();
 
                     // Remove the reflection.xml file from the configuration since it isn't valid
-                    XPathNodeIterator allTargets = navConfig.Select("//targets[@files='reflection.xml']");
+                    var allTargets = config.XPathSelectElements("//targets[@files='reflection.xml']").ToList();
 
-                    foreach(XPathNavigator target in allTargets)
-                        deleteTargets.Add(target);
+                    foreach(var t in allTargets)
+                        t.Remove();
 
-                    foreach(var t in deleteTargets)
-                        t.DeleteSelf();
-
-                    config.Save(builder.WorkingFolder + "sandcastle.config");
+                    config.Save(configFile);
                 }
+            }
 
             // Ignore all other the steps
         }

@@ -4,7 +4,6 @@
 // Author  : Eric Woodruff
 // Updated : 11/14/2017
 // Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build Events category properties
 //
@@ -23,7 +22,7 @@ using System.Windows.Controls;
 
 using Microsoft.Build.Evaluation;
 
-using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
 
 namespace SandcastleBuilder.WPF.PropertyPages
 {

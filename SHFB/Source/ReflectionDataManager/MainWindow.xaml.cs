@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : MainWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/28/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the main window for the application and is used to edit the reflection data set files
 //
@@ -23,7 +22,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -104,7 +102,8 @@ namespace ReflectionDataManager
             if(hasChanges)
             {
                 result = MessageBox.Show("Do you want to save your changes to this reflection data file?",
-                  "Save Changes", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+                  "Reflection Data Manager", MessageBoxButton.YesNoCancel, MessageBoxImage.Question,
+                  MessageBoxResult.Cancel);
 
                 if(result == MessageBoxResult.Yes)
                 {
@@ -219,7 +218,7 @@ namespace ReflectionDataManager
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show("Unable to save changes: " + ex.Message, "Save Error",
+                    MessageBox.Show("Unable to save changes: " + ex.Message, "Reflection Data Manager",
                         MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
@@ -255,7 +254,7 @@ namespace ReflectionDataManager
             if(dataSet.AssemblyLocations.Count == 0 || !dataSet.IncludedAssemblies.Any())
             {
                 MessageBox.Show("You must add at least one location with included assemblies to build",
-                    "Build Reflection Data", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    "Reflection Data Manager", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
 
@@ -326,7 +325,7 @@ namespace ReflectionDataManager
         private void cmdDelete_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if(MessageBox.Show("Are you sure you want to remove the current assembly location?",
-              "Remove Assembly Location", MessageBoxButton.YesNo, MessageBoxImage.Question,
+              "Reflection Data Manager", MessageBoxButton.YesNo, MessageBoxImage.Question,
               MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 dataSet.AssemblyLocations.Remove((AssemblyLocation)locationsView.CurrentItem);

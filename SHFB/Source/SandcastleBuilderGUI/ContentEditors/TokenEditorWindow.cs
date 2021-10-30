@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder
 // File    : TokenEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/09/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the token files.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -40,7 +39,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data members
         //=====================================================================
 
-        private FileItem tokenFile;
+        private readonly FileItem tokenFile;
+
         #endregion
 
         #region Properties
@@ -49,10 +49,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return ucTokenEditor.Tokens.TokenFilePath; }
-        }
+        public string Filename => ucTokenEditor.Tokens.TokenFilePath;
 
         /// <summary>
         /// This read-only property returns the current token collection including any unsaved edits
@@ -76,6 +73,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="fileItem">The project file item to edit</param>
         public TokenEditorWindow(FileItem fileItem)
         {
+            if(fileItem == null)
+                throw new ArgumentNullException(nameof(fileItem));
+
             InitializeComponent();
 
             this.Text = Path.GetFileName(fileItem.FullPath);
@@ -99,6 +99,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
+            if(filename == null)
+                throw new ArgumentNullException(nameof(filename));
+
             string projectPath = Path.GetDirectoryName(tokenFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
@@ -167,16 +170,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return true; }
-        }
+        public override bool CanSaveContent => true;
 
         /// <inheritdoc />
-        public override bool IsContentDocument
-        {
-            get { return true; }
-        }
+        public override bool IsContentDocument => true;
 
         /// <inheritdoc />
         public override bool Save()
@@ -232,6 +229,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         protected override void OnClosing(CancelEventArgs e)
         {
+            if(e == null)
+                throw new ArgumentNullException(nameof(e));
+
             e.Cancel = !this.CanClose;
             base.OnClosing(e);
         }

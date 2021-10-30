@@ -7,6 +7,7 @@
 // 12/23/2012 - EFW - Added a dispose method to properly dispose of all components in each branch
 // 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
@@ -15,7 +16,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to clone the topic for each set of build components and execute them
@@ -35,7 +36,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new CloneComponent(base.BuildAssembler);
+                return new CloneComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -43,7 +44,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private List<IEnumerable<BuildComponentCore>> branches = new List<IEnumerable<BuildComponentCore>>();
+        private readonly List<IEnumerable<BuildComponentCore>> branches = new List<IEnumerable<BuildComponentCore>>();
 
         #endregion
 
@@ -66,7 +67,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <remarks>This sets a unique group ID for each branch</remarks>
         public override string GroupId
         {
-            get { return base.GroupId; }
+            get => base.GroupId;
             set
             {
                 base.GroupId = value;
@@ -91,6 +92,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// generating multiple help output formats in one build configuration.</remarks>
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             XPathNodeIterator branchNodes = configuration.Select("branch");
 
             foreach(XPathNavigator branchNode in branchNodes)
@@ -103,6 +107,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             foreach(var branch in branches)
             {
                 XmlDocument subdocument = (XmlDocument)document.Clone();

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2021
+// Updated : 05/16/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the MRefBuilder project file by adding in reference
@@ -25,8 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using System.Xml.XPath;
 using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
@@ -41,7 +39,7 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is designed to modify the MRefBuilder project file by adding in reference assemblies
     /// matching wildcard search paths.
     /// </summary>
-    [HelpFileBuilderPlugInExport("Wildcard Assembly References", IsConfigurable = true, RunsInPartialBuild = true,
+    [HelpFileBuilderPlugInExport("Wildcard Assembly References", RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to modify the Generate Reflection Information build step by adding " +
         "assembly references found in one or more wildcard search paths.")]
@@ -51,11 +49,9 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         private List<ExecutionPoint> executionPoints;
-
         private BuildProcess builder;
+        private List<WildcardReferenceSettings> referencePaths;
 
-        // Plug-in configuration options
-        private WildcardReferenceSettingsCollection referencePaths;
         #endregion
 
         #region IPlugIn implementation
@@ -80,50 +76,36 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(WildcardReferencesConfigDlg dlg = new WildcardReferencesConfigDlg(project, currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
-            builder = buildProcess;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            builder = buildProcess ?? throw new ArgumentNullException(nameof(buildProcess));
 
             var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
                 typeof(HelpFileBuilderPlugInExportAttribute), false).First();
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            XElement root = XElement.Parse(configuration.OuterXml);
-
-            if(root.IsEmpty)
+            if(configuration.IsEmpty)
                 throw new BuilderException("WRP0001", "The Wildcard References plug-in has not been configured yet");
 
-            // Load the reference links settings
-            referencePaths = new WildcardReferenceSettingsCollection();
-            referencePaths.FromXml(buildProcess.CurrentProject, root);
+            // Load the reference path settings
+            referencePaths = new List<WildcardReferenceSettings>();
+
+            foreach(var r in configuration.Descendants("reference"))
+                referencePaths.Add(WildcardReferenceSettings.FromXml(buildProcess.CurrentProject, r));
 
             if(referencePaths.Count == 0)
+            {
                 throw new BuilderException("WRP0002", "At least one reference path is required for the " +
                     "Wildcard References plug-in.");
+            }
         }
 
         /// <summary>

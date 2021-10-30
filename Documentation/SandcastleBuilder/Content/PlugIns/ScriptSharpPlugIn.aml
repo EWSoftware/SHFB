@@ -8,7 +8,7 @@
 			<para>This plug-in is used to modify the reflection information file produced after running
 <application>MRefBuilder</application> on assemblies created by the <externalLink>
 <linkText>Script# compiler</linkText>
-<linkUri>http://scriptsharp.com/</linkUri>
+<linkUri>https://github.com/NikhilK/scriptsharp</linkUri>
 <linkTarget>_blank</linkTarget></externalLink> so that it is suitable for use in producing a help file.  This
 plug-in contains no configuration options.  It simply adds an additional transformation that runs after the
 reflection information file has been generated that fixes up certain elements in it so that they are documented

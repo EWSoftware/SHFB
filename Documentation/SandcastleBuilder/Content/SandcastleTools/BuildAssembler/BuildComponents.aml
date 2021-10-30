@@ -7,11 +7,9 @@
 
 		<section>
 			<content>
-				<para>http://blogs.msdn.com/b/sandcastle/archive/2006/08/28/727901.aspx</para>
+				<para>https://web.archive.org/web/20140510183723/http://blogs.msdn.com/b/sandcastle/archive/2006/08/28/727901.aspx</para>
 
-				<para>http://blogs.msdn.com/b/sandcastle/archive/2006/09/21/765012.aspx</para>
-
-				<para>http://blogs.msdn.com/b/sandcastle/archive/2007/07/20/sandcastle-and-mtps-conntent-service.aspx</para>
+				<para>https://web.archive.org/web/20140410011150/http://blogs.msdn.com/b/sandcastle/archive/2006/09/21/765012.aspx</para>
 
 				<para>TODO: Rather than document each of the build components here, include the BuildComponents project
 as a documentation source and put the necessary documentation in the XML comments of each build component.  Add

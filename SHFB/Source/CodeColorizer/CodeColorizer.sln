@@ -1,27 +1,32 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29509.3
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{85714152-106C-48B7-A408-6078045BEDEC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C894AE5E-8F27-44C6-BF48-902775D4775F}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
-		CodeColorizer.ruleset = CodeColorizer.ruleset
+		CodeColorizer.sln.vsspell = CodeColorizer.sln.vsspell
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorizerLibrary", "ColorizerLibrary\ColorizerLibrary.csproj", "{AFCAE462-7625-4E9A-AB87-C37820470977}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowDocumentTest", "FlowDocumentTest\FlowDocumentTest.csproj", "{EE1A372C-52AC-472E-BCB3-23ECA906FB8A}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextColorizerTest\", "{D7F11A0C-3E65-42D0-8743-82CEA117A003}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.7.2"
-		ProjectReferences = "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}|ColorizerLibrary.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/TextColorizerTest"
+		ProjectReferences = ""
+		Debug.AspNetCompiler.VirtualPath = "/localhost_1789"
 		Debug.AspNetCompiler.PhysicalPath = "TextColorizerTest\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\TextColorizerTest\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1789\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/TextColorizerTest"
+		Release.AspNetCompiler.VirtualPath = "/localhost_1789"
 		Release.AspNetCompiler.PhysicalPath = "TextColorizerTest\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\TextColorizerTest\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1789\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
@@ -30,75 +35,35 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextCo
 		SlnRelativePath = "TextColorizerTest\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
-EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "ColorizerLibraryDocs", "Doc\ColorizerLibraryDocs.shfbproj", "{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowDocumentTest", "FlowDocumentTest\FlowDocumentTest.csproj", "{2C79E315-A5C8-4436-A2AC-8C264A1E823C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU
-		Debug|Mixed Platforms = Debug|Mixed Platforms
-		Debug|x86 = Debug|x86
-		Release|.NET = Release|.NET
 		Release|Any CPU = Release|Any CPU
-		Release|Mixed Platforms = Release|Mixed Platforms
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{AFCAE462-7625-4E9A-AB87-C37820470977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFCAE462-7625-4E9A-AB87-C37820470977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFCAE462-7625-4E9A-AB87-C37820470977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFCAE462-7625-4E9A-AB87-C37820470977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1A372C-52AC-472E-BCB3-23ECA906FB8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1A372C-52AC-472E-BCB3-23ECA906FB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1A372C-52AC-472E-BCB3-23ECA906FB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1A372C-52AC-472E-BCB3-23ECA906FB8A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Release|.NET.ActiveCfg = Debug|Any CPU
 		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D7F11A0C-3E65-42D0-8743-82CEA117A003}.Release|x86.ActiveCfg = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|.NET.ActiveCfg = Release|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|x86.ActiveCfg = Release|Any CPU
-		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Release|.NET.ActiveCfg = Release|Any CPU
 		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{398EAD70-EE9B-401B-B0D8-FBDA6CFD5B23}.Release|x86.ActiveCfg = Release|Any CPU
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Debug|.NET.ActiveCfg = Debug|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Debug|x86.ActiveCfg = Debug|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Debug|x86.Build.0 = Debug|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Release|.NET.ActiveCfg = Release|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Release|Any CPU.ActiveCfg = Release|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Release|Mixed Platforms.Build.0 = Release|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Release|x86.ActiveCfg = Release|x86
-		{2C79E315-A5C8-4436-A2AC-8C264A1E823C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {678A0D8E-396A-4421-A197-4FBFF2F6B1A7}
+		SolutionGuid = {AAA4D81E-2974-4CAD-97F6-7E538006362A}
 	EndGlobalSection
 EndGlobal

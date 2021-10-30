@@ -5,11 +5,11 @@
 		<documentation>
             This schema describes MAML, the Microsoft Assistance Markup Language.
             MAML is intended for software documentation. In particular, it is 
-            intended to accomodate the needs of Microsoft documentation.
+            intended to accommodate the needs of Microsoft documentation.
         </documentation>
 		<documentation>
             The schema is broken into three main areas: end user, developer and
-            IT Pro. These areas adequaltely categorize Microsoft
+            IT Pro. These areas adequately categorize Microsoft
             documentation.
         </documentation>
 		<documentation>

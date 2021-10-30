@@ -21,9 +21,9 @@ using System.Xml.XPath;
 
 using System.Compiler;
 
-using Microsoft.Ddue.Tools.Reflection;
+using Sandcastle.Tools.Reflection;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools
 {
     /// <summary>
     /// This add-in is used to add extension method information to API member nodes
@@ -33,9 +33,9 @@ namespace Microsoft.Ddue.Tools
         #region Private data members
         //=====================================================================
 
-        private Dictionary<TypeNode, List<Method>> index;
+        private readonly Dictionary<TypeNode, List<Method>> index;
+        private readonly ManagedReflectionWriter mrw;
         private bool isExtensionMethod;
-        private ManagedReflectionWriter mrw;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Microsoft.Ddue.Tools
         {
             index = new Dictionary<TypeNode, List<Method>>();
 
-            this.mrw = writer;
+            this.mrw = writer ?? throw new ArgumentNullException(nameof(writer));
 
             writer.RegisterStartTagCallback("apis", RecordExtensionMethods);
             writer.RegisterStartTagCallback("apidata", AddExtensionSubsubgroup);
@@ -91,9 +91,7 @@ namespace Microsoft.Ddue.Tools
                     // added so convert to a list first to avoid enumeration issues.
                     foreach(Member member in type.Members.ToList())
                     {
-                        Method method = member as Method;
-
-                        if(method == null || !mrw.ApiFilter.IsExposedMember(method) ||
+                        if(!(member is Method method) || !mrw.ApiFilter.IsExposedMember(method) ||
                           !method.Attributes.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.ExtensionAttribute"))
                             continue;
 
@@ -114,6 +112,7 @@ namespace Microsoft.Ddue.Tools
                         // extended types that are specialized by a specific type rather than by the extension
                         // method's template parameter.
                         if(method.IsGeneric && method.TemplateParameters.Count > 0)
+                        {
                             if(extendedType.IsGeneric && extendedType.TemplateArguments != null &&
                               extendedType.TemplateArguments.Count == 1)
                             {
@@ -133,10 +132,9 @@ namespace Microsoft.Ddue.Tools
                                     }
                                 }
                             }
+                        }
 
-                        List<Method> methods = null;
-
-                        if(!index.TryGetValue(extendedType, out methods))
+                        if(!index.TryGetValue(extendedType, out List<Method> methods))
                         {
                             methods = new List<Method>();
                             index.Add(extendedType, methods);
@@ -166,21 +164,20 @@ namespace Microsoft.Ddue.Tools
         /// <param name="info">For this callback, this is a member dictionary</param>
         private void AddExtensionMethods(XmlWriter writer, object info)
         {
-            MemberDictionary members = info as MemberDictionary;
-
-            if(members == null)
+            if(!(info is MemberDictionary members))
                 return;
 
             TypeNode type = members.Type;
 
             foreach(Interface contract in type.Interfaces)
             {
-                List<Method> extensionMethods = null;
 
-                if(index.TryGetValue(contract, out extensionMethods))
+                if(index.TryGetValue(contract, out List<Method> extensionMethods))
+                {
                     foreach(Method extensionMethod in extensionMethods)
                         if(!IsExtensionMethodHidden(extensionMethod, members))
                             AddExtensionMethod(writer, type, extensionMethod, null);
+                }
 
                 if(contract.IsGeneric && contract.TemplateArguments != null && contract.TemplateArguments.Count > 0)
                 {
@@ -199,12 +196,13 @@ namespace Microsoft.Ddue.Tools
 
             while(comparisonType != null)
             {
-                List<Method> extensionMethods = null;
 
-                if(index.TryGetValue(comparisonType, out extensionMethods))
+                if(index.TryGetValue(comparisonType, out List<Method> extensionMethods))
+                {
                     foreach(Method extensionMethod in extensionMethods)
                         if(!IsExtensionMethodHidden(extensionMethod, members))
                             AddExtensionMethod(writer, type, extensionMethod, null);
+                }
 
                 if(comparisonType.IsGeneric && comparisonType.TemplateArguments != null &&
                   comparisonType.TemplateArguments.Count > 0)
@@ -253,8 +251,10 @@ namespace Microsoft.Ddue.Tools
             if(extensionMethodTemplate2.IsGeneric && specialization != null)
             {
                 // The specialization type is the first of the method's template arguments
-                TypeNodeList templateArgs = new TypeNodeList();
-                templateArgs.Add(specialization);
+                TypeNodeList templateArgs = new TypeNodeList
+                {
+                    specialization
+                };
 
                 // Add any additional template arguments
                 for(int i = 1; i < extensionMethodTemplate.TemplateParameters.Count; i++)
@@ -274,9 +274,10 @@ namespace Microsoft.Ddue.Tools
             }
 
             Method extensionMethod = new Method(extensionMethodTemplate.DeclaringType, new AttributeList(),
-                extensionMethodTemplate.Name, extensionMethodParameters, extensionMethodTemplate2.ReturnType,
-                null);
-            extensionMethod.Flags = extensionMethodTemplate.Flags & ~MethodFlags.Static;
+              extensionMethodTemplate.Name, extensionMethodParameters, extensionMethodTemplate2.ReturnType, null)
+            {
+                Flags = extensionMethodTemplate.Flags & ~MethodFlags.Static
+            };
 
             // For generic methods, set the template arguments and parameters so the template data is included in
             // the ID and the method data.
@@ -320,12 +321,10 @@ namespace Microsoft.Ddue.Tools
         private static bool IsValidTemplateArgument(TypeNode type, TypeNode parameter)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             // Check that the parameter really is a type parameter
-            ITypeParameter itp = parameter as ITypeParameter;
-
-            if(itp == null)
+            if(!(parameter is ITypeParameter itp))
                 throw new ArgumentException("The 'parameter' argument is null or not an 'ITypeParameter'.");
 
             // Test constraints

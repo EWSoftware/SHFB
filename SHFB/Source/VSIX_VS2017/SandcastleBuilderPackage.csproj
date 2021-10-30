@@ -1,0 +1,1116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{242129CC-9310-450C-AEE3-4B849ECFB67E}</ProjectGuid>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.Package</RootNamespace>
+    <AssemblyName>SandcastleBuilder.Package</AssemblyName>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseCodebase>true</UseCodebase>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Common debugging support -->
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DevEnvDir)\devenv.exe</StartProgram>
+    <StartArguments>/rootSuffix Exp</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilder.Package.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <DocumentationFile>bin\Release\SandcastleBuilder.Package.xml</DocumentationFile>
+    <CreateVsixContainer>True</CreateVsixContainer>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DeployExtension>False</DeployExtension>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=4.6.97.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.4.6.97\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\packages\EnvDTE.8.0.0\lib\net10\EnvDTE.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\packages\EnvDTE80.8.0.0\lib\net10\EnvDTE80.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.15.1.548\lib\net46\Microsoft.Build.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Framework.15.1.548\lib\net46\Microsoft.Build.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.1.548\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.CoreUtility.14.3.25407\lib\net45\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Editor, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Editor.14.3.25407\lib\net45\Microsoft.VisualStudio.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Imaging, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Imaging.14.3.25407\lib\net45\Microsoft.VisualStudio.Imaging.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime.14.3.26930\lib\net20\Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Language.Intellisense, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Language.Intellisense.14.3.25407\lib\net45\Microsoft.VisualStudio.Language.Intellisense.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.7.10.6071\lib\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.14.0.14.3.25407\lib\Microsoft.VisualStudio.Shell.14.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.10.0.10.0.30319\lib\net40\Microsoft.VisualStudio.Shell.Immutable.10.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.11.0.11.0.50727\lib\net45\Microsoft.VisualStudio.Shell.Immutable.11.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.12.0.12.0.21003\lib\net45\Microsoft.VisualStudio.Shell.Immutable.12.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.14.0.14.3.25407\lib\net45\Microsoft.VisualStudio.Shell.Immutable.14.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.7.10.6072\lib\net11\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.10.0.10.0.30320\lib\net20\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.11.0.11.0.61031\lib\net20\Microsoft.VisualStudio.Shell.Interop.11.0.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.12.0.12.0.30111\lib\net20\Microsoft.VisualStudio.Shell.Interop.12.0.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime.14.3.26929\lib\net20\Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.8.0.8.0.50728\lib\net11\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.9.0.9.0.30729\lib\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Text.Data, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.Data.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Text.Logic, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.Logic.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.Logic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Text.UI, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Text.UI.Wpf.14.3.25407\lib\net45\Microsoft.VisualStudio.Text.UI.Wpf.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.7.10.6071\lib\net11\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.8.0.8.0.50728\lib\net11\Microsoft.VisualStudio.TextManager.Interop.8.0.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Threading, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Threading.14.1.111\lib\net45\Microsoft.VisualStudio.Threading.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Utilities, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Utilities.14.3.25407\lib\net45\Microsoft.VisualStudio.Utilities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Validation, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.Validation.14.1.111\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\packages\stdole.7.0.3300\lib\net10\stdole.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Resources\SandcastleBuilderProjectNode.bmp" />
+    <Resource Include="Resources\AspNetWebsite.png" />
+    <Resource Include="Resources\CodeSnippets.ico" />
+    <Resource Include="Resources\Component.ico" />
+    <Resource Include="Resources\Docx.png" />
+    <Resource Include="Resources\EntityReferences.png" />
+    <Resource Include="Resources\FAQ.png" />
+    <Resource Include="Resources\HtmlEncode.png" />
+    <Resource Include="Resources\HtmlHelp.png" />
+    <Resource Include="Resources\HtmlPage.ico" />
+    <Resource Include="Resources\ImageFile.ico" />
+    <Resource Include="Resources\JScriptFile.ico" />
+    <Resource Include="Resources\LogFile.png" />
+    <Resource Include="Resources\MSHelpViewer.png" />
+    <Resource Include="Resources\MamlTopic.ico" />
+    <Resource Include="Resources\Package.ico" />
+    <Resource Include="Resources\ResourceItemFile.ico" />
+    <Resource Include="Resources\ShowHelp.png" />
+    <Resource Include="Resources\SiteMap.ico" />
+    <Resource Include="Resources\StyleSheet.ico" />
+    <Resource Include="Resources\Text.ico" />
+    <Resource Include="Resources\TokenFile.ico" />
+    <Resource Include="Resources\TopicPreview.png" />
+    <Resource Include="Resources\ViewHelpFile.png" />
+    <Resource Include="Resources\XmlFile.ico" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Content Include="..\License.rtf">
+      <Link>License.rtf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <VSCTCompile Include="SandcastleBuilderPackage.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="VSIXPackage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="VSIXPreview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <EmbeddedResource Include="VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Deploy\Schemas\Authoring\SandcastleMAML.xml">
+      <!-- This must be in the root to install in the root schemas folder -->
+      <Link>SandcastleMAML.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\base.xsd">
+      <Link>SandcastleMAML\base.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\baseConditional.xsd">
+      <Link>SandcastleMAML\baseConditional.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\block.xsd">
+      <Link>SandcastleMAML\block.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\blockCommon.xsd">
+      <Link>SandcastleMAML\blockCommon.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\blockSoftware.xsd">
+      <Link>SandcastleMAML\blockSoftware.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\conditionSet.xsd">
+      <Link>SandcastleMAML\conditionSet.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\developer.xsd">
+      <Link>SandcastleMAML\developer.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\developerReference.xsd">
+      <Link>SandcastleMAML\developerReference.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\developerStructure.xsd">
+      <Link>SandcastleMAML\developerStructure.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\glossary.xsd">
+      <Link>SandcastleMAML\glossary.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\hierarchy.xsd">
+      <Link>SandcastleMAML\hierarchy.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inline.xsd">
+      <Link>SandcastleMAML\inline.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineCommon.xsd">
+      <Link>SandcastleMAML\inlineCommon.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineLinking.xsd">
+      <Link>SandcastleMAML\inlineLinking.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineSoftware.xsd">
+      <Link>SandcastleMAML\inlineSoftware.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\inlineUi.xsd">
+      <Link>SandcastleMAML\inlineUi.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\standardCodes.xsd">
+      <Link>SandcastleMAML\standardCodes.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structure.xsd">
+      <Link>SandcastleMAML\structure.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureList.xsd">
+      <Link>SandcastleMAML\structureList.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureMedia.xsd">
+      <Link>SandcastleMAML\structureMedia.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureProcedure.xsd">
+      <Link>SandcastleMAML\structureProcedure.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\structureTable.xsd">
+      <Link>SandcastleMAML\structureTable.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+    <Content Include="..\..\Deploy\Schemas\Authoring\__internal.xsd">
+      <Link>SandcastleMAML\__internal.xsd</Link>
+      <SubType>Designer</SubType>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\.gitignore" />
+    <None Include="Templates\ReadMe.txt" />
+    <None Include="Templates\Templates.vsspell" />
+    <Content Include="Templates\Projects\BuildComponentCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\GlobalSuppressions.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\GlobalSuppressions.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.Designer.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\XamlExampleConfigDlg.xaml.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugIn.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyle.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\AssemblyInfo.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\GlobalSuppressions.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.cs">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.snippets">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\CodeSnippets</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.content">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ContentLayout</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.items">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ResourceItems</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.tokens">
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\TokenFile</VSIXSubPath>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Conceptual</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\ErrorMessage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\HowTo</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Orientation</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Reference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefNoSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefWithSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Sample</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechArch</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechCodeDir</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechOrient</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechScen</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechSum</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Troubleshooting</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\UIReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Whitepaper</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\XMLReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponent.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\ConfigEditor.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\ConfigEditor.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugIn.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugIn.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugIn.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugIn.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyle.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyle.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyle.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.csproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGenerator.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\launchSettings.json">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.props">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.sitemap">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\SiteMap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.xamlcfg">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XamlSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\ContentLayout.content">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\v1.0.0.0.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\VersionHistory.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\Welcome.aml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\CodeSnippets</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ContentLayout</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\ResourceItems</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.vstemplate">
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Project Files\TokenFile</VSIXSubPath>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Conceptual</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\ErrorMessage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Glossary</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\HowTo</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Orientation</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Reference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefNoSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\RefWithSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Sample</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechArch</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechCodeDir</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechOrient</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechScen</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\SDKTechSum</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Troubleshooting</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\UIReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Walkthrough</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\Whitepaper</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Conceptual Content\Topics\XMLReference</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentCS\BuildComponentCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponent.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\BuildComponentVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\BuildComponentVB\GlobalSuppressions.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\BuildComponentVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\ConfigEditorCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\ConfigEditorVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\GlobalSuppressions.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.Designer.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\XamlExampleConfigDlg.xaml.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInCS\PlugInCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugIn.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PlugInVB\PlugInVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PlugInVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleCS\PresentationStyleCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyle.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\PresentationStyleVB\PresentationStyleVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\PresentationStyleVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\ResourceItems.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorCS\SyntaxGeneratorCS.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\AssemblyInfo.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\GlobalSuppressions.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\ResourceItems.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGenerator.vb">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SyntaxGeneratorVB\SyntaxGeneratorVB.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\SyntaxGeneratorVB</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.bmp">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bitmap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\Bitmap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.html">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\HtmlPage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\HtmlPage</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.js">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\ScriptFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\ScriptFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\SiteMap</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.css">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\StyleSheet</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\StyleSheet</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\TextFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\TextFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XamlSyntax</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XmlFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ItemTemplates\SHFBProject\Other Content\XmlFile</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\Help.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.shfbproj">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\SandcastleBuilderProject</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorCS\WindowsFormsExampleConfigDlg.resx">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorCS</VSIXSubPath>
+    </Content>
+    <Content Include="Templates\Projects\ConfigEditorVB\WindowsFormsExampleConfigDlg.resx">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ProjectTemplates\SHFBProject\Documentation\ConfigEditorVB</VSIXSubPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
+      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
+      <Name>ColorizerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPFProj_VS2010\Microsoft.VisualStudio.Project.csproj">
+      <Project>{cacb60a9-1e76-4f92-8831-b134a658c695}</Project>
+      <Name>Microsoft.VisualStudio.Project</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
+      <Name>SandcastleBuilderUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
+      <Project>{1e9be929-4cba-4668-a141-0bbdb0ac9f0f}</Project>
+      <Name>SandcastleBuilderWPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">
+      <Project>{3464677b-467d-4a35-baf4-543fb5fa9d66}</Project>
+      <Name>SandcastlePlatformWindows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\analyzers\cs\Microsoft.VisualStudio.SDK.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="..\VSIX_Shared\SandcastleBuilderPackage.Shared.projitems" Label="Shared" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>IF "$(ConfigurationName)"=="Debug" Goto Exit
+
+IF NOT EXIST "$(SolutionDir)..\..\Deployment\InstallResources" MD "$(SolutionDir)..\..\Deployment\InstallResources"
+
+Copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)..\..\Deployment\InstallResources\SHFBVisualStudioPackage_VS2017AndLater.vsix"
+
+:Exit
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" />
+  <Import Project="..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.16\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" />
+</Project>

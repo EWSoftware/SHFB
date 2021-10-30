@@ -2,22 +2,21 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/11/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the derived editor control used to edit conceptual content
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  05/10/2008  EFW  Created the code
-// 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
-// 1.9.8.0  05/11/2013  EFW  Added support for spell checking
+// 05/10/2008  EFW  Created the code
+// 07/26/2008  EFW  Reworked for use with the new project format
+// 05/11/2013  EFW  Added support for spell checking
 //===============================================================================================================
 
 using System;
@@ -45,10 +44,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public ContentEditorControl()
         {
-            IEditAction oldAction;
-
             // Hook up the custom actions for the key presses
-            if(!editactions.TryGetValue(Keys.Tab, out oldAction))
+            if(!editactions.TryGetValue(Keys.Tab, out IEditAction oldAction))
                 oldAction = null;
 
             editactions[Keys.Tab] = new InsertClosingElement(oldAction);
@@ -94,10 +91,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         internal void OnPerformFindText(EventArgs e)
         {
-            var handler = PerformFindText;
-
-            if(handler != null)
-                handler(this, e);
+            PerformFindText?.Invoke(this, e);
         }
 
         /// <summary>
@@ -111,10 +105,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         internal void OnPerformReplaceText(EventArgs e)
         {
-            var handler = PerformReplaceText;
-
-            if(handler != null)
-                handler(this, e);
+            PerformReplaceText?.Invoke(this, e);
         }
 
         /// <summary>
@@ -128,10 +119,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         internal void OnPerformSpellCheck(EventArgs e)
         {
-            var handler = PerformSpellCheck;
-
-            if(handler != null)
-                handler(this, e);
+            PerformSpellCheck?.Invoke(this, e);
         }
         #endregion
 
@@ -159,6 +147,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="text">The text to insert</param>
         public static void InsertString(TextArea textArea, string text)
         {
+            if(textArea == null)
+                throw new ArgumentNullException(nameof(textArea));
+
+            if(text == null)
+                throw new ArgumentNullException(nameof(text));
+
             int offset = textArea.Caret.Offset;
 
             textArea.BeginUpdate();
@@ -196,7 +190,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="action">The action to execute</param>
         public void Execute(IEditAction action)
         {
-            action.Execute(this.ActiveTextAreaControl.TextArea);
+            action?.Execute(this.ActiveTextAreaControl.TextArea);
         }
         #endregion
     }

@@ -10,10 +10,9 @@
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.Commands
+namespace Sandcastle.Tools.BuildComponents.Commands
 {
     /// <summary>
     /// This is an abstract base class used for copy commands
@@ -27,18 +26,19 @@ namespace Microsoft.Ddue.Tools.Commands
         /// This read-only property returns the parent component
         /// </summary>
         /// <value>This can be used to log messages</value>
-        public BuildComponentCore ParentComponent { get; private set; }
+        public BuildComponentCore ParentComponent { get; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to get the source elements
         /// </summary>
-        public XPathExpression Source { get; private set; }
+        public XPathExpression Source { get; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to get the target element to which the
         /// source elements are copied
         /// </summary>
-        public XPathExpression Target { get; private set; }
+        public XPathExpression Target { get; }
+
         #endregion
 
         #region Constructor

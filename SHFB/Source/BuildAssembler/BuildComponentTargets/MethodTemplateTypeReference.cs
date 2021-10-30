@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a method template type reference
@@ -23,12 +23,13 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the template method
         /// </summary>
-        public MemberReference TemplateMethod { get; private set; }
+        public MemberReference TemplateMethod { get; }
 
         /// <summary>
         /// This read only property returns the position
         /// </summary>
-        public int Position { get; private set; }
+        public int Position { get; }
+
         #endregion
 
         #region Constructor

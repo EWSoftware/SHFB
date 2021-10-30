@@ -7,7 +7,7 @@
 // necessary to actually write out the link by using the ResolveConceptualLinksComponent.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -17,9 +17,7 @@
 
 using System;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This class is used to represent a resolved target containing all the information necessary to actually
@@ -33,17 +31,17 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property is used to get the text
         /// </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /// <summary>
         /// This read-only property is used to get the link type
         /// </summary>
-        public ConceptualLinkType LinkType { get; private set; }
+        public ConceptualLinkType LinkType { get; }
 
         /// <summary>
         /// This read-only property is used to get the URL
         /// </summary>
-        public string Url { get; private set; }
+        public string Url { get; }
 
         #endregion
 
@@ -59,17 +57,11 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <exception cref="ArgumentNullException">This is thrown if the target URL or text is null</exception>
         public TargetInfo(string targetUrl, string targetText, ConceptualLinkType typeOfLink)
         {
-            if(targetUrl == null)
-                throw new ArgumentNullException("targetUrl");
-
             if(targetText == null)
-                throw new ArgumentNullException("targetText");
+                throw new ArgumentNullException(nameof(targetText));
 
-            this.Url = targetUrl;
-
-            // EFW - Use String.Empty or trim off unwanted whitespace
-            this.Text = String.IsNullOrEmpty(targetText) ? String.Empty : targetText.Trim();
-
+            this.Url = targetUrl ?? throw new ArgumentNullException(nameof(targetUrl));
+            this.Text = targetText.Trim();
             this.LinkType = typeOfLink;
         }
         #endregion

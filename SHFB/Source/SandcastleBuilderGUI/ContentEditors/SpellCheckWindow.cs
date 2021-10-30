@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/26/2018
-// Note    : Copyright 2013-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to handle spell checking in the text editor windows
 //
@@ -77,7 +76,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private TopicEditorWindow currentTopicWindow;
         private GlobalDictionary dictionary;
 
-        private List<SpellingIssue> issues;
+        private readonly List<SpellingIssue> issues;
 
         #endregion
 
@@ -291,7 +290,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             int idx = lbSuggestions.IndexFromPoint(e.Location);
 
             if(idx != -1)
-                if((Control.ModifierKeys & Keys.Control) == 0)
+                if((ModifierKeys & Keys.Control) == 0)
                     btnReplace_Click(sender, e);
                 else
                     btnReplaceAll_Click(sender, e);
@@ -462,11 +461,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         case ".xsl":
                         case ".xslt":
                         case ".xamlcfg":
-                            using(MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+                            using(var ms = new MemoryStream(Encoding.UTF8.GetBytes(text)))
+                            using(var reader = XmlReader.Create(ms, new XmlReaderSettings {
+                              DtdProcessing = DtdProcessing.Ignore }))
                             {
-                                XmlReaderSettings rs = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
-
-                                speller.SpellCheckXmlReader(XmlReader.Create(ms, rs));
+                                speller.SpellCheckXmlReader(reader);
                             }
                             break;
 

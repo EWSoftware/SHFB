@@ -14,7 +14,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -26,7 +25,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to save the generated document or parts of it to a file
@@ -53,7 +52,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private XmlWriterSettings settings = new XmlWriterSettings();
+        private readonly XmlWriterSettings settings = new XmlWriterSettings();
         private XPathExpression pathExpression, selectExpression;
 
         private string basePath, groupId;
@@ -84,6 +83,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             settings.Encoding = Encoding.UTF8;
             settings.CloseOutput = true;
 
@@ -91,8 +93,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XPathNavigator saveNode = configuration.SelectSingleNode("save");
 
             if(saveNode == null)
-                throw new ConfigurationErrorsException("When instantiating a save component, you must specify " +
-                    "a the target file using the <save> element.");
+                throw new ArgumentException("When instantiating a save component, you must specify " +
+                    "a the target file using the <save> element.", nameof(configuration));
 
             string baseValue = saveNode.GetAttribute("base", String.Empty);
 
@@ -145,8 +147,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             if(!String.IsNullOrWhiteSpace(outputMethod))
             {
                 if(!Enum.TryParse(outputMethod, true, out XmlOutputMethod method))
-                    throw new ConfigurationErrorsException("The specified output method is not valid for the " +
-                        "save component");
+                    throw new ArgumentException("The specified output method is not valid for the save component",
+                        nameof(configuration));
 
                 // This isn't a publicly settable property so we have to resort to reflection
                 var propertyInfo = typeof(XmlWriterSettings).GetProperty("OutputMethod", BindingFlags.Instance |
@@ -278,7 +280,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                                 while(ni.MoveNext())
                                 {
                                     if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
-                                        ni.Current.Name.Equals("literal-text"))
+                                        ni.Current.Name.Equals("literal-text", StringComparison.Ordinal))
                                     {
                                         writer.Flush();
                                         output.Write(ni.Current.Value);

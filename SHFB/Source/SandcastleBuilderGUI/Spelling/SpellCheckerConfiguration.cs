@@ -2,13 +2,13 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckerConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
-// Note    : Copyright 2013-2019, Eric Woodruff, All rights reserved
+// Updated : 04/20/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to contain the spell checker's configuration settings
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -105,19 +105,13 @@ namespace SandcastleBuilder.Gui.Spelling
         /// This read-only property returns an enumerable list of ignored XML element names that will not have
         /// their content spell checked.
         /// </summary>
-        public static IEnumerable<string> IgnoredXmlElements
-        {
-            get { return ignoredXmlElements; }
-        }
+        public static IEnumerable<string> IgnoredXmlElements => ignoredXmlElements;
 
         /// <summary>
         /// This read-only property returns an enumerable list of XML attribute names that will not have their
         /// values spell checked.
         /// </summary>
-        public static IEnumerable<string> SpellCheckedXmlAttributes
-        {
-            get { return spellCheckedXmlAttributes; }
-        }
+        public static IEnumerable<string> SpellCheckedXmlAttributes => spellCheckedXmlAttributes;
 
         /// <summary>
         /// This read-only property returns a list of available dictionary languages
@@ -158,28 +152,17 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <summary>
         /// This read-only property returns the default list of ignored XML elements
         /// </summary>
-        public static IEnumerable<string> DefaultIgnoredXmlElements
-        {
-            get
-            {
-                return new string[] { "c", "code", "codeEntityReference", "codeReference", "codeInline",
-                    "command", "environmentVariable", "fictitiousUri", "foreignPhrase", "link", "linkTarget",
-                    "linkUri", "localUri", "replaceable", "see", "seeAlso", "unmanagedCodeEntityReference",
-                    "token" };
-            }
-        }
+        public static IEnumerable<string> DefaultIgnoredXmlElements => new string[] {
+            "c", "code", "codeEntityReference", "codeReference", "codeInline", "command", "environmentVariable",
+            "fictitiousUri", "foreignPhrase", "link", "linkTarget", "linkUri", "localUri", "replaceable", "see",
+            "seeAlso", "unmanagedCodeEntityReference", "token" };
 
         /// <summary>
         /// This read-only property returns the default list of spell checked XML attributes
         /// </summary>
-        public static IEnumerable<string> DefaultSpellCheckedAttributes
-        {
-            get
-            {
-                return new[] { "altText", "Caption", "Content", "Header", "lead", "title", "term", "Text",
-                    "ToolTip" };
-            }
-        }
+        public static IEnumerable<string> DefaultSpellCheckedAttributes => new[] {
+            "altText", "Caption", "Content", "Header", "lead", "title", "term", "Text", "ToolTip" };
+
         #endregion
 
         #region Constructor

@@ -142,11 +142,6 @@
         <HelpKeyword index="K" term="Visual Studio, item file templates" />
       </HelpKeywords>
     </Topic>
-    <Topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" visible="True" title="Component Project Templates">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="Visual Studio, component project templates" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" title="Visual Studio Text Editor">
       <HelpKeywords>
         <HelpKeyword index="K" term="Visual Studio, text editor" />
@@ -161,9 +156,10 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Project Explorer Window">
+  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Solution/Project Explorer Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="Project Explorer, overview" />
+      <HelpKeyword index="K" term="Solution Explorer, overview" />
     </HelpKeywords>
     <Topic id="64f0576f-51b3-4dae-aaac-06568c6c2f68" visible="True" title="Documentation Sources">
       <HelpKeywords>
@@ -173,6 +169,12 @@
     <Topic id="9309b01b-87bf-4d68-b035-c10ac77d1522" visible="True">
       <HelpKeywords>
         <HelpKeyword index="K" term="references" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="273dcaf1-1e51-475d-a622-732dd3afc212" visible="True" title="Component Packages">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="component packages" />
+        <HelpKeyword index="K" term="NuGet" />
       </HelpKeywords>
     </Topic>
     <Topic id="0a9d6da4-cff6-4664-8b64-b7df04c8a37d" visible="True" title="Folder and File Items">
@@ -539,14 +541,6 @@
         <HelpKeyword index="K" term="XPathReflectionFileFilterPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating Build Process Plug-Ins">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
-        <HelpKeyword index="K" term="plug-ins, execution notes" />
-        <HelpKeyword index="K" term="plug-ins, plug-in documentation" />
-        <HelpKeyword index="K" term="plug-ins, template class" />
-      </HelpKeywords>
-    </Topic>
   </Topic>
   <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="BuildAssembler Components">
     <HelpKeywords>
@@ -603,16 +597,41 @@
         </HelpKeywords>
       </Topic>
     </Topic>
+  </Topic>
+  <Topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" visible="True" title="Creating Custom Components">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="custom components" />
+    </HelpKeywords>
+    <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating a Build Process Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
+        <HelpKeyword index="K" term="plug-ins, execution notes" />
+        <HelpKeyword index="K" term="plug-ins, plug-in documentation" />
+        <HelpKeyword index="K" term="plug-ins, template class" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a BuildAssembler Build Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, creating a build component" />
         <HelpKeyword index="K" term="build components, build component template class" />
       </HelpKeywords>
     </Topic>
+    <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Creating a Presentation Style Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, creating a presentation style" />
+        <HelpKeyword index="K" term="build components, presentation style template class" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" visible="True" title="Creating a Syntax Filter Generator Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, creating a syntax filter generator" />
         <HelpKeyword index="K" term="build components, syntax generator template class" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="9ec616aa-59df-4c5c-a128-e540e6bb479c" visible="True" title="Creating a Configuration UI Project">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, creating a configuration UI project" />
+        <HelpKeyword index="K" term="plug-ins, creating a configuration UI project" />
       </HelpKeywords>
     </Topic>
   </Topic>
@@ -670,6 +689,11 @@
       <Topic id="29685951-0496-4717-bf33-a14bf065a8b8" visible="True" title="BE0010: Image file '[imageFile]' already exists">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, BE0010" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="874bd953-1817-41f7-bd9b-d11d2c26609d" visible="True" title="BE0011: Unable to load package reference information for '[path]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0011" />
         </HelpKeywords>
       </Topic>
       <Topic id="44bd5bf4-6cf0-41ca-b12c-41c34076c298" visible="True" title="BE0012: Error generating namespace summaries (Namespace = [namespace]): [error]">
@@ -747,6 +771,11 @@
           <HelpKeyword index="K" term="errors, BE0026" />
         </HelpKeywords>
       </Topic>
+      <Topic id="cd48f4ce-100e-441e-b23b-fd534d40c65c" visible="True" title="BE0027: Namespace grouping was requested but the selected presentation style does not support it">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0027" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="25036a28-bd82-4032-8108-ac614423a2cf" visible="True" title="BE0028: [Plug-in loading error]">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0028" />
@@ -783,6 +812,11 @@
         </HelpKeywords>
       </Topic>
       <Topic id="230e5a68-858d-4272-a3a2-eea156cf379b" visible="True" title="BE0035: The framework version is set to Cross-platform but no reference assemblies were specified" />
+      <Topic id="cda7d163-87c9-47de-986a-92f067ded11b" visible="True" title="BE0036: The FIPS validated cryptographic algorithms policy appears to be enabled">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0036" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path to the HTML Help 1 compiler">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0037" />
@@ -1196,12 +1230,6 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
-  <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Creating a Presentation Style Component">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="build components, creating a presentation style" />
-      <HelpKeyword index="K" term="build components, presentation style template class" />
-    </HelpKeywords>
-  </Topic>
   <Topic id="c5e7e920-2cb4-4f78-b167-634361d85263" visible="True" title="Open XML Document Help File Format">
     <HelpKeywords>
       <HelpKeyword index="K" term="open XML" />
@@ -1241,21 +1269,6 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="36b6f77e-5662-4e1f-a075-bae885db0401" visible="True" title="XSL Transform Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, XslTransform.exe" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="66f0b914-3e4f-4fa5-bee7-67879a74a018" visible="True" title="Add Namespace Groups Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, AddNamespaceGroups.exe" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="cdac64ac-3d78-4d30-b528-ce1e9aacfb24" visible="True" title="Version Builder Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, VersionBuilder.exe" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="e3a49da5-e80c-4878-b904-72f902c31709" visible="True" title="Generate Inherited Documentation Tool">
       <HelpKeywords>
         <HelpKeyword index="K" term="tools, GenerateInheritedDocs.exe" />
@@ -1294,11 +1307,6 @@
     <Topic id="032f1fab-6625-4ffb-9316-57fb3e4a03ff" visible="True" title="Reflection Data Manager Tool">
       <HelpKeywords>
         <HelpKeyword index="K" term="tools, ReflectionDataManager.exe" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="04f289d0-20bd-4873-9012-6c77a21c0f0a" visible="True" title="Segregate By Namespace Tool">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="tools, SegregateByNamespace.exe" />
       </HelpKeywords>
     </Topic>
     <Topic id="5f73b7b1-473c-4740-bdfc-e662192910fc" visible="True" title="Help Library Manager Launcher Utility">
@@ -1388,30 +1396,40 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" visible="True" isSelected="true" title="Version 2021.4.9.0">
+    <Topic id="003c85ec-45ad-4123-a31d-fd63a695b1f3" visible="True" title="Version 2021.10.23.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 2021.4.9.0" />
+        <HelpKeyword index="K" term="versions, 2021.10.23.0" />
       </HelpKeywords>
     </Topic>
-    <Topic id="70b704dc-03c8-4934-b83e-e84d4d7f927a" visible="True" title="Version 2021.3.29.0">
+    <Topic id="bc933f8f-e792-45bf-afec-62aa2c46aa3b" visible="True" title="Component Migration Support">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 2021.3.29.0" />
+        <HelpKeyword index="K" term="migration support" />
       </HelpKeywords>
     </Topic>
-    <Topic id="fa3bd7c8-2b1d-4e66-9278-e36f57e098a6" visible="True" title="Version 2020.3.6.0">
+    <Topic id="dc3de2e5-750a-4839-88f9-62eb108c087e" visible="True" title="Versions 2015.7.25.0 through 2021.4.9.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 2020.3.6.0" />
+        <HelpKeyword index="K" term="prior versions, Versions 2015.7.25.0 to 2021.4.9.0" />
       </HelpKeywords>
-    </Topic>
-    <Topic id="dc3de2e5-750a-4839-88f9-62eb108c087e" visible="True" title="Versions 2015.7.25.0 through 2019.11.17.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="prior versions, Versions 2015.7.25.0 to 2019.11.17.0" />
-      </HelpKeywords>
+      <Topic id="52c2409d-0a0a-4b6e-bd0a-5d2b03d1d332" visible="True" title="Version 2021.4.9.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 2021.4.9.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="70b704dc-03c8-4934-b83e-e84d4d7f927a" visible="True" title="Version 2021.3.29.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 2021.3.29.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="fa3bd7c8-2b1d-4e66-9278-e36f57e098a6" visible="True" title="Version 2020.3.6.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 2020.3.6.0" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="f8d393f6-a081-43ad-9a84-e8d379f2de56" visible="True" title="Version 2019.11.17.0">
         <HelpKeywords>
           <HelpKeyword index="K" term="versions, 2019.11.17.0" />
@@ -1474,12 +1492,12 @@
       </Topic>
       <Topic id="8b636153-2500-4e63-b372-a1595456c3a6" visible="True" title="Version 2017.1.28.0">
         <HelpKeywords>
-          <HelpKeyword index="K" term="version, 2017.1.28.0" />
+          <HelpKeyword index="K" term="versions, 2017.1.28.0" />
         </HelpKeywords>
       </Topic>
       <Topic id="4a295201-9516-4914-b9d1-7db80631b42d" visible="True" title="Version 2016.9.17.0">
         <HelpKeywords>
-          <HelpKeyword index="K" term="version, 2016.9.17.0" />
+          <HelpKeyword index="K" term="versions, 2016.9.17.0" />
         </HelpKeywords>
       </Topic>
       <Topic id="7603a301-1567-4f97-84ea-165d209dab7d" visible="True" title="Version 2016.5.28.0">

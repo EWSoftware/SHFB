@@ -2,9 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ContentFileEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing an external application used to edit an additional content file
 //
@@ -28,8 +27,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
+using Sandcastle.Platform.Windows.Design;
+
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -43,12 +43,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         // These are used to parse the extension list and replace the macro placeholders
-        private static Regex reSplit = new Regex("[.,; ]");
+        private static readonly Regex reSplit = new Regex("[.,; ]");
 
         // There are only three so we won't bother with a match evaluator
-        private static Regex reContentItem = new Regex("\\$ContentItem", RegexOptions.IgnoreCase);
-        private static Regex reProjectFile = new Regex("\\$ProjectFile", RegexOptions.IgnoreCase);
-        private static Regex reProjectFolder = new Regex("\\$ProjectFolder", RegexOptions.IgnoreCase);
+        private static readonly Regex reContentItem = new Regex("\\$ContentItem", RegexOptions.IgnoreCase);
+        private static readonly Regex reProjectFile = new Regex("\\$ProjectFile", RegexOptions.IgnoreCase);
+        private static readonly Regex reProjectFolder = new Regex("\\$ProjectFolder", RegexOptions.IgnoreCase);
 
         // Member fields
         private string description, arguments, extensions;
@@ -67,7 +67,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
          Description("A description of the editor application")]
         public string Description
         {
-            get { return description; }
+            get => description;
             set
             {
                 if(value == null || value.Trim().Length == 0)
@@ -86,7 +86,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             "extensions with a space, semi-colon, period, or a comma.")]
         public string Extensions
         {
-            get { return extensions; }
+            get => extensions;
             set
             {
                 if(value == null || value.Trim().Length == 0)
@@ -127,7 +127,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             "project folder name.  Enclose in quotes if necessary.")]
         public string Arguments
         {
-            get { return arguments; }
+            get => arguments;
             set
             {
                 if(value == null || value.Trim().Length == 0)
@@ -147,7 +147,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             "Application (*.exe)|*.exe|All Files (*.*)|*.*", FileDialogType.FileOpen), XmlIgnore]
         public FilePath ApplicationPath
         {
-            get { return applicationPath; }
+            get => applicationPath;
             set
             {
                 if(value == null || value.Path.Length == 0)
@@ -168,7 +168,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
           XmlIgnore]
         public FolderPath StartupFolder
         {
-            get { return startupFolder; }
+            get => startupFolder;
             set
             {
                 if(value == null)
@@ -194,8 +194,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         [Browsable(false)]
         public string ApplicationPathSerializable
         {
-            get { return this.ApplicationPath.PersistablePath; }
-            set { this.ApplicationPath = new FilePath(value, null); }
+            get => this.ApplicationPath.PersistablePath;
+            set => this.ApplicationPath = new FilePath(value, null);
         }
 
         /// <summary>
@@ -207,8 +207,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         [Browsable(false)]
         public string StartupFolderSerializable
         {
-            get { return this.StartupFolder.PersistablePath; }
-            set { this.StartupFolder = new FolderPath(value, null); }
+            get => this.StartupFolder.PersistablePath;
+            set => this.StartupFolder = new FolderPath(value, null);
         }
         #endregion
 
@@ -264,7 +264,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     extension = extension.Substring(1);
 
                 foreach(string entry in matchList)
-                    if(entry.Length != 0 && String.Compare(entry, extension, true, CultureInfo.CurrentCulture) == 0)
+                    if(entry.Length != 0 && String.Compare(entry, extension, StringComparison.OrdinalIgnoreCase) == 0)
                         return true;
             }
 

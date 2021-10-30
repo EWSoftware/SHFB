@@ -23,7 +23,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools.SyntaxGenerators
 {
     /// <summary>
     /// This class generates usage syntax sections for Visual Basic
@@ -48,13 +48,8 @@ namespace Microsoft.Ddue.Tools
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public string ResourceItemFileLocation
-            {
-                get
-                {
-                    return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent");
-                }
-            }
+            public string ResourceItemFileLocation => Path.Combine(ComponentUtilities.AssemblyFolder(
+                Assembly.GetExecutingAssembly()), "SyntaxContent");
 
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
@@ -69,6 +64,9 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             base.Initialize(configuration);
 
             var lineCont = configuration.SelectSingleNode("includeLineContinuation/@value");
@@ -80,6 +78,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string name = (string)reflection.Evaluate(apiNameExpression);
 
             writer.WriteKeyword("Imports");
@@ -103,11 +107,13 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(" ");
             writer.WriteKeyword("As");
             writer.WriteString(" ");
+
             if(declaringType != null)
             {
                 WriteTypeReference(declaringType, writer);
                 writer.WriteString(".");
             }
+
             if(reservedWords.Contains(name))
             {
                 writer.WriteString("[");
@@ -115,9 +121,8 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteString("]");
             }
             else
-            {
                 writer.WriteIdentifier(name);
-            }
+
             WriteGenericTemplates(reflection, writer, writeVariance);
         }
 
@@ -187,6 +192,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
 
@@ -199,18 +210,36 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             TypeDeclaration(reflection, writer);
         }
 
         /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             TypeDeclaration(reflection, writer, true);  // Need to write variance info for interfaces and delegates
         }
 
         /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
 
@@ -251,6 +280,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
 
@@ -318,6 +353,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
 
@@ -363,11 +404,16 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             bool isExtension = (bool)reflection.Evaluate(apiIsExtensionMethod);
+
             if(isExtension)
-            {
                 WriteExtensionMethodSyntax(reflection, writer);
-            }
             else
             {
 
@@ -393,7 +439,6 @@ namespace Microsoft.Ddue.Tools
 
                 WriteMemberName(reflection, writer);
                 WriteMethodParameters(reflection, writer);
-
             }
         }
 
@@ -481,6 +526,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string name = (string)reflection.Evaluate(apiNameExpression);
             XPathNavigator returnType = reflection.SelectSingleNode(apiReturnTypeExpression);
 
@@ -497,121 +548,147 @@ namespace Microsoft.Ddue.Tools
                         identifier = "+";
                         type = -1;
                         break;
+
                     case "UnaryNegation":
                         identifier = "-";
                         type = -1;
                         break;
+
                     case "Increment":
                         identifier = "++";
                         type = +1;
                         break;
+
                     case "Decrement":
                         identifier = "--";
                         type = +1;
                         break;
+
                     // unary logical operators
                     case "LogicalNot":
                         identifier = "Not";
                         type = -1;
                         break;
+
                     case "True":
                         identifier = "IsTrue";
                         type = -1;
                         break;
+
                     case "False":
                         identifier = "IsFalse";
                         type = -1;
                         break;
+
                     // binary comparison operators
                     case "Equality":
                         identifier = "=";
                         type = 2;
                         break;
+
                     case "Inequality":
                         identifier = "<>";
                         type = 2;
                         break;
+
                     case "LessThan":
                         identifier = "<";
                         type = 2;
                         break;
+
                     case "GreaterThan":
                         identifier = ">";
                         type = 2;
                         break;
+
                     case "LessThanOrEqual":
                         identifier = "<=";
                         type = 2;
                         break;
+
                     case "GreaterThanOrEqual":
                         identifier = ">=";
                         type = 2;
                         break;
+
                     // binary math operators
                     case "Addition":
                         identifier = "+";
                         type = 2;
                         break;
+
                     case "Subtraction":
                         identifier = "-";
                         type = 2;
                         break;
+
                     case "Multiply":
                         identifier = "*";
                         type = 2;
                         break;
+
                     case "Division":
                         identifier = "/";
                         type = 2;
                         break;
+
                     case "Exponent":
                         identifier = "^";
                         type = 2;
                         break;
+
                     case "Modulus":
                         identifier = "Mod";
                         type = 2;
                         break;
+
                     case "IntegerDivision":
                         identifier = @"\";
                         type = 2;
                         break;
+
                     // binary logical operators
                     case "BitwiseAnd":
                         identifier = "And";
                         type = 2;
                         break;
+
                     case "BitwiseOr":
                         identifier = "Or";
                         type = 2;
                         break;
+
                     case "ExclusiveOr":
                         identifier = "Xor";
                         type = 2;
                         break;
+
                     // bit-array operators
                     case "OnesComplement":
                         identifier = "~";
                         type = -1;
                         break;
+
                     case "LeftShift":
                         identifier = "<<";
                         type = 2;
                         break;
+
                     case "RightShift":
                         identifier = ">>";
                         type = 2;
                         break;
+
                     // concatenation
                     case "Concatenate":
                         identifier = "&";
                         type = 2;
                         break;
+
                     case "Assign":
                         identifier = "=";
                         type = 2;
                         break;
-
 
                     // didn't recognize an operator
                     default:
@@ -635,9 +712,11 @@ namespace Microsoft.Ddue.Tools
 
                 WriteParameterDeclarations(reflection, writer);
                 ParameterDeclaration("returnValue", returnType, writer);
+
                 writer.WriteLine();
                 writer.WriteParameter("returnValue");
                 writer.WriteString(" = ");
+
                 switch(type)
                 {
                     case -1:
@@ -645,11 +724,13 @@ namespace Microsoft.Ddue.Tools
                         parameters.MoveNext();
                         writer.WriteParameter((string)parameters.Current.Evaluate(parameterNameExpression));
                         break;
+
                     case +1:
                         parameters.MoveNext();
                         writer.WriteParameter((string)parameters.Current.Evaluate(parameterNameExpression));
                         writer.WriteIdentifier(identifier);
                         break;
+
                     case 2:
                         writer.WriteString("(");
 
@@ -669,22 +750,31 @@ namespace Microsoft.Ddue.Tools
                         break;
                 }
             }
-
         }
 
         /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             XPathNavigator parameter = reflection.SelectSingleNode(apiParametersExpression);
+
             if(parameter == null)
                 return;
+
             XPathNavigator inputType = parameter.SelectSingleNode(typeExpression);
             XPathNavigator outputType = reflection.SelectSingleNode(apiReturnTypeExpression);
+
             if((inputType == null) || (outputType == null))
                 return;
 
             ParameterDeclaration("input", inputType, writer);
             ParameterDeclaration("output", outputType, writer);
+
             writer.WriteLine();
             writer.WriteParameter("output");
             writer.WriteString(" = ");
@@ -692,13 +782,21 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("(");
             writer.WriteParameter("input");
             writer.WriteString(", ");
+
             WriteTypeReference(outputType, writer);
+
             writer.WriteString(")");
         }
 
         /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
 
@@ -711,6 +809,7 @@ namespace Microsoft.Ddue.Tools
 
             if(!(isStatic || isFamily))
                 ParameterDeclaration("instance", declaringType, writer);
+
             WriteParameterDeclarations(reflection, writer);
 
             // Some F# properties don't generate return type info for some reason.  It's probably unsupported
@@ -722,7 +821,8 @@ namespace Microsoft.Ddue.Tools
             if(getter)
             {
                 string getVisibility = (string)reflection.Evaluate(apiGetVisibilityExpression);
-                if(string.IsNullOrEmpty(getVisibility) || (getVisibility != "assembly" &&
+
+                if(String.IsNullOrEmpty(getVisibility) || (getVisibility != "assembly" &&
                     getVisibility != "private" && getVisibility != "family and assembly"))
                 {
                     writer.WriteLine();
@@ -738,7 +838,8 @@ namespace Microsoft.Ddue.Tools
             if(setter)
             {
                 string setVisibility = (string)reflection.Evaluate(apiSetVisibilityExpression);
-                if(string.IsNullOrEmpty(setVisibility) || (setVisibility != "assembly" &&
+
+                if(String.IsNullOrEmpty(setVisibility) || (setVisibility != "assembly" &&
                     setVisibility != "private" && setVisibility != "family and assembly"))
                 {
                     writer.WriteLine();
@@ -754,6 +855,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             // !EFW - Added unsafe check
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
@@ -765,6 +872,7 @@ namespace Microsoft.Ddue.Tools
 
             if(!(isStatic | isFamily))
                 ParameterDeclaration("instance", declaringType, writer);
+
             ParameterDeclaration("handler", handler, writer);
 
             // adder
@@ -847,6 +955,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void WriteTypeReference(XPathNavigator reference, SyntaxWriter writer)
         {
+            if(reference == null)
+                throw new ArgumentNullException(nameof(reference));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             switch(reference.LocalName)
             {
                 case "arrayOf":
@@ -963,36 +1077,39 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <inheritdoc />
-        protected override void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        protected override void WriteNormalTypeReference(string api, SyntaxWriter writer)
         {
-            switch(reference)
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
+            switch(api)
             {
                 case "T:System.Int16":
-                    writer.WriteReferenceLink(reference, "Short");
+                    writer.WriteReferenceLink(api, "Short");
                     break;
 
                 case "T:System.Int32":
-                    writer.WriteReferenceLink(reference, "Integer");
+                    writer.WriteReferenceLink(api, "Integer");
                     break;
 
                 case "T:System.Int64":
-                    writer.WriteReferenceLink(reference, "Long");
+                    writer.WriteReferenceLink(api, "Long");
                     break;
 
                 case "T:System.UInt16":
-                    writer.WriteReferenceLink(reference, "UShort");
+                    writer.WriteReferenceLink(api, "UShort");
                     break;
 
                 case "T:System.UInt32":
-                    writer.WriteReferenceLink(reference, "UInteger");
+                    writer.WriteReferenceLink(api, "UInteger");
                     break;
 
                 case "T:System.UInt64":
-                    writer.WriteReferenceLink(reference, "ULong");
+                    writer.WriteReferenceLink(api, "ULong");
                     break;
 
                 default:
-                    writer.WriteReferenceLink(reference);
+                    writer.WriteReferenceLink(api);
                     break;
             }
         }
@@ -1003,7 +1120,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteReferenceLink(api);
         }
 
-        private static HashSet<string> reservedWords = new HashSet<string>
+        private static readonly HashSet<string> reservedWords = new HashSet<string>
         {
             "Alias",
             "Assembly",

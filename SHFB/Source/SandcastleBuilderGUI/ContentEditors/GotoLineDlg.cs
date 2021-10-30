@@ -1,26 +1,22 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : GotoLineDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/12/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
-// This file contains the dialog used to enter a line number for the Goto Line
-// editor action.
+// This file contains the dialog used to enter a line number for the Goto Line editor action
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: https://GitHub.com/EWSoftware/SHFB.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.8.0.0  07/26/2008  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/26/2008  EFW  Created the code
+//===============================================================================================================
 
-using System;
 using System.Windows.Forms;
 
 namespace SandcastleBuilder.Gui.ContentEditors
@@ -33,10 +29,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This read-only property returns the entered line number
         /// </summary>
-        public int LineNumber
-        {
-            get { return (int)udcLineNo.Value; }
-        }
+        public int LineNumber => (int)udcLineNo.Value;
 
         /// <summary>
         /// Constructor

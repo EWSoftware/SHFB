@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<RootNamespace>$safeprojectname$</RootNamespace>
+		<AssemblyName>$safeprojectname$</AssemblyName>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Product>$safeprojectname$</Product>
+		<Title>$safeprojectname$ Build Component</Title>
+		<Description>A Sandcastle Help File Builder build component</Description>
+		<Version>1.0.0.0</Version>
+		<Authors>$username$</Authors>
+		<Company>$username$</Company>
+		<PackageIconUrl></PackageIconUrl>
+		<PackageIcon></PackageIcon>
+		<RepositoryUrl></RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>$safeprojectname$ SHFB sandcastle build component</PackageTags>
+		<PackageProjectUrl></PackageProjectUrl>
+		<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<IsTool>true</IsTool>
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+		<ContentTargetFolders>tools\</ContentTargetFolders>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="build\$safeprojectname$.props">
+			<Pack>true</Pack>
+			<PackagePath>build\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+		<PackageReference Include="EWSoftware.Sandcastle.Core" Version="2021.10.23" />
+	</ItemGroup>
+
+	<!-- TODO: If you have a project with configuration forms, you can include it in this package by
+						 manually adding the assemblies needed for them here.  This keeps the platform-specific UI elements
+						 isolated and allows the component to work with MSBuild and dotnet build.
+	<ItemGroup>
+		<None Include="..\$safeprojectname$UI\bin\$(Configuration)\net472\$safeprojectname$UI.dll">
+			<Pack>true</Pack>
+			<PackagePath>tools\</PackagePath>
+			<Visible>false</Visible>
+		</None>
+	</ItemGroup>
+	-->
+</Project>

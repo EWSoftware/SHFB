@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : EntityReferenceWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2017
-// Note    : Copyright 2008-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to look up code entity references, code snippets, tokens, and images, and
 // allows them to be dragged and dropped into a topic editor window.
@@ -18,8 +17,7 @@
 // ==============================================================================================================
 // 05/12/2008  EFW  Created the code
 // 08/18/2008  EFW  Reworked for use with the new project format
-// 12/11/2011  EFW  Rewrote to use the shared WPF Entity References
-//                  user control.
+// 12/11/2011  EFW  Rewrote to use the shared WPF Entity References user control
 //===============================================================================================================
 
 using SandcastleBuilder.Utils;
@@ -43,8 +41,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public SandcastleProject CurrentProject
         {
-            get { return ucEntityReferences.CurrentProject; }
-            set { ucEntityReferences.CurrentProject = value; }
+            get => ucEntityReferences.CurrentProject;
+            set => ucEntityReferences.CurrentProject = value;
         }
         #endregion
 

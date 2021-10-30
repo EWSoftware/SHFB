@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : IInstallerPage.cs
 // Author  : Eric Woodruff
-// Updated : 11/07/2019
+// Updated : 09/08/2021
 //
 // This file contains an interface definition used to implement an installer page
 //
@@ -39,12 +39,6 @@ namespace Sandcastle.Installer.InstallerPages
         /// This read-only property returns the page title
         /// </summary>
         string PageTitle { get; }
-
-        /// <summary>
-        /// This is used to get or set the Sandcastle release version
-        /// </summary>
-        /// <remarks>The installer will set this when it loads the page</remarks>
-        string SandcastleVersion { get; set; }
 
         /// <summary>
         /// This read-only property is used to determine if the user can continue on from this step to the next

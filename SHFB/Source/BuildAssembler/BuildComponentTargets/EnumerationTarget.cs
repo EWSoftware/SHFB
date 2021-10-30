@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents an enumeration target
@@ -24,7 +24,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns a list of enumeration elements
         /// </summary>
-        public IList<MemberTarget> Elements { get; private set; }
+        public IList<MemberTarget> Elements { get; }
+
         #endregion
 
         #region Constructor

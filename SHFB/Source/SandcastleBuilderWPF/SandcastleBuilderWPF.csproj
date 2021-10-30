@@ -1,556 +1,85 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D3B06405-3435-4329-9233-2DF1BF5028AA}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SandcastleBuilder.WPF</RootNamespace>
-    <AssemblyName>SandcastleBuilder.WPF</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>binVSP\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>binVSP\Debug\SandcastleBuilder.WPF.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\SandcastleTools.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>binVSP\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>binVSP\Release\SandcastleBuilder.WPF.xml</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.15.1.548\lib\net46\Microsoft.Build.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Build.Framework.15.1.548\lib\net46\Microsoft.Build.Framework.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Imaging, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Imaging.14.3.25407\lib\net45\Microsoft.VisualStudio.Imaging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.7.10.6070\lib\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.14.0.14.3.25407\lib\Microsoft.VisualStudio.Shell.14.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.10.0.10.0.30319\lib\net40\Microsoft.VisualStudio.Shell.Immutable.10.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.11.0.11.0.50727\lib\net45\Microsoft.VisualStudio.Shell.Immutable.11.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.12.0.12.0.21003\lib\net45\Microsoft.VisualStudio.Shell.Immutable.12.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Immutable.14.0.14.3.25407\lib\net45\Microsoft.VisualStudio.Shell.Immutable.14.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.7.10.6071\lib\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.8.0.8.0.50727\lib\Microsoft.VisualStudio.Shell.Interop.8.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.Shell.Interop.9.0.9.0.30729\lib\Microsoft.VisualStudio.Shell.Interop.9.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.7.10.6070\lib\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.8.0.8.0.50727\lib\Microsoft.VisualStudio.TextManager.Interop.8.0.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Threading, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Threading.14.1.111\lib\net45\Microsoft.VisualStudio.Threading.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Utilities, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Utilities.14.3.25407\lib\net45\Microsoft.VisualStudio.Utilities.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Validation, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Validation.14.1.111\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="PresentationFramework.Luna" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="DotNetProjects.Wpf.Extended.Toolkit, Version=4.6.82.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetProjects.Extended.Wpf.Toolkit.4.6.82\lib\net40\DotNetProjects.Wpf.Extended.Toolkit.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="Commands\EditorCommands.cs" />
-    <Compile Include="Commands\ProjectCommands.cs" />
-    <Compile Include="ControlExtensions.cs" />
-    <Compile Include="Controls\DropDownButton.cs" />
-    <Compile Include="Controls\SplitButton.cs" />
-    <Compile Include="EntityReference.cs" />
-    <Compile Include="EntityType.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Maml\ElementProperties.cs" />
-    <Compile Include="Maml\GlossaryEntry.cs" />
-    <Compile Include="Maml\MamlToFlowDocumentConverter.Core.cs" />
-    <Compile Include="Maml\MamlToFlowDocumentConverter.Handlers.cs" />
-    <Compile Include="Maml\MamlToFlowDocumentConverter.Static.cs" />
-    <Compile Include="Maml\NamedStyle.cs" />
-    <Compile Include="PropertyPages\ApiFilterEditorDlg.xaml.cs">
-      <DependentUpon>ApiFilterEditorDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\ApiNodeInfo.cs" />
-    <Compile Include="PropertyPages\ApiVisibility.cs" />
-    <Compile Include="PropertyPages\ApplyChangesEventArgs.cs" />
-    <Compile Include="PropertyPages\BuildEventEditorDlg.xaml.cs">
-      <DependentUpon>BuildEventEditorDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\BuildEventPropertiesPageContent.xaml.cs">
-      <DependentUpon>BuildEventPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\BuildPropertiesNeededEventArgs.cs" />
-    <Compile Include="PropertyPages\BuildPropertiesPageContent.xaml.cs">
-      <DependentUpon>BuildPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\ComponentCache.cs" />
-    <Compile Include="PropertyPages\ComponentPropertiesPageContent.xaml.cs">
-      <DependentUpon>ComponentPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\ComponentSettingsNeededEventArgs.cs" />
-    <Compile Include="PropertyPages\FilePathUserControl.xaml.cs">
-      <DependentUpon>FilePathUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\FolderPathUserControl.xaml.cs">
-      <DependentUpon>FolderPathUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\GeneralOptionsControl.xaml.cs">
-      <DependentUpon>GeneralOptionsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\Help1WebsitePropertiesPageContent.xaml.cs">
-      <DependentUpon>Help1WebsitePropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\HelpFilePropertiesPageContent.xaml.cs">
-      <DependentUpon>HelpFilePropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\LargeTextBoxEditor.cs" />
-    <Compile Include="PropertyPages\MissingTagPropertiesPageContent.xaml.cs">
-      <DependentUpon>MissingTagPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\MSHelpViewerPropertiesPageContent.xaml.cs">
-      <DependentUpon>MSHelpViewerPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\NamespaceSummaryItemEditorDlg.xaml.cs">
-      <DependentUpon>NamespaceSummaryItemEditorDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\PathPropertiesPageContent.xaml.cs">
-      <DependentUpon>PathPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\PlugInPropertiesPageContent.xaml.cs">
-      <DependentUpon>PlugInPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\PresentationStyleSettingsNeededEventArgs.cs" />
-    <Compile Include="PropertyPages\TransformArgumentsPageContent.xaml.cs">
-      <DependentUpon>TransformArgumentsPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\UserDefinedProperty.cs" />
-    <Compile Include="PropertyPages\PropertyPageBinding.cs" />
-    <Compile Include="PropertyPages\SummaryPropertiesPageContent.xaml.cs">
-      <DependentUpon>SummaryPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\UserDefinedPropertiesPageContent.xaml.cs">
-      <DependentUpon>UserDefinedPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\VisibilityPropertiesPageContent.xaml.cs">
-      <DependentUpon>VisibilityPropertiesPageContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SharedResources.cs" />
-    <Compile Include="Theme\TeamFoundationColors.cs" />
-    <Compile Include="Theme\ThemeColorId.cs" />
-    <Compile Include="Theme\ThemeColors.cs" />
-    <Compile Include="UI\LaunchMSHelpViewerDlg.xaml.cs">
-      <DependentUpon>LaunchMSHelpViewerDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\SelectProjectsDlg.xaml.cs">
-      <DependentUpon>SelectProjectsDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\BuildLogViewerControl.xaml.cs">
-      <DependentUpon>BuildLogViewerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ContentLayoutEditorControl.xaml.cs">
-      <DependentUpon>ContentLayoutEditorControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\EntityReferencesControl.xaml.cs">
-      <DependentUpon>EntityReferencesControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\FileContentNeededEventArgs.cs" />
-    <Compile Include="UserControls\ResourceItemEditorControl.xaml.cs">
-      <DependentUpon>ResourceItemEditorControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UserControls\SiteMapEditorControl.xaml.cs">
-      <DependentUpon>SiteMapEditorControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UserControls\SpinnerControl.xaml.cs">
-      <DependentUpon>SpinnerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\TokenEditorControl.xaml.cs">
-      <DependentUpon>TokenEditorControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UserControls\TopicContentNeededEventArgs.cs" />
-    <Compile Include="UserControls\TopicPreviewerControl.xaml.cs">
-      <DependentUpon>TopicPreviewerControl.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Behaviors\TreeViewItemBehavior.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\DropDownButtonStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\SplitButtonStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\ApiFilterEditorDlg.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\BuildEventEditorDlg.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\BuildEventPropertiesPageContent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\BuildPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\ComponentPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\FilePathUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\FolderPathUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\GeneralOptionsControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\Help1WebsitePropertiesPageContent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\HelpFilePropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\MissingTagPropertiesPageContent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\MSHelpViewerPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\NamespaceSummaryItemEditorDlg.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\PathPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\PlugInPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\SummaryPropertiesPageContent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PropertyPages\TransformArgumentsPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\UserDefinedPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PropertyPages\VisibilityPropertiesPageContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Theme\VisualStudioThemeResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\LaunchMSHelpViewerDlg.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\SelectProjectsDlg.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\BuildLogViewerControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\ContentLayoutEditorControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\EntityReferencesControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\ResourceItemEditorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\SiteMapEditorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\SpinnerControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\TokenEditorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\TopicPreviewerControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
-      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
-      <Name>ColorizerLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
-      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
-      <Name>SandcastleBuilderUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
-      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>Sandcastle.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\AddItem.png" />
-    <Resource Include="Resources\Copy.png" />
-    <Resource Include="Resources\Entity.png" />
-    <Resource Include="Resources\ImageFile.png" />
-    <Resource Include="Resources\Information.png" />
-    <Resource Include="Resources\Refresh.png" />
-    <Resource Include="Resources\SnippetsFile.png" />
-    <Resource Include="Resources\TokenFile.png" />
-    <Resource Include="Resources\Undo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\About.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\AddChildItem.png" />
-    <Resource Include="Resources\AddRootItem.png" />
-    <Resource Include="Resources\Cut.png" />
-    <Resource Include="Resources\DefaultTopic.png" />
-    <Resource Include="Resources\Delete.png" />
-    <Resource Include="Resources\ExpandCollapse.png" />
-    <Resource Include="Resources\HiddenTopic.png" />
-    <Resource Include="Resources\InsertApiAfter.png" />
-    <Resource Include="Resources\InsertApiAsChild.png" />
-    <Resource Include="Resources\InsertApiBefore.png" />
-    <Resource Include="Resources\MoveDown.png" />
-    <Resource Include="Resources\MoveUp.png" />
-    <Resource Include="Resources\PageEdit.png" />
-    <Resource Include="Resources\Paste.png" />
-    <Resource Include="Resources\RefreshDocument.png" />
-    <Resource Include="Resources\RemoveLink.png" />
-    <Resource Include="Resources\RootContentContainer.png" />
-    <Resource Include="Resources\Sort.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\AlertCaution.png" />
-    <Resource Include="Resources\AlertNote.png" />
-    <Resource Include="Resources\AlertSecurity.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\MoveLeft.png" />
-    <Resource Include="Resources\MoveRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BuildEvents.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\APIClassInternal.png" />
-    <Resource Include="Resources\APIClassPrivate.png" />
-    <Resource Include="Resources\APIClassProtected.png" />
-    <Resource Include="Resources\APIClassPublic.png" />
-    <Resource Include="Resources\APIConstructorInternal.png" />
-    <Resource Include="Resources\APIConstructorPrivate.png" />
-    <Resource Include="Resources\APIConstructorProtected.png" />
-    <Resource Include="Resources\APIConstructorPublic.png" />
-    <Resource Include="Resources\APIDelegateInternal.png" />
-    <Resource Include="Resources\APIDelegatePrivate.png" />
-    <Resource Include="Resources\APIDelegateProtected.png" />
-    <Resource Include="Resources\APIDelegatePublic.png" />
-    <Resource Include="Resources\APIDocumented.png" />
-    <Resource Include="Resources\APIEnumerationInternal.png" />
-    <Resource Include="Resources\APIEnumerationPrivate.png" />
-    <Resource Include="Resources\APIEnumerationProtected.png" />
-    <Resource Include="Resources\APIEnumerationPublic.png" />
-    <Resource Include="Resources\APIEventInternal.png" />
-    <Resource Include="Resources\APIEventPrivate.png" />
-    <Resource Include="Resources\APIEventProtected.png" />
-    <Resource Include="Resources\APIEventPublic.png" />
-    <Resource Include="Resources\APIFieldInternal.png" />
-    <Resource Include="Resources\APIFieldPrivate.png" />
-    <Resource Include="Resources\APIFieldProtected.png" />
-    <Resource Include="Resources\APIFieldPublic.png" />
-    <Resource Include="Resources\APIInterfaceInternal.png" />
-    <Resource Include="Resources\APIInterfacePrivate.png" />
-    <Resource Include="Resources\APIInterfaceProtected.png" />
-    <Resource Include="Resources\APIInterfacePublic.png" />
-    <Resource Include="Resources\APIInternal.png" />
-    <Resource Include="Resources\APIMethodInternal.png" />
-    <Resource Include="Resources\APIMethodPrivate.png" />
-    <Resource Include="Resources\APIMethodProtected.png" />
-    <Resource Include="Resources\APIMethodPublic.png" />
-    <Resource Include="Resources\APINamespace.png" />
-    <Resource Include="Resources\APIOperatorInternal.png" />
-    <Resource Include="Resources\APIOperatorPrivate.png" />
-    <Resource Include="Resources\APIOperatorProtected.png" />
-    <Resource Include="Resources\APIOperatorPublic.png" />
-    <Resource Include="Resources\APIPrivate.png" />
-    <Resource Include="Resources\APIPropertyInternal.png" />
-    <Resource Include="Resources\APIPropertyPrivate.png" />
-    <Resource Include="Resources\APIPropertyProtected.png" />
-    <Resource Include="Resources\APIPropertyPublic.png" />
-    <Resource Include="Resources\APIProtected.png" />
-    <Resource Include="Resources\APIStructureInternal.png" />
-    <Resource Include="Resources\APIStructurePrivate.png" />
-    <Resource Include="Resources\APIStructureProtected.png" />
-    <Resource Include="Resources\APIStructurePublic.png" />
-    <Resource Include="Resources\Filter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\APICaseSensitive.png" />
-    <Resource Include="Resources\APIFullyQualified.png" />
-    <Resource Include="Resources\APIInherited.png" />
-    <Resource Include="Resources\APINotFound.png" />
-    <Resource Include="Resources\APIPublic.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\HelpLibraryManager.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\SelectProjects.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Classes in this assembly will only be used from the Visual Studio extension on the Windows platform
+				 so we will always target the .NET Framework. -->
+		<TargetFramework>net472</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWpf>true</UseWpf>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyTitleAttribute>False</GenerateAssemblyTitleAttribute>
+		<GenerateAssemblyVersionAttribute>False</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>False</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>False</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>SandcastleBuilder.WPF</AssemblyName>
+		<RootNamespace>SandcastleBuilder.WPF</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>binVSP\Debug\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>binVSP\Release\</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs" Link="Properties\AssemblyInfoShared.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
+		<ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\SandcastleCore\SandcastleCore.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+		<ProjectReference Include="..\SandcastlePlatformWindows\SandcastlePlatformWindows.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.97" />
+		<PackageReference Include="Microsoft.Build" Version="15.1.548">
+			<ExcludeAssets>Runtime</ExcludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.SDK" Version="15.0.1" ExcludeAssets="runtime">
+			<IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
+		<Reference Include="PresentationFramework.Aero">
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="PresentationFramework.Luna">
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Resources\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="binGUI\**" />
+		<Compile Remove="binVSP\**" />
+		<Compile Remove="binVS2022\**" />
+		<EmbeddedResource Remove="binGUI\**" />
+		<EmbeddedResource Remove="binVSP\**" />
+		<EmbeddedResource Remove="binVS2022\**" />
+		<None Remove="binGUI\**" />
+		<None Remove="binVSP\**" />
+		<None Remove="binVS2022\**" />
+		<Page Remove="binGUI\**" />
+		<Page Remove="binVSP\**" />
+		<Page Remove="binVS2022\**" />
+	</ItemGroup>
 </Project>

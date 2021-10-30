@@ -13,14 +13,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// Link text writing logic
     /// </summary>
     public class LinkTextResolver
     {
-        private TargetTypeDictionary targets;
+        private readonly TargetTypeDictionary targets;
 
         /// <summary>
         /// Constructor
@@ -40,30 +40,24 @@ namespace Microsoft.Ddue.Tools.Targets
         public void WriteTarget(Target target, DisplayOptions options, XmlWriter writer)
         {
             if(target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
-            NamespaceTarget space = target as NamespaceTarget;
-
-            if(space != null)
+            if(target is NamespaceTarget space)
             {
                 WriteNamespaceTarget(space, writer);
                 return;
             }
 
-            TypeTarget type = target as TypeTarget;
-
-            if(type != null)
+            if(target is TypeTarget type)
             {
                 WriteTypeTarget(type, options, writer);
                 return;
             }
 
-            MemberTarget member = target as MemberTarget;
-
-            if(member != null)
+            if(target is MemberTarget member)
             {
                 WriteMemberTarget(member, options, writer);
                 return;
@@ -86,10 +80,10 @@ namespace Microsoft.Ddue.Tools.Targets
         public static void WriteNamespaceTarget(NamespaceTarget space, XmlWriter writer)
         {
             if(space == null)
-                throw new ArgumentNullException("space");
+                throw new ArgumentNullException(nameof(space));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             writer.WriteString(space.Name);
         }
@@ -103,10 +97,10 @@ namespace Microsoft.Ddue.Tools.Targets
         public void WriteTypeTarget(TypeTarget type, DisplayOptions options, XmlWriter writer)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             WriteTypeTarget(type, options, true, writer);
         }
@@ -159,10 +153,10 @@ namespace Microsoft.Ddue.Tools.Targets
         private void WriteMemberTarget(MemberTarget target, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
             if(target == null)
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             MethodTarget method = target as MethodTarget;
 
@@ -184,27 +178,21 @@ namespace Microsoft.Ddue.Tools.Targets
             }
 
             // special logic for writing properties
-            PropertyTarget property = target as PropertyTarget;
-
-            if(property != null)
+            if(target is PropertyTarget property)
             {
                 WriteProperty(property, options, writer);
                 return;
             }
 
             // special logic for writing constructors
-            ConstructorTarget constructor = target as ConstructorTarget;
-
-            if(constructor != null)
+            if(target is ConstructorTarget constructor)
             {
                 WriteConstructor(constructor, options, writer);
                 return;
             }
 
             // special logic for writing events
-            EventTarget trigger = target as EventTarget;
-
-            if(trigger != null)
+            if(target is EventTarget trigger)
             {
                 WriteEvent(trigger, writer);
                 return;
@@ -223,46 +211,36 @@ namespace Microsoft.Ddue.Tools.Targets
         public void WriteReference(Reference reference, DisplayOptions options, XmlWriter writer)
         {
             if(reference == null)
-                throw new ArgumentNullException("reference");
+                throw new ArgumentNullException(nameof(reference));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
-            NamespaceReference space = reference as NamespaceReference;
-
-            if(space != null)
+            if(reference is NamespaceReference space)
             {
                 WriteNamespace(space, writer);
                 return;
             }
 
-            TypeReference type = reference as TypeReference;
-
-            if(type != null)
+            if(reference is TypeReference type)
             {
                 WriteType(type, options, writer);
                 return;
             }
 
-            MemberReference member = reference as MemberReference;
-
-            if(member != null)
+            if(reference is MemberReference member)
             {
                 WriteMember(member, options, writer);
                 return;
             }
 
-            ExtensionMethodReference extMethod = reference as ExtensionMethodReference;
-
-            if(extMethod != null)
+            if(reference is ExtensionMethodReference extMethod)
             {
                 WriteExtensionMethod(extMethod, options, writer);
                 return;
             }
 
-            InvalidReference invalid = reference as InvalidReference;
-
-            if(invalid != null)
+            if(reference is InvalidReference invalid)
             {
                 WriteInvalid(invalid, writer);
                 return;
@@ -279,14 +257,12 @@ namespace Microsoft.Ddue.Tools.Targets
         public void WriteNamespace(NamespaceReference spaceReference, XmlWriter writer)
         {
             if(spaceReference == null)
-                throw new ArgumentNullException("spaceReference");
+                throw new ArgumentNullException(nameof(spaceReference));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
-            NamespaceTarget spaceTarget = targets[spaceReference.Id] as NamespaceTarget;
-
-            if(spaceTarget != null)
+            if(targets[spaceReference.Id] is NamespaceTarget spaceTarget)
                 WriteNamespaceTarget(spaceTarget, writer);
             else
                 TextReferenceUtilities.WriteNamespaceReference(spaceReference, writer);
@@ -313,47 +289,42 @@ namespace Microsoft.Ddue.Tools.Targets
         private void WriteType(TypeReference type, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
             if(type == null)
-                throw new ArgumentNullException("type");
-            if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(type));
 
-            SimpleTypeReference simple = type as SimpleTypeReference;
-            if(simple != null)
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
+            if(type is SimpleTypeReference simple)
             {
                 WriteSimpleType(simple, options, writer);
                 return;
             }
 
-            SpecializedTypeReference specialized = type as SpecializedTypeReference;
-            if(specialized != null)
+            if(type is SpecializedTypeReference specialized)
             {
                 WriteSpecializedType(specialized, options, writer);
                 return;
             }
 
-            ArrayTypeReference array = type as ArrayTypeReference;
-            if(array != null)
+            if(type is ArrayTypeReference array)
             {
                 WriteArrayType(array, options, writer, dictionary);
                 return;
             }
 
-            ReferenceTypeReference reference = type as ReferenceTypeReference;
-            if(reference != null)
+            if(type is ReferenceTypeReference reference)
             {
                 WriteReferenceType(reference, options, writer, dictionary);
                 return;
             }
 
-            PointerTypeReference pointer = type as PointerTypeReference;
-            if(pointer != null)
+            if(type is PointerTypeReference pointer)
             {
                 WritePointerType(pointer, options, writer, dictionary);
                 return;
             }
 
-            TemplateTypeReference template = type as TemplateTypeReference;
-            if(template != null)
+            if(type is TemplateTypeReference template)
             {
                 WriteTemplateType(template, options, writer, dictionary);
                 return;
@@ -370,20 +341,18 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="writer">The write to which the information is written</param>
         public void WriteSimpleType(SimpleTypeReference simple, DisplayOptions options, XmlWriter writer)
         {
+            if(simple == null)
+                throw new ArgumentNullException(nameof(simple));
+
             WriteSimpleType(simple, options, true, writer);
         }
 
         private void WriteSimpleType(SimpleTypeReference simple, DisplayOptions options, bool showOuterType, XmlWriter writer)
         {
-            TypeTarget type = targets[simple.Id] as TypeTarget;
-            if(type != null)
-            {
+            if(targets[simple.Id] is TypeTarget type)
                 WriteTypeTarget(type, options, showOuterType, writer);
-            }
             else
-            {
                 TextReferenceUtilities.WriteSimpleTypeReference(simple, options, writer);
-            }
         }
 
         private static void WriteTemplateParameters(IList<string> templates, XmlWriter writer)
@@ -686,18 +655,14 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private void WriteTemplateType(TemplateTypeReference template, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
-            // if we have the name, just write it
-            NamedTemplateTypeReference namedTemplate = template as NamedTemplateTypeReference;
-
-            if(namedTemplate != null)
+            // If we have the name, just write it
+            if(template is NamedTemplateTypeReference namedTemplate)
             {
                 writer.WriteString(namedTemplate.Name);
                 return;
             }
 
-            IndexedTemplateTypeReference indexedTemplate = template as IndexedTemplateTypeReference;
-
-            if(indexedTemplate != null)
+            if(template is IndexedTemplateTypeReference indexedTemplate)
             {
                 if(dictionary != null && dictionary.ContainsKey(indexedTemplate))
                     WriteType(dictionary[indexedTemplate], options, writer);
@@ -707,11 +672,8 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
             }
 
-            TypeTemplateTypeReference typeTemplate = template as TypeTemplateTypeReference;
-
-            if(typeTemplate != null)
+            if(template is TypeTemplateTypeReference typeTemplate)
             {
-
                 TypeReference value = null;
 
                 if(dictionary != null)
@@ -739,9 +701,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if(target != null)
             {
-                TypeTarget type = target as TypeTarget;
-
-                if(type != null)
+                if(target is TypeTarget type)
                 {
                     IList<string> templates = type.Templates;
 
@@ -750,9 +710,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 }
                 else
                 {
-                    MethodTarget method = target as MethodTarget;
-
-                    if(method != null)
+                    if(target is MethodTarget method)
                     {
                         IList<string> templates = method.Templates;
 
@@ -767,9 +725,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private string GetTypeTemplateName(SimpleTypeReference type, int position)
         {
-            TypeTarget target = targets[type.Id] as TypeTarget;
-
-            if(target != null)
+            if(targets[type.Id] is TypeTarget target)
             {
                 IList<string> templates = target.Templates;
 
@@ -795,10 +751,10 @@ namespace Microsoft.Ddue.Tools.Targets
         public void WriteExtensionMethod(ExtensionMethodReference extMethod, DisplayOptions options, XmlWriter writer)
         {
             if(extMethod == null)
-                throw new ArgumentNullException("extMethod");
+                throw new ArgumentNullException(nameof(extMethod));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
             // write the unqualified method name
             writer.WriteString(extMethod.Name);
@@ -821,37 +777,34 @@ namespace Microsoft.Ddue.Tools.Targets
         public void WriteMember(MemberReference member, DisplayOptions options, XmlWriter writer)
         {
             if(member == null)
-                throw new ArgumentNullException("member");
+                throw new ArgumentNullException(nameof(member));
 
             if(writer == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
 
-            SimpleMemberReference simple = member as SimpleMemberReference;
-            if(simple != null)
+            if(member is SimpleMemberReference simple)
             {
                 WriteSimpleMember(simple, options, writer);
                 return;
             }
 
-            SpecializedMemberReference special = member as SpecializedMemberReference;
-            if(special != null)
+            if(member is SpecializedMemberReference special)
             {
                 WriteSpecializedMember(special, options, writer);
                 return;
             }
 
-            SpecializedMemberWithParametersReference ugly = member as SpecializedMemberWithParametersReference;
-            if(ugly != null)
+            if(member is SpecializedMemberWithParametersReference ugly)
             {
                 WriteSpecializedMemberWithParameters(ugly, options, writer);
                 return;
             }
 
             throw new InvalidOperationException("Unknown member reference type");
-
         }
 
-        private void WriteSpecializedMember(SpecializedMemberReference member, DisplayOptions options, XmlWriter writer)
+        private void WriteSpecializedMember(SpecializedMemberReference member, DisplayOptions options,
+          XmlWriter writer)
         {
             if((options & DisplayOptions.ShowContainer) > 0)
             {
@@ -868,11 +821,10 @@ namespace Microsoft.Ddue.Tools.Targets
             WriteSimpleMember(member, options, writer, null);
         }
 
-        private void WriteSimpleMember(SimpleMemberReference member, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
+        private void WriteSimpleMember(SimpleMemberReference member, DisplayOptions options, XmlWriter writer,
+          Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
-            MemberTarget target = targets[member.Id] as MemberTarget;
-
-            if(target != null)
+            if(targets[member.Id] is MemberTarget target)
                 WriteMemberTarget(target, options, writer, dictionary);
             else
                 TextReferenceUtilities.WriteSimpleMemberReference(member, options, writer, this);
@@ -893,7 +845,8 @@ namespace Microsoft.Ddue.Tools.Targets
                 WriteMember(implements, DisplayOptions.ShowContainer, writer);
         }
 
-        private void WriteMethod(MethodTarget target, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
+        private void WriteMethod(MethodTarget target, DisplayOptions options, XmlWriter writer,
+          Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
             WriteProcedureName(target, writer);
 
@@ -925,6 +878,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", "vb");
+
             if(target.Name == "Explicit")
             {
                 writer.WriteString("Narrowing");
@@ -1160,7 +1114,8 @@ namespace Microsoft.Ddue.Tools.Targets
                 WriteMethodParameters(constructor.Parameters, writer);
         }
 
-        private void WriteSpecializedMemberWithParameters(SpecializedMemberWithParametersReference ugly, DisplayOptions options, XmlWriter writer)
+        private void WriteSpecializedMemberWithParameters(SpecializedMemberWithParametersReference ugly,
+          DisplayOptions options, XmlWriter writer)
         {
             if((options & DisplayOptions.ShowContainer) > 0)
             {

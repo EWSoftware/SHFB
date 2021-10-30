@@ -12,18 +12,14 @@ successfully.</Paragraph>
 
   <List>
     <ListItem>
-      <Paragraph>Click this link to go to the download page:
-<Hyperlink NavigateUri="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/htmlhelp/microsoft-html-help-downloads">HTML Help Workshop</Hyperlink></Paragraph>
+      <Paragraph>Click this link to download the installer:
+				<Hyperlink NavigateUri="https://github.com/EWSoftware/SHFB/raw/master/ThirdPartyTools/htmlhelp.exe">HTML Help Workshop</Hyperlink></Paragraph>
     </ListItem>
     <ListItem>
-      <Paragraph>Once the page opens, click the <Bold>Download HtmlHelp.exe</Bold> link.</Paragraph>
+      <Paragraph>Once downloaded, navigate to where you saved it and run <Bold>htmlhelp.exe</Bold>.</Paragraph>
     </ListItem>
     <ListItem>
-        <Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
-installer.</Paragraph>
-    </ListItem>
-    <ListItem>
-        <Paragraph>When it has finished, come back to this application and click the <Bold>Search Again</Bold>
+        <Paragraph>When the install has finished, come back to this application and click the <Bold>Search Again</Bold>
 button below to ensure that it can be found.</Paragraph>
     </ListItem>
   </List>

@@ -24,6 +24,7 @@ namespace Sandcastle.Core.CommandLine
         //=====================================================================
 
         private string template;
+
         #endregion
 
         #region Properties
@@ -34,7 +35,7 @@ namespace Sandcastle.Core.CommandLine
         /// </summary>
         public string Template
         {
-            get { return template; }
+            get => template;
             set
             {
                 if(String.IsNullOrEmpty(value))
@@ -81,10 +82,10 @@ namespace Sandcastle.Core.CommandLine
             if(argument[0] != ':')
                 return ParseResult.MalformedArgument;
 
-            if(base.IsPresent)
+            if(this.IsPresent)
                 return ParseResult.MultipleOccurence;
 
-            base.Value = argument.Substring(1);
+            this.Value = argument.Substring(1);
 
             return ParseResult.Success;
         }

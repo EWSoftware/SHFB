@@ -6,8 +6,6 @@
 // Change history:
 // 11/22/2013 - EFW - Cleared out the conditional statements
 
-using System;
-
 namespace System.Compiler
 {
     public enum OpCode

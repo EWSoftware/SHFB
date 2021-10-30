@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8cf3b55a-1d94-4dfa-8fa8-ff7de35e0cdd</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SandcastleBuilder.Package</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OADocumentationSourceItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OADocumentationSourcesFolderItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OASandcastleBuilderProject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BuildCompletedEventListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\CommandTargetArguments.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\ContentLayoutEditorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\ContentLayoutEditorPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\HtmlEncodingCommandTarget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\HtmlEncodingTextViewCreationListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\ICommonCommandSupport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\ResourceItemEditorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\ResourceItemEditorPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\SimpleEditorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\SimpleEditorPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\SiteMapEditorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\SiteMapEditorPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\TokenEditorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Editors\TokenEditorPane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\CodeEntitySearcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\CSharpGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\CSharpGoToDefinitionMouseProcessorProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\CtrlKeyState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\GoToDefinitionCommandTarget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\GoToDefinitionKeyProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\GoToDefinitionKeyProcessorProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\GoToDefinitionMouseProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\GoToDefinitionTextViewCreationListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\MamlLinkQuickInfoSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\MamlLinkQuickInfoSourceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\ProjectFileSearcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\TopicIdCache.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\UnderlineClassifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\UnderlineClassifierProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\UnderlineFormatDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\XmlCommentsLinkQuickInfoSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\XmlCommentsLinkQuickInfoSourceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\XmlGoToDefinitionMouseProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GoToDefinition\XmlGoToDefinitionMouseProcessorProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Guids.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\AugmentedCompletionSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\CompletionDisplayTextComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\CSharpDocumentationCompletionSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\CSharpDocumentationCompletionSourceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\CustomCompletion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\RoslynHacks\CommandFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\RoslynHacks\RoslynKeyboardFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\RoslynHacks\RoslynTextViewCreationListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\RoslynHacks\TextViewCommandFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IntelliSense\SandcastleCompletion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MefProviderOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\DocumentationSourceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\DocumentationSourceNodeProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\DocumentationSourcesContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\ProjectImageIndex.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\ProjectPropertiesContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderAssemblyReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderComponentPackagesContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderComReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderFileNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderFileNodeProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderFolderNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderPackageReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderProjectNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderProjectNodeProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderProjectReferenceNodes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\SandcastleBuilderReferenceContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Nodes\VsProjectCapabilitiesPresenceChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PkgCmdID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\BasePropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\BasePropertyPage.Designer.cs">
+      <DependentUpon>BasePropertyPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\BuildEventPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\BuildEventPropertiesPageControl.Designer.cs">
+      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\BuildPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\BuildPropertiesPageControl.Designer.cs">
+      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\ComponentPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\ComponentPropertiesPageControl.Designer.cs">
+      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\Help1WebsitePropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\Help1WebsitePropertiesPageControl.Designer.cs">
+      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\HelpFilePropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\HelpFilePropertiesPageControl.Designer.cs">
+      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\MissingTagPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\MissingTagPropertiesPageControl.Designer.cs">
+      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\MSHelpViewerPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\MSHelpViewerPropertiesPageControl.Designer.cs">
+      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\PathPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\PathPropertiesPageControl.Designer.cs">
+      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\PlugInPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\PlugInPropertiesPageControl.Designer.cs">
+      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\SandcastleBuilderOptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\SummaryPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\SummaryPropertiesPageControl.Designer.cs">
+      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\TransformArgumentsPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\TransformArgumentsPageControl.Designer.cs">
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\UserDefinedPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\UserDefinedPropertiesPageControl.Designer.cs">
+      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\VisibilityPropertiesPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyPages\VisibilityPropertiesPageControl.Designer.cs">
+      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SandcastleBuilderPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SandcastleBuilderProjectFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ToolWindows\BuildLogToolWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ToolWindows\EntityReferencesToolWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ToolWindows\TopicPreviewerToolWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\BasePropertyPage.resx">
+      <DependentUpon>BasePropertyPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\BuildEventPropertiesPageControl.resx">
+      <DependentUpon>BuildEventPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\BuildPropertiesPageControl.resx">
+      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\ComponentPropertiesPageControl.resx">
+      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\Help1WebsitePropertiesPageControl.resx">
+      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\HelpFilePropertiesPageControl.resx">
+      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\MissingTagPropertiesPageControl.resx">
+      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\MSHelpViewerPropertiesPageControl.resx">
+      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\PathPropertiesPageControl.resx">
+      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\PlugInPropertiesPageControl.resx">
+      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\SummaryPropertiesPageControl.resx">
+      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\TransformArgumentsPageControl.resx">
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\UserDefinedPropertiesPageControl.resx">
+      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PropertyPages\VisibilityPropertiesPageControl.resx">
+      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

@@ -8,8 +8,6 @@
 // when a type contains a nested type that itself implements a nested type from within the containing type.
 // 11/21/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
 
-using System;
-using System.Collections;
 using System.Diagnostics;
 
 namespace System.Compiler
@@ -81,8 +79,10 @@ namespace System.Compiler
         public override void TransferStateTo(Visitor targetVisitor)
         {
             base.TransferStateTo(targetVisitor);
-            Duplicator target = targetVisitor as Duplicator;
-            if (target == null) return;
+
+            if(!(targetVisitor is Duplicator target))
+                return;
+
             target.DuplicateFor = this.DuplicateFor;
             target.OriginalTargetType = this.OriginalTargetType;
             target.RecordOriginalAsTemplate = this.RecordOriginalAsTemplate;
@@ -92,18 +92,27 @@ namespace System.Compiler
             target.TargetType = this.TargetType;
             target.TypesToBeDuplicated = this.TypesToBeDuplicated;
         }
+
         public virtual void FindTypesToBeDuplicated(Node node)
         {
         }
+
         public virtual void FindTypesToBeDuplicated(NodeList nodes)
         {
-            if (nodes == null) return;
+            if (nodes == null)
+                return;
+            
             for (int i = 0, n = nodes.Count; i < n; i++)
             {
                 Node node = nodes[i];
-                if (node == null) continue;
-                if (node is Namespace) this.FindTypesToBeDuplicated((Namespace)node);
-                else this.FindTypesToBeDuplicated(node);
+
+                if (node == null)
+                    continue;
+
+                if (node is Namespace ns)
+                    this.FindTypesToBeDuplicated(ns);
+                else
+                    this.FindTypesToBeDuplicated(node);
             }
         }
         public virtual void FindTypesToBeDuplicated(Namespace nspace)
@@ -141,10 +150,13 @@ namespace System.Compiler
         public override Node Visit(Node node)
         {
             node = base.Visit(node);
-            Expression e = node as Expression;
-            if (e != null) e.Type = this.VisitTypeReference(e.Type);
+
+            if(node is Expression e)
+                e.Type = this.VisitTypeReference(e.Type);
+
             return node;
         }
+
         public override Expression VisitAddressDereference(AddressDereference addr)
         {
             if (addr == null) return null;
@@ -458,8 +470,7 @@ namespace System.Compiler
                     expression = (Expression)expression.Clone();
                     break;
                 case NodeType.Pop:
-                    UnaryExpression uex = expression as UnaryExpression;
-                    if (uex != null)
+                    if(expression is UnaryExpression uex)
                     {
                         uex = (UnaryExpression)uex.Clone();
                         uex.Operand = this.VisitExpression(uex.Operand);
@@ -513,20 +524,26 @@ namespace System.Compiler
 
         public override Field VisitField(Field field)
         {
-            if (field == null) return null;
+            if (field == null)
+                return null;
+
             Field dup = (Field)this.DuplicateFor[field.UniqueKey];
-            if (dup != null) return dup;
+            
+            if (dup != null)
+                return dup;
+            
             this.DuplicateFor[field.UniqueKey] = dup = (Field)field.Clone();
+            
             if (field.MarshallingInformation != null)
                 dup.MarshallingInformation = field.MarshallingInformation.Clone();
 
-            ParameterField pField = dup as ParameterField;
-            if (pField != null)
+            if(dup is ParameterField pField)
                 pField.Parameter = (Parameter)this.VisitParameter(pField.Parameter);
 
             dup.DeclaringType = this.TargetType;
 
-            if (this.CopyDocumentation) dup.Documentation = field.Documentation;
+            if (this.CopyDocumentation)
+                dup.Documentation = field.Documentation;
 
             return base.VisitField(dup);
         }
@@ -744,9 +761,7 @@ namespace System.Compiler
             if(member == null)
                 return null;
 
-            Method method = member as Method;
-
-            if(method != null && method.Template != null && method.TemplateArguments != null && method.TemplateArguments.Count > 0)
+            if(member is Method method && method.Template != null && method.TemplateArguments != null && method.TemplateArguments.Count > 0)
             {
                 Method template = this.VisitMemberReference(method.Template) as Method;
                 bool needNewInstance = template != null && template != method.Template;
@@ -869,7 +884,7 @@ namespace System.Compiler
                 dup.ReturnTypeMarshallingInformation = method.ReturnTypeMarshallingInformation.Clone();
             dup.ThisParameter = (This)this.VisitParameter(dup.ThisParameter);
             dup = base.VisitMethod(dup);
-            //^ assume dup != null;
+            ////^ assume dup != null;
             dup.fullName = null;
 
             dup.DocumentationId = null;
@@ -941,7 +956,7 @@ namespace System.Compiler
                 //^ assert this.TargetModule.ModuleReferences != null;
                 ModuleReference modRef = this.TargetModule.ModuleReferences[i];
                 if (modRef == null) continue;
-                if (string.Compare(module.Name, modRef.Name, true, System.Globalization.CultureInfo.InvariantCulture) != 0) continue;
+                if (String.Compare(module.Name, modRef.Name, true, System.Globalization.CultureInfo.InvariantCulture) != 0) continue;
                 this.DuplicateFor[module.UniqueKey] = modRef.Module; return modRef.Module;
             }
             if (this.TargetModule.ModuleReferences == null)
@@ -1193,7 +1208,7 @@ namespace System.Compiler
         {
             if (type == null) return null;
             TypeNode dup = this.VisitTypeNode(type, null, null, null, true);
-            //^ assume dup != null;
+            ////^ assume dup != null;
             TypeNodeList nestedTypes = type.NestedTypes;
             if (nestedTypes != null && nestedTypes.Count > 0)
                 this.VisitNestedTypes(dup, nestedTypes);
@@ -1658,7 +1673,7 @@ namespace System.Compiler
                     {
                         TypeNode templ = this.VisitTypeReference(type.Template);
 
-                        //^ assume templ != null;
+                        ////^ assume templ != null;
                         if (TargetPlatform.UseGenerics)
                         {
                             if (templ.Template != null)
@@ -1667,7 +1682,7 @@ namespace System.Compiler
                                     templ = templ.Template;
                                 else
                                     templ = this.VisitTypeReference(templ.Template);
-                                //^ assume templ != null;
+                                ////^ assume templ != null;
                             }
                             if (type.DeclaringType != null)
                             {
@@ -1679,7 +1694,7 @@ namespace System.Compiler
 
                                     if (templDup == null)
                                     {
-                                        //Can happen when templ is nested in a type that is still being duplicated
+                                        // Can happen when template is nested in a type that is still being duplicated
                                         templDup = (TypeNode)templ.Clone();
                                         templDup.DeclaringModule = this.TargetModule;
                                         templDup.Template = templ;
@@ -1699,7 +1714,7 @@ namespace System.Compiler
                                                     templ.Template.DeclaringType = templ.DeclaringType.Template;
                                                 templ = this.VisitTypeReference(templ.Template);
                                             }
-                                            //^ assume templ != null;
+                                            ////^ assume templ != null;
                                         }
                                     }
                                 }

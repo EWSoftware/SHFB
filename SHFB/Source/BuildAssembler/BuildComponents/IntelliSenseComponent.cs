@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/29/2020
-// Note    : Copyright 2007-2020, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/11/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
 // IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API
@@ -29,8 +28,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -38,13 +35,10 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.UI;
-
-using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to generate IntelliSense files based on the documented APIs.
@@ -54,7 +48,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
     /// Microsoft-specific XML comments files and does not work with general XML comments files created by the
     /// compilers.</remarks>
     /// <example>
-    /// <code lang="xml" title="Example configuration">
+    /// <code language="xml" title="Example configuration">
     /// &lt;!-- IntelliSense component configuration.  This must appear
     ///      before the TransformComponent. --&gt;
     /// &lt;component id="IntelliSense Component"&gt;
@@ -77,11 +71,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        [BuildComponentExport("IntelliSense Component", IsVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-          Description = "This build component is used to extract the XML comments into files that can be used " +
-            "for IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for " +
-            "documented API members.")]
+        [BuildComponentExport("IntelliSense Component", IsVisible = true, Version = AssemblyInfo.ProductVersion,
+          Copyright = AssemblyInfo.Copyright, Description = "This build component is used to extract the XML " +
+            "comments into files that can be used for IntelliSense.  Only the basic set of tags needed for " +
+            "IntelliSense are exported and only for documented API members.")]
         public sealed class Factory : BuildComponentFactory
         {
             /// <summary>
@@ -97,17 +90,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             public override BuildComponentCore Create()
             {
                 return new IntelliSenseComponent(this.BuildAssembler);
-            }
-
-            /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
-            {
-                var dlg = new IntelliSenseConfigDlg(currentConfiguration);
-
-                if(dlg.ShowModalDialog() ?? false)
-                    currentConfiguration = dlg.Configuration;
-
-                return currentConfiguration;
             }
 
             /// <inheritdoc />
@@ -260,8 +242,8 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
-            XPathNavigator nav;
-            string attrValue;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
@@ -286,15 +268,15 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             codeContractsExpression = XPathExpression.Compile("requires|ensures|ensuresOnThrow|pure|invariant|" +
                 "getter|setter");
 
-            nav = configuration.SelectSingleNode("output");
+            XPathNavigator nav = configuration.SelectSingleNode("output");
 
             if(nav != null)
             {
-                attrValue = nav.GetAttribute("includeNamespaces", String.Empty);
+                string attrValue = nav.GetAttribute("includeNamespaces", String.Empty);
 
                 if(!String.IsNullOrEmpty(attrValue) && !Boolean.TryParse(attrValue, out includeNamespaces))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the <output> " +
-                        "'includeNamespaces' attribute.");
+                    throw new ArgumentException("You must specify a Boolean value for the <output> " +
+                        "'includeNamespaces' attribute.", nameof(configuration));
 
                 attrValue = nav.GetAttribute("folder", String.Empty);
 
@@ -326,13 +308,17 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            XPathNavigator navComments;
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if(key == null)
+                throw new ArgumentNullException(nameof(key));
 
             // Don't bother if there is nothing to add
             if(key[1] != ':' || ((key[0] == 'G' || key[0] == 'N' || key[0] == 'R') && !includeNamespaces))
                 return;
 
-            navComments = document.CreateNavigator().SelectSingleNode("/document/comments");
+            XPathNavigator navComments = document.CreateNavigator().SelectSingleNode("/document/comments");
 
             // Project and namespace comments go in a separate file.  A member may appear in multiple assemblies
             // so write its comments out to each one.

@@ -21,7 +21,7 @@
 // 03/24/2017 - EFW - Updated to try and resolve missing overload IDs to an equivalent non-overload method ID
 // 08/15/2019 - EFW - Replaced the MSDN resolver with the new Microsoft Docs resolver
 
-// Ignore Spelling: Stazzz
+// Ignore Spelling: Stazzz noopener noreferrer
 
 using System;
 using System.Collections.Generic;
@@ -32,12 +32,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Targets;
+using Sandcastle.Tools.BuildComponents.Targets;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to resolve links to reference topics
@@ -127,6 +127,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             string attrValue, id;
 
             targets = new TargetTypeDictionary();
@@ -228,6 +231,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             Target target = null;
             string memberUrl = null;
 
@@ -590,11 +596,14 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <overloads>There are two overloads for this method</overloads>
         protected virtual IMemberIdUrlResolver CreateMemberIdResolver(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             IMemberIdUrlResolver newResolver;
             IDictionary<string, string> cache = null;
 
-            if(BuildComponentCore.Data.ContainsKey(SharedMemberUrlCacheId))
-                cache = BuildComponentCore.Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
+            if(Data.ContainsKey(SharedMemberUrlCacheId))
+                cache = Data[SharedMemberUrlCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
@@ -644,7 +653,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     }
             }
 
-            BuildComponentCore.Data[SharedMemberUrlCacheId] = newResolver.CachedUrls;
+            Data[SharedMemberUrlCacheId] = newResolver.CachedUrls;
 
             return newResolver;
         }

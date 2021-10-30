@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2021
+// Updated : 08/20/2021
 // Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -30,9 +30,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.Reflection;
+
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -57,7 +61,6 @@ namespace SandcastleBuilder.WPF.UserControls
         private List<string> codeEntities;
 
         private CancellationTokenSource indexTokenSource;
-        private Task<IndexedCommentsCache> indexTask;
 
         #endregion
 
@@ -83,7 +86,9 @@ namespace SandcastleBuilder.WPF.UserControls
                     txtFindName.IsReadOnly = true;
                     tvEntities.IsEnabled = btnGo.IsEnabled = false;
 
-                    this.DisposeOfTask();
+                    if(indexTokenSource != null)
+                        indexTokenSource.Cancel();
+
                     this.cboEntityType_SelectionChanged(this, null);
                 }
             }
@@ -145,7 +150,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
-            base.RaiseEvent(args);
+            this.RaiseEvent(args);
 
             foreach(var tokenFile in currentProject.ContentFiles(BuildAction.Tokens).OrderBy(f => f.LinkPath))
                 try
@@ -263,7 +268,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
-            base.RaiseEvent(args);
+            this.RaiseEvent(args);
 
             try
             {
@@ -403,9 +408,6 @@ namespace SandcastleBuilder.WPF.UserControls
         private List<EntityReference> LoadCodeSnippetInfo()
         {
             EntityReference snippetFileEntity = null;
-            XPathDocument snippets;
-            XPathNavigator navSnippets;
-            CodeReference cr;
 
             if(codeSnippets != null)
                 return codeSnippets;
@@ -427,21 +429,25 @@ namespace SandcastleBuilder.WPF.UserControls
 
                         codeSnippets.Add(snippetFileEntity);
 
-                        snippets = new XPathDocument(snippetFile.FullPath);
-                        navSnippets = snippets.CreateNavigator();
-
-                        foreach(XPathNavigator nav in navSnippets.Select("examples/item/@id"))
+                        using(var reader = XmlReader.Create(snippetFile.FullPath,
+                          new XmlReaderSettings { CloseInput = true }))
                         {
-                            cr = new CodeReference(nav.Value);
+                            var snippets = new XPathDocument(reader);
+                            var navSnippets = snippets.CreateNavigator();
 
-                            snippetFileEntity.SubEntities.Add(new EntityReference
+                            foreach(XPathNavigator nav in navSnippets.Select("examples/item/@id"))
                             {
-                                EntityType = EntityType.CodeSnippet,
-                                Id = cr.Id,
-                                Label = cr.Id,
-                                ToolTip = cr.Id,
-                                Tag = cr
-                            });
+                                var cr = new CodeReference(nav.Value);
+
+                                snippetFileEntity.SubEntities.Add(new EntityReference
+                                {
+                                    EntityType = EntityType.CodeSnippet,
+                                    Id = cr.Id,
+                                    Label = cr.Id,
+                                    ToolTip = cr.Id,
+                                    Tag = cr
+                                });
+                            }
                         }
                     }
 
@@ -450,20 +456,23 @@ namespace SandcastleBuilder.WPF.UserControls
                 catch(Exception ex)
                 {
                     if(snippetFileEntity == null)
+                    {
                         codeSnippets.Add(new EntityReference
                         {
                             EntityType = EntityType.File,
-                            Label = "Unable to load file '" + snippetFile.FullPath +
-                                "'.  Reason: " + ex.Message,
+                            Label = "Unable to load file '" + snippetFile.FullPath + "'.  Reason: " + ex.Message,
                             ToolTip = "Error"
                         });
+                    }
                     else
+                    {
                         codeSnippets.Add(new EntityReference
                         {
                             EntityType = EntityType.File,
                             Label = "Unable to load file: " + ex.Message,
                             ToolTip = "Error"
                         });
+                    }
                 }
 
             if(codeSnippets.Count != 0)
@@ -484,7 +493,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This loads the code entities from the project and base framework
         /// </summary>
-        private void LoadCodeEntities()
+        private async void LoadCodeEntities()
         {
             if(codeEntities == null)
             {
@@ -494,55 +503,70 @@ namespace SandcastleBuilder.WPF.UserControls
                 // Ignore the request if the task is already running
                 if(indexTokenSource == null)
                 {
-                    var ui = TaskScheduler.FromCurrentSynchronizationContext();
+                    try
+                    {
+                        indexTokenSource = new CancellationTokenSource();
 
-                    indexTokenSource = new CancellationTokenSource();
-                    indexTask = Task.Factory.StartNew<IndexedCommentsCache>(this.IndexComments,
-                        indexTokenSource.Token);
+                        var cache = await Task.Run(() => this.IndexComments(), indexTokenSource.Token).ConfigureAwait(true);
 
-                    indexTask.ContinueWith(t => this.IndexCompleted(t.Result),
-                        CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, ui);
+                        spIndexingPanel.Visibility = Visibility.Collapsed;
 
-                    indexTask.ContinueWith(t => this.IndexFailed(t.Exception),
-                        CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, ui);
+                        var allEntities = new HashSet<string>(cache.AllKeys);
+
+                        // Add entries for all namespaces in the project namespace summaries
+                        foreach(var ns in currentProject.NamespaceSummaries.Where(n => n.IsDocumented))
+                        {
+                            string name;
+
+                            if(!ns.IsGroup)
+                                name = "N:" + ns.Name;
+                            else
+                                name = "G:" + ns.Name.Replace(" (Group)", String.Empty);
+
+                            if(!allEntities.Contains(name))
+                                allEntities.Add(name);
+                        }
+
+                        // Add an entry for the root namespace container
+                        allEntities.Add("R:Project_" + currentProject.HtmlHelpName.Replace(" ", "_"));
+
+                        codeEntities = new List<string>(allEntities);
+
+                        if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
+                        {
+                            txtFindName.IsReadOnly = false;
+                            txtFindName.Text = "<Enter text or reg ex to find here, then click Go>";
+                            txtFindName.SelectAll();
+                            tvEntities.IsEnabled = btnGo.IsEnabled = true;
+                        }
+                    }
+                    catch(OperationCanceledException)
+                    {
+                        spIndexingPanel.Visibility = Visibility.Collapsed;
+                    }
+                    catch(Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+
+                        if(ex.InnerException != null)
+                            ex = ex.InnerException;
+
+                        spIndexingPanel.Visibility = Visibility.Collapsed;
+
+                        if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
+                            txtFindName.Text = "Indexing failed.  Reason: " + ex.Message;
+                    }
+                    finally
+                    {
+                        indexTokenSource.Dispose();
+                        indexTokenSource = null;
+                    }
                 }
             }
             else
             {
                 txtFindName.IsReadOnly = false;
                 tvEntities.IsEnabled = btnGo.IsEnabled = true;
-            }
-        }
-
-        /// <summary>
-        /// This is used to stop the task if it is still running
-        /// </summary>
-        private void DisposeOfTask()
-        {
-            if(indexTokenSource != null)
-            {
-                try
-                {
-                    // Cancel the task if it is running and wait for it to see the request
-                    if(!indexTask.IsCompleted)
-                    {
-                        indexTokenSource.Cancel();
-                        indexTask.Wait();
-                    }
-                }
-                catch(AggregateException )
-                {
-                    // Ignore the "Task cancelled" exception.  If we don't catch it, the
-                    // application never shuts down.
-                }
-                finally
-                {
-                    indexTokenSource.Dispose();
-                    indexTask.Dispose();
-
-                    indexTokenSource = null;
-                    indexTask = null;
-                }
             }
         }
 
@@ -558,8 +582,7 @@ namespace SandcastleBuilder.WPF.UserControls
             string lastSolution = null;
 
             // Index the framework comments based on the framework version in the project
-            var reflectionDataDictionary = new ReflectionDataSetDictionary(new[] { currentProject.ComponentPath,
-                    Path.GetDirectoryName(currentProject.Filename) });
+            var reflectionDataDictionary = new ReflectionDataSetDictionary(currentProject.ComponentSearchPaths);
             var frameworkReflectionData = reflectionDataDictionary.CoreFrameworkByTitle(
                 currentProject.FrameworkVersion, true);
 
@@ -631,61 +654,6 @@ namespace SandcastleBuilder.WPF.UserControls
 
             return cache;
         }
-
-        /// <summary>
-        /// This is called if indexing completes successfully
-        /// </summary>
-        /// <param name="cache">The index cache</param>
-        private void IndexCompleted(IndexedCommentsCache cache)
-        {
-            this.DisposeOfTask();
-
-            spIndexingPanel.Visibility = Visibility.Collapsed;
-
-            var allEntities = new HashSet<string>(cache.AllKeys);
-
-            // Add entries for all namespaces in the project namespace summaries
-            foreach(var ns in currentProject.NamespaceSummaries.Where(n => n.IsDocumented))
-            {
-                string name;
-
-                if(!ns.IsGroup)
-                    name = "N:" + ns.Name;
-                else
-                    name = "G:" + ns.Name.Replace(" (Group)", String.Empty);
-
-                if(!allEntities.Contains(name))
-                    allEntities.Add(name);
-            }
-
-            // Add an entry for the root namespace container
-            allEntities.Add("R:Project_" + currentProject.HtmlHelpName.Replace(" ", "_"));
-
-            codeEntities = new List<string>(allEntities);
-
-            if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
-            {
-                txtFindName.IsReadOnly = false;
-                txtFindName.Text = "<Enter text or reg ex to find here, then click Go>";
-                txtFindName.SelectAll();
-                tvEntities.IsEnabled = btnGo.IsEnabled = true;
-            }
-        }
-
-        /// <summary>
-        /// This is called if indexing fails
-        /// </summary>
-        /// <param name="ex">The exception that caused the failure</param>
-        private void IndexFailed(AggregateException ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex);
-            this.DisposeOfTask();
-
-            spIndexingPanel.Visibility = Visibility.Collapsed;
-
-            if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
-                txtFindName.Text = "Indexing failed.  Reason: " + ex.InnerException.Message;
-        }
         #endregion
 
         #region Other helper methods
@@ -754,11 +722,11 @@ namespace SandcastleBuilder.WPF.UserControls
                         {
                             if(rbMamlLink.IsChecked.Value)
                                 textToCopy = String.Format(CultureInfo.InvariantCulture,
-                                    "<link xlink:href=\"{0}\" />", (toc.Id ?? "[Unknown ID]"));
+                                    "<link xlink:href=\"{0}\" />", toc.Id ?? "[Unknown ID]");
                             else
                                 if(rbConceptualLink.IsChecked.Value)
                                     textToCopy = String.Format(CultureInfo.InvariantCulture,
-                                        "<conceptualLink target=\"{0}\" />", (toc.Id ?? "[Unknown ID]"));
+                                        "<conceptualLink target=\"{0}\" />", toc.Id ?? "[Unknown ID]");
                                 else
                                     textToCopy = String.Format(CultureInfo.InvariantCulture,
                                     "<a href=\"html/{0}.htm\">{1}</a>", toc.Id, toc.Title);
@@ -794,6 +762,7 @@ namespace SandcastleBuilder.WPF.UserControls
             bool loadInfo;
 
             if(currentProject != null)
+            {
                 if(this.IsVisible)
                 {
                     switch((EntityType)cboEntityType.SelectedIndex)
@@ -823,7 +792,11 @@ namespace SandcastleBuilder.WPF.UserControls
                         this.cboEntityType_SelectionChanged(sender, null);
                 }
                 else
-                    this.DisposeOfTask();
+                {
+                    if(indexTokenSource != null)
+                        indexTokenSource.Cancel();
+                }
+            }
         }
 
         /// <summary>
@@ -833,7 +806,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdHelp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("e49eea91-a9ef-4aa5-ad8f-16ebd61b798a");
+            UiUtility.ShowHelpTopic("e49eea91-a9ef-4aa5-ad8f-16ebd61b798a");
         }
 
         /// <summary>
@@ -843,9 +816,9 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdRefresh_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // Don't refresh while the index task is running as it may cause an exception
-            // when it goes to ensure the current project is current.
-            if(indexTask == null)
+            // Don't refresh while the index task is running as it may cause an exception when it goes to ensure
+            // the current project is current.
+            if(indexTokenSource == null)
             {
                 switch((EntityType)cboEntityType.SelectedIndex)
                 {
@@ -999,7 +972,7 @@ namespace SandcastleBuilder.WPF.UserControls
                         matchEnumerator = null;
                     }
 
-                    MessageBox.Show("No more matches found", "Entity References", MessageBoxButton.OK,
+                    MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
 
@@ -1032,7 +1005,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 {
                     matches.Sort((x, y) =>
                     {
-                        return String.Compare(x, y, StringComparison.CurrentCulture);
+                        return String.Compare(x, y, StringComparison.Ordinal);
                     });
 
                     foreach(string member in matches)
@@ -1064,7 +1037,7 @@ namespace SandcastleBuilder.WPF.UserControls
             catch(ArgumentException ex)
             {
                 MessageBox.Show("The search regular expression is not valid: " + ex.Message,
-                    "Entity References", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             finally
@@ -1076,7 +1049,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 if(entities.Count == 1000)
                     MessageBox.Show("Too many matches found.  Only the first 1000 are shown.",
-                        "Entity References", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

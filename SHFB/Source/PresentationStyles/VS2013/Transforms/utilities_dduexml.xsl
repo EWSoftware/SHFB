@@ -1551,24 +1551,16 @@
 		<!-- The $p_changedHistoryDate param is from the authored changeHistory table, if any. -->
 		<xsl:param name="p_changedHistoryDate"/>
 		<!-- Determine whether the authored date is a valid date string.  -->
-		<xsl:variable name="v_validChangeHistoryDate">
-			<xsl:choose>
-				<xsl:when test="normalize-space($p_changedHistoryDate)=''"/>
-				<xsl:when test="ddue:IsValidDate(normalize-space($p_changedHistoryDate)) = 'true'">
-					<xsl:value-of select="normalize-space($p_changedHistoryDate)"/>
-				</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
 		<xsl:choose>
 			<!-- display nothing if the 'changeHistoryOptions' argument is set to 'omit' -->
 			<xsl:when test="$changeHistoryOptions = 'omit'"/>
 
 			<!-- if it's a valid date, display the freshness line. -->
-			<xsl:when test="normalize-space($v_validChangeHistoryDate)">
+			<xsl:when test="normalize-space($p_changedHistoryDate)">
 				<p>
 					<include item="boilerplate_UpdateTitle">
 						<parameter>
-							<xsl:value-of select="normalize-space($v_validChangeHistoryDate)"/>
+							<xsl:value-of select="normalize-space($p_changedHistoryDate)"/>
 						</parameter>
 					</include>
 				</p>

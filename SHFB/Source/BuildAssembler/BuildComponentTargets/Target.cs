@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This is the base class for all other target types
@@ -35,6 +35,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// This is used to get or set the target's reference topic filename
         /// </summary>
         public string File { get; set; }
+
         #endregion
 
         #region Methods
@@ -47,6 +48,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <remarks>This can be overridden to add dependent targets to the dictionary as well</remarks>
         public virtual void Add(IDictionary<string, Target> targets)
         {
+            if(targets == null)
+                throw new ArgumentNullException(nameof(targets));
+
             targets[this.Id] = this;
         }
         #endregion

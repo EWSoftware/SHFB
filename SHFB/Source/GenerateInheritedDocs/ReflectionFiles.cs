@@ -2,26 +2,26 @@
 // System  : Sandcastle Help File Builder
 // File    : ReflectionFiles.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/09/2021
+// Note    : Copyright 2013-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to track the reflection information files and their content.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.9.7.0  03/27/2013  EFW  Created the code
+// 03/27/2013  EFW  Created the code
 //===============================================================================================================
 
 using System.Collections.Generic;
+using System.Xml;
 using System.Xml.XPath;
 
-namespace SandcastleBuilder.InheritedDocumentation
+namespace SandcastleBuilder.Utils.InheritedDocumentation
 {
     /// <summary>
     /// This is used to load one or more reflection data files used to look up API information
@@ -31,7 +31,8 @@ namespace SandcastleBuilder.InheritedDocumentation
         #region Private data members
         //=====================================================================
 
-        private List<XPathNavigator> apiNodes;
+        private readonly List<XPathNavigator> apiNodes;
+
         #endregion
 
         #region Properties
@@ -40,10 +41,8 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// <summary>
         /// This returns the number of reflection files
         /// </summary>
-        public int Count
-        {
-            get { return apiNodes.Count; }
-        }
+        public int Count => apiNodes.Count;
+
         #endregion
 
         #region Constructor
@@ -67,8 +66,11 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// <param name="filename">The file to add</param>
         public void AddReflectionFile(string filename)
         {
-            XPathDocument xpathDoc = new XPathDocument(filename);
-            apiNodes.Add(xpathDoc.CreateNavigator().SelectSingleNode("reflection/apis"));
+            using(var reader = XmlReader.Create(filename, new XmlReaderSettings { CloseInput = true }))
+            {
+                XPathDocument xpathDoc = new XPathDocument(reader);
+                apiNodes.Add(xpathDoc.CreateNavigator().SelectSingleNode("reflection/apis"));
+            }
         }
 
         /// <summary>

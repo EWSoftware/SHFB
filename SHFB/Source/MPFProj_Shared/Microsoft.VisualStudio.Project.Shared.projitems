@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1653ac9e-7af2-4e59-97bf-66131660af89</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Microsoft.VisualStudio.Project.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\AutomationScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAFileItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAFolderItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OANavigableProjectItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OANestedProjectItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OANullProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAProject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAProjectItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAProjectItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAReferenceFolderItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OAReferenceItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\OASolutionFolder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAAssemblyReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OABuildManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAComReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAProjectReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAReferenceBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAReferences.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAVSProject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Automation\VSProject\OAVSProjectItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BuildDependency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BuildPropertyPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ComReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConfigProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConfigurationProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependentFileNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DesignPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DesignTimeAssemblyResolution.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DocumentManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnumDependencies.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileChangeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileDocumentManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FolderNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HierarchyNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IDEBuildLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LocalizableProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\ConnectionPointContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\ExternDll.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\NativeMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\UnsafeNativeMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NestedProjectBuildDependency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NestedProjectNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NodeProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OleServiceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Output.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OutputGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectDesignerDocumentManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectDocumentsListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectFileConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectNode.CopyPaste.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectNode.Events.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectPackage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProjectReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PropertiesEditorLauncher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReferenceContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReferenceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RegisteredProjectType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectionListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SingleFileGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SingleFileGeneratorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SolutionListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SolutionListenerForBuildDependencyUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SolutionListenerForProjectEvents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SolutionListenerForProjectOpen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SolutionListenerForProjectReferenceUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StructuresEnums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SuspendFileChanges.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TokenProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tracing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TrackDocumentsHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeConverters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UIThread.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpdateSolutionEventsListener.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VsCommands.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VSShellUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Microsoft.VisualStudio.Project.Shared.shproj.vsspell" />
+  </ItemGroup>
+</Project>

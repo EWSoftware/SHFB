@@ -42,7 +42,8 @@
 						<RowDefinition />
 						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
-					<ListBox Grid.Row="0" Name="lbProjectComponents" MouseDoubleClick="lbProjectComponents_MouseDoubleClick">
+					<ListBox Grid.Row="0" Name="lbProjectComponents" MouseDoubleClick="lbProjectComponents_MouseDoubleClick"
+						SelectionChanged="lbProjectComponents_SelectionChanged">
 						<ListBox.ItemTemplate>
 							<HierarchicalDataTemplate>
 								<CheckBox Name="chkEnabledState" Content="{Binding Name}" IsChecked="{Binding Configuration.Enabled}"

@@ -3,9 +3,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d" Width="550" Height="350" ResizeMode="NoResize"
+	mc:Ignorable="d" Width="550" SizeToContent="Height" ResizeMode="NoResize"
 	Title="Sandcastle Help File Builder Project Launcher"
-	WindowStartupLocation="CenterScreen" Icon="Images/SHFBProjectLauncher.ico" Closing="ProjectLauncherDlg_Closing">
+	WindowStartupLocation="CenterScreen" Icon="Resources/SHFBProjectLauncher.ico" Closing="ProjectLauncherDlg_Closing">
   <Grid Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />

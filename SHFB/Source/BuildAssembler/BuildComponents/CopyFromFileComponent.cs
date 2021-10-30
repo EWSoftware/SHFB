@@ -12,12 +12,12 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Commands;
+using Sandcastle.Tools.BuildComponents.Commands;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component copies elements from one or more constant XML files into the target document based
@@ -45,7 +45,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private List<CopyFromFileCommand> copyCommands = new List<CopyFromFileCommand>();
+        private readonly List<CopyFromFileCommand> copyCommands = new List<CopyFromFileCommand>();
 
         #endregion
 
@@ -70,7 +70,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             Dictionary<string, XPathDocument> dataFiles = new Dictionary<string, XPathDocument>();
 
             if(configuration == null)
-                throw new ArgumentNullException("configuration");
+                throw new ArgumentNullException(nameof(configuration));
 
             // Get information about the data files.  There may be more than one.  If so, each must have a
             // unique name.  If there is only one, the name can be omitted.

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 10/04/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
 // and find the default help file page
@@ -43,6 +42,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
 using Sandcastle.Core;
 
@@ -51,7 +51,7 @@ using SandcastleBuilder.Utils.ConceptualContent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
-    partial class BuildProcess
+    public partial class BuildProcess
     {
         #region Private data members
         //=====================================================================
@@ -78,7 +78,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.ApiTocOrder = -1;
 
             tocXml = new XmlDocument();
-            tocXml.Load(workingFolder + "toc.xml");
+            tocXml.Load(Path.Combine(workingFolder, "toc.xml"));
 
             XmlNodeList topics = tocXml.SelectNodes("topics/topic");
 
@@ -150,6 +150,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             {
                                 this.ApiTocParentId = parentTopic.Id;
 
+                                // If null or blank, it's probably parented to a topic in an old site map file
+                                if(String.IsNullOrWhiteSpace(this.ApiTocParentId))
+                                {
+                                    this.ApiTocParentId = Path.GetFileNameWithoutExtension(parentTopic.SourceFile);
+                                    parentTopic.Id = this.ApiTocParentId;
+                                }
+
                                 if(this.ApiTocOrder < parentCollection.Count)
                                     parentCollection[this.ApiTocOrder].SortOrder = this.ApiTocOrder + topics.Count;
                             }
@@ -189,7 +196,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 attr.Value = this.ApiTocOrder.ToString(CultureInfo.InvariantCulture);
                 topics[0].Attributes.Append(attr);
 
-                tocXml.Save(workingFolder + "toc.xml");
+                tocXml.Save(Path.Combine(workingFolder ,"toc.xml"));
             }
         }
 
@@ -315,11 +322,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(toc != null && toc.Count != 0)
                 {
                     conceptualXml = new XmlDocument();
-                    conceptualXml.Load(workingFolder + "_ConceptualTOC_.xml");
+                    conceptualXml.Load(Path.Combine(workingFolder, "_ConceptualTOC_.xml"));
                 }
 
                 tocXml = new XmlDocument();
-                tocXml.Load(workingFolder + "toc.xml");
+                tocXml.Load(Path.Combine(workingFolder, "toc.xml"));
 
                 // Merge the conceptual and API TOCs into one?
                 if(conceptualXml != null)
@@ -412,7 +419,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             attr.Value = n.Attributes["title"].Value;
                     }
 
-                    tocXml.Save(workingFolder + "toc.xml");
+                    tocXml.Save(Path.Combine(workingFolder, "toc.xml"));
                 }
 
                 this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -423,7 +430,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(defaultTopic == null && (project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 |
               HelpFileFormats.Website | HelpFileFormats.Markdown)) != 0)
             {
-                var defTopic = ComponentUtilities.XmlStreamAxis(workingFolder + "toc.xml", "topic").FirstOrDefault(
+                var defTopic = ComponentUtilities.XmlStreamAxis(Path.Combine(workingFolder, "toc.xml"), "topic").FirstOrDefault(
                     t => t.Attribute("file") != null);
 
                 if(defTopic != null)
@@ -540,10 +547,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private void RecursiveCopy(string sourcePath, string destPath, ref int fileCount)
         {
             if(sourcePath == null)
-                throw new ArgumentNullException("sourcePath");
+                throw new ArgumentNullException(nameof(sourcePath));
 
             if(destPath == null)
-                throw new ArgumentNullException("destPath");
+                throw new ArgumentNullException(nameof(destPath));
 
             int idx = sourcePath.LastIndexOf('\\');
 
@@ -574,6 +581,81 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
                         this.RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
                             ref fileCount);
+            }
+        }
+        #endregion
+
+        #region Add API member topic filenames
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to add filenames to the API members in the reflection data file
+        /// </summary>
+        private void AddApiTopicFilenames()
+        {
+            this.ReportProgress(BuildStep.AddApiTopicFilenames, "Adding topic filenames to API members...");
+
+            if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+            {
+                this.ExecutePlugIns(ExecutionBehaviors.Before);
+
+                string noFilenames = Path.ChangeExtension(reflectionFile, ".nofilenames");
+
+                File.Move(reflectionFile, noFilenames);
+
+                // Clone the file and add the filename elements
+                using(XmlReader reader = XmlReader.Create(noFilenames, new XmlReaderSettings { IgnoreWhitespace = true }))
+                using(XmlWriter writer = XmlWriter.Create(reflectionFile, new XmlWriterSettings { Indent = true }))
+                using(ApiTopicNamer namer = new ApiTopicNamer(this))
+                {
+                    writer.WriteStartDocument();
+                    reader.Read();
+
+                    while(!reader.EOF)
+                    {
+                        switch(reader.NodeType)
+                        {
+                            case XmlNodeType.XmlDeclaration:
+                            case XmlNodeType.EndElement:
+                                reader.Read();
+                                break;
+
+                            case XmlNodeType.Element:
+                                switch(reader.Name)
+                                {
+                                    case "apis":
+                                    case "reflection":
+                                        writer.WriteStartElement(reader.Name);
+                                        reader.Read();
+                                        break;
+
+                                    case "api":
+                                        string id = reader.GetAttribute("id");
+
+                                        var apiNode = (XElement)XNode.ReadFrom(reader);
+
+                                        apiNode.Add(new XElement("file",
+                                            new XAttribute("name", namer.ToTopicFileName(id))));
+
+                                        apiNode.WriteTo(writer);
+                                        break;
+
+                                    default:
+                                        writer.WriteNode(reader.ReadSubtree(), true);
+                                        break;
+                                }
+                                break;
+
+                            default:
+                                reader.Read();
+                                break;
+                        }
+                    }
+
+                    writer.WriteEndDocument();
+                }
+
+                this.ExecutePlugIns(ExecutionBehaviors.After);
             }
         }
         #endregion

@@ -1,0 +1,218 @@
+﻿<Window x:Class="SandcastleBuilder.WPF.UI.NuGetPackageManagerDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:shfbcvt="clr-namespace:SandcastleBuilder.WPF.Converters"
+	xmlns:shfbuc="clr-namespace:SandcastleBuilder.WPF.UserControls"
+	xmlns:shfbwpf="clr-namespace:SandcastleBuilder.WPF"
+	mc:Ignorable="d" Title="Manage NuGet Packages" Height="800" Width="1000" MinHeight="600" MinWidth="1000"
+	WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="CanResizeWithGrip"
+  Icon="/SandcastleBuilder.WPF;component/Resources/NuGet.png"
+	FocusManager.FocusedElement="{Binding ElementName=txtKeywords}" Loaded="NuGetPackageManagerDlg_Loaded">
+	<Window.Resources>
+		<shfbcvt:DownloadCountConverter x:Key="DownloadCountConverter"/>
+		<shfbcvt:VisibilityConverter x:Key="VisibilityConverter"/>
+		<shfbcvt:FontSizeConverter x:Key="FontSizeConverter"/>
+		<shfbcvt:EnumerableStringConverter x:Key="EnumerableStringConverter"/>
+		<shfbcvt:NullConverter x:Key="NullConverter"/>
+	</Window.Resources>
+	<Grid Margin="5">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0" Name="grdOptions">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" Margin="3" Content="_Package Source"
+				Target="{Binding ElementName=cboPackageSource}" />
+			<ComboBox Grid.Row="0" Grid.Column="1" Margin="3" Name="cboPackageSource" MinWidth="200"
+				SelectionChanged="btnSearch_Click" />
+			<Label Grid.Row="0" Grid.Column="2" Margin="3" Content="_Keywords"
+				Target="{Binding ElementName=txtKeywords}" />
+			<TextBox Grid.Row="0" Grid.Column="3" Name="txtKeywords" Margin="3" Text="Sandcastle" Padding="3" />
+			<CheckBox Grid.Row="0" Grid.Column="4" Name="chkPrerelease" Margin="3,5" Content="_Include Pre-release"
+				Click="btnSearch_Click" />
+			<Button Grid.Row="0" Grid.Column="5" Name="btnSearch" Margin="3" Padding="3" MinWidth="80" Content="_Search"
+        IsDefault="True" Click="btnSearch_Click" ToolTip="Search for packages containing the keywords" />
+			<StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal">
+				<RadioButton Content="S_earch package source" Margin="3,3" IsChecked="True" Checked="btnSearch_Click" />
+				<RadioButton Content="_View installed packages" Margin="3,3" Checked="btnSearch_Click" Name="rbInstalledOnly"/>
+			</StackPanel>
+			<Grid Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Name="grdAction" Margin="3">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+				<shfbuc:SpinnerControl Grid.Column="0" Margin="0,0,10,0" />
+				<TextBlock Grid.Column="1" Margin="3" Name="lblAction" TextTrimming="CharacterEllipsis" Text="--" />
+			</Grid>
+			<Button Grid.Row="1" Grid.Column="5" Name="btnClose" Margin="3" Padding="3" MinWidth="80" Content="Close"
+        IsCancel="True" ToolTip="Close this form" />
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*"/>
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<ListBox Grid.Column="0" Grid.Row="0" Name="lbPackages" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				ScrollViewer.ScrollChanged="lbPackages_ScrollChanged" Grid.IsSharedSizeScope="True"
+				HorizontalContentAlignment="Stretch">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Grid Margin="0,0,0,10" >
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition />
+								<ColumnDefinition Width="Auto" SharedSizeGroup="Version" />
+								<ColumnDefinition Width="Auto" SharedSizeGroup="Buttons" />
+							</Grid.ColumnDefinitions>
+							<Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="3"
+								Source="{x:Static shfbwpf:SharedResources.PackageInstalledIcon}"
+								Visibility="{Binding Path=IsInstalled, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"/>
+							<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+								<TextBlock TextTrimming="CharacterEllipsis" VerticalAlignment="Bottom">
+									<Run Text="{Binding Path=Id, Mode=OneWay}" FontWeight="Bold"
+										FontSize="{Binding RelativeSource={RelativeSource AncestorType={x:Type TextBlock}},Path=FontSize, Mode=OneWay,
+										Converter={StaticResource FontSizeConverter}, ConverterParameter=20}" /><Run Text=" by " /><Run
+										Text="{Binding Path=Authors, Mode=OneWay}" />
+								</TextBlock><TextBlock VerticalAlignment="Bottom"
+									Visibility="{Binding Path=TotalDownloads, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"><Run Text=", " /><Run 
+									Text="{Binding Path=TotalDownloads, Mode=OneWay, Converter={StaticResource DownloadCountConverter}}"
+									FontWeight="Bold" /><Run Text=" downloads" />
+								</TextBlock>
+							</StackPanel>
+							<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=LatestVersion}" TextAlignment="Right" />
+							<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Description}"
+								TextWrapping="Wrap"  MaxHeight="100" TextTrimming="CharacterEllipsis" />
+							<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=InstalledVersion}" TextAlignment="Right" />
+							<Image Grid.Column="3" Grid.Row="0" Margin="3" Source="{x:Static shfbwpf:SharedResources.InstallPackageIcon}"
+								Visibility="{Binding Path=IsInstalled, Mode=OneWay, Converter={StaticResource VisibilityConverter},
+								ConverterParameter=True}" Cursor="Hand" MouseUp="imgInstallUpdatePackage_MouseUp" />
+							<Image Grid.Column="3" Grid.Row="0" Margin="3" Source="{x:Static shfbwpf:SharedResources.RemovePackageIcon}"
+								Visibility="{Binding Path=IsInstalled, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"
+								Cursor="Hand" MouseUp="imgRemovePackage_MouseUp" />
+							<Image Grid.Column="3" Grid.Row="1" Margin="3" Source="{x:Static shfbwpf:SharedResources.UpdatePackageIcon}"
+								Visibility="{Binding Path=IsLatestVersion, Mode=OneWay, Converter={StaticResource VisibilityConverter},
+								ConverterParameter=True}" Cursor="Hand" MouseUp="imgInstallUpdatePackage_MouseUp" />
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<ScrollViewer Grid.Column="1" Grid.Row="0" DataContext="{Binding ElementName=lbPackages, Path=SelectedItem}"
+				Hyperlink.Click="Hyperlink_Click" Name="svDetails">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Grid Grid.Row="0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="3,3,3,20" FontWeight="Bold"
+							FontSize="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}},Path=FontSize,
+								Mode=OneWay, Converter={StaticResource FontSizeConverter}, ConverterParameter=30}"
+							TextWrapping="Wrap" Text="{Binding Path=Id, Mode=OneWay}" />
+						<TextBlock Grid.Column="2" HorizontalAlignment="Right" Margin="3"
+							Visibility="{Binding Path=IsFromOnlineSource, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+							<Hyperlink NavigateUri="{Binding Path=NuGetUrl, Mode=OneWay}"
+								ToolTip="{Binding Path=NuGetUrl, Mode=OneWay}">nuget.org</Hyperlink>
+						</TextBlock>
+						<Label Grid.Column="0" Grid.Row="1" Margin="3" Content="Ve_rsion" FontWeight="Bold"
+							Target="{Binding ElementName=cboVersion}" />
+						<ComboBox Grid.Column="1" Grid.Row="1" Margin="3" Name="cboVersion"
+							ItemsSource="{Binding Path=Versions, Mode=OneWay}"
+							SelectedItem="{Binding Path=LatestVersion, Mode=OneWay}"/>
+						<Button Grid.Column="2" Grid.Row="1" Name="btnInstall" Margin="3" Padding="3" MinWidth="80"
+						Content="_Install" Click="btnInstall_Click"  ToolTip="Install the selected package version" />
+					</Grid>
+					<Grid Grid.Row="1" Margin="0,10,0,0">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Grid.Row="0" Margin="3" FontWeight="Bold" Text="Title" />
+						<TextBlock Grid.Column="1" Grid.Row="0" Margin="3" Text="{Binding Path=Title, Mode=OneWay}"
+							TextWrapping="Wrap"/>
+						<TextBlock Grid.Column="0" Grid.Row="1" Margin="3" FontWeight="Bold" Text="Author(s)" />
+						<TextBlock Grid.Column="1" Grid.Row="1" Margin="3" Text="{Binding Path=Authors, Mode=OneWay}"
+							TextWrapping="Wrap"/>
+						<TextBlock Grid.Column="0" Grid.Row="2" Margin="3" FontWeight="Bold" Text="License" />
+						<TextBlock Grid.Column="1" Grid.Row="2" Margin="3" TextWrapping="Wrap"
+							Visibility="{Binding Path=LicenseUrl, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+							<Hyperlink NavigateUri="{Binding Path=LicenseUrl, Mode=OneWay, Converter={StaticResource NullConverter}}"
+								ToolTip="{Binding Path=LicenseUrl, Mode=OneWay}">View License</Hyperlink>
+						</TextBlock>
+						<TextBlock Grid.Column="0" Grid.Row="3" Margin="3" FontWeight="Bold" Text="Project URL" />
+						<TextBlock Grid.Column="1" Grid.Row="3" Margin="3" TextWrapping="Wrap"
+							Visibility="{Binding Path=ProjectUrl, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+							<Hyperlink NavigateUri="{Binding Path=ProjectUrl, Mode=OneWay, Converter={StaticResource NullConverter}}"
+								ToolTip="{Binding Path=ProjectUrl, Mode=OneWay}"><Run Text="{Binding Path=ProjectUrl, Mode=OneWay}"/></Hyperlink>
+						</TextBlock>
+						<TextBlock Grid.Column="0" Grid.Row="4" Margin="3" FontWeight="Bold" Text="Tags" />
+						<TextBlock Grid.Column="1" Grid.Row="4" Margin="3" Text="{Binding Path=Tags, Mode=OneWay,
+							Converter={StaticResource EnumerableStringConverter}}" TextWrapping="Wrap"/>
+						<TextBlock Grid.Column="0" Grid.Row="5" Margin="3" FontWeight="Bold" Text="Description" />
+						<TextBlock Grid.Column="0" Grid.Row="6" Margin="3" Grid.ColumnSpan="2"  TextWrapping="Wrap"
+							TextTrimming="CharacterEllipsis" Text="{Binding Path=Description, Mode=OneWay}" />
+					</Grid>
+				</Grid>
+			</ScrollViewer>
+			<Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="3" Name="grdBuildOutput">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<TextBox Grid.Row="0" Name="txtBuildOutput" IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
+					VerticalScrollBarVisibility="Auto" MinHeight="150" MaxHeight="150" />
+				<Border Grid.Row="1" BorderBrush="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
+					Margin="0,3,0,3" BorderThickness="0.5">
+					<TextBlock Padding="10" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}"
+					Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}" TextWrapping="Wrap">
+<Bold>Important:</Bold> There are some know issues due to limited support for managing NuGet packages in help
+file builder projects.<LineBreak/>
+- If prompted to reload the project because external changes were detected, do so in order to see those changes.<LineBreak/>
+- You may need to close and reopen the Project Properties tool window to see changes to the components.<LineBreak/>
+- You may need to close and reopen the project or restart the IDE to see changes to the components.<LineBreak/>
+- When closing Visual Studio you may be warned about a task blocking user input.  Ignore the warning and close
+Visual Studio anyway.</TextBlock>
+				</Border>
+			</Grid>
+		</Grid>
+	</Grid>
+</Window>

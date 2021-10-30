@@ -13,6 +13,21 @@ deploy the Sandcastle Help File Builder tools inside of a project to build help 
 tools manually and without defining the <environmentVariable>SHFBROOT</environmentVariable> environment variable.
 Certain limitations apply in this case and are detailed in the package's Read Me file which is displayed when the
 package is installed.</para>
+
+			<para>For NuGet installations, you must also install one or more of the Reflection Data Set packages
+based on which platform types you need.  The reflection data set package names start with
+<application>EWSoftware.SHFB</application> and end with a framework suffix: .NET, .NETFramework,
+.NETMicroFramework, .NETCore, .NETPortable, .Silverlight, .WindowsPhone, and .WindowsPhoneApp.  If multiple versions
+are available for any given reflection data set package, install the latest version as it will cover all prior
+versions as well.  For example, the latest <application>EWSoftware.SHFB.NETFramework</application> package covers
+all .NET Framework versions from 1.0 to 4.8.  Use the <application>EWSoftware.SHFB.NET</application> package for
+.NET Core, .NET Standard, and .NET 5.0 and later.</para>
+
+			<para>To install the packages, right click on the project's <link xlink:href="273dcaf1-1e51-475d-a622-732dd3afc212" />
+node and select the <ui>Manage NuGet Packages</ui> option.  If NuGet packages are available for build components
+used by the project, they can also be added as package references using this option.  Some required import
+elements must be present in the help file build project for package restores to work properly.  Those elements will
+be added by the package manager form when the first package is added to the project.</para>
 		</introduction>
 
 		<section address="XCopyDeployment">
@@ -21,9 +36,15 @@ package is installed.</para>
 
 				<list class="bullet">
 					<listItem>
+						<para>If NuGet package references are present in the project, the package tool paths in each are
+searched.  Help file builder packages define a build properties file containing a
+<codeInline>SHFBComponentPath</codeInline> item that equates to the package's <localUri>.\tools</localUri>
+folder.</para>
+					</listItem>
+					<listItem>
 						<para>If a <codeInline>ComponentPath</codeInline> project property value is set, the folder it refers
-to is searched first and then the actual project folder is searched.  If the property contains no value, the
-actual project folder is searched first.</para>
+to is searched first and then the actual project folder is searched.  If the property contains no value, only the
+project folder is searched.</para>
 					</listItem>
 					<listItem>
 						<para>Next, the common application data folders noted in the
@@ -38,87 +59,11 @@ is searched.</para>
 				<para>If any duplicate components are encountered, the first one loaded based on the above search order
 will be used.</para>
 
-				<para>If your version of Visual Studio supports them, <codeInline>PackageReference</codeInline> elements
-can be used to add the help file builder packages to your project.  The packages contain a properties file that
-defines the necessary project properties to define the root path and component path so that you do not have to
-define them manually as described below.  To enable NuGet package restore, the following changes must be made
-to the help file builder project.  Note that many of these changes may already be there if you have created a
-recent project.  In older projects, these elements will need to be added.</para>
-
-				<para>At the top of the project, import the common properties file to support package restore and add
-the required <codeInline>TargetFrameworkVersion</codeInline> element.</para>
-				
-<code language="xml" title=" ">
-&lt;Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
-	&lt;!-- Import the common properties to support NuGet restore --&gt;
-	&lt;Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-		Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" /&gt;
-
-	&lt;PropertyGroup&gt;
-		&lt;!-- A framework version is required for NuGet restore.  This can be any valid version --&gt;
-		&lt;TargetFrameworkVersion&gt;v4.5&lt;/TargetFrameworkVersion&gt;
-	.
-	.
-	.
-</code>
-
-				<para>Add the package references to import the help file builder tools package and the reflection data
-set package.  Update the version attributes to the latest releases.</para>
-
-<code language="xml" title=" ">
-&lt;ItemGroup&gt;
-	&lt;!-- IMPORTANT: Update the package versions to the latest releases. --&gt;
-	&lt;PackageReference Include="EWSoftware.SHFB" Version="2019.9.15" /&gt;
-  &lt;PackageReference Include="EWSoftware.SHFB.NETFramework" Version="4.8.0" /&gt;
-&lt;/ItemGroup&gt;
-</code>
-
-				<para>At the end of the project file just above the line that imports the help file builder targets,
-add an import for the common build targets.  Also add the <codeInline>Condition</codeInline> attribute to the
-help file builder targets import.</para>
-
-<code language="xml" title=" ">
-	&lt;!-- Import the common build targets during NuGet restore because before the
-		packages are being installed, $(SHFBROOT) is not set yet --&gt;
-	&lt;Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets"
-		Condition="'$(MSBuildRestoreSessionId)' != ''"/&gt;
-
-	&lt;!-- Import the SHFB build targets during build --&gt;
-	&lt;Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets"
-		Condition="'$(MSBuildRestoreSessionId)' == ''"/&gt;
-</code>
-				<para>If not using package references, it is possible to build a project without defining the
-<codeInline>SHFBROOT</codeInline> environment variable such as when using the NuGet package.  To do this, a
-conditional <codeInline>SHFBROOT</codeInline> property must be added to each help file builder project as a child
-of the main <codeInline>PropertyGroup</codeInline> element.  An example is shown below (lines wrapped for display
-purposes):</para>
-
-<code language="xml" title=" ">
-&lt;PropertyGroup&gt;
-	&lt;!-- NOTE: Update the version number in the path (YYYY.M.D.R) to match the package version --&gt;
-	&lt;SHFBROOT Condition=" '$(SHFBROOT)' == '' "&gt;$(MSBuildThisFileDirectory)..\packages\
-EWSoftware.SHFB.YYYY.M.D.R\Tools\&lt;/SHFBROOT&gt;
-
-	... other SHFB project properties ...
-
-&lt;/PropertyGroup&gt;
-</code>
-
-				<para>By making it conditional, you can work with the project on your local machine with the available
-tools where the environment variable is defined but still allow it to be built on a server using the XCOPY/NuGet
-deployment.</para>
-
 				<alert class="important">
 					<para>The Help 1 file format is unsupported in the XCOPY/NuGet deployment scenario as it requires
 additional tools and components to be installed.  If these tools and components are missing on the build server,
 the help file build will fail.  Only the MS Help Viewer, Open XML, website, and markdown help file formats are
 guaranteed to work as they have no external tool dependencies.</para>
-
-					<para>For NuGet installations, you must also install one or more of the Reflection Data Set packages
-based on which platform types you need: .NETCore, .NETFramework, .NETMicroFramework, .NETPortable, Silverlight,
-WindowsPhone, and/or WindowsPhoneApp.  If multiple versions are available for any given reflection data set
-package, download the latest version as it will cover all prior versions as well.  For example, the
-.NETFramework 4.8 package covers all .NET Framework versions from 1.0 to 4.8.</para>
 				</alert>
 
 			</content>

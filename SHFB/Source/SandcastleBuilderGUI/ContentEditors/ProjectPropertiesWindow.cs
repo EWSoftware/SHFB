@@ -2,14 +2,13 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/05/2018
-// Note    : Copyright 2008-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/10/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the project properties
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -52,7 +51,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public SandcastleProject CurrentProject
         {
-            get { return currentProject; }
+            get => currentProject;
             set
             {
                 currentProject = value;
@@ -76,12 +75,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             InitializeComponent();
 
             // Ensure that the custom controls are known by the base property page class
-            if(!BasePropertyPage.CustomControls.ContainsKey("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl"))
+            if(!BasePropertyPage.CustomControls.ContainsKey("Sandcastle.Platform.Windows.UserControls.FilePathUserControl"))
             {
                 BasePropertyPage.CustomControls.Add("Xceed.Wpf.Toolkit.IntegerUpDown", "Value");
-                BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FilePathUserControl",
+                BasePropertyPage.CustomControls.Add("Sandcastle.Platform.Windows.UserControls.FilePathUserControl",
                     "PersistablePath");
-                BasePropertyPage.CustomControls.Add("SandcastleBuilder.WPF.PropertyPages.FolderPathUserControl",
+                BasePropertyPage.CustomControls.Add("Sandcastle.Platform.Windows.UserControls.FolderPathUserControl",
                     "PersistablePath");
             }
         }
@@ -174,7 +173,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(tvPropertyPages.SelectedNode != null)
                 Settings.Default.LastUsedPropertyPage = tvPropertyPages.Nodes.IndexOf(tvPropertyPages.SelectedNode);
 
-            if(e.CloseReason == CloseReason.UserClosing && this.DockState == DockState.Document)
+            if(e != null &&  e.CloseReason == CloseReason.UserClosing && this.DockState == DockState.Document)
             {
                 if(this.Apply())
                     this.Hide();
@@ -188,11 +187,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <inheritdoc />
         public override bool IsDirty
         {
-            get
-            {
-                return MainForm.Host.ProjectExplorer.IsDirty ||
-                    this.Controls.OfType<BasePropertyPage>().Any(p => p.IsDirty);
-            }
+            get => MainForm.Host.ProjectExplorer.IsDirty || this.Controls.OfType<BasePropertyPage>().Any(p => p.IsDirty);
             set { /* Handled by the property pages and the main form */ }
         }
 

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : PropertyPageBinding.cs
 // Author  : Eric Woodruff
-// Updated : 10/06/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF-specific binding code for the property page class
 //
@@ -18,6 +17,7 @@
 // 10/05/2017  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Windows;
 
 namespace SandcastleBuilder.WPF.PropertyPages
@@ -49,6 +49,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
         public static string GetProjectPropertyName(UIElement element)
         {
+            if(element == null)
+                throw new ArgumentNullException(nameof(element));
+
             return (string)element.GetValue(ProjectPropertyNameProperty);
         }
 
@@ -59,6 +62,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="value">The property value</param>
         public static void SetProjectPropertyName(UIElement element, string value)
         {
+            if(element == null)
+                throw new ArgumentNullException(nameof(element));
+
             element.SetValue(ProjectPropertyNameProperty, value);
         }
     }

@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a simple type reference
@@ -23,7 +23,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the type ID
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get; }
 
         #endregion
 
@@ -36,10 +36,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="id">The type ID</param>
         public SimpleTypeReference(string id)
         {
-            if(id == null)
-                throw new ArgumentNullException("id");
-
-            this.Id = id;
+            this.Id = id ?? throw new ArgumentNullException(nameof(id));
         }
         #endregion
     }

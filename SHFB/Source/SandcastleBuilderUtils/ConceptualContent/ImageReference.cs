@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ImageReference.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a conceptual content image that can be used to insert a reference to
 // an image in a topic.
@@ -37,10 +36,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This read-only property is used to get the image filename without the path
         /// </summary>
-        public string Filename
-        {
-            get { return Path.GetFileName(this.FullPath); }
-        }
+        public string Filename => Path.GetFileName(this.FullPath);
 
         /// <summary>
         /// This is used to get or set the full path to the image file
@@ -97,10 +93,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public ImageReference(string fullPath, string id)
         {
             if(String.IsNullOrWhiteSpace(fullPath))
-                throw new ArgumentException("A full path to the image is required", "fullPath");
+                throw new ArgumentException("A full path to the image is required", nameof(fullPath));
 
             if(String.IsNullOrWhiteSpace(id))
-                throw new ArgumentException("An image ID is required", "id");
+                throw new ArgumentException("An image ID is required", nameof(id));
 
             this.FullPath = Path.GetFullPath(fullPath);
             this.Id = id;

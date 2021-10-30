@@ -1,18 +1,8 @@
 # Ignore these files and folders in this directory
-/*.config
-/*.dll
-/*.exe*
-/*.pdb
-/*.targets
-/*.xml
 /Data/**/*.xml
-ConceptualTemplates/*
+Components/*
 Extras/*
 Help/*
-ItemTemplates/*
-PresentationStyles/*
-ProductionTransforms/*
-Spelling/*
-SyntaxContent*/
-Templates/*
-reflection.org
+net472/*
+netcoreapp3.1/*
+Tools/*

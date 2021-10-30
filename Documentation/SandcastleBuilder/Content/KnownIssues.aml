@@ -6,6 +6,47 @@
           excludeRelatedTopics="true" />
     </introduction>
 
+		<section address="NetCore">
+			<title>.NET Core Builds</title>
+			<content>
+				<para>The following are the known issues with .NET Core builds.  These will be addressed in later
+releases if possible.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>If one is specified, the XSL transform in the Completion Notification plug-in currently fails
+on .NET Core.  It can be cleared in the plug-in settings to send the raw log file in the meantime.</para>
+					</listItem>
+
+					<listItem>
+						<para>The ESent and SQL cached data components currently have some issues.  However, in most cases
+these caching components are no longer necessary and can be removed from the project with no ill effects on
+build performance.</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Data caches built using the .NET Framework ESent and SQL cached data components cannot be
+used by the .NET Core versions of the same components and vice versa due to differences in the serialized
+framework types.</para>
+							</listItem>
+
+							<listItem>
+								<para>The ESent cached data components are not currently working under .NET Core due to some
+non-serializable types.</para>
+							</listItem>
+
+							<listItem>
+								<para>The SQL cached data components are not currently working under .NET Core due to
+the SQL client types not being supported.</para>
+							</listItem>
+						</list>
+						
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
     <section address="MSHelpViewer">
       <title>Microsoft Help Viewer</title>
       <content>
@@ -91,11 +132,6 @@ focus to another window and back to restore it.</para>
     </section>
 
 		<relatedTopics>
-			<link xlink:href="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" />
-			<link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" />
-			<link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />
-			<link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />
-			<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
 			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
 			</relatedTopics>
   </developerConceptualDocument>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2019
-// Note    : Copyright 2006-2019, Eric Woodruff, All rights reserved
+// Updated : 04/25/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the main form for the application.
 //
@@ -45,7 +45,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -56,6 +55,8 @@ using System.Windows.Forms;
 using Microsoft.Build.Exceptions;
 
 using Sandcastle.Core;
+
+using Sandcastle.Platform.Windows;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
@@ -183,7 +184,7 @@ namespace SandcastleBuilder.Gui
                     Settings.Default.MruList = new StringCollection();
 
                 if(File.Exists(projectToLoad))
-                    MainForm.UpdateMruList(projectToLoad);
+                    UpdateMruList(projectToLoad);
                 else
                     MessageBox.Show("Unable to find project: " + projectToLoad, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -647,7 +648,7 @@ namespace SandcastleBuilder.Gui
             // If not starting out minimized, attempt to load the last used window size and position
             if(this.WindowState != FormWindowState.Minimized)
             {
-                WINDOWPLACEMENT wp = (WINDOWPLACEMENT)Settings.Default.WindowPlacement;
+                WINDOWPLACEMENT wp = Settings.Default.WindowPlacement;
 
                 if(wp.length == Marshal.SizeOf(typeof(WINDOWPLACEMENT)))
                 {
@@ -663,7 +664,7 @@ namespace SandcastleBuilder.Gui
             // Restore default content state if present and shift isn't held down
             state = Settings.Default.ContentEditorDockState;
 
-            if(!String.IsNullOrEmpty(state) && (Control.ModifierKeys & Keys.Shift) == 0)
+            if(!String.IsNullOrEmpty(state) && (ModifierKeys & Keys.Shift) == 0)
             {
                 byte[] stateBytes = Encoding.UTF8.GetBytes(state.ToCharArray());
 
@@ -689,14 +690,12 @@ namespace SandcastleBuilder.Gui
                 // that projects can be loaded and built.
                 if(Environment.GetEnvironmentVariable("SHFBROOT") == null)
                 {
-                    string shfbRootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
                     MessageBox.Show("The SHFBROOT system environment variable was not found.  This variable " +
                         "is usually created during installation and may require a reboot.  It has been defined " +
-                        "temporarily for this process as:\n\nSHFBROOT=" + shfbRootPath, Constants.AppName,
+                        "temporarily for this process as:\n\nSHFBROOT=" + ComponentUtilities.RootFolder, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    Environment.SetEnvironmentVariable("SHFBROOT", shfbRootPath);
+                    Environment.SetEnvironmentVariable("SHFBROOT", ComponentUtilities.RootFolder);
                 }
             }
             catch(Exception ex)
@@ -882,7 +881,7 @@ namespace SandcastleBuilder.Gui
             else
                 topic = "1aea789d-b226-4b39-b534-4c97c256fac8";
 
-            Utility.ShowHelpTopic(topic);
+            UiUtility.ShowHelpTopic(topic);
         }
         #endregion
 
@@ -979,7 +978,7 @@ namespace SandcastleBuilder.Gui
                         {
                             this.Cursor = Cursors.WaitCursor;
                             this.CreateProject(dlg.FileName, true);
-                            MainForm.UpdateMruList(project.Filename);
+                            UpdateMruList(project.Filename);
                         }
                         catch(InvalidProjectFileException pex)
                         {
@@ -1045,7 +1044,7 @@ namespace SandcastleBuilder.Gui
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        void miProject_Click(object sender, EventArgs e)
+        private void miProject_Click(object sender, EventArgs e)
         {
             StringCollection mruList = Settings.Default.MruList;
 
@@ -1057,7 +1056,7 @@ namespace SandcastleBuilder.Gui
                     this.CreateProject(mruList[miRecentProjects.DropDownItems.IndexOf(
                         (ToolStripMenuItem)sender)], true);
 
-                    MainForm.UpdateMruList(project.Filename);
+                    UpdateMruList(project.Filename);
                 }
                 catch(InvalidProjectFileException pex)
                 {
@@ -1128,7 +1127,7 @@ namespace SandcastleBuilder.Gui
                     CancellationToken = cancellationTokenSource.Token,
                 };
 
-                await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token);
+                await Task.Run(() => buildProcess.Build(), cancellationTokenSource.Token).ConfigureAwait(true);
             }
             finally
             {
@@ -1242,7 +1241,7 @@ namespace SandcastleBuilder.Gui
                         if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                             File.Delete(file);
                         else
-                            sb.AppendFormat("Did not delete read-only or hidden file '{0}'\r\n", file);
+                            sb.AppendFormat(CultureInfo.CurrentCulture, "Did not delete read-only or hidden file '{0}'\r\n", file);
 
                     foreach(string folder in Directory.EnumerateDirectories(outputFolder))
                         try
@@ -1251,21 +1250,30 @@ namespace SandcastleBuilder.Gui
                             // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
                             if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(f =>
                               (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
-                                sb.AppendFormat("Did not delete folder '{0}' as it contains read-only or hidden " +
-                                    "folders/files\r\n", folder);
+                            {
+                                sb.AppendFormat(CultureInfo.CurrentCulture, "Did not delete folder '{0}' as it " +
+                                    "contains read-only or hidden folders/files\r\n", folder);
+                            }
                             else
+                            {
                                 if((File.GetAttributes(folder) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                                     Directory.Delete(folder, true);
                                 else
-                                    sb.AppendFormat("Did not delete folder '{0}' as it is read-only or hidden\r\n", folder);
+                                {
+                                    sb.AppendFormat(CultureInfo.CurrentCulture, "Did not delete folder '{0}' as " +
+                                        "it is read-only or hidden\r\n", folder);
+                                }
+                            }
                         }
                         catch(IOException ioEx)
                         {
-                            sb.AppendFormat("Did not delete folder '{0}': {1}\r\n", folder, ioEx.Message);
+                            sb.AppendFormat(CultureInfo.CurrentCulture, "Did not delete folder '{0}': {1}\r\n",
+                                folder, ioEx.Message);
                         }
                         catch(UnauthorizedAccessException uaEx)
                         {
-                            sb.AppendFormat("Did not delete folder '{0}': {1}\r\n", folder, uaEx.Message);
+                            sb.AppendFormat(CultureInfo.CurrentCulture, "Did not delete folder '{0}': {1}\r\n",
+                                folder, uaEx.Message);
                         }
 
                     // Delete the log file too
@@ -1300,11 +1308,11 @@ namespace SandcastleBuilder.Gui
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     foreach(IDockContent content in dockPanel.Contents)
-                        if(content is OutputWindow)
-                            ((OutputWindow)content).UpdateSettings();
+                        if(content is OutputWindow outputWindow)
+                            outputWindow.UpdateSettings();
                         else
-                            if(content is TopicEditorWindow)
-                                ((TopicEditorWindow)content).UpdateFont();
+                            if(content is TopicEditorWindow topicEditor)
+                                topicEditor.UpdateFont();
             }
         }
 

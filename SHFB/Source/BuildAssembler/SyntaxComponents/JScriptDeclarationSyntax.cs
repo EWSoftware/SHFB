@@ -8,7 +8,6 @@
 // 08/01/2014 - EFW - Added support for resource item files containing the localized titles, messages, etc.
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Xml.XPath;
@@ -16,7 +15,7 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Tools.SyntaxGenerators
 {
     /// <summary>
     /// This class generates declaration syntax sections for JScript
@@ -38,13 +37,8 @@ namespace Microsoft.Ddue.Tools
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public string ResourceItemFileLocation
-            {
-                get
-                {
-                    return Path.Combine(ComponentUtilities.AssemblyFolder(Assembly.GetExecutingAssembly()), "SyntaxContent");
-                }
-            }
+            public string ResourceItemFileLocation => Path.Combine(ComponentUtilities.AssemblyFolder(
+                Assembly.GetExecutingAssembly()), "SyntaxContent");
 
             /// <inheritdoc />
             public SyntaxGeneratorCore Create()
@@ -57,6 +51,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string name = (string)reflection.Evaluate(apiNameExpression);
 
             writer.WriteKeyword("package");
@@ -67,6 +67,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedGeneric(reflection, writer))
                 return;
 
@@ -96,14 +102,27 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedGeneric(reflection, writer))
                 return;
+
             writer.WriteMessage("UnsupportedStructure_" + Language);
         }
 
         /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedGeneric(reflection, writer))
                 return;
 
@@ -119,14 +138,27 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedGeneric(reflection, writer))
                 return;
+
             writer.WriteMessage("UnsupportedDelegate_" + Language);
         }
 
         /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             string name = (string)reflection.Evaluate(apiNameExpression);
 
             WriteAccessModifier(reflection, writer);
@@ -139,15 +171,21 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
+
             if(isStatic)
-            {
                 writer.WriteMessage("UnsupportedStaticConstructor_" + Language);
-            }
             else
             {
                 if(IsUnsupportedUnsafe(reflection, writer))
                     return;
+
                 XPathNavigator declaringType = reflection.SelectSingleNode(apiContainingTypeExpression);
 
                 WriteAccessModifier(reflection, writer);
@@ -161,6 +199,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
             if(IsUnsupportedGeneric(reflection, writer))
@@ -188,6 +232,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
             if(IsUnsupportedExplicit(reflection, writer))
@@ -265,6 +315,12 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(reflection == null)
+                throw new ArgumentNullException(nameof(reflection));
+
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             if(IsUnsupportedUnsafe(reflection, writer))
                 return;
 
@@ -302,18 +358,27 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteMessage("UnsupportedOperator_" + Language);
         }
 
         /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteMessage("UnsupportedCast_" + Language);
         }
 
         /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             writer.WriteMessage("UnsupportedEvent_" + Language);
         }
 
@@ -489,6 +554,9 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         protected override void WriteNormalTypeReference(string api, SyntaxWriter writer)
         {
+            if(writer == null)
+                throw new ArgumentNullException(nameof(writer));
+
             switch(api)
             {
                 case "T:System.Boolean":

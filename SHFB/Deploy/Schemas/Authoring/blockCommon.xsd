@@ -75,7 +75,7 @@
 		<annotation>
 			<documentation>
 				The alert element describes an slim alert structure
-				that largely mimicks the block alert structure.
+				that largely mimics the block alert structure.
 			</documentation>
 			<appinfo>
 				<doc:localizable>n/a</doc:localizable>

@@ -2,9 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerLauncher.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2015
-// Note    : Copyright 2010-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the main program entry point.
 //
@@ -20,6 +19,8 @@
 // 03/03/2014  EFW  Fixed FindLocaleFor() so that it works properly when multiple languages are present
 // 03/24/2015  EFW  Made catalogName optional and set a default based on the viewer version
 //===============================================================================================================
+
+// Ignore Spelling: ver loc
 
 using System;
 using System.Collections.Generic;
@@ -257,7 +258,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     ex.ToString());
             }
 #if DEBUG
-            if(System.Diagnostics.Debugger.IsAttached)
+            if(Debugger.IsAttached)
             {
                 Console.WriteLine("Hit ENTER to exit...");
                 Console.ReadLine();

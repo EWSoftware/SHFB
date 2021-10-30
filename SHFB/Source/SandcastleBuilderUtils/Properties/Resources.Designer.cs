@@ -61,6 +61,26 @@ namespace SandcastleBuilder.Utils.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;!-- Run the following script in LINQPad to regenerate the content below:
+        ///XElement root = new XElement(&quot;mimeTypes&quot;);
+        ///
+        ///foreach (string key in Registry.ClassesRoot.GetSubKeyNames().Where(k =&gt; k[0] == &apos;.&apos;))
+        ///{
+        ///	using (RegistryKey regKey = Registry.ClassesRoot.OpenSubKey(key))
+        ///	{
+        ///		string mimeType = regKey.GetValue(&quot;Content Type&quot;)?.ToString();
+        ///		
+        ///		if (!String.IsNullOrWhiteSpace(mimeType))
+        ///			root.Add(new XElement(&quot;mimeType&quot;, new XAttribute(&quot;extension&quot;, key), ne [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MimeTypes {
+            get {
+                return ResourceManager.GetString("MimeTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;Project ToolsVersion=&quot;14.0&quot; DefaultTargets=&quot;Build&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
         ///	&lt;!-- Import the common properties to support NuGet restore --&gt;
         ///	&lt;Import Project=&quot;$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props&quot; Condition=&quot;Exists(&apos;$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props&apos;)&quot; /&gt;

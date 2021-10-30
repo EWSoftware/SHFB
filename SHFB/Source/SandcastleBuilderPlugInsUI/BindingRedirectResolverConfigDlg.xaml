@@ -1,0 +1,154 @@
+﻿<Window x:Class="SandcastleBuilder.PlugIns.UI.BindingRedirectResolverConfigDlg"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:shfbWin="clr-namespace:Sandcastle.Platform.Windows.UserControls;assembly=Sandcastle.Platform.Windows"
+	mc:Ignorable="d" Width="800" Height="500" MinWidth="500" MinHeight="500" ShowInTaskbar="False"
+	Title="Configure Assembly Binding Redirection Plug-In" ResizeMode="CanResizeWithGrip"
+	WindowStartupLocation="CenterScreen" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+	FocusManager.FocusedElement="{Binding ElementName=lbBindingRedirections}">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<CheckBox Grid.Row="0" Name="chkUseGac" Margin="3"
+			Content="_Use the GAC to resolve unknown assembly references" />
+		<TabControl Grid.Row="1" Margin="3">
+			<TabItem Header="_Binding Redirections">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="2*"/>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<ListBox Grid.Row="0" Name="lbBindingRedirections" Margin="3" SelectionChanged="lbBindingRedirections_SelectionChanged">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<TextBlock Grid.Row="0" Text="{Binding Path=BindingRedirectDescription}" />
+									<TextBlock Grid.Row="1" Text="{Binding Path=ErrorMessage}"
+										Background="Firebrick" Foreground="White">
+										<TextBlock.Style>
+											<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<Trigger Property="TextBlock.Text" Value="">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</Trigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+					<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+						<Button Name="btnAddBindingRedirect" Margin="3" Padding="3" MinWidth="80" Content="_Add"
+							Click="btnAddBindingRedirect_Click" ToolTip="Add a new binding redirect"/>
+						<Button Name="btnDeleteBindingRedirect" Margin="3" Padding="3" MinWidth="80" Content="_Delete"
+							Click="btnDeleteBindingRedirect_Click" ToolTip="Delete the selected binding redirection" />
+					</StackPanel>
+					<GroupBox Grid.Row="2" Name="grpBindingRedirects" Header="Binding Redirect Settings" Margin="3">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
+							<Label Grid.Row="0" Grid.Column="0" Content="Assembly _Name" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=txtBindingAssemblyName}" />
+							<TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name="txtBindingAssemblyName" Margin="3"
+								Text="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.AssemblyName, Mode=TwoWay}" />
+							<Label Grid.Row="1" Grid.Column="0" Content="_Public Key Token" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=txtBindingPublicKeyToken}" />
+							<TextBox Grid.Row="1" Grid.Column="1" Name="txtBindingPublicKeyToken" Margin="3"
+								Text="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.PublicKeyToken, Mode=TwoWay}" />
+							<Label Grid.Row="1" Grid.Column="2" Content="_Culture" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=txtBindingCulture}" />
+							<TextBox Grid.Row="1" Grid.Column="3" Name="txtBindingCulture" Margin="3"
+								Text="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.Culture, Mode=TwoWay}" />
+							<Label Grid.Row="2" Grid.Column="0" Content="_Old Version" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=txtBindingOldVersion}" />
+							<TextBox Grid.Row="2" Grid.Column="1" Name="txtBindingOldVersion" Margin="3"
+								Text="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.OldVersion, Mode=TwoWay}" />
+							<Label Grid.Row="2" Grid.Column="2" Content="Old _Version To" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=txtBindingOldVersionTo}" />
+							<TextBox Grid.Row="2" Grid.Column="3" Name="txtBindingOldVersionTo" Margin="3"
+								Text="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.OldVersionTo, Mode=TwoWay}" />
+							<Label Grid.Row="3" Grid.Column="0" Content="N_ew Version" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=txtBindingNewVersion}" />
+							<TextBox Grid.Row="3" Grid.Column="1" Name="txtBindingNewVersion" Margin="3"
+								Text="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.NewVersion, Mode=TwoWay}" />
+							<Label Grid.Row="4" Grid.Column="0" Content="Or I_mport From Config File" HorizontalAlignment="Right" Margin="3"
+								Target="{Binding ElementName=fpConfigFile}" />
+							<shfbWin:FilePathUserControl Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Name="fpConfigFile"
+								Margin="3" Title="Select the configuration file to use"
+								Filter="Configuration Files (*.config)|*.config|All Files (*.*)|*.*"
+								DataContext="{Binding ElementName=lbBindingRedirections, Path=SelectedItem.ConfigurationFile}" />
+						</Grid>
+					</GroupBox>
+				</Grid>
+			</TabItem>
+			<TabItem Header="_Ignore If Unresolved">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid Grid.Row="0" Margin="3">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<Label Grid.Column="0" Content="Assembly _Name to Ignore" Margin="3"
+							Target="{Binding ElementName=txtAssemblyName}" />
+						<TextBox Grid.Column="1" Name="txtAssemblyName" Margin="3" />
+						<Button Grid.Column="2" Name="btnAddIgnoredName" Margin="3" Padding="3" MinWidth="80"
+							Content="_Add" ToolTip="Add a new assembly name to be ignored if unresolved"
+							Click="btnAddIgnoredName_Click" />
+					</Grid>
+					<ListBox Grid.Row="1" Name="lbIgnoreIfUnresolved" Margin="3" SelectionChanged="lbIgnoreIfUnresolved_SelectionChanged" />
+					<Button Grid.Row="2" Name="btnDeleteIgnoredName" Margin="3" Padding="3" MinWidth="80"
+						Content="_Delete" ToolTip="Delete the selected assembly name"
+						HorizontalAlignment="Left" Click="btnDeleteIgnoredName_Click" />
+				</Grid>
+			</TabItem>
+		</TabControl>
+		<Grid Grid.Row="2" Margin="3,3,3,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Name="btnOK" Margin="3" Padding="3" MinWidth="80" Content="OK" Click="btnOK_Click"
+				HorizontalAlignment="Left" ToolTip="Save settings"/>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Hyperlink Name="lnkProjectSite" NavigateUri="https://GitHub.com/EWSoftware/SHFB"
+          RequestNavigate="lnkProjectSite_RequestNavigate"  ToolTip="https://GitHub.com/EWSoftware/SHFB">Sandcastle
+Help File Builder</Hyperlink>
+			</TextBlock>
+			<Button Grid.Column="2" Name="btnHelp" Margin="0,3,3,3" Padding="3" MinWidth="80" Content="Help"
+				Click="btnHelp_Click"  ToolTip="View help for this component" />
+			<Button Grid.Column="3" Name="btnCancel" Margin="3" Padding="3" MinWidth="80" Content="Cancel"
+        HorizontalAlignment="Right" IsCancel="True" ToolTip="Cancel without saving changes" />
+		</Grid>
+	</Grid>
+</Window>

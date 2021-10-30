@@ -1,10 +1,8 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 //
-// Les informations générales relatives à un assembly dépendent de 
-// l'ensemble d'attributs suivant. Pour modifier les informations
-// associées à un assembly, changez les valeurs de ces attributs.
+// General Information about an assembly is controlled through the following set of attributes.  Change these
+// attribute values to modify the information associated with an assembly.
 //
 [assembly: AssemblyTitle("")]
 [assembly: AssemblyDescription("")]
@@ -13,17 +11,14 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 
+// Version information for an assembly consists of the following four values based on the current date:
 //
-// Les informations de version pour un assembly se composent des quatre valeurs suivantes :
+//      Year of release     4 digit year
+//      Month of release    1 or 2 digit month
+//      Day of release      1 or 2 digit day
+//      Revision            Typically zero unless multiple releases are made on the same day.  In such cases,
+//                          increment the revision by one with each same day release.
 //
-//      Version principale
-//      Version secondaire 
-//      Numéro de build
-//      Révision
-//
-// Vous pouvez spécifier toutes les valeurs ou indiquer des numéros de révision et de build par défaut 
-// en utilisant '*', comme ci-dessous :
-
-[assembly: AssemblyVersion("2.1.0.12")]
+[assembly: AssemblyVersion("2021.4.6.0")]

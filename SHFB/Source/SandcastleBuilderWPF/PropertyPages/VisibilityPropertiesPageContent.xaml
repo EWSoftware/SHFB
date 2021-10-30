@@ -46,6 +46,8 @@
 attribute set to Never" HorizontalAlignment="Left" Margin="0,3" />
 			<CheckBox Name="chkNonBrowsable" Content="Types and members marked with a Browsable attribute set to False"
 				HorizontalAlignment="Left" Margin="0,3" />
+			<CheckBox Name="chkInternalAndPrivateIfExternal" Content="Internal members in other assemblies and private members from base types"
+				HorizontalAlignment="Left" Margin="0,3" />
 		</StackPanel>
 		<StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal">
 			<CheckBox Name="chkProtectedInternalAsProtected" Content="Doc_ument &quot;protected internal&quot; members as

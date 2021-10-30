@@ -11,4 +11,11 @@
   <InheritExclusionExpressions>True</InheritExclusionExpressions>
   <InheritIgnoredFilePatterns>True</InheritIgnoredFilePatterns>
   <InheritXmlSettings>True</InheritXmlSettings>
+  <IgnoredWords>
+    <Ignore>subitem</Ignore>
+    <Ignore>subitems</Ignore>
+    <Ignore>safearray</Ignore>
+    <Ignore>bstr</Ignore>
+  </IgnoredWords>
+  <IgnoredWordsFile></IgnoredWordsFile>
 </SpellCheckerConfiguration>

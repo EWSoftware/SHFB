@@ -17,23 +17,19 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
-using Microsoft.Ddue.Tools.UI;
-using Microsoft.Ddue.Tools.Snippets;
+using Sandcastle.Tools.BuildComponents.Snippets;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This build component is used to generate syntax sections for API member topics
@@ -46,11 +42,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        [BuildComponentExport("Syntax Component", IsVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
-          Description = "This build component is used to create syntax sections in topics using the syntax " +
-            "filter languages selected in the project.  It can also group and sort code snippets based on the " +
-            "order of the defined syntax generators.")]
+        [BuildComponentExport("Syntax Component", IsVisible = true, Version = AssemblyInfo.ProductVersion,
+          Copyright = AssemblyInfo.Copyright, Description = "This build component is used to create syntax " +
+            "sections in topics using the syntax filter languages selected in the project.  It can also group " +
+            "and sort code snippets based on the order of the defined syntax generators.")]
         public sealed class Factory : BuildComponentFactory
         {
             // This is used to import the list of syntax generator factories that is passed to the build
@@ -85,17 +80,6 @@ namespace Microsoft.Ddue.Tools.BuildComponent
 </generators>
 <containerElement name=""codeSnippetGroup"" addNoExampleTabs=""true"" includeOnSingleSnippets=""false""
     groupingEnabled=""{@CodeSnippetGrouping}"" />";
-
-            /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
-            {
-                var dlg = new SyntaxComponentConfigDlg(currentConfiguration, container);
-
-                if(dlg.ShowModalDialog() ?? false)
-                    currentConfiguration = dlg.Configuration;
-
-                return currentConfiguration;
-            }
         }
         #endregion
 
@@ -106,16 +90,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private XPathExpression syntaxInput, syntaxOutput;
         private bool renderReferenceLinks, addNoExampleTabs, includeOnSingleSnippets;
 
-        private List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories;
-        private List<SyntaxGeneratorCore> generators = new List<SyntaxGeneratorCore>();
+        private readonly List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories;
+        private readonly List<SyntaxGeneratorCore> generators = new List<SyntaxGeneratorCore>();
 
         // Code snippet grouping and sorting members
         private XPathExpression referenceRoot, referenceCode, conceptualRoot, conceptualCode;
         private string containerElementName;
-        private Dictionary<string, ISyntaxGeneratorMetadata> codeSnippetLanguages;
-        private Dictionary<string, int> languageOrder;
-        private HashSet<string> generatorLanguages;
-        private List<ISyntaxGeneratorMetadata> languageSet;
+        private readonly Dictionary<string, ISyntaxGeneratorMetadata> codeSnippetLanguages;
+        private readonly Dictionary<string, int> languageOrder;
+        private readonly HashSet<string> generatorLanguages;
+        private readonly List<ISyntaxGeneratorMetadata> languageSet;
 
         #endregion
 
@@ -130,7 +114,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         protected SyntaxComponent(BuildAssemblerCore buildAssembler,
           List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> generatorFactories) : base(buildAssembler)
         {
-            this.generatorFactories = generatorFactories;
+            this.generatorFactories = generatorFactories ?? throw new ArgumentNullException(nameof(generatorFactories));
 
             generatorLanguages = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             languageSet = new List<ISyntaxGeneratorMetadata>();
@@ -158,18 +142,23 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             XPathNavigator syntaxNode = configuration.SelectSingleNode("syntax");
             string syntaxInputXPath = syntaxNode.GetAttribute("input", String.Empty);
 
             if(String.IsNullOrEmpty(syntaxInputXPath))
-                throw new ConfigurationErrorsException("You must specify an XPath for input in the syntax element");
+                throw new ArgumentException("You must specify an XPath for input in the syntax element",
+                    nameof(configuration));
 
             syntaxInput = XPathExpression.Compile(syntaxInputXPath);
 
             string syntaxOutputXPath = syntaxNode.GetAttribute("output", String.Empty);
 
             if(String.IsNullOrEmpty(syntaxOutputXPath))
-                throw new ConfigurationErrorsException("You must specify an XPath for output in the syntax element");
+                throw new ArgumentException("You must specify an XPath for output in the syntax element",
+                    nameof(configuration));
 
             syntaxOutput = XPathExpression.Compile(syntaxOutputXPath);
 
@@ -258,12 +247,10 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             {
                 // If grouping is disabled, skip the remainder of the set up.  This will happen if the user adds
                 // a custom configuration to a project for a presentation style that doesn't support it.
-                bool groupingEnabled;
-
                 containerElementName = containerElement.GetAttribute("name", String.Empty);
                 attrValue = containerElement.GetAttribute("groupingEnabled", String.Empty);
 
-                if(String.IsNullOrWhiteSpace(attrValue) || !Boolean.TryParse(attrValue, out groupingEnabled))
+                if(String.IsNullOrWhiteSpace(attrValue) || !Boolean.TryParse(attrValue, out bool groupingEnabled))
                     groupingEnabled = false;
 
                 if(!groupingEnabled || String.IsNullOrWhiteSpace(containerElementName))
@@ -300,6 +287,12 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if(key == null)
+                throw new ArgumentNullException(nameof(key));
+
             // Don't bother if there is nothing to add (conceptual topics, overloads, group, namespace, and
             // project summary topics).
             if(key[1] == ':' && key[0] != 'G' && key[0] != 'N' && key[0] != 'R')
@@ -332,14 +325,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             XmlAttribute attribute;
             XmlNode code, nextNode;
             CodeSnippetGroup snippetGroup;
-            ISyntaxGeneratorMetadata metadata;
             string namespaceUri;
             int order;
 
             // Don't bother if not a transforming event or not in our group
-            TransformingTopicEventArgs tt = e as TransformingTopicEventArgs;
-
-            if(tt == null || ((BuildComponentCore)sender).GroupId != this.GroupId)
+            if(!(e is TransformingTopicEventArgs tt) || ((BuildComponentCore)sender).GroupId != this.GroupId)
                 return;
 
             XmlDocument document = tt.Document;
@@ -427,7 +417,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                 // group by themselves following the containing group and remove them from the containing group.
                 foreach(var snippet in group.CodeSnippets.ToList())
                 {
-                    if(!codeSnippetLanguages.TryGetValue(snippet.Language, out metadata))
+                    if(!codeSnippetLanguages.TryGetValue(snippet.Language, out ISyntaxGeneratorMetadata metadata))
                     {
                         // If the language is not set or not recognized, put it in a standalone group without
                         // a title if one hasn't been set already.

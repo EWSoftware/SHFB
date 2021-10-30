@@ -1,5 +1,5 @@
 <%@ Page validateRequest="false" language="c#" Inherits="TextColorizerTest.WebForm1" CodeFile="Default.aspx.cs" %>
-<%@ Register TagPrefix="cc1" Namespace="ColorizerLibrary.Controls" Assembly="ColorizerLibrary" %>
+<%@ Register TagPrefix="cc1" Namespace="ColorizerLibrary.Controls" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
 <head>
@@ -10,7 +10,7 @@
 <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
 <link href="highlight.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="highlight.js"></script>
-<style>body { font-family: verdana, arial, sans-serif; font-size: 8.5pt; }</style>
+<style type="text/css">body { font-family: verdana, arial, sans-serif; font-size: 8.5pt; }</style>
 </head>
 
 <body>
@@ -61,22 +61,19 @@ int main( int argc, char* argv[])
 &lt;/pre&gt;
 </pre>
 
-<p /><asp:CheckBox ID="chkNumberLines" runat="server" Text="Number lines"
-    Checked="true" />
+<p><asp:CheckBox ID="chkNumberLines" runat="server" Text="Number lines" Checked="true" />
 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="chkOutlining" runat="server"
-    Text="Enable outlining of #region and #if/#else/#endif blocks"
-    Checked="true" />
+    Text="Enable outlining of #region and #if/#else/#endif blocks" Checked="true" />
 &nbsp;&nbsp;&nbsp;<asp:CheckBox ID="chkDefaultTitle" runat="server"
     Text="Use default title if none specified" Checked="true" />
 <br /><asp:CheckBox ID="chkKeepSeeTags" runat="server"
     Text="Keep XML comment 'see' tags that appear in the code" />
     (NOTE: When enabled, &lt;see&gt; tags are output as normal HTML tags and
-    will not be visible in the rendered text if they are self-closing.)
+    will not be visible in the rendered text if they are self-closing.)</p>
 
-<p />Tab size override: <asp:TextBox ID="txtTabSize" runat="server"
-    Columns="2" Text="0" />
+<p>Tab size override: <asp:TextBox ID="txtTabSize" runat="server" Columns="2" Text="0" /></p>
 
-<p />Tag: <asp:DropDownList ID="cboTag" runat="server" >
+<p>Tag: <asp:DropDownList ID="cboTag" runat="server" >
     <asp:ListItem Value="pre">pre - Multi-line</asp:ListItem>
     <asp:ListItem Value="code">code - Single line</asp:ListItem>
 </asp:DropDownList> lang=
@@ -97,17 +94,16 @@ int main( int argc, char* argv[])
     <asp:ListItem Value="py">py - Python</asp:ListItem>
     <asp:ListItem Value="bat">bat - MS-DOS batch script</asp:ListItem>
     <asp:ListItem Value="None">None - No language</asp:ListItem>
-</asp:DropDownList>
+</asp:DropDownList></p>
 
-<p />Optional Title: <asp:TextBox ID="txtTitle" runat="server" Columns="50" />
+<p>Optional Title: <asp:TextBox ID="txtTitle" runat="server" Columns="50" /></p>
 
-<p />Tag Content:
-<p /><asp:TextBox ID="txtContent" runat="server" Rows="14"
-    Columns="77" TextMode="MultiLine" />
+<p>Tag Content:</p>
+<p><asp:TextBox ID="txtContent" runat="server" Rows="14" Columns="77" TextMode="MultiLine" /></p>
 
-<p /><asp:Button ID="btnProcess" runat="server" Text="Process" OnClick="btnProcess_Click" />
+<p><asp:Button ID="btnProcess" runat="server" Text="Process" OnClick="btnProcess_Click" /></p>
 
-<p /><cc1:TextColorizerControl id="colorizerControl" runat="server" />
+<p><cc1:TextColorizerControl id="colorizerControl" runat="server" /></p>
 
 </form>
 

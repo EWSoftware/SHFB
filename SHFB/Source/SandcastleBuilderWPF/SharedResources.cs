@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SharedResources.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/19/2017
-// Note    : Copyright 2011-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 08/20/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to load shared resources at runtime
 //
@@ -39,7 +38,8 @@ namespace SandcastleBuilder.WPF
         //=====================================================================
 
         private static ResourceDictionary splitButtonResources;
-        private static BitmapImage cautionIcon, noteIcon, securityIcon, informationIcon;
+        private static BitmapImage cautionIcon, noteIcon, securityIcon, informationIcon, installPackageIcon,
+            packageInstalledIcon, removePackageIcon, updatePackageIcon;
 
         #endregion
 
@@ -153,6 +153,98 @@ namespace SandcastleBuilder.WPF
                 }
 
                 return informationIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the install package icon for the NuGet package manager
+        /// </summary>
+        public static BitmapImage InstallPackageIcon
+        {
+            get
+            {
+                if(installPackageIcon == null)
+                {
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/InstallPackage.png");
+
+                    // Cache on load to prevent it locking the image
+                    installPackageIcon = new BitmapImage();
+                    installPackageIcon.BeginInit();
+                    installPackageIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    installPackageIcon.UriSource = image;
+                    installPackageIcon.EndInit();
+                }
+
+                return installPackageIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the package installed icon for the NuGet package manager
+        /// </summary>
+        public static BitmapImage PackageInstalledIcon
+        {
+            get
+            {
+                if(packageInstalledIcon == null)
+                {
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/PackageInstalled.png");
+
+                    // Cache on load to prevent it locking the image
+                    packageInstalledIcon = new BitmapImage();
+                    packageInstalledIcon.BeginInit();
+                    packageInstalledIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    packageInstalledIcon.UriSource = image;
+                    packageInstalledIcon.EndInit();
+                }
+
+                return packageInstalledIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the remove package icon for the NuGet package manager
+        /// </summary>
+        public static BitmapImage RemovePackageIcon
+        {
+            get
+            {
+                if(removePackageIcon == null)
+                {
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/RemovePackage.png");
+
+                    // Cache on load to prevent it locking the image
+                    removePackageIcon = new BitmapImage();
+                    removePackageIcon.BeginInit();
+                    removePackageIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    removePackageIcon.UriSource = image;
+                    removePackageIcon.EndInit();
+                }
+
+                return removePackageIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the update package icon for the NuGet package manager
+        /// </summary>
+        public static BitmapImage UpdatePackageIcon
+        {
+            get
+            {
+                if(updatePackageIcon == null)
+                {
+                    Uri image = new Uri("pack://application:,,,/SandcastleBuilder.WPF;component/Resources/UpdatePackage.png");
+
+                    // Cache on load to prevent it locking the image
+                    updatePackageIcon = new BitmapImage();
+                    updatePackageIcon.BeginInit();
+                    updatePackageIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    updatePackageIcon.UriSource = image;
+                    updatePackageIcon.EndInit();
+                }
+
+                return updatePackageIcon;
             }
         }
         #endregion

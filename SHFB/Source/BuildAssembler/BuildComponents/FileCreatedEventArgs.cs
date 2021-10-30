@@ -6,7 +6,7 @@
 // some sort.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -18,7 +18,7 @@
 using System;
 using System.IO;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This event arguments class is used by build components to indicate that they have saved a file of some
@@ -32,12 +32,13 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <summary>
         /// This read-only property returns the path to the saved file
         /// </summary>
-        public string FilePath { get; private set; }
+        public string FilePath { get; }
 
         /// <summary>
         /// This read-only property indicates whether or not the file is a help content file
         /// </summary>
-        public bool IsContentFile { get; private set; }
+        public bool IsContentFile { get; }
+
         #endregion
 
         #region Constructor

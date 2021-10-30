@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a utility class with extension and utility methods
 //
@@ -18,15 +17,11 @@
 // 12/15/2011  EFW  Created the code
 //===============================================================================================================
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-
-using Sandcastle.Core;
 
 using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -44,43 +39,6 @@ namespace SandcastleBuilder.Utils
         // Regular expressions used for encoding detection and parsing
         private static readonly Regex reXmlEncoding = new Regex("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
 
-        #endregion
-
-        #region General utility methods
-        //=====================================================================
-
-        /// <summary>
-        /// Show a help topic by opening the SHFB help website
-        /// </summary>
-        /// <param name="topic">The topic ID to display (will be formatted as "html/[Topic_ID].htm")</param>
-        public static void ShowHelpTopic(string topic)
-        {
-            string anchor = String.Empty;
-            int pos;
-
-            if(String.IsNullOrEmpty(topic))
-                throw new ArgumentException("A topic must be specified", nameof(topic));
-
-            try
-            {
-                // If there's an anchor, split it off
-                pos = topic.IndexOf('#');
-
-                if(pos != -1)
-                {
-                    anchor = topic.Substring(pos);
-                    topic = topic.Substring(0, pos);
-                }
-
-                System.Diagnostics.Process.Start($"https://ewsoftware.github.io/SHFB/html/{topic}.htm{anchor}");
-            }
-            catch(Exception ex)
-            {
-
-                MessageBox.Show($"Unable to view online help\r\n\r\nReason: {ex.Message}",
-                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
         #endregion
 
         #region Plug-in execution point extension methods

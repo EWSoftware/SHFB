@@ -2,9 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ContentFileEditorCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/07/2017
-// Note    : Copyright 2007-2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the content file editor definitions
 //
@@ -85,8 +84,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="editors">The collection to clone</param>
         public ContentFileEditorCollection(ContentFileEditorCollection editors)
         {
-            foreach(ContentFileEditor e in editors)
-                base.Add((ContentFileEditor)e.Clone());
+            if(editors != null)
+                foreach(ContentFileEditor e in editors)
+                    this.Add((ContentFileEditor)e.Clone());
         }
         #endregion
 
@@ -102,7 +102,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             if(range != null)
                 foreach(ContentFileEditor editor in range)
-                    base.Add(editor);
+                    this.Add(editor);
         }
 
         /// <summary>
@@ -110,10 +110,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public void Sort()
         {
-            ((List<ContentFileEditor>)base.Items).Sort((x, y) =>
+            ((List<ContentFileEditor>)this.Items).Sort((x, y) =>
             {
-                return String.Compare(x.EditorDescription, y.EditorDescription,
-                    StringComparison.CurrentCultureIgnoreCase);
+                return String.Compare(x.EditorDescription, y.EditorDescription, StringComparison.OrdinalIgnoreCase);
             });
         }
 
@@ -169,7 +168,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 lastError = ex;
             }
             finally

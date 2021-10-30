@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="222" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="223" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
+		<ProjectType>VisualBasic</ProjectType>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>ComponentPlugInUI</DefaultName>
+		<SortOrder>45</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+		<LanguageTag>visualbasic</LanguageTag>
+		<PlatformTag>windows</PlatformTag>
+		<ProjectTypeTag>Build Component</ProjectTypeTag>
+		<ProjectTypeTag>Plugin</ProjectTypeTag>
+		<ProjectTypeTag>Documentation</ProjectTypeTag>
+		<CreateInPlace>true</CreateInPlace>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="ConfigEditor.vbproj" ReplaceParameters="true">
+			<ProjectItem TargetFileName="GlobalSuppressions.vb" ReplaceParameters="true">GlobalSuppressions.vb</ProjectItem>
+			<ProjectItem TargetFileName="WindowsFormsExampleConfigDlg.vb" ReplaceParameters="true" OpenInEditor="true">WindowsFormsExampleConfigDlg.vb</ProjectItem>
+			<ProjectItem TargetFileName="WindowsFormsExampleConfigDlg.Designer.vb" ReplaceParameters="true">WindowsFormsExampleConfigDlg.Designer.vb</ProjectItem>
+			<ProjectItem TargetFileName="WindowsFormsExampleConfigDlg.resx" ReplaceParameters="true">WindowsFormsExampleConfigDlg.resx</ProjectItem>
+			<ProjectItem TargetFileName="XamlExampleConfigDlg.xaml" ReplaceParameters="true">XamlExampleConfigDlg.xaml</ProjectItem>
+			<ProjectItem TargetFileName="XamlExampleConfigDlg.xaml.vb" ReplaceParameters="true" OpenInEditor="true">XamlExampleConfigDlg.xaml.vb</ProjectItem>
+			<Folder Name="My Project" TargetFolderName="My Project">
+				<ProjectItem TargetFileName="AssemblyInfo.vb" ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
+				<ProjectItem TargetFileName="launchSettings.json" ReplaceParameters="true">launchSettings.json</ProjectItem>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>

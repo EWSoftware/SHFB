@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="cda7d163-87c9-47de-986a-92f067ded11b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Error BE0036: The FIPS validated cryptographic algorithms policy appears to be enabled</para>
+		</introduction>
+
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>The FIPS validated cryptographic algorithms policy appears to be enabled preventing MD5 hashes from
+being computed for the topic filenames.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>If disabling the FIPS policy is not an option, change the project's Naming Method property to
+either Member Name or Hashed Member Name which do not rely on the MD5 hashing algorithm.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20e87b11-21a3-493c-8dd6-16ce7694952b" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

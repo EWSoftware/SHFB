@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a namespace reference
@@ -23,7 +23,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the namespace ID
         /// </summary>
-        public string Id { get; private set; }
+        public string Id { get; }
 
         #endregion
 

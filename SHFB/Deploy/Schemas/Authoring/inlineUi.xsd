@@ -117,7 +117,7 @@
 	<group name="inlineUiGroup">
 		<annotation>
 			<documentation>
-				This group is intended to be be used for referencing all base UI 
+				This group is intended to be used for referencing all base UI 
 				elements.
 			</documentation>
 		</annotation>

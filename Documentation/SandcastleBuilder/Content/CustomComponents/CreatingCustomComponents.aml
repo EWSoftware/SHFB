@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>In addition to the help file builder project template, component project templates are provided in
+Visual Studio to create custom build components, plug-ins, syntax generators, and presentation styles.  Templates
+are provided for C# and VB.NET and appear in the given language categories in the <ui>Documentation</ui>
+subcategory.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>The following component project templates are available:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><legacyBold>Sandcastle Help File Builder Plug-In</legacyBold> - Create a build process plug-in
+used to extend or alter the help file builder build process.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>BuildAssembler Build Component</legacyBold> - Create a build component for use with
+the <application>BuildAssembler</application> tool that can alter the topics in some way as they are being
+generated.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Build Component/Plug-In Configuration Editor</legacyBold> - Create a configuration
+editor for a build component or plug-in.  This allows you to configure the component or plug-in interactively
+from within the standalone GUI or Visual Studio.  The configuration editor is placed in a separate assembly from
+the component or plug-in as the editors are specific to the Windows platform.  This allows the components to
+remain platform-neutral and usable with either <application>MSBuild</application> or
+<application>dotnet build</application>.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>BuildAssembler Syntax Generator</legacyBold> - Create a syntax generator for use
+with the <application>BuildAssembler</application>&#160;<codeInline>SyntaxComponent</codeInline> used to create
+declaration or usage syntax sections within topics.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Sandcastle Presentation Style Component</legacyBold> - Create a presentation style
+component to add a new presentation style used to format the topics.  This template provides a shell into which
+you can copy the content files from an existing presentation style or start from scratch and add all new content.</para>
+					</listItem>
+				</list>
+
+				<para>Once the project has been created, see the comments in the template source code for things to do to
+implement the given component.  Refer to the related topics in the <legacyBold>See Also</legacyBold> section
+below for more information on creating the components.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Common Traits</title>
+			<content>
+				<para>All component project templates are set up to generate .NET Standard 2.0 assemblies.  As noted
+above, this allows the components to remain platform-neutral and usable with either <application>MSBuild</application>
+or <application>dotnet build</application>.  In addition, the necessary properties are defined to automatically
+generate a NuGet package from the build output.</para>
+
+				<para>Each component project has a <localUri>.\build</localUri> folder containing a <localUri>.props</localUri>
+file that defines a single <codeInline>SHFBComponentPath</codeInline> item that equates to the path of the
+<localUri>.\tools</localUri> folder for the NuGet package.  This allows the help file builder to locate the
+component when adding it to the project via the related property page and at build time so that it can be used.</para>
+
+				<para>Additional supporting files can be added to the project such as configuration files or other
+content files.  These will be added to the package's <localUri>.\tools</localUri> folder as well.  If placed in
+subfolders within the project, the folder structure will be retained when compiled into the package.</para>
+
+				<para>The configuration UI project template is the exception to the above.  It is set to generate a
+.NET 4.7.2 assembly as it will only be used from the standalone GUI or Visual Studio on the Windows platform.  In
+addition, it does not generate a NuGet package.  Instead, you will include the assembly in your component
+package as an additional assembly.  Instructions are given in the UI project template example source code and
+the build component and plug-in project files on how to do this.  The configuration forms can be created with
+Windows Forms or XAML.  An example of each is provided in the template project as a starting point.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+			<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" />
+			<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" />
+			<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" />
+			<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

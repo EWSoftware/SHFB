@@ -2,9 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/29/2016
-// Note    : Copyright 2010-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/07/2021
+// Note    : Copyright 2010-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to interact with the Help Library Manager.
 //
@@ -41,7 +40,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         #region Private data members
         //=====================================================================
 
-        private Version viewerVersion;
+        private readonly Version viewerVersion;
+
         #endregion
 
         #region Properties
@@ -50,30 +50,29 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>
         /// This read-only property returns the path to the local store folder.
         /// </summary>
-        public string LocalStorePath { get; private set; }
+        public string LocalStorePath { get; }
 
         /// <summary>
         /// This read-only property returns the path to the MS Help Viewer installation folder
         /// </summary>
-        public string HelpViewerInstallPath { get; private set; }
+        public string HelpViewerInstallPath { get; }
 
         /// <summary>
         /// This read-only property returns the path to the Help Library Manager executable
         /// </summary>
-        public string HelpLibraryManagerPath { get; private set; }
+        public string HelpLibraryManagerPath { get; }
 
         /// <summary>
         /// This read-only property returns the path to the MS Help Viewer application
         /// </summary>
-        public string HelpViewerPath { get; private set; }
+        public string HelpViewerPath { get; }
 
         /// <summary>
         /// This read-only property is used to see if the local store has been initialized
         /// </summary>
-        public bool LocalStoreInitialized
-        {
-            get { return (!String.IsNullOrEmpty(this.LocalStorePath) && Directory.Exists(this.LocalStorePath)); }
-        }
+        public bool LocalStoreInitialized => (!String.IsNullOrEmpty(this.LocalStorePath) &&
+            Directory.Exists(this.LocalStorePath));
+
         #endregion
 
         #region Constructors
@@ -93,6 +92,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <param name="version">The help viewer version to use for all operations</param>
         public HelpLibraryManager(Version version)
         {
+            if(version == null)
+                throw new ArgumentNullException(nameof(version));
+
             string appRoot, appName, registryPath = @"SOFTWARE\Microsoft\Help\v" + version.ToString();
 
             viewerVersion = version;
@@ -137,6 +139,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// determined.</returns>
         public static string DefaultCatalogName(Version viewerVersion)
         {
+            if(viewerVersion == null)
+                throw new ArgumentNullException(nameof(viewerVersion));
+
             switch(viewerVersion.Minor)
             {
                 case 0:     // Visual Studio 2012
@@ -167,7 +172,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             XmlDocument manifest;
             Dictionary<string, int> allCatalogLocales = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             string path, productId, productVersion, productLocale;
-            int sourceFileCount, currentCount;
+            int sourceFileCount;
 
             if(String.IsNullOrEmpty(this.LocalStorePath))
                 return null;
@@ -177,11 +182,21 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             if(!Directory.Exists(path))
                 return null;
 
+            if(product == null)
+                throw new ArgumentNullException(nameof(product));
+
+            if(version == null)
+                throw new ArgumentNullException(nameof(version));
+
             // I suppose it's possible there may be more than one so we'll look at all of them
             foreach(string file in Directory.EnumerateFiles(path, "queryManifest.*.xml"))
             {
                 manifest = new XmlDocument();
-                manifest.Load(file);
+
+                using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                {
+                    manifest.Load(sr);
+                }
 
                 foreach(XmlNode node in manifest.SelectNodes("/queryManifest/catalogs/catalog"))
                 {
@@ -194,7 +209,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                         productLocale = node.Attributes["productLocale"].Value;
                         sourceFileCount = node.SelectNodes("catalogSources/catalogSource/sourceFiles/sourceFile").Count;
 
-                        if(!allCatalogLocales.TryGetValue(productLocale, out currentCount))
+                        if(!allCatalogLocales.TryGetValue(productLocale, out int currentCount))
                             currentCount = 0;
 
                         allCatalogLocales[productLocale] = currentCount + sourceFileCount;
@@ -214,8 +229,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             // isn't en-US.  Failing that, just return the first one.
             var matches = allCatalogLocales.Where(c => c.Value == maxSourceFileCount).ToList();
 
-            if(matches.Count > 1 && matches.Any(c => !c.Key.Equals("en-US")))
-                return matches.First(c => !c.Key.Equals("en-US")).Key;
+            if(matches.Count > 1 && matches.Any(c => !c.Key.Equals("en-US", StringComparison.OrdinalIgnoreCase)))
+                return matches.First(c => !c.Key.Equals("en-US", StringComparison.OrdinalIgnoreCase)).Key;
 
             return matches.First().Key;
         }
@@ -230,7 +245,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             XmlDocument manifest;
             Dictionary<string, int> allCatalogLocales = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             string path, bookLocale;
-            int bookCount, currentCount;
+            int bookCount;
 
             if(String.IsNullOrEmpty(this.LocalStorePath))
                 return null;
@@ -244,14 +259,18 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             foreach(string file in Directory.EnumerateFiles(path, "installedBooks.*.xml"))
             {
                 manifest = new XmlDocument();
-                manifest.Load(file);
+
+                using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                {
+                    manifest.Load(sr);
+                }
 
                 foreach(XmlNode node in manifest.SelectNodes("/installed-books/locale-membership/locale"))
                 {
                     bookLocale = node.Attributes["name"].Value;
                     bookCount = node.SelectNodes("book-list/book").Count;
 
-                    if(!allCatalogLocales.TryGetValue(bookLocale, out currentCount))
+                    if(!allCatalogLocales.TryGetValue(bookLocale, out int currentCount))
                         currentCount = 0;
 
                     allCatalogLocales[bookLocale] = currentCount + bookCount;
@@ -270,8 +289,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             // isn't en-US.  Failing that, just return the first one.
             var matches = allCatalogLocales.Where(c => c.Value == maxSourceFileCount).ToList();
 
-            if(matches.Count > 1 && matches.Any(c => !c.Key.Equals("en-US")))
-                return matches.First(c => !c.Key.Equals("en-US")).Key;
+            if(matches.Count > 1 && matches.Any(c => !c.Key.Equals("en-US", StringComparison.OrdinalIgnoreCase)))
+                return matches.First(c => !c.Key.Equals("en-US", StringComparison.OrdinalIgnoreCase)).Key;
 
             return matches.First().Key;
         }
@@ -303,7 +322,11 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                   "queryManifest.*.xml"))
                 {
                     manifest = new XmlDocument();
-                    manifest.Load(file);
+
+                    using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                    {
+                        manifest.Load(sr);
+                    }
 
                     if(manifest.SelectNodes("/queryManifest/catalogs/catalog/catalogSources//catalogSource/sourceFiles/" +
                       "sourceFile/contentFiles/contentFile[@fileName='" + filename + "']").Count != 0)
@@ -317,7 +340,11 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                   SearchOption.AllDirectories))
                 {
                     manifest = new XmlDocument();
-                    manifest.Load(file);
+
+                    using(var sr = XmlReader.Create(file, new XmlReaderSettings()))
+                    {
+                        manifest.Load(sr);
+                    }
 
                     foreach(XmlNode r in manifest.SelectNodes("/installed-books/locale-membership/locale" +
                       "/book-membership/book/package/@ref"))

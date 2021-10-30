@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2015
-// Note    : Copyright 2006-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2006-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the namespace summary item information
 //
@@ -163,7 +162,7 @@ namespace SandcastleBuilder.Utils
             if(item == null)
             {
                 item = new NamespaceSummaryItem(name, isGroup, isDocumented, summary);
-                base.Add(item);
+                this.Add(item);
             }
 
             return item;
@@ -183,7 +182,7 @@ namespace SandcastleBuilder.Utils
 
             if(item != null)
                 throw new ArgumentException("The given namespace exists in the collection and cannot be a " +
-                    "temporary item", "name");
+                    "temporary item", nameof(name));
 
             item = new NamespaceSummaryItem(name, isGroup, !String.IsNullOrEmpty(name), String.Empty);
 

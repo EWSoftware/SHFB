@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ManualVisibilityApiFilterPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/25/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/17/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that can be used to manually apply the visibility settings and API filter from
 // the project to the reflection data file.
@@ -27,9 +26,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using System.Xml;
-using System.Xml.XPath;
+using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -48,12 +46,12 @@ namespace SandcastleBuilder.PlugIns
     /// settings and API filter automatically to the file that it produces.</note></remarks>
     [HelpFileBuilderPlugInExport("Manual Visibility/API Filter", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This plug-in can be used to manually apply the " +
-      "visibility settings and API filter from the project to the reflection data file if MRefBuilder is not " +
-      "used.\r\n\r\nNOTE:  This is only necessary if the Generate Reflection Information build step is " +
-      "suppressed or replaced by some other means as in the AjaxDoc Builder plug-in for example.  In such cases, " +
-      "the visibility settings and API filter are not applied unless this plug-in is used.  If the reflection " +
-      "information file is produced by MRefBuilder.exe, there is no need to use this plug-in as it will apply " +
-      "the visibility settings and API filter automatically to the file that it produces.")]
+        "visibility settings and API filter from the project to the reflection data file if MRefBuilder is not " +
+        "used.\r\n\r\nNOTE:  This is only necessary if the Generate Reflection Information build step is " +
+        "suppressed or replaced by some other means as in the AjaxDoc Builder plug-in for example.  In such cases, " +
+        "the visibility settings and API filter are not applied unless this plug-in is used.  If the reflection " +
+        "information file is produced by MRefBuilder.exe, there is no need to use this plug-in as it will apply " +
+        "the visibility settings and API filter automatically to the file that it produces.")]
     public sealed class ManualVisibilityApiFilterPlugIn : IPlugIn
     {
         #region Private data members
@@ -67,7 +65,7 @@ namespace SandcastleBuilder.PlugIns
         // settings.
         private HashSet<string> excludedMembers;
 
-        private static Regex reExcludeElementEntry = new Regex(
+        private static readonly Regex reExcludeElementEntry = new Regex(
             "<element api=\"([^\n\"]+?)\">.*?</element>|<element api=\"([^\n\"]+?)\" />", RegexOptions.Singleline);
 
         private MatchEvaluator excludeElementEval;
@@ -89,7 +87,7 @@ namespace SandcastleBuilder.PlugIns
                     executionPoints = new List<ExecutionPoint>
                     {
                         // This one has a lower priority as it may need to remove things added by other plug-ins
-                        new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.Before, 100),
+                        new ExecutionPoint(BuildStep.ApplyDocumentModel, ExecutionBehaviors.Before, 100),
                     };
 
                 return executionPoints;
@@ -97,27 +95,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            MessageBox.Show("This plug-in has no configurable settings", "Manual Visibility/API Filter Plug-In",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
             builder = buildProcess;
 

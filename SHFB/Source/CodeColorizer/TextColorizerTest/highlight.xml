@@ -1310,7 +1310,7 @@
 				</context>
 			</contexts>
 		</language>
-		<!-- XML -->
+		<!-- XML - Catch-all for any XML type -->
 		<language id="xml" tabSize="2" name="XML">
 			<contexts default="value">
 				<!-- Value context -->
@@ -1379,8 +1379,66 @@
 				</context>
 			</contexts>
 		</language>
-		<!-- XAML -->
+		<!-- XAML - Extensible Application Markup Language (WPF and things like it) -->
 		<language id="xaml" tabSize="2" name="XAML">
+			<contexts default="value">
+				<!-- Value context -->
+				<context id="value" attribute="xml-value">
+					<!-- Comment -->
+					<regexp id="rx-xml-comment" attribute="xml-comment" context="value" expression="&lt;!--(.|\n)*?--&gt;" />
+					<!-- cdata -->
+					<regexp id="rx-hidden" attribute="hidden" context="cdata" expression="&lt;!\[CDATA\[" />
+					<!-- A doctype of some sort-->
+					<regexp id="rx-doctype" attribute="xml-bracket" context="doctype" expression="&lt;!" />
+					<!-- closing element -->
+					<regexp id="rx-close-elem" attribute="xml-bracket" context="closing-element" expression="&lt;/" />
+					<!-- opening element -->
+					<regexp id="rx-open-elem" attribute="xml-bracket" context="opening-element" expression="&lt;\?{0,1}" />
+					<!-- Leftover end bracket from doctype -->
+					<regexp id="rx-end-bracket" attribute="xml-bracket" context="value" expression="&gt;" />
+				</context>
+				<!-- cdata tag -->
+				<context id="cdata" attribute="xml-cdata">
+					<regexp id="rx-hidden" attribute="hidden" context="value" expression="\]\]&gt;" />
+				</context>
+				<!-- A doctype of some sort -->
+				<context id="doctype" attribute="xml-code">
+					<regexp id="rx-doc-bracket" attribute="xml-bracket" context="value" expression="&gt;" />
+					<!-- Comment -->
+					<regexp id="rx-doc-comment" attribute="xml-comment" context="doctype" expression="&lt;!--(.|\n)*?--&gt;" />
+					<!-- A quoted string or attribute name -->
+					<regexp id="rx-doc-quote" attribute="xml-attribute-value" context="doctype" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;|\b(\w|-|\.)+\b)" />
+					<!-- A doctype of some sort-->
+					<regexp id="rx-doc-nested" attribute="xml-bracket" context="doctype" expression="&lt;!" />
+				</context>
+				<!-- opening element context -->
+				<context id="opening-element" attribute="xml-code">
+					<!-- find tag... -->
+					<regexp id="rx-attr" attribute="xml-tag" context="element-attributes" expression="\b((\w|-|\.)+\:){0,1}(\w|-|\.)+\b" />
+				</context>
+				<!-- closing element -->
+				<context id="closing-element" attribute="xml-code">
+					<regexp id="rx-closing-elem" attribute="xml-tag" context="closing-element" expression="\b((\w|-|\.)+\:){0,1}(\w|-|\.)+\b" />
+					<regexp id="rx-value" attribute="xml-bracket" context="value" expression="(\?|/){0,1}&gt;" />
+				</context>
+				<!-- attributes group -->
+				<context id="element-attributes" attribute="xml-code">
+					<!-- find end of element -->
+					<regexp id="rx-value" attribute="xml-bracket" context="value" expression="(\?|/){0,1}&gt;" />
+					<!-- find attributes... -->
+					<regexp id="rx-attr-name" attribute="xml-attribute-name" context="attribute-name" expression="\b((\w|-|\.)+\:){0,1}(\w|-|\.)+\b" />
+				</context>
+				<!-- attribute name -->
+				<context id="attribute-name" attribute="hidden">
+					<regexp id="rx-elem-attrs" attribute="xml-attribute-value" context="element-attributes" expression="(&quot;(.|[\r\n])*?&quot;|&apos;(.|[\r\n])*?&apos;|\b(\w|-|\.)+\b)" />
+					<!-- This must come last as equals can appear in quoted strings -->
+					<regexp id="rx-elem-equal" attribute="xml-attribute-equal" context="attribute-name" expression="=" />
+				</context>
+			</contexts>
+		</language>
+		<!-- AXML - Android Extensible Markup Language.  Like XAML but Android-specific and different enough it gets
+				 its own set of rules to allow for a different code block title. -->
+		<language id="axml" tabSize="2" name="AXML">
 			<contexts default="value">
 				<!-- Value context -->
 				<context id="value" attribute="xml-value">

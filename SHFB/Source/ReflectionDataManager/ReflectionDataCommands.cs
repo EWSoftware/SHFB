@@ -2,9 +2,8 @@
 // System  : Sandcastle Reflection Data Manager
 // File    : ReflectionDataCommands.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/29/2015
-// Note    : Copyright 2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/10/2021
+// Note    : Copyright 2015-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the reflection data manager's routed UI commands
 //

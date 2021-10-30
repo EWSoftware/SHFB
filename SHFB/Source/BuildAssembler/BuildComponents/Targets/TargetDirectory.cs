@@ -1,14 +1,14 @@
 //===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : TargetDirectory.cs
-// Note    : Copyright 2010-2012 Microsoft Corporation
+// Note    : Copyright 2010-2021 Microsoft Corporation
 //
 // This file contains the TargetDirectory class used to represent a targets directory along with all the
 // associated expressions used to find target metadata files in it, and extract URLs and link text from those
 // files using the ResolveConceptualLinksComponent.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
@@ -18,11 +18,10 @@
 
 using System;
 using System.IO;
+using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.BuildComponent;
-
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents a targets directory along with all the associated expressions used to find target
@@ -35,9 +34,10 @@ namespace Microsoft.Ddue.Tools.Targets
         //=====================================================================
 
         // EFW - Got rid of fileExpression as it wasn't used
-        private XPathExpression textExpression, urlExpression, linkTextExpression;
-        private ConceptualLinkType linkType;
-        private string directory;
+        private readonly XPathExpression textExpression, urlExpression, linkTextExpression;
+        private readonly ConceptualLinkType linkType;
+        private readonly string directory;
+
         #endregion
 
         // EFW - Removed unused properties
@@ -55,26 +55,14 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="typeOfLink">The link type</param>
         /// <exception cref="ArgumentNullException">This is thrown if the directory, URL expression, or either
         /// text expression is null.</exception>
-        public TargetDirectory(string targetDir, XPathExpression urlExp,
-          XPathExpression textExp, XPathExpression linkTextExp, ConceptualLinkType typeOfLink)
+        public TargetDirectory(string targetDir, XPathExpression urlExp, XPathExpression textExp,
+          XPathExpression linkTextExp, ConceptualLinkType typeOfLink)
         {
-            if(targetDir == null)
-                throw new ArgumentNullException("targetDir");
-
-            if(urlExp == null)
-                throw new ArgumentNullException("urlExp");
-
-            if(textExp == null)
-                throw new ArgumentNullException("textExp");
-
             // EFW - Added support for alternate link text expression
-            if(linkTextExp == null)
-                throw new ArgumentNullException("linkTextExp");
-
-            directory = targetDir;
-            urlExpression = urlExp;
-            textExpression = textExp;
-            linkTextExpression = linkTextExp;
+            directory = targetDir ?? throw new ArgumentNullException(nameof(targetDir));
+            urlExpression = urlExp ?? throw new ArgumentNullException(nameof(urlExp));
+            textExpression = textExp ?? throw new ArgumentNullException(nameof(textExp));
+            linkTextExpression = linkTextExp ?? throw new ArgumentNullException(nameof(linkTextExp));
             linkType = typeOfLink;
         }
         #endregion
@@ -98,17 +86,20 @@ namespace Microsoft.Ddue.Tools.Targets
             if(!File.Exists(path))
                 return null;
 
-            XPathDocument document = new XPathDocument(path);
-            XPathNavigator navigator = document.CreateNavigator();
-            string url = navigator.Evaluate(urlExpression).ToString(),
-                   text = navigator.Evaluate(textExpression).ToString(),
-                   linkText = navigator.Evaluate(linkTextExpression).ToString();
+            using(var reader = XmlReader.Create(path, new XmlReaderSettings { CloseInput = true }))
+            {
+                XPathDocument document = new XPathDocument(reader);
+                XPathNavigator navigator = document.CreateNavigator();
+                string url = navigator.Evaluate(urlExpression).ToString(),
+                       text = navigator.Evaluate(textExpression).ToString(),
+                       linkText = navigator.Evaluate(linkTextExpression).ToString();
 
-            // EFW - Use the alternate link text if specified
-            if(!String.IsNullOrEmpty(linkText))
-                text = linkText;
+                // EFW - Use the alternate link text if specified
+                if(!String.IsNullOrEmpty(linkText))
+                    text = linkText;
 
-            return new TargetInfo(url, text, linkType);
+                return new TargetInfo(url, text, linkType);
+            }
         }
         #endregion
     }

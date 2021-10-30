@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/17/2019
-// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a conceptual content topic file.
 //
@@ -25,7 +24,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using System.Xml.XPath;
 
 using Sandcastle.Core;
 
@@ -144,10 +142,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// true, the file is reparsed to refresh the information.</param>
         public void ParseContent(bool reparse)
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            XmlReader xr = null;
-            string attrValue;
-
             if(!reparse && contentParsed)
                 return;
 
@@ -164,68 +158,77 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             try
             {
-                settings.CloseInput = true;
-                settings.IgnoreComments = true;
-                settings.IgnoreProcessingInstructions = true;
-                settings.IgnoreWhitespace = true;
+                var settings = new XmlReaderSettings
+                {
+                    CloseInput = true,
+                    IgnoreComments = true,
+                    IgnoreProcessingInstructions = true,
+                    IgnoreWhitespace = true
+                };
 
-                xr = XmlReader.Create(contentFile.FullPath, settings);
-                xr.MoveToContent();
+                using(var xr = XmlReader.Create(contentFile.FullPath, settings))
+                {
+                    xr.MoveToContent();
 
-                while(!xr.EOF)
-                    if(xr.NodeType != XmlNodeType.Element)
-                        xr.Read();
-                    else
-                        switch(xr.Name)
+                    while(!xr.EOF)
+                    {
+                        if(xr.NodeType != XmlNodeType.Element)
+                            xr.Read();
+                        else
                         {
-                            case "topic":
-                                // If a <topic> element is found, parse the ID
-                                // and revision number from it.
-                                attrValue = xr.GetAttribute("id");
+                            switch(xr.Name)
+                            {
+                                case "topic":
+                                    // If a <topic> element is found, parse the ID
+                                    // and revision number from it.
+                                    string attrValue = xr.GetAttribute("id");
 
-                                // The ID is required
-                                if(attrValue != null && attrValue.Trim().Length != 0)
-                                    id = attrValue;
-                                else
-                                    throw new XmlException("<topic> element " +
-                                        "is missing the 'id' attribute");
+                                    // The ID is required
+                                    if(attrValue != null && attrValue.Trim().Length != 0)
+                                        id = attrValue;
+                                    else
+                                        throw new XmlException("<topic> element " +
+                                            "is missing the 'id' attribute");
 
-                                // This is optional
-                                attrValue = xr.GetAttribute("revisionNumber");
+                                    // This is optional
+                                    attrValue = xr.GetAttribute("revisionNumber");
 
-                                if(attrValue != null && Int32.TryParse(attrValue, out int rev))
-                                    revision = rev;
+                                    if(attrValue != null && Int32.TryParse(attrValue, out int rev))
+                                        revision = rev;
 
-                                xr.Read();
-                                break;
+                                    xr.Read();
+                                    break;
 
-                            case "developerConceptualDocument":
-                            case "developerErrorMessageDocument":
-                            case "developerGlossaryDocument":
-                            case "developerHowToDocument":
-                            case "developerOrientationDocument":
-                            case "codeEntityDocument":
-                            case "developerReferenceWithSyntaxDocument":
-                            case "developerReferenceWithoutSyntaxDocument":
-                            case "developerSampleDocument":
-                            case "developerSDKTechnologyOverviewArchitectureDocument":
-                            case "developerSDKTechnologyOverviewCodeDirectoryDocument":
-                            case "developerSDKTechnologyOverviewOrientationDocument":
-                            case "developerSDKTechnologyOverviewScenariosDocument":
-                            case "developerSDKTechnologyOverviewTechnologySummaryDocument":
-                            case "developerTroubleshootingDocument":
-                            case "developerUIReferenceDocument":
-                            case "developerWalkthroughDocument":
-                            case "developerWhitePaperDocument":
-                            case "developerXmlReference":
-                                docType = (DocumentType)Enum.Parse(typeof(DocumentType), xr.Name, true);
-                                xr.Read();
-                                break;
+                                case "developerConceptualDocument":
+                                case "developerErrorMessageDocument":
+                                case "developerGlossaryDocument":
+                                case "developerHowToDocument":
+                                case "developerOrientationDocument":
+                                case "codeEntityDocument":
+                                case "developerReferenceWithSyntaxDocument":
+                                case "developerReferenceWithoutSyntaxDocument":
+                                case "developerSampleDocument":
+                                case "developerSDKTechnologyOverviewArchitectureDocument":
+                                case "developerSDKTechnologyOverviewCodeDirectoryDocument":
+                                case "developerSDKTechnologyOverviewOrientationDocument":
+                                case "developerSDKTechnologyOverviewScenariosDocument":
+                                case "developerSDKTechnologyOverviewTechnologySummaryDocument":
+                                case "developerTroubleshootingDocument":
+                                case "developerUIReferenceDocument":
+                                case "developerWalkthroughDocument":
+                                case "developerWhitePaperDocument":
+                                case "developerXmlReference":
+                                    docType = (DocumentType)Enum.Parse(typeof(DocumentType), xr.Name, true);
+                                    xr.Read();
+                                    break;
 
-                            default:    // Ignore it
-                                xr.Skip();
-                                break;
+                                default:    // Ignore it
+                                    xr.Skip();
+                                    break;
+                            }
                         }
+                    }
+                }
             }
             catch(Exception ex)
             {
@@ -234,9 +237,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             }
             finally
             {
-                if(xr != null)
-                    xr.Close();
-
                 contentParsed = true;
             }
         }

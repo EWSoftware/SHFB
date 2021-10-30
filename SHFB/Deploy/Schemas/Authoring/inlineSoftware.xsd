@@ -279,7 +279,7 @@
 	<element name="system" type="maml:textType">
 		<annotation>
 			<documentation>
-				The system element describes any system commands (eg: command line switches, commands)
+				The system element describes any system commands (e.g.: command line switches, commands)
 			</documentation>
 			<appinfo>
 				<doc:localizable>false</doc:localizable>

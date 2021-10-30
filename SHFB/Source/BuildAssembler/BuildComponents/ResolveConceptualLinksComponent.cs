@@ -30,12 +30,12 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.Targets;
+using Sandcastle.Tools.BuildComponents.Targets;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This is a modified version of the original <c>ResolveConceptualLinksComponent</c> that is used to resolve
@@ -59,7 +59,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
     /// On links without inner text, if the companion file contains a <c>linkText</c> element, that text will be
     /// used.  If not, the title is used.
     ///
-    /// <code lang="xml" title="Example Links">
+    /// <code language="xml" title="Example Links">
     /// <![CDATA[<!-- Link with inner text -->
     /// <link xlink:href="3ab3113f-984b-19ac-7812-990192aca5b0">Click Here</link>
     /// <!-- Link with anchor reference -->
@@ -68,7 +68,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
     /// <link xlink:href="3ab3113f-984b-19ac-7812-990192aca5b1#PropA">PropertyA</link>]]>
     /// </code>
     /// 
-    /// <code lang="xml" title="Example configuration">
+    /// <code language="xml" title="Example configuration">
     /// &lt;!-- Resolve conceptual links --&gt;
     /// &lt;component id="Resolve Conceptual Links Component">
     ///     &lt;showBrokenLinkText value="true" /&gt;
@@ -103,7 +103,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         private TargetDirectoryCollection targetDirectories;
         private bool showBrokenLinkText;
 
-        private static XPathExpression conceptualLinks = XPathExpression.Compile("//conceptualLink");
+        private static readonly XPathExpression conceptualLinks = XPathExpression.Compile("//conceptualLink");
 
         private const int CacheSize = 1000;
 
@@ -127,9 +127,11 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             TargetDirectory targetDirectory;
             XPathExpression urlExp, textExp, linkTextExp;
-            ConceptualLinkType linkType = ConceptualLinkType.None;
             string attribute, basePath;
 
             targetDirectories = new TargetDirectoryCollection();
@@ -184,7 +186,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
                     this.WriteMessage(MessageLevel.Error, "Every targets element must have a type attribute " +
                         "that specifies what kind of link to create to targets found in that directory.");
 
-                if(!Enum.TryParse<ConceptualLinkType>(attribute, true, out linkType))
+                if(!Enum.TryParse<ConceptualLinkType>(attribute, true, out ConceptualLinkType linkType))
                     this.WriteMessage(MessageLevel.Error, "'{0}' is not a valid link type.", attribute);
 
                 targetDirectory = new TargetDirectory(basePath, urlExp, textExp, linkTextExp, linkType);
@@ -201,6 +203,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <param name="key">The key (member name) of the item being documented.</param>
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             ConceptualLinkInfo info;
             TargetInfo targetInfo;
             ConceptualLinkType linkType;
@@ -318,9 +323,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <returns>The target info object if found or null if not found</returns>
         private TargetInfo GetTargetInfoFromCache(string target)
         {
-            TargetInfo targetInfo;
-
-            if(!cache.TryGetValue(target, out targetInfo))
+            if(!cache.TryGetValue(target, out TargetInfo targetInfo))
             {
                 targetInfo = targetDirectories[target];
 

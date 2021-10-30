@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2019
-// Note    : Copyright 2008-2019, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/14/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in that is used to add assembly binding redirection support to the MRefBuilder
 // configuration file.
@@ -27,9 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.XPath;
+using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -41,11 +38,11 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to add assembly binding redirection support to the MRefBuilder configuration
     /// file.
     /// </summary>
-    [HelpFileBuilderPlugInExport("Assembly Binding Redirection", IsConfigurable = true, RunsInPartialBuild = true,
+    [HelpFileBuilderPlugInExport("Assembly Binding Redirection", RunsInPartialBuild = true,
       Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to add assembly binding redirection support to the MRefBuilder " +
         "configuration file.")]
-    public sealed class BindingRedirectResolverPlugIn : SandcastleBuilder.Utils.BuildComponent.IPlugIn
+    public sealed class BindingRedirectResolverPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
@@ -54,8 +51,9 @@ namespace SandcastleBuilder.PlugIns
         private BuildProcess builder;
 
         private bool useGac;
-        private BindingRedirectSettingsCollection redirects;
+        private List<BindingRedirectSettings> redirects;
         private List<string> ignoreIfUnresolved;
+
         #endregion
 
         #region IPlugIn implementation
@@ -80,37 +78,19 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(BindingRedirectResolverConfigDlg dlg = new BindingRedirectResolverConfigDlg(project,
-              currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
-            XPathNavigator root;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
+            builder = buildProcess ?? throw new ArgumentNullException(nameof(buildProcess));
+
+            redirects = new List<BindingRedirectSettings>();
             ignoreIfUnresolved = new List<string>();
-
-            builder = buildProcess;
 
             var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
                 typeof(HelpFileBuilderPlugInExportAttribute), false).First();
@@ -118,29 +98,24 @@ namespace SandcastleBuilder.PlugIns
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             // Transform the configuration elements to handle substitution tags
-            string config = buildProcess.SubstitutionTags.TransformText(
-                configuration.SelectSingleNode("configuration").OuterXml);
+            string config = buildProcess.SubstitutionTags.TransformText(configuration.ToString());
 
-            XmlDocument doc = new XmlDocument();
+            var settings = XElement.Parse(config);
 
-            doc.LoadXml(config);
-            root = doc.CreateNavigator().SelectSingleNode("configuration");
-            
-            if(root.IsEmptyElement)
+            if(settings.IsEmpty)
+            {
                 throw new BuilderException("ABR0001", "The Assembly Binding Redirection Resolver plug-in " +
                     "has not been configured yet");
+            }
 
             // Load the configuration
-            string value = root.GetAttribute("useGAC", String.Empty);
+            useGac = (bool)settings.Attribute("useGAC");
 
-            if(!Boolean.TryParse(value, out useGac))
-                useGac = false;
+            foreach(var r in settings.Element("assemblyBinding").Descendants("dependentAssembly"))
+                redirects.Add(BindingRedirectSettings.FromXml(builder.CurrentProject, r));
 
-            redirects = new BindingRedirectSettingsCollection();
-            redirects.FromXml(builder.CurrentProject, root);
-
-            foreach(XPathNavigator nav in root.Select("ignoreIfUnresolved/assemblyIdentity/@name"))
-                ignoreIfUnresolved.Add(nav.Value);
+            foreach(var i in settings.Element("ignoreIfUnresolved").Descendants("assemblyIdentity"))
+                ignoreIfUnresolved.Add(i.Attribute("name").Value);
         }
 
         /// <summary>
@@ -149,10 +124,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(ExecutionContext context)
         {
-            XmlDocument config = new XmlDocument();
-            XmlAttribute attr;
-            XmlNode resolver, ddue, ignoreNode, assemblyNode;
-            string configFile = builder.WorkingFolder + "MRefBuilder.config";
+            string configFile = Path.Combine(builder.WorkingFolder, "MRefBuilder.config");
 
             // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
             // has bypassed it so only issue a warning.
@@ -163,71 +135,57 @@ namespace SandcastleBuilder.PlugIns
                 return;
             }
 
-            config.Load(configFile);
-            resolver = config.SelectSingleNode("configuration/dduetools/resolver");
+            var config = XDocument.Load(configFile);
+            var ddueTools = config.Root.Element("dduetools");
+    
+            if(ddueTools == null)
+            {
+                throw new BuilderException("ABR0002", "Unable to locate configuration/dduetools element in " +
+                    "MRefBuilder.config");
+            }
+
+            var resolver = ddueTools.Element("resolver");
 
             if(resolver == null)
             {
-                ddue = config.SelectSingleNode("configuration/dduetools");
-
-                if(ddue == null)
-                    throw new BuilderException("ABR0002", "Unable to locate configuration/dduetools or its " +
-                        "child resolver element in MRefBuilder.config");
-
                 builder.ReportProgress("Default resolver element not found, adding new element");
-                resolver = config.CreateNode(XmlNodeType.Element, "resolver", null);
-                ddue.AppendChild(resolver);
-
-                attr = config.CreateAttribute("type");
-                attr.Value = "Microsoft.Ddue.Tools.Reflection.AssemblyResolver";
-                resolver.Attributes.Append(attr);
-
-                attr = config.CreateAttribute("assembly");
-                attr.Value = builder.SubstitutionTags.TransformText(@"{@SHFBFolder}MRefBuilder.exe");
-                resolver.Attributes.Append(attr);
-
-                attr = config.CreateAttribute("use-gac");
-                attr.Value = "false";
-                resolver.Attributes.Append(attr);
+                resolver = new XElement("resolver",
+                    new XAttribute("type", "Sandcastle.Tools.Reflection.AssemblyResolver"),
+                    new XAttribute("use-gac", "false"));
             }
 
             // Allow turning GAC resolution on
-            resolver.Attributes["use-gac"].Value = useGac.ToString().ToLowerInvariant();
+            resolver.Attribute("use-gac").Value = useGac.ToString().ToLowerInvariant();
 
             if(redirects.Count != 0)
             {
                 builder.ReportProgress("Adding binding redirections to assembly resolver configuration:");
 
-                foreach(BindingRedirectSettings brs in redirects)
-                    builder.ReportProgress("    {0}", brs);
-
-                redirects.ToXml(config, resolver, false);
+                foreach(var brs in redirects)
+                {
+                    builder.ReportProgress("    {0}", brs.BindingRedirectDescription);
+                    resolver.Add(brs.ToXml(false));
+                }
             }
 
             if(ignoreIfUnresolved.Count != 0)
             {
                 builder.ReportProgress("Adding ignored assembly names to assembly resolver configuration:");
 
-                ignoreNode = resolver.SelectSingleNode("ignoreIfUnresolved");
+                var ignoreNode = resolver.Element("ignoreIfUnresolved");
 
                 if(ignoreNode == null)
                 {
-                    ignoreNode = config.CreateNode(XmlNodeType.Element, "ignoreIfUnresolved", null);
-                    resolver.AppendChild(ignoreNode);
+                    ignoreNode = new XElement("ignoreIfUnresolved");
+                    resolver.Add(ignoreNode);
                 }
                 else
                     ignoreNode.RemoveAll();
 
                 foreach(string ignoreName in ignoreIfUnresolved)
                 {
-                    assemblyNode = config.CreateNode(XmlNodeType.Element, "assemblyIdentity", null);
-                    ignoreNode.AppendChild(assemblyNode);
-
-                    attr = config.CreateAttribute("name");
-                    attr.Value = ignoreName;
-                    assemblyNode.Attributes.Append(attr);
-
                     builder.ReportProgress("    {0}", ignoreName);
+                    ignoreNode.Add(new XElement("assemblyIdentity", new XAttribute("name", ignoreName)));
                 }
             }
 

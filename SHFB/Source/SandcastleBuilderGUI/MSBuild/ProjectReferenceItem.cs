@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/20/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a project reference item that can be used by MRefBuilder to locate
 // assembly dependencies for the assemblies being documented.
@@ -29,8 +28,9 @@ using System.IO;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Platform.Windows.Design;
+
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.MSBuild;
 
 namespace SandcastleBuilder.Gui.MSBuild
@@ -45,6 +45,7 @@ namespace SandcastleBuilder.Gui.MSBuild
         //=====================================================================
 
         private FilePath projectPath;
+
         #endregion
 
         #region Properties
@@ -60,12 +61,12 @@ namespace SandcastleBuilder.Gui.MSBuild
             "All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath ProjectPath
         {
-            get { return projectPath; }
+            get => projectPath;
             set
             {
                 if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
                     throw new ArgumentException("A project path must be specified and cannot contain wildcards " +
-                        "(* or ?)", "value");
+                        "(* or ?)", nameof(value));
 
                 // Do this first in case the project isn't editable
                 this.Include = value.PersistablePath;
@@ -82,41 +83,26 @@ namespace SandcastleBuilder.Gui.MSBuild
         [Browsable(false)]
         public override FilePath HintPath
         {
-            get { return base.HintPath; }
+            get => base.HintPath;
             set { }
         }
 
         /// <summary>
         /// This is overridden to return the project name rather than the file path
         /// </summary>
-        public override string Reference
-        {
-            get { return this.Name; }
-        }
+        public override string Reference => this.Name;
 
         /// <summary>
         /// This is used to get the project reference's GUID
         /// </summary>
         [Category("Metadata"), Description("The project reference's GUID")]
-        public string ProjectGuid
-        {
-            get
-            {
-                return this.GetMetadata(BuildItemMetadata.ProjectGuid);
-            }
-        }
+        public string ProjectGuid => this.GetMetadata(BuildItemMetadata.ProjectGuid);
 
         /// <summary>
         /// This is used to get the project name
         /// </summary>
         [Category("Metadata"), Description("The project name")]
-        public string Name
-        {
-            get
-            {
-                return this.GetMetadata(BuildItemMetadata.Name);
-            }
-        }
+        public string Name => this.GetMetadata(BuildItemMetadata.Name);
 
         /// <summary>
         /// This is used to get or set whether or not to use the project as a reference or just for MSBuild
@@ -128,18 +114,13 @@ namespace SandcastleBuilder.Gui.MSBuild
         {
             get
             {
-                bool value;
-
                 // If not present or valid, default to true
-                if(!Boolean.TryParse(this.GetMetadata(BuildItemMetadata.ReferenceOutputAssembly), out value))
+                if(!Boolean.TryParse(this.GetMetadata(BuildItemMetadata.ReferenceOutputAssembly), out bool value))
                     value = true;
 
                 return value;
             }
-            set
-            {
-                this.SetMetadata(BuildItemMetadata.ReferenceOutputAssembly, value.ToString().ToLowerInvariant());
-            }
+            set => this.SetMetadata(BuildItemMetadata.ReferenceOutputAssembly, value.ToString().ToLowerInvariant());
         }
         #endregion
 
@@ -156,7 +137,7 @@ namespace SandcastleBuilder.Gui.MSBuild
         {
             this.Include = projectPath.PersistablePath;
             this.GetProjectMetadata(true);
-            this.OnPropertyChanged("ProjectPath");
+            this.OnPropertyChanged(nameof(ProjectPath));
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// Logic for constructing references from code entity reference strings.  Anything that depends on the
@@ -33,7 +33,7 @@ namespace Microsoft.Ddue.Tools.Targets
             if(String.IsNullOrEmpty(api))
                 throw new ArgumentException("api cannot be null or empty");
 
-            Reference reference = null;
+            Reference reference;
 
             char start = api[0];
 
@@ -45,7 +45,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 else
                     reference = CreateMemberReference(api);
 
-            return (reference ?? new InvalidReference(api));
+            return reference ?? new InvalidReference(api);
         }
 
         /// <summary>
@@ -68,6 +68,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>The type reference</returns>
         public static TypeReference CreateTypeReference(string api)
         {
+            if(api == null)
+                throw new ArgumentNullException(nameof(api));
+
             if(ValidSimpleType.IsMatch(api))
             {
                 // This is a reference to a "normal" simple type
@@ -181,6 +184,9 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <returns>The member reference</returns>
         public static MemberReference CreateMemberReference(string api)
         {
+            if(api == null)
+                throw new ArgumentNullException(nameof(api));
+
             if(ValidSimpleMember.IsMatch(api))
             {
                 // This is just a normal member of a simple type
@@ -276,21 +282,16 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
 
             // If it is a type context, set it to be the type context
-            SimpleTypeReference typeContext = context as SimpleTypeReference;
-
-            if(typeContext != null)
+            if(context is SimpleTypeReference typeContext)
             {
                 genericTypeContext = typeContext;
                 return;
             }
 
             // If it is a member context, set it to be the member context and use it to obtain a type context, too
-            SimpleMemberReference memberContext = context as SimpleMemberReference;
-
-            if(memberContext != null)
+            if(context is SimpleMemberReference memberContext)
             {
-                string typeId, memberName, arguments;
-                DecomposeMemberIdentifier(memberContext.Id, out typeId, out memberName, out arguments);
+                DecomposeMemberIdentifier(memberContext.Id, out string typeId, out _, out _);
                 genericTypeContext = CreateSimpleTypeReference(typeId);
                 return;
             }
@@ -299,13 +300,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the generic context
         /// </summary>
-        public static SimpleTypeReference GenericContext
-        {
-            get
-            {
-                return (genericTypeContext);
-            }
-        }
+        public static SimpleTypeReference GenericContext => genericTypeContext;
 
         // Code entity reference validation logic
 
@@ -404,17 +399,17 @@ namespace Microsoft.Ddue.Tools.Targets
                 specializedOverloadPattern));
         }
 
-        private static Regex ValidNamespace;
+        private static readonly Regex ValidNamespace;
 
-        private static Regex ValidSimpleType;
+        private static readonly Regex ValidSimpleType;
 
-        private static Regex ValidDecoratedType;
+        private static readonly Regex ValidDecoratedType;
 
-        private static Regex ValidSpecializedType;
+        private static readonly Regex ValidSpecializedType;
 
-        private static Regex ValidSimpleMember;
+        private static readonly Regex ValidSimpleMember;
 
-        private static Regex ValidSpecializedMember;
+        private static readonly Regex ValidSpecializedMember;
 
         // Code entity reference string manipulation utilities
 
@@ -491,10 +486,10 @@ namespace Microsoft.Ddue.Tools.Targets
         private static int FindMatchingEndBracket(string text, int position)
         {
             if(text == null)
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
 
             if(position < 0 || position >= text.Length)
-                throw new ArgumentOutOfRangeException("position", String.Format(CultureInfo.InvariantCulture,
+                throw new ArgumentOutOfRangeException(nameof(position), String.Format(CultureInfo.InvariantCulture,
                     "The position {0} is not within the given text string.", position));
 
             if(text[position] != '{')
@@ -570,8 +565,7 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             string cer = member.Id;
 
-            string typeCer, memberName, arguments;
-            DecomposeMemberIdentifier(cer, out typeCer, out memberName, out arguments);
+            DecomposeMemberIdentifier(cer, out string typeCer, out string memberName, out string arguments);
 
             if((options & DisplayOptions.ShowContainer) > 0)
             {
@@ -587,7 +581,7 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 if(String.IsNullOrEmpty(arguments))
                 {
-                    Parameter[] parameters = new Parameter[0];
+                    Parameter[] parameters = Array.Empty<Parameter>();
                     resolver.WriteMethodParameters(parameters, writer);
                 }
                 else

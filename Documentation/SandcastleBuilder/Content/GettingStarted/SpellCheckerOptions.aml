@@ -2,7 +2,7 @@
 <topic id="836847bc-d780-468b-ae23-f014f0829a0f" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<autoOutline excludeRelatedTopics="true" lead="This tab contains settings for the spell checker." />
+			<autoOutline excludeRelatedTopics="true" lead="This tab contains settings for the spell checker (standalone GUI only)." />
 		</introduction>
 
 		<section address="GeneralOptions">

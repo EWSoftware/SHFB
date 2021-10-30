@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/23/2015
-// Note    : Copyright 2008-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 05/16/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
 // encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.
@@ -28,9 +27,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
-using System.Xml.XPath;
+using System.Xml.Linq;
 
 using Sandcastle.Core;
 
@@ -46,9 +44,8 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     /// <remarks>This uses the <see href="http://www.steelbytes.com/?mid=45">Steel Bytes SBAppLocale</see> tool
     /// to run the HTML Help 1 compiler using the correct locale.</remarks>
-    [HelpFileBuilderPlugInExport("DBCS Fix for CHM Builds", IsConfigurable = true,
-      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nSBAppLocale is Copyright \xA9 " +
-      "2005-2014 Steel Bytes, All Rights Reserved",
+    [HelpFileBuilderPlugInExport("DBCS Fix for CHM Builds", Version = AssemblyInfo.ProductVersion,
+      Copyright = AssemblyInfo.Copyright + "\r\nSBAppLocale is Copyright \xA9 2005-2014 Steel Bytes, All Rights Reserved",
       Description = "This plug-in is used to modify the HTML files and alter the build so as to overcome the " +
         "encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.")]
     public sealed class DbcsFixPlugIn : IPlugIn
@@ -61,6 +58,7 @@ namespace SandcastleBuilder.PlugIns
         private BuildProcess builder;
 
         private string sbAppLocalePath;
+
         #endregion
 
         #region IPlugIn implementation
@@ -86,32 +84,14 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="project">A reference to the active project</param>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
-        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
-        {
-            using(DbcsFixConfigDlg dlg = new DbcsFixConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
-        }
-
-        /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build process</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
-        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XElement configuration)
         {
-            XPathNavigator root, node;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             builder = buildProcess;
 
@@ -120,15 +100,13 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
-            root = configuration.SelectSingleNode("configuration");
-
-            if(root.IsEmptyElement)
+            if(configuration.IsEmpty)
                 throw new BuilderException("DFP0001", "The DBCS Fix plug-in has not been configured yet");
 
-            node = root.SelectSingleNode("sbAppLocale");
+            var node = configuration.Element("sbAppLocale");
 
             if(node != null)
-                sbAppLocalePath = node.GetAttribute("path", String.Empty).Trim();
+                sbAppLocalePath = node.Attribute("path").Value;
 
             if(String.IsNullOrWhiteSpace(sbAppLocalePath))
             {
@@ -165,6 +143,9 @@ namespace SandcastleBuilder.PlugIns
             XmlNode property;
             string projectFile;
 
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
+
             // Localize the content when extracting keyword and TOC info
             if(context.BuildStep == BuildStep.ExtractingHtmlInfo)
             {
@@ -182,7 +163,7 @@ namespace SandcastleBuilder.PlugIns
 
                 builder.ReportProgress("Adding DBCS Fix localization folder");
 
-                projectFile = builder.WorkingFolder + "ExtractHtmlInfo.proj";
+                projectFile = Path.Combine(builder.WorkingFolder, "ExtractHtmlInfo.proj");
                 project = new XmlDocument();
                 project.Load(projectFile);
                 nsm = new XmlNamespaceManager(project.NameTable);

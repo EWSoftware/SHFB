@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : LargeTextBoxEditor.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2017
-// Note    : Copyright 2017, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/17/2021
+// Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to edit user-defined project properties
 //
@@ -18,6 +17,7 @@
 // 10/26/2017  EFW  Created the code
 //===============================================================================================================
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -39,6 +39,9 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="propertyItem">The property item</param>
         protected override void SetControlProperties(PropertyItem propertyItem)
         {
+            if(propertyItem == null)
+                throw new ArgumentNullException(nameof(propertyItem));
+
             base.SetControlProperties(propertyItem);
 
             this.Editor.Height = 75;

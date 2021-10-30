@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ContentLayoutEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2019
-// Note    : Copyright 2011-2019, Eric Woodruff, All rights reserved
+// Updated : 04/17/2021
+// Note    : Copyright 2011-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the WPF user control used to edit content layout files
 //
@@ -26,6 +26,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using Sandcastle.Core;
+using Sandcastle.Platform.Windows;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
@@ -40,13 +43,13 @@ namespace SandcastleBuilder.WPF.UserControls
         #region Private data members
         //=====================================================================
 
-        private TopicCollection topics;
         private IEnumerator<Topic> matchEnumerator;
         private Point startDragPoint;
 
         // Topics are too complex to serialize to the clipboard.  As such, we'll use this as an internal
         // "clipboard" for cut items within the editor instance.
         private Topic clipboardTopic;
+
         #endregion
 
         #region Properties
@@ -55,10 +58,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// This read-only property returns the current topic collection including any edits
         /// </summary>
-        public TopicCollection Topics
-        {
-            get { return topics; }
-        }
+        public TopicCollection Topics { get; private set; }
 
         /// <summary>
         /// This read-only property returns the current topic
@@ -145,17 +145,16 @@ namespace SandcastleBuilder.WPF.UserControls
         public void LoadContentLayoutFile(FileItem contentLayoutFile)
         {
             if(contentLayoutFile == null)
-                throw new ArgumentNullException("contentLayoutFile",
-                    "A content layout file item must be specified");
+                throw new ArgumentNullException(nameof(contentLayoutFile), "A content layout file item must be specified");
 
-            topics = new TopicCollection(contentLayoutFile.ToContentFile());
-            topics.Load();
-            topics.ListChanged += new ListChangedEventHandler(topics_ListChanged);
+            this.Topics = new TopicCollection(contentLayoutFile.ToContentFile());
+            this.Topics.Load();
+            this.Topics.ListChanged += new ListChangedEventHandler(topics_ListChanged);
 
-            if(topics.Count != 0 && !topics.Find(t => t.IsSelected, false).Any())
-                topics[0].IsSelected = true;
+            if(this.Topics.Count != 0 && !this.Topics.Find(t => t.IsSelected, false).Any())
+                this.Topics[0].IsSelected = true;
 
-            tvContent.ItemsSource = topics;
+            tvContent.ItemsSource = this.Topics;
 
             this.topics_ListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, -1));
         }
@@ -166,10 +165,9 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <returns>The string to copy to the clipboard or null if there is nothing to copy</returns>
         private string GetTextToCopy()
         {
-            Topic t = tvContent.SelectedItem as Topic;
             string textToCopy;
 
-            if(t != null && !String.IsNullOrEmpty(t.Id))
+            if(tvContent.SelectedItem is Topic t && !String.IsNullOrEmpty(t.Id))
                 textToCopy = String.Format(CultureInfo.InvariantCulture, "<link xlink:href=\"{0}\" />", t.Id);
             else
                 textToCopy = null;
@@ -186,7 +184,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        void topics_ListChanged(object sender, ListChangedEventArgs e)
+        private void topics_ListChanged(object sender, ListChangedEventArgs e)
         {
             Topic selectedTopic = tvContent.SelectedItem as Topic;
 
@@ -203,7 +201,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     case "ApiParentMode":
                         // There can be only one API content parent
                         if(selectedTopic != null && selectedTopic.ApiParentMode != ApiParentMode.None)
-                            foreach(var match in topics.Find(
+                            foreach(var match in this.Topics.Find(
                               t => t.ApiParentMode != ApiParentMode.None && t != selectedTopic, false))
                                 match.ApiParentMode = ApiParentMode.None;
                         break;
@@ -211,7 +209,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     case "IsDefaultTopic":
                         // There can be only one default topic
                         if(selectedTopic != null && selectedTopic.IsDefaultTopic)
-                            foreach(var match in topics.Find(t => t.IsDefaultTopic && t != selectedTopic, false))
+                            foreach(var match in this.Topics.Find(t => t.IsDefaultTopic && t != selectedTopic, false))
                                 match.IsDefaultTopic = false;
                         break;
 
@@ -223,13 +221,13 @@ namespace SandcastleBuilder.WPF.UserControls
                             if(selectedTopic.Subtopics.Find(t => t.Visible, false).Any())
                             {
                                 MessageBox.Show("The root container cannot contain any visible sub-topics",
-                                    "Content Layout Editor", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                                    Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
                                 selectedTopic.IsMSHVRootContentContainer = false;
                                 return;
                             }
 
-                            foreach(var match in topics.Find(t => t.IsMSHVRootContentContainer &&
+                            foreach(var match in this.Topics.Find(t => t.IsMSHVRootContentContainer &&
                               t != selectedTopic, false))
                                 match.IsMSHVRootContentContainer = false;
                         }
@@ -240,11 +238,11 @@ namespace SandcastleBuilder.WPF.UserControls
                 }
 
             if(sender != this)
-                base.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
+                this.RaiseEvent(new RoutedEventArgs(ContentModifiedEvent, this));
 
             // Update control state based on the collection content
             tvContent.IsEnabled = expFileProps.IsEnabled = expTopicProps.IsEnabled = expIndexKeywords.IsEnabled =
-                (topics != null && topics.Count != 0);
+                (this.Topics != null && this.Topics.Count != 0);
 
             CommandManager.InvalidateRequerySuggested();
 
@@ -264,12 +262,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void AddChildTopic_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            ItemCollection items;
-
-            if(sender is MenuItem)
-                items = ((MenuItem)sender).Items;
-            else
-                items = ((ContextMenu)sender).Items;
+            ItemCollection items = sender is MenuItem item ? item.Items : ((ContextMenu)sender).Items;
 
             foreach(MenuItem mi in items.OfType<MenuItem>())
                 mi.CommandParameter = true;
@@ -282,7 +275,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void btnGo_Click(object sender, RoutedEventArgs e)
         {
-            if(topics == null || topics.Count == 0)
+            if(this.Topics == null || this.Topics.Count == 0)
                 return;
 
             if(txtFindID.Text.Trim().Length == 0)
@@ -300,7 +293,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             // If this is the first time, get all matches
             if(matchEnumerator == null)
-                matchEnumerator = topics.Find(t =>
+                matchEnumerator = this.Topics.Find(t =>
                   (!String.IsNullOrEmpty(t.Id) && t.Id.IndexOf(txtFindID.Text,
                     StringComparison.CurrentCultureIgnoreCase) != -1) ||
                   (!String.IsNullOrEmpty(t.DisplayTitle) && t.DisplayTitle.IndexOf(txtFindID.Text,
@@ -317,7 +310,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     matchEnumerator = null;
                 }
 
-                MessageBox.Show("No more matches found", "Content Layout Editor", MessageBoxButton.OK,
+                MessageBox.Show("No more matches found", Constants.AppName, MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
         }
@@ -358,9 +351,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem item = sender as TreeViewItem;
-
-            if(item != null)
+            if(sender is TreeViewItem item)
             {
                 item.IsSelected = true;
                 item.Focus();
@@ -375,12 +366,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void tvContent_TreeViewItemMouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            TreeViewItem item = sender as TreeViewItem;
-
             // Only execute this if it's the selected node.  An odd side-effect of how we have to hook up
             // the event handler is that it fires for the selected item and all of its parents up to the
             // root of the tree even if the event is marked as handled.
-            if(item != null && item.IsSelected)
+            if(sender is TreeViewItem item && item.IsSelected)
                 EditorCommands.Edit.Execute(null, item);
         }
         #endregion
@@ -405,8 +394,8 @@ namespace SandcastleBuilder.WPF.UserControls
             // If the command parameter is null, add it as a sibling.  If not, add it as a child.
             if(e.Parameter == null || currentTopic == null)
             {
-                if(currentTopic == null || topics.Count == 0)
-                    topics.Add(newTopic);
+                if(currentTopic == null || this.Topics.Count == 0)
+                    this.Topics.Add(newTopic);
                 else
                     currentTopic.Parent.Insert(currentTopic.Parent.IndexOf(currentTopic) + 1, newTopic);
             }
@@ -426,7 +415,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdExpandCollapse_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (topics != null && topics.Count != 0 &&
+            e.CanExecute = (this.Topics != null && this.Topics.Count != 0 &&
                 ((e.Command != EditorCommands.CollapseCurrent && e.Command != EditorCommands.ExpandCurrent) ||
                 (this.CurrentTopic != null && this.CurrentTopic.Subtopics.Count != 0)));
         }
@@ -440,8 +429,8 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             bool expand = (e.Command == EditorCommands.ExpandAll);
 
-            if(topics != null)
-                foreach(var topic in topics.Find(t => t.Subtopics.Count != 0, false))
+            if(this.Topics != null)
+                foreach(var topic in this.Topics.Find(t => t.Subtopics.Count != 0, false))
                     topic.IsExpanded = expand;
         }
 
@@ -480,14 +469,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdMoveUp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Topic t = tvContent.SelectedItem as Topic;
-            TopicCollection parent;
-            int idx;
-
-            if(t != null)
+            if(tvContent.SelectedItem is Topic t)
             {
-                parent = t.Parent;
-                idx = parent.IndexOf(t);
+                TopicCollection parent = t.Parent;
+                int idx = parent.IndexOf(t);
 
                 parent.Remove(t);
                 parent.Insert(idx - 1, t);
@@ -514,14 +499,10 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdMoveDown_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Topic t = tvContent.SelectedItem as Topic;
-            TopicCollection parent;
-            int idx;
-
-            if(t != null)
+            if(tvContent.SelectedItem is Topic t)
             {
-                parent = t.Parent;
-                idx = parent.IndexOf(t);
+                TopicCollection parent = t.Parent;
+                int idx = parent.IndexOf(t);
 
                 parent.Remove(t);
                 parent.Insert(idx + 1, t);
@@ -547,9 +528,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdSort_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Topic t = tvContent.SelectedItem as Topic;
-
-            if(t != null)
+            if(tvContent.SelectedItem is Topic t)
                 try
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
@@ -581,11 +560,9 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdDelete_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Topic t = tvContent.SelectedItem as Topic;
-
-            if(t != null && MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Are you sure you " +
-              "want to delete the topic '{0}' and all of its sub-topics?", t.DisplayTitle),
-              "Content Layout Editor", MessageBoxButton.YesNo, MessageBoxImage.Question,
+            if(tvContent.SelectedItem is Topic t && MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
+              "Are you sure you want to delete the topic '{0}' and all of its sub-topics?", t.DisplayTitle),
+              Constants.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question,
               MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 t.Parent.Remove(t);
@@ -644,7 +621,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdPaste_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (topics != null && clipboardTopic != null);
+            e.CanExecute = (this.Topics != null && clipboardTopic != null);
         }
 
         /// <summary>
@@ -662,7 +639,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 clipboardTopic = null;
 
                 if(targetTopic == null)
-                    topics.Add(newTopic);
+                    this.Topics.Add(newTopic);
                 else
                 {
                     if(e.Command == EditorCommands.PasteAsChild)
@@ -686,7 +663,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdHelp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Utility.ShowHelpTopic("54e3dc97-5125-441e-8e84-7f9303e95f26");
+            UiUtility.ShowHelpTopic("54e3dc97-5125-441e-8e84-7f9303e95f26");
         }
 
         /// <summary>
@@ -696,13 +673,11 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void btnAssociateTopic_Click(object sender, RoutedEventArgs e)
         {
-            Topic t = tvContent.SelectedItem as Topic;
-
-            if(t != null)
+            if(tvContent.SelectedItem is Topic)
             {
                 // Let the caller prompt for the filename and add it to the project if necessary
                 RoutedEventArgs args = new RoutedEventArgs(AssociateTopicEvent, this);
-                base.RaiseEvent(args);
+                this.RaiseEvent(args);
 
                 // If associated, refresh the bindings
                 if(args.Handled)
@@ -723,10 +698,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void btnClearTopic_Click(object sender, RoutedEventArgs e)
         {
-            Topic t = tvContent.SelectedItem as Topic;
-
-            if(t != null && MessageBox.Show("Do you want to clear the file associated with this topic?",
-              "Content Layout Editor", MessageBoxButton.YesNo, MessageBoxImage.Question,
+            if(tvContent.SelectedItem is Topic t && MessageBox.Show("Do you want to clear the file associated with this topic?",
+              Constants.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question,
               MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 t.TopicFile = null;
@@ -747,7 +720,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void btnRefreshAssociations_Click(object sender, RoutedEventArgs e)
         {
-            topics.MatchProjectFilesToTopics();
+            this.Topics.MatchProjectFilesToTopics();
 
             txtID.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             txtRevNumber.GetBindingExpression(TextBox.TextProperty).UpdateTarget();

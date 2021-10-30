@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : LanguageSpecificTextComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 06/17/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to convert span style language-specific text elements to
 // the script style elements used in the VS2010 and later styles.
@@ -25,10 +24,11 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used to convert the span style language-specific text elements to the script style
@@ -51,7 +51,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new LanguageSpecificTextComponent(base.BuildAssembler);
+                return new LanguageSpecificTextComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -81,6 +81,9 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             // The <scriptFunction> element is optional.  If not set, it will use the default name
             // "AddLanguageSpecificTextSet".
             var nav = configuration.SelectSingleNode("scriptFunction");
@@ -95,10 +98,16 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if(key == null)
+                throw new ArgumentNullException(nameof(key));
+
             XmlNodeList langList;
             XmlElement spanElement, scriptElement;
-            string uniqueId, langParam, idRoot = String.Format(CultureInfo.InvariantCulture,
-                "LST{0:X}_", key.GetHashCode());
+            string uniqueId, langParam, idRoot = String.Format(CultureInfo.InvariantCulture, "LST{0:X}_",
+                key.GetHashCodeDeterministic());
             int sequence = 0;
 
             foreach(XmlNode lstNode in document.SelectNodes("//span[@class='languageSpecificText']"))

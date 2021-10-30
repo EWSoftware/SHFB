@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/02/2018
-// Note    : Copyright 2012-2018, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/22/2021
+// Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the class used to view the build log content.
 //
@@ -54,7 +53,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public string LogFilename
         {
-            get { return logFilename; }
+            get => logFilename;
             set
             {
                 logFilename = null;
@@ -103,7 +102,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 {
                     bool filtered = rbFilter.IsChecked.Value, highlight = rbHighlight.IsChecked.Value;
 
-                    string content = await Task.Run(() => TransformLogFile(logFilename, filtered, highlight));
+                    string content = await Task.Run(() => TransformLogFile(logFilename, filtered, highlight)).ConfigureAwait(true);
 
                     wbContent.NavigateToString(content);
                 }
@@ -147,14 +146,12 @@ namespace SandcastleBuilder.WPF.UserControls
                 html = File.ReadAllText(logFile);
 
                 // Transform the log into something more readable
-                XmlReaderSettings readerSettings = new XmlReaderSettings();
-                readerSettings.CloseInput = true;
-
+                XmlReaderSettings readerSettings = new XmlReaderSettings { CloseInput = true };
                 XslCompiledTransform xslTransform = new XslCompiledTransform();
                 XsltSettings settings = new XsltSettings(true, true);
 
-                using(var transformReader = XmlReader.Create(Path.Combine(Path.GetDirectoryName(
-                  ComponentUtilities.ToolsFolder), @"Templates\TransformBuildLog.xsl"), readerSettings))
+                using(var transformReader = XmlReader.Create(Path.Combine(ComponentUtilities.RootFolder,
+                  "Templates", "TransformBuildLog.xsl"), readerSettings))
                 {
                     xslTransform.Load(transformReader, settings, new XmlUrlResolver());
 
@@ -163,18 +160,16 @@ namespace SandcastleBuilder.WPF.UserControls
                     argList.AddParam("highlightOn", String.Empty, highlight ? "true" : "false");
 
                     using(StringReader sr = new StringReader(html))
+                    using(XmlReader reader = XmlReader.Create(sr, readerSettings))
                     {
-                        using(XmlReader reader = XmlReader.Create(sr, readerSettings))
-                        {
-                            XmlWriterSettings writerSettings = xslTransform.OutputSettings.Clone();
-                            writerSettings.CloseOutput = true;
-                            writerSettings.Indent = false;
+                        XmlWriterSettings writerSettings = xslTransform.OutputSettings.Clone();
+                        writerSettings.CloseOutput = true;
+                        writerSettings.Indent = false;
 
-                            using(XmlWriter writer = XmlWriter.Create(sb, writerSettings))
-                            {
-                                xslTransform.Transform(reader, argList, writer);
-                                writer.Flush();
-                            }
+                        using(XmlWriter writer = XmlWriter.Create(sb, writerSettings))
+                        {
+                            xslTransform.Transform(reader, argList, writer);
+                            writer.Flush();
                         }
                     }
                 }

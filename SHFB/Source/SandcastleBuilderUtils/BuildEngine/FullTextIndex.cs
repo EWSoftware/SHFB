@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/05/2016
-// Note    : Copyright 2007-2016, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/15/2021
+// Note    : Copyright 2007-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class used to create a full-text index used to search for topics in the ASP.NET web
 // pages.  It's a really basic implementation but should get the job done.
@@ -32,12 +31,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -54,28 +53,28 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         // Parsing regular expressions
-        private static Regex rePageTitle = new Regex(@"<title>(?<Title>.*)</title>", RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
+        private static readonly Regex rePageTitle = new Regex(@"<title>(?<Title>.*)</title>",
+            RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reStripScriptStyleHead = new Regex(
+        private static readonly Regex reStripScriptStyleHead = new Regex(
             @"<script[^>]*(?<!/)>.*?</script\s*>|<style[^>]*(?<!/)>.*?</style\s*>|<head[^>]*(?<!/)>.*?</head\s*>",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reStripTags = new Regex("<[^>]+>");
+        private static readonly Regex reStripTags = new Regex("<[^>]+>");
 
-        private static Regex reStripApos = new Regex(@"\w'\w{1,2}");
+        private static readonly Regex reStripApos = new Regex(@"\w'\w{1,2}");
 
-        private static Regex reCondenseWS = new Regex(@"\s+");
+        private static readonly Regex reCondenseWS = new Regex(@"\s+");
 
-        private static Regex reSplitWords = new Regex(@"\W");
+        private static readonly Regex reSplitWords = new Regex(@"\W");
 
         // Exclusion word list
-        private HashSet<string> exclusionWords;
-        private CultureInfo lang;
+        private readonly HashSet<string> exclusionWords;
+        private readonly CultureInfo lang;
 
         // Index information
-        private ConcurrentQueue<string> fileList;
-        private ConcurrentDictionary<string, ConcurrentQueue<long>> wordDictionary;
+        private readonly ConcurrentQueue<string> fileList;
+        private readonly ConcurrentDictionary<string, ConcurrentQueue<long>> wordDictionary;
         private int fileListCount;
 
         #endregion
@@ -127,6 +126,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             int rootPathLength;
 
+            if(filePath == null)
+                throw new ArgumentNullException(nameof(filePath));
+
             if(filePath[filePath.Length - 1] == '\\')
                 rootPathLength = filePath.Length;
             else
@@ -160,7 +162,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 content = reStripTags.Replace(content, " ");
 
                 // Decode the text
-                content = HttpUtility.HtmlDecode(content);
+                content = WebUtility.HtmlDecode(content);
 
                 // Strip apostrophe suffixes
                 content = reStripApos.Replace(content, String.Empty);
@@ -213,7 +215,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // Store the file index in the upper part of a 64-bit integer and the word count
                         // in the lower 16-bits.  More room is given to the file count as some builds
                         // contain a large number of topics.
-                        wordDictionary[word].Enqueue(((long)(count - 1) << 16) + (long)(wordCounts[word] & 0xFFFF));
+                        wordDictionary[word].Enqueue(((long)(count - 1) << 16) + (wordCounts[word] & 0xFFFF));
                     }
                 }
             });
@@ -229,7 +231,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Dictionary<char, Dictionary<string, List<long>>> letters =
                 new Dictionary<char, Dictionary<string, List<long>>>();
-            JavaScriptSerializer jss = new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue };
             char firstLetter;
 
             if(!Directory.Exists(indexPath))
@@ -238,7 +239,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // First, the easy part.  Save the filename index
             using(StreamWriter sw = new StreamWriter(indexPath + "FTI_Files.json"))
             {
-                sw.Write(jss.Serialize(new List<string>(fileList)));
+                sw.Write(JsonSerializer.Serialize(new List<string>(fileList)));
             }
 
             // Now split the word dictionary up into pieces by first letter.  This will help the search
@@ -259,7 +260,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 using(StreamWriter sw = new StreamWriter(String.Format(CultureInfo.InvariantCulture,
                   "{0}\\FTI_{1}.json", indexPath, (int)letter)))
                 {
-                    sw.Write(jss.Serialize(letters[letter]));
+                    sw.Write(JsonSerializer.Serialize(letters[letter]));
                 }
         }
         #endregion

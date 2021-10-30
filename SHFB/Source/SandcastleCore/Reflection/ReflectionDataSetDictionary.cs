@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ReflectionDataSetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2021
+// Updated : 04/23/2021
 // Note    : Copyright 2012-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a class representing a dictionary of reflection data settings for the various .NET
@@ -75,12 +75,13 @@ namespace Sandcastle.Core.Reflection
         {
             List<string> files = new List<string>();
 
-            foreach(string file in Directory.EnumerateFiles(ComponentUtilities.ToolsFolder, "*.reflection",
-              SearchOption.AllDirectories))
-                files.Add(file);
+            if(Directory.Exists(ComponentUtilities.CoreReflectionDataFolder))
+                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.CoreReflectionDataFolder, "*.reflection",
+                  SearchOption.AllDirectories))
+                    files.Add(file);
 
-            if(Directory.Exists(ComponentUtilities.ComponentsFolder))
-                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.ComponentsFolder, "*.reflection",
+            if(Directory.Exists(ComponentUtilities.ThirdPartyComponentsFolder))
+                foreach(string file in Directory.EnumerateFiles(ComponentUtilities.ThirdPartyComponentsFolder, "*.reflection",
                   SearchOption.AllDirectories))
                     files.Add(file);
 
@@ -180,6 +181,9 @@ namespace Sandcastle.Core.Reflection
         /// <returns>The best matching reflection data set or null if one could not be found</returns>
         public ReflectionDataSet BestMatchFor(IEnumerable<(string PlatformType, string Version)> frameworks)
         {
+            if(frameworks == null)
+                throw new ArgumentNullException(nameof(frameworks));
+
             List<ReflectionDataSet> bestMatches = new List<ReflectionDataSet>();
             ReflectionDataSet match;
 

@@ -2,9 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : AdditionalHeaderResourcesComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2015
-// Note    : Copyright 2014-2015, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/11/2021
+// Note    : Copyright 2014-2021, Eric Woodruff, All rights reserved
 //
 // This file contains a build component that is used to add additional metadata, style sheet, and script file
 // resources to the header of the transformed topics.
@@ -26,7 +25,7 @@ using System.Xml.XPath;
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
-namespace Microsoft.Ddue.Tools.BuildComponent
+namespace Sandcastle.Tools.BuildComponents
 {
     /// <summary>
     /// This component is used add additional metadata, style sheet, and script file resources to the header of
@@ -50,7 +49,7 @@ namespace Microsoft.Ddue.Tools.BuildComponent
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
-                return new AdditionalHeaderResourcesComponent(base.BuildAssembler);
+                return new AdditionalHeaderResourcesComponent(this.BuildAssembler);
             }
         }
         #endregion
@@ -80,12 +79,18 @@ namespace Microsoft.Ddue.Tools.BuildComponent
         /// <inheritdoc />
         public override void Initialize(XPathNavigator configuration)
         {
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
             headerResources = configuration.Select("meta|script|stylesheet");
         }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            if(document == null)
+                throw new ArgumentNullException(nameof(document));
+
             XmlElement element, lastMetaElement = null;
             var head = document.SelectSingleNode("//head");
 

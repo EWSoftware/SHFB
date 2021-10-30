@@ -2,29 +2,27 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentLayoutWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
-// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft Visual C#
+// Updated : 04/19/2021
+// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the form used to edit the conceptual content items.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.7  04/24/2008  EFW  Created the code
-// 1.8.0.0  09/04/2008  EFW  Reworked for use with the new project format
-// 1.9.0.0  07/10/2010  EFW  Added support for parenting API content anywhere
-// 1.9.3.3  12/19/2011  EFW  Rewrote to use the shared WPF Content Layout Editor user control
+// 04/24/2008  EFW  Created the code
+// 09/04/2008  EFW  Reworked for use with the new project format
+// 07/10/2010  EFW  Added support for parenting API content anywhere
+// 12/19/2011  EFW  Rewrote to use the shared WPF Content Layout Editor user control
 //===============================================================================================================
 
 // Ignore Spelling: aml
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -53,8 +51,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Private data Members
         //=====================================================================
 
-        private FileItem contentLayoutFile;
-        private ContentLayoutEditorControl ucContentLayoutEditor;
+        private readonly FileItem contentLayoutFile;
+        private readonly ContentLayoutEditorControl ucContentLayoutEditor;
 
         //=====================================================================
         #endregion
@@ -65,10 +63,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This read-only property returns the filename
         /// </summary>
-        public string Filename
-        {
-            get { return contentLayoutFile.FullPath; }
-        }
+        public string Filename => contentLayoutFile.FullPath;
 
         /// <summary>
         /// This read-only property returns the current topic collection including any unsaved edits
@@ -93,6 +88,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public ContentLayoutWindow(FileItem fileItem)
         {
             InitializeComponent();
+
+            if(fileItem == null)
+                throw new ArgumentNullException(nameof(fileItem));
 
             this.Text = Path.GetFileName(fileItem.FullPath);
             this.ToolTipText = fileItem.FullPath;
@@ -131,6 +129,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <overloads>There are two overloads for this method</overloads>
         public bool Save(string filename)
         {
+            if(filename == null)
+                throw new ArgumentNullException(nameof(filename));
+
             string projectPath = Path.GetDirectoryName(contentLayoutFile.Project.Filename);
 
             if(!filename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
@@ -241,16 +242,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <inheritdoc />
-        public override bool CanSaveContent
-        {
-            get { return true; }
-        }
+        public override bool CanSaveContent => true;
 
         /// <inheritdoc />
-        public override bool IsContentDocument
-        {
-            get { return true; }
-        }
+        public override bool IsContentDocument => true;
 
         /// <inheritdoc />
         public override bool Save()
@@ -318,7 +313,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void ucContentLayoutEditor_ContentModified(object sender, System.Windows.RoutedEventArgs e)
+        private void ucContentLayoutEditor_ContentModified(object sender, RoutedEventArgs e)
         {
             if(!this.IsDirty)
             {
@@ -393,9 +388,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             // If the sender is a topic, use that instead.  Due to the way the WPF tree view works, the
             // selected topic isn't always the one we just added when it's the first child of a parent topic.
-            Topic t = sender as Topic;
-
-            if(t == null)
+            if(!(sender is Topic t))
                 t = ucContentLayoutEditor.CurrentTopic;
 
             if(t.TopicFile != null)
@@ -404,8 +397,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // If the document is already open, just activate it
                 foreach(IDockContent content in this.DockPanel.Documents)
-                    if(String.Compare(content.DockHandler.ToolTipText, fullName, true,
-                      CultureInfo.CurrentCulture) == 0)
+                    if(String.Compare(content.DockHandler.ToolTipText, fullName, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         content.DockHandler.Activate();
                         return;

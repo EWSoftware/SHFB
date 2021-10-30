@@ -2,18 +2,17 @@
 // System  : Sandcastle Guided Installation
 // File    : WhatsNewPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/13/2012
-// Compiler: Microsoft Visual C#
+// Updated : 04/21/2021
 //
 // This file contains a What's New page for the installer.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.1.0.2  12/13/2012  EFW  Created the code
+// 12/13/2012  EFW  Created the code
 //===============================================================================================================
 
 // Ignore Spelling: url
@@ -35,10 +34,8 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <inheritdoc />
-        public override string PageTitle
-        {
-            get { return "What's New"; }
-        }
+        public override string PageTitle => "What's New";
+
         #endregion
 
         #region Constructor
@@ -59,13 +56,17 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void Initialize(XElement configuration)
         {
-            Hyperlink hyperLink;
+            if(configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             // Load the What's New link information
             foreach(var wn in configuration.Elements("whatsNew"))
             {
-                hyperLink = new Hyperlink(new Run(wn.Attribute("description").Value));
-                hyperLink.Tag = wn.Attribute("url").Value;
+                Hyperlink hyperLink = new Hyperlink(new Run(wn.Attribute("description").Value))
+                {
+                    Tag = wn.Attribute("url").Value
+                };
+
                 hyperLink.Click += LaunchLink;
 
                 pnlLinks.Children.Add(new Label

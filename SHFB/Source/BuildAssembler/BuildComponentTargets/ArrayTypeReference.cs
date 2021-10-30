@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Microsoft.Ddue.Tools.Targets
+namespace Sandcastle.Tools.BuildComponents.Targets
 {
     /// <summary>
     /// This represents an array type reference
@@ -23,12 +23,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This read-only property returns the element type
         /// </summary>
-        public TypeReference ElementType { get; private set; }
+        public TypeReference ElementType { get; }
 
         /// <summary>
         /// This read-only property returns the array rank
         /// </summary>
-        public int Rank { get; private set; }
+        public int Rank { get; }
 
         #endregion
 
@@ -42,13 +42,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="rank">The array rank</param>
         public ArrayTypeReference(TypeReference elementType, int rank)
         {
-            if(elementType == null)
-                throw new ArgumentNullException("elementType");
-
             if(rank <= 0)
-                throw new ArgumentOutOfRangeException("rank");
+                throw new ArgumentOutOfRangeException(nameof(rank));
 
-            this.ElementType = elementType;
+            this.ElementType = elementType ?? throw new ArgumentNullException(nameof(elementType));
             this.Rank = rank;
         }
         #endregion

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildPropertiesPageContent.xaml.cs
 // Author  : Eric Woodruff
-// Updated : 03/28/2021
+// Updated : 08/24/2021
 // Note    : Copyright 2017-2021, Eric Woodruff, All rights reserved
 //
 // This user control is used to edit the Build category properties
@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -215,7 +214,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
         /// <param name="project">The current Sandcastle project</param>
         public void SetCurrentProject(SandcastleProject project)
         {
-            fpBuildLogFile.File = new FilePath(project);
+            fpBuildLogFile.DataContext = new FilePath(project);
         }
 
         /// <summary>
@@ -234,8 +233,7 @@ namespace SandcastleBuilder.WPF.PropertyPages
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 if(currentProject != null)
-                    reflectionDataSets = new ReflectionDataSetDictionary(new[] {
-                        currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                    reflectionDataSets = new ReflectionDataSetDictionary(currentProject.ComponentSearchPaths);
                 else
                     reflectionDataSets = new ReflectionDataSetDictionary(null);
             }

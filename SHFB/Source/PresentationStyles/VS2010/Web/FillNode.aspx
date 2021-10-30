@@ -7,13 +7,12 @@
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 04/09/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
-// Compiler: Microsoft C#
 //
 // This file contains the code used to dynamically load a parent node with its child table of content nodes when
 // first expanded.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -84,7 +83,7 @@ private TableOfContents GetToc()
 		{
 			CacheDependency cacheDependency = new CacheDependency(tocPath);
 
-			using(XmlReader reader = XmlReader.Create(tocPath))
+			using(XmlReader reader = XmlReader.Create(tocPath, new XmlReaderSettings()))
 			{
 				toc = (TableOfContents)new XmlSerializer(typeof(TableOfContents)).Deserialize(reader);
 				toc.IndexNodes();
