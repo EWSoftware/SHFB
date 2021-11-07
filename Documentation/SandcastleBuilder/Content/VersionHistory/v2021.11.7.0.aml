@@ -15,7 +15,10 @@ topic for more information.</para>
 
 				<para>See the <link xlink:href="21c2a363-6c94-440b-8985-6b224d275463" /> topic for known issues with
 .NET Core builds.</para>
+
 			</alert>
+
+			<para>This release is a minor update to version 2021.10.23.0 which originally contained these changes.</para>
 
 			<autoOutline excludeRelatedTopics="true" lead="none" />
 		</introduction>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2021
+// Updated : 11/01/2021
 // Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
 //
 // This file contains the console mode application used to extract title and keyword information from HTML files
@@ -591,9 +591,9 @@ namespace SandcastleBuilder.HtmlExtract
                 writer.Write(content);
             }
         }
-#endregion
+        #endregion
 
-#region Write out the HTML Help 1 table of contents
+        #region Write out the HTML Help 1 table of contents
         //=====================================================================
 
         /// <summary>
@@ -634,12 +634,15 @@ namespace SandcastleBuilder.HtmlExtract
                                     key = reader.GetAttribute("file");
 
                                     // Remove any sub-folder if present as the titles are keyed on the name alone
-                                    int dirSep = key.IndexOfAny(new[] { '/', '\\' });
+                                    if(!String.IsNullOrWhiteSpace(key))
+                                    {
+                                        int dirSep = key.IndexOfAny(new[] { '/', '\\' });
 
-                                    if(dirSep != -1)
-                                        key = key.Substring(dirSep + 1);
+                                        if(dirSep != -1)
+                                            key = key.Substring(dirSep + 1);
+                                    }
 
-                                    if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                                    if(!String.IsNullOrWhiteSpace(key) && titles.ContainsKey(key))
                                     {
                                         titleInfo = titles[key];
                                         title = titleInfo.TocTitle;
@@ -707,9 +710,9 @@ namespace SandcastleBuilder.HtmlExtract
 
             writer.Write(value);
         }
-#endregion
+        #endregion
 
-#region Write out the HTML Help 1 keyword index
+        #region Write out the HTML Help 1 keyword index
         //=====================================================================
 
         /// <summary>
@@ -797,9 +800,9 @@ namespace SandcastleBuilder.HtmlExtract
 
             WriteContentLine(writer, indent, "</OBJECT></LI>");
         }
-#endregion
+        #endregion
 
-#region Write out the website table of contents
+        #region Write out the website table of contents
         //=====================================================================
 
         /// <summary>
@@ -839,12 +842,15 @@ namespace SandcastleBuilder.HtmlExtract
                                     key = reader.GetAttribute("file");
 
                                     // Remove any sub-folder if present as the titles are keyed on the name alone
-                                    int dirSep = key.IndexOfAny(new[] { '/', '\\' });
+                                    if(!String.IsNullOrWhiteSpace(key))
+                                    {
+                                        int dirSep = key.IndexOfAny(new[] { '/', '\\' });
 
-                                    if(dirSep != -1)
-                                        key = key.Substring(dirSep + 1);
+                                        if(dirSep != -1)
+                                            key = key.Substring(dirSep + 1);
+                                    }
 
-                                    if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
+                                    if(!String.IsNullOrWhiteSpace(key) && titles.ContainsKey(key))
                                     {
                                         titleInfo = titles[key];
                                         title = titleInfo.TocTitle;
@@ -897,9 +903,9 @@ namespace SandcastleBuilder.HtmlExtract
                 }
             }
         }
-#endregion
+        #endregion
 
-#region Write out the website keyword index
+        #region Write out the website keyword index
         //=====================================================================
 
         /// <summary>
@@ -959,6 +965,6 @@ namespace SandcastleBuilder.HtmlExtract
                 writer.WriteLine("</HelpKI>");
             }
         }
-#endregion
+        #endregion
     }
 }
