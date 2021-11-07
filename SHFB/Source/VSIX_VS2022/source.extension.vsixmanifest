@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Id="SHFB.A8C96335-DAF7-4D30-89E2-B004400E4525" Version="2021.10.23.0" Language="en-US" Publisher="EWSoftware" />
+		<Identity Id="SHFB.A8C96335-DAF7-4D30-89E2-B004400E4525" Version="2021.11.7.0" Language="en-US" Publisher="EWSoftware" />
 		<DisplayName>SHFB</DisplayName>
 		<Description xml:space="preserve">Visual Studio integration for the Sandcastle Help File Builder.</Description>
 		<MoreInfo>https://ewsoftware.github.io/SHFB/html/bd1ddb51-1c4f-434f-bb1a-ce2135d3a909.htm</MoreInfo>

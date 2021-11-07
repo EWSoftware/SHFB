@@ -4,7 +4,7 @@
 	<pathOffset location="..\..\..\..\..\Deployment" />
 
 	<!-- This indicates the tools version with which this installer is associated.-->
-	<tools version="2021.10.23.0" />
+	<tools version="2021.11.7.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
