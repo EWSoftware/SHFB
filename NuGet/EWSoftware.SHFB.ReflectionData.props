@@ -2,7 +2,10 @@
   <PropertyGroup>
     <!-- For backward compatibility with SHFB 2021.4.9 and earlier -->
     <ComponentPath Condition="$(ComponentPath) == ''">$(MSBuildThisFileDirectory)..\tools\</ComponentPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
     <!-- For all SHFB versions after 2021.4.9 -->
     <SHFBComponentPath Include="$(MSBuildThisFileDirectory)..\tools\" />
-  </PropertyGroup>
+  </ItemGroup>  
 </Project>
