@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/14/2021
-// Note    : Copyright 2008-2021, Eric Woodruff, All rights reserved
+// Updated : 01/13/2022
+// Note    : Copyright 2008-2022, Eric Woodruff, All rights reserved
 //
 // This file contains a collection class used to hold the conceptual content topics for a project.
 //
@@ -409,9 +409,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     {
                         enc = Encoding.Default;
 
-                        // When reading the file, use the default encoding but
-                        // detect the encoding if byte order marks are present.
-                        templateText = Utility.ReadWithEncoding(builder.TemplateFolder + "PlaceHolderNode.aml",
+                        // When reading the file, use the default encoding but detect the encoding if byte order
+                        // marks are present.
+                        templateText = Utility.ReadWithEncoding(Path.Combine(builder.TemplateFolder, "PlaceHolderNode.aml"),
                             ref enc);
 
                         templateText = templateText.Replace("{@GUID}", t.Id);
